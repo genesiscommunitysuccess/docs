@@ -20,13 +20,13 @@ For a custom message type called `TradeEvent` defined as:
 
 ```kotlin
 data class TradeEvent(
-  val price: Double,
-  val quantity: Int,
+    val price: Double,
+    val quantity: Int,
 ){
-  init{
-    require(price > 0) { "Price cannot be negative "}
-    require(quantity > 0) { "Quantity cannot be negative "}
-  }
+    init{
+        require(price > 0) { "Price cannot be negative "}
+        require(quantity > 0) { "Quantity cannot be negative "}
+    }
 }
 ```
 
@@ -34,9 +34,9 @@ data class TradeEvent(
 
 ```kotlin
 sealed class CustomTradeEventReply : Outbound() {
-  class TradeEventValidateAck : CustomTradeEventReply()
-  data class TradeEventAck(val tradeId: String) : CustomTradeEventReply()
-  data class TradeEventNack(val error: String) : CustomTradeEventReply()
+    class TradeEventValidateAck : CustomTradeEventReply()
+    data class TradeEventAck(val tradeId: String) : CustomTradeEventReply()
+    data class TradeEventNack(val error: String) : CustomTradeEventReply()
 }
 ```
 
@@ -46,22 +46,22 @@ Add `CustomTradeEventReply` under **{app-name}-messages** and assemble. Once you
 
 ```kotlin
     eventHandler<TradeEvent, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
-  onException { event, throwable ->
-    CustomTradeEventReply.TradeEventNack(throwable.message!!)
-  }
-  onValidate {
-    val tradeEvent = it.details
-    val notional = tradeEvent.price?.times(tradeEvent.quantity!!.toDouble())
-
-    require(notional!! < 1_000_000) { "Trade notional is too high" }
-    CustomTradeEventReply.TradeEventValidateAck()
-  }
-  onCommit { event ->
-    val trade = event.details
-    val result = entityDb.insert(trade)
-    CustomTradeEventReply.TradeEventAck(result.record.tradeId)
-  }
-}
+        onException { event, throwable ->
+            CustomTradeEventReply.TradeEventNack(throwable.message!!)
+        }
+        onValidate {
+            val tradeEvent = it.details
+            val notional = tradeEvent.price?.times(tradeEvent.quantity!!.toDouble())
+            
+            require(notional!! < 1_000_000) { "Trade notional is too high" }
+            CustomTradeEventReply.TradeEventValidateAck()
+        }
+        onCommit { event ->
+            val trade = event.details
+            val result = entityDb.insert(trade)
+            CustomTradeEventReply.TradeEventAck(result.record.tradeId)
+        }
+    }
 ```
 
 The following code assumes you have built your fields and tables after you created your `TradeEvent` under **jvm/{app-name}-config** with a primary key of `tradeId`. If intelliJ can't find you `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](../../../getting-started/learn-the-basics/data-model/).
@@ -80,18 +80,18 @@ In the below example we use a generated database entity called `Company` as mess
 
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
-  permissioning {
-    auth(mapName = "COMPANY"){
-      field { companyName }
-    }
-  }
+        permissioning {
+            auth(mapName = "COMPANY"){
+                field { companyName } 
+            }
+        }
 
-  onCommit { event ->
-    val company = event.details
-    val result = entityDb.insert(company)
-    ack(listOf(mapOf("VALUE" to result.record.companyId)))
-  }
-}
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
 ```
 
 If you use custom class instead of generated database entities as message-type of events, we recommend that you locate your classes within the messages module of your application. This is where we place all the custom message types for our application. You need to ensure that the _app-name_**-script-config** module has a dependency on the messages module.
@@ -103,13 +103,13 @@ If you use custom class instead of generated database entities as message-type o
 
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
-  permissionCodes = listOf("INSERT_TRADE")
-  onCommit { event ->
-    val company = event.details
-    val result = entityDb.insert(company)
-    ack(listOf(mapOf("VALUE" to result.record.companyId)))
-  }
-}
+        permissionCodes = listOf("INSERT_TRADE")
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
 ```
 
 You can find out more details in our section on [authorisation](../../../server/access-control/authorisation-overview/).
@@ -147,20 +147,20 @@ import global.genesis.message.core.event.EventReply
 
 @Module
 class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply> {
-  // Override schemaValidation here to disable schema validation
-  override fun schemaValidation(): Boolean = false
+    // Override schemaValidation here to disable schema validation
+    override fun schemaValidation(): Boolean = false
+    
+    override suspend fun onValidate(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack()
+    }
 
-  override suspend fun onValidate(message: Event<Company>): EventReply {
-    val company = message.details
-    // custom code block..
-    return ack()
-  }
-
-  override suspend fun onCommit(message: Event<Company>): EventReply {
-    val company = message.details
-    // custom code block..
-    return ack()
-  }
+    override suspend fun onCommit(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack()
+    }
 }
 ```
 
@@ -169,14 +169,14 @@ or in a GPAL definition:
 ```kotlin
 
 eventHandler {
-  eventHandler<Company> {
-    schemaValidation = false
-    onCommit { event ->
-      val company = event.details
-      // custom code block..
-      ack()
+    eventHandler<Company> {
+        schemaValidation = false
+        onCommit { event ->
+            val company = event.details
+            // custom code block..
+            ack()
+        }
     }
-  }
 }
 ```
 
@@ -203,19 +203,19 @@ Here is an example of a GPAL Event Handler definition:
 
 ```kotlin
 eventHandler {
-  eventHandler<Company>("COMPANY_INSERT") {
-    // Override requiresPendingApproval here to enable the "pending approval" flow.
-    // In this implementation, any user that is not "system.user" needs to go through requires going through the approval mechanism.
-    // The last line just needs to evaluate to a boolean; if false it does not require approval, if true it does
-    requiresPendingApproval { event ->
-      event.userName != "system.user"
+    eventHandler<Company>("COMPANY_INSERT") {
+        // Override requiresPendingApproval here to enable the "pending approval" flow.
+        // In this implementation, any user that is not "system.user" needs to go through requires going through the approval mechanism.
+        // The last line just needs to evaluate to a boolean; if false it does not require approval, if true it does
+        requiresPendingApproval { event ->
+            event.userName != "system.user"
+        }
+        onCommit { event ->
+            val company = event.details
+            // custom code block..
+            ack()
+        }
     }
-    onCommit { event ->
-      val company = event.details
-      // custom code block..
-      ack()
-    }
-  }
 }
 ```
 
@@ -447,7 +447,7 @@ pendingApproval {
 You might have noticed that the original type-safe event message types are lost inside the **-approval.kts** file, as the content of `eventMessage` inside `APPROVAL` table (and also inside `PendingApprovalInsert`) is a serialised JSON string. You can deserialise the original type-safe objects using the `selectPredicate` method combined with multiple `onEvent` predicates. These methods are available in all the `pendingApproval` code blocks: `insert`, `accept`, `cancel` and `reject`.
 
 - `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function  provides a [GenesisSet](../../../server/inter-process-messages/genesisset/) object with the contents of the original message payload.
-- `onEvent` works very similarly to any other GPAL [Event Handler definition](#adding-a-name). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
+- `onEvent` works very similarly to any other GPAL [Event Handler definition](#defining-an-event-handler-in-gpal). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
 
 
 Please see the example below for custom logic using a table called "RESTRICTED_SYMBOL" to prevent restricted symbols from being added to the system, as well as checking user right codes:
@@ -523,33 +523,33 @@ import kotlin.system.exitProcess
 val serviceDiscovery: ServiceDiscovery = injector.inject()
 val client = serviceDiscovery.resolveClientByResource("EVENT_PENDING_APPROVAL_SYSTEM_REJECT")
 if (client == null || !client.isConnected) {
-    println("Unable to find service exposing EVENT_PENDING_APPROVAL_SYSTEM_REJECT")
-    exitProcess(1)
+  println("Unable to find service exposing EVENT_PENDING_APPROVAL_SYSTEM_REJECT")
+  exitProcess(1)
 } else {
-    suspendable {
-        entityDb.getBulk<Approval>()
-            .filter { it.approvalStatus == ApprovalStatus.PENDING }
-            .collect { approval ->
-                val reply: EventReply? = client.suspendRequest(
-                    Event(
-                        messageType = "EVENT_PENDING_APPROVAL_SYSTEM_REJECT",
-                        userName = "SYSTEM",
-                        details = ApprovalSystemRejectMessage(
-                            approvalKey = approval.approvalKey,
-                            approvalMessage = "Rejected by system"
-                        )
-                    )
-                )
-                when (reply) {
-                    is EventReply.EventAck ->
-                        println("Successfully rejected APPROVAL_ID: ${approval.approvalId}")
-                    is EventReply.EventNack ->
-                        println("Failed to rejected APPROVAL_ID: ${approval.approvalId}: $reply")
-                    else ->
-                        println("Unexpected response from pending approval system: $reply")
-                }
-            }
-    }
+  suspendable {
+    entityDb.getBulk<Approval>()
+      .filter { it.approvalStatus == ApprovalStatus.PENDING }
+      .collect { approval ->
+        val reply: EventReply? = client.suspendRequest(
+          Event(
+            messageType = "EVENT_PENDING_APPROVAL_SYSTEM_REJECT",
+            userName = "SYSTEM",
+            details = ApprovalSystemRejectMessage(
+              approvalKey = approval.approvalKey,
+              approvalMessage = "Rejected by system"
+            )
+          )
+        )
+        when (reply) {
+          is EventReply.EventAck ->
+            println("Successfully rejected APPROVAL_ID: ${approval.approvalId}")
+          is EventReply.EventNack ->
+            println("Failed to rejected APPROVAL_ID: ${approval.approvalId}: $reply")
+          else ->
+            println("Unexpected response from pending approval system: $reply")
+        }
+      }
+  }
 }
 ```
 

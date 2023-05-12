@@ -397,13 +397,13 @@ You can replace the "true" return values with Kotlin code in each of the relevan
 The platform makes the following objects accessible to the `insert` block:
 
 * `insertMessage` - an instance of the `PendingApprovalInsert` class, which is used to populate the `APPROVAL` table if successful. The content of this class consists of several properties:
-    * `approvalMessage` - contains the original approval message text sent by the user who initiated the action.
-    * `messageType` - represents the original EVENT name (e.g. EVENT_TRADE_INSERT).
-    * `destination` - is the process name this event was originally targeting (e.g. POSITION_EVENT_HANDLER).
-    * `eventMessage` - contains the JSON object representing the original message payload.
-    * `approvalType` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
-    * `additionalDetails` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
-    * `generated` - equivalent to the property named `entityDetails` provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
+  * `approvalMessage` - contains the original approval message text sent by the user who initiated the action.
+  * `messageType` - represents the original EVENT name (e.g. EVENT_TRADE_INSERT).
+  * `destination` - is the process name this event was originally targeting (e.g. POSITION_EVENT_HANDLER).
+  * `eventMessage` - contains the JSON object representing the original message payload.
+  * `approvalType` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
+  * `additionalDetails` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
+  * `generated` - equivalent to the property named `entityDetails` provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
 * `userName` - a string property containing the user name who triggered the event.
 * `messageType` - a shortcut property accessor for the `messageType` value stored inside `insertMessage`.
 * `eventMessage` - a shortcut property accessor for the `eventMessage` value stored inside `insertMessage`.
@@ -413,8 +413,8 @@ The following objects are accessible within the `accept`, `cancel` and `reject` 
 * `userName` - a string property containing the user name who triggered the pending approval event (e.g. accept, reject or cancel).
 * `pendingApproval` - the pending approval record stored in the database. The type of this property is the "Approval" database entity (see [table entities](../../../database/data-types/table-entities/)).
 * `approvalMessage` - an instance of the `ApprovalMessage` class, which represents the payload of the message sent to EVENT_PENDING_APPROVAL_ACCEPT, EVENT_PENDING_APPROVAL_CANCEL and EVENT_PENDING_APPROVAL_REJECT. It contains two properties:
-    * `approvalMessage` - the message text sent by the user who initiated this pending approval action
-    * `approvalId` - contains the APPROVAL_ID used to identify the APPROVAL record we are handling as part of this action
+  * `approvalMessage` - the message text sent by the user who initiated this pending approval action
+  * `approvalId` - contains the APPROVAL_ID used to identify the APPROVAL record we are handling as part of this action
 * `messageType` - a shortcut property accessor for the `messageType` value stored inside `pendingApproval`.
 * `eventMessage` - a shortcut property accessor for the `eventMessage` value stored inside `pendingApproval`.
 
@@ -447,7 +447,7 @@ pendingApproval {
 You might have noticed that the original type-safe event message types are lost inside the **-approval.kts** file, as the content of `eventMessage` inside `APPROVAL` table (and also inside `PendingApprovalInsert`) is a serialised JSON string. You can deserialise the original type-safe objects using the `selectPredicate` method combined with multiple `onEvent` predicates. These methods are available in all the `pendingApproval` code blocks: `insert`, `accept`, `cancel` and `reject`.
 
 - `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function  provides a [GenesisSet](../../../server/inter-process-messages/genesisset/) object with the contents of the original message payload.
-- `onEvent` works very similarly to any other GPAL [Event Handler definition](#adding-a-name). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
+- `onEvent` works very similarly to any other GPAL [Event Handler definition](#defining-an-event-handler-in-gpal). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
 
 
 Please see the example below for custom logic using a table called "RESTRICTED_SYMBOL" to prevent restricted symbols from being added to the system, as well as checking user right codes:
@@ -523,33 +523,33 @@ import kotlin.system.exitProcess
 val serviceDiscovery: ServiceDiscovery = injector.inject()
 val client = serviceDiscovery.resolveClientByResource("EVENT_PENDING_APPROVAL_SYSTEM_REJECT")
 if (client == null || !client.isConnected) {
-    println("Unable to find service exposing EVENT_PENDING_APPROVAL_SYSTEM_REJECT")
-    exitProcess(1)
+  println("Unable to find service exposing EVENT_PENDING_APPROVAL_SYSTEM_REJECT")
+  exitProcess(1)
 } else {
-    suspendable {
-        entityDb.getBulk<Approval>()
-            .filter { it.approvalStatus == ApprovalStatus.PENDING }
-            .collect { approval ->
-                val reply: EventReply? = client.suspendRequest(
-                    Event(
-                        messageType = "EVENT_PENDING_APPROVAL_SYSTEM_REJECT",
-                        userName = "SYSTEM",
-                        details = ApprovalSystemRejectMessage(
-                            approvalKey = approval.approvalKey,
-                            approvalMessage = "Rejected by system"
-                        )
-                    )
-                )
-                when (reply) {
-                    is EventReply.EventAck ->
-                        println("Successfully rejected APPROVAL_ID: ${approval.approvalId}")
-                    is EventReply.EventNack ->
-                        println("Failed to rejected APPROVAL_ID: ${approval.approvalId}: $reply")
-                    else ->
-                        println("Unexpected response from pending approval system: $reply")
-                }
-            }
-    }
+  suspendable {
+    entityDb.getBulk<Approval>()
+      .filter { it.approvalStatus == ApprovalStatus.PENDING }
+      .collect { approval ->
+        val reply: EventReply? = client.suspendRequest(
+          Event(
+            messageType = "EVENT_PENDING_APPROVAL_SYSTEM_REJECT",
+            userName = "SYSTEM",
+            details = ApprovalSystemRejectMessage(
+              approvalKey = approval.approvalKey,
+              approvalMessage = "Rejected by system"
+            )
+          )
+        )
+        when (reply) {
+          is EventReply.EventAck ->
+            println("Successfully rejected APPROVAL_ID: ${approval.approvalId}")
+          is EventReply.EventNack ->
+            println("Failed to rejected APPROVAL_ID: ${approval.approvalId}: $reply")
+          else ->
+            println("Unexpected response from pending approval system: $reply")
+        }
+      }
+  }
 }
 ```
 
