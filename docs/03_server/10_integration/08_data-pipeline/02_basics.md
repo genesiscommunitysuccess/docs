@@ -89,7 +89,11 @@ pipelines {
 
 Genesis currently supports CSV, JSON and XML file sources.
 
-In addition to the configuration properties explained below, each file type also has an optional `onCompletion` block, which can be used to specify what to do after the file has been processed. In scope is `entityDb`, plus `result`, which contains information about the lines that were processed successfully and the lines that failed.
+In addition to the configuration properties explained below, each file type also has an optional `onCompletion` block, which can be used to specify what to do after the file has been processed.
+The following are in scope:
+* `entityDb`: a read/write handle on the database.
+* `result`: contains information about the lines that were processed successfully and the lines that failed.
+* `context`: contains pipeline contextual information such as `fileName` and `movePath` (if a mvoe path was specified in the `location`).
 
 Below, you can see what options are available for each:
 
@@ -118,6 +122,7 @@ pipelines {
         val successfulRows = result.successfulRows
         val failedRows = result.failedRows
         val existingRecords = entityDb.getBulk(TABLE).toList()
+        val fileName = context.fileName
         // ...
     }
   }
