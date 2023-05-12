@@ -256,9 +256,17 @@ Currently, there are two types of error strategies available:
 
 The Best Effort strategy will process all rows and log any errors that occur.
 
+```kotlin
+errorStrategy = BestEffort()
+```
+
 ### Stop On First Failure
 
 The Stop On First Failure strategy will log an error if it occurs and stop processing.
+
+```kotlin
+errorStrategy = StopOnFirstFailure()
+```
 
 ## Map functions
 
