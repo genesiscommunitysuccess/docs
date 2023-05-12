@@ -72,6 +72,7 @@ To start, create a process called *GENESIS_EVALUATOR* and add it to the file **a
         <primaryOnly>true</primaryOnly>
         <package>global.genesis.eventhandler,global.genesis.evaluator</package>
         <description>Dynamic/time rules engine</description>
+        <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
     </process>
 </processes>
 ```
