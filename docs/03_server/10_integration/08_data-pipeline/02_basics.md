@@ -51,14 +51,15 @@ The currently supported sources are:
 
 All databases share common configuration. 
 
-| Parameter | Default value | Sample usage | Value type | Description |
-|---|---|---|---|---|
-| sourceName | N/A | `postgres("cdc-test")` | String | Name for the source |
-| hostname | N/A | `hostname = "localhost"` | String | Set the hostname of the remote Database |
-| port | 5432 | `port = 5432` | Integer | Set the port on which Database is running |
-| username | N/A | `username = "postgres"` | String | Set the database user  |
-| password | N/A | `password = "db-password"` | String | Set the database user password  |
-| databaseName | N/A | `databaseName = "postgres"` | String | Set the name of the database  | 
+| Parameter     | Default value | Sample usage                            | Value type    | Description                               |
+|---------------|---------------|-----------------------------------------|---------------|-------------------------------------------|
+| sourceName    | N/A           | `postgres("cdc-test")`                  | String        | Name for the source                       |
+| hostname      | N/A           | `hostname = "localhost"`                | String        | Set the hostname of the remote Database   |
+| port          | 5432          | `port = 5432`                           | Integer       | Set the port on which Database is running |
+| username      | N/A           | `username = "postgres"`                 | String        | Set the database user                     |
+| password      | N/A           | `password = "db-password"`              | String        | Set the database user password            |
+| databaseName  | N/A           | `databaseName = "postgres"`             | String        | Set the name of the database              | 
+| errorStrategy | BestEffort    | `errorStrategy = StopOnFirstFailure()"` | ErrorStrategy | Set the source's error strategy           | 
 
 ```kotlin
 pipelines {
@@ -102,6 +103,7 @@ Below, you can see what options are available for each:
 | hasHeader | true | `hasHeader = true` | Boolean | Set whether the file has headers  |
 | headerOverrides | null | `headerOverrides = arrayListOf("id", "name")` | List | Set the column names to be used. If the file has a header, it is ignored and the specified names are used  |
 | readLazily | false | `readLazily = true` | Boolean | Set lazy reading  |
+| errorStrategy | BestEffort    | `errorStrategy = StopOnFirstFailure()"` | ErrorStrategy | Set the source's error strategy           | 
 
 ```kotlin
 pipelines {
@@ -130,6 +132,7 @@ pipelines {
 | location  | N/A | `location = "file://runtime/testFiles?fileName=trades_array.json"` | String | Set the location of the XML or Json file. See details below |
 | tagName   | N/A | `tagName = "Trade"` | String | Set the root tag of the XML (does not apply to Json) |
 | rootAt    | "$.[*]" | `rootAt = "$.[*]"` | String | Set the root of the Json/XML tree |
+| errorStrategy | BestEffort    | `errorStrategy = StopOnFirstFailure()"` | ErrorStrategy | Set the source's error strategy           | 
 
 ```kotlin
 pipelines {
@@ -231,6 +234,26 @@ pipelines {
   }
 }
 ```
+
+## Error strategies
+
+You can choose how to handle errors that occur during processing on a per-source basis by setting the `errorStrategy` property on a source. The default error strategy is Best Effort.
+
+When an error occurs, by default, the error strategy will set the state of the process to `ERROR`. This can be changed by setting the `setProcessOnError` property for the strategy.
+
+```kotlin
+errorStrategy = BestEffort(setProcessOnError = false)
+```
+
+Currently, there are two types of error strategies available:
+
+### Best Effort
+
+The Best Effort strategy will process all rows and log any errors that occur.
+
+### Stop On First Failure
+
+The Stop On First Failure strategy will log an error if it occurs and stop processing.
 
 ## Map functions
 
