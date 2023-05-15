@@ -896,9 +896,11 @@ purgers{
 ### Purge by date
 
 The purger supports purging based on days. You can specify the max age of record in terms of calendar days or business days.
-Business days disregard weekends and public holidays. Calendar days disregard weekends by default, but can be set to include them as shown in the below example:
 
-To use this you need to supply
+- Business days disregard weekends and public holidays. 
+- Calendar days disregard weekends by default, but can be set to include them, as shown in the example below.
+
+To use this script, you need to supply
 - a LONG or DATETIME field in the table to be used, or you can supply just the table name, in which case the TIMESTAMP field of the table will be used to calculate the age of the record.
 - The max age of the record, which indicates all the records older than these days will be purged
 - Optional fields when you use calendar days: boolean flag `ignoreWeekends` (defaults to true).
