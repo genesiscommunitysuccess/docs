@@ -111,17 +111,17 @@ Style the `quantity` field of the orders grid in such a way that if the value is
 Here you can use specific conditions providing a function to the `cellClass` column config.
 :::
 
-## Dynamic Layout
+## Dynamic layout
 
-The aim of this section is to implement the `foundation-layout` component which allows the user to drag, drop, resize, maximise, and restore windows.
+The aim of this section is to implement the `foundation-layout` component, which allows the user to drag, drop, resize, maximise, and restore windows.
 
-### Refactor the Order.ts
+### Refactor orders.ts
 
-In order to prevent the components to get excessivly large, we need to refactor the **orders.ts**.
+In order to prevent the components becoming excessivly large, we need to refactor the **orders.ts**.
 
 #### Orders grid
 
-We'll start with the most straightforward component. Create a directory called **orders-grid** in **orders** folder and add these two files to it.
+We'll start with the most straightforward component. Create a directory called **orders-grid** in the  **orders** folder and add these two files to it:
 
 ```typescript title='orders-grid.ts'
 import { customElement, FASTElement, observable, attr } from '@microsoft/fast-element';
@@ -203,7 +203,7 @@ export class OrdersGrid extends FASTElement {
 
 #### Insert trade form
 
-And now we refactor out the form. This is slightly different because we need an associated styles file too. Create a **insert-orders-form** directory and add these three files
+And now we refactor out the form. This is slightly different because we need an associated styles file too. Create an **insert-orders-form** directory and add these three files:
 
 ```typescript title='insert-orders-form.ts'
 import { Connect } from '@genesislcap/foundation-comms';
@@ -344,7 +344,7 @@ export const insertOrdersFormTemplate = html<InsertOrdersForm>`
 </template>
 `
 ```
-and finally
+and finally:
 
 ```typescript title='insert-orders-form.styles.ts'
 import {css, ElementStyles} from "@microsoft/fast-element";
@@ -381,7 +381,7 @@ export const insertOrdersFormStyles = css`
 
 ### Add the layout to the order template
 
-Now we have refactored our 2 components, it is easy to add the dynamic layout. Change the **order.template.ts** to:
+Now we have refactored our two components, it is easy to add the dynamic layout. Change the **order.template.ts** to:
 
 ```typescript title='order.template.ts'
 import {html, repeat, when, ref } from '@microsoft/fast-element';
@@ -417,10 +417,10 @@ export const OrderTemplate = html<Order>`
 
 ### Understanding the layout
 
-As you noticed, the `<zero-layout>` has 2 main components that control the layout of the page.
+As you noticed, the `<zero-layout>` has two main components that control the layout of the page.
 
-- `<zero-layout-region>`: It divides the layout of the page equally depending on the its type. If `type` = horizontal then the layout will be splitted horizontally and if `type` = vertical then the layout will be splitted vertically. The layout is splitted equally depending on the number of items you insert between the `<zero-layout-region></zero-layout-region>` to the application.
-- `zero-layout-item`: It stores the content of each region of the page.
+- `<zero-layout-region>` divides the layout of the page equally depending on its type. If `type` = horizontal, then the layout will be split horizontally and if `type` = vertical then the layout will be split vertically. The layout is split equally, depending on the number of items you insert between the `<zero-layout-region></zero-layout-region>` to the application.
+- `zero-layout-item` stores the content of each region of the page.
 
 ### Exercise 4.2 insert a new grid
 
@@ -428,10 +428,10 @@ As you noticed, the `<zero-layout>` has 2 main components that control the layou
 20 mins
 :::
 
-Insert the `ALL_INSTRUMENTS` grid to the orders page. Place it on the top right of the page.
+Insert the `ALL_INSTRUMENTS` grid in the orders page. Place it on the top right of the page.
 
 :::tip
-You can directly insert the new grid onto the order.template.ts, but it is recommended to create e new component called positions-grid and follow he previous steps. That wat you maintain your order.template.ts as clear as possible.
+You can directly insert the new grid into the **order.template.ts**, but it is recommended to create a new component called `positions-grid` and follow the previous steps. This enables you to maintain your **order.template.ts** as clear as possible.
 :::
 
 Now we are going to look at some of the dynamic interactions that are available via the layout's JavaScript API. In this example, we are going to:
@@ -439,7 +439,7 @@ Now we are going to look at some of the dynamic interactions that are available 
 - set up the component to autosave the layout as the user interacts with it
 - add a button to reset the layout
 
-To see what else you can do with the JavaScript API, see the main documentation linked in the [API documentation here](../../04_web/10_dynamic-layout/docs/api/foundation-layout.foundationlayout.md/#methods).
+To see what else you can do with the JavaScript API, see the [main documentation in the API documentation](../../04_web/10_dynamic-layout/docs/api/foundation-layout.foundationlayout.md/#methods).
 
 ### Autosaving layout
 
@@ -455,12 +455,12 @@ Add this attribute to your `order.template.ts`:
 </zero-layout>
 ```
 
-Now when you're on the page, if you make a change to the layout (resize, drag, reorder, add/remove items) then the layout will be saved in local storage. 
+Now when you're on the page, if you make a change to the layout (resize, drag, reorder, add/remove items), then the layout will be saved in local storage. 
 
 Try for yourself! drag an item around and refresh the page and see it reload your layout.
 
 :::note
-The layout-saving functionality is only responsible for the *layout* itself - it will not save the state of the items inside it. Components are responsible for saving their own state if required - such as the grids [we set up earlier in the tutorial](#saving-user-preferences).
+The layout-saving functionality is only responsible for the *layout* itself - it will not save the state of the items inside it. Components are responsible for saving their own state if required - such as the [grids we set up earlier in the tutorial](#saving-user-preferences).
 :::
 
 ### Resetting the layout
@@ -668,7 +668,7 @@ export class OrdersChart extends FASTElement {
 }
 ```
 
-For further configuration examples please see: [here](https://g2plot.antv.antgroup.com/en/examples).
+For further configuration examples, please see: [here](https://g2plot.antv.antgroup.com/en/examples).
 
 Your **orders.template.ts** should be like this:
 
