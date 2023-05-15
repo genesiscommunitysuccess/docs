@@ -27,9 +27,9 @@ You might want to customise look and feel using layout and styles. For instance,
 
 ### grid-pro
 
-We've seen how to create custom grids, now let's see another way to further style it.
+We've seen how to create custom grids, now let's see a way to style it further.
 
-Styling an grid-pro can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called **orders-grid.styles.ts** and provide the following code:
+Styling a grid-pro can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called **orders-grid.styles.ts** and provide the following code:
 
 ```ts {4-6} title='orders-grid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
@@ -47,7 +47,7 @@ Configure your column to have the specific class name:
 {field: 'NOTES', headerName: 'Notes', sort: 'desc', cellClass: 'notes-column', flex: 2},
 ```
 
-In **order.template.ts**, in the grid tag, include utility that will inject your stylesheet to the component:
+In **order.template.ts**, in the grid tag, include a utility that will inject your stylesheet to the component:
 
 ```ts {1,7} title ='order.template.ts'
 import {ordersGridStyles} from "./orders-grid.styles";
@@ -90,7 +90,7 @@ export const ordersGridStyles: ElementStyles = css`
 
 ### Layout
 
-By default, all elements on screen will use `display:block`, but we can easily customise it using our custom component that supports responsive web design.
+By default, all elements on screen use `display:block`, but we can easily customise it using our custom component that supports responsive web design.
 
 ```html
 <foundation-flex-layout class="flex-row flex-sm-column spacing-2x">
@@ -105,7 +105,7 @@ For further styling your components, it would make sense to start working with [
 :::info ESTIMATED TIME
 20 mins
 :::
-Style the `quantity` field of the orders grid in such a way that if the value is bigger than 100 it will be in green, otherwise red.
+Style the `quantity` field of the orders grid so that if the value is bigger than 100 it will be in green, otherwise red.
 
 :::tip
 Here you can use specific conditions providing a function to the `cellClass` column config.
@@ -419,7 +419,7 @@ export const OrderTemplate = html<Order>`
 
 As you noticed, the `<zero-layout>` has two main components that control the layout of the page.
 
-- `<zero-layout-region>` divides the layout of the page equally depending on its type. If `type` = horizontal, then the layout will be split horizontally and if `type` = vertical then the layout will be split vertically. The layout is split equally, depending on the number of items you insert between the `<zero-layout-region></zero-layout-region>` to the application.
+- `<zero-layout-region>` divides the layout of the page equally depending on its type. If `type` = horizontal, then the layout will be split horizontally; if `type` = vertical, then the layout will be split vertically. The layout is split equally, depending on the number of items you insert between the `<zero-layout-region></zero-layout-region>` to the application.
 - `zero-layout-item` stores the content of each region of the page.
 
 ### Exercise 4.2 insert a new grid
@@ -553,7 +553,7 @@ Now we need access to this component in the web console. In most browsers you ca
 ![](/img/zero-layout-select.png)
 
 
-This will save the layout in a variable such as `temp1`. 
+This will save the layout in a variable, such as `temp1`. 
 
 ![](/img/temp1-global-variable.png)
 
@@ -567,7 +567,7 @@ JSON.stringify(temp1.getLayout()) // temp0, or whatever your browser saved the l
 You can follow this process to create a range of pre-defined layouts for the user in addition to being able to restore the default layout. Or you can, for example, use the `.getLayout()` and `.loadLayout()` APIs to allow the user to save their own layouts.
 :::
 
-Now create a file under **order** directory called **predefined-layouts.ts**; copy the generated string and paste it into a file in the project.
+Now create a file under the **order** directory called **predefined-layouts.ts**; copy the generated string and paste it into a file in the project.
 
 ```typescript title='predefined-layouts.ts'
 export const ORDERS_DEFAULT_LAYOUT = ... /* Set this equal to the string from the web console */
@@ -622,7 +622,7 @@ Charts is one of the must-have components in any dashboard. Because of that, Gen
 
 The `g2plot-chart` component is a wrapper for `@antv/g2plot`, which allows the following types: Line, Area, Bar, Bubble, Column, Pie, Dual Axes, Rose, Scatter.
 
-You can quickly add charts to your application. First we need to create a new component as we did in the previous exercise. Create a folder named **orders-chart** and add these two files
+You can quickly add charts to your application. First we need to create a new component as we did in the previous exercise. Create a folder named **orders-chart** and add these two files:
 
 ```typescript title='orders-chart.template.ts'
 import { html } from '@microsoft/fast-element';
@@ -710,7 +710,7 @@ export const OrderTemplate = html<Order>`
 `
 ```
 
-Now you show play aound with the properties of the chart, so you get used to it.
+Now you should play aound with the properties of the chart, so you get used to it.
 
 ## Design systems
 
@@ -939,7 +939,7 @@ Lastly, to keep the best practices and avoid conflicts, always open the system p
 :::
 
 
-## Micro Front-ends
+## Micro front-ends
 
 The [Micro-front-end](../../../web/micro-front-ends/introduction/) architecture is a design approach in which a front-end app is decomposed into individual, semi-independent **micro applications** working loosely together. There are re-usable micro-front-ends that can be used by Genesis-powered applications, such as [Foundation Header](../../../web/micro-front-ends/foundation-header/) (covered in [Day 1](#)), [Entity Management](../../../web/micro-front-ends/foundation-entity-management/) (pretty much covered in the [Developer Training](#)), [User Management](#user-management), and [Front-end reporting](#front-end-reporting).
 
