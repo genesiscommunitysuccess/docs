@@ -45,4 +45,4 @@ WSL/CentOS - there are instructions for the installtion on the [installation pag
 Before you start, make sure you have the relevant [hardware and software](./hardware-and-software/).
 For this tutorial, please use Windows as your development environment.
 
-Once everything is installed, you can proceed to the first step of the Quick start - [Create a new project](../../quick-start/create-a-new-project/)
+Once everything is installed, you can proceed to the first step of the Quick start - [Create a new project](../../getting-started/quick-start/create-a-new-project/)
