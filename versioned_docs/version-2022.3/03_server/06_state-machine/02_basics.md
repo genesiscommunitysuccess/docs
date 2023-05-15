@@ -1,5 +1,5 @@
 ---
-title: 'State Machine - Basics'
+title: 'State Machine - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, state machine, basics]

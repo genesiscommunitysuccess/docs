@@ -1,5 +1,5 @@
 ---
-title: 'Consolidator - Introduction'
+title: 'Consolidator - introduction'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [server, consolidator, introduction]
@@ -8,8 +8,6 @@ tags:
   - consolidator
   - introduction
 ---
-
-[Introduction](../../../server/consolidator/introduction) | [Basics](../../../server/consolidator/basics) |  [Advanced](../../../server/consolidator/advanced) | [Examples](../../../server/consolidator/examples) | [Configuring runtime](../../../server/consolidator/configuring-runtime) | [Testing](../../../server/consolidator/testing)
 
 A Consolidator exists to aggregate data or perform calculations whenever the underlying data is changed.
 

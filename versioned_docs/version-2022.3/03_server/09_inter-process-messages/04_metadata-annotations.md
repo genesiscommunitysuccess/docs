@@ -1,5 +1,5 @@
 ---
-title: 'Inter-process messages - Metadata annotations'
+title: 'Inter-process messages - metadata annotations'
 sidebar_label: 'Metadata annotations'
 id: metadata-annotations
 keywords: [server, inter-process messages, metadata, annotations]

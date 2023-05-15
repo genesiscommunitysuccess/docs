@@ -1,5 +1,5 @@
 ---
-title: 'Consolidator - Examples'
+title: 'Consolidator - examples'
 sidebar_label: 'Examples'
 id: examples
 keywords: [server, consolidator, examples]
@@ -9,7 +9,6 @@ tags:
   - examples
 ---
 
-[Introduction](../../../server/consolidator/introduction) | [Basics](../../../server/consolidator/basics) |  [Advanced](../../../server/consolidator/advanced) | [Examples](../../../server/consolidator/examples) | [Configuring runtime](../../../server/consolidator/configuring-runtime) | [Testing](../../../server/consolidator/testing)
 
 Here is an example Consolidator file that defines two Consolidators:
 

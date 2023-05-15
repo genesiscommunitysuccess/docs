@@ -1,19 +1,72 @@
 ---
-title: 'Consolidator - Advanced'
+title: 'Consolidator - advanced'
 sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, consolidator, advanced]
 tags:
   - server
   - consolidator
+  - Consolidator groups
   - advanced
 ---
 
-[Introduction](../../../server/consolidator/introduction) | [Basics](../../../server/consolidator/basics) |  [Advanced](../../../server/consolidator/advanced) | [Examples](../../../server/consolidator/examples) | [Configuring runtime](../../../server/consolidator/configuring-runtime) | [Testing](../../../server/consolidator/testing)
+## Consolidator groups
+Consolidator groups are essential if you are using a non-transaction database (such as Aerospike).
 
-In this page, we look in more detail at the functions that are the building blocks of the select statement in a `consolidator` specification.
+`groupName` identifies a group of Consolidators. 
 
-## Standard functions
+```kotlin
+groupName = "_name_"
+```
+
+If you include this statement in your `consolidator` block, then the Consolidator will belong to the named group.
+
+In a non-transaction database (for example, Aerospike), a group is designed to offer consistent consolidation in the absence of ACID guarantees at the database level. Consolidators in the same group will not interfere with each other's calculations as they update - particularly where they output to the same table. 
+
+:::note 
+This is limited to Consolidator updates within a group in a single process. Updates in other groups, other processes or other nodes could still interfere. You must plan this carefully.
+:::
+
+Below is an example where we have declared two `consolidator` blocks. Each has `groupName = "ORDER"`, so they are in the same group. The two `consolidator`blocks handle different types of order - but they are aggregated into the same three output tables: `TOTAL_NOTIONAL`, `TOTAL_QUANTITY` and `TRADE_COUNT`.
+
+
+```kotlin
+    consolidator(SWAP_ORDERS, ORDER_SUMMARY) {
+        config {
+            groupName = "ORDER"
+        }
+        
+        select {
+            ORDER_SUMMARY {
+                sum { totalNotional } into TOTAL_NOTIONAL
+                sum { totalQuantity } into TOTAL_QUANTITY
+                sum { tradeCount } into TRADE_COUNT
+            }
+        }
+​
+        groupBy { OrderSummary.byGroupId("${orderDate.year}-${orderDate.monthOfYear}") }
+    }
+    consolidator(FX_ORDERS, ORDER_SUMMARY) {
+        config {
+            groupName = "ORDER"
+        }
+        
+        select {
+            ORDER_SUMMARY {
+                sum { totalNotional } into TOTAL_NOTIONAL
+                sum { totalQuantity } into TOTAL_QUANTITY
+                sum { tradeCount } into TRADE_COUNT
+            }
+        }
+​
+        groupBy { OrderSummary.byGroupId("${orderDate.year}-${orderDate.monthOfYear}") }
+    }
+```	
+
+
+## Select statement: standard functions 
+
+In this section, we look in more detail at the functions that are the building blocks of the select statement in a `consolidator` specification.
 
 With one exception, all functions require input. 
 
