@@ -592,7 +592,7 @@ You can customise:
 - the icon shown on the navigation bar and flyout menu (this shows the Genesis logo by default).
 - navigation links at the left-hand side of the navigation bar.
 - the control buttons on the right-hand side of the navigation bar can be shown or hidden, and their behaviour controlled via event listeners
-- The contents of the flyout menu.
+- the contents of the flyout menu.
 
 Here is an example of the navigation bar with three navigation items, and all three control buttons shown.
 ![Header with the standard genesis logo](/img/foundation-header-standard.png)
@@ -603,13 +603,13 @@ This next example is the same as the previous example, except the Genesis logo i
 In this next example, we have put a set of example options set in the flyout menu.
 ![The sidebar included with the header opened with some example content](/img/foundation-header-sidebar.png)
 
-#### Header Set-up
+#### Header set-up
 
 **We have already enabled this micro front-end when we created the initial structure of the application in the [Developer Training](../../../getting-started/developer-training/training-intro/).** But for learning purposes, let's review what needs to be done to set up the foundation-header from scratch - compare this with the existing code to get a better understanding.
 
 To enable this micro front-end in our application, we'd have to follow the steps below.
 
-- Make sure you have `@genesislcap/foundation-header` as a dependency in your _client/web/package.json_ file.
+1. Make sure you have `@genesislcap/foundation-header` as a dependency in your _client/web/package.json_ file.
 
 ```js {5} title='package.json'
 {
@@ -632,7 +632,7 @@ npm run bootstrap
 
 :::
 
-- In our **web/src/main/main.ts** file, which is our top level class of our application, make sure you imported and dependency injected the Navigation class.
+2. In our **web/src/main/main.ts** file, which is our top-level class of our application, make sure you imported and dependency injected the Navigation class.
 
 ```js {1,6} title='main.ts'
 import { Navigation } from '@genesislcap/foundation-header';
@@ -647,7 +647,7 @@ export class MainApplication extends FASTElement {
 }
 ```
 
-- Make sure you have got a reference to the `navigation` object on the FAST router when you instantiate it. This will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
+3. Make sure you have got a reference to the `navigation` object on the FAST router when you instantiate it. This will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
 
 ```js {5} title='main.template.ts'
 ...
@@ -659,7 +659,7 @@ export const MainTemplate: ViewTemplate<MainApplication> = html`
 `;
 ```
 
-- Make sure the `foundation-header` tag is part of the html that you set as the markup for the `defaultLayout` in your router configuration.
+4. Make sure the `foundation-header` tag is part of the html that you set as the markup for the `defaultLayout` in your router configuration.
 
 ```js {3} title='client/web/src/layouts/default.ts'
 export const defaultLayout = new FASTElementLayout(html`
@@ -770,7 +770,7 @@ That's why, when you add a new route to the `allRoutes` attribute, it's automati
 
 ##### Control buttons
 
-There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (by default, these are hidden). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined. Each one dispatches an associated event when clicked.
+There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (by default, these are hidden). Each one is a boolean attribute that can be added where the `<foundation-header>` tag is defined. Each one dispatches an associated event when clicked.
 
 | Logo          | Toggle Attribute             | Dispatched Event          | Icon                        |
 | ------------- | ---------------------------- | ------------------------- | --------------------------- |
@@ -793,9 +793,9 @@ For instance, adding the Misc logo would look like this:
 </div>
 ```
 
-To implement the functionality of the button in the client, you should follow the steps below:
+To implement the functionality of the button in the client, follow the steps below:
 
-- Define the functionality of the event `callback` in the class of a class which is a parent to the router.
+1. Define the functionality of the event `callback` in the class of a class which is a parent to the router.
 
 ```javascript title='main.ts'
 export class MainApplication extends FASTElement {
@@ -807,7 +807,7 @@ export class MainApplication extends FASTElement {
 }
 ```
 
-- Set the event listener in the parent html to call the defined functionality.
+2. Set the event listener in the parent html to call the defined functionality.
 
 ```javascript title='main.template.ts'
 // fast-router will likely have other attributes such as :config too
@@ -863,7 +863,7 @@ To set the content of the flyout menu, add the content in the html within an ele
 Add an item pointing to the playground page.
 
 :::tip
-Look at the [interaction components](../../../web/web-components/interaction/anchor/) to see a list of available components you can use for the menu item. A good suggestion would be adding the `@click` attribute to the `<zero-tree-item>`
+Look at the [interaction components](../../../web/web-components/interaction/anchor/) to see a list of available components you can use for the menu item. A good suggestion would be adding the `@click` attribute to the `<zero-tree-item>`.
 
 ```ts
   <zero-tree-item @click=${(x) => x.navigation.navigateTo("<YOUR_PATH_TO_PLAYGROUD>")}>
