@@ -450,7 +450,7 @@ You might have noticed that the original type-safe event message types are lost 
 - `onEvent` works very similarly to any other GPAL [Event Handler definition](#defining-an-event-handler-in-gpal). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
 
 
-See the example below of custom logic. This uses a table called "RESTRICTED_SYMBOL" to prevent restricted symbols from being added to the system, as well as checking user right codes:
+See the example of custom logic below. This uses a table called "RESTRICTED_SYMBOL" to prevent restricted symbols from being added to the system, as well as checking user right codes:
 
 ```kotlin
 import global.genesis.session.RightSummaryCache
