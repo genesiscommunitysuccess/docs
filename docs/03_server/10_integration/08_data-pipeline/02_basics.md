@@ -93,7 +93,7 @@ In addition to the configuration properties explained below, each file type also
 The following are in scope:
 * `entityDb`: a read/write handle on the database.
 * `result`: contains information about the lines that were processed successfully and the lines that failed.
-* `context`: contains pipeline contextual information such as `fileName` and `movePath` (if a mvoe path was specified in the `location`).
+* `context`: contains pipeline contextual information such as `fileName` and `movePath` (if a move path was specified in the `location`).
 
 Below, you can see what options are available for each:
 
