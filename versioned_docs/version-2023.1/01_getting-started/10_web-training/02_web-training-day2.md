@@ -19,9 +19,9 @@ This day covers:
 
 ## Orders screen
 Let's continue the development of our web app creating an order screen. We're going to work on these files:
--	***order.template.ts***
--	***order.ts***
--	***order.styles.ts***
+-	**order.template.ts**
+-	**order.ts**
+-	**order.styles.ts**
 
 You should have created these files in the last exercise of the previous day of the training with the navigation bar pointing to them as well.
 
@@ -62,9 +62,9 @@ export const OrderTemplate = html<Order>`
 `;
 ```
 
-This component is able to retrieve the meta-data from the `EVENT_ORDER_INSERT` backend resource (an Event Handler) and automatically builds a simple form for you. In simple scenarios, it can be good enough.
+This component is able to retrieve the meta-data from the `EVENT_ORDER_INSERT` back-end resource (an Event Handler) and automatically build a simple form for you. In simple scenarios, it can be good enough.
 
-Try to run it now and you'll notice that, even though the form is displayed, nothing happens when you click on Submit. We have to bind the submit button to a function, like this:
+Try to run it now and you'll notice that, even though the form is displayed, nothing happens when you click on **Submit**. We have to bind the submit button to a function, like this:
 ```html {4} title='order.template.ts'
   <foundation-form
     class="order-entry-form"
@@ -73,10 +73,10 @@ Try to run it now and you'll notice that, even though the form is displayed, not
   </foundation-form>
 ```
 :::tip what is the @submit=${(x, c)} ?
-This is related to binding as we briefly explained in the previous day. If it's still unclear, make sure to check [Understanding bindings](https://www.fast.design/docs/fast-element/declaring-templates#understanding-bindings) and [Events](https://www.fast.design/docs/fast-element/declaring-templates#events)
+This is related to binding, as we briefly explained on the previous day. If it's still unclear, make sure to check [Understanding bindings](https://www.fast.design/docs/fast-element/declaring-templates#understanding-bindings) and [Events](https://www.fast.design/docs/fast-element/declaring-templates#events)
 :::
 
-We define `insertOrder` function in order.ts
+We define `insertOrder` function in **order.ts**.
 
 ```typescript {2,3,7,13-25} title='order.ts'
   ...
@@ -111,9 +111,9 @@ We define `insertOrder` function in order.ts
 ### Introducing Genesis Foundation Comms lib
 As you can see in the `insertOrder` code, we are importing `Connect` from `@genesislcap/foundation-comms`, which is Genesis core communication system with the server.
 :::info full flexibility
-You can use the foundation-comms in any modern web app, based on FAST or not. This gives you full flexibility on how to interact with the server without, necessarily, relying on the UI components provided.
+You can use the foundation-comms in any modern web app, based on FAST or not. This gives you full flexibility on how to interact with the server without necessarily relying on the UI components provided.
 
-Alternatively, you could use any HTTP client to access the server resources as they are exposed as HTTP endpoints as well. However, we strongly encourage the use of Foundation Comms as it handles things like the web socket connection, authentication and authorization, data subscription and so on.
+Alternatively, you could use any HTTP client to access the server resources, as they are exposed as HTTP endpoints as well. However, we strongly encourage the use of Foundation Comms as it handles things like the web socket connection, authentication and authorization, data subscription and so on.
 :::
 
 One of the key objects provided by the Foundation Comms is the `Connect` object whose main methods are:
@@ -123,11 +123,11 @@ connects to the server through a web socket (when WS is available or http as fal
 - `commitEvent`: 
 use it to call event handlers on the server. You must pass the name of the event and an object with the input data required by the event. This data must be in JSON format with key **DETAILS**. See the example above of the `insertOrder` function.
 
-- `getMetadata`: it retrieves the metadata of a resource, that can be an event handler, data server query or a request server. When we used the **foundation-form** component previously, for example, it used internally getMetadata passing the event handler name to get all the input fields of the event.
+- `getMetadata`: retrieves the metadata of a resource, that can be an event handler, data server query or a request server. When we used the **foundation-form** component previously, for example, it used internally getMetadata passing the event handler name to get all the input fields of the event.
 
-- `request`: use it to call a [request server](../../../server/request-server/introduction/) resource. You must pass the request server resource name.
+- `request`: calls a [request server](../../../server/request-server/introduction/) resource. You must pass the request server resource name.
 
-- `snapshot` and `stream`: use them to get a snapshot of data or to stream data in real time from a resource (usually, a data server query).
+- `snapshot` and `stream`: get a snapshot of data or stream data in real time from a resource (usually, a Data Server query).
 
 Those are the most common features from Foundation Comms you will use. We're going to use most of them and give more practical examples throughout the training. However, please note that there are more components provided by Foundation Comms such as Auth, Session, User, Analytics. Feel free to import these components and explore their methods to get a sense of what's provided.
 
@@ -135,7 +135,7 @@ Those are the most common features from Foundation Comms you will use. We're goi
 
 Using `foundation-form` is good for simple forms or prototyping, but we might realise that it is not enough for our use case, and we require much more customisation.
 
-To enable that you will create each form element manually and take care of storing user inputted data.
+To enable that you will create each form element manually and take care of storing the data input by the user.
 
 You start by adding elements to the template:
 
@@ -274,9 +274,9 @@ If you're not entirely familiar with [async function](https://developer.mozilla.
 Also, check this practical resource on [Async Await](https://www.typescriptlang.org/pt/play#example/async-await).
 :::
 
-As you can see, we used `connect.snapshot` to retrieve the data from a data server resource called `ALL_INSTRUMENTS`. If you wanted to stream data in real time, you could use the `connect.stream` method instead. Remember to always use these methods to get data from data server resources.
+As you can see, we used `connect.snapshot` to retrieve the data from a Data Server resource called `ALL_INSTRUMENTS`. If you wanted to stream data in real time, you would use the `connect.stream` method instead. Remember to always use these methods to get data from data server resources.
 
-Once we have the list of instruments from the server we can make use of it in the template file.
+Once we have the list of instruments from the server, we can make use of it in the template file.
 
 To dynamically include list of options we use [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items.
 
@@ -297,7 +297,7 @@ export const OrderTemplate = html<Order>`
 
 You should see the instrument field populated now with the instruments from the server.
 
-Now let's get the **direction** field sorted. We could just add two static options BUY and SELL like this:
+Now let's get the **direction** field sorted. We could just add two static options, BUY and SELL, like this:
 
 ```html {5-8} title='order.template.ts' 
 ...
@@ -312,7 +312,7 @@ export const OrderTemplate = html<Order>`
 `;
 ```
 
-However, any changes on the backend would require a change in the options. Wouldn't it be much better if we could just retrieve all ***direction*** options from the server? We already know how to get data from a data server resource, now let's use the `getMetadata` method from ***Connect*** to get some metadata of a field, ***direction field*** in our case.
+However, any changes on the back end would require a change in the options. Wouldn't it be much better if we could just retrieve all ***direction*** options from the server? We already know how to get data from a data server resource, now let's use the `getMetadata` method from ***Connect*** to get some metadata of a field, ***direction field*** in our case.
 
 ```ts {3,14-17} title='order.ts' 
 ...
@@ -352,22 +352,20 @@ export const OrderTemplate = html<Order>`
 `;
 ```
 
-Reload your screen and should see the select fields being populated now!
+Reload your screen and you should see the select fields being populated now!
 
 :::caution ERROR HANDLING
-For learning purposes, we are not doing proper error handling in our code.
-
-Things like checking null or empty data from the server, arrays out of bounds etc.
+For learning purposes, we are not doing proper error handling in our code: things like checking null or empty data from the server, arrays out of bounds etc.
 
 When working on production code, make sure to add those validations.
 :::
 
-#### Loading Market Data
-We're still missing the ***lastPrice*** field that, based on the instrument selected, must display the corresponding ***lastPrice***.
+#### Loading market data
+We're still missing the ***lastPrice*** field, which, based on the instrument selected, must display the corresponding ***lastPrice***.
 
-We have a request server resource (a.k.a reqRep) available on the server called `INSTRUMENT_MARKET_DATA`. It takes the INSTRUMENT_ID as input and returns the last price of the given instrument.
+We have a Request Server resource (a.k.a reqRep) available on the server, called `INSTRUMENT_MARKET_DATA`. It takes the INSTRUMENT_ID as input and returns the last price of the given instrument.
 
-We already know how to get data from data servers, now let's see how to get data from a reqRep. 
+We already know how to get data from Data Servers; now let's see how to get data from a reqRep. 
 
 Add this method to the Order class:
 
@@ -405,7 +403,7 @@ export const OrderTemplate = html<Order>`
 Note that we used the `@change` binding to call `getMarketData()` when the value selected changed.
 
 :::tip
-We've used console.log to display the data returned from the server so we can get a better understanding of the data structure returned by each kind of resource (data servers, request replies, metadata etc).
+We've used console.log to display the data returned from the server so we can get a better understanding of the data structure returned by each kind of resource (Data Servers, request replies, metadata etc).
 
 Remember that you can also use POSTMAN or any HTTP client to retrieve and analyse the data as we saw in the Developer Training.
 :::
@@ -511,12 +509,12 @@ This will result in a grid displaying all the columns available in the for the `
 
 Take a moment to play around, insert new orders and see the orders in the grid.
 
-### Exercise 2.2: customizing order entry further
+### Exercise 2.2: customising order entry further
 :::info estimated time
 30min
 :::
 Implement these changes in the order entry form:
-- There's a field ORDER_ID in the ORDER table which is generated automatically by the server. However, if a value is given, it will use the given value instead. Generate a random value on the frontend and pass the value to the EVENT_ORDER_INSERT event.
+- There's a field ORDER_ID in the ORDER table, which is generated automatically by the server. However, if a value is given, it will use the given value instead. Generate a random value on the front end and pass the value to the EVENT_ORDER_INSERT event.
 - Fields instrument, quantity and price are mandatory on the server. Whenever a null or empty value is passed, make sure to capture the error response from the server and paint the missing field label in red.
 :::tip
 To generate the ORDER_ID value you can use `Date.now()`
@@ -526,4 +524,4 @@ To generate the ORDER_ID value you can use `Date.now()`
 :::info estimated time
 60min
 :::
-Remember the Trade screen from the Developer Training? Rebuilt it now using a custom form like we did with the Order screen instead of using the entity-management micro frontend. Make sure to populate the dropdown fields and handle the server response as well.
+Remember the Trade screen from the Developer Training? Rebuild it now using a custom form like we did with the Order screen instead of using the entity-management micro front-end. Make sure to populate the dropdown fields and handle the server response as well.
