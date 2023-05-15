@@ -141,7 +141,7 @@ We have two different approaches to connect to the server, depending on your run
 
 In this tutorial, you need to verify the default `API_HOST` in the **package.json** in **client/web/**.
 
-<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', }, { label: 'WSL & Docker', value: 'WSL'}]}>
+<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', }, { label: 'Docker', value: 'Docker'}, { label: 'WSL', value: 'WSL'}]}>
 <TabItem value="Intellij Plugin">
 
 ```kotlin {8} title="client/web/package.json"
@@ -160,6 +160,23 @@ In this tutorial, you need to verify the default `API_HOST` in the **package.jso
 ```
 
 </TabItem>
+<TabItem value = "Docker">
+
+```kotlin {8} title="client/web/package.json"
+{
+  "name": "@genesislcap/alpha-web-client",
+  "description": "Developer Training Web Client",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "config": {
+    "API_HOST": "ws://localhost/gwf/",
+    "DEFAULT_USER": "JaneDee",
+    "DEFAULT_PASSWORD": "beONneON*74",
+    "PORT": 6060
+  },
+```
+</TabItem>
 <TabItem value = "WSL">
 
 ```kotlin {8} title="client/web/package.json"
@@ -176,7 +193,6 @@ In this tutorial, you need to verify the default `API_HOST` in the **package.jso
     "PORT": 6060
   },
 ```
-
 </TabItem>
 </Tabs>
 
@@ -200,9 +216,7 @@ In the Gradle menu on the right of IntelliJ, select:
 
 As soon as the Build is done, you need to deploy the application. Here are the two ways to deploy using different runtime environments.
 
-If you are using docker, you can proceed to the [run the application](../../quick-start/run-the-application-docker/)
-
-<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', }, { label: 'WSL', value: 'WSL'}]}>
+<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker'} ,{ label: 'WSL', value: 'WSL'}]}>
 <TabItem value="Intellij Plugin">
 
 <h3>Start up plugin</h3>
@@ -228,6 +242,11 @@ On the first run, this could take up to 20 minutes, because it performs a full b
 This starts the build processes and the logs will be shown below.
 
 ![Deploy logs](/img/intellij-deploy3.png)
+
+</TabItem>
+<TabItem value="Docker">
+
+You do not need to do anything at this point. You can now proceed to the [run the application](../../quick-start/run-the-application-docker/)
 
 </TabItem>
 <TabItem value="WSL">
