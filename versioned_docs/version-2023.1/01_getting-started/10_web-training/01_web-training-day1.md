@@ -737,7 +737,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 :::tip
 If you look at the `icon` and `variant` properties, you'll see that you can change the icon displayed on the top menu bar.
 
-Take a look on the [fontawesome](https://fontawesome.com/) icons. You can customize it by changing its properties' values. Try to use `icon: 'gear'` and check.
+Take a look on the [fontawesome](https://fontawesome.com/) icons. You can customise it by changing its properties' values. Try to use `icon: 'gear'` and check.
 :::
 
 - Now, when setting the navigation items, we can use the `repeat` directive to iterate over the defined routes and create a navigation item for each.
@@ -793,9 +793,9 @@ For instance, adding the Misc logo would look like this:
 </div>
 ```
 
-To implement the functionality of the button in the client, you should follow the steps below:
+To implement the functionality of the button in the client, follow the steps below:
 
-- Define the functionality of the event `callback` in the class of a class which is a parent to the router.
+1. Define the functionality of the event `callback` in the class of a class which is a parent to the router.
 
 ```javascript title='main.ts'
 export class MainApplication extends FASTElement {
@@ -807,7 +807,7 @@ export class MainApplication extends FASTElement {
 }
 ```
 
-- Set the event listener in the parent html to call the defined functionality.
+2. Set the event listener in the parent html to call the defined functionality.
 
 ```javascript title='main.template.ts'
 // fast-router will likely have other attributes such as :config too
@@ -822,7 +822,7 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 
 ##### Menu contents
 
-To set the content of the flyout menu, add the content in the html within an element that has the `slot="menu-contents"` attribute.
+To set the content of the flyout menu, add the content in the html within an element that has the `slot="menu-contents"` attribute:
 
 ```html {3-27}
 <foundation-header>
