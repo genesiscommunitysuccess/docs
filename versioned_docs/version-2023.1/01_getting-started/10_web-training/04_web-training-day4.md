@@ -27,9 +27,9 @@ You might want to customise look and feel using layout and styles. For instance,
 
 ### grid-pro
 
-We've seen how to create custom grids, now let's see another way to further style it.
+We've seen how to create custom grids, now let's see a way to style it further.
 
-Styling an grid-pro can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called **orders-grid.styles.ts** and provide the following code:
+Styling a grid-pro can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called **orders-grid.styles.ts** and provide the following code:
 
 ```ts {4-6} title='orders-grid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
@@ -47,7 +47,7 @@ Configure your column to have the specific class name:
 {field: 'NOTES', headerName: 'Notes', sort: 'desc', cellClass: 'notes-column', flex: 2},
 ```
 
-In **order.template.ts**, in the grid tag, include utility that will inject your stylesheet to the component:
+In **order.template.ts**, in the grid tag, include a utility that will inject your stylesheet to the component:
 
 ```ts {1,7} title ='order.template.ts'
 import {ordersGridStyles} from "./orders-grid.styles";
@@ -90,7 +90,7 @@ export const ordersGridStyles: ElementStyles = css`
 
 ### Layout
 
-By default, all elements on screen will use `display:block`, but we can easily customise it using our custom component that supports responsive web design.
+By default, all elements on screen use `display:block`, but we can easily customise it using our custom component that supports responsive web design.
 
 ```html
 <foundation-flex-layout class="flex-row flex-sm-column spacing-2x">
@@ -105,7 +105,7 @@ For further styling your components, it would make sense to start working with [
 :::info ESTIMATED TIME
 20 mins
 :::
-Style the `quantity` field of the orders grid in such a way that if the value is bigger than 100 it will be in green, otherwise red.
+Style the `quantity` field of the orders grid in such a way that if the value is bigger than 100 it will be in green; otherwise, it will be in red.
 
 :::tip
 Here you can use specific conditions providing a function to the `cellClass` column config.
@@ -113,15 +113,15 @@ Here you can use specific conditions providing a function to the `cellClass` col
 
 ## Dynamic Layout
 
-The aim of this section is to implement the `foundation-layout` component which allows the user to drag, drop, resize, maximise, and restore windows.
+The aim of this section is to implement the `foundation-layout` component, which allows the user to drag, drop, resize, maximise, and restore windows.
 
-### Refactor the Order.ts
+### Refactor the orders.ts
 
 In order to prevent the components to get excessivly large, we need to refactor the **orders.ts**.
 
 #### Orders grid
 
-We'll start with the most straightforward component. Create a directory called **orders-grid** in **orders** folder and add these two files to it.
+We'll start with the most straightforward component. Create a directory called **orders-grid** in **orders** folder and add these two files to it:
 
 ```typescript title='orders-grid.ts'
 import { customElement, FASTElement, observable, attr } from '@microsoft/fast-element';
@@ -203,7 +203,7 @@ export class OrdersGrid extends FASTElement {
 
 #### Insert trade form
 
-And now we refactor out the form. This is slightly different because we need an associated styles file too. Create a **insert-orders-form** directory and add these three files
+And now we refactor out the form. This is slightly different because we need an associated styles file too. Create a **insert-orders-form** directory and add these three files:
 
 ```typescript title='insert-orders-form.ts'
 import { Connect } from '@genesislcap/foundation-comms';
@@ -344,7 +344,7 @@ export const insertOrdersFormTemplate = html<InsertOrdersForm>`
 </template>
 `
 ```
-and finally
+and finally:
 
 ```typescript title='insert-orders-form.styles.ts'
 import {css, ElementStyles} from "@microsoft/fast-element";
@@ -381,7 +381,7 @@ export const insertOrdersFormStyles = css`
 
 ### Add the layout to the order template
 
-Now we have refactored our 2 components, it is easy to add the dynamic layout. Change the **order.template.ts** to:
+Now we have refactored our two components, it is easy to add the dynamic layout. Change the **order.template.ts** to:
 
 ```typescript title='order.template.ts'
 import {html, repeat, when, ref } from '@microsoft/fast-element';
@@ -417,9 +417,9 @@ export const OrderTemplate = html<Order>`
 
 ### Understanding the layout
 
-As you noticed, the `<zero-layout>` has 2 main components that control the layout of the page.
+As you noticed, the `<zero-layout>` has two main components that control the layout of the page.
 
-- `<zero-layout-region>`: It divides the layout of the page equally depending on the its type. If `type` = horizontal then the layout will be splitted horizontally and if `type` = vertical then the layout will be splitted vertically. The layout is splitted equally depending on the number of items you insert between the `<zero-layout-region></zero-layout-region>` to the application.
+- `<zero-layout-region>` divides the layout of the page equally, depending on its type. If `type` = horizontal, then the layout will be split horizontally; if `type` = vertical, then the layout will be split vertically. The layout is split equally, depending on the number of items you insert between the `<zero-layout-region></zero-layout-region>` to the application.
 - `zero-layout-item`: It stores the content of each region of the page.
 
 ### Exercise 4.2 insert a new grid
@@ -428,10 +428,10 @@ As you noticed, the `<zero-layout>` has 2 main components that control the layou
 20 mins
 :::
 
-Insert the `ALL_INSTRUMENTS` grid to the orders page. Place it on the top right of the page.
+Insert the `ALL_INSTRUMENTS` grid in the orders page. Place it in the top right of the page.
 
 :::tip
-You can directly insert the new grid onto the order.template.ts, but it is recommended to create e new component called positions-grid and follow he previous steps. That wat you maintain your order.template.ts as clear as possible.
+You can directly insert the new grid into the **order.template.ts**, but it is recommended to create a new component called positions-grid and follow the previous steps. Thhis enables you to maintain your **order.template.ts** as clear as possible.
 :::
 
 Now we are going to look at some of the dynamic interactions that are available via the layout's JavaScript API. In this example, we are going to:
@@ -441,7 +441,7 @@ Now we are going to look at some of the dynamic interactions that are available 
 
 To see what else you can do with the JavaScript API, see the main documentation linked in the [API documentation here](../../04_web/10_dynamic-layout/docs/api/foundation-layout.foundationlayout.md/#methods).
 
-### Autosaving layout
+### Autosaving the layout
 
 It is easy to get the layout to autosave as the user changes it. Add a key under the `auto-save-key` attribute and the layout will take care of the rest. Ensure that the key you use is unique, so it doesn't clash with any other saved layouts.
 
@@ -455,9 +455,9 @@ Add this attribute to your `order.template.ts`:
 </zero-layout>
 ```
 
-Now when you're on the page, if you make a change to the layout (resize, drag, reorder, add/remove items) then the layout will be saved in local storage. 
+Now when you're on the page, if you make a change to the layout (resize, drag, reorder, add/remove items), then the layout will be saved in local storage. 
 
-Try for yourself! drag an item around and refresh the page and see it reload your layout.
+Try for yourself! Drag an item around and refresh the page and see it reload your layout.
 
 :::note
 The layout-saving functionality is only responsible for the *layout* itself - it will not save the state of the items inside it. Components are responsible for saving their own state if required - such as the grids [we set up earlier in the tutorial](#saving-user-preferences).
@@ -465,7 +465,7 @@ The layout-saving functionality is only responsible for the *layout* itself - it
 
 ### Resetting the layout
 
-The user's layout is now saved, now we need to create a reset button.Now we are going to create this button.
+The user's layout is now saved; now are going to create a reset button.
 
 The first thing we want to do is to update the `Order` component with a reference to the layout.
 
@@ -567,13 +567,13 @@ JSON.stringify(temp1.getLayout()) // temp0, or whatever your browser saved the l
 You can follow this process to create a range of pre-defined layouts for the user in addition to being able to restore the default layout. Or you can, for example, use the `.getLayout()` and `.loadLayout()` APIs to allow the user to save their own layouts.
 :::
 
-Now create a file under **order** directory called **predefined-layouts.ts**; copy the generated string and paste it into a file in the project.
+Now create a file under the **order** directory called **predefined-layouts.ts**; copy the generated string and paste it into a file in the project.
 
 ```typescript title='predefined-layouts.ts'
 export const ORDERS_DEFAULT_LAYOUT = ... /* Set this equal to the string from the web console */
 ```
 
-The final step is to wire all of this functionality together so that the button loads the layout that we have just saved.
+The final step is to wire all this functionality together so that the button loads the layout that we have just saved.
 
 ```typescript {6,22,27-29} title='home.ts'
 import { customElement, FASTElement, observable } from '@microsoft/fast-element';
@@ -616,7 +616,7 @@ Now when you open the header sidebar and click the reset button, you should see 
 
 ## Chart
 
-Charts is one of the must-have components in any dashboard. Because of that, Genesis created a easy way to add a series of charts into your application. Let's create our brand new chart.
+Charts is one of the must-have components in any dashboard. Because of that, Genesis has created an easy way to add a series of charts into your application. Let's create our brand new chart.
 
 ### Adding a new chart
 
@@ -668,7 +668,7 @@ export class OrdersChart extends FASTElement {
 }
 ```
 
-For further configuration examples please see: [here](https://g2plot.antv.antgroup.com/en/examples).
+For further configuration examples, see: [here](https://g2plot.antv.antgroup.com/en/examples).
 
 Your **orders.template.ts** should be like this:
 
@@ -710,7 +710,7 @@ export const OrderTemplate = html<Order>`
 `
 ```
 
-Now you show play aound with the properties of the chart, so you get used to it.
+Now you should play aound with the properties of the chart, so you get used to it.
 
 ## Design systems
 
@@ -723,7 +723,7 @@ The Genesis [design system](../../../web/design-systems/introduction/) implement
 
 When you generate a design system using the Genesis scaffolding CLI tool [GenX](../../../getting-started/quick-start/create-a-new-project/) it will automatically extend a base design system that we have provided. This highly configurable design system is called Genesis Foundation UI. Our design system starts in [Axure](https://www.axure.com/) and has been lab-tested to meet the needs of financial markets.
 
-Design system are highly configurable and can be shared across multiple applications. When performing customisations, you can control the scope as follows:
+Design systems are highly configurable and can be shared across multiple applications. When performing customisations, you can control the scope as follows:
 
 * [Customisation (general)](#customisation-general) - applied to the design system itself, affecting all applications that use the system. 
 * [Customisation (app-specific)](#customisation-app-specific) - this is only applied to a single application. Other applications using the same system are not affected.
@@ -925,11 +925,11 @@ Override the Zero design system, registering a new style for the ***zero-button*
 Additionally, register your own design system called **ui-training** and a new component `<ui-training-text-field>` whose font colour is blue. Use this component in the order screen.
 
 :::tip
-Remember, we have already provided you a folder with the main components (**client\web\src\ui-training-design-system**), so you need to select the required ones and customize them.
+Remember, we have already provided you a folder with the main components (**client\web\src\ui-training-design-system**), so you need to select the required ones and customise them.
 
 To register your own design system name, you have to edit the file **client\web\src\ui-training-design-system\provide-design-system.ts** and then change the attribute `provideDesignSystem.prefix`. Thus, the components will get the defined prefix to declare (e.g. *ui-training*-text-field, *ui-training*-button, and so on).
 
-Lastly, to keep the best practices and avoid conflicts, always open the system provider tag prior using the design system components like the example below.
+Lastly, to keep the best practices and avoid conflicts, always open the system provider tag before using the design system components like the example below.
 ```html {1,4}
 <ui-training-design-system-provider>
   <ui-training-text-field required :value=${sync(x=> x.quantity)}>Quantity</ui-training-text-field>
@@ -939,7 +939,7 @@ Lastly, to keep the best practices and avoid conflicts, always open the system p
 :::
 
 
-## Micro Front-ends
+## Micro front-ends
 
 The [Micro-front-end](../../../web/micro-front-ends/introduction/) architecture is a design approach in which a front-end app is decomposed into individual, semi-independent **micro applications** working loosely together. There are re-usable micro-front-ends that can be used by Genesis-powered applications, such as [Foundation Header](../../../web/micro-front-ends/foundation-header/) (covered in [Day 1](#)), [Entity Management](../../../web/micro-front-ends/foundation-entity-management/) (pretty much covered in the [Developer Training](#)), [User Management](#user-management), and [Front-end reporting](#front-end-reporting).
 
@@ -1016,7 +1016,7 @@ Further information about User Management API Ref (such as `Permissions` or `per
 30 mins
 :::
 
-Add the User Management into the application. To do that create a new route and add the User Management micro front-end.
+Add the User Management into the application. To do that, create a new route and add the User Management micro front-end.
 
 
 ### Front-end reporting
@@ -1030,7 +1030,7 @@ The [Front-end reporting](../../../web/micro-front-ends/front-end-reporting/foun
 
 #### Server configuration
 
-This component requires a server side module to be installed and running. Please access the [reporting distribution 6.5.0](https://genesisglobal.jfrog.io/ui/native/libs-release-local/global/genesis/reporting-distribution/6.5.0/reporting-distribution-6.5.0-bin.zip) and export the files into your **.genesi-home** directory.
+This component requires a server-side module to be installed and running. Please access the [reporting distribution 6.5.0](https://genesisglobal.jfrog.io/ui/native/libs-release-local/global/genesis/reporting-distribution/6.5.0/reporting-distribution-6.5.0-bin.zip) and export the files into your **.genesis-home** directory.
 
 To make data available to users so that they can create reports, you must insert entries into the `REPORT_DATASOURCES` table. This table determines which data resources can be reported on.
 
@@ -1222,7 +1222,7 @@ Third-party controls require a ControlValueAccessor for writing a value and list
 Congratulations! You're now set up to use Genesis Foundation and Angular!
 
 ### Exercise 4.5 Adding a Grid Pro to list Counterparties in our Angular solution
-this is pretty much here: https://docs.genesis.global/secure/tutorials/training-resources/training-content-day3/#ui-configuring
+This is pretty much here: https://docs.genesis.global/secure/tutorials/training-resources/training-content-day3/#ui-configuring
 
 
 :::info ESTIMATED TIME
