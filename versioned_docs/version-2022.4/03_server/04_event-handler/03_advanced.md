@@ -255,7 +255,7 @@ class TestCompanyHandlerAsyncContext : AsyncContextValidatingEventHandler<Compan
 
 Events going through a pending approval workflow are validated as usual (i.e. the `onValidate` method is run).  If the validation is successful, the “delayed” event is stored in the `APPROVAL` table in JSON format.
 
-Assuming the event is inserting, updating or deleting a target database record, it is possible to have multiple `APPROVAL` records associated with a single database entity. So, you should use the event `onValidate` method to check for pre-existing approvals against the entities related to the event if you need to ensure there is only one pending approval per record.
+Assuming the event is inserting, updating or deleting a target database record, it is possible to have multiple `APPROVAL` records associated with a single database entity. So, if you need to ensure there is only one pending approval per record, you should use the event `onValidate` method to check for pre-existing approvals against the entities related to the event.
 
 The `APPROVAL` record is keyed on an auto-generated `APPROVAL_ID` and does not have a direct link to the original record(s). You have to create one or many links by adding “approval entity” details to the payload returned within an `approvableAck` inside the `onValidate` method. These details include the `entityTable` (e.g COUNTERPARTY), `entityKey` (e.g. COUNTERPARTY_ID), as well as an optional `approvalType` to describe what operation is happening on the entity itself (e.g. NEW, UPDATE or REMOVE).
 
@@ -450,7 +450,7 @@ You might have noticed that the original type-safe event message types are lost 
 - `onEvent` works very similarly to any other GPAL [Event Handler definition](#defining-an-event-handler-in-gpal). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
 
 
-Please see the example below for custom logic using a table called "RESTRICTED_SYMBOL" to prevent restricted symbols from being added to the system, as well as checking user right codes:
+See the example of custom logic below. This uses a table called "RESTRICTED_SYMBOL" to prevent restricted symbols from being added to the system, as well as checking user right codes:
 
 ```kotlin
 import global.genesis.session.RightSummaryCache
