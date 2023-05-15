@@ -567,12 +567,10 @@ For implementing an Event Handler as a set of classes, there are three different
 
 :::note
 
-Java Event Handlers can be implemented using [RxJava3](../../../server/api-reference/event-handler-api/#rx3eventhandler) and [Sync](../../../server/api-reference/event-handler-api/#sync) Event Handlers only. Async Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
+Java Event Handlers can be implemented using RxJava3 and Sync Event Handlers only. Async Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
 
 **We recommend using Kotlin to implement Event Handlers.**
 :::
-
-If you would like to know more about creating an event handler in GPAL, please visit our [event-handler-api](../../../server/api-reference/event-handler-api) page.
 
 ### Available properties
 
