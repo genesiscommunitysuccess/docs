@@ -1030,7 +1030,7 @@ The [Front-end reporting](../../../web/micro-front-ends/front-end-reporting/foun
 
 #### Server configuration
 
-This component requires a server side module to be installed and running. Please access the [reporting distribution 6.5.0](https://genesisglobal.jfrog.io/ui/native/libs-release-local/global/genesis/reporting-distribution/6.5.0/reporting-distribution-6.5.0-bin.zip) and export the files into your **.genesi-home** directory.
+This component requires a server-side module to be installed and running. Please access the [reporting distribution 6.5.0](https://genesisglobal.jfrog.io/ui/native/libs-release-local/global/genesis/reporting-distribution/6.5.0/reporting-distribution-6.5.0-bin.zip) and export the files into your **.genesis-home** directory.
 
 To make data available to users so that they can create reports, you must insert entries into the `REPORT_DATASOURCES` table. This table determines which data resources can be reported on.
 
@@ -1222,7 +1222,7 @@ Third-party controls require a ControlValueAccessor for writing a value and list
 Congratulations! You're now set up to use Genesis Foundation and Angular!
 
 ### Exercise 4.5 Adding a Grid Pro to list Counterparties in our Angular solution
-this is pretty much here: https://docs.genesis.global/secure/tutorials/training-resources/training-content-day3/#ui-configuring
+This is pretty much here: https://docs.genesis.global/secure/tutorials/training-resources/training-content-day3/#ui-configuring
 
 
 :::info ESTIMATED TIME
