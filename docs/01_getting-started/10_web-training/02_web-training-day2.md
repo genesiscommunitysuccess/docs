@@ -191,7 +191,7 @@ export const OrderStyles = css`
 ```
 
 :::info form style
-We're just showing the relevant code for the functionality we're building, with an example of customization. Feel free to surround the elements with `div` or use any other resource to make your form look better. For that, you will only need some css styling knowledge.
+We're just showing the relevant code for the functionality we're building, with an example of customisation. Feel free to surround the elements with `div` or use any other resource to make your form look better. For that, you will only need some css styling knowledge.
 :::
 
 Then, define the variables that will hold the values that are entered.
