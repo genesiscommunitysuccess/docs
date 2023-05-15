@@ -18,13 +18,21 @@ Download and install all the relevant requirements.
 ## The genx script
 `genx` is a CLI tool that enables you to seed projects. In this case, you shall generate a full-stack application project; the key files will be empty so that you can define the details of the application.
 
+If you still don't have genx installed, please see the session [Installing GenX](../../../getting-started/quick-start/hardware-and-software/#installing-genx).
+
 ## Starting
 
-Launch CLI from the terminal:
+Once configured and installed, from the Windows terminal, run:
 
-```shell title="Terminal"
-npx @genesislcap/genx@latest
+```shell title="Windows Terminal"
+genx
 ```
+
+:::tip
+
+If this does not work, use the command `npx genx`.
+
+:::
 
 <!-- NO EDIT (NEXT 4 LINES) -->
 import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
@@ -62,7 +70,7 @@ App seed (Use arrow keys)
   Overwrite existing files (y/N)
   ```
 
-At this point, the seed application is created and the seed dependencies are installed.
+At this point, the seed application is created and the `genx` dependencies are installed.
 
 Then there are more questions, which you can respond to as follows (we have provided some notes below):
 
@@ -94,7 +102,7 @@ i Application created successfully! 🎉 Please open the application and follow 
 Now let's open your application in Intellij. Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (**alpha**, **client**, **genesisproduct-alpha**).
 
 ### Gradle.properties
-Before you finish the creation of your new project, make sure your **gradle.properties** file in **server/jvm** has the highlighted properties following properties:
+Before you finish the creation of your new project, make sure your **gradle.properties** file in **server/jvm** has the  following highlighted properties:
 
 ```kotlin {2,3} title="server/jvm/gradle.properties"
                 ...
