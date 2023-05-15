@@ -116,13 +116,13 @@ systemDefinition {
 systemDefinition {
     global {
         ...
-        item(name = "DbLayer", value = "FDB")
+        item(name = "DbLayer", value = "SQL")
         item(name = "DictionarySource", value = "DB")
         item(name = "AliasSource", value = "DB")
         item(name = "MetricsEnabled", value = "false")
         item(name = "ZeroMQProxyInboundPort", value = "5001")
         item(name = "ZeroMQProxyOutboundPort", value = "5000")
-        item(name = "DbHost", value = "localhost")
+        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=docker")
         item(name = "DbMode", value = "VANILLA")
         ...
     }
@@ -141,27 +141,6 @@ We have two different approaches to connect to the server, depending on your run
 
 In this tutorial, you need to verify the default `API_HOST` in the **package.json** in **client/web/**.
 
-<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', }, { label: 'Docker', value: 'Docker'}, { label: 'WSL', value: 'WSL'}]}>
-<TabItem value="Intellij Plugin">
-
-```kotlin {8} title="client/web/package.json"
-{
-  "name": "@genesislcap/alpha-web-client",
-  "description": "Developer Training Web Client",
-  "version": "0.0.1",
-  "private": true,
-  "license": "Apache-2.0",
-  "config": {
-    "API_HOST": "ws://localhost:9064",
-    "DEFAULT_USER": "JaneDee",
-    "DEFAULT_PASSWORD": "beONneON*74",
-    "PORT": 6060
-  },
-```
-
-</TabItem>
-<TabItem value = "Docker">
-
 ```kotlin {8} title="client/web/package.json"
 {
   "name": "@genesislcap/alpha-web-client",
@@ -176,25 +155,6 @@ In this tutorial, you need to verify the default `API_HOST` in the **package.jso
     "PORT": 6060
   },
 ```
-</TabItem>
-<TabItem value = "WSL">
-
-```kotlin {8} title="client/web/package.json"
-{
-  "name": "@genesislcap/alpha-web-client",
-  "description": "Developer Training Web Client",
-  "version": "0.0.1",
-  "private": true,
-  "license": "Apache-2.0",
-  "config": {
-    "API_HOST": "ws://localhost/gwf/",
-    "DEFAULT_USER": "JaneDee",
-    "DEFAULT_PASSWORD": "beONneON*74",
-    "PORT": 6060
-  },
-```
-</TabItem>
-</Tabs>
 
 ## Build and deploy
 
@@ -246,7 +206,11 @@ This starts the build processes and the logs will be shown below.
 </TabItem>
 <TabItem value="Docker">
 
-You do not need to do anything at this point. You can now proceed to the [run the application](../../quick-start/run-the-application-docker/)
+```shell title="Intellij terminal"
+./gradlew assemble
+docker-compose build
+docker-compose up -d
+```
 
 </TabItem>
 <TabItem value="WSL">

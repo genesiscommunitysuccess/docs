@@ -27,7 +27,7 @@ Once the project is open, there are two easy ways to find this file quickly in I
 
 For your simple example, you shall add five fields:
 
-```kotlin
+```kotlin title = "alpha-fields-dictionary.kts"
 fields {
 
     field("TRADE_ID", type = STRING)

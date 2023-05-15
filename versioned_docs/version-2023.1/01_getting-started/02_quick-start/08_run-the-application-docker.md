@@ -227,12 +227,37 @@ Wait for all processes to be healthy (it may take a few minutes for the first ru
 </TabItem>
 <TabItem value="Docker">
 
-In your terminal, you should enter the following commands to build and run all containers
+Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
 
-```shell title="Intellij terminal"
-docker-compose build
-docker-compose up -d
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**mon**.
+
+![](/img/using-mon.png)
+
+```shell title='Running mon from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:mon
 ```
+
+we should see something like this
+
+```shell
+PID     Process Name                  Port        Status         CPU       Memory    Message
+===============================================================================================
+426     GENESIS_AUTH_CONSOLIDATOR     8005        STANDBY        36.30     1.30
+350     GENESIS_AUTH_DATASERVER       8002        RUNNING        56.70     1.70
+334     GENESIS_AUTH_MANAGER          8001        RUNNING        61.50     1.70
+368     GENESIS_AUTH_PERMS            8003        RUNNING        65.70     1.90
+403     GENESIS_AUTH_REQUEST_SERVER   8004        RUNNING        56.80     1.60
+490     GENESIS_CLUSTER               9000        RUNNING        84.30     2.50
+570     GENESIS_ROUTER                9017        RUNNING        54.70     2.00
+534     GENESIS_WEBMON                9011        RUNNING        51.30     2.50
+===============================================================================================
+664     ALPHA_DATASERVER              11000       RUNNING        58.10     1.50
+703     ALPHA_EVENT_HANDLER           11001       RUNNING        71.30     2.20
+```
+
+:::note server commands
+Try to run `mon` from the command line as well!
+:::
 
 </TabItem>
 <TabItem value="WSL">
