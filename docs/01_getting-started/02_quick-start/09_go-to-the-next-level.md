@@ -13,24 +13,24 @@ tags:
     - server training
 ---
 
-Now that you have completed the [Quick Start](../../../getting-started/quick-start/) and are comfortable with the basics, it is time to build an advanced application that will demonstrate more of the Genesis platform features.
+Now that you have completed the [Quick Start](../../../getting-started/quick-start/) and are comfortable with the basics, it is time to build an advanced application that will demonstrate more features of the platform.
 
-## Genesis trainings
+## Genesis training
 
-We offer 3 distinct kinds of trainings each of which with a different approach:
+We offer three distinct training, each of which has a different focus:
 
-- [Developer training](../../developer-training/training-intro/) - general training with server and web elements to create a solid foundation within the genesis platform.
+- [Developer training](../../developer-training/training-intro/) - general training with server and web elements to create a solid foundation of knowledge and skills.
 - [Web developer training](../../web-training/training-intro/) - strong training to provide the trainee a solid knowledge of the web elements of the platform.
 - [Server developer training](../../server_training/ssdt-intro/) - strong training to provide the trainee a solid knowledge of the server elements of the platform.
 
-We strongly recommend you to start from the [Developer training](../../developer-training/training-intro/) then you can choose a path from server or web training (or Both, it is your call).
+We strongly recommend that you start with the [Developer training](../../developer-training/training-intro/). Then you can choose a path through either server or web training (or both; it is your call).
 
-To illustrate why it is s important to start from the [Developer training](../../developer-training/training-intro/),bellow you see some of the basic features covered by this training:
+To illustrate why it is important to start with the [Developer training](../../developer-training/training-intro/), here is a  list of some of the basic features covered by this training:
 
 - [Data Model](../../developer-training/training-content-day1/#2-define-the-data-model)
 - [Business logic](../../developer-training/training-content-day1/#3-add-business-logic)
 - [Building the server](../../developer-training/training-content-day1/#4-prepare-the-server)
-- [Intrudution to UI](../../developer-training/training-content-day2/#introducing-the-ui)
+- [Introduction to UI](../../developer-training/training-content-day2/#introducing-the-ui)
 - [User interface](../../developer-training/training-content-day2/#create-a-user-interface)
 - [Views](../../developer-training/training-content-day3/#views)
 - [Automated testing](../../developer-training/training-content-day3/#automated-testing)
@@ -42,4 +42,4 @@ To illustrate why it is s important to start from the [Developer training](../..
 - [Schedulers](../../developer-training/training-content-day5/#schedulers)
 - [Permissions](../../developer-training/training-content-day5/#permissions)
 
-These topics are the foundation for the 2 other advanced training we offer ([Web developer training](../../web-training/training-intro/) and [Server developer training](../../server_training/ssdt-intro/))
+These topics are the foundation for the two other advanced training we offer: ([Web developer training](../../web-training/training-intro/) and [Server developer training](../../server_training/ssdt-intro/)).
