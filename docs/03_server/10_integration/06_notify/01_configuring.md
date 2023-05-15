@@ -46,7 +46,7 @@ All of the metadata management APIs deal directly with the views, so you can thi
 ### Entity types
 Some route types are used for sending notifications directly to users of the application. For example, a SCREEN_ROUTE can send toast notifications directly to a user's screen, and an EMAIL_USER_ROUTE can send a notification directly to a user's email address. In contrast, an EMAIL_DISTRIBUTION_ROUTE can send a notification to email addresses that are not tied to a specific user in the system.
 
-For the routes that are used to send to application users, two fields are present on the route object: ENTITY_ID and ENTITY_ID type. These two fields represent a user or set of users to deliver the notification to.
+For the routes that are used to send to application users, two fields are present on the route object: ENTITY_ID and ENTITY_ID_TYPE. These two fields represent a user or set of users to deliver the notification to.
 
 ENTITY_ID_TYPE is an enumeration with the following possible values.
 
