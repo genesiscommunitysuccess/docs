@@ -10,9 +10,9 @@ tags:
     - docker
 ---
 
-## Create a new Schema
+## Create a new schema
 
-Before you can run your application, you need to create a new schema for the database, where all the tables will be created (in our case, there is only one). To do that, follow these two steps:
+Before you can run your application, you need to create a new schema for the database; this is where all the tables will be created (in our case, there is only one). To do that, follow these two steps:
 
 1. Run `genesis-install`.
 
@@ -80,29 +80,38 @@ DbMon:USER>
 </details>
 
 ## Starting the server
-:::note
-Make sure you have started the [resource deamon](../../../server/tooling/intellij-plugin/#remap).
-:::
-Once your resource deamon has started, you can start all Genesis processes; click on the **start** button.
+
+1. Start the [resource deamon](../../../server/tooling/intellij-plugin/#remap); click on the **start resource daemon** button.
+
+2. Once your resource deamon has started, you can see your Genesis processes listed. Click on the **start** button for each process to start it.
 
 ![](/img/genesis_deamon.png)
 
-Wait for all processes to be healthy (it may take a few minutes for the first run).
+Wait for all the processes to be healthy (it may take a few minutes for the first run).
 
 ## Accessing the application
 
 Now you are ready to run the application you have created for the front end.
 
-Using the Genesis IntelliJ plugin click the [Start UI button](../../../server/tooling/intellij-plugin/#starting-the-ui) on the toolbar as shown below. This builds your front-end codebase and starts the webpack webserver in development mode.
+Using the Genesis IntelliJ plugin click the [Start UI button](../../../server/tooling/intellij-plugin/#starting-the-ui) (this is the small globe) on the toolbar as shown below. This builds your front-end codebase and starts the webpack webserver in development mode.
 
 ![Debug Window](/img/intellij-ui.png)
 
 The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
 
-## Conclusion
-That’s it. You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.
+The login details are: 
 
-![](/img/quickstart-app-final.png)
+- login name: JaneDee
+- password: beONneON*74
+
+When you have logged in, the screen is empty, but note the **ADD** button at the top right. You can click on this to add some dummy trade details.
+
+Below, we have added two trades. We have sold MMM at 404 and bought back at 401.5.
+
+![](/img/final-result.png)
+
+## Conclusion
+That’s it. You have quickly built a very simple application using some fundamental Genesis components. 
 
 There's obviously a lot more to building enterprise-ready applications. However, you now have enough knowledge and experience of the Genesis low-code platform to look at our reference documentation and learn more there.

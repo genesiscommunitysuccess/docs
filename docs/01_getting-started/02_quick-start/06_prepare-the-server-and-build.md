@@ -67,7 +67,7 @@ Further information can be found in the [**-service-definitions.xml** file](../.
 
 You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\\**.
 
-Further information can be found in the [**genesis-system-definitions.kts** file](../../../server/configuring-runtime/system-definitions/).
+Further information can be found in the [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/).
 
 ### Run with docker
 
@@ -94,7 +94,7 @@ systemDefinition {
 
 ### Build and compose Docker images
 
-Now, you need to start the database. Make sure your docker management software (in our case Rancher desktop) is up and running and do the following:
+Now, you need to start the database. First, start your docker management software (in our case Rancher desktop) and do the following:
 
 ```powershell
 docker pull postgres
@@ -130,7 +130,7 @@ Finally, you can build and deploy the server.
 
 ### Build
 
-In the Gradle menu on the right of IntelliJ, select:
+1. In the Gradle menu on the right of IntelliJ, select:
 
 **genesisproduct-alpha**
 
@@ -139,10 +139,13 @@ In the Gradle menu on the right of IntelliJ, select:
 ```shell title='Running assemble from the command line'
 ./gradlew :genesisproduct-alpha:assemble
 ```
+The first time you run this, it will take quite a few minutes. Make yourself a cup of tea or open a bottle of good champagne.
 
-**genesisproduct-alpha**/**alpha-config**
+2. Run the config: **genesisproduct-alpha**/**alpha-config**
 
 ![](/img/alpha-config-gradle.png)
+
+If you prefer to run the config from the command line: 
 
 ```shell title='Running alpha-config assemble from the command line'
 ./gradlew :genesisproduct-alpha:alpha-config:assemble
@@ -150,9 +153,13 @@ In the Gradle menu on the right of IntelliJ, select:
 
 ```
 
+3. Rub the script config assemble:
+
 **genesisproduct-alpha**/**alpha-script-config**
 
 ![](/img/alpha-script-config-gradle.png)
+
+If you prefer to run this from the command line: 
 
 ```shell title='Running alpha-script-config assemble from the command line'
 ./gradlew :genesisproduct-alpha:alpha-script-config:assemble
@@ -160,7 +167,7 @@ In the Gradle menu on the right of IntelliJ, select:
 
 ```
 
-### Start up plugin
+### Start the plugin
 
 After the Gradle tasks, when first using the plugin with a project, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
 
@@ -180,13 +187,13 @@ As soon as the Build is done, you need to deploy the application:
 
 ![Deploy](/img/intellij-deploy1.png)
 
-2. Rebuilding the application requires the Genesis processes to be stopped. If you are prompted for this, click **ok** to continue. 
+2. Redeploying the application requires the Genesis processes to be stopped. If you are prompted for this, click **ok** to continue. 
 
 ![Deploy Prompt](/img/intellij-deploy2.png)
 
-This starts the build processes and the logs will be shown below.
+This starts the  processes and the logs will be shown below.
 
 ![Deploy logs](/img/intellij-deploy3.png)
 
 
-Congratulations! You now you have a running database and a built application. Next step [run the application](../run-the-application-docker/)
+Congratulations! You have built an application and you are running a database. The next step is to [run the application](../run-the-application-docker/).
