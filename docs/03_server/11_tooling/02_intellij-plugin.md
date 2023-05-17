@@ -37,7 +37,7 @@ To run a development application locally using the plugin, you must have:
 - a mono repo (the client and server must be in the same repository)
 
 **Local requirements**
-- a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
+- a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running
 
 :::tip
 You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
@@ -166,9 +166,9 @@ This starts the build processes and the logs will be shown below.
 Using the plugin, you can right-click on CSV files or folders containing CSV files and select the **Import CSV(s) to Genesis** option.
 This takes the CSV files and uses the Genesis `SendIt` utility to load the data from those files into tables with matching names.
 
-## Task view
+## Tasks view
 
-Apart from the **Mon** view, there is the **Task** view, where it is possible to see, run and modify the configurations of Genesis services, scripts, and setup.
+Apart from the **Mon** view, there is the **Tasks** view, where it is possible to see, run and modify the configurations of Genesis services, scripts, and setup.
 
 ![Task view](/img/genesis-plugin-task-view.png)
 
@@ -178,7 +178,7 @@ To run a Genesis script, open the folder **Scripts**, find the one you want to r
 
 ![Task view](/img/genesis-plugin-task-view-droptable.png)
 
-The example above runs the [DropTable](../../../operations/commands/server-commands/#droptable) script. This has parameters, so make sure you configure them using the **"Modify Run Configuration..."** option setting the *Args* properly.
+The example above runs the [DropTable](../../../operations/commands/server-commands/#droptable) script. This has parameters, so make sure you configure them using the **"Modify Run Configuration..."** option setting the *Args* property.
 
 ## Access to the docs
 
