@@ -22,9 +22,9 @@ The Genesis Intellij plugin enables you to run the full stack of a Genesis appli
 
 ![Genesis Platform Support on Tool window](/img/genesis-plugin-intellij-toolwindow.png)
 
-:::note
+:::info
 That's the end of the installation process.
-If you have come here from the Quick Start guide, [you can go back now](../../../getting-started/quick-start/hardware-and-software#genesis-intellij-plugin/)
+If you have come here from the Quick Start guide, [you can **go back now**](../../../getting-started/quick-start/hardware-and-software/#genesis-intellij-plugin/).
 :::
 
 ## Running a Genesis application locally
@@ -33,11 +33,11 @@ To run a development application locally using the plugin, you must have:
 
 **Project requirements**
 - a Genesis project where your front end and back end are being developed
-- Gradle project
-- Mono repo (with the client and server in the same repository)
+- a Gradle project
+- a mono repo (the client and server must be in the same repository)
 
 **Local requirements**
-- A [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
+- a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
 
 :::tip
 You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
@@ -164,25 +164,25 @@ This starts the build processes and the logs will be shown below.
 ## Loading data into the application
 
 Using the plugin, you can right-click on CSV files or folders containing CSV files and select the **Import CSV(s) to Genesis** option.
-This takes the csv files and uses the Genesis `SendIt` utility to load the data from the CSV files into tables with matching names.
+This takes the CSV files and uses the Genesis `SendIt` utility to load the data from those files into tables with matching names.
 
 ## Task view
 
-On the plugin, apart from the **Mon** view explained here before, there is the **Task** view where it is possible to see, run and modify the configurations of Genesis services, scripts, and setup.
+Apart from the **Mon** view, there is the **Task** view, where it is possible to see, run and modify the configurations of Genesis services, scripts, and setup.
 
 ![Task view](/img/genesis-plugin-task-view.png)
 
 ### Running a Genesis script
 
-To run a Genesis script, open the folder *Scripts*, find the one you want to run, right-click on it and select Run.
+To run a Genesis script, open the folder **Scripts**, find the one you want to run, right-click on it and select **Run**.
 
 ![Task view](/img/genesis-plugin-task-view-droptable.png)
 
-The example above runs the [DropTable](../../../operations/commands/server-commands/#droptable) script. As it has parameters, make sure you configure them using the **"Modify Run Configuration..."** option setting the *Args* properly.
+The example above runs the [DropTable](../../../operations/commands/server-commands/#droptable) script. This has parameters, so make sure you configure them using the **"Modify Run Configuration..."** option setting the *Args* properly.
 
-## Docs navigation
+## Access to the docs
 
-Developers can navigate to **learn.genesis.global** straight from IntelliJ:
+You obviously have access to the documentation, because you are reading it right now. But it is worth noting that there is a link from the **Tools** menu in IntelliJ that opens the documentation: 
 
 ![Genesis Install](/img/intellij-docs.png)
 
