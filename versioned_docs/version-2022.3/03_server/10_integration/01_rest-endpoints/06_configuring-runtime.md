@@ -1,5 +1,5 @@
 ---
-title: 'REST endpoints - Configuring runtime'
+title: 'REST endpoints - configuring runtime'
 sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
 keywords: [server, integration, REST endpoints, configuring runtime]

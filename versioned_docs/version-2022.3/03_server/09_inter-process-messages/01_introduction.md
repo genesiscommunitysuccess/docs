@@ -1,5 +1,5 @@
 ---
-title: 'Inter-process messages - Introduction'
+title: 'Inter-process messages - introduction'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [server, inter-process messages, introduction]

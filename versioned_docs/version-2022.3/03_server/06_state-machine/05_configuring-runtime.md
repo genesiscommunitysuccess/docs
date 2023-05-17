@@ -1,5 +1,5 @@
 ---
-title: 'State Machine - Configuring Runtime'
+title: 'State Machine - Configuring runtime'
 sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
 keywords: [server, state machine, configuring runtime]

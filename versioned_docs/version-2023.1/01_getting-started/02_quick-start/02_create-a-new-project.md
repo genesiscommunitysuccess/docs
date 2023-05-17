@@ -15,59 +15,59 @@ Before you start, make sure you have checked out the [hardware and software requ
 Download and install all the relevant requirements.
 :::
 
-## The genx script
-`genx` is a CLI tool that enables you to seed projects. In this case, you shall generate a full-stack application project; the key files will be empty so that you can define the details of the application.
-
-If you still don't have genx installed, please see the session [Installing GenX](../../../getting-started/quick-start/hardware-and-software/#installing-genx).
-
 ## Starting
 
-Once configured and installed, from the Windows terminal, run:
+We start our quick journey using the CLI provided by Genesis, from the Windows terminal, run:
 
 ```shell title="Windows Terminal"
-genx
+npx @genesislcap/genx@latest
 ```
-
-:::tip
-
-If this does not work, use the command `npx genx`.
-
-:::
 
 <!-- NO EDIT (NEXT 4 LINES) -->
 import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
 
 <InsecureFlag />
 
-In the `genx` script, there is a series of questions.
+You will be prompted a series of questions.
 
 First, you are asked to select from a short list of seed applications. Select `create application`:
 
 ```shell {4} title="Windows Terminal"
-? Please select an option: (Use arrow keys)
+? Please select an option:
   create workspace - Generates a local workspace to use for your Genesis based apps.
   configure workspace - Configure a local workspace.
 > create application - Generates a local application.
   configure application - Configure a local app.
+  switch design system - Switch all design system prefixes found in files under the target directory to a new prefix, ie. templates, css rules, markdown etc.
+  analyze component usage - Analyse component usage under the target directory.
 ```
 Now you can proceed using the following responses:
 
 ```shell title="Windows Terminal"
-? Create a app in current directory Yes
+  App:
+  Create a Genesis application from one of our many best practice and compliant application seeds.
+
+  This generator automates the following steps for you:
+    - Creates a local Genesis app from a local or remote seed and configures it.
+    - Persists the information captured here within the app for future use.
+
+  Let's get started!
+
+? Create an app in current directory Yes
 ? App name alpha
 ```
 
 Then you are asked to select the App Seed. Select `Quick Start Application` from the list. If you are asked to overwrite existing files, select **Y**.
 
   ```shell {2} title="Windows Terminal"
-App seed (Use arrow keys)
+? App seed (Use arrow keys)
 > Quick Start Application
+  Quick Start Application - Early Access
   Positions Application
   Hello World Application
   Foundation-Store Based Application
   Foundation App Seed
   Local Application Seed
-  Overwrite existing files (y/N)
   ```
 
 At this point, the seed application is created and the `genx` dependencies are installed.

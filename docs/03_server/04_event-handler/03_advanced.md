@@ -222,33 +222,32 @@ eventHandler {
 or in a custom Event Handler definition:
 
 ```kotlin
+package global.genesis.position.samples.events.async
+
 import global.genesis.commons.annotation.Module
-import global.genesis.eventhandler.typed.async.AsyncValidatingEventHandler
+import global.genesis.eventhandler.typed.async.AsyncContextValidatingEventHandler
+import global.genesis.gen.dao.Company
 import global.genesis.message.core.event.Event
 import global.genesis.message.core.event.EventReply
+import global.genesis.message.core.event.ValidationResult
 
 @Module
-class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply> {
-    // Override requiresPendingApproval here to enable the "pending approval" flow.
-    // In this implementation, any user that is not "system.user" needs to go through the approval mechanism.
-    // The last line just needs to evaluate to a boolean; if false it does not require approval, if true it does
-    override fun requiresPendingApproval(): (suspend (Event<Company>) -> Boolean) {
-        return { event ->
-            event.userName != "system.user"
-        }
-    }
-    
-    override suspend fun onValidate(message: Event<Company>): EventReply {
-        val company = message.details
-        // custom code block..
-        return ack()
-    }
+class TestCompanyHandlerAsyncContext : AsyncContextValidatingEventHandler<Company, EventReply, String> {
+  override suspend fun onValidate(message: Event<Company>): ValidationResult<EventReply, String> {
+    val company = message.details
+    // custom code block..
+    val companyName = company.companyName
+    return validationResult(ack(), companyName)
+  }
 
-    override suspend fun onCommit(message: Event<Company>): EventReply {
-        val company = message.details
-        // custom code block..
-        return ack()
+  override suspend fun onCommit(message: Event<Company>, context: String?): EventReply {
+    if(context != null){
+      // Do something with the context
     }
+    val company = message.details
+    // custom code block..
+    return ack()
+  }
 }
 ```
 
@@ -448,7 +447,7 @@ pendingApproval {
 You might have noticed that the original type-safe event message types are lost inside the **-approval.kts** file, as the content of `eventMessage` inside `APPROVAL` table (and also inside `PendingApprovalInsert`) is a serialised JSON string. You can deserialise the original type-safe objects using the `selectPredicate` method combined with multiple `onEvent` predicates. These methods are available in all the `pendingApproval` code blocks: `insert`, `accept`, `cancel` and `reject`.
 
 - `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function  provides a [GenesisSet](../../../server/inter-process-messages/genesisset/) object with the contents of the original message payload.
-- `onEvent` works very similarly to any other GPAL [Event Handler definition](#adding-a-name). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
+- `onEvent` works very similarly to any other GPAL [Event Handler definition](#defining-an-event-handler-in-gpal). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
 
 
 Please see the example below for custom logic using a table called "RESTRICTED_SYMBOL" to prevent restricted symbols from being added to the system, as well as checking user right codes:
@@ -556,17 +555,26 @@ if (client == null || !client.isConnected) {
 
 ## Defining an Event Handler in GPAL
 
-The following imports are automatically available inside GPAL Event Handlers:
+In most cases, you will create [Event Handlers](../../../server/event-handler/introduction/) in a kts file using GPAL. This offers a method with succinct code and a good degree of flexibility.
 
-```kotlin
-import CodeBlock from '@theme/CodeBlock';
-import Imports from '!!raw-loader!/examples/server/java/event-handlers/imports.java';
+However, you can also implement Event Handlers as a set of classes. Typically, this is useful where you have a complex requirement for business logic and database interaction. For example, a kts file of 1,000 lines is difficult to test and maintain; in this case, a set of individual classes is much more convenient.
 
-<CodeBlock className="language-java">{Imports}</CodeBlock>
-```
+For implementing an Event Handler as a set of classes, there are three different options:
 
+-   Async. This uses the Kotlin coroutine API to simplify asynchronous development. This is the underlying implementation used in GPAL Event Handlers. You can only create Async Event Handlers using Kotlin.
+-   RxJava3. This uses the RxJava3 library, which is a popular option for composing asynchronous event-based programs. You can create RxJava3 Event Handlers using either Kotlin or Java.
+-   Sync. This creates synchronous Event Handlers. You can create Sync Event Handlers using either Kotlin or Java.
 
-### Automatic import
+:::note
+
+Java Event Handlers can be implemented using [RxJava3](../../../server/api-reference/event-handler-api/#rx3eventhandler) and [Sync](../../../server/api-reference/event-handler-api/#sync) Event Handlers only. Async Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
+
+**We recommend using Kotlin to implement Event Handlers.**
+:::
+
+If you would like to know more about creating an event handler in GPAL, please visit our [event-handler-api](../../../server/api-reference/event-handler-api) page.
+
+### Available properties
 
 The following properties are automatically available inside GPAL Event Handlers:
 

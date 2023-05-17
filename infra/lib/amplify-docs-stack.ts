@@ -19,13 +19,13 @@ export class AmplifyDocsStack extends cdk.Stack {
       sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
         owner: 'genesiscommunitysuccess',
         repository: 'docs',
-        // We have to use a Personal Access Token to authenticate with GitHub. Currently
-        // the token used here is generated from Nick Payne's (@makeusabrew on GitHub) account
+        // We got to use a Personal Access Token to authenticate with GitHub. 
         // The account needs admin privileges on the repository to set up a one-time read-only
         // deploy key (to clone the repo) and webhook (for PR previews). Due to this association
         // it will stop working if the user's privileges are revoked
         // @see https://github.com/aws-amplify/amplify-hosting/issues/2160 for more discussion
-        oauthToken: SecretValue.secretsManager('genesiscommunitysuccess-docs-prod')
+        // @see https://www.notion.so/genesisglobal/Handover-notes-57b7f846c46e4539bff66a006eccbb9c#3015d5bcd9f4404cbd0ced433e6070bc for internal guidance on 'Fully rotating a secret'
+        oauthToken: SecretValue.secretsManager('gcs-docs-prod-05-2023')
       }),
 
       // We could replace this with an `amplify.yml` in the root of the project, but it'd amount to
@@ -37,6 +37,16 @@ export class AmplifyDocsStack extends cdk.Stack {
           phases: {
             preBuild: {
               commands: [
+                'npm config set @genesiscommunitysuccess:registry https://npm.pkg.github.com',
+                // this isn't ideal, but the only rights this token has are packages:read. No amount of
+                // indirection gymnastics gets us away from the fact Amplify doesn't have the concept of
+                // environmental secrets, so however we pass this token value in, it will ultimately be visible
+                // in plaintext in the AWS Amplify console. We accept that because:
+                // 1. it's a *lot* better than leaking the token in code
+                // 2. it's a token we will rotate frequently
+                // 3. it's a token which only grants read-only access to our private npm packages (@genesislcap stuff)
+                // 4. it's only visible in the AWS console to authenticated users, just as normal secrets are
+                'npm config set //npm.pkg.github.com/:_authToken ' + SecretValue.secretsManager('npm-package-manager-05-2023').unsafeUnwrap(),
                 'npm install',
               ],
             },

@@ -1,5 +1,5 @@
 ---
-title: 'State Machine - Advanced'
+title: 'State Machine - advanced'
 sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, state machine, advanced]

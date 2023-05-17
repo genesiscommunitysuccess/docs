@@ -1,5 +1,5 @@
 ---
-title: 'Consolidator - Configuring runtime'
+title: 'Consolidator - configuring runtime'
 sidebar_label: 'Configuring runtime'
 id: configuring-runtime
 keywords: [server, consolidator, configuring runtime]
