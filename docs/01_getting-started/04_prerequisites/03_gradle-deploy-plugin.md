@@ -139,7 +139,7 @@ This is the easiest set-up, and applies if your development workstation is on a 
 To configure this, open `gradle.properties` from the server/jvm folder and add the following entry:
 
 ```properties
-genesis-home=<path-to-genesis-home>
+genesis-home=<path-to-local-genesis-home>
 ```
 
 The set-up task will create the folder (if it doesn't exist) and set up the Genesis platform there.
@@ -152,7 +152,7 @@ supported.
 To configure this, open `gradle.properties` from the server/jvm folder and add the following entries:
 
 ```properties
-genesis-home=<path-to-genesis-home>
+genesis-home=<path-to-remote-host-genesis-home>
 ssh-username=<remote-host-username>
 ssh-password=<remote-host-password>
 ssh-host=<remote-host>
