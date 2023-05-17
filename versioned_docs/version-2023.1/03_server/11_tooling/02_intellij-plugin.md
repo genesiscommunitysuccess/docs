@@ -38,6 +38,14 @@ After installing **Genesis Platform Support** plugin, make sure you add it to be
 
 ![Genesis Platform Support on Tool window](/img/genesis-plugin-intellij-toolwindow.png)
 
+:::info
+When using the plugin, ensure you have specified the `deploy-plugin-mode` gradle property as `local`. You can do this by adding the line below to the `gradle.properties` file in the server/jvm folder:
+
+```
+deploy-plugin-mode=local
+```
+:::
+
 ## The Tools window
 
 ### Settings
