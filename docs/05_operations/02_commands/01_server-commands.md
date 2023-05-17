@@ -896,19 +896,22 @@ purgers{
 ### Purge by date
 
 The purger supports purging based on days. You can specify the max age of record in terms of calendar days or business days.
-Business days disregard weekends and public holidays.
 
-To use this you need to supply
-- a LONG or DATETIME field in the table to be used, or you can supply just table name and TIMESTAMP field of table will be used to calculate the age of the record.
-- Also max age of record, which indicates all the records older than these days will be purged
+- Business days disregard weekends and public holidays. 
+- Calendar days disregard weekends by default, but can be set to include them, as shown in the example below.
+
+To use this script, you need to supply
+- a LONG or DATETIME field in the table to be used, or you can supply just the table name, in which case the TIMESTAMP field of the table will be used to calculate the age of the record.
+- The max age of the record, which indicates all the records older than these days will be purged
+- Optional fields when you use calendar days: boolean flag `ignoreWeekends` (defaults to true).
 - Optional fields when you use business days: `country` and `region` name.
 
 ```kotlin
 purgers {
- // purge trades over 6 months old based on field TRADE_DATE
+ // purge trades over 180 days old based on field TRADE_DATE, not taking weekends into account (180 week-days)
  daysPurger(TRADE.TRADE_DATE, 180)
- // purge trades over 6 months old based on field TIMESTAMP of table which will be used internally 
- daysPurger(TRADE, 180)
+ // purge trades over 6 months old based on field TIMESTAMP of table which will be used internally, including weekends (180 full calendar days)
+ daysPurger(TRADE, 180, ignoreWeekends = false)
 
  // purge prices older than 5 business days based on PRICE_DATETIME
  businessDaysPurger(PRICE.PRICE_DATETIME, 5)

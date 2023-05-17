@@ -47,6 +47,14 @@ docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POST
 ```
 :::
 
+:::info
+When using the plugin, ensure you have specified the `deploy-plugin-mode` gradle property as `local`. You can do this by adding the line below to the `gradle.properties` file in the server/jvm folder:
+
+```
+deploy-plugin-mode=local
+```
+:::
+
 ## The Tools window
 
 ### Settings
