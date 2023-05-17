@@ -153,7 +153,7 @@ If you prefer to run the config from the command line:
 
 ```
 
-3. Rub the script config assemble:
+3. Run the script config assemble:
 
 **genesisproduct-alpha**/**alpha-script-config**
 

@@ -11,7 +11,7 @@ tags:
   - plugin  
 ---
 
-The Genesis Intellij plugin enables you to run the full stack of a Genesis application locally within IntelliJ, so you can check and test your development work as you develop.
+The Genesis Intellij plugin enables you to run the full stack of a Genesis application locally within IntelliJ, so you can check and test your development work as you progress.
 
 
 ## Installation
