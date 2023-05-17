@@ -33,7 +33,7 @@ Genesis Intellij plugin - This is the very last version of our development. The 
 
 Docker containers - there are instructions for installing Rancher for Desktop (container management software) in the [Rancher documentation](https://rancherdesktop.io/). For a download, [click here](https://docs.rancherdesktop.io/). 
 
-
+ 
 </TabItem>
 <TabItem value="WSL">
 
