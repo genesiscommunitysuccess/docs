@@ -17,7 +17,7 @@ Download and install all the relevant requirements.
 
 ## Starting
 
-We start our quick journey using the CLI provided by Genesis, from the Windows terminal, run:
+We start our quick journey using the CLI provided by Genesis. From the Windows terminal, run:
 
 ```shell title="Windows Terminal"
 npx @genesislcap/genx@latest

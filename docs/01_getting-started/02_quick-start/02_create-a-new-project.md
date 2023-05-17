@@ -17,7 +17,7 @@ Download and install all the relevant requirements.
 
 ## Starting
 
-We start our quick journey using the CLI provided by Genesis, from the Windows terminal, run:
+We start our quick journey using the CLI provided by Genesis. From the Windows terminal, run:
 
 ```shell title="Windows Terminal"
 npx @genesislcap/genx@latest
@@ -102,7 +102,7 @@ i Application created successfully! 🎉 Please open the application and follow 
 Now let's open your application in Intellij. Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (**alpha**, **client**, **genesisproduct-alpha**).
 
 ### Gradle.properties
-Before you finish the creation of your new project, make sure your **gradle.properties** file in **server/jvm** has the  following highlighted properties:
+You should already have [created a **gradle.properties** file](../../../getting-started/quick-start/hardware-and-software/), but now is a good time to check that this.  in **server/jvm** has the following highlighted properties:
 
 ```kotlin {2,3} title="server/jvm/gradle.properties"
                 ...
