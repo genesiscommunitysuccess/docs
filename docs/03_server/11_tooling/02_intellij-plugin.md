@@ -24,7 +24,7 @@ The Genesis Intellij plugin enables you to run the full stack of a Genesis appli
 
 :::info
 That's the end of the installation process.
-If you have come here from the Quick Start guide, [you can **go back now**](../../../getting-started/quick-start/hardware-and-software/#genesis-intellij-plugin/).
+If you have come here from the Quick Start guide, [you can **go back now**](../../../getting-started/quick-start/hardware-and-software/#genesis-intellij-plugin).
 :::
 
 ## Running a Genesis application locally
