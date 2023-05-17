@@ -11,15 +11,32 @@ tags:
   - plugin  
 ---
 
-The Genesis Intellij plugin allows developers to run the full stack of a Genesis application locally within IntelliJ, in order to better test their development work.
+The Genesis Intellij plugin enables you to run the full stack of a Genesis application locally within IntelliJ, so you can check and test your development work as you progress.
 
-## Prerequisites
+## Installation
 
- - Genesis Project using server version 6.5.0 or later
- - Gradle project
- - Mono repo (having client and server in the same repository)
- - A [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
+1. The plugin is available from the [jet brains marketplace](https://plugins.jetbrains.com/plugin/21131-genesis-platform-support). You can install it by searching for **Genesis Platform Support** from the plugin section of your [IntelliJ settings](https://www.jetbrains.com/help/idea/managing-plugins.html).
 
+2. After installing the plugin, make sure you add it so that it is visible on the [Tool window bars and buttons](https://www.jetbrains.com/help/idea/tool-windows.html#bars_and_buttons).
+
+![Genesis Platform Support on Tool window](/img/genesis-plugin-intellij-toolwindow.png)
+
+:::info
+That's the end of the installation process.
+If you have come here from the Quick Start guide, [you can **go back now**](../../../getting-started/quick-start/hardware-and-software/#genesis-intellij-plugin).
+:::
+
+## Running a Genesis application locally
+
+To run a development application locally using the plugin, you must have:
+
+**Project requirements**
+- a Genesis project where your front end and back end are being developed
+- a Gradle project
+- a mono repo (the client and server must be in the same repository)
+
+**Local requirements**
+- a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running
 :::tip
 You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
 
@@ -29,14 +46,6 @@ docker pull postgres
 docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=10000'
 ```
 :::
-
-## Installation
-
-The plugin is available from the [jet brains marketplace](https://plugins.jetbrains.com/plugin/21131-genesis-platform-support). You can install it by searching for **Genesis Platform Support** from the plugin section of your [IntelliJ settings](https://www.jetbrains.com/help/idea/managing-plugins.html).
-
-After installing **Genesis Platform Support** plugin, make sure you add it to be visible on the [Tool window bars and buttons](https://www.jetbrains.com/help/idea/tool-windows.html#bars_and_buttons).
-
-![Genesis Platform Support on Tool window](/img/genesis-plugin-intellij-toolwindow.png)
 
 :::info
 When using the plugin, ensure you have specified the `deploy-plugin-mode` gradle property as `local`. You can do this by adding the line below to the `gradle.properties` file in the server/jvm folder:
@@ -50,7 +59,7 @@ deploy-plugin-mode=local
 
 ### Settings
 
-The first thing to set up is the Genesis system definition overrides. These are needed to provide settings that override values set in your [system definition](/server/configuring-runtime/system-definitions/) configuration.
+To run locally, you need to override the values set in your [system definition](/server/configuring-runtime/system-definitions/) configuration (which contain a url for the host).
 
 ![Genesis Settings](/img/intellij-settings.png)
 
@@ -61,7 +70,7 @@ jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres
 ```
 :::
 
-### Initial install
+### Setting up genesis.home
 
 When first using the plugin with a project, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
 
@@ -81,7 +90,7 @@ This opens a new Run window in IntelliJ and requires you to confirm the changes 
 
 ### Resource daemon
 
-The Resource daemon provides health information about your processes; when running, you will be able to start and stop your processes via the Process view. 
+The Resource daemon provides health information about your processes; it enables you to start and stop your processes via the Process view. 
 
 To start the Resource daemon, press the **Start Resource Daemon** button. 
 
@@ -114,7 +123,7 @@ It’s possible to debug ‘normal’ code using the **debug** option from the g
 
 ### Starting the UI
 
-To start your Genesis UI, click the Start UI button on the tool bar. This builds your front-end codebase and starts the webpack webserver in development mode. 
+To start your Genesis UI, click the **Start UI** button on the tool bar. This builds your front-end codebase and starts the webpack webserver in development mode. 
 Once started, this launches a browser tab showing your application's login screen.
 
 ![Debug Window](/img/intellij-ui.png)
@@ -143,7 +152,7 @@ If you make a change to the code, you can then build and run again:
 
 ![Deploy](/img/intellij-deploy1.png)
 
-2. Rebuilding the application requires the Genesis processes to be stopped. When you are prompted for this, click **ok** to continue. 
+2. Redeploying the application requires the Genesis processes to be stopped. When you are prompted for this, click **ok** to continue. 
 
 
 ![Deploy Prompt](/img/intellij-deploy2.png)
@@ -152,7 +161,7 @@ This starts the build processes and the logs will be shown below.
 
 ![Deploy logs](/img/intellij-deploy3.png)
 
-3. Once the build is successful, you’ll be asked to start the Resource daemon again:
+3. Once the redeployment has been completed, you are asked to start the Resource daemon again:
 
 ![Genesis Install](/img/intellij-daemon.png)
 
@@ -161,25 +170,24 @@ This starts the build processes and the logs will be shown below.
 ## Loading data into the application
 
 Using the plugin, you can right-click on CSV files or folders containing CSV files and select the **Import CSV(s) to Genesis** option.
-This takes the csv files and uses the Genesis `SendIt` utility to load the data from the CSV files into tables with matching names.
+This takes the CSV files and uses the Genesis `SendIt` utility to load the data from those files into tables with matching names.
 
-## Task view
+## Tasks view
 
-On the plugin, apart from the **Mon** view explained here before, there is the **Task** view where it is possible to see, run and modify the configurations of Genesis services, scripts, and setup.
+On the plugin, apart from the **Mon** view explained here before, there is the **Tasks** view, where it is possible to see, run and modify the configurations of Genesis services, scripts, and setup.
 
 ![Task view](/img/genesis-plugin-task-view.png)
 
 ### Running a Genesis script
 
-To run a Genesis script, open the folder *Scripts*, find the one you want to run, right-click on it and select Run.
+To run a Genesis script, open the folder **Scripts**, find the one you want to run, right-click on it and select **Run**.
 
 ![Task view](/img/genesis-plugin-task-view-droptable.png)
 
-The example above runs the [DropTable](../../../operations/commands/server-commands/#droptable) script. As it has parameters, make sure if configure them using the **"Modify Run Configuration..."** option setting the *Args* properly.
+The example above runs the [DropTable](../../../operations/commands/server-commands/#droptable) script. This has parameters, so make sure you configure them using the **"Modify Run Configuration..."** option setting the *Args* property.
 
-## Docs navigation
-
-Developers can navigate to **learn.genesis.global** straight from IntelliJ:
+## Access to the docs
+You obviously have access to the documentation, because you are reading it right now. But it is worth noting that there is a link from the **Tools** menu in IntelliJ that opens the documentation: 
 
 ![Genesis Install](/img/intellij-docs.png)
 
