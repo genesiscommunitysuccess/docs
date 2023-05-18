@@ -31,4 +31,4 @@ tmp
 .idea
 .vscode
 
-src\client-modules\docs.iife.min.js
+/src/client-modules/
