@@ -23,7 +23,7 @@ At present, these files are empty. You need to insert the details of the Data Se
 Add the following content to the **server/jvm/alpha-config/src/main/resources/cfg/alpha-processes.xml** file:
 
 
-```xml title="alpha-processes.xml"
+```xml title='alpha-processes.xml'
 <processes>
     <process name="ALPHA_DATASERVER">
         <groupId>ALPHA</groupId>
@@ -149,6 +149,35 @@ We have two different approaches to connect to the server, depending on your run
 
 In this tutorial, you need to verify the default `API_HOST` in the **package.json** in **client/web/**.
 
+<Tabs
+defaultValue='Intellij Plugin'
+values={[
+{ label: 'Intellij Plugin', value : 'Intellij Plugin' },
+{ label: 'Docker', value: 'Docker' },
+{ label: 'WSL', value: 'WSL'}
+]}>
+<TabItem value="Intellij Plugin">
+
+
+```kotlin {8} title="client/web/package.json"
+{
+  "name": "@genesislcap/alpha-web-client",
+  "description": "Developer Training Web Client",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "config": {
+    "API_HOST": "ws://localhost:9064",
+    "DEFAULT_USER": "JaneDee",
+    "DEFAULT_PASSWORD": "beONneON*74",
+    "PORT": 6060
+  },
+```
+
+</TabItem>
+<TabItem value="Docker">
+
+
 ```kotlin {8} title="client/web/package.json"
 {
   "name": "@genesislcap/alpha-web-client",
@@ -163,6 +192,28 @@ In this tutorial, you need to verify the default `API_HOST` in the **package.jso
     "PORT": 6060
   },
 ```
+
+</TabItem>
+<TabItem value="WSL">
+
+
+```kotlin {8} title="client/web/package.json"
+{
+  "name": "@genesislcap/alpha-web-client",
+  "description": "Developer Training Web Client",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "config": {
+    "API_HOST": "ws://localhost/gwf/",
+    "DEFAULT_USER": "JaneDee",
+    "DEFAULT_PASSWORD": "beONneON*74",
+    "PORT": 6060
+  },
+```
+
+</TabItem>
+</Tabs>
 
 ## Build and deploy
 

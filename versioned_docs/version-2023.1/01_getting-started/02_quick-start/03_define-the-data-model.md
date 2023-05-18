@@ -27,7 +27,7 @@ Once the project is open, there are two easy ways to find this file (or any file
 
 For your simple example, you shall add five fields:
 
-```kotlin title = "alpha-fields-dictionary.kts"
+```kotlin title='alpha-fields-dictionary.kts'
 fields {
 
     field("TRADE_ID", type = STRING)
@@ -60,7 +60,7 @@ You are defining one single table, containing all your fields.
 
 TRADE_ID is the primaryKey, which will be auto-generated.
 
-```kotlin
+```kotlin title='alpha-tables-dictionary.kts'
 tables {
 
     table (name = "TRADE", id = 2000) {
@@ -87,7 +87,7 @@ After you have saved this file, run **genesis-generated-dao** from the Gradle me
 ![](/img/build-gradle-kts-generated-dao.png)
 
 
-```shell title='Running generateDAO f   rom the command line'
+```shell title='Running generateDAO from the command line'
 ./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-dao:generateDao
 ```
 
