@@ -141,7 +141,7 @@ Following this, there are three key sections you need to be aware of:
 
 When running the app on your local machine, you can adjust a few settings under the `config` section, including which host to connect to and what port to run the dev server on.
 
-```
+```js title="client/web/package.json"
   "config": {
     "API_HOST": "ws://localhost:9064",
     "DEFAULT_USER": "JaneDee",
@@ -156,7 +156,7 @@ Since our back end is running locally, we set the `API_HOST` to localhost (**ws:
 
 The next section is `scripts`.
 
-```javascript
+```javascript title="client/web/package.json"
   "scripts": {
     "build": "npm run build:webpack",
     "build:with-host": "cross-env API_HOST=$npm_package_config_API_HOST npm run build:webpack",
@@ -185,20 +185,20 @@ Last but not least, the `dependencies` section contains a list of your app's dep
 This includes **@genesislcap** dependencies. This is where you can change versions to upgrade to a newer version of the platform.
 :::
 
-```javascript
+```javascript title="client/web/package.json"
   "dependencies": {
-    "@genesislcap/foundation-comms": "14.7.0",
-    "@genesislcap/foundation-entity-management": "14.7.0",
-    "@genesislcap/foundation-forms": "14.7.0",
-    "@genesislcap/foundation-header": "14.7.0",
-    "@genesislcap/foundation-layout": "14.7.0",
-    "@genesislcap/foundation-login": "14.7.0",
-    "@genesislcap/foundation-ui": "14.7.0",
-    "@genesislcap/foundation-utils": "14.7.0",
-    "@genesislcap/foundation-zero": "14.7.0",
-    "@genesislcap/foundation-zero-grid-pro": "14.7.0",
-    "@genesislcap/foundation-reporting": "14.7.0",
-    "@genesislcap/g2plot-chart": "14.7.0",
+    "@genesislcap/foundation-comms": "14.15.2",
+    "@genesislcap/foundation-entity-management": "14.15.2",
+    "@genesislcap/foundation-forms": "14.15.2",
+    "@genesislcap/foundation-header": "14.15.2",
+    "@genesislcap/foundation-layout": "14.15.2",
+    "@genesislcap/foundation-login": "14.15.2",
+    "@genesislcap/foundation-ui": "14.15.2",
+    "@genesislcap/foundation-utils": "14.15.2",
+    "@genesislcap/foundation-zero": "14.15.2",
+    "@genesislcap/foundation-zero-grid-pro": "14.15.2",
+    "@genesislcap/foundation-reporting": "14.15.2",
+    "@genesislcap/g2plot-chart": "14.15.2",
     "@microsoft/fast-components": "^2.21.6",
     "@microsoft/fast-element": "^1.7.0",
     "@microsoft/fast-foundation": "^2.33.4",
@@ -265,7 +265,7 @@ The second approach involves design systems and we will cover this topic later i
 
 Create folder **./client/web/src/routes/playground/** and create a new empty file called **playground.ts** in there. Then, add this code to **playground.ts**:
 
-```typescript
+```typescript title="../playground/playground.ts"
 import { FASTElement, customElement } from "@microsoft/fast-element";
 
 @customElement({ name: "marketdata-component" }) // custom element being created
@@ -558,7 +558,6 @@ You may find it useful: https://www.fast.design/docs/fast-element/using-directiv
 ```typescript
 ${(x,c) => c.parent.PROPERTY_OF_THE_CONTEXT
 ```
-
 :::
 
 ## Extending our application
@@ -596,30 +595,28 @@ You can customise:
 - the contents of the flyout menu.
 
 Here is an example of the navigation bar with three navigation items, and all three control buttons shown.
-
 ![Header with the standard genesis logo](/img/foundation-header-standard.png)
 
 This next example is the same as the previous example, except the Genesis logo is replaced with a custom icon.
-
 ![Header with a customised logo](/img/foundation-header-replaced-img.png)
 
 In this next example, we have put a set of example options set in the flyout menu.
 ![The sidebar included with the header opened with some example content](/img/foundation-header-sidebar.png)
 
-#### Header Set-up
+#### Header set-up
 
 **We have already enabled this micro front-end when we created the initial structure of the application in the [Developer Training](../../../getting-started/developer-training/training-intro/).** But for learning purposes, let's review what needs to be done to set up the foundation-header from scratch - compare this with the existing code to get a better understanding.
 
 To enable this micro front-end in our application, we'd have to follow the steps below.
 
-- Make sure you have `@genesislcap/foundation-header` as a dependency in your _client/web/package.json_ file.
+1. Make sure you have `@genesislcap/foundation-header` as a dependency in your _client/web/package.json_ file.
 
 ```js {5} title='package.json'
 {
   ...
   "dependencies": {
     ...
-    "@genesislcap/foundation-header": "14.7.0",
+    "@genesislcap/foundation-header": "14.15.2",
     ...
   },
   ...
@@ -635,7 +632,7 @@ npm run bootstrap
 
 :::
 
-- In our **web/src/main/main.ts** file, which is our top level class of our application, make sure you imported and dependency injected the Navigation class.
+2. In our **web/src/main/main.ts** file, which is our top-level class of our application, make sure you imported and dependency injected the Navigation class.
 
 ```js {1,6} title='main.ts'
 import { Navigation } from '@genesislcap/foundation-header';
@@ -650,7 +647,7 @@ export class MainApplication extends FASTElement {
 }
 ```
 
-- Make sure you have got a reference to the `navigation` object on the FAST router when you instantiate it. This will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
+3. Make sure you have got a reference to the `navigation` object on the FAST router when you instantiate it. This will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
 
 ```js {5} title='main.template.ts'
 ...
@@ -662,12 +659,11 @@ export const MainTemplate: ViewTemplate<MainApplication> = html`
 `;
 ```
 
-- Make sure the `foundation-header` tag is part of the html that you set as the markup for the `defaultLayout` in your router configuration.
+4. Make sure the `foundation-header` tag is part of the html that you set as the markup for the `defaultLayout` in your router configuration.
 
 ```js {3} title='client/web/src/layouts/default.ts'
 export const defaultLayout = new FASTElementLayout(html`
 <div class="container">
-  <alpha-button>Alpha</alpha-button>
   <foundation-header
   ...
 </div>`);
@@ -738,6 +734,11 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 	...
 }
 ```
+:::tip
+If you look at the `icon` and `variant` properties, you'll see that you can change the icon displayed on the top menu bar.
+
+Take a look on the [fontawesome](https://fontawesome.com/) icons. You can customize it by changing its properties' values. Try to use `icon: 'gear'` and check.
+:::
 
 - Now, when setting the navigation items, we can use the `repeat` directive to iterate over the defined routes and create a navigation item for each.
 
@@ -769,7 +770,7 @@ That's why, when you add a new route to the `allRoutes` attribute, it's automati
 
 ##### Control buttons
 
-There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (by default, these are hidden). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined. Each one dispatches an associated event when clicked.
+There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (by default, these are hidden). Each one is a boolean attribute that can be added where the `<foundation-header>` tag is defined. Each one dispatches an associated event when clicked.
 
 | Logo          | Toggle Attribute             | Dispatched Event          | Icon                        |
 | ------------- | ---------------------------- | ------------------------- | --------------------------- |
@@ -792,9 +793,9 @@ For instance, adding the Misc logo would look like this:
 </div>
 ```
 
-To implement the functionality of the button in the client, you should follow the steps below:
+To implement the functionality of the button in the client, follow the steps below:
 
-- Define the functionality of the event `callback` in the class of a class which is a parent to the router.
+1. Define the functionality of the event `callback` in the class of a class which is a parent to the router.
 
 ```javascript title='main.ts'
 export class MainApplication extends FASTElement {
@@ -806,7 +807,7 @@ export class MainApplication extends FASTElement {
 }
 ```
 
-- Set the event listener in the parent html to call the defined functionality.
+2. Set the event listener in the parent html to call the defined functionality.
 
 ```javascript title='main.template.ts'
 // fast-router will likely have other attributes such as :config too
@@ -823,10 +824,10 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 
 To set the content of the flyout menu, add the content in the html within an element that has the `slot="menu-contents"` attribute.
 
-```html
+```html {3-27}
 <foundation-header>
+          ....
   <div slot="menu-contents">
-    <!-- Example markup -->
     <p>GROUP SLOT</p>
     <zero-tree-view>
       <zero-tree-item>
@@ -850,6 +851,7 @@ To set the content of the flyout menu, add the content in the html within an ele
       </zero-tree-item>
     </zero-tree-view>
   </div>
+      ...
 </foundation-header>
 ```
 
@@ -861,13 +863,14 @@ To set the content of the flyout menu, add the content in the html within an ele
 Add an item pointing to the playground page.
 
 :::tip
-Look at the [interaction components](../../../web/web-components/interaction/anchor/) to see a list of available components you can use for the menu item.
-A good suggestion would be to use `Anchor`, which can be simply used as `<zero-anchor>`:
+Look at the [interaction components](../../../web/web-components/interaction/anchor/) to see a list of available components you can use for the menu item. A good suggestion would be adding the `@click` attribute to the `<zero-tree-item>`.
 
 ```ts
-<zero-anchor @click=${(x) => x.navigation.navigateTo("/PUT_YOUR_ROUTE_HERE")}>
-Playground
-</zero-anchor>
+  <zero-tree-item @click=${(x) => x.navigation.navigateTo("<YOUR_PATH_TO_PLAYGROUD>")}>
+    <zero-icon variant="solid" name="location-arrow"></zero-icon> 
+    Playground
+    </zero-tree-item>
+  <zero-tree-item>
 ```
 
 By the way, we're using by default the Zero Design Systems. We are going to talk more about Design Systems later in this course.
@@ -884,8 +887,8 @@ Customise our header in such a way that we end up with these menu items:
 | ------------------ | ---------- |
 | Trades & Positions | home       |
 | Playground         | playground |
-| Orders             | orders     |
-| Reporting          | reporting  |
+| Orders             | order      |
+| Reporting          | report     |
 
 Feel free to display only empty content when you create the new pages (Orders and Reporting). We're just interested in the navigation for now.
 

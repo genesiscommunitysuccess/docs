@@ -50,27 +50,27 @@ Insert, edit and cancel.
 
 Let's start with the simplest way to create a form, using the `foundation-form` component:
 
-```ts {5-9} title='order.template.ts'
+```ts {5-12} title='order.template.ts'
 import {html} from '@microsoft/fast-element';
 import type {Order} from './order';
 
 export const OrderTemplate = html<Order>`
-<div class="split-layout">
-    <div class="top-layout">
-      <foundation-form class="order-entry-form" resourceName="EVENT_ORDER_INSERT"></foundation-form>
-    </div> 
-</div>
+  <foundation-form 
+  class="order-entry-form" 
+  resourceName="EVENT_ORDER_INSERT">
+  </foundation-form>
 `;
 ```
 
 This component is able to retrieve the meta-data from the `EVENT_ORDER_INSERT` backend resource (an Event Handler) and automatically builds a simple form for you. In simple scenarios, it can be good enough.
 
 Try to run it now and you'll notice that, even though the form is displayed, nothing happens when you click on Submit. We have to bind the submit button to a function, like this:
-```html {3} title='order.template.ts'
-<foundation-form
-  resource-name="EVENT_ORDER_INSERT"
-  @submit=${(x, c) => x.insertOrder(c.event as CustomEvent)}
-></foundation-form>
+```html {4} title='order.template.ts'
+  <foundation-form
+    class="order-entry-form"
+    resourceName="EVENT_ORDER_INSERT"
+    @submit=${(x, c) => x.insertOrder(c.event as CustomEvent)}>
+  </foundation-form>
 ```
 :::tip what is the @submit=${(x, c)} ?
 This is related to binding as we briefly explained in the previous day. If it's still unclear, make sure to check [Understanding bindings](https://www.fast.design/docs/fast-element/declaring-templates#understanding-bindings) and [Events](https://www.fast.design/docs/fast-element/declaring-templates#events)
@@ -141,18 +141,57 @@ You start by adding elements to the template:
 
 ```ts title='order.template.ts' 
 export const OrderTemplate = html<Order>`
-<zero-select>Instrument</zero-select>
-<label>Last price</label>
-<zero-text-field type="number">Quantity</zero-text-field>
-<zero-text-field type="number">Price</zero-text-field>
-<label>Total</label>
-<zero-select>Direction</zero-select>
-<zero-text-area>Notes</zero-text-area>
+<div class="row-split-layout">
+    <div class="column-split-layout">
+      <zero-select>Instrument</zero-select>
+      <label>Last price</label>
+      <zero-text-field type="number">Quantity</zero-text-field>
+      <zero-text-field type="number">Price</zero-text-field>
+      <label>Total</label>
+      <zero-select>Direction</zero-select>
+      <zero-text-area>Notes</zero-text-area>
+    </div>
+</div>
 `;
+```
+Add to your `order.styles.ts` the following, so you get a nice look on your forms
+
+```ts title="order.styles.ts"
+export const OrderStyles = css`
+import {css} from "@microsoft/fast-element";
+import { mixinScreen } from '../../styles';
+
+export const OrderStyles = css`
+  :host {
+    ${mixinScreen('flex')}
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .column-split-layout {
+    text-align: center;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+  }
+
+  .row-split-layout {
+    justify-content: center;
+    display: block;
+    flex-direction: row;
+    flex: 1;
+    width: 100%;
+    height: 50%;
+  }
+
+  zero-select, zero-text-area, span{
+      display: block;
+  }
+`
 ```
 
 :::info form style
-We're just showing the relevant code for the functionality we're building. Feel free to surround the elements with `div` or use any other resource to make your form look good.
+We're just showing the relevant code for the functionality we're building, with an example of customisation. Feel free to surround the elements with `div` or use any other resource to make your form look better. For that, you will only need some css styling knowledge.
 :::
 
 Then, define the variables that will hold the values that are entered.
@@ -389,8 +428,9 @@ Let's add a simple button with click event handler:
 export const OrderTemplate = html<Order>`
   ...
   ...
-<zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
-<zero-button @click=${x=> x.insertOrder()}>Add Order</zero-button>
+    <zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
+    <zero-button @click=${x=> x.insertOrder()}>Add Order</zero-button>
+</div>
 `;
   
 ```
@@ -451,16 +491,18 @@ export class Order extends FASTElement {
 In the template file, let's add the Genesis [data source](../../../web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [grid-pro](../../../web/web-components/grids/grid-pro/grid-pro-intro/).
 
 Add this code to the end of html template code:
-```html {4-9} title="order.template.ts"
+```html {4-11} title="order.template.ts"
 ...
 export const OrderTemplate = html<Order>`
   ...
-<zero-grid-pro>
-    <grid-pro-genesis-datasource
-        resource-name="ALL_ORDERS"
-        order-by="ORDER_ID">
-    </grid-pro-genesis-datasource>
-</zero-grid-pro>
+  <div class="row-split-layout">
+      <zero-grid-pro>
+          <grid-pro-genesis-datasource
+              resource-name="ALL_ORDERS"
+              order-by="ORDER_ID">
+          </grid-pro-genesis-datasource>
+      </zero-grid-pro>
+  </div>
   ...
 `;
 ```
