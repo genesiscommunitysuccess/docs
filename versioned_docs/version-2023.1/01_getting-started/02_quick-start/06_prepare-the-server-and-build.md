@@ -1,6 +1,6 @@
 ---
-title: 'Quick start - run, build and deploy'
-sidebar_label: 'Run, build and deploy'
+title: 'Quick start - build and deploy'
+sidebar_label: 'Build and deploy'
 id: prepare-the-server-and-build
 keywords: [getting started, quick start, server, build]
 tags:
@@ -52,7 +52,7 @@ Add the following content to the **server/jvm/alpha-config/src/main/resources/cf
 
 Further information can be found in our page on the [**-processes.xml** file](../../../server/configuring-runtime/processes/).
 
-You can then add the following content to the **server/jvm/alpha-config/src/main/resources/cfg/alpha-service-definitions.xml** file.
+You can then add the following content to the **server/jvm/alpha-config/src/main/resources/cfg/alpha-service-definitions.xml** file:
 
 ```xml title="alpha-service-definitions.xml"
 <configuration>
@@ -61,13 +61,13 @@ You can then add the following content to the **server/jvm/alpha-config/src/main
 </configuration>
 ```
 
-Further information can be found in the [**-service-definitions.xml** file](../../../server/configuring-runtime/service-definitions/).
+Further information can be found in the page on the [**-service-definitions.xml** file](../../../server/configuring-runtime/service-definitions/).
 
 ## Database layer
 
 You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\\**.
 
-Further information can be found in the [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/).
+Further information can be found in the page on the [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/).
 
 ### Run with docker
 
@@ -94,14 +94,14 @@ systemDefinition {
 
 ### Build and compose Docker images
 
-Now, you need to start the database. First, start your docker management software (in our case Rancher desktop) is up and running and do the following:
+Now you need to start the database. First, start your docker management software (in our case Rancher desktop) and do the following:
 
 ```powershell
 docker pull postgres
 docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=10000'
 ```
 
-To confirm your docker has been created, please run:
+To confirm your docker has been created, run:
 ```powershell
 docker ps | findstr "localPostgresDb"
 ```

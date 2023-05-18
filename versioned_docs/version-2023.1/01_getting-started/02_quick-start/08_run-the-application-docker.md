@@ -24,7 +24,7 @@ Before you can run your application, you need to create a new schema for the dat
 
 
 ## Send data to Genesis
-Now that you have your database up and running, you need to send the login information so you can access the application you have just created. To do this, go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**
+Now that you have your updated the database with the new schema, you need to send the login information so you can access the application you have just created. To do this, go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**
 
 ![](/img/import_csv_to_genesis.png)
 
