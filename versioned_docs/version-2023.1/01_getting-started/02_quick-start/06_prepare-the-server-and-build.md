@@ -67,12 +67,18 @@ Further information can be found in the page on the [**-service-definitions.xml*
 
 You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\\**. Choose the appropriate environment you are using.
 
+Further information can be found in the page on the [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/).
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Further information can be found in the page on the [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/).
-
-<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker' }, { label: 'WSL', value: 'WSL'}]}>
+<Tabs 
+    defaultValue='Intellij Plugin' 
+    values={[
+        { label: 'Intellij Plugin', value : 'Intellij Plugin' },
+        { label: 'Docker', value: 'Docker' }, 
+        { label: 'WSL', value: 'WSL'}
+        ]}>
 <TabItem value="Intellij Plugin">
 
 ```kotlin {4,10} title="genesis-system-definition.kts"

@@ -304,9 +304,6 @@ See [here](/getting-started/prerequisites/gradle-deploy-plugin/) for extra detai
 
 Now you are ready to run the application you have created for the front end.
 
-<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker'} ,{ label: 'WSL', value: 'WSL'}]}>
-<TabItem value="Intellij Plugin">
-
 Using the Genesis IntelliJ plugin click the [Start UI button](../../../server/tooling/intellij-plugin/#starting-the-ui) on the toolbar as shown below. This builds your front-end codebase and starts the webpack webserver in development mode.
 
 ![Debug Window](/img/intellij-ui.png)

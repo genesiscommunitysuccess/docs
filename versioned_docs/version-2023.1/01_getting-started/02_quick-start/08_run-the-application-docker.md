@@ -18,7 +18,8 @@ Now that you have your database up and running, you need to send the login infor
 
 <Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker'} ,{ label: 'WSL', value: 'WSL'}]}>
 <TabItem value="Intellij Plugin">
-## Create a new schema
+
+<h3>Create a new schema</h3>
 
 Before you can run your application, you need to create a new schema for the database; this is where all tables will be created. To do that, follow these two steps:
 
