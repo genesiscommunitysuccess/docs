@@ -38,7 +38,7 @@ import MinimunRequirement from '/snippet/_minimun_requirement.md'
 </details>
 
 ## gradle.properties file
-You must create or edit a **gradle.properties** file inside a **.gradle** folder on your user directory. This file must contain your Genesis Artifactory password in a [base64 encrypted text](https://www.base64encode.org/), for example:
+You must create or edit a **gradle.properties** file inside a **.gradle** folder on your user directory. This file must contain your Genesis Artifactory password in clear text, for example:
 
 ```shell
 genesisArtifactoryUser=<JaneDee>

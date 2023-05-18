@@ -47,7 +47,6 @@ npm config set https-proxy https://proxy_host:port
 Install GenX CLI; this is a Genesis tool that enables you to seed projects.
 
 ```shell
-
 npx @genesislcap/genx@latest
 ```
 
@@ -79,16 +78,12 @@ As an alternative, you can [download the project structure that would be generat
 :::
 
 ### Gradle set-up
-Make sure you have a **gradle.properties** file inside a **.gradle** folder in your user directory; this file must contain your encrypted password:
+Make sure you have a **gradle.properties** file inside a **.gradle** folder in your user directory; this file must contain your clear text password:
 
 ```shell
 genesisArtifactoryUser=<your-artifactory-user>
 genesisArtifactoryPassword=<your-artifactory-password>
 ```
-
-:::info Password
-It is also possible to input your unencrypted password, but it is *not recommended*.
-:::
 
 :::caution proxy settings
 If you are behind a corporate proxy, make sure you add your proxy settings to the **gradle.properties** file as well. For example:
