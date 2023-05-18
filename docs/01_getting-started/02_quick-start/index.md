@@ -10,7 +10,7 @@ tags:
     - landing page
 ---
 
-Welcome to the quick start tutorial page. Here we are going to create a very simple application using the [Genesis Intellij plugin](../../server/tooling/intellij-plugin/).
+Welcome to our quick start tutorial. Here we are going to create a very simple Genesis application.
 
 Before you start, make sure you have the relevant [hardware and software](./00_hardware-and-software.md).
 For this tutorial, please use Windows as your development environment and Docker as your runtime environment.
