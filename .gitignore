@@ -30,3 +30,5 @@ yarn-error.log*
 tmp
 .idea
 .vscode
+
+src\client-modules\docs.iife.min.js
