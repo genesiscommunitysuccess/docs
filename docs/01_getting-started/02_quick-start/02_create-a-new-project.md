@@ -23,6 +23,12 @@ We start our quick journey using the CLI provided by Genesis, from the Windows t
 npx @genesislcap/genx@latest
 ```
 
+:::tip
+
+If this does not work, use the command `npx genx`.
+
+:::
+
 <!-- NO EDIT (NEXT 4 LINES) -->
 import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
 

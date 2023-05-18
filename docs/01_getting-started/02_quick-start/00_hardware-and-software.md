@@ -26,6 +26,8 @@ import MinimunRequirement from '/snippet/_minimun_requirement.md'
 
 <MinimunRequirement />
 
+## Installing GenX
+
 <details>
   <summary>Pre-requisite check</summary>
     <li>JDK11 - <code>java --version </code> </li>
@@ -34,8 +36,6 @@ import MinimunRequirement from '/snippet/_minimun_requirement.md'
     <br></br>
     <p>Check if these versions are compatible with the requirements.</p>
 </details>
-
-## .npmrc
 
 Starting from version **10.3.0** Foundation UI libraries are published to the [public NPM registry](https://www.npmjs.com/~genesisnpm?activeTab=packages), so a custom `.npmrc` file is no longer required.
 

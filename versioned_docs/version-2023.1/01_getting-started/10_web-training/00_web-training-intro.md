@@ -34,12 +34,16 @@ Estimated total effort: <b>Daily four-hour sessions for four days</b>.
 - [Day one](../../../getting-started/web-training/web-training-day1/): Reviewing basic concepts, extending our web application, navigation menu
 - [Day two](../../../getting-started/web-training/web-training-day2/): Complex forms, data-entry components, using Genesis Foundation Comms
 - [Day three](../../../getting-started/web-training/web-training-day3/): Custom data grids, client-side options and filters
-- [Day four](../../../getting-started/web-training/web-training-day4/): Design systems, styling, micro front-ends
+- [Day four](../../../getting-started/web-training/web-training-day4/): Design systems, styling, charts, micro front-ends
 
 ## Genesis low-code platform version
 Back end (GSF) 6.5.3
 
-Front end (FUI) 14.7.0
+Front end (FUI) 14.15.2
 
 ## Source code
 The complete source code of this training is available on [GitHub](https://github.com/genesiscommunitysuccess/webtraining-alpha).
+
+## Walkthrough
+
+To see the answers for each exercise in this training, you can check this repository at [GitHub](https://github.com/genesiscommunitysuccess/webtraining-seed/branches/all). Each branch has the answer for a given exercise.
