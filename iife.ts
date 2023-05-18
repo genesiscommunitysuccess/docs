@@ -10,6 +10,7 @@ provideDesignSystem().register(baseComponents, foundationGridComponents);
 import {
   ColorPalette,
   ColorToken,
+  ColorTokens,
   DesignSystemEditor,
   DesignSystemExport,
   DesignSystemPreview,
@@ -22,6 +23,7 @@ PreviewComponents;
 DesignSystemExport;
 ColorPalette;
 ColorToken;
+ColorTokens;
 TypographyTokens;
 DesignSystemPreview;
 

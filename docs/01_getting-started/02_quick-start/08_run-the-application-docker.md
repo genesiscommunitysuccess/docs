@@ -19,7 +19,7 @@ Now that you have your database up and running, you need to send the login infor
 <Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker'} ,{ label: 'WSL', value: 'WSL'}]}>
 <TabItem value="Intellij Plugin">
 
-Before you can run your application, you need to create a new schema for the database, where all tables will be created. To do that, follow these two steps:
+Before you can run your application, you need to create a new schema for the database; this is where all tables will be created. To do that, follow these two steps:
 
 1. Run `genesis-install`.
 
@@ -30,9 +30,8 @@ Before you can run your application, you need to create a new schema for the dat
 ![Genesis Install](/img/intellij-remap.png)
 
 
-<h3>Send data to genesis</h3>
-
-Go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**
+## Send data to Genesis
+Now that you have your database up and running, you need to send the login information so that you can access the application you have just created. To do this, go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**:
 
 ![](/img/import_csv_to_genesis.png)
 
@@ -222,7 +221,7 @@ Once your resource deamon has started, you can start all Genesis processes; clic
 
 ![](/img/genesis_deamon.png)
 
-Wait for all processes to be healthy (it may take a few minutes for the first run).
+Wait for all the processes to be healthy (it may take a few minutes for the first run).
 
 </TabItem>
 <TabItem value="Docker">
@@ -315,28 +314,18 @@ Using the Genesis IntelliJ plugin click the [Start UI button](../../../server/to
 The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
 
-</TabItem>
-<TabItem value="Docker">
+The login details are: 
 
-The application will open at `http://localhost:6060/login`.
-![](/img/btfe--positions-example--login.png)
+- login name: JaneDee
+- password: beONneON*74
 
+When you have logged in, the screen is empty, but note the **ADD** button at the top right. You can click on this to add some dummy trade details.
 
-</TabItem>
-<TabItem value="WSL">
+Below, we have added two trades. We have sold MMM at 404 and bought back at 401.5.
 
-The application will open at `http://localhost:6060/login`.
-![](/img/btfe--positions-example--login.png)
-
-
-</TabItem>
-
-</Tabs>
-
+![](/img/final-result.png)
 
 ## Conclusion
-That’s it. You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.
-
-![](/img/quickstart-app-final.png)
+That’s it. You have quickly built a very simple application using some fundamental Genesis components. 
 
 There's obviously a lot more to building enterprise-ready applications. However, you now have enough knowledge and experience of the Genesis low-code platform to look at our reference documentation and learn more there.

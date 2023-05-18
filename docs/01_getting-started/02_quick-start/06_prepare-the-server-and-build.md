@@ -1,5 +1,5 @@
 ---
-title: 'Quick start - Build and deploy'
+title: 'Quick start - build and deploy'
 sidebar_label: 'Build and deploy'
 id: prepare-the-server-and-build
 keywords: [getting started, quick start, server, build]
@@ -52,7 +52,7 @@ Add the following content to the **server/jvm/alpha-config/src/main/resources/cf
 
 Further information can be found in our page on the [**-processes.xml** file](../../../server/configuring-runtime/processes/).
 
-You can then add the following content to the **server/jvm/alpha-config/src/main/resources/cfg/alpha-service-definitions.xml** file.
+You can then add the following content to the **server/jvm/alpha-config/src/main/resources/cfg/alpha-service-definitions.xml** file:
 
 ```xml title="alpha-service-definitions.xml"
 <configuration>
@@ -61,11 +61,13 @@ You can then add the following content to the **server/jvm/alpha-config/src/main
 </configuration>
 ```
 
-Further information can be found in the [**-service-definitions.xml** file](../../../server/configuring-runtime/service-definitions/).
+Further information can be found in the page on the [**-service-definitions.xml** file](../../../server/configuring-runtime/service-definitions/).
 
 ## Database layer
 
 You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\\**. Choose the appropriate environment you are using.
+
+Further information can be found in the [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/).
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -162,7 +164,7 @@ Finally, you can build and deploy the server.
 
 ### Build
 
-In the Gradle menu on the right of IntelliJ, select:
+1. In the Gradle menu on the right of IntelliJ, select:
 
 **genesisproduct-alpha**
 
@@ -171,6 +173,7 @@ In the Gradle menu on the right of IntelliJ, select:
 ```shell title='Running assemble from the command line'
 ./gradlew :genesisproduct-alpha:assemble
 ```
+The first time you run this, it will take quite a few minutes. Make yourself a cup of tea or open a bottle of good champagne.
 
 ### Deploy
 
@@ -195,11 +198,11 @@ On the first run, this could take up to 20 minutes, because it performs a full b
 
 ![Deploy](/img/intellij-deploy1.png)
 
-2. Rebuilding the application requires the Genesis processes to be stopped. If you are prompted for this, click **ok** to continue. 
+2. Redeploying the application requires the Genesis processes to be stopped. If you are prompted for this, click **ok** to continue. 
 
 ![Deploy Prompt](/img/intellij-deploy2.png)
 
-This starts the build processes and the logs will be shown below.
+This starts the  processes and the logs will be shown below.
 
 ![Deploy logs](/img/intellij-deploy3.png)
 
@@ -300,4 +303,4 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**a
 </TabItem>
 </Tabs>
 
-Congratulations! You now you have a running database and a built application. Next step [run the application](../run-the-application-docker/)
+Congratulations! You have built an application and you are running a database. The next step is to [run the application](../run-the-application-docker/).
