@@ -9,7 +9,7 @@ tags:
 - site specific
 ---
 
-The Genesis low code platform allows you to override certain standard definitions found in the application.
+The Genesis low code platform enables you to override standard definitions found in the application.
 
 You supply the standard definition name and your own definition. Your application will then only use your definition.
 This is useful where you have used standard modules, such as Auth; you should never change these modules. Any files/definitions that are listed in the site-specific area automatically take their places.
@@ -26,7 +26,7 @@ In order to override the standard definitions of your application, you must firs
 
 You can override the standard definitions using the site-specific folder located at **[application-name]\server\jvm\[application-name]-site-specific\src\main\resources\cfg**.
 
-Within this folder you will find `genesis-system-definitions.kts`. From within this file, you are able to change mny of the default definitions used by your application. See example below:
+Within this folder you will find the file `genesis-system-definitions.kts`. Within this file, you are able to change many of the default definitions used by your application. See the example below:
 
 ```kotlin
 systemDefinition {
@@ -55,7 +55,7 @@ systemDefinition {
     }
 ```
 
-Once deployed to the server, the files from that folder are installed in the runtime folder under a sub-folder called **site-specific**. For example, the **genesis-system-definition.kts** can be edited to change the database host used by the application. An example of this can be seen below in our developer training [tutorials](https://learn.genesis.global/docs/getting-started/developer-training/training-content-day1/).
+Once deployed to the server, the files from that folder are installed in the runtime folder under a sub-folder called **site-specific**. For example, the **genesis-system-definition.kts** can be edited to change the database host used by the application. An example of this can be seen in our developer training [tutorials](https://learn.genesis.global/docs/getting-started/developer-training/training-content-day1/).
 
 ### Username and Password
 
