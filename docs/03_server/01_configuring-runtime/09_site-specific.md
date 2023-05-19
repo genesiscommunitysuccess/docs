@@ -26,7 +26,7 @@ In order to override the standard definitions of your application, you must firs
 
 You can override the standard definitions using the site-specific folder located at **[application-name]\server\jvm\[application-name]-site-specific\src\main\resources\cfg**.
 
-Within this folder you will find the `genesis-system-definitions.kts`. Within this file, you are able to change many of the default definitions used by your application. See the example below:
+Within this folder you will find the `genesis-system-definition.kts`. Within this file, you are able to change many of the default definitions used by your application. See the example below:
 
 ```kotlin
 systemDefinition {
