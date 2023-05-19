@@ -69,6 +69,7 @@ package global.genesis
 import com.google.inject.Inject
 import global.genesis.commons.annotation.Module
 import global.genesis.db.rx.entity.multi.AsyncEntityDb
+import global.genesis.db.rx.entity.multi.AsyncMultiEntityReadWriteGenericSupport
 import global.genesis.db.statemachine.StateMachine
 import global.genesis.db.statemachine.Transition
 import global.genesis.gen.dao.Trade
