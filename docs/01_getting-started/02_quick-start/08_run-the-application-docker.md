@@ -19,6 +19,8 @@ Now that you have your database up and running, you need to send the login infor
 <Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker'} ,{ label: 'WSL', value: 'WSL'}]}>
 <TabItem value="Intellij Plugin">
 
+<h3>Create a new schema</h3>
+
 Before you can run your application, you need to create a new schema for the database; this is where all tables will be created. To do that, follow these two steps:
 
 1. Run `genesis-install`.
@@ -30,8 +32,9 @@ Before you can run your application, you need to create a new schema for the dat
 ![Genesis Install](/img/intellij-remap.png)
 
 
-## Send data to Genesis
-Now that you have your database up and running, you need to send the login information so that you can access the application you have just created. To do this, go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**:
+<h3>Send data to genesis</h3>
+
+Go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**
 
 ![](/img/import_csv_to_genesis.png)
 
@@ -214,10 +217,9 @@ Now we need to start the servers. To do that, follow the structions below accord
 <Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker'} ,{ label: 'WSL', value: 'WSL'}]}>
 <TabItem value="Intellij Plugin">
 
-:::note
-Make sure you have started the [resource deamon](../../../server/tooling/intellij-plugin/#remap).
-:::
-Once your resource deamon has started, you can start all Genesis processes; click on the **start** button.
+1. Start the [resource deamon](../../../server/tooling/intellij-plugin/#remap).
+
+2. Once your resource deamon has started, you can see your Genesis processes listed. Click on the **start** button for each process to start it.
 
 ![](/img/genesis_deamon.png)
 
@@ -226,7 +228,7 @@ Wait for all the processes to be healthy (it may take a few minutes for the firs
 </TabItem>
 <TabItem value="Docker">
 
-Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
+If you are running on docker, your processes has already been started. Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
 
 In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**mon**.
 
@@ -261,7 +263,8 @@ Try to run `mon` from the command line as well!
 </TabItem>
 <TabItem value="WSL">
 
-Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
+
+If you are running on wsl, your processes has already been started. Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
 
 In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**mon**.
 
@@ -304,13 +307,37 @@ See [here](/getting-started/prerequisites/gradle-deploy-plugin/) for extra detai
 
 Now you are ready to run the application you have created for the front end.
 
-Using the Genesis IntelliJ plugin click the [Start UI button](../../../server/tooling/intellij-plugin/#starting-the-ui) on the toolbar as shown below. This builds your front-end codebase and starts the webpack webserver in development mode.
+<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker'} ,{ label: 'WSL', value: 'WSL'}]}>
+<TabItem value="Intellij Plugin">
+
+Using the Genesis IntelliJ plugin click the [Start UI button](../../../server/tooling/intellij-plugin/#starting-the-ui) (this is the small globe) on the toolbar as shown below. This builds your front-end codebase and starts the webpack webserver in development mode.
 
 ![Debug Window](/img/intellij-ui.png)
 
 The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
 
+</TabItem>
+<TabItem value="Docker">
+
+The application will open at `http://localhost:6060/login`.
+![](/img/btfe--positions-example--login.png)
+
+
+</TabItem>
+<TabItem value="WSL">
+
+The application will open at `http://localhost:6060/login`.
+![](/img/btfe--positions-example--login.png)
+
+
+</TabItem>
+
+</Tabs>
+
+
+## Conclusion
+That’s it. You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.
 The login details are: 
 
 - login name: JaneDee
@@ -322,7 +349,9 @@ Below, we have added two trades. We have sold MMM at 404 and bought back at 401.
 
 ![](/img/final-result.png)
 
+
 ## Conclusion
-That’s it. You have quickly built a very simple application using some fundamental Genesis components. 
+That’s it. You have quickly built a very simple application using some fundamental Genesis components.
+
 
 There's obviously a lot more to building enterprise-ready applications. However, you now have enough knowledge and experience of the Genesis low-code platform to look at our reference documentation and learn more there.

@@ -32,3 +32,4 @@ tmp
 .vscode
 
 /src/client-modules/
+src/client-modules/iife.d.ts

@@ -228,7 +228,7 @@ Wait for all the processes to be healthy (it may take a few minutes for the firs
 </TabItem>
 <TabItem value="Docker">
 
-Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
+If you are running on docker, your processes has already been started. Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
 
 In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**mon**.
 
@@ -263,7 +263,8 @@ Try to run `mon` from the command line as well!
 </TabItem>
 <TabItem value="WSL">
 
-Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
+
+If you are running on wsl, your processes has already been started. Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
 
 In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**mon**.
 

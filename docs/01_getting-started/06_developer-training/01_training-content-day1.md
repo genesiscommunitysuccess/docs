@@ -11,6 +11,9 @@ tags:
     - day one
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 This day covers:
 
 - [Quick review of the platform​](#quick-review-of-the-platform)
@@ -133,7 +136,7 @@ After you have saved this file, run [genesis-generated-fields](../../../database
 
 ### generateFields
 
-Import GenerateFields from '/snippet/_generate_fields.md';
+import GenerateFields from '/snippet/_generate_fields.md';
 
 <GenerateFields />
 
@@ -173,14 +176,14 @@ After you have saved this file, run [genesis-generated-dao](../../../database/fi
 
 ### generateDao
 
-Import GenerateDao from '/snippet/_generate_DAO.md'
+import GenerateDao from '/snippet/_generate_DAO.md'
 
 <GenerateDao />
 
 After running this, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
 
 ## 3. Add business logic
-We have a table; now we want to be able to see its content and create new entries.
+We have a table; now we want to be able to see its contents and create new entries.
 
 
 ### Data Server
@@ -214,7 +217,7 @@ The [entityDb](../../../database/database-interface/entity-db/) enables you to i
 :::
 
 ## 4. Prepare the server
-So far we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on its own process. To do that, we have to change the processes and the service definition files:
+So far we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own process. To do that, we have to change the processes and the service definition files:
 
 - **alpha-processes.xml**
 - **alpha-service-definitions.xml**
@@ -262,6 +265,7 @@ Please see [here](../../../server/configuring-runtime/processes/) for a detailed
 
 ## 5. The build and deploy process
 
+
 Finally, you can build and deploy the server.
 
 ### Build
@@ -275,66 +279,431 @@ In the Gradle menu on the right of IntelliJ, select:
 ```shell title='Running assemble from the command line'
 ./gradlew :genesisproduct-alpha:assemble
 ```
+### Deploy
 
-#### .genesis-home folder
+As soon as the Build is done, you need to deploy the application. Here are the three ways to deploy using different runtime environments.
 
-After the Gradle task, when first using the plugin with a project, you must configure it to be able to access your DB. For this tutorial, we are going to use POSTGRESQL. Make sure you have configured it properly following the installation guide of the [genesis plugin](../../../server/tooling/intellij-plugin/). 
+<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker'} ,{ label: 'WSL', value: 'WSL'}]}>
+<TabItem value="Intellij Plugin">
 
-After that, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
+<h3>Start up plugin</h3>
+
+After the Gradle tasks, when first using the plugin with a project, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
 
 ![Genesis Install](/img/intellij-install.png)
 
-This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes. On the first run, this could take up to 20 minutes, because it performs a full build of your application.
+This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes. 
 
-:::tip
-If you want to keep your file search as clean as possible, it is possible to assign the **.genesis-home** folder as Excluded. To do that, follow the three steps below.
-
-1. Right-click on the directory you want to exclude in the Project pane on the left side of IntelliJ.
-
-2. Select **Mark Directory as** from the dropdown menu.
-
-3. Choose **Excluded** from the sub-menu.
-
-Further information can be found [here](https://www.jetbrains.com/help/idea/content-roots.html#configure-folders).
+:::note
+On the first run, this could take up to 20 minutes, because it performs a full build of your application.
 :::
-
-### Remap
-
-Now you need to run the remap, so we can actually create the schema `alpha` to your database and dd all the standard tables from genesis.
-
-![Genesis Install](/img/intellij-remap.png)
-
-### Deploy
-
-As soon as the Build is done, you can apply the changes and run the Genesis processes again using the Genesis IntelliJ Plugin.
-
-According to the [instructions](../../../server/tooling/intellij-plugin/#making-a-change), you must follow these four steps:
 
 1. Click on the **Deploy Genesis** button on the toolbar.
 
 ![Deploy](/img/intellij-deploy1.png)
 
-2. Rebuilding the application requires the Genesis processes to be stopped. When you are prompted for this, click **ok** to continue. 
+2. Redeploying the application requires the Genesis processes to be stopped. If you are prompted for this, click **ok** to continue. 
 
 ![Deploy Prompt](/img/intellij-deploy2.png)
 
-This starts the build processes and the logs will be shown below.
+This starts the relevant processes and the logs will be shown below.
 
 ![Deploy logs](/img/intellij-deploy3.png)
 
-### User name and password
+</TabItem>
+<TabItem value="Docker">
+
+```shell title="Intellij terminal"
+./gradlew assemble
+docker-compose build
+docker-compose up -d
+```
+
+</TabItem>
+<TabItem value="WSL">
+
+The Genesis platform provides several tasks that help to set up the Genesis environment so that you can deploy a project to it. It can be used on Linux machines (local and over SSH) or Windows machines with WSL support.
+
+<h4>Pre-requisites</h4>
+
+:::caution Adding the WSL configuration in the gradle.properties file
+Please add the last three highlighted lines in your  **gradle.properties** file from the **server/jvm** folder. The final file should be like this:
+
+```properties {8-10} title="gradle.properties"
+kotlin.code.style=official
+org.gradle.jvmargs=-Xmx6g -Xss512k -XX:+HeapDumpOnOutOfMemoryError -XX:+UseG1GC -XX:+UseStringDeduplication -XX:ReservedCodeCacheSize=512m -Dkotlin.daemon.jvm.options=-Xmx2g -Dfile.encoding=UTF-8
+bundleGeneratedClasses=true
+genesisVersion=6.4.2
+authVersion=6.4.0
+deployPluginVersion=6.4.2
+genesisArtifactoryPath=https://genesisglobal.jfrog.io/genesisglobal/libs-release-client
+genesis-home=/home/genesis/run
+wsl-distro=TrainingCentOS
+wsl-user=genesis
+```
+
+| Entry  |  Description | 
+|---|---|
+|`genesis-home`|  This is a mandatory property that is a path on the WSL distribution. |
+|`wsl-distro`|  This is a mandatory property that is the name of the WSL distribution. |
+|`wsl-user`|  This is an optional property. If omitted, the default WSL user will be used. |
+
+:::
+
+<h4>Deployment of the back end</h4>
+
+Now we are going to install the Genesis Platform (i.e. Genesis distribution) on the server and then install the back end of our application on the same server. This is all done using the Genesis deploy plugin that comes with several tasks grouped under `genesisdeploy` and `genesissetup`.
+
+<h5>Deploying to the server</h5>
+
+We will run `setupEnvironment` first (we only need to run it once) to set up the platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution. So, basically, it installs the Genesis Platform on your local server.
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**setupEnvironment**.
+
+![](/img/setup-environment.png)
+
+```shell title='Running setupEnvironment from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:setupEnvironment
+```
+
+After this command is completed, we will have a basic genesis server running.
+
+<h5>Deploying the auth module</h5>
+As our application requires [authentication](/server/access-control/introduction/), we have to install the Genesis Auth module.
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**install-auth-distribution.zip**.
+
+![](/img/install-auth.png)
+
+```shell title='Running install-auth-distribution.zip from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:install-auth-distribution.zip
+```
+
+<!-- Adjusting WSL we could remove this-->
+<h5>Deploying the site-specific</h5>
+As our application will override the standard definitions using the site-specific folder, we have to run this task.
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip**.
+
+![](/img/install-site-specific.png) 
+
+```shell title='Running install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip
+```
+
+<!-- END Adjusting WSL we could remove this-->
+
+<h5>Deploying the alpha product</h5>
+
+Now we have to deploy our application, the alpha product.
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisdeploy**/**deploy-genesisproduct-alpha.zip**.
+
+![](/img/deploy-alpha-product.png)
+
+```shell title='Running deploy-genesisproduct-alpha.zip from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:deploy-genesisproduct-alpha.zip 
+```
+</TabItem>
+</Tabs>
+
+Congratulations! You have built an application and you are running a database.
+
+### Credentials to login
+
 By default the following will be your login details:
 
 - Username: JaneDee
 - Password: beONneON*74 (This is encrypted in the user.csv file.)
 
-However, after the first Build and Deploy, you added the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin as [explained](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
+However, after the first Build and Deploy, you need to send the login information so you can access the application you have just created.
 
-To do that, find the **USER.csv** file (it is inside the **server/jvm/alpha-site-specific/src/main/resources/data** folder). Right-click **USER.csv**, and then click on **Import CSV(s) to Genesis**, as shown below.
+<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker'} ,{ label: 'WSL', value: 'WSL'}]}>
+<TabItem value="Intellij Plugin">
 
-![Genesis Install](/img/intellij-sendIt-USERcsv.png)
+<h3>Create a new schema</h3>
 
-Behind the scenes, the plugin option `Import CSV(s) to Genesis` uses the [SendIt script](../../../operations/commands/server-commands/#sendit-script) to load data into application.
+Before you can run your application, you need to create a new schema for the database; this is where all tables will be created. To do that, follow these two steps:
+
+1. Run `genesis-install`.
+
+![Genesis Install](/img/intellij-genesisInstall.png)
+
+2. Run `remap`.
+
+![Genesis Install](/img/intellij-remap.png)
+
+
+<h3>Send data to genesis</h3>
+
+Go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**
+
+![](/img/import_csv_to_genesis.png)
+
+You will be prompted the following message. Type **y** to proceed.
+
+```powershell
+WARNING: Are you sure you want to import all the tables from all the csv files to the database? (y/n)
+```
+
+After that, you have all the data to start the application.
+
+<details>
+  <summary>Want to check if your data has been sent?</summary>
+  To check your database, Genesis Intellij plugin has the following script 
+
+  ![](/img/DbMon-script.png)
+
+  type `table USER` and then `search 1` you will be displayed the following:
+
+```kotlin
+==================================
+Genesis Database Monitor
+Enter 'help' for a list of commands
+==================================
+DbMon>table USER
+DbMon:USER>search 1
+==================================
+USER
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)      NANO_TIMESTAMP      
+COMPANY_ID                                                                        STRING              
+COMPANY_NAME                             GENESIS                                  STRING              
+DOMAIN                                                                            STRING              
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING              
+FIRST_NAME                               Jane                                     STRING              
+LAST_LOGIN                               2016-04-28                               DATE                
+LAST_NAME                                Dee                                      STRING              
+ONLINE                                   false                                    BOOLEAN             
+PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING              
+PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
+REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
+STATUS                                   ENABLED                                  STRING              
+USER_NAME                                JaneDee                                  STRING              
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+Total Results:  1
+DbMon:USER>
+```
+</details>
+
+</TabItem>
+
+<TabItem value = 'Docker'>
+
+We shall run the task `loadInitialData`. This adds the data in a file called USER.csv to be imported into the USER table in your database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously. 
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**loadInitialData**.
+
+![](/img/load-initial-data.png)
+
+```shell title='Running loadInitialData from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:loadInitialData
+```
+
+<details>
+  <summary>Want to check if your data has been sent?</summary>
+
+To check your database, in the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**DbMon**.
+
+![](/img/using-dbmon.png)
+
+```shell title='Running DbMon from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:DbMon
+```
+
+  type `table USER` and then `search 1` you will be displayed the following:
+
+```kotlin
+==================================
+Genesis Database Monitor
+Enter 'help' for a list of commands
+==================================
+DbMon>table USER
+DbMon:USER>search 1
+==================================
+USER
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)      NANO_TIMESTAMP      
+COMPANY_ID                                                                        STRING              
+COMPANY_NAME                             GENESIS                                  STRING              
+DOMAIN                                                                            STRING              
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING              
+FIRST_NAME                               Jane                                     STRING              
+LAST_LOGIN                               2016-04-28                               DATE                
+LAST_NAME                                Dee                                      STRING              
+ONLINE                                   false                                    BOOLEAN             
+PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING              
+PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
+REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
+STATUS                                   ENABLED                                  STRING              
+USER_NAME                                JaneDee                                  STRING              
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+Total Results:  1
+DbMon:USER>
+```
+
+</details>
+</TabItem>
+
+<TabItem value = 'WSL'>
+
+We shall run the task `loadInitialData`. This adds the data in a file called USER.csv to be imported into the USER table in your database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously. 
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**loadInitialData**.
+
+![](/img/load-initial-data.png)
+
+```shell title='Running loadInitialData from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:loadInitialData
+```
+
+<details>
+  <summary>Want to check if your data has been sent?</summary>
+
+To check your database, in the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**DbMon**.
+
+![](/img/using-dbmon.png)
+
+```shell title='Running DbMon from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:DbMon
+```
+
+  type `table USER` and then `search 1` you will be displayed the following:
+
+```kotlin
+==================================
+Genesis Database Monitor
+Enter 'help' for a list of commands
+==================================
+DbMon>table USER
+DbMon:USER>search 1
+==================================
+USER
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)      NANO_TIMESTAMP      
+COMPANY_ID                                                                        STRING              
+COMPANY_NAME                             GENESIS                                  STRING              
+DOMAIN                                                                            STRING              
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING              
+FIRST_NAME                               Jane                                     STRING              
+LAST_LOGIN                               2016-04-28                               DATE                
+LAST_NAME                                Dee                                      STRING              
+ONLINE                                   false                                    BOOLEAN             
+PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING              
+PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
+REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
+STATUS                                   ENABLED                                  STRING              
+USER_NAME                                JaneDee                                  STRING              
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+Total Results:  1
+DbMon:USER>
+```
+</details>
+
+</TabItem>
+</Tabs>
+
+### Starting the server
+
+Now we need to start the servers. To do that, follow the structions below according to your environment configuration.
+
+<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker'} ,{ label: 'WSL', value: 'WSL'}]}>
+<TabItem value="Intellij Plugin">
+
+1. Start the [resource deamon](../../../server/tooling/intellij-plugin/#remap).
+
+2. Once your resource deamon has started, you can see your Genesis processes listed. Click on the **start** button for each process to start it.
+
+![](/img/genesis_deamon.png)
+
+Wait for all the processes to be healthy (it may take a few minutes for the first run).
+
+</TabItem>
+<TabItem value="Docker">
+
+If you are running on docker, your processes has already been started. Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**mon**.
+
+![](/img/using-mon.png)
+
+```shell title='Running mon from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:mon
+```
+
+we should see something like this
+
+```shell
+PID     Process Name                  Port        Status         CPU       Memory    Message
+===============================================================================================
+426     GENESIS_AUTH_CONSOLIDATOR     8005        STANDBY        36.30     1.30
+350     GENESIS_AUTH_DATASERVER       8002        RUNNING        56.70     1.70
+334     GENESIS_AUTH_MANAGER          8001        RUNNING        61.50     1.70
+368     GENESIS_AUTH_PERMS            8003        RUNNING        65.70     1.90
+403     GENESIS_AUTH_REQUEST_SERVER   8004        RUNNING        56.80     1.60
+490     GENESIS_CLUSTER               9000        RUNNING        84.30     2.50
+570     GENESIS_ROUTER                9017        RUNNING        54.70     2.00
+534     GENESIS_WEBMON                9011        RUNNING        51.30     2.50
+===============================================================================================
+664     ALPHA_DATASERVER              11000       RUNNING        58.10     1.50
+703     ALPHA_EVENT_HANDLER           11001       RUNNING        71.30     2.20
+```
+
+:::note server commands
+Try to run `mon` from the command line as well!
+:::
+
+</TabItem>
+<TabItem value="WSL">
+
+
+If you are running on wsl, your processes has already been started. Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**mon**.
+
+![](/img/using-mon.png)
+
+```shell title='Running mon from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:mon
+```
+
+we should see something like this
+
+```shell
+PID     Process Name                  Port        Status         CPU       Memory    Message
+===============================================================================================
+426     GENESIS_AUTH_CONSOLIDATOR     8005        STANDBY        36.30     1.30
+350     GENESIS_AUTH_DATASERVER       8002        RUNNING        56.70     1.70
+334     GENESIS_AUTH_MANAGER          8001        RUNNING        61.50     1.70
+368     GENESIS_AUTH_PERMS            8003        RUNNING        65.70     1.90
+403     GENESIS_AUTH_REQUEST_SERVER   8004        RUNNING        56.80     1.60
+490     GENESIS_CLUSTER               9000        RUNNING        84.30     2.50
+570     GENESIS_ROUTER                9017        RUNNING        54.70     2.00
+534     GENESIS_WEBMON                9011        RUNNING        51.30     2.50
+===============================================================================================
+664     ALPHA_DATASERVER              11000       RUNNING        58.10     1.50
+703     ALPHA_EVENT_HANDLER           11001       RUNNING        71.30     2.20
+```
+
+:::note server commands
+Try to run `mon` from the command line as well!
+:::
+
+See [here](/getting-started/prerequisites/gradle-deploy-plugin/) for extra details on how to configure the Genesis deploy plugin.
+
+
+</TabItem>
+
+</Tabs>
 
 ## Testing the back end
 
