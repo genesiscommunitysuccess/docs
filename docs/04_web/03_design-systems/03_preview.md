@@ -57,7 +57,7 @@ In the preview we can see four tabs displaying the information as suggested by t
 
 ### Components
 
-The contents of the the `Components` tab reflect the components that are affected by the configurations of the design tokens. 
+The contents of the `Components` tab reflect the components that are affected by the configurations of the design tokens. 
 
 :::note
 The components we see here, are only a small collection used for the purpose of displaying an example. There are many more [components](../../../web/web-components/overview) that we have access to. 
@@ -73,4 +73,4 @@ The `Colors` tab as you may suspect, shows the design tokens available for use t
 
 ### Forms
 
-The `Form` tab displayes a `Smart Form`. This is another component available for us to use. We can configure it by tweaking the design tokens in the editor. Go to the `Form` tab and modify the styles in the editor to see the results. 
+The `Form` tab displays a `Smart Form`. This is another component available for us to use. We can configure it by tweaking the design tokens in the editor. Go to the `Form` tab and modify the styles in the editor to see the results. 
