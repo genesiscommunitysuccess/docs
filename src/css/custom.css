@@ -154,6 +154,10 @@ code {
     margin-right: auto;
   }
 }
+
+.ds-preview {
+  position: absolute;
+}
 /**********************************************/
 
 

@@ -9,7 +9,7 @@ tags:
   - preview
 ---
 
-<design-system-editor>
+<design-system-editor class="ds-preview">
   <design-system-preview></design-system-preview>
   <design-system-export slot="export"></design-system-export>
 </design-system-editor>
