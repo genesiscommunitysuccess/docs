@@ -8,7 +8,9 @@ tags:
   - configuration
   - system definitions
 ---
-The system-definition file **genesis-system-definition.kts** is the main configuration file for your application. This section explains all the different items that can be contained in the file.
+The system-definition file **genesis-system-definition.kts** is the main configuration file for your application. It is located in the [site-specific](../../../server/configuring-runtime/site-specific/) area, by default, at **_application-name_\server\jvm\_application-name_-site-specific\src\main\resources\cfg**.
+
+This section explains all the different items that can be contained in the file.
 
 Here is an example of a **genesis-system-definition.kts** file for an application:
 
