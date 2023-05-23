@@ -465,6 +465,17 @@
           "id": "web/dynamic-layout/foundation-layout"
         }
       ]
+    },
+    {
+      "type": "category",
+      "label": "COMMS",
+      "collapsed": true,
+      "items": [
+        {
+          "type": "doc",
+          "id": "web/comms/foundation-comms"
+        }
+      ]
     }
   ],
   "operationsSidebar": [

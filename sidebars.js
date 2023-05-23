@@ -490,6 +490,17 @@ module.exports = {
         },
       ],
     },
+    {
+      "type": "category",
+      "label": "COMMS",
+      "collapsed": true,
+      "items": [
+        {
+          "type": "doc",
+          "id": "web/comms/foundation-comms"
+        }
+      ]
+    }
   ],
   operationsSidebar: [
     'operations/operations',
