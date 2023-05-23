@@ -28,7 +28,16 @@ import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
 
 <InsecureFlag />
 
-You will be prompted a series of questions.
+This script checks for the latest version of genx. If you need to download anything, then you are asked to confirm, for example:
+
+```shell
+Need to install the following packages:
+  @genesislcap/genx@latest
+Ok to proceed? (y) 
+```
+
+### Responding to genx
+As genx runs, you are prompted to respond to a series of questions.
 
 First, you are asked to select from a short list of seed applications. Select `create application`:
 
@@ -41,7 +50,7 @@ First, you are asked to select from a short list of seed applications. Select `c
   switch design system - Switch all design system prefixes found in files under the target directory to a new prefix, ie. templates, css rules, markdown etc.
   analyze component usage - Analyse component usage under the target directory.
 ```
-Now you can proceed using the following responses:
+You can proceed using the following responses:
 
 ```shell title="Windows Terminal"
   App:
@@ -99,10 +108,11 @@ At this point, the application will be configured. On completion, you will see t
 ```shell title="Windows Terminal"
 i Application created successfully! 🎉 Please open the application and follow the README to complete setup.
 ```
+## Opening IntelliJ
 Now open your application in Intellij. Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders: **alpha**, **client**, **genesisproduct-alpha**.
 
-### Gradle.properties
-There is a **gradle.properties** file in the **server/jvm** folder. Check that it has has the following highlighted properties, and update it if necessary:
+## Gradle.properties
+There is a **gradle.properties** file in the **server/jvm** folder. Check that it has the following highlighted properties, and update it if necessary:
 
 ```kotlin {2,3} title="server/jvm/gradle.properties"
                 ...
