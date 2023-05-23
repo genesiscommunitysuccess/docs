@@ -4,31 +4,20 @@ sidebar_label: 'Site specific'
 id: site-specific
 keywords: [server, configuration, site specific]
 tags:
-- server
-- configuration
 - site specific
+- configuration
+- server
 ---
 
-The Genesis low code platform enables you to override standard definitions found in the application.
+Site-specific is an area of the run directory where you can override the standard definitions found elsewhere in the application. 
 
-You supply the standard definition name and your own definition. Your application will then only use your definition.
-This is useful where you have used standard modules, such as Auth; you should never change these modules. Any files/definitions that are listed in the site-specific area automatically take their places.
+The [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/) is always found in this area. By default, it is located at **_application-name_\server\jvm\_application-name_-site-specific\src\main\resources\cfg**.
 
-:::danger
-Please ensure that you do not change individual modules such as Auth. Definitions must be changed within site-specific.
-:::
+You can change the settings in this file to make fundamental changes to your application. For example, if you want to change to a different database technology, you can change the `DbLayer` and `DbHost` settings.
 
-## Changing default configurations
+Here is an example where we have changed the underlying technology to Postgres.
 
-In order to override the standard definitions of your application, you must first navigate to the site-specific directory found within your application. The route to this path would be something akin to **..\[application-name]\server\jvm\[application-name]-site-specific**
-
-### Overriding system-definitions
-
-You can override the standard definitions using the site-specific folder located at **[application-name]\server\jvm\[application-name]-site-specific\src\main\resources\cfg**.
-
-Within this folder you will find the file `genesis-system-definitions.kts`. Within this file, you are able to change many of the default definitions used by your application. See the example below:
-
-```kotlin
+```kotlin {5,11}
 systemDefinition {
     global {
         item(name = "DEPLOYED_PRODUCT", value = "alpha")
@@ -55,13 +44,13 @@ systemDefinition {
     }
 ```
 
-Once deployed to the server, the files from that folder are installed in the runtime folder under a sub-folder called **site-specific**. For example, the **genesis-system-definition.kts** can be edited to change the database host used by the application. An example of this can be seen in our developer training [tutorials](https://learn.genesis.global/docs/getting-started/developer-training/training-content-day1/).
+## Overriding scripts
+Any script file that you put in your site-specific folder will override a file of the same name in your application's main (non-site-specific) folders.
 
-### Username and Password
+This is essential where you use standard modules, such as Auth; you should never change these modules. 
 
-Within the site specific folder it is also possible to change user details.
-
-In order to do that, find the USER.csv file (it is inside the **server/jvm/[application name]-site-specific/src/main/resources/data** folder); right-click USER.csv, and then click on Import CSV(s) to Genesis, as shown below.
-
+:::danger
+Never change the standard modules, such as Auth. You can copy their script files to **site-specific** and change them there.
+:::
 
 
