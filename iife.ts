@@ -4,6 +4,7 @@
  */
 import { baseComponents, provideDesignSystem } from '@genesislcap/alpha-design-system';
 import { foundationGridComponents } from '@genesislcap/grid-pro';
+import { Form as FoundationForms } from '@genesislcap/foundation-forms';
 
 provideDesignSystem().register(baseComponents, foundationGridComponents);
 
@@ -15,7 +16,8 @@ import {
   DesignSystemExport,
   DesignSystemPreview,
   PreviewComponents,
-  TypographyTokens
+  TypographyTokens,
+  PreviewForm
 } from '@genesislcap/documentation-components';
 
 DesignSystemEditor;
@@ -24,8 +26,10 @@ DesignSystemExport;
 ColorPalette;
 ColorToken;
 ColorTokens;
+PreviewForm;
 TypographyTokens;
 DesignSystemPreview;
+FoundationForms;
 
 
 import { provideDesignSystem as provideZero, baseComponents as zeroComponents } from '@genesislcap/foundation-zero';
