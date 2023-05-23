@@ -6,10 +6,12 @@ keywords: [server, request server, advanced]
 tags:
   - server
   - request server
-  - advanced
+  - requestreply
 ---
 
 
+## Audit tables
+If you want to create a `requestReply`codeblock for an Audit table, you must specify at least one field that is an index field in the underlying table.
 
 ## Pre-processing a request
 

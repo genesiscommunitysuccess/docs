@@ -163,7 +163,7 @@ send("QUOTE_HANDLER", "QUOTE_EVENT") { quote ->
         ...
     }
 }
-```
+```f
 This example uses the message and a GenesisSet as parameters:
 
 ```kotlin
@@ -172,3 +172,22 @@ send("QUOTE_HANDLER", "QUOTE_EVENT") { quote, set ->
 }
 ```
 When using this example, you need to specify both parameters, (quote -> or quote, set ->). The default parameter does not work in this case.
+
+## Event caching and ChronicleMap
+Each Streamer Client subscription creates a ChronicleMap instance with capacity for 2000 entries. This is used as the cache for events that have been received from the Streamer and sent to the Event Handler. The map uses the `TIMESTAMP` or a similar unique value as a key, and then a status (`SENT` or `COMPLETE`) as the value.
+
+Once an event has been sent to the Event Handler, we mark the `TIMESTAMP` reference as `SENT`. When the Streamer Client receives a response, it is marked as `COMPLETE`.
+
+Every two seconds, a job runs to update the PROCESS_REF database table with the data stored in the ChronicleMap instance (if there is any). The value stored in the database is either:
+
+- the oldest `SENT` value (if available)
+or
+- if no `SENT` values are stored, the latest `COMPLETE` value 
+
+The idea is that whenever it is necessary, we can always replay events from the Streamer, starting from the oldest `SENT`(there was no response for that event and we can't guarantee it was processed successfully). If no `SENT` values are available, then it is safe to replay from the latest `COMPLETE` event. As part of this job, we also remove entries from the ChronicleMap that have been marked as `COMPLETE`.
+
+ChronicleMap instances need to be pre-allocated with a fixed set of parameters. So if the Streamer Client tries to store more than 2000 entries before the cleaning/flushing job runs (i.e. within two seconds), it exceeds the maximum capacity.
+
+For AUTH_PERMS and its internal ChronicleMap instances, the platform exposes the number of entries parameter, because we recreate the ChronicleMap file on every process restart. 
+
+However, the platform does not expose a parameter in the Streamer Client for changing the number of entries, because the cache files are persisted across Streamer Client restarts. 
