@@ -13,7 +13,8 @@ Site-specific is an area of the run directory where you can override the standar
 
 The [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/) is always found in this area. By default, it is located at **_application-name_\server\jvm\_application-name_-site-specific\src\main\resources\cfg**.
 
-You can change the settings in this file to make fundamental changes to your application. For example, if you want to change to a different database technology, you can change the `DbLayer` and `DbHost` settings.
+## Changing system definitions
+You can change the settings in the **genesis-system-definition.kts**  file to make fundamental changes to your application. For example, if you want to change to a different database technology, you can change the `DbLayer` and `DbHost` settings.
 
 Here is an example where we have changed the underlying technology to Postgres.
 
