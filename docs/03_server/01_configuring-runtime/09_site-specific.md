@@ -12,8 +12,7 @@ tags:
 
 Site-specific is an area of the run directory where you can override the standard definitions found elsewhere in your application. By default, its location is:
 
-<strong><em>application-name</em>\server\jvm\<em>application-name</em>-site-specific`</strong>
-
+<strong><em>application-name</em>\server\jvm\<em>application-name</em>-site-specific</strong>
 
 
 ## Changing system definitions

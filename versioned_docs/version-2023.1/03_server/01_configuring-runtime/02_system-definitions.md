@@ -2,13 +2,20 @@
 title: 'Server configuration - system definition'
 sidebar_label: 'System definition'
 id: system-definitions
-keywords: [server, configuration, system definitions]
+keywords: [system definition, server, configuration, ]
 tags:
-  - server
+  - system definition
   - configuration
-  - system definitions
+  - server
 ---
-The system-definition file **genesis-system-definition.kts** is the main configuration file for your application. It is located in the [site-specific](../../../server/configuring-runtime/site-specific/) area, by default, at <strong><em>_application-name</em>\server\jvm\<em>application-name</em>-site-specific\src\main\resources\cfg</strong>.
+
+The system-definition file **genesis-system-definition.kts** is the main configuration file for your application. 
+
+It is located in the [site-specific](../../../server/configuring-runtime/site-specific/) area.
+
+Within the **site-specific** folder, the default location is:
+
+**\src\main\resources\cfg**.
 
 This section explains all the different items that can be contained in the file.
 
@@ -101,7 +108,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
 
-**DbMode**: This setting is utilised by Aerospike and PostgreSQL database only, for other databases this property will be ignored
+**DbMode**: This setting is used by Aerospike and PostgreSQL database only; for other databases, this property is ignored
 - For [Aerospike](../../../database/database-technology/aerospike/) database: This can be one of two values: VANILLA for an Aerospike Community installation and DURABLE_DELETE if you are using Aerospike Enterprise
 
 - For [PostgresSQL](../../../database/database-technology/sql/#postgresql): This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY, which is the default mode; it always stores the dictionary in a table called `dictionary` and a schema called `metadata`.
@@ -131,9 +138,9 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 
 If you want to enable SSL for your process communication, this is done in the [service definition](../../../server/configuring-runtime/service-definitions/#enable-ssl-for-processes).
 
-## Setting System-definitions value from environment variables
+## Setting system definition values from environment variables
 
-You can override system definition values from the environments. This is preferable, for example, if you wish to set values for a given environment dynamically.
+You can override system-definition values from the environments. This is preferable, for example, if you wish to set values for a given environment dynamically.
 
 To do this, you can set an environment variable which has the same name as the system definition item name prefixed with `GENESIS_SYSDEF_`: for example, `GENESIS_SYSDEF_DbHost=jdbc:postgresql://localhost/genesis`
 

@@ -99,7 +99,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
 
-**DbMode**: This setting is utilised by Aerospike and PostgreSQL database only, for other databases this property will be ignored
+**DbMode**: This setting is used by Aerospike and PostgreSQL databases only; for other databases, this property is ignored
 - For [Aerospike](../../../database/database-technology/aerospike/) database: This can be one of two values: VANILLA for an Aerospike Community installation and DURABLE_DELETE if you are using Aerospike Enterprise
 
 - For [PostgresSQL](../../../database/database-technology/sql/#postgresql): This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY, which is the default mode; it always stores the dictionary in a table called `dictionary` and a schema called `metadata`.
@@ -129,9 +129,9 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 
 If you want to enable SSL for your process communication, this is done in the [service definition](../../../server/configuring-runtime/service-definitions/#enable-ssl-for-processes).
 
-## Setting System Definitions values from environment variables
+## Setting system-definition values from environment variables
 
-You can load system definition values from the environments. This is preferable, for example, if you wish to set values for a given environment dynamically.
+You can load system-definition values from the environments. This is preferable, for example, if you wish to set values for a given environment dynamically.
 
 To do this, set the `value` attribute of an `item` to read an environment variable and fall back to a sensible default. 
 
@@ -141,7 +141,7 @@ item(name = "DbHost", value = System.getenv("DBHOST") ?: "localhost")
 
 In this example we are fetching the value of `DbHost` from the environment variable `DBHOST`, if the environment variable is not set then the default value of `"localhost"` will be used.
 
-## Retrieving System Definition properties
+## Retrieving system-definition properties
 
 There are examples of how to retrieve properties from an application's System Definition in our page on [dependency injection](../../../database/api-reference/dependency-injection/#injectable-properties-from-system-definition) in the API section.
 
