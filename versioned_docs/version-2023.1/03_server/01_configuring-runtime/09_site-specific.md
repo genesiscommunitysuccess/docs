@@ -12,12 +12,12 @@ tags:
 
 Site-specific is an area of the run directory where you can override the standard definitions found elsewhere in your application. By default, its location is:
 
-**{application-name}\server\jvm\{application-name}-site-specific**
+**{application-name}\server\jvm\\{application-name}-site-specific**
 
 
 
 ## Changing system definitions
-The [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/) is always found in the site-specific folder. 
+The [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/) is always found in the **site-specific** folder. 
 
 Within that folder, it is located at:
 
