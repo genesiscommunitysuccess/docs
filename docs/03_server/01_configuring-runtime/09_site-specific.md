@@ -12,7 +12,7 @@ tags:
 
 Site-specific is an area of the run directory where you can override the standard definitions found elsewhere in your application. By default, its location is:
 
-**{application-name}\server\jvm\{application-name}-site-specific**
+<strong><em>application-name</em>\server\jvm\<em>application-name</em>-site-specific`</strong>
 
 
 
@@ -52,7 +52,7 @@ systemDefinition {
             value = "-XX:MaxHeapFreeRatio=70 -XX:MinHeapFreeRatio=30 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:OnOutOfMemoryError=\"handleOutOfMemoryError.sh %p\""
         )
     }
-```
+}```
 
 ## Overriding scripts
 Any script file that you put in your site-specific folder will override a file of the same name in your application's main (non-site-specific) folders.

@@ -250,18 +250,32 @@ In this case you must invalidate the autosaved layout cache. The cleanest and ea
 
 ## Contained elements
 
-This section concerns the behaviour of elements inside the layout. If you are using simple elements or Genesis-supplied elements this section is less of a concern, but if you are building complex custom components yourself, you will need this information.
+This section concerns the behaviour of elements inside the layout. If you are using simple elements or Genesis-supplied elements, this is less of a concern; but if you are building complex custom components yourself, you need this information.
 
 ### Element lifecycle
 
 When an item is dragged around the layout, its lifecycle functions `connectedCallback` and `disconnectedCallback` are called.
-It is important that the element accounts for this, such as caching data, or resizing correctly.
+It is important that the element accounts for this, including such requirements as caching data, or resizing correctly.
 
-In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin` which exposes two protected members `shouldRunConnect` and `shouldRunDisconnect`, which can be used to gate certain functionality. For example, if there are parts of `disconnectedCallback` that you don't want to run if the item is being dragged around the layout, you can gate it behind a `(!this.shouldRunDisconnect) return;` early return.
+In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin` which exposes two protected members:
+
+-  `shouldRunConnect`
+-  `shouldRunDisconnect`
+
+These can be used to gate certain functionality. 
+
+For example, if there are parts of `disconnectedCallback` that you don't want to run when the item is being dragged around the layout, you can gate it behind a `(!this.shouldRunDisconnect) return;` early return.
 
 :::warning
 At the very least, you must run `super` calls to the lifecycle methods, or else your custom element will not work correctly.
 :::
+
+### Resource-intensive components
+Throughout Foundation UI, there is no need to unregister a component that is registered in the layout while it is not in use.  However, if you have a component that is extremely resource-intensive, then you can use this lifecycle control method to ensure that it only consumes resources when it is in use.
+
+- When the element is part of the layout registry, then `shouldRunConnect` will be false and you can use this to ensure that your component isn't doing unnecessary work while part of the cache.
+
+- Once the component is actually initialised in the layout on the DOM, then `shouldRunConnect` will be true, and you can then perform all the required initialisation.
 
 ### Element cloning
 
