@@ -31,6 +31,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@genesislcap/documentation-components": "14.20.0",
+    "@genesislcap/foundation-comms": "14.20.0",
     "@genesislcap/foundation-entity-management": "14.20.0",
     "@genesislcap/foundation-filters": "14.20.0",
     "@genesislcap/foundation-header": "14.20.0",
