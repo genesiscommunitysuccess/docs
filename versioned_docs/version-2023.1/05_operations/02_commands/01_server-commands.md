@@ -357,6 +357,10 @@ If no file parameter is specified, `.csv` is assumed and read from the local dir
 
 Verbose mode will additionally output line-by-line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes the script useful for scheduled or automated jobs (e.g. daily data loads).
 
+:::warning
+Do not use `SendIt` to update User details in any way. This can easily cause database errors. To update User profiles or User attributes, only use Genesis GUI Admin screens.
+:::
+
 ## DumpIt script
 
 To copy data from a Genesis database, use the 'DumpIt' command.

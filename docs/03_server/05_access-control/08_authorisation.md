@@ -14,14 +14,14 @@ tags:
 Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:
 
 * An entire grid from the UI
-* An entire data server
+* An entire Data Server
 * Specific rows and columns
 
 Effectively, you have two levels of control.
 
 ### High-level
 
-You could hide an entire grid from the UI. So one group of users could view reference data, but other groups would not see this. Or, you could hide an entire data server. To achieve this, you use `RIGHT_CODE`. This is like a switch – you can either see it or not, depending on whether the code is **TRUE** or **FALSE**.
+You could hide an entire grid from the UI. In this case, one group of users could view reference data, but other groups could not. Or, you could hide an entire Data Server. To achieve this, use `RIGHT_CODE`. This is like a switch – you can either see it or not, depending on whether the code is **TRUE** or **FALSE**.
 
 ### Entity-level
 
@@ -55,7 +55,7 @@ The `RIGHT_SUMMARY` table entries are automatically maintained by the system in 
 
 :::warning
 This table is only automatically maintained when profile user/right entries are maintained via `GENESIS_AUTH_MANAGER` business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. **DbMon** or **SendIt**) then the `RIGHT_SUMMARY` table will not be maintained automatically.
-In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in `PROFILE_USER` and `PROFILE_RIGHT` and populates `RIGHT_SUMMARY` withe the correct data.
+In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in `PROFILE_USER` and `PROFILE_RIGHT` and populates `RIGHT_SUMMARY` with the correct data.
 :::
 
 ### Sample explanation
@@ -233,7 +233,7 @@ There are two auth maps in **auth-permissions.templt.xml** to control how users 
         ]]>
 </entity>
 ```
-Here is an example of using `ENTITY_VISIBILITY` in a data server or request server:
+Here is an example of using `ENTITY_VISIBILITY` in a Data Server or Request Server:
 
 ```kotlin
 query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
@@ -248,11 +248,11 @@ query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
 }
 ```
 
-### Adding authorisation to the data server and request server
+### Adding authorisation to the Data Server and Request Server
 
-The code for permissioning specific queries must be inserted into your data servers and request servers.
+The code for permissioning specific queries must be inserted into your Data Servers and Request Servers.
 
-The dynamic authorisation definition in a GPAL data server or request server has 4 settings, which can be used in any combination:
+The dynamic authorisation definition in a GPAL Data Server or Request Server has 4 settings, which can be used in any combination:
 - grouping (and/or)
 - where clauses
 - hideFields
@@ -349,7 +349,7 @@ permissioning {
 
 #### enrichedAuth
 
-Our permission model could require access to client-enriched data, so data servers have an additional level of auth functionality that takes this data into account.
+Our permission model could require access to client-enriched data, so Data Servers have an additional level of auth functionality that takes this data into account.
 
 Here is an example:
 
@@ -714,7 +714,7 @@ Each `expression` has the following properties and should return either `true` o
 
 | Name | Description |
 | --- | --- |
-| entityDb | Read only access to the database if additional data query is required. **Note:** Keep in mind that the expression is called on each data update and querying the database each time will result in performance hit. Better approach would be to define a View that joins all the Tables with relevant data|
+| entityDb | Read only access to the database if additional data query is required. **Note:** The expression is called on each data update, and querying the database each time will result in performance hit. A better approach would be to define a View that joins all the Tables with relevant data|
 | entity | The entity to be evaluated for access |
 | user | The user to be evaluated for access to the `entity`  |
 | entityId | The value calculated based on the specified `idField` |
@@ -749,7 +749,7 @@ dynamicPermissions {
 }
 ```
 
-### Data server snippet
+### Data Server snippet
 ```kotlin
 dataServer {
   query(POSITION_VIEW) {
