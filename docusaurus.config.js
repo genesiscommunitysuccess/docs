@@ -100,6 +100,17 @@ module.exports = {
       {
         // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs
         docs: {
+          /**
+           * Enabling edit this page functionality and making the last updated timestamp visible.
+           */
+          editUrl: 'https://github.com/genesiscommunitysuccess/docs/edit/master/',
+          showLastUpdateTime: true,
+          /**
+           * editCurrentVersion: false allows people to make changes to any version of the docs they find an issue with.
+           * Alternatively, we could direct all edits to the current version. However, with our infrequent docs releases,
+           * that would leave the default unchanged even after their edit was accepted, which may confuse contributors.
+           */
+          editCurrentVersion: false,
           breadcrumbs: false,
           routeBasePath,
           sidebarPath: require.resolve('./sidebars.js'),
