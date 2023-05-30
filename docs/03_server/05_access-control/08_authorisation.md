@@ -55,7 +55,7 @@ The `RIGHT_SUMMARY` table entries are automatically maintained by the system in 
 
 :::warning
 This table is only automatically maintained when profile user/right entries are maintained via `GENESIS_AUTH_MANAGER` business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. **DbMon** or **SendIt**) then the `RIGHT_SUMMARY` table will not be maintained automatically.
-In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in `PROFILE_USER` and `PROFILE_RIGHT` and populates `RIGHT_SUMMARY` withe the correct data.
+In such situations (e.g. setting up a brand new environment and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in `PROFILE_USER` and `PROFILE_RIGHT` and populates `RIGHT_SUMMARY` with the the correct data.
 :::
 
 ### Sample explanation
@@ -91,7 +91,7 @@ In many cases, you want different people to have access to different functions a
 
 ## General approach
 
-On startup, the `GENESIS_AUTH_PERMS` process performs an initial scan of all entities. For each entity found, it performs authorisation against every user in the system. This builds a full map of permissioned users.
+On start-up, the `GENESIS_AUTH_PERMS` process performs an initial scan of all entities. For each entity found, it performs authorisation against every user in the system. This builds a full map of permissioned users.
 
 By default, any updates to the entity and the `USER` table will be automatically processed to permission new entities as they are entered into the database.
 
@@ -116,7 +116,7 @@ field(name = "ACCESS_TYPE", type = ENUM("ALL", "ENTITY", "MULTI_ENTITY", default
 Only `ALL` and `ENTITY` are in working condition at the moment.
 :::
 
-Users with `ACCESS_TYPE` set to `ENTITY` (e.g. the entity could be represented by COUNTERPARTY_ID) will be permissioned only to see data relating to the value stored in the x field in the `USER_ATTRIBUTES` table. The name of x field is set in the `ADMIN_PERMISSION_ENTITY_FIELD` in the system definition file, as you can see in the example below.
+Users with `ACCESS_TYPE` set to `ENTITY` (e.g. the entity could be represented by COUNTERPARTY_ID) will be permissioned to see only data relating to the value stored in the x field in the `USER_ATTRIBUTES` table. The name of x field is set in the `ADMIN_PERMISSION_ENTITY_FIELD` in the system definition file, as you can see in the example below.
 
 
 
@@ -129,7 +129,7 @@ systemDefinition {
 }
 ```
 
-These two items change the structure of **auth-tables-dictionary.kts** and **auth-permissions.templt.xml** to accomodate the defined table and field, and ensure that the table/permission data structure is built correctly.
+These two items change the structure of **auth-tables-dictionary.kts** and **auth-permissions.templt.xml** to accommodate the defined table and field, and ensure that the table/permission data structure is built correctly.
 
 Here is the `USER_ATTRIBUTES` table definition in **auth-tables-dictionary.kts**:
 
@@ -163,7 +163,7 @@ table(name = "USER_ATTRIBUTES", id = 1007, audit = details(1052, "AA")) {
 ```
 The permissions field will be added dynamically to `USER_ATTRIBUTES`, so it can be used in auth transactions to control entitlements.
 
-The following table will be created as well (ignore `MULTI_ENTITY` setup for now; this is in development). It is used by the Genesis low-code platform to manage `AUTH_PERMS` results.
+The following table will be created as well (ignore `MULTI_ENTITY` set-up for now; this is in development). It is used by the Genesis low-code platform to manage `AUTH_PERMS` results.
 
 ```kotlin
 val permissionsTable = SysDef.systemDefinition["ADMIN_PERMISSION_ENTITY_TABLE"].orElse(null)
@@ -233,7 +233,7 @@ There are two auth maps in **auth-permissions.templt.xml** to control how users 
         ]]>
 </entity>
 ```
-Here is an example of using `ENTITY_VISIBILITY` in a data server or request server:
+Here is an example of using `ENTITY_VISIBILITY` in a Data Server or Request Server:
 
 ```kotlin
 query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
@@ -248,11 +248,11 @@ query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
 }
 ```
 
-### Adding authorisation to the data server and request server
+### Adding authorisation to the Data Server and Request Server
 
-The code for permissioning specific queries must be inserted into your data servers and request servers.
+The code for permissioning specific queries must be inserted into your Data Servers and Data Servers.
 
-The dynamic authorisation definition in a GPAL data server or request server has 4 settings, which can be used in any combination:
+The dynamic authorisation definition in a GPAL Data Server or Data Server has 4 settings, which can be used in any combination:
 - grouping (and/or)
 - where clauses
 - hideFields
@@ -349,7 +349,7 @@ permissioning {
 
 #### enrichedAuth
 
-Our permission model could require access to client-enriched data, so data servers have an additional level of auth functionality that takes this data into account.
+Our permission model could require access to client-enriched data, so Data Servers have an additional level of auth functionality that takes this data into account.
 
 Here is an example:
 
@@ -503,7 +503,7 @@ We also define several items on the entity element:
 * **name** - The entity (and table name) we're dealing with
 * **maxEntries** - Max number of entries to read on initial scan
 * **idField** - The account ID
-* **updateOn** xml block - We want to re-evaluate the auth entries (entities and users) when the TAG table is updated, just in case we make a user sales officer/asset manager.
+* **updateOn** xml block - we want to re-evaluate the auth entries (entities and users) when the TAG table is updated, just in case we make a user sales officer/asset manager.
 
 As mentioned above, we will also refresh when either the `ENTITY`, `USER` or `USER_ATTRIBUTES` tables are updated. You will need to define `updateOnUserFields` (see further down) to ensure user data updates are triggered.
 
@@ -749,7 +749,7 @@ dynamicPermissions {
 }
 ```
 
-### Data server snippet
+### Data Server snippet
 ```kotlin
 dataServer {
   query(POSITION_VIEW) {
