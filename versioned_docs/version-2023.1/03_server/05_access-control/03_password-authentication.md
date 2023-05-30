@@ -21,7 +21,7 @@ The `security` function wraps all other variables and functions within the **aut
 
 * `sessionTimeoutMins` specifies a time out for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](../../../server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
 * `expiryCheckMins` specifies the time interval (in minutes) used to check for idle sessions in the system. Default: 5 minutes.
-* `maxSimultaneousUserLogins` specifies the maximum number of concurrent active sessions a user can maintain. Once this limit has been reached, the user cannot activate additional sessions until one or more of the active sessions has been logged out. If the value zero is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
+* `maxSimultaneousUserLogins` specifies the maximum number of concurrent active sessions a user can maintain. Once this limit has been reached, the user cannot activate additional sessions until one or more of the active sessions has been logged out. So, a value of 1 means that only one session can be logged in at any time; a value of two allows two to be logged in concurrently, and so on. If the value is zero, is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
 
 ```kotlin
 security {
@@ -71,7 +71,7 @@ The following variables are used to configure an LDAP connection; these are only
     * using the `cn` attribute (Common Name)
     * using the `sAMAccountName` in Windows
 * `bypassLoginInternalAuth` this is a boolean flag that prevents internal authorisation checks on login
-* `onLoginSuccess` this is a function which is invoked on a successful LDAP login: for example, it allows you to insert a user into the db when it exists in LDAP but not the database.
+* `onLoginSuccess` this is a function which is invoked on a successful LDAP login: for example, it allows you to insert a user into the database when it exists in LDAP but not the database.
 * `useTLS` this is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
 
 For more information about the various authentication types, see the [Authentication overview](../../../server/access-control/authentication-overview/).
@@ -81,7 +81,7 @@ The `passwordRetry` function has been deprecated in favour of the `retry` functi
 
 ### genesisPassword
 
-The `genesisPassword` groups all configuration options when using `type = AuthType.INTERNAL`. 
+The `genesisPassword` statement groups all configuration options when using `type = AuthType.INTERNAL`. 
 
 ### validation
 The `validation` function enables password validation, and is used to set the variables relating to this validation. 
@@ -92,24 +92,24 @@ These following variables are used to configure the application's password valid
 
 * `passwordStrength` can be called within `validation` to set a range of configuration variables. These enable you to specify in detail the mandatory characteristics for the password:
 
-    * `minimumLength` specifies the minimum length of password. If null or undefined this assumes there is no minimum limit. Default: null.
-    * `maximumLength` specifies the maximum length of password. If null or undefined this assumes there is no maximum limit. Default: null.
-    * `minDigits` specifies the minimum number of numerical digits required in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
+    * `minimumLength` specifies the minimum length of password. If null or undefined, this assumes there is no minimum limit. Default: null.
+    * `maximumLength` specifies the maximum length of password. If null or undefined, this assumes there is no maximum limit. Default: null.
+    * `minDigits` specifies the minimum number of numeric digits required in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
     * `maxRepeatCharacters` specifies the maximum number of the same characters across an entire password. This does not just include consecutive repeat characters, which is controlled by the `repeatCharacterRestrictSize` variable below. If null or undefined, this assumes there is no maximum limit. Default: null.
-    * `minUppercaseCharacters` specifies the minimum number of upper-case characters in a password. If null or undefined this assumes there is no minimum limit. Default: null.
-    * `minLowercaseCharacters` specifies the minimum number of lower-case characters in a password. If null or undefined this assumes there is no minimum limit. Default: null.
+    * `minUppercaseCharacters` specifies the minimum number of upper-case characters in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
+    * `minLowercaseCharacters` specifies the minimum number of lower-case characters in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
     * `minNonAlphaNumericCharacters` specifies the minimum number of non-alphanumeric characters, such as punctuation and other special characters. If null or undefined, this assumes there is no minimum limit. Default: null.
     * `restrictWhitespace` specifies if whitespace characters are prevented from being used in passwords. Default: true.
     * `restrictAlphaSequences` specifies if alphabetical sequences in passwords (e.g. abcdefg) are restricted. Sequences greater than or equal to five characters won't be permitted if this is true. Default: false.
     * `restrictQWERTY` specifies if QWERTY sequences in passwords (e.g. qwertyuiop) are restricted. Sequences greater or equal to five characters won't be permitted if this is true. Default: true.
-    * `restrictNumericalSequences` specifies if numerical sequences in passwords (e.g. 123456) are restricted. Sequences greater or equal to five numbers won't be allowed if active. Default: true.
+    * `restrictNumericalSequences` specifies if numeric sequences in passwords (e.g. 123456) are restricted. Sequences greater or equal to five numbers won't be allowed if active. Default: true.
     * `illegalCharacters` specifies which characters are not permitted in user passwords. Default: empty.
-    * `historicalCheck` specifies how many previous passwords to check against, in order to prevent password re-use. If null or undefined no historical check is performed. Default: null.
+    * `historicalCheck` specifies how many previous passwords to check against, in order to prevent password re-use. If null or undefined, no historical check is performed. Default: null.
     * `restrictPassword` specifies if the password should differ from a list of the worst passwords stored within the application. Default: false.
     * `restrictDictionarySubstring` specifies if any dictionary word of four or more characters can be included in a password (either forwards or backwards). Default: false.
     * `restrictUserName` specifies if the user's username is restricted as part of their password. Default: false.
-    * `repeatCharacterRestrictSize` specifies the number of consecutive repeated characters that make a password restricted. If null or undefined this assumes there is no limit. Default: null.
-    * `passwordExpiryDays` specifies how many days before a password expires. If null or undefined this assumes there is no limit. Default: null.
+    * `repeatCharacterRestrictSize` specifies the number of consecutive repeated characters that make a password restricted. If null or undefined, this assumes there is no limit. Default: null.
+    * `passwordExpiryDays` specifies how many days before a password expires. If null or undefined, this assumes there is no limit. Default: null.
     * `passwordExpiryNotificationDays` specifies how many days before their password expiry a user is notified. If null or undefined, a user is not notified in advance of their password expiry. Default: null.
 
 ### retry
@@ -120,7 +120,7 @@ The `retry` function enables you to configure settings for limiting the rate at 
 
 ### selfServiceReset 
 
-The `selfServiceReset` function enables the self-service reset workflow. In this, users authenticated with the internal auth type, can request an email to reset their password. This workflow requires Genesis Notify to be configured with a working email gateway. When a user requests a reset, an email is sent to their configured email address, with a link to a password reset page. This link is valid for a preconfigured timeout.
+The `selfServiceReset` function enables the self-service reset workflow for the user. In this, users authenticated with the internal auth type, can request an email to reset their password. This workflow requires Genesis Notify to be configured with a working email gateway. When a user requests a reset, an email with a link to a password reset page is sent to their configured email address. This link is valid for a preconfigured timeout.
 
 :::note
 
@@ -130,8 +130,8 @@ In the interest of security, this response will always receive an ACK, even if t
 
 The `selfServiceReset` function  has the following options: 
 
-* `timeoutInMinutes` - the time in minutes that a reset link remains valid 
-* `coolDownInMinutes` - the time in minutes between before the next password reset can be made 
+* `timeoutInMinutes` - the time in minutes for which a reset link remains valid 
+* `coolDownInMinutes` - the time in minutes before the next password reset can be made 
 * `notifyTopic` - the email topic in Genesis Notify to be used
 * `redirectUrl` - the url to use for the redirect
 * `acceptClientUrl` - boolean flag; if true, it will use the client provided reset url
@@ -153,7 +153,7 @@ Both the subject and the body support templating. Values surrounded by double cu
 
 * `RESET_URL` the reset url
 * `TIMEOUT` the time the url is valid for
-* `USER` the user record, properties on this record should be access using lowerCamelCase, e.g. `{{ USER.firstName }}`
+* `USER` the user record, properties on this record should be accessed using lowerCamelCase, e.g. `{{ USER.firstName }}`
 * any system definition or environment variable available
 
 ### mfa
@@ -163,8 +163,8 @@ The `mfa` function allows you to configure Multi-factor Authentication (MFA). Th
 * `codePeriodDiscrepancy` specifies the allowed discrepancy to the TOTP. 1 would mean a single block of each `codePeriodSeconds` either side of the time window. Default: 1.
 * `codeDigits` specifies the number of digits used in the TOTP. Default: 6 digits.
 * `hashingAlgorithm` specifies which choice of Hashing Algorithm to use. Available choices are: `HashingFunction.SHA1`, `HashingFunction.SHA256` or `HashingFunction.SHA512`. Default: `HashingFunction.SHA1`.
-* `issuer` specifies a reference to the Organisation or Entity issuing the MFA. Default: Genesis.
-* `label` specifies a label for the MFA. This is typically an email address of the issuing Entity or Organisation. Default: genesis.global.
+* `issuer` specifies a reference to the organisation or entity issuing the MFA. Default: Genesis.
+* `label` specifies a label for the MFA. This is typically an email address of the issuing entity or organisation. Default: genesis.global.
 * `confirmWaitPeriodSecs` specifies the period of time in seconds before a secret has to be confirmed. Default: 300 seconds.
 * `secretEncryptKey` specifies the key that is used to encrypt Secrets in the database. If this is null or undefined, Secrets will not be encrypted in the database. Default: null.
 * `usernameTableLookUpSalt` specifies the salt with which a username is hashed when stored in the database with the above Secret. If this is null or undefined, the username will not be hashed in the database. Default: null.
@@ -172,21 +172,13 @@ The `mfa` function allows you to configure Multi-factor Authentication (MFA). Th
 ### loginAck
 The `loginAck` function enables you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message. When you call the `loginAck` function, you have to supply a table or view as a parameter. The following functions will be invoked on this table or view:
 
-#### loadRecord
-The `loadRecord` function can be invoked within the `loginAck` function to load a single record from the previously supplied table or view.
+- The `loadRecord` function within the `loginAck` function loads a single record from the previously supplied table or view.
+- The `fields` function within the `loginAck` function specifies which additional fields should be sent back to the client as part of the LOGIN_ACK message.
+- The `customLoginAck` function enables you to modify the list of permissions, profiles and user preferences returned to the client as part of the `LOGIN_ACK` message. For this purpose, the `User` entity is provided as a parameter, as well as three properties:
+    * permissions - a mutable list containing all the right codes associated to the user. Given its mutability, codes can be added or removed.
+    * profiles - a mutable list containing all the profiles associated with the user.  Given its mutability, profiles can be added or removed.
+    * userPreferences - a [GenesisSet](../../../server/inter-process-messages/genesisset/) object containing additional fields provided as part of the [loginAck](#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
 
-#### fields
-The `fields` function can be invoked within the `loginAck` function to specify which additional fields should be sent back to the client as part of the LOGIN_ACK message.
-
-#### customLoginAck
-
-The `customLoginAck` function enables you to modify the list of permissions, profiles and user preferences returned to the client as part of the `LOGIN_ACK` message. For this purpose, the `User` entity is provided as a parameter, as well as three properties:
-
-* permissions - a mutable list containing all the right codes associated to the user. Given its mutability, codes can be added or removed.
-* profiles - a mutable list containing all the profiles associated with the user.  Given its mutability, profiles can be added or removed.
-* userPreferences - a [GenesisSet](../../../server/inter-process-messages/genesisset/) object containing additional fields provided as part of the [loginAck](#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
-
-### Example
 Here is an example configuration:
 
 ```kotlin

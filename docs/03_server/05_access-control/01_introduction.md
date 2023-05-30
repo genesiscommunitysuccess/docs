@@ -10,16 +10,18 @@ tags:
 ---
 
 
-The Genesis low-code platform has a collection of access control mechanisms to limit usage of your application and access to specific data and functions dynamically.
+The Genesis low-code platform has a collection of access control mechanisms to ensure that:
 
-Applications built on the system use both authentication and authorisation solutions to verify user identities and their permission to interact with the application, and underlying data.
+- only authenticated users can have access to your application
+- within the application, users have access to specific data and functions, which is controlled dynamically.
 
-This is done through a variety of authentication functions, including Single Sign-On (SSO) authentication, username and password authentication, and Multi-factor authentication.
+The platform can use a variety of authentication functions, including Single Sign-On (SSO) authentication, username and password authentication, and Multi-factor authentication.
 
 The password authentication can be configured to use an internal store of users, LDAP to communicate with an external service, or a combination of both.
 
 For more information about LDAP, see [Wikipedia](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol).
 
-Once a user is authenticated, the authorisation systems allow for their access to be further restricted to particular function and items of data.
+Once a user has been authenticated, the authorisation systems allow for a user's access to be further restricted to particular function and items of data.
 
-This authorisation can be done on a group or individual basis.
+This authorisation is performed on a group basis, not on individual users; however, you can have groups with only one member.
+

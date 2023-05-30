@@ -11,7 +11,7 @@ tags:
 
 
 ## Types of control
-Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:
+Authorisation controls which features and information users have access to. This is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:
 
 * An entire grid from the UI
 * An entire data server
@@ -25,7 +25,7 @@ You could hide an entire grid from the UI. So one group of users could view refe
 
 ### Entity-level
 
-This is row or column level access to information. Different users can all view the same grid, but each one sees different data. This is best explained with these simple scenarios:
+This is row- or column-level access to information. Different users can all view the same grid, but each one sees different data. This is best explained with these simple scenarios:
 
 * You can have user A, user B and user C all having the RIGHT_CODE to view a specific grid, but each one sees different trades in that grid. This enables you to separate different trading desks.
 * Each user might only have access to trades for specific clients.
