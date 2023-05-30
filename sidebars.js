@@ -500,6 +500,17 @@ module.exports = {
           "id": "web/comms/foundation-comms"
         }
       ]
+    },
+    {
+      "type": "category",
+      "label": "SMART FORMS",
+      "collapsed": true,
+      "items": [
+        {
+          "type": "doc",
+          "id": "web/forms/foundation-forms"
+        }
+      ]
     }
   ],
   operationsSidebar: [

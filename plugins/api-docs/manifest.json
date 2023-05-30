@@ -167,6 +167,26 @@
           "data server", "request server", "event handler" ,"stream", "snapshot"
         ]
       }
+    },
+    {
+      "name": "@genesislcap/foundation-forms",
+      "enabled": true,
+      "api_docs": "./docs/api",
+      "readme": "./README.md",
+      "output": {
+        "title": "Foundation Forms",
+        "sidebar_label": "Foundation Forms",
+        "id": "foundation-forms",
+        "directory": "./docs/04_web/12_forms",
+        "api_docs": "docs/api",
+        "readme": "01_foundation-forms.md",
+        "keywords": [
+          "genesis", "foundation", "ui", "forms", "smart forms"
+        ],
+        "tags": [
+          "genesis", "foundation", "ui", "forms", "smart forms"
+        ]
+      }
     }
   ]
 }
