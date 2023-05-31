@@ -1,6 +1,6 @@
 ---
-title: 'Quick start - run, build and deploy'
-sidebar_label: 'Run, build and deploy'
+title: 'Quick start - build and deploy'
+sidebar_label: 'Build and deploy'
 id: prepare-the-server-and-build
 keywords: [getting started, quick start, server, build]
 tags:
@@ -52,7 +52,7 @@ Add the following content to the **server/jvm/alpha-config/src/main/resources/cf
 
 Further information can be found in our page on the [**-processes.xml** file](../../../server/configuring-runtime/processes/).
 
-You can then add the following content to the **server/jvm/alpha-config/src/main/resources/cfg/alpha-service-definitions.xml** file.
+You can then add the following content to the **server/jvm/alpha-config/src/main/resources/cfg/alpha-service-definitions.xml** file:
 
 ```xml title="alpha-service-definitions.xml"
 <configuration>
@@ -61,19 +61,21 @@ You can then add the following content to the **server/jvm/alpha-config/src/main
 </configuration>
 ```
 
-Further information can be found in the [**-service-definitions.xml** file](../../../server/configuring-runtime/service-definitions/).
+Further information can be found in the page on the [**-service-definitions.xml** file](../../../server/configuring-runtime/service-definitions/).
 
 ## Database layer
 
-You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\\**.
+You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\\**. Choose the appropriate environment you are using.
 
 Further information can be found in the [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/).
 
-### Run with docker
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-Since we are using a docker container, add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
+<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker' }, { label: 'WSL', value: 'WSL'}]}>
+<TabItem value="Intellij Plugin">
 
-```kotlin {4,10}
+```kotlin {4,10} title="genesis-system-definition.kts"
 systemDefinition {
     global {
         ...
@@ -87,29 +89,61 @@ systemDefinition {
         item(name = "DbMode", value = "VANILLA")
         ...
     }
-    
 }
-
 ```
 
-### Build and compose Docker images
+</TabItem>
+<TabItem value="Docker">
 
-Now, you need to start the database. First, start your docker management software (in our case Rancher desktop) and do the following:
-
-```powershell
-docker pull postgres
-docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=10000'
+```kotlin {4,10} title="genesis-system-definition.kts"
+systemDefinition {
+    global {
+        ...
+        item(name = "DbLayer", value = "SQL")
+        item(name = "DictionarySource", value = "DB")
+        item(name = "AliasSource", value = "DB")
+        item(name = "MetricsEnabled", value = "false")
+        item(name = "ZeroMQProxyInboundPort", value = "5001")
+        item(name = "ZeroMQProxyOutboundPort", value = "5000")
+        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=postgres")
+        item(name = "DbMode", value = "VANILLA")
+        ...
+    }
+}
 ```
+</TabItem>
+<TabItem value="WSL">
 
-To confirm your docker has been created, please run:
-```powershell
-docker ps | findstr "localPostgresDb"
+```kotlin {4,10} title="genesis-system-definition.kts"
+systemDefinition {
+    global {
+        ...
+        item(name = "DbLayer", value = "SQL")
+        item(name = "DictionarySource", value = "DB")
+        item(name = "AliasSource", value = "DB")
+        item(name = "MetricsEnabled", value = "false")
+        item(name = "ZeroMQProxyInboundPort", value = "5001")
+        item(name = "ZeroMQProxyOutboundPort", value = "5000")
+        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=docker")
+        item(name = "DbMode", value = "VANILLA")
+        ...
+    }
+}
 ```
+</TabItem>
+</Tabs>
+
+:::tip
+Further information can be found in the [**genesis-system-definitions.kts** file](../../../server/configuring-runtime/system-definitions/).
+:::
 
 ## Connect the front end to the server
-Since you created your project from a seed, you need to change the default API_HOST in the **package.json** in **client/web/** to `ws://localhost:9064`.
 
-```kotlin {7-12} title="client/web/package.json"
+We have two different approaches to connect to the server, depending on your runtime environment.
+
+In this tutorial, you need to verify the default `API_HOST` in the **package.json** in **client/web/**.
+
+```kotlin {8} title="client/web/package.json"
 {
   "name": "@genesislcap/alpha-web-client",
   "description": "Developer Training Web Client",
@@ -117,7 +151,7 @@ Since you created your project from a seed, you need to change the default API_H
   "private": true,
   "license": "Apache-2.0",
   "config": {
-    "API_HOST": "ws://localhost:9064",
+    "API_HOST": "ws://localhost/gwf/",
     "DEFAULT_USER": "JaneDee",
     "DEFAULT_PASSWORD": "beONneON*74",
     "PORT": 6060
@@ -141,33 +175,14 @@ Finally, you can build and deploy the server.
 ```
 The first time you run this, it will take quite a few minutes. Make yourself a cup of tea or open a bottle of good champagne.
 
-2. Run the config: **genesisproduct-alpha**/**alpha-config**
+### Deploy
 
-![](/img/alpha-config-gradle.png)
+As soon as the Build is done, you need to deploy the application. Here are the two ways to deploy using different runtime environments.
 
-If you prefer to run the config from the command line: 
+<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker'} ,{ label: 'WSL', value: 'WSL'}]}>
+<TabItem value="Intellij Plugin">
 
-```shell title='Running alpha-config assemble from the command line'
-./gradlew :genesisproduct-alpha:alpha-config:assemble
-./gradlew :genesisproduct-alpha:alpha-config:deployCfgToGenesisHome
-
-```
-
-3. Run the script config assemble:
-
-**genesisproduct-alpha**/**alpha-script-config**
-
-![](/img/alpha-script-config-gradle.png)
-
-If you prefer to run this from the command line: 
-
-```shell title='Running alpha-script-config assemble from the command line'
-./gradlew :genesisproduct-alpha:alpha-script-config:assemble
-./gradlew :genesisproduct-alpha:alpha-script-config:deployScriptsToGenesisHome
-
-```
-
-### Start the plugin
+<h3>Start up plugin</h3>
 
 After the Gradle tasks, when first using the plugin with a project, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
 
@@ -178,10 +193,6 @@ This generates a hidden folder called **.genesis-home** in your project root, re
 :::note
 On the first run, this could take up to 20 minutes, because it performs a full build of your application.
 :::
-
-### Deploy
-
-As soon as the Build is done, you need to deploy the application:
 
 1. Click on the **Deploy Genesis** button on the toolbar.
 
@@ -195,5 +206,101 @@ This starts the  processes and the logs will be shown below.
 
 ![Deploy logs](/img/intellij-deploy3.png)
 
+</TabItem>
+<TabItem value="Docker">
+
+```shell title="Intellij terminal"
+./gradlew assemble
+docker-compose build
+docker-compose up -d
+```
+
+</TabItem>
+<TabItem value="WSL">
+
+The Genesis platform provides several tasks that help to set up the Genesis environment so that you can deploy a project to it. It can be used on Linux machines (local and over SSH) or Windows machines with WSL support.
+
+<h4>Pre-requisites</h4>
+
+:::caution Adding the WSL configuration in the gradle.properties file
+Please add the last three highlighted lines in your  **gradle.properties** file from the **server/jvm** folder. The final file should be like this:
+
+```properties {8-10} title="gradle.properties"
+kotlin.code.style=official
+org.gradle.jvmargs=-Xmx6g -Xss512k -XX:+HeapDumpOnOutOfMemoryError -XX:+UseG1GC -XX:+UseStringDeduplication -XX:ReservedCodeCacheSize=512m -Dkotlin.daemon.jvm.options=-Xmx2g -Dfile.encoding=UTF-8
+bundleGeneratedClasses=true
+genesisVersion=6.4.2
+authVersion=6.4.0
+deployPluginVersion=6.4.2
+genesisArtifactoryPath=https://genesisglobal.jfrog.io/genesisglobal/libs-release-client
+genesis-home=/home/genesis/run
+wsl-distro=TrainingCentOS
+wsl-user=genesis
+```
+
+| Entry  |  Description | 
+|---|---|
+|`genesis-home`|  This is a mandatory property that is a path on the WSL distribution. |
+|`wsl-distro`|  This is a mandatory property that is the name of the WSL distribution. |
+|`wsl-user`|  This is an optional property. If omitted, the default WSL user will be used. |
+
+:::
+
+<h4>Deployment of the back end</h4>
+
+Now we are going to install the Genesis Platform (i.e. Genesis distribution) on the server and then install the back end of our application on the same server. This is all done using the Genesis deploy plugin that comes with several tasks grouped under `genesisdeploy` and `genesissetup`.
+
+<h5>Deploying to the server</h5>
+
+We will run `setupEnvironment` first (we only need to run it once) to set up the platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution. So, basically, it installs the Genesis Platform on your local server.
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**setupEnvironment**.
+
+![](/img/setup-environment.png)
+
+```shell title='Running setupEnvironment from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:setupEnvironment
+```
+
+After this command is completed, we will have a basic genesis server running.
+
+<h5>Deploying the auth module</h5>
+As our application requires [authentication](/server/access-control/introduction/), we have to install the Genesis Auth module.
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**install-auth-distribution.zip**.
+
+![](/img/install-auth.png)
+
+```shell title='Running install-auth-distribution.zip from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:install-auth-distribution.zip
+```
+
+<!-- Adjusting WSL we could remove this-->
+<h5>Deploying the site-specific</h5>
+As our application will override the standard definitions using the site-specific folder, we have to run this task.
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip**.
+
+![](/img/install-site-specific.png) 
+
+```shell title='Running install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip
+```
+
+<!-- END Adjusting WSL we could remove this-->
+
+<h5>Deploying the alpha product</h5>
+
+Now we have to deploy our application, the alpha product.
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisdeploy**/**deploy-genesisproduct-alpha.zip**.
+
+![](/img/deploy-alpha-product.png)
+
+```shell title='Running deploy-genesisproduct-alpha.zip from the command line'
+./gradlew :genesisproduct-alpha:alpha-deploy:deploy-genesisproduct-alpha.zip 
+```
+</TabItem>
+</Tabs>
 
 Congratulations! You have built an application and you are running a database. The next step is to [run the application](../run-the-application-docker/).

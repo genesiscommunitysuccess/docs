@@ -2,13 +2,22 @@
 title: 'Server configuration - system definition'
 sidebar_label: 'System definition'
 id: system-definitions
-keywords: [server, configuration, system definitions]
+keywords: [system definition, server, configuration, ]
 tags:
-  - server
+  - system definition
   - configuration
-  - system definitions
+  - server
 ---
-The system-definition file **genesis-system-definition.kts** is the main configuration file for your application. This section explains all the different items that can be contained in the file.
+
+The system-definition file **genesis-system-definition.kts** is the main configuration file for your application. 
+
+It is located in the [site-specific](../../../server/configuring-runtime/site-specific/) area.
+
+Within the **site-specific** folder, the default location is:
+
+**\src\main\resources\cfg**.
+
+This section explains all the different items that can be contained in the file.
 
 Here is an example of a **genesis-system-definition.kts** file for an application:
 
@@ -99,7 +108,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
 
-**DbMode**: This setting is utilised by Aerospike and PostgreSQL database only, for other databases this property will be ignored
+**DbMode**: This setting is used by Aerospike and PostgreSQL database only; for other databases, this property is ignored
 - For [Aerospike](../../../database/database-technology/aerospike/) database: This can be one of two values: VANILLA for an Aerospike Community installation and DURABLE_DELETE if you are using Aerospike Enterprise
 
 - For [PostgresSQL](../../../database/database-technology/sql/#postgresql): This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY, which is the default mode; it always stores the dictionary in a table called `dictionary` and a schema called `metadata`.

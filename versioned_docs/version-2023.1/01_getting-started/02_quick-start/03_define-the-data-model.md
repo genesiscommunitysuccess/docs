@@ -17,7 +17,7 @@ You define your fields in the file **alpha-fields-dictionary.kts**.
 
 :::tip
 
-Once the project is open, there are two easy ways to find this file quickly in IntelliJ:
+Once the project is open, there are two easy ways to find this file (or any file) quickly in IntelliJ:
 
 - Press the **Shift** key twice, then type the name of the file you are looking for.
 - Press **Shift** + **Ctrl** + **N**, then type the name of the file you are looking for.
@@ -27,7 +27,7 @@ Once the project is open, there are two easy ways to find this file quickly in I
 
 For your simple example, you shall add five fields:
 
-```kotlin
+```kotlin title='alpha-fields-dictionary.kts'
 fields {
 
     field("TRADE_ID", type = STRING)
@@ -41,7 +41,7 @@ fields {
 
 You can find more information on fields in our [Database documentation](../../../database/fields-tables-views/fields/).
 
-After you have saved this file, run genesis-generated-fields from the Gradle menu on the right of Intellij, this is:
+After you have saved this file, run **genesis-generated-fields** from the Gradle menu on the right of Intellij; this is:
 
  **genesisproduct-alpha**/**alpha-dictionary-cache**/**alpha-generated-fields**/**Tasks**/**genesis**/**generateFields**
 
@@ -60,7 +60,7 @@ You are defining one single table, containing all your fields.
 
 TRADE_ID is the primaryKey, which will be auto-generated.
 
-```kotlin
+```kotlin title='alpha-tables-dictionary.kts'
 tables {
 
     table (name = "TRADE", id = 2000) {
@@ -80,14 +80,14 @@ tables {
 
 You can find more information on tables [here](../../../database/fields-tables-views/tables/).
 
-After you have saved this file, run genesis-generated-dao from the Gradle menu, this is:
+After you have saved this file, run **genesis-generated-dao** from the Gradle menu; this is:
 
 **genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDao**
 
 ![](/img/build-gradle-kts-generated-dao.png)
 
 
-```shell title='Running generateDAO f   rom the command line'
+```shell title='Running generateDAO from the command line'
 ./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-dao:generateDao
 ```
 

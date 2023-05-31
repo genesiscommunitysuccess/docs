@@ -147,6 +147,26 @@
 					"web" ,"layout" ,"foundation layout" ,"frontend" ,"ui" ,"golden layout"
 				]
       }
+    },
+    {
+      "name": "@genesislcap/foundation-comms",
+      "enabled": true,
+      "api_docs": "./docs/api",
+      "readme": "./README.md",
+      "output": {
+        "title": "Foundation Comms",
+        "sidebar_label": "Foundation Comms",
+        "id": "foundation-comms",
+        "directory": "./docs/04_web/11_comms",
+        "api_docs": "docs/api",
+        "readme": "01_foundation-comms.md",
+        "keywords": [
+          "genesis", "foundation", "ui", "comms"
+        ],
+        "tags": [
+          "data server", "request server", "event handler" ,"stream", "snapshot"
+        ]
+      }
     }
   ]
 }
