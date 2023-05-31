@@ -612,7 +612,7 @@ INSTRUMENT_ID,LAST_PRICE
 1,10
 ```
 
-Then import the local csv using the Genesis plugin as we saw [here](../../../ggetting-started/developer-training/training-content-day1/#credentials-to-login).
+Then import the local csv using the Genesis plugin as we saw [here](../../../getting-started/developer-training/training-content-day1/#credentials-to-login).
 
 Make sure you settled the INSTRUMENT_ID field as not nullable in the TRADE and POSITION tables, as the consolidations will use it.
 
