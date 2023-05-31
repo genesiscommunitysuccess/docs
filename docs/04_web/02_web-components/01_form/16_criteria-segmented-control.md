@@ -10,7 +10,7 @@ tags:
     - segmented control
 ---
 
-This version allows to use segmented control that will generate criteria based on selected item.
+This version allows you to use a segmented control that generates criteria based on the selected item.
 
 1. Add `@genesislcap/foundation-criteria` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. For more information, see the [package.json basics](../../../web/basics/package-json-basics/) page.
 
