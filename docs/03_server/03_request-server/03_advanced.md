@@ -11,7 +11,7 @@ tags:
 
 
 ## Audit tables
-If you want to create a `requestReply`codeblock for an Audit table, you must specify at least one field that is an index field in the underlying table.
+If you want to create a `requestReply`codeblock for an Audit table, and you also want to specify a specific set of request fields, those fields must belong to an index in the underlying audit table.
 
 ## Pre-processing a request
 
