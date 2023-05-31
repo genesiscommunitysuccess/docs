@@ -163,7 +163,8 @@ send("QUOTE_HANDLER", "QUOTE_EVENT") { quote ->
         ...
     }
 }
-```f
+```
+
 This example uses the message and a GenesisSet as parameters:
 
 ```kotlin
