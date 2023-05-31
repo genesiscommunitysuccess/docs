@@ -26,7 +26,7 @@ eventHandler {
 }
 ```
 
-- **Method 2**. Provide the field of table that holds the state, and explicitly choose whether you want to make the events transactional or not by providing boolean value.
+- **Method 2**. Provide the field of table that holds the state, and explicitly choose whether you want to make the events transactional or not by providing a boolean value.
 ```kotlin
 eventHandler {
     stateMachine(tableField = TRADE.TRADE_STATUS, transactional = true) {
