@@ -14,14 +14,14 @@ tags:
 Authorisation controls which features and information users have access to. This is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:
 
 * An entire grid from the UI
-* An entire data server
+* An entire Data Server
 * Specific rows and columns
 
 Effectively, you have two levels of control.
 
 ### High-level
 
-You could hide an entire grid from the UI. So one group of users could view reference data, but other groups would not see this. Or, you could hide an entire data server. To achieve this, you use `RIGHT_CODE`. This is like a switch – you can either see it or not, depending on whether the code is **TRUE** or **FALSE**.
+You could hide an entire grid from the UI. In this case, one group of users could view reference data, but other groups could not. Or, you could hide an entire Data Server. To achieve this, use `RIGHT_CODE`. This is like a switch – you can either see it or not, depending on whether the code is **TRUE** or **FALSE**.
 
 ### Entity-level
 
@@ -60,19 +60,19 @@ In such situations (e.g. setting up a brand new environment and bulk loading dat
 
 ### Sample explanation
 
-See the following simple system set-up. We have a set of entities (our user, rights and profiles), a set of profile mappings (to users and rights) and, finally, the resultant set of right entries we would see in `RIGHT_SUMMARY`
+See the following simple system set-up. We have a set of entities (our user, rights and profiles), a set of profile mappings (to users and rights) and, finally, the resultant set of right entries we would see in `RIGHT_SUMMARY`:
 
 ![](/img/user-profile-rights-example-simple.png)
 
 The above image shows:
 * 3 profiles, each with particular rights assigned
-* 4 users, 3 of which have one profile assigned to each and 1 of which, Jenny.Super, is assigned to have all rights.
+* 4 users, three of which have one profile assigned and one of which, Jenny.Super, is assigned to have all rights.
 
-Another way of achieving this same set-up would be to have a fourth profile, say **SUPER**, as per below, and to have all rights assigned to it, and Jenny.Super assigned just to the one profile:
+Another way of achieving this set-up would be to have a fourth profile, say **SUPER**, as per below, and to have all rights assigned to it, and Jenny.Super assigned just to the one profile:
 
 ![](/img/user-profile-rights-example-super.png)
 
-Note how we now have an extra profile, and edits to the `PROFILE_USER` and `PROFILE_RIGHT` entries, but still see the same resulting rights.
+Note how we now have an extra profile, and edits to the `PROFILE_USER` and `PROFILE_RIGHT` entries, but the resulting rights are the same.
 
 As you can tell, this enables you to build powerful combinations, and since **Users**, **Profiles**, **Profile_Users** and **Profile_Rights** are all editable by system administrators, they can build their own set-up that makes sense for their organisation.
 
@@ -83,9 +83,10 @@ Having profiles as an intermediary between users and rights enables admin users 
 ## Entity-level (row-level)
 
 The `GENESIS_AUTH_PERMS` process runs automatically on start-up and creates a memory-mapped file that acts as a big key-value pair.
+
 For example, User A has access to Counterparty 1, User B has access to Counterparty 2, User C has access to Counterparty 1, User D has access to Counterparty 4, etc. If there is no appropriate entry in the file, the user won’t have access.
 
-You must keep the `GENESIS_AUTH_PERMS` process running, as it maintains itself automatically whenever any permissions change. When a permission is changed, then it is automatically reflected on screen. If I have a grid on screen with 4 trades from Counterparty 1 and my permission to view that counterparty is withdrawn, those 4 trades disappear from my screen immediately.
+You must keep the `GENESIS_AUTH_PERMS` process running, as it maintains itself automatically whenever any permissions change. When a permission is changed, then it is automatically reflected on screen. If I have a grid on screen with four trades from Counterparty 1 and my permission to view that counterparty is withdrawn, those 4 trades disappear from my screen immediately.
 
 In many cases, you want different people to have access to different functions and different information, based on their roles. In Genesis, users are not permissioned individually for these purposes. Instead, permissioning is based on roles. You define what information and functions are available to a role, and then you allocate users to these roles. We refer to this as dynamic authorisation. There is nothing to stop you creating a role that has only one user, of course.
 
@@ -250,9 +251,12 @@ query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
 
 ### Adding authorisation to the Data Server and Request Server
 
-The code for permissioning specific queries must be inserted into your Data Servers and Data Servers.
-
 The dynamic authorisation definition in a GPAL Data Server or Data Server has 4 settings, which can be used in any combination:
+
+The code for permissioning specific queries must be inserted into your Data Servers and Request Servers.
+
+The dynamic authorisation definition in a GPAL Data Server or Request Server has 4 settings, which can be used in any combination:
+
 - grouping (and/or)
 - where clauses
 - hideFields
@@ -714,7 +718,7 @@ Each `expression` has the following properties and should return either `true` o
 
 | Name | Description |
 | --- | --- |
-| entityDb | Read only access to the database if additional data query is required. **Note:** Keep in mind that the expression is called on each data update and querying the database each time will result in performance hit. Better approach would be to define a View that joins all the Tables with relevant data|
+| entityDb | Read only access to the database if additional data query is required. **Note:** The expression is called on each data update, and querying the database each time will result in performance hit. A better approach would be to define a View that joins all the Tables with relevant data|
 | entity | The entity to be evaluated for access |
 | user | The user to be evaluated for access to the `entity`  |
 | entityId | The value calculated based on the specified `idField` |
