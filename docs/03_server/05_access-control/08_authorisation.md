@@ -55,7 +55,7 @@ The `RIGHT_SUMMARY` table entries are automatically maintained by the system in 
 
 :::warning
 This table is only automatically maintained when profile user/right entries are maintained via `GENESIS_AUTH_MANAGER` business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. **DbMon** or **SendIt**) then the `RIGHT_SUMMARY` table will not be maintained automatically.
-In such situations (e.g. setting up a brand new environment and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in `PROFILE_USER` and `PROFILE_RIGHT` and populates `RIGHT_SUMMARY` with the the correct data.
+In such situations (e.g. setting up a brand new environment and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in `PROFILE_USER` and `PROFILE_RIGHT` and populates `RIGHT_SUMMARY` with the correct data.
 :::
 
 ### Sample explanation
