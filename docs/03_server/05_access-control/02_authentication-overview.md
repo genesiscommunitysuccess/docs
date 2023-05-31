@@ -11,7 +11,7 @@ tags:
 ---
 
 
-YOur application can perform authentication through many techniques. All these techniques support [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication) to bring additional security.
+Your application can perform authentication through many techniques. All these techniques support [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication) to bring additional security.
 
 You can set Username and Password authentication to use one of three solutions:
 
