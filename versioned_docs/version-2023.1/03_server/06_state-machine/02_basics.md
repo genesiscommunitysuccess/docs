@@ -11,12 +11,12 @@ tags:
 
 You define your State Machine as a specific type of Event Handler. 
 
-Within your application's **eventhandler.kts**, you must define the conditions for each possible change of state. Remember, if you don't the conditions for changing from one state to another, then it will not be possible for the application to make that transition.
+Within your application's **eventhandler.kts**, you must define the conditions for each possible change of state. Remember, if you don't define the conditions for changing from one state to another, then it will not be possible for the application to make that transition.
 
-Before you initialise, you need an ENUM field to hold the state. There are two ways of initialising the State Machine:
+Before you start to define your state machine, you will need to define an ENUM field to hold the state. There are two ways to define the State Machine:
 
 
-- **Method 1**. Provide the field of the table that holds the state. This table must be transactional (if the database layer supports it). For example:
+- **Method 1**. Provide the field of the table that holds the state. This defaults the events under the state machine to be transactional (if the database layer supports it). For example:
 ```kotlin
 // tableField: the field of table which holds the state and will always be transaction if the database layer supports it.
 eventHandler {
@@ -26,7 +26,7 @@ eventHandler {
 }
 ```
 
-- **Method 2**. Provide the field of table that holds the state, and choose whether you want to make the event Transactional or not by providing boolean value.
+- **Method 2**. Provide the field of table that holds the state, and explicitly choose whether you want to make the events transactional or not by providing boolean value.
 ```kotlin
 eventHandler {
     stateMachine(tableField = TRADE.TRADE_STATUS, transactional = true) {
