@@ -13,7 +13,7 @@ You define your State Machine as a specific type of Event Handler.
 
 Within your application's **eventhandler.kts**, you must define the conditions for each possible change of state. Remember, if you don't define the conditions for changing from one state to another, then it will not be possible for the application to make that transition.
 
-Before you start to define your state machine, you will need to define an ENUM field to hold the state. There are two ways to define the State Machine:
+Before you start to define your state machine, you need to define an ENUM field to hold the state. There are two ways to define the State Machine:
 
 
 - **Method 1**. Provide the field of the table that holds the state. This defaults the events under the state machine to be transactional (if the database layer supports it). For example:
