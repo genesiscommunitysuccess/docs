@@ -170,7 +170,7 @@ eventHandler {
 }
 ```
 
-You can also see a state machine being created in practice in our [tutorial](../../../server/state-machine/introduction/).
+You can also see a state machine being created in practice in our [tutorial](../../../getting-started/developer-training/training-content-day4/#state-management).
 
 ### Inject state machine in event handler [API](../../../database/api-reference/event-handler-api/)
 
