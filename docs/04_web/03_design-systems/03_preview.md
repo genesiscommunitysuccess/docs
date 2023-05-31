@@ -24,6 +24,13 @@ Try changing the configurations and observe the reflected changes on the right.
 
 ## Editor
 
+This checkbox is ticked by default:
+> Preserve selected options when changing design systems
+
+This means that when you switch between Design Systems, all of your actively made selections are retained. For instance, if you configure the design tokens in the `Zero` Design System, and then switch to the `Foundation-UI`, you will see the changes you configured there as well. 
+
+Alternatively, if it's unticked, switching between Design Systems will not retain the configurations but only display the default values of the Design System selected.
+
 :::important
 An important configuration to note, is the `Design System`. In the dropdown list of `Design System` you will see `Zero` and `Foundation-Ui`. Depending on which one you choose to create your designs on, will give you a different look.
 :::
@@ -53,14 +60,14 @@ Alternatively if we found that we no longer need the modifications we have made,
 
 ## Preview
 
-In the preview we can see four tabs displaying the information as suggested by their titles. 
+In the preview we can see three tabs displaying the information as suggested by their titles. 
 
 ### Components
 
 The contents of the `Components` tab reflect the components that are affected by the configurations of the design tokens. 
 
 :::note
-The components we see here, are only a small collection used for the purpose of displaying an example. There are many more [components](../../../web/web-components/overview) that we have access to. 
+The components we see here, are only a small collection used for the purpose of displaying an example. There are many more ***[components](../../../web/web-components/overview)*** that we have access to. 
 :::
 
 ### Typography
@@ -70,7 +77,3 @@ The `Typography` tab displays the list of typography tokens avilable for us to u
 ### Colors
 
 The `Colors` tab as you may suspect, shows the design tokens available for use that pertain to color. Click on the `Color` tab and observe the reflected changes as you configure the `Accent color` and `Neutral color` design tokens. 
-
-### Forms
-
-The `Form` tab displays a `Smart Form`. This is another component available for us to use. We can configure it by tweaking the design tokens in the editor. Go to the `Form` tab and modify the styles in the editor to see the results. 
