@@ -14,14 +14,14 @@ tags:
 Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:
 
 * An entire grid from the UI
-* An entire data server
+* An entire Data Server
 * Specific rows and columns
 
 Effectively, you have two levels of control.
 
 ### High-level
 
-You could hide an entire grid from the UI. So one group of users could view reference data, but other groups would not see this. Or, you could hide an entire data server. To achieve this, you use `RIGHT_CODE`. This is like a switch – you can either see it or not, depending on whether the code is **TRUE** or **FALSE**.
+You could hide an entire grid from the UI. In this case, one group of users could view reference data, but other groups could not. Or, you could hide an entire Data Server. To achieve this, use `RIGHT_CODE`. This is like a switch – you can either see it or not, depending on whether the code is **TRUE** or **FALSE**.
 
 ### Entity-level
 
@@ -55,24 +55,24 @@ The `RIGHT_SUMMARY` table entries are automatically maintained by the system in 
 
 :::warning
 This table is only automatically maintained when profile user/right entries are maintained via `GENESIS_AUTH_MANAGER` business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. **DbMon** or **SendIt**) then the `RIGHT_SUMMARY` table will not be maintained automatically.
-In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in `PROFILE_USER` and `PROFILE_RIGHT` and populates `RIGHT_SUMMARY` withe the correct data.
+In such situations (e.g. setting up a brand new environment and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in `PROFILE_USER` and `PROFILE_RIGHT` and populates `RIGHT_SUMMARY` with the correct data.
 :::
 
 ### Sample explanation
 
-See the following simple system set-up. We have a set of entities (our user, rights and profiles), a set of profile mappings (to users and rights) and, finally, the resultant set of right entries we would see in `RIGHT_SUMMARY`
+See the following simple system set-up. We have a set of entities (our user, rights and profiles), a set of profile mappings (to users and rights) and, finally, the resultant set of right entries we would see in `RIGHT_SUMMARY`:
 
 ![](/img/user-profile-rights-example-simple.png)
 
 The above image shows:
 * 3 profiles, each with particular rights assigned
-* 4 users, 3 of which have one profile assigned to each and 1 of which, Jenny.Super, is assigned to have all rights.
+* 4 users, three of which have one profile assigned and one of which, Jenny.Super, is assigned to have all rights.
 
-Another way of achieving this same set-up would be to have a fourth profile, say **SUPER**, as per below, and to have all rights assigned to it, and Jenny.Super assigned just to the one profile:
+Another way of achieving this set-up would be to have a fourth profile, say **SUPER**, as per below, and to have all rights assigned to it, and Jenny.Super assigned just to the one profile:
 
 ![](/img/user-profile-rights-example-super.png)
 
-Note how we now have an extra profile, and edits to the `PROFILE_USER` and `PROFILE_RIGHT` entries, but still see the same resulting rights.
+Note how we now have an extra profile, and edits to the `PROFILE_USER` and `PROFILE_RIGHT` entries, but the resulting rights are the same.
 
 As you can tell, this enables you to build powerful combinations, and since **Users**, **Profiles**, **Profile_Users** and **Profile_Rights** are all editable by system administrators, they can build their own set-up that makes sense for their organisation.
 
@@ -83,15 +83,16 @@ Having profiles as an intermediary between users and rights enables admin users 
 ## Entity-level (row-level)
 
 The `GENESIS_AUTH_PERMS` process runs automatically on start-up and creates a memory-mapped file that acts as a big key-value pair.
+
 For example, User A has access to Counterparty 1, User B has access to Counterparty 2, User C has access to Counterparty 1, User D has access to Counterparty 4, etc. If there is no appropriate entry in the file, the user won’t have access.
 
-You must keep the `GENESIS_AUTH_PERMS` process running, as it maintains itself automatically whenever any permissions change. When a permission is changed, then it is automatically reflected on screen. If I have a grid on screen with 4 trades from Counterparty 1 and my permission to view that counterparty is withdrawn, those 4 trades disappear from my screen immediately.
+You must keep the `GENESIS_AUTH_PERMS` process running, as it maintains itself automatically whenever any permissions change. When a permission is changed, then it is automatically reflected on screen. If I have a grid on screen with four trades from Counterparty 1 and my permission to view that counterparty is withdrawn, those 4 trades disappear from my screen immediately.
 
 In many cases, you want different people to have access to different functions and different information, based on their roles. In Genesis, users are not permissioned individually for these purposes. Instead, permissioning is based on roles. You define what information and functions are available to a role, and then you allocate users to these roles. We refer to this as dynamic authorisation. There is nothing to stop you creating a role that has only one user, of course.
 
 ## General approach
 
-On startup, the `GENESIS_AUTH_PERMS` process performs an initial scan of all entities. For each entity found, it performs authorisation against every user in the system. This builds a full map of permissioned users.
+On start-up, the `GENESIS_AUTH_PERMS` process performs an initial scan of all entities. For each entity found, it performs authorisation against every user in the system. This builds a full map of permissioned users.
 
 By default, any updates to the entity and the `USER` table will be automatically processed to permission new entities as they are entered into the database.
 
@@ -233,7 +234,7 @@ There are two auth maps in **auth-permissions.templt.xml** to control how users 
         ]]>
 </entity>
 ```
-Here is an example of using `ENTITY_VISIBILITY` in a data server or request server:
+Here is an example of using `ENTITY_VISIBILITY` in a Data Server or Request Server:
 
 ```kotlin
 query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
@@ -248,11 +249,11 @@ query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
 }
 ```
 
-### Adding authorisation to the data server and request server
+### Adding authorisation to the Data Server and Request Server
 
-The code for permissioning specific queries must be inserted into your data servers and request servers.
+The code for permissioning specific queries must be inserted into your Data Servers and Request Servers.
 
-The dynamic authorisation definition in a GPAL data server or request server has 4 settings, which can be used in any combination:
+The dynamic authorisation definition in a GPAL Data Server or Request Server has 4 settings, which can be used in any combination:
 - grouping (and/or)
 - where clauses
 - hideFields
@@ -349,7 +350,7 @@ permissioning {
 
 #### enrichedAuth
 
-Our permission model could require access to client-enriched data, so data servers have an additional level of auth functionality that takes this data into account.
+Our permission model could require access to client-enriched data, so Data Servers have an additional level of auth functionality that takes this data into account.
 
 Here is an example:
 
@@ -714,7 +715,7 @@ Each `expression` has the following properties and should return either `true` o
 
 | Name | Description |
 | --- | --- |
-| entityDb | Read only access to the database if additional data query is required. **Note:** Keep in mind that the expression is called on each data update and querying the database each time will result in performance hit. Better approach would be to define a View that joins all the Tables with relevant data|
+| entityDb | Read only access to the database if additional data query is required. **Note:** The expression is called on each data update, and querying the database each time will result in performance hit. A better approach would be to define a View that joins all the Tables with relevant data|
 | entity | The entity to be evaluated for access |
 | user | The user to be evaluated for access to the `entity`  |
 | entityId | The value calculated based on the specified `idField` |
@@ -749,7 +750,7 @@ dynamicPermissions {
 }
 ```
 
-### Data server snippet
+### Data Server snippet
 ```kotlin
 dataServer {
   query(POSITION_VIEW) {
