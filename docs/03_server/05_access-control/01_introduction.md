@@ -21,7 +21,7 @@ The password authentication can be configured to use an internal store of users,
 
 For more information about LDAP, see [Wikipedia](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol).
 
-Once a user has been authenticated, the authorisation systems allow for a user's access to be further restricted to particular function and items of data.
+Once a user has been authenticated, the authorisation systems allow for a user's access to be further restricted to particular functions and items of data.
 
 This authorisation is performed on a group basis, not on individual users; however, you can have groups with only one member.
 
