@@ -35,11 +35,11 @@ Alternatively, if it's unticked, switching between design systems will not retai
 Instead, they will be reset to design system defaults.
 
 :::note
-Note that in the documentation, the DSC (Design System Configurator), is on *preview* mode rather than on *application* mode. There are minor but significant differences between them.
+Note that in the documentation, the DSC (Design System Configurator), is in *preview* mode rather than *application* mode. There are minor but significant differences between them.
 :::
 
 :::important
-The **Design System** is an important configuration. Depending on which one you choose, you will get a different look. While on *preview* mode, in the dropdown list of **Design System** you will see **Zero** and **Foundation UI**. But in *application* mode, you will see one more design system. 
+The **Design System** is an important configuration. Depending on which one you choose, you will get a different look. While in *preview* mode, you will see **Zero** and **Foundation UI** in the dropdown list of **Design System**. But in *application* mode, you will see one more design system. 
 :::
 
 For example, if you have launched DSC from an application called **client-app**, you will also see **Client App** in the dropdown list.
@@ -59,7 +59,7 @@ In the editor, after you have configured the design system, there are two more t
 Once you're happy with all the changes, you can click the **Save** button. At this point, a modal is prompted that shows you the configured design tokens in a JSON format. 
 
 :::note
-Because this is only a preview, only the **Close** button is shown on the modal. when the **DSC** app is launched, you will see another **Save** button parallel to the **Close** one. Clicking the **Save** button, saves all the changes; this is reflected in the application you're currently running the Design System Configurator from.
+Because this is only a preview, only the **Close** button is shown on the modal. When the **DSC** app is launched, you will see another **Save** button parallel to the **Close** one. Clicking the **Save** button, saves all the changes; this is reflected in the application you're currently running the Design System Configurator from.
 :::
 
 See the images below.
@@ -87,8 +87,8 @@ The components we see here are only a small collection used for the purpose of d
 
 ### Typography
 
-The **Typography** tab displays the list of typography tokens avilable for you to use. Click on the tab in the preview and observe the changes on the **Body Font**, **Base Font Size** and **Base Line Height** as you configure these tokens on the left-hand side. 
+The **Typography** tab displays the list of typography tokens avilable for you to use. Click on the tab in the preview and observe the changes to the **Body Font**, **Base Font Size** and **Base Line Height** as you configure these tokens on the left-hand side. 
 
 ### Colors
 
-The **Colors** tab, as you may suspect, shows the design tokens available for setting color. Click on the **Colors** tab and observe the reflected changes as you configure the **Accent color** and **Neutral color** design tokens. 
+The **Colors** tab, as you may suspect, shows the design tokens available for setting colour. Click on the **Colors** tab and observe the reflected changes as you configure the **Accent color** and **Neutral color** design tokens. 
