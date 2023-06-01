@@ -24,7 +24,7 @@ Try changing the configurations and observe the reflected changes on the right.
 
 ## Editor
 
-The **'Preserve selected options...'** checkbox in the editor is ticked by default.
+The **Preserve selected options...** checkbox in the editor is ticked by default.
 
 ![](/img/checkbox.PNG)
 
