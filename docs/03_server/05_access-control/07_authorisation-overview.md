@@ -161,7 +161,7 @@ customPermissions { message ->
 }
 ```
 
-The `customPermissions` function acts as an additional permissions check which works in a similar way to  `permissionCodes`. If this function returns true, the user will be able to access the resource, otherwise the request will be rejected. The example above perfoms a database lookup on the "USER_ATTRIBUTES" table, and will only return "true" if the user has `AccessType.ALL`.
+The `customPermissions` function acts as an additional permissions check which works in a similar way to  `permissionCodes`. If this function returns true, the user will be able to access the resource, otherwise the request will be rejected. The example above performs a database lookup on the "USER_ATTRIBUTES" table, and will only return true if the user has `AccessType.ALL`.
 
 The main advantage of declaring a `customPermissions` function is that you can write any sort of custom code within it. This can make integration with existing entitlement systems a much easier task, as it means you can avoid replicating the correct rights and profiles hierarchy within the Genesis database.
 
@@ -177,7 +177,8 @@ All `customPermissions` functions give you access to a property called `entityDb
 Generic permissions is a term used to name the optional permissions configuration that is available for a Genesis application; this is included as part of the Genesis Auth Module.
 
 To fully activate Generic permissions, you need to add the following values to your [system definition file](../../../server/configuring-runtime/system-definitions/) before you run `genesisInstall`.
-These values specify which table column will be used to associate users to entities for fine-grained row permissions.
+
+These values specify which table column will be used to associate users with entities for fine-grained row permissions.
 
 
 ```kotlin
@@ -200,10 +201,10 @@ Note these **important** details:
 - When new users are created in the Genesis GUI Admin screens, a required field, COUNTERPARTY, is presented to the operating user. This limits users to belonging to a single counterparty.
 
 
-A user can define additional **permissions.xml** files. For example, you could define something like **order-management-permissions.xml**, with an order management system auth implementation, and it will be read by `AUTH_PERMS` process on startup.
+A user can define additional **permissions.xml** files. For example, you could define something like **order-management-permissions.xml**, with an order management system auth implementation, and it will be read by `AUTH_PERMS` process on start-up.
 
 There are two kinds of permission entity defined by Generic Permissions in the **auth-permission.templt.xml** file:
 
 - **USER_VISIBILITY** - an AuthCache that determines which user is visible to which user; this is driven by which users are associated for the entity. Using our example, if two users are both in the same counterparty, then they should be viewable to each other.
 
-- **ENTITY_VISIBILITY** - an AuthCache that determines if a user has access to particular entity; in our example, if the user is permissioned for a particular counterparty, then it will be able to see the associated row data for that counterparty.
+- **ENTITY_VISIBILITY** - an AuthCache that determines if a user has access to a particular entity; in our example, if the user is permissioned for a particular counterparty, then that user will be able to see the associated row data for that counterparty.

@@ -11,7 +11,7 @@ tags:
 
 
 ## Types of control
-Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:
+Authorisation controls which features and information users have access to. This is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:
 
 * An entire grid from the UI
 * An entire Data Server
@@ -25,7 +25,7 @@ You could hide an entire grid from the UI. In this case, one group of users coul
 
 ### Entity-level
 
-This is row or column level access to information. Different users can all view the same grid, but each one sees different data. This is best explained with these simple scenarios:
+This is row- or column-level access to information. Different users can all view the same grid, but each one sees different data. This is best explained with these simple scenarios:
 
 * You can have user A, user B and user C all having the RIGHT_CODE to view a specific grid, but each one sees different trades in that grid. This enables you to separate different trading desks.
 * Each user might only have access to trades for specific clients.
@@ -117,7 +117,7 @@ field(name = "ACCESS_TYPE", type = ENUM("ALL", "ENTITY", "MULTI_ENTITY", default
 Only `ALL` and `ENTITY` are in working condition at the moment.
 :::
 
-Users with `ACCESS_TYPE` set to `ENTITY` (e.g. the entity could be represented by COUNTERPARTY_ID) will be permissioned only to see data relating to the value stored in the x field in the `USER_ATTRIBUTES` table. The name of x field is set in the `ADMIN_PERMISSION_ENTITY_FIELD` in the system definition file, as you can see in the example below.
+Users with `ACCESS_TYPE` set to `ENTITY` (e.g. the entity could be represented by COUNTERPARTY_ID) will be permissioned to see only data relating to the value stored in the x field in the `USER_ATTRIBUTES` table. The name of x field is set in the `ADMIN_PERMISSION_ENTITY_FIELD` in the system definition file, as you can see in the example below.
 
 
 
@@ -130,7 +130,7 @@ systemDefinition {
 }
 ```
 
-These two items change the structure of **auth-tables-dictionary.kts** and **auth-permissions.templt.xml** to accomodate the defined table and field, and ensure that the table/permission data structure is built correctly.
+These two items change the structure of **auth-tables-dictionary.kts** and **auth-permissions.templt.xml** to accommodate the defined table and field, and ensure that the table/permission data structure is built correctly.
 
 Here is the `USER_ATTRIBUTES` table definition in **auth-tables-dictionary.kts**:
 
@@ -164,7 +164,7 @@ table(name = "USER_ATTRIBUTES", id = 1007, audit = details(1052, "AA")) {
 ```
 The permissions field will be added dynamically to `USER_ATTRIBUTES`, so it can be used in auth transactions to control entitlements.
 
-The following table will be created as well (ignore `MULTI_ENTITY` setup for now; this is in development). It is used by the Genesis low-code platform to manage `AUTH_PERMS` results.
+The following table will be created as well (ignore `MULTI_ENTITY` set-up for now; this is in development). It is used by the Genesis low-code platform to manage `AUTH_PERMS` results.
 
 ```kotlin
 val permissionsTable = SysDef.systemDefinition["ADMIN_PERMISSION_ENTITY_TABLE"].orElse(null)
@@ -251,9 +251,12 @@ query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
 
 ### Adding authorisation to the Data Server and Request Server
 
+The dynamic authorisation definition in a GPAL Data Server or Data Server has 4 settings, which can be used in any combination:
+
 The code for permissioning specific queries must be inserted into your Data Servers and Request Servers.
 
 The dynamic authorisation definition in a GPAL Data Server or Request Server has 4 settings, which can be used in any combination:
+
 - grouping (and/or)
 - where clauses
 - hideFields
@@ -504,7 +507,7 @@ We also define several items on the entity element:
 * **name** - The entity (and table name) we're dealing with
 * **maxEntries** - Max number of entries to read on initial scan
 * **idField** - The account ID
-* **updateOn** xml block - We want to re-evaluate the auth entries (entities and users) when the TAG table is updated, just in case we make a user sales officer/asset manager.
+* **updateOn** xml block - we want to re-evaluate the auth entries (entities and users) when the TAG table is updated, just in case we make a user sales officer/asset manager.
 
 As mentioned above, we will also refresh when either the `ENTITY`, `USER` or `USER_ATTRIBUTES` tables are updated. You will need to define `updateOnUserFields` (see further down) to ensure user data updates are triggered.
 

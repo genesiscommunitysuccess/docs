@@ -70,7 +70,7 @@ Make sure that the`JWT_CONFIG` table of your application is correctly configured
 
 * The `DOMAIN` must contain the domain for which this JWT is valid.
 * The `PUBLIC_KEY` should contain the public key of the JWT key pair, (the private key is used to sign the JWT at the internal authentication service).
-* Alternatively the `PUBLIC_KEY_URL` can be set as a URL to obtain this dynamically. Public keys obtained in this way are expected to be in JSON Web Key Sets format.
+* Alternatively, the `PUBLIC_KEY_URL` can be set as a URL to obtain this dynamically. Public keys obtained in this way are expected to be in JSON Web Key Sets format.
 * The `REDIRECT_URL` must contain the URL for which the user is redirected to log in, should they not possess a valid JWT.
 * The `KEY_ALGORITHM` should be set either to `KeyAlgorithm.RSA` or `KeyAlgorithm.HMAC`.
 
