@@ -6,10 +6,11 @@ keywords: [server, request server, advanced]
 tags:
   - server
   - request server
-  - advanced
+  - requestreply
 ---
 
-
+## Audit tables
+If you want to create a `requestReply`codeblock for an Audit table, and you also want to specify a specific set of request fields, those fields must belong to an index in the underlying audit table.
 
 ## Pre-processing a request
 
@@ -135,7 +136,7 @@ Note that ranges that are not based on indexes perform more slowly than those th
 
 You can use a permissioning block to define both dynamic permissions (AUTH) and permission codes (based on RIGHT_SUMMARY rights) on Request Servers, which is similar to Event Handler and Data Server.
 
-### Dynamic permission:
+### Dynamic permissioning
 
 Similar to Data-Server, you can provide dynamic permissioning on Request Server by using table/view reference.
 
@@ -294,6 +295,7 @@ requestReply<InstrumentDetails.ByInstrumentId, InstrumentDetails> {
 ```
 
 Next is a more complex example. 
+
 The first block checks that the user is authorised to view the instrument.
 
 The second block uses the ALT_INSTRUMENT_ID table. The index is used as the input, but we return either a `getBulk`, a `getRange` or a `get`, depending on the input.
@@ -341,7 +343,7 @@ requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId>("FAN
 }
 ```
 
-Helpers exist to assist interacting with the Kotlin Flow type, which is the return type within the reply block. These helpers are:
+Helpers assist you to interact with the Kotlin Flow type, which is the return type within the reply block. These helpers are:
 * T.flow() - Converts to the Flow type
 * T.distinct() - Returns a Flow of all distinct values
 * T.distinctBy(selector: (T) -> K?) - Returns a Flow of all distinct values given a selector
