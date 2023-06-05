@@ -97,7 +97,7 @@ For each process, the tags define key information. Let's look at the tags that a
 
 ### dependency
 
-This tag defines the processes that the current process is dependent on. In the above example, the **POSITION_APP_CONSOLIDATOR** process will only start once the **POSITION_APP_EVENT_HANDLER** process is running. 
+This tag defines a comma-separated list of processes that the current process is dependent on. In the above example, the **POSITION_APP_CONSOLIDATOR** process will only start once the **POSITION_APP_EVENT_HANDLER** process is running. 
 
 When you are defining the process in your application's **process.xml**, this tag is optional.
 

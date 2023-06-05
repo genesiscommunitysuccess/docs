@@ -30,3 +30,6 @@ yarn-error.log*
 tmp
 .idea
 .vscode
+
+/src/client-modules/
+src/client-modules/iife.d.ts

@@ -219,7 +219,7 @@ Now you can run the application's front end. From there, you can view the data t
 
 To run the application, from **client/package.json**:
 
-1. Run the**bootstrap** script.
+1. Run the **bootstrap** script.
 2. Run the **dev** script.
 
 Now you have a fully running application. If it is not opened automatically, navigate to http://localhost:6060/login, and you should see the following:

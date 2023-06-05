@@ -490,6 +490,28 @@ module.exports = {
         },
       ],
     },
+    {
+      "type": "category",
+      "label": "COMMS",
+      "collapsed": true,
+      "items": [
+        {
+          "type": "doc",
+          "id": "web/comms/foundation-comms"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "label": "SMART FORMS",
+      "collapsed": true,
+      "items": [
+        {
+          "type": "doc",
+          "id": "web/forms/foundation-forms"
+        }
+      ]
+    }
   ],
   operationsSidebar: [
     'operations/operations',

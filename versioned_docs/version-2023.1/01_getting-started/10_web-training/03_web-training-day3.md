@@ -94,15 +94,13 @@ To stop automatic generation of columns, you need to add the `only-template-col-
 Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive) directive; this includes all the columns from our column config array.
 
 
-```typescript {2,7,13-15} title="order.template.ts"
+```typescript {2,6,11-13} title="order.template.ts"
 ...
 import {orderColumnDefs} from './orderColumnDefs';
 ...
 export const OrderTemplate = html<Order>`
 ...
-<zero-grid-pro
-    only-template-col-defs
-    >
+<zero-grid-pro only-template-col-defs >
     <grid-pro-genesis-datasource
         resource-name="ALL_ORDERS"
         order-by="ORDER_ID">
@@ -152,9 +150,9 @@ If you struggle, make sure to revisit this previous lesson on [calling event han
 ## An example of own grid component
 It's possible to create your own grid component if you want something completely customized. We can do that creating a new customElement. 
 
-In the example below, the component is called `positions-grid-pro`. 
+In the example below, the component is called `positions-grid-pro`. Go to the folder **components** and create a new folder called "order-grid". We are going to create our brand new component there.
 
-```javascript {10}
+```javascript {10} title="component/order-grid/positions-grid-pro.ts"
 import {ZeroGridPro, zeroGridProTemplate} from '@genesislcap/foundation-zero-grid-pro';
 import {customElement} from '@microsoft/fast-element';
 import {positionsGridStyles} from './grid-pro.styles';
@@ -172,7 +170,7 @@ Note we are extending `ZeroGridPro`, not `FASTElement`.
 
 Now you need to provide custom styles for the custom component:
 
-```javascript
+```javascript title="component/order-grid/order-grid.styles.ts"
 import {zeroAgGridStyles} from '@genesislcap/foundation-zero';
 import {css, ElementStyles} from '@microsoft/fast-element';
 import {BUY_SIDE, SELL_SIDE, NEW_TRADE_STATUS, CANCELLED_TRADE_STATUS} from './colors';
@@ -230,7 +228,7 @@ export const positionsAgGridStyles: ElementStyles = css`
 
 This allows us to enhance the column definitions by adding conditional classes:
 
-```javascript
+```javascript title="component/order-grid/ordersaggridColumnDefs.ts"
 const tradeCellClassRules = {
   'buy-side-trade': params => params.value === 'BUY',
   'sell-side-trade': params => params.value === 'SELL',
@@ -267,7 +265,7 @@ Looks good, doesn't it?
 Create a new component called `OrdersAgGrid` extending `ZeroGridPro`. Apply the same style on the `SIDE` field of the `PositionsAgGrid` in the `OrdersAgGrid` - so that SIDE will be green when ***BUY*** and red when ***SELL***.
 
 :::tip
-To do this, create an **order-grid** folder below **client\web\src\components** and create the files needed to create a class, template and styles (e.g. **order-grid.ts**, **order-grid.template.ts** and **order-grid.styles.ts**). Apply the necessary changes that we saw above. 
+To do this, remember to create an **order-grid** folder below **client\web\src\components** and create the files needed to create a class, template and styles (e.g. **order-grid.ts**, **order-grid.template.ts** and **order-grid.styles.ts**). Apply the necessary changes that we saw above. 
 
 Finally, create a new route called custom-order (as we did with playground, order, etc) and then add the order-grid you just created.
 :::
@@ -305,11 +303,13 @@ Having a static filter like that is not always very useful though. Let's make it
 <grid-pro-genesis-datasource
         resource-name="ALL_ORDERS"
         order-by="ORDER_ID"
-        criteria="SIDE == '${x=>x.sideFilter}'">
+        criteria="DIRECTION == '${x=>x.sideFilter}'">
 </grid-pro-genesis-datasource>
 ```
 
-```ts title='order.ts'
+```ts {1} title='order.ts'
+import {customElement, FASTElement, observable, attr } from '@microsoft/fast-element';
+...
 @attr public sideFilter = 'BUY';
 
 public toggleSideFilter() {
@@ -321,13 +321,19 @@ Make sure to try it now and click on the 'Toggle SIDE filter' button to see the 
 
 Ultimately, we can use something like the [ref directive](https://www.fast.design/docs/fast-element/using-directives/#the-ref-directive) to make our code completely override the criteria. So, let's add another button to reset the criteria to something else and use the `ref` in grid-pro-genesis-datasource.
 
-```ts {1,3} title='order.template.ts'
+```ts {1,5,9} title='order.template.ts'
+import {html, repeat, when, ref} from '@microsoft/fast-element';
+
+...
+
 <zero-button @click=${x=> x.customFilter()}>No filters</zero-button>
+
+...
 
 <grid-pro-genesis-datasource ${ref('ordersGrid')}
         resource-name="ALL_ORDERS"
         order-by="ORDER_ID"
-        criteria="SIDE == '${x=>x.sideFilter}'">
+        criteria="DIRECTION == '${x=>x.sideFilter}'">
     </grid-pro-genesis-datasource>
 ```
 
@@ -336,7 +342,7 @@ Add the ordersGrid property and customFilter method to the Order class:
 @observable ordersGrid: any;
 
 public customFilter() {
-    this.ordersGrid.criteria = `SIDE == 'BUY' || SIDE == 'SELL'`;
+    this.ordersGrid.criteria = `DIRECTION == 'BUY' || DIRECTION == 'SELL'`;
   }
 ```
 

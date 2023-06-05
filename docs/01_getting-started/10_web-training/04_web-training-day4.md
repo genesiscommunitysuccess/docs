@@ -15,8 +15,11 @@ tags:
 This day covers:
 
 - [Styling](#styling)
+- [Dynamic layout](#dynamic-layout)
+- [Chart](#chart)
 - [Design systems](#design-systems)
 - [Micro Front-ends](#micro-front-ends)
+
 
 ## Styling
 
@@ -24,11 +27,11 @@ You might want to customise look and feel using layout and styles. For instance,
 
 ### grid-pro
 
-We've seen how to create custom grids, now let's see another way to further style it.
+We've seen how to create custom grids, now let's see a way to style it further.
 
-Styling an grid-pro can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called **orders.styles.ts** and provide the following code:
+Styling a grid-pro can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called **orders-grid.styles.ts** and provide the following code:
 
-```ts title='orders.styles.ts'
+```ts {4-6} title='orders-grid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
 
 export const ordersGridStyles: ElementStyles = css`
@@ -40,14 +43,16 @@ export const ordersGridStyles: ElementStyles = css`
 
 Configure your column to have the specific class name:
 
-```ts
-{field: 'NOTES', cellClass: 'notes-column'},
+```ts title="orderColumnDefs.ts"
+{field: 'NOTES', headerName: 'Notes', sort: 'desc', cellClass: 'notes-column', flex: 2},
 ```
 
-In **order.template.ts**, in the grid tag, include utility that will inject your stylesheet to the component:
+In **order.template.ts**, in the grid tag, include a utility that will inject your stylesheet to the component:
 
-```ts {1,5}
+```ts {1,7} title ='order.template.ts'
 import {ordersGridStyles} from "./orders-grid.styles";
+
+...
 
 <zero-grid-pro>
     ...    
@@ -59,23 +64,23 @@ import {ordersGridStyles} from "./orders-grid.styles";
 
 If you need to provide different class names for specific conditions, you can provide a function to the `cellClass` column config, as shown in the example below:
 
-```ts
-{field: 'DIRECTION', cellClass: (params) => params.value === 'BUY' ? 'buy-direction' : 'sell-direction'},
+```ts title="orderColumnDefs.ts"
+{field: 'DIRECTION', headerName: 'Order Side', cellClass: (params) => params.value === 'BUY' ? 'buy-direction' : 'sell-direction', sort: 'desc', flex: 2},
 ```
 
 Remember to add the new styles to your stylesheet file.
 
-```ts
+```ts title="orders-grid.styles.ts"
 import {css, ElementStyles} from '@microsoft/fast-element';
 
-export const tradesGridStyles: ElementStyles = css`
-.notes-column {         
-  color: blue;     
+export const ordersGridStyles: ElementStyles = css`
+.notes-column {
+  color: blue;
 }
 
 .buy-direction {
   color: green;
-}    
+}
 
 .sell-direction {
   color: red;
@@ -85,7 +90,7 @@ export const tradesGridStyles: ElementStyles = css`
 
 ### Layout
 
-By default, all elements on screen will use `display:block`, but we can easily customise it using our custom component that supports responsive web design.
+By default, all elements on screen use `display:block`, but we can easily customise it using our custom component that supports responsive web design.
 
 ```html
 <foundation-flex-layout class="flex-row flex-sm-column spacing-2x">
@@ -100,12 +105,612 @@ For further styling your components, it would make sense to start working with [
 :::info ESTIMATED TIME
 20 mins
 :::
-Style the `quantity` field of the orders grid in such a way that if the value is bigger than 100 it will be in green, otherwise red.
+Style the `quantity` field of the orders grid so that if the value is bigger than 100 it will be in green, otherwise red.
 
 :::tip
 Here you can use specific conditions providing a function to the `cellClass` column config.
 :::
 
+## Dynamic layout
+
+The aim of this section is to implement the `foundation-layout` component, which allows the user to drag, drop, resize, maximise, and restore windows.
+
+### Refactor orders.ts
+
+In order to prevent the components becoming excessivly large, we need to refactor the **orders.ts**.
+
+#### Orders grid
+
+We'll start with the most straightforward component. Create a directory called **orders-grid** in the  **orders** folder and add these two files to it:
+
+```typescript title='orders-grid.ts'
+import { customElement, FASTElement, observable, attr } from '@microsoft/fast-element';
+import { ordersGridTemplate } from './orders-grid.template';
+import { Connect } from '@genesislcap/foundation-comms';
+
+@customElement({
+  name: 'orders-grid',
+  template: ordersGridTemplate
+})
+
+export class OrdersGrid extends FASTElement {
+
+    @Connect connect: Connect;
+    @observable public instrument: string;
+    @observable public lastPrice: number;
+    @observable public quantity: number;
+    @observable public price: number;
+    @observable public direction: string;
+    @observable public notes: string;
+    @observable public serverResponse;
+    @observable public instrumentClass: string;
+    @observable public quantityClass: string;
+    @observable public priceClass: string;
+    @attr public Order_ID = Date.now();
+    @attr public minimumQuantity: number;
+    @attr public sideFilter = 'BUY';
+
+
+    public singleOrderActionColDef = {
+        headerName: 'Action',
+        minWidth: 150,
+        maxWidth: 150,
+        cellRenderer: 'action',
+        cellRendererParams: {
+          actionClick: async (rowData) => {
+            console.log(rowData);
+          },
+          actionName: 'Print Order',
+          appearance: 'primary-gradient',
+        },
+        pinned: 'right',
+        };
+
+        public cancelOrderActionColDef = {
+            headerName: 'Cancel',
+            minWidth: 150,
+            maxWidth: 150,
+            cellRenderer: 'action',
+            cellRendererParams: {
+              actionClick: async (rowData) => {
+                this.serverResponse = await this.connect.commitEvent('EVENT_ORDER_CANCEL', {
+                  DETAILS: {
+                    ORDER_ID: rowData.ORDER_ID,
+                    INSTRUMENT_ID: rowData.INSTRUMENT_ID,
+                    QUANTITY: rowData.QUANTITY,
+                    PRICE: rowData.PRICE,
+                    DIRECTION: rowData.direction,
+                    NOTES: rowData.NOTES,
+                  },
+                });
+            console.log(this.serverResponse);
+
+            if (this.serverResponse.MESSAGE_TYPE == 'EVENT_NACK') {
+              const errorMsg = this.serverResponse.ERROR[0].TEXT;
+              alert(errorMsg);
+            } else {
+              alert('Order canceled successfully.');
+            }
+          },
+          actionName: 'Cancel Order',
+          appearance: 'primary-gradient',
+        },
+        pinned: 'right',
+    };
+
+}
+```
+
+#### Insert trade form
+
+And now we refactor out the form. This is slightly different because we need an associated styles file too. Create an **insert-orders-form** directory and add these three files:
+
+```typescript title='insert-orders-form.ts'
+import { Connect } from '@genesislcap/foundation-comms';
+import {customElement, FASTElement, observable, attr } from '@microsoft/fast-element';
+import { insertOrdersFormStyles } from './insert-orders-form.styles';
+import { insertOrdersFormTemplate } from './insert-orders-form.template';
+
+@customElement({
+  name: 'insert-orders-form',
+  template: insertOrdersFormTemplate,
+  styles: insertOrdersFormStyles,
+})
+
+
+
+export class InsertOrdersForm extends FASTElement {
+    @Connect connect: Connect;
+    @observable public instrument: string;
+    @observable public lastPrice: number;
+    @observable public quantity: number;
+    @observable public price: number;
+    @observable public direction: string;
+    @observable public notes: string;
+    @observable public allInstruments: Array<{value: string, label: string}>; //add this property
+    @observable public directionOptions: Array<{value: string, label: string}>; //add this property
+    @observable public serverResponse;
+    @observable public instrumentClass: string;
+    @observable public quantityClass: string;
+    @observable public priceClass: string;
+
+    @attr public Order_ID = Date.now();
+    @attr public minimumQuantity: number;
+    @attr public sideFilter = 'BUY';
+
+    public async getMarketData() {
+          const msg = await this.connect.request('INSTRUMENT_MARKET_DATA', {
+            REQUEST: {
+              INSTRUMENT_ID: this.instrument,
+            }});
+          console.log(msg);
+
+          this.lastPrice = msg.REPLY[0].LAST_PRICE;
+        }
+
+    @observable tradeInstruments: Array<{ value: string; label: string }>;
+
+    public async connectedCallback() { //add this method to Order class
+        super.connectedCallback(); //FASTElement implementation
+
+        const msg = await this.connect.snapshot('ALL_INSTRUMENTS'); //get a snapshot of data from ALL_INSTRUMENTS data server
+        console.log(msg); //add this to look into the data returned and understand its structure
+        this.allInstruments = msg.ROW?.map(instrument => ({
+          value: instrument.INSTRUMENT_ID, label: instrument.INSTRUMENT_NAME}));
+        const metadata = await this.connect.getMetadata('ALL_ORDERS');
+        console.log(metadata);
+        const directionField = metadata.FIELD?.find(field => field.NAME == 'DIRECTION');
+        this.directionOptions = Array.from(directionField.VALID_VALUES).map(v => ({value: v, label: v}));
+    }
+
+    public async insertOrder() {
+
+        this.Order_ID = Date.now();
+        this.instrumentClass = "";
+        this.quantityClass = "";
+        this.priceClass = "";
+
+        this.serverResponse = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
+            DETAILS: {
+                ORDER_ID: this.Order_ID,
+                INSTRUMENT_ID: this.instrument,
+                QUANTITY: this.quantity,
+                PRICE: this.price,
+                DIRECTION: this.direction,
+                NOTES: this.notes,
+            },
+        });
+        console.log("serverResponse: ", this.serverResponse);
+
+        if (this.serverResponse.MESSAGE_TYPE == 'EVENT_NACK') {
+            const error = this.serverResponse.ERROR[0];
+            alert(error.TEXT);
+            switch (error.FIELD) {
+                case "INSTRUMENT_ID":
+                  this.instrumentClass = 'required-yes';
+                  break;
+
+                case "QUANTITY":
+                  this.quantityClass = 'required-yes';
+                  break;
+
+                case "PRICE":
+                  this.priceClass = 'required-yes';
+                  break;
+
+                default:
+                  console.log("FIELD not found: ", error.FIELD);
+            }
+        }
+    }
+}
+```
+
+```typescript title='insert-orders-form.template.ts'
+import { sync } from '@genesislcap/foundation-utils';
+import { html, repeat, when } from '@microsoft/fast-element';
+import { InsertOrdersForm } from './insert-orders-form';
+
+export const insertOrdersFormTemplate = html<InsertOrdersForm>`
+<template>
+    <div class = "column-split-layout">
+        <zero-anchor disabled appearance="accent">Order_ID - ${x => x.Order_ID}</zero-anchor>
+        <span class='${x => x.instrumentClass}'>Instrument</span>
+        <zero-select :value=${sync(x=> x.instrument)} @change=${x => x.getMarketData()} position="below">
+          <zero-option :selected=${sync(x => x.instrument==undefined)}>-- Select --</zero-option>
+          ${repeat(x => x.allInstruments, html`
+            <zero-option value=${x => x.value}>${x => x.label}</zero-option>
+          `)}
+        </zero-select>
+        <span>Last price: ${x => x.lastPrice}</span>
+        <zero-text-field required :value=${sync(x=> x.quantity)} :class='${x => x.quantityClass}'>Quantity</zero-text-field>
+        <zero-text-field :value=${sync(x=> x.price)} class='${x => x.priceClass}'>Price</zero-text-field>
+        <span>Total: ${x => x.quantity * x.price}</span>
+        <span>Direction</span>
+        <zero-select :value=${sync(x=> x.direction)}>
+          ${repeat(x => x.directionOptions, html`
+            <zero-option value=${x => x.value}>${x => x.label}</zero-option>
+          `)}
+        </zero-select>
+        <zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
+        <zero-button @click=${x=> x.insertOrder()}>Add Order</zero-button>
+        ${when(x => x.serverResponse, html`
+            <zero-banner id="js-banner">
+              <div slot="content">
+                ${x=> x.serverResponse.MESSAGE_TYPE == 'EVENT_ACK' ? 'Successfully added order' : 'Something went wrong'} </div>
+              </zero-banner>
+            `)}
+    </div>
+</template>
+`
+```
+and finally:
+
+```typescript title='insert-orders-form.styles.ts'
+import {css, ElementStyles} from "@microsoft/fast-element";
+import { mixinScreen } from '../../../styles';
+
+export const insertOrdersFormStyles = css`
+  :host {
+    ${mixinScreen('flex')}
+    justify-content: top;
+    flex-direction: column;
+    display: block;
+  }
+
+  .required-yes {
+    color: red;
+  }
+
+  .column-split-layout {
+    margin-up: 5%;
+    display: flex;
+    flex-direction: column;
+    border-style: solid;
+    vertical-align: center;
+
+  }
+
+  span, zero-select {
+  display: block;
+  }
+
+`;
+
+```
+
+### Add the layout to the order template
+
+Now we have refactored our two components, it is easy to add the dynamic layout. Change the **order.template.ts** to:
+
+```typescript title='order.template.ts'
+import {html, repeat, when, ref } from '@microsoft/fast-element';
+import type {Order } from './order';
+import { sync } from '@genesislcap/foundation-utils';
+import { OrderStyles } from './order.styles';
+import { positionGridStyles } from "./positionsGrid.styles";
+import { orderColumnDefs } from './orderColumnDefs';
+import { ordersGridStyles } from "./orders-grid.styles";
+import { InsertOrdersForm } from './insert-orders-form/insert-orders-form';
+import { OrdersGrid } from './orders-grid/orders-grid';
+
+InsertOrdersForm;
+OrdersGrid;
+
+export const OrderTemplate = html<Order>`
+  <zero-layout>
+    <zero-layout-region type="horizontal">
+      <zero-layout-region type="vertical">
+        <zero-layout-item title="Orders Grid">
+            <orders-grid></orders-grid>
+        </zero-layout-item>
+      </zero-layout-region>
+      <zero-layout-region type="vertical">
+        <zero-layout-item title="Orders Form">
+            <insert-orders-form></insert-orders-form>>
+        </zero-layout-item>
+      </zero-layout-region>
+    </zero-layout-region>
+  </zero-layout>
+`
+```
+
+### Understanding the layout
+
+As you noticed, the `<zero-layout>` has two main components that control the layout of the page.
+
+- `<zero-layout-region>` divides the layout of the page equally depending on its type. If `type` = horizontal, then the layout will be split horizontally; if `type` = vertical, then the layout will be split vertically. The layout is split equally, depending on the number of items you insert between the `<zero-layout-region></zero-layout-region>` to the application.
+- `zero-layout-item` stores the content of each region of the page.
+
+### Exercise 4.2 insert a new grid
+
+:::info ESTIMATED TIME
+20 mins
+:::
+
+Insert the `ALL_INSTRUMENTS` grid in the orders page. Place it on the top right of the page.
+
+:::tip
+You can directly insert the new grid into the **order.template.ts**, but it is recommended to create a new component called `positions-grid` and follow the previous steps. This enables you to maintain your **order.template.ts** as clear as possible.
+:::
+
+Now we are going to look at some of the dynamic interactions that are available via the layout's JavaScript API. In this example, we are going to:
+
+- set up the component to autosave the layout as the user interacts with it
+- add a button to reset the layout
+
+To see what else you can do with the JavaScript API, see the [main documentation in the API documentation](../../04_web/10_dynamic-layout/docs/api/foundation-layout.foundationlayout.md/#methods).
+
+### Autosaving layout
+
+It is easy to get the layout to autosave as the user changes it. Add a key under the `auto-save-key` attribute and the layout will take care of the rest. Ensure that the key you use is unique, so it doesn't clash with any other saved layouts.
+
+Add this attribute to your `order.template.ts`:
+
+```html {1} title='order.template.ts'
+<zero-layout auto-save-key="training-layout-key">
+	<zero-layout-region type="horizontal">
+		<!-- other layout contents -->
+	</zero-layout-region>
+</zero-layout>
+```
+
+Now when you're on the page, if you make a change to the layout (resize, drag, reorder, add/remove items), then the layout will be saved in local storage. 
+
+Try for yourself! drag an item around and refresh the page and see it reload your layout.
+
+:::note
+The layout-saving functionality is only responsible for the *layout* itself - it will not save the state of the items inside it. Components are responsible for saving their own state if required - such as the [grids we set up earlier in the tutorial](#saving-user-preferences).
+:::
+
+### Resetting the layout
+
+The user's layout is now saved, now we need to create a reset button.Now we are going to create this button.
+
+The first thing we want to do is to update the `Order` component with a reference to the layout.
+
+```ts title='order.template.ts'
+import { ... , ref } from '@microsoft/fast-element';
+```
+
+```html {1} title='order.template.ts'
+<zero-layout auto-save-key="tutorial-app-layout-key" ${ref('layout')}>
+	<zero-layout-region type="horizontal">
+		<!-- other layout contents -->
+	</zero-layout-region>
+</zero-layout>
+```
+
+```typescript {6,17} title='order.ts'
+import {customElement, FASTElement, observable, attr } from '@microsoft/fast-element';
+import {OrderTemplate as template} from './order.template';
+import {OrderStyles as styles} from './order.styles';
+import {Connect} from '@genesislcap/foundation-comms';
+import {logger} from '../../utils';
+import { FoundationLayout } from '@genesislcap/foundation-layout';
+
+const name = 'order-route';
+
+@customElement({
+  name,
+  template,
+  styles,
+})
+
+export class Order extends FASTElement {
+  layout: FoundationLayout;
+```
+
+#### Updating the header
+
+Next, we want to add a button to the header sidebar to reset the layout. In this seed, the header is defined in a file called **default.ts**.
+
+```html {7-17} title='default.ts'
+    <div class="container">
+      <foundation-header 
+        show-luminance-toggle-button
+        show-misc-toggle-button
+        show-notification-button>
+		<!-- other header contents -->
+		<div slot="menu-contents">
+			<zero-button
+				appearance="neutral-grey"
+				@click=${(x, _) => {
+					const { resetLayout } = x.lastChild;
+					resetLayout();
+				}}
+			>
+				Reset Layout
+			</zero-button>
+		</div>
+		<!-- other header contents -->
+	</foundation-header>
+	<div class="content">
+		<slot></slot>
+	</div>
+</div>
+```
+
+When you load the app, you can now click the hamburger menu in the top-left corner and see the reset button. Clicking it will execute the `resetLayout()` function in the **order.ts** file; but we still need to set up the actual functionality.
+
+:::info
+If you've changed the structure of your application from the default, you might not be able to access `Home` via `x.lastChild` like we did in the click handler. You may need to experiment with getting a reference to the `Home` yourself, use events, or the `Foundation Store`.
+:::
+
+#### Reload the default
+
+Finally we can now make `resetLayout()` load the default layout. The easiest way to get the default layout configuration is using the developer tools on your web browser. Open the developer tools in your browser and find the layout component (remember [from earlier](#registration-prefix) that we are looking for `<zero-layout>` in this case).
+
+:::caution
+If you've changed the layout from the default while testing your application, you need to reset it manually back to the default. 
+
+1. In the developer tools, find the local storage and delete the `foundation-layout-autosave` value.
+2. Refresh the page.
+:::
+
+Now we need access to this component in the web console. In most browsers you can do this by right-clicking on `<zero-layout>` in the element inspector and selecting an option that is similar to "store in a global variable". 
+
+![](/img/zero-layout-select.png)
+
+
+This will save the layout in a variable, such as `temp1`. 
+
+![](/img/temp1-global-variable.png)
+
+Then, to get to get the layout run this command in the web console:
+
+```javascript title='web console'
+JSON.stringify(temp1.getLayout()) // temp0, or whatever your browser saved the layout in
+```
+
+:::tip
+You can follow this process to create a range of pre-defined layouts for the user in addition to being able to restore the default layout. Or you can, for example, use the `.getLayout()` and `.loadLayout()` APIs to allow the user to save their own layouts.
+:::
+
+Now create a file under the **order** directory called **predefined-layouts.ts**; copy the generated string and paste it into a file in the project.
+
+```typescript title='predefined-layouts.ts'
+export const ORDERS_DEFAULT_LAYOUT = ... /* Set this equal to the string from the web console */
+```
+
+The final step is to wire all of this functionality together so that the button loads the layout that we have just saved.
+
+```typescript {6,22,27-29} title='home.ts'
+import { customElement, FASTElement, observable } from '@microsoft/fast-element';
+import { HomeTemplate as template } from './home.template';
+import { HomeStyles as styles } from './home.styles';
+import { Connect } from '@genesislcap/foundation-comms';
+import { FoundationLayout } from '@genesislcap/foundation-layout';
+import { ORDERS_DEFAULT_LAYOUT } from './predefined-layouts';
+
+const name = 'order-route';
+
+@customElement({
+  name,
+  template,
+  styles,
+})
+export class Home extends FASTElement {
+  layout: FoundationLayout;
+
+  connectedCallback(): void {
+    
+    ...
+    
+    this.resetLayout = this.resetLayout.bind(this);
+    
+    ...
+  }
+
+  resetLayout() {
+    this.layout.loadLayout(JSON.parse(ORDERS_DEFAULT_LAYOUT));
+  }
+}
+```
+
+:::warning Warning
+You need to override the existing connectedCallback() method.
+:::
+
+Now when you open the header sidebar and click the reset button, you should see the layout return to its default settings.
+
+## Chart
+
+Charts is one of the must-have components in any dashboard. Because of that, Genesis created a easy way to add a series of charts into your application. Let's create our brand new chart.
+
+### Adding a new chart
+
+The `g2plot-chart` component is a wrapper for `@antv/g2plot`, which allows the following types: Line, Area, Bar, Bubble, Column, Pie, Dual Axes, Rose, Scatter.
+
+You can quickly add charts to your application. First we need to create a new component as we did in the previous exercise. Create a folder named **orders-chart** and add these two files:
+
+```typescript title='orders-chart.template.ts'
+import { html } from '@microsoft/fast-element';
+import { OrdersChart } from './orders-chart';
+
+export const ordersChartTemplate = html<OrdersChart>`
+  <template>
+    <zero-g2plot-chart type="pie" :config=${(x) => x.chartConfiguration}>
+        <chart-datasource
+        resourceName="ALL_ORDERS"
+        server-fields="INSTRUMENT_ID QUANTITY"
+        isSnapshot
+        ></chart-datasource>
+    </zero-g2plot-chart>
+  </template>
+`;
+```
+
+```typescript title='orders-chart.ts'
+import { customElement, FASTElement, observable } from '@microsoft/fast-element';
+import { ordersChartTemplate } from './orders-chart.template';
+
+@customElement({
+  name: 'orders-chart',
+  template: ordersChartTemplate,
+})
+export class OrdersChart extends FASTElement {
+  @observable chartConfiguration = {
+    width: 800,
+    angleField: 'value',
+    colorField: 'groupBy',
+    radius: 0.75,
+    label: {
+      type: 'spider',
+      labelHeight: 28,
+      content: '{name}\n{percentage}',
+      style: {
+        fill: 'white',
+      },
+    },
+    interactions: [{ type: 'element-selected' }, { type: 'element-active' }],
+  };
+}
+```
+
+For further configuration examples, please see: [here](https://g2plot.antv.antgroup.com/en/examples).
+
+Your **orders.template.ts** should be like this:
+
+```typescript {3-6,8-11,29-31} title='orders.template.ts'import {html, repeat, when, ref} from '@microsoft/fast-element';
+import type {Order} from './order';
+import { OrderStyles} from './order.styles';
+import { InsertOrdersForm } from './insert-orders-form/insert-orders-form';
+import { OrdersGrid } from './orders-grid/orders-grid';
+import { InstrumentsGrid } from './instruments-grid/instruments-grid';
+import { OrdersChart } from './orders-chart/orders-chart';
+
+InsertOrdersForm;
+OrdersGrid;
+InstrumentsGrid;
+OrdersChart;
+
+
+export const OrderTemplate = html<Order>`
+  <zero-layout>
+    <zero-layout-region type="horizontal">
+      <zero-layout-region type="vertical">
+        <zero-layout-item title="Orders Grid">
+            <orders-grid></orders-grid>
+        </zero-layout-item>
+        <zero-layout-item title="Orders Grid">
+            <instruments-grid></instruments-grid>
+        </zero-layout-item>
+      </zero-layout-region>
+      <zero-layout-region type="vertical">
+        <zero-layout-item title="Orders Form">
+            <insert-orders-form></insert-orders-form>>
+        </zero-layout-item>
+        <zero-layout-item title="Orders Chart">
+            <orders-chart></orders-chart>
+        </zero-layout-item>
+      </zero-layout-region>
+    </zero-layout-region>
+  </zero-layout>
+`
+```
+
+Now you should play aound with the properties of the chart, so you get used to it.
 
 ## Design systems
 
@@ -305,7 +910,7 @@ Other developers will simply reuse the same design system.
 :::
 
 
-### Exercise 4.2 Overriding some components using Design System
+### Exercise 4.3 Overriding some components using Design System
 <!--
 this is pretty much here: https://github.com/genesislcap/clarity-web/blob/develop/packages/apps/clarity/src/components/components.ts
   ====> provideZeroDS
@@ -334,7 +939,7 @@ Lastly, to keep the best practices and avoid conflicts, always open the system p
 :::
 
 
-## Micro Front-ends
+## Micro front-ends
 
 The [Micro-front-end](../../../web/micro-front-ends/introduction/) architecture is a design approach in which a front-end app is decomposed into individual, semi-independent **micro applications** working loosely together. There are re-usable micro-front-ends that can be used by Genesis-powered applications, such as [Foundation Header](../../../web/micro-front-ends/foundation-header/) (covered in [Day 1](#)), [Entity Management](../../../web/micro-front-ends/foundation-entity-management/) (pretty much covered in the [Developer Training](#)), [User Management](#user-management), and [Front-end reporting](#front-end-reporting).
 
@@ -356,7 +961,7 @@ To enable this micro front-end in your application, follow the steps below:
 
 - Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
 
-```javascript
+```javascript {4} title="./client/web/package.json"
 {
   ...
   "dependencies": {
@@ -370,7 +975,7 @@ To enable this micro front-end in your application, follow the steps below:
 
 ```javascript
 // Import
-import { Users, } from '@genesislcap/foundation-entity-management';
+import { Users } from '@genesislcap/foundation-entity-management';
 
 // Declare class
 Users;
@@ -406,7 +1011,7 @@ To configure the columns yourself, set the `columns` attribute when you define t
 Further information about User Management API Ref (such as `Permissions` or `persist-column-state-key`) can be found [here](../../../web/micro-front-ends/foundation-entity-management/docs/api/).
 
 
-### Exercise 4.3 Add the User Management into the application
+### Exercise 4.4 Add the User Management into the application
 :::info ESTIMATED TIME
 30 mins
 :::
@@ -425,15 +1030,19 @@ The [Front-end reporting](../../../web/micro-front-ends/front-end-reporting/foun
 
 #### Server configuration
 
-This component requires a server side module to be installed and running. Luckily, this is already available in the WSL training distro you're using.
+This component requires a server-side module to be installed and running. Please access the [reporting distribution 6.5.0](https://genesisglobal.jfrog.io/ui/native/libs-release-local/global/genesis/reporting-distribution/6.5.0/reporting-distribution-6.5.0-bin.zip) and export the files into your **.genesis-home** directory.
 
 To make data available to users so that they can create reports, you must insert entries into the `REPORT_DATASOURCES` table. This table determines which data resources can be reported on.
+
+Now import the **REPORTING_DATASOURCES.csv** into genesis.
 
 The Report Server adds the following metadata services:
 
 - ALL_SAVED_REPORTS (Data Server)
 - SAVED_REPORTS (Request Response)
 - ALL_REPORT_DATASOURCES (Request Response)
+
+go to your resource deamon and start all processes.
 
 #### Front-end configuration
  
@@ -446,13 +1055,13 @@ To enable this micro front-end in your application, follow the steps below.
   ...
   "dependencies": {
     ...
-    "@genesislcap/foundation-reporting": "^5.0.1"
+    "@genesislcap/foundation-reporting": "14.15.2",
   },
   ...
 }
 ```
 
-- Import the module and configure the route in your routes **config.ts** file.
+- Import the module and in case you haven't done the [exercise 2.1](../web-training-day1/#exercise-14-adding-new-routes) configure the route in your routes **config.ts** file.
 
 **Synchronous example**
 
@@ -465,7 +1074,7 @@ public configure() {
   ...
   this.routes.map(
     ...
-    {path: 'reporting', element: Reporting, title: 'Reporting', name: 'reporting'},
+    {path: 'report', element: Reporting, title: 'Report', name: 'report'},
     ...
   );
 }
@@ -485,11 +1094,11 @@ public async configure() {
 }
 ```
 
-### Exercise 4.4 Creating a new ALL_POSITIONS Report
+### Exercise 4.5 Creating a new ALL_POSITIONS Report
 :::info ESTIMATED TIME
 25 mins
 :::
-Create a new report using the ALL_POSITIONS query in the Data Server.
+Create a new report using the ALL_ORDERS query in the Data Server.
 
 
 <!-- 
@@ -613,7 +1222,7 @@ Third-party controls require a ControlValueAccessor for writing a value and list
 Congratulations! You're now set up to use Genesis Foundation and Angular!
 
 ### Exercise 4.5 Adding a Grid Pro to list Counterparties in our Angular solution
-this is pretty much here: https://docs.genesis.global/secure/tutorials/training-resources/training-content-day3/#ui-configuring
+This is pretty much here: https://docs.genesis.global/secure/tutorials/training-resources/training-content-day3/#ui-configuring
 
 
 :::info ESTIMATED TIME

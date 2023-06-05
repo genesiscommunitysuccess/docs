@@ -143,9 +143,9 @@ FixEnumValues --commit TRADE POSITION
 
 ### As an installHook
 
-To automate this process, you can use an installHook to call the script before `remap` is peformed - be aware however that it will only run successfully once.
+To automate this process, you can use an installHook to call the script before `remap` is performed - be aware however that it will only run successfully once.
 
-The following will find all String to Enum changes in all tables and commit any valid updates to the DB before `remap` is peformed.
+The following will find all String to Enum changes in all tables and commit any valid updates to the DB before `remap` is performed.
 
 ```bash
 #!/bin/bash
@@ -181,10 +181,11 @@ startProcess processName [--hostname <[host names]>] [--dump]
 
 | Argument                   | Argument long name                          | Mandatory | Description                                                                                                                                                                                         | Restricted values |
 |----------------------------|---------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | No        | where   the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | No                |
+| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | No        | where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | No                |
 | -c                         | --cluster                                   | No        | starts  the process on every node in the cluster                                                                                                                                                   | No                |
+| -v                         | --verbose                                   | No        | starts in verbose mode, logs to console                                                                                                                                                 | No                |
 |                            | --dump                                      | No        | displays progress of the process, which is useful for debugging                                                                                                                          | No                |	
-|                            | --coldStart                                      | No        | this is only used if you have a consolidator. Consolidators aggregate data from IN table(s) into an OUT table; a coldStart effectively zeros out values in the OUT table records and then iterating over all the IN table records and rebuilding them on startUp. After this, the consolidators in their normal way
+|                            | --coldStart                                      | No        | this is only used if you have a Consolidator. Consolidators aggregate data from IN table(s) into an OUT table; a coldStart effectively zeros out values in the OUT table records and then iterates over all the IN table records, rebuilding them on startUp. After this, the Consolidators are started in their normal way
  | No                |	
 
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
@@ -342,6 +343,10 @@ SendIt -t FUND -d
 If no file parameter is specified, `.csv` is assumed and read from the local directory.
 
 Verbose mode will additionally output line-by-line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes the script useful for scheduled or automated jobs (e.g. daily data loads).
+
+:::warning
+Do not use `SendIt` to update User details in any way. This can easily cause database errors. To update User profiles or User attributes, only use Genesis GUI Admin screens.
+:::
 
 ## DumpIt script
 

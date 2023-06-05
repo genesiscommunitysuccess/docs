@@ -197,9 +197,9 @@ The Genesis username should be the user’s email address.
 
 This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes the following settings:
 
-- `ssoToggle` is set to true in the Genesis application’s `config.ts`, this ensures that the ‘Enable SSO?’ checkbox is displayed on the application's login page.
-- 'Enable SSO’ is checked, either manually in the UI, or `ssoEnable` is set to true by default in the config.
-- In the front end, the following has been added to `src/routes/config.ts`:
+- `ssoToggle` is set to true in the Genesis application’s `config.ts`, this ensures that the **Enable SSO?’ checkbox is displayed on the application's login page.
+- either **Enable SSO** is checked manually in the UI, or `ssoEnable` is set to true by default in the config.
+- in the front end, the following has been added to `src/routes/config.ts`:
 
 ```javascript
 this.routes.map(
@@ -224,7 +224,7 @@ this.routes.map(
 
 ```
 
-1. The front end hits **ssoListEndpoint** - by default - this is `gwf/sso/listJWT/SSO` (This is configurable).
+1. The front end hits **ssoListEndpoint** - by default, this is `gwf/sso/listJWT/SSO` (this is configurable).
 2. **ssoListEndpoint** returns a list of identity providers:
    ```
    [
@@ -233,14 +233,14 @@ this.routes.map(
    ]
    ```
 3. Identity providers are parsed and the dropdown is populated on the login page.
-4. The user selects an identity provider using the dropdown (or keeps the preselected default). Then the user clicks the '**SSO Login**' button.
+4. The user selects an identity provider using the dropdown (or keeps the preselected default). Then the user clicks the **SSO Login** button.
 5. The browser redirects to the **ssoLoginUrl**, which might be, for example: `https://dev-position2/gwf/saml/login?idp=provider1`.
 6. The server sends the user to the identity provider’s login page.
 7. The user logs in using their SSO credentials.
 
 8. The server redirects the client back to the client-app with a new url param: `SSO_TOKEN`.
 
-9. The front end checks for the presence of an `SSO_TOKEN` url param. If found, it stores it in session storage and uses it to perform an ‘SSO Login’.
+9. The front end checks for the presence of an `SSO_TOKEN` url param. If found, it stores it in session storage and uses it to perform an SSO Login.
 10. The server responds with an ACK and the user is now logged in. If there is an error, a NACK is returned and the login fails.
 
 ## Testing SAML

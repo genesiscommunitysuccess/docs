@@ -17,7 +17,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 SSO is a mechanism that enables a user to be authenticated against a single system, and use that authenticated id across multiple applications - including those built on the Genesis low-code platform. This has the advantage that a user is required to log in only once, rather than once per system.
 
-SAML is an SSO protocol that can be used to authenticate users on the Genesis platform. It works by connecting a Service Provider (SP) - the Genesis application in this case - and an Identity Provider (IDP), which would be an external party.
+SAML is an SSO protocol that can be used to authenticate users on the Genesis low-code platform. It works by connecting a Service Provider (SP) - the Genesis application in this case - and an Identity Provider (IDP), which would be an external party.
 
 The SP and the IDP communicate using the user's web browser, and do not need to be accessible to each other.
 
@@ -153,13 +153,14 @@ The `loginEndpoint` is the URL to which the front end is redirected once the ful
 If this URL itself is a redirect, the SSO_TOKEN query parameter could be lost.
 
 Additionally, if the web server is routing via scripts, navigating to this URL could throw a **404 Not Found** error. The remedy in this case is to add an override for 404 errors to redirect back to your application logon screen. 
+
 An example of how to do this in NGINX is here:
 ```
 error_page 404 =200 /index.html;
 ```
 :::
 
-If necessary, ou can define advanced configuration in the file **onelogin.saml.properties**. You need to use this if - for example - you need to configure a key for signing the authn request.
+If necessary, you can define advanced configuration in the file **onelogin.saml.properties**. You need to use this if - for example - you need to configure a key for signing the authn request.
 
 Once this is configured, a service provider metadata endpoint will be available on: `https://{url}/gwf/saml/metadata?idp={idp name}`.
 
@@ -189,7 +190,7 @@ To enable users to be able to sign in using SAML, you must add them to the `USER
 In the `SSO_USER` table:
 
 * `SSO_METHOD` must be set to SAML
-* `SSO_SOURCE` must be set to the identity provider name defined in the **saml-config.kts** file.
+* `SSO_SOURCE` must be set to the identity provider name defined in the **saml-config.kts** file
 
 The Genesis username should be the user’s email address.
 
@@ -197,8 +198,8 @@ The Genesis username should be the user’s email address.
 
 This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes the following settings:
 
-- `ssoToggle` is set to true in the Genesis application’s `config.ts`, this ensures that the ‘Enable SSO?’ checkbox is displayed on the application's login page.
-- 'Enable SSO’ is checked, either manually in the UI, or `ssoEnable` is set to true by default in the config.
+- `ssoToggle` is set to true in the Genesis application’s `config.ts`, this ensures that the **Enable SSO?** checkbox is displayed on the application's login page.
+- either **Enable SSO** is checked manually in the UI, or `ssoEnable` is set to true by default in the config.
 - In the front end, the following has been added to `src/routes/config.ts`:
 
 ```javascript
@@ -224,7 +225,7 @@ this.routes.map(
 
 ```
 
-1. The front end hits **ssoListEndpoint** - by default - this is `gwf/sso/listJWT/SSO` (This is configurable).
+1. The front end hits **ssoListEndpoint** - by default, this is `gwf/sso/listJWT/SSO` (this is configurable).
 2. **ssoListEndpoint** returns a list of identity providers:
    ```
    [
@@ -233,14 +234,12 @@ this.routes.map(
    ]
    ```
 3. Identity providers are parsed and the dropdown is populated on the login page.
-4. The user selects an identity provider using the dropdown (or keeps the preselected default). Then the user clicks the '**SSO Login**' button.
+4. The user selects an identity provider using the dropdown (or keeps the preselected default). Then the user clicks the **SSO Login** button.
 5. The browser redirects to the **ssoLoginUrl**, which might be, for example: `https://dev-position2/gwf/saml/login?idp=provider1`.
 6. The server sends the user to the identity provider’s login page.
 7. The user logs in using their SSO credentials.
-
 8. The server redirects the client back to the client-app with a new url param: `SSO_TOKEN`.
-
-9. The front end checks for the presence of an `SSO_TOKEN` url param. If found, it stores it in session storage and uses it to perform an ‘SSO Login’.
+9. The front end checks for the presence of an `SSO_TOKEN` url parameter. If found, it stores it in session storage and uses it to perform an SSO Login.
 10. The server responds with an ACK and the user is now logged in. If there is an error, a NACK is returned and the login fails.
 
 ## Testing SAML

@@ -114,11 +114,11 @@ Each `identityProvider` configuration has the following properties:
 | client | The client id and secret | Yes | No default value | Object |
 | config | Holds the endpoint and verification configuration for the OIDC provider | Yes if `remoteConfig` is not present | No default value | Object |
 | remoteConfig | If the OIDC provider has the configuration endpoint `remoteConfig`, this can be used to point to that endpoint for automatic `endpoint` and `verification` configuration | Yes if `config` is not present | No default value | Object |
-| scopes | Requested scopes on authorization | No | `openid profile email` | Set |
+| scopes | Requested scopes on authorisation | No | `openid profile email` | Set |
 | onNewUser | Predefined action when a new user logs in. | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
 | tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | Yes | No default value | Int |
-| redirectUri | The URI to handle the code authorization. | Yes | No default value | String |
+| redirectUri | The URI to handle the code authorisation. | Yes | No default value | String |
 
 
 Each `config` configuration has the following properties:
@@ -126,7 +126,7 @@ Each `config` configuration has the following properties:
 | Property name | Description | Mandatory | Default value | Type |
 | --- | ------ | --- | --- | --- |
 | endpoints | Holds the token and authorization endpoints | Yes | No default value | Object |
-| verification | Holds configuration for the public key of the JWT issuer, the allowed clock skew and whether validation is enabled | No | No JWT verification | Object |
+| verification | Holds configuration for the public key of the JWT issuer, the allowed clock skew, and whether validation is enabled | No | No JWT verification | Object |
 
 Each `remoteConfig` configuration has the following properties:
 
@@ -140,8 +140,8 @@ Each `client` configuration has the following properties:
 
 | Property name | Description | Mandatory | Default value | Type |
 | --- | ------ | --- | --- | --- |
-| id | The client id provided by the OIDC Provider when application was registered | Yes | No default value | String |
-| secret | The client secret provided by the OIDC Provider when application was registered | Yes | No default value | String |
+| id | The client id provided by the OIDC provider when application was registered | Yes | No default value | String |
+| secret | The client secret provided by the OIDC provider when application was registered | Yes | No default value | String |
 
 Each `endpoints` configuration has the following properties:
 
@@ -169,7 +169,7 @@ If `verification` is defined, either `publicKey` or `publicKeyUrl` must also be 
 Sometimes, applications require functionality where the user logs out of the OIDC provider. By default, this is disabled.
 
 :::note
-If a user logs out of the OIDC Provider, she or he will also be logged out of all other applications that work with that provider.
+If a user logs out of the OIDC provider, she or he will also be logged out of all other applications that work with that provider.
 :::
 
 There are several steps required to enable OIDC logout. 
