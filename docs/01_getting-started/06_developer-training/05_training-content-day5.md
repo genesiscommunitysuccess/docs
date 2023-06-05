@@ -27,7 +27,7 @@ You can use the Evaluator to schedule the production of EOD reports (for example
 
 In system terms, Evaluators enable you to connect Event Handlers to two different kinds of event: dynamic and static (cron rules):
 
-- __Cron Rules__  are scheduling rules; these are defined as [quartz cron expressions](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.ht.
+- __Cron Rules__  are scheduling rules; these are defined as [quartz cron expressions](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html).
 - __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
 In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [Defining a dynamic rule](../../../server/evaluator/basics/#defining-a-dynamic-rule).
@@ -109,12 +109,13 @@ Create an event handler that will write the csv files to the runtime/position-mi
 
 Open the file **alpha-eventhandler.kts** and add a variable called *tradeViewRepo* injecting the class *TradeViewAsyncRepository*. Then, add an event handler to generate the csv file:
 
-```kotlin {8,12}
+```kotlin {6, 9,13}
 import java.io.File
 import java.time.LocalDate
 import global.genesis.TradeStateMachine
 import global.genesis.commons.standards.GenesisPaths
 import global.genesis.gen.view.repository.TradeViewAsyncRepository
+import global.genesis.alpha.message.event.PositionReport
 import global.genesis.jackson.core.GenesisJacksonMapper
 
 val tradeViewRepo = inject<TradeViewAsyncRepository>()
@@ -146,7 +147,7 @@ eventHandler {
 #### 4.Load the cron rule on to the database
 Load the cron rule csv below into the database, [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) Table.
 
-Create a new file in the same folder as **USER.csv** and name it as **CRON_RULE.csv**. Copy the content below into the file you just created.
+Create a new file in the same folder as **USER.csv** and name it as **CRON_RULE.csv**. Copy the content below into the file that you just created.
 ```csv
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
 "0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
@@ -166,7 +167,7 @@ To delete rows you can use [DbMon](../../../operations/commands/server-commands/
 By the way, the CRON expression for every 10 seconds is `0/10 * * * * ? *`. See a CRON generator [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
 :::
 
-## Permissions​
+## Permissions
 
 At this stage, the app has a Consolidator to calculate the positions, Event Handlers to control changes to the database and Data Servers to distribute the data to the front end.
 
@@ -218,10 +219,10 @@ Related to these tables, we have the RIGHT_SUMMARY table, which contains the sup
 
 ![](/img/user-profile-rights-setup.png)
 
-The RIGHT_SUMMARY table entries are automatically maintained by the system in real time. This ensures that the rights are easily accessible at speed. The GENESIS_AUTH_MANAGER process manages this table's entries automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY table is updated immediately and all the users in that profile receive the new right automatically.
+The RIGHT_SUMMARY table entries are automatically maintained by the system in real time. In this way, the rights are easily accessible at speed. The GENESIS_AUTH_MANAGER process manages this table's entries automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY table is updated immediately and all the users in that profile receive the new right automatically.
 
 :::warning
-This table is only automatically maintained when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. **DbMon** or **SendIt**) then the RIGHT_SUMMARY table will not be maintained automatically.
+This table is only maintained automatically when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. **DbMon** or **SendIt**) then the RIGHT_SUMMARY table will not be maintained automatically.
 In such situations (e.g. setting up a brand new environment and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in PROFILE_USER and PROFILE_RIGHT and populates RIGHT_SUMMARY with the correct data.
 :::
 
@@ -262,7 +263,7 @@ Run [build and deploy](../../../getting-started/developer-training/training-cont
 ### How to configure dynamic permissions
 
 You can configure dynamic permissions for trades in our IDE. You need to make these changes to the code for the Request Server, Data Server and Event Handler.
-For example, here we add permissioning to a query in the data server file - *alpha-dataserver.kts*:
+For example, here we add permissioning to a query in the data server file - **alpha-dataserver.kts**:
 
 ```kotlin
 dataServer {
@@ -276,7 +277,7 @@ dataServer {
 }
 ```
 
-You can add similar code to the queries in your Request Server - *alpha-reqrep.kts*.
+You can add similar code to the queries in your Request Server - **alpha-reqrep.kts**.
 
 ```kotlin
 requestReplies {
@@ -289,7 +290,7 @@ requestReplies {
     }
 }
 ```
-Event Handlers are slightly different, because the input data class can be customised. The code would look like this (taking the TRADE_INSERT event handler as an example):
+Event Handlers are slightly different, because the input data class can be customised. The code would look like this (taking the TRADE_INSERT eventHandler codeblock as an example):
 
 ```kotlin
   eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -430,8 +431,8 @@ DictionaryBuilder -t MSSQL -U admin -P beONneON*74 -p 1433 -H ref-data-rdb.clatr
 Once the command has finished, it will generate the `fields-dictionary.kts` and `tables-dictionary.kts` files for the data model. Keep these files handy, as you will have to copy them over in the next steps.
  -->
 
- ### Application is done!
- Congratulations! You have finished the Positions & Trades app!
+### Application is done!
+Congratulations! You have finished the Positions & Trades app!
 
 ## Operating the Genesis low-code platform
 Now that our application code is complete, let's take a look at the operations side of the platform on the server.
@@ -544,10 +545,10 @@ Change the log level of the ALPHA_EVENT_HANDLER process to INFO with `LogLevel` 
 To test it, check if you can see the new log you added in the alpha event handler log file.
 -->
 
-## How to get help
+## How to get help​
 
-Remember that the Search function in the [documentation](https://docs.genesis.global/) is your friend.
+Remember that the Search function in the [documentation](https://learn.genesis.global/docs/getting-started/) is your friend.
 
-A new developer portal is on the way with features such as forum (internal Stack overflow), technical blogs, articles and more detailed documentation.
+You can also ask questions by visiting our [Stack Overflow](https://stackoverflowteams.com/c/genesis-global/questions).
 
 Stay tuned!

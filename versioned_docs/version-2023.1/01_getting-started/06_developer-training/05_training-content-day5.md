@@ -109,12 +109,13 @@ Create an event handler that will write the csv files to the runtime/position-mi
 
 Open the file **alpha-eventhandler.kts** and add a variable called *tradeViewRepo* injecting the class *TradeViewAsyncRepository*. Then, add an event handler to generate the csv file:
 
-```kotlin {8,12}
+```kotlin {6, 9,13}
 import java.io.File
 import java.time.LocalDate
 import global.genesis.TradeStateMachine
 import global.genesis.commons.standards.GenesisPaths
 import global.genesis.gen.view.repository.TradeViewAsyncRepository
+import global.genesis.alpha.message.event.PositionReport
 import global.genesis.jackson.core.GenesisJacksonMapper
 
 val tradeViewRepo = inject<TradeViewAsyncRepository>()
