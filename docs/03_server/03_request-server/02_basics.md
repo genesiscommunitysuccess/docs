@@ -6,14 +6,14 @@ keywords: [server, request server, introduction]
 tags:
   - server
   - request server
-  - introduction
+  - requestreply
 ---
 
 
 
 Let's make things really simple.
 - A Request Server is a component that supplies static data to the front end of your application.
-- You define your application's Request Reply in a kotlin script file  _application-name_**-reqrep.kts**. This file should be in the _application-name_-script-config module.
+- You define your application's Request Server in a kotlin script file  _application-name_**-reqrep.kts**. This file should be in the _application-name_-script-config module.
 - In this file, you define specific `requestReply` codeblocks, each of which is designed to supply different sets of data; this could be a table or view, or just a subset of the fields in a table or view.
 - A `requestReply` can include a number of other subtleties, such as `where` clauses or ranges, so that you can create code that matches your precise requirements.
 - If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the component.
@@ -34,8 +34,8 @@ requestReplies {
 
 ## Adding a name
 
-Every requestReply in your .kts must have a unique name. If you do not provide one, it will be allocated automatically. In the previous example, the requestReply will automatically be named as REQ_INSTRUMENT_DETAILS.
-If you name it as "INSTRUMENT_INFO" then it will be registered as "REQ_INSTRUMENT_INFO"
+Every `requestReply` in your .kts must have a unique name. If you do not provide one, it will be allocated automatically. In the previous example, the `requestReply` will automatically be named `REQ_INSTRUMENT_DETAILS`.
+If you name it INSTRUMENT_INFO then it will be registered as `REQ_INSTRUMENT_INFO`.
 
 ## Multiple Request Servers
 

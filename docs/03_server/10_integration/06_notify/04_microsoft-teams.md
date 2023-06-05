@@ -18,36 +18,23 @@ The most important thing to gather from the teams channel webhook setup is the "
 
 No configuration is required for Teams integration; you simply need to know the WebHook URL which is used in database entries outlined in the section below
 
+## Teams configuration
+
+Teams must be configured in your **notify.kts** file. Here is an example configuration with connection details. 
+
+```kotlin
+notify {
+    gateways {
+        teams("teams") {
+            url = "https://some-teams-server-somewhere"
+        }
+	}
+    
+    // optionally include additional connections, including Microsoft Teams connections
+}
+```
+
 ## Database configuration
-
-### GATEWAY
-
-You'll need to set up a GATEWAY entry for each of the channels the app needs to send messages to.
-
-| Field Name | Usage |
-| --- | --- |
-| GATEWAY_ID | A unique identifier for this gateway, which will be referenced in the NOTIFY_ROUTE table when sending a message to the channel: for example, the Channel name could be used |
-| GATEWAY_TYPE | should be set to `MsTeamsChannel`|
-| GATEWAY_VALUE | The teams WebHook Url from your channel (see [here](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook)) |
-| INCOMING_TOPIC | N/A - Notify does not currently support inbound messages from the channel |
-| CONNECTION_ID | N/A |
-
-Here is an example GATEWAY entry:
-
-```
-==================================
-GATEWAY
-==================================
-Field Name                               Value                                    Type
-===========================================================================================
-TIMESTAMP                                2022-03-16 13:35:18.863(n:0,s:1964)      NANO_TIMESTAMP
-CONNECTION_ID                                                                     STRING
-GATEWAY_ID                               TestAlerts                               STRING
-GATEWAY_TYPE                             MsTeamsChannel                           ENUM[Log EmailUser EmailDistribution SymphonyByUserEmail SymphonyRoom MsTeamsChannel SymphonyRoomReqRep]
-GATEWAY_VALUE                            https://netorg209792.webhook.office.c... STRING
-INCOMING_TOPIC                                                                    STRING
--------------------------------------------------------------------------------------------
-```
 
 ### NOTIFY_ROUTE
 
@@ -78,11 +65,18 @@ TOPIC_MATCH                              TestAlerts                             
 -------------------------------------------------------------------------------------------
 ```
 
+### MS_TEAMS_NOTIFY_ROUTE_EXT
+
+| Field Name | Usage |
+| --- | --- |
+| URL | URL for the team webhook. Will default to the one configured on the gateway if not present. | 
+| NOTIFY_ROUTE_ID | Reference to a primary KEY in the NOTIFY_ROUTE table. |
+
 ### NOTIFY
 
-Writing a record to this table which correctly points to a TOPIC, will result in a message being sent to the Teams channel the GATEWAY record is pointed to.
+Writing a record to this table, which correctly points to a TOPIC, will result in a message being sent to the Teams gateway.
 
-Equally, EVENT_NOTIFY_INSERT can be used, as opposed to a direct table write (and is the encouraged form of interaction), this event allows for the same set of fields as the DbRecord. The input fields detailed below cater for either approach.
+Equally, EVENT_NOTIFY_INSERT can be used, as opposed to a direct table write (this is the encouraged form of interaction). This event allows for the same set of fields as the DbRecord. The input fields detailed below cater for either approach.
 
 | Field Name | Usage                                                                                  |
 | --- |----------------------------------------------------------------------------------------|

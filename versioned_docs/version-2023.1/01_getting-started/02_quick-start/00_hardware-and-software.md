@@ -41,7 +41,9 @@ import MinimunRequirement from '/snippet/_minimun_requirement.md'
 From version **10.3.0**, Foundation UI libraries are published to the [public NPM registry](https://www.npmjs.com/~genesisnpm?activeTab=packages), so a custom **npmrc** file is no longer required.
 
 ## gradle.properties file
-You must create or edit a **gradle.properties** file inside a **.gradle** folder on your user directory. This file must contain your Genesis Artifactory password in [encrypted base 64](https://www.base64decode.org/) text, for example:
+You must create or edit a **gradle.properties** file inside a **.gradle** folder on your user directory. This file must contain your Genesis Artifactory password. For this exercise, the password can either be unencrypted (clear text) or in [encrypted base 64](https://www.base64decode.org/) text.
+
+For example:
 
 
 ```shell
