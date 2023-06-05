@@ -158,7 +158,7 @@ Then import the local csv using the Genesis plugin as we saw [here](../../../get
 30 mins
 :::
 
-Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) table, and insert a new role changing the CRON_EXPRESSION value.
+Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) table, and insert a new rule changing the CRON_EXPRESSION value.
 
 :::tip
 To delete rows you can use [DbMon](../../../operations/commands/server-commands/#dbmon-script) and the command `delete`. After that you can use [SendIt](../../../operations/commands/server-commands/#sendit-script) to insert a new row again.
