@@ -349,9 +349,4 @@ Below, we have added two trades. We have sold MMM at 404 and bought back at 401.
 
 ![](/img/final-result.png)
 
-
-## Conclusion
-That’s it. You have quickly built a very simple application using some fundamental Genesis components.
-
-
 There's obviously a lot more to building enterprise-ready applications. However, you now have enough knowledge and experience of the Genesis low-code platform to look at our reference documentation and learn more there.
