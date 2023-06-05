@@ -11,16 +11,17 @@ tags:
     - config
     - management
 ---
-This document describes the recommended uses of config management with Genesis frameworks.  It is written for a reader with some
-Linux system administration experience.
+This document describes the recommended uses of config management with Genesis frameworks.  It is written for readers with some Linux system administration experience.
 
 ## Config management vs continuous deployment
 
-In environments where servers are managed to a greater or lesser degree by config-management systems, like Chef, Puppet or Ansible, there is a decision to be made about which aspects of a system are config-managed, and which are subject to operator actions.
+In environments where servers are managed to a greater or lesser degree by config-management systems, like Chef, Puppet or Ansible, you have to decide which aspects of a system are config-managed, and which are subject to operator actions.
 
 When deciding about the division of responsibilities, it is worth considering development systems and production systems separately.
 
-During application development, it is likely that there will be frequent code releases to a development host, and using config-management systems to enact such an upgrade is likely to be more complicated than allowing a CI/CD system to issue releases. Development-phase versioning is less rigorous than when an application approaches readiness. Ill-behaved versions are possible. Releases may be frequent. These conditions are a poor fit for the automation and consistency that is the mainstay of a config-management system.
+During application development, it is likely that there will be frequent code releases to a development host. Using config-management systems to enact such upgrades is likely to be more complicated than allowing a CI/CD system to issue releases. 
+
+Development-phase versioning is less rigorous than when an application approaches readiness; ill-behaved versions are possible; releases may be frequent. These conditions are a poor fit for the automation and consistency that is the mainstay of a config-management system.
 
 ## Suitable elements for CM
 
@@ -33,7 +34,7 @@ On a host prepared for Genesis applications, the following key elements are suit
 ### Dependencies
 
 The packages that are needed to run a Genesis application are covered in more detail in [host preparation](../../../operations/server-setup/host-preparation).
-These are all off-the-shelf packages found either in OS core package repos or extended repo,s such as EPEL.
+These are all off-the-shelf packages found either in OS core package repos or extended repos such as EPEL.
 
 ### Nginx configuration
 
