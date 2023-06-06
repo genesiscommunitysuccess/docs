@@ -501,3 +501,8 @@ Run the [generatedao](../../../getting-started/developer-training/training-conte
 20 mins
 :::
 Try to insert or modify a TRADE and see the auditing happening accordingly. You can use DbMon or Genesis Console to check the data in table TRADE_AUDIT.
+
+:::info END OF DAY 4
+This is the end of the day 4 of our training, to help your training journey, check out how your application should look like at the end of day 4 [here](https://github.com/genesiscommunitysuccess/devtraining-seed/tree/Exercise_4.3).
+:::
+
