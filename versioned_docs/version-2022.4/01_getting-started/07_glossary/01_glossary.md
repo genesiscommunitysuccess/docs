@@ -154,6 +154,9 @@ High Frequency Trading (HFT) relates to software-enabled trading of large number
 - You get to sell these back to the market at a new higher price.
 That means no change in your holdings or risk, plus a profit for your trading desk. All in the blink of an eye.
 
+## IOPS
+Input/output operations per second, a metric for input/output performance, typically used for storage devices, such as disk drives (HDD), solid-state drives (SSD), and storage area networks (SAN). 
+
 ## Java Binary Object
 
 A binary object is a wrapper over the binary representation of an entry stored in a cache. Each binary object has the `field (name)` method, which returns the value of the given field, and the `type ()` method, which extracts the information about the type of the object. Binary objects are useful when you want to work only with some fields of the objects and do not need to deserialise the entire content set.
@@ -290,6 +293,11 @@ There are 4 basic HTTP verbs used in REST:
 * POST — create a new resource
 * PUT — update a specific resource (by ID)
 * DELETE — remove a specific resource (by ID)
+
+## RPM 
+RPM can refer to:
+-  RPM Package Manager, which is an open-source package management system. It was originally created for Red Hat Linux, but is now used in many Linux distributions, including CentOS. 
+-  the .rpm file format. Most .rpm files are binary RPMs containing the compiled version of the software, but you can also find source RPMs containing the source code used to build the binaries.
 
 ## Script
 
