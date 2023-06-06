@@ -12,7 +12,7 @@ tags:
     - application
     - install
 ---
-This section describes installing an application built on the Genesis low-code platform.  Readers need to have some experience of Linux system administration .
+This section describes installing an application built on the Genesis low-code platform.  Readers need to have some experience of Linux system administration.
 
 ## Installing build artifacts
 
@@ -60,8 +60,7 @@ rm -f /home/${runUser}/run
 ln -s /data/${runUser}/server/${installDate}/run /home/${runUser}/run
 ```
 
-The web code is served up by nginx, and so it is installed separately from the server-side code.  The default path for
-the web code is generated as follows:
+The web code is served up by nginx, and so it is installed separately from the server-side code.  The default path for the web code is generated as follows:
 
 ```shell
 installDate=$(date +%Y%m%d)

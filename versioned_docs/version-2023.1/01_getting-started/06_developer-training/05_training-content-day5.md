@@ -109,12 +109,13 @@ Create an event handler that will write the csv files to the runtime/position-mi
 
 Open the file **alpha-eventhandler.kts** and add a variable called *tradeViewRepo* injecting the class *TradeViewAsyncRepository*. Then, add an event handler to generate the csv file:
 
-```kotlin {8,12}
+```kotlin {6, 9,13}
 import java.io.File
 import java.time.LocalDate
 import global.genesis.TradeStateMachine
 import global.genesis.commons.standards.GenesisPaths
 import global.genesis.gen.view.repository.TradeViewAsyncRepository
+import global.genesis.alpha.message.event.PositionReport
 import global.genesis.jackson.core.GenesisJacksonMapper
 
 val tradeViewRepo = inject<TradeViewAsyncRepository>()
@@ -158,7 +159,7 @@ Then import the local csv using the Genesis plugin as we saw [here](../../../get
 30 mins
 :::
 
-Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) table, and insert a new role changing the CRON_EXPRESSION value.
+Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) table, and insert a new rule changing the CRON_EXPRESSION value.
 
 :::tip
 To delete rows you can use [DbMon](../../../operations/commands/server-commands/#dbmon-script) and the command `delete`. After that you can use [SendIt](../../../operations/commands/server-commands/#sendit-script) to insert a new row again.

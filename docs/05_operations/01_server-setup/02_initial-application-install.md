@@ -12,13 +12,13 @@ tags:
     - application
     - install
 ---
-This section describes installing an application built on the Genesis low-code platform.  Readers need to have some experience of Linux system administration .
+This section describes installing an application built on the Genesis low-code platform. Readers need to have some experience of Linux system administration.
 
 ## Installing build artifacts
 
 ### Transferring the build artifacts
 
-After a build process is finished, the result is a set of build artifacts ready to be installed.  At present, Genesis applications are built as ZIP files ready to be copied to and unzipped on the target host(s). The application's developer can advise which are the correct ZIP files.
+After a build process is finished, the result is a set of build artifacts ready to be installed. At present, Genesis applications are built as ZIP files ready to be copied to and unzipped on the target host(s). The application's developer can advise which are the correct ZIP files.
 
 Copy the build artifact onto the host by whatever means your local security policies allow.  
 
@@ -77,8 +77,7 @@ ln -s /data/${runUser}/web-${installDate} /data/${runUser}/web
 
 ### Application code
 
-The ZIP files will contain relative paths, so the extract path matters. Therefore, either `chdir` to the correct
-directory, or use a command-line argument to unzip.
+The ZIP files contain relative paths, so the extract path matters. Therefore, either `chdir` to the correct directory, or use a command-line argument to unzip.
 
 ```shell
 installDir=$(date +%Y%m%d)
@@ -113,15 +112,13 @@ unzip <absolute path to web ZIP> -d /data/${runUser}/web-${installDate}
 The final build artifact is the configuration for the run environment. There are two options here:
 
 - separate config, where only the given environment config is provided
-- unified config, where each separate environment is specified in the
-config
+- unified config, where each separate environment is specified in the config
 
-Each approach has its virtues.  Separate config maintains separation between environments.  Unified config provides a single artifact for all environments (this helps to confirm that what is live is what was tested).
+Each approach has its virtues. Separate config maintains separation between environments. Unified config provides a single artifact for all environments. This helps to confirm that what is live is what was tested.
 
 This is also a ZIP file, containing relative paths (the top-level directory is always **site-specfic**).
 
-This needs to be installed in the server-side code directory, following a very similar pattern to installing the
-server-side code.
+This needs to be installed in the server-side code directory, following a very similar pattern to installing the server-side code.
 
 ```shell
 installDir=$(date %Y%m%d)
@@ -136,7 +133,7 @@ unzip <absolute path to site-specific ZIP> -d /data/${runUser}/server/${installD
 
 ## Post-install tasks
 
-Any last changes to the configuration files should be made before proceeding.  Whether the site-specific config provides a complete configuration set is a matter that needs to be agreed between the developer and the system administrator.
+Any last changes to the configuration files should be made *before* proceeding. Whether the site-specific config provides a complete configuration set is a matter that needs to be agreed between the developer and the system administrator.
 
 If anything cannot be determined at site-specific ZIP build time, it might need to be changed manually on the host.
 
