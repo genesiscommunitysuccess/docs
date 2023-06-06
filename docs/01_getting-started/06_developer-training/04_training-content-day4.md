@@ -132,7 +132,7 @@ sealed class TradeEffect {
 }
 ```
 
-### 3. Add the module as a dependency in the *build.gradle.kts* inside **alpha-script-config** module.
+### 3. Add the module as a dependency in the **build.gradle.kts** inside **alpha-script-config** module.
 
 ```
 ...
