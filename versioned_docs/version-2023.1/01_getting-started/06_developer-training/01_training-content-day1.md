@@ -779,5 +779,5 @@ Look at the [Event Handler documentation](../../../server/event-handler/basics/#
 Test it with Genesis Console.
 
 :::info END OF DAY 1
-This is the end of the day 1 of our training, to help your training journey, check out how your application should look like at the end of day 1 [here](https://github.com/genesiscommunitysuccess/devtraining-seed/tree/Exercise-1.2).
+This is the end of the day 1 of our training. To help your training journey, check out how your application should look at the end of day 1 [here](https://github.com/genesiscommunitysuccess/devtraining-seed/tree/Exercise-1.2).
 :::
