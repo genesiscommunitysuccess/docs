@@ -535,5 +535,5 @@ Remember to send the login request first. This automatically populates all envir
 :::
 
 :::info END OF DAY 2
-This is the end of the day 2 of our training, to help your training journey, check out how your application should look like at the end of day 2 [here](https://github.com/genesiscommunitysuccess/devtraining-seed/tree/End_Of_Day_2).
+This is the end of the day 2 of our training. To help your training journey, check out how your application should look at the end of day 2 [here](https://github.com/genesiscommunitysuccess/devtraining-seed/tree/End_Of_Day_2).
 :::
