@@ -432,7 +432,7 @@ Once the command has finished, it will generate the `fields-dictionary.kts` and 
  -->
 
  ### The application is complete!
- Congratulations! You have finished the Positions & Trades app! Check out the final application example [here](https://github.com/genesiscommunitysuccess/devtraining-alpha)
+ Congratulations! You have finished the Positions & Trades app! Check out the final application example [here](https://github.com/genesiscommunitysuccess/devtraining-alpha).
 
 
 ## Operating the Genesis low-code platform
