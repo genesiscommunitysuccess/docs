@@ -856,6 +856,10 @@ Change the Position constant to delete the POSITION_ID, as this field does not h
 Don't forget to reload the client side to see the upgrades.
 :::
 
+:::info END OF DAY 3
+This is the end of the day 3 of our trainingTo help your training journey, check out how your application should look at the end of day 3 [here](https://github.com/genesiscommunitysuccess/devtraining-seed/tree/Exercise_3.3).
+:::
+
 <!-- Apart from building a front end, as we did [before](../../../tutorials/training-resources/training-content-day2/#intro-to-ui) the application user interface can be configured in various aspects such as data distribution, using Request Servers for static (reference) data, and Data Servers for streaming real-time data. -->
 
 <!-- 
