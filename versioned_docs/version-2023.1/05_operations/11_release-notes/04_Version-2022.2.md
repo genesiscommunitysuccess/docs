@@ -196,7 +196,7 @@ The basis of this version is:
 - New flex-layout component added for easy-to-use Flexbox layouts (there’s also an upcoming app-layout component with UI persistence features).
 - **IMPORTANT** select / combobox / multiselect now have their own datasource adapters, allowing quick and easy integration with back-end data (this is the same as in our grids, but for list elements!)
 - New error-boundary component, which enables improved error management for UI elements.
-- [Grid column persistence](../../../getting-started/go-to-the-next-level/data-grid/#saving-user-preferences) to restore a user’s column preferences between app reloads.
+- [Grid column persistence](../../../getting-started/web-training/web-training-day4/) to restore a user’s column preferences between app reloads.
 - **IMPORTANT** charts component wrapper for [@ant-design/charts](https://github.com/ant-design/ant-design-charts/) added, allowing the following types: Line, Area, Bar, Column, Pie, Dual Axes, Rose.
 - Added SSO login support for Symphony. WebSocket connection addresses now fully configurable (auto assignment of ws: or wss:, and allowing other extensions - default still /gwf/)
 - New CLI tasks to help end users analyse their component usage and switch design-system prefixes. These generate sample code for users to copy from the terminal to their projects.
@@ -213,7 +213,7 @@ The basis of this version is:
     - [Reporting](../../../web/micro-front-ends/front-end-reporting/foundation-reporting)
 - Added multiple parameter support for Testing Suite in foundation-testing
 - More code examples in our Showcase Client App, including selecting values and labels in our combobox programmatically.
-- Added [slotted-styles](../../../getting-started/go-to-the-next-level/customize-look-and-feel/#styling-grid-pro) component to allow overriding component styles.
+- Added [slotted-styles](../../../getting-started/web-training/web-training-day4/) component to allow overriding component styles.
 
 ### Maintenance
 - Various CLI tweaks to support continuing DSL work.
