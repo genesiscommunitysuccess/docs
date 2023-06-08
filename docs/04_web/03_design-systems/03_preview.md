@@ -17,10 +17,12 @@ On the left-hand side, is the [Editor](../../../web/design-systems/preview/#edit
 
 Try changing the configurations and observe the reflected changes on the right.
 
-<design-system-editor>
-  <design-system-preview></design-system-preview>
-  <design-system-export slot="export"></design-system-export>
-</design-system-editor>
+<div class="demo-view">
+  <img src="/img/DSC.PNG" alt="Alt Text"/>
+  <div>
+    <a class="overlay-link" href="/dsconfig/" target="_blank">View DSC Demo &#x2197;</a>
+  </div>
+</div>
 
 ## Editor
 
@@ -35,19 +37,19 @@ Alternatively, if it's unticked, switching between design systems will not retai
 Instead, they will be reset to design system defaults.
 
 :::note
-Note that in the documentation, the DSC (Design System Configurator), is in *preview* mode rather than *application* mode. There are minor but significant differences between them.
+Note that in the documentation, the DSC (Design System Configurator), is in _preview_ mode rather than _application_ mode. There are minor but significant differences between them.
 :::
 
 :::important
-The **Design System** is an important configuration. Depending on which one you choose, you will get a different look. While in *preview* mode, you will see **Zero** and **Foundation UI** in the dropdown list of **Design System**. But in *application* mode, you will see one more design system. 
+The **Design System** is an important configuration. Depending on which one you choose, you will get a different look. While in _preview_ mode, you will see **Zero** and **Foundation UI** in the dropdown list of **Design System**. But in _application_ mode, you will see one more design system.
 :::
 
 For example, if you have launched DSC from an application called **client-app**, you will also see **Client App** in the dropdown list.
 
-|         |         |
-| :-------: | :-------: |
-| Preview dropdown | Application dropdown|
-| ![Image 1](/img/preview_drop_down.PNG) |![Image 2](/img/custom_drop_down.PNG) |
+|                                        |                                       |
+| :------------------------------------: | :-----------------------------------: |
+|            Preview dropdown            |         Application dropdown          |
+| ![Image 1](/img/preview_drop_down.PNG) | ![Image 2](/img/custom_drop_down.PNG) |
 
 In the editor, after you have configured the design system, there are two more things you can do:
 
@@ -56,7 +58,7 @@ In the editor, after you have configured the design system, there are two more t
 
 ### Saving tokens
 
-Once you're happy with all the changes, you can click the **Save** button. At this point, a modal is prompted that shows you the configured design tokens in a JSON format. 
+Once you're happy with all the changes, you can click the **Save** button. At this point, a modal is prompted that shows you the configured design tokens in a JSON format.
 
 :::note
 Because this is only a preview, only the **Close** button is shown on the modal. When the **DSC** app is launched, you will see another **Save** button parallel to the **Close** one. Clicking the **Save** button, saves all the changes; this is reflected in the application you're currently running the Design System Configurator from.
@@ -64,10 +66,10 @@ Because this is only a preview, only the **Close** button is shown on the modal.
 
 See the images below.
 
-|         |         |
-| :-------: | :-------: |
-| Preview Modal | Application Modal|
-| ![Image 1](/img/close_modal.PNG) |![Image 2](/img/save_modal.PNG) |
+|                                  |                                 |
+| :------------------------------: | :-----------------------------: |
+|          Preview Modal           |        Application Modal        |
+| ![Image 1](/img/close_modal.PNG) | ![Image 2](/img/save_modal.PNG) |
 
 ### Resetting tokens
 
@@ -75,20 +77,20 @@ Alternatively, if you no longer need the modifications you have made, click the 
 
 ## Preview
 
-In the preview, you can see three tabs displaying the information suggested by their titles. 
+In the preview, you can see three tabs displaying the information suggested by their titles.
 
 ### Components
 
-The contents of the **Components** tab reflect the components that are affected by the configurations of the design tokens. 
+The contents of the **Components** tab reflect the components that are affected by the configurations of the design tokens.
 
 :::note
-The components we see here are only a small collection used for the purpose of displaying an example. There are many more **[components](../../../web/web-components/overview)** that you have access to. 
+The components we see here are only a small collection used for the purpose of displaying an example. There are many more **[components](../../../web/web-components/overview)** that you have access to.
 :::
 
 ### Typography
 
-The **Typography** tab displays the list of typography tokens avilable for you to use. Click on the tab in the preview and observe the changes to the **Body Font**, **Base Font Size** and **Base Line Height** as you configure these tokens on the left-hand side. 
+The **Typography** tab displays the list of typography tokens avilable for you to use. Click on the tab in the preview and observe the changes to the **Body Font**, **Base Font Size** and **Base Line Height** as you configure these tokens on the left-hand side.
 
 ### Colors
 
-The **Colors** tab, as you may suspect, shows the design tokens available for setting colour. Click on the **Colors** tab and observe the reflected changes as you configure the **Accent color** and **Neutral color** design tokens. 
+The **Colors** tab, as you may suspect, shows the design tokens available for setting colour. Click on the **Colors** tab and observe the reflected changes as you configure the **Accent color** and **Neutral color** design tokens.
