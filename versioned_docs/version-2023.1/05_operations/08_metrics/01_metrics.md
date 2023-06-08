@@ -35,7 +35,7 @@ item(name = "MetricsReportType", value = "GRAPHITE,SLF4J")
 item(name = "MetricsGraphiteURL", value = "localhost")
 item(name = "MetricsGraphitePort", value = "2003")
 item(name = "MetricsReportIntervalSecs", value = "60") // Optional, defaults to 10 seconds if not specified
-item(name = "Slf4jReporterLoggingLevel", value = "DEBUG") // Optional, defaults to DEBUG, options include {DEBUG, INFO, WARN, ERROR}
+item(name = "Slf4jReporterLoggingLevel", value = "DEBUG") // Optional, defaults to DEBUG, options include {DEBUG, INFO, TRACE, WARN, ERROR}
 ```
 
 ## Metrics API
