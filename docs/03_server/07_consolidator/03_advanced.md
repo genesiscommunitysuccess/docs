@@ -193,9 +193,11 @@ For this function:
 - The `previousValue` holds the previous value. 
 - the `sum` function uses `withAggregation`
 
-`input` contains only `Join`, `Leave` and `Noop` values. You can see how these are accessed in the example below.
+`input` contains only `Join`, `Leave` and `Noop` values. (You can see how these are accessed in the example below.)
 
-This example uses the Kotlin function `fold` to calculate the value `acc`, which is the aggregated value for a group. This could be total fees, for example.
+All `withAggregation` functions must end with an `asUpdate()` call. This effectively says, use the value you now have. 
+
+The example below uses the Kotlin function `fold` to calculate the value `acc`, which is the aggregated value for a group, such as total fees.
 
 
 ```kotlin
@@ -210,9 +212,7 @@ using { feeAmount } withAggregation {
 }
 ```
 
-In that example, the `asUpdate()` call at the end is required, because `withAggregation` also supports additional return values of `Noop` and
-`IndexScan`. The `Noop` value will cause the function to ignore the input for this particular field, and there will be no change written to the database. Conversely, returning `IndexScan` will cause the Consolidator to re-evaluate every database value for that key.
+`withAggregation` also supports two other return values:
 
-A similar example to the above would be to use the `max` function. 
-- If the new maximum value is less than the current maximum, then no data needs to be written to the database.
-- If the current maximum value leaves the `Consolidator` group, then all values should be evaluated to determine the new maximum value.
+- `Noop` causes the function to ignore the input for this particular field, and there is no change written to the database. For example, this is used during an iterative comparison to find a maximum value. The function compares the next value with the previous; if it is not higher, then return `Noop`. 
+- `IndexScan` causes the function to re-evaluate every database value for that key. For example, if the record with the maximum value has been deleted from the database, go to the database and find the new maximum value.
