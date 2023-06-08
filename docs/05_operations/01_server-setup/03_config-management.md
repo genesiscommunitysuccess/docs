@@ -107,6 +107,36 @@ server {
 
 The IP and port shown are for the application's Router process. The example above also shows configuration for TLS, and listening on both port 443 for HTTPS and port 80 for plain-text traffic.
 
+## Context path of your app
+Changing the context path creates a different url for your application. If you want to do this, add a location directive to your nginx configuration file. The location directive specifies the URL path that will be matched to the context root. 
+
+For example, to set up a context root for the URL path **/myapp**, add the following location directive to your nginx configuration file:
+
+```
+location /myapp {
+    root /usr/share/nginx/html;
+}
+```
+
+This directive tells nginx to serve all requests that match the URL path **/myapp** from the directory **/usr/share/nginx/html**.
+
+You can also use the alias directive to set up a context root. The alias directive tells nginx to redirect all requests that match the specified URL path to a different URL path. For example, to set up a context root for the URL path **/myapp** that redirects to the URL path **/yourapp**, add the following alias directive to your nginx configuration file:
+
+```
+alias /myapp /yourapp;
+```
+
+:::note
+Once you have added the location or alias directive to your nginx configuration file, you need to restart nginx for the changes to take effect.
+:::
+
+Here are some additional things to keep in mind when setting up a context root or alias directive:
+
+- The context root must be a valid directory on your web server.
+- The context root must not contain any spaces or special characters.
+- If you are using the alias directive, the target URL path must be accessible from your web server.
+
+
 ### Environment overrides
 
 Each process within the application can be instructed to read another file to override the main configuration file, [system-definitions](../../../server/configuring-runtime/system-definitions/).
