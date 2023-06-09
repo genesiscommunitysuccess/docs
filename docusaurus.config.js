@@ -35,13 +35,22 @@ module.exports = {
   clientModules: [
     './src/client-modules/genesislcap.js'
   ],
+  webpack: {
+    jsLoader: (isServer) => ({
+      loader: require.resolve('esbuild-loader'),
+      options: {
+        loader: 'tsx',
+        format: isServer ? 'cjs' : undefined,
+        target: isServer ? 'node12' : 'es2017',
+      },
+    }),
+  },
   scripts: [
     {
       src: "https://feedback.fish/ff.js?pid=d642786cff63aa",
       defer: true
     }
   ],
-
   plugins: [
     [
       '@docusaurus/plugin-client-redirects',
