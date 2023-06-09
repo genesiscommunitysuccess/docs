@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "docusaurus": "docusaurus",
-    "build": "npm run copy:dsconfig && docusaurus build",
+    "build": "npm run copy:dsc && docusaurus build",
     "build:next": "SHOW_NEXT=true docusaurus build",
     "build:base_url": "BASE_URL=/docs/ docusaurus build",
     "build:production": "BASE_URL=/docs/ BRANCH=master docusaurus build",
@@ -19,7 +19,7 @@
     "generate:iife": "rollup -c -f iife",
     "hack:iife": "npm run copy:iife && npm run rename:iife && npm run package:iife",
     "copy:iife": "copyfiles -u 2 src/client-modules/docs.iife.min.js node_modules/iife",
-    "copy:dsconfig": "rimraf --glob ./static/dsconfig/* && copyfiles -u 4 node_modules/@genesislcap/design-system-configurator/dist/* static/dsconfig",
+    "copy:dsc": "rimraf --glob ./static/dsc/* && copyfiles -u 4 node_modules/@genesislcap/design-system-configurator/dist/* static/dsc",
     "rename:iife": "node -e \"require('fs').rename('node_modules/iife/docs.iife.min.js', 'node_modules/iife/index.js',()=>{})\"",
     "package:iife": "node -e \"require('fs').writeFileSync('node_modules/iife/package.json', '{\\\"name\\\":\\\"iife\\\",\\\"version\\\":\\\"1.0.0\\\",\\\"main\\\":\\\"index.js\\\"}')\""
   },

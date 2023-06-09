@@ -34,4 +34,4 @@ tmp
 /src/client-modules/
 /src/client-modules/iife.d.ts
 src/client-modules/docs.iife.min.js
-/static/dsconfig
+/static/dsc
