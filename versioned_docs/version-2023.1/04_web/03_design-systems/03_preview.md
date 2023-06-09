@@ -9,7 +9,17 @@ tags:
   - preview
 ---
 
-<design-system-editor>
-  <design-system-preview></design-system-preview>
-  <design-system-export slot="export"></design-system-export>
-</design-system-editor>
+## Introduction
+
+The Design System Configurator can be used to customise and tailor the design system according to your specific needs.
+
+On the left-hand side, is the [Editor](../../../web/design-systems/preview/#editor), where you can make all the modifications you want. On the right side, you can see the [Preview](../../../web/design-systems/preview/#preview) with the results of those changes.
+
+Try changing the configurations and observe the reflected changes on the right.
+
+<div class="demo-view">
+  <img id="shadowed-img" src="/img/DSC-checkbox.PNG" alt="Image capture of DSC app"/>
+  <div>
+    <a class="overlay-link" href="/dsc/" target="_blank">Launch DSC &#x2197;</a>
+  </div>
+</div>
