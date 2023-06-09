@@ -113,6 +113,11 @@ It provides a plug-in architecture (based on the Eclipse plugins architecture) t
 
 There are also tools for drawing diagrams, import/export and data analysis.
 
+## Docker
+An open platform for developing, shipping, and running applications. 
+
+With Docker, you can package and run an application in a loosely isolated environment called a container. You can run many containers simultaneously on a given host. The containers are lightweight and contain everything needed to run the application, so you do not need to rely on the host's set-up. Therefore, you can deliver software quickly. 
+
 ## EC2
 
 Amazon Elastic Compute Cloud This is where the Genesis Dev, Test and Production Instances are housed in the cloud.
@@ -213,12 +218,16 @@ Maven users need to add a dependency to their pom.xml to use Netty.
 
 Find this and a lot more at the [Camel website](https://camel.apache.org/components/latest/netty-component.html).
 
+## nginx
+Genesis uses nginx as a reverse proxy to pass incoming requests to the server. nginx can handle many concurrent connections. This is designed to increase security and ensure high performance. 
+
+The [ngnix documentation](https://nginx.org/en/docs/) will tell you more if you work hard.
+
 ## NIO
 Non-blocking I/O
 
 This usually refers to [java.nio](https://docs.oracle.com/javase/10/docs/api/java/nio/package-summary.html), which is a set of Java APIs for intensive I/O operations. 
 The APIs give access to low-level I/O operations in operating systems. So you have APIs that use the most efficient operations of the underlying platform.
-
 
 ## Node Package Manager
 
