@@ -149,7 +149,7 @@ usingRow(DOUBLE) withOperations {
 } into value
 ```
 
-This shows the benefit of `using`, as it handles `null` values. The `orZero()` call takes any nullable number and returns the value or `0` if it is null.
+This shows the benefit of `using`, as it handles `null` values. The `orZero()` call takes any nullable number and returns the value, or `0` if it is null.
 
 ### withOperations
 
