@@ -97,9 +97,7 @@ Within the curly brackets of the function, you can access all the fields on a ro
 `*` if previous min or max value is removed<br />
 `+` if previous any value is changed
 
-### Examples
-
-
+### Example
 
 ```kotlin
 sum { feeAmount }                   // sums the FEE_AMOUNT
@@ -109,7 +107,6 @@ count ()                            // counts the number of records
 count { feeAmount }                 // counts the records with a FEE_AMOUNT
 // etc.
 ```
-
 
 ## Custom functions
 
@@ -151,7 +148,6 @@ usingRow(DOUBLE) withOperations {
     onNoop { previousValue + newInput.feeAmount.orZero() - oldInput.feeAmount.orZero() }
 } into value
 ```
-
 
 This shows the benefit of `using`, as it handles `null` values. The `orZero()` call takes any nullable number and returns the value or `0` if it is null.
 
@@ -195,9 +191,9 @@ For this function:
 
 `input` contains only `Join`, `Leave` and `Noop` values. (You can see how these are accessed in the example below.)
 
-All `withAggregation` functions must end with an `asUpdate()` call. This effectively says, use the value you now have. 
-
 The example below uses the Kotlin function `fold` to calculate the value `acc`, which is the aggregated value for a group, such as total fees.
+
+The function ends with an `asUpdate()` call. This effectively says, use the value you now have. 
 
 
 ```kotlin
@@ -212,7 +208,7 @@ using { feeAmount } withAggregation {
 }
 ```
 
-`withAggregation` also supports two other return values:
+`withAggregation` does not have to end with an `asUpdate()` call. Two other return values are also available:
 
 - `Noop` causes the function to ignore the input for this particular field, and there is no change written to the database. For example, this is used during an iterative comparison to find a maximum value. The function compares the next value with the previous; if it is not higher, then return `Noop`. 
 - `IndexScan` causes the function to re-evaluate every database value for that key. For example, if the record with the maximum value has been deleted from the database, go to the database and find the new maximum value.
