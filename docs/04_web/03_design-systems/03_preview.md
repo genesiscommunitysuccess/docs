@@ -77,7 +77,7 @@ Alternatively, if you no longer need the modifications you have made, click the 
 
 ## Preview
 
-In the preview, you can see three tabs displaying the information suggested by their titles.
+In the preview, you can see four tabs displaying the information suggested by their titles.
 
 ### Components
 
