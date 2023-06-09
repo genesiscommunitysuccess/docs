@@ -98,7 +98,7 @@ Within the curly brackets of the function, you can access all the fields on a ro
 `*` if previous min or max value is removed<br />
 `+` if previous any value is changed
 
-### Examples
+### Example
 
 
 
@@ -114,7 +114,7 @@ count { feeAmount }                 // counts the records with a FEE_AMOUNT
 
 ## Custom functions
 
-Consolidators also support custom functions that allow you to specify behaviour for  join, leave and noop
+Consolidators also support custom functions that allow you to specify behaviour for join, leave and noop
 operations. 
 
 There are two parts to defining a custom functions:
@@ -142,8 +142,8 @@ using { feeAmount } withOperations {
 
 There are two types of input for custom functions: 
 
-- `using` and `usingRow`. `using` will take an input from a row, like any other function. The return type determines the type of the function.
-- `usingRow` will take the whole row as input. The type of function must be specified. 
+- `using` takes an input from a row, like any other function. The return type determines the type of the function.
+- `usingRow` takes the whole row as input. The type of function must be specified. 
 
 The function in the example above can also be implemented with `usingRow`, as shown below:
 
@@ -156,7 +156,7 @@ usingRow(DOUBLE) withOperations {
 ```
 
 
-This shows the benefit of `using`, as it handles `null` values. The `orZero()` call will take any nullable number and return the value or `0` if it is null.
+This shows the benefit of `using`, as it handles `null` values. The `orZero()` call takes any nullable number and returns the value, or `0` if it is null.
 
 ### withOperations
 
@@ -179,22 +179,29 @@ Each operation has access to the operation context as follows:
 - `onNoop`
     1. `previousValue`
     2. `newInput`
-    2. `oldInput`
+    3. `oldInput`
 
 ### withAggregation
 
-This function has a number of different uses:
+You can use this function for a number of requirements:
 
 - where the function needs to consider all values, rather than just one at time 
 - where you require a different function outcome, other than update value 
 - where no update at all is required
 - where the group id should be reconsolidated
 
-When using this way of calculating custom functions, the `input` variable holds a `List` of aggregation events, and
-the `previousValue` holds the previous value. `input` contains only `Join`, `Leave` and `Noop` values, which can
-be accessed as per the example below.
+For this function:
 
-Again, the `sum` function uses `withAggregation`.
+- The `input` variable holds a `List` of aggregation events.
+- The `previousValue` holds the previous value. 
+- the `sum` function uses `withAggregation`
+
+`input` contains only `Join`, `Leave` and `Noop` values. (You can see how these are accessed in the example below.)
+
+The example below uses the Kotlin function `fold` to calculate the value `acc`, which is the aggregated value for a group, such as total fees.
+
+The function ends with an `asUpdate()` call. This effectively says, use the value you now have. 
+
 
 ```kotlin
 using { feeAmount } withAggregation {
@@ -208,10 +215,7 @@ using { feeAmount } withAggregation {
 }
 ```
 
-In that example, the `asUpdate()` call at the end is required, as `withAggregation` also supports additional return values of `Noop` and
-`IndexScan`. The `Noop` value will cause the function to ignore the input for this particular field, and there will
-be no change written to the database. Conversely, returning `IndexScan` will cause the Consolidator to re-evaluate every database value for that key.
+`withAggregation` does not have to end with an `asUpdate()` call. Two other return values are also available:
 
-A similar example to the above would be to use the `max` function. 
-- If the new maximum value is less than the current maximum, then no data needs to be written to the database.
-- If the current maximum value leaves the `Consolidator` group, then all values should be evaluated to determine the new maximum value.
+- `Noop` causes the function to ignore the input for this particular field, and there is no change written to the database. For example, this is used during an iterative comparison to find a maximum value. The function compares the next value with the previous; if it is not higher, then return `Noop`. 
+- `IndexScan` causes the function to re-evaluate every database value for that key. For example, if the record with the maximum value has been deleted from the database, go to the database and find the new maximum value.
