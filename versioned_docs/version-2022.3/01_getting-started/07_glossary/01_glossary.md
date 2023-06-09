@@ -130,7 +130,7 @@ So, let's say that again. An endpoint is a URL.
 Financial Information Exchange
 A protocol for sending and receiving financial information.
 
-FIX has standard dictionaries of different messages. Typically, we use v4.4. note that some banks use earlier versions (usually 4.2) and some have already moved to 5.0). Also note that you can customise these dictionaries to create our own messages.
+FIX has standard dictionaries of different messages. Typically, we use v4.4. note that some banks use earlier versions (usually 4.2) and some have already moved to 5.0. Also note that you can customise these dictionaries to create our own messages.
 
 Genesis uses [QuickFIX](http://www.quickfixengine.org/quickfix/doc/html/?quickfix/doc/html) (open source).
 

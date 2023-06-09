@@ -107,7 +107,7 @@ server {
 
 The IP and port shown are for the application's Router process. The example above also shows configuration for TLS, and listening on both port 443 for HTTPS and port 80 for plain-text traffic.
 
-## Context path of your app
+### Context path of your app
 Changing the context path creates a different url for your application. If you want to do this, add a location directive to your nginx configuration file. The location directive specifies the URL path that will be matched to the context root. 
 
 For example, to set up a context root for the URL path **/myapp**, add the following location directive to your nginx configuration file:
@@ -135,7 +135,6 @@ Here are some additional things to keep in mind when setting up a context root o
 - The context root must be a valid directory on your web server.
 - The context root must not contain any spaces or special characters.
 - If you are using the alias directive, the target URL path must be accessible from your web server.
-
 
 ### Environment overrides
 
