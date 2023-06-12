@@ -15,7 +15,6 @@ tags:
 The Genesis low-code platform offers you pre-built components designed to speed up your development, testing and deployment.
 - [Component architecture](02_component-architecture-overview.md)
 - [Core components](03_core-components.md)
-- [Application components](04_application-components.md)
 - [Integration components](05_integration-components.md)
 - [User-interface components](06_ui-components.md)
 
