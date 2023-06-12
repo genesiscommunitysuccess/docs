@@ -83,21 +83,45 @@ When creating autiding tables, you will add a new table into your schema named `
 | `AUDIT_EVENT_TYPE`        | STRING    | Event that wrote on the source table |
 | `AUDIT_EVENT_USER`        | STRING    | User on the event message |
  
-
 ### Adding audit to table dictionary
 
-In case you want to add basic auditing to your table dictionary, you need to go to **{APP_NAME}-tables-dictionary.kts**, and add the following parameter into the table definition `audit = details()`. It should resemble as the example below:
+In order to create an audit table, you need to add the parameter `audit = details()` into your table's definition. The parameters avaiable in `details()` are decribed below.
 
-```kotlin {1}
+| Parameter name            | Type | Description |
+| ---                       | ---       | ---  |
+| `id`    | Integer  | **Unique** `id` to identify the audit table |
+| `sequence`        | STRING    | **Unique** name to identify its `sequence`   | 
+| `tskey`        | boolean  | Set a timestamp index |
+
+The sintax is:
+
+```kotlin tittle = "{APP_NAME}-tables-dictionary.kts"
 table (name = <TABLE_NAME>, id = <TABLE_ID>, audit = details(id = <TABLE_NAME_AUDIT_ID>, sequence = <TABLE_SEQUENCE>, tskey = <TRUE_OR_FALSE>))
         ...
 
 ```
-#### Parameters
 
-- `id` (**Unique integer**):  It indicates the id of the newly created audit table, as all tables, it needs to be unique.
-- `sequence` (**Unique String**): Creates a sequence, with the given string.
-- `tskey` (**Boolean**): Set the timestamp index
+#### Example
+
+```kotlin
+table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR_AU", tskey = true)) {
+    sequence(TRADE_ID, "TR")
+    COUNTERPARTY_ID 
+    INSTRUMENT_ID not null
+    QUANTITY
+    PRICE not null
+    SYMBOL
+    DIRECTION
+    TRADE_DATE
+    ENTERED_BY
+    TRADE_STATUS
+
+    primaryKey {
+        TRADE_ID
+    }
+}
+
+```
 
 <!-- ### Event Handlers to use auditing
 
