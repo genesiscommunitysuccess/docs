@@ -1,7 +1,7 @@
 ---
-title: 'Components - UI'
+title: 'UI components'
 sidebar_label: 'UI components'
-sidebar_position: 5
+sidebar_position: 1
 id: ui-components
 keywords: [getting started, basics, components, ui]
 tags:
