@@ -113,6 +113,11 @@ It provides a plug-in architecture (based on the Eclipse plugins architecture) t
 
 There are also tools for drawing diagrams, import/export and data analysis.
 
+## Docker
+An open platform for developing, shipping, and running applications. 
+
+With Docker, you can package and run an application in a loosely isolated environment called a container. You can run many containers simultaneously on a given host. The containers are lightweight and contain everything needed to run the application, so you do not need to rely on the host's set-up. Therefore, you can deliver software quickly. 
+
 ## EC2
 
 Amazon Elastic Compute Cloud This is where the Genesis Dev, Test and Production Instances are housed in the cloud.
@@ -130,7 +135,7 @@ So, let's say that again. An endpoint is a URL.
 Financial Information Exchange
 A protocol for sending and receiving financial information.
 
-FIX has standard dictionaries of different messages. Typically, we use v4.4. note that some banks use earlier versions (usually 4.2) and some have already moved to 5.0). Also note that you can customise these dictionaries to create our own messages.
+FIX has standard dictionaries of different messages. Typically, we use v4.4. note that some banks use earlier versions (usually 4.2) and some have already moved to 5.0. Also note that you can customise these dictionaries to create our own messages.
 
 Genesis uses [QuickFIX](http://www.quickfixengine.org/quickfix/doc/html/?quickfix/doc/html) (open source).
 
@@ -153,6 +158,9 @@ High Frequency Trading (HFT) relates to software-enabled trading of large number
 - You can execute a lot of buy trades on the instrument within milliseconds and offer these at a higher price because the market has moved up - partly as a result of your buying.
 - You get to sell these back to the market at a new higher price.
 That means no change in your holdings or risk, plus a profit for your trading desk. All in the blink of an eye.
+
+## IOPS
+Input/output operations per second, a metric for input/output performance, typically used for storage devices, such as disk drives (HDD), solid-state drives (SSD), and storage area networks (SAN). 
 
 ## Java Binary Object
 
@@ -213,12 +221,16 @@ Maven users need to add a dependency to their pom.xml to use Netty.
 
 Find this and a lot more at the [Camel website](https://camel.apache.org/components/latest/netty-component.html).
 
+## nginx
+Genesis uses nginx as a reverse proxy to pass incoming requests to the server. nginx can handle many concurrent connections. This is designed to increase security and ensure high performance. 
+
+The [ngnix documentation](https://nginx.org/en/docs/) will tell you more if you work hard.
+
 ## NIO
 Non-blocking I/O
 
 This usually refers to [java.nio](https://docs.oracle.com/javase/10/docs/api/java/nio/package-summary.html), which is a set of Java APIs for intensive I/O operations. 
 The APIs give access to low-level I/O operations in operating systems. So you have APIs that use the most efficient operations of the underlying platform.
-
 
 ## Node Package Manager
 
@@ -290,6 +302,11 @@ There are 4 basic HTTP verbs used in REST:
 * POST — create a new resource
 * PUT — update a specific resource (by ID)
 * DELETE — remove a specific resource (by ID)
+
+RPM 
+RPM can refer to:
+-  RPM Package Manager, which is an open-source package management system. It was originally created for Red Hat Linux, but is now used in many Linux distributions, including CentOS. 
+-  the .rpm file format. Most .rpm files are binary RPMs containing the compiled version of the software, but you can also find source RPMs containing the source code used to build the binaries.
 
 ## Script
 

@@ -58,6 +58,3 @@ ENTITY_ID_TYPE is an enumeration with the following possible values.
 | PROFILE_NAME | If the type is PROFILE_NAME, ENTITY_ID will be the name of a PROFILE. All users that have that profile assignment will receive the notification.  |
 
 An additional value is available that matches the ENTITY_ADMIN_PERMISSION_FIELD, if it is defined in Sysdef. This is used primarily in multi-tenant systems. If using this value, notifications can be sent to everyone with visibility on a particular entity.
-
-<!-- TODO: link to dynamic-events -->
-<!-- could be /getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#dynamic-rules-conditional-rules -->

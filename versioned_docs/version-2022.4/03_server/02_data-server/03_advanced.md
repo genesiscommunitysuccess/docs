@@ -182,21 +182,53 @@ are always selected in the order they are specified in the index.
 
 The `index` property can have unique and non-unique [indexes](../../../database/data-types/index-entities/#types)
 
-## Client-side (runtime) options
+In order to receive data from the Data Server, a front-end client supplies a datasource configuration, such as a [Grid Pro](../../../web/web-components/grids/grid-pro/grid-pro-genesis-datasource/), which initiates a subscription and controls the flow of data that is returned by the connection. 
 
-When a client initiates a subscription to a Data Server by sending a **DATA_LOGON** message, there are several options that can be specified. None of these options is mandatory; you don't have to specify any to initiate a subscription. 
-The features of the options are explained below.
+These configurations are handled automatically by sending a **DATA_LOGON** message. Here we describe the options that can be sent as part of the DATA_LOGON message. They are all optional.
 
 
 | Option         | Default   | Description                                                  |
 | -------------- | --------- | ------------------------------------------------------------ |
-| MAX_ROWS       | 250       | Maximum number of rows to be returned as part of the initial message, and as part of any additional **MORE_ROWS** messages |
-| MAX_VIEW       | 1000      | Maximum number of rows to track as part of a client "view   |
+| MAX_ROWS       | 250       | Maximum number of rows to be returned as part of the initial message, and as part of any additional [MORE_ROWS](../../../server/integration/rest-endpoints/basics/#more_rows) requests; see below for more information |
+| MAX_VIEW       | 1000      | Maximum number of rows to track as part of a client view; see below for more information   |
 | MOVING_VIEW    | **true**  | Defines the behaviour of the client view when new rows are received in real time. If `MOVING_VIEW` is set to `true`, and `MAX_VIEW` is reached, any new rows arriving to the query will start replacing the oldest rows in the view. This guarantees that only the most recent rows are shown by default |
 | CRITERIA_MATCH |           | Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: `Expr.dateIsBefore(TRADE_DATE,'20150518')` or `QUANTITY > 10000` |
 | FIELDS         |           | This optional parameter enables you to select a subset of fields from the query if the client is not interested in receiving all of them. Example: `TRADE_ID QUANTITY PRICE INSTRUMENT_ID`. By default, all fields are returned if this option is not specified |
 | ORDER_BY       |           | This option can be used to select a [Data Server index](../../../database/data-types/index-entities/) (defined in xml), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows will be returned in order of creation (from oldest database record to newest) |
 | REVERSE        | **false** | This option changes the [Data Server index](../../../database/data-types/index-entities/) iteration. For example, if you are using the default index, the query will return rows from newest database records to oldest |
+
+### How MORE_ROWS and MAX_VIEWS behave
+#### MAX_ROWS
+MAX_ROWS determines how many rows will be sent when the front end requests data. It also determines how many rows are sent when the front end makes a [MORE_ROWS request](../../../server/integration/rest-endpoints/basics/#more_rows). 
+
+The rows are queried based on the REVERSE setting (which only applies to non-real-time updates). So it is important to note the following behaviour. 
+
+For example, when a DATA_LOGON is received with MAX_ROWS set to 500, and REVERSE set to false:
+
+- **If no real-time updates occur on the server**  the initial DATA_LOGON receives all 500 rows in reverse order. If the front end makes another request for MAX_ROWS, it receives another 500 rows in reverse order. From here, the client can make further MORE_ROWS requests until the MAX_VIEW setting is reached. 
+
+- **If real-time updates occur on the server** these are sent to the front end regardless of order, and they will count towards the MAX_VIEW.
+
+#### MAX_VIEW and MOVING_VIEW
+What happens when you reach MAX_VIEW depends on the MOVING_VIEW setting. 
+
+- If MOVING_VIEW is set to true, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows. So if you already have 2000 rows in your view and a new row is inserted, the oldest row in your view will be deleted (the Data Server sends a delete message) and the new row will be sent (the Data Server sends an insert message for that row). 
+
+- If MOVING_VIEW is set to false, the Data Server will not send any updates for any new rows whatsoever. Only the rows that are currently in your view will receive updates. In either case, you can only have a total of MAX_VIEW rows in your grid.
+
+This allows for easier implementation of infinite scrolling whilst providing latest and greatest database updates in your view. You just need to send a DATA_LOGON and then continue calling MORE_ROWS to fill the grid as you scroll.
+
+If you only want receive a limited number of rows, and you only want to receive updates for those rows and nothing else. You have two options. Our scenarios here assume you are interested in receiving only five lines:
+
+- The DATA_LOGON must have MAX_ROWS = 5, MAX_VIEW = 5, and MOVING_VIEW = false. This ensures that you only see those rows and only receive updates for those rows and nothing else. 
+- If you are interested in a limited number of lines for the purposes of pagination, the DATA_LOGON must have MAX_ROWS = 5 and VIEW_NUMBER = 1. You will receive the first five rows in a pagination mode. If you then send a MORE_ROWS update with VIEW_NUMBER = 2, you will receive an update to delete all your current five rows in your grid and receive the next page of rows (i.e. another 5). These pages will only receive updates for the rows on display, and will respect REVERSE settings.  
+On successful DATA_LOGON and on any subsequent MORE_ROWS messages, you will receive a field called ROWS_COUNT which contains an estimated number of rows in the server. You can divide this number by your MAX_ROWS setting to know how many pages can be queried on the server.
+
+:::info
+Let's summarise all that.
+- Normal DATA_LOGONs without MAX_ROWS = MAX_VIEW and MOVING_VIEW false always send new updates to the front end automatically once they occur in the server, regardless of the value of REVERSE. 
+- If you only want to see a subset of rows, or to use pagination, use either MAX_ROWS = MAX_VIEW and MOVING_VIEW = false.
+:::
 
 ## Criteria matching
 

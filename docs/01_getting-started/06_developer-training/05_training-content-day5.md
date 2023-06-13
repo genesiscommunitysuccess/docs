@@ -431,8 +431,9 @@ DictionaryBuilder -t MSSQL -U admin -P beONneON*74 -p 1433 -H ref-data-rdb.clatr
 Once the command has finished, it will generate the `fields-dictionary.kts` and `tables-dictionary.kts` files for the data model. Keep these files handy, as you will have to copy them over in the next steps.
  -->
 
-### Application is done!
-Congratulations! You have finished the Positions & Trades app!
+ ### The application is complete!
+ Congratulations! You have finished the Positions & Trades app! Check out the final application example [here](https://github.com/genesiscommunitysuccess/devtraining-alpha).
+
 
 ## Operating the Genesis low-code platform
 Now that our application code is complete, let's take a look at the operations side of the platform on the server.
@@ -545,7 +546,7 @@ Change the log level of the ALPHA_EVENT_HANDLER process to INFO with `LogLevel` 
 To test it, check if you can see the new log you added in the alpha event handler log file.
 -->
 
-## How to get help​
+## How to get help
 
 Remember that the Search function in the [documentation](https://learn.genesis.global/docs/getting-started/) is your friend.
 
