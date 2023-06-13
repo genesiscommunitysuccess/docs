@@ -134,7 +134,7 @@ So far, we have seen `ack` and `nack`. There is a third type: `warningNack`. Let
 
 
 ## Transactional Event Handlers (ACID)
-If you want your  `eventHandler` to comply with [ACID](../../../../getting-started/glossary/glossary/#acid), you can declare it to be  `transactional = true`. Any exception returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) blocks. While an exception will trigger a rollback, the transaction will commit if a `nack` or `ack` is returned.
+If you want your  `eventHandler` to comply with [ACID](../../../getting-started/glossary/glossary/#acid), you can declare it to be  `transactional = true`. Any exception returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) blocks. While an exception will trigger a rollback, the transaction will commit if a `nack` or `ack` is returned.
 
 ```kotlin
     eventHandler<Counterparty>(transactional = true) {
