@@ -123,6 +123,19 @@ table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR_AU",
 
 ```
 
+### Event Handlers with auditing tables
+
+In order to be able insert automatically audit records to audit tables, you only need to follow the [previous steps](#adding-audit-to-table-dictionary). After that, every time an eventhandle interacts with any audited table, it will automatically insert an audit record.
+
+To garantee that the audit record is inserted into the audit table, Genesis provide a parameter to eventhandlers called `transactional = true | false`.
+
+**Transactional** eventhandlers are [ACID](../../../../getting-started/glossary/glossary/#acid)-compliant, which means that it will use the concept of transactions to garantee that the audit record is inserted into the audit table. In other words, if `transactional = true` and the eventhandler triggered finishes its excecution, then it is garanteed that the audit record is inserted.
+
+:::warning
+Make sure your database supports transactions
+:::
+
+
 <!-- ### Event Handlers to use auditing
 
 Now you must update the **alpha-eventhandler.kts** in order to pass the `entityDb` object into the updated methods of the state machine, as the **syncMultiEntityReadWriteGenericSupport** parameter. This should resemble the example below:

@@ -124,6 +124,14 @@ If the Event Handler message type is a database-generated entity that is auditab
 * AUDIT_EVENT_TEXT: Optional “REASON” value sent as part of the event message
 * AUDIT_EVENT_USER: Extracted from the event message
 
+To garantee that the audit record is inserted into the audit table, Genesis provide a parameter to eventhandlers called `transactional = true | false`.
+
+**Transactional** eventhandlers are [ACID](../../../../getting-started/glossary/glossary/#acid)-compliant, which means that it will use the concept of transactions to garantee that the audit record is inserted into the audit table. In other words, if `transactional = true` and the eventhandler triggered finishes its excecution, then it is garanteed that the audit record is inserted.
+
+:::warning
+Make sure your database supports transactions
+:::
+
 ## Defining state machines
 
 State machines, which define the conditions for moving from one state to another, are defined within your Event Handler files. See more details about these in the section on [Defining your state machines](../../../server/state-machine/introduction/).

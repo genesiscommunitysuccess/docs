@@ -95,7 +95,7 @@ In order to create an audit table, you need to add the parameter `audit = detail
 
 The sintax is:
 
-```kotlin tittle = "{APP_NAME}-tables-dictionary.kts"
+```kotlin title="{APP_NAME}-tables-dictionary.kts"
 table (name = <TABLE_NAME>, id = <TABLE_ID>, audit = details(id = <TABLE_NAME_AUDIT_ID>, sequence = <TABLE_SEQUENCE>, tskey = <TRUE_OR_FALSE>))
         ...
 
@@ -122,6 +122,19 @@ table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR_AU",
 }
 
 ```
+
+### Event Handlers with auditing tables
+
+In order to be able insert automatically audit records to audit tables, you only need to follow the [previous steps](#adding-audit-to-table-dictionary). After that, every time an eventhandle interacts with any audited table, it will automatically insert an audit record.
+
+To garantee that the audit record is inserted into the audit table, Genesis provide a parameter to eventhandlers called `transactional = true | false`.
+
+**Transactional** eventhandlers are [ACID](../../../../getting-started/glossary/glossary/#acid)-compliant, which means that it will use the concept of transactions to garantee that the audit record is inserted into the audit table. In other words, if `transactional = true` and the eventhandler triggered finishes its excecution, then it is garanteed that the audit record is inserted.
+
+:::warning
+Make sure your database supports transactions
+:::
+
 
 <!-- ### Event Handlers to use auditing
 
