@@ -11,7 +11,11 @@ tags:
     - ui
 ---
 
-With these user-interface (UI) components, you can create clear and usable interfaces quickly.
+To give your front end a wide range of visual possibilities, the Genesis low-code platform provides a wide range of [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components). These are built on top of [Microsoft FAST](https://www.fast.design/docs/introduction/). 
+
+This eliminates a number of problems, such as deciding between Angular, React & Vue, dealing with version clashes & upgrades, or needing to onboard web-framework specialists.
+
+You can use these Web Components to create clear and usable interfaces quickly.
 
 | Name                                                                                         | Category      | Description                                                                                                                                                 |
 |----------------------------------------------------------------------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|

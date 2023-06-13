@@ -13,7 +13,7 @@ tags:
 
 Every Genesis application is different, but all Genesis applications share a common architecture. The best way to understand the purpose of all the main elements of this architecture is to familiarise yourself with the server modules and the web front-end.
 
-The diagram below shows what an example application looks like, showing the server modules and web front-end. Hence, this diagram can be the foundation for every developer.
+The diagram below shows what an example application looks like, with the server modules and web front-end.  This diagram is the foundation for understanding all Genesis applications.
 
 ![](/img/component-architecture-02.png)
 
