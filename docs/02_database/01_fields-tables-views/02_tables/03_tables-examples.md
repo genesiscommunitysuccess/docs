@@ -13,6 +13,13 @@ tags:
 
 Our example below shows an application's **tables-dictionary.kts** file containing two tables. The first contains trades and the second contains simple position information for each instrument.
 
+However, note that the first table has been declared with an audit table, so this creates two tables: one called TRADE and one called TRADE_AUDIT. The schema will actually have three tables:
+
+- TRADE
+- TRADE_AUDIT
+- POSITION
+
+
 ```kotlin
 tables {
   table(name = "TRADE", id = 11000, audit = details(id = 11001, sequence = "TR", tsKey = true)) {

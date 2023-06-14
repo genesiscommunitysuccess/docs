@@ -11,7 +11,7 @@ tags:
 
  
 
-In your application's **tables-dictionary.kts** file, you need to define every table that your application needs. Let look at a very simple example definition. This contains a single table with three fields in it.
+In your application's **tables-dictionary.kts** file, you need to define every table that your application needs. Let us look at a very simple example definition. This contains a single table with three fields in it.
 
 Then you can look closer at all the elements that can go into a table definition.
 
