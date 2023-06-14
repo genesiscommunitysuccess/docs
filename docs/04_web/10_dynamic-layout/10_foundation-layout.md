@@ -466,7 +466,7 @@ class Commodities extends FASTElement {
 const template = html<Commodities>`
 <foundation-layout>
 	<foundation-layout-region type="horizontal">
-		${when(x => x.positions, html<Position>`
+		${repeat(x => x.positions, html<Position>`
 			<foundation-layout-item title="${x => x.symbol}">
 				<chart symbol="${x => x.symbol}"></chart>
 			</foundation-layout-item>`)}
