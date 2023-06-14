@@ -1,20 +1,19 @@
 ---
-title: 'Components - architecture overview'
+title: 'Architecture overview'
 id: component-architecture-overview
 sidebar_label: 'Architecture overview'
-sidebar_position: 1
-keywords: [getting started, basics, components, architecture, overview]
+sidebar_position: 2
+keywords: [getting started, basics, architecture, overview]
 tags:
     - getting started
     - basics
-    - components
     - architecture
     - overview
 ---
 
-Every Genesis application is different, but all Genesis applications share a common architecture. The best way to understand the purpose of all the main elements of this architecture is to familiarise yourself with the server components and the web front-end.
+Every Genesis application is different, but all Genesis applications share a common architecture. The best way to understand the purpose of all the main elements of this architecture is to familiarise yourself with the server modules and the web front-end.
 
-The diagram below shows what an example application looks like and well explains the server components and web front-end. Hence, this diagram can be the foundation for every developer.
+The diagram below shows what an example application looks like, with the server modules and web front-end.  This diagram is the foundation for understanding all Genesis applications.
 
 ![](/img/component-architecture-02.png)
 
@@ -42,5 +41,5 @@ Your application comes to life when you create a base skeleton project and then 
 
 ## The User interface
 
-Using our tools, you can define pages, install grids, charts and other visual components, then connect these to the resources in the server. Thereafter, the permitted users can log in to it. You can assign the user groups with the rights to view specific data and have access to specific functions.
+Using our tools, you can define pages, install grids, charts and other visual components, then connect these to the resources in the server. Thereafter, the permitted users can log in to it. You can assign users to user groups. Then you can configure each user group with the rights to view specific data and have access to specific functions.
  
