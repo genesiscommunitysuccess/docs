@@ -468,30 +468,13 @@ class Commodities extends FASTElement {
 const template = html<Commodities>`
 <foundation-layout>
 	<foundation-layout-region type="horizontal">
-		${when(x => x.positions, html<Position>`
+		${repeat(x => x.positions, html<Position>`
 			<foundation-layout-item title="${x => x.symbol}">
 				<chart symbol="${x => x.symbol}"></chart>
 			</foundation-layout-item>`)}
 	</foundation-layout-region>
 </foundation-layout>`;
 ```
-
-For an example where the `Commodities` object has three positions, you will see the following output:
-```
-+-----------------------------------------------------+
-|              Component 1 Contents                   |
-+-----------------------------------------------------+
-|              Component 2 Contents                   |
-+-----------------------------------------------------+
-|              Component 3 Contents                   |
-+-----------------------------------------------------+
-```
-
-
-:::note
-`<chart>` is just an example component; it doesn't exist within `foundation-ui`.
-:::
-
 ### `when` directive
 
 Using the `when` directive:
