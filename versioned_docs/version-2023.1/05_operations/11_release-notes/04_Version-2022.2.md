@@ -37,7 +37,7 @@ Release date: July 08, 2022. Note that there is sub-release, [2022.2.1](../../..
 - **DSL**. The first release (version 0.0.1) of our proprietary DSL now enables you to define full-stack applications, unifying front-end and back-end development.
     This is designed to improve the speed and efficiency of development on the Genesis low-code platform. You can now:
 
-    - enable authentication more easily across your applications- more easily authorise access to grids, views or commands
+    - enable authentication more easily across your applications - more easily authorise access to grids, views or commands
     - create custom commands and advanced views (via custom cell renderers).
 
 Main details are:
