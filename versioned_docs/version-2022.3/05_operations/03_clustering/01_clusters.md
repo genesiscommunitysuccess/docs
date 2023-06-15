@@ -7,11 +7,12 @@ tags:
     - database
     - clusters
 ---
-The Genesis low-code platform is highly resilient and easy to cluster for a High Availability (HA) setup. This area takes you through the steps required to establish a HOT-HOT setup.
+The Genesis low-code platform is highly resilient and easy to cluster for a High Availability (HA) set-up. This area takes you through the steps required to establish a HOT-HOT setup.
 
 ## Prerequisites
 
-This set-up focuses on the Genesis low-code platform within an HA setup. The database is expected to be decoupled from the Genesis server instances in its HA setup.
+This set-up focuses on the Genesis low-code platform within an HA setup. To achieve full HA, the application's database must be installed on a separate node. There is, of course, an effect on performance in such a set-up.
+
 
 An HA Load Balancer is required to direct web traffic to the primary node and fail over to the secondary node when the primary node is unresponsive.
 
