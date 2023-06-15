@@ -23,11 +23,11 @@ The basis of this version is:
 Release date: February 28, 2023. 
 
 ## Feature highlights
-* **Revamped pending approval workflow** - The pending approval workflow has been revamped to support GPAL configuration and other improvements. More information [here](../../../server/event-handler/advanced/#pending-approvals).
-* **Self-service password reset functionality** - The platform now supports self-service password reset capabilities. Please see this [page](../../../server/access-control/password-authentication/#selfservicereset) for more information.
-* **JSON Schema validation** - Event Handlers now validate each incoming message based on the implicit JSON schema definition. See more information in [schema validation](../../../server/event-handler/advanced/#disabling-schema-validation) and [inter-process messages](../../../server/inter-process-messages/metadata-annotations/).
+* **Revamped pending approval workflow** - The pending approval workflow has been revamped to support GPAL configuration and other improvements. 
+* **Self-service password reset functionality** - The platform now supports self-service password reset capabilities. 
+* **JSON Schema validation** - Event Handlers now validate each incoming message based on the implicit JSON schema definition.
 * **Case-insensitive user login** - The user name field is now case-insensitive when attempting login operations.
-* **Custom permissions support** - A new function called `customPermissions` is available within the `permissioning` block to improve integration with third-party entitlement systems. More information in this [page](../../../server/access-control/authorisation-overview/#custom-permissions-function).
+* **Custom permissions support** - A new function called `customPermissions` is available within the `permissioning` block to improve integration with third-party entitlement systems.
 * **OpenID Connect improvements** - It is now possible to set up a new logout workflow within Genesis that also logs out the user from the underlying SSO identity provider.
 
 ## Genesis Server Framework (GSF)
@@ -41,12 +41,12 @@ GSF and its modules are compiled using Kotlin 1.7.10 and Gradle 7.5.0.
 ## GSF
 
 ### Breaking changes
-- Make username available in scope within a permissioning 'where' clause (see [sample code](../../../server/access-control/authorisation/#where-clauses))
+- Make username available in scope within a permissioning 'where' clause.
 - MS SQL fields now use the appropriate "max length" parameter when the `maxSize` value goes beyond the MS SQL limit. 
 - The 'USER' table has been updated to include a unique index for the 'REFRESH_TOKEN' field.
 - The minimal safe TLS version is now set to 1.2.
-- The pending approval mechanism has had a [major revamp](../../../server/event-handler/advanced/#pending-approvals)).
-- JSON [schema validation](../../../server/event-handler/advanced/#disabling-schema-validation) and [inter-process messages](../../../server/inter-process-messages/metadata-annotations/) have been enabled for Event Handlers in GSF.
+- The pending approval mechanism has had a major revamp.
+- JSON schema validation and inter-process messages have been enabled for Event Handlers in GSF.
 
 ### Features
 
@@ -58,7 +58,7 @@ GSF and its modules are compiled using Kotlin 1.7.10 and Gradle 7.5.0.
 - We now allow running containers as non-root users.
 - There is now access to self-service password reset without logging in.
 - We have enabled case-insensitive support for username as part of the login workflow in GENESIS_ROUTER.
-- Auth map is now optional in permissioning GPAL (see this [example](../../../server/access-control/authorisation-overview/#auth-sub-block)).
+- Auth map is now optional in permissioning GPAL.
 - Mon process statuses now include a new HEALTHY state when a process has passed its health checks.
 - Auto-increment ids can be shared between more than one table definition to have their own sequence value.
 
@@ -101,7 +101,7 @@ GSF and its modules are compiled using Kotlin 1.7.10 and Gradle 7.5.0.
 
 ### Features
 
-- We have added "customLoginAck" block to auth-preferences, so we can [further customise the login ack message](../../../server/access-control/password-authentication/#customloginack).
+- We have added "customLoginAck" block to auth-preferences, so we can further customise the login ack message.
 - New fields have been added to ALL_APPROVAL_ALERTS and add new query for ALL_APPROVAL_ALERTS_AUDITS as part of the pending approval workflow revamp.
 - We have added allowedClockSkewSeconds property to the OIDC verification configuration.
 - There is now logout functionality for OIDC.
@@ -350,16 +350,16 @@ These are the complete changes.
 - Update breaking behavior in genesis-datasource-next 
 - (grid-pro): grid config cache regression 
 - Address missing default export breaking foundation-zero storybook build 
-- Smart forms correct schema payload  address 
+- Smart forms correct schema payload address 
 - Showcases/micro-front ends not running locally 
 - Allow to pass column config to file-upload-grid 
 - column config without overriding it by metadata 
-- (foundation-entity-management): lifecycle mixin for entitites.ts and users.ts 
+- (foundation-entity-management): lifecycle mixin for entities.ts and users.ts 
 - (foundation-testing): add insertRule mock 
 - (foundation-ui): adjusting storybook versions 
 - (foundation-login): ensure autoConnect is non-blocking 
 - (foundation-ui): label made optional and fixed grid filtering issue 
-- (foundation-ui): file upload url was missing /gwf prefix. 
+- (foundation-ui): file upload url was missing /gwf prefix
 - (foundation-login): add hostPath config 
 - (foundation-login): update README, logout to '/' 
 

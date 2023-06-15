@@ -10,6 +10,12 @@ tags:
     - v-2022.1
 ---
 
+:::warning
+
+This documentation version has been archived.
+
+:::
+
 This is version v2022.1 of the documentation for the Genesis low-code platform.
 
 The basis of this version is:
@@ -344,7 +350,7 @@ consolidator(TRADE, ORDER) {
 }
 ```
 
-In the above example, we aggregate data from the TRADE table into the ORDER table. We group by orderId and we count the number of trades and sum the notional. For further details, please see [here](../../03_server/07_consolidator/01_introduction.md).
+In the above example, we aggregate data from the TRADE table into the ORDER table. We group by orderId and we count the number of trades and sum the notional. 
 
 The main advantages over the previous consolidator syntax are:
 

@@ -10,6 +10,12 @@ tags:
     - v-2022.2
 ---
 
+:::warning
+
+This documentation version has been archived.
+
+::
+
 ## Release notes
 This is version v2022.2 of the documentation for the Genesis low-code platform.
 
@@ -205,12 +211,12 @@ The basis of this version is:
 - A number of (`foundation-header`, `foundation-reporting`) styling improvements to micro front-ends.
 - The `foundation-header` for micro front-ends is more configurable.
 - Created How-To and API documentation for several of our micro front-ends:
-    - [Header](../../../web/micro-front-ends/foundation-header)
-    - [Entity Management](../../../web/micro-front-ends/foundation-entity-management)
-    - [User Management](../../../web/micro-front-ends/foundation-entity-management#User-management)
-    - [Profile Management](../../../web/micro-front-ends/foundation-entity-management/#profile-management)
-    - [Login](../../../web/micro-front-ends/foundation-login)
-    - [Reporting](../../../web/micro-front-ends/front-end-reporting/foundation-reporting)
+    - Header
+    - Entity Management
+    - User Management
+    - Profile Management
+    - Login
+    - Reporting
 - Added multiple parameter support for Testing Suite in foundation-testing
 - More code examples in our Showcase Client App, including selecting values and labels in our combobox programmatically.
 - Added slotted-styles component to allow overriding component styles.
@@ -258,7 +264,7 @@ ZeroMQ publishers and subscribers (and the ZeroMQ proxy implementation) now have
 
     - this.socket.recvStr();
     - final byte msgTrimmed = this.socket.recv();
-    - the unpacked message (final V message = handler.getUpdateQueueUnpacker().unpack(tlUnpacker);
+    - the unpacked message (final V message = handler.getUpdateQueueUnpacker().unpack(tlUnpacker));
     - ZeroMQForwarder.kt. This is used when proxying ZeroMQ updates via the GENESIS_CLUSTER implementation. Publishers will send messages to GENESIS_CLUSTER and GENESIS_CLUSTER will redistribute those to any other process subscribed to it.
 
 - Methods. We have added trace logging for the following methods:

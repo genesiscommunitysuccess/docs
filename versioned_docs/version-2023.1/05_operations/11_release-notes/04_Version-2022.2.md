@@ -10,6 +10,13 @@ tags:
     - v-2022.2
 ---
 
+
+:::info NOTE
+
+This documentation version has been archived.
+
+:::
+
 ## Release notes
 This is version v2022.2 of the documentation for the Genesis low-code platform.
 
@@ -196,7 +203,7 @@ The basis of this version is:
 - New flex-layout component added for easy-to-use Flexbox layouts (there’s also an upcoming app-layout component with UI persistence features).
 - **IMPORTANT** select / combobox / multiselect now have their own datasource adapters, allowing quick and easy integration with back-end data (this is the same as in our grids, but for list elements!)
 - New error-boundary component, which enables improved error management for UI elements.
-- [Grid column persistence](../../../getting-started/web-training/web-training-day4/) to restore a user’s column preferences between app reloads.
+- Grid column persistence to restore a user’s column preferences between app reloads.
 - **IMPORTANT** charts component wrapper for [@ant-design/charts](https://github.com/ant-design/ant-design-charts/) added, allowing the following types: Line, Area, Bar, Column, Pie, Dual Axes, Rose.
 - Added SSO login support for Symphony. WebSocket connection addresses now fully configurable (auto assignment of ws: or wss:, and allowing other extensions - default still /gwf/)
 - New CLI tasks to help end users analyse their component usage and switch design-system prefixes. These generate sample code for users to copy from the terminal to their projects.
@@ -205,15 +212,15 @@ The basis of this version is:
 - A number of (`foundation-header`, `foundation-reporting`) styling improvements to micro front-ends.
 - The `foundation-header` for micro front-ends is more configurable.
 - Created How-To and API documentation for several of our micro front-ends:
-    - [Header](../../../web/micro-front-ends/foundation-header)
-    - [Entity Management](../../../web/micro-front-ends/foundation-entity-management)
-    - [User Management](../../../web/micro-front-ends/foundation-entity-management#User-management)
-    - [Profile Management](../../../web/micro-front-ends/foundation-entity-management/#profile-management)
-    - [Login](../../../web/micro-front-ends/foundation-login)
-    - [Reporting](../../../web/micro-front-ends/front-end-reporting/foundation-reporting)
+    - Header
+    - Entity Management
+    - User Management
+    - Profile Management
+    - Login
+    - Reporting
 - Added multiple parameter support for Testing Suite in foundation-testing
 - More code examples in our Showcase Client App, including selecting values and labels in our combobox programmatically.
-- Added [slotted-styles](../../../getting-started/web-training/web-training-day4/) component to allow overriding component styles.
+- Added slotted-styles component to allow overriding component styles.
 
 ### Maintenance
 - Various CLI tweaks to support continuing DSL work.
@@ -258,7 +265,7 @@ ZeroMQ publishers and subscribers (and the ZeroMQ proxy implementation) now have
 
     - this.socket.recvStr();
     - final byte msgTrimmed = this.socket.recv();
-    - the unpacked message (final V message = handler.getUpdateQueueUnpacker().unpack(tlUnpacker);
+    - the unpacked message (final V message = handler.getUpdateQueueUnpacker().unpack(tlUnpacker));
     - ZeroMQForwarder.kt. This is used when proxying ZeroMQ updates via the GENESIS_CLUSTER implementation. Publishers will send messages to GENESIS_CLUSTER and GENESIS_CLUSTER will redistribute those to any other process subscribed to it.
 
 - Methods. We have added trace logging for the following methods:
