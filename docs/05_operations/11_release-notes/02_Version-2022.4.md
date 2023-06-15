@@ -87,7 +87,7 @@ This is a high-level overview of the changes.
 ### Features
 * Added a `foundation-layout` package to provide application and route-based layout, similar to [Golden Layout](https://golden-layout.com/). Most APIs are in [@beta](https://api-extractor.com/pages/tsdoc/tag_beta/), but feel free to test these before full public release.
 * Added a `foundation-criteria` package to provide a type-safe criteria builder for generating queries.
-* Added a `foundation-filters` package to provide a collection of client-side filters that can be used in complex logic chains ([docs](../../../web/filters/foundation-filters/)).
+* Added a `foundation-filters` package to provide a collection of client-side filters that can be used in complex logic chains.
 * Added support for OpenID SSO in `foundation-login`.
 * Added bubble and scatter chart types.
 * Added drag-and-drop field ordering functionality to `foundation-reporting`.

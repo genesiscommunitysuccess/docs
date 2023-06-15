@@ -83,7 +83,7 @@ Features
 - we have added options for username and password to allow the use of authenticated MQTT brokers  
 - tls certificate verification can now be disabled for mqtt connection 
 - chore: FDB diagnostic utility scripts added
-- chore: status badge in [README.md](http://readme.md/) updated
+- chore: status badge in README.md updated
 - chore: oracle warning removed
 - chore: updating opencsv to 5.7.1 
 - chore: improvements to tidy up the docker plugin configuration 
@@ -120,7 +120,7 @@ The following fixes have been made
 - `remap`: fixed incorrect check for free space in FoundationDB 
 - `remap`: logger and stack trace issues fixed 
 - `remap`: fixed issues with table counter changes when renaming a table and/or removing/reading with the same name 
-- `remap`: fixed underflow errors when using `FDBIndexWriterHelper` on FDB2. 
+- `remap`: fixed underflow errors when using `FDBIndexWriterHelper` on FDB2 
 - `remap`: SQL column resizing added
 - `remap`: need for a separate module for compacted processes has been removed 
 - `remap` tests now use `DictionaryCreatedAliasStore` instead of `SqlAliasStore` 

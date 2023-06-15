@@ -162,7 +162,7 @@ Features
 - we have added options for username and password to allow the use of authenticated MQTT brokers  
 - tls certificate verification can now be disabled for mqtt connection 
 - chore: FDB diagnostic utility scripts added
-- chore: status badge in [README.md](http://readme.md/) updated
+- chore: status badge in README.md updated
 - chore: oracle warning removed
 - chore: updating opencsv to 5.7.1 
 - chore: improvements to tidy up the docker plugin configuration 
