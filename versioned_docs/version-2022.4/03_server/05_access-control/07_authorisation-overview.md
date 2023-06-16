@@ -160,7 +160,7 @@ Note these **important** details:
 - The `USER_COUNTERPARTY_MAP` table is referenced in the `ENTITY_VISIBILITY` entity in the **auth-permission.templt.xml** file. This file is a Genesis [mustache](https://en.wikipedia.org/wiki/Mustache_(template_system))
   template that is processed when `genesisInstall` is run, using entries from system-definition.
 
-- When new users are created in the Genesis GUI Admin screens, a required field, COUNTERPARTY, is presented to the operating user. This limits users to belonging to a single counterparty.
+- When new users are created in the Genesis [user entity management](../../../web/micro-front-ends/foundation-entity-management/), a required field, COUNTERPARTY, is presented to the operating user. This limits users to belonging to a single counterparty.
 
 
 A user can define additional **permissions.xml** files. For example, you could define something like **order-management-permissions.xml**, with an order management system auth implementation, and it will be read by `AUTH_PERMS` process on startup.

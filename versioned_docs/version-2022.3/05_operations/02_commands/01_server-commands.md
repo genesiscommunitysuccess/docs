@@ -327,7 +327,7 @@ Verbose mode will additionally output line-by-line operation outcome, and a fina
 
 
 :::warning
-Do not use `SendIt` to update User details in any way. This can easily cause database errors. To update User profiles or User attributes, only use Genesis GUI Admin screens.
+Do not use `SendIt` to update User details in any way. This can easily cause database errors. To update User profiles or User attributes, only use Genesis [user entity management](../../../web/micro-front-ends/foundation-entity-management/).
 :::
 
 ## DumpIt script
