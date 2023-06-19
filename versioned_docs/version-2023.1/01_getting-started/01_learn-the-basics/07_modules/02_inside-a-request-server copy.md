@@ -12,21 +12,17 @@ tags:
 
 <iframe src="https://player.vimeo.com/video/792592165?h=18cdb5adf0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
 
-
 A Request Server supplies static data to the front end of your application.
 
-Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. Typically, this is data requested by the front end.
+When a user at the front end requests a snapshot of data from a table or a view, the relevant `requestReply` code in the Request Server retrieves the data and sends it to the front end. Once the response is received, the transaction is complete.
 
-When the request is received, the Request Server replies with a single response. Once the response is received, the transaction has been completed.
+Each `requestReply` query is designed to supply all or some data from the specified table or view. You must specify all the required `requestReply` queries in a single Kotlin script file. If your application is called bravo, then this file will be called **bravo-reqrep.kts**. 
 
-You specify all your Request Servers as requestReply queries in a single Kotlin script file. If your application is called bravo, then this file will be called **bravo-reqrep.kts**. Each requestReply query is designed to supply all or some data from the specified table or view.
-
-
-Here is a simple example of a Request Server file. It defines three requestReply queries:
+Here is a simple example of a Request Server file. It defines three `requestReply` queries:
 
 - the first returns all the fields in the COUNTERPARTY table
 - the second returns all the fields in the EXCHANGE table
-- the third includes a  request block, which specifies the two fields ALTERNATE_TYPE and INSTRUMENT_CODE as a primary key; it responds with four fields from the INSTRUMENT_DETAILS table
+- the third includes a `request` block, which specifies the two fields ALTERNATE_TYPE and INSTRUMENT_CODE as a primary key; it responds with four fields from the INSTRUMENT_DETAILS table
 
 ```kotlin
 requestReplies {
