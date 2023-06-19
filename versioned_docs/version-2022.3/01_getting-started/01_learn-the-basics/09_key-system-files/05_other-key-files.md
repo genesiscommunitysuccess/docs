@@ -19,7 +19,7 @@ The file is divided into three areas:
 
 - In the second area, you can specify the routes for the messages from the specific modules or microservices.
 
-- In the third area, you can specify the resources that are available to the front end. If you don't specify at least one, all the resources in the server will be available.
+- In the third area, you can specify the resources that are available to the front end. If you don't specify at least one, **all** the resources in the server will be available.
 
 Here is an example configuration file for Genesis Router:
 

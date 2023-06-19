@@ -10,7 +10,9 @@ tags:
     - process
 ---
 
-Your application must have a **-processes.xml** file. For example, if your application is called 'bravo', then the file will be called **bravo-processes.xml**.
+Now let us consider a few files that are vital for configuring your application.
+
+First, your application must have a **-processes.xml** file. For example, if your application is called 'bravo', then the file will be called **bravo-processes.xml**.
 
 The purpose of this file is to specify the main characteristics of each of the services (or modules) in your application. If you don't define a module here, it will not be a part of your application.
 
