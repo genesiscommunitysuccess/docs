@@ -9,17 +9,19 @@ tags:
 ---
 
 
+## Database on a separate node
+This set-up focuses on the Genesis low-code platform within an HA set-up using the built-in Genesis Clustering. To achieve full HA, the application's database must be installed on a separate node. There is, of course, an effect on performance in such a set-up.
+
+In the set-up below, there is a stand-by secondary application and a cluster of four FoundationDB databases.
+
+![](/img/cluster-db.png)
+
 ## Prerequisites
-
-This set-up focuses on the Genesis low-code platform within an HA setup using the built-in Genesis Clustering. To achieve full HA, the application's database must be installed on a separate node. There is, of course, an effect on performance in such a set-up. 
-
-This area takes you through the steps required to establish a HOT-HOT setup.
-
 An HA Load Balancer is required to direct web traffic to the primary node and fail over to the secondary node when the primary node is unresponsive.
 
 The cluster servers need to be able to connect to each other on the configured cluster port (6000 is the default) and by host name.
 
-### Example set-up in AWS
+Here is an example set-up in AWS:
 
 ![](/img/cluster-1.png)
 

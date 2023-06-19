@@ -1,6 +1,6 @@
 ---
-title: 'Database technology - FoundationDb'
-sidebar_label: 'FoundationDb'
+title: 'Database technology - FoundationDB'
+sidebar_label: 'FoundationDB'
 id: foundationdb
 keywords: [database, technology, foundationdb]
 tags:
@@ -18,7 +18,7 @@ FDB and FDB2 are equivalent in terms of configuration, but they store data using
 
 Each mode has implications in terms of database limitations, as FDB can only store a maximum of 10MB data per transaction and 1MB data per key-value.
 
-Therefore, for applications using small table records, FDB2 will be more efficient. For applications using large table records, FDB will be more efficient.
+Therefore, for applications using small table records, FDB2 is more efficient. For applications using large table records, FDB is more efficient.
 
 System definitions[​](../../../database/database-technology/foundationdb/#system-definitionsdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ For FDB and FDB2 layers, there are additional system definition items that you c
 
 | Setting | Description |
 | --- | --- |
-| `FdbClusterFile` | A path to an fdb.cluster file. If this item is not defined, the default fdb.cluster file will be used. This file is located in /_etc_**/foundationdb/fdb.cluster**y |
+| `FdbClusterFile` | A path to an fdb.cluster file. If this item is not defined, the default fdb.cluster file will be used. This file is located in **/etc/foundationdb/fdb.cluster |
 | `DbNamespace` | A name for the internal FDB directory to use. |
 | `DbThreadsMin` | The minimum number of threads to be created in the FDB layer thread pool. Defaults to the minimum of 4 or the number of processing units |
 | `DbThreadsMax` | The maximum number of threads to be created in the FDB layer thread pool. Defaults to the maximum of 4 or the number of processing units multiplied by 2 |
