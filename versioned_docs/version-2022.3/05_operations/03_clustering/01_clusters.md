@@ -11,8 +11,11 @@ The Genesis low-code platform is highly resilient and easy to cluster for a High
 
 ## Prerequisites
 
-This set-up focuses on the Genesis low-code platform within an HA setup. To achieve full HA, the application's database must be installed on a separate node. There is, of course, an effect on performance in such a set-up.
+This set-up focuses on the Genesis low-code platform within an HA setup using the built-in Genesis Clustering. To achieve full HA, the application's database must be installed on a separate node. There is, of course, an effect on performance in such a set-up.
 
+In the set-up below, there is a stand-by secondary application and a cluster of four FoundationDB databases.
+
+![](/img/cluster-db.png)
 
 An HA Load Balancer is required to direct web traffic to the primary node and fail over to the secondary node when the primary node is unresponsive.
 
