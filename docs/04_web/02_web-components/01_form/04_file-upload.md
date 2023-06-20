@@ -40,7 +40,7 @@ The `file-upload` component can be used as shown below:
           upload-key="series">
     </zero-file-upload>
 ```
-:::important
+:::warning
 Please note that the `entity-id`, `upload-key` and `field-name` attributes are required for the `file-upload` component to work. Additionally, if no other attributes are passed, the `file-upload` component will use the default values for those attributes.
 :::
 
