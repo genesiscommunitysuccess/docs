@@ -353,6 +353,10 @@ To copy data from a Genesis database, use the `DumpIt` command.
 
 ### Syntax
 
+```bash
+DumpIt -t <table name> -f <file name>
+```
+
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|
 | -a       | --all              | No        | exports all tables to csv                              | No                |
@@ -835,6 +839,7 @@ Strings parsed in lower-camel-case format (camelCase) will be transformed to upp
 ## ReconcileDatabaseSync
 
 This is used to check if there are differences between a local DB and a remote DB with common dictionary tables.
+
 Typically, this would be used to reconcile tables that are being kept in sync by the GENESIS_SYNC process.
 
 The local DB's details (host, port, user, etc) are read from the system definition file in the local environment. The remote DB's details are specified as options to the command.
@@ -873,13 +878,13 @@ because the tables being compared are in separate databases. Therefore, these fi
 
 ### Examples
 
-This is a simple run with a remote postgres DB:
+This is a simple run with a remote Postgres DB:
 
 ```bash
 ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass
 ```
 
-This example runs with a remote postgres DB. it evaluates null and empty strings as equal; it compares records up to 2 days ago, and it ignores the field STATUS.
+This example runs with a remote Postgres DB. it evaluates null and empty strings as equal; it compares records up to 2 days ago, and it ignores the field STATUS.
 
 ```bash
 ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass -s -n 2 -i STATUS
@@ -1013,21 +1018,21 @@ You need to provide:
 
 AppGen can be used to generate a fully working application from a dictionary file.
 
-Usually when creating a application, you would start with a schema; you then build data servers, request servers and event handlers on top to create your application.  AppGen automates all this, and will generate the following new files:
+Usually when creating a application, you would start with a schema; you then build Data Servers, Request Servers and Event Handlers on top to create your application. AppGen automates all this, and will generate the following new files:
 
-- Data server: _application_**-dataserver.kts**
-- Request server: _application_**-reqrep.kts**
-- Event handler: _application_**-eventhandler.kts**
-- Sytem processes: _application_**-processes.xml**
+- Data Server: _application_**-dataserver.kts**
+- Request Server: _application_**-reqrep.kts**
+- Event Handler: _application_**-eventhandler.kts**
+- System processes: _application_**-processes.xml**
 - Service definitions: _application_**-service-definitions.xml
 
-### Data server and request server
+### Data Server and Request Server
 
-One block will be generated for each table in the database, complete with metadata (all fields on the table) and a field block that returns all fields on the table.  For request servers, the inbound metadata will be based on the primary key.
+One block will be generated for each table in the database, complete with metadata (all fields on the table) and a field block that returns all fields on the table. For Request Servers, the inbound metadata will be based on the primary key.
 
-### Event handler
+### Event Handler
 
-The file for the event handler contains insert, amend and delete transactions for every table in the database.  All transactions support validation and meta data. If a field is marked as a sequence in the dictionary (i.e. generated ID) then the field is not specified on the metadata for inserts, but it will be specified on modifies and deletes.
+The file for the Event Handler contains insert, amend and delete transactions for every table in the database.  All transactions support validation and meta data. If a field is marked as a sequence in the dictionary (i.e. generated ID) then the field is not specified on the metadata for inserts, but it will be specified on modifies and deletes.
 
 Deletes will have reduced metadata, as it is only necessary for the columns to satisfy the primary key to perform the delete.
 
@@ -1048,7 +1053,7 @@ This example has no `-t` option.
 AppGen -d tas-dictionary.xml -p 4000 -pn tas
 ```
 
-In this case, the dictionary to read is `tas-dictionary.xml`, the port offset is `4000` and the product name to generate is `tas`.  Running this command results in the following structure being created:
+In this case, the dictionary to read is `tas-dictionary.xml`, the port offset is `4000` and the product name to generate is `tas`. Running this command results in the following structure being created:
 
 ```bash
 tas/
