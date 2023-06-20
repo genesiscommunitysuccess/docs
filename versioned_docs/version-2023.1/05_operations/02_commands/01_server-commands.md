@@ -337,15 +337,15 @@ For example:
 SendIt -t FUND -f FUND
 ```
 
-This reads the FUND.csv file in the local directory and insert the data from the file into the FUND table.
+This reads the **FUND.csv** file in the local directory and inserts the data from the file into the FUND table.
 
-To modify records you, need to specify the key that will be used to identify the original record from the each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
+To modify records, you need to specify the key that will be used to identify the original record from each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
 
 ```bash
 SendIt -t FUND -m FUND_BY_ID
 ```
 
-Modify fields (`-mf`) is a special parameter that can be added to `-m` operations. SendTable will only attempt to modify the record fields specified in this comma-separated list parameter.
+Modify fields (`-mf`) is a special parameter that can be added to `-m` operations. SendIt only attempts to modify the record fields specified in this comma-separated list parameter.
 
 To delete records, specify `-d` (or `--delete`)
 
@@ -355,7 +355,7 @@ SendIt -t FUND -d
 
 If no file parameter is specified, `.csv` is assumed and read from the local directory.
 
-Verbose mode will additionally output line-by-line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes the script useful for scheduled or automated jobs (e.g. daily data loads).
+Verbose mode additionally outputs line-by-line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes the script useful for scheduled or automated jobs (e.g. daily data loads).
 
 :::warning
 Do not use `SendIt` to update User details in any way. This can easily cause database errors. To update User profiles or User attributes, only use Genesis [user entity management](../../../web/micro-front-ends/foundation-entity-management/).
