@@ -595,20 +595,24 @@ This migrates the Genesis dictionary from the Database Dictionary Store to the F
 MigrateDictionary
 ```
 
-The script uses the system definition file to get the `DictionarySource` property.
+The script uses the [system definition file](../../../server/configuring-runtime/system-definitions/#items-defined) to discover the `DictionarySource` property:
 
-If the property is `DB`, the server uses a Database Dictionary Store), then the `MigrateDictionary` script saves a dictionary to a file.
+- If the property is `DB` (if the server uses a Database Dictionary Store), the `MigrateDictionary` script saves the dictionary to a file.
 
-If the `DictionarySource` is `FILE` (the server uses a File Dictionary Store), then the dictionary is saved to a database. The target database type - `DbLayer` - is retrieved from the system definitions file.
+- If the `DictionarySource` is `FILE` (if the server uses a File Dictionary Store), the dictionary is saved to a database. The target database type - `DbLayer` - is also retrieved from the system definitions file.
 
 Here is a recommendation:
 
-- Use a file store (set by default) if you are running Genesis in a single node
-- Use database store if you are running Genesis in more than one node
+- Use a file store (set by default) if you are running Genesis on a single node
+- Use database store if you are running Genesis on more than one node
 
-The `remap` operation will update the dictionary, so if you are running a Genesis cluster, it is better to use a Database Dictionary Store, as it is less error-prone and the user won't have to copy the dictionary file to the remaining nodes manually.
+The `remap` operation updates the dictionary, so if you are running a Genesis cluster, it is better to use a Database Dictionary Store; this is more robust and you won't have to copy the dictionary file manually to the remaining nodes.
 
-It is potentially dangerous to switch the `DictionarySource` property. If you run `remap` (which modifies the  dictionary) after `MigrateDictionary` and before switching the `DictionarySource` property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
+:::warning
+It is potentially dangerous to switch the `DictionarySource` property. 
+
+If you run `remap` (which modifies the  dictionary) after `MigrateDictionary` and before switching the `DictionarySource` property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
+:::
 
 ## GetNextSequenceNumbers
 

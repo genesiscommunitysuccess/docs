@@ -12,11 +12,11 @@ tags:
 
 [Introduction](../../../../server/integration/apache-camel/introduction/)  | [Basics](../../../../server/integration/apache-camel/basics) | [Advanced](../../../../server/integration/apache-camel/advanced) | [Examples](../../../../server/integration/apache-camel/examples) | [Configuring runtime](../../../../server/integration/apache-camel/configuring-runtime) | [Testing](../../../../server/integration/apache-camel/testing)
 
-The Genesis low-code platform supports the use of [Apache Camel](https://camel.apache.org/) in order to integrate with external systems, using its plethora of [components](https://camel.apache.org/components/3.16.x/index.html).
+The Genesis low-code platform supports the use of [Apache Camel](https://camel.apache.org/) in order to integrate with external systems, using its plethora of [components](https://camel.apache.org/components/next/index.html).
 
 Genesis makes this easy to configure and set up, allowing new processors to be defined and used within GPAL.
 
-Likely uses for Apache Camel include:
+You can use Apache Camel for:
 
 * receiving data [from the local filesystem](../../../../getting-started/use-cases/loading-feed-data/overview/)
 * transmitting data [to or from an external location](../../../../getting-started/use-cases/loading-feed-data/sftp-and-encryption/).
