@@ -289,10 +289,9 @@ killServer [--hostname <[hosts names]>] [--force]
 
 ## DbMon script
 
-The DbMonscript enables you to navigate through the database tables from the command line.
+The DbMon script is the Genesis database client, which provides its own command line. From here, you can navigate through the database tables in your application.
 
-Once inside `DbMon`, you can run the command 'help', which shows all the available DbMon commands. 
-To get help on a specific command, run `help _command_`.
+`DbMon` itself has a `help` command, which shows all the available commands. To get help on a specific command, run `help _command_`.
 
 `DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
 
