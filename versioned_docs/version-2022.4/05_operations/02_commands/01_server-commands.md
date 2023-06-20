@@ -408,8 +408,11 @@ RenameFields [-i <[current name of field]>] [-o  <[new name of field]>]
 
 
 The `--input` argument represents the name of the field you would like to change. The argument must be an existing field name in the database.
+
 The `--output` argument represents the name of the field you would like to change to. The argument must also be an existing field name in the database.
+
 Both arguments must also be of the same type.
+
 If both arguments are in the same table, it would result in the `--output` field being deleted.
 All changes using `RenameFields` can be changed back to the original database schema by using the command `remap --commit`.
 
@@ -783,8 +786,11 @@ There are a few considerations you should be aware of:
 
 #### Keys and indexes
 Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based.
+
 Only unique indexes will be parsed as secondary keys.
+
 There is no concept of foreign keys in Genesis, so these are ignored.
+
 Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE).
 
 ### Type mapping

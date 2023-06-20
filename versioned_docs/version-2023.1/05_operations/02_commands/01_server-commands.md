@@ -820,8 +820,11 @@ There are a few considerations you should be aware of:
 
 #### Keys and indexes
 Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based.
+
 Only unique indexes will be parsed as secondary keys.
+
 There is no concept of foreign keys in Genesis, so these are ignored.
+
 Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE).
 
 ### Type mapping
