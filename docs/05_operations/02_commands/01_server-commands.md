@@ -672,7 +672,7 @@ GetSequenceCount
 This works similarly to `GetSequenceCount`, but for auto increment INT values defined in dictionaries.
 
 :::warning
-Only use this command when all the application's processes have been stopped. 
+Stop all your application's processes before using this command. 
 :::
 
 ### Syntax
@@ -696,7 +696,6 @@ The behaviour of this command depends on which database implementation your appl
 - **If you are using an SQL implementation**, this command returns the last value assigned by the sequence, not the next to be assigned.
 
 And remember: only use this command when all the application's processes have been stopped. 
-
 
 ## SetSequence
 
@@ -722,7 +721,11 @@ Options:
 
 ## SetAutoIncrement
 
-This works in a similar way to `SetSequence`, but for auto-increment INT values. You can supply a single increment value or a whole batch of values using a csv file. Always ensure that the system processes are down before using this command.
+This works in a similar way to `SetSequence`, but for auto-increment INT values. You can supply a single increment value or a whole batch of values using a csv file. 
+
+:::warning
+Stop all your application's processes before using this command. 
+:::
 
 ### Syntax
 
@@ -738,16 +741,14 @@ SetAutoIncrement
 | -t       | --table `<arg>`    | No        |   Name of the table containing the auto-increment field (when not inserting via CSV)                                                                                                   | No                |
 | -v       | --value `<arg>`    | No        |                                                                                                        | No                | New integer value to be set (if setting individual value)
 
-:::info
 
-This command can have different behaviour depending on which database implementation is used. 
+The behaviour of this command depends on which database implementation your application uses. 
 
-When using a NOSQL database like Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command will set the value in the database, which corresponds to the first value in the next range to be allocated.
+- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
 
-When using Oracle, you can **not** set a sequence value directly. This command will increment the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values already assigned in the cache, as the increment is also applied to these values.
+- **If you are using Oracle**, you can **not** set a sequence value directly. This command increments the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values that are already assigned in the cache, as the increment is also applied to these values.
 
-For predictable results, this command is best used when the system is down for maintenance.
-:::
+And remember, only use this command when all your applications have been stopped.
 
 ## GenesisRun
 
