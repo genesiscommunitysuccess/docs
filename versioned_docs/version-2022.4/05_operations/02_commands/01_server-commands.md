@@ -26,7 +26,7 @@ In the files collected, the command examines the installation environment and lo
 
 The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a  file in **site-specific/cfg** has the same name as a file in a module's **cfg**, the version in **site-specific/cfg** will always be used.
 
-Following this, when you start any process, the 'startProcess' command reads from the **cfg** directory in the **generated** folder.
+Following this, when you start any process, the `startProcess` command reads from the **cfg** directory in the **generated** folder.
 
 `genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the **run/generated/cfg** area.
 
@@ -334,7 +334,7 @@ To modify records, you need to specify the key that will be used to identify the
 SendIt -t FUND -m FUND_BY_ID
 ```
 
-Modify fields (`-mf`) is a special parameter that can be added to `-m` operations. SendTable only attempts to modify the record fields specified in this comma-separated list parameter.
+Modify fields (`-mf`) is a special parameter that can be added to `-m` operations. `SendIt` only attempts to modify the record fields specified in this comma-separated list parameter.
 
 To delete records, specify `-d` (or `--delete`)
 

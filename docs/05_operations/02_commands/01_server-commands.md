@@ -26,7 +26,7 @@ In the files collected, the command examines the installation environment and lo
 
 The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a  file in **site-specific/cfg** has the same name as a file in a module's **cfg**, the version in **site-specific/cfg** will always be used.
 
-Following this, when you start any process, the 'startProcess' command reads from the **cfg** directory in the **generated** folder.
+Following this, when you start any process, the `startProcess` command reads from the **cfg** directory in the **generated** folder.
 
 `genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the **run/generated/cfg** area.
 
@@ -671,6 +671,10 @@ GetSequenceCount
 
 This works similarly to `GetSequenceCount`, but for auto increment INT values defined in dictionaries.
 
+:::warning
+Only use this command when all the application's processes have been stopped. 
+:::
+
 ### Syntax
 
 ```bash
@@ -683,18 +687,15 @@ GetAutoIncrementCount
 | -h       | --help             | No        | show usage information                  | No                |
 | -p       | --print            | No        |                                         | No                |
 
-:::info
+The behaviour of this command depends on which database implementation your application uses. 
 
-This command can have different behaviour depending on which database implementation is used. 
+- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
 
-When using a NOSQL database like Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
+- **Similarly, if you are using Oracle**, auto-incremented values are cached in memory in configurable block sizes. This command only retrieves the current value of the counter stored on disk.
 
-Similarly, when using Oracle, auto-incremented values are cached in memory in configurable block sizes. This command only retrieves the current value of the counter stored on disk.
+- **If you are using an SQL implementation**, this command returns the last value assigned by the sequence, not the next to be assigned.
 
-When using an SQL implementation, this command will return the last value assigned by the sequence, not the next to be assigned.
-
-To achieve predictable results, only use this command when the system is down for maintenance.
-:::
+And remember: only use this command when all the application's processes have been stopped. 
 
 
 ## SetSequence
@@ -703,7 +704,6 @@ To achieve predictable results, only use this command when the system is down fo
 This enables you to set a sequence number for a table. This can either be a single sequence number or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
 
 `SetSequence` must only be run when the system processes have been stopped. After running `SetSequence` - like all processes that write to the table - you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
-
 
 ### Syntax
 
