@@ -23,7 +23,7 @@ At present, these files are empty. You need to insert the details of the Data Se
 Add the following content to the **server/jvm/alpha-config/src/main/resources/cfg/alpha-processes.xml** file:
 
 
-```xml title="alpha-processes.xml"
+```xml title='alpha-processes.xml'
 <processes>
     <process name="ALPHA_DATASERVER">
         <groupId>ALPHA</groupId>
@@ -67,54 +67,12 @@ Further information can be found in the page on the [**-service-definitions.xml*
 
 You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\\**. Choose the appropriate environment you are using.
 
-Further information can be found in the [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/).
+Further information can be found in the page on the [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/).
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker' }, { label: 'WSL', value: 'WSL'}]}>
-<TabItem value="Intellij Plugin">
-
-```kotlin {4,10} title="genesis-system-definition.kts"
-systemDefinition {
-    global {
-        ...
-        item(name = "DbLayer", value = "SQL")
-        item(name = "DictionarySource", value = "DB")
-        item(name = "AliasSource", value = "DB")
-        item(name = "MetricsEnabled", value = "false")
-        item(name = "ZeroMQProxyInboundPort", value = "5001")
-        item(name = "ZeroMQProxyOutboundPort", value = "5000")
-        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=postgres")
-        item(name = "DbMode", value = "VANILLA")
-        ...
-    }
-}
-```
-
-</TabItem>
-<TabItem value="Docker">
-
-```kotlin {4,10} title="genesis-system-definition.kts"
-systemDefinition {
-    global {
-        ...
-        item(name = "DbLayer", value = "SQL")
-        item(name = "DictionarySource", value = "DB")
-        item(name = "AliasSource", value = "DB")
-        item(name = "MetricsEnabled", value = "false")
-        item(name = "ZeroMQProxyInboundPort", value = "5001")
-        item(name = "ZeroMQProxyOutboundPort", value = "5000")
-        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=postgres")
-        item(name = "DbMode", value = "VANILLA")
-        ...
-    }
-}
-```
-</TabItem>
-<TabItem value="WSL">
-
-```kotlin {4,10} title="genesis-system-definition.kts"
+```kotlin {4,10,12} title="genesis-system-definition.kts"
 systemDefinition {
     global {
         ...
@@ -126,12 +84,11 @@ systemDefinition {
         item(name = "ZeroMQProxyOutboundPort", value = "5000")
         item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=docker")
         item(name = "DbMode", value = "VANILLA")
+        item(name = "DbSqlConnectionPoolSize", value = "4")
         ...
     }
 }
 ```
-</TabItem>
-</Tabs>
 
 :::tip
 Further information can be found in the [**genesis-system-definitions.kts** file](../../../server/configuring-runtime/system-definitions/).
@@ -142,6 +99,35 @@ Further information can be found in the [**genesis-system-definitions.kts** file
 We have two different approaches to connect to the server, depending on your runtime environment.
 
 In this tutorial, you need to verify the default `API_HOST` in the **package.json** in **client/web/**.
+
+<Tabs
+defaultValue='Intellij Plugin'
+values={[
+{ label: 'Intellij Plugin', value : 'Intellij Plugin' },
+{ label: 'Docker', value: 'Docker' },
+{ label: 'WSL', value: 'WSL'}
+]}>
+<TabItem value="Intellij Plugin">
+
+
+```kotlin {8} title="client/web/package.json"
+{
+  "name": "@genesislcap/alpha-web-client",
+  "description": "Developer Training Web Client",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "config": {
+    "API_HOST": "ws://localhost:9064",
+    "DEFAULT_USER": "JaneDee",
+    "DEFAULT_PASSWORD": "beONneON*74",
+    "PORT": 6060
+  },
+```
+
+</TabItem>
+<TabItem value="Docker">
+
 
 ```kotlin {8} title="client/web/package.json"
 {
@@ -158,6 +144,28 @@ In this tutorial, you need to verify the default `API_HOST` in the **package.jso
   },
 ```
 
+</TabItem>
+<TabItem value="WSL">
+
+
+```kotlin {8} title="client/web/package.json"
+{
+  "name": "@genesislcap/alpha-web-client",
+  "description": "Developer Training Web Client",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "config": {
+    "API_HOST": "ws://localhost/gwf/",
+    "DEFAULT_USER": "JaneDee",
+    "DEFAULT_PASSWORD": "beONneON*74",
+    "PORT": 6060
+  },
+```
+
+</TabItem>
+</Tabs>
+
 ## Build and deploy
 
 Finally, you can build and deploy the server.
@@ -170,10 +178,11 @@ Finally, you can build and deploy the server.
 
 ![](/img/assemble-server.png)
 
+If you prefer to run the config from the command line: 
+
 ```shell title='Running assemble from the command line'
 ./gradlew :genesisproduct-alpha:assemble
 ```
-The first time you run this, it will take quite a few minutes. Make yourself a cup of tea or open a bottle of good champagne.
 
 ### Deploy
 
@@ -202,7 +211,7 @@ On the first run, this could take up to 20 minutes, because it performs a full b
 
 ![Deploy Prompt](/img/intellij-deploy2.png)
 
-This starts the  processes and the logs will be shown below.
+This starts the relevant processes and the logs will be shown below.
 
 ![Deploy logs](/img/intellij-deploy3.png)
 

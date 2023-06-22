@@ -72,55 +72,7 @@ Further information can be found in the page on the [**genesis-system-definition
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-<Tabs 
-    defaultValue='Intellij Plugin' 
-    values={[
-        { label: 'Intellij Plugin', value : 'Intellij Plugin' },
-        { label: 'Docker', value: 'Docker' }, 
-        { label: 'WSL', value: 'WSL'}
-        ]}>
-<TabItem value="Intellij Plugin">
-
-```kotlin {4,10} title="genesis-system-definition.kts"
-systemDefinition {
-    global {
-        ...
-        item(name = "DbLayer", value = "SQL")
-        item(name = "DictionarySource", value = "DB")
-        item(name = "AliasSource", value = "DB")
-        item(name = "MetricsEnabled", value = "false")
-        item(name = "ZeroMQProxyInboundPort", value = "5001")
-        item(name = "ZeroMQProxyOutboundPort", value = "5000")
-        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=postgres")
-        item(name = "DbMode", value = "VANILLA")
-        ...
-    }
-}
-```
-
-</TabItem>
-<TabItem value="Docker">
-
-```kotlin {4,10} title="genesis-system-definition.kts"
-systemDefinition {
-    global {
-        ...
-        item(name = "DbLayer", value = "SQL")
-        item(name = "DictionarySource", value = "DB")
-        item(name = "AliasSource", value = "DB")
-        item(name = "MetricsEnabled", value = "false")
-        item(name = "ZeroMQProxyInboundPort", value = "5001")
-        item(name = "ZeroMQProxyOutboundPort", value = "5000")
-        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=postgres")
-        item(name = "DbMode", value = "VANILLA")
-        ...
-    }
-}
-```
-</TabItem>
-<TabItem value="WSL">
-
-```kotlin {4,10} title="genesis-system-definition.kts"
+```kotlin {4,10,12} title="genesis-system-definition.kts"
 systemDefinition {
     global {
         ...
@@ -132,12 +84,11 @@ systemDefinition {
         item(name = "ZeroMQProxyOutboundPort", value = "5000")
         item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=docker")
         item(name = "DbMode", value = "VANILLA")
+        item(name = "DbSqlConnectionPoolSize", value = "4")
         ...
     }
 }
 ```
-</TabItem>
-</Tabs>
 
 :::tip
 Further information can be found in the [**genesis-system-definitions.kts** file](../../../server/configuring-runtime/system-definitions/).

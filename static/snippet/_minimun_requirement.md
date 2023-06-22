@@ -7,7 +7,7 @@
 
 ### Software packages
 
-| Package	                                                                                                      |  Minimum Version   | 
+| Package	                                                                                                      |  Recommended Version   | 
 |-----------------------------------------------------------------------------------------------------------------|:------------------:|
 | [IntelliJ](https://www.jetbrains.com/idea/download/?fromIDE=#section=windows)	                                  | 2022.3 or above    |
 | [Java SDK or JDK](https://www.oracle.com/java/technologies/downloads/) (Choose the **x64 installer** download) |         11         |
