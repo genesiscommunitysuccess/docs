@@ -793,6 +793,30 @@ The behaviour of this command depends on which database implementation your appl
 
 And remember, only use this command when all your applications have been stopped. After running `SetAutoIncrement`, you need to restart the server.
 
+
+## SetSequence
+
+
+This enables you to set a sequence number for a table. This can either be a single sequence number or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
+
+`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
+
+
+### Syntax
+
+```bash
+SetSequence
+````
+
+Options: 
+
+| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
+|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
+| -f       | --file `<arg>`     | No        |  Name of csv file containing batch sequence/value pairs (this overrides any sequence and value option supplied) | No                |
+| -h       | --help             | No        |                                                                                                        | No                |
+| -s       | --sequence `<arg>` | No        |  Two-character ID for the sequence (if setting individual value)                                       | No                |
+| -v       | --value `<arg>`    | No        |  New integer value to be set (if setting individual value)                                             | No                |
+
 ## startProcess script
 
 This script starts a Genesis process. It takes a single positional argument:
@@ -880,29 +904,6 @@ The `classpath` tag defines additional jar files that might be needed by the mic
 
 
 
-
-## SetSequence
-
-
-This enables you to set a sequence number for a table. This can either be a single sequence number or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
-
-`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
-
-
-### Syntax
-
-```bash
-SetSequence
-````
-
-Options: 
-
-| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
-|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
-| -f       | --file `<arg>`     | No        |  Name of csv file containing batch sequence/value pairs (this overrides any sequence and value option supplied) | No                |
-| -h       | --help             | No        |                                                                                                        | No                |
-| -s       | --sequence `<arg>` | No        |  Two-character ID for the sequence (if setting individual value)                                       | No                |
-| -v       | --value `<arg>`    | No        |  New integer value to be set (if setting individual value)                                             | No                |
 
 
 

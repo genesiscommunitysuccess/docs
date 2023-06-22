@@ -790,6 +790,26 @@ The behaviour of this command depends on which database implementation your appl
 
 And remember, only use this command when all your applications have been stopped. After running `SetAutoIncrement`, you need to restart the server.
 
+## SetSequence
+
+This enables you to set a sequence number for a table. This can either be a single sequence number or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
+
+`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
+
+### Syntax
+
+```bash
+SetSequence
+````
+
+Options: 
+
+| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
+|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
+| -f       | --file `<arg>`     | No        |  Name of csv file containing batch sequence/value pairs (this overrides any sequence and value option supplied) | No                |
+| -h       | --help             | No        |                                                                                                        | No                |
+| -s       | --sequence `<arg>` | No        |  Two-character ID for the sequence (if setting individual value)                                       | No                |
+| -v       | --value `<arg>`    | No        |  New integer value to be set (if setting individual value)                                             | No                |
 
 
 ## startProcess script
@@ -879,29 +899,6 @@ The `dependency` tag defines the processes that the current process is dependent
 The `loggingLevel` tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to declare explicitly that you would like to log all the received/sent network messages.
 
 The `classpath` tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a lib folder for one of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
-
-
-
-## SetSequence
-
-This enables you to set a sequence number for a table. This can either be a single sequence number or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
-
-`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
-
-### Syntax
-
-```bash
-SetSequence
-````
-
-Options: 
-
-| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
-|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
-| -f       | --file `<arg>`     | No        |  Name of csv file containing batch sequence/value pairs (this overrides any sequence and value option supplied) | No                |
-| -h       | --help             | No        |                                                                                                        | No                |
-| -s       | --sequence `<arg>` | No        |  Two-character ID for the sequence (if setting individual value)                                       | No                |
-| -v       | --value `<arg>`    | No        |  New integer value to be set (if setting individual value)                                             | No                |
 
 
 ## DictionaryBuilder
