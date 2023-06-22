@@ -32,10 +32,6 @@ Following this, when you start any process, the `startProcess` command reads fro
 
 ### Syntax
 
-```bash
-genesisInstall [--ignore]
-```
-
 | Argument | Argument long name | Mandatory | Description                                                                                                                           | Restricted values |
 |----------|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------|
 |          | --ignore           | no        | If supplied, will ignore errors in the configuration files                                                                            | No                |
@@ -51,6 +47,13 @@ If any problems are found in the generated configuration files, they will be del
 To ignore errors in the configuration files, use the `--ignore` argument. This leaves the configuration files undeleted, even if errors are found.
 
 All process configuration is stored within **$GC**.
+
+For example:
+```bash
+genesisInstall --ignore
+```
+
+This example ignores errors and leaves the configuration files undeleted, even if errors are found.
 
 ### Install hooks
 
@@ -532,7 +535,7 @@ Options
 
 ## DropTable
 
-To remove database tables and all corresponding records instantly, use the `DropTable` command.
+The `DropTable` command removes database tables and all corresponding records instantly.
 
 ### Syntax 
 The command takes a flag of `-t`, followed by a list of space-separated table names, for example:
@@ -715,7 +718,7 @@ And remember: only use this command when all the application's processes have be
 
 This enables you to set a sequence number for a table. This can either be a single sequence number or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
 
-`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence` - like all processes that write to the table - you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
+`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
 
 
 ### Syntax
@@ -762,7 +765,7 @@ The behaviour of this command depends on which database implementation your appl
 
 - **If you are using Oracle**, you can **not** set a sequence value directly. This command increments the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values that are already assigned in the cache, as the increment is also applied to these values.
 
-And remember, only use this command when all your applications have been stopped.
+And remember, only use this command when all your applications have been stopped. After running `SetAutoIncrement`, you need to restart the server.
 
 ## GenesisRun
 

@@ -690,7 +690,7 @@ GetAutoIncrementCount
 
 This enables you to set a sequence number for a table. ALternatively, you can perform a bulk change of sequence numbers for a whole csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
 
-`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence` - like all processes that write to the table - you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
+`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
 
 
 ### Syntax
