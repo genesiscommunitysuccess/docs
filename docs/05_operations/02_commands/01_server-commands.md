@@ -26,7 +26,7 @@ In the files collected, the command examines the installation environment and lo
 
 The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a  file in **site-specific/cfg** has the same name as a file in a module's **cfg**, the version in **site-specific/cfg** will always be used.
 
-Following this, when you start any process, the 'startProcess' command reads from the **cfg** directory in the **generated** folder.
+Following this, when you start any process, the `startProcess` command reads from the **cfg** directory in the **generated** folder.
 
 `genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the **run/generated/cfg** area.
 
@@ -157,7 +157,7 @@ FixEnumValues --commit
 exit $?
 ```
 
-To implement thia:
+To implement this:
 
 1. Navigate to the ***appName*\server\jvm\\*appName*-config\src\main\resources\scripts\installHooks** folder
 
@@ -286,10 +286,9 @@ killServer [--hostname <[hosts names]>] [--force]
 
 ## DbMon script
 
-The DbMonscript enables you to navigate through the database tables from the command line.
+The DbMon script is the Genesis database client, which provides its own command line. From here, you can navigate through the database tables in your application.
 
-Once inside `DbMon`, you can run the command 'help', which shows all the available DbMon commands. 
-To get help on a specific command, run `help _command_`.
+`DbMon` itself has a `help` command, which shows all the available commands. To get help on a specific command, run `help _command_`.
 
 `DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
 
@@ -324,15 +323,15 @@ For example:
 SendIt -t FUND -f FUND
 ```
 
-This reads the FUND.csv file in the local directory and insert the data from the file into the FUND table.
+This reads the **FUND.csv** file in the local directory and inserts the data from the file into the FUND table.
 
-To modify records you, need to specify the key that will be used to identify the original record from the each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
+To modify records, you need to specify the key that will be used to identify the original record from each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
 
 ```bash
 SendIt -t FUND -m FUND_BY_ID
 ```
 
-Modify fields (`-mf`) is a special parameter that can be added to `-m` operations. SendTable will only attempt to modify the record fields specified in this comma-separated list parameter.
+Modify fields (`-mf`) is a special parameter that can be added to `-m` operations. SendIt only attempts to modify the record fields specified in this comma-separated list parameter.
 
 To delete records, specify `-d` (or `--delete`)
 
@@ -350,9 +349,13 @@ Do not use `SendIt` to update User details in any way. This can easily cause dat
 
 ## DumpIt script
 
-To copy data from a Genesis database, use the 'DumpIt' command.
+To copy data from a Genesis database, use the `DumpIt` command.
 
 ### Syntax
+
+```bash
+DumpIt -t <table name> -f <file name>
+```
 
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|
@@ -369,7 +372,7 @@ For example:
 DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME
 ```
 
-This copies the data in the FUND table to FUND.csv.
+This copies the data in the FUND table to **FUND.csv**.
 
 Another example:
 
@@ -407,9 +410,13 @@ RenameFields [-i <[current name of field]>] [-o  <[new name of field]>]
 
 
 The `--input` argument represents the name of the field you would like to change. The argument must be an existing field name in the database.
+
 The `--output` argument represents the name of the field you would like to change to. The argument must also be an existing field name in the database.
+
 Both arguments must also be of the same type.
+
 If both arguments are in the same table, it would result in the `--output` field being deleted.
+
 All changes using `RenameFields` can be changed back to the original database schema by using the command `remap --commit`.
 
 For example:
@@ -418,7 +425,7 @@ For example:
 RenameFields -i SYMBOL -o TRADE_ID
 ```
 
-This changes the name of SYMBOL field to TRADE_ID.     
+This changes the name of the SYMBOL field to TRADE_ID.     
 
 Another example:
 
@@ -426,7 +433,7 @@ Another example:
 RenameFields --input FIRST_NAME --output FNAME 
 ```
 
-This changes the name of the field FIRST_NAME to FNAME
+This changes the name of the field FIRST_NAME to FNAME.
 
 Invalid example:
 
@@ -434,11 +441,11 @@ Invalid example:
 RenameFields -i PRICE -o FIRST_NAME
 ```
 
-This would result in an error as PRICE is of type DOUBLE while FIRST_NAME is of type STRING.
+This would result in an error, as PRICE is of type DOUBLE while FIRST_NAME is of type STRING.
 
 ## LogLevel script
 
-To dynamically change the logging levels on any Genesis process, use the LogLevel command.
+To dynamically change the logging levels on any Genesis process, use the `LogLevel` command.
 
 ### Syntax
 
@@ -595,20 +602,24 @@ This migrates the Genesis dictionary from the Database Dictionary Store to the F
 MigrateDictionary
 ```
 
-The script uses the system definition file to get the `DictionarySource` property.
+The script uses the [system definition file](../../../server/configuring-runtime/system-definitions/#items-defined) to discover the `DictionarySource` property:
 
-If the property is `DB`, the server uses a Database Dictionary Store), then the `MigrateDictionary` script saves a dictionary to a file.
+- If the property is `DB` (if the server uses a Database Dictionary Store), the `MigrateDictionary` script saves the dictionary to a file.
 
-If the `DictionarySource` is `FILE` (the server uses a File Dictionary Store), then the dictionary is saved to a database. The target database type - `DbLayer` - is retrieved from the system definitions file.
+- If the `DictionarySource` is `FILE` (if the server uses a File Dictionary Store), the dictionary is saved to a database. The target database type - `DbLayer` - is also retrieved from the system definitions file.
 
 Here is a recommendation:
 
-- Use a file store (set by default) if you are running Genesis in a single node
-- Use database store if you are running Genesis in more than one node
+- Use a file store (set by default) if you are running Genesis on a single node
+- Use database store if you are running Genesis on more than one node
 
-The `remap` operation will update the dictionary, so if you are running a Genesis cluster, it is better to use a Database Dictionary Store, as it is less error-prone and the user won't have to copy the dictionary file to the remaining nodes manually.
+The `remap` operation updates the dictionary, so if you are running a Genesis cluster, it is better to use a Database Dictionary Store; this is more robust and you won't have to copy the dictionary file manually to the remaining nodes.
 
-It is potentially dangerous to switch the `DictionarySource` property. If you run `remap` (which modifies the  dictionary) after `MigrateDictionary` and before switching the `DictionarySource` property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
+:::warning
+It is potentially dangerous to switch the `DictionarySource` property. 
+
+If you run `remap` (which modifies the  dictionary) after `MigrateDictionary` and before switching the `DictionarySource` property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
+:::
 
 ## GetNextSequenceNumbers
 
@@ -660,6 +671,10 @@ GetSequenceCount
 
 This works similarly to `GetSequenceCount`, but for auto increment INT values defined in dictionaries.
 
+:::warning
+Stop all your application's processes before using this command. 
+:::
+
 ### Syntax
 
 ```bash
@@ -672,19 +687,15 @@ GetAutoIncrementCount
 | -h       | --help             | No        | show usage information                  | No                |
 | -p       | --print            | No        |                                         | No                |
 
-:::info
+The behaviour of this command depends on which database implementation your application uses. 
 
-This command can have different behaviour depending on which database implementation is used. 
+- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
 
-When using a NOSQL database like Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
+- **Similarly, if you are using Oracle**, auto-incremented values are cached in memory in configurable block sizes. This command only retrieves the current value of the counter stored on disk.
 
-Similarly, when using Oracle, auto-incremented values are cached in memory in configurable block sizes. This command only retrieves the current value of the counter stored on disk.
+- **If you are using an SQL implementation**, this command returns the last value assigned by the sequence, not the next to be assigned.
 
-When using an SQL implementation, this command will return the last value assigned by the sequence, not the next to be assigned.
-
-To achieve predictable results, only use this command when the system is down for maintenance.
-:::
-
+And remember: only use this command when all the application's processes have been stopped. 
 
 ## SetSequence
 
@@ -692,7 +703,6 @@ To achieve predictable results, only use this command when the system is down fo
 This enables you to set a sequence number for a table. This can either be a single sequence number or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
 
 `SetSequence` must only be run when the system processes have been stopped. After running `SetSequence` - like all processes that write to the table - you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
-
 
 ### Syntax
 
@@ -711,7 +721,11 @@ Options:
 
 ## SetAutoIncrement
 
-This works in a similar way to `SetSequence`, but for auto-increment INT values. You can supply a single increment value or a whole batch of values using a csv file. Always ensure that the system processes are down before using this command.
+This works in a similar way to `SetSequence`, but for auto-increment INT values. You can supply a single increment value or a whole batch of values using a csv file. 
+
+:::warning
+Stop all your application's processes before using this command. 
+:::
 
 ### Syntax
 
@@ -727,16 +741,14 @@ SetAutoIncrement
 | -t       | --table `<arg>`    | No        |   Name of the table containing the auto-increment field (when not inserting via CSV)                                                                                                   | No                |
 | -v       | --value `<arg>`    | No        |                                                                                                        | No                | New integer value to be set (if setting individual value)
 
-:::info
 
-This command can have different behaviour depending on which database implementation is used. 
+The behaviour of this command depends on which database implementation your application uses. 
 
-When using a NOSQL database like Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command will set the value in the database, which corresponds to the first value in the next range to be allocated.
+- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
 
-When using Oracle, you can **not** set a sequence value directly. This command will increment the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values already assigned in the cache, as the increment is also applied to these values.
+- **If you are using Oracle**, you can **not** set a sequence value directly. This command increments the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values that are already assigned in the cache, as the increment is also applied to these values.
 
-For predictable results, this command is best used when the system is down for maintenance.
-:::
+And remember, only use this command when all your applications have been stopped.
 
 ## GenesisRun
 
@@ -803,8 +815,11 @@ There are a few considerations you should be aware of:
 
 #### Keys and indexes
 Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based.
+
 Only unique indexes will be parsed as secondary keys.
+
 There is no concept of foreign keys in Genesis, so these are ignored.
+
 Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE).
 
 ### Type mapping
@@ -825,6 +840,7 @@ Strings parsed in lower-camel-case format (camelCase) will be transformed to upp
 ## ReconcileDatabaseSync
 
 This is used to check if there are differences between a local DB and a remote DB with common dictionary tables.
+
 Typically, this would be used to reconcile tables that are being kept in sync by the GENESIS_SYNC process.
 
 The local DB's details (host, port, user, etc) are read from the system definition file in the local environment. The remote DB's details are specified as options to the command.
@@ -863,13 +879,13 @@ because the tables being compared are in separate databases. Therefore, these fi
 
 ### Examples
 
-This is a simple run with a remote postgres DB:
+This is a simple run with a remote Postgres DB:
 
 ```bash
 ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass
 ```
 
-This example runs with a remote postgres DB. it evaluates null and empty strings as equal; it compares records up to 2 days ago, and it ignores the field STATUS.
+This example runs with a remote Postgres DB. it evaluates null and empty strings as equal; it compares records up to 2 days ago, and it ignores the field STATUS.
 
 ```bash
 ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass -s -n 2 -i STATUS
@@ -1003,21 +1019,21 @@ You need to provide:
 
 AppGen can be used to generate a fully working application from a dictionary file.
 
-Usually when creating a application, you would start with a schema; you then build data servers, request servers and event handlers on top to create your application.  AppGen automates all this, and will generate the following new files:
+Usually when creating a application, you would start with a schema; you then build Data Servers, Request Servers and Event Handlers on top to create your application. AppGen automates all this, and will generate the following new files:
 
-- Data server: _application_**-dataserver.kts**
-- Request server: _application_**-reqrep.kts**
-- Event handler: _application_**-eventhandler.kts**
-- Sytem processes: _application_**-processes.xml**
+- Data Server: _application_**-dataserver.kts**
+- Request Server: _application_**-reqrep.kts**
+- Event Handler: _application_**-eventhandler.kts**
+- System processes: _application_**-processes.xml**
 - Service definitions: _application_**-service-definitions.xml
 
-### Data server and request server
+### Data Server and Request Server
 
-One block will be generated for each table in the database, complete with metadata (all fields on the table) and a field block that returns all fields on the table.  For request servers, the inbound metadata will be based on the primary key.
+One block will be generated for each table in the database, complete with metadata (all fields on the table) and a field block that returns all fields on the table. For Request Servers, the inbound metadata will be based on the primary key.
 
-### Event handler
+### Event Handler
 
-The file for the event handler contains insert, amend and delete transactions for every table in the database.  All transactions support validation and meta data. If a field is marked as a sequence in the dictionary (i.e. generated ID) then the field is not specified on the metadata for inserts, but it will be specified on modifies and deletes.
+The file for the Event Handler contains insert, amend and delete transactions for every table in the database.  All transactions support validation and meta data. If a field is marked as a sequence in the dictionary (i.e. generated ID) then the field is not specified on the metadata for inserts, but it will be specified on modifies and deletes.
 
 Deletes will have reduced metadata, as it is only necessary for the columns to satisfy the primary key to perform the delete.
 
@@ -1038,7 +1054,7 @@ This example has no `-t` option.
 AppGen -d tas-dictionary.xml -p 4000 -pn tas
 ```
 
-In this case, the dictionary to read is `tas-dictionary.xml`, the port offset is `4000` and the product name to generate is `tas`.  Running this command results in the following structure being created:
+In this case, the dictionary to read is `tas-dictionary.xml`, the port offset is `4000` and the product name to generate is `tas`. Running this command results in the following structure being created:
 
 ```bash
 tas/

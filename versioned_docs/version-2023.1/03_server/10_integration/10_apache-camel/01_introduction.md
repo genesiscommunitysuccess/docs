@@ -10,11 +10,11 @@ tags:
   - introduction
 ---
 
-The Genesis low-code platform supports the use of [Apache Camel](https://camel.apache.org/) in order to integrate with external systems, using its plethora of [components](https://camel.apache.org/components/3.16.x/index.html).
+The Genesis low-code platform supports the use of [Apache Camel](https://camel.apache.org/) in order to integrate with external systems, using its plethora of [components](https://camel.apache.org/components/next/index.html).
 
 Genesis makes this easy to configure and set up, allowing new processors to be defined and used within GPAL.
 
-Likely uses for Apache Camel include:
+You can use Apache Camel for:
 
 * receiving data [from the local filesystem](../../../../getting-started/use-cases/loading-feed-data/overview/)
 * transmitting data [to or from an external location](../../../../getting-started/use-cases/loading-feed-data/sftp-and-encryption/).

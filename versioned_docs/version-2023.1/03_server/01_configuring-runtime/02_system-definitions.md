@@ -80,8 +80,8 @@ Local values can be specified in this block. **These values override the global 
 **MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues.
 
 **DbLayer**: Default value is set to FDB. If you want to use PostgreSQL, MSSQL or Aerospike, then you need to change this value and then [change the value of the DbHost item](../../../server/configuring-runtime/setting-the-database-technology/).
-**DbHost**: Contains information about the hostname/JDBC connection string pointing to local database. For example:
 
+**DbHost**: Contains information about the hostname/JDBC connection string pointing to local database. For example:
 
 ```kotlin
 item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432”)
