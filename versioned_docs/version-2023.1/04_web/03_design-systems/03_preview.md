@@ -17,9 +17,4 @@ On the left-hand side, is the [Editor](../../../web/design-systems/preview/#edit
 
 Try changing the configurations and observe the reflected changes on the right.
 
-<div class="demo-view">
-  <img id="shadowed-img" src="/img/DSC-checkbox.PNG" alt="Image capture of DSC app"/>
-  <div>
-    <a class="overlay-link" href="/dsc/" target="_blank">Launch DSC &#x2197;</a>
-  </div>
-</div>
+![](/img/DSC-checkbox.PNG)
