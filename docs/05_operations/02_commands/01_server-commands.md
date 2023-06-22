@@ -32,10 +32,6 @@ Following this, when you start any process, the `startProcess` command reads fro
 
 ### Syntax
 
-```bash
-genesisInstall [--ignore]
-```
-
 | Argument | Argument long name | Mandatory | Description                                                                                                                           | Restricted values |
 |----------|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------|
 |          | --ignore           | no        | If supplied, will ignore errors in the configuration files                                                                            | No                |
@@ -51,6 +47,13 @@ If any problems are found in the generated configuration files, they will be del
 To ignore errors in the configuration files, use the `--ignore` argument. This leaves the configuration files undeleted, even if errors are found.
 
 All process configuration is stored within **$GC**.
+
+For example:
+```bash
+genesisInstall --ignore
+```
+
+This example ignores errors and leaves the configuration files undeleted, even if errors are found.
 
 ### Install hooks
 
@@ -116,8 +119,6 @@ exit $?
 
 Remap is a schema-migration tool used to apply the current schema (defined in the deployed field and table GPAL dictionaries) to the underlying database layer used by the Genesis low-code platform.
 
-### Syntax
-
 ```bash
 remap [-c | --commit]
 ```
@@ -128,17 +129,22 @@ For full details, see our page on [Remap](../../../operations/commands/remap).
 
 Converts non-matching enum values in the database to SNAKE_CASE. This script is intended to be used after a dictionary change that adds new enum values. It will only update the data if the converted value matches the list of enum values in the dictionary.
 
-As with `remap`, changes will only be applied to the database if run with the **--commit** flag.
+Changes will only be applied to the database if run with the **--commit** flag.
 
-### Usage
+:::warning
+Stop all processes before using this command.
+:::
 
-```shell
-FixEnumValues [-c | --commit] [TABLES]
+### Syntax
+
+| Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values |
+|----------|------------------------|-----------|----------------------------------------------------------------------------------------|-------------------|
+| -c       | --commit               | no        | Applies dictionary changes to the database                                             | No                |
+|          | [TABLES]               | no        | Comma-separated list of specific tables to be changed; if no list is supplied, all tables are changed                                              | No                |
+
+In the example below, the changes are applied to the database for two tables: TRADE and POSITION.
 ```
-### Example
-
-```
-FixEnumValues --commit TRADE POSITION
+FixEnumValues --commit TRADE,POSITION
 ```
 
 ### As an installHook
@@ -173,10 +179,6 @@ This script starts a Genesis process. It takes a single positional argument:
 
 ### Syntax
 
-```bash
-startProcess processName [--hostname <[host names]>] [--dump] 
-```
-
 `processName` is the name of the process that you want to start.
 
 | Argument                   | Argument long name                          | Mandatory | Description                                                                                                                                                                                         | Restricted values |
@@ -187,6 +189,12 @@ startProcess processName [--hostname <[host names]>] [--dump]
 |                            | --dump                                      | No        | displays progress of the process, which is useful for debugging                                                                                                                          | No                |	
 |                            | --coldStart                                      | No        | this is only used if you have a Consolidator. Consolidators aggregate data from IN table(s) into an OUT table; a coldStart effectively zeros out values in the OUT table records and then iterates over all the IN table records, rebuilding them on startUp. After this, the Consolidators are started in their normal way
  | No                |	
+
+For example:
+
+```bash
+startProcess processName [--hostname <[host names]>] [--dump] 
+```
 
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
 
@@ -201,16 +209,17 @@ This script is used to terminate a specified process.
 
 ### Syntax
 
-```bash
-killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--force] [--wait]
-```
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                      | Restricted values |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | No        | Where   the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | No                |
-| -f                           | --force                                       |           | forcefully   kills a process (using kill -9)                                                                                                                                                     | No                |
-| -w WAIT                      | --wait WAIT                                   | No        | specifies   how many seconds to wait before forcing the kill                                                                                                                                     | No                |
-| -c                           | --cluster                                     | No        | kills   the process on every node in the cluster                                                                                                                                                 | No                |
+| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | No        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | No                |
+| -f                           | --force                                       |           | forcefully kills a process (using kill -9)                                                                                                                                                     | No                |
+| -w WAIT                      | --wait WAIT                                   | No        | specifies how many seconds to wait before forcing the kill                                                                                                                                     | No           |
+| -c                           | --cluster                                     | No        | kills the process on every node in the cluster             | No                |
+
+```bash
+killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--force] [--wait]
+```
 
 ## startServer script
 
@@ -353,10 +362,6 @@ To copy data from a Genesis database, use the `DumpIt` command.
 
 ### Syntax
 
-```bash
-DumpIt -t <table name> -f <file name>
-```
-
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|
 | -a       | --all              | No        | exports all tables to csv                              | No                |
@@ -366,6 +371,7 @@ DumpIt -t <table name> -f <file name>
 | -s       | --sql `<arg>`      | No        | name of the sql file where table is exported           | No                |
 | -t       | --table `<arg>`    | No        | the name of the table to export to csv                 | No                |
 |          | -where `<arg>`     | No        | match criteria e,g, "USER_NAME=='John'"                | No                |
+
 For example:
 
 ```bash
@@ -519,7 +525,7 @@ Options
 
 ## DropTable
 
-To remove database tables and all corresponding records instantly, use the `DropTable` command.
+The `DropTable` command removes database tables and all corresponding records instantly.
 
 ### Syntax 
 The command takes a flag of `-t`, followed by a list of space-separated table names, for example:
@@ -699,10 +705,9 @@ And remember: only use this command when all the application's processes have be
 
 ## SetSequence
 
-
 This enables you to set a sequence number for a table. This can either be a single sequence number or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
 
-`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence` - like all processes that write to the table - you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
+`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
 
 ### Syntax
 
@@ -748,7 +753,7 @@ The behaviour of this command depends on which database implementation your appl
 
 - **If you are using Oracle**, you can **not** set a sequence value directly. This command increments the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values that are already assigned in the cache, as the increment is also applied to these values.
 
-And remember, only use this command when all your applications have been stopped.
+And remember, only use this command when all your applications have been stopped. After running `SetAutoIncrement`, you need to restart the server.
 
 ## GenesisRun
 
