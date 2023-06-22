@@ -16,6 +16,136 @@ Once an application has been built and zipped, you can install it in any another
 
 To ensure a correct installation, you must follow the product installation procedure.
 
+## CountRecords
+
+This counts the number of records in the database, grouped by table, and prints to screen.
+
+### Syntax
+By default, the command provides the record count for each table defined in the dictionary. If you only want a count for specific tables, you can specify a space-separated list of those tables.
+
+This example gives a record count for all tables:
+
+```bash
+CountRecords
+```
+
+This example gives a record count for two specific Tables:
+
+```bash
+CountRecords TABLE_NAME1 TABLE_NAME2 ...
+```
+
+## DbMon script
+
+The DbMon script is the Genesis database client, which provides its own command line. From here, you can navigate through the database tables in your application.
+
+`DbMon` itself has a `help` command, which shows all the available commands. To get help on a specific command, run `help _command_`.
+
+`DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
+
+For full details, see our page on [DbMon](../../../operations/commands/dbmon).
+
+## DropTable
+
+The `DropTable` command removes database tables and all corresponding records instantly.
+
+### Syntax 
+The command takes a flag of `-t`, followed by a list of space-separated table names, for example:
+
+```bash
+DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
+```
+
+The command will ask you to confirm the removal of each table.
+
+## DumpIt script
+
+To copy data from a Genesis database, use the `DumpIt` command.
+
+### Syntax
+
+| Argument | Argument long name | Mandatory | Description                                            | Restricted values |
+|----------|--------------------|-----------|--------------------------------------------------------|-------------------|
+| -a       | --all              | No        | exports all tables to csv                              | No                |
+| -f       | --file `<arg>`     | No        | name of the csv file where table is exported           | No                |
+|          | -fields `<arg>`    | No        | space separated field list e.g. "FIRST_NAME LAST_NAME" | No                |
+| -h       | --help             | No        | show usage information                                 | No                |
+| -s       | --sql `<arg>`      | No        | name of the sql file where table is exported           | No                |
+| -t       | --table `<arg>`    | No        | the name of the table to export to csv                 | No                |
+|          | -where `<arg>`     | No        | match criteria e,g, "USER_NAME=='John'"                | No                |
+
+For example:
+
+```bash
+DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME
+```
+
+This copies the data in the FUND table to **FUND.csv**.
+
+Another example:
+
+```bash
+DumpIt -t FUND -f FUND -fields "FUND_ID NAME" -where "NAME == 'FUND_FUND' && YEARS_IN_SERVICE >= 10"
+```
+
+This copies the FUND_ID and NAME fields of every record that has "FUND_FUND" for a name, and ten or more years in service.
+
+If you want to dump all the tables in the database, here is an example:
+
+```bash
+DumpIt --all
+```
+
+This copies all tables in the system, creating one .csv file for each table in the database. The files are saved in the current directory. It is useful for taking a back-up of the current system database.
+
+Additionally, you can just run `DumpIt` without any arguments to enter interactive mode.
+
+## FixEnumValues
+
+Converts non-matching enum values in the database to SNAKE_CASE. This script is intended to be used after a dictionary change that adds new enum values. It will only update the data if the converted value matches the list of enum values in the dictionary.
+
+Changes will only be applied to the database if run with the **--commit** flag.
+
+:::warning
+Stop all processes before using this command.
+:::
+
+### Syntax
+
+| Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values |
+|----------|------------------------|-----------|----------------------------------------------------------------------------------------|-------------------|
+| -c       | --commit               | no        | Applies dictionary changes to the database                                             | No                |
+|          | [TABLES]               | no        | Comma-separated list of specific tables to be changed; if no list is supplied, all tables are changed                                              | No                |
+
+In the example below, the changes are applied to the database for two tables: TRADE and POSITION.
+```
+FixEnumValues --commit TRADE,POSITION
+```
+
+### As an installHook
+
+To automate this process, you can use an installHook to call the script before `remap` is performed - be aware however that it will only run successfully once.
+
+The following will find all String to Enum changes in all tables and commit any valid updates to the DB before `remap` is performed.
+
+```bash
+#!/bin/bash
+source "$HOME"/.bashrc
+shopt -s expand_aliases
+
+FixEnumValues --commit
+
+exit $?
+```
+
+To implement this:
+
+1. Navigate to the ***appName*\server\jvm\\*appName*-config\src\main\resources\scripts\installHooks** folder
+
+2. Create a file called ***nextInstallHookNumber*_ConvertData.sh** or similar and add the bash script above.
+
+The installHook will run before `remap` on your next deploy.
+
 ## genesisInstall script
 
 This script validates all system and product configuration, checking for things such as field duplication.
@@ -115,93 +245,99 @@ MigrateDictionary -dst DB
 exit $?
 ```
 
-## remap script
+## GenesisRun
 
-Remap is a schema-migration tool used to apply the current schema (defined in the deployed field and table GPAL dictionaries) to the underlying database layer used by the Genesis low-code platform.
+This is a Python script wrapper for Genesis scripts.
 
-```bash
-remap [-c | --commit]
-```
+'GenesisRun` will attempt to find a script to execute within the Genesis folder structure (site-specific or scripts).
 
-For full details, see our page on [Remap](../../../operations/commands/remap).
+There are two environment variables that can be used to configure how much RAM the scripts will use:
 
-## FixEnumValues
+* SCRIPT_MAX_HEAP
+* REMAP_MAX_HEAP
 
-Converts non-matching enum values in the database to SNAKE_CASE. This script is intended to be used after a dictionary change that adds new enum values. It will only update the data if the converted value matches the list of enum values in the dictionary.
+`GenesisRun` can execute code in two different modes: Groovy script and GPAL Kotlin script. **GenesisRun** builds the necessary classpath, so you don't need to build it in each script.
 
-Changes will only be applied to the database if run with the **--commit** flag.
+* Groovy script: GenesisRun SetLogLevelScript.groovy
+* GPAL Kotlin script: GenesisRun customPurger-script.kts
+
+There is a separate wrapper, `JvmRun` for Java main class scripts.
+
+## GetAutoIncrementCount
+
+This works similarly to `GetSequenceCount`, but for auto increment INT values defined in dictionaries.
 
 :::warning
-Stop all processes before using this command.
+Stop all your application's processes before using this command. 
 :::
 
 ### Syntax
 
-| Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values |
-|----------|------------------------|-----------|----------------------------------------------------------------------------------------|-------------------|
-| -c       | --commit               | no        | Applies dictionary changes to the database                                             | No                |
-|          | [TABLES]               | no        | Comma-separated list of specific tables to be changed; if no list is supplied, all tables are changed                                              | No                |
-
-In the example below, the changes are applied to the database for two tables: TRADE and POSITION.
-```
-FixEnumValues --commit TRADE,POSITION
+```bash
+GetAutoIncrementCount
 ```
 
-### As an installHook
+| Argument | Argument long name | Mandatory |               Description               | Restricted values |
+|----------|--------------------|-----------|-----------------------------------------|-------------------|
+| -f       | --file `<arg>`     | No        |                                         | No                |
+| -h       | --help             | No        | show usage information                  | No                |
+| -p       | --print            | No        |                                         | No                |
 
-To automate this process, you can use an installHook to call the script before `remap` is performed - be aware however that it will only run successfully once.
+The behaviour of this command depends on which database implementation your application uses. 
 
-The following will find all String to Enum changes in all tables and commit any valid updates to the DB before `remap` is performed.
+- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
+
+- **Similarly, if you are using Oracle**, auto-incremented values are cached in memory in configurable block sizes. This command only retrieves the current value of the counter stored on disk.
+
+- **If you are using an SQL implementation**, this command returns the last value assigned by the sequence, not the next to be assigned.
+
+And remember: only use this command when all the application's processes have been stopped. 
+
+## GetNextSequenceNumbers
+
+This gives you the next sequence number of every table in the application. The numbers are provided in table format (csv), for example:
+
+```
+"Table","Sequence","Value"
+"USER_AUDIT","UA","104"
+"PROFILE_AUDIT","PR","804"
+"PROFILE_USER_AUDIT","PA","104"
+```
+
+By default, this is sent to the screen, but you can redirect the output to a file, for example:
 
 ```bash
-#!/bin/bash
-source "$HOME"/.bashrc
-shopt -s expand_aliases
-
-FixEnumValues --commit
-
-exit $?
+GetNextSequenceNumbers >> /tmp/NextSeqNumbers.txt 
 ```
 
-To implement this:
+The `GetNextSequenceNumbers` command is often used with the `SetSequence` script [see below](../../../operations/commands/server-commands/#setsequence), for example, if you suspect that you have an error in one of your tables:
 
-1. Navigate to the ***appName*\server\jvm\\*appName*-config\src\main\resources\scripts\installHooks** folder
-
-2. Create a file called ***nextInstallHookNumber*_ConvertData.sh** or similar and add the bash script above.
-
-The installHook will run before `remap` on your next deploy.
-
-## startProcess script
-
-This script starts a Genesis process. It takes a single positional argument:
-
-`<process name>` and an optional argument `--dump`, to ensure output is shown on screen (useful for debugging).
+1. Stop all the processes and run `GetNextSequenceNumbers` to find the next sequence numbers of the tables.
+2. Check the table contents. You might find that a row is missing or needs to be added. Make this change on the database manually. This affects the sequence numbers in those tables.
+3. Run `SetSequence` to reset the sequence numbers where relevant. 
+4. Now you can [restart your processes](../../../operations/commands/server-commands/#startserver-script).
 
 ### Syntax
 
-`processName` is the name of the process that you want to start.
-
-| Argument                   | Argument long name                          | Mandatory | Description                                                                                                                                                                                         | Restricted values |
-|----------------------------|---------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | No        | where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | No                |
-| -c                         | --cluster                                   | No        | starts  the process on every node in the cluster                                                                                                                                                   | No                |
-| -v                         | --verbose                                   | No        | starts in verbose mode, logs to console                                                                                                                                                 | No                |
-|                            | --dump                                      | No        | displays progress of the process, which is useful for debugging                                                                                                                          | No                |	
-|                            | --coldStart                                      | No        | this is only used if you have a Consolidator. Consolidators aggregate data from IN table(s) into an OUT table; a coldStart effectively zeros out values in the OUT table records and then iterates over all the IN table records, rebuilding them on startUp. After this, the Consolidators are started in their normal way
- | No                |	
-
-For example:
-
 ```bash
-startProcess processName [--hostname <[host names]>] [--dump] 
+GetNextSequenceNumbers
 ```
 
-The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
+## GetSequenceCount
+
+This gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by the `SetSequence` script (see below).
+
+### Syntax
 
 ```bash
-java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
+GetSequenceCount
 ```
 
+| Argument | Argument long name | Mandatory |               Description               | Restricted values |
+|----------|--------------------|-----------|-----------------------------------------|-------------------|
+| -f       | --file `<arg>`     | No        |                                         | No                |
+| -h       | --help             | No        | show usage information                  | No                |
+| -p       | --print            | No        |                                         | No                |
 
 ## killProcess script
 
@@ -221,60 +357,6 @@ This script is used to terminate a specified process.
 killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--force] [--wait]
 ```
 
-## startServer script
-
-This script reads the **$GC/processes.xml** file to determine which processes to start and how to start them.
-
-### Syntax
-
-```bash
-startServer [--hostname <[host names]>] [--ignoreDaemon] 
-```
-
-| Argument                    | Argument long name                   | Mandatory | Description                                                                                                                                                                                | Restricted values |
-|-----------------------------|--------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-|  -s HOSTNAME [HOSTNAME ...] | --hostname   HOSTNAME [HOSTNAME ...] | No        | If the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node). Specify the Host Name | No                |
-|  -c                         | --cluster                            | No        | Starts the process on every node in the cluster,                                                                                                                                           | No                |
-|  -i                         | --ignoreDaemon                       | No        | avoids killing/starting the daemon                                                                                                                                                         | No                |
-
-The **processes.xml** file looks like this:
-
-```xml
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<configuration>
-    <process name="GENESIS_AUTH_MANAGER">
-        <start>true</start>
-        <options>-Xmx512m -DXSD_VALIDATE=false</options>
-        <module>auth-manager</module>
-        <package>global.genesis.dta.auth.manager</package>
-        <classpath>quickfixj-core-2.1.0.jar</classpath>
-    </process>
-    <process name="GENESIS_AUTH_DATASERVER">
-        <start>true</start>
-        <options>-Xmx512m -DXSD_VALIDATE=false</options>
-        <module>dataserver</module>
-        <package>global.genesis.dataserver</package>
-        <config>auth-dataserver.xml</config>
-        <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
-    </process>
-    <process name="GENESIS_AUTH_PERMS">
-        <start>true</start>
-        <options>-Xmx512m -DXSD_VALIDATE=false</options>
-        <module>auth-perms</module>
-        <package>global.genesis.dta.auth.perms</package>
-        <dependency>AUTH_MANAGER,AUTH_DATASERVER</dependency>
-    </process>
-</configuration>
-```
-
-Each process property is defined in here, including Java arguments, configuration files, and scripts.
-
-The `dependency` tag defines the processes that the current process is dependent on. In the above example, the GENESIS_AUTH_PERMS process will start after all its dependencies have started.
-
-The `loggingLevel` tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to declare explicitly that you would like to log all the received/sent network messages.
-
-The `classpath` tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a lib folder for one of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
-
 ## killServer script
 
 This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt for confirmation (`Are you sure you want to kill server? (y/n):`), unless you specify `--force`.
@@ -292,162 +374,6 @@ killServer [--hostname <[hosts names]>] [--force]
 | -f                           | --force                                       | No        | forcefully kills a process (using kill -9)                                                                                                                                                                                         | No                |
 |                              | --all                                         | No        | kills all processes, including   GENESIS_CLUSTER                                                                                                                                                                                     | No                |
 | -c                           | --cluster                                     | No        | kills the server on all the nodes in the cluster                                                                                                                                                                                   | No                |    
-
-## DbMon script
-
-The DbMon script is the Genesis database client, which provides its own command line. From here, you can navigate through the database tables in your application.
-
-`DbMon` itself has a `help` command, which shows all the available commands. To get help on a specific command, run `help _command_`.
-
-`DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
-
-For full details, see our page on [DbMon](../../../operations/commands/dbmon).
-
-## SendIt script
-
-To send data into the database, use the `SendIt` command.
-
-### Syntax
-
-```bash
-SendIt -t <table name> -f <file name>
-```
-
-| Argument | Argument long name     | Mandatory | Description                                                    | Restricted values |
-|----------|------------------------|-----------|----------------------------------------------------------------|-------------------|
-| -a       | --all                  | No        | import all the tables from all the csv files to the database | No                |
-| -d       | --delete               | No        | perform delete operations on all records                     | No                |
-| -f       | --file `<arg>`         | No        | name of the csv file where table is imported                 | No                |
-| -h       | --help                 | No        | show usage   information                                       | No                |
-| -m       | --modify `<arg>`       | No        | key name used to find original record                        | No                |
-| -mf      | --modifyFields `<arg>` | No        | specifies fields to modify                                     | No                |
-| -quiet   | --quietMode            | No        | make database changes without triggering real-time updates in update queue layer | No |
-| -r       | --recover              | No        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | No                |
-| -t       | --table `<arg>`        | No        | the name of the table to import to the database                  | No                |
-| -v       | --verbose              | No        | log every error line to output                               | No                |
-
-For example:
-
-```bash
-SendIt -t FUND -f FUND
-```
-
-This reads the **FUND.csv** file in the local directory and inserts the data from the file into the FUND table.
-
-To modify records, you need to specify the key that will be used to identify the original record from each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
-
-```bash
-SendIt -t FUND -m FUND_BY_ID
-```
-
-Modify fields (`-mf`) is a special parameter that can be added to `-m` operations. SendIt only attempts to modify the record fields specified in this comma-separated list parameter.
-
-To delete records, specify `-d` (or `--delete`)
-
-```bash
-SendIt -t FUND -d
-```
-
-If no file parameter is specified, `.csv` is assumed and read from the local directory.
-
-Verbose mode will additionally output line-by-line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes the script useful for scheduled or automated jobs (e.g. daily data loads).
-
-:::warning
-Do not use `SendIt` to update User details in any way. This can easily cause database errors. To update User profiles or User attributes, only use Genesis [user entity management](../../../web/micro-front-ends/foundation-entity-management/).
-:::
-
-## DumpIt script
-
-To copy data from a Genesis database, use the `DumpIt` command.
-
-### Syntax
-
-| Argument | Argument long name | Mandatory | Description                                            | Restricted values |
-|----------|--------------------|-----------|--------------------------------------------------------|-------------------|
-| -a       | --all              | No        | exports all tables to csv                              | No                |
-| -f       | --file `<arg>`     | No        | name of the csv file where table is exported           | No                |
-|          | -fields `<arg>`    | No        | space separated field list e.g. "FIRST_NAME LAST_NAME" | No                |
-| -h       | --help             | No        | show usage information                                 | No                |
-| -s       | --sql `<arg>`      | No        | name of the sql file where table is exported           | No                |
-| -t       | --table `<arg>`    | No        | the name of the table to export to csv                 | No                |
-|          | -where `<arg>`     | No        | match criteria e,g, "USER_NAME=='John'"                | No                |
-
-For example:
-
-```bash
-DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME
-```
-
-This copies the data in the FUND table to **FUND.csv**.
-
-Another example:
-
-```bash
-DumpIt -t FUND -f FUND -fields "FUND_ID NAME" -where "NAME == 'FUND_FUND' && YEARS_IN_SERVICE >= 10"
-```
-
-This copies the FUND_ID and NAME fields of every record that has "FUND_FUND" for a name, and ten or more years in service.
-
-If you want to dump all the tables in the database, here is an example:
-
-```bash
-DumpIt --all
-```
-
-This copies all tables in the system, creating one .csv file for each table in the database. The files are saved in the current directory. It is useful for taking a back-up of the current system database.
-
-Additionally, you can just run `DumpIt` without any arguments to enter interactive mode.
-
-## RenameFields script
-This script is used to rename a field name in a database without changing the dictionary or config files.
-
-### Syntax
-The `RenameFields` script takes two arguments; both of which are mandatory:
-
-```bash
-RenameFields [-i <[current name of field]>] [-o  <[new name of field]>]
-```
-
-| Argument | Argument long name | Mandatory | Description                              | Restricted values |
-|----------|--------------------|-----------|------------------------------------------|-------------------|
-| -i       | --input            | yes       | name of field that you want to change    | No                |
-| -o       | --output           | yes       | name you want the field to be changed to | No                |
-
-
-
-The `--input` argument represents the name of the field you would like to change. The argument must be an existing field name in the database.
-
-The `--output` argument represents the name of the field you would like to change to. The argument must also be an existing field name in the database.
-
-Both arguments must also be of the same type.
-
-If both arguments are in the same table, it would result in the `--output` field being deleted.
-
-All changes using `RenameFields` can be changed back to the original database schema by using the command `remap --commit`.
-
-For example:
-
-```bash
-RenameFields -i SYMBOL -o TRADE_ID
-```
-
-This changes the name of the SYMBOL field to TRADE_ID.     
-
-Another example:
-
-```bash
-RenameFields --input FIRST_NAME --output FNAME 
-```
-
-This changes the name of the field FIRST_NAME to FNAME.
-
-Invalid example:
-
-```bash
-RenameFields -i PRICE -o FIRST_NAME
-```
-
-This would result in an error, as PRICE is of type DOUBLE while FIRST_NAME is of type STRING.
 
 ## LogLevel script
 
@@ -473,6 +399,55 @@ LogLevel -p <process-name> -l <log level> -t <time> [-optional params] -c <class
 |                                        | -STATUSDUMP_OFF                      | No        | changes the log level to info for status updates                                      | No                |
 |                                        | -STATUSDUMP_ON                       | No        | changes the log level to trace for status updates                                     | No                |
 | -t `<time>`                            |                                      | No        | duration of log level change in min/sec Eg: 1m, 1000s                                 | No                |
+
+
+## MigrateAliases
+
+This migrates the Genesis alias store from database storage to file storage and vice versa.
+
+### Syntax
+
+```bash
+MigrateAliases FILE
+
+MigrateAliases DATABASE
+```
+
+Aerospike and FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
+
+- If you are running Genesis on a single node, use a file store 
+- If you are running Genesis on more than one node, use database mode .
+
+The "remap" operation will update the alias store, so if you are running a Genesis cluster it is better to use a database storage mode, as it is less error-prone and you won't have to copy the alias storage file to the remaining nodes manually.
+
+## MigrateDictionary
+
+This migrates the Genesis dictionary from the Database Dictionary Store to the File Dictionary Store storage and vice versa.
+
+### Syntax
+
+```bash
+MigrateDictionary
+```
+
+The script uses the [system definition file](../../../server/configuring-runtime/system-definitions/#items-defined) to discover the `DictionarySource` property:
+
+- If the property is `DB` (if the server uses a Database Dictionary Store), the `MigrateDictionary` script saves the dictionary to a file.
+
+- If the `DictionarySource` is `FILE` (if the server uses a File Dictionary Store), the dictionary is saved to a database. The target database type - `DbLayer` - is also retrieved from the system definitions file.
+
+Here is a recommendation:
+
+- Use a file store (set by default) if you are running Genesis on a single node
+- Use database store if you are running Genesis on more than one node
+
+The `remap` operation updates the dictionary, so if you are running a Genesis cluster, it is better to use a Database Dictionary Store; this is more robust and you won't have to copy the dictionary file manually to the remaining nodes.
+
+:::warning
+It is potentially dangerous to switch the `DictionarySource` property. 
+
+If you run `remap` (which modifies the  dictionary) after `MigrateDictionary` and before switching the `DictionarySource` property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
+:::
 
 ## mon script
 
@@ -523,19 +498,6 @@ Options
 | -c       | --cfg              | No        | Shows the config files used by each process. | No                |
 | -a       | --all              | No        | Shows all information.                       | No                |
 
-## DropTable
-
-The `DropTable` command removes database tables and all corresponding records instantly.
-
-### Syntax 
-The command takes a flag of `-t`, followed by a list of space-separated table names, for example:
-
-```bash
-DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
-```
-
-The command will ask you to confirm the removal of each table.
-
 ## PopulateHolidays
 
 This script populates the Holidays table with holidays, based on a specific year(s), country(ies) and region(s).
@@ -557,343 +519,6 @@ For example:
 
 ```bash
 PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
-```
-
-
-## CountRecords
-
-This counts the number of records in the database, grouped by table, and prints to screen.
-
-### Syntax
-By default, the command provides the record count for each table defined in the dictionary. If you only want a count for specific tables, you can specify a space-separated list of those tables.
-
-This example gives a record count for all tables:
-
-```bash
-CountRecords
-```
-
-This example gives a record count for two specific Tables:
-
-```bash
-CountRecords TABLE_NAME1 TABLE_NAME2 ...
-```
-
-## MigrateAliases
-
-This migrates the Genesis alias store from database storage to file storage and vice versa.
-
-### Syntax
-
-```bash
-MigrateAliases FILE
-
-MigrateAliases DATABASE
-```
-
-Aerospike and FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
-
-- If you are running Genesis on a single node, use a file store 
-- If you are running Genesis on more than one node, use database mode .
-
-The "remap" operation will update the alias store, so if you are running a Genesis cluster it is better to use a database storage mode, as it is less error-prone and you won't have to copy the alias storage file to the remaining nodes manually.
-
-## MigrateDictionary
-
-This migrates the Genesis dictionary from the Database Dictionary Store to the File Dictionary Store storage and vice versa.
-
-### Syntax
-
-```bash
-MigrateDictionary
-```
-
-The script uses the [system definition file](../../../server/configuring-runtime/system-definitions/#items-defined) to discover the `DictionarySource` property:
-
-- If the property is `DB` (if the server uses a Database Dictionary Store), the `MigrateDictionary` script saves the dictionary to a file.
-
-- If the `DictionarySource` is `FILE` (if the server uses a File Dictionary Store), the dictionary is saved to a database. The target database type - `DbLayer` - is also retrieved from the system definitions file.
-
-Here is a recommendation:
-
-- Use a file store (set by default) if you are running Genesis on a single node
-- Use database store if you are running Genesis on more than one node
-
-The `remap` operation updates the dictionary, so if you are running a Genesis cluster, it is better to use a Database Dictionary Store; this is more robust and you won't have to copy the dictionary file manually to the remaining nodes.
-
-:::warning
-It is potentially dangerous to switch the `DictionarySource` property. 
-
-If you run `remap` (which modifies the  dictionary) after `MigrateDictionary` and before switching the `DictionarySource` property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
-:::
-
-## GetNextSequenceNumbers
-
-This gives you the next sequence number of every table in the application. The numbers are provided in table format (csv), for example:
-
-```
-"Table","Sequence","Value"
-"USER_AUDIT","UA","104"
-"PROFILE_AUDIT","PR","804"
-"PROFILE_USER_AUDIT","PA","104"
-```
-
-By default, this is sent to the screen, but you can redirect the output to a file, for example:
-
-```bash
-GetNextSequenceNumbers >> /tmp/NextSeqNumbers.txt 
-```
-
-The `GetNextSequenceNumbers` command is often used with the `SetSequence` script [see below](../../../operations/commands/server-commands/#setsequence), for example, if you suspect that you have an error in one of your tables:
-
-1. Stop all the processes and run `GetNextSequenceNumbers` to find the next sequence numbers of the tables.
-2. Check the table contents. You might find that a row is missing or needs to be added. Make this change on the database manually. This affects the sequence numbers in those tables.
-3. Run `SetSequence` to reset the sequence numbers where relevant. 
-4. Now you can [restart your processes](../../../operations/commands/server-commands/#startserver-script).
-
-### Syntax
-
-```bash
-GetNextSequenceNumbers
-```
-
-## GetSequenceCount
-
-This gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by the `SetSequence` script (see below).
-
-### Syntax
-
-```bash
-GetSequenceCount
-```
-
-| Argument | Argument long name | Mandatory |               Description               | Restricted values |
-|----------|--------------------|-----------|-----------------------------------------|-------------------|
-| -f       | --file `<arg>`     | No        |                                         | No                |
-| -h       | --help             | No        | show usage information                  | No                |
-| -p       | --print            | No        |                                         | No                |
-
-## GetAutoIncrementCount
-
-This works similarly to `GetSequenceCount`, but for auto increment INT values defined in dictionaries.
-
-:::warning
-Stop all your application's processes before using this command. 
-:::
-
-### Syntax
-
-```bash
-GetAutoIncrementCount
-```
-
-| Argument | Argument long name | Mandatory |               Description               | Restricted values |
-|----------|--------------------|-----------|-----------------------------------------|-------------------|
-| -f       | --file `<arg>`     | No        |                                         | No                |
-| -h       | --help             | No        | show usage information                  | No                |
-| -p       | --print            | No        |                                         | No                |
-
-The behaviour of this command depends on which database implementation your application uses. 
-
-- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
-
-- **Similarly, if you are using Oracle**, auto-incremented values are cached in memory in configurable block sizes. This command only retrieves the current value of the counter stored on disk.
-
-- **If you are using an SQL implementation**, this command returns the last value assigned by the sequence, not the next to be assigned.
-
-And remember: only use this command when all the application's processes have been stopped. 
-
-## SetSequence
-
-This enables you to set a sequence number for a table. This can either be a single sequence number or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
-
-`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
-
-### Syntax
-
-```bash
-SetSequence
-````
-
-Options: 
-
-| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
-|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
-| -f       | --file `<arg>`     | No        |  Name of csv file containing batch sequence/value pairs (this overrides any sequence and value option supplied) | No                |
-| -h       | --help             | No        |                                                                                                        | No                |
-| -s       | --sequence `<arg>` | No        |  Two-character ID for the sequence (if setting individual value)                                       | No                |
-| -v       | --value `<arg>`    | No        |  New integer value to be set (if setting individual value)                                             | No                |
-
-## SetAutoIncrement
-
-This works in a similar way to `SetSequence`, but for auto-increment INT values. You can supply a single increment value or a whole batch of values using a csv file. 
-
-:::warning
-Stop all your application's processes before using this command. 
-:::
-
-### Syntax
-
-```bash
-SetAutoIncrement
-```
-
-| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
-|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
-| -f       | --file `<arg>`     | No        | Name of csv file containing batch sequence/value pairs (this overrides any value option supplied) | No                |
-| -h       | --help             | No        |                                                                                                        | No                | 
-| -s       | --field `<arg>`    | No        |   Name of the auto-increment field (when not inserting via CSV)                                                                                                     | No                |
-| -t       | --table `<arg>`    | No        |   Name of the table containing the auto-increment field (when not inserting via CSV)                                                                                                   | No                |
-| -v       | --value `<arg>`    | No        |                                                                                                        | No                | New integer value to be set (if setting individual value)
-
-
-The behaviour of this command depends on which database implementation your application uses. 
-
-- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
-
-- **If you are using Oracle**, you can **not** set a sequence value directly. This command increments the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values that are already assigned in the cache, as the increment is also applied to these values.
-
-And remember, only use this command when all your applications have been stopped. After running `SetAutoIncrement`, you need to restart the server.
-
-## GenesisRun
-
-This is a Python script wrapper for Genesis scripts.
-
-'GenesisRun` will attempt to find a script to execute within the Genesis folder structure (site-specific or scripts).
-
-There are two environment variables that can be used to configure how much RAM the scripts will use:
-
-* SCRIPT_MAX_HEAP
-* REMAP_MAX_HEAP
-
-`GenesisRun` can execute code in two different modes: Groovy script and GPAL Kotlin script. **GenesisRun** builds the necessary classpath, so you don't need to build it in each script.
-
-* Groovy script: GenesisRun SetLogLevelScript.groovy
-* GPAL Kotlin script: GenesisRun customPurger-script.kts
-
-There is a separate wrapper, `JvmRun` for Java main class scripts.
-
-## DictionaryBuilder
-
-`DictionaryBuilder` connects to an RDBMS, parses schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
-
-The script accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc).
-
-### Syntax
-
-| Short | Long Argument                          | Mandatory | Description                                                                                                               |
-|----|----------------------------------------|----|--------------------------------------------------------------------------------------------------------------------------|
-| -c | --comments                             |  | Include original SQL in Comments defaults to true                                                                         |
-| -d | --databaseName=\<databaseName\>        | Yes | Database name                                                                                                             |
-| -h | --help                                 |  | Show this help message and exit.                                                                                          |
-| -H | --host=\<hostname\>                    | Yes | The database hostname.                                                                                                    |
-| -i | --tableid=\<tableIdStart\>             |  | Table Id start number, defaults = 0                                                                                       |
-| -l | --tables=\<tables\>\[,\<tables\>...\]  |  | table list to include, default is all tables                                                                              |
-| -o | --output=\<outputDirectory\>           |  | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created             |
-| -p | --port=\<port\>                        | Yes | The database port                                                                                                        |
-| -P | --password\[=\<password\>\]            | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively |
-| -R | --product=\<productName\>              | Yes | Represents the product name and affects the output file                                                                 |
-| -s | --sid=\<oracleSidId\>                  |  | The Oracle System ID if using oracle, or the schema ID if using MSSQL                                                    |
-| -t | --type=\<databaseType\>                | Yes | Database type, valid values: MSSQL, Oracle, Postgres                                                                      |
-| -U | --username=\<username\>                | Yes | Username                                                                                                                  |
-| -V | --version                              |  | Print version information and exit                                                                                       |
-
-You can use double-dash notation for any argument.
-
-### Example
-
-```bash
-DictionaryBuilder -u TAS -p my_password -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
-```
-
-### How the script behaves
-
-The script tries to connect to the RDBMS currently specified in the arguments. It generates Genesis dictionary fields for column names and their types, and it creates tables with their fields and keys.
-
-There are a few considerations you should be aware of:
-
-* If a column name (e.g. DATE) is found in several tables, and it always has the same type, only one field will be specified in the dictionary. However, if the same column name is found in different tables with different types, a new field will be created for each type, keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so you can fix the name and/or type it manually later on.
-* The types are mapped from [http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html "http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html") to Genesis dictionary types. Each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate; you must check the results for correctness.
-* If there is no mapping available for the `java.sql.Type` retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type `STRING`. This event will be shown on standard output too, so you can know that there is an uncommon type that you should take care of.
-* Every time a table is successfully parsed, the script will give feedback: `TABLE USERS complete`.
-* Views are not parsed.
-
-#### Keys and indexes
-Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based.
-
-Only unique indexes will be parsed as secondary keys.
-
-There is no concept of foreign keys in Genesis, so these are ignored.
-
-Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE).
-
-### Type mapping
-
-| Genesis Type | JDBC Types |   |   |   |   |   |   |
-| -- | -- | -- | -- | -- |
-| STRING | CHAR | LONGNVARCHAR | LONGVARCHAR | NCHAR | NVARCHAR | VARCHAR | CLOB |
-| LONG | BIGINT |   |   |   |   |   |   |
-| RAW | BINARY | LONGVARBINARY | VARBINARY | BLOB |   |   |   |
-| INT | INTEGER | SMALLINT | TINYINT |   |   |   |   |
-| DOUBLE | FLOAT | DOUBLE |   |   |   |   |   |
-| BIGDECIMAL | DECIMAL |   |   |   |   |   |   |
-| DATETIME | TIMESTAMP |   |   |   |   |   |   |
-| BOOLEAN | BOOLEAN |   |   |   |   |   |   |
-| DATE | DATE |   |   |   |   |   |   |
-| TIME | TIME |   |   |   |   |   |   |
-
-## ReconcileDatabaseSync
-
-This is used to check if there are differences between a local DB and a remote DB with common dictionary tables.
-
-Typically, this would be used to reconcile tables that are being kept in sync by the GENESIS_SYNC process.
-
-The local DB's details (host, port, user, etc) are read from the system definition file in the local environment. The remote DB's details are specified as options to the command.
-
-The tables to check are specified in the **genesis-sync-definition.xml** file. Here is a simple example that specifies two tables:
-
-```xml
-<sync>
-    <tables>
-        <table name="TRADE"/>
-        <table name="ORDER"/>
-    </tables>
-</sync>
-```
-
-If there are any differences found between the local and remote tables, then the result will be output to a text file. The location of this text file will be displayed on screen.
-There are 3 categories in the output: "Records Missing From Local", "Records Missing From Remote" and "Records Which Differ Between Remote and Local".
-
-Records are compared using the primary key field. The TIMESTAMP and RECORD_ID fields are extremely likely to differ,
-because the tables being compared are in separate databases. Therefore, these fields are not compared.
-
-### Options
-
-| Argument | Argument long name | Mandatory | Description | Restricted Values |
-| -- | -- | -- | -- | -- |
-| -d | --dblayer | true | Database Layer type | Yes: FDB, FDB2, AEROSPIKE, SQL, SIMPLE |
-| -f | --fdb | false | FDB cluster file name |No |
-| -H | --host | false | Remote DB hostname |No |
-| -P | --port | false | Remote DB port |Yes: Number > 0 |
-| -u | --username | false | DB user username |No |
-| -p | --password | false | DB user password |No |
-| -s | --nullstring | false | Evaluate null and empty strings as equal |No value required |
-| -n | --numdays | false | Only compare records with timestamps between now and the number of days specified. If either DB has matching records outside this timestamp range, this will not be flagged as a reconciliation difference |Yes: Number > 0 |
-| -i | --ignorefields | false | Comma-separated list of additional fields to ignore ("RECORD_ID" and "TIMESTAMP" are always ignored) |No |
-| -h | --help | false | Show usage information |No |
-
-### Examples
-
-This is a simple run with a remote Postgres DB:
-
-```bash
-ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass
-```
-
-This example runs with a remote Postgres DB. it evaluates null and empty strings as equal; it compares records up to 2 days ago, and it ignores the field STATUS.
-
-```bash
-ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass -s -n 2 -i STATUS
 ```
 
 ## PurgeTables
@@ -1019,6 +644,388 @@ You need to provide:
 - and optional LONG or DATETIME field of table you want to purge and if not specified TIMESTAMP field of table is used
 
 `finally` clause: It is run for every record that is purged and used to add some extra functionality if needed
+
+## remap script
+
+Remap is a schema-migration tool used to apply the current schema (defined in the deployed field and table GPAL dictionaries) to the underlying database layer used by the Genesis low-code platform.
+
+```bash
+remap [-c | --commit]
+```
+
+For full details, see our page on [Remap](../../../operations/commands/remap).
+
+## RenameFields script
+This script is used to rename a field name in a database without changing the dictionary or config files.
+
+### Syntax
+The `RenameFields` script takes two arguments; both of which are mandatory:
+
+```bash
+RenameFields [-i <[current name of field]>] [-o  <[new name of field]>]
+```
+
+| Argument | Argument long name | Mandatory | Description                              | Restricted values |
+|----------|--------------------|-----------|------------------------------------------|-------------------|
+| -i       | --input            | yes       | name of field that you want to change    | No                |
+| -o       | --output           | yes       | name you want the field to be changed to | No                |
+
+
+
+The `--input` argument represents the name of the field you would like to change. The argument must be an existing field name in the database.
+
+The `--output` argument represents the name of the field you would like to change to. The argument must also be an existing field name in the database.
+
+Both arguments must also be of the same type.
+
+If both arguments are in the same table, it would result in the `--output` field being deleted.
+
+All changes using `RenameFields` can be changed back to the original database schema by using the command `remap --commit`.
+
+For example:
+
+```bash
+RenameFields -i SYMBOL -o TRADE_ID
+```
+
+This changes the name of the SYMBOL field to TRADE_ID.     
+
+Another example:
+
+```bash
+RenameFields --input FIRST_NAME --output FNAME 
+```
+
+This changes the name of the field FIRST_NAME to FNAME.
+
+Invalid example:
+
+```bash
+RenameFields -i PRICE -o FIRST_NAME
+```
+
+This would result in an error, as PRICE is of type DOUBLE while FIRST_NAME is of type STRING.
+
+
+## startProcess script
+
+This script starts a Genesis process. It takes a single positional argument:
+
+`<process name>` and an optional argument `--dump`, to ensure output is shown on screen (useful for debugging).
+
+### Syntax
+
+`processName` is the name of the process that you want to start.
+
+| Argument                   | Argument long name                          | Mandatory | Description                                                                                                                                                                                         | Restricted values |
+|----------------------------|---------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | No        | where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | No                |
+| -c                         | --cluster                                   | No        | starts  the process on every node in the cluster                                                                                                                                                   | No                |
+| -v                         | --verbose                                   | No        | starts in verbose mode, logs to console                                                                                                                                                 | No                |
+|                            | --dump                                      | No        | displays progress of the process, which is useful for debugging                                                                                                                          | No                |	
+|                            | --coldStart                                      | No        | this is only used if you have a Consolidator. Consolidators aggregate data from IN table(s) into an OUT table; a coldStart effectively zeros out values in the OUT table records and then iterates over all the IN table records, rebuilding them on startUp. After this, the Consolidators are started in their normal way
+ | No                |	
+
+For example:
+
+```bash
+startProcess processName [--hostname <[host names]>] [--dump] 
+```
+
+The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
+
+```bash
+java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
+```
+
+
+
+
+## startServer script
+
+This script reads the **$GC/processes.xml** file to determine which processes to start and how to start them.
+
+### Syntax
+
+```bash
+startServer [--hostname <[host names]>] [--ignoreDaemon] 
+```
+
+| Argument                    | Argument long name                   | Mandatory | Description                                                                                                                                                                                | Restricted values |
+|-----------------------------|--------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+|  -s HOSTNAME [HOSTNAME ...] | --hostname   HOSTNAME [HOSTNAME ...] | No        | If the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node). Specify the Host Name | No                |
+|  -c                         | --cluster                            | No        | Starts the process on every node in the cluster,                                                                                                                                           | No                |
+|  -i                         | --ignoreDaemon                       | No        | avoids killing/starting the daemon                                                                                                                                                         | No                |
+
+The **processes.xml** file looks like this:
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+    <process name="GENESIS_AUTH_MANAGER">
+        <start>true</start>
+        <options>-Xmx512m -DXSD_VALIDATE=false</options>
+        <module>auth-manager</module>
+        <package>global.genesis.dta.auth.manager</package>
+        <classpath>quickfixj-core-2.1.0.jar</classpath>
+    </process>
+    <process name="GENESIS_AUTH_DATASERVER">
+        <start>true</start>
+        <options>-Xmx512m -DXSD_VALIDATE=false</options>
+        <module>dataserver</module>
+        <package>global.genesis.dataserver</package>
+        <config>auth-dataserver.xml</config>
+        <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
+    </process>
+    <process name="GENESIS_AUTH_PERMS">
+        <start>true</start>
+        <options>-Xmx512m -DXSD_VALIDATE=false</options>
+        <module>auth-perms</module>
+        <package>global.genesis.dta.auth.perms</package>
+        <dependency>AUTH_MANAGER,AUTH_DATASERVER</dependency>
+    </process>
+</configuration>
+```
+
+Each process property is defined in here, including Java arguments, configuration files, and scripts.
+
+The `dependency` tag defines the processes that the current process is dependent on. In the above example, the GENESIS_AUTH_PERMS process will start after all its dependencies have started.
+
+The `loggingLevel` tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to declare explicitly that you would like to log all the received/sent network messages.
+
+The `classpath` tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a lib folder for one of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
+
+
+## SendIt script
+
+To send data into the database, use the `SendIt` command.
+
+### Syntax
+
+```bash
+SendIt -t <table name> -f <file name>
+```
+
+| Argument | Argument long name     | Mandatory | Description                                                    | Restricted values |
+|----------|------------------------|-----------|----------------------------------------------------------------|-------------------|
+| -a       | --all                  | No        | import all the tables from all the csv files to the database | No                |
+| -d       | --delete               | No        | perform delete operations on all records                     | No                |
+| -f       | --file `<arg>`         | No        | name of the csv file where table is imported                 | No                |
+| -h       | --help                 | No        | show usage   information                                       | No                |
+| -m       | --modify `<arg>`       | No        | key name used to find original record                        | No                |
+| -mf      | --modifyFields `<arg>` | No        | specifies fields to modify                                     | No                |
+| -quiet   | --quietMode            | No        | make database changes without triggering real-time updates in update queue layer | No |
+| -r       | --recover              | No        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | No                |
+| -t       | --table `<arg>`        | No        | the name of the table to import to the database                  | No                |
+| -v       | --verbose              | No        | log every error line to output                               | No                |
+
+For example:
+
+```bash
+SendIt -t FUND -f FUND
+```
+
+This reads the **FUND.csv** file in the local directory and inserts the data from the file into the FUND table.
+
+To modify records, you need to specify the key that will be used to identify the original record from each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
+
+```bash
+SendIt -t FUND -m FUND_BY_ID
+```
+
+Modify fields (`-mf`) is a special parameter that can be added to `-m` operations. SendIt only attempts to modify the record fields specified in this comma-separated list parameter.
+
+To delete records, specify `-d` (or `--delete`)
+
+```bash
+SendIt -t FUND -d
+```
+
+If no file parameter is specified, `.csv` is assumed and read from the local directory.
+
+Verbose mode will additionally output line-by-line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes the script useful for scheduled or automated jobs (e.g. daily data loads).
+
+:::warning
+Do not use `SendIt` to update User details in any way. This can easily cause database errors. To update User profiles or User attributes, only use Genesis [user entity management](../../../web/micro-front-ends/foundation-entity-management/).
+:::
+
+
+## SetSequence
+
+This enables you to set a sequence number for a table. This can either be a single sequence number or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
+
+`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
+
+### Syntax
+
+```bash
+SetSequence
+````
+
+Options: 
+
+| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
+|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
+| -f       | --file `<arg>`     | No        |  Name of csv file containing batch sequence/value pairs (this overrides any sequence and value option supplied) | No                |
+| -h       | --help             | No        |                                                                                                        | No                |
+| -s       | --sequence `<arg>` | No        |  Two-character ID for the sequence (if setting individual value)                                       | No                |
+| -v       | --value `<arg>`    | No        |  New integer value to be set (if setting individual value)                                             | No                |
+
+## SetAutoIncrement
+
+This works in a similar way to `SetSequence`, but for auto-increment INT values. You can supply a single increment value or a whole batch of values using a csv file. 
+
+:::warning
+Stop all your application's processes before using this command. 
+:::
+
+### Syntax
+
+```bash
+SetAutoIncrement
+```
+
+| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
+|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
+| -f       | --file `<arg>`     | No        | Name of csv file containing batch sequence/value pairs (this overrides any value option supplied) | No                |
+| -h       | --help             | No        |                                                                                                        | No                | 
+| -s       | --field `<arg>`    | No        |   Name of the auto-increment field (when not inserting via CSV)                                                                                                     | No                |
+| -t       | --table `<arg>`    | No        |   Name of the table containing the auto-increment field (when not inserting via CSV)                                                                                                   | No                |
+| -v       | --value `<arg>`    | No        |                                                                                                        | No                | New integer value to be set (if setting individual value)
+
+
+The behaviour of this command depends on which database implementation your application uses. 
+
+- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
+
+- **If you are using Oracle**, you can **not** set a sequence value directly. This command increments the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values that are already assigned in the cache, as the increment is also applied to these values.
+
+And remember, only use this command when all your applications have been stopped. After running `SetAutoIncrement`, you need to restart the server.
+
+
+## DictionaryBuilder
+
+`DictionaryBuilder` connects to an RDBMS, parses schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
+
+The script accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc).
+
+### Syntax
+
+| Short | Long Argument                          | Mandatory | Description                                                                                                               |
+|----|----------------------------------------|----|--------------------------------------------------------------------------------------------------------------------------|
+| -c | --comments                             |  | Include original SQL in Comments defaults to true                                                                         |
+| -d | --databaseName=\<databaseName\>        | Yes | Database name                                                                                                             |
+| -h | --help                                 |  | Show this help message and exit.                                                                                          |
+| -H | --host=\<hostname\>                    | Yes | The database hostname.                                                                                                    |
+| -i | --tableid=\<tableIdStart\>             |  | Table Id start number, defaults = 0                                                                                       |
+| -l | --tables=\<tables\>\[,\<tables\>...\]  |  | table list to include, default is all tables                                                                              |
+| -o | --output=\<outputDirectory\>           |  | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created             |
+| -p | --port=\<port\>                        | Yes | The database port                                                                                                        |
+| -P | --password\[=\<password\>\]            | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively |
+| -R | --product=\<productName\>              | Yes | Represents the product name and affects the output file                                                                 |
+| -s | --sid=\<oracleSidId\>                  |  | The Oracle System ID if using oracle, or the schema ID if using MSSQL                                                    |
+| -t | --type=\<databaseType\>                | Yes | Database type, valid values: MSSQL, Oracle, Postgres                                                                      |
+| -U | --username=\<username\>                | Yes | Username                                                                                                                  |
+| -V | --version                              |  | Print version information and exit                                                                                       |
+
+You can use double-dash notation for any argument.
+
+### Example
+
+```bash
+DictionaryBuilder -u TAS -p my_password -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
+```
+
+### How the script behaves
+
+The script tries to connect to the RDBMS currently specified in the arguments. It generates Genesis dictionary fields for column names and their types, and it creates tables with their fields and keys.
+
+There are a few considerations you should be aware of:
+
+* If a column name (e.g. DATE) is found in several tables, and it always has the same type, only one field will be specified in the dictionary. However, if the same column name is found in different tables with different types, a new field will be created for each type, keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so you can fix the name and/or type it manually later on.
+* The types are mapped from [http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html "http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html") to Genesis dictionary types. Each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate; you must check the results for correctness.
+* If there is no mapping available for the `java.sql.Type` retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type `STRING`. This event will be shown on standard output too, so you can know that there is an uncommon type that you should take care of.
+* Every time a table is successfully parsed, the script will give feedback: `TABLE USERS complete`.
+* Views are not parsed.
+
+#### Keys and indexes
+Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based.
+
+Only unique indexes will be parsed as secondary keys.
+
+There is no concept of foreign keys in Genesis, so these are ignored.
+
+Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE).
+
+### Type mapping
+
+| Genesis Type | JDBC Types |   |   |   |   |   |   |
+| -- | -- | -- | -- | -- |
+| STRING | CHAR | LONGNVARCHAR | LONGVARCHAR | NCHAR | NVARCHAR | VARCHAR | CLOB |
+| LONG | BIGINT |   |   |   |   |   |   |
+| RAW | BINARY | LONGVARBINARY | VARBINARY | BLOB |   |   |   |
+| INT | INTEGER | SMALLINT | TINYINT |   |   |   |   |
+| DOUBLE | FLOAT | DOUBLE |   |   |   |   |   |
+| BIGDECIMAL | DECIMAL |   |   |   |   |   |   |
+| DATETIME | TIMESTAMP |   |   |   |   |   |   |
+| BOOLEAN | BOOLEAN |   |   |   |   |   |   |
+| DATE | DATE |   |   |   |   |   |   |
+| TIME | TIME |   |   |   |   |   |   |
+
+## ReconcileDatabaseSync
+
+This is used to check if there are differences between a local DB and a remote DB with common dictionary tables.
+
+Typically, this would be used to reconcile tables that are being kept in sync by the GENESIS_SYNC process.
+
+The local DB's details (host, port, user, etc) are read from the system definition file in the local environment. The remote DB's details are specified as options to the command.
+
+The tables to check are specified in the **genesis-sync-definition.xml** file. Here is a simple example that specifies two tables:
+
+```xml
+<sync>
+    <tables>
+        <table name="TRADE"/>
+        <table name="ORDER"/>
+    </tables>
+</sync>
+```
+
+If there are any differences found between the local and remote tables, then the result will be output to a text file. The location of this text file will be displayed on screen.
+There are 3 categories in the output: "Records Missing From Local", "Records Missing From Remote" and "Records Which Differ Between Remote and Local".
+
+Records are compared using the primary key field. The TIMESTAMP and RECORD_ID fields are extremely likely to differ,
+because the tables being compared are in separate databases. Therefore, these fields are not compared.
+
+### Options
+
+| Argument | Argument long name | Mandatory | Description | Restricted Values |
+| -- | -- | -- | -- | -- |
+| -d | --dblayer | true | Database Layer type | Yes: FDB, FDB2, AEROSPIKE, SQL, SIMPLE |
+| -f | --fdb | false | FDB cluster file name |No |
+| -H | --host | false | Remote DB hostname |No |
+| -P | --port | false | Remote DB port |Yes: Number > 0 |
+| -u | --username | false | DB user username |No |
+| -p | --password | false | DB user password |No |
+| -s | --nullstring | false | Evaluate null and empty strings as equal |No value required |
+| -n | --numdays | false | Only compare records with timestamps between now and the number of days specified. If either DB has matching records outside this timestamp range, this will not be flagged as a reconciliation difference |Yes: Number > 0 |
+| -i | --ignorefields | false | Comma-separated list of additional fields to ignore ("RECORD_ID" and "TIMESTAMP" are always ignored) |No |
+| -h | --help | false | Show usage information |No |
+
+### Examples
+
+This is a simple run with a remote Postgres DB:
+
+```bash
+ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass
+```
+
+This example runs with a remote Postgres DB. it evaluates null and empty strings as equal; it compares records up to 2 days ago, and it ignores the field STATUS.
+
+```bash
+ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass -s -n 2 -i STATUS
+```
+
 
 ## AppGen
 
