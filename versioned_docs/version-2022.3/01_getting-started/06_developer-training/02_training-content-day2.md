@@ -217,7 +217,7 @@ After running, if you receive an error message similar to this `digital envelope
 
 The solution described in this issue's history [here](https://github.com/webpack/webpack/issues/14532#issuecomment-947012063) is pretty much exporting an environment variable NODE_OPTIONS setting the value below
 ```shell
-export NODE_OPTIONS=--openssl-legacy-provider
+SET NODE_OPTIONS=--openssl-legacy-provider
 ```
 :::
 
