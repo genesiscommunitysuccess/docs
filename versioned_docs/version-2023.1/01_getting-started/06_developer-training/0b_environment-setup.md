@@ -122,7 +122,7 @@ Clone the Developer Training starting repo from [here](https://github.com/genesi
 
 ### Running the back and front end
 
-We are going to change the back-end and front-end code, so ideally we should have the server running to make our application work.
+We are going to change the back-end and front-end code, so ideally we should have the server running to make our application work. Below you see all supported technologies in the training.
 
 <Tabs defaultValue="plugin" values={[{ label: 'Intellij Plugin', value: 'plugin', }, { label: 'Docker', value: 'docker', }, { label: 'WSL', value: 'wsl', }]}>
 
@@ -141,13 +141,15 @@ import Docker from '/snippet/_environment_setup_docker.md'
 
 </TabItem>
 <TabItem value="wsl">
-wsl
+
+import Wls from '/snippet/_environment_setup_wls.md'
+
+<Wls />
+
+
 </TabItem>
 
 </Tabs>
-
-Lastly, confirm if you can get the UI started properly showing the login page as below. The application will open at `http://localhost:6060/login`.
-![](/img/btfe--positions-example--login.png)
 
 
 You are good to go!
