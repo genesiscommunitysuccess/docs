@@ -219,39 +219,6 @@ More information [here](https://docs.gradle.org/current/userguide/build_environm
 
 ## Local server set-up
 
-<!--
-Make sure you have completed the [Workstation setup](#workstation-setup) prior to this.
-
-We are going to set up Windows Subsystem for Linux (WSL 2) to deploy and run the application locally.
-
-You can install everything you need to run WSL by entering this command in an administrator PowerShell or Windows Command Prompt and then restarting your machine.
-```
-wsl --install
-```
-Microsoft provides [documentation on the WSL installation](https://docs.microsoft.com/en-us/windows/wsl/install), if you need it.
-
-Then download the [Genesis WSL training distro](https://genesisglobal.jfrog.io/artifactory/community-uploads/training-wsl.zip). This distro contains everything you need to get started, including:
-Linux CentOS 7 base, Java 11 SDK, genesis user, nginx, FoundationDB.
-
-Now create a local folder where you want to run the distro, e.g., "C:\wsl\distros\training-distro\". Unzip the package downloaded there and from that folder, run:
-```
-wsl --import TrainingCentOS . training-wsl.backup
-```
-
-Run the distro:
-```
-wsl -d TrainingCentOS
-```
-
-You should see this message:
-```bash
-Welcome to Genesis WSL training distro!
-[root@hostname training-distro]#
-```
-:::note
-From now on, whenever you see things like "from the terminal or command line" or "run this command", it means from the WSL Linux instance command line as user 'genesis' ('su genesis').
-:::
--->
 ### Start the project baseline
 
 Clone the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
