@@ -5,9 +5,9 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "build": "npm run copy:dsc && docusaurus build",
-    "build:next": "SHOW_NEXT=true docusaurus build",
-    "build:base_url": "BASE_URL=/docs/ docusaurus build",
-    "build:production": "BASE_URL=/docs/ BRANCH=master docusaurus build",
+    "build:next": "SHOW_NEXT=true npm run copy:dsc && docusaurus build",
+    "build:base_url": "BASE_URL=/docs/npm run copy:dsc && docusaurus build",
+    "build:production": "BASE_URL=/docs/ BRANCH=master npm run copy:dsc && docusaurus build",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve",
