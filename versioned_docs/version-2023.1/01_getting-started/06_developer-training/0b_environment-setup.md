@@ -120,15 +120,37 @@ docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POST
 
 Clone the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed), and open it using IntelliJ.
 
-
 ### Running the back and front end
-We are going to change the back-end and front-end code, so ideally we should have the server running to make our application work. 
 
-To do that, we will use the [IntelliJ plugin](../../../server/tooling/intellij-plugin/) provided by Genesis. So, first step is installing the plugin following the [instructions here](../../../server/tooling/intellij-plugin/#installation). Then, have a look at the [Tools window installed](../../../server/tooling/intellij-plugin/#the-tools-window) to understand it and do the configurations asked.
+We are going to change the back-end and front-end code, so ideally we should have the server running to make our application work. Below you see all supported technologies in the training.
+
+<Tabs defaultValue="plugin" values={[{ label: 'Intellij Plugin', value: 'plugin', }, { label: 'Docker', value: 'docker', }, { label: 'WSL', value: 'wsl', }]}>
+
+<TabItem value="plugin">
+
+You can use the [IntelliJ plugin](../../../server/tooling/intellij-plugin/) provided by Genesis. So, first step is installing the plugin following the [instructions here](../../../server/tooling/intellij-plugin/#installation). Then, have a look at the [Tools window installed](../../../server/tooling/intellij-plugin/#the-tools-window) to understand it and do the configurations asked.
 
 As soon as everything is done and you are ok about the Intellij plugin, double-check if you can see the processes running properly as [explained](../../../server/tooling/intellij-plugin/#starting-processes). You must see all processes up and running or in standby mode.
 
-Lastly, confirm if you can get the [UI started](../../../server/tooling/intellij-plugin/#starting-the-ui) properly showing the login page as below. The application will open at `http://localhost:6060/login`.
-![](/img/btfe--positions-example--login.png)
+</TabItem>
+<TabItem value="docker">
+
+import Docker from '/snippet/_environment_setup_docker.md'
+
+<Docker />
+
+</TabItem>
+<TabItem value="wsl">
+
+import Wls from '/snippet/_environment_setup_wls.md'
+
+<Wls />
+
+
+</TabItem>
+
+</Tabs>
+
 
 You are good to go!
+
