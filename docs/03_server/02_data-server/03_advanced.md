@@ -106,24 +106,36 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
 
 ```
 
-## Ranged Data Server queries
+## Index based data server queries
 
-Ranged Data Server queries only read a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](../../../database/database-interface/entity-db/#getrange).
+These type of Data Server queries only read a defined range within a table or view using indices, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](../../../database/database-interface/entity-db/#getrange).
+We have the following options to write index based queries
 
-The following conditions apply to a ranged Data Server query:
-- You can specify the start index and end index using these keywords:
-   `from` specifies the start of the data range. It is mandatory when you use `from-to` condition.
-   `to` specifies the end of the data range. It is optional. When `to` is not specified, the `from` clause works in a same way as `where` clause specified below
-- You can specify a particular index value using this keyword:
-   `where` gives the range of data on a specified index field value, which must be provided.
-- You can optionally refresh keys using the `refresh` keyword, which sets a periodic refresh of keys, as shown in examples below
+### Advanced `where`
 
-The example below shows how using the `where` clause in ranged queries differs from normal queries.
+Provides set of data equal to specified index
+Advanced `where` accepts index and the provided index is used to get similar records from database. Below data server query returns all the trade data whose quantity is equal to 42. You can optionally refresh keys using the `refresh` keyword, which sets a periodic refresh of keys, as shown in examples below
+
+```kotlin
+query("TRADE_RANGE_BY_QUANTITY", TRADE) {
+    where(Trade.ByQuantity(42), 1)
+}
+
+query("TRADE_RANGE_USD_REFRESH", TRADE) {
+    where(Trade.ByCurrencyId("USD"), 1) {
+        refresh {
+            every(15.minutes)
+        }
+    }
+}
+```
+
+The example below shows how advanced where queries differs from basic where queries.
 The scenario is this: you want to get trade records where the `currencyId` is `USD`. You can write a Data Server query in two ways, which affects how much data is cached:
 
-- Method 1 is not a ranged query. It initially reads all the table/view data (which could be very large) and then applies the `where` clause to confine the range to USD, so it can take a long time to get the Data Server query up and running.
-- Method 2 is a ranged query. It uses a database range search operation [getRange](../../../database/database-interface/entity-db/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
-No real `where` clause is applied, the data returned by the database operation already contains the correct rows.
+- Method 1 uses basic where. It initially reads all the table/view data (which could be very large) and then applies the `where` clause to confine the range to USD, so it can take a long time to get the Data Server query up and running.
+- Method 2 uses advanced where. It uses a database range search operation [getRange](../../../database/database-interface/entity-db/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
+  `where` clause is applied at database level, the data returned by the database operation already contains the correct rows.
 
 ```kotlin
 // Method 1:
@@ -135,17 +147,21 @@ query("TRADE_USD", TRADE) {
 
 // Method 2:
 query("TRADE_RANGED_USD", TRADE) {
-    ranged(Trade.ByCurrencyId, 1) {
-            where {
-                Trade.ByCurrencyId("USD")
-            }
-        }
+    where(Trade.ByCurrencyId("USD"), 1)
 }
 ```
 
+### Ranged Data Server queries
+
+Provides range of data based on specified  from and to indices
+
+The following conditions apply to a ranged Data Server query:
+- You can specify the start index and end index using these keywords:
+   `from` specifies the start of the data range. It is mandatory when you use `from-to` condition.
+   `to` specifies the end of the data range. It is optional. When `to` is not specified, the `from` clause works in a same way as advanced `where` specified above. We recommend using advanced `where` when `to` is optional for better readability.
+- You can optionally refresh keys using the `refresh` keyword, which sets a periodic refresh of keys, as shown in examples below
+
 The examples below include comments to ease understanding.
-
-
 
 ```kotlin
 query("TRADE_RANGED_LAST_2_HOURS", TRADE) {
@@ -176,11 +192,7 @@ Examples:
 ```kotlin
 // all dollar trades:
 query("TRADE_RANGED_TRADE_RANGE_USD", TRADE) {
-    ranged(Trade.ByCurrencyId, 1) {
-        where {
-            Trade.ByCurrencyId("USD")
-        }
-    }
+    where(Trade.ByCurrencyId("USD"), 1)
 }
 
 // all trades with quantity between 100 and 1,000
