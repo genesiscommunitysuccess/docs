@@ -254,6 +254,10 @@ For larger tables, this can be slow and risks causing latency to your applicatio
 For example, if you wanted to find all the records in the `BROKER` table where the `COUNTRY_CODE` was IRL, and there is no index that can be used (and there might be multiple results), the [`search`](#dbmon-commands) command would look like this:
 
 ```javascript
+DbMon:BROKER>search COUNTRY_CODE=='IRL'
+```
+
+```javascript
 ==================================
 BROKER
 ==================================
@@ -334,9 +338,7 @@ The logical operators available are:
 | &&     | Logical And                 |
 | ![](/img/logical-or.png)    | Logical Or                  |
 
-## Searching
-
-### Searching with wildcards
+#### Searching with wildcards
 
 You can search using the * wildcard. Note that this might be quite slow if running against a large dataset.
 
@@ -353,25 +355,53 @@ Field Name                               Value                                  
 Total Results:  3
 ```
 
-## Datetime
+## Datetime or Date
 
 When setting a DATE or DATETIME, the format must be specified as follow:
 
 - DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS Z"
 - DATE_FORMAT = "yyyy-MM-dd"
 
-### Searching a Datetime
+### Searching a Datetime or Date
 
-```bash
--where 'LAST_ACCESS_TIME>"2022-06-20"'
+Accepted Datetime formats:
+- DateTime with milliseconds precision: yyyyMMdd-HH:mm:ss.SSS
+- DateTime with seconds precision: yyyyMMdd-HH:mm:ss
+- DateTime with minutes precision: yyyyMMdd-HH:mm
+
+Accepted Date formats:
+- yyyyMMdd
+
+#### Using search command
+
+```jsx
+// if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database 
+DbMon:BROKER>search MODIFIED_DATE=="20221008-14:20:17.400"
+
+// if MODIFIED_DATE is 2022-10-08 14:20:17 in database 
+DbMon:BROKER>search MODIFIED_DATE=="20221008-14:20:17"
+
+// if MODIFIED_DATE is 2022-10-08 14:20 in database 
+DbMon:BROKER>search MODIFIED_DATE>"20221008-14:20" && COUNTRY_CODE=='IRL'
+
+// if MODIFIED_DATE is 2022-10-08 in database 
+DbMon:BROKER>search MODIFIED_DATE=="20221008" || COUNTRY_CODE=='IRL'
 ```
 
-### Searching a timestamp
+#### Using distinct command
 
-You can search for a specific date using a `where` clause, such as:
+```jsx
+// if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database 
+DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="20221008-14:20:17.400"
 
-```bash
--where == "20220202"
+// if MODIFIED_DATE is 2022-10-08 14:20:17 in database 
+DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE>"20221008-14:20:17" && IS_ACTIVE=='true'
+
+// if MODIFIED_DATE is 2022-10-08 14:20 in database 
+DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE<"20221008-14:20" || IS_ACTIVE=='true'
+
+// if MODIFIED_DATE is 2022-10-08 in database 
+DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="20221008"
 ```
 
 
@@ -458,5 +488,6 @@ update <key_name>
 updateWhere <condition> <assignments>
 writeMode
 ```
-### Quiet mode
+
+## Quiet mode
 `DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
