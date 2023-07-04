@@ -441,7 +441,7 @@ PID     Process Name                  Port        Status         CPU       Memor
 ### Syntax
 
 ```bash
-mon [-v | -c | -a] polling_interval
+mon [-v | -c | -a | -m] polling_interval
 ```
 
 Options
@@ -452,6 +452,7 @@ Options
 | -v       | --version          | No        | Shows installed products versions.           | No                |
 | -c       | --cfg              | No        | Shows the config files used by each process. | No                |
 | -a       | --all              | No        | Shows all information.                       | No                |
+| -m       | --monitors         | No        | Shows state monitors information             | No                |
 
 ## PopulateHolidays
 
