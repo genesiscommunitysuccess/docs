@@ -377,25 +377,6 @@ Accepted Date formats:
 
 ```jsx
 // if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database 
-DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="20221008-14:20:17.400"
-
-// if MODIFIED_DATE is 2022-10-08 14:20:17 in database 
-DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE>"20221008-14:20:17" && IS_ACTIVE=='true'
-
-// if MODIFIED_DATE is 2022-10-08 14:20 in database 
-DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE<"20221008-14:20" || IS_ACTIVE=='true'
-
-// if MODIFIED_DATE is 2022-10-08 in database 
-DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="20221008"
-
-// if MODIFIED_DATE is 2022-10-08 in database 
-DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="2022-10-08"
-```
-
-#### Using distinct command
-
-```jsx
-// if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database 
 DbMon:BROKER>search MODIFIED_DATE=="20221008-14:20:17.400"
 
 // if MODIFIED_DATE is 2022-10-08 14:20:17 in database 
@@ -409,6 +390,25 @@ DbMon:BROKER>search MODIFIED_DATE=="20221008" || COUNTRY_CODE=='IRL'
 
 // if MODIFIED_DATE is 2022-10-08 in database 
 DbMon:BROKER>search MODIFIED_DATE=="2022-10-08"
+```
+
+#### Using distinct command
+
+```jsx
+// if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database 
+DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="20221008-14:20:17.400"
+
+// if MODIFIED_DATE is 2022-10-08 14:20:17 in database 
+DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE>"20221008-14:20:17" && IS_ACTIVE=='true'
+
+// if MODIFIED_DATE is 2022-10-08 14:20 in database 
+DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE<"20221008-14:20" || IS_ACTIVE=='true'
+
+// if MODIFIED_DATE is 2022-10-08 in database 
+DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="20221008"
+
+// if MODIFIED_DATE is 2022-10-08 in database 
+DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="2022-10-08"
 ```
 
 ## Counting records
