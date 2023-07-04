@@ -295,7 +295,7 @@ Flowable<DbRecord> tradeByIDIDAndPrice = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_
 Whereas a `get` operation selects a single entry from a unique index, and a `getBulk` operation selects the whole table, `getRange` selects a range within an index. 
 
 By providing different parameters, you can refine what information you are returned:
-* `startRecord` is needed in all cases, and defines where the range should start from.
+* `startRecord` is needed in all cases, and defines where the range should start from, if `endRecord` is provided, else acts as where clause to get similar records. 
 * `endRecord` is an optional end record for where the range should end.
 * `index` is also needed in all cases, it is the String name of the Index upon which the range spans.
 * `numKeyFields` is the number of key fields to take into account for the range.
