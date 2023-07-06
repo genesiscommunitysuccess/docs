@@ -486,7 +486,7 @@ PID     Process Name                  Port        Status         CPU       Memor
 ### Syntax
 
 ```bash
-mon [-v | -c | -a] polling_interval
+mon [-v | -c | -a | -m | -u] polling_interval
 ```
 
 Options
@@ -497,6 +497,24 @@ Options
 | -v       | --version          | No        | Shows installed products versions.           | No                |
 | -c       | --cfg              | No        | Shows the config files used by each process. | No                |
 | -a       | --all              | No        | Shows all information.                       | No                |
+| -m       | --monitors         | No        | Shows state monitors information             | No                |
+| -u       | --unhealthy        | No        | Shows unhealthy processes only               | No                |
+|          | --down             | No        | Shows DOWN processes                         | No                |
+|          | --warning          | No        | Shows WARNING processes                      | No                |
+|          | --error            | No        | Shows ERROR processes                        | No                |
+|          | --unknown          | No        | Shows UNKNOWN processes                      | No                |
+|          | --missing          | No        | Shows MISSING processes                      | No                |
+|          | --running          | No        | Shows RUNNING processes                      | No                |
+|          | --starting         | No        | Shows STARTING processes                     | No                |
+|          | --standby          | No        | Shows STANDBY processes                      | No                |
+|          | --healthy          | No        | Shows HEALTHY processes                      | No                |
+
+:::info
+
+Unhealthy processes includes all processes that are not `HEALTHY` or `STANDBY`. 
+`--UNHEALTHY` can't be used with other status filtering arguments
+
+:::
 
 ## PopulateHolidays
 
