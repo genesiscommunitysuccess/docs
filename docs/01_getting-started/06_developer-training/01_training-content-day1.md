@@ -409,6 +409,8 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**a
 
 Congratulations! You have built an application and you are running a database.
 
+---
+
 ### Credentials to login
 
 By default the following will be your login details:
