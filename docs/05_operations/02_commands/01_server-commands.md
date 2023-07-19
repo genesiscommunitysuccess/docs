@@ -100,6 +100,7 @@ This copies all tables in the system, creating one .csv file for each table in t
 
 Additionally, you can just run `DumpIt` without any arguments to enter interactive mode.
 
+
 ## FixEnumValues
 
 Converts non-matching enum values in the database to SNAKE_CASE. This script is intended to be used after a dictionary change that adds new enum values. It will only update the data if the converted value matches the list of enum values in the dictionary.

@@ -59,40 +59,39 @@ The command will ask you to confirm the removal of each table.
 
 ## DumpIt script
 
-To copy data from a Genesis database, use the 'DumpIt' command.
+To copy data from a Genesis database, use the `DumpIt` command.
 
 ### Syntax
-
-```bash
-DumpIt -t <table name> -f <file name>
-```
 
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|
 | -a       | --all              | No        | exports all tables to csv                              | No                |
 | -f       | --file `<arg>`     | No        | name of the csv file where table is exported           | No                |
-|          | -fields `<arg>`    | No        | space separated field list e.g. "FIRST_NAME LAST_NAME" | No                |
+|          | -fields `<arg>`    | No        | space-separated field list e.g. "FIRST_NAME LAST_NAME" | No                |
 | -h       | --help             | No        | show usage information                                 | No                |
 | -s       | --sql `<arg>`      | No        | name of the sql file where table is exported           | No                |
 | -t       | --table `<arg>`    | No        | the name of the table to export to csv                 | No                |
 |          | -where `<arg>`     | No        | match criteria e,g, "USER_NAME=='John'"                | No                |
-For example:
+
+Here are some examples:
+
+```bash
+DumpIt -t GBP_TRADES -f gbp-trades
+```
+
+This copies the data in the GBP_TRADES table to gbp-trades.csv.
 
 ```bash
 DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME
 ```
 
-This copies the data in the FUND table to FUND.csv.
-
-Another example:
+This copies every record in the USER table where the USER_NAME is John. 
 
 ```bash
 DumpIt -t FUND -f FUND -fields "FUND_ID NAME" -where "NAME == 'FUND_FUND' && YEARS_IN_SERVICE >= 10"
 ```
 
 This copies the FUND_ID and NAME fields of every record that has "FUND_FUND" for a name, and ten or more years in service.
-
-If you want to dump all the tables in the database, here is an example:
 
 ```bash
 DumpIt --all
@@ -101,24 +100,6 @@ DumpIt --all
 This copies all tables in the system, creating one .csv file for each table in the database. The files are saved in the current directory. It is useful for taking a back-up of the current system database.
 
 Additionally, you can just run `DumpIt` without any arguments to enter interactive mode.
-
-## GenesisRun
-
-This is a Python script wrapper for Genesis scripts.
-
-'GenesisRun` will attempt to find a script to execute within the Genesis folder structure (site-specific or scripts).
-
-There are two environment variables that can be used to configure how much RAM the scripts will use:
-
-* SCRIPT_MAX_HEAP
-* REMAP_MAX_HEAP
-
-`GenesisRun` can execute code in two different modes: Groovy script and GPAL Kotlin script. **GenesisRun** builds the necessary classpath, so you don't need to build it in each script.
-
-* Groovy script: GenesisRun SetLogLevelScript.groovy
-* GPAL Kotlin script: GenesisRun customPurger-script.kts
-
-There is a separate wrapper, `JvmRun` for Java main class scripts.
 
 ## genesisInstall script
 
@@ -219,6 +200,24 @@ MigrateDictionary -dst DB
 exit $?
 ```
 
+## GenesisRun
+
+This is a Python script wrapper for Genesis scripts.
+
+'GenesisRun` will attempt to find a script to execute within the Genesis folder structure (site-specific or scripts).
+
+There are two environment variables that can be used to configure how much RAM the scripts will use:
+
+* SCRIPT_MAX_HEAP
+* REMAP_MAX_HEAP
+
+`GenesisRun` can execute code in two different modes: Groovy script and GPAL Kotlin script. **GenesisRun** builds the necessary classpath, so you don't need to build it in each script.
+
+* Groovy script: GenesisRun SetLogLevelScript.groovy
+* GPAL Kotlin script: GenesisRun customPurger-script.kts
+
+There is a separate wrapper, `JvmRun` for Java main class scripts.
+
 ## GetAutoIncrementCount
 
 This works similarly to `GetSequenceCount`, but for auto increment INT values defined in dictionaries.
@@ -262,6 +261,8 @@ This gives you the next sequence number of every table in the application. The n
 
 By default, this is sent to the screen, but you can redirect the output to a file, for example:
 
+### Syntax
+
 ```bash
 GetNextSequenceNumbers >> /tmp/NextSeqNumbers.txt 
 ```
@@ -271,11 +272,7 @@ The `GetNextSequenceNumbers` command is often used with the `SetSequence` script
 1. Stop all the processes and run `GetNextSequenceNumbers` to find the next sequence numbers of the tables.
 2. Check the table contents. You might find that a row is missing or needs to be added. Make this change on the database manually. This affects the sequence numbers in those tables.
 3. Run `SetSequence` to reset the sequence numbers where relevant. 
-4. Now you can [restart your processes](../../../operations/commands/server-commands/#startserver-script).
-
-### Syntax
-
-```bash
+4. Now you can [restart your processes](../../../operations/commands/server-commands/#startserver-script).```bash
 GetNextSequenceNumbers
 ```
 
@@ -285,9 +282,6 @@ This gets the current sequence number for all the sequences in the system. The v
 
 ### Syntax
 
-```bash
-GetSequenceCount
-```
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|
@@ -295,6 +289,12 @@ GetSequenceCount
 | -h       | --help             | No        | show usage information                  | No                |
 | -p       | --print            | No        |                                         | No                |
 
+
+Example:
+
+```bash
+GetSequenceCount
+```
 
 ## MigrateAliases
 
