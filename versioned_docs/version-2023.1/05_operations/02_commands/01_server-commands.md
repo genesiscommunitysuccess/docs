@@ -254,6 +254,14 @@ And remember: only use this command when all the application's processes have be
 
 This gives you the next sequence number of every table in the application. The numbers are provided in table format (csv), for example:
 
+
+```
+"Table","Sequence","Value"
+"USER_AUDIT","UA","104"
+"PROFILE_AUDIT","PR","804"
+"PROFILE_USER_AUDIT","PA","104"
+```
+
 ### Syntax
 
 ```bash
