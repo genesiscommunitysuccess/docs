@@ -79,13 +79,13 @@ Here are some examples:
 DumpIt -t GBP_TRADES -f gbp-trades
 ```
 
-This copies the data in the GBP_TRADES table to gbp-trades.csv.
+This copies all records in the GBP_TRADES table to the file **gbp-trades.csv**.
 
 ```bash
-DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME
+DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME"
 ```
 
-This copies every record in the USER table where the USER_NAME is John. 
+This copies every record in the USER table where the USER_NAME is John. This is useful if you want to know if the user name John exists in the database.
 
 ```bash
 DumpIt -t FUND -f FUND -fields "FUND_ID NAME" -where "NAME == 'FUND_FUND' && YEARS_IN_SERVICE >= 10"
@@ -99,7 +99,9 @@ DumpIt --all
 
 This copies all tables in the system, creating one .csv file for each table in the database. The files are saved in the current directory. It is useful for taking a back-up of the current system database.
 
-Additionally, you can just run `DumpIt` without any arguments to enter interactive mode.
+### Interactive mode
+You can run `DumpIt` without any arguments to enter interactive mode.
+.
 
 ## genesisInstall script
 
@@ -252,16 +254,14 @@ And remember: only use this command when all the application's processes have be
 
 This gives you the next sequence number of every table in the application. The numbers are provided in table format (csv), for example:
 
-```
-"Table","Sequence","Value"
-"USER_AUDIT","UA","104"
-"PROFILE_AUDIT","PR","804"
-"PROFILE_USER_AUDIT","PA","104"
-```
-
-By default, this is sent to the screen, but you can redirect the output to a file, for example:
-
 ### Syntax
+
+```bash
+GetNextSequenceNumbers
+```
+This displays the next sequence number of each table, using the format described above.
+
+By default, the details are sent to the screen, but you can redirect the output to a file, for example:
 
 ```bash
 GetNextSequenceNumbers >> /tmp/NextSeqNumbers.txt 
@@ -272,9 +272,7 @@ The `GetNextSequenceNumbers` command is often used with the `SetSequence` script
 1. Stop all the processes and run `GetNextSequenceNumbers` to find the next sequence numbers of the tables.
 2. Check the table contents. You might find that a row is missing or needs to be added. Make this change on the database manually. This affects the sequence numbers in those tables.
 3. Run `SetSequence` to reset the sequence numbers where relevant. 
-4. Now you can [restart your processes](../../../operations/commands/server-commands/#startserver-script).```bash
-GetNextSequenceNumbers
-```
+4. Now you can [restart your processes](../../../operations/commands/server-commands/#startserver-script).
 
 ## GetSequenceCount
 
