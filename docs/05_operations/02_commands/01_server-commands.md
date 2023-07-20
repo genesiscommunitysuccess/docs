@@ -322,6 +322,7 @@ By default, the details are sent to the screen, but you can redirect the output 
 GetNextSequenceNumbers >> /tmp/NextSeqNumbers.txt 
 ```
 
+### Correcting errors in tables
 The `GetNextSequenceNumbers` command is often used with the `SetSequence` script [see below](../../../operations/commands/server-commands/#setsequence), for example, if you suspect that you have an error in one of your tables:
 
 1. Stop all the processes and run `GetNextSequenceNumbers` to find the next sequence numbers of the tables.
