@@ -172,6 +172,13 @@ Each `verification` configuration has the following properties:
 If `verification` is defined, either `publicKey` or `publicKeyUrl` must also be defined.
 :::
 
+Finally, you need to specify an SSOToken authenticator in your _application-name-_**auth-preferences.kts** file:
+```kotlin
+    authentication {
+		ssoToken {}
+    }
+```
+
 ## OIDC logout
 
 Sometimes, applications require functionality where the user logs out of the OIDC provider. By default, this is disabled.

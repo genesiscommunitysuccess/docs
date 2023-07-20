@@ -80,8 +80,8 @@ To enable SSO, you need to configure it in your _application-name_**-auth-prefer
 
 The following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Password Authentication section](../../../server/access-control/password-authentication/).
 
-### sso
-The `sso` function enables you to configure and enable SSO options. You can set the following variables:
+### jwt
+The `jwt` function enables you to configure and enable JWT options. You can set the following variables:
 
 * `enabled` is a boolean value that defines whether the SSO functionality is enabled. Default: `true` when the `sso` function is invoked, otherwise `false`.
 * `onFirstLogin` is a function that is called when a user has been authenticated for the first time and doesn't yet exist in the database. Here you can define two things:
@@ -90,22 +90,24 @@ The `sso` function enables you to configure and enable SSO options. You can set 
 * `onLoginSuccess` is a function that is called each time the user is authenticated. Inside the function, you have access to the actual token that was used for authentication and database access.
 * `newUserMode` **is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess`.
 
-### SSO Example
+### JWT Example
 ```kotlin
 // applicationName-auth-preferences.kts:
-sso {
-    enabled = true
-    onFirstLogin {
-        createUser { jwtSuccessOutcome ->
-            val userName = jwtSuccessOutcome.id
-            User(userName, domain = jwtSuccessOutcome.domain) to UserAttributes(userName)
+authentication {
+    jwt {
+        enabled = true
+        onFirstLogin {
+            createUser { jwtSuccessOutcome ->
+                val userName = jwtSuccessOutcome.id
+                User(userName, domain = jwtSuccessOutcome.domain) to UserAttributes(userName)
+            }
+            createUserPermissions {
+                userProfiles("default")
+            }
         }
-        createUserPermissions {
-            userProfiles("default")
+        onLoginSuccess { entityDb, jwtLoginRequestToken ->
+            // Valid token received from SSO provider
         }
-    }
-    onLoginSuccess { entityDb, jwtLoginRequestToken ->
-        // Valid token received from SSO provider
     }
 }
 ```
