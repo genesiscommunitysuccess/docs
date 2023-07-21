@@ -17,4 +17,8 @@ The Genesis low-code platform has a collection of access control mechanisms to e
 
 The platform offers a variety of authentication methods, including Single Sign-On (SSO) authentication, username and password authentication, and Multi-factor authentication.
 
-The password authentication can be configured to use an internal store of users, LDAP to communicate with an external service, or a custom implementation.
+Password authentication can be configured to use:
+
+- an internal store of users
+- LDAP to communicate with an external service
+- a custom implementation
