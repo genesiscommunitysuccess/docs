@@ -70,7 +70,7 @@ The following variables are used to configure an LDAP connection; these are only
 For more information about the various authentication types, see the [Authentication overview](../../../server/access-control/authentication-overview/).
 
 ## genesisPassword
-The `genesisPassword` authenticator defines the configuration for validating user accounts stored locally in the application database.
+The `genesisPassword` authenticator defines the configuration for validating user accounts that are stored locally in the application database.
 
 ### passwordRetry
 The `passwordRetry` function has been deprecated in favour of the `retry` function within the `genesisPassword` configuration.
@@ -78,7 +78,7 @@ The `passwordRetry` function has been deprecated in favour of the `retry` functi
 ### validation
 The `validation` function enables password validation, and is used to set the variables relating to this validation. 
 
-The following variables can be used to configure the application's password validation; these can only used when `type` is either `AuthType.INTERNAL` or `AuthType.HYBRID`.
+The following variables can be used to configure the application's password validation; these can only be used when `type` is either `AuthType.INTERNAL` or `AuthType.HYBRID`.
 
 * `passwordSalt` defines a system-specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different applications built on the Genesis low-code platform are stored as different hashes. Default: empty string indicating no additional salting.
 
@@ -136,7 +136,7 @@ You can set `acceptClientUrl` to `true` in a development environment. For securi
 
 ### resetMessage
 
-The `resetMessage` function enables users to configure the email sent when a reset is requested. It has the following options: 
+The `resetMessage` function enables your application's users to configure the email sent when a reset is requested. It has the following options: 
 
 * `subject` the subject line of the email
 * `body` the body of the email
@@ -151,42 +151,46 @@ Both the subject and the body support templating. Values surrounded by double cu
 ### mfa
 The `mfa` function enables you to configure [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function, you can choose between different implementations of MFA providers.
 
-## qrCode
-This method of MFA will generate a qrCode which can be imported into apps such as Google and Microsfoft authenticator, to generate one-time-only time based passwords to use as multi factor codes to login. This block exposes the following configuaration items:
+### qrCode
+This method of MFA generates a qrCode that can be imported into apps such as Google and Microsfoft authenticator; the code generates a one-time-only time-based password to use as multi-factor codes to login. This block exposes the following configuaration items:
 
 * `codePeriodSeconds` specifies how many seconds a Time-based One-time Password (TOTP) remains valid. Default: 30 seconds.
 * `codePeriodDiscrepancy` specifies the allowed discrepancy to the TOTP. 1 would mean a single block of each `codePeriodSeconds` either side of the time window. Default: 1.
 * `codeDigits` specifies the number of digits used in the TOTP. Default: 6 digits.
-* `hashingAlgorithm` specifies which choice of Hashing Algorithm to use. Available choices are: `HashingFunction.SHA1`, `HashingFunction.SHA256` or `HashingFunction.SHA512`. Default: `HashingFunction.SHA1`.
+* `hashingAlgorithm` specifies the Hashing Algorithm to use. Available choices are: `HashingFunction.SHA1`, `HashingFunction.SHA256` or `HashingFunction.SHA512`. Default: `HashingFunction.SHA1`.
 * `issuer` specifies a reference to the organisation or entity issuing the MFA. Default: Genesis.
 * `label` specifies a label for the MFA. This is typically an email address of the issuing entity or organisation. Default: genesis.global.
-* `confirmWaitPeriodSecs` specifies the time-period in seconds before a secret has to be confirmed. Default: 300 seconds.
+* `confirmWaitPeriodSecs` specifies the time period in seconds before a secret has to be confirmed. Default: 300 seconds.
 * `secretEncryptKey` specifies the key that is used to encrypt Secrets in the database. If this is null or undefined, Secrets will not be encrypted in the database. Default: null.
 * `usernameTableLookUpSalt` specifies the salt with which a username is hashed when stored in the database with the above Secret. If this is null or undefined, the username will not be hashed in the database. Default: null.
 
-## notify 
-This method of MFA will generate a one time login link that is sent via the Genesis Notify module. 
-Each time a login is unsuccessful, a new one time link will be generated using a temporary code with a short timed expiry. 
-When login is successful using a temporary code, an active code will be generated with the configured expiry, which can either be stored or saved as a cookie, preventing the need for the user to perform a second-factor authentication again until is has expired. 
-This block exposes the following configuaration items:
+### notify 
+This method of MFA generates a one-time login link that is sent via the Genesis Notify module. 
 
-* `loginUrl` specifies the base URL to open in the one time login link.
+Each time a login is unsuccessful, a new one-time link is generated, using a temporary code with a short-timed expiry.
+
+When login is successful using a temporary code, an active code is generated with the configured expiry. This can either be stored or saved as a cookie, preventing the need for the user to perform a second-factor authentication again until it has expired. 
+
+This block exposes the following configuration items:
+
+* `loginUrl` specifies the base URL to open in the one-time login link.
 * `tempCodeExpiryDuration` specifies a duration for temporary generated codes. Default is 15 minutes.
 * `activeCodeExpiryDuration` specifies a duration for active generated codes. Default is 30 days.
-* `notifyTopic` the topic to publish to the notify module on. Default is 'MFA'.
-* `messageHeader` the header of the resulting message.
-* `messageBody` the body of the resulting message.
+* `notifyTopic` is the topic to publish to the notify module on. Default is 'MFA'.
+* `messageHeader` is the header of the resulting message.
+* `messageBody` is the body of the resulting message.
 
 ### loginAck
-The `loginAck` function enables you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message. When you call the `loginAck` function, you have to supply a table or view as a parameter. The following functions will be invoked on this table or view:
+The `loginAck` function enables you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message. When you call the `loginAck` function, you have to supply a table or view as a parameter. 
+
+The following functions will be invoked on this table or view:
 
 - The `loadRecord` within the `loginAck` function loads a single record from the previously supplied table or view.
 - The `fields` function within the `loginAck` function specifies which additional fields should be sent back to the client as part of the LOGIN_ACK message.
 - The `customLoginAck` function enables you to modify the list of permissions, profiles and user preferences returned to the client as part of the `LOGIN_ACK` message. For this purpose, the `User` entity is provided as a parameter, as well as three properties:
-    * permissions - a mutable list containing all the right codes associated to the user. Given its mutability, codes can be added or removed.
+    * permissions - a mutable list containing all the right codes associated with the user. Given its mutability, codes can be added or removed.
     * profiles - a mutable list containing all the profiles associated with the user.  Given its mutability, profiles can be added or removed.
     * userPreferences - a [GenesisSet](../../../server/inter-process-messages/genesisset/) object containing additional fields provided as part of the [loginAck](#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
-
 
 Here is an example configuration:
 
