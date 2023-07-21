@@ -11,7 +11,8 @@ tags:
 ---
 
 
-Your application can perform authentication through many techniques. Each method is encapsulated by an implementation of an 'Authenticator'. The authenticators offered by the genesis platform are:
+There are many different ways for your application to perform authentication. Each method requires the implementation of an 'Authenticator'. The authenticators offered by the Genesis low-code platform are:
+
 * INTERNAL
 * LDAP
 * [JWT (JSON Web Token)](https://jwt.io/introduction) SSO
@@ -25,20 +26,20 @@ Each of these requires its own configuration settings in the application's _appl
 
 ## Username and password authentication
 
-Username and password authentication allows users to log in directly to your application. You must choose one of the provided solutions in order control this process.
+Username and password authentication allow users to log in directly to your application. You must choose one of the  solutions provided in order control this process.
 
 To specify which one to use, just edit the application's **auth-preferences.kts** file and call any of the functions exposed inside the 'authentication' block to register an authenticator instance.
 
-The differences between the solutions associated with each value are detailed below:
+The differences between the solutions associated with each value are detailed below.
 
 ### Genesis Password
 
-Genesis Password authentication uses internally stored hashed credentials to authenticate users. It checks user credentials against an internal table. Genesis Password authentication provides the following features:
+Genesis Password authentication uses internally stored hashed credentials to authenticate users. It checks user credentials against an internal table. This provides the following features:
 
-- User accounts can be locked
-- Passwords can be set to expire
-- Passwords can be required to conform to a configurable standard
-- Users can reset or change their password (assuming they can log in first)
+- User accounts can be locked.
+- Passwords can be set to expire.
+- Passwords can be required to conform to a configurable standard.
+- Users can reset or change their password (assuming they can log in first).
 
 ```kotlin
     authentication {
@@ -120,4 +121,5 @@ SSO authentication is a more involved process to enable; it requires additional 
 - [SSO - SAML](../../../server/access-control/SSO-saml/)
 - [SSO - OIDC](../../../server/access-control/SSO-oidc/)
 
-Any authentication type can be used concurrently by applications built on the platform; the use of one does not mandate or prevent the use of the other. Each configured authenticator will be tried in turn to see if a logon message can be successfully authenticated.
+## Using more than one authentication type
+Your application can use two or more authentication types concurrently; the use of one does not mandate or prevent the use of the other. Each configured authenticator will be tried in turn to see if a logon message can be successfully authenticated.
