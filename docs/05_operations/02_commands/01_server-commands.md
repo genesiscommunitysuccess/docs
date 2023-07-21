@@ -59,10 +59,10 @@ DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
 The command will ask you to confirm the removal of each table.
 
 ## DumpIt script
-
 To copy data from a Genesis database, use the `DumpIt` command.
 
 ### Syntax
+The `DumpIt` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|
@@ -117,6 +117,7 @@ Stop all processes before using this command.
 :::
 
 ### Syntax
+The `FixEnumValues` command can take the following arguments:
 
 | Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values |
 |----------|------------------------|-----------|----------------------------------------------------------------------------------------|-------------------|
@@ -124,6 +125,7 @@ Stop all processes before using this command.
 |          | [TABLES]               | no        | Comma-separated list of specific tables to be changed; if no list is supplied, all tables are changed                                              | No                |
 
 In the example below, the changes are applied to the database for two tables: TRADE and POSITION.
+
 ```
 FixEnumValues --commit TRADE,POSITION
 ```
@@ -152,9 +154,9 @@ To implement this:
 
 The installHook will run before `remap` on your next deploy.
 
-## genesisInstall script
+## genesisInstall
 
-This script validates all system and product configuration, checking for things such as field duplication.
+This command validates all system and product configuration, checking for things such as field duplication.
 
 `genesisInstall` looks at all the folders (apart from runtime and generated), all the modules, and all files in the **cfg** directory. It copies the config files from the **cfg** directory into the **generated** folder. 
 
@@ -167,6 +169,7 @@ Following this, when you start any process, the `startProcess` command reads fro
 `genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the **run/generated/cfg** area.
 
 ### Syntax
+The `genesisInstall` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory | Description                                                                                                                           | Restricted values |
 |----------|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------|
@@ -278,10 +281,7 @@ Stop all your application's processes before using this command.
 :::
 
 ### Syntax
-
-```bash
-GetAutoIncrementCount
-```
+The `GetAutoIncrementCount` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|
@@ -335,10 +335,7 @@ The `GetNextSequenceNumbers` command is often used with the `SetSequence` script
 This gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by the `SetSequence` script (see below).
 
 ### Syntax
-
-```bash
-GetSequenceCount
-```
+The `GetSequenceCount` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|
@@ -346,12 +343,12 @@ GetSequenceCount
 | -h       | --help             | No        | show usage information                  | No                |
 | -p       | --print            | No        |                                         | No                |
 
-## killProcess script
+## killProcess
 
 This script is used to terminate a specified process.
 
 ### Syntax
-
+The `killProcess` command can take the following arguments:
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                      | Restricted values |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
@@ -369,11 +366,7 @@ killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--
 This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt for confirmation (`Are you sure you want to kill server? (y/n):`), unless you specify `--force`.
 
 ### Syntax
-
-```bash
-killServer [--hostname <[hosts names]>] [--force]
-```
-
+The `killServer` command can take the following arguments:
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                                                          | Restricted values |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
@@ -382,15 +375,12 @@ killServer [--hostname <[hosts names]>] [--force]
 |                              | --all                                         | No        | kills all processes, including   GENESIS_CLUSTER                                                                                                                                                                                     | No                |
 | -c                           | --cluster                                     | No        | kills the server on all the nodes in the cluster                                                                                                                                                                                   | No                |    
 
-## LogLevel script
+## LogLevel
 
 To dynamically change the logging levels on any Genesis process, use the `LogLevel` command.
 
 ### Syntax
-
-```bash
-LogLevel -p <process-name> -l <log level> -t <time> [-optional params] -c <class-name> -DATADUMP_ON -DATADUMP_OFF
-```
+The `LogLevel` command can take the following arguments:
 
 | Argument                               | Argument long name                   | Mandatory | Description                                                                           | Restricted values |
 |----------------------------------------|--------------------------------------|-----------|---------------------------------------------------------------------------------------|-------------------|
@@ -496,7 +486,7 @@ PID     Process Name                  Port        Status         CPU       Memor
 mon [-v | -c | -a | -m | -u] polling_interval
 ```
 
-Options
+The `mon` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory | Description                                  | Restricted values |
 |----------|--------------------|-----------|----------------------------------------------|-------------------|
@@ -524,14 +514,10 @@ Unhealthy processes includes all processes that are not `HEALTHY` or `STANDBY`.
 :::
 
 ## PopulateHolidays
-
-This script populates the Holidays table with holidays, based on a specific year(s), country(ies) and region(s).
+This command populates the Holidays table with holidays, based on a specific year(s), country(ies) and region(s).
 
 ### Syntax
-
-```bash
-PopulateHolidays
-```
+The `PopulateHolidays` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|
@@ -670,7 +656,7 @@ You need to provide:
 
 `finally` clause: It is run for every record that is purged and used to add some extra functionality if needed
 
-## remap script
+## remap
 
 Remap is a schema-migration tool used to apply the current schema (defined in the deployed field and table GPAL dictionaries) to the underlying database layer used by the Genesis low-code platform.
 
@@ -680,11 +666,11 @@ remap [-c | --commit]
 
 For full details, see our page on [Remap](../../../operations/commands/remap).
 
-## RenameFields script
+## RenameFields 
 This script is used to rename a field name in a database without changing the dictionary or config files.
 
 ### Syntax
-The `RenameFields` script takes two arguments; both of which are mandatory:
+The `RenameFields` command takes two arguments; both of which are mandatory:
 
 ```bash
 RenameFields [-i <[current name of field]>] [-o  <[new name of field]>]
@@ -694,7 +680,6 @@ RenameFields [-i <[current name of field]>] [-o  <[new name of field]>]
 |----------|--------------------|-----------|------------------------------------------|-------------------|
 | -i       | --input            | yes       | name of field that you want to change    | No                |
 | -o       | --output           | yes       | name you want the field to be changed to | No                |
-
 
 
 The `--input` argument represents the name of the field you would like to change. The argument must be an existing field name in the database.
@@ -731,15 +716,13 @@ RenameFields -i PRICE -o FIRST_NAME
 
 This would result in an error, as PRICE is of type DOUBLE while FIRST_NAME is of type STRING.
 
-## SendIt script
+## SendIt 
 
 To send data into the database, use the `SendIt` command.
 
 ### Syntax
+The `SendIt` command can take the following arguments:
 
-```bash
-SendIt -t <table name> -f <file name>
-```
 
 | Argument | Argument long name     | Mandatory | Description                                                    | Restricted values |
 |----------|------------------------|-----------|----------------------------------------------------------------|-------------------|
@@ -793,10 +776,7 @@ Stop all your application's processes before using this command.
 :::
 
 ### Syntax
-
-```bash
-SetAutoIncrement
-```
+The `SetAutoIncrement` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
@@ -822,12 +802,7 @@ This enables you to set a sequence number for a table. This can either be a sing
 `SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
 
 ### Syntax
-
-```bash
-SetSequence
-````
-
-Options: 
+The `SetSequence` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
@@ -869,9 +844,7 @@ java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBoot
 ```
 
 
-
-
-## startServer script
+## startServer 
 
 This script reads the **$GC/processes.xml** file to determine which processes to start and how to start them.
 
@@ -880,6 +853,8 @@ This script reads the **$GC/processes.xml** file to determine which processes to
 ```bash
 startServer [--hostname <[host names]>] [--ignoreDaemon] 
 ```
+
+The `startServer` command can take the following arguments:
 
 | Argument                    | Argument long name                   | Mandatory | Description                                                                                                                                                                                | Restricted values |
 |-----------------------------|--------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
