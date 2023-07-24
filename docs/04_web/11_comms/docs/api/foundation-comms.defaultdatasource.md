@@ -42,7 +42,9 @@ export declare class DefaultDatasource implements Datasource
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
+|  [deinit()](./foundation-comms.defaultdatasource.deinit.md) |  |  |
 |  [init(options, fetchMeta)](./foundation-comms.defaultdatasource.init.md) |  |  |
 |  [snapshot()](./foundation-comms.defaultdatasource.snapshot.md) |  |  |
 |  [snapshotFiltered(rowId)](./foundation-comms.defaultdatasource.snapshotfiltered.md) |  |  |
+|  [validResourceName(resourceName)](./foundation-comms.defaultdatasource.validresourcename.md) |  |  |
 

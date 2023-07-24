@@ -13,9 +13,9 @@ tags:
   - micro frontends
 ---
 
-# Foundation Header
+# Foundation-Header
 
-Our [API](./docs/api/index.md) documentation is in a separate area. Click on the link if you want to view it.
+[API](./docs/api/index.md)
 
 ## Introduction
 
@@ -26,18 +26,15 @@ You can customise:
 - the icon shown on the navigation bar and flyout menu (this shows the Genesis logo by default)
 - navigation links at the left-hand side of the navigation bar
 - the control buttons on the right-hand side of the navigation bar; these can be shown or hidden, and their behaviour controlled via event listeners
-- the contents of the flyout menu
+- The contents of the flyout menu
 
 Here is an example of the navigation bar with three navigation items, and all three control buttons shown.
-
 ![Header with the standard genesis logo](./docs/img/foundation-header-standard.png)
 
 This next example is the same as the previous example, except the Genesis logo is replaced with a custom icon.
-
 ![Header with a customised logo](./docs/img/foundation-header-replaced-img.png)
 
 In this next example, we have put a set of example options set in the flyout menu.
-
 ![The sidebar included with the header opened with some example content](./docs/img/foundation-header-sidebar.png)
 
 ## Header set-up
@@ -262,3 +259,6 @@ To set the content of the flyout menu, add the content in the html within an ele
 ## License
 
 Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform

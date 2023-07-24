@@ -6,7 +6,7 @@
 
 The execution context to use during binding.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 context?: ExecutionContext;

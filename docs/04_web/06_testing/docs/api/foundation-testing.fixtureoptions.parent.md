@@ -6,7 +6,7 @@
 
 The parent element to append the fixture to.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 parent?: HTMLElement;

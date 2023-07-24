@@ -6,7 +6,7 @@
 
 Logic suite context interface
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface LogicContext 
@@ -16,5 +16,5 @@ export interface LogicContext
 
 |  Method | Description |
 |  --- | --- |
-|  [runCases(fn, cases)?](./foundation-testing.logiccontext.runcases.md) | <i>(Optional)</i> |
+|  [runCases(fn, cases)?](./foundation-testing.logiccontext.runcases.md) | _(Optional)_ |
 

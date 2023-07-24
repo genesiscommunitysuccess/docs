@@ -6,7 +6,7 @@
 
 The first element in the [Fixture.view](./foundation-testing.fixture.view.md).
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 element: TElement;

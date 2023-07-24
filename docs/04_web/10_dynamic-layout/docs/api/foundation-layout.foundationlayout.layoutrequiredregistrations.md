@@ -4,7 +4,7 @@
 
 ## FoundationLayout.layoutRequiredRegistrations() method
 
-Gets all of the required registration function names for a set of config
+Gets all of the required element registry function names for a set of config
 
 **Signature:**
 

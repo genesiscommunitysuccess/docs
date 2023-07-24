@@ -6,7 +6,7 @@
 
 Create logic test suite.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function createLogicSuite<TContext = LogicContext>(title: string, context?: TContext): uvu.Test<TContext>;
@@ -17,9 +17,9 @@ export declare function createLogicSuite<TContext = LogicContext>(title: string,
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  title | string | Title of the test suite |
-|  context | TContext | <i>(Optional)</i> Optional context which extends [LogicContext](./foundation-testing.logiccontext.md) |
+|  context | TContext | _(Optional)_ Optional context which extends [LogicContext](./foundation-testing.logiccontext.md) |
 
-<b>Returns:</b>
+**Returns:**
 
 uvu.Test&lt;TContext&gt;
 

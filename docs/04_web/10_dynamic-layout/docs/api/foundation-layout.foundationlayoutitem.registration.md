@@ -4,7 +4,7 @@
 
 ## FoundationLayoutItem.registration property
 
-Sets the registration name for the item, which can be used later to add the item via the JavaScript API using .
+Sets the registration name for the item, which can be used later to add the item via the JavaScript API using [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md).
 
 **Signature:**
 

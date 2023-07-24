@@ -9,7 +9,7 @@ Retrieves the metadata for the specified resource.
 **Signature:**
 
 ```typescript
-getMetadata(resourceName: string): Promise<Metadata>;
+getMetadata(resourceName: string, useCache?: boolean): Promise<Metadata>;
 ```
 
 ## Parameters
@@ -17,6 +17,7 @@ getMetadata(resourceName: string): Promise<Metadata>;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  resourceName | string | The name of the resource to retrieve the metadata for. |
+|  useCache | boolean | _(Optional)_ Whether to use the cached metadata if available. Default: true. |
 
 **Returns:**
 

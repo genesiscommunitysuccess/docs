@@ -6,7 +6,7 @@
 
 Options used to customize the creation of the unit test fixture.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface FixtureOptions 
@@ -16,9 +16,9 @@ export interface FixtureOptions
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [context?](./foundation-testing.fixtureoptions.context.md) |  | ExecutionContext | <i>(Optional)</i> The execution context to use during binding. |
-|  [designSystem?](./foundation-testing.fixtureoptions.designsystem.md) |  | DesignSystem | <i>(Optional)</i> A pre-configured design system instance used in setting up the fixture. |
-|  [document?](./foundation-testing.fixtureoptions.document.md) |  | Document | <i>(Optional)</i> The document to run the fixture in. |
-|  [parent?](./foundation-testing.fixtureoptions.parent.md) |  | HTMLElement | <i>(Optional)</i> The parent element to append the fixture to. |
-|  [source?](./foundation-testing.fixtureoptions.source.md) |  | any | <i>(Optional)</i> The data source to bind the HTML to. |
+|  [context?](./foundation-testing.fixtureoptions.context.md) |  | ExecutionContext | _(Optional)_ The execution context to use during binding. |
+|  [designSystem?](./foundation-testing.fixtureoptions.designsystem.md) |  | DesignSystem | _(Optional)_ A pre-configured design system instance used in setting up the fixture. |
+|  [document?](./foundation-testing.fixtureoptions.document.md) |  | Document | _(Optional)_ The document to run the fixture in. |
+|  [parent?](./foundation-testing.fixtureoptions.parent.md) |  | HTMLElement | _(Optional)_ The parent element to append the fixture to. |
+|  [source?](./foundation-testing.fixtureoptions.source.md) |  | any | _(Optional)_ The data source to bind the HTML to. |
 

@@ -34,6 +34,7 @@ The public interface available on the injected store fragment.
 |  [clearFilter(name)?](./foundation-comms.datasource.clearfilter.md) | _(Optional)_ Clears the filter with the specified name from the datasource. |
 |  [createItem(data)?](./foundation-comms.datasource.createitem.md) | _(Optional)_ Creates a new item in the datasource with the specified data. |
 |  [dataHandler(data)?](./foundation-comms.datasource.datahandler.md) | _(Optional)_ Handles the specified data and returns it. |
+|  [deinit()](./foundation-comms.datasource.deinit.md) | Deinitializes the datasource. |
 |  [deleteItem(itemId)?](./foundation-comms.datasource.deleteitem.md) | _(Optional)_ Deletes an item with the given ID from the datasource. |
 |  [dropView(view)?](./foundation-comms.datasource.dropview.md) | _(Optional)_ Removes the specified dataview from the datasource. |
 |  [getMetadata(resourceName)?](./foundation-comms.datasource.getmetadata.md) | _(Optional)_ Fetches metadata for the specified resource name. |
@@ -43,4 +44,5 @@ The public interface available on the injected store fragment.
 |  [snapshotFiltered(rowId)](./foundation-comms.datasource.snapshotfiltered.md) | Takes a filtered snapshot of the data in the datasource. |
 |  [updateData(data)?](./foundation-comms.datasource.updatedata.md) | _(Optional)_ Updates the data in the datasource with the specified data. |
 |  [updateItem(itemId, data)?](./foundation-comms.datasource.updateitem.md) | _(Optional)_ Updates an item in the datasource with the given ID and data. |
+|  [validResourceName(resourceName)](./foundation-comms.datasource.validresourcename.md) | Indicates whether the resourceName is valid or not. |
 

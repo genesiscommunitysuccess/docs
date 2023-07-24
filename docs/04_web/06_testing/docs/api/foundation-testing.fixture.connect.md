@@ -6,12 +6,12 @@
 
 Adds the [Fixture.parent](./foundation-testing.fixture.parent.md) to the DOM, causing the connect lifecycle to begin.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 connect(): Promise<void>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;void&gt;
 
