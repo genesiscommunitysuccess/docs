@@ -12,5 +12,8 @@ Could be expanded to allow field ViewTemplates.
 export type FieldConfig = {
     label: string;
     value?: any;
+    required?: boolean;
+    pattern?: string;
+    title?: string;
 };
 ```
