@@ -15,7 +15,7 @@ tags:
   - playwright
 ---
 
-# Genesis Foundation Testing
+# Genesis Foundation testing
 
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
@@ -24,7 +24,7 @@ tags:
 
 ### [API Docs](./docs/api/index.md)
 
-## Unit Testing with UVU
+## Unit testing with UVU
 
 Unit testing is provided by [UVU](https://github.com/lukeed/uvu)
 
@@ -35,7 +35,7 @@ Unit testing is provided by [UVU](https://github.com/lukeed/uvu)
 * Individually executable test files
 * Supports `async`/`await` tests
 * Supports native ES Modules
-* Browser-Compatible
+* Browser-compatible
 * Familiar API
 
 ## E2E Testing with Playwright
@@ -52,15 +52,14 @@ E2E testing is provided by [Playwright](https://playwright.dev/docs/intro)
 
 ## Test Organisation
 
-Unit testing specific logic can be done by adding a test file alongside the source file.
+You can unit-test specific logic by adding a test file alongside the source file.
 
 ```
 logic.ts
 logic.test.ts
 ```
 
-If your test spans more than one file or is more of an end-to-end test, you may wish to add your test to your package's
-`/test` directory instead. An example structure might be:
+If your test spans more than one file or is more of an end-to-end test, you may wish to add your test to your package's **/test** directory instead. An example structure might be:
 
 ```
 ├── src 
@@ -77,7 +76,7 @@ If your test spans more than one file or is more of an end-to-end test, you may 
 └── playwright.config.ts
 ```
 
-The contents of your package's `playwright.config.ts` may include:
+The contents of your package's **playwright.config.ts** may include:
 
 ```ts
 export { configDefaults as default } from '@genesislcap/foundation-testing/e2e';
@@ -95,16 +94,16 @@ export default {
 };
 ```
 
-If you need to customise JSDOM, you can create `jsdom.setup.ts` file in your package directory:
+If you need to customise JSDOM, you can create a **jsdom.setup.ts** file in your package directory:
 
 ```ts
 // custom code
 export * from '@genesislcap/foundation-testing/jsdom';
 ```
 
-## Test Scripts
+## Test scripts
 
-The test related scripts to add to your package's `package.json` file may include:
+The test-related scripts to add to your package's **package.json** file may include:
 
 ```
 "test": "genx test",
@@ -119,9 +118,9 @@ The test related scripts to add to your package's `package.json` file may includ
 "test:debug": "genx test --debug"
 ```
 
-## Testing Logic
+## Testing logic
 
-The `logic.test.ts` will likely leverage `createLogicSuite`, which is used to test function output given certain input
+The **logic.test.ts** usually uses `createLogicSuite`, which is used to test function output given certain input
 arguments. Based on user feedback, these arguments are now passed as an array by convention:
 
 ```ts
@@ -147,11 +146,9 @@ Suite('myFunction should provide expected results', ({ runCases }) => {
 Suite.run();
 ```
 
-## Testing Components
+## Testing components
 
-The `component.test.ts` or any test which directly or in-directly makes use of the DI will leverage
-`createComponentSuite`. Apart from setting up and tearing down your element fixture with a wrapping design system and DI
-container, this util also allows you to provide DI container mocks, which will be required for certain testing flows.
+The **component.test.ts** or any test that directly or indirectly makes use of the DI uses `createComponentSuite`. Apart from setting up and tearing down your element fixture with a wrapping design system and DI container, this util also allows you to provide DI container mocks, which are required for certain testing flows.
 
 ```ts
 // component.test.ts
@@ -239,7 +236,7 @@ Suite.run();
 
 ## Testing E2E
 
-The `baseline.e2e.ts` will leverage `playwright`, and test cases will have access to the fixtures provided during setup.
+The **baseline.e2e.ts** uses `playwright`; test cases have access to the fixtures provided during set-up.
 
 ```ts
 import { test, expect } from '@genesislcap/foundation-testing/e2e';
@@ -255,7 +252,7 @@ _We will be adding more details on E2E in future updates._
 
 ## License
 
-Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
 
 ### Licensed components
 Genesis low-code platform
