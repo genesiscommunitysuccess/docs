@@ -15,7 +15,7 @@ tags:
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 
-`foundation-filters` provides a collection of client side filters, including:
+`foundation-filters` provides a collection of client-side filters, including:
 
 * [nodeEnv](./docs/api/foundation-filters.nodeenvfilter.md)
 * [percentage](./docs/api/foundation-filters.percentagefilter.md)
@@ -28,17 +28,12 @@ These can be run in isolation or as part of a chain using the [runner](./docs/ap
 
 ### [API Docs](./docs/api/index.md)
 
-Client side filters generally take primitive input parameters, and will return `true` or `false` based these
-values. They may also access runtime data or state to provide an outcome. They can be used for simple tasks like array
-or input filtering, to for more advanced use-cases such as driving feature flags, behaviors, directives etc.
+Client-side filters generally take primitive input parameters, and return `true` or `false` based on these values. They may also access runtime data or state to provide an outcome. They can be used for simple tasks like array or input filtering, or for more advanced use cases - such as driving feature flags, behaviors, directives, etc.
 
-Filters can be chained using the utilities provided in this package to handle more complex scenarios. When a filter is
-used without all the input parameters needed, we log a warning and return `true` by convention so the chain can continue.
-This is currently controlled at an individual filter level, and may change in time.
+Filters can be chained using the utilities provided in this package to handle more complex scenarios. When a filter is used without all the input parameters needed, Genesis logs a warning and returns `true` by convention so that the chain can continue. This is currently controlled at an individual filter level, and may change in time.
 
 :::important
-It's important to highlight that filters are purposefully decoupled from any `effect`, like pairing with a `when()`
-directive or custom effect logic. This flexibility allows these filters to be reused for numerous purposes.
+It's important to highlight that filters are purposefully decoupled from any `effect`, like pairing with a `when()` directive or custom-effect logic. This flexibility allows these filters to be reused for numerous purposes.
 :::
 
 ## Usage
@@ -66,10 +61,9 @@ const outcome = this.timeWindow.filter({
 });
 ```
 
-The function version is pretty self-explanatory, and you may be thinking why would you use the DI injected version. The
-reason is at the point of calling a filter, either directly or indirectly as say part of a chain, you may not know what
-data or state from the application it needs to provide its outcome. The DI versions encapsulate this complexity, which
-aids later refactoring, and leaves callers free to pass only primitive input parameters where possible.
+The function version is pretty self-explanatory, and you may be wondering why you would use the DI injected version. The
+reason is at the point of calling a filter, either directly or indirectly as (say) part of a chain, you may not know what
+data or state from the application it needs to provide its outcome. The DI versions encapsulate this complexity, which aids later refactoring, and leaves callers free to pass only primitive input parameters where possible.
 
 ### DI use cases
 
@@ -83,13 +77,9 @@ const outcome = this.userTargeting.filter({
 });
 ```
 
-Here we've leveraged the `UserTargeting` filter without the need to provide the current user or other data points to
-the underlying function directly. If where we source the current user from changes over time, the author of the filter
-can refactor centrally.
+Here we've used the `UserTargeting` filter without the need to provide the current user or other data points to the underlying function directly. If we source the current user from changes over time, the author of the filter can refactor centrally.
 
-All DI based filters implement the [ClientFilter](./docs/api/foundation-filters.clientfilter.md) interface, however they
-may provide other APIs for convenience to abstract underlying implementation details. For example, `UserTargeting`
-provides a `hasAdminProfile` API, so the previous example can be re-written as:
+All DI-based filters implement the [ClientFilter](./docs/api/foundation-filters.clientfilter.md) interface; however, they may provide other APIs for convenience to abstract underlying implementation details. For example, `UserTargeting` provides a `hasAdminProfile` API, so the previous example can be re-written as:
 
 ```ts
 import { UserTargeting } from '@genesislcap/foundation-filters';
@@ -99,8 +89,8 @@ import { UserTargeting } from '@genesislcap/foundation-filters';
 const outcome = this.userTargeting.hasAdminProfile();
 ```
 
-This is quite a simplistic example, but hopefully helps to highlight that common parameters can be predefined in the
-filters themselves where needed. It is also worth mentioning that DI based filters are registered as transient, meaning
+This is quite a simplistic example, but we hope it helps to highlight that common parameters can be predefined in the
+filters themselves where needed. It is also worth mentioning that DI-based filters are registered as transient, meaning
 you will get a new instance for every dependency request or container.get(). The ClientFilterRunner used to run chained
 filters is also transient.
 
@@ -182,7 +172,7 @@ class RunnerExample extends FASTElement {
 
 ## License
 
-Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
 
 ### Licensed components
 Genesis low-code platform
