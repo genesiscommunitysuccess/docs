@@ -109,7 +109,7 @@ The higher the value is, the more performant the component is - but the first lo
 - **auto-save-key** : optional string which if set, will enable autosaving the layout under this key in local
 storage. See [here](#autosaving-layout) for more.
 
-::tip
+:::tip
 This only applies for usage with the declarative HTML API. When the layout first loads after this amount of time,
 it emits an [event](#event).
 :::

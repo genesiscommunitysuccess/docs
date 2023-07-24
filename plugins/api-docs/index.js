@@ -100,6 +100,7 @@ async function copyApiDocs(manifest, processedMap) {
     console.log("[api-docs-plugin] No packages awaiting processing.");
     return;
   }
+	console.log("[api-docs-plugin] Processing packages:", packagesToProcess)
   for await (const pkg of packagesToProcess) {
     const packageRootDir = path.join(process.cwd(), "node_modules", pkg.name);
     const outputRootDir = path.join(process.cwd(), pkg.output.directory);
