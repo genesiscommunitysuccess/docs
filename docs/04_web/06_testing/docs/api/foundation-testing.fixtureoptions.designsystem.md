@@ -6,7 +6,7 @@
 
 A pre-configured design system instance used in setting up the fixture.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 designSystem?: DesignSystem;

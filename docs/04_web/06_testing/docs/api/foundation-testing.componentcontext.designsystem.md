@@ -4,7 +4,7 @@
 
 ## ComponentContext.designSystem property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 designSystem: DesignSystem;

@@ -6,7 +6,7 @@
 
 The data source to bind the HTML to.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 source?: any;

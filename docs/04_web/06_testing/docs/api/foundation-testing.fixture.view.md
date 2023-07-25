@@ -6,7 +6,7 @@
 
 The view that was created from the fixture's template.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 view: HTMLView;

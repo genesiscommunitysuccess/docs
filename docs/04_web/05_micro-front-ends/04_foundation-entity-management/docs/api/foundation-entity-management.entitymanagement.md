@@ -41,6 +41,7 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [createEvent](./foundation-entity-management.entitymanagement.createevent.md) |  | string | Name of the event handler on the Genesis server which handles creating an entity |
 |  [createFormUiSchema](./foundation-entity-management.entitymanagement.createformuischema.md) |  | any |  |
 |  [datasourceConfig](./foundation-entity-management.entitymanagement.datasourceconfig.md) |  | [DatasourceConfiguration](./foundation-entity-management.datasourceconfiguration.md) | The configuration which is used when interacting with the resource on the backend |
+|  [defaultEntityValues](./foundation-entity-management.entitymanagement.defaultentityvalues.md) |  | any |  |
 |  [deleteEvent](./foundation-entity-management.entitymanagement.deleteevent.md) |  | string | Name of the event handler on the Genesis server which handles deleting the entity |
 |  [editDialogTitle](./foundation-entity-management.entitymanagement.editdialogtitle.md) |  | string | String which contains the text of the popup modal when the user is adding or editing an entity |
 |  [editedEntity](./foundation-entity-management.entitymanagement.editedentity.md) |  | any | Disables the form while enabled to stop the user dispatching a large number of duplicate events |
@@ -50,6 +51,10 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [enableFilterBar](./foundation-entity-management.entitymanagement.enablefilterbar.md) |  | boolean |  |
 |  [entityLabel](./foundation-entity-management.entitymanagement.entitylabel.md) |  | string | Label for the entity which has usages such as being shown in the title of the modal wen editing the entity |
 |  [formUiSchema](./foundation-entity-management.entitymanagement.formuischema.md) |  | any |  |
+|  [gridOptions](./foundation-entity-management.entitymanagement.gridoptions.md) |  | GridOptions | GridOptions to be passed down from application |
+|  [hideDelete](./foundation-entity-management.entitymanagement.hidedelete.md) |  | boolean |  |
+|  [hideEdit](./foundation-entity-management.entitymanagement.hideedit.md) |  | boolean |  |
+|  [modalPosition](./foundation-entity-management.entitymanagement.modalposition.md) |  | 'centre' \| 'left' \| 'right' | Determines where the modal dialog will appear on screen |
 |  [persistColumnStateKey](./foundation-entity-management.entitymanagement.persistcolumnstatekey.md) |  | string | This attribute controls whether and how the entity manager stores the state of the columns when the user edits them. Omit this attribute to disable the functionality, set it to a unique value to enable it. |
 |  [readEvent](./foundation-entity-management.entitymanagement.readevent.md) |  | string |  |
 |  [readEventFn](./foundation-entity-management.entitymanagement.readeventfn.md) |  | (...args: any\[\]) =&gt; {} |  |
@@ -67,8 +72,9 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
 |  [closeModal()](./foundation-entity-management.entitymanagement.closemodal.md) |  |  |
+|  [confirmDelete()](./foundation-entity-management.entitymanagement.confirmdelete.md) |  |  |
+|  [criteriaChanged(e)](./foundation-entity-management.entitymanagement.criteriachanged.md) |  |  |
 |  [deepClone()](./foundation-entity-management.entitymanagement.deepclone.md) |  | Override the deepClone method to ensure that observable attributes are cloned |
 |  [editModalVisibleChanged()](./foundation-entity-management.entitymanagement.editmodalvisiblechanged.md) |  |  |
-|  [errorNotify(request)](./foundation-entity-management.entitymanagement.errornotify.md) |  | Show notifications if the executed event returned an error. |
 |  [submitEntityChanges(e)](./foundation-entity-management.entitymanagement.submitentitychanges.md) |  | Event handler for when the user submits the action for the currently open form, either editing or adding the entity |
 

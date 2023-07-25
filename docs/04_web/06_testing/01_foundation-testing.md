@@ -1,8 +1,8 @@
 ---
-title: 'Foundation testing'
-sidebar_label: 'Foundation testing'
+title: 'Foundation Testing'
+sidebar_label: 'Foundation Testing'
 id: foundation-testing
-keywords: [web, testing, frontend, ui, unit, end-to-end, e2e, uvu, playwright]
+keywords: [genesis, foundation, ui, testing]
 tags:
   - test
   - testing
@@ -17,30 +17,32 @@ tags:
 
 # Genesis Foundation testing
 
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
+
 `foundation-testing` provides shared unit and e2e testing functionality.
 
 ### [API Docs](./docs/api/index.md)
 
-## Unit Testing with UVU
+## Unit testing with UVU
 
-Unit testing is provided by [UVU](https://github.com/lukeed/uvu).
+Unit testing is provided by [UVU](https://github.com/lukeed/uvu)
 
-### UVU features
+### UVU Features
 
-* super [lightweight](https://npm.anvaka.com/#/view/2d/uvu)
-* extremely [performant](https://github.com/lukeed/uvu/tree/master#benchmarks)
-* individually executable test files
-* supports `async`/`await` tests
-* supports native ES modules
-* browser-compatible
-* familiar API
+* Super [lightweight](https://npm.anvaka.com/#/view/2d/uvu)
+* Extremely [performant](https://github.com/lukeed/uvu/tree/master#benchmarks)
+* Individually executable test files
+* Supports `async`/`await` tests
+* Supports native ES Modules
+* Browser-compatible
+* Familiar API
 
-## E2E testing with Playwright
+## E2E Testing with Playwright
 
 E2E testing is provided by [Playwright](https://playwright.dev/docs/intro)
 
-### Playwright features
-Playwright enables you to perform a number of very useful functions.
+### Playwright Features
 
 * Run tests across all browsers.
 * Execute tests in parallel.
@@ -48,17 +50,16 @@ Playwright enables you to perform a number of very useful functions.
 * Capture videos, screenshots and other artifacts on failure.
 * Integrate your POMs as extensible fixtures.
 
-## Test organisation
+## Test Organisation
 
-Unit testing specific logic can be done by adding a test file alongside the source file.
+You can unit-test specific logic by adding a test file alongside the source file.
 
 ```
 logic.ts
 logic.test.ts
 ```
 
-If your test spans more than one file or is more of an end-to-end test, you could wish to add your test to your package's
-**/test** directory instead. An example structure might be:
+If your test spans more than one file or is more of an end-to-end test, you may wish to add your test to your package's **/test** directory instead. An example structure might be:
 
 ```
 ├── src 
@@ -71,71 +72,58 @@ If your test spans more than one file or is more of an end-to-end test, you coul
 │       └── baseline.e2e.ts
 │   └── unit
 │       └── baseline.test.ts
-├── jsdom.setup.ts 
 ├── package.json
 └── playwright.config.ts
 ```
 
-The contents of the **jsdom.setup.ts** file for your package could simply be:
+The contents of your package's **playwright.config.ts** may include:
 
-```typescript
-export * from '@genesislcap/foundation-testing/jsdom';
+```ts
+export { configDefaults as default } from '@genesislcap/foundation-testing/e2e';
 ```
 
-The contents of the **playwright.config.ts** file for your package could include:
+If you need to customise configuration, you can do it as follows:
 
-```typescript
-import { PlaywrightTestConfig } from '@playwright/test';
-const config: PlaywrightTestConfig = {
-  testMatch: '**/*.e2e.ts',
-  globalSetup: '@genesislcap/foundation-testing/playwright', // returns teardown
-  projects: [
-    {
-      name: 'Chrome Stable',
-      use: {
-        browserName: 'chromium',
-        channel: 'chrome',
-      },
-    },
-  ],
+```ts
+import { configDefaults } from '@genesislcap/foundation-testing/e2e';
+
+export default {
+  ...configDefaults,
+  // Any custom configuration here e.g. disabling the web server:
+  webServer: undefined,
 };
-export default config;
+```
+
+If you need to customise JSDOM, you can create a **jsdom.setup.ts** file in your package directory:
+
+```ts
+// custom code
+export * from '@genesislcap/foundation-testing/jsdom';
 ```
 
 ## Test scripts
 
-You could add the following test-related scripts to the **package.json** file for your package:
+The test-related scripts to add to your package's **package.json** file may include:
 
 ```
-"test": "npm run test:unit && npm run test:e2e",
-"test:coverage": "c8 --include=src npm run test:unit",
-"test:coverage:report": "npm run test:coverage && c8 report --reporter=text-lcov > coverage.lcov",
-"test:coverage:report:nyc": "npm run test:unit:browser -- --cov && npx nyc report --reporter=html",
-"test:e2e": "npx playwright test --config=./playwright.config.ts",
-"test:e2e:debug": "cross-env PWDEBUG=1 npm run test:e2e",
-"test:unit": "npm run test:unit:node",
-"test:unit:browser": "playwright-test \"./**/*.test.ts\" --runner uvu",
-"test:unit:browser:watch": "npm run test:unit:browser -- -w -d",
-"test:unit:node": "npm run test:unit:node:src && npm run test:unit:node:test",
-"test:unit:node:src": "uvu -r tsm -r esm -r ./jsdom.setup.ts ./src \".*.test.ts\"",
-"test:unit:node:test": "uvu -r tsm -r esm -r ./jsdom.setup.ts ./test/unit \".*.test.ts\"",
-"test:unit:watch": "watchlist src test -- npm run test:unit"
+"test": "genx test",
+"test:coverage": "genx test --coverage",
+"test:coverage:browser": "genx test --coverage --browser",
+"test:e2e": "genx test --e2e",
+"test:e2e:debug": "genx test --e2e --debug",
+"test:e2e:ui": "genx test --e2e --interactive",
+"test:unit:browser": "genx test --browser",
+"test:unit:browser:watch": "genx test --browser --watch",
+"test:unit:watch": "genx test --watch",
+"test:debug": "genx test --debug"
 ```
-
-To provide the dev dependencies for these test scripts, you need to install: 
-
-```
-@playwright/test playwright-test c8 esm jsdom tsm uvu watchlist
-```
-
-_We are working on enhancing the `genx` cli to abstract test running, so you can offload this setup and tasks._
 
 ## Testing logic
 
-The **logic.test.ts** will probably use `createLogicSuite`, which is used to test function output given certain input
+The **logic.test.ts** usually uses `createLogicSuite`, which is used to test function output given certain input
 arguments. Based on user feedback, these arguments are now passed as an array by convention:
 
-```typescript
+```ts
 // logic.test.ts
 import { createLogicSuite } from '@genesislcap/foundation-testing';
 import { myFunction } from './logic';
@@ -160,11 +148,9 @@ Suite.run();
 
 ## Testing components
 
-The **component.test.ts** file or any test that directly or indirectly uses the DI will also use
-`createComponentSuite`. Apart from setting up and tearing down your element fixture with a wrapping design system and DI
-container, this util also allows you to provide DI container mocks, which will be required for certain testing flows.
+The **component.test.ts** or any test that directly or indirectly makes use of the DI uses `createComponentSuite`. Apart from setting up and tearing down your element fixture with a wrapping design system and DI container, this util also allows you to provide DI container mocks, which are required for certain testing flows.
 
-```typescript
+```ts
 // component.test.ts
 import { Connect } from '@genesislcap/foundation-comms';
 import { ConnectMock } from '@genesislcap/foundation-comms/testing';
@@ -250,11 +236,10 @@ Suite.run();
 
 ## Testing E2E
 
-The **baseline.e2e.ts** file uses `playwright`, and test cases will have access to the fixtures provided during set-up.
+The **baseline.e2e.ts** uses `playwright`; test cases have access to the fixtures provided during set-up.
 
-```typescript
-import { expect } from '@playwright/test';
-import { test } from '@genesislcap/foundation-testing/e2e';
+```ts
+import { test, expect } from '@genesislcap/foundation-testing/e2e';
 
 test('baseline test', async ({ page }) => {
     await page.goto('https://playwright.dev/');
@@ -264,3 +249,10 @@ test('baseline test', async ({ page }) => {
 ```
 
 _We will be adding more details on E2E in future updates._
+
+## License
+
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform

@@ -6,7 +6,7 @@
 
 The document to run the fixture in.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 document?: Document;

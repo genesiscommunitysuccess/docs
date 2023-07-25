@@ -9,15 +9,15 @@ Dynamically add a new item to the layout. The user can move the new plane to whe
 **Signature:**
 
 ```typescript
-addItem(config: RegisteredElementConfig, placement?: Placement): void;
+addItem(config: RegisteredElementConfig | RegisteredElementConfig[], placement?: Placement): void;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  config | [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) | [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) configuration items for the new pane |
-|  placement | [Placement](./foundation-layout.placement.md) | _(Optional)_ where to add the new pane on the layout (defaults to the right hand side) |
+|  config | [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) \| [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md)\[\] | [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) configuration items for the new items(s). Pass an array of [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) to add multiple items at once. |
+|  placement | [Placement](./foundation-layout.placement.md) | _(Optional)_ where and how to add the new items to the layout. For more info and defaults see [Placement](./foundation-layout.placement.md). |
 
 **Returns:**
 
@@ -29,7 +29,7 @@ void
 
 ## Remarks
 
-Adding a new item invokes the registration previously made explicitly via [registerItem()](./foundation-layout.foundationlayout.registeritem.md) or implicitly via the html declerative API.
+Adding new items invokes the registration previously made explicitly via [registerItem()](./foundation-layout.foundationlayout.registeritem.md) or implicitly via the html declarative API.
 
 The elements added onto the new pane are copies using `element.cloneNode()` of the original element references used during registration.
 

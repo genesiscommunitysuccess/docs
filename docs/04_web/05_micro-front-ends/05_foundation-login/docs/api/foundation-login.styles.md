@@ -4,9 +4,21 @@
 
 ## styles variable
 
-
 **Signature:**
 
 ```typescript
 styles: (options: TemplateOptions) => import("@microsoft/fast-element").ElementStyles
 ```
+
+## Example
+
+unknown target
+
+```
+const buttonTag = tagFor(options.button);
+...
+${buttonTag} {
+  width: 200px;
+}
+```
+

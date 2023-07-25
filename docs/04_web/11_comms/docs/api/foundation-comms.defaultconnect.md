@@ -24,6 +24,7 @@ export declare class DefaultConnect implements Connect
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [isConnected](./foundation-comms.defaultconnect.isconnected.md) | <code>readonly</code> | boolean |  |
+|  [isConnected$](./foundation-comms.defaultconnect.isconnected_.md) | <code>readonly</code> | Observable&lt;boolean&gt; |  |
 |  [isConnectedSubject](./foundation-comms.defaultconnect.isconnectedsubject.md) | <code>readonly</code> | BehaviorSubject&lt;boolean&gt; |  |
 |  [isWorking](./foundation-comms.defaultconnect.isworking.md) |  | boolean |  |
 |  [socket](./foundation-comms.defaultconnect.socket.md) |  | [Socket](./foundation-comms.socket.md) |  |

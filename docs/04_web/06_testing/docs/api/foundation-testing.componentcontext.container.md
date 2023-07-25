@@ -4,7 +4,7 @@
 
 ## ComponentContext.container property
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 container: Container;

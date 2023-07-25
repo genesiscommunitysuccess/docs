@@ -12,6 +12,7 @@ export type UiSchemaElement = {
     type: UiSchemaElementType;
     scope: string;
     label?: string;
+    placeholder?: string;
     options?: UiSchemaElementOptions;
 };
 ```

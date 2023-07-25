@@ -6,7 +6,7 @@
 
 Unit test fixture.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface Fixture<TElement = HTMLElement> 
