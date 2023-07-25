@@ -94,7 +94,7 @@ export const AdminTemplate: ViewTemplate = html`
 
 ### Config
 
-The functionality of the Entity Manager is customised through the properties you set on it in the HTML. This section covers the main properties that you need to customise. For a full list of all of the properties, [see here](./docs/api/foundation-entity-management.md#properties).
+The functionality of the Entity Manager is customised through the properties you set on it in the HTML. This section covers the main properties that you need to customise. For a full list of all properties, [see here](./docs/api/foundation-entity-management.md#properties).
 
 #### Title
 
@@ -106,7 +106,7 @@ The functionality of the Entity Manager is customised through the properties you
 
 - a `query` in a Data Server
 - a `ReqRep` definition in a Request Server
-- an `eventHandler`in the Event Handler.
+- an `eventHandler`in the Event Handler
 
  In the [above example](#set-up), we use `ALL_COUNTERPARTYS`, which is a `query` in a Data Server; by convention, these queries all start with `ALL_`.
 
@@ -235,7 +235,7 @@ Example grid view when managing profiles.
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. You can find more information in the [package.json basics](../../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. You can find more information in the [package.json basics](../../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -247,7 +247,8 @@ To enable this micro front-end in your application, follow the steps below.
 }
 ```
 
-- Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template html where required:
+2. Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template html where required:
+ 
 ```javascript
 // Import
 import { Profiles } from '@genesislcap/foundation-entity-management';
