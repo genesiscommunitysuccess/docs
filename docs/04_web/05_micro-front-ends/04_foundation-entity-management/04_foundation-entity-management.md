@@ -21,25 +21,27 @@ tags:
 
 ### Introduction
 
-The Entity Management micro-front-end is used to connect to a resource on the back end and manage it from the front end. Handlers can be set up for create, update, and delete events; after adding an event, a button appears to perform the action. There is a list of pre-defined events and resources to manage, but you can manage custom resources that you create on the back-end too.
+The Entity Management micro front-end is used to connect to a resource on the back end and manage it from the front end. Handlers can be set up for create, update, and delete events; after adding an event, a button is displayed, so that the user can perform the action. There is a list of pre-defined events and resources to manage, but you can also manage custom resources that have been created on the back end.
 
 :::tip
-The buttons are conditionally accessed, based on the specified events. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to conditionally set the events based on user authorisations.
+The buttons are accessed conditionally, based on the specified events. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to set the events so that they are conditional on user authorisations.
 :::
 
-Two core components are used to manage the entities - the grid and the form. The grid contains an entity on each row and data in each column.
+Two core components are used to manage the entities - the grid and the form. 
 
-Example grid used to manage counterparties
+The grid contains an entity on each row and data in each column. Here is an example showing a grid used to manage counterparties:
+
 ![Example entity management grid](./docs/img/foundation-entity-management-grid.png)
 
-The other component is the form, and this is used to update an existing entity or create a new one. An example form is shown here.
+The other component is the form. This is used to update an existing entity or to create a new one. Here is an example :
+
 ![Example entity management form](./docs/img/foundation-entity-management-form.png)
 
 ### Set-up
 
 To enable this micro-front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. For more info see the [package.json basics](../../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again. For more information, see the [package.json basics](../../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -51,7 +53,8 @@ To enable this micro-front-end in your application, follow the steps below.
 }
 ```
 
-- Import and declare the class in the page of the class where you wish to use the Entity Manager. Then add the entity management into the template html where required:
+2. Import and declare the class in the page of the class where you wish to use the Entity Manager. Then add the entity management into the template html where required:
+
 ```javascript
 // Import
 import { EntityManagement, } from '@genesislcap/foundation-entity-management';
@@ -99,11 +102,17 @@ The functionality of the Entity Manager is customised through the properties you
 
 #### Resource
 
-`resourceName` refers to the name of either a `DATASERVER` query, a `ReqRep` definition or a specific `EVENT_HANDLER`. This essentially is the resource to be managed. In the [above example](#set-up), we use `ALL_COUNTERPARTYS` which is a `SDATASERVER` query, as, by convention, they all start with `ALL_`.
+`resourceName` refers to the name of a resource on the server. This could be:
+
+- a `query` in a Data Server
+- a `ReqRep` definition in a Request Server
+- an `eventHandler`in the Event Handler.
+
+ In the [above example](#set-up), we use `ALL_COUNTERPARTYS`, which is a `query` in a Data Server; by convention, these queries all start with `ALL_`.
 
 #### Events
 
-`createEvent`, `updateEvent`, `deleteEvent` are set to be the events on the back end that handle the specific actions, such as deleting counterparty data. For the create and update functionality, these also define the resource in which the form is populated when the user is creating or updating an entity. After adding an event, a button for performing the selected action appears.
+`createEvent`, `updateEvent`, `deleteEvent` are set to be the events on the back end that handle the specific actions, such as deleting counterparty data. For the create and update functionality, these also define the resource in which the form is populated when the user is creating or updating an entity. After adding an event, a button is displayed so that the user can perform the selected action.
 
 #### Datasource configuration
 
@@ -113,7 +122,7 @@ Set this object to configure how the Entity Manager interacts with the resource.
 `persist-column-state-key` is a string value. It is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and  the grid will revert back to its default state every time the user navigates away from it.
 
 :::warning
-The string defines the key in which the serialised state of the columns is stored in an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). Therefore, if you are setting multiple Entity Managers in your application to persist the state you need to use unique keys or you will get undefined behaviour.
+The string defines the key in which the serialised state of the columns is stored in an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). Therefore, if you are setting multiple Entity Managers in your application, you must use unique keys to persist the state - otherwise, you will get undefined behaviour.
 :::
 
 ## User Management
@@ -129,13 +138,14 @@ User Management is a concrete use case of the [Entity Management](#entity-manage
 :::
 
 Here is an example grid view for managing users:
+
 ![Example user management grid](./docs/img/foundation-user-management.png)
 
 ### Set-up
 
 To enable this micro-front-end in your application, follow the steps below:
 
-- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -147,7 +157,7 @@ To enable this micro-front-end in your application, follow the steps below:
 }
 ```
 
-- Import and declare the class in the page of the class where you wish to use the user manager. Then add User Management to the template html where required:
+2. Import and declare the class in the page of the class where you wish to use the user manager. Then add User Management to the template html where required:
 
 ```javascript
 // Import
@@ -212,7 +222,7 @@ For more info on `persist-column-state-key` see [the section in the entity manag
 
 ## Profile Management
 
-The Profile Management micro-front-end is used to manage the profiles on the front end. Two core components are used to manage the profiles - the grid and the form.
+The Profile Management micro front-end is used to manage the profiles on the front end. Two core components are used to manage the profiles - the grid and the form.
 
 :::info
 Profile Management is a concrete use case of the [Entity Management](#entity-management) micro front-end, which is provided as part of `foundation-ui`.
@@ -223,7 +233,7 @@ Example grid view when managing profiles.
 
 ### Set-up
 
-To enable this micro-front-end in your application, follow the steps below.
+To enable this micro front-end in your application, follow the steps below.
 
 - Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. You can find more information in the [package.json basics](../../../../web/basics/package-json-basics/) page.
 
@@ -270,7 +280,7 @@ In contrast to Entity Management, we have a different way of displaying buttons 
 - `AMEND_PROFILE` - the user can update existing profiles
 
 #### Persist column state
-`persist-column-state-key` is a string value which is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and  the grid will revert back to its default state every time the user navigates away from it.
+`persist-column-state-key` is a string value that is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and the grid will revert back to its default state every time the user navigates away from it.
 
 :::info
 For more information on `persist-column-state-key` see [the section in the Entity Management](#persist-column-state) page.
@@ -278,7 +288,7 @@ For more information on `persist-column-state-key` see [the section in the Entit
 
 ## License
 
-Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
 
 ### Licensed components
 Genesis low-code platform
