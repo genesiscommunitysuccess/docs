@@ -4,6 +4,8 @@
 
 ## getErrorFormat variable
 
+Format the error as a string with a different format depending on whether `err` has a `FIELD` property or not
+
 **Signature:**
 
 ```typescript

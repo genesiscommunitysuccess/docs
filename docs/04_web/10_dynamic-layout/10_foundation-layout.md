@@ -182,7 +182,7 @@ This API enables you to register an item at runtime, but it will not be displaye
 
 #### [Add Item](./docs/api/foundation-layout.foundationlayout.additem.md)
 
-Add an item that has previously been registered with the layout.
+Add an item or items that have previously been registered with the layout.
 
 #### [Layout Required Registrations](./docs/api/foundation-layout.foundationlayout.layoutrequiredregistrations.md)
 
@@ -262,7 +262,7 @@ In the `@genesislcap/foundation-utils` package, there is a mix-in class `Lifecyc
 -  `shouldRunConnect`
 -  `shouldRunDisconnect`
 
-These can be used to gate certain functionality. 
+These can be used to gate certain functionality.
 
 For example, if there are parts of `disconnectedCallback` that you don't want to run when the item is being dragged around the layout, you can gate it behind a `(!this.shouldRunDisconnect) return;` early return.
 
@@ -283,6 +283,11 @@ To enable you to add multiple items from the same `registration`, the layout sys
 This is the case both when items are added with `.addItem()`, and when they are added using the declarative API. Under the hood, this uses the Node [cloneNode](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) api.
 There are certain limitations to this function, especially when using custom elements with the shadow DOM. [See troubleshooting example](#binding-events-inline-in-the-declarative-api).
 
+:::tip
+As a general rule, if you need to have elements with FAST bindings inside of the layout, wrap them in custom elements.
+:::
+
+If you are writing your own custom element which needs to work inside of the layout follow these steps.
 In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin` which overrides the `cloneNode` API.
 
 ```typescript
@@ -466,7 +471,7 @@ class Commodities extends FASTElement {
 const template = html<Commodities>`
 <foundation-layout>
 	<foundation-layout-region type="horizontal">
-		${repeat(x => x.positions, html<Position>`
+		${when(x => x.positions, html<Position>`
 			<foundation-layout-item title="${x => x.symbol}">
 				<chart symbol="${x => x.symbol}"></chart>
 			</foundation-layout-item>`)}
@@ -855,6 +860,39 @@ The following example is invalid:
 ```
 This is because you cannot have multiple layout elements as the immediate child of the layout root. You will get a runtime error.
 
+### Multiple nested layouts
+
+The following example is invalid:
+
+```html
+<foundation-layout>
+		<foundation-layout-item title="Component 1">
+      <another-component></another-component>
+		</foundation-layout-item>
+		<foundation-layout-item title="Component 2">
+			<!-- Content -->
+		</foundation-layout-item>
+</foundation-layout>
+```
+Where the markup of `another-component` is something like:
+```html
+<!--other markup-->
+<foundation-layout>
+		<foundation-layout-item title="Component 1">
+			<!-- Content -->
+		</foundation-layout-item>
+		<foundation-layout-item title="Component 2">
+			<!-- Content -->
+		</foundation-layout-item>
+		<foundation-layout-item title="Component 3">
+			<!-- Content -->
+		</foundation-layout-item>
+</foundation-layout>
+<!--other markup-->
+```
+
+This is because you cannot have an instance of the layout nested inside of another layout instance. You could try adding multiple items at once using `.addItem([elem1,..,elemN])` instead.
+
 ### Nested item
 
 The following example is invalid:
@@ -972,6 +1010,8 @@ You can then use the custom component in the layout:
 </foundation-layout>
 ```
 
+See [here](#custom-components-to-handle-bindings-and-event-listeners) for a thorough technical explanation.
+
 ### New layout item not displaying
 Say you have the following layout, [the simple example](#simple-example), with autosave enabled.
 ```html
@@ -1007,6 +1047,33 @@ The user of your layout will move things around and this will cache the layout. 
 You and the user will only see the first two items like before. This is because the cached layout is being loaded, which does not contain the
 new item. To fix this you must [invalidate the cache](#invalidating-the-cache).
 
+## Supplementary information
+
+### Custom components to handle bindings and event listeners
+As shown in [this example](#binding-events-inline-in-the-declarative-api) you need to wrap html that uses fast bindings and event listeners into their own custom
+components. This section is a technical explanation for why this is the case. It is required we make use of `cloneNode` to allow the layout to add multiple instances
+of a registered component.
+
+Consider the following which is the order of events of loading the layout when using html that includes bindings.
+
+1. As the DOM is parsed the elements inside of the layout are created. At this point the bindings are attached and the event listeners are created, and the `connectedCallback` lifecycle method executes.
+2. Once all of the layout’s contained elements are created, the layout itself initialises\*.
+3. As part of the initialisation process it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache.
+4. We then load golden layout with the layout config and the registered items, where the registered items create a clone of the items in the document fragment.
+
+The issue occurs during step four - the clone from `cloneNode` doesn't have the event listeners, so the new copy (which is the one you see on the layout) has no event listeners. Compare this with the similar but different process if you've wrapped up the html into its own custom component.
+
+1. As the DOM is parsed the elements inside of the layout are created. At this point the bindings are attached and the event listeners are created, and the `connectedCallback` lifecycle method executes.
+2. Once all of the layout’s contained elements are created, the layout itself initialises\*.
+3. As part of the initialisation process it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache. This is just a tag such as `<filtered-chart></filtered-chart>` instead of a definition that includes bindings or event listeners.
+4. We then load golden layout with the layout config and the registered items, where the registered items create a clone of the items in the document fragment.
+5. When that clone is put on the DOM, because it is a custom element it calls the lifecycle method again `connectedCallback` as well as other initialisation methods which include attaching the event listener to the component as required.
+
+>>\* It initialises after the timeout specified by the `reload-buffer` attribute if using the declarative HTML API, or steps `3` and `4` occur during calls to `registerItem` and `addItem` respectively.
+
 ## License
 
 Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform

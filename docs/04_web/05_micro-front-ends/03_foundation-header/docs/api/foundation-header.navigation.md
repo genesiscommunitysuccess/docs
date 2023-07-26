@@ -28,6 +28,7 @@ export declare class Navigation extends Navigation_base
 |  [provider](./foundation-header.navigation.provider.md) |  | any |  |
 |  [ready](./foundation-header.navigation.ready.md) |  | boolean |  |
 |  [routeButtons](./foundation-header.navigation.routebuttons.md) |  | Array&lt;{ index: number; path: string; title: string; icon: string; variant: string; }&gt; | If present the defined route buttons will be rendered in the header 'routes' slot |
+|  [showConnectionIndicator](./foundation-header.navigation.showconnectionindicator.md) |  | boolean | Boolean attribute which controls whether to show the connection indicator on the navigation bar Control via <code>show-connection-indicator</code> |
 |  [showLuminanceToggleButton](./foundation-header.navigation.showluminancetogglebutton.md) |  | boolean | Boolean attribute which controls whether to show the luminance (moon) icon on the navigation bar Control via<code>show-luminance-toggle-button</code> |
 |  [showMiscToggleButton](./foundation-header.navigation.showmisctogglebutton.md) |  | boolean | Boolean attribute which controls whether to show the miscellaneous (menu) icon on the navigation bar Control via <code>show-luminance-toggle-button</code> |
 |  [showNotificationsButton](./foundation-header.navigation.shownotificationsbutton.md) |  | boolean | Boolean attribute which controls whether to show the notification (bell) icon on the navigation bar Control via <code>show-notification-button</code> |

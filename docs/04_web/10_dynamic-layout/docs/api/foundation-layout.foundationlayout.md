@@ -27,6 +27,7 @@ The constructor for this class is marked as internal. Third-party code should no
 |  --- | --- | --- | --- |
 |  [autoSaveKey?](./foundation-layout.foundationlayout.autosavekey.md) |  | string | _(Optional)_ Attribute which if set will auto save and load the layout as the user changes it. Omit this attribute to disable this feature. Set attribute using <code>auto-save-key</code>. |
 |  [dragging](./foundation-layout.foundationlayout.dragging.md) |  | boolean | Set to true when the user is currently dragging the panes inside of the layout |
+|  [hasFirstLoaded](./foundation-layout.foundationlayout.hasfirstloaded.md) |  | boolean | Boolean signifies whether the layout has loaded for the first time or not. |
 |  [missingItemPlaceholder](./foundation-layout.foundationlayout.missingitemplaceholder.md) |  | (missingItem: string) =&gt; string | Function which is used to generate the placeholder text when a layout is loaded with a missing item. |
 |  [reloadBuffer](./foundation-layout.foundationlayout.reloadbuffer.md) |  | number | Number describing how long to wait in ms before reloading the config when adding items declaratively by the html API. Default 500 (ms). |
 
@@ -36,9 +37,9 @@ The constructor for this class is marked as internal. Third-party code should no
 |  --- | --- | --- |
 |  [addItem(config, placement)](./foundation-layout.foundationlayout.additem.md) |  | Dynamically add a new item to the layout. The user can move the new plane to whenever they want once it has been added. |
 |  [getLayout()](./foundation-layout.foundationlayout.getlayout.md) |  | Gets a minified string containing the config describing the current layout of the layout object to later restore in [function](./foundation-layout.foundationlayout.loadlayout.md) |
-|  [layoutRequiredRegistrations(layout)](./foundation-layout.foundationlayout.layoutrequiredregistrations.md) | <code>static</code> | Gets all of the required registration function names for a set of config |
+|  [layoutRequiredRegistrations(layout)](./foundation-layout.foundationlayout.layoutrequiredregistrations.md) | <code>static</code> | Gets all of the required element registry function names for a set of config |
 |  [loadLayout(layout, handleMissingItem)](./foundation-layout.foundationlayout.loadlayout.md) |  | Restores a layout described in the config from [getLayout()](./foundation-layout.foundationlayout.getlayout.md) |
 |  [registeredItems()](./foundation-layout.foundationlayout.registereditems.md) |  | Gets all of the currently registered names |
 |  [registerItem(registration, elements)](./foundation-layout.foundationlayout.registeritem.md) |  | Register a collection of <code>Element</code> and associate them with an <code>ID</code> with the layout system for later use. |
-|  [tryLoadLayoutFromLocalStorage()](./foundation-layout.foundationlayout.tryloadlayoutfromlocalstorage.md) |  | Try to load a layout from local storage, or return false. Only required if manually calling  |
+|  [tryLoadLayoutFromLocalStorage()](./foundation-layout.foundationlayout.tryloadlayoutfromlocalstorage.md) |  | Try to load a layout from local storage, or return false. Only required if manually calling [FoundationLayout.registerItem()](./foundation-layout.foundationlayout.registeritem.md) |
 

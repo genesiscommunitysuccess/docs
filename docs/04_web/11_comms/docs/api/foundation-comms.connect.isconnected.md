@@ -9,5 +9,5 @@ Indicates whether the connection is currently established.
 **Signature:**
 
 ```typescript
-isConnected: boolean;
+readonly isConnected: boolean;
 ```

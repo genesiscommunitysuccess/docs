@@ -6,7 +6,7 @@
 
 The parent element that the view was appended to.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 parent: HTMLElement;

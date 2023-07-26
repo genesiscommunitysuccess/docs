@@ -4,7 +4,7 @@
 
 ## Connect.isWorking property
 
-Indicates whether connect is working or is idle.
+Indicates whether Connect is working or is idle.
 
 **Signature:**
 

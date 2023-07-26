@@ -4,10 +4,15 @@
 
 ## Connect.isConnectedSubject property
 
+> Warning: This API is now obsolete.
+> 
+> - Use `isConnected$` instead.
+> 
+
 A behavior subject holding the current connection status.
 
 **Signature:**
 
 ```typescript
-isConnectedSubject?: BehaviorSubject<boolean>;
+readonly isConnectedSubject?: BehaviorSubject<boolean>;
 ```

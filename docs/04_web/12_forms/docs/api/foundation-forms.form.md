@@ -31,5 +31,7 @@ export declare class Form extends FoundationElement
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
+|  [connectedCallback()](./foundation-forms.form.connectedcallback.md) |  | **_(BETA)_** |
 |  [disconnectedCallback()](./foundation-forms.form.disconnectedcallback.md) |  | **_(BETA)_** |
+|  [reset()](./foundation-forms.form.reset.md) |  | Reset the form state |
 

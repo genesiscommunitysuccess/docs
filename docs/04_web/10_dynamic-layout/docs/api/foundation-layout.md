@@ -37,6 +37,6 @@
 |  --- | --- |
 |  [LayoutReceiveEventsDetail](./foundation-layout.layoutreceiveeventsdetail.md) | <p>Defines the shape of the detail that the layout listens works with for events it listens on</p><p>'changeTitle' - <code>title</code> is the string you want to set. For <code>mode</code>: <code>replace</code> will set the title to be <code>title</code>, <code>suffix</code> will append <code>title</code> to the end of the existing title.</p> |
 |  [LayoutRegionType](./foundation-layout.layoutregiontype.md) | Union type describing the three different types of region splits. Set on the <code>type</code> attribute on [FoundationLayoutRegion](./foundation-layout.foundationlayoutregion.md). |
-|  [Placement](./foundation-layout.placement.md) | Where to add the new item into the layout when using the [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md) API |
+|  [Placement](./foundation-layout.placement.md) | Where to and how to add the new item(s) into the layout when using the [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md) API. |
 |  [SerialisedLayout](./foundation-layout.serialisedlayout.md) | Versioned layout config objects. <code>v</code> is the version and <code>c</code> contains the layout config. |
 

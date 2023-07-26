@@ -35,6 +35,6 @@ You can use this class by forward declaring it in the template file where it is 
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [deleteEntity(e)](./foundation-entity-management.profiles.deleteentity.md) |  |  |
+|  [confirmDelete()](./foundation-entity-management.profiles.confirmdelete.md) |  |  |
 |  [readProfileData(profile)](./foundation-entity-management.profiles.readprofiledata.md) |  |  |
 

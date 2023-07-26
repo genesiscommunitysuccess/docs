@@ -16,9 +16,10 @@ export interface Connect
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [isConnected](./foundation-comms.connect.isconnected.md) |  | boolean | Indicates whether the connection is currently established. |
-|  [isConnectedSubject?](./foundation-comms.connect.isconnectedsubject.md) |  | BehaviorSubject&lt;boolean&gt; | _(Optional)_ A behavior subject holding the current connection status. |
-|  [isWorking](./foundation-comms.connect.isworking.md) |  | boolean | Indicates whether connect is working or is idle. |
+|  [isConnected](./foundation-comms.connect.isconnected.md) | <code>readonly</code> | boolean | Indicates whether the connection is currently established. |
+|  [isConnected$?](./foundation-comms.connect.isconnected_.md) | <code>readonly</code> | Observable&lt;boolean&gt; | _(Optional)_ An Observable that emits a boolean value indicating whether the connection is currently established. |
+|  [isConnectedSubject?](./foundation-comms.connect.isconnectedsubject.md) | <code>readonly</code> | BehaviorSubject&lt;boolean&gt; | _(Optional)_ A behavior subject holding the current connection status. |
+|  [isWorking](./foundation-comms.connect.isworking.md) |  | boolean | Indicates whether Connect is working or is idle. |
 
 ## Methods
 
@@ -29,7 +30,7 @@ export interface Connect
 |  [dataLogoff(sourceRef)](./foundation-comms.connect.datalogoff.md) | Logs off from the specified data source. |
 |  [disconnect()](./foundation-comms.connect.disconnect.md) | Disconnects from the server. |
 |  [getJSONSchema(resourceName)](./foundation-comms.connect.getjsonschema.md) | Retrieves the JSON schema for the specified resource. |
-|  [getMetadata(resourceName)](./foundation-comms.connect.getmetadata.md) | Retrieves the metadata for the specified resource. |
+|  [getMetadata(resourceName, useCache)](./foundation-comms.connect.getmetadata.md) | Retrieves the metadata for the specified resource. |
 |  [getMoreRows(sourceRef)](./foundation-comms.connect.getmorerows.md) | Requests additional rows of data for the specified source reference. |
 |  [request(resourceName, params)](./foundation-comms.connect.request.md) | Sends a request to the server to retrieve data or perform an action. |
 |  [snapshot(resourceName, params)](./foundation-comms.connect.snapshot.md) | Retrieves a snapshot of data for the specified resource. |

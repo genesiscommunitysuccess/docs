@@ -6,7 +6,7 @@
 
 The template the fixture was created from.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 template: ViewTemplate;

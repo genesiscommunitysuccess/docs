@@ -6,12 +6,12 @@
 
 Component suite context interface
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export interface ComponentContext<TElement = HTMLElement> extends Pick<Fixture<TElement>, 'element' | 'disconnect'> 
 ```
-<b>Extends:</b> Pick&lt;[Fixture](./foundation-testing.fixture.md)&lt;TElement&gt;, 'element' \| 'disconnect'&gt;
+**Extends:** Pick&lt;[Fixture](./foundation-testing.fixture.md)&lt;TElement&gt;, 'element' \| 'disconnect'&gt;
 
 ## Properties
 
@@ -19,4 +19,5 @@ export interface ComponentContext<TElement = HTMLElement> extends Pick<Fixture<T
 |  --- | --- | --- | --- |
 |  [container](./foundation-testing.componentcontext.container.md) |  | Container |  |
 |  [designSystem](./foundation-testing.componentcontext.designsystem.md) |  | DesignSystem |  |
+|  [runCases](./foundation-testing.componentcontext.runcases.md) |  | [RunCases](./foundation-testing.runcases.md) |  |
 

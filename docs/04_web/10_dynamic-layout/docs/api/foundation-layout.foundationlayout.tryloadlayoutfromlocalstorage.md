@@ -4,7 +4,7 @@
 
 ## FoundationLayout.tryLoadLayoutFromLocalStorage() method
 
-Try to load a layout from local storage, or return false. Only required if manually calling 
+Try to load a layout from local storage, or return false. Only required if manually calling [FoundationLayout.registerItem()](./foundation-layout.foundationlayout.registeritem.md)
 
 **Signature:**
 
@@ -21,7 +21,7 @@ boolean - true if a layout was loaded, false if not
 
 Attempt to load an autosaved layout from local storage, keyed on the `auto-save-key` attribute. If `auto-save-key` attribute is not set or there is no autosaved layout yet, this will return false. Else, true.
 
-This function is automatically called when loading the layout via the declarative API so if you're not registering components via the JavaScript API then you don't need to call this function. If you \*are\* calling  then you should call this function immediately afterwards.
+This function is automatically called when loading the layout via the declarative API so if you're not registering components via the JavaScript API then you don't need to call this function. If you \*are\* calling [FoundationLayout.registerItem()](./foundation-layout.foundationlayout.registeritem.md) then you should call this function immediately afterwards.
 
 Will load the layout with `handleMissingItem = 'placeholder` so placeholder text will be shown for any missing items.
 

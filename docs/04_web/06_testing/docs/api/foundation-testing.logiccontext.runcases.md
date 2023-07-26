@@ -4,7 +4,7 @@
 
 ## LogicContext.runCases() method
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 runCases?(fn: (value: any) => any, cases: [any, any, assert.Message?][]): void;
@@ -17,7 +17,7 @@ runCases?(fn: (value: any) => any, cases: [any, any, assert.Message?][]): void;
 |  fn | (value: any) =&gt; any |  |
 |  cases | \[any, any, assert.Message?\]\[\] |  |
 
-<b>Returns:</b>
+**Returns:**
 
 void
 

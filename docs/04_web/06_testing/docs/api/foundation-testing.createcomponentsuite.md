@@ -6,7 +6,7 @@
 
 Create component test suite.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 export declare function createComponentSuite<TElement = HTMLElement>(title: string, elementNameOrGetter: string | ElementGetter, context?: ComponentContext<TElement>, registrations?: Registration<any>[]): uvu.Test<ComponentContext<TElement>>;
@@ -18,10 +18,10 @@ export declare function createComponentSuite<TElement = HTMLElement>(title: stri
 |  --- | --- | --- |
 |  title | string | Title of the test suite |
 |  elementNameOrGetter | string \| [ElementGetter](./foundation-testing.elementgetter.md) | Element tag name or getter which is used to create the element within the fixture |
-|  context | [ComponentContext](./foundation-testing.componentcontext.md)&lt;TElement&gt; | <i>(Optional)</i> Optional component context [ComponentContext](./foundation-testing.componentcontext.md) |
-|  registrations | Registration&lt;any&gt;\[\] | <i>(Optional)</i> Optional array of DI container registrations |
+|  context | [ComponentContext](./foundation-testing.componentcontext.md)&lt;TElement&gt; | _(Optional)_ Optional component context [ComponentContext](./foundation-testing.componentcontext.md) |
+|  registrations | Registration&lt;any&gt;\[\] | _(Optional)_ Optional array of DI container registrations |
 
-<b>Returns:</b>
+**Returns:**
 
 uvu.Test&lt;[ComponentContext](./foundation-testing.componentcontext.md)&lt;TElement&gt;&gt;
 

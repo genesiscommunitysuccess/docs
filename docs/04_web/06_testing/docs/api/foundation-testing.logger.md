@@ -6,7 +6,7 @@
 
 Test logger
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 logger: import("@genesislcap/foundation-utils").Logger

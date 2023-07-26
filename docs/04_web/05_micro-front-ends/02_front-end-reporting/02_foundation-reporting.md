@@ -11,7 +11,7 @@ tags:
   - reporting
 ---
 
-# Micro front-end reporting
+# Micro Frontend Reporting
 
 The Reporting micro front-end enables your users to create report specifications, run them, or save them for later use.
 
@@ -23,9 +23,11 @@ From the GUI, users can:
 - export the report results to .csv  format
 
 The micro front-end has a GUI that walks the user through generating a report.
+
 ![Example showing creating a new report](./docs/img/foundation-reporting_create-report.png)
 
-Once the report has been created,  it can be viewed in the GUI; it can also be exported to a `.csv` file.
+Once the report is created it can be viewed in the GUI, and also exported to a `.csv` file.
+
 ![Example showing the list of all generated reports](./docs/img/foundation-reporting_view-report.png)
 
 All the generated reports are stored for retrieval later. The report configuration is saved and the report updated when the user runs the report again.
@@ -35,14 +37,15 @@ All the generated reports are stored for retrieval later. The report configurati
 
 ### Server configuration
 
-To enable the Report micro-front-end, you need to configure the Reporting module on the server.
+To enable the Report microfront-end, you need to configure the Reporting module on the server.
+
 - Configure [backend server](../../../../server/integration/server-reporting/)
 
 ### Front-end configuration
 
-To enable this micro-front-end in your application, follow the steps below.
+To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-reporting` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. There is more information on this in the [package.json basics](../../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-reporting` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again. There is more information on this in the [package.json basics](../../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -54,7 +57,7 @@ To enable this micro-front-end in your application, follow the steps below.
 }
 ```
 
-- Import the module and configure the route in your routes **config.ts** file.
+2. Import the module and configure the route in your routes **config.ts** file.
 
 **Synchronous example**
 
@@ -96,4 +99,7 @@ If there are no reports in the database, you will see an error on the web page s
 
 ## License
 
-Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform

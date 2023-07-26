@@ -5,8 +5,8 @@
 ## ElementGetter type
 
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
-export declare type ElementGetter = () => FoundationElementRegistry<FoundationElementDefinition, FoundationElement>;
+export type ElementGetter = () => FoundationElementRegistry<FoundationElementDefinition, FoundationElement>;
 ```

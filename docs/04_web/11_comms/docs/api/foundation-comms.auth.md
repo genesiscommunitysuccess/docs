@@ -12,6 +12,14 @@ Auth is the main interface for authenticating with a Genesis Server endpoint.
 export interface Auth 
 ```
 
+## Properties
+
+|  Property | Modifiers | Type | Description |
+|  --- | --- | --- | --- |
+|  [isLoggedIn](./foundation-comms.auth.isloggedin.md) | <code>readonly</code> | boolean | A boolean value indicating whether or not the user is currently logged in. |
+|  [isLoggedIn$?](./foundation-comms.auth.isloggedin_.md) | <code>readonly</code> | Observable&lt;boolean&gt; | _(Optional)_ An Observable that emits a boolean value indicating whether or not the user is currently logged in. |
+|  [isWorking](./foundation-comms.auth.isworking.md) |  | boolean | Indicates whether Auth is working or is idle. |
+
 ## Methods
 
 |  Method | Description |

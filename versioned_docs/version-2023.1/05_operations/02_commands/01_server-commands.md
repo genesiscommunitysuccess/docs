@@ -59,32 +59,34 @@ The command will ask you to confirm the removal of each table.
 
 ## DumpIt script
 
-To copy data from a Genesis database, use the 'DumpIt' command.
+To copy data from a Genesis database, use the `DumpIt` command.
 
 ### Syntax
-
-```bash
-DumpIt -t <table name> -f <file name>
-```
+The `DumpIt`command can take the following arguments:
 
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|
 | -a       | --all              | No        | exports all tables to csv                              | No                |
 | -f       | --file `<arg>`     | No        | name of the csv file where table is exported           | No                |
-|          | -fields `<arg>`    | No        | space separated field list e.g. "FIRST_NAME LAST_NAME" | No                |
+|          | -fields `<arg>`    | No        | space-separated field list e.g. "FIRST_NAME LAST_NAME" | No                |
 | -h       | --help             | No        | show usage information                                 | No                |
 | -s       | --sql `<arg>`      | No        | name of the sql file where table is exported           | No                |
 | -t       | --table `<arg>`    | No        | the name of the table to export to csv                 | No                |
 |          | -where `<arg>`     | No        | match criteria e,g, "USER_NAME=='John'"                | No                |
-For example:
+
+Here are some examples:
 
 ```bash
-DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME
+DumpIt -t GBP_TRADES -f gbp-trades
 ```
 
-This copies the data in the FUND table to FUND.csv.
+This copies all records in the GBP_TRADES table to the file **gbp-trades.csv**.
 
-Another example:
+```bash
+DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME"
+```
+
+This copies every record in the USER table where the USER_NAME is John. This is useful if you want to know if the user name John exists in the database.
 
 ```bash
 DumpIt -t FUND -f FUND -fields "FUND_ID NAME" -where "NAME == 'FUND_FUND' && YEARS_IN_SERVICE >= 10"
@@ -92,33 +94,15 @@ DumpIt -t FUND -f FUND -fields "FUND_ID NAME" -where "NAME == 'FUND_FUND' && YEA
 
 This copies the FUND_ID and NAME fields of every record that has "FUND_FUND" for a name, and ten or more years in service.
 
-If you want to dump all the tables in the database, here is an example:
-
 ```bash
 DumpIt --all
 ```
 
 This copies all tables in the system, creating one .csv file for each table in the database. The files are saved in the current directory. It is useful for taking a back-up of the current system database.
 
-Additionally, you can just run `DumpIt` without any arguments to enter interactive mode.
-
-## GenesisRun
-
-This is a Python script wrapper for Genesis scripts.
-
-'GenesisRun` will attempt to find a script to execute within the Genesis folder structure (site-specific or scripts).
-
-There are two environment variables that can be used to configure how much RAM the scripts will use:
-
-* SCRIPT_MAX_HEAP
-* REMAP_MAX_HEAP
-
-`GenesisRun` can execute code in two different modes: Groovy script and GPAL Kotlin script. **GenesisRun** builds the necessary classpath, so you don't need to build it in each script.
-
-* Groovy script: GenesisRun SetLogLevelScript.groovy
-* GPAL Kotlin script: GenesisRun customPurger-script.kts
-
-There is a separate wrapper, `JvmRun` for Java main class scripts.
+### Interactive mode
+You can run `DumpIt` without any arguments to enter interactive mode.
+.
 
 ## genesisInstall script
 
@@ -135,6 +119,7 @@ Following this, when you start any process, the `startProcess` command reads fro
 `genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the **run/generated/cfg** area.
 
 ### Syntax
+The `genesisInstall`command can take the following arguments:
 
 | Argument | Argument long name | Mandatory | Description                                                                                                                           | Restricted values |
 |----------|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------|
@@ -219,6 +204,24 @@ MigrateDictionary -dst DB
 exit $?
 ```
 
+## GenesisRun
+
+This is a Python script wrapper for Genesis scripts.
+
+'GenesisRun` will attempt to find a script to execute within the Genesis folder structure (site-specific or scripts).
+
+There are two environment variables that can be used to configure how much RAM the scripts will use:
+
+* SCRIPT_MAX_HEAP
+* REMAP_MAX_HEAP
+
+`GenesisRun` can execute code in two different modes: Groovy script and GPAL Kotlin script. **GenesisRun** builds the necessary classpath, so you don't need to build it in each script.
+
+* Groovy script: GenesisRun SetLogLevelScript.groovy
+* GPAL Kotlin script: GenesisRun customPurger-script.kts
+
+There is a separate wrapper, `JvmRun` for Java main class scripts.
+
 ## GetAutoIncrementCount
 
 This works similarly to `GetSequenceCount`, but for auto increment INT values defined in dictionaries.
@@ -228,10 +231,7 @@ Only use this command when all the application's processes have been stopped.
 :::
 
 ### Syntax
-
-```bash
-GetAutoIncrementCount
-```
+The `GetAutoIncrementCount`command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|
@@ -253,6 +253,7 @@ And remember: only use this command when all the application's processes have be
 
 This gives you the next sequence number of every table in the application. The numbers are provided in table format (csv), for example:
 
+
 ```
 "Table","Sequence","Value"
 "USER_AUDIT","UA","104"
@@ -260,12 +261,20 @@ This gives you the next sequence number of every table in the application. The n
 "PROFILE_USER_AUDIT","PA","104"
 ```
 
-By default, this is sent to the screen, but you can redirect the output to a file, for example:
+### Syntax
+
+```bash
+GetNextSequenceNumbers
+```
+This displays the next sequence number of each table, using the format described above.
+
+By default, the details are sent to the screen, but you can redirect the output to a file, for example:
 
 ```bash
 GetNextSequenceNumbers >> /tmp/NextSeqNumbers.txt 
 ```
 
+### Correcting errors in tables
 The `GetNextSequenceNumbers` command is often used with the `SetSequence` script [see below](../../../operations/commands/server-commands/#setsequence), for example, if you suspect that you have an error in one of your tables:
 
 1. Stop all the processes and run `GetNextSequenceNumbers` to find the next sequence numbers of the tables.
@@ -273,21 +282,13 @@ The `GetNextSequenceNumbers` command is often used with the `SetSequence` script
 3. Run `SetSequence` to reset the sequence numbers where relevant. 
 4. Now you can [restart your processes](../../../operations/commands/server-commands/#startserver-script).
 
-### Syntax
-
-```bash
-GetNextSequenceNumbers
-```
-
 ## GetSequenceCount
 
 This gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by the `SetSequence` script (see below).
 
 ### Syntax
+The `GetSequenceCount`command can take the following arguments:
 
-```bash
-GetSequenceCount
-```
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|
@@ -295,6 +296,12 @@ GetSequenceCount
 | -h       | --help             | No        | show usage information                  | No                |
 | -p       | --print            | No        |                                         | No                |
 
+
+Example:
+
+```bash
+GetSequenceCount
+```
 
 ## MigrateAliases
 
@@ -315,15 +322,12 @@ Aerospike and FDB implementations use internal aliases for fields and tables. Mi
 
 The "remap" operation will update the alias store, so if you are running a Genesis cluster it is better to use a database storage mode, as it is less error-prone and you won't have to copy the alias storage file to the remaining nodes manually.
 
-## killProcess script
+## killProcess
 
 This script is used to terminate a specified process.
 
 ### Syntax
-
-```bash
-killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--force] [--wait]
-```
+The `killProcess`command can take the following arguments:
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                      | Restricted values |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
@@ -334,14 +338,10 @@ killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--
 
 ## killServer script
 
-This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt for confirmation (`Are you sure you want to kill server? (y/n):`), unless you specify `--force`.
+This command reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt for confirmation (`Are you sure you want to kill server? (y/n):`), unless you specify `--force`.
 
 ### Syntax
-
-```bash
-killServer [--hostname <[hosts names]>] [--force]
-```
-
+The `killServer`command can take the following arguments:
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                                                          | Restricted values |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
@@ -355,10 +355,7 @@ killServer [--hostname <[hosts names]>] [--force]
 To dynamically change the logging levels on any Genesis process, use the LogLevel command.
 
 ### Syntax
-
-```bash
-LogLevel -p <process-name> -l <log level> -t <time> [-optional params] -c <class-name> -DATADUMP_ON -DATADUMP_OFF
-```
+The `LogLevel`command can take the following arguments:
 
 | Argument                               | Argument long name                   | Mandatory | Description                                                                           | Restricted values |
 |----------------------------------------|--------------------------------------|-----------|---------------------------------------------------------------------------------------|-------------------|
@@ -440,11 +437,8 @@ PID     Process Name                  Port        Status         CPU       Memor
 
 ### Syntax
 
-```bash
-mon [-v | -c | -a | -m] polling_interval
-```
+The `LogLevel`command can take the following arguments:
 
-Options
 
 | Argument | Argument long name | Mandatory | Description                                  | Restricted values |
 |----------|--------------------|-----------|----------------------------------------------|-------------------|
@@ -454,11 +448,14 @@ Options
 | -a       | --all              | No        | Shows all information.                       | No                |
 | -m       | --monitors         | No        | Shows state monitors information             | No                |
 
+
+
 ## PopulateHolidays
 
-This script populates the Holidays table with holidays, based on a specific year(s), country(ies) and region(s).
+This command populates the Holidays table with holidays, based on a specific year(s), country(ies) and region(s).
 
 ### Syntax
+The `PopulateHolidays`command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|
@@ -595,7 +592,7 @@ You need to provide:
 
 `finally` clause: It is run for every record that is purged and used to add some extra functionality if needed
 
-## remap script
+## remap 
 
 The remap script reads all dictionary files (fields and table definitions) from **$GC** and remaps the memory-resident database accordingly.
 
@@ -612,10 +609,7 @@ When you run `remap`, the database is automatically locked to ensure that no oth
 If the database crashes during a `remap` and the database remains locked (or if the database is locked for any other reason), run `remap --force --commit` to unlock the database.
 
 ### Syntax
-
-```bash
-remap [-c | --commit]
-```
+The `remap`command can take the following arguments:
 
 | Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values |
 |----------|------------------------|-----------|----------------------------------------------------------------------------------------|-------------------|
@@ -628,6 +622,10 @@ remap [-c | --commit]
 | -m       | --metadataOnly         | no        | Only updates the GSF dictionary and alias stores, does not apply any table changes    | No                |
 |          | --skip-unchanged       | no        | Forces remap to fail if the `--commit` option is used and schema changes are present  | No                |
 
+
+```bash
+remap [-c | --commit]
+```
 If you run remap with no arguments, it simply gives a report of changes that exist in the configuration.
 
 For example:
@@ -665,10 +663,6 @@ This script is used to rename a field name in a database without changing the di
 
 ### Syntax
 The `RenameFields` script takes two arguments; both of which are mandatory:
-
-```bash
-RenameFields [-i <[current name of field]>] [-o  <[new name of field]>]
-```
 
 | Argument | Argument long name | Mandatory | Description                              | Restricted values |
 |----------|--------------------|-----------|------------------------------------------|-------------------|
@@ -715,10 +709,7 @@ This would result in an error as PRICE is of type DOUBLE while FIRST_NAME is of 
 To send data into the database, use the `SendIt` command.
 
 ### Syntax
-
-```bash
-SendIt -t <table name> -f <file name>
-```
+The `SendIt` command can take the following arguments:
 
 | Argument | Argument long name     | Mandatory | Description                                                    | Restricted values |
 |----------|------------------------|-----------|----------------------------------------------------------------|-------------------|
@@ -772,10 +763,7 @@ Stop all your application's processes before using this command.
 :::
 
 ### Syntax
-
-```bash
-SetAutoIncrement
-```
+The `SetAutoIncrement` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
@@ -796,20 +784,13 @@ And remember, only use this command when all your applications have been stopped
 
 
 ## SetSequence
-
-
 This enables you to set a sequence number for a table. This can either be a single sequence number or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
 
 `SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
 
 
 ### Syntax
-
-```bash
-SetSequence
-````
-
-Options: 
+The `SetSequence`command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
@@ -825,10 +806,8 @@ This script starts a Genesis process. It takes a single positional argument:
 `<process name>` and an optional argument `--dump`, to ensure output is shown on screen (useful for debugging).
 
 ### Syntax
+The `startProcess` command can take the following arguments:
 
-```bash
-startProcess processName [--hostname <[host names]>] [--dump] 
-```
 
 `processName` is the name of the process that you want to start.
 
@@ -849,15 +828,12 @@ java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBoot
 
 
 
-## startServer script
+## startServer 
 
-This script reads the **$GC/processes.xml** file to determine which processes to start and how to start them.
+This command reads the **$GC/processes.xml** file to determine which processes to start and how to start them.
 
 ### Syntax
-
-```bash
-startServer [--hostname <[host names]>] [--ignoreDaemon] 
-```
+The `startServer` command can take the following arguments:
 
 | Argument                    | Argument long name                   | Mandatory | Description                                                                                                                                                                                | Restricted values |
 |-----------------------------|--------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
@@ -902,8 +878,6 @@ The `dependency` tag defines the processes that the current process is dependent
 The `loggingLevel` tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to declare explicitly that you would like to log all the received/sent network messages.
 
 The `classpath` tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a lib folder for one of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
-
-
 
 
 

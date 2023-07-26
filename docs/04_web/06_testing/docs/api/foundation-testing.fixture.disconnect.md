@@ -6,12 +6,12 @@
 
 Removes the [Fixture.parent](./foundation-testing.fixture.parent.md) from the DOM, causing the disconnect lifecycle to begin.
 
-<b>Signature:</b>
+**Signature:**
 
 ```typescript
 disconnect(): Promise<void>;
 ```
-<b>Returns:</b>
+**Returns:**
 
 Promise&lt;void&gt;
 
