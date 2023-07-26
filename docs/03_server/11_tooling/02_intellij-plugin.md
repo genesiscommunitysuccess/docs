@@ -113,37 +113,37 @@ You can also start all your processes at once using the **startServer** button i
 ![Application Processes](/img/plugin-processes.png)
 
 :::tip
-Starting all processes at once in large projects can take some time and by default will open a run window for each process.
-To clean up the UI, use the **Services** window for better organisation (Only available in IntelliJ Ultimate Edition).
+Starting all processes at once in large projects can take some time. By default, it opens a run window for each process.
+To clean up the UI, use the **Services** window for better organisation (only available in IntelliJ Ultimate Edition).
 :::
 
 ![Services Window](/img/plugin-services.png)
 
-### Using the Terminal
+### Using the terminal
 
 Every process and script that you can run via the UI can also be run via the IntelliJ terminal window.
-Recognised commands will be highlighted in green and can be run by pressing **Ctrl + Enter**.
+Recognised commands are highlighted in green and can be run by pressing **Ctrl** + **Enter**.
 
 ![Start all processes from the terminal](/img/plugin-terminal-1.png)
 
-Commands ran from the terminal can take arguments, which is easier than editing run configs to add them.
+You can include arguments when you run commands from the terminal, which is easier than editing run configs to add them.
 
 ![Process with arguments](/img/plugin-terminal-2.png)
 
 Although these commands are entered in the terminal, when executed they will open up the relevant window in your IDE, the same as when running via the UI.
 
-For ease of use, some commands which are not strictly processes or scripts have been added:
+For ease of use, some commands that are not strictly processes or scripts have been added:
 
-- `startServer` will start all your registered processes (as well as the Resource Daemon), as you would when running in a Unix based environment.
-- `killServer` stops all running processes (this also includes the Resource Daemon)
-- `startProcess` can be used for familiarity, but note that the process name itself is also a valid command e.g. `MY-APP-CONSOLIDATOR --coldStart`
-- `killProcess` will stop an individual processes
+- `startServer` starts all your registered processes (as well as the Resource Daemon), as you would when running in a Unix-based environment.
+- `killServer` stops all running processes (this also includes the Resource Daemon).
+- `startProcess` can be used for familiarity, but note that the process name itself is also a valid command e.g. `MY-APP-CONSOLIDATOR --coldStart`.
+- `killProcess` stops an individual process.
 
-Note: As with other plugin features, terminal commands will not be available until indexing has completed.
+Note: As with other plugin features, terminal commands will not be available until indexing has been completed.
 
 ### Log Files
 
-When starting services, the log file will be automatically attached to the run or debug window.
+When starting services, the log file is automatically attached to the run or debug window.
 
 The window has two tabs:
 
@@ -154,10 +154,10 @@ The log file view defaults to show only warnings. You can change the level from 
 
 ![Log Window](/img/plugin-logs.png)
 
-### Log Level
+### Log level
 
-Currently the plugin will not pickup `<loggingLevel>` entries in `processes.xml` files.
-To set the log level for a process, use the [LogLevel script](/operations/commands/server-commands/#loglevel-script)
+Currently, the plugin does not pickup `<loggingLevel>` entries in `processes.xml` files.
+To set the log level for a process, use the [LogLevel script](/operations/commands/server-commands/#loglevel-script).
 
 ### Debug
 
@@ -171,17 +171,18 @@ Once started, this launches a browser tab showing your application's login scree
 ![Debug Window](/img/intellij-ui.png)
 
 :::info
-Please note we are using [GENESIS_ROUTER](../../../server/configuring-runtime/genesis-router/) as our API_HOST and its default port is 9064. Therefore, your router port in the settings should be as below.
+Note that we are using [GENESIS_ROUTER](../../../server/configuring-runtime/genesis-router/) as our API_HOST; its default port is 9064. Therefore, your router port in the settings should be as below.
 
 ![Router Settings](/img/plugin-router.png)
 :::
 
 ### Making a change
 
-When changing files related to a certain process there is no need to redeploy the entire application.
+When changing files related to a certain process, there is no need to redeploy the entire application.
+
 When you restart a process, the modules relating to the process will be rebuilt and re-deployed automatically.
 
-For wider reaching changes, such as changing dependencies, a full redeploy of the application is required:
+For wider-reaching changes, such as changing dependencies, a full redeployment of the application is required:
 
 1. Click on the **Deploy Genesis** button on the toolbar.
 
@@ -206,9 +207,9 @@ This starts the build processes and the logs will be shown below.
 Using the plugin, you can right-click on CSV files or folders containing CSV files and select the **Import CSV(s) to Genesis** option.
 This takes the CSV files and uses the Genesis `SendIt` utility to load the data from those files into tables with matching names.
 
-## Tasks view
+  ## Tasks view
 
-Apart from the **Mon** view, there is the **Tasks** view, where it is possible to see, run and modify the configurations of Genesis services, scripts, and setup.
+Apart from the **Mon** view, there is the **Tasks** view, where it is possible to see, run and modify the configurations of Genesis services, scripts, and set-up.
 
 ![Task view](/img/plugin-tasks.png)
 
@@ -219,13 +220,14 @@ The preferred way of running a script is via the IntelliJ terminal window, any s
 ![Running a script](/img/plugin-terminal-3.png)
 
 Once run, the passed arguments will be saved in the run config for the script until new arguments are passed.
+
 To run a script with the same arguments, just re-run the run config.
 
 Alternatively, open the folder **Scripts**, find the one you want to run, right-click on it and select **Run**.
 
 ![Task view](/img/plugin-tasks-droptable.png)
 
-The example above runs the [DropTable](../../../operations/commands/server-commands/#droptable) script. This has parameters, so make sure you configure them using the **"Modify Run Configuration..."** option setting the *Args* property.
+The example above runs the [DropTable](../../../operations/commands/server-commands/#droptable) script. This has parameters, so make sure you configure them using the **"Modify Run Configuration..."** option, setting the *Args* property.
 
 ## Access to the docs
 
