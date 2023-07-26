@@ -16,8 +16,8 @@ Whenever you have a module that uses Genesis Router, it is **essential** that yo
 
 The file needs to include two entries:
 
--  the [package](../../../../server/configuring-runtime/processes/#package) where the classes exist; in the example below, this is `alpha.custom.endpoint`
--  the [classpath](../../../../server/configuring-runtime/processes/#classpath) of the jar that contains the package; in the example below, this is `alpha-file-processor-*.jar`
+-  the [package](../../../../server/configuring-runtime/processes/#package) where the classes exist; in the example below, this is `foxtrot.custom.endpoint`
+-  the [classpath](../../../../server/configuring-runtime/processes/#classpath) of the jar that contains the package; in the example below, this is `foxtrot-file-processor-*.jar`
 
 
 ```xml {6,10}
@@ -26,11 +26,11 @@ The file needs to include two entries:
         <groupId>GENESIS</groupId>
         <options>-Xmx512m -DXSD_VALIDATE=false</options>
         <module>router</module>
-        <package>global.genesis.router,global.genesis.console,alpha.custom.endpoint</package>
+        <package>global.genesis.router,global.genesis.console,foxtrot.custom.endpoint</package>
         <config>router-process-config.kts</config>
         <script>genesis-router.kts</script>
         <language>pal</language>
-        <classpath>genesis-console-*.jar,alpha-file-processor-*.jar</classpath>
+        <classpath>genesis-console-*.jar,foxtrot-file-processor-*.jar</classpath>
         <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
 </process>
 ```

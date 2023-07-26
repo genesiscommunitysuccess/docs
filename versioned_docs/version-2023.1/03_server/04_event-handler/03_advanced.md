@@ -40,7 +40,7 @@ sealed class CustomTradeEventReply : Outbound() {
 }
 ```
 
-Add `CustomTradeEventReply` under **{app-name}-messages** and assemble. Once you have built, add `api(project(":alpha-messages"))` to your build.gradle.kts file under **{app-name}-script-config/build.gradle.kts**.
+Add `CustomTradeEventReply` under **{app-name}-messages** and assemble. Once you have built, add `api(project(":{app-name}-messages"))` to your build.gradle.kts file under **{app-name}-script-config/build.gradle.kts**.
 
 ...you can now use the following example Event Handler:
 
