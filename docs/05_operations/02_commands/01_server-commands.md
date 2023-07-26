@@ -115,11 +115,12 @@ Stop all processes before using this command.
 | Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values |
 |----------|------------------------|-----------|----------------------------------------------------------------------------------------|-------------------|
 | -c       | --commit               | no        | Applies dictionary changes to the database                                             | No                |
-|          | [TABLES]               | no        | Comma-separated list of specific tables to be changed; if no list is supplied, all tables are changed                                              | No                |
+|          | [TABLES]               | no        | A list of specific tables to be changed separated by spaces; if no list is supplied, all tables are changed                                              | No                |
 
 In the example below, the changes are applied to the database for two tables: TRADE and POSITION.
-```
-FixEnumValues --commit TRADE,POSITION
+
+```bash
+FixEnumValues --commit TRADE POSITION
 ```
 
 ### As an installHook
