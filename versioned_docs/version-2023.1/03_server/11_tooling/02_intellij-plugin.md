@@ -41,7 +41,7 @@ To run a development application locally using the plugin, you must have:
 - a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running
 
 :::tip
-You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
+You could use, for example, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
 
 ```terminal
 docker ps --format '{{ .ID }}\t{{.Image}}\t{{ .Names }}'
@@ -57,7 +57,7 @@ docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POST
 To run locally, you need to override the values set in your [system definition](/server/configuring-runtime/system-definitions/) configuration (which contain a url for the host).
 
 With the Genesis IntelliJ Plugin, system definitions can be overriden via the plugin settings.
-When editing plugin settings you do not need to redeploy, unlike editing *\*-system-definitions.kts* files.
+When editing plugin settings you do not need to redeploy, unlike editing **\*-system-definitions.kts** files.
 
 ![Open Settings](/img/plugin-settings.png)
 
@@ -74,7 +74,7 @@ jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres
 
 ### Setting up genesis.home
 
-When first using the plugin with a project, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
+When first using the plugin with a project, you must create your genesis home folder; click on the **Install Genesis** button in the Tool window.
 
 ![Genesis Install](/img/intellij-install.png)
 
@@ -96,7 +96,7 @@ The Resource Daemon provides health information about your processes; it enables
 
 To start the Resource daemon, press the **Start Resource Daemon** button.
 
-Alternatively, if using the **startServer** button to start all of your processes at once, the Resource Daemon will be started for you.
+Alternatively, if using the **startServer** button to start all your processes at once, the Resource Daemon will be started for you.
 
 ![Genesis Install](/img/plugin-resourcedaemon.png)
 
@@ -113,50 +113,50 @@ You can also start all your processes at once using the **startServer** button i
 ![Application Processes](/img/plugin-processes.png)
 
 :::tip
-Starting all processes at once in large projects can take some time and by default will open a run window for each process.
-To clean up the UI, use the **Services** window for better organisation (Only available in IntelliJ Ultimate Edition).
+Starting all processes at once in large projects can take some time. By default, this opens a run window for each process.
+To clean up the UI, use the **Services** window for better organisation (only available in IntelliJ Ultimate Edition).
 :::
 
 ![Services Window](/img/plugin-services.png)
 
-### Using the Terminal
+### Using the terminal
 
 Every process and script that you can run via the UI can also be run via the IntelliJ terminal window.
-Recognised commands will be highlighted in green and can be run by pressing **Ctrl + Enter**.
+Recognised commands are highlighted in green and can be run by pressing **Ctrl** + **Enter**.
 
 ![Start all processes from the terminal](/img/plugin-terminal-1.png)
 
-Commands ran from the terminal can take arguments, which is easier than editing run configs to add them.
+When you run commands from the terminal you can include arguments, which is easier than editing the run configs to add them.
 
 ![Process with arguments](/img/plugin-terminal-2.png)
 
-Although these commands are entered in the terminal, when executed they will open up the relevant window in your IDE, the same as when running via the UI.
+Although these commands are entered in the terminal, when they are executed they open up the relevant window in your IDE, the same as when running via the UI.
 
-For ease of use, some commands which are not strictly processes or scripts have been added:
+For ease of use, some commands that are not strictly processes or scripts have been added:
 
-- `startServer` will start all your registered processes (as well as the Resource Daemon), as you would when running in a Unix based environment.
-- `killServer` stops all running processes (this also includes the Resource Daemon)
-- `startProcess` can be used for familiarity, but note that the process name itself is also a valid command e.g. `MY-APP-CONSOLIDATOR --coldStart`
-- `killProcess` will stop an individual processes
+- `startServer` starts all your registered processes (as well as the Resource Daemon), as you would when running in a Unix based environment.
+- `killServer` stops all running processes (this also includes the Resource Daemon).
+- `startProcess` can be used for familiarity, but note that the process name itself is also a valid command e.g. `MY-APP-CONSOLIDATOR --coldStart`.
+- `killProcess` stops an individual process.
 
-Note: As with other plugin features, terminal commands will not be available until indexing has completed.
+Note: As with other plugin features, terminal commands are not available until indexing has been completed.
 
-### Log Files
+### Log files
 
-When starting services, the log file will be automatically attached to the run or debug window.
+When starting services, the log file is automatically attached to the run or debug window.
 
 The window has two tabs:
 
 - console output
 - the log file for the process
 
-The log file view defaults to show only warnings. You can change the level from the dropdown on the right of this screen. 
+The log file view defaults to show only warnings. You can change the level from the drop-down on the right of this screen. 
 
 ![Log Window](/img/plugin-logs.png)
 
-### Log Level
+### Log level
 
-Currently the plugin will not pickup `<loggingLevel>` entries in `processes.xml` files.
+Currently, the plugin will not pick up `<loggingLevel>` entries in **processes.xml** files.
 To set the log level for a process, use the [LogLevel script](/operations/commands/server-commands/#loglevel-script)
 
 ### Debug
@@ -166,22 +166,22 @@ It’s possible to debug ‘normal’ code using the **debug** option from the g
 ### Starting the UI
 
 To start your Genesis UI, click the **Start UI** button on the tool bar. This builds your front-end codebase and starts the webpack webserver in development mode. 
-Once started, this launches a browser tab showing your application's login screen.
+Once this has started, it launches a browser tab showing your application's login screen.
 
 ![Debug Window](/img/intellij-ui.png)
 
 :::info
-Please note we are using [GENESIS_ROUTER](../../../server/configuring-runtime/genesis-router/) as our API_HOST and its default port is 9064. Therefore, your router port in the settings should be as below.
+Note that we are using [GENESIS_ROUTER](../../../server/configuring-runtime/genesis-router/) as our API_HOST; its default port is 9064. Therefore, your router port in the settings should be as below.
 
 ![Router Settings](/img/plugin-router.png)
 :::
 
 ### Making a change
 
-When changing files related to a certain process there is no need to redeploy the entire application.
+When changing files related to a certain process, there is no need to redeploy the entire application.
 When you restart a process, the modules relating to the process will be rebuilt and re-deployed automatically.
 
-For wider reaching changes, such as changing dependencies, a full redeploy of the application is required:
+For wider-reaching changes, such as changing dependencies, you need to redeploy the application.
 
 1. Click on the **Deploy Genesis** button on the toolbar.
 
@@ -199,7 +199,7 @@ This starts the build processes and the logs will be shown below.
 
 ![Genesis Install](/img/plugin-resourcedaemon.png)
 
-4. Once the Resource daemon starts, you can start the processes you wish to have running.
+4. Once the Resource daemon has started, you can start the processes you wish to have running.
 
 ## Loading data into the application
 
@@ -214,18 +214,18 @@ Apart from the **Mon** view, there is the **Tasks** view, where it is possible t
 
 ### Running a Genesis script
 
-The preferred way of running a script is via the IntelliJ terminal window, any script visible in the view can be run via the terminal and arguments can be applied easily.
+The preferred way of running a script is via the IntelliJ terminal window; any script visible in the view can be run via the terminal and arguments can be applied easily.
 
 ![Running a script](/img/plugin-terminal-3.png)
 
-Once run, the passed arguments will be saved in the run config for the script until new arguments are passed.
+Once a scri[t has been run, the passed arguments will be saved in the run config for the script until new arguments are passed.
 To run a script with the same arguments, just re-run the run config.
 
 Alternatively, open the folder **Scripts**, find the one you want to run, right-click on it and select **Run**.
 
 ![Task view](/img/plugin-tasks-droptable.png)
 
-The example above runs the [DropTable](../../../operations/commands/server-commands/#droptable) script. This has parameters, so make sure you configure them using the **"Modify Run Configuration..."** option setting the *Args* property.
+The example above runs the [DropTable](../../../operations/commands/server-commands/#droptable) script. This has parameters, so make sure you configure them using the **"Modify Run Configuration..."** option, setting the *Args* property.
 
 ## Access to the docs
 
