@@ -11,65 +11,71 @@ tags:
 ---
 
 
-Your application can perform authentication through many techniques. All these techniques support [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication) to bring additional security.
-
-You can set Username and Password authentication to use one of three solutions:
+There are many different ways for your application to perform authentication. Each method requires the implementation of an 'Authenticator'. The authenticators offered by the Genesis low-code platform are:
 
 * INTERNAL
 * LDAP
-* HYBRID
-
-SSO authentication is further broken down into one of the following:
-
 * [JWT (JSON Web Token)](https://jwt.io/introduction) SSO
-* [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language)
-* [OIDC](https://openid.net/connect/)
+* SSO Token
+
+SSO Token authentication covers both [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OIDC](https://openid.net/connect/)
+
+Some of these techniques support [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication) to bring additional security.
 
 Each of these requires its own configuration settings in the application's _application-name-_**auth-preferences.kts** file.
 
 ## Username and password authentication
 
-Username and password authentication allows users to log in directly to your application. You must choose one of the provided solutions in order control this process.
+Username and password authentication allow users to log in directly to your application. You must choose one of the  solutions provided in order control this process.
 
-To specify which one to use, just edit the application's **auth-preferences.kts** file and change the `type` variable in the `authentication` block to match the required value. For example:
+To specify which one to use, just edit the application's **auth-preferences.kts** file and call any of the functions exposed inside the 'authentication' block to register an authenticator instance.
 
-```kotlin
-security {
-  authentication {
-    type = AuthType.LDAP
-  }
-}
-```
+The differences between the solutions associated with each value are detailed below.
 
-:::note
+### Genesis Password
 
-If you do not specify an authentication type, INTERNAL authentication is used.
+Genesis Password authentication uses internally stored hashed credentials to authenticate users. It checks user credentials against an internal table. This provides the following features:
 
-:::
-
-The three values that this can be set to are:
-
-* AuthType.INTERNAL
-* AuthType.LDAP
-* AuthType.HYBRID
-
-The differences between the solutions associated with each value are detailed below:
-
-### Internal
-
-Internal authentication uses internally stored hashed credentials to authenticate users. It checks user credentials against an internal table. Internal authentication provides the following features:
-
-- User accounts can be locked
-- Passwords can be set to expire
-- Passwords can be required to conform to a configurable standard
-- Users can reset or change their password (assuming they can log in first)
-
-Internal authentication is the default authentication behaviour if you don't specify a `type` in **auth-preferences.kts**.
+- User accounts can be locked.
+- Passwords can be set to expire.
+- Passwords can be required to conform to a configurable standard.
+- Users can reset or change their password (assuming they can log in first).
 
 ```kotlin
     authentication {
-        type = AuthType.INTERNAL
-    }
+        genesisPassword {
+            validation {
+                passwordSalt = ""
+                passwordStrength {
+                    minimumLength = null
+                    maximumLength = 256
+                    minDigits = null
+                    maxRepeatCharacters = null
+                    minUppercaseCharacters = null
+                    minLowercaseCharacters = null
+                    minNonAlphaNumericCharacters = null
+                    restrictWhiteSpace = true
+                    restrictAlphaSequences = false
+                    restrictQWERTY = true
+                    restrictNumericalSequences = true
+                    illegalCharacters = ""
+                    historicalCheck = null
+                    dictionaryWordSize = null
+                    restrictDictionarySubstring = false
+                    restrictPassword = false
+                    restrictUserName = false
+                    repeatCharacterRestrictSize = null
+                    passwordExpiryDays = null
+                    passwordExpiryNotificationDays = null
+                }
+            }
+
+            retry {
+                maxAttempts = 3
+                waitTimeMins = 5
+            }
+        }
+	}
 ```
 
 ### LDAP
@@ -88,38 +94,7 @@ The example below shows LDAP authentication specified, with `userIdType` set to 
 
 ```kotlin
     authentication {
-        type = AuthType.LDAP
 		ldap {
-		    connection {
-		        url = "localhost"
-                port = 389
-                searchBases {
-				    searchBase {
-                        entry("ou=People,dc=example,dc=com")
-			        }
-                }
-                bindDn = "CN=DTADevBindUser,ou=People,dc=example,dc=com"
-                bindPassword = "password123"
-                userIdType = "cn"	
-			}
-		}
-    }
-```
-
-### Hybrid
-
-As its name suggests, hybrid mode is a mix of Internal and LDAP authentication modes, and it checks credentials against both.
-
-First, an internal authentication is performed. If the outcome is successful, authentication is performed against the LDAP server . The login request is only successful if both authentications are successful.
-
-This enables you to take advantage of all the available functionality of internal mode (locked accounts, expiring passwords, reset/change passwords). However, if passwords are changed or expired, they need to be changed manually in LDAP too, because authentication always happens in both services.
-
-The configuration file takes the same fields as LDAP. You can see this in the example below, where the authentication `type` has been set to `HYBRID`.
-
-```kotlin
-    authentication {
-        type = AuthType.HYBRID
-        ldap {
 		    connection {
 		        url = "localhost"
                 port = 389
@@ -146,4 +121,5 @@ SSO authentication is a more involved process to enable; it requires additional 
 - [SSO - SAML](../../../server/access-control/SSO-saml/)
 - [SSO - OIDC](../../../server/access-control/SSO-oidc/)
 
-Both SSO and password authentication can be used concurrently by applications built on the platform; the use of one does not mandate or prevent the use of the other.
+## Using more than one authentication type
+Your application can use two or more authentication types concurrently; the use of one does not mandate or prevent the use of the other. Each configured authenticator will be tried in turn to see if a logon message can be successfully authenticated.

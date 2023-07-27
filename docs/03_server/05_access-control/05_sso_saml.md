@@ -160,6 +160,14 @@ error_page 404 =200 /index.html;
 ```
 :::
 
+
+Finally, you need to specify an SSOToken authenticator in your _application-name-_**auth-preferences.kts** file:
+```kotlin
+    authentication {
+		ssoToken {}
+    }
+```
+
 If necessary, you can define advanced configuration in the file **onelogin.saml.properties**. You need to use this if - for example - you need to configure a key for signing the authn request.
 
 Once this is configured, a service provider metadata endpoint will be available on: `https://{url}/gwf/saml/metadata?idp={idp name}`.
