@@ -41,7 +41,7 @@ To run a development application locally using the plugin, you must have:
 - a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running
 
 :::tip
-You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
+You could use, for example, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
 
 ```terminal
 docker ps --format '{{ .ID }}\t{{.Image}}\t{{ .Names }}'
@@ -57,7 +57,7 @@ docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POST
 To run locally, you need to override the values set in your [system definition](/server/configuring-runtime/system-definitions/) configuration (which contain a url for the host).
 
 With the Genesis IntelliJ Plugin, system definitions can be overriden via the plugin settings.
-When editing plugin settings you do not need to redeploy, unlike editing *\*-system-definitions.kts* files.
+When editing plugin settings you do not need to redeploy, unlike editing **\*-system-definitions.kts** files.
 
 ![Open Settings](/img/plugin-settings.png)
 
@@ -130,7 +130,7 @@ You can include arguments when you run commands from the terminal, which is easi
 
 ![Process with arguments](/img/plugin-terminal-2.png)
 
-Although these commands are entered in the terminal, when executed they will open up the relevant window in your IDE, the same as when running via the UI.
+Although these commands are entered in the terminal, when they are executed they open the relevant window in your IDE - just as if you were running via the UI.
 
 For ease of use, some commands that are not strictly processes or scripts have been added:
 
@@ -141,7 +141,7 @@ For ease of use, some commands that are not strictly processes or scripts have b
 
 Note: As with other plugin features, terminal commands will not be available until indexing has been completed.
 
-### Log Files
+### Log files
 
 When starting services, the log file is automatically attached to the run or debug window.
 
@@ -156,7 +156,7 @@ The log file view defaults to show only warnings. You can change the level from 
 
 ### Log level
 
-Currently, the plugin does not pickup `<loggingLevel>` entries in `processes.xml` files.
+Currently, the plugin does not pick up `<loggingLevel>` entries in `processes.xml` files.
 To set the log level for a process, use the [LogLevel script](/operations/commands/server-commands/#loglevel-script).
 
 ### Debug
@@ -182,7 +182,7 @@ When changing files related to a certain process, there is no need to redeploy t
 
 When you restart a process, the modules relating to the process will be rebuilt and re-deployed automatically.
 
-For wider-reaching changes, such as changing dependencies, a full redeployment of the application is required:
+For wider-reaching changes, such as changing dependencies, you must redeploy the application:
 
 1. Click on the **Deploy Genesis** button on the toolbar.
 
@@ -215,11 +215,11 @@ Apart from the **Mon** view, there is the **Tasks** view, where it is possible t
 
 ### Running a Genesis script
 
-The preferred way of running a script is via the IntelliJ terminal window, any script visible in the view can be run via the terminal and arguments can be applied easily.
+The preferred way of running a script is via the IntelliJ terminal window; any script visible in the view can be run via the terminal and arguments can be applied easily.
 
 ![Running a script](/img/plugin-terminal-3.png)
 
-Once run, the passed arguments will be saved in the run config for the script until new arguments are passed.
+Once a script has been run, the passed arguments are saved in the run config for the script until new arguments are passed.
 
 To run a script with the same arguments, just re-run the run config.
 
