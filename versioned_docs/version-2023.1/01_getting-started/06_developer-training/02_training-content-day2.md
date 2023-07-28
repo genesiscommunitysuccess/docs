@@ -27,7 +27,7 @@ This day covers:
 
 ## Introducing the UI
 
-Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](https://www.fast.design/docs/introduction/), which is a lightweight abstraction that enables you to easily ​build performant, memory-efficient, standards-compliant ​Web Components.
+Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](https://www.fast.design/docs/introduction/), which is a lightweight abstraction that enables you to easily ​build performant, memory-efficient, standards-compliant ​Web Components. You can find more about Microsoft FAST and fast-foundation at its main [documentation website](https://www.fast.design/docs/introduction/), which includes an [API reference](https://www.fast.design/docs/api/fast-foundation/).
 
 ### Web Components
 
