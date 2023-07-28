@@ -1,5 +1,5 @@
 ---
-title: 'Gateways and Streamers - Examples'
+title: 'FIX Gateways and Streamers - examples'
 sidebar_label: 'Examples'
 id: examples
 keywords: [server, integration, gateways, streamers, examples]
@@ -10,7 +10,7 @@ tags:
   - streamers
   - examples
 ---
-Streamer example:
+## Streamer
 
 ```kotlin
 streams {
@@ -27,7 +27,7 @@ streams {
     }
 }
 ```
-Streamer Client example:
+## Streamer Client
 
 ```kotlin
 streamerClients {

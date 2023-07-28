@@ -1,5 +1,5 @@
 ---
-title: 'Gateways and Streamers - FIX-Xlator'
+title: 'FIX Gateways and Streamers - FIX-Xlator'
 sidebar_label: 'FIX-Xlator'
 id: fix-xlator
 keywords: [server, integration, gateways, streamers, fix-xlator]
