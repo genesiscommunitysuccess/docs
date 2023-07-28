@@ -1,5 +1,5 @@
 ---
-title: 'Gateways and Streamers - customisation'
+title: 'FIX Gateways and Streamers - customisation'
 sidebar_label: 'Customisation'
 id: customisation
 keywords: [server, integration, gateways, streamers, customisation]

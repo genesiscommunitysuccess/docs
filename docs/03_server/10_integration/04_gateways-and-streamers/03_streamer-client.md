@@ -1,5 +1,5 @@
 ---
-title: 'Gateways and Streamers - Streamer Client'
+title: 'FIX Gateways and Streamers - Streamer Client'
 sidebar_label: 'Streamer Client'
 id: streamer-client
 keywords: [server, integration, gateways, streamers, streamer client]
