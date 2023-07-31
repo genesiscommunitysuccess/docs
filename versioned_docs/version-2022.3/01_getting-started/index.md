@@ -6,7 +6,11 @@ id: introduction
 import QuickCard from '@site/src/components/Card';
 import { Grid } from '@mui/material'
 
-The Learning area for the Genesis low-code platform is aimed at people who **already have some development knowledge**. Ideally, you should have experience of Java and/or JavaScript, but development experience in any object-oriented language is a good starting point.
+Welcome to the Learning area for the Genesis low-code platform. This is a full-stack application-development platform designed specifically for the financial markets.
+
+- All our documentation is aimed at people who **already have some development knowledge**. Ideally, you should have experience of Java and/or JavaScript, but development experience in any object-oriented language is a good starting point.
+- It helps if you have some basic knowledge of the financial markets - you'll need that if you want to develop an effective application - but we have tried to avoid jargon as much as possible.
+
 
 You can take the **slow road** or the **fast track** through this area. We recommend the slow road, but if you want to whizz through things, be our guest.  
 
