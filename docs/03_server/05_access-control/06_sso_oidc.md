@@ -104,7 +104,7 @@ Within the configuration file, each OIDC configuration has the following propert
 
 | Property name | Description | Mandatory | Default value | Type |
 | --- | ------ | --- | --- | --- |
-| loginEndpoint | The URI to be re-directed after successful authentication | Yes | No default value | String |
+| loginEndpoint | The login URI of your application; this is used to initiate the OIDC login | Yes | No default value | String |
 | identityProvider | Configuration for each OIDC Provider. Can be repeated if multiple providers have to be configured | Yes | No default value | Object |
 
 Each `identityProvider` configuration has the following properties:
@@ -118,7 +118,7 @@ Each `identityProvider` configuration has the following properties:
 | onNewUser | Predefined action when a new user logs in. **This property is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess` | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
 | tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | Yes | No default value | Int |
-| redirectUri | The URI to handle the code authorisation. | Yes | No default value | String |
+| redirectUri | The URI that handles the code authorisation; in normal OIDC workflow, this is the login URL of your application | Yes | No default value | String |
 | onFirstLogin | Configuration for creating `User` and its `UserAttributes`. It's called on first successful login when the user doesn't exist in the database. | No | No default value | Object |
 | onLoginSuccess | Callback that is invoked every time after successful authentication. It has access to the database and the `DecodedIdToken` returned by the OIDC Provider | No | No default value | Object |
 
@@ -177,6 +177,47 @@ Finally, you need to specify an SSOToken authenticator in your _application-name
     authentication {
 		ssoToken {}
     }
+```
+
+### Configuring the front end
+There are two files that need to be attended to here.
+
+First, add the `sso` configuration block to your **config.ts** file. This enables SSO. You can use the code below:
+
+```typescript
+configure(this.container, {
+.....
+	authAuth:true,
+	sso: {
+		toggled: true,
+		identityProvidersPath: 'gwf/sso/list'
+	}
+......
+});
+```
+
+Then, update the **main.ts** file so that it fetches the `SSO_TOKEN` from the query parameter and adds it to the session storage:
+
+```typescript
+async connectedCallback(){
+	.....
+	this.checkForSSOToken();
+	.....
+}
+
+checkForSSOToken(){
+	const queryParams = new  URLSearchParams(window.location.search);
+    const ssoToken = queryParams.get('SSO_TOKEN');
+    if(ssoToken) {
+      if (window.opener){
+        window.opener.sessionStorage.setItem('ssoToken', ssoToken);
+        window.opener.location.reload();
+        window.close();
+      } else {
+        sessionStorage.setItem('ssoToken', ssoToken);
+      }
+    }
+}
 ```
 
 ## OIDC logout
@@ -431,8 +472,6 @@ oidc{
     }
     
     scopes("openid", "profile")
-
-    onNewUser = NewUserStrategy.ALWAYS_ALLOW
 
     usernameClaim = "name"
 

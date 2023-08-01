@@ -149,12 +149,13 @@ Additionally, you need an _application-name-_**saml-config.kts** file, as below:
     }
 ```
 :::warning
-The `loginEndpoint` is the URL to which the front end is redirected once the full SAML workflow has been completed and an SSO_TOKEN has been issued. 
-If this URL itself is a redirect, the SSO_TOKEN query parameter could be lost.
+The `loginEndpoint` is the URL to which the front end is redirected once the full SAML workflow has been completed and an `SSO_TOKEN` has been issued. 
+If this URL itself is a redirect, the `SSO_TOKEN` query parameter could be lost.
 
 Additionally, if the web server is routing via scripts, navigating to this URL could throw a **404 Not Found** error. The remedy in this case is to add an override for 404 errors to redirect back to your application logon screen. 
 
-An example of how to do this in NGINX is here:
+Here is an example of how to do this in NGINX:
+
 ```
 error_page 404 =200 /index.html;
 ```
@@ -208,31 +209,42 @@ This section provides a more detailed description of the workflow between a Gene
 
 - `ssoToggle` is set to true in the Genesis application’s `config.ts`, this ensures that the **Enable SSO?** checkbox is displayed on the application's login page.
 - either **Enable SSO** is checked manually in the UI, or `ssoEnable` is set to true by default in the config.
-- In the front end, the following has been added to `src/routes/config.ts`:
+- In the front end, an `sso` configuration block has been added to enable SSO: 
+```typescript
+configure(this.container, {
+.....
+	authAuth:true,
+	sso: {
+		toggled: true,
+		identityProvidersPath: 'gwf/sso/list'
+	}
+......
+});
+```
+- In the front end, **main.ts** has been updated to fetch the `ssoToken` from the query parameter and add it to the session storage:
+```typescript
+async connectedCallback(){
+	.....
+	this.checkForSSOToken();
+	.....
+}
 
-```javascript
-this.routes.map(
-      {path: '', redirect: 'login'},
-      {
-        path: 'login',
-        element: Login,
-        title: 'Login',
-        name: 'login',
-        layout: loginLayout,
-        settings: {
-          ...
-          ssoToggle: true,
-          ssoEnable: true,
-        },
-        childRouters: true,
-      },
-      {path: 'protected', element: Protected, title: 'Protected', name: 'protected', settings: {allowAutoAuth: true}},
-      {path: 'admin', element: Admin, title: 'Admin', name: 'admin', settings: {allowAutoAuth: true}},
-      {path: 'reporting', element: Reporting, title: 'Reporting', name: 'reporting', settings: {allowAutoAuth: true}},
-    );
-
+checkForSSOToken(){
+	const queryParams = new  URLSearchParams(window.location.search);
+    const ssoToken = queryParams.get('SSO_TOKEN');
+    if(ssoToken) {
+      if (window.opener){
+        window.opener.sessionStorage.setItem('ssoToken', ssoToken);
+        window.opener.location.reload();
+        window.close();
+      } else {
+        sessionStorage.setItem('ssoToken', ssoToken);
+      }
+    }
+}
 ```
 
+### The flow
 1. The front end hits **ssoListEndpoint** - by default, this is `gwf/sso/listJWT/SSO` (this is configurable).
 2. **ssoListEndpoint** returns a list of identity providers:
    ```
