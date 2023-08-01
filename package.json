@@ -16,9 +16,9 @@
     "start:next": "SHOW_NEXT=true docusaurus start --port 8080 --host 0.0.0.0",
     "swizzle": "docusaurus swizzle",
     "postinstall": "patch-package --error-on-fail && npm run generate:iife && npm run hack:iife",
-    "generate:iife": "rollup -c -f iife",
+    "generate:iife": "genx build -b rollup",
     "hack:iife": "npm run copy:iife && npm run rename:iife && npm run package:iife",
-    "copy:iife": "copyfiles -u 2 src/client-modules/docs.iife.min.js node_modules/iife",
+    "copy:iife": "copyfiles -u 1 dist/docs.iife.min.js node_modules/iife",
     "copy:dsc": "rimraf ./static/dsc && copyfiles -u 4 node_modules/@genesislcap/design-system-configurator/dist/* static/dsc",
     "rename:iife": "node -e \"require('fs').rename('node_modules/iife/docs.iife.min.js', 'node_modules/iife/index.js',()=>{})\"",
     "package:iife": "node -e \"require('fs').writeFileSync('node_modules/iife/package.json', '{\\\"name\\\":\\\"iife\\\",\\\"version\\\":\\\"1.0.0\\\",\\\"main\\\":\\\"index.js\\\"}')\""
@@ -31,24 +31,25 @@
     "@docusaurus/theme-live-codeblock": "^2.4.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@genesislcap/documentation-components": "14.62.1",
-    "@genesislcap/design-system-configurator": "14.62.1",
-    "@genesislcap/foundation-comms": "14.62.1",
-    "@genesislcap/foundation-entity-management": "14.62.1",
-    "@genesislcap/foundation-filters": "14.62.1",
-    "@genesislcap/foundation-header": "14.62.1",
-    "@genesislcap/foundation-layout": "14.62.1",
-    "@genesislcap/foundation-login": "14.62.1",
-    "@genesislcap/foundation-reporting": "14.62.1",
-    "@genesislcap/foundation-testing": "14.62.1",
-    "@genesislcap/foundation-zero": "14.62.1",
+    "@genesislcap/design-system-configurator": "14.67.3",
+    "@genesislcap/documentation-components": "14.67.3",
+    "@genesislcap/foundation-comms": "14.67.3",
+    "@genesislcap/foundation-entity-management": "14.67.3",
+    "@genesislcap/foundation-filters": "14.67.3",
+    "@genesislcap/foundation-header": "14.67.3",
+    "@genesislcap/foundation-layout": "14.67.3",
+    "@genesislcap/foundation-login": "14.67.3",
+    "@genesislcap/foundation-reporting": "14.67.3",
+    "@genesislcap/foundation-testing": "14.67.3",
+    "@genesislcap/foundation-zero": "14.67.3",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.6",
     "classnames": "^2.3.2",
-    "webpack":"^5.83.1",
     "dayjs": "1.10.7",
     "docusaurus-gtm-plugin": "^0.0.2",
     "docusaurus-plugin-matomo": "^0.0.6",
+    "esbuild": "0.17.19",
+    "esbuild-loader": "^3.0.1",
     "fs-extra": "^11.1.0",
     "mdx-mermaid": "1.3.2",
     "mermaid": "^9.3.0",
@@ -57,8 +58,7 @@
     "react-dom": "^17.0.0",
     "react-player": "^2.11.0",
     "tslib": "^2.4.1",
-    "esbuild-loader": "^3.0.1",
-    "esbuild": "0.17.19"
+    "webpack": "^5.83.1"
   },
   "browserslist": {
     "production": [
@@ -73,13 +73,16 @@
     ]
   },
   "devDependencies": {
-    "@genesislcap/rollup-builder": "14.62.1",
+    "@genesislcap/genx": "14.67.3",
     "@types/mocha": "^10.0.1",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
+    "esbuild-loader": "^3.0.1",
     "patch-package": "^6.5.1",
-    "rimraf": "5.0.1",
-    "esbuild-loader": "^3.0.1"
+    "rimraf": "5.0.1"
+  },
+  "genx": {
+    "entry": "iife.ts"
   }
 }
