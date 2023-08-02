@@ -163,6 +163,7 @@ error_page 404 =200 /index.html;
 
 
 Finally, you need to specify an SSOToken authenticator in your _application-name-_**auth-preferences.kts** file:
+
 ```kotlin
     authentication {
 		ssoToken {}
