@@ -163,45 +163,7 @@ If `verification` is defined, either `publicKey` or `publicKeyUrl` must also be 
 :::
 
 ### Configuring the front end
-There are two files that need to be attended to here.
-
-First, add the `sso` configuration block to your **config.ts** file. This enables SSO. You can use the code below:
-
-```typescript
-configure(this.container, {
-.....
-	authAuth:true,
-	sso: {
-		toggled: true,
-		identityProvidersPath: 'gwf/sso/list'
-	}
-......
-});
-```
-
-Then, update the **main.ts** file so that it fetches the `SSO_TOKEN` from the query parameter and adds it to the session storage:
-
-```typescript
-async connectedCallback(){
-	.....
-	this.checkForSSOToken();
-	.....
-}
-
-checkForSSOToken(){
-	const queryParams = new  URLSearchParams(window.location.search);
-    const ssoToken = queryParams.get('SSO_TOKEN');
-    if(ssoToken) {
-      if (window.opener){
-        window.opener.sessionStorage.setItem('ssoToken', ssoToken);
-        window.opener.location.reload();
-        window.close();
-      } else {
-        sessionStorage.setItem('ssoToken', ssoToken);
-      }
-    }
-}
-```
+The front end of your application needs to be configured correctly to ensure that the workflow works correctly.
  
 ## Sample configurations
 

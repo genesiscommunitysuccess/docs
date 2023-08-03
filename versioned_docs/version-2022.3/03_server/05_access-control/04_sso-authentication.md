@@ -277,8 +277,8 @@ The Genesis username should be the user’s email address.
 
 This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes the following settings:
 
-- `ssoToggle` is set to true in the Genesis application’s `config.ts`, this ensures that the ‘Enable SSO?’ checkbox is displayed on the application's login page.
-- 'Enable SSO’ is checked, either manually in the UI, or `ssoEnable` is set to true by default in the config.
+- `ssoToggle` is set to true in the Genesis application’s `config.ts`, this ensures that the **Enable SSO?** checkbox is displayed on the application's login page.
+- **Enable SSO** is checked, either manually in the UI, or `ssoEnable` is set to true by default in the config.
 - In the front end, the following has been added to `src/routes/config.ts`:
 
 ```javascript

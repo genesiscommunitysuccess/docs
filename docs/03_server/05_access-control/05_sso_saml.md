@@ -206,44 +206,7 @@ The Genesis username should be the user’s email address.
 
 ## Front-to-back flow
 
-This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes the following settings:
-
-- `ssoToggle` is set to true in the Genesis application’s `config.ts`, this ensures that the **Enable SSO?** checkbox is displayed on the application's login page.
-- either **Enable SSO** is checked manually in the UI, or `ssoEnable` is set to true by default in the config.
-- In the front end, an `sso` configuration block has been added to enable SSO: 
-```typescript
-configure(this.container, {
-.....
-	authAuth:true,
-	sso: {
-		toggled: true,
-		identityProvidersPath: 'gwf/sso/list'
-	}
-......
-});
-```
-- In the front end, **main.ts** has been updated to fetch the `ssoToken` from the query parameter and add it to the session storage:
-```typescript
-async connectedCallback(){
-	.....
-	this.checkForSSOToken();
-	.....
-}
-
-checkForSSOToken(){
-	const queryParams = new  URLSearchParams(window.location.search);
-    const ssoToken = queryParams.get('SSO_TOKEN');
-    if(ssoToken) {
-      if (window.opener){
-        window.opener.sessionStorage.setItem('ssoToken', ssoToken);
-        window.opener.location.reload();
-        window.close();
-      } else {
-        sessionStorage.setItem('ssoToken', ssoToken);
-      }
-    }
-}
-```
+This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes that the front end has been configured correctly.
 
 ### The flow
 1. The front end hits **ssoListEndpoint** - by default, this is `gwf/sso/listJWT/SSO` (this is configurable).
