@@ -17,7 +17,7 @@ import CodeBlock from '@theme/CodeBlock';
 In the front end of your application, there are two files that need to be checked and amended to ensure that the SSO workflow works correctly.
 
 ## config.ts
-Add the `sso` configuration block to your **config.ts** file. Note particularly that `ssoToggle` is set to true . This ensures that the **Enable SSO** checkbox is displayed on the application's login page. The user can then check **Enable SSO** manually in the UI. You can use the code below:
+Add the `sso` configuration block to your **config.ts** file. Note particularly that `ssoToggle` is set to true. This ensures that the **Enable SSO** checkbox is displayed on the application's login page. The user can then check **Enable SSO** manually in the UI. You can use the code below:
 
 ```typescript
 configure(this.container, {
