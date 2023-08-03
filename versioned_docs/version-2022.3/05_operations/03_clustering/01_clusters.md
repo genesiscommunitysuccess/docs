@@ -41,6 +41,8 @@ systems {
         item(name = "location", value = "LO")
         item(name = "LogFramework", value = "LOG4J2")
         item(name = "LogFrameworkConfig", value = "log4j2-default.xml")
+        // defaults to true, false only for Windows
+        item(name = "LSOF_AVAILABLE", value = "false")
     }
 }
 ```

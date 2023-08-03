@@ -159,6 +159,13 @@ The log file view defaults to show only warnings. You can change the level from 
 Currently, the plugin will not pick up `<loggingLevel>` entries in **processes.xml** files.
 To set the log level for a process, use the [LogLevel script](/operations/commands/server-commands/#loglevel-script)
 
+### Chronicle files
+
+:::tip
+On Windows, set `LSOF_AVAILABLE` to `false` in order
+for the Chronicle queue files to be properly cleaned up.
+:::
+
 ### Debug
 
 It’s possible to debug ‘normal’ code using the **debug** option from the generated run configurations.
@@ -218,7 +225,7 @@ The preferred way of running a script is via the IntelliJ terminal window; any s
 
 ![Running a script](/img/plugin-terminal-3.png)
 
-Once a scri[t has been run, the passed arguments will be saved in the run config for the script until new arguments are passed.
+Once a script has been run, the passed arguments will be saved in the run config for the script until new arguments are passed.
 To run a script with the same arguments, just re-run the run config.
 
 Alternatively, open the folder **Scripts**, find the one you want to run, right-click on it and select **Run**.
