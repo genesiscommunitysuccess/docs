@@ -132,7 +132,7 @@ sealed class TradeEffect {
 }
 ```
 
-### 3. Add the module as a dependency in the *build.gradle.kts* inside **alpha-script-config** module. 
+### 3. Add the module as a dependency in the *build.gradle.kts* inside **alpha-script-config** module.
 
 ```
 ...
@@ -144,7 +144,7 @@ api(project(":alpha-eventhandler"))
 
 Let's edit the event handler to add an integrated state machine. First, in the **alpha-eventhandler.kts** file, add the imports below and declare a variable to be visible to all events by injecting the class `TradeStateMachine`, which we have just created. 
 
-```kotlin {1-9,11}
+```kotlin {1-9,12}
 import java.io.File
 import java.time.LocalDate
 import global.genesis.TradeStateMachine
@@ -168,7 +168,7 @@ eventHandler {
 Then, integrate the state machine in the TRADE_INSERT event *onCommit*.
 
 ```kotlin {2,5}
-eventHandler<Trade>(name = "TRADE_INSERT") {
+eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
     onCommit { event ->
         val trade = event.details
         trade.enteredBy = event.userName
@@ -348,7 +348,7 @@ Go to the **alpha-eventhandler.kts** file for the Event Handler.
 Add the verification by inserting an **verify** inside the **onValidate** block, before the **onCommit** block in TRADE_INSERT. We can see this below, with separate lines checking the Counterparty ID and the Instrument ID exist in the database. The new block ends by sending an **ack()**.
 
 ```kotlin {2-9}
-eventHandler<Trade>(name = "TRADE_INSERT") {
+eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
     onValidate { event ->
         val message = event.details
         verify {
@@ -451,7 +451,7 @@ Next you need to extend the insert, and modify methods in the **TradeStateMachin
 Now you must update the **alpha-eventhandler.kts** in order to pass the `entityDb` object into the updated methods of the state machine, as the **syncMultiEntityReadWriteGenericSupport** parameter. This should resemble the example below:
 
 ```kotlin {12,19,26,35}
-    eventHandler<Trade>(name = "TRADE_INSERT") {
+    eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
         onValidate { event ->
             val message = event.details
             verify {
@@ -466,14 +466,14 @@ Now you must update the **alpha-eventhandler.kts** in order to pass the `entityD
             ack()
         }
     }
-    eventHandler<Trade>(name = "TRADE_MODIFY") {
+    eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
         onCommit { event ->
             val trade = event.details
             stateMachine.modify(entityDb, trade)
             ack()
         }
     }
-    eventHandler<TradeCancelled>(name = "TRADE_CANCELLED") {
+    eventHandler<TradeCancelled>(name = "TRADE_CANCELLED", transactional = true) {
         onCommit { event ->
             val message = event.details
             stateMachine.modify(entityDb, message.tradeId) { trade ->
@@ -482,7 +482,7 @@ Now you must update the **alpha-eventhandler.kts** in order to pass the `entityD
             ack()
         }
     }
-    eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED") {
+    eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
         onCommit { event ->
             val message = event.details
             stateMachine.modify(entityDb, message.tradeId) { trade ->
