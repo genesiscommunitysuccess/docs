@@ -27,31 +27,7 @@ import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
 
 <InsecureFlag />
 
-At this point, the seed application is created and the `genx` dependencies are installed.
-
-Then there are more questions, which you can respond to as follows (we have provided some notes below):
-
-```shell title="Terminal"
-? Package scope (without the @) genesislcap
-? Package name alpha
-? Create design system Yes
-? Design system name alpha
-? Base design system package (@latest will be used) @genesislcap/foundation-ui
-? Set API Host (Y/n) Yes
-? API Host (with websocket prefix and suffix if any) (ws://localhost/gwf/)
-? Group Id global.genesis
-? Application Version 1.0.0-SNAPSHOT
-```
-:::note
-Here's a quick note about those questions:
-- package scope is the namespace identifier for your app
-- package name is the identifier for the app itself
-- a design system and a base design system package are necessary for the front end 
-- the API host is the address that the front end will connect to
-- Group ID is another identifier (sorry about all these)
-:::
-
-At this point, the application will be configured. On completion, you will see the following text:
+At this point, the seed application is created and the `genx` dependencies are installed. On completion, you will see the following text:
 
 ```shell title="Terminal"
 ✔ Project successfully created. Next steps:                                                   
