@@ -17,46 +17,21 @@ Download and install all the relevant requirements.
 
 ## Starting
 
-We start our quick journey using the CLI provided by Genesis. From the Windows terminal, run:
+We start our quick journey using the CLI provided by Genesis. From the terminal, run:
 
-```shell title="Windows Terminal"
-npx -y @genesislcap/genx@latest
+```shell title="Terminal"
+npx -y @genesislcap/genx@latest init alpha -x
 ```
-
-:::tip
-
-If this does not work, use the command `npx genx`.
-
-:::
-
-This script checks for the latest version of genx. If you need to download anything, then you are asked to confirm, for example:
-
-```shell
-Need to install the following packages:
-  @genesislcap/genx@latest
-Ok to proceed? (y) 
-```
-
-Type **y** to continue. The script downloads genx and runs it immediately.
-
 <!-- NO EDIT (NEXT 4 LINES) -->
 import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
 
 <InsecureFlag />
 
-### Responding to genx
-
-To start the genx cli, run the following command
-
-```shell title="Windows Terminal"
-npx -y @genesislcap/genx@latest init alpha
-```
-
 At this point, the seed application is created and the `genx` dependencies are installed.
 
 Then there are more questions, which you can respond to as follows (we have provided some notes below):
 
-```shell title="Windows Terminal"
+```shell title="Terminal"
 ? Package scope (without the @) genesislcap
 ? Package name alpha
 ? Create design system Yes
@@ -78,7 +53,7 @@ Here's a quick note about those questions:
 
 At this point, the application will be configured. On completion, you will see the following text:
 
-```shell title="Windows Terminal"
+```shell title="Terminal"
 ✔ Project successfully created. Next steps:                                                   
  › Install dependencies with npm run bootstrap
  › Start development server with npm run dev
