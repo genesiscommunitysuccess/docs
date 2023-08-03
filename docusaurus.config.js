@@ -49,6 +49,11 @@ module.exports = {
     {
       src: "https://feedback.fish/ff.js?pid=d642786cff63aa",
       defer: true
+    },
+    {
+      src: "https://myaskai.com/ev-embed-chat-js-min?id=IxBBJkH6SbnXxwP5IBMjEVZX7alEdk",
+      id: "IxBBJkH6SbnXxwP5IBMjEVZX7alEdk",
+      defer: true
     }
   ],
   plugins: [
