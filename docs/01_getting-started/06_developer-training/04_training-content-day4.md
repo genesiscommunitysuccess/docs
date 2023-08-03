@@ -34,7 +34,7 @@ State Machines enable you to control workflow by defining the transitions from s
 
 ![](/img/diagram-of-states.png)
 
-Once we have added add a new field to the data model, we will edit the event handler file to add controlled transitions from one state to another.
+Once we have added add a new field to the data model, we will edit the Event Handler file to add controlled transitions from one state to another.
 
 ### 1. Data model
 
@@ -57,11 +57,11 @@ tables {
 
 If the TRADE_STATUS is missing, run [generatefields](../../../getting-started/developer-training/training-content-day1/#generatefields) to generate the fields, AND​ [generatedao](../../../getting-started/developer-training/training-content-day1/#generatedao) to create the DAOs.
 
-### 2. Create a new class for the state machine
+### 2. Create a new class for the State Machine
 
-Add a main folder in the event handler module *alpha-eventhandler* and create a state machine class called *TradeStateMachine* inside **alpha-eventhandler/src/main/kotlin/global/genesis**.
+Add a main folder in the Event Handler module **alpha-eventhandler** and create a state machine class called *TradeStateMachine* inside **alpha-eventhandler/src/main/kotlin/global/genesis**.
 
-Add a state machine definition and assign a field in the **onCommit** block,
+Add a state machine definition and assign a field in the `onCommit` block,
 
 ```kotlin
 package global.genesis
@@ -132,7 +132,8 @@ sealed class TradeEffect {
 }
 ```
 
-### 3. Add the module as a dependency in the **build.gradle.kts** inside **alpha-script-config** module.
+### 3. Add the module as a dependency in **build.gradle.kts**
+Add the module as a dependency in the **build.gradle.kts** inside **alpha-script-config** module.
 
 ```
 ...
@@ -140,9 +141,9 @@ api(project(":alpha-eventhandler"))
 ...
 ```
 
-### 4. Edit the event handler to add an integrated state machine
+### 4. Edit the Event Handler to add an integrated State Machine
 
-Let's edit the event handler to add an integrated state machine. First, in the **alpha-eventhandler.kts** file, add the imports below and declare a variable to be visible to all events by injecting the class `TradeStateMachine`, which we have just created. 
+Let's edit the Event Handler to add an integrated State Machine. First, in the **alpha-eventhandler.kts** file, add the imports below and declare a variable to be visible to all events by injecting the class `TradeStateMachine`, which we have just created. 
 
 ```kotlin {1-9,12}
 import java.io.File
@@ -165,7 +166,7 @@ eventHandler {
 }
 ```
 
-Then, integrate the state machine in the TRADE_INSERT event *onCommit*.
+Then, integrate the State Machine in the TRADE_INSERT event `onCommit`.
 
 ```kotlin {2,5}
 eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
@@ -178,7 +179,7 @@ eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
 }
 ```
 
-Create two data classes that will be used in the cancel and allocated Event Handlers. These classes should be in **alpha-messages/src/main/kotlin/global/genesis/alpha/message/event**
+Create two data classes that will be used in the cancel and allocated eventhandler codeblocks. These classes should be in **alpha-messages/src/main/kotlin/global/genesis/alpha/message/event**.
 
 * TradeAllocated
 * TradeCancelled
@@ -201,7 +202,7 @@ package global.genesis.alpha.message.event
 data class TradeCancelled(val tradeId: String)
 ```
 
-Create a new event handler called TRADE_CANCELLED to handle cancellations. Then integrate the state machine in it.
+Create a new eventHandler codeblock called TRADE_CANCELLED to handle cancellations. Then integrate the State Machine in it.
 
 ```kotlin
 eventHandler<TradeCancelled>(name = "TRADE_CANCELLED", transactional = true) {
@@ -215,7 +216,7 @@ eventHandler<TradeCancelled>(name = "TRADE_CANCELLED", transactional = true) {
 }
 ```
 
-Create a new event handler called TRADE_ALLOCATED to handle completion. Integrate the state machine in it.
+Create a new eventHandler codeblock called TRADE_ALLOCATED to handle completion. Integrate the State Machine in it.
 
 ```kotlin
 eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
@@ -229,7 +230,7 @@ eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
 }
 ```
 
-Modify or add the TRADE_MODIFY Event Handler to use the state machine.
+Modify or add the TRADE_MODIFY eventHandler codeblock to use the State Machine.
 
 ```kotlin {4}
 eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
@@ -241,17 +242,15 @@ eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
 }
 ```
 
-Remove the TRADE_DELETE Event Handler if you included it before.
-
-You want to manage the state of the trade, so remove the delete Event Handler. If a trade is incorrect and needs to be deleted, similar functionality can be achieved by cancelling the trade.
+Remove the TRADE_DELETE eventHandler code block if you included it before. You only want to manage the state of the trade. If a trade is incorrect and needs to be deleted, similar functionality can be achieved by cancelling the trade.
 
 To test it, you can try to modify a TRADE and see the states changing accordingly. 
 
-### Exercise 4.1: state machines
+### Exercise 4.1: State Machines
 :::info ESTIMATED TIME
 40 mins
 :::
-Modify the class TradeStateMachine to keep the `trade.price`. Removing the current rule when TradeStatus.NEW, and set the field trade.enteredBy to empty when TradeStatus.CANCELLED.
+Modify the class TradeStateMachine to keep the `trade.price`. Remove the current rule when TradeStatus.NEW, and set the field trade.enteredBy to empty when TradeStatus.CANCELLED.
 
 :::info UI CHANGES
 Open the **home.ts** file and add the TRADE_STATUS field in the const *COLUMNS*.
@@ -306,7 +305,7 @@ export class Home extends FASTElement {
 
 ```
 
-And add the *deleteEvent* as to the **home.template.ts** file.
+And add the `deleteEvent` to the **home.template.ts** file.
 
 ```html {10}
 ...
@@ -345,7 +344,7 @@ We are going to change the code in the Event Handler so that:
 
 Go to the **alpha-eventhandler.kts** file for the Event Handler. 
 
-Add the verification by inserting an **verify** inside the **onValidate** block, before the **onCommit** block in TRADE_INSERT. We can see this below, with separate lines checking the Counterparty ID and the Instrument ID exist in the database. The new block ends by sending an **ack()**.
+Add the verification by inserting a `verify` inside the `onValidate` block, before the `onCommit` block in TRADE_INSERT. We can see this below, with separate lines checking that the Counterparty ID and the Instrument ID exist in the database. The new block ends by sending an **ack()**.
 
 ```kotlin {2-9}
 eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
@@ -367,10 +366,10 @@ eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
 ```
 
 :::info verify function
-The `verify` block you see above is part of the validation helper provided by the Platform to make it easier to verify conditions against the database. Outside of the `verify` block, you can write any Kotlin code to validate whatever you want to.
+The `verify` block you see above is part of the validation helper provided by the Platform to make it easier to verify conditions against the database. Outside the `verify` block, you can write any Kotlin code to validate whatever you want to.
 :::
 
-### Exercise 4.2: adding onValidate to event handlers
+### Exercise 4.2: adding onValidate to Event Handlers
 :::info ESTIMATED TIME
 20 mins
 :::
@@ -383,13 +382,13 @@ Implement and test the back end with Console or Postman. To do that, see the [Da
 
 We want to be able to track the changes made to the various trades on the TRADE table, such that we could see the times and modifications made in the history of the trade. So, we are going to add basic auditing to the TRADE table in order to keep a record of the changing states of the trades.
 
-This can be useful for historical purposes, if you need to at a later date be able to produce an accurate course of events.
+This can be useful for historical purposes, if you need to be able to produce an accurate course of events at a later date.
 
 ### Adding basic auditing
 
-#### Adding audit to table dictionary
+#### Adding audit to the table dictionary
 
-The first step to add basic auditing is to change the relevant table dictionary. In this instance, we will be making changes to the **alpha-tables-dictionary.kts**, in order to add the parameter `audit = details()` to the table definition. It should resemble the following:
+For basic auditing, the first step is to change the relevant table dictionary. In this instance, we will make changes to the **alpha-tables-dictionary.kts**, in order to add the parameter `audit = details()` to the table definition. It should resemble the following:
 
 ```kotlin {1}
 table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
@@ -410,13 +409,13 @@ table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
 }
 ```
 
-The id parameter indicates the id of the newly created audit table, and will need to be different from any other table id.
+The id parameter indicates the id of the newly created audit table, and must be different from any other table id.
 
-As we are using the GPAL event handlers, this is sufficient to enable auditing on this table. A new table is created by the name of the original table, with the **_AUDIT** suffix added to the end. In this instance that would be the **TRADE_AUDIT** table.
+As we are using the GPAL Event Handlers, this is sufficient to enable auditing on this table. A new table is created with the name of the original table, and the **_AUDIT** suffix added. In this instance, that would be the **TRADE_AUDIT** table.
 
-#### Updating the state machine to use auditing
+#### Updating the State Machine to use auditing
 
-Next you need to extend the insert, and modify methods in the **TradeStateMachine.kt** file. Specifically, each method must be have a second option so that the method signature uses the **AsyncMultiEntityReadWriteGenericSupport** parameter and the `internalState.withTransaction(transaction) { }` code block.  For example:
+Next you need to extend the insert, and modify methods in the **TradeStateMachine.kt** file. Specifically, each method must have a second option so that the method signature uses the **AsyncMultiEntityReadWriteGenericSupport** parameter and the `internalState.withTransaction(transaction) { }` code block.  For example:
 
 ```kotlin {2,5,10,12,20,23}
     suspend fun insert(
@@ -448,7 +447,7 @@ Next you need to extend the insert, and modify methods in the **TradeStateMachin
 
 #### Update the Event Handlers to use auditing
 
-Now you must update the **alpha-eventhandler.kts** in order to pass the `entityDb` object into the updated methods of the state machine, as the **syncMultiEntityReadWriteGenericSupport** parameter. This should resemble the example below:
+Now you must update the **alpha-eventhandler.kts** in order to pass the `entityDb` object into the updated methods of the State Machine, as the **syncMultiEntityReadWriteGenericSupport** parameter. This should resemble the example below:
 
 ```kotlin {12,19,26,35}
     eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
