@@ -24,9 +24,9 @@ This day covers:
 - [Adding logic to the event handler](#adding-logic-to-the-event-handler)
 - [Auditing​](#auditing)
 
-## State management​
+## State Management​
 
-State machines enable you to control workflow by defining the transitions from state to state. This example enables you to build a very simple state machine so that you can add new trades. You will create a new field called TRADE_STATUS, which can have three possible states: NEW, ALLOCATED, CANCELLED.
+State Machines enable you to control workflow by defining the transitions from state to state. This example enables you to build a very simple state machine so that you can add new trades. You will create a new field called TRADE_STATUS, which can have three possible states: NEW, ALLOCATED, CANCELLED.
 
 * NEW can go to ALLOCATED or CANCELLED.
 * ALLOCATED and CANCELLED can’t go anywhere else.
