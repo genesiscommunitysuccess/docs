@@ -42,16 +42,16 @@ Make sure you added the TRADE_STATUS field to the TRADE table in the **alpha-tab
 
 ```kotlin {4}
 tables {
-    table (name = "TRADE", id = 2000) {
-        ...
-        TRADE_STATUS
-
-        primaryKey {
-            TRADE_ID
-        }
-
-    }
+  table (name = "TRADE", id = 2000) {
     ...
+    TRADE_STATUS
+
+    primaryKey {
+      TRADE_ID
+    }
+
+  }
+  ...
 }
 ```
 
@@ -132,7 +132,7 @@ sealed class TradeEffect {
 }
 ```
 
-### 3. Add the module as a dependency in the **build.gradle.kts** inside **alpha-script-config** module.
+### 3. Add the module as a dependency in the *build.gradle.kts* inside **alpha-script-config** module.
 
 ```
 ...
@@ -142,9 +142,9 @@ api(project(":alpha-eventhandler"))
 
 ### 4. Edit the event handler to add an integrated state machine
 
-Let's edit the event handler to add an integrated state machine. First, in the **alpha-eventhandler.kts** file, add the imports below and declare a variable to be visible to all events by injecting the class `TradeStateMachine`, which we have just created.
+Let's edit the event handler to add an integrated state machine. First, in the **alpha-eventhandler.kts** file, add the imports below and declare a variable to be visible to all events by injecting the class `TradeStateMachine`, which we have just created. 
 
-```kotlin {1-9,11}
+```kotlin {1-9,12}
 import java.io.File
 import java.time.LocalDate
 import global.genesis.TradeStateMachine
@@ -168,7 +168,7 @@ eventHandler {
 Then, integrate the state machine in the TRADE_INSERT event *onCommit*.
 
 ```kotlin {2,5}
-eventHandler<Trade>(name = "TRADE_INSERT") {
+eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
     onCommit { event ->
         val trade = event.details
         trade.enteredBy = event.userName
@@ -245,7 +245,7 @@ Remove the TRADE_DELETE Event Handler if you included it before.
 
 You want to manage the state of the trade, so remove the delete Event Handler. If a trade is incorrect and needs to be deleted, similar functionality can be achieved by cancelling the trade.
 
-To test it, you can try to modify a TRADE and see the states changing accordingly.
+To test it, you can try to modify a TRADE and see the states changing accordingly. 
 
 ### Exercise 4.1: state machines
 :::info ESTIMATED TIME
@@ -260,47 +260,47 @@ Open the **home.ts** file and add the TRADE_STATUS field in the const *COLUMNS*.
 ...
 //grid columns that will be showed
 const COLUMNS = [
-    {
-        ...defaultColumnConfig,
-        field: 'TRADE_ID',
-        headerName: 'Id',
-    },
-    {
-        ...defaultColumnConfig,
-        field: 'QUANTITY',
-        headerName: 'Quantity',
-    },
-    {
-        ...defaultColumnConfig,
-        field: 'PRICE',
-        headerName: 'Price',
-    },
-    {
-        ...defaultColumnConfig,
-        field: 'SYMBOL',
-        headerName: 'Symbol',
-    },
-    {
-        ...defaultColumnConfig,
-        field: 'DIRECTION',
-        headerName: 'Direction',
-    },
-    {
-        ...defaultColumnConfig,
-        field: 'TRADE_STATUS',
-        headerName: 'Status',
-    },
+  {
+    ...defaultColumnConfig,
+    field: 'TRADE_ID',
+    headerName: 'Id',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'QUANTITY',
+    headerName: 'Quantity',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'PRICE',
+    headerName: 'Price',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'SYMBOL',
+    headerName: 'Symbol',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'DIRECTION',
+    headerName: 'Direction',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'TRADE_STATUS',
+    headerName: 'Status',
+  },  
 ];
 
 @customElement({
-        name,
-        template,
-        styles,
+  name,
+  template,
+  styles,
 })
 export class Home extends FASTElement {
     ...
     constructor() {
-        super();
+      super();
     }
 }
 
@@ -311,22 +311,22 @@ And add the *deleteEvent* as to the **home.template.ts** file.
 ```html {10}
 ...
 export const HomeTemplate = html<Home>`
-    <div class="split-layout">
-        <div class="top-layout">
-            <entity-management
-                    resourceName="ALL_TRADES"
-                    title = "Trades"
-                    entityLabel="Trades"
-                    createEvent = "EVENT_TRADE_INSERT"
-                    deleteEvent = "EVENT_TRADE_CANCELLED"
-                    :columns=${x => x.columns}
-            :createFormUiSchema=${() => tradeFormCreateSchema}
-            :updateFormUiSchema=${() => tradeFormUpdateSchema}
-            ></entity-management>
-            ...
-        </div>
+<div class="split-layout">
+    <div class="top-layout">
+        <entity-management
+          resourceName="ALL_TRADES"
+          title = "Trades"
+          entityLabel="Trades"
+          createEvent = "EVENT_TRADE_INSERT"
+          deleteEvent = "EVENT_TRADE_CANCELLED"
+          :columns=${x => x.columns}
+          :createFormUiSchema=${() => tradeFormCreateSchema}
+          :updateFormUiSchema=${() => tradeFormUpdateSchema}
+        ></entity-management>
+    ...
     </div>
-    `;
+</div>
+`;
 ```
 :::
 
@@ -343,12 +343,12 @@ We are going to change the code in the Event Handler so that:
 
 ### Add the validation code
 
-Go to the **alpha-eventhandler.kts** file for the Event Handler.
+Go to the **alpha-eventhandler.kts** file for the Event Handler. 
 
 Add the verification by inserting an **verify** inside the **onValidate** block, before the **onCommit** block in TRADE_INSERT. We can see this below, with separate lines checking the Counterparty ID and the Instrument ID exist in the database. The new block ends by sending an **ack()**.
 
 ```kotlin {2-9}
-eventHandler<Trade>(name = "TRADE_INSERT") {
+eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
     onValidate { event ->
         val message = event.details
         verify {
@@ -377,7 +377,7 @@ The `verify` block you see above is part of the validation helper provided by th
 Add the same verification `onValidate` as in TRADE_INSERT to the TRADE_MODIFY event handler.
 
 
-Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](../../../getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost:9064/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN).
+Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](../../../getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost:9064/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
 
 ## Auditing​
 
@@ -394,7 +394,7 @@ The first step to add basic auditing is to change the relevant table dictionary.
 ```kotlin {1}
 table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
     sequence(TRADE_ID, "TR")
-    COUNTERPARTY_ID
+    COUNTERPARTY_ID 
     INSTRUMENT_ID not null
     QUANTITY
     PRICE not null
@@ -420,30 +420,30 @@ Next you need to extend the insert, and modify methods in the **TradeStateMachin
 
 ```kotlin {2,5,10,12,20,23}
     suspend fun insert(
-    transaction: AsyncMultiEntityReadWriteGenericSupport,
-    trade: Trade,
-): Transition<Trade, TradeStatus, TradeEffect> =
-    internalState.withTransaction(transaction) {
-        create(trade)
-    }
-
-suspend fun modify(
-    transaction: AsyncMultiEntityReadWriteGenericSupport,
-    tradeId: String, modify: suspend (Trade) -> Unit
-): Transition<Trade, TradeStatus, TradeEffect>? =
-    internalState.withTransaction(transaction) {
-        update(Trade.ById(tradeId)) {
-                trade, _ -> modify(trade)
+        transaction: AsyncMultiEntityReadWriteGenericSupport,
+        trade: Trade,
+    ): Transition<Trade, TradeStatus, TradeEffect> =
+        internalState.withTransaction(transaction) {
+            create(trade)
         }
-    }
 
-suspend fun modify(
-    transaction: AsyncMultiEntityReadWriteGenericSupport,
-    trade: Trade
-): Transition<Trade, TradeStatus, TradeEffect>? =
-    internalState.withTransaction(transaction) {
-        update(trade)
-    }
+    suspend fun modify(
+        transaction: AsyncMultiEntityReadWriteGenericSupport,
+        tradeId: String, modify: suspend (Trade) -> Unit
+    ): Transition<Trade, TradeStatus, TradeEffect>? =
+        internalState.withTransaction(transaction) {
+            update(Trade.ById(tradeId)) {
+                    trade, _ -> modify(trade)
+            }
+        }
+
+    suspend fun modify(
+        transaction: AsyncMultiEntityReadWriteGenericSupport,
+        trade: Trade
+    ): Transition<Trade, TradeStatus, TradeEffect>? =
+        internalState.withTransaction(transaction) {
+            update(trade)
+        }
 ```
 
 #### Update the Event Handlers to use auditing
@@ -451,46 +451,46 @@ suspend fun modify(
 Now you must update the **alpha-eventhandler.kts** in order to pass the `entityDb` object into the updated methods of the state machine, as the **syncMultiEntityReadWriteGenericSupport** parameter. This should resemble the example below:
 
 ```kotlin {12,19,26,35}
-    eventHandler<Trade>(name = "TRADE_INSERT") {
-    onValidate { event ->
-        val message = event.details
-        verify {
-            entityDb hasEntry Counterparty.ById(message.counterpartyId)
-            entityDb hasEntry Instrument.ById(message.instrumentId)
+    eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
+        onValidate { event ->
+            val message = event.details
+            verify {
+                entityDb hasEntry Counterparty.ById(message.counterpartyId)
+                entityDb hasEntry Instrument.ById(message.instrumentId)
+            }
+            ack()
         }
-        ack()
-    }
-    onCommit { event ->
-        val trade = event.details
-        stateMachine.insert(entityDb, trade)
-        ack()
-    }
-}
-eventHandler<Trade>(name = "TRADE_MODIFY") {
-    onCommit { event ->
-        val trade = event.details
-        stateMachine.modify(entityDb, trade)
-        ack()
-    }
-}
-eventHandler<TradeCancelled>(name = "TRADE_CANCELLED") {
-    onCommit { event ->
-        val message = event.details
-        stateMachine.modify(entityDb, message.tradeId) { trade ->
-            trade.tradeStatus = TradeStatus.CANCELLED
+        onCommit { event ->
+            val trade = event.details
+            stateMachine.insert(entityDb, trade)
+            ack()
         }
-        ack()
     }
-}
-eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED") {
-    onCommit { event ->
-        val message = event.details
-        stateMachine.modify(entityDb, message.tradeId) { trade ->
-            trade.tradeStatus = TradeStatus.ALLOCATED
+    eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
+        onCommit { event ->
+            val trade = event.details
+            stateMachine.modify(entityDb, trade)
+            ack()
         }
-        ack()
     }
-}
+    eventHandler<TradeCancelled>(name = "TRADE_CANCELLED", transactional = true) {
+        onCommit { event ->
+            val message = event.details
+            stateMachine.modify(entityDb, message.tradeId) { trade ->
+                trade.tradeStatus = TradeStatus.CANCELLED
+            }
+            ack()
+        }
+    }
+    eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
+        onCommit { event ->
+            val message = event.details
+            stateMachine.modify(entityDb, message.tradeId) { trade ->
+                trade.tradeStatus = TradeStatus.ALLOCATED
+            }
+            ack()
+        }
+    }
 ```
 
 Run the [generatedao](../../../getting-started/developer-training/training-content-day1/#generatedao), [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
