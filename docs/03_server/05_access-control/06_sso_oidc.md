@@ -104,7 +104,7 @@ Within the configuration file, each OIDC configuration has the following propert
 
 | Property name | Description | Mandatory | Default value | Type |
 | --- | ------ | --- | --- | --- |
-| loginEndpoint | The URI to be re-directed after successful authentication | Yes | No default value | String |
+| loginEndpoint | The login URI of your application; this is used to initiate the OIDC login | Yes | No default value | String |
 | identityProvider | Configuration for each OIDC Provider. Can be repeated if multiple providers have to be configured | Yes | No default value | Object |
 
 Each `identityProvider` configuration has the following properties:
@@ -118,7 +118,7 @@ Each `identityProvider` configuration has the following properties:
 | onNewUser | Predefined action when a new user logs in. **This property is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess` | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
 | tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | Yes | No default value | Int |
-| redirectUri | The URI to handle the code authorisation. | Yes | No default value | String |
+| redirectUri | The URI that handles the code authorisation; in normal OIDC workflow, this is the login URL of your application | Yes | No default value | String |
 | onFirstLogin | Configuration for creating `User` and its `UserAttributes`. It's called on first successful login when the user doesn't exist in the database. | No | No default value | Object |
 | onLoginSuccess | Callback that is invoked every time after successful authentication. It has access to the database and the `DecodedIdToken` returned by the OIDC Provider | No | No default value | Object |
 
@@ -178,6 +178,9 @@ Finally, you need to specify an SSOToken authenticator in your _application-name
 		ssoToken {}
     }
 ```
+
+### Configuring the front end
+The [front end of your application needs to be configured correctly](../../access-control/sso-front-end-config/) to ensure that the workflow works correctly.
 
 ## OIDC logout
 
@@ -431,8 +434,6 @@ oidc{
     }
     
     scopes("openid", "profile")
-
-    onNewUser = NewUserStrategy.ALWAYS_ALLOW
 
     usernameClaim = "name"
 

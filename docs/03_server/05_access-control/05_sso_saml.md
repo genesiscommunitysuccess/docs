@@ -149,12 +149,13 @@ Additionally, you need an _application-name-_**saml-config.kts** file, as below:
     }
 ```
 :::warning
-The `loginEndpoint` is the URL to which the front end is redirected once the full SAML workflow has been completed and an SSO_TOKEN has been issued. 
-If this URL itself is a redirect, the SSO_TOKEN query parameter could be lost.
+The `loginEndpoint` is the URL to which the front end is redirected once the full SAML workflow has been completed and an `SSO_TOKEN` has been issued. 
+If this URL itself is a redirect, the `SSO_TOKEN` query parameter could be lost.
 
 Additionally, if the web server is routing via scripts, navigating to this URL could throw a **404 Not Found** error. The remedy in this case is to add an override for 404 errors to redirect back to your application logon screen. 
 
-An example of how to do this in NGINX is here:
+Here is an example of how to do this in NGINX:
+
 ```
 error_page 404 =200 /index.html;
 ```
@@ -162,6 +163,7 @@ error_page 404 =200 /index.html;
 
 
 Finally, you need to specify an SSOToken authenticator in your _application-name-_**auth-preferences.kts** file:
+
 ```kotlin
     authentication {
 		ssoToken {}
@@ -204,35 +206,9 @@ The Genesis username should be the user’s email address.
 
 ## Front-to-back flow
 
-This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes the following settings:
+This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes that the [front end has been configured correctly](../../access-control/sso-front-end-config/).
 
-- `ssoToggle` is set to true in the Genesis application’s `config.ts`, this ensures that the **Enable SSO?** checkbox is displayed on the application's login page.
-- either **Enable SSO** is checked manually in the UI, or `ssoEnable` is set to true by default in the config.
-- In the front end, the following has been added to `src/routes/config.ts`:
-
-```javascript
-this.routes.map(
-      {path: '', redirect: 'login'},
-      {
-        path: 'login',
-        element: Login,
-        title: 'Login',
-        name: 'login',
-        layout: loginLayout,
-        settings: {
-          ...
-          ssoToggle: true,
-          ssoEnable: true,
-        },
-        childRouters: true,
-      },
-      {path: 'protected', element: Protected, title: 'Protected', name: 'protected', settings: {allowAutoAuth: true}},
-      {path: 'admin', element: Admin, title: 'Admin', name: 'admin', settings: {allowAutoAuth: true}},
-      {path: 'reporting', element: Reporting, title: 'Reporting', name: 'reporting', settings: {allowAutoAuth: true}},
-    );
-
-```
-
+### The flow
 1. The front end hits **ssoListEndpoint** - by default, this is `gwf/sso/listJWT/SSO` (this is configurable).
 2. **ssoListEndpoint** returns a list of identity providers:
    ```
