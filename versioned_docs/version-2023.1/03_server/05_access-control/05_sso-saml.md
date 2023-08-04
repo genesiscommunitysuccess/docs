@@ -195,7 +195,7 @@ The Genesis username should be the user’s email address.
 
 ## Front-to-back flow
 
-This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes that the front end has been configured correctly.
+This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes that the [front end has been configured correctly](../../access-control/sso-front-end-config/).
 
 ### The flow
 1. The front end hits **ssoListEndpoint** - by default, this is `gwf/sso/listJWT/SSO` (this is configurable).

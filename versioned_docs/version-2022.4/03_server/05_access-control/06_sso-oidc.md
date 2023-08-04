@@ -163,7 +163,7 @@ If `verification` is defined, either `publicKey` or `publicKeyUrl` must also be 
 :::
 
 ### Configuring the front end
-The front end of your application needs to be configured correctly to ensure that the workflow works correctly.
+The [front end of your application needs to be configured correctly](../../access-control/sso-front-end-config/) to ensure that the workflow works correctly.
  
 ## Sample configurations
 

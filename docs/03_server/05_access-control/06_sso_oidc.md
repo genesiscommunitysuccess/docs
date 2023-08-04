@@ -180,7 +180,7 @@ Finally, you need to specify an SSOToken authenticator in your _application-name
 ```
 
 ### Configuring the front end
-The front end of your application needs to be configured correctly to ensure that the workflow works correctly.
+The [front end of your application needs to be configured correctly](../../access-control/sso-front-end-config/) to ensure that the workflow works correctly.
 
 ## OIDC logout
 

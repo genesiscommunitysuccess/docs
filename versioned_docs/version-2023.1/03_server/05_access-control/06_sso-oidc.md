@@ -165,9 +165,8 @@ If `verification` is defined, either `publicKey` or `publicKeyUrl` must also be 
 :::
 
 ### Configuring the front end
-The front end of your application needs to be configured correctly to ensure that the workflow works correctly.
+The [front end of your application needs to be configured correctly](../../access-control/sso-front-end-config/) to ensure that the workflow works correctly.
 
-link to [login page](../../../web/micro-front-ends/foundation-login/) 
 ## OIDC logout
 
 Sometimes, applications require functionality where the user logs out of the OIDC provider. By default, this is disabled.
