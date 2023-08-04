@@ -150,7 +150,7 @@ Load the cron rule csv below into the database, [CRON_RULE](../../../server/eval
 Create a new file in the same folder as **USER.csv** and name it as **CRON_RULE.csv**. Copy the content below into the file that you just created.
 ```csv
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
-"0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
+"0 * * ? * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 Then import the local csv using the Genesis plugin as we saw [here](../../../getting-started/developer-training/training-content-day1/#user-name-and-password).
 
