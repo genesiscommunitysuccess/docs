@@ -46,7 +46,7 @@ For full details, see our page on [DbMon](../../../operations/commands/dbmon).
 
 ## DropTable
 
-The `DropTable` command removes database tables and all corresponding records instantly.
+The `DropTable` command removes all rows from the specified tables.
 
 ### Syntax 
 The command takes a flag of `-t`, followed by a list of space-separated table names, for example:
