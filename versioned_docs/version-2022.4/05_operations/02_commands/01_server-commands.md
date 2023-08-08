@@ -529,7 +529,7 @@ Options
 
 ## DropTable
 
-To remove database tables and all corresponding records instantly, use the `DropTable` command.
+To remove all rows from the specified tables, use the `DropTable` command.
 
 ### Syntax 
 The command takes a flag of `-t`, followed by a list of space-separated table names, for example:
