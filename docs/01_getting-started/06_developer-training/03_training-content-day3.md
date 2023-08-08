@@ -79,7 +79,7 @@ More info [here](../../../database/fields-tables-views/views/views-basics/#overr
 
 Now go to the Data Server definition (open **alpha-dataserver.kts**). Replace the `ALL_TRADES` query in the Data Server with the new `TRADE_VIEW`.
 
-```kotlin
+```kotlin {2}
 dataServer {​
      query("ALL_TRADES", TRADE_VIEW)​
      ...
@@ -524,7 +524,7 @@ derivedField("CONSIDERATION", DOUBLE) {
 ```
 
 Add this `derivedField` to your view now. The final view should look like this.
-```kotlin
+```kotlin {20-24}
 view("TRADE_VIEW", TRADE) {
 
     joins {
@@ -717,18 +717,21 @@ consolidators {
 
 As Consolidators run on their own process, we need to add a new entry to **alpha-processes.xml** with the definition of the Consolidator process.
 
-```xml
-<process name="ALPHA_CONSOLIDATOR">
-    <groupId>ALPHA</groupId>
-    <start>true</start>
-    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
-    <module>genesis-pal-consolidator</module>
-    <package>global.genesis.pal.consolidator</package>
-    <script>alpha-consolidator.kts</script>
-    <description>Consolidates trades to calculate positions</description>
-    <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
-    <language>pal</language>
-</process>
+```xml {3-13}
+<processes>
+    ...
+    <process name="ALPHA_CONSOLIDATOR">
+        <groupId>ALPHA</groupId>
+        <start>true</start>
+        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+        <module>genesis-pal-consolidator</module>
+        <package>global.genesis.pal.consolidator</package>
+        <script>alpha-consolidator.kts</script>
+        <description>Consolidates trades to calculate positions</description>
+        <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
+        <language>pal</language>
+    </process>
+</processes>
 ```
 ##### Update the service-definitions.xml file
 
@@ -736,7 +739,7 @@ This file lists all the active services for the Positions application. You can s
 
 Add a new entry to **alpha-service-definitions.xml** with the consolidator details. Remember the port numbers should be free and, ideally, sequential.
 
-```xml
+```xml {3}
 <configuration>
     ...
     <service host="localhost" name="ALPHA_CONSOLIDATOR" port="11002"/>

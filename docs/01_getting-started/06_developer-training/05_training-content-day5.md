@@ -59,9 +59,9 @@ Let's look at the most important fields:
 #### 1. Configure the Evaluator
 
 An Evaluator is a process that runs cron jobs.
-To start, create a process called *GENESIS_EVALUATOR* and add it to the file **alpha-processes.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below.
+To start, create a process called *ALPHA_EVALUATOR* and add it to the file **alpha-processes.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below.
 
-```xml
+```xml {3-12}
 <processes>
     ...
     <process name="ALPHA_EVALUATOR">
@@ -79,7 +79,7 @@ To start, create a process called *GENESIS_EVALUATOR* and add it to the file **a
 
 Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** with the code below.
 
-```xml
+```xml {3}
 <configuration>
     ...
     <service host="localhost" name="ALPHA_EVALUATOR" port="11003"/>
@@ -109,7 +109,7 @@ Create an event handler that will write the csv files to the runtime/position-mi
 
 Open the file **alpha-eventhandler.kts** and add a variable called *tradeViewRepo* injecting the class *TradeViewAsyncRepository*. Then, add an event handler to generate the csv file:
 
-```kotlin {6, 9,13}
+```kotlin {6,9,13-31}
 import java.io.File
 import java.time.LocalDate
 import global.genesis.TradeStateMachine

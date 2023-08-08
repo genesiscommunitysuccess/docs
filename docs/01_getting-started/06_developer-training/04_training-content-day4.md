@@ -302,7 +302,6 @@ export class Home extends FASTElement {
       super();
     }
 }
-
 ```
 
 And add the `deleteEvent` to the **home.template.ts** file.
