@@ -47,10 +47,6 @@ module.exports = {
   },
   scripts: [
     {
-      src: "https://feedback.fish/ff.js?pid=d642786cff63aa",
-      defer: true
-    },
-    {
       src: "https://myaskai.com/ev-embed-chat-js-min?id=IxBBJkH6SbnXxwP5IBMjEVZX7alEdk",
       id: "IxBBJkH6SbnXxwP5IBMjEVZX7alEdk",
       defer: true
@@ -174,7 +170,7 @@ module.exports = {
         {
           type: "html",
           position: "right",
-          value: '<a class="feedback" data-feedback-fish>Give us Feedback</a>',
+          value: '<a href="https://github.com/genesiscommunitysuccess/docs/issues/new?title=New+Feedback+from+learn.genesis.global&body=Thank+you+for+giving+us+your+feedback.%20Please+provide+it+below.%0a%0a%23%23+My+Issue/Idea/Suggestion%0a%0a" target="_blank" class="feedback" style="text-decoration:none">Give us Feedback</a>',
         },
         {
           href: "https://stackoverflow.com/c/genesis-global/questions",
