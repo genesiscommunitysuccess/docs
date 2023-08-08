@@ -415,7 +415,7 @@ Aerospike and FDB implementations use internal aliases for fields and tables. Mi
 - If you are running Genesis on a single node, use a file store 
 - If you are running Genesis on more than one node, use database mode .
 
-The "remap" operation will update the alias store, so if you are running a Genesis cluster it is better to use a database storage mode, as it is less error-prone and you won't have to copy the alias storage file to the remaining nodes manually.
+The `remap` operation updates the alias store, so if you are running a Genesis cluster it is better to use a database storage mode, as this is less error-prone and you won't have to copy the alias storage file to the remaining nodes manually.
 
 ## MigrateDictionary
 

@@ -594,19 +594,19 @@ You need to provide:
 
 ## remap 
 
-The remap script reads all dictionary files (fields and table definitions) from **$GC** and remaps the memory-resident database accordingly.
+The `remap` command reads all the dictionary files from **$GC** and performs the following tasks:
 
-If using an SQL DB Layer, it can also be used to dump all the SQL DDL statements to the console so these can be applied by a database administrator instead of applying the changes directly from the remap script.
+- remaps the memory-resident database, taking into account amy changes to the dictionary files 
+- generates dao objects based on the dictionary tables, so you can perform database operations in a type-safe way
+- if you are running Aerospike or FDB, it updates the Genesis alias store; for Aerospike, it also generates UDFs (user defined functions)
 
-It also generates dao objects based on the dictionary tables, so you can perform database operations in a type-safe way.
+The dictionary files are:
 
-Additionally, it will update the Genesis alias store (if running Aerospike or FDB).
-
-The Aerospike DB layer needs UDFs (user defined functions) to work correctly, and these are also generated at this step.
+_application_**-fields-dictionary.kts**
+_application_**-tables-dictionary.kts**
+_application_**-view-dictionary.kts**
 
 When you run `remap`, the database is automatically locked to ensure that no other `remap` can run concurrently. 
-
-If the database crashes during a `remap` and the database remains locked (or if the database is locked for any other reason), run `remap --force --commit` to unlock the database.
 
 ### Syntax
 The `remap`command can take the following arguments:
@@ -656,7 +656,12 @@ Key changes
 No changes
 ```
 
-To commit the changes to the database, use the **--commit** argument.
+If you want to commit the changes to the database, you must use the **--commit** argument.
+
+### Unlocking a database
+When you run `remap`, the database is automatically locked to ensure that no other `remap` can run concurrently. 
+
+If the database crashes during a `remap` and the database remains locked (or if the database is locked for any other reason), run `remap --force --commit` to unlock the database.
 
 ## RenameFields script
 This script is used to rename a field name in a database without changing the dictionary or config files.
@@ -703,6 +708,8 @@ RenameFields -i PRICE -o FIRST_NAME
 ```
 
 This would result in an error as PRICE is of type DOUBLE while FIRST_NAME is of type STRING.
+
+If you want to commit the changes to the database, you must use the **--commit** argument.
 
 ## SendIt script
 

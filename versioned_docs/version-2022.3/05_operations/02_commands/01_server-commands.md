@@ -49,34 +49,32 @@ To ignore errors in the configuration files, use the `--ignore` argument. This l
 
 All process configuration is stored within **$GC**.
 
-## remap script
+## remap 
 
-The remap script reads all dictionary files (fields and table definitions) from **$GC** and remaps the memory-resident database accordingly.
+The `remap` command reads all the dictionary files from **$GC** and performs the following tasks:
 
-It also generates dao objects based on the dictionary tables, so you can perform database operations in a type-safe way.
+- remaps the memory-resident database, taking into account amy changes to the dictionary files 
+- generates dao objects based on the dictionary tables, so you can perform database operations in a type-safe way
+- if you are running Aerospike or FDB, it updates the Genesis alias store; for Aerospike, it also generates UDFs (user defined functions)
 
-Additionally, it will update the Genesis alias store (if running Aerospike or FDB).
+The dictionary files are:
 
-The Aerospike DB layer needs UDFs (user defined functions) to work correctly, and these are also generated at this step.
+_application_**-fields-dictionary.kts**
+_application_**-tables-dictionary.kts**
+_application_**-view-dictionary.kts**
 
 When you run `remap`, the database is automatically locked to ensure that no other `remap` can run concurrently. 
 
-If the database crashes during a `remap` and the database remains locked (or if the database is locked for any other reason), run `remap --force --commit` to unlock the database.
-
 ### Syntax
-
-```bash
-remap [-c | --commit]
-```
 
 | Argument | Argument long name     | Mandatory | Description                                                | Restricted values |
 |----------|------------------------|-----------|------------------------------------------------------------|-------------------|
 |          | --force                | no        | Forces the unlocking of a locked database                  | No                |
 | -c       | --commit               | no        | Applies dictionary changes to the database                 | No                |
 |          | --skip-dao-generation  | no        | Skips the re-generation of DAOs on the given host          | No                |
-|          | --ask-db-password      | no        | Prompt for a DB user password to be manually entered      | No                |
+|          | --ask-db-password      | no        | Prompt for a DB user password to be manually entered       | No                |
 
-If you run remap with no arguments, it simply gives a report of changes that exist in the configuration.
+If you run `remap` with no arguments, it simply gives a report of changes that exist in the configuration.
 
 For example:
 
@@ -106,9 +104,14 @@ Key changes
 No changes
 ```
 
-To commit the changes to the database, use the **--commit** argument.
+If you want to commit the changes to the database, you must use the **--commit** argument.
 
-## startProcess script
+### Unlocking a database
+When you run `remap`, the database is automatically locked to ensure that no other `remap` can run concurrently. 
+
+If the database crashes during a `remap` and the database remains locked (or if the database is locked for any other reason), run `remap --force --commit` to unlock the database.
+
+## startProcess 
 
 This script starts a Genesis process. It takes a single positional argument:
 
