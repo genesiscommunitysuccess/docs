@@ -207,7 +207,7 @@ or
 
 Both of these options involve implementing a function with the event message as an input and a Boolean value as a return value.
 
-Here is an example of a GPAL Event Handler definition:
+Here is an example of a GPAL Event Handler definition where we use the `event.userName` to get access to the user who triggered the event, and check if it a valid user for the operation:
 
 ```kotlin
 eventHandler {
