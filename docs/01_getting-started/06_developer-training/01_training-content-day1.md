@@ -288,6 +288,8 @@ As soon as the Build is done, you need to deploy the application. Here are the t
 
 <h3>Start up plugin</h3>
 
+If you have already run the `Install genesis`, then you can skip this step.
+
 After the Gradle tasks, when first using the plugin with a project, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
 
 ![Genesis Install](/img/intellij-install.png)
@@ -298,13 +300,9 @@ This generates a hidden folder called **.genesis-home** in your project root, re
 On the first run, this could take up to 20 minutes, because it performs a full build of your application.
 :::
 
-1. Click on the **Deploy Genesis** button on the toolbar.
+Click on the **Deploy Genesis** button on the toolbar.
 
 ![Deploy](/img/intellij-deploy1.png)
-
-2. Redeploying the application requires the Genesis processes to be stopped. If you are prompted for this, click **ok** to continue. 
-
-![Deploy Prompt](/img/intellij-deploy2.png)
 
 This starts the relevant processes and the logs will be shown below.
 
@@ -425,13 +423,9 @@ However, after the first Build and Deploy, you need to send the login informatio
 
 <h3>Create a new schema</h3>
 
-Before you can run your application, you need to create a new schema for the database; this is where all tables will be created. To do that, follow these two steps:
+Before you can run your application, you need to create a new schema for the database; this is where all tables will be created. To do that, 
 
-1. Run `genesis-install`.
-
-![Genesis Install](/img/intellij-genesisInstall.png)
-
-2. Run `remap`.
+Run the `remap`.
 
 ![Genesis Install](/img/intellij-remap.png)
 
