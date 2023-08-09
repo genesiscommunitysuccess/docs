@@ -35,9 +35,9 @@ This example gives a record count for two specific Tables:
 CountRecords TABLE_NAME1 TABLE_NAME2 ...
 ```
 
-## DbMon script
+## DbMon 
 
-The DbMon script is the Genesis database client, which provides its own command line. From here, you can navigate through the database tables in your application.
+DbMon is the Genesis database client, which provides its own command line. From here, you can navigate through the database tables in your application.
 
 `DbMon` itself has a `help` command, which shows all the available commands. To get help on a specific command, run `help _command_`.
 
@@ -58,21 +58,24 @@ DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
 
 The command will ask you to confirm the removal of each table.
 
-## DumpIt script
+## DumpIt
 To copy data from a Genesis database, use the `DumpIt` command.
 
 ### Syntax
 The `DumpIt` command can take the following arguments:
 
-| Argument | Argument long name | Mandatory | Description                                            | Restricted values |
-|----------|--------------------|-----------|--------------------------------------------------------|-------------------|
-| -a       | --all              | No        | exports all tables to csv                              | No                |
-| -f       | --file `<arg>`     | No        | name of the csv file where table is exported           | No                |
-|          | -fields `<arg>`    | No        | space separated field list e.g. "FIRST_NAME LAST_NAME" | No                |
-| -h       | --help             | No        | show usage information                                 | No                |
-| -s       | --sql `<arg>`      | No        | name of the sql file where table is exported           | No                |
-| -t       | --table `<arg>`    | No        | the name of the table to export to csv                 | No                |
-|          | -where `<arg>`     | No        | match criteria e,g, "USER_NAME=='John'"                | No                |
+| Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
+|----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
+| -a       | --all              | No        | exports all tables to csv                              | No                | None    |
+| -f       | --file `<arg>`     | No        | name of the csv file where table is exported           | No                | None    |
+|          | -fields `<arg>`    | No        | space separated field list e.g. "FIRST_NAME LAST_NAME" | No                | None    |
+| -h       | --help             | No        | show help on how to use the command                    | No                | None    |
+| -s       | --sql `<arg>`      | No        | name of the sql file to export the table to           | No                | None    |
+| -t       | --table `<arg>`    | No        | the name of the table to export to csv                 | No                | None    |
+| -cem     | --criteriaEvaluatorMode `<arg>` | No        | the type of criteria evaluator to be used | TYPE_AWARE or LEGACY | LEGACY |
+| -fm      | --formatMode `<arg>`     | No        | indicates whether field formats should be taken into account  | FORMATTED (takes field formats into account) or LEGACY (does not take field formats into account) | None    |
+| -qi      | --quoteIdentifiers     | No        | if present, all sql identifiers (e.g. column names) will be quoted     | No  | None   |
+|          | -where `<arg>`     | No        | match criteria e.g. "USER_NAME=='John'"                | No                | None    |
 
 Here are some examples:
 
@@ -108,9 +111,9 @@ You can run `DumpIt` without any arguments to enter interactive mode.
 
 ## FixEnumValues
 
-Converts non-matching enum values in the database to SNAKE_CASE. This script is intended to be used after a dictionary change that adds new enum values. It will only update the data if the converted value matches the list of enum values in the dictionary.
+Converts non-matching enum values in the database to SNAKE_CASE. This command is intended for use after a dictionary change that adds new enum values. It will only update the data if the converted value matches the list of enum values in the dictionary.
 
-Changes will only be applied to the database if run with the **--commit** flag.
+Changes will only be applied to the database if the command is run with the **--commit** flag.
 
 :::warning
 Stop all processes before using this command.
@@ -119,10 +122,11 @@ Stop all processes before using this command.
 ### Syntax
 The `FixEnumValues` command can take the following arguments:
 
-| Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values |
-|----------|------------------------|-----------|----------------------------------------------------------------------------------------|-------------------|
-| -c       | --commit               | no        | Applies dictionary changes to the database                                             | No                |
-|          | [TABLES]               | no        | A list of specific tables to be changed separated by spaces; if no list is supplied, all tables are changed                                              | No                |
+| Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values | Default |
+|----------|------------------------|-----------|----------------------------------------------------------------------------------------|----------------|--------|
+| -c       | --commit               | no        | Applies dictionary changes to the database                                             | no    | none |
+|          | [TABLES]               | no        | A list of specific tables to be changed separated by spaces; if no list is supplied, all tables are changed                                              | no                | none |
+| -h       | --help             | no        | show help on how to use the command                    | no                | none    |
 
 In the example below, the changes are applied to the database for two tables: TRADE and POSITION.
 
@@ -130,7 +134,7 @@ In the example below, the changes are applied to the database for two tables: TR
 FixEnumValues --commit TRADE POSITION
 ```
 
-### As an installHook
+### Using an installHook
 
 To automate this process, you can use an installHook to call the script before `remap` is performed - be aware however that it will only run successfully once.
 
@@ -171,13 +175,13 @@ Following this, when you start any process, the `startProcess` command reads fro
 ### Syntax
 The `genesisInstall` command can take the following arguments:
 
-| Argument | Argument long name | Mandatory | Description                                                                                                                           | Restricted values |
+| Argument | Argument long name | Mandatory | Description                                                                                                               | Restricted values |
 |----------|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-|          | --ignore           | no        | If supplied, will ignore errors in the configuration files                                                                            | No                |
-|          | --ignoreHooks      | no        | If supplied, will ignore any install hooks found                                                                                      | No                |
-|          | --compactProcesses | no        | When set to `true`, combines compatible services into a single process, which reduces the number of services running in the container | No                |
-|          | --repeatedHooks    | no        | If supplied, will repeat the specified install hooks                                                                                      | No                |
-|          | --hostDiff         | no        | If supplied, will compare all the files in every Genesis server in the cluster to make sure that the files are in sync  | No                |
+|          | --ignore           | no        | If supplied, will ignore errors in the configuration files                                                                            | no                |
+|          | --ignoreHooks      | no        | If supplied, will ignore any install hooks found                                                                                      | no                |
+|          | --compactProcesses | no        | When set to `true`, combines compatible services into a single process, which reduces the number of services running in the container | no                |
+|          | --repeatedHooks    | no        | If supplied, will repeat the specified install hooks                                                                                      | no                |
+|          | --hostDiff         | no        | If supplied, will compare all the files in every Genesis server in the cluster to make sure that the files are in sync  | no                |
 
 Once complete, all configuration files will be copied and, where necessary, merged into the **~/run/generated/cfg** file, which we alias as **$GC**.
 
