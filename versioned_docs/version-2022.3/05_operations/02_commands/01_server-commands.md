@@ -1,6 +1,6 @@
 ---
-title: 'Operations - Server Commands'
-sidebar_label: 'Server Commands'
+title: 'Operations - server commands'
+sidebar_label: 'Server commands'
 id: server-commands
 keywords: [operations, server, commands]
 tags:

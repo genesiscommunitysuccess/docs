@@ -18,10 +18,16 @@ To ensure a correct installation, you must follow the product installation proce
 
 ## CountRecords
 
-This counts the number of records in the database, grouped by table, and prints to screen.
+This counts the number of records in the database, grouped by table; the results are printed to screen.
+
+By default, a count is given for every table in the database.
+
+If you only want the record count for specific tables, you can specify the table name or names.
 
 ### Syntax
-By default, the command provides the record count for each table defined in the dictionary. If you only want a count for specific tables, you can specify a space-separated list of those tables.
+| Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
+|----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
+|          |          [TABLES]  | no        | the name of the table whose rows are to be counted; for more than one table, this must be a space-separated list            | no                | a record count is provided for all tables in the database    |
 
 This example gives a record count for all tables:
 
@@ -29,10 +35,10 @@ This example gives a record count for all tables:
 CountRecords
 ```
 
-This example gives a record count for two specific Tables:
+The example below gives a record count for two specific tables:
 
 ```bash
-CountRecords TABLE_NAME1 TABLE_NAME2 ...
+CountRecords CHF_ORDERS CHF_TRADES
 ```
 
 ## DbMon 
@@ -50,10 +56,14 @@ For full details, see our page on [DbMon](../../../operations/commands/dbmon).
 The `DropTable` command removes all rows from the specified tables.
 
 ### Syntax 
-The command takes a flag of `-t`, followed by a list of space-separated table names, for example:
+| Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
+|----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
+| -t       | [TABLES]    | no        | the name of the table to have its rows removed; for more than one table, this must be a space-separated list            | no                | all records are removed from all tables    |
+
+The example below removes the rows from three separate tables:
 
 ```bash
-DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
+DropTable -t EQUITY_ORDERS_GB EQUITY_ORDERS_DE EQUITY_ORDERS_IT
 ```
 
 The command will ask you to confirm the removal of each table.
@@ -66,16 +76,16 @@ The `DumpIt` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
-| -a       | --all              | No        | exports all tables to csv                              | No                | None    |
-| -f       | --file `<arg>`     | No        | name of the csv file where table is exported           | No                | None    |
-|          | -fields `<arg>`    | No        | space separated field list e.g. "FIRST_NAME LAST_NAME" | No                | None    |
-| -h       | --help             | No        | show help on how to use the command                    | No                | None    |
-| -s       | --sql `<arg>`      | No        | name of the sql file to export the table to           | No                | None    |
-| -t       | --table `<arg>`    | No        | the name of the table to export to csv                 | No                | None    |
-| -cem     | --criteriaEvaluatorMode `<arg>` | No        | the type of criteria evaluator to be used | TYPE_AWARE or LEGACY | LEGACY |
-| -fm      | --formatMode `<arg>`     | No        | indicates whether field formats should be taken into account  | FORMATTED (takes field formats into account) or LEGACY (does not take field formats into account) | None    |
-| -qi      | --quoteIdentifiers     | No        | if present, all sql identifiers (e.g. column names) will be quoted     | No  | None   |
-|          | -where `<arg>`     | No        | match criteria e.g. "USER_NAME=='John'"                | No                | None    |
+| -a       | --all              | no        | exports all tables to csv                              | no                | none    |
+| -f       | --file `<arg>`     | no        | name of the csv file where table is exported           | no                | none    |
+|          | -fields `<arg>`    | no        | space separated field list e.g. "FIRST_NAME LAST_NAME" | no                | none    |
+| -h       | --help             | no        | show help on how to use the command                    | no                | none    |
+| -s       | --sql `<arg>`      | no        | name of the sql file to export the table to           | no                | none    |
+| -t       | --table `<arg>`    | no        | the name of the table to export to csv                 | no                | none    |
+| -cem     | --criteriaEvaluatorMode `<arg>` | no        | the type of criteria evaluator to be used | TYPE_AWARE or LEGACY | LEGACY |
+| -fm      | --formatMode `<arg>`     | no        | indicates whether field formats should be taken into account  | FORMATTED (takes field formats into account) or LEGACY (does not take field formats into account) | none    |
+| -qi      | --quoteIdentifiers     | no        | if present, all sql identifiers (e.g. column names) will be quoted     | no  | none   |
+|          | -where `<arg>`     | no        | match criteria e.g. "USER_NAME=='John'"                | no                | none    |
 
 Here are some examples:
 
@@ -124,9 +134,9 @@ The `FixEnumValues` command can take the following arguments:
 
 | Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values | Default |
 |----------|------------------------|-----------|----------------------------------------------------------------------------------------|----------------|--------|
-| -c       | --commit               | no        | Applies dictionary changes to the database                                             | no    | none |
-|          | [TABLES]               | no        | A list of specific tables to be changed separated by spaces; if no list is supplied, all tables are changed                                              | no                | none |
-| -h       | --help             | no        | show help on how to use the command                    | no                | none    |
+| -c       | --commit               | no        | applies dictionary changes to the database                                             | no    | none |
+|          | [TABLES]               | no        | a list of specific tables to be changed separated by spaces; if no list is supplied, all tables are changed                                              | no                | none |
+| -h       | --help             | no        | shows help on how to use the command                    | no                | none    |
 
 In the example below, the changes are applied to the database for two tables: TRADE and POSITION.
 
@@ -138,7 +148,7 @@ FixEnumValues --commit TRADE POSITION
 
 To automate this process, you can use an installHook to call the script before `remap` is performed - be aware however that it will only run successfully once.
 
-The following will find all String to Enum changes in all tables and commit any valid updates to the DB before `remap` is performed.
+The following example finds all String to Enum changes in all tables and commits any valid updates to the database before `remap` is performed.
 
 ```bash
 #!/bin/bash
@@ -175,13 +185,13 @@ Following this, when you start any process, the `startProcess` command reads fro
 ### Syntax
 The `genesisInstall` command can take the following arguments:
 
-| Argument | Argument long name | Mandatory | Description                                                                                                               | Restricted values |
-|----------|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-|          | --ignore           | no        | If supplied, will ignore errors in the configuration files                                                                            | no                |
-|          | --ignoreHooks      | no        | If supplied, will ignore any install hooks found                                                                                      | no                |
+| Argument | Argument long name | Mandatory | Description                                                                                                               | Restricted values | Default |
+|----------|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------|--------|
+|          | --ignore           | no        | If supplied, will ignore errors in the configuration files                                                                            | no                | none |
+|          | --ignoreHooks      | no        | If supplied, will ignore any install hooks found                                                                                      | no                | none |
 |          | --compactProcesses | no        | When set to `true`, combines compatible services into a single process, which reduces the number of services running in the container | no                |
-|          | --repeatedHooks    | no        | If supplied, will repeat the specified install hooks                                                                                      | no                |
-|          | --hostDiff         | no        | If supplied, will compare all the files in every Genesis server in the cluster to make sure that the files are in sync  | no                |
+|          | --repeatedHooks    | no        | If supplied, will repeat the specified install hooks                                                                                      | no                | none |
+|          | --hostDiff         | no        | If supplied, will compare all the files in every Genesis server in the cluster to make sure that the files are in sync  | no                | none |
 
 Once complete, all configuration files will be copied and, where necessary, merged into the **~/run/generated/cfg** file, which we alias as **$GC**.
 
@@ -191,12 +201,17 @@ To ignore errors in the configuration files, use the `--ignore` argument. This l
 
 All process configuration is stored within **$GC**.
 
-For example:
+The example below ignores errors and leaves the configuration files undeleted, even if errors are found.
+
 ```bash
 genesisInstall --ignore
 ```
 
-This example ignores errors and leaves the configuration files undeleted, even if errors are found.
+The example combines all compatible processes into a single process.
+
+```bash
+genesisInstall --compactProcesses
+```
 
 ### Install hooks
 
@@ -277,8 +292,7 @@ There are two environment variables that can be used to configure how much RAM t
 There is a separate wrapper, `JvmRun` for Java main class scripts.
 
 ## GetAutoIncrementCount
-
-This works similarly to `GetSequenceCount`, but for auto increment INT values defined in dictionaries.
+This gets the current auto increment INT values defined in dictionaries for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by the `SetAutoIncrement` script (see below).
 
 :::warning
 Stop all your application's processes before using this command. 
@@ -287,11 +301,11 @@ Stop all your application's processes before using this command.
 ### Syntax
 The `GetAutoIncrementCount` command can take the following arguments:
 
-| Argument | Argument long name | Mandatory |               Description               | Restricted values |
-|----------|--------------------|-----------|-----------------------------------------|-------------------|
-| -f       | --file `<arg>`     | No        |                                         | No                |
-| -h       | --help             | No        | show usage information                  | No                |
-| -p       | --print            | No        |                                         | No                |
+| Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
+|----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
+| -f       | --file `<arg>`     | no        | name of file to receive the values      | no                | AutoIncrementValues |
+| -h       | --help             | no        | displays help on the command            | no                | none    |
+| -p       | --print            | no        | if sending to a file, then use this if you also want to print to screen | no                | true (unless -f is supplied) |
 
 The behaviour of this command depends on which database implementation your application uses. 
 
@@ -301,6 +315,11 @@ The behaviour of this command depends on which database implementation your appl
 
 - **If you are using an SQL implementation**, this command returns the last value assigned by the sequence, not the next to be assigned.
 
+For example, this command puts all the auto increment values in a file called **AutoIncVals**. The values are not displayed on screen.
+
+```bash
+GetAutoIncrementCount -f=AutoIncVals
+```
 And remember: only use this command when all the application's processes have been stopped. 
 
 ## GetNextSequenceNumbers
@@ -341,11 +360,11 @@ This gets the current sequence number for all the sequences in the system. The v
 ### Syntax
 The `GetSequenceCount` command can take the following arguments:
 
-| Argument | Argument long name | Mandatory |               Description               | Restricted values |
-|----------|--------------------|-----------|-----------------------------------------|-------------------|
-| -f       | --file `<arg>`     | No        |                                         | No                |
-| -h       | --help             | No        | show usage information                  | No                |
-| -p       | --print            | No        |                                         | No                |
+| Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
+|----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
+| -f       | --file `<arg>`     | no        | name of the file to contain the sequence numbers | no                | SEQUENCE.csv |
+| -h       | --help             | no        | show usage information                  | no                | none |
+| -p       | --print            | no        |                                         | no                | true (unless -f is supplied) |
 
 ## killProcess
 
