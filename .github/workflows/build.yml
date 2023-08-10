@@ -28,7 +28,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
         registry-url: https://npm.pkg.github.com/
         scope: '@genesislcap'
-
+    
+    - name: NPM install cache
+      uses: c-hive/gha-npm-cache@v1
+      
     - name: Install CDK dependencies
       working-directory: ./infra
       run: npm install
