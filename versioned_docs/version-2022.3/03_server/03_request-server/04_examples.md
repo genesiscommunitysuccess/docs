@@ -9,8 +9,9 @@ tags:
   - examples
 ---
 
+You define your application's Request Server in a kotlin script file called _application-name_**-reqrep.kts**. 
 
-Below is an example of a file where the single `requestReply` code block includes a `where` clause. You can find out more about using `where` clauses on the [Basics](../../../server/request-server/basics/#where-block) page.
+Below is an example of a **reqrep.kts** file where the single `requestReply` code block includes a `where` clause. You can find out more about using `where` clauses on the [Basics](../../../server/request-server/basics/#where-block) page.
 
 ```kotlin
 requestReplies {
@@ -28,7 +29,7 @@ requestReplies {
 }
 ```
 
-Below is a file with a fairly simple `requestReply` codeblock with standard `request` and `reply` statements. The [`where` block](../../../server/request-server/basics/#where-block) filters out any data that does not meet the conditions. All data that is returned will have an instrumentCode equal to the request parameter INSTRUMENT_CODE. 
+Below is a **reqrep** file with a fairly simple `requestReply` codeblock that has standard `request` and `reply` statements. The [`where` block](../../../server/request-server/basics/#where-block) filters out any data that does not meet the conditions. All data that is returned will have an instrumentCode equal to the request parameter INSTRUMENT_CODE. 
 
 ```kotlin
 requestReplies {
