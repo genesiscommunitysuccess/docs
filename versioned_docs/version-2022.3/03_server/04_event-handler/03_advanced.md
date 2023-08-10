@@ -199,13 +199,13 @@ or
 
 Both of these options involve implementing a function with the event message as an input and a Boolean value as a return value.
 
-Here is an example of a GPAL Event Handler definition:
+Here is an example of a GPAL Event Handler definition where `event.userName` is used to gain access to the user who triggered the event; if the user name is not **system.user**, it is directed to an approval procedure:
 
 ```kotlin
 eventHandler {
     eventHandler<Company>("COMPANY_INSERT") {
         // Override requiresPendingApproval here to enable the "pending approval" flow.
-        // In this implementation, any user that is not "system.user" needs to go through requires going through the approval mechanism.
+        // In this implementation, any user that is not "system.user" needs to go through the approval mechanism.
         // The last line just needs to evaluate to a boolean; if false it does not require approval, if true it does
         requiresPendingApproval { event ->
             event.userName != "system.user"
