@@ -10,6 +10,23 @@ tags:
 ---
 
 
+Below is an example of a file where the single `requestReply` code block includes a `where` clause. You can find out more about using `where` clauses on the [Basics](../../../server/request-server/basics/#where-block) page.
+
+```kotlin
+requestReplies {
+    requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
+
+        request {
+            ALTERNATE_TYPE
+        }
+
+        where { row, parameters ->
+            "ALLL3" == row.instrumentCode &&                         
+             parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
+        }
+    }
+}
+```
 
 Below is a file with a fairly simple `requestReply` codeblock with standard `request` and `reply` statements. The [`where` block](../../../server/request-server/basics/#where-block) filters out any data that does not meet the conditions. All data that is returned will have an instrumentCode equal to the request parameter INSTRUMENT_CODE. 
 
@@ -40,6 +57,7 @@ requestReplies {
 ```
 
 In the example below, we have modified the example above to include two restrictions:
+
 - The maximum number of rows to be returned is 5.
 - The process will time out if no response is received for 15 seconds.
 
@@ -66,22 +84,3 @@ requestReplies {
     }
 }
 ```
-
-Below is an example of a file where the single `requestReply` code block includes a `where` clause. You can find out more about this example on the [Basics](../../../server/request-server/basics/#where-block) page.
-
-```kotlin
-requestReplies {
-    requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
-
-        request {
-            ALTERNATE_TYPE
-        }
-
-        where { row, parameters ->
-            "ALLL3" == row.instrumentCode &&                         
-             parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
-        }
-    }
-}
-```
-

@@ -9,7 +9,23 @@ tags:
   - examples
 ---
 
+Below is an example of a file where the single `requestReply` code block includes a `where` clause. You can find out more about `where` clauses on the [Basics](../../../server/request-server/basics/#where-block) page.
 
+```kotlin
+requestReplies {
+    requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
+
+        request {
+            ALTERNATE_TYPE
+        }
+
+        where { row, parameters ->
+            "ALLL3" == row.instrumentCode &&                         
+             parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
+        }
+    }
+}
+```
 
 Below is a file with a fairly simple `requestReply` codeblock with standard `request` and `reply` statements. The [`where` block](../../../server/request-server/basics/#where-block) filters out any data that does not meet the conditions. All data that is returned will have an instrumentCode equal to the request parameter INSTRUMENT_CODE. 
 
@@ -62,24 +78,6 @@ requestReplies {
             SPREAD
             TRADED_CURRENCY
             EXCHANGE_ID
-        }
-    }
-}
-```
-
-Below is an example of a file where the single `requestReply` code block includes a `where` clause. You can find out more about this example on the [Basics](../../../server/request-server/basics/#where-block) page.
-
-```kotlin
-requestReplies {
-    requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
-
-        request {
-            ALTERNATE_TYPE
-        }
-
-        where { row, parameters ->
-            "ALLL3" == row.instrumentCode &&                         
-             parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
         }
     }
 }
