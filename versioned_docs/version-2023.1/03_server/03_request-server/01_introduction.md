@@ -12,9 +12,7 @@ tags:
 
 
 
-Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI.
-
-Request Servers will reply with a single response. Once the response is received, the transaction is over (unlike a [Data Server](../../../server/data-server/basics), which stays connected to the client and pushes updates).
+Request Servers (otherwise known as request/replies and often shortened to reqrep) provide snapshot data from a table or view in response to a request from the front end. Once the response is received, the transaction is over (unlike a [Data Server](../../../server/data-server/basics), which stays connected to the client and pushes updates).
 
 ```mermaid
 graph TD
