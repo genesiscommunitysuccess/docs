@@ -22,7 +22,7 @@ requestReplies {
         }
 
         where { row, parameters ->
-            "ALLL3" == row.instrumentCode &&                         
+             row.instrumentCode == "ALLL3" &&                         
              parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
         }
     }
