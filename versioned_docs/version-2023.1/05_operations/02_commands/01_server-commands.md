@@ -34,7 +34,7 @@ This example gives a record count for two specific Tables:
 ```bash
 CountRecords TABLE_NAME1 TABLE_NAME2 ...
 ```
-## DbMon script
+## DbMon 
 
 The DbMon script is the Genesis database client, which provides its own command line. From here, you can navigate through the database tables in your application.
 

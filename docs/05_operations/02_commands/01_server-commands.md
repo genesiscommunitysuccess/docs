@@ -379,8 +379,8 @@ This command is used to terminate a specified process.
 The `killProcess` command can take the following arguments:
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                      | Restricted values | Default |
-|------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | No        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | no                | none |
+|------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|-------|
+| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | no        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | no                | none |
 | -f                           | --force                                       |           | forcefully kills a process (using kill -9)                                                                                                                                                     | no                | none |
 | -w WAIT                      | --wait WAIT                                   | no        | specifies how many seconds to wait before forcing the kill                                                                                                                                     | no           |  10 |
 | -c                           | --cluster                                     | no        | kills the process on every node in the cluster             | no                | none |
@@ -396,16 +396,16 @@ This script reads the **$GC/processes.xml** file to determine which processes to
 ### Syntax
 The `killServer` command can take the following arguments:
 
-| Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                                                          | Restricted values |
-|------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | No        | Where the application is running  on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node). Specify the Host Name, Host Names or "cluster" for all hosts | No                |
-| -f                           | --force                                       | No        | forcefully kills a process (using kill -9)                                                                                                                                                                                         | No                |
-|                              | --all                                         | No        | kills all processes, including   GENESIS_CLUSTER                                                                                                                                                                                     | No                |
-| -c                           | --cluster                                     | No        | kills the server on all the nodes in the cluster                                                                                                                                                                                   | No                |    
+| Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                                                          | Restricted values | Default |
+|------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|--------|-------|
+| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | no        | Where the application is running  on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node). Specify the Host Name, Host Names or "cluster" for all hosts | no | none |
+| -f                           | --force                                       | no        | forcefully kills a process (using kill -9)                                                                                                                                                                                         | no                | none |
+|                              | --all                                         | no        | kills all processes, including   GENESIS_CLUSTER                                                                                                                                                                                     | no                | none |
+| -c                           | --cluster                                     | no        | kills the server on all the nodes in the cluster                                                                                                                                                                                   | no                |    none | 
 
 ## LogLevel
 
-To dynamically change the logging levels on any Genesis process, use the `LogLevel` command.
+To change the logging levels by code (dynamically) on any Genesis process, use the `LogLevel` command.
 
 ### Syntax
 The `LogLevel` command can take the following arguments:
@@ -474,7 +474,7 @@ It is potentially dangerous to switch the `DictionarySource` property.
 If you run `remap` (which modifies the  dictionary) after `MigrateDictionary` and before switching the `DictionarySource` property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
 :::
 
-## mon script
+## mon 
 
 This script shows the status of the overall system, so you can see if the server is up or not.
 
@@ -509,11 +509,6 @@ PID     Process Name                  Port        Status         CPU       Memor
 ```
 
 ### Syntax
-
-```bash
-mon [-v | -c | -a | -m | -u] polling_interval
-```
-
 The `mon` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory | Description                                  | Restricted values |
@@ -541,6 +536,10 @@ Unhealthy processes includes all processes that are not `HEALTHY` or `STANDBY`.
 
 :::
 
+```bash
+mon [-v | -c | -a | -m | -u] polling_interval
+```
+
 ## PopulateHolidays
 This command populates the Holidays table with holidays, based on a specific year(s), country(ies) and region(s).
 
@@ -564,9 +563,9 @@ PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
 
 This enables you to define the data-retention policy. Data will be removed from the database where the defined criteria are fulfilled.
 
-Example: For the TRADE table, we could decide to keep allocated trades for 60 days, and 30 days for the rest.
+Example: For the TRADE table, you could decide to keep allocated trades for 60 days, and 30 days for the rest.
 
-To use this tool, you must have an _application_**-purger.kts* file in the application's config folder. Invoking the **PurgeTables** command will pick up all  files that are found in the **$GENESIS_HOME/generated/cfg/** directory.
+To use this tool, you must have an _application_**-purger.kts* file in the application's config folder. Invoking the **PurgeTables** command will pick up all files that are found in the **$GENESIS_HOME/generated/cfg/** directory.
 
 In order to enable syntax highlighting and autocompletion for purger files, you must add **genesis-environment** as a dependency of your application's **-config** module. See simple examples below for purger definitions:
 
@@ -585,7 +584,7 @@ purgers{
 
 ### Purge by date
 
-The purger supports purging based on days. You can specify the max age of record in terms of calendar days or business days.
+The purger supports purging based on days. You can specify the max age of a record in terms of either calendar days or business days.
 
 - Business days disregard weekends and public holidays. 
 - Calendar days disregard weekends by default, but can be set to include them, as shown in the example below.
@@ -610,7 +609,7 @@ purgers {
 }
 ```
 
-### Purge by range:
+### Purge by range
 Range purger is similar to bulkPurger, but it performs efficient index range searches in database and speed up purger performance compared to bulkPurger.
 - You need to give index name of the table you want to purge data on
 - Purger has special function called `whereRange` which is used to filter based on index value
@@ -642,7 +641,7 @@ purgers {
 }
 ```
 
-### Purge bulk data:
+### Purge bulk data
 
 You can purge data of whole table by using
 
@@ -663,14 +662,14 @@ purgers {
 
 ### Filters
 
-Following filters are used in the examples explained above:
+The following filters are used in the examples explained above:
 
 `whereRange`: This filter can contain value of the table-index parameter or parameters if there are more than one field in the table-index. Parameter list can range from 1-10.
 It filters the records based on the index parameter value/values
 
 `filter`: filter based on predicate provided
 
-`filterBusinessDays`: this method allows to purge data based on business date. 
+`filterBusinessDays`: this method allows you to purge data based on business date. 
 You need to provide:
 - max age of record
 - country name
