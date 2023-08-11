@@ -54,12 +54,14 @@ systemDefinition {
 }```
 
 ## Overriding scripts
-Any script file that you put in your site-specific folder will override a file of the same name in your application's main (non-site-specific) folders.
+
+If you want to override any scripts in your application such as **{app-name}-dataserver.kts**, **{app-name}-eventhandler.kts**, etc, you need to go to **site-specific/main/src/main/resources/scripts** folder and create the new script file with the same name as the script you want to override.
+
+To see the changes, you need to deploy your application, and if you are using intellij plugin, you shall see these files under your **.genesis-home/site-specific**
 
 This is essential where you use standard modules, such as Auth; you should never change these modules. 
 
 :::danger
 Never change the standard modules, such as Auth. You can copy their script files to **site-specific** and change them there.
 :::
-
 
