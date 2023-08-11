@@ -366,19 +366,24 @@ The `GetSequenceCount` command can take the following arguments:
 | -h       | --help             | no        | show usage information                  | no                | none |
 | -p       | --print            | no        |                                         | no                | true (unless -f is supplied) |
 
+The example below puts the numbers for all sequences in the database in the file **/home/user/run/sequenceCount**. 
+```
+GetSequenceCount --file=/home/user/run/sequenceCount
+```
+
 ## killProcess
 
-This script is used to terminate a specified process.
+This command is used to terminate a specified process.
 
 ### Syntax
 The `killProcess` command can take the following arguments:
 
-| Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                      | Restricted values |
+| Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                      | Restricted values | Default |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | No        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | No                |
-| -f                           | --force                                       |           | forcefully kills a process (using kill -9)                                                                                                                                                     | No                |
-| -w WAIT                      | --wait WAIT                                   | No        | specifies how many seconds to wait before forcing the kill                                                                                                                                     | No           |
-| -c                           | --cluster                                     | No        | kills the process on every node in the cluster             | No                |
+| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | No        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | no                | none |
+| -f                           | --force                                       |           | forcefully kills a process (using kill -9)                                                                                                                                                     | no                | none |
+| -w WAIT                      | --wait WAIT                                   | no        | specifies how many seconds to wait before forcing the kill                                                                                                                                     | no           |  10 |
+| -c                           | --cluster                                     | no        | kills the process on every node in the cluster             | no                | none |
 
 ```bash
 killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--force] [--wait]
