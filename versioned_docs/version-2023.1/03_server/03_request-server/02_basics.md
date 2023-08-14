@@ -123,20 +123,6 @@ The `where` block enables you to specify the conditions for which data should be
 In this contrived example below, the `where` block filters rows whose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG". 
 The row parameter represents the rows returned from the table or view defined at the top of the `requestReply` definition, in this case INSTRUMENT_DETAILS.
 
-```kotlin
-requestReplies {
-    requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
+import Example1 from '/examples/requestserver/_reqrep1.md'
 
-        request {
-            ALTERNATE_TYPE
-        }
-
-        where { row, parameters ->
-            row.instrumentCode == "ALLL3" &&                         
-            parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
-        }
-    }
-}
-```
-
-Note - you cannot use derived fields within a `where` block.
+<Example1 />

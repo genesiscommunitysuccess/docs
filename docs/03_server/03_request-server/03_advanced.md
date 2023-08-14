@@ -9,7 +9,6 @@ tags:
   - requestreply
 ---
 
-
 ## Audit tables
 If you want to create a `requestReply`codeblock for an Audit table, and you also want to specify a specific set of request fields, those fields must belong to an index in the underlying audit table.
 
@@ -58,59 +57,17 @@ requestReplies {
 
 ## Limit the number of rows returned
 
-You can limit the number of rows returned using the property `rowReturnLimit`. In this example, we limit it to 2.
+You can limit the number of rows returned using the property `rowReturnLimit`. In this example, we limit it to 3.
 
-```kotlin
-requestReplies {
-    requestReply(INSTRUMENT_DETAILS) {
+import Example3 from '/examples/requestserver/_reqrep3.md'
 
-        rowReturnLimit = 2
-
-        request {
-            ALTERNATE_TYPE
-            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
-        }
-
-        reply {
-            INSTRUMENT_ID
-            INSTRUMENT_NAME
-            LAST_TRADED_PRICE
-            VWAP
-            SPREAD
-            TRADED_CURRENCY
-            EXCHANGE_ID
-        }
-    }
-}
-```
+<Example3 />
 
 ## Timeout
 
-You can specify a timeout (in seconds) for a Request Server using the property `timeout`. In this example, we set a timeout of 10 seconds.
+You can specify a timeout (in seconds) for a Request Server using the property `timeout`. In this example, we set a timeout of 15 seconds.
 
-```kotlin
-requestReplies {
-    requestReply("QUICK_INSTRUMENT", INSTRUMENT_DETAILS) {
-
-        timeout = 10
-
-        request {
-            ALTERNATE_TYPE
-            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
-        }
-
-        reply {
-            INSTRUMENT_ID
-            INSTRUMENT_NAME
-            LAST_TRADED_PRICE
-            VWAP
-            SPREAD
-            TRADED_CURRENCY
-            EXCHANGE_ID
-        }
-    }
-}
-```
+<Example3 />
 
 ## Ranges
 
@@ -137,7 +94,7 @@ Note that ranges that are not based on indexes perform more slowly than those th
 
 You can use a permissioning block to define both dynamic permissions (AUTH) and permission codes (based on RIGHT_SUMMARY rights) on Request Servers, which is similar to Event Handler and Data Server.
 
-### Dynamic permission:
+### Dynamic permissioning
 
 Similar to Data-Server, you can provide dynamic permissioning on Request Server by using table/view reference.
 
@@ -296,6 +253,7 @@ requestReply<InstrumentDetails.ByInstrumentId, InstrumentDetails> {
 ```
 
 Next is a more complex example. 
+
 The first block checks that the user is authorised to view the instrument.
 
 The second block uses the ALT_INSTRUMENT_ID table. The index is used as the input, but we return either a `getBulk`, a `getRange` or a `get`, depending on the input.
@@ -343,7 +301,7 @@ requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId>("FAN
 }
 ```
 
-Helpers exist to assist interacting with the Kotlin Flow type, which is the return type within the reply block. These helpers are:
+Helpers assist you to interact with the Kotlin Flow type, which is the return type within the reply block. These helpers are:
 * T.flow() - Converts to the Flow type
 * T.distinct() - Returns a Flow of all distinct values
 * T.distinctBy(selector: (T) -> K?) - Returns a Flow of all distinct values given a selector
