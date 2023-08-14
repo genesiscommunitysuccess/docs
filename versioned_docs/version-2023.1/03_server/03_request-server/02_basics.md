@@ -132,11 +132,11 @@ requestReplies {
         }
 
         where { row, parameters ->
-            "ALLL3" == row.instrumentCode &&                         
-             parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
+            row.instrumentCode == "ALLL3" &&                         
+            parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
         }
     }
 }
 ```
 
-Note - You cannot use derived fields within a `where` block.
+Note - you cannot use derived fields within a `where` block.
