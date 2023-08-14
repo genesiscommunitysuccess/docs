@@ -322,6 +322,24 @@ GetAutoIncrementCount -f=AutoIncVals
 ```
 And remember: only use this command when all the application's processes have been stopped. 
 
+## GetSequenceCount
+
+This gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by the `SetSequence` script (see below). For example, if you have 120 rows in the table DE_ORDERS, the sequence count is for that table is 120.
+
+### Syntax
+The `GetSequenceCount` command can take the following arguments:
+
+| Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
+|----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
+| -f       | --file `<arg>`     | no        | name of the file to contain the sequence numbers | no       | SEQUENCE.csv |
+| -h       | --help             | no        | show help on how to use thus command             | no       | none |
+| -p       | --print            | no        |                                                  | no       | true (unless -f is supplied) |
+
+The example below puts the numbers for all sequences in the database in the file **/home/user/run/sequenceCount**. 
+```
+GetSequenceCount --file=/home/user/run/sequenceCount
+```
+
 ## GetNextSequenceNumbers
 
 This gives you the next sequence number of every table in the application. The numbers are provided in table format (csv), for example:
@@ -332,14 +350,23 @@ This gives you the next sequence number of every table in the application. The n
 "PROFILE_AUDIT","PR","804"
 "PROFILE_USER_AUDIT","PA","104"
 ```
-### Syntax
+In the example above, the table USER_AUDIT has 103 rows, so the next sequence number for that table is 104.
 
+### Syntax
+The `GetSequenceNumbers` command can take the following arguments:
+
+| Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
+|----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
+| -f       | --file `<arg>`     | no        | name of the file to contain the sequence numbers | no       | SequenceValues.csv |
+| -h       | --help             | no        | show help on how to use this command             | no       | none |
+| -p       | --print            | no        |                                         | no                | true (unless -f is supplied) |
+
+The example below displays the next sequence number of each table, using the format described above.
 ```bash
 GetNextSequenceNumbers
 ```
-This displays the next sequence number of each table, using the format described above.
 
-By default, the details are sent to the screen, but you can redirect the output to a file, for example:
+By default, the details are sent to the screen, but you can redirect the output to a file. For this use either the `-f` argument followed by the filename, or you can use the `>>` annotation followed by a filename, as in the example below:
 
 ```bash
 GetNextSequenceNumbers >> /tmp/NextSeqNumbers.txt 
@@ -352,24 +379,6 @@ The `GetNextSequenceNumbers` command is often used with the `SetSequence` script
 2. Check the table contents. You might find that a row is missing or needs to be added. Make this change on the database manually. This affects the sequence numbers in those tables.
 3. Run `SetSequence` to reset the sequence numbers where relevant. 
 4. Now you can [restart your processes](../../../operations/commands/server-commands/#startserver-script).
-
-## GetSequenceCount
-
-This gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by the `SetSequence` script (see below).
-
-### Syntax
-The `GetSequenceCount` command can take the following arguments:
-
-| Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
-|----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
-| -f       | --file `<arg>`     | no        | name of the file to contain the sequence numbers | no                | SEQUENCE.csv |
-| -h       | --help             | no        | show usage information                  | no                | none |
-| -p       | --print            | no        |                                         | no                | true (unless -f is supplied) |
-
-The example below puts the numbers for all sequences in the database in the file **/home/user/run/sequenceCount**. 
-```
-GetSequenceCount --file=/home/user/run/sequenceCount
-```
 
 ## killProcess
 
@@ -385,8 +394,21 @@ The `killProcess` command can take the following arguments:
 | -w WAIT                      | --wait WAIT                                   | no        | specifies how many seconds to wait before forcing the kill                                                                                                                                     | no           |  10 |
 | -c                           | --cluster                                     | no        | kills the process on every node in the cluster             | no                | none |
 
-```bash
-killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--force] [--wait]
+The example below kills the GENESIS_AUTH_PERMS process.
+
+ ```bash
+killProcess GENESIS_AUTH_PERMS
+```
+In the example below, there is a cluster; this command kills the GENESIS_ROUTER process on the nodes HARRY and GARY.
+
+ ```bash
+killProcess GENESIS_ROUTER --hostname HARRY, GARY
+```
+
+In the example below, there is a cluster; this command kills the GENESIS_ROUTER process on ALL nodes.
+
+ ```bash
+killProcess GENESIS_ROUTER --cluster
 ```
 
 ## killServer script
@@ -403,6 +425,18 @@ The `killServer` command can take the following arguments:
 |                              | --all                                         | no        | kills all processes, including   GENESIS_CLUSTER                                                                                                                                                                                     | no                | none |
 | -c                           | --cluster                                     | no        | kills the server on all the nodes in the cluster                                                                                                                                                                                   | no                |    none | 
 
+In the example below, there is a single node; this command kills all processes for the application, including GENESIS_CLUSTER.
+
+ ```bash
+killServer GENESIS_ROUTER --all
+```
+
+In the example below, there is a cluster; this command kills the nodes HARRY and GARY.
+
+ ```bash
+killServer GENESIS_ROUTER --hostname HARRY, GARY
+```
+
 ## LogLevel
 
 To change the logging levels by code (dynamically) on any Genesis process, use the `LogLevel` command.
@@ -417,7 +451,7 @@ The `LogLevel` command can take the following arguments:
 |                                        | -DATADUMP_NACK_ON                    | No        | changes log level to TRACE and captures only _NACK messages from Genesis messages     | No                |
 |                                        |  -DATADUMP_OFF                       | No        | changes the log level to info for Genesis messages                                    | No                |
 |                                        |  -DATADUMP_ON                        | No        | changes the log level to trace for Genesis messages                                   | No                |
-| -h                                     |  --help                              | No        | show usage information                                                                | No                |
+| -h                                     |  --help                              | No        | show help on the command                                | No                |
 | -l                                     |  --level `<log level>`               | No        | log level - if log level is not correct it will be set automatically to   DEBUG level | No                |
 | -p _process-name_,..,_process-name_  |                                      | No        | attaches processes to the command                                                     | No                |
 | -r _process-name_,..,_process-name_`  |                                      | No        | remove processes                                                                      | No                |
@@ -425,12 +459,35 @@ The `LogLevel` command can take the following arguments:
 |                                        | -STATUSDUMP_ON                       | No        | changes the log level to trace for status updates                                     | No                |
 | -t `<time>`                            |                                      | No        | duration of log level change in min/sec Eg: 1m, 1000s                                 | No                |
 
+The example below sets the logging level for the GENSIS_AUTH_DATASERVER process to TRACE.
+
+```bash
+LogLevel -p GENESIS_AUTH_DATASERVER -l TRACE
+```
+
+The example below resets the LogLevel for the GENESIS_CLUSTER process. 
+
+```bash
+LogLevel -r GENESIS_CLUSTER
+```
+The example below changes the log level to TRACE and captures only `_NACK` messages from Genesis messages for all processes. 
+
+```bash
+LogLevel -DATADUMP_NACK_ON
+```
 
 ## MigrateAliases
 
 This migrates the Genesis alias store from database storage to file storage and vice versa.
 
 ### Syntax
+The `MigrateAliases` command can take the following arguments:
+
+| Argument | Argument long name                   | Mandatory | Description                                                     | Restricted values | Default |
+|----------|--------------------------------------|-----------|-----------------------------------------------------------------|-------------------|---------|
+| -h   | --help        | no	| show help on the command | none | no |
+| -o   | --override    | no	| override existing alias store if it exists in destination | none | no |
+| -dst | --destination | no	| destination dictionary store | DB or FILE | yes |
 
 ```bash
 MigrateAliases FILE
