@@ -34,8 +34,7 @@ requestReplies {
 
 ## Adding a name
 
-Every `requestReply` in your .kts must have a unique name. If you do not provide one, it will be allocated automatically. In the previous example, the `requestReply` will automatically be named as `REQ_INSTRUMENT_DETAILS`.
-If you name it as INSTRUMENT_INFO then it will be registered as `REQ_INSTRUMENT_INFO`.
+Every `requestReply` in your .kts must have a unique name. If you do not provide one, it will be allocated automatically. In the previous example, the `requestReply` will automatically be named as `REQ_INSTRUMENT_DETAILS` - based on the table name.
 
 ## Multiple Request Servers
 
@@ -50,9 +49,7 @@ requestReplies {
 ```
 
 ## Specifying fields on request and reply
-
-
-With all those basic `requestReply` codeblocks we have seen so far, all the fields in the table are returned.
+With all the basic `requestReply` codeblocks we have seen so far, all the fields in the table are returned.
 
 We can add some precision using `request` and `reply` blocks within a `requestReply` statement.
 
