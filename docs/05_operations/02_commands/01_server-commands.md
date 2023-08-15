@@ -489,12 +489,15 @@ The `MigrateAliases` command can take the following arguments:
 | -o   | --override    | no	| override existing alias store if it exists in destination | none | no |
 | -dst | --destination | no	| destination dictionary store | DB or FILE | yes |
 
+
 ```bash
 MigrateAliases FILE
 
 MigrateAliases DATABASE
 ```
-
+```
+MigrateAliases -dst=DB
+```
 Aerospike and FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
 
 - If you are running Genesis on a single node, use a file store 
