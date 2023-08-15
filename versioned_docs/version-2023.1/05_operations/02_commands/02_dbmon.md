@@ -32,7 +32,7 @@ The commands available with DbMon are listed below.
 | forceAutoIncrementNumber | `<field_name> <sequence_number>` |                                        |
 | forceSequenceNumber      | `<sequence_name> <sequence_number>`         |                             |
 | help                     |                         | lists all commands                              |
-| insert                   |                         | inserts the current row                         |
+| [insert](#insert)                  |                         | inserts the current row                         |
 | [last](#first-and-last)  | `<key_name>`            | gets the last record by key                     |
 | listAll                  | `<key_name> <num_key_fields> <max_records>` |                             |
 | [next](#next)            | `<key_name>`                                | gets the next record by key |
@@ -40,14 +40,14 @@ The commands available with DbMon are listed below.
 | qshow                    |                                             |                             |
 | [search](#search)    | `<condition> [-l <limit>]`|  return the records that matches with the criteria|
 | sequenceNumber           | `<sequence_name>`                           |                             |
-| [set](#displaying-a-record---set)| `<field_name> <field_value>`        | sets a field                |
+| [set](#set--unset)| `<field_name> <field_value>`        | sets a field                |
 | [show](#show)            |                                             | display the current record  |
 | [showKeys](#show-keys-indexes)|                                        | display all indexes         |
 | [showTables](#show-tables)|                                        | display all tables in the schema|
 | [table](#table)          | `<table_name>`                              | select an specified table   |
-| unset                    |                                             | sets a field to `null`      |
+| [unset](#set--unset)     | `<field>`                                  | sets a field to `null`      |
 | update                   | `<key_name>` `<fields>`                    | updates the current row by key|
-| updateWhere              | `<condition> <assignments>`                 |                             |
+| [updateWhere](#updatewhere)  | `<condition> <assignments>`            |                             |
 | writeMode                |                                             | enables write mode          |
 
 
@@ -175,6 +175,56 @@ DbMon:BROKER>count
 The table BROKER contains 114 records
 ```
 
+### Set & Unset
+
+If you use the `set` or `unset` commands, you are setting a value a specific field in the selected table. If you have previously selected a record, it will override its value, otherwise it will set a new record (note that it is only local, to insert a new record to the table, you need to use the insert command). In the case of the `set` command, you specify the value you want to set. In the example below, we set a new value for the `QUANTITY` field:
+
+``` javascript
+DbMon:TRADE>set QUANTITY = 10
+```
+
+In case you want to set the value as **null**, you need to use the `unset` command as the example below:
+
+``` javascript
+DbMon:TRADE>set QUANTITY = 10
+```
+
+:::tip
+Any changes performed by `set` and `unset` will not be reflected in the database unless you use `insert` with `writeMode` 
+
+### Insert
+
+If you are interested in inserting a new record to the database, you can use the `insert`. This command wil insert a new record based on the current record selected. Before y insert this new record, you need to enable the `writeMode`. 
+
+In the example below, we make use of the `set` command to create a new record before inserting it into the database.
+
+``` javascript
+DbMon:TRADE>set PRICE 80
+DbMon:TRADE>set QUANTITY 70
+DbMon:TRADE>set TRADE_ID DbMonTest
+DbMon:TRADE>show
+==================================
+TRADE
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                                                         NANO_TIMESTAMP      
+COUNTERPARTY_ID                          1                                        STRING              
+DIRECTION                                BUY                                      ENUM[BUY SELL]      
+ENTERED_BY                               JaneDee                                  STRING              
+INSTRUMENT_ID                            1                                        STRING              
+PRICE                                    80.0                                     DOUBLE              
+QUANTITY                                 70                                       INT                 
+SYMBOL                                   EUR                                      STRING              
+TRADE_DATE                                                                        DATE                
+TRADE_ID                                 DbMonTest                                STRING              
+TRADE_STATUS                             NEW                                      ENUM[NEW ALLOCATED CANCELLED]
+DbMon:TRADE>insert
+Are you sure you wish to execute the command? Y/N
+y
+Record saved
+```
+
 ### Delete rows
 
 If you would like to delete a row from a table manually using DbMon, then you should use the `delete` or `deleteWhere`. Note that to perform a delete operation, you must run `writeMode` to enable the write mode.
@@ -191,7 +241,7 @@ y
 Record deleted
 ```
 :::Note
-To disable the `writeMode` you should use the command `clear`.
+To be able to use this command, you need to be in `writeMode`.
 :::
 
 #### deleteWhere
@@ -211,7 +261,23 @@ Deleted record: DbRecord [tableName=TRADE] [PRICE = 76.0, SYMBOL = EUR, QUANTITY
 ```
 
 :::Note
-To disable the `writeMode` you should use the command `clear`.
+To be able to use this command, you need to be in `writeMode`.
+:::
+### UpdateWhere
+If you use the `updateWhere` command, it will update all records in the selected table hat matches with the specified criteria. After the confirmation, it will prompt all the records that have been updated.
+
+Here is an example of how to use `updateWhere`. In this example, we are updating the `QUANTITY` value to 10 to all records in **TRADE** with `id = genesis1`.
+
+```javascript
+DbMon:TRADE>writeMode
+DbMon:TRADE>updateWhere TRADE_ID=="genesis1" QUANTITY=10
+Are you sure you wish to execute the command? Y/N
+y
+Updated record: DbRecord [tableName=TRADE] [PRICE = 90.0, SYMBOL = EUR, QUANTITY = 10, DIRECTION = BUY, TIMESTAMP = 2023-08-15 19:14:01.488(n:0,s:104) (7097294379760484456), TRADE_DATE = null, RECORD_ID = 7097293333759787097, COUNTERPARTY_ID = 1, TRADE_STATUS = NEW, TRADE_ID = genesis1, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
+1 records updated
+```
+:::Note
+To be able to use this command, you need to be in `writeMode`.
 :::
 
 ## Finding data in a table
