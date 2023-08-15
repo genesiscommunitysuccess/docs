@@ -49,11 +49,11 @@ requestReplies {
 ```
 
 ## Specifying fields on request and reply
-With all the basic `requestReply` codeblocks we have seen so far, all the fields in the table are returned.
+With all the `requestReply` codeblocks we have seen so far, all the fields in the table are returned.
 
 We can add some precision using `request` and `reply` blocks within a `requestReply` statement.
 
-When defining a `request` block, you must define at least one primary key or index. In the example below, the fields `ALTERNATE_TYPE` AND `INSTRUMENT_CODE` together form the primary key.
+Within a `request` block, you must define at least one primary key or index. In the example below, the fields `ALTERNATE_TYPE` AND `INSTRUMENT_CODE` together form the primary key.
 
 
 ```kotlin
@@ -114,11 +114,13 @@ requestReplies {
 ## Where block
 
 The `where` block enables you to specify the conditions for which data should be returned. The `where` block can take two optional parameters:
+
 * `row` - this represents a row from the table or view
 * `parameters` - this is a GenesisSet that holds the parameters that are passed on the request; the parameters can be accessed by using the GenesisSet getters to access named parameters
 
 In this contrived example below, the `where` block filters rows whose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG". 
-The row parameter represents the rows returned from the table or view defined at the top of the `requestReply` definition, in this case INSTRUMENT_DETAILS.
+
+The row parameter represents the rows returned from the table or view defined at the top of the `requestReply` definition, in this case, INSTRUMENT_DETAILS.
 
 import Example1 from '/examples/requestserver/_reqrep1.md'
 
