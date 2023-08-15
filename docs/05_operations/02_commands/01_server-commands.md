@@ -478,47 +478,52 @@ LogLevel -DATADUMP_NACK_ON
 
 ## MigrateAliases
 
-This migrates the Genesis alias store from database storage to file storage and vice versa.
+This migrates the Genesis alias store from database storage to file storage and vice versa. This is useful for debugging when you have FDB or Aerospike database technology. 
 
 ### Syntax
 The `MigrateAliases` command can take the following arguments:
 
 | Argument | Argument long name                   | Mandatory | Description                                                     | Restricted values | Default |
 |----------|--------------------------------------|-----------|-----------------------------------------------------------------|-------------------|---------|
-| -h   | --help        | no	| show help on the command | none | no |
-| -o   | --override    | no	| override existing alias store if it exists in destination | none | no |
-| -dst | --destination | no	| destination dictionary store | DB or FILE | yes |
+| -h   | --help        | no	 | show help on the command | none | no |
+| -o   | --override    | no	 | overwrite existing alias store if it exists in the destination | none | no |
+| -dst | --destination | yes | destination dictionary store | DB or FILE | yes |
 
+The example below migrates the Genesis alias store to DB. It overwrites any existing dictionary in the destination.
 
-```bash
-MigrateAliases FILE
-
-MigrateAliases DATABASE
-```
 ```
 MigrateAliases -dst=DB
 ```
+
+### Database technology
 Aerospike and FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
 
-- If you are running Genesis on a single node, use a file store 
-- If you are running Genesis on more than one node, use database mode .
+- If you are running Genesis on a single node, use a file store.
+- If you are running Genesis on more than one node, use database mode.
 
-The `remap` operation updates the alias store, so if you are running a Genesis cluster it is better to use a database storage mode, as this is less error-prone and you won't have to copy the alias storage file to the remaining nodes manually.
+The `remap` operation updates the alias store, so if you are running a Genesis cluster it is better to use a database storage mode; this is less open to error, and you won't have to copy the alias storage file to the remaining nodes manually.
 
 ## MigrateDictionary
 
 This migrates the Genesis dictionary from the Database Dictionary Store to the File Dictionary Store storage and vice versa.
 
-### Syntax
+The `MigrateAliases` command can take the following arguments:
+
+| Argument | Argument long name                   | Mandatory | Description                                                     | Restricted values | Default |
+|----------|--------------------------------------|-----------|-----------------------------------------------------------------|-------------------|---------|
+| -h   | --help        | no	 | show help on the command | none | no |
+| -o   | --override    | no	 | overwrite existing alias store if it exists in the destination | none | no |
+| -dst | --destination | yes | destination dictionary store | DB or FILE | yes |
+
+The example below migrates the Genesis dictionary from DB to FILE, it also overwrites any existing dictionary in the destination
 
 ```bash
-MigrateDictionary
+ MigrateDictionary -dst=FILE -o
 ```
 
 The script uses the [system definition file](../../../server/configuring-runtime/system-definitions/#items-defined) to discover the `DictionarySource` property:
 
 - If the property is `DB` (if the server uses a Database Dictionary Store), the `MigrateDictionary` script saves the dictionary to a file.
-
 - If the `DictionarySource` is `FILE` (if the server uses a File Dictionary Store), the dictionary is saved to a database. The target database type - `DbLayer` - is also retrieved from the system definitions file.
 
 Here is a recommendation:
@@ -536,7 +541,7 @@ If you run `remap` (which modifies the  dictionary) after `MigrateDictionary` an
 
 ## mon 
 
-This script shows the status of the overall system, so you can see if the server is up or not.
+This command shows the status of the overall system, so you can see if the server is up or not. By default, it  displays a snapshot. If you want to the screen to be refreshed, simply add a flag with the number of seconds between refreshes, such as `mon -10`.
 
 ```bash
 ***************************************************************************
@@ -571,33 +576,53 @@ PID     Process Name                  Port        Status         CPU       Memor
 ### Syntax
 The `mon` command can take the following arguments:
 
-| Argument | Argument long name | Mandatory | Description                                  | Restricted values |
-|----------|--------------------|-----------|----------------------------------------------|-------------------|
-| -h       | --help             | No        | show this help message and exit              | No                |
-| -v       | --version          | No        | Shows installed products versions.           | No                |
-| -c       | --cfg              | No        | Shows the config files used by each process. | No                |
-| -a       | --all              | No        | Shows all information.                       | No                |
-| -m       | --monitors         | No        | Shows state monitors information             | No                |
-| -u       | --unhealthy        | No        | Shows unhealthy processes only               | No                |
-|          | --down             | No        | Shows DOWN processes                         | No                |
-|          | --warning          | No        | Shows WARNING processes                      | No                |
-|          | --error            | No        | Shows ERROR processes                        | No                |
-|          | --unknown          | No        | Shows UNKNOWN processes                      | No                |
-|          | --missing          | No        | Shows MISSING processes                      | No                |
-|          | --running          | No        | Shows RUNNING processes                      | No                |
-|          | --starting         | No        | Shows STARTING processes                     | No                |
-|          | --standby          | No        | Shows STANDBY processes                      | No                |
-|          | --healthy          | No        | Shows HEALTHY processes                      | No                |
+| Argument | Argument long name | Mandatory | Description                                | Restricted values | Default |
+|----------|--------------------|-----------|--------------------------------------------|-------------------|---------|
+| -h       | --help             | no        | show help on the mon commands              | none              | none    |
+| -v       | --version          | no        | show installed product versions            | none              | none    |
+| -c       | --cfg              | no        | show the config files used by each process | none              | none    |
+| -a       | --all              | no        | show all information                       | none              | none    |
+| -m       | --monitors         | no        | show state monitors information            | none              | none    |
+| -u       | --unhealthy        | no        | show unhealthy processes only              | none              | none    |
+|          | --down             | no        | show DOWN processes                        | none              | none    |
+|          | --warning          | no        | show WARNING processes                     | none              | none    |
+|          | --error            | no        | show ERROR processes                       | none              | none    |
+|          | --unknown          | no        | show UNKNOWN processes                     | none              | none    |
+|          | --missing          | no        | show MISSING processes                     | none              | none    |
+|          | --running          | no        | show RUNNING processes                     | none              | none    |
+|          | --starting         | no        | show STARTING processes                    | none              | none    |
+|          | --standby          | no        | show STANDBY processes                     | none              | none    |
+|          | --healthy          | no        | show HEALTHY processes                     | none              | none    |
 
 :::info
 
 Unhealthy processes includes all processes that are not `HEALTHY` or `STANDBY`. 
-`--UNHEALTHY` can't be used with other status filtering arguments
+`--unhealthy` can **not** be used with other status-filtering arguments.
 
 :::
 
+The example below runs `mon` with a polling interval of one second.
+
 ```bash
-mon [-v | -c | -a | -m | -u] polling_interval
+mon -1
+```
+
+The example below runs `mon`; it shows the status of every process and outputs the config files used by each process.
+
+```bash
+mon --cfg
+```
+
+The example below runs `mon`, but only shows processes that are unhealthy.
+
+```bash
+mon --unhealthy
+```
+
+The example below runs `mon`, but only shows processes that are missing.
+
+```bash
+mon --missing
 ```
 
 ## PopulateHolidays
@@ -609,7 +634,7 @@ The `PopulateHolidays` command can take the following arguments:
 | Argument | Argument long name | Mandatory |               Description               | Restricted values |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|
 | -c       | --country `<arg>`  | No        | the country name to search for holidays | No                |
-| -h       | --help             | No        | show usage information                  | No                |
+| -h       | --help             | No        | show help on this command               | No                |
 | -r       | --region `<arg>`   | No        | the region name to search for holidays  | No                |
 | -y       | --year `<arg>`     | No        | the year of holidays                    | No                |
 
@@ -763,10 +788,11 @@ The `RenameFields` command takes two arguments; both of which are mandatory:
 RenameFields [-i <[current name of field]>] [-o  <[new name of field]>]
 ```
 
-| Argument | Argument long name | Mandatory | Description                              | Restricted values |
-|----------|--------------------|-----------|------------------------------------------|-------------------|
-| -i       | --input            | yes       | name of field that you want to change    | No                |
-| -o       | --output           | yes       | name you want the field to be changed to | No                |
+| Argument | Argument long name | Mandatory | Description                              | Restricted values | Default |
+|----------|--------------------|-----------|------------------------------------------|-------------------|---------|
+| -i       | --input            | yes       | name of field that you want to change    | none              | none    |
+| -o       | --output           | yes       | name you want the field to be changed to | none              | none    |
+| -h       | --help             | no        | show help on using this command          | none              | none    |
 
 
 The `--input` argument represents the name of the field you would like to change. The argument must be an existing field name in the database.
@@ -811,18 +837,20 @@ To send data into the database, use the `SendIt` command.
 The `SendIt` command can take the following arguments:
 
 
-| Argument | Argument long name     | Mandatory | Description                                                    | Restricted values |
-|----------|------------------------|-----------|----------------------------------------------------------------|-------------------|
-| -a       | --all                  | No        | import all the tables from all the csv files to the database | No                |
-| -d       | --delete               | No        | perform delete operations on all records                     | No                |
-| -f       | --file `<arg>`         | No        | name of the csv file where table is imported                 | No                |
-| -h       | --help                 | No        | show usage   information                                       | No                |
-| -m       | --modify `<arg>`       | No        | key name used to find original record                        | No                |
-| -mf      | --modifyFields `<arg>` | No        | specifies fields to modify                                     | No                |
-| -quiet   | --quietMode            | No        | make database changes without triggering real-time updates in update queue layer | No |
-| -r       | --recover              | No        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | No                |
-| -t       | --table `<arg>`        | No        | the name of the table to import to the database                  | No                |
-| -v       | --verbose              | No        | log every error line to output                               | No                |
+| Argument | Argument long name     | Mandatory | Description                                                    | Restricted values | Default |
+|----------|------------------------|-----------|----------------------------------------------------------------|-------------------|--------|
+| -a       | --all                  | no        | import all the tables from all the csv files to the database | no                | none    |
+| -d       | --delete               | no        | perform delete operations on all records                     | no                | none    |
+| -cf      | --columnFormat         | no        | set specific date format for column                          | no                | none    |
+| -f       | --file `<arg>`         | no        | name of the csv file where table is imported                 | no                | none    |
+| -fm      | --formatMode `<arg>`   | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY | LEGACY  |
+| -h       | --help                 | no        | show help on how to use this command                         | no                | none    |
+| -m       | --modify `<arg>`       | no        | key name used to find original record                        | no                | none    |
+| -mf      | --modifyFields `<arg>` | no        | specifies fields to modify                                   | no                | none    |
+| -quiet   | --quietMode            | no        | make database changes without triggering real-time updates in update queue layer | no | none    |
+| -r       | --recover              | no        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | no                | none    |
+| -t       | --table `<arg>`        | no        | the name of the table to import to the database              | must be a valid table | none    |
+| -v       | --verbose              | no        | log every error line to output                               | no                | none    |
 
 For example:
 
