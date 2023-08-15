@@ -18,37 +18,37 @@ DbMon is the Genesis database client. It provides an interface to the underlying
 
 The commands available with DbMon are listed below. 
 
-| Command                  | Argument                                    | Description                                     |
-|--------------------------|---------------------------------------------|-------------------------------------------------|
-| autoIncrementNumber      | `<field_name>`                              |                                                 |
-| clear                    |                                             | clears the current context                      |
-| count                    |                                             | counts the rows in the table                    |
-| delete                   |                                             | deletes the current row                         |
-| deleteWhere              | `<condition>`                               | deletes all matching rows in the selected table |
-| displayFields            | `<field_names>`                             |                                                 |
-| distinct                 | `<condition> [-where <limiting_condition>]` |                                                 |
-| find                     | `<key_name>`                                |                                                 |
-| first                    | `<key_name>`                                |                                                 |
-| forceAutoIncrementNumber | `<field_name> <sequence_number>`            |                                                 |
-| forceSequenceNumber      | `<sequence_name> <sequence_number>`         |                                                 |
-| help                     |                                             | lists all commands                              |
-| insert                   |                                             | inserts the current row                         |
-| last                     | `<key_name>`                                | gets the last record by key                     |
-| listAll                  | `<key_name> <num_key_fields> <max_records>` |                                                 |
-| next                     | `<key_name>`                                | gets the next record by key                     |
-| qsearch                  | `<condition> [-l <limit>]`                  ||
-| qshow                    ||||
-| search                   | `<condition> [-l <limit>]`                  ||
-| sequenceNumber           | `<sequence_name>`                           ||
-| set                      | `<field_name> <field_value>`                | sets a field                                    |
-| show                     |||
-| showKeys                 |||
-| showTables               |||
-| table                    | `<table_name>`                              ||
-| unset                    |                                             | sets a field to `null`                          |
-| update                   | `<key_name>`                                | updates the current row by key                  |
-| updateWhere              | `<condition> <assignments>`                 |                                                 |
-| writeMode                |                                             | enables write mode                              |
+| Command     | Argument           | Description                          |
+|-------------|--------------------|--------------------------------------|
+| autoIncrementNumber      | `<field_name>`          |                     |
+| [clear](#displaying-a-record---set) |              | clears the current context                      |
+| [count](#count-rows)     |                         | counts the rows in the table                    |
+| delete                   |                         | deletes the current row                         |
+| deleteWhere              | `<condition>`           | deletes all matching rows in the selected table |
+| [displayFields](#display-fields) | `<field_names>` |                                                 |
+| [distinct](#distinct)    | `<condition> [-where <limiting_condition>]` |                             |
+| [find](#find)            | `<key_name>`            |                                                 |
+| first                    | `<key_name>`            |                                                 |
+| forceAutoIncrementNumber | `<field_name> <sequence_number>` |                                        |
+| forceSequenceNumber      | `<sequence_name> <sequence_number>`         |                             |
+| help                     |                         | lists all commands                              |
+| insert                   |                         | inserts the current row                         |
+| last                     | `<key_name>`            | gets the last record by key                     |
+| listAll                  | `<key_name> <num_key_fields> <max_records>` |                             |
+| next                     | `<key_name>`                                | gets the next record by key |
+| qsearch                  | `<condition> [-l <limit>]`                  |                             |
+| qshow                    |                                             |                             |
+| [search](#search)        | `<condition> [-l <limit>]`                  |                             |
+| sequenceNumber           | `<sequence_name>`                           |                             |
+| [set](#displaying-a-record---set)| `<field_name> <field_value>`        | sets a field                |
+| [show](#show)            |                                             |                             |
+| showKeys                 |                                             |                             |
+| showTables               |                                             |                             |
+| [table](#table)          | `<table_name>`                              |                             |
+| unset                    |                                             | sets a field to `null`      |
+| update                   | `<key_name>`                              | updates the current row by key|
+| updateWhere              | `<condition> <assignments>`                 |                             |
+| writeMode                |                                             | enables write mode          |
 
 
 ## Starting DbMon
@@ -173,6 +173,45 @@ If you would like to know how many rows of data there are in a table, then use t
 DbMon:BROKER>count
 The table BROKER contains 114 records
 ```
+
+### Delete rows
+
+If you would like to delete a row from a table manually using DbMon, then you should use the `delete` or `deleteWhere`. Note that to perform a delete operation, you must run `writeMode` to enable the write mode.
+
+#### Delete
+
+If you use the `delete` command, it will delete the last record in the selected table. Here is an example of how to use `delete`, it is deleting the last record in the **TRADE** table:
+
+```javascript
+DbMon:TRADE>writeMode
+DbMon:TRADE>delete
+Are you sure you wish to execute the command? Y/N
+y
+Record deleted
+```
+:::Note
+To disable the `writeMode` you should use the command `clear`.
+:::
+
+#### deleteWhere
+
+If you use the `deleteWhere` command, it will delete all records in the selected table that matches the specified criteria. After the confirmation, it will prompt all the records that have been deleted.
+
+Here is an example of how to use `deleteWhere`. In this example, we are deleting all records in **TRADE** table with **QUANTITY** values grater than 100.
+
+```javascript
+DbMon:TRADE>writeMode
+DbMon:TRADE>deleteWhere QUANTITY > 100
+Are you sure you wish to execute the command? Y/N
+y
+Deleted record: DbRecord [tableName=TRADE] [PRICE = 9.0, SYMBOL = EUR, QUANTITY = 888, DIRECTION = BUY, TIMESTAMP = 2023-08-15 12:09:55.422(n:0,s:119) (7097187651224076407), TRADE_DATE = null, RECORD_ID = 7097187651224076407, COUNTERPARTY_ID = 3, TRADE_ID = 3aa96a32-0fdb-47e1-b96b-243dfa265e5cTRLO1, TRADE_STATUS = NEW, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
+Deleted record: DbRecord [tableName=TRADE] [PRICE = 76.0, SYMBOL = EUR, QUANTITY = 888, DIRECTION = BUY, TIMESTAMP = 2023-08-15 12:09:52.163(n:0,s:116) (7097187637554839668), TRADE_DATE = null, RECORD_ID = 7097187637554839668, COUNTERPARTY_ID = 3, TRADE_ID = 0750ffa9-f080-4256-b0e4-efa0369d089cTRLO1, TRADE_STATUS = NEW, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
+2 records deleted
+```
+
+:::Note
+To disable the `writeMode` you should use the command `clear`.
+:::
 
 ## Finding data in a table
 
