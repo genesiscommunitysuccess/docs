@@ -84,3 +84,7 @@ WebSocket Req Rep message:
 HTTP Insert event:
 
 ![](/img/tracing-zipkin-event-insert.png)
+
+Messages across multiple services:
+
+![](/img/tracing-zipkin-multiple-services.png)
