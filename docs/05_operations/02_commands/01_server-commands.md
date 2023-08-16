@@ -842,20 +842,20 @@ The `SendIt` command can take the following arguments:
 | -a       | --all                  | no        | import all the tables from all the csv files to the database | no                | none    |
 | -d       | --delete               | no        | perform delete operations on all records                     | no                | none    |
 | -cf      | --columnFormat         | no        | set specific date format for column                          | no                | none    |
-| -f       | --file `<arg>`         | no        | name of the csv file where table is imported                 | no                | none    |
+| -f       | --file `<arg>`         | no        | name of the csv file to which the table is imported  |no                | the name of the new file with the data matches the name of the source table      |
 | -fm      | --formatMode `<arg>`   | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY | LEGACY  |
 | -h       | --help                 | no        | show help on how to use this command                         | no                | none    |
 | -m       | --modify `<arg>`       | no        | key name used to find original record                        | no                | none    |
 | -mf      | --modifyFields `<arg>` | no        | specifies fields to modify                                   | no                | none    |
 | -quiet   | --quietMode            | no        | make database changes without triggering real-time updates in update queue layer | no | none    |
 | -r       | --recover              | no        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | no                | none    |
-| -t       | --table `<arg>`        | no        | the name of the table to import to the database              | must be a valid table | none    |
+| -t       | --table `<arg>`        | yes        | the name of the table to import to the database              | must be a valid table |   |
 | -v       | --verbose              | no        | log every error line to output                               | no                | none    |
 
 For example:
 
 ```bash
-SendIt -t FUND -f FUND
+SendIt -t FUND -f FUND.csv
 ```
 
 This reads the **FUND.csv** file in the local directory and inserts the data from the file into the FUND table.
@@ -884,7 +884,18 @@ Do not use `SendIt` to update User details in any way. This can easily cause dat
 
 ## SetAutoIncrement
 
-This works in a similar way to `SetSequence`, but for auto-increment INT values. You can supply a single increment value or a whole batch of values using a csv file. 
+This enables you to set autoincrement values for one or more tables. 
+
+You can set the value for a single table using the `-v` argument.
+
+You can set values for more than one table by supplying the details in a csv file and using the -f argument. The file should take the following format:
+
+```
+table, field, value
+TRADE, TRADE_ID, 1
+ORDER, ORDER_ID, 10
+```
+
 
 :::warning
 Stop all your application's processes before using this command. 
@@ -895,12 +906,11 @@ The `SetAutoIncrement` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
-| -f       | --file `<arg>`     | No        | Name of csv file containing batch sequence/value pairs (this overrides any value option supplied) | No                |
-| -h       | --help             | No        |                                                                                                        | No                | 
-| -s       | --field `<arg>`    | No        |   Name of the auto-increment field (when not inserting via CSV)                                                                                                     | No                |
-| -t       | --table `<arg>`    | No        |   Name of the table containing the auto-increment field (when not inserting via CSV)                                                                                                   | No                |
-| -v       | --value `<arg>`    | No        |                                                                                                        | No                | New integer value to be set (if setting individual value)
-
+| -f       | --file `<arg>`     | if setting increments for multiple tables, yes | name of the csv file containing the increment values (this overrides any value option supplied) | none                |
+| -h       | --help             | displays help on using this command |no        |                                        | no                | 
+| -s       | --field `<arg>`    | if setting a single value, yes |   Name of the auto-increment field (when not inserting via CSV)    | none                |
+| -t       | --table `<arg>`    | if setting a single value, yes        |   Name of the table containing the auto-increment field (when not inserting via CSV)                                                                                                   | No                |
+| -v       | --value `<arg>`    | no        |                                                                                                        | if setting a single value, yes | New integer value to be set (if setting individual value) |
 
 The behaviour of this command depends on which database implementation your application uses. 
 
