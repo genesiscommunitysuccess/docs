@@ -18,37 +18,37 @@ DbMon is the Genesis database client. It provides an interface to the underlying
 
 The commands available with DbMon are listed below. 
 
-| Command     | Argument           | Description                          |
-|-------------|--------------------|--------------------------------------|
-| autoIncrementNumber      | `<field_name>`          |                     |
-| [clear](#displaying-a-record---set) |              | clears the current context                      |
-| [count](#count-rows)     |                         | counts the rows in the table                    |
-| [delete](#delete)        |                         | deletes the current row                         |
-| [deleteWhere](#deletewhere)| `<condition>`         | deletes all matching rows in the selected table |
-| [displayFields](#display-fields) | `<field_names>` | display only selected columns                   |
-| [distinct](#distinct)    | `<condition> [-where <limiting_condition>]` | show only distinct records  |
-| [find](#find)            | `<key_name>`            | find an specific record in a index              |
-| [first](#first-and-last) | `<key_name>`            | gets the first record by key                    |
-| forceAutoIncrementNumber | `<field_name> <sequence_number>` |                                        |
-| forceSequenceNumber      | `<sequence_name> <sequence_number>`         |                             |
-| help                     |                         | lists all commands                              |
-| [insert](#insert)                  |                         | inserts the current row                         |
-| [last](#first-and-last)  | `<key_name>`            | gets the last record by key                     |
-| listAll                  | `<key_name> <num_key_fields> <max_records>` |                             |
-| [next](#next)            | `<key_name>`                                | gets the next record by key |
-| qsearch                  | `<condition> [-l <limit>]`                  |                             |
-| qshow                    |                                             |                             |
-| [search](#search)    | `<condition> [-l <limit>]`|  return the records that matches with the criteria|
-| sequenceNumber           | `<sequence_name>`                           |                             |
-| [set](#set--unset)| `<field_name> <field_value>`        | sets a field                |
-| [show](#show)            |                                             | display the current record  |
-| [showKeys](#show-keys-indexes)|                                        | display all indexes         |
-| [showTables](#show-tables)|                                        | display all tables in the schema|
-| [table](#table)          | `<table_name>`                              | select an specified table   |
-| [unset](#set--unset)     | `<field>`                                  | sets a field to `null`      |
-| update                   | `<key_name>` `<fields>`                    | updates the current row by key|
-| [updateWhere](#updatewhere)  | `<condition> <assignments>`            |                             |
-| writeMode                |                                             | enables write mode          |
+| Command                             | Argument                                    | Description                                       |
+|-------------------------------------|---------------------------------------------|---------------------------------------------------|
+| writeMode                           |                                             | enables write mode                                |
+| help                                |                                             | lists all commands                                |
+| [showTables](#show-tables)          |                                             | display all tables in the schema                  |
+| [table](#table)                     | `<table_name>`                              | select an specified table                         |
+| [show](#show)                       |                                             | display the current record                        |
+| [displayFields](#display-fields)    | `<field_names>`                             | display only selected columns                     |
+| [count](#count-rows)                |                                             | counts the rows in the table                      |
+| [set](#set--unset)                  | `<field_name> <field_value>`                | sets a field                                      |
+| [unset](#set--unset)                | `<field>`                                   | sets a field to `null`                            |
+| [insert](#insert)                   |                                             | inserts the current                               |
+| [delete](#delete)                   |                                             | deletes the current row                           |
+| [deleteWhere](#deletewhere)         | `<condition>`                               | deletes all matching rows in the selected table   |
+| [update](#update)                   | `<key_name>` `<fields>`                     | updates the current row by key                    |
+| [updateWhere](#updatewhere)         | `<condition> <assignments>`                 | updates all records that matches a given condition|
+| [find](#find)                       | `<key_name>`                                | find an specific record in a index                |
+| [showKeys](#show-keys-indexes)      |                                             | display all indexes                               |
+| [first](#first-and-last)            | `<key_name>`                                | gets the first record by key                      |
+| [last](#first-and-last)             | `<key_name>`                                | gets the last record by key                       |
+| [next](#next)                       | `<key_name>`                                | gets the next record by key                       |
+| [clear](#displaying-a-record---set) |                                             | clears the current context                        |
+| [search](#search)                   | `<condition> [-l <limit>]`                  | return the records that matches with the criteria |
+| [distinct](#distinct)               | `<condition> [-where <limiting_condition>]` | show only distinct records                        |
+| sequenceNumber                      | `<sequence_name>`                           |                                                   |
+| autoIncrementNumber                 | `<field_name>`                              |                                                   |
+| forceAutoIncrementNumber            | `<field_name> <sequence_number>`            |                                                   |
+| forceSequenceNumber                 | `<sequence_name> <sequence_number>`         |                                                   |
+| listAll                             | `<key_name> <num_key_fields> <max_records>` |                                                   |
+| qsearch                             | `<condition> [-l <limit>]`                  |                                                   |
+| qshow                               |                                             |                                                   |
 
 
 ## Starting DbMon
@@ -190,7 +190,8 @@ DbMon:TRADE>set QUANTITY = 10
 ```
 
 :::tip
-Any changes performed by `set` and `unset` will not be reflected in the database unless you use `insert` with `writeMode` 
+Any changes performed by `set` and `unset` will not be reflected in the database unless you use `insert` with `writeMode`
+:::
 
 ### Insert
 
@@ -231,7 +232,7 @@ If you would like to delete a row from a table manually using DbMon, then you sh
 
 #### Delete
 
-If you use the `delete` command, it will delete the selected record (In case you did not select any record, the default one is the last) in the selected table. Here is an example of how to use `delete`, it is deleting the last record in the **TRADE** table:
+If you use the `delete` command, it will delete the selected record in the selected table. Here is an example of how to use `delete`, it is deleting the last record in the **TRADE** table:
 
 ```javascript
 DbMon:TRADE>writeMode
@@ -240,7 +241,7 @@ Are you sure you wish to execute the command? Y/N
 y
 Record deleted
 ```
-:::Note
+:::note
 To be able to use this command, you need to be in `writeMode`.
 :::
 
@@ -260,10 +261,26 @@ Deleted record: DbRecord [tableName=TRADE] [PRICE = 76.0, SYMBOL = EUR, QUANTITY
 2 records deleted
 ```
 
-:::Note
+:::note
 To be able to use this command, you need to be in `writeMode`.
 :::
-### UpdateWhere
+
+### Update rows
+If you would like to perform an update in the database manually using DbMon, then you should use the `update` or `updateWhere`. Note that to perform a update operation, you must run `writeMode` to enable the write mode.
+
+#### Update
+If you use the `update` command, it will update the given fields in the selected row in the selected table. Use the commands `set` and `unset` to manipulate the selected row before you run `update`. To be able to use `update`, you need to provide a `key_name`. Here is an example of how to use the `update` command to update the field PRICE in the **TRADE** table.
+
+```javascript
+DbMon:TRADE>writeMode
+DbMon:TRADE>set PRICE 50
+DbMon:TRADE>update TRADE_BY_ID PRICE
+Are you sure you wish to execute the command? Y/N
+y
+Record updated
+```
+
+#### UpdateWhere
 If you use the `updateWhere` command, it will update all records in the selected table hat matches with the specified criteria. After the confirmation, it will prompt all the records that have been updated.
 
 Here is an example of how to use `updateWhere`. In this example, we are updating the `QUANTITY` value to 10 to all records in **TRADE** with `id = genesis1`.
@@ -276,7 +293,7 @@ y
 Updated record: DbRecord [tableName=TRADE] [PRICE = 90.0, SYMBOL = EUR, QUANTITY = 10, DIRECTION = BUY, TIMESTAMP = 2023-08-15 19:14:01.488(n:0,s:104) (7097294379760484456), TRADE_DATE = null, RECORD_ID = 7097293333759787097, COUNTERPARTY_ID = 1, TRADE_STATUS = NEW, TRADE_ID = genesis1, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
 1 records updated
 ```
-:::Note
+:::note
 To be able to use this command, you need to be in `writeMode`.
 :::
 
