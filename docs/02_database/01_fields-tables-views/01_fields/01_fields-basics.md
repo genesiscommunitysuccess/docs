@@ -84,17 +84,10 @@ field(name = "DESCRIPTION", type = STRING, maxSize = dbMaxSize(target = 9000))
 ```
 If the underlying database is Postgres, this sets the field's `maxSize` to 9000, because Postgres can support up to 65535. But if you are using MS SQL, then the `maxSize` is set to 8000, the maximum supported size for MS SQL.
 
-## Marking fields as sensitive
+## DisplayDefaultSensitiveFields
 
-You can mark fields as sensitive using `sensitive` keyword as shown in below example, which will mask sensitive field values.
-By default, following framework fields are declared as sensitive: PASSWORD, REFRESH_TOKEN and SESSION_AUTH_TOKEN
-
-```kotlin
-field(name = "PASSWORD", type = STRING, sensitive = true)
-field(name = "SESSION_AUTH_TOKEN", type = STRING, sensitive = true)
-```
-To display sensitive fields in your logs for debugging purpose, you can utilize system property called as `DisplaySensitiveFields`, if set to true all sensitive fields are displayed as plain text else they will be masked, 
-it's set to false by default
+Following framework fields are declared as sensitive by default: PASSWORD, REFRESH_TOKEN, REFRESH_AUTH_TOKEN and SESSION_AUTH_TOKEN.
+`DisplayDefaultSensitiveFields` system property can be set to `true` to display these default sensitive fields for debugging purpose, it's value is set to `false` by default, and it only applies on toString() output of GenesisSet and DbRecord objects
 
 ## Pre-defined fields
 
