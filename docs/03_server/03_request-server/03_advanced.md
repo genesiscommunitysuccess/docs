@@ -9,7 +9,6 @@ tags:
   - requestreply
 ---
 
-
 ## Audit tables
 If you want to create a `requestReply`codeblock for an Audit table, and you also want to specify a specific set of request fields, those fields must belong to an index in the underlying audit table.
 
@@ -58,59 +57,17 @@ requestReplies {
 
 ## Limit the number of rows returned
 
-You can limit the number of rows returned using the property `rowReturnLimit`. In this example, we limit it to 2.
+You can limit the number of rows returned using the property `rowReturnLimit`. In this example, we limit it to 3.
 
-```kotlin
-requestReplies {
-    requestReply(INSTRUMENT_DETAILS) {
+import Example3 from '/examples/requestserver/_reqrep3.md'
 
-        rowReturnLimit = 2
-
-        request {
-            ALTERNATE_TYPE
-            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
-        }
-
-        reply {
-            INSTRUMENT_ID
-            INSTRUMENT_NAME
-            LAST_TRADED_PRICE
-            VWAP
-            SPREAD
-            TRADED_CURRENCY
-            EXCHANGE_ID
-        }
-    }
-}
-```
+<Example3 />
 
 ## Timeout
 
-You can specify a timeout (in seconds) for a Request Server using the property `timeout`. In this example, we set a timeout of 10 seconds.
+You can specify a timeout (in seconds) for a Request Server using the property `timeout`. In this example, we set a timeout of 15 seconds.
 
-```kotlin
-requestReplies {
-    requestReply("QUICK_INSTRUMENT", INSTRUMENT_DETAILS) {
-
-        timeout = 10
-
-        request {
-            ALTERNATE_TYPE
-            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
-        }
-
-        reply {
-            INSTRUMENT_ID
-            INSTRUMENT_NAME
-            LAST_TRADED_PRICE
-            VWAP
-            SPREAD
-            TRADED_CURRENCY
-            EXCHANGE_ID
-        }
-    }
-}
-```
+<Example3 />
 
 ## Ranges
 
@@ -133,13 +90,13 @@ the requestReplies defined from previous example. This example stipulates a pric
 ```
 Note that ranges that are not based on indexes perform more slowly than those that are.
 
-## Permission
+## Permissioning
 
 You can use a permissioning block to define both dynamic permissions (AUTH) and permission codes (based on RIGHT_SUMMARY rights) on Request Servers, which is similar to Event Handler and Data Server.
 
-### Dynamic permission:
+### Dynamic permissioning
 
-Similar to Data-Server, you can provide dynamic permissioning on Request Server by using table/view reference.
+Similar to a Data Server, you can provide dynamic permissioning on a Request Server by providing a table/view reference.
 
 ```kotlin
     requestReply("MARKET_INSTRUMENTS", INSTRUMENT_DETAILS) {
@@ -160,8 +117,8 @@ Similar to Data-Server, you can provide dynamic permissioning on Request Server 
     }
 ```
 
-Permissioning is different when you use [Custom Request Servers](../../../server/request-server/advanced/#custom-request-servers), which is similar to Event-Handler permissioning.
-As you use any class/DAO as input and output classes - you cannot use field syntax under auth block ex: Use instrumentId instead of INSTRUMENT_DETAILS.INSTRUMENT_ID
+When you use [Custom Request Servers](../../../server/request-server/advanced/#custom-request-servers), permissioning is different; it is similar to permissioning for Event Handlers.
+You can use any class/DAO as input and output classes; however, you cannot use field syntax in an auth block: for example, Use instrumentId instead of INSTRUMENT_DETAILS.INSTRUMENT_ID
 
 ```kotlin
 requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
@@ -178,8 +135,7 @@ requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
 ```
 
 ### Permission codes
-
-Similar to Event Handlers and Request Servers you can add permission code as specified below.
+Here is a simple example of using a permission code:
 
 ```kotlin
     requestReply(INSTRUMENT_DETAILS) {
@@ -201,7 +157,11 @@ Similar to Event Handlers and Request Servers you can add permission code as spe
 You can find out more details in our section on [authorisation](../../../server/access-control/authorisation-overview/).
 
 ## Custom Request Servers
-By defining your own Request Servers, you have maximum flexibility. You can specify any class for the input and output, similar to Event Handlers. For the request, optional fields should have a default value in the primary constructor. You cannot use native Kotlin classes. You should wrap these in custom input and output classes.
+By defining your own Request Servers, you have maximum flexibility. 
+
+* You can specify any class for the input and output, similar to Event Handlers.
+* For the request, optional fields should have a default value in the primary constructor.
+* You cannot use native Kotlin classes. You should wrap these in custom input and output classes.
 
 We recommend that you locate your classes within the messages module of your application. This is where we place all the custom message types for our application. You need to ensure that the _app-name_**-script-config** module has a dependency on the messages module.
 
@@ -259,6 +219,7 @@ requestReply<[input class], [output class]> ("{optional name}") {
 }
 ```
 
+### Examples
 In this example, we define two data classes; Hello and World. We use these to create a Hello World request:
 
 ```kotlin
@@ -285,7 +246,7 @@ requestReply<Hello, World>("HELLO_WORLD_CHECK") {
 }
 ```
 
-In this next example, we are using the generated dao classes to get a single record from the `INSTRUMENT_DETAILS` table using the `ByInstrumentId` index. We use the `db` property to access the entity db.
+In this next example, we use generated dao classes to get a single record from the `INSTRUMENT_DETAILS` table using the `ByInstrumentId` index. We use the `db` property to access the entity db.
 
 ```kotlin
 requestReply<InstrumentDetails.ByInstrumentId, InstrumentDetails> {
@@ -296,9 +257,9 @@ requestReply<InstrumentDetails.ByInstrumentId, InstrumentDetails> {
 ```
 
 Next is a more complex example. 
-The first block checks that the user is authorised to view the instrument.
 
-The second block uses the ALT_INSTRUMENT_ID table. The index is used as the input, but we return either a `getBulk`, a `getRange` or a `get`, depending on the input.
+- The first block checks that the user is authorised to view the instrument.
+- The second block uses the ALT_INSTRUMENT_ID table. The index is used as the input, but we return either a `getBulk`, a `getRange` or a `get`, depending on the input.
 
 ```kotlin
 requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
@@ -343,7 +304,7 @@ requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId>("FAN
 }
 ```
 
-Helpers exist to assist interacting with the Kotlin Flow type, which is the return type within the reply block. These helpers are:
+Helpers assist you to interact with the Kotlin Flow type, which is the return type within the reply block. These helpers are:
 * T.flow() - Converts to the Flow type
 * T.distinct() - Returns a Flow of all distinct values
 * T.distinctBy(selector: (T) -> K?) - Returns a Flow of all distinct values given a selector
@@ -361,4 +322,4 @@ The features of the options are explained below.
 | MAX_ROWS       | Equal to the rowReturnLimit configuration value defined for the target Request Server | Maximum number of rows to be returned as part of the reply message                                                                                                                              |
 | CRITERIA_MATCH |                                                                                       | Clients can send a Groovy expression to filter specific rows on the reply message provided by the Request Server. For example: `Expr.dateIsBefore(TRADE_DATE,'20150518')` or `QUANTITY > 10000` |
 
-You can find out more details about the CRITERIA_MATCH parameter [here](../../../server/data-server/advanced/#criteria-matching).
+You can find out more details about the CRITERIA_MATCH parameter on our [Advanced page for Data Server](../../../server/data-server/advanced/#criteria-matching).

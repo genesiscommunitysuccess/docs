@@ -6,17 +6,17 @@ keywords: [server, request server, introduction]
 tags:
   - server
   - request server
-  - requestreply
+  - introduction
 ---
 
 
 
 Let's make things really simple.
-- A Request Server is a component that supplies static data to the front end of your application.
+- A Request Server is a module that supplies static data to the front end of your application.
 - You define your application's Request Server in a kotlin script file  _application-name_**-reqrep.kts**. This file should be in the _application-name_-script-config module.
 - In this file, you define specific `requestReply` codeblocks, each of which is designed to supply different sets of data; this could be a table or view, or just a subset of the fields in a table or view.
 - A `requestReply` can include a number of other subtleties, such as `where` clauses or ranges, so that you can create code that matches your precise requirements.
-- If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the component.
+- If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the module.
 - Otherwise, you can build your kts by defining each `requestReply` codeblock from scratch. 
 
 ## Basic definition
@@ -34,8 +34,7 @@ requestReplies {
 
 ## Adding a name
 
-Every `requestReply` in your .kts must have a unique name. If you do not provide one, it will be allocated automatically. In the previous example, the `requestReply` will automatically be named `REQ_INSTRUMENT_DETAILS`.
-If you name it INSTRUMENT_INFO then it will be registered as `REQ_INSTRUMENT_INFO`.
+Every `requestReply` in your .kts must have a unique name. If you do not provide one, it will be allocated automatically. In the previous example, the `requestReply` will automatically be named as `REQ_INSTRUMENT_DETAILS` - based on the table name.
 
 ## Multiple Request Servers
 
@@ -50,13 +49,11 @@ requestReplies {
 ```
 
 ## Specifying fields on request and reply
-
-
-With all those basic `requestReply` codeblocks we have seen so far, all the fields in the table are returned.
+With all the `requestReply` codeblocks we have seen so far, all the fields in the table are returned.
 
 We can add some precision using `request` and `reply` blocks within a `requestReply` statement.
 
-When defining a `request` block, you must define at least one primary key or index. In the example below, the fields `ALTERNATE_TYPE` AND `INSTRUMENT_CODE` together form the primary key.
+Within a `request` block, you must define at least one primary key or index. In the example below, the fields `ALTERNATE_TYPE` AND `INSTRUMENT_CODE` together form the primary key.
 
 
 ```kotlin
@@ -117,26 +114,14 @@ requestReplies {
 ## Where block
 
 The `where` block enables you to specify the conditions for which data should be returned. The `where` block can take two optional parameters:
+
 * `row` - this represents a row from the table or view
 * `parameters` - this is a GenesisSet that holds the parameters that are passed on the request; the parameters can be accessed by using the GenesisSet getters to access named parameters
 
 In this contrived example below, the `where` block filters rows whose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG". 
-The row parameter represents the rows returned from the table or view defined at the top of the `requestReply` definition, in this case INSTRUMENT_DETAILS.
 
-```kotlin
-requestReplies {
-    requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
+The row parameter represents the rows returned from the table or view defined at the top of the `requestReply` definition, in this case, INSTRUMENT_DETAILS.
 
-        request {
-            ALTERNATE_TYPE
-        }
+import Example1 from '/examples/requestserver/_reqrep1.md'
 
-        where { row, parameters ->
-            row.instrumentCode == "ALLL3" &&                         
-            parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
-        }
-    }
-}
-```
-
-Note - you cannot use derived fields within a `where` block.
+<Example1 />
