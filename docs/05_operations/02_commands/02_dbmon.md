@@ -145,7 +145,7 @@ VIEW_CODE                                                           STRING
 
 If you are only interested in seeing selected columns, use the [`displayFields`](#dbmon-commands) command and list the names of the columns you are interested in (separated by spaces). 
 
-Any subsequent [`show`](#dbmon-commands) commands will only display those columns, rather than the all the columns in the table.
+Any subsequent [`show`](#dbmon-commands) commands will only display those columns, rather than all the columns in the table.
 
 
 ```javascript
@@ -168,29 +168,28 @@ To view all columns again, use the [`displayFields`](#dbmon-commands) command fo
 
 ### Count rows
 
-If you would like to know how many rows of data there are in a table, then use the [`count`](#dbmon-commands) command. Be aware that, for large tables, this could take some time to return:
+To discover how many rows of data there are in a table, use the [`count`](#dbmon-commands) command. For large tables, this could take some time to return:
 
 ```javascript
 DbMon:BROKER>count
 The table BROKER contains 114 records
 ```
 
-### Set & Unset
-
-If you use the `set` or `unset` commands, you are setting a value a specific field in the selected table. If you have previously selected a record, it will override its value, otherwise it will set a new record (note that it is only local, to insert a new record to the table, you need to use the insert command). In the case of the `set` command, you specify the value you want to set. In the example below, we set a new value for the `QUANTITY` field:
+### Set and Unset
+The `set` and `unset` commands are used to set the value of a specific field in the selected table. If you have previously selected a record, it will override its value; otherwise, it sets a new record (note that this is only local - to insert a new record to the table, use the insert command). In the case of the `set` command, specify the value you want to set. In the example below, we set a new value for the `QUANTITY` field:
 
 ``` javascript
 DbMon:TRADE>set QUANTITY = 10
 ```
 
-In case you want to set the value as **null**, you need to use the `unset` command as the example below:
+To set the value to **null**, use the `unset` command, for example:
 
 ``` javascript
 DbMon:TRADE>set QUANTITY = 10
 ```
 
 :::tip
-Any changes performed by `set` and `unset` will not be reflected in the database unless you use `insert` with `writeMode`
+Changes performed by `set` and `unset` will not be reflected in the database unless you use `insert` with `writeMode`.
 :::
 
 ### Insert
