@@ -9,8 +9,9 @@ tags:
     - commands
     - terminal
 ---
+<!-- Genx  -->
 
-Genesis provides a `genx` terminal CLI interface for any one who is interested in creating a new project. This interface allows you to create a new project based on some existing seeds, so you do not need to worry about creating a new project from strach.
+Genesis provides a `genx` which is a CLI scaffolding tool that enables you to create Genesis applications from scratch. This interface allows you to create a new project based on some existing seeds, so you do not need to worry about creating a new project from scratch.
 
 The `genx` has several options available to create, configure or modify the project. these are the available parameters:
 
@@ -28,7 +29,8 @@ The `genx` has several options available to create, configure or modify the proj
 | [upgrade](#upgrade) | [folder]      |Upgrade Foundation UI dependencies|
 
 ## How to use it
-To use the `genx` commands, you need to write the follow command in the terminal:
+
+Use the `genx` commands to write the follow command in the terminal:
 
 ```terminal
 npx -y @genesislcap/genx@latest <command> [args]
@@ -46,8 +48,8 @@ Although the first option will be used more frequently, you need to use the seco
 If you are going to use a specific version, please do change the `latest` with the specific version
 :::
 
-
 ## Init
+
 The `init` command creates a new project in the selected directory. The basic structure of this command is:
 
 ```terminal
@@ -58,19 +60,19 @@ By doing this, it will create a new project called `<app_Name>`, and the user wi
 
 This command can be used with the following parameters:
 
-|Parameter | Argument  | Description | Structure |
-|----------|-----------|-------------|-----------|
-|`-s` or `--seed`|`<location>` |You provide a seed where your project will be created upon | npx -y @genesislcap/genx@latest init `<app_Name>` -s `<seed_name>`|
-| `--ref`| [ref] |You provide a branch, tag or commit to create your project upon | npx -y @genesislcap/genx@latest init `<app_Name>` -s `<seed_name>` --ref `<branch_name>`|
-|`-x` or `--skip-optional-prompts` | |Skip prompts with default values|npx -y @genesislcap/genx@latest init `<app_Name>` -x|
-|`--insecure` | |Skip SSL certificate verification|npx -y @genesislcap/genx@latest init `<app_Name>` --insecure|
-|`--remote` | | Remote seed only, it will ignore any local seed |npx -y @genesislcap/genx@latest init `<app_Name>` -s `<seed_name>` --remote|
-|`-l` or `--log-level` |**info** or **verbose** |info (default) or verbose |npx -y @genesislcap/genx@latest init `<app_Name>` --log-level `<info | verbose>`|
-|`-h` or `--help` | | provide help information |npx -y @genesislcap/genx@latest init -h|
+|Parameter | Argument  | Description |
+|----------|-----------|-------------|
+|`-s` or `--seed`|`<location>` |You provide a seed where your project will be created upon |
+| `--ref`| [ref] |You provide a branch, tag or commit to create your project upon |
+|`-x` or `--skip-optional-prompts` | |Skip prompts with default values|
+|`--insecure` | |Skip SSL certificate verification|
+|`--remote` | | Remote seed only, it will ignore any local seed |
+|`-l` or `--log-level` |**info** or **verbose** |info (default) or verbose |
+|`-h` or `--help` | | provide help information |
 
 ### --seed
 
-To use the `-s` or `--seed` parameter, you need to specify the local seed directory, a remote seed or one of the pre-defined seeds provided by genesis.
+To use the `-s` or `--seed` parameter to specify the local seed directory, a remote seed or one of the pre-defined seeds provided by genesis.
 
 The pre-defined seeds available are:
 
@@ -100,7 +102,7 @@ npx -y @genesislcap/genx@latest init myApp -s ./path/to/local-seed
 
 ### --ref
 
-To use the `--ref` parameter, you need to specify the branch, tag or commit from a remote location, in case you do not want to use the main one. 
+Use the `--ref` parameter to specify the **branch**, **tag** or **commit** from a remote location, in case you do not want to use the main one.
 
 Here is an example of creating a new project named **myApp** based on positions-app-seed on the **develop** branch:
 
@@ -110,7 +112,7 @@ npx -y @genesislcap/genx@latest init myApp -s positions-app-seed --ref develop
 
 ### --skip-optional-prompts
 
-In case you want to skip all the optional questions when creating a new project, you just need to use the `-x` or `--skip-optional-prompts` parameter. Note that the project will be created with the default configuration.
+Use the `-x` or `--skip-optional-prompts` parameter to skip all the optional questions when creating a new project. 
 
 Here is an example of creating a new project named **myApp** skipping all questions.
 
@@ -124,9 +126,13 @@ or
 npx -y @genesislcap/genx@latest init myApp --skip-optional-prompts
 ```
 
+:::caution
+Creating a project using `-x` will create only sing the default configurations.
+:::
+
 ### --insecure
 
-In case you want to skip all the SSL certification validation when creating a new project, you just need to use the `--insecure` parameter.
+Use the `--insecure` parameter to skip all the SSL certification validation when creating a new project.
 
 Here is an example of creating a new project named **myApp** skipping the SSL certification validation.
 
@@ -136,7 +142,7 @@ npx -y @genesislcap/genx@latest init myApp --insecure
 
 ### --remote
 
-In case you want to use a remote-only seed, you need to provide the `--remote` parameter. It will ignore any local seed.
+Use the `--remote` parameter to use a remote-only seed. It will ignore any local seed.
 
 Here is an example of creating a new project named **myApp** with a seed called blank-app-seed (It will ignore any blank-app-seed locally).
 
@@ -146,7 +152,7 @@ npx -y @genesislcap/genx@latest init myApp -s blank-app-seed --remote
 
 ### --log-level
 
-If you want to change the default log-level, you can choose from **info** (default) or **verbose**.
+Use the `log-level` to choose between **info** (default) or **verbose** log level.
 
 Here is an example of creating a new project named **myApp** changing the log level to verbose:
 
@@ -154,29 +160,40 @@ Here is an example of creating a new project named **myApp** changing the log le
 npx -y @genesislcap/genx@latest init myApp --log-level verbose
 ```
 
-### -help
-
-In case you want some additional information about this command, simply run:
-
-```terminal
-npx -y @genesislcap/genx@latest init -h
-```
-
-or
-
-```terminal
-npx -y @genesislcap/genx@latest init myApp --help
-```
-
-and the more details will be displayed.
-
 ## Analyze
 
-The analyze command ...
+The `analyze` command ...
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description |
+|----------|-----------|-------------|
+|`-b` or `--builder`|`<builder>` | Override default builder |
+| `-n` or `--no-open`| Don't launch browser window (default: true) |
+|`-e` or `--env` | `<ENV_VAR1=VAL1,ENV_VAR2=VAL2,ENV3>` | Set environment variables|
+|`-h` or `--help` | | |
+
+### --builder
+
+Use the `-b` or `--builder` when you want to override the default builder.
+
+Here is an example of... <!--Needs to provide some example-->
+
+### --no-open
+
+Use the `-n` or `--no-open` when you don't want to launch a browser window.
+
+Here is an example of... <!--Needs to provide some example-->
+
+### --env
+
+Use `e` or `--env` if you need to set environment variables.
+
+Here is an example of... <!--Needs to provide some example-->
 
 ## Clean
 
-The `clean` command will delete the provided path. The given path is relative to the directory the command is ran. 
+The `clean` command will delete the provided path. The given path is relative to the directory the command is ran.
 
 Here is an example to clean the project called **myApp**:
 
@@ -188,14 +205,194 @@ The only additional option accepted by this command is the `-h` which provides s
 
 ## Build
 
+The `build` command ...
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description |
+|----------|-----------|-------------|
+|`-b` or `--builder`|`<builder>` | Override default builder |
+|`-e` or `--env` | `<ENV_VAR1=VAL1,ENV_VAR2=VAL2,ENV3>` | Set environment variables |
+|`-h` or `--help` | | |
+
+### --builder
+
+Use the `-b` or `--builder` when you want to override the default builder.
+
+Here is an example of... <!--Needs to provide some example-->
+
+### --env
+
+Use `e` or `--env` if you need to set environment variables.
+
+Here is an example of... <!--Needs to provide some example-->
+
 ## Dev
+
+The `dev` command ...
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description |
+|----------|-----------|-------------|
+|`-b` or `--builder`|`<builder>` | Override default builder|
+| `--https` | | Use HTTPS|
+| `-n` or `--no-open`| | Don't launch browser window (default: true) |
+|`-e` or `--env` | | Set environment variables |
+|`-h` or `--help` | | |
+
+### --builder
+
+Use the `-b` or `--builder` when you want to override the default builder.
+
+Here is an example of... <!--Needs to provide some example-->
+
+### --no-open
+
+Use the `-n` or `--no-open` when you don't want to launch a browser window.
+
+Here is an example of... <!--Needs to provide some example-->
+
+### --env
+
+Use `e` or `--env` if you need to set environment variables.
+
+Here is an example of... <!--Needs to provide some example-->
 
 ## Run
 
+The `run` command executes a specific task. This is used for.... <!--Explain why is this used for-->
+
+Here is an example of... <!--Needs to provide some example-->
+
 ## Serve
+
+The `serve` command ...
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description | Structure |
+|----------|-----------|-------------|-----------|
+|`-p` or `--port`| `<port>` | | sets a port number <!--what is this port number for?--> |
+|`-h` or `--help` | | |
+
+### --port
+
+Use `--port` or `-p` to....
+
+Here is an example of... <!--Needs to provide some example--> 
 
 ## Test
 
+The `test` command ...
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description |
+|----------|-----------|-------------|
+|`-c` or `--coverage`| | |
+| `-w` or `--watch` | | |
+| `-d` or `--debug`| | |
+| `--e2e` | | |
+| `-i` or `--interactive` | | |
+| `-b` or `--browser` | | |
+| `-e` or `--env` | | |
+| `-h` or `--help` | | |
+
+### --coverage
+
+Use `-c` or `--coverage` to ...
+
+Here is an example of... <!--Needs to provide some example--> 
+
+### --watch
+
+Use `--w` or `--watch` to....
+
+Here is an example of... <!--Needs to provide some example--> 
+
+### --debug
+
+Use `-d` or `--debug` to....
+
+Here is an example of... <!--Needs to provide some example--> 
+
+### --interactive
+
+Use `-i` or `--interactive` to....
+
+Here is an example of... <!--Needs to provide some example--> 
+
+### --browser
+
+Use `-b` or `--browser` to....
+
+Here is an example of... <!--Needs to provide some example--> 
+
+### --env
+
+Use `-e` or `--env` if you need to set environment variables.
+
+Here is an example of... <!--Needs to provide some example-->
+
 ## Lint
 
+The `lint` command ...
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description | Structure |
+|----------|-----------|-------------|-----------|
+|`-l` or `--linter`| `<linter>` | | |
+| `-f` or `--fix` | | | |
+| `-p` or `--profile`| | |
+| `-b` or `--builder` | `<builder` | |
+| `-h` or `--help` | | |
+
+### --linter
+
+Use `-l` or `--linter` if you need to set environment variables.
+
+Here is an example of... <!--Needs to provide some example-->
+
+### --fix
+
+Use `-f` or `--fix` if you need to set environment variables.
+
+Here is an example of... <!--Needs to provide some example-->
+
+### --profile
+
+Use `-p` or `--profile` if you need to set environment variables.
+
+Here is an example of... <!--Needs to provide some example-->
+
+### --builder
+
+Use the `-b` or `--builder` when you want to override the default builder.
+
+Here is an example of... <!--Needs to provide some example-->
+
 ## Upgrade
+
+The `upgrade` command to upgrade the dependencies versions of your app to the latest version available for each dependency, regardless the range defined in the **package.json**
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description | Structure |
+|----------|-----------|-------------|-----------|
+|`-r` or `--respect-version-ranges`| | Update within package.json version ranges (defaults to latest otherwise) | |
+| `-x` or `--exclude` | `<list>` | Comma-separated list of packages to exclude | |
+| `-h` or `--help` | | |
+
+### --respect-version-ranges
+
+Use `-r` or `--respect-version-ranges` to update your application's dependencies with the ranges defined in your **package.json**
+
+Here is an example of... <!--Needs to provide some example-->
+
+### --exclude
+
+Use `-x` or `--exclude` to exclude a dependency from the update process. You can provide a list of packages that will not be upgraded. 
+
+Here is an example of... <!--Needs to provide some example-->
