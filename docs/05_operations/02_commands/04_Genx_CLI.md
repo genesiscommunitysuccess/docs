@@ -13,11 +13,11 @@ tags:
 
 Genx CLI is a tool that simplifies and speeds up local development. Among other useful functions, it enables you to:
 
-•	scaffold Genesis applications from scratch based on existing seeds
-•	start local development server
-•	build artifacts for production
-•	execute unit and end-to-end tests and collect coverage data
-•	perform code linting
+- Scaffold Genesis applications from scratch based on existing seeds;
+- Start local development server;
+- Build artifacts for production;
+- Execute unit and end-to-end tests and collect coverage data;
+- Perform code linting.
 
 The `genx` command has several options available to create, configure or modify a project. these are the available parameters:
 
@@ -36,19 +36,63 @@ The `genx` command has several options available to create, configure or modify 
 
 ## How to use it
 
-Use the `genx` commands to write the follow command in the terminal:
+There are two main ways to run the Genx CLI:
+
+- Standalone - outside of an existing project such as when scaffolding a new project
+- Local - within an existing project such as when executing builds within a project
+
+### Standalone
 
 ```terminal
 npx -y @genesislcap/genx@latest <command> [args]
 ```
 
-or
+For example, to scaffold a new project:
 
 ```terminal
-genx <command> [args]
+npx -y @genesislcap/genx@latest init myApp
 ```
 
-Although the first option will be used more frequently, you need to use the secong way when... <!--When do we use the genx?? @cistov-->
+This will use the latest available version of the CLI and crete a new application called **myApp** usind the default seed **blank-app-seed**.
+
+### Local
+
+Once you have a project, you can add Genx CLI as a local dependency to your **package.json**:
+
+``` javascript
+"devDependencies": {
+    ...
+    "@genesislcap/genx": "...",
+    ...
+},
+```
+
+You can find out the latest available version by running `npm info @genesislcap/genx` at any point.
+
+Once you have bootstrapped NPM dependencies, you will be able to call Genx CLI in **package.json** scripts section like so:
+
+``` javascript
+"scripts":{
+    ...
+    "build": "genx <command> [args]"
+    ...
+}
+```
+
+For example:
+
+``` javascript
+"scripts":{
+    ...
+    "build": "genx build -e ENABLE_SSO",
+    "dev": "genx dev -e API_HOST,ENABLE_SSO"
+    "serve": "genx serve",
+    "test": "genx test"
+    ...
+}
+```
+
+now if you execute `npm run build` or `npm run dev`, it will launch Genx CLI installed in your project locally.
 
 :::note
 If you are going to use a specific version, please do change the `latest` with the specific version
