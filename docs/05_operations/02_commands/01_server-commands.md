@@ -135,7 +135,7 @@ The `FixEnumValues` command can take the following arguments:
 | Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values | Default |
 |----------|------------------------|-----------|----------------------------------------------------------------------------------------|----------------|--------|
 | -c       | --commit               | no        | applies dictionary changes to the database                                             | none    | none |
-|          | [TABLES]               | no        | a list of specific tables to be changed separated by spaces; if no list is supplied, all tables are changed                                              | none              | none |
+|          | [TABLES]               | no        | a space-separated list of specific tables to be changed; if no list is supplied, all tables are changed                                              | none              | none |
 | -h       | --help             | no        | shows help on how to use the command                    | none   | none    |
 
 In the example below, the changes are applied to the database for two tables: TRADE and POSITION.
