@@ -56,19 +56,19 @@ The `init` command creates a new project in the selected directory. The basic st
 npx -y @genesislcap/genx@latest init <app_Name>
 ```
 
-By doing this, it will create a new project called `<app_Name>`, and the user will be prompt several questions regarding the configuration of this new project.
+The `init` command creates a new project called `<app_Name>`. When the command runs, the user will be prompted to answer a set of questions to cover the basic configuration of the project.
 
 This command can be used with the following parameters:
 
 |Parameter | Argument  | Description |
 |----------|-----------|-------------|
-|`-s` or `--seed`|`<location>` |You provide a seed where your project will be created upon |
-| `--ref`| [ref] |You provide a branch, tag or commit to create your project upon |
-|`-x` or `--skip-optional-prompts` | |Skip prompts with default values|
-|`--insecure` | |Skip SSL certificate verification|
-|`--remote` | | Remote seed only, it will ignore any local seed |
-|`-l` or `--log-level` |**info** or **verbose** |info (default) or verbose |
-|`-h` or `--help` | | provide help information |
+|`-s` or `--seed`|`<location>` | provide a seed where the project will be created |
+| `--ref`| [ref] | provide a branch, tag or commit for creating the project |
+|`-x` or `--skip-optional-prompts` | | omits the prompts and applies default values |
+|`--insecure` | omits SSL certificate verification |
+|`--remote` | | remote seed only; any local seed is ignored |
+|`-l` or `--log-level` |**info** or **verbose** | info (default) or verbose |
+|`-h` or `--help` | | display help information |
 
 ### --seed
 
