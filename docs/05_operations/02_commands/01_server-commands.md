@@ -366,7 +366,7 @@ The example below displays the next sequence number of each table, using the for
 GetNextSequenceNumbers
 ```
 
-By default, the details are sent to the screen, but you can redirect the output to a file. For this use either the `-f` argument followed by the filename, or you can use the `>>` annotation followed by a filename, as in the example below:
+By default, the details are sent to the screen, but you can redirect the output to a file. For this, use either the `-f` argument followed by the filename. Alternatively, you can use the `>>` annotation followed by a filename, as in the example below:
 
 ```bash
 GetNextSequenceNumbers >> /tmp/NextSeqNumbers.txt 
