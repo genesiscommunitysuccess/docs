@@ -84,11 +84,19 @@ field(name = "DESCRIPTION", type = STRING, maxSize = dbMaxSize(target = 9000))
 ```
 If the underlying database is Postgres, this sets the field's `maxSize` to 9000, because Postgres can support up to 65535. But if you are using MS SQL, then the `maxSize` is set to 8000, the maximum supported size for MS SQL.
 
-## DisplayDefaultSensitiveFields
-
-Following framework fields are declared as sensitive by default: PASSWORD, REFRESH_TOKEN, REFRESH_AUTH_TOKEN and SESSION_AUTH_TOKEN.
-`DisplayDefaultSensitiveFields` system property can be set to `true` to display these default sensitive fields for debugging purpose, it's value is set to `false` by default, and it only applies on toString() output of GenesisSet and DbRecord objects
-
 ## Pre-defined fields
 
 By default, you have access to all the standard field definitions in the Genesis low-code platform. You also have access to all the fields in any module that you include in your application (for example, the Auth module comes with a set of pre-defined fields).
+
+## DisplayDefaultSensitiveFields
+The platform declares the following framework fields as sensitive by default: 
+
+- PASSWORD
+- REFRESH_TOKEN
+- REFRESH_AUTH_TOKEN
+- SESSION_AUTH_TOKEN
+
+As sensitive fields, their values are displayed as asterisks on screen. For debugging purposes, you can set the `DisplayDefaultSensitiveFields` system property to `true` to display the values. 
+
+By default, sensitive fields are set to `false`, and this only applies on `toString()` output of GenesisSet and DbRecord objects.
+
