@@ -1,6 +1,6 @@
 ---
-title: 'Operations - Genx commands'
-sidebar_label: 'Genx commands'
+title: 'Operations - Genx CLI'
+sidebar_label: 'Genx CLI'
 id: genx-commands
 keywords: [operations, genx, commands]
 tags:
@@ -11,22 +11,28 @@ tags:
 ---
 <!-- Genx  -->
 
-Genesis provides a `genx` which is a CLI scaffolding tool that enables you to create Genesis applications from scratch. This interface allows you to create a new project based on some existing seeds, so you do not need to worry about creating a new project from scratch.
+Genx CLI is a tool that simplifies and speeds up local development. Among other useful functions, it enables you to:
 
-The `genx` has several options available to create, configure or modify the project. these are the available parameters:
+•	scaffold Genesis applications from scratch based on existing seeds
+•	start local development server
+•	build artifacts for production
+•	execute unit and end-to-end tests and collect coverage data
+•	perform code linting
+
+The `genx` command has several options available to create, configure or modify a project. these are the available parameters:
 
 |Command | Argument      | Description|
 |--------|---------------|-------------|
-| [init](#init)   |`<app_Name>`          |   Create a new project|
-| [analyze](#analyze) |[folder]       |Analyze production bundle|
-| [clean](#clean)   |[...paths]     | Delete specified paths (defaults to dist folder)|
-| [build](#build)  |[folder]       | Build production bundle|
-| [dev](#dev)    |[folder]       |   Start development server|
-| [run](#run)    |`<task>` [module]|  Run monorepo task|
-| [serve](#serve)  |[folder]       |Start static file server (defaults to dist folder)|
-| [test](#test)   |[folder]       | Run tests|
-| [lint](#lint)   |[folder]       | Lint TypesSript and style files|
-| [upgrade](#upgrade) | [folder]      |Upgrade Foundation UI dependencies|
+| [init](#init)   |`<app_Name>`          |   create a new project |
+| [analyze](#analyze) |[folder]       |analyse the production bundle |
+| [clean](#clean)   |[...paths]     | delete specified paths (defaults to dist folder) |
+| [build](#build)  |[folder]       | build a production bundle |
+| [dev](#dev)    |[folder]       |   start a development server |
+| [run](#run)    |`<task>` [module]|  run monorepo task|
+| [serve](#serve)  |[folder]       | start a static file server (defaults to dist folder)|
+| [test](#test)   |[folder]       | run tests|
+| [lint](#lint)   |[folder]       | Lint TypesSript and style files |
+| [upgrade](#upgrade) | [folder]      | upgrade Foundation UI dependencies |
 
 ## How to use it
 
