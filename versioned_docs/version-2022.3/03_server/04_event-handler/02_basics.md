@@ -220,4 +220,4 @@ Below you see an example of accessing a custom end-point called **EVENT_TRADE_IN
 [POST] http://localhost:9064/EVENT_TRADE_INSERT/
 ```
 
-If you are interested in how to manipulate and work with the auto-generated REST endpoints, make sure to follow [this link](../../../server/integration/rest-endpoints/introduction/).
+You can see how to manipulate and work with auto-generated endpoints in our pages on [REST endpoints](../../../server/integration/rest-endpoints/introduction/).
