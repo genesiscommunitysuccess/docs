@@ -1,7 +1,7 @@
 ---
 title: 'Operations - Genx CLI'
 sidebar_label: 'Genx CLI'
-id: genx-commands
+id: genx-CLI
 keywords: [operations, genx, commands]
 tags:
     - genx
