@@ -287,4 +287,4 @@ Below you see an example of accessing a custom end-point called **ALL_TRADES** r
 [POST] http://localhost:9064/ALL_TRADES/
 ```
 
-If you are interested in how to manipulate and work with the auto-generated REST endpoints, make sure to follow [this link](../../../server/integration/rest-endpoints/introduction/).
+You can see how to manipulate and work with auto-generated endpoints in our pages on [REST endpoints](../../../server/integration/rest-endpoints/introduction/).
