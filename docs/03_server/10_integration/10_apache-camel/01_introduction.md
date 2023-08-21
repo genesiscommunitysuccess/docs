@@ -16,8 +16,8 @@ Genesis makes this easy to configure and set up, allowing new processors to be d
 
 You can use Apache Camel for:
 
-* receiving data [from the local filesystem](../../../../getting-started/use-cases/loading-feed-data/overview/)
-* transmitting data [to or from an external location](../../../../getting-started/use-cases/loading-feed-data/sftp-and-encryption/).
+* receiving data [from the local filesystem](../../../../getting-started/advanced-learning/loading-feed-data/overview/)
+* transmitting data [to or from an external location](../../../../getting-started/advanced-learning/loading-feed-data/sftp-and-encryption/).
 
 Note that Camel's power and flexibility come at the cost of some complexity and configuration overhead.
 
