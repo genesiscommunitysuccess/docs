@@ -53,7 +53,7 @@ For example, to scaffold a new project:
 npx -y @genesislcap/genx@latest init myApp
 ```
 
-This will use the latest available version of the CLI and crete a new application called **myApp** usind the default seed **blank-app-seed**.
+This will use the latest available version of the CLI and create a new application called **myApp** usind the default seed **blank-app-seed**.
 
 ### Local
 
