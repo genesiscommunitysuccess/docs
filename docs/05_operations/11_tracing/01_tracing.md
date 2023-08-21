@@ -8,7 +8,7 @@ tags:
     - tracing
 ---
 
-The Genesis Tracing module enables you to capture tracing for your application through its integration with [OpenTelemetry](https://opentelemetry.io/). OpenTelemetry is a vendor-neutral open-source observability freamework and has become an industry-standard.
+The Genesis Tracing module enables you to capture tracing for your application through its integration with [OpenTelemetry](https://opentelemetry.io/). OpenTelemetry is a vendor-neutral open-source observability framework and has become an industry-standard.
 
 To enable tracing you need to provide the OpenTelemetry java agent to the application's JVM options. You can read more about the OpenTelemetry java agent [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation).
 In short, the java agent dynamically injects bytecode to capture telemetry from a number of popular libraries and frameworks. Genesis takes advantage of this along with its own manual instrumentation.
