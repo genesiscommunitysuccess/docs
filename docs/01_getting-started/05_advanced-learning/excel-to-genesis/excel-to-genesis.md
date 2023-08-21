@@ -124,7 +124,7 @@ fields {
 }
   
 ```
-You can see the whole file [here](../../../getting-started/use-cases/excel-to-genesis/Files/guide-5).
+You can see the whole file [here](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-11).
 ### Field types
 The fields are automatically sampled by the command to allocate a type. If it is not sure, it allocates the field as `STRING`. Most of these will be correct, but you will need to handle exceptions.
 ### Long names and illegal characters
@@ -134,6 +134,7 @@ Illegal characters in field names have been automatically converted. You can see
 field(name = "DEPOSIT_AMOUNT_ON_MAY_IN_PERCENT_HAIR_CUT_AND_MAX_PERCENT_ON_FUNDS", type = DOUBLE)
   ```
 And yes, it would have been a very good idea to have made the source column heading shorter before we converted the workbook!
+
 ### The tables file
 Inside the file `cash-tables-dictionary.kts`, each table created has a name and numeric ID. Each field in a table has a comment showing the column it came from, as well as relevant notes on the function (e.g aggregation). For example:
 ```kotlin
@@ -164,7 +165,7 @@ tables {
     }
   
 ```
-You can see the whole table's file [here](../../../getting-started/use-cases/excel-to-genesis/Files/guide-12). Table IDs are sequential from the first one created, starting with the `-t` number supplied when you ran the script.
+You can see the complete file [here](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-12). Table IDs are sequential from the first one created, starting with the `-t` number supplied when you ran the script.
 ### Unable to parse
 If the conversion process was not able to parse a field, this is clearly marked by the comment. For example:
 ```kotlin
@@ -219,7 +220,7 @@ views {
   }
 }
 ```
-You can see the complete view file [here](../../../getting-started/use-cases/excel-to-genesis/Files/guide-13).
+You can see the complete view file [here](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-13).
 
 ### Derived fields
 The conversion has created derived fields - simple calculations based on other fields in the view.
@@ -270,9 +271,9 @@ After you have checked the files generated and addressed any issues in the field
 
 This creates an application called **Cash** with:
 
-* the kts files for the  [Event Handler](../../../getting-started/use-cases/excel-to-genesis/Files/guide-5), [Request Server](../../../getting-started/use-cases/excel-to-genesis/Files/guide-6) and [Data Server](../../../getting-started/use-cases/excel-to-genesis/Files/guide-7)
-* the [service definitions](../../../getting-started/use-cases/excel-to-genesis/Files/guide-10)
-* the [process definitions](../../../getting-started/use-cases/excel-to-genesis/Files/guide-9)
+* the kts files for the  [Event Handler](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-5), [Request Server](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-6) and [Data Server](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-7)
+* the [service definitions](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-10)
+* the [process definitions](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-9)
 
 ![](/img/built-by-appgen.png)
 
