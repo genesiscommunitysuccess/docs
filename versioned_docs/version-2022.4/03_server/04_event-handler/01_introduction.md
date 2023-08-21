@@ -24,7 +24,7 @@ B -->|INSERT/MODIFY/DELETE| C[Database]
 C --> |Ack/Nack|B
 ```
 
-As a rough guide, many of the tables you have created need **Insert**, **Modify** and **Delete** events, so that you can specify the processing that these events require. 
+As a rough guide, many of the tables you have created need **Insert**, **Modify** and **Delete** events, so that you can specify the processing that these events require.
 
 The vast majority of applications include business workflow.
 
@@ -32,7 +32,7 @@ That could be a simple linear workflow, such as a deal being enriched and approv
 
 Most applications built on the platform include typical **business entities** for the financial market, such as orders, trades, bids, allocations and positions. These business entities have a lifecycle where they go through various **states**. The transition from one state to another is an event that needs to be handled. The paths through those states are workflows, and to assist the workflows, we use state machines.
 
-Event Handlers are conventionally defined in the file **{app-name}-eventhandler.kts**. 
+Event Handlers are conventionally defined in the file **{app-name}-eventhandler.kts**.
 
 So, if your application is called **positions**, then the file would conventionally be named **positions-eventhandler.kts**.
 
@@ -42,9 +42,9 @@ You can write custom Event Handlers using our [APIs](../../../database/api-refer
 
 We recommend using **Kotlin** to implement Event Handlers.
 
-- **Java** Event Handlers are implemented using [**RxJava3**](#rx3) [**Sync**](#sync) Event Handlers only. 
+- **Java** Event Handlers are implemented using [**RxJava3**](#rx3) [**Sync**](#sync) Event Handlers only.
 - Async Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
-
 
 :::
 
+All queries created in the Event Handler are exposed as HTTP/HTTPs [REST endpoints](../../../server/integration/rest-endpoints/introduction/) automatically by the Genesis platform. You can use any http client, such as postman, to access these custom endpoints.

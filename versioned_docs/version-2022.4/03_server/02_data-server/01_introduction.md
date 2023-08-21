@@ -34,3 +34,5 @@ Data Servers are conventionally defined in the file _application-name_**-dataser
 So, if your application is called **positions**, then the file would conventionally be named **positions-dataserver.kts**.
 
 Note, you also need to declare your Data Server within the [runtime configuration](../../../server/data-server/configuring-runtime/).
+
+All queries created in the Data Server are exposed as HTTP/HTTPs [REST endpoints](../../../server/integration/rest-endpoints/introduction/) automatically by the Genesis platform. You can use any http client, such as postman, to access these custom endpoints.
