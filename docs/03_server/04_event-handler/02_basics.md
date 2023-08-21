@@ -12,6 +12,7 @@ tags:
 
 
 Let's make things really simple.
+
 - The Event Handler is the component that enables the application to write to the database.
 - You define your application's Event Handler in a Kotlin script file (**.kts**).
 - In this file, you define specific `eventHandler` codeblocks, each of which has full access to the database.
@@ -102,11 +103,13 @@ The `onCommit` block will only be executed if the `counterparty` field is not nu
 ```
 
 ## Returning a value
+
 The `onCommit` block must always return either an `ack()` or `nack(...)`. In the previous examples, it has always been an `ack()`.
 
 Now consider a scenario where you might want to return a `nack(...)`. In this case, there is no `onValidate` block.
 
 In the `onCommit` block:
+
 - if the counterparty field is empty, the `eventHandler` returns a `nack`, along with a suitable message.
 - if the counterparty field has content, then the `eventHandler` returns an `ack`
 
@@ -128,12 +131,12 @@ eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
 
 So far, we have seen `ack` and `nack`. There is a third type: `warningNack`. Let's stop and look at the specifications for all three default reply types:
 
-* `ack`: used to signify a successful result. `ack` takes an optional parameter of `List<Map<String, Any>>`. For example, `ack(listOf(mapOf("TRADE_ID", "1")))`.
-* `nack`: used to signify an unsuccessful result. `nack` accepts either a `String` parameter or a `Throwable`. For example, `nack("Error!")` or `nack(myThrowable)`.
-* `warningNack`: used to warn the client. `warningNack`, like `nack`, accepts either a `String` parameter or a `Throwable`. For example, `warningNack("Provided User alias $userAlias will override Username $username.")` or `warningNack(myThrowable)`.
-
+- `ack`: used to signify a successful result. `ack` takes an optional parameter of `List<Map<String, Any>>`. For example, `ack(listOf(mapOf("TRADE_ID", "1")))`.
+- `nack`: used to signify an unsuccessful result. `nack` accepts either a `String` parameter or a `Throwable`. For example, `nack("Error!")` or `nack(myThrowable)`.
+- `warningNack`: used to warn the client. `warningNack`, like `nack`, accepts either a `String` parameter or a `Throwable`. For example, `warningNack("Provided User alias $userAlias will override Username $username.")` or `warningNack(myThrowable)`.
 
 ## Transactional Event Handlers (ACID)
+
 If you want your  `eventHandler` to comply with [ACID](../../../getting-started/glossary/glossary/#acid), you can declare it to be  `transactional = true`. Any exception returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) blocks. While an exception will trigger a rollback, the transaction will commit if a `nack` or `ack` is returned.
 
 ```kotlin
@@ -149,17 +152,23 @@ If you want your  `eventHandler` to comply with [ACID](../../../getting-started/
  Whether it is a database update or uploading a report to a third party. It will be called when an event message is received with `validate = false` and has successfully passed the `onValidate` block. The last value of the code block must always be the return message type.
 
 ## Processing onValidate and onCommit
-The incoming message that triggers an Event Handler can have `validate` set to `true` or `false`. This controls whether the Event Handler simply performs some validation or it executes its complete set of processing. 
+
+The incoming message that triggers an Event Handler can have `validate` set to `true` or `false`. This controls whether the Event Handler simply performs some validation or it executes its complete set of processing.
 
 ### validate = true
+
 The key thing about this setting is that it means that only the `onValidate` block is executed, not the `onCommit` block. Here is the precise process flow:
 
 ![](/img/eh-validate-true.png)
+
 ### validate = false
+
 With this setting, both the `onValidate` codeblock and the `onCommit` codeblock will be executed. Here is the precise process flow:
 
 ![](/img/eh-validate-false.png)
+
 ## More information about onValidate
+
 As you will have seen above, an `onValidate` codeblock will be executed whether the incoming message has `validate=true` or `validate=false`.The `onValidate` block is optional if you are using the default reply message type (`EventReply`) and will automatically be successful if not defined.
 
 However, note that an `onValidate` codeblock is mandatory when using custom reply message types; the script will not compile if there is no `onValidate` codeblock. See the simple example below:
@@ -184,6 +193,7 @@ However, note that an `onValidate` codeblock is mandatory when using custom repl
 Kotlin’s `require` method throws an exception with a message if the boolean expression is not what is expected, and the Event Handler automatically converts that exception into a corresponding `EventNack`.
 
 ### Context Event Handlers
+
 In order to optimise database look-up operations, you might want to use data obtained by the `onValidate` block inside your `onCommit` block. To do this, use context Event Handlers, as shown below:
 
 ```kotlin
@@ -209,3 +219,14 @@ As the  example shows, there is an additional type defined for the context Event
 
 Because the example creates a validation context, the function `validationAck()` is used at the end of the `onValidate` block, and not just `ack()`.
 
+# Auto-generated REST endpoints
+
+As we have mentioned before, all events created in the eventhandler file are automatically exposed as a [REST endpoints](../../../server/integration/rest-endpoints/introduction/).
+
+Below you see an example of accessing a custom end-point called **EVENT_TRADE_INSERT** running locally. It was automatically generated by the Genesis platform when you defined the event **TRADE_INSERT** in the **{app_name}-eventhandler.kts**.
+
+``` javascript
+[POST] http://localhost:9064/EVENT_TRADE_INSERT/
+```
+
+If you are interested in how to manipulate and work with the auto-generated REST endpoints, make sure to follow [this link](../../../server/integration/rest-endpoints/introduction/).

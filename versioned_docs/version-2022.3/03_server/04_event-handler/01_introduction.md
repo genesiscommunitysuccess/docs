@@ -48,3 +48,4 @@ We recommend using **Kotlin** to implement Event Handlers.
 
 :::
 
+All eventhandlers are exposed as HTTP/HTTPs [REST endpoints](../../../server/integration/rest-endpoints/introduction/) automatically by the Genesis platform. In that way, you can use any http client such as postman to get access to these custom endpoints.
