@@ -35,4 +35,4 @@ So, if your application is called **positions**, then the file would conventiona
 
 Note, you also need to declare your Data Server within the [runtime configuration](../../../server/data-server/configuring-runtime/).
 
-All queries created in the dataserver are exposed as HTTP/HTTPs [REST endpoints](../../../server/integration/rest-endpoints/introduction/) automatically by the Genesis platform. In that way, you can use any http client such as postman to get access to these custom endpoints.
+All queries created in the Data Server are exposed as HTTP/HTTPs [REST endpoints](../../../server/integration/rest-endpoints/introduction/) automatically by the Genesis platform. You can use any http client, such as postman, to access these custom endpoints.
