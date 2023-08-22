@@ -94,10 +94,6 @@ For example:
 
 now if you execute `npm run build` or `npm run dev`, it will launch Genx CLI installed in your project locally.
 
-:::note
-If you are going to use a specific version, please do change the `latest` with the specific version
-:::
-
 ## Init
 
 The `init` command creates a new project in the selected directory. The basic structure of this command is:
@@ -162,7 +158,7 @@ npx -y @genesislcap/genx@latest init myApp -s positions-app-seed --ref develop
 
 ### --skip-optional-prompts
 
-Use the `-x` or `--skip-optional-prompts` parameter to skip all the optional questions when creating a new project. 
+Use the `-x` or `--skip-optional-prompts` parameter to skip all the optional questions when creating a new project.
 
 Here is an example of creating a new project named **myApp** skipping all questions.
 
@@ -245,11 +241,13 @@ Here is an example of... <!--Needs to provide some example-->
 
 The `clean` command will delete the provided path. The given path is relative to the directory the command is ran.
 
-Here is an example to clean the project called **myApp**:
+This command is more useful to be used locally in your project. To do that, simply add this comment to the list of scripts in your **package.json**
 
-```terminal
-npx -y @genesislcap/genx@latest clean myApp
+```javascript
+"clean": "genx clean",
 ```
+
+After that, you can run `npm run clean` to clear the dist folder (containing previously built artifact and temporary compilation files)
 
 The only additional option accepted by this command is the `-h` which provides some details about the `clean` command.
 
@@ -330,7 +328,7 @@ This command can be used with the following parameters:
 
 Use `--port` or `-p` to....
 
-Here is an example of... <!--Needs to provide some example--> 
+Here is an example of... <!--Needs to provide some example-->
 
 ## Test
 
@@ -353,31 +351,31 @@ This command can be used with the following parameters:
 
 Use `-c` or `--coverage` to ...
 
-Here is an example of... <!--Needs to provide some example--> 
+Here is an example of... <!--Needs to provide some example-->
 
 ### --watch
 
 Use `--w` or `--watch` to....
 
-Here is an example of... <!--Needs to provide some example--> 
+Here is an example of... <!--Needs to provide some example-->
 
 ### --debug
 
 Use `-d` or `--debug` to....
 
-Here is an example of... <!--Needs to provide some example--> 
+Here is an example of... <!--Needs to provide some example-->
 
 ### --interactive
 
 Use `-i` or `--interactive` to....
 
-Here is an example of... <!--Needs to provide some example--> 
+Here is an example of... <!--Needs to provide some example-->
 
 ### --browser
 
 Use `-b` or `--browser` to....
 
-Here is an example of... <!--Needs to provide some example--> 
+Here is an example of... <!--Needs to provide some example-->
 
 ### --env
 
@@ -443,6 +441,6 @@ Here is an example of... <!--Needs to provide some example-->
 
 ### --exclude
 
-Use `-x` or `--exclude` to exclude a dependency from the update process. You can provide a list of packages that will not be upgraded. 
+Use `-x` or `--exclude` to exclude a dependency from the update process. You can provide a list of packages that will not be upgraded.
 
 Here is an example of... <!--Needs to provide some example-->
