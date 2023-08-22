@@ -243,13 +243,17 @@ The `clean` command will delete the provided path. The given path is relative to
 
 This command is more useful to be used locally in your project. To do that, simply add this comment to the list of scripts in your **package.json**
 
-```javascript
-"clean": "genx clean",
+```javascript title="package.json"
+"clean": "genx clean <Path>",
 ```
 
-After that, you can run `npm run clean` to clear the dist folder (containing previously built artifact and temporary compilation files)
+Below is an example of creating a `clean` script to clear the dist folder (containing previously built artifact) and the node_modules folder. 
 
-The only additional option accepted by this command is the `-h` which provides some details about the `clean` command.
+```javascript title="Client/package.json"
+"clean": "genx clean dist node_modules"
+```
+
+Now you can run `npm run clear` in the **client** folder. 
 
 ## Build
 
