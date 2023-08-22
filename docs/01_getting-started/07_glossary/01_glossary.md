@@ -44,10 +44,7 @@ There is an [aeron wiki](https://github.com/real-logic/aeron/wiki) on github.
 ## Akka
 
 Akka is a set of open-source libraries for designing scalable, resilient systems that span processor cores and networks.
-Akka provides low-level code to deliver reliable behaviour, fault tolerance, and high performance.
-
-Aeron addresses important challenges inherent in designing distributed systems. To be successful, they must cope in an environment where components crash without responding, messages get lost without a trace on the wire, and network latency fluctuates.
-These are regular problems in carefully managed intra-data-centre environments - even more so in virtualised architectures.
+[Akka](https://akka.io/docs/) provides low-level code to deliver reliable behaviour, fault tolerance, and high performance.
 
 ## Amazon Elastic Compute Cloud
 
