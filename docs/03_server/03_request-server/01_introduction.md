@@ -1,6 +1,6 @@
 ---
 title: 'Request Server - introduction'
-sidebar_label: 'Request Server'
+sidebar_label: 'Introduction'
 id: introduction
 keywords: [server, request server, introduction]
 tags:
