@@ -18,37 +18,37 @@ DbMon is the Genesis database client. It provides an interface to the underlying
 
 The commands available with DbMon are listed below. 
 
-| Command                  | Argument                                    | Description                                     |
-|--------------------------|---------------------------------------------|-------------------------------------------------|
-| autoIncrementNumber      | `<field_name>`                              |                                                 |
-| clear                    |                                             | clears the current context                      |
-| count                    |                                             | counts the rows in the table                    |
-| delete                   |                                             | deletes the current row                         |
-| deleteWhere              | `<condition>`                               | deletes all matching rows in the selected table |
-| displayFields            | `<field_names>`                             |                                                 |
-| distinct                 | `<condition> [-where <limiting_condition>]` |                                                 |
-| find                     | `<key_name>`                                |                                                 |
-| first                    | `<key_name>`                                |                                                 |
-| forceAutoIncrementNumber | `<field_name> <sequence_number>`            |                                                 |
-| forceSequenceNumber      | `<sequence_name> <sequence_number>`         |                                                 |
-| help                     |                                             | lists all commands                              |
-| insert                   |                                             | inserts the current row                         |
-| last                     | `<key_name>`                                | gets the last record by key                     |
-| listAll                  | `<key_name> <num_key_fields> <max_records>` |                                                 |
-| next                     | `<key_name>`                                | gets the next record by key                     |
-| qsearch                  | `<condition> [-l <limit>]`                  ||
-| qshow                    ||||
-| search                   | `<condition> [-l <limit>]`                  ||
-| sequenceNumber           | `<sequence_name>`                           ||
-| set                      | `<field_name> <field_value>`                | sets a field                                    |
-| show                     |||
-| showKeys                 |||
-| showTables               |||
-| table                    | `<table_name>`                              ||
-| unset                    |                                             | sets a field to `null`                          |
-| update                   | `<key_name>`                                | updates the current row by key                  |
-| updateWhere              | `<condition> <assignments>`                 |                                                 |
-| writeMode                |                                             | enables write mode                              |
+| Command                             | Argument                                    | Description                                       |
+|-------------------------------------|---------------------------------------------|---------------------------------------------------|
+| writeMode                           |                                             | enables write mode                                |
+| help                                |                                             | lists all commands                                |
+| [showTables](#show-tables)          |                                             | display all tables in the schema                  |
+| [table](#table)                     | `<table_name>`                              | select an specified table                         |
+| [show](#show)                       |                                             | display the current record                        |
+| [displayFields](#display-fields)    | `<field_names>`                             | display only selected columns                     |
+| [count](#count-rows)                |                                             | counts the rows in the table                      |
+| [set](#set--unset)                  | `<field_name> <field_value>`                | sets a field                                      |
+| [unset](#set--unset)                | `<field>`                                   | sets a field to `null`                            |
+| [insert](#insert)                   |                                             | inserts the current                               |
+| [delete](#delete)                   |                                             | deletes the current row                           |
+| [deleteWhere](#deletewhere)         | `<condition>`                               | deletes all matching rows in the selected table   |
+| [update](#update)                   | `<key_name>` `<fields>`                     | updates the current row by key                    |
+| [updateWhere](#updatewhere)         | `<condition> <assignments>`                 | updates all records that matches a given condition|
+| [find](#find)                       | `<key_name>`                                | find an specific record in a index                |
+| [showKeys](#show-keys-indexes)      |                                             | display all indexes                               |
+| [first](#first-and-last)            | `<key_name>`                                | gets the first record by key                      |
+| [last](#first-and-last)             | `<key_name>`                                | gets the last record by key                       |
+| [next](#next)                       | `<key_name>`                                | gets the next record by key                       |
+| [clear](#displaying-a-record---set) |                                             | clears the current context                        |
+| [search](#search)                   | `<condition> [-l <limit>]`                  | return the records that matches with the criteria |
+| [distinct](#distinct)               | `<condition> [-where <limiting_condition>]` | show only distinct records                        |
+| sequenceNumber                      | `<sequence_name>`                           |                                                   |
+| autoIncrementNumber                 | `<field_name>`                              |                                                   |
+| forceAutoIncrementNumber            | `<field_name> <sequence_number>`            |                                                   |
+| forceSequenceNumber                 | `<sequence_name> <sequence_number>`         |                                                   |
+| listAll                             | `<key_name> <num_key_fields> <max_records>` |                                                   |
+| qsearch                             | `<condition> [-l <limit>]`                  |                                                   |
+| qshow                               |                                             |                                                   |
 
 
 ## Starting DbMon
@@ -140,11 +140,12 @@ NETTING_GROUP_ID                                                    INT
 REGION                                                              STRING
 VIEW_CODE                                                           STRING
 ```
+
 ### Display fields
 
 If you are only interested in seeing selected columns, use the [`displayFields`](#dbmon-commands) command and list the names of the columns you are interested in (separated by spaces). 
 
-Any subsequent [`show`](#dbmon-commands) commands will only display those columns, rather than the all the columns in the table.
+Any subsequent [`show`](#dbmon-commands) commands will only display those columns, rather than all the columns in the table.
 
 
 ```javascript
@@ -167,12 +168,133 @@ To view all columns again, use the [`displayFields`](#dbmon-commands) command fo
 
 ### Count rows
 
-If you would like to know how many rows of data there are in a table, then use the [`count`](#dbmon-commands) command. Be aware that, for large tables, this could take some time to return:
+To discover how many rows of data there are in a table, use the [`count`](#dbmon-commands) command. For large tables, this could take some time to return:
 
 ```javascript
 DbMon:BROKER>count
 The table BROKER contains 114 records
 ```
+
+### Set and Unset
+The `set` and `unset` commands are used to set the value of a specific field in the selected table. If you have previously selected a record, it will override its value; otherwise, it sets a new record (note that this is only local - to insert a new record to the table, use the insert command). In the case of the `set` command, specify the value you want to set. In the example below, we set a new value for the `QUANTITY` field:
+
+``` javascript
+DbMon:TRADE>set QUANTITY = 10
+```
+
+To set the value to **null**, use the `unset` command, for example:
+
+``` javascript
+DbMon:TRADE>set QUANTITY = 10
+```
+
+:::tip
+Changes performed by `set` and `unset` will not be reflected in the database unless you use `insert` with `writeMode`.
+:::
+
+### Insert
+
+If you are interested in inserting a new record to the database, you can use the `insert`. This command wil insert a new record based on the current record selected. Before y insert this new record, you need to enable the `writeMode`. 
+
+In the example below, we make use of the `set` command to create a new record before inserting it into the database.
+
+``` javascript
+DbMon:TRADE>set PRICE 80
+DbMon:TRADE>set QUANTITY 70
+DbMon:TRADE>set TRADE_ID DbMonTest
+DbMon:TRADE>show
+==================================
+TRADE
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                                                         NANO_TIMESTAMP      
+COUNTERPARTY_ID                          1                                        STRING              
+DIRECTION                                BUY                                      ENUM[BUY SELL]      
+ENTERED_BY                               JaneDee                                  STRING              
+INSTRUMENT_ID                            1                                        STRING              
+PRICE                                    80.0                                     DOUBLE              
+QUANTITY                                 70                                       INT                 
+SYMBOL                                   EUR                                      STRING              
+TRADE_DATE                                                                        DATE                
+TRADE_ID                                 DbMonTest                                STRING              
+TRADE_STATUS                             NEW                                      ENUM[NEW ALLOCATED CANCELLED]
+DbMon:TRADE>insert
+Are you sure you wish to execute the command? Y/N
+y
+Record saved
+```
+
+### Delete rows
+
+If you would like to delete a row from a table manually using DbMon, then you should use the `delete` or `deleteWhere`. Note that to perform a delete operation, you must run `writeMode` to enable the write mode.
+
+#### Delete
+
+If you use the `delete` command, it will delete the selected record in the selected table. Here is an example of how to use `delete`, it is deleting the last record in the **TRADE** table:
+
+```javascript
+DbMon:TRADE>writeMode
+DbMon:TRADE>delete
+Are you sure you wish to execute the command? Y/N
+y
+Record deleted
+```
+:::note
+To be able to use this command, you need to be in `writeMode`.
+:::
+
+#### deleteWhere
+
+If you use the `deleteWhere` command, it will delete all records in the selected table that matches the specified criteria. After the confirmation, it will prompt all the records that have been deleted.
+
+Here is an example of how to use `deleteWhere`. In this example, we are deleting all records in **TRADE** table with **QUANTITY** values grater than 100.
+
+```javascript
+DbMon:TRADE>writeMode
+DbMon:TRADE>deleteWhere QUANTITY > 100
+Are you sure you wish to execute the command? Y/N
+y
+Deleted record: DbRecord [tableName=TRADE] [PRICE = 9.0, SYMBOL = EUR, QUANTITY = 888, DIRECTION = BUY, TIMESTAMP = 2023-08-15 12:09:55.422(n:0,s:119) (7097187651224076407), TRADE_DATE = null, RECORD_ID = 7097187651224076407, COUNTERPARTY_ID = 3, TRADE_ID = 3aa96a32-0fdb-47e1-b96b-243dfa265e5cTRLO1, TRADE_STATUS = NEW, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
+Deleted record: DbRecord [tableName=TRADE] [PRICE = 76.0, SYMBOL = EUR, QUANTITY = 888, DIRECTION = BUY, TIMESTAMP = 2023-08-15 12:09:52.163(n:0,s:116) (7097187637554839668), TRADE_DATE = null, RECORD_ID = 7097187637554839668, COUNTERPARTY_ID = 3, TRADE_ID = 0750ffa9-f080-4256-b0e4-efa0369d089cTRLO1, TRADE_STATUS = NEW, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
+2 records deleted
+```
+
+:::note
+To be able to use this command, you need to be in `writeMode`.
+:::
+
+### Update rows
+If you would like to perform an update in the database manually using DbMon, then you should use the `update` or `updateWhere`. Note that to perform a update operation, you must run `writeMode` to enable the write mode.
+
+#### Update
+If you use the `update` command, it will update the given fields in the selected row in the selected table. Use the commands `set` and `unset` to manipulate the selected row before you run `update`. To be able to use `update`, you need to provide a `key_name`. Here is an example of how to use the `update` command to update the field PRICE in the **TRADE** table.
+
+```javascript
+DbMon:TRADE>writeMode
+DbMon:TRADE>set PRICE 50
+DbMon:TRADE>update TRADE_BY_ID PRICE
+Are you sure you wish to execute the command? Y/N
+y
+Record updated
+```
+
+#### UpdateWhere
+If you use the `updateWhere` command, it will update all records in the selected table hat matches with the specified criteria. After the confirmation, it will prompt all the records that have been updated.
+
+Here is an example of how to use `updateWhere`. In this example, we are updating the `QUANTITY` value to 10 to all records in **TRADE** with `id = genesis1`.
+
+```javascript
+DbMon:TRADE>writeMode
+DbMon:TRADE>updateWhere TRADE_ID=="genesis1" QUANTITY=10
+Are you sure you wish to execute the command? Y/N
+y
+Updated record: DbRecord [tableName=TRADE] [PRICE = 90.0, SYMBOL = EUR, QUANTITY = 10, DIRECTION = BUY, TIMESTAMP = 2023-08-15 19:14:01.488(n:0,s:104) (7097294379760484456), TRADE_DATE = null, RECORD_ID = 7097293333759787097, COUNTERPARTY_ID = 1, TRADE_STATUS = NEW, TRADE_ID = genesis1, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
+1 records updated
+```
+:::note
+To be able to use this command, you need to be in `writeMode`.
+:::
 
 ## Finding data in a table
 
@@ -199,7 +321,53 @@ BROKER_BY_TIMESTAMP                TIMESTAMP                                Seco
 BROKER_BY_VIEW_CODE                VIEW_CODE                                Secondary
 	------------------------------------------------------------------------------------------ 
 ```
+### First and Last
+If you are interested in selecting the `first` or the `last` record, you can use the `first` or `last` along with the index name. After selecting a record, to be able to see it in the dbmon, you need to run the `show` command. In the following example, we are going to select the first record in the **TRADE** table using the index **TRADE_BY_ID**.
 
+```javascript
+DbMon:TRADE>first TRADE_BY_ID
+DbMon:TRADE>show
+==================================
+TRADE
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                2023-08-15 12:09:47.802(n:0,s:112)       NANO_TIMESTAMP      
+COUNTERPARTY_ID                          3                                        STRING              
+DIRECTION                                BUY                                      ENUM[BUY SELL]      
+ENTERED_BY                               JaneDee                                  STRING              
+INSTRUMENT_ID                            1                                        STRING              
+PRICE                                    76.0                                     DOUBLE              
+QUANTITY                                 99                                       INT                 
+SYMBOL                                   EUR                                      STRING              
+TRADE_DATE                                                                        DATE                
+TRADE_ID                                 0350e01b-7064-4c60-8bcc-6084b6bee342T... STRING              
+TRADE_STATUS                             NEW                                      ENUM[NEW ALLOCATED CANCELLED]
+```
+### Next
+
+You can alo use the `next` command to select the next record in the sequence. Here is an example:
+
+```javascript
+DbMon:TRADE>next TRADE_BY_ID
+DbMon:TRADE>show
+==================================
+TRADE
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                2023-08-15 12:09:10.992(n:0,s:103)       NANO_TIMESTAMP      
+COUNTERPARTY_ID                          3                                        STRING              
+DIRECTION                                BUY                                      ENUM[BUY SELL]      
+ENTERED_BY                               JaneDee                                  STRING              
+INSTRUMENT_ID                            1                                        STRING              
+PRICE                                    76.0                                     DOUBLE              
+QUANTITY                                 99                                       INT                 
+SYMBOL                                   EUR                                      STRING              
+TRADE_DATE                                                                        DATE                
+TRADE_ID                                 a4ce9a4c-21e1-416c-ae48-401eeef3f3b9T... STRING              
+TRADE_STATUS                             NEW                                      ENUM[NEW ALLOCATED CANCELLED]
+```
 ### Displaying a record - Set
 
 To display a particular record from a table, use the [`set`](#dbmon-commands) command to populate an index field with the value you are searching for. Then use the [`find`](#dbmon-commands) command along with the appropriate index name.
@@ -312,7 +480,7 @@ Field Name                Value                                     Type
 Total Results:  3
 ```
 
-For multiple criteria, use || for logical OR and && for logical AND. For example, if you want to [`search`](#dbmon-commands) for any `BROKER` where the `COUNTRY_CODE` is USA or IRL:
+To string criteria together, use || for logical OR and && for logical AND. For example, if you want to [`search`](#dbmon-commands) for any `BROKER` where the `COUNTRY_CODE` is USA or IRL:
 
 ```javascript
 DbMon:BROKER>search COUNTRY_CODE=='IRL'||COUNTRY_CODE=='USA'
@@ -357,7 +525,7 @@ Total Results:  3
 
 ## Datetime or Date
 
-When setting a DATE or DATETIME, the format must be specified as follows:
+When setting a DATE or DATETIME, the format must be specified as follow:
 
 - DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS Z"
 - DATE_FORMAT = "yyyy-MM-dd"
@@ -371,7 +539,6 @@ Accepted Datetime formats:
 
 Accepted Date formats:
 - yyyyMMdd
-- yyyy-MM-dd
 
 #### Using search command
 
@@ -387,9 +554,6 @@ DbMon:BROKER>search MODIFIED_DATE>"20221008-14:20" && COUNTRY_CODE=='IRL'
 
 // if MODIFIED_DATE is 2022-10-08 in database 
 DbMon:BROKER>search MODIFIED_DATE=="20221008" || COUNTRY_CODE=='IRL'
-
-// if MODIFIED_DATE is 2022-10-08 in database 
-DbMon:BROKER>search MODIFIED_DATE=="2022-10-08"
 ```
 
 #### Using distinct command
@@ -406,10 +570,8 @@ DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE<"20221008-14:20" || IS_ACTI
 
 // if MODIFIED_DATE is 2022-10-08 in database 
 DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="20221008"
-
-// if MODIFIED_DATE is 2022-10-08 in database 
-DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="2022-10-08"
 ```
+
 
 ## Counting records
 
