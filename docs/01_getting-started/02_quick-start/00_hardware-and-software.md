@@ -33,9 +33,10 @@ import MinimunRequirement from '/snippet/_minimun_requirement.md'
 
 Since version 11.3.0 of the foundation-UI, we have set our libraries public. To verify the infos about this package, type `npm info @genesislcap/foundation-ui`. If everything is ok, you should see a response like this:
 
-```shell
-@genesislcap/foundation-ui@0.0.26 | UNLICENSED | deps: 23 | versions: 111
-Genesis Foundation UI
+```terminal
+@genesislcap/genx@xx.xx.x| SEE LICENSE IN license.txt | deps: XX | versions: XXX
+Genx CLI
+https://github.com/genesislcap/foundation-ui#readme
 ```
 :::caution trouble running npm?
 Please make sure:
@@ -47,28 +48,11 @@ npm config set https-proxy https://proxy_host:port
 ```
 :::
 
-
 Install GenX CLI; this is a Genesis tool that enables you to seed projects.
 
-```shell
-npx @genesislcap/genx@latest
+```terminal
+npx -y @genesislcap/genx@latest init myApp
 ```
-
-You should see this message:
-```shell
-
-
-   ______                     _     _  __
-  / _______  ____  ___  _____(_____| |/ /
- / / __/ _ \/ __ \/ _ \/ ___/ / ___|   /
-/ /_/ /  __/ / / /  __(__  / (__  /   |
-\____/\___/_/ /_/\___/____/_/____/_/|_|
-
-
-  GenesisX CLI VX.X.X
-  ```
-
-Feel free to abort this program for now - we'll use genx later on.
 
 <!-- NO EDIT (NEXT 4 LINES) -->
 import InsecureFlag from '../../_includes/_cli-insecure-flag.md'

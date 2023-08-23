@@ -34,6 +34,9 @@ At this point, the seed application is created and the `genx` dependencies are i
  › Install dependencies with npm run bootstrap
  › Start development server with npm run dev
 ```
+
+For more information about al `genx` available commands, check our [Genx CLI page](../../../operations/commands/genx-CLI/).
+
 ## Opening IntelliJ
 Now open your application in Intellij. Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders: **alpha**, **client**, **genesisproduct-alpha**.
 

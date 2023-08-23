@@ -249,6 +249,7 @@ This command can be used with the following parameters:
 | `-e` or `--env` | `<VAR1, VAR2>` | Set environment variables | `genx build --env VAR1=VAL1,VAR2=VAL2`|
 |`-h` or `--help` | | display information about the command| `genx serve --help` |
 
+
 ## Dev
 
 The `dev` command starts an incremental development build server. It will watch for source file changes on disk and refresh the application.
@@ -267,16 +268,23 @@ This command can be used with the following parameters:
 
 The `run` command provides a shortcut for executing NPM tasks in a monorepos managed by [Nx](https://nx.dev/) / [Lerna](https://lerna.js.org/)
 
-
 ``` terminal
 npx -y @genesislcap/genx@latest run <task>
 ```
 
-or locally
+or locally:
 
 ``` javascript
 genx run <task>
 ```
+
+for example: 
+```javascript
+"scripts": {
+  "dev:app1": "genx run dev app1-name"
+}
+```
+
 
 ## Serve
 
@@ -286,8 +294,10 @@ This command can be used with the following parameters:
 
 |Parameter | Argument  | Description | Local signature |
 |----------|-----------|-------------|-----------|
-|`-p` or `--port`| `<port>` |sets a port number | `genx serve --port 6060` |
+|`-p` or `--port`| `<port>` |sets a port number (override the **package.json** definition) | `genx serve --port 6060` |
 |`-h` or `--help` | | display information about the command| `genx serve --help` |
+
+If there is no `-p` defined, then it will be used the port defined in the **package.json**.
 
 ## Test
 
@@ -304,7 +314,7 @@ This command can be used with the following parameters:
 | `-i` or `--interactive` | |Run e2e tests in interactive UI mode| `genx test --interactive`|
 | `-b` or `--browser` | |Execute unit test in a browser. Defaults to Node.js | `genx test --browser`|
 | `-e` or `--env` | `<VAR1, VAR2>` | Set environment variables | `genx test --env VAR1=VAL1,VAR2=VAL2`|
-| `-h` or `--help` | | `genx test --help` |
+| `-h` or `--help` | | | `genx test --help` |
 
 ## Lint
 
@@ -317,7 +327,7 @@ This command can be used with the following parameters:
 |`-l` or `--linter`| `<linter>` | eslint / stylelint / all (default) | `genx lint -l <linter>`|
 | `-f` or `--fix` | | Fix issues | `genx lint --fix`|
 | `-p` or `--profile`| | Output profiling information | `genx lint --profile` |
-| `-b` or `--builder` | `<builder` | | |
+|`-b` or `--builder`|`<builder>` | Override default builder| `genx lint --builder <builder>`|
 | `-h` or `--help` | | | `genx lint -h`|
 
 ## Upgrade
@@ -330,4 +340,4 @@ This command can be used with the following parameters:
 |----------|-----------|-------------|-----------|
 |`-r` or `--respect-version-ranges`| | Update within package.json version ranges (defaults to latest otherwise) | `genx upgrade --respect-version-ranges` |
 | `-x` or `--exclude` | `<list>` | Comma-separated list of packages to exclude | `genx upgrade --exclude tslib` |
-| `-h` or `--help` | |
+|`-h` or `--help` | | display information about the command| `genx upgrade --help` |
