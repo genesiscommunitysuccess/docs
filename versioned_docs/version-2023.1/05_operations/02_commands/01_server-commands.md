@@ -57,7 +57,7 @@ DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
 
 The command will ask you to confirm the removal of each table.
 
-## DumpIt script
+## DumpIt 
 
 To copy data from a Genesis database, use the `DumpIt` command.
 
@@ -104,7 +104,7 @@ This copies all tables in the system, creating one .csv file for each table in t
 You can run `DumpIt` without any arguments to enter interactive mode.
 .
 
-## genesisInstall script
+## genesisInstall
 
 This script validates all system and product configuration, checking for things such as field duplication.
 
@@ -336,7 +336,7 @@ The `killProcess`command can take the following arguments:
 | -w WAIT                      | --wait WAIT                                   | No        | specifies   how many seconds to wait before forcing the kill                                                                                                                                     | No                |
 | -c                           | --cluster                                     | No        | kills   the process on every node in the cluster                                                                                                                                                 | No                |
 
-## killServer script
+## killServer
 
 This command reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt for confirmation (`Are you sure you want to kill server? (y/n):`), unless you specify `--force`.
 
@@ -350,7 +350,7 @@ The `killServer`command can take the following arguments:
 |                              | --all                                         | No        | kills all processes, including   GENESIS_CLUSTER                                                                                                                                                                                     | No                |
 | -c                           | --cluster                                     | No        | kills the server on all the nodes in the cluster                                                                                                                                                                                   | No                |    
 
-## LogLevel script
+## LogLevel 
 
 To dynamically change the logging levels on any Genesis process, use the LogLevel command.
 
@@ -401,7 +401,7 @@ It is potentially dangerous to switch the `DictionarySource` property.
 If you run `remap` (which modifies the dictionary) after `MigrateDictionary` and before switching the `DictionarySource` property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
 :::
 
-## mon script
+## mon 
 
 This script shows the status of the overall system, so you can see if the server is up or not.
 
@@ -663,7 +663,7 @@ When you run `remap`, the database is automatically locked to ensure that no oth
 
 If the database crashes during a `remap` and the database remains locked (or if the database is locked for any other reason), run `remap --force --commit` to unlock the database.
 
-## RenameFields script
+## RenameFields 
 This script is used to rename a field name in a database without changing the dictionary or config files.
 
 ### Syntax
@@ -711,7 +711,7 @@ This would result in an error as PRICE is of type DOUBLE while FIRST_NAME is of 
 
 If you want to commit the changes to the database, you must use the **--commit** argument.
 
-## SendIt script
+## SendIt 
 
 To send data into the database, use the `SendIt` command.
 
@@ -806,7 +806,7 @@ The `SetSequence`command can take the following arguments:
 | -s       | --sequence `<arg>` | No        |  Two-character ID for the sequence (if setting individual value)                                       | No                |
 | -v       | --value `<arg>`    | No        |  New integer value to be set (if setting individual value)                                             | No                |
 
-## startProcess script
+## startProcess 
 
 This script starts a Genesis process. It takes a single positional argument:
 
