@@ -10,9 +10,14 @@ tags:
   - configuring runtime
 ---
 
-Gpal custom endpoints require no additional configuration, and will be picked up automatically by the Genesis Router
-once they are found in a /script folder. If a script requires extra jars on the classpath, these can be added to 
-using a `ScriptModules` annotation on the script file. For example adding this to the top of your file:
+Gpal custom endpoints require no configuration beyond the `web-handler.kts` file. No modifications to the 
+`processes.xml` file are required. Files will be picked up automatically by the Genesis Router from /script folders.
+
+## Script modules
+
+If your custom endpoint requires additional dependencies; then these can the `ScriptModules` annotation. 
+
+For example to add a dependency on `my-module`, add this to the top of your file:
 
 ```kotlin
 @file:ScriptModules("my-module")
