@@ -53,23 +53,6 @@ Install GenX CLI; this is a Genesis tool that enables you to seed projects.
 npx @genesislcap/genx@latest
 ```
 
-You should see this message:
-
-```shell
-
-
-   ______                     _     _  __
-  / _______  ____  ___  _____(_____| |/ /
- / / __/ _ \/ __ \/ _ \/ ___/ / ___|   /
-/ /_/ /  __/ / / /  __(__  / (__  /   |
-\____/\___/_/ /_/\___/____/_/____/_/|_|
-
-
-  GenesisX CLI VX.X.X
-  ```
-
-Feel free to abort this program for now - we'll use genx later on.
-
 <!-- NO EDIT (NEXT 4 LINES) -->
 import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
 

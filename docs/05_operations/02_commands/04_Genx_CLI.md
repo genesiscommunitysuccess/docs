@@ -116,7 +116,7 @@ This command can be used with the following parameters:
 |`-l` or `--log-level` |**info** or **verbose** | info (default) or verbose |
 |`-h` or `--help` | | display help information |
 
-### --seed
+<h3>--seed</h3>
 
 To use the `-s` or `--seed` parameter to specify the local seed directory, a remote seed or one of the pre-defined seeds provided by genesis.
 
@@ -140,13 +140,13 @@ You can use a local seed, to do that follow the example below:
 npx -y @genesislcap/genx@latest init myApp -s ./path/to/local-seed
 ```
 
-Or you can use a custom remote sed for your app
+Or you can use a custom remote seed for your app
 
 ```terminal
-npx -y @genesislcap/genx@latest init myApp -s ./path/to/local-seed
+npx -y @genesislcap/genx@latest init myApp -s githubuser/repo
 ```
 
-### --ref
+<h3>--ref</h3>
 
 Use the `--ref` parameter to specify the **branch**, **tag** or **commit** from a remote location, in case you do not want to use the main one.
 
@@ -156,7 +156,7 @@ Here is an example of creating a new project named **myApp** based on positions-
 npx -y @genesislcap/genx@latest init myApp -s positions-app-seed --ref develop
 ```
 
-### --skip-optional-prompts
+<h3> --skip-optional-prompts </h3>
 
 Use the `-x` or `--skip-optional-prompts` parameter to skip all the optional questions when creating a new project.
 
@@ -173,10 +173,10 @@ npx -y @genesislcap/genx@latest init myApp --skip-optional-prompts
 ```
 
 :::caution
-Creating a project using `-x` will create only sing the default configurations.
+Creating a project using `-x` will create only using the default configurations.
 :::
 
-### --insecure
+<h3> --insecure </h3>
 
 Use the `--insecure` parameter to skip all the SSL certification validation when creating a new project.
 
@@ -186,7 +186,7 @@ Here is an example of creating a new project named **myApp** skipping the SSL ce
 npx -y @genesislcap/genx@latest init myApp --insecure
 ```
 
-### --remote
+<h3> --remote </h3>
 
 Use the `--remote` parameter to use a remote-only seed. It will ignore any local seed.
 
@@ -196,7 +196,7 @@ Here is an example of creating a new project named **myApp** with a seed called 
 npx -y @genesislcap/genx@latest init myApp -s blank-app-seed --remote
 ```
 
-### --log-level
+<h3> --log-level </h3>
 
 Use the `log-level` to choose between **info** (default) or **verbose** log level.
 
@@ -208,239 +208,136 @@ npx -y @genesislcap/genx@latest init myApp --log-level verbose
 
 ## Analyze
 
-The `analyze` command ...
+The `analyze` command helps to optimise size of production bundle - it identifies the modules contributing to the overall filesize the most.
 
 This command can be used with the following parameters:
 
-|Parameter | Argument  | Description |
-|----------|-----------|-------------|
-|`-b` or `--builder`|`<builder>` | Override default builder |
-| `-n` or `--no-open`| Don't launch browser window (default: true) |
-|`-e` or `--env` | `<ENV_VAR1=VAL1,ENV_VAR2=VAL2,ENV3>` | Set environment variables|
-|`-h` or `--help` | | |
-
-### --builder
-
-Use the `-b` or `--builder` when you want to override the default builder.
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --no-open
-
-Use the `-n` or `--no-open` when you don't want to launch a browser window.
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --env
-
-Use `e` or `--env` if you need to set environment variables.
-
-Here is an example of... <!--Needs to provide some example-->
+|Parameter | Argument  | Description | Local signature |
+|----------|-----------|-------------|-----------|
+|`-b` or `--builder`|`<builder>` | Override default builder| `genx analyze --builder <builder>`|
+| `-n` or `--no-open`| |Don't launch browser window (default: true) | `genx analyze --no-open`|
+| `-e` or `--env` | `<VAR1, VAR2>` | Set environment variables | `genx build --env VAR1=VAL1,VAR2=VAL2`|
+|`-h` or `--help` | | display information about the command| `genx serve --help` |
 
 ## Clean
 
-The `clean` command will delete the provided path. The given path is relative to the directory the command is ran.
+The `clean` command clears out the dist folder as well as temporary TypeScript compilation files. You can customise the exact files and folders to delete.
 
-This command is more useful to be used locally in your project. To do that, simply add this comment to the list of scripts in your **package.json**
+This command is more useful to be used locally in your project. To do that, simply add this scripts to the list of scripts in your **package.json**
 
-```javascript
-"clean": "genx clean",
+```javascript title="package.json"
+"clean": "genx clean <Path>",
 ```
 
-After that, you can run `npm run clean` to clear the dist folder (containing previously built artifact and temporary compilation files)
+Below is an example of creating a `clean` script to clear the dist folder (containing previously built artifact) and the node_modules folder. 
 
-The only additional option accepted by this command is the `-h` which provides some details about the `clean` command.
+```javascript title="Client/package.json"
+"clean": "genx clean dist node_modules"
+```
+
+Now you can run `npm run clear` in the **client** folder. 
 
 ## Build
 
-The `build` command ...
+The `build` command produces production bundle for deployment.
 
 This command can be used with the following parameters:
 
-|Parameter | Argument  | Description |
-|----------|-----------|-------------|
-|`-b` or `--builder`|`<builder>` | Override default builder |
-|`-e` or `--env` | `<ENV_VAR1=VAL1,ENV_VAR2=VAL2,ENV3>` | Set environment variables |
-|`-h` or `--help` | | |
+|Parameter | Argument  | Description | Local signature |
+|----------|-----------|-------------|-----------|
+|`-b` or `--builder`|`<builder>` | Override default builder| `genx build --builder <builder>`|
+| `-e` or `--env` | `<VAR1, VAR2>` | Set environment variables | `genx build --env VAR1=VAL1,VAR2=VAL2`|
+|`-h` or `--help` | | display information about the command| `genx serve --help` |
 
-### --builder
-
-Use the `-b` or `--builder` when you want to override the default builder.
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --env
-
-Use `e` or `--env` if you need to set environment variables.
-
-Here is an example of... <!--Needs to provide some example-->
 
 ## Dev
 
-The `dev` command ...
+The `dev` command starts an incremental development build server. It will watch for source file changes on disk and refresh the application.
 
 This command can be used with the following parameters:
 
-|Parameter | Argument  | Description |
-|----------|-----------|-------------|
-|`-b` or `--builder`|`<builder>` | Override default builder|
-| `--https` | | Use HTTPS|
-| `-n` or `--no-open`| | Don't launch browser window (default: true) |
-|`-e` or `--env` | | Set environment variables |
-|`-h` or `--help` | | |
-
-### --builder
-
-Use the `-b` or `--builder` when you want to override the default builder.
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --no-open
-
-Use the `-n` or `--no-open` when you don't want to launch a browser window.
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --env
-
-Use `e` or `--env` if you need to set environment variables.
-
-Here is an example of... <!--Needs to provide some example-->
+|Parameter | Argument  | Description | Local signature |
+|----------|-----------|-------------|-----------|
+|`-b` or `--builder`|`<builder>` | Override default builder| `genx dev --builder <builder>`|
+| `--https` | | Use HTTPS| `genx dev --https` |
+| `-n` or `--no-open`| | Don't launch browser window (default: true) | `genx dev --no-open` |
+| `-e` or `--env` | `<VAR1, VAR2>` | Set environment variables | `genx dev --env VAR1=VAL1,VAR2=VAL2`|
+|`-h` or `--help` | | display information about the command| `genx serve --help` |
 
 ## Run
 
-The `run` command executes a specific task. This is used for.... <!--Explain why is this used for-->
+The `run` command provides a shortcut for executing NPM tasks in a monorepos managed by [Nx](https://nx.dev/) / [Lerna](https://lerna.js.org/)
 
-Here is an example of... <!--Needs to provide some example-->
+``` terminal
+npx -y @genesislcap/genx@latest run <task>
+```
+
+or locally:
+
+``` javascript
+genx run <task>
+```
+
+for example: 
+```javascript
+"scripts": {
+  "dev:app1": "genx run dev app1-name"
+}
+```
+
 
 ## Serve
 
-The `serve` command ...
+The `serve` command allows to preview production bundle locally. It starts a static HTTP server in `dist` folder.
 
 This command can be used with the following parameters:
 
-|Parameter | Argument  | Description | Structure |
+|Parameter | Argument  | Description | Local signature |
 |----------|-----------|-------------|-----------|
-|`-p` or `--port`| `<port>` | | sets a port number <!--what is this port number for?--> |
-|`-h` or `--help` | | |
+|`-p` or `--port`| `<port>` |sets a port number (override the **package.json** definition) | `genx serve --port 6060` |
+|`-h` or `--help` | | display information about the command| `genx serve --help` |
 
-### --port
-
-Use `--port` or `-p` to....
-
-Here is an example of... <!--Needs to provide some example-->
+If there is no `-p` defined, then it will be used the port defined in the **package.json**.
 
 ## Test
 
-The `test` command ...
+The `test` command executes unit and end-to-end tests. Node.js and browsers (Chrome, Firefox etc.) are supported as execution targets. Test coverage reports can be produced in a number of formats such as LCOV.
 
 This command can be used with the following parameters:
 
-|Parameter | Argument  | Description |
-|----------|-----------|-------------|
-|`-c` or `--coverage`| | |
-| `-w` or `--watch` | | |
-| `-d` or `--debug`| | |
-| `--e2e` | | |
-| `-i` or `--interactive` | | |
-| `-b` or `--browser` | | |
-| `-e` or `--env` | | |
-| `-h` or `--help` | | |
-
-### --coverage
-
-Use `-c` or `--coverage` to ...
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --watch
-
-Use `--w` or `--watch` to....
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --debug
-
-Use `-d` or `--debug` to....
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --interactive
-
-Use `-i` or `--interactive` to....
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --browser
-
-Use `-b` or `--browser` to....
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --env
-
-Use `-e` or `--env` if you need to set environment variables.
-
-Here is an example of... <!--Needs to provide some example-->
+|Parameter | Argument  | Description | Local Signature|
+|----------|-----------|-------------|-----------|
+|`-c` or `--coverage`| | Produce coverage report | `genx test --coverage` |
+| `-w` or `--watch` | |Watch files for changes | `genx test --watch` |
+| `-d` or `--debug`| |Debug test execution | `genx test --debug`|
+| `--e2e` | |Run e2e tests. Defaults to unit test | `genx test --e2e`|
+| `-i` or `--interactive` | |Run e2e tests in interactive UI mode| `genx test --interactive`|
+| `-b` or `--browser` | |Execute unit test in a browser. Defaults to Node.js | `genx test --browser`|
+| `-e` or `--env` | `<VAR1, VAR2>` | Set environment variables | `genx test --env VAR1=VAL1,VAR2=VAL2`|
+| `-h` or `--help` | | | `genx test --help` |
 
 ## Lint
 
-The `lint` command ...
+The `lint` command verifies compliance with ESLint/Prettier/Stylelint rules and formatting conventions. Default configurations are provided, which can be tailored for a specific project.
 
 This command can be used with the following parameters:
 
-|Parameter | Argument  | Description | Structure |
+|Parameter | Argument  | Description | Local Signature|
 |----------|-----------|-------------|-----------|
-|`-l` or `--linter`| `<linter>` | | |
-| `-f` or `--fix` | | | |
-| `-p` or `--profile`| | |
-| `-b` or `--builder` | `<builder` | |
-| `-h` or `--help` | | |
-
-### --linter
-
-Use `-l` or `--linter` if you need to set environment variables.
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --fix
-
-Use `-f` or `--fix` if you need to set environment variables.
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --profile
-
-Use `-p` or `--profile` if you need to set environment variables.
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --builder
-
-Use the `-b` or `--builder` when you want to override the default builder.
-
-Here is an example of... <!--Needs to provide some example-->
+|`-l` or `--linter`| `<linter>` | eslint / stylelint / all (default) | `genx lint -l <linter>`|
+| `-f` or `--fix` | | Fix issues | `genx lint --fix`|
+| `-p` or `--profile`| | Output profiling information | `genx lint --profile` |
+|`-b` or `--builder`|`<builder>` | Override default builder| `genx lint --builder <builder>`|
+| `-h` or `--help` | | | `genx lint -h`|
 
 ## Upgrade
 
-The `upgrade` command to upgrade the dependencies versions of your app to the latest version available for each dependency, regardless the range defined in the **package.json**
+The `upgrade` command updates Foundation UI NPM module dependency versions regardless the range defined in your **package.json**. It can be plugged in into CI jobs for automated upgrade workflows.
 
 This command can be used with the following parameters:
 
-|Parameter | Argument  | Description | Structure |
+|Parameter | Argument  | Description | Local ignature |
 |----------|-----------|-------------|-----------|
-|`-r` or `--respect-version-ranges`| | Update within package.json version ranges (defaults to latest otherwise) | |
-| `-x` or `--exclude` | `<list>` | Comma-separated list of packages to exclude | |
-| `-h` or `--help` | | |
-
-### --respect-version-ranges
-
-Use `-r` or `--respect-version-ranges` to update your application's dependencies with the ranges defined in your **package.json**
-
-Here is an example of... <!--Needs to provide some example-->
-
-### --exclude
-
-Use `-x` or `--exclude` to exclude a dependency from the update process. You can provide a list of packages that will not be upgraded.
-
-Here is an example of... <!--Needs to provide some example-->
+|`-r` or `--respect-version-ranges`| | Update within package.json version ranges (defaults to latest otherwise) | `genx upgrade --respect-version-ranges` |
+| `-x` or `--exclude` | `<list>` | Comma-separated list of packages to exclude | `genx upgrade --exclude tslib` |
+|`-h` or `--help` | | display information about the command| `genx upgrade --help` |

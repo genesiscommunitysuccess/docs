@@ -56,78 +56,45 @@ You should ignore any other seed version listings.
 Open a terminal on your machine and launch the CLI tool using this:
 
 ```shell title="Terminal"
-npx @genesislcap/genx@latest
+npx -y @genesislcap/genx@latest init myApp
 ```
 
 This command presents you with a sequence of choices for creating and configuring applications.
 
 ## Using genx
 
-First, you'll be prompted to supply your Genesis artifactory credentials.
-
-Next, you just need to respond to the questions, which depend on the task you initially select. For example, if you want to create a new application:
+First, you'll be prompted the following messages:
 
 ```shell title="Terminal"
-? Please select an option: create application - Generates a local application.
+ ℹ Downloading genesiscommunitysuccess seed blank-app-seed (Git ref main) to myApp directory...
+✔ Seed downloaded in 1554ms
+ℹ Installing seed NPM dependencies...
+✔ Installed
+
+  Thanks for choosing this seed:
+  Name: @genesiscommunitysuccess/blank-app-seed
+  Description: Genesis Blank App Seed
+  Version: 1.0.0
+  License: Apache-2.0
+
+  You can override the default Genesis server URL used during local developent.
 ```
 
-Enter the local directory where you want to create the app (where relevant, the default for these options is the letter displayed in upper case; this will be applied if nothing is entered):
-
-```shell title="Terminal"
-? Create a app in current directory (Y/n)
-```
-
-... and then give it an appropriate name (e.g. **alpha**):
-
-```shell title="Terminal"
-? App name alpha
-```
-
-Next, select the Seed application you wish to base your project on:
-
-```shell title="Terminal"
-? App seed
-
-> Genesis Quick Start Application
-```
-
-Choose whether to overwrite existing files. Note that the default is **No**.
-
-```shell title="Terminal"
-? Overwrite existing files (y/N)
-```
-
-This will start the download of dependencies.
-
-### Front-end prompts
-
-Once that has been completed, you will be prompted for configuring the front-end part of the project.
-
-The first prompt is the package [scope](https://docs.npmjs.com/cli/v8/using-npm/scope). The default is **genesislcap**.
-
-```shell title="Terminal"
-? Package scope (without the @) genesislcap
-```
-
-The next question is about the package name. You can use **alpha**.
-
-```shell title="Terminal"
-? Package name alpha
-```
-
-The next is whether you want to create a design system. The default is **Yes**.
-
-```shell title="Terminal"
-? Create design system (Yes/no)
-```
-
-Finally, whether you want to set an API host. The default is **Yes**.
-
+Next, you will be asked to set an API host. The default is **Yes**.
 ```shell title="Terminal"
 ? Set API Host (Yes/no)
 ```
 
-### Back-end prompts
+If you choose `Yes`, then you need to provide an API Host. Default is **(ws://localhost/gwf/)**:
+```shell title="Terminal"
+? API Host (with WebSocket prefix and suffix if any)
+```
+
+After that it will ask if there is any SSO connection. Default is **(No)**:
+
+```shell title="Terminal"
+? Init SSO connection before loading application
+```
 
 The next prompts concern the back-end part of the application.
 
@@ -154,13 +121,6 @@ Here's a quick overview of the generated application's folder structure:
 Above, we have expanded the `client` folder. This contains all the UI-related projects.
 
 The `server` folder follows the same structure. This contains all the server-side projects.
-
-:::note
-The **Quick Start Application** seed will generate:
-
-- the **web** project structure
-- the **jvm** project structure
-:::
 
 ## Workspaces
 
@@ -191,20 +151,6 @@ After you have created a workspace, your workspace filesystem should look someth
 
 This is a monorepo containing multiple packages. Each package can be released independently.
 
-## CLI command-language syntax
+## Genx commands
 
-To learn about available CLI commands run `npx @genesislcap/genx@latest -h`.
-
-The command syntax is:
-
-`npx @genesislcap/genx@latest` _commandNameOrAlias requiredArg [optionalArg]_ [options]
-
-## Boolean options
-
-Boolean options have two forms:
-
-- `--this-option` sets the flag to `true`
-
-- `--no-this-option` sets it to `false`
-
-If neither option is supplied, the flag remains in its default state.
+For more information about the Genx commands, please checkout our [Genx CLI commands page](../../../operations/commands/genx-CLI/).
