@@ -36,18 +36,20 @@ The commands available with DbMon are listed below.
 | last                     | `<key_name>`                                | gets the last record by key                     |
 | listAll                  | `<key_name> <num_key_fields> <max_records>` |                                                 |
 | next                     | `<key_name>`                                | gets the next record by key                     |
-| qsearch                  | `<condition> [-l <limit>]`                  ||
-| qshow                    ||||
-| search                   | `<condition> [-l <limit>]`                  ||
-| sequenceNumber           | `<sequence_name>`                           ||
+| qsearch                  | `<condition> [-l <limit>]`                  |                                                 |
+| qshow                    |                                             |                                                 |
+| search                   | `<condition> [-l <limit>]`                  |                                                 |
+| sequenceNumber           | `<sequence_name>`                           |                                                 |
 | set                      | `<field_name> <field_value>`                | sets a field                                    |
-| show                     |||
-| showKeys                 |||
-| showTables               |||
-| table                    | `<table_name>`                              ||
+| show                     |                                             |                                                 |
+| showKeys                 |                                             |                                                 |
+| showTables               |                                             |                                                 |
+| showViews                |                                             |                                                 |
+| table                    | `<table_name>`                              |                                                 |
 | unset                    |                                             | sets a field to `null`                          |
 | update                   | `<key_name>`                                | updates the current row by key                  |
 | updateWhere              | `<condition> <assignments>`                 |                                                 |
+| view                     | `<view_name>`                               |                                                 |
 | writeMode                |                                             | enables write mode                              |
 
 
@@ -75,11 +77,11 @@ To end a DbMon session, just type [`quit`](#dbmon-commands) at the DbMon prompt.
 
 ## Working with tables
 
-Most of the time, you'll be using DbMon to examine tables in one way or another. 
+Most of the time, you'll be using DbMon to examine tables or views in one way or another. 
 
-### Show tables
+### Show tables / Show views
 
-To see a list of available tables, use the [`showtables`](#dbmon-commands) command. This displays an alphabetical list of available tables, for example:
+To see a list of available tables or views, use either the [`showTables`](#dbmon-commands) command or the [`showViews`](#dbmon-commands). This displays an alphabetical list of available entities, for example:
 
 ```javascript
 ==================================
@@ -102,18 +104,23 @@ BROKER
 <<List Snipped For Primer>>
 ```
 
-### Table
+### Table / View
 
-To look at the data held in a specific table, use the [`table`](#dbmon-commands) command followed by the table name: for example `table BROKER`. Once you have selected a table, the `DbMon` prompt changes to show the table name.
+To look at the data held in a specific table or view, use the [`table`](#dbmon-commands) or [`view`](#dbmon-commands)command followed by the database entity name: for example `table BROKER` or `view TRADE`. Once you have selected an entity, the `DbMon` prompt changes to show its name.
 
 ```javascript
 DbMon>table BROKER
 DbMon:BROKER>
 ```
 
+```javascript
+DbMon>view TRADE
+DbMon:TRADE>
+```
+
 ### Show
 
-To see the columns available in the selected table use the [`show`](#dbmon-commands) command. This displays the current record in the selected table. If no record has been selected, it displays an empty record (notice the value column below is not populated):
+To see the columns available in the selected table or view use the [`show`](#dbmon-commands) command. This displays the current record in the selected entity. If no record has been selected, it displays an empty record (notice the value column below is not populated):
 
 ```javascript
 ==================================
@@ -144,7 +151,7 @@ VIEW_CODE                                                           STRING
 
 If you are only interested in seeing selected columns, use the [`displayFields`](#dbmon-commands) command and list the names of the columns you are interested in (separated by spaces). 
 
-Any subsequent [`show`](#dbmon-commands) commands will only display those columns, rather than the all the columns in the table.
+Any subsequent [`show`](#dbmon-commands) commands will only display those columns, rather than the all the columns in the entity.
 
 
 ```javascript
@@ -167,42 +174,36 @@ To view all columns again, use the [`displayFields`](#dbmon-commands) command fo
 
 ### Count rows
 
-If you would like to know how many rows of data there are in a table, then use the [`count`](#dbmon-commands) command. Be aware that, for large tables, this could take some time to return:
+If you would like to know how many rows of data there are in a table or view, then use the [`count`](#dbmon-commands) command. Be aware that, for large entities, this could take some time to return:
 
 ```javascript
-DbMon:BROKER>count
-The table BROKER contains 114 records
+DbMon:USER_VIEW>count
+The entity USER_VIEW contains 23 records
 ```
 
-## Finding data in a table
+## Finding data in a table or view
 
 ### Find
 
-In DbMon, you can only see one record at a time. To display the record you want, you must first locate it using the [`find`](#dbmon-commands) command, which searches the table’s indexes for a given key value.  
+In DbMon, you can only see one record at a time. To display the record you want, you must first locate it using the [`find`](#dbmon-commands) command, which searches the entity’s indexes for a given key value.  
 
 ### Show keys (indexes)
 
-To see the indexes (or keys) on the selected table, use the [`showKeys`](#dbmon-commands) command. This displays a list of the index names and the fields you will need to supply to use the index:
+To see the indexes (or keys) on the selected entity, use the [`showKeys`](#dbmon-commands) command. This displays a list of the index names and the fields you will need to supply to use the index:
 
 ```javascript
 ==================================
-BROKER
+USER_VIEW
 ==================================
-Key Name                           Field Name                               Index Type
-=======================================================
-BROKER_BY_BROKER_EXTERNAL_ID       EXTERNAL_ID                              Secondary
-------------------------------------------------------------------------------------------
-BROKER_BY_ID                       BROKER_ID                                Primary
-------------------------------------------------------------------------------------------
-BROKER_BY_TIMESTAMP                TIMESTAMP                                Secondary
-------------------------------------------------------------------------------------------
-BROKER_BY_VIEW_CODE                VIEW_CODE                                Secondary
-	------------------------------------------------------------------------------------------ 
+Key Name                                 Field Name                               Index Type
+===========================================================================================
+USER_BY_NAME                             [USER_NAME]                              PRIMARY
+-------------------------------------------------------------------------------------------
 ```
 
 ### Displaying a record - Set
 
-To display a particular record from a table, use the [`set`](#dbmon-commands) command to populate an index field with the value you are searching for. Then use the [`find`](#dbmon-commands) command along with the appropriate index name.
+To display a particular record from an entity, use the [`set`](#dbmon-commands) command to populate an index field with the value you are searching for. Then use the [`find`](#dbmon-commands) command along with the appropriate index name.
 
 The example below looks for a broker that has a `VIEW_CODE` value of “WALSH”. We have searched for the Key named `BROKER_BY_VIEW_CODE` and to use that key we whave set the `VIEW_CODE` to the value `WALSH`.
 
@@ -237,7 +238,7 @@ VIEW_CODE                 WALSH                                     STRING
 
 If you then want to [`find`](#dbmon-commands) a record with a different `VIEW_CODE`, you need to go back to having an empty record so that you can [`set`](#dbmon-commands) the `VIEW_CODE` again and perform another [`find`](#dbmon-commands). 
 
-To do this, use the [`clear`](#dbmon-commands) command.This resets your view onto the table so that you can start again. 
+To do this, use the [`clear`](#dbmon-commands) command.This resets your view onto the entity so that you can start again. 
 
 :::note
 The [`clear`](#dbmon-commands) command does not have any effect on the data itself, just on your “window” into the database.
@@ -245,10 +246,10 @@ The [`clear`](#dbmon-commands) command does not have any effect on the data itse
 
 ### Search
 
-If you wish to look for a record (or a number of records) but your criterion does not match an index on the table, you can use the [`search`](#dbmon-commands) command.
+If you wish to look for a record (or a number of records) but your criterion does not match an index on the entity, you can use the [`search`](#dbmon-commands) command.
 
 :::warning
-For larger tables, this can be slow and risks causing latency to your application's users.
+For larger entities, this can be slow and risks causing latency to your application's users.
 :::
 
 For example, if you wanted to find all the records in the `BROKER` table where the `COUNTRY_CODE` was IRL, and there is no index that can be used (and there might be multiple results), the [`search`](#dbmon-commands) command would look like this:
@@ -488,10 +489,12 @@ set <field_name> <field_value>
 show
 showKeys
 showTables
+showViews
 table <table_name>
 unset
 update <key_name>
 updateWhere <condition> <assignments>
+view
 writeMode
 ```
 
