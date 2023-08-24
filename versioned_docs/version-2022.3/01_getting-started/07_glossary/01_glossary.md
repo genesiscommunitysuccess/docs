@@ -46,6 +46,8 @@ There is an [aeron wiki](https://github.com/real-logic/aeron/wiki) on github.
 Akka is a set of open-source libraries for designing scalable, resilient systems that span processor cores and networks.
 [Akka](https://akka.io/docs/) provides low-level code to deliver reliable behaviour, fault tolerance, and high performance.
 
+In the Genesis low-code platform, Akka is used to help manage the communication between clusters; specifically, this is for identifying members of the cluster, and for monitoring joiners and leavers.
+
 ## Amazon Elastic Compute Cloud
 
 Known as EC2.
