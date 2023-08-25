@@ -268,6 +268,15 @@ The Stop On First Failure strategy will log an error if it occurs and stop proce
 errorStrategy = StopOnFirstFailure()
 ```
 
+### All Or Nothing
+
+The All Or Nothing strategy will process all rows in a single transaction using the Genesis Entity DB API. If one row fails then none of the rows are committed.
+See [here](../../../02_database/05_database-interface/01_entitydb.md/#transactions) to check which databases support Entity DB transactions.
+
+```kotlin
+errorStrategy = AllOrNothing()
+```
+
 ## Map functions
 
 A map function is a step between the reading of a source event and the resulting sinking of this event. Data is read, one record at a time and is mapped to or from a Genesis Table Entity.
