@@ -12,7 +12,7 @@ This page relates to Server logging.
 
 ## Logging level
 
-The logging level can be modified in the processes xml file. See [here](https://learn.genesis.global/docs/server/configuring-runtime/processes/#logginglevel) for more details.
+The logging level can be modified in the processes xml file. See [here](../../../server/configuring-runtime/processes/#logginglevel) for more details.
 
 ## Logging context
 
