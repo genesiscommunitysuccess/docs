@@ -229,13 +229,13 @@ This command is more useful to be used locally in your project. To do that, simp
 "clean": "genx clean <Path>",
 ```
 
-Below is an example of creating a `clean` script to clear the dist folder (containing previously built artifact) and the node_modules folder. 
+Below is an example of creating a `clean` script to clear the dist folder (containing previously built artifact) and the node_modules folder.
 
 ```javascript title="Client/package.json"
 "clean": "genx clean dist node_modules"
 ```
 
-Now you can run `npm run clear` in the **client** folder. 
+Now you can run `npm run clear` in the **client** folder.
 
 ## Build
 
@@ -248,7 +248,6 @@ This command can be used with the following parameters:
 |`-b` or `--builder`|`<builder>` | Override default builder| `genx build --builder <builder>`|
 | `-e` or `--env` | `<VAR1, VAR2>` | Set environment variables | `genx build --env VAR1=VAL1,VAR2=VAL2`|
 |`-h` or `--help` | | display information about the command| `genx serve --help` |
-
 
 ## Dev
 
@@ -278,13 +277,13 @@ or locally:
 genx run <task>
 ```
 
-for example: 
+for example:
+
 ```javascript
 "scripts": {
   "dev:app1": "genx run dev app1-name"
 }
 ```
-
 
 ## Serve
 
