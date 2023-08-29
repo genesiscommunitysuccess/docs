@@ -33,9 +33,9 @@ This command presents you with a sequence of choices for creating and configurin
 
 ## Using GenX
 
-First, you'll be prompted to supply your Genesis artifactory credentials.
+First, you are prompted to supply your Genesis artifactory credentials.
 
-Next, follow the instructions according to the task you're wishing to carry out.
+From there, you just need to respond to the questions, which depend on the task you initially select.
 
 The following is the most typical example, creating a new application:
 

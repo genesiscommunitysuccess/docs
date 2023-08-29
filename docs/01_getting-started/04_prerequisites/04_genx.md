@@ -41,13 +41,11 @@ You should ignore any other seed version listings.
 
 
 **Some important points to note about seeds used by Genx:**
-- Any local directory/project can become a seed by adding a root level **.genx** directory (CLI API)
-- Developers may clone an existing seed to form a new one
-- Developers contribute to official seeds by cloning that seed repo
-- Select code owners manage merges
-- Available to all Genesis users
-
-
+- Any local directory/project can become a seed by adding a root level **.genx** directory (CLI API).
+- Developers can clone an existing seed to form a new one.
+- Developers contribute to official seeds by cloning that seed repo.
+- Select code owners manage merges.
+- these are available to all Genesis users.
 
 
 ## Prerequisites
@@ -63,13 +61,13 @@ Open a terminal on your machine and launch the CLI tool using this:
 npx @genesislcap/genx@latest
 ```
 
-This command presents you with a sequence of choices for creating and configuring applications.
+This command presents a sequence of choices for creating and configuring applications.
 
 ## Using genx
 
-First, you'll be prompted to supply your Genesis artifactory credentials.
+First, you are prompted to supply your Genesis artifactory credentials.
 
-Next, you just need to respond to the questions, which depend on the task you initially select. For example, if you want to create a new application:
+From there, you just need to respond to the questions, which depend on the task you initially select. For example, if you want to create a new application:
 
 ```shell title="Terminal"
 ? Please select an option: create application - Generates a local application.
@@ -136,7 +134,7 @@ The first prompt is for the [group id](https://maven.apache.org/guides/mini/guid
 ? Application Version 1.0.0-SNAPSHOT
 ```
 
-Press **Enter** and you should be greeted by a message saying that the application was created successfully.
+Press **Enter**. Unless there are any errors, you will be greeted by a message saying that the application was created successfully.
 
 Open the project in IntelliJ to start building. But note - it takes a few minutes to set up the folder structure, so be patient.
 
