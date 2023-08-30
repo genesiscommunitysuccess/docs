@@ -10,7 +10,6 @@ tags:
   - introduction
 ---
 
-[Introduction](../../../../server/integration/apache-camel/introduction/)  | [Basics](../../../../server/integration/apache-camel/basics) | [Advanced](../../../../server/integration/apache-camel/advanced) | [Examples](../../../../server/integration/apache-camel/examples) | [Configuring runtime](../../../../server/integration/apache-camel/configuring-runtime) | [Testing](../../../../server/integration/apache-camel/testing)
 
 The Genesis low-code platform supports the use of [Apache Camel](https://camel.apache.org/) in order to integrate with external systems, using its plethora of [components](https://camel.apache.org/components/next/index.html).
 
@@ -18,13 +17,13 @@ Genesis makes this easy to configure and set up, allowing new processors to be d
 
 You can use Apache Camel for:
 
-* Receiving data [from the local filesystem](../../../../getting-started/use-cases/loading-feed-data/overview/)
-* Transmitting data [to or from an external location](../../../../getting-started/use-cases/loading-feed-data/sftp-and-encryption/).
-* Consume data from email - [camel-mail](https://camel.apache.org/components/3.21.x/mail-component.html)
+* receiving data [from the local filesystem](../../../../getting-started/use-cases/loading-feed-data/overview/)
+* transmitting data [to or from an external location](../../../../getting-started/use-cases/loading-feed-data/sftp-and-encryption/)
+* consuming data from email - [camel-mail](https://camel.apache.org/components/3.21.x/mail-component.html)
 * RESTful API integration - [camel-http](https://camel.apache.org/components/3.21.x/http-component.html)
-* Database integration - [camel-sql](https://camel.apache.org/components/3.21.x/sql-component.html).
+* database integration - [camel-sql](https://camel.apache.org/components/3.21.x/sql-component.html)
 
-These are just few examples of what you can do with apache camel. To learn more about how to use apache camel, check out the [Apache Camel documentation](https://camel.apache.org/docs/).
+These are just few examples of what you can do with apache camel. To learn more, check out the [Apache Camel documentation](https://camel.apache.org/docs/).
 
 :::caution
 Note that Camel's power and flexibility come at the cost of some complexity and configuration overhead.

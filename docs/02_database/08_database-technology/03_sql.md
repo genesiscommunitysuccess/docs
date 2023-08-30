@@ -65,7 +65,7 @@ If you want PostgreSQL to work with different namespaces/schemas you need to add
 
 | Setting     | Description                                                                                                                                                                                                                           |
 |-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| DbMode      | This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY, which is default mode and it always stores the dictionary in a table called `dictionary` and a schema called `metadata`. |
+| DbMode      | This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY, which is the default mode, and it always stores the dictionary in a table called `dictionary` and a schema called `metadata`. |
 | DbNamespace | It refers to namespace/schema of database. This feature allows you to segregate data from different Genesis apps whilst using a single database.                                                                                      |
 
 ### MS SQL

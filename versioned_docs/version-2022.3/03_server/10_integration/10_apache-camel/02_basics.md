@@ -10,7 +10,7 @@ tags:
   - basics
 ---
 
-[Introduction](../../../../server/integration/apache-camel/introduction/)  | [Basics](../../../../server/integration/apache-camel/basics) | [Advanced](../../../../server/integration/apache-camel/advanced) | [Examples](../../../../server/integration/apache-camel/examples) | [Configuring runtime](../../../../server/integration/apache-camel/configuring-runtime) | [Testing](../../../../server/integration/apache-camel/testing)
+
 
 Apache Camel integrations are defined within your application's **jvm/{app-name}-script-config/{app-name}-camel.kts** file.
 
