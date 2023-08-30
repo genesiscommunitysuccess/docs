@@ -45,7 +45,7 @@ You should ignore any other seed version listings.
 - Developers can clone an existing seed to form a new one.
 - Developers contribute to official seeds by cloning that seed repo.
 - Select code owners manage merges.
-- these are available to all Genesis users.
+- The seeeds are available to all Genesis users.
 
 
 ## Prerequisites
