@@ -12,7 +12,7 @@ tags:
 
 ## Where to define
 
-You can configure data pipelines in a file called _pipeline-name_**-data-pipeline.kts**. This must be located in your application's configuration directory.
+You can configure a Data Pipeline in a file called _pipeline-name_**-data-pipeline.kts**. This must be located in your application's configuration directory.
 
 A pipeline configuration contains a collection of `sources`, one or many `map` functions and one or many `sink` functions.
 
@@ -27,10 +27,10 @@ val serviceDiscovery: ServiceDiscovery
 
 ## How to define a source
 
-Each data pipeline source contains the configuration specifying how to access the data and the associated mapping and sink functionality.
+Each Data Pipeline source contains the configuration specifying how to access the data and the associated mapping and sink functionality.
 
 :::note
-Remote databases do not work with Data Pipelines by default and will require some setup/configuration to enable Change Data Capture functionality. More details can be found in the pages on [Pipeline set-up](../../../../operations/pipeline-setup/).
+Remote databases do not work with Data Pipelines by default; they require some setup/configuration to enable Change Data Capture functionality. More details can be found in the pages on [Pipeline set-up](../../../../operations/pipeline-setup/).
 :::
 
 The currently supported sources are:
@@ -49,7 +49,7 @@ The currently supported sources are:
 
 ### External database
 
-All databases share common configuration. 
+All databases share a common configuration. 
 
 | Parameter     | Default value | Sample usage                            | Value type    | Description                               |
 |---------------|---------------|-----------------------------------------|---------------|-------------------------------------------|
@@ -90,10 +90,11 @@ pipelines {
 Genesis currently supports CSV, JSON and XML file sources.
 
 In addition to the configuration properties explained below, each file type also has an optional `onCompletion` block, which can be used to specify what to do after the file has been processed.
+
 The following are in scope:
-* `entityDb`: a read/write handle on the database.
-* `result`: contains information about the lines that were processed successfully and the lines that failed.
-* `context`: contains pipeline contextual information such as `fileName` and `movePath` (if a move path was specified in the `location`).
+* `entityDb`: a read/write handle on the database
+* `result`: contains information about the lines that were processed successfully and the lines that failed
+* `context`: contains pipeline contextual information such as `fileName` and `movePath` (if a move path was specified in the `location`)
 
 Below, you can see what options are available for each:
 
@@ -190,7 +191,7 @@ You can also pass arguments to the URI to change the behaviour of the source.
 
 ### S3
 
-To use S3 as a file source, you need access to an S3 like service such as AWS S3 or Dell ECS.
+To use S3 as a file source, you need access to an S3-like service, such as AWS S3 or Dell ECS.
 
 `aws2-s3://bucketNameOrArn[?options]`
 
@@ -212,7 +213,7 @@ To use S3 as a file source, you need access to an S3 like service such as AWS S3
 |---|---|---|
 | username | | Username to use for login |
 | password | | Password to use for login |
-| knownHostsUri | | Sets the known_hosts file (loaded from classpath by default), so that the SFTP endpoint can do host key verification |
+| knownHostsUri | | Set the known_hosts file (loaded from classpath by default), so that the SFTP endpoint can do host key verification |
 | privateKeyUri | | Set the private key file (loaded from classpath by default) so that the SFTP endpoint can do private key verification |
 | delete | true | Should delete the file after processing |
 | fileName | | Only listen for files with the exact name |
@@ -220,8 +221,9 @@ To use S3 as a file source, you need access to an S3 like service such as AWS S3
 
 ### Genesis Table
 
-The Genesis Table source will attach a listener to a chosen table in your application. 
-All inserts, modifications and deletions to the table will be processed. Previous records before pipeline startup, will not be replayed.
+The Genesis Table source attaches a listener to a chosen table in your application. 
+
+All inserts, modifications and deletions to the table will be processed. Records from before pipeline start-up will not be replayed.
 
 | Parameter | Sample usage | Value type | Description |
 |---|---|---|---|
@@ -250,11 +252,11 @@ When an error occurs, by default, the error strategy will set the state of the p
 errorStrategy = BestEffort(setProcessOnError = false)
 ```
 
-Currently, there are two types of error strategies available:
+The error strategies available are described below.
 
 ### Best Effort
 
-The Best Effort strategy will process all rows and log any errors that occur.
+The Best Effort strategy processes all rows and logs any errors that occur.
 
 ```kotlin
 errorStrategy = BestEffort()
@@ -262,7 +264,7 @@ errorStrategy = BestEffort()
 
 ### Stop On First Failure
 
-The Stop On First Failure strategy will log an error if it occurs and stop processing.
+The Stop On First Failure strategy logs an error if it occurs and stops processing.
 
 ```kotlin
 errorStrategy = StopOnFirstFailure()
@@ -270,8 +272,8 @@ errorStrategy = StopOnFirstFailure()
 
 ### All Or Nothing
 
-The All Or Nothing strategy will process all rows in a single transaction using the Genesis Entity DB API. If one row fails then none of the rows are committed.
-See [here](../../../02_database/05_database-interface/01_entitydb.md/#transactions) to check which databases support Entity DB transactions.
+The All Or Nothing strategy processes all rows in a single transaction using the Genesis Entity DB API. If one row fails, then none of the rows are committed.
+This is only relevant to [databases that support Entity DB transactions](../../../02_database/05_database-interface/01_entitydb.md/#transactions).
 
 ```kotlin
 errorStrategy = AllOrNothing()
@@ -281,8 +283,8 @@ errorStrategy = AllOrNothing()
 
 A map function is a step between the reading of a source event and the resulting sinking of this event. Data is read, one record at a time and is mapped to or from a Genesis Table Entity.
 
-For ingress, all data is mapped to a Table Entity before being sent to the sink operation.
-For egress, data is read from the database and mapped to an intermediary state that is used by the sink operation.
+- For ingress, all data is mapped to a Table Entity before being sent to the sink operation.
+- For egress, data is read from the database and mapped to an intermediary state that is used by the sink operation.
 
 ### Mapping by column name
 If the column name of the source row is the same as the field name, then there is no need for explicit mapping.
@@ -295,16 +297,16 @@ TRADE_SIDE {
 }
 ```
 
-If the type of the source row is different from the field type, then it will be converted using best effort.
+If the type of the source row is different from the field type, then it is converted using Best Effort.
 
 ### Transform function
 
 There are cases when the source value is not directly mapped to the destination value. For example:
 
-- Type conversion is complex
-- Data enrichment
-- Data obfuscation
-- Calculated value based on input
+- type conversion is complex
+- data enrichment
+- data obfuscation
+- calculated value based on input
 
 For such cases, each mapper can declare a `transform` function. Here are a few examples:
 
@@ -402,7 +404,7 @@ map("mapper-name", TABLE_OBJECT) {
 
 ### Conditional map functions
 
-There may be a time when you wish to only map based on some business logic. Within your `map` function, you can define a `where` block that is evaluated before any mapping operations are started.
+There may be a time when you wish to map based on some business logic. Within your `map` function, you can define a `where` block that is evaluated before any mapping operations are started.
 
 ```kotlin
 map("mapper-name", TABLE_OBJECT) {
@@ -420,14 +422,15 @@ You are provided with the following variables within a `where` block:
 | Parameter | Description |
 |---|---|
 | entityDb | object to access the underlying Genesis database |
-| input | The data object of the data pipeline trigger event |
-| operation | The operation of the data pipeline trigger event |
+| input | The data object of the Data Pipeline trigger event |
+| operation | The operation of the Data Pipeline trigger event |
 
-For ingress, the `input` is strongly typed and null safe. Like `transform` functions an accessor is required. For egress, the `input` takes the type of the database table entity you are mapping from.
+- For ingress, the `input` is strongly typed and null safe. Like `transform` functions, an accessor is required. 
+- For egress, the `input` takes the type of the database table entity you are mapping from.
 
 ### Declaring reusable map functions
 
-You can declare map and sink functions outside of the pipeline block and reuse these in your pipeline definition. These map functions look mostly the same but use a slightly different function name:
+You can declare map and sink functions outside the pipeline block and reuse these in your pipeline definition. These map functions look mostly the same but use a slightly different function name:
 
 ```kotlin
 val inboundMapper = buildInboundMap("mapper-name", TABLE_OBJECT) {
@@ -463,11 +466,11 @@ pipelines {
 
 ## Sink functions
 
-A `sink` function is where you will define the logic to do something with the data that has been picked up by your data pipelines and successfully mapped. This something usually involves storing the data into another data store (database, log, etc.) either directly or after applying some additional logic of your choosing. `transform` functions are also available for applying business logic inside your `map` functions as shown above.
+A `sink` function is where you define the logic to do something with the data that has been picked up by your data pipelines and successfully mapped. This usually involves storing the data in another data store (database, log, etc.), either directly or after applying some additional logic of your choosing. `transform` functions are also available for applying business logic inside your `map` functions, as shown above.
 
 ### Ingress
 
-The default behaviour of a ingress data pipeline is to store the mapped [Table](../../../../database/fields-tables-views/tables/) object to the Genesis database. However, there are times when you might want to delete or modify that entity, or do other conditional operations that do not interact with the database at all. For those cases, the `sink` function can be used. The function has two parameters:
+The default behaviour of an ingress Data Pipeline is to store the mapped [Table](../../../../database/fields-tables-views/tables/) object to the Genesis database. However, there are times when you might want to delete or modify that entity, or to perform other conditional operations that do not interact with the database at all. For those cases, the `sink` function can be used. The function has two parameters:
 
 - `entityDb` - object to access the underlying Genesis database
 - `mappedEntity` - the mapped Table object
@@ -494,7 +497,7 @@ pipelines {
 
 #### Conditional sink operations
 
-This can be combined with the `where` function, found within the `map`, and give you the ability to delete or modify certain records conditionally without having to map all rows:
+You can use the `where` function within the `map` to delete or modify records conditionally, so you don't have to map all rows:
 
 ```kotlin
 pipelines {
@@ -530,9 +533,9 @@ pipelines {
 
 ### Egress
 
-For egress data pipelines, the only supported sink operation is SQL based JDBC databases. We have provided helper classes for Postgres, MS SQL Server and Oracle databases for convenience.
+An egress Data Pipeline provides a sink operation for SQL-based JDBC databases. For convenience, the platform provides helper classes for Postgres, MS SQL Server and Oracle databases.
 
-In the below example, we define a postgres configuration object and pass this into our `sink` declaration. Our sink takes the database configuration and provides us with methods to describe the behaviour we would like for each operation that our pipeline might pick up.
+In the example below, we define a postgres configuration object and pass this into our `sink` declaration. Our sink takes the database configuration and provides us with methods to describe the behaviour for each operation that the pipeline can pick up.
 
 ```kotlin
 val postgresConfig = postgresConfiguration(
@@ -566,7 +569,7 @@ The `sink` function has three optional settings:
 | onModify | null | Operation to run on Genesis DB modify operation |
 | onDelete | null | Operation to run on Genesis DB delete operation |
 
-All of the operations are executed via SQL and take the order of the mapped field entities as they are found in your map configuration.
+All the operations are executed via SQL and take the order of the mapped field entities as they are found in your map configuration.
 
 #### onInsert 
 
@@ -582,7 +585,7 @@ Takes `deleteTable("table name")`
 
 #### Conditional sink operations
 
-Much like ingress sinks, egress sinks can be combined with the `where` function, found within the `map`, giving you the ability to conditionally map rows before the sink operation:
+Egress sinks can use the `where` function within the `map`, giving you the ability to map rows conditionally before the sink operation:
 
 ```kotlin
 pipelines {
