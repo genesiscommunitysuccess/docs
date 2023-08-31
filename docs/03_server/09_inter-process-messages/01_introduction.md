@@ -9,8 +9,7 @@ tags:
   - introduction
 ---
 
-In this area, we'll look at the standard message format sent between Genesis processes.
-
+In this area, we'll look at the network messages which are utilised at front-end and inter-process communications
 
 - [GenesisSet](../../../server/inter-process-messages/genesisSet/) - a generic message format sent between Genesis processes
 - [Type-safe messages](../../../server/inter-process-messages/type-safe-messages/) that perform message serialization and deserialization. These extract metadata information and expose it to the front end. 
