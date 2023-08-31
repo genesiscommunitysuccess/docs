@@ -47,10 +47,10 @@ The project distribution module contains all the configuration for creating a Ge
 
 It has four directories:
 
-- bin - (Binaries) - contains the jars for each module of the project
-- lib - (Libraries) - contains the jars that are the direct and transitive dependencies of the jars in the bin directory
-- cfg - (Config) - contains the config files for your application
-- scripts - contains the script files for your application
+- bin - (Binaries) - contains the jars for each module of the project.
+- lib - (Libraries) - contains the jars that are the direct and transitive dependencies of the jars in the bin directory.
+- cfg - (Config) - contains the config files for your application.
+- scripts - contains the script files for your application.
 
 The distribution module should have a direct dependency on each of the other modules in the project, to ensure their inclusion in the final distribution.
 
@@ -59,14 +59,14 @@ The **lib** directory is built in exactly the same way as the manifest for each 
 ### Building the runtime classpath for a process
 In the **processess.xml** file, there is a `module` tag; note that the value of this tag corresponds to a specific jar file bundled as part of the framework.
 
-The `startProcess` command uses the `module` tag to work out which jars to add to the classpath of the java process. All jar files are resolved from the **$GENESIS_HOME/<product>/bin|lib** directories. Every installed distribution is a potential lookup location to find jar files.
+The `startProcess` command uses the `module` tag to work out which jars to add to the classpath of the Java process. All jar files are resolved from the **$GENESIS_HOME/<product>/bin|lib** directories. Every installed distribution is a potential lookup location to find jar files.
 This is what happens:
 
 1. The `startProcess` command first resolves the jar file specified in the `module` tag for each process definition; it then reads the manifest of that jar file in order to construct the classpath by looking in the **bin** and **lib** directories of each installed distribution. If a particular jar file specified in the manifest cannot be found, then an error will be thrown.
 
 2. It then does the same thing for any additional jars specified in the `classpath` tag of the process definition. Note that if the jar was not built using the Genesis tools, it will not have a classpath in the manifest and will therefore only add the single jar to the classpath.
 
-This gives you two ways of creating an Event Handler:
+This gives you two ways of creating a module, such as an Event Handler:
 
 - You can use the standard pal-eventhandler jar in the framework as the base module, and add custom types using the `classpath` tag.
 - Or, you can create a custom module in your project. You then add dependencies on the eventhandler jar from the framework, as well as any custom jars that the module needs. You can then use that jar as the base module in the process definition without any need for a `classpath` tag.
@@ -80,7 +80,7 @@ Good question. The answer is the *wildcard matching* mechanism.
 
 When the `startProcess` command is called and the classpath is being calculated, if the jar is a framework jar (anything matching the pattern __genesis-\*.jar__), then the name of the jar is modified to use a wildcard for the maintenance version.
 
-As an example, if an application was compiled against version 6.7.0 of the platform, then it would have as a dependency:
+As an example, if an application is compiled against version 6.7.0 of the platform, then it has this dependency:
 
 ```
 genesis-db-6.7.0.jar
@@ -93,7 +93,7 @@ genesis-db-6.7.*.jar
 
 So, if you upgrade the host to a patch version, for example, 6.7.1, then **genesis-db-6.7.1.jar** will still match the pattern and it will be added to the classpath. In this way, apps built using the framework can take framework bug fixes without having to recompile.
 
-The Genesis low-code platform has a strict policy on any changes to dependencies or breaking API changes within the same minor version. Any maintenance version within the same minor version always has the same dependency tree to ensure that there are no breaking changes.
+The Genesis low-code platform has a strict policy on changes to dependencies or breaking API changes within the same minor version. Any maintenance version within the same minor version always has the same dependency tree to ensure that there are no breaking changes.
 
 ## Generated jars
 The final thing to mention regarding classpaths is the way that we handle generated code. Each Genesis app has a dictionary-cache module that produces several generated jars:
@@ -115,7 +115,7 @@ If you are generating your DAOs as part of the app at build time, they need to b
 If you are using `remap` to generate code at runtime, the number of external distributions (and therefore, tables that are part of the codegen process) might not be known until the application is deployed. *So, these jars must still be excluded from module manifests*.
 
 ### Creating a reusable component
-If you are working on a re-usable platform component, then the schema defined in your module is designed to be composed into a larger application schema. *So, the generated jars still should be excluded from module manifests.*
+If you are working on a re-usable platform component, then the schema defined in your module is designed to be composed into a larger application schema. *So, the generated jars must still be excluded from module manifests.*
 
 To ensure that generated jars are excluded from the module manifests when building, use the `compileOnly` scope in gradle.
 
