@@ -18,7 +18,7 @@ You can use Apache Camel for:
 
 * Receiving data [from the local filesystem](../../../../getting-started/advanced-learning/loading-feed-data/overview/)
 * Rransmitting data [to or from an external location](../../../../getting-started/advanced-learning/loading-feed-data/sftp-and-encryption/).
-* Receiving and sending emails - [camel-mail](https://camel.apache.org/components/3.21.x/mail-component.html)
+* Consume data from email - [camel-mail](https://camel.apache.org/components/3.21.x/mail-component.html)
 * RESTful API integration - [camel-http](https://camel.apache.org/components/3.21.x/http-component.html)
 * Database integration - [camel-sql](https://camel.apache.org/components/3.21.x/sql-component.html).
 
