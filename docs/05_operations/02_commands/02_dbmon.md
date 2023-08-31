@@ -104,9 +104,9 @@ BROKER
 <<List Snipped For Primer>>
 ```
 
-### Table / View
+### Table / view
 
-To look at the data held in a specific table or view, use the [`table`](#dbmon-commands) or [`view`](#dbmon-commands)command followed by the database entity name: for example `table BROKER` or `view TRADE`. Once you have selected an entity, the `DbMon` prompt changes to show its name.
+To look at the data held in a specific table or view, use the [`table`](#dbmon-commands) or [`view`](#dbmon-commands)command followed by the database entity name: for example, `table BROKER` or `view TRADE`. Once you have selected an entity, the `DbMon` prompt changes to show its name.
 
 ```javascript
 DbMon>table BROKER
@@ -201,7 +201,7 @@ USER_BY_NAME                             [USER_NAME]                            
 -------------------------------------------------------------------------------------------
 ```
 
-### Displaying a record - Set
+### Displaying a record - set
 
 To display a particular record from an entity, use the [`set`](#dbmon-commands) command to populate an index field with the value you are searching for. Then use the [`find`](#dbmon-commands) command along with the appropriate index name.
 
@@ -238,7 +238,7 @@ VIEW_CODE                 WALSH                                     STRING
 
 If you then want to [`find`](#dbmon-commands) a record with a different `VIEW_CODE`, you need to go back to having an empty record so that you can [`set`](#dbmon-commands) the `VIEW_CODE` again and perform another [`find`](#dbmon-commands). 
 
-To do this, use the [`clear`](#dbmon-commands) command.This resets your view onto the entity so that you can start again. 
+To do this, use the [`clear`](#dbmon-commands) command. This resets your view onto the entity so that you can start again. 
 
 :::note
 The [`clear`](#dbmon-commands) command does not have any effect on the data itself, just on your “window” into the database.
@@ -249,7 +249,7 @@ The [`clear`](#dbmon-commands) command does not have any effect on the data itse
 If you wish to look for a record (or a number of records) but your criterion does not match an index on the entity, you can use the [`search`](#dbmon-commands) command.
 
 :::warning
-For larger entities, this can be slow and risks causing latency to your application's users.
+For larger entities, this can be slow and it risks causing latency to your application's users.
 :::
 
 For example, if you wanted to find all the records in the `BROKER` table where the `COUNTRY_CODE` was IRL, and there is no index that can be used (and there might be multiple results), the [`search`](#dbmon-commands) command would look like this:
@@ -393,7 +393,7 @@ DbMon:BROKER>search MODIFIED_DATE=="20221008" || COUNTRY_CODE=='IRL'
 DbMon:BROKER>search MODIFIED_DATE=="2022-10-08"
 ```
 
-#### Using distinct command
+#### Using the distinct command
 
 ```jsx
 // if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database 
