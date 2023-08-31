@@ -22,6 +22,8 @@ import { foundationGridComponents } from '@genesislcap/grid-pro';
 provideDesignSystem().register(alphaAgGrid(), foundationGridComponents);
 ```
 
+This is an example of how to retrieve information from ALL_PROCESS_STATUS query
+
 ```html title="Streaming data from ALL_PROCESS_STATUS data server"
 <alpha-card>
   <alpha-grid-pro>
@@ -32,6 +34,8 @@ provideDesignSystem().register(alphaAgGrid(), foundationGridComponents);
 </alpha-card>
 ```
 
+This is an example of a simple snapshot of the ALL_PROCESS_STATUS query
+
 ```html title="Spanshot (one-time) data from ALL_PROCESS_STATUS data server"
 <alpha-card>
   <alpha-grid-pro>
@@ -41,6 +45,8 @@ provideDesignSystem().register(alphaAgGrid(), foundationGridComponents);
   ...
 </alpha-card>
 ```
+
+and lastly, this is an example of a simple snapshot of the ALL_PROCESS_STATUS query limiting the rows to a fixed number
 
 ```html title="Spanshot (one-time) data from ALL_PROCESS_STATUS data server limited to 5 rows"
 <alpha-card>
