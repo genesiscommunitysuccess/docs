@@ -23,7 +23,7 @@ The basis of this version is:
 Release date: December 19, 2022. 
 
 ## Features
-* **OpenID Connect Integration** - The Genesis low-code platform now supports OpenId Connect as an authentication mechanism. The configuration of OpenId Connect providers is done through GPAL, with all of its benefits, including intellisense, autocompletion and compile-time errors. An application can have more than one OpenId Connect provider configured.
+* **OpenID Connect Integration** - The Genesis low-code platform now supports OpenId Connect as an authentication mechanism. The configuration of OpenId Connect providers is done through GPAL, with all its benefits, including intellisense, autocompletion and compile-time errors. An application can have more than one OpenId Connect provider configured.
 * **GPAL for Dynamic Permissions** - You can now use GPAL to define dynamic permissions with a strongly typed data model, intellisense and autocompletion. Dynamic permissions can now be defined for tables and views.
 * **DevOps/Containerisation**
   - Now allows Consul service names to be configured via the new system definition value `ConsulServiceNamePattern`.

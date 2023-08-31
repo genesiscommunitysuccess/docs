@@ -59,7 +59,7 @@ The **lib** directory is built in exactly the same way as the manifest for each 
 ### Building the runtime classpath for a process
 In the **processess.xml** file, there is a `module` tag; note that the value of this tag corresponds to a specific jar file bundled as part of the framework.
 
-The `startProcess` command uses the `module` tag to work out which jars to add to the classpath of the Java process. All jar files are resolved from the **$GENESIS_HOME/<product>/bin|lib** directories. Every installed distribution is a potential lookup location to find jar files.
+The `startProcess` command uses the `module` tag to work out which jars to add to the classpath of the Java process. All jar files are resolved from the **bin** or **lib** directories in your application's **$GENESIS_HOME/** directory. Every installed distribution is a potential lookup location to find jar files.
 This is what happens:
 
 1. The `startProcess` command first resolves the jar file specified in the `module` tag for each process definition; it then reads the manifest of that jar file in order to construct the classpath by looking in the **bin** and **lib** directories of each installed distribution. If a particular jar file specified in the manifest cannot be found, then an error will be thrown.
