@@ -202,13 +202,13 @@ interface GenesisError {
 
 So by default, all error/warning messages have the following properties, along with any extra properties that are needed to represent the error:
 
-CODE is the error code, which can be of two types:
-- [ErrorCode](../error-codes) is the ENUM class that contains a list of different error codes coming from the server
-- String is used to pass any code that is not part of ErrorCode enum
+- CODE is the error code, which can be of two types:
+  - [ErrorCode](../error-codes) is the ENUM class that contains a list of different error codes coming from the server
+  - String is used to pass any code that is not part of ErrorCode enum
 
-TEXT is of type String and contains more detailed information about the error code that is being sent.
+- TEXT is of type String and contains more detailed information about the error code that is being sent.
 
-STATUS_CODE is of type ENUM, represented by HttpStatusCode enum class, which corresponds to netty `HttpResponseStatus` and will be used to represent HTTP status of all error/warning messages.
+- STATUS_CODE is of type ENUM, represented by HttpStatusCode enum class, which corresponds to netty `HttpResponseStatus` and will be used to represent HTTP status of all error/warning messages.
 
 There is also the common interface `GenesisNackReply`, for NACK messages:
 
@@ -309,14 +309,23 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 
 We use standard HTTP status codes to represent the response status. This is a well-known standard that is easy to understand. It is Internally represented by the `HttpStatusCode` enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html).
 
-**HTTP Status Code for error message**
 A single message can contain multiple errors and warnings. Here is how the response status code for the message is allocated:
 
-- If the message contains a single error, then its code is used as the response status code for the message.
-- If the message contains multiple errors with the same code, then this is used as the response status code for the message:
+**Messages with only errors**
+- If the message contains a single error, then its code is used as the response status code for the message
+- If the message contains multiple errors with the same code, then this is used as the response status code for the message
 - If the message contains multiple errors with different status codes, then:
     - for multiple 5xx errors, the response status code is set to 500
     - for multiple 4xx errors, the response status code is set to the status code of first error
     - for a mix of 5xx and 4xx errors, the response status code is set to 500
-- If there are both error and warning messages, the response status is set to the status code of the error message; the logic above is used to find the error status code.
+
+**Messages with only warnings**
 - If there are only warning messages, the response status is set to 400.
+
+**Messages with errors and warnings**
+- If there are both error messages and warning messages, the response status code is based on the error message or messages:
+    - for a single error message or multiple error messages of the same type, this error code is used as the response status code for the message
+    - for multiple 5xx errors, the response status code is set to 500
+    - for multiple 4xx errors, the response status code is set to the status code of first error
+    - for a mix of 5xx and 4xx errors, the response status code is set to 500
+
