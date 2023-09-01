@@ -42,12 +42,12 @@ data class SetLogLevel(
 )
 ```
 
-In this example, the `SetLogLevel` data class has a single constructor that also defines the data class properties. Also note:
+In this example, the `SetLogLevel` data class has a single constructor that also defines the properties of the data class. Also note:
 
 - **Mandatory metadata field**. `processName` does not have a default value associated with it; therefore, a value is mandatory to construct this message. So, it will be exposed as a *mandatory* metadata field. 
-- **Optional metadata fields**. `logLevel`, `datadump` and `expiration` all have default values; they will therefore be exposed as optional metadata fields.
+- **Optional metadata fields**. `logLevel`, `datadump` and `expiration` all have default values; they will therefore be exposed as *optional* metadata fields.
 
-You are free to use all the following types as long as they are composed using the same elements: 
+You are free to use all the following types, as long as they are composed using the same elements: 
 
 - Genesis metadata field basic types (Boolean, Short, Int, Long, Double, String, BigDecimal or Joda DateTime)
 - enumerated types (as you can see defined in `LogLevel` above)
@@ -63,7 +63,7 @@ For example:
 -	`@Title` could be used to provide a human-readable name for a metadata field to be displayed in a grid column.
 -	`@Description` could be used to provide tooltip information when hovering over that column header. 
 
-You can find more information on our page about [metadata annotations](../../../server/inter-process-messages/metadata-annotations/).
+You can find more information in our page about [metadata annotations](../../../server/inter-process-messages/metadata-annotations/).
 
 ## Read-only values
 Read-only values can be exposed inside a Kotlin companion object and can be as complex as any other metadata field definition. In the example below, the enhanced `SetLogLevel` class provides information about the default LogLevel:
@@ -89,7 +89,7 @@ There is a significant disadvantage in using type-safe messages with support for
 
 Following the previous example with the `SetLogLevel` data class, it is possible to receive a message with just a `processName` value; you will still have default values for all the other fields because of the automatic defaults. This causes problems where you have business logic where those fields were part of the original payload. 
 
-For example, if you receive a value for the field `expiration` set as 0, you might want to define different business logic than if the value was never sent in the first place - even though 0 is the same value as the default value.
+For example, if you receive a value for the field `expiration` set as 0, you might want to define a different business logic than if the value was never sent in the first place - even though 0 is the same value as the default value.
 
 In order to solve this problem, there is a class called `DeserializedFieldsSupport`. This class can be extended by any type-safe data class. It is available for both Event Handler definitions and Request Server definitions. The `SetLogLevel` data class in the previous example would now look like this:
 
@@ -166,7 +166,7 @@ IMPORTANT! The success message should always end in `Ack` in order for the inter
 
 ### Error messages
 
-There is a common format for error or warning messages sent between server and client. The message format is the same for all the HTTP and WebSocket messages we support:
+There is a common format for error or warning messages sent between server and client. The message format is the same for all HTTP and WebSocket messages that we support:
 
 ```kotlin
 MESSAGE_TYPE = ...
@@ -206,9 +206,9 @@ CODE is the error code, which can be of two types:
 - [ErrorCode](../error-codes) is the ENUM class that contains a list of different error codes coming from the server
 - String is used to pass any code that is not part of ErrorCode enum
 
-TEXT is of type String and contains more detailed information about the error code that is being sent
+TEXT is of type String and contains more detailed information about the error code that is being sent.
 
-STATUS_CODE is of type ENUM, represented by HttpStatusCode enum class, which corresponds to netty `HttpResponseStatus` and will be used to represent HTTP status of all error/warning messages
+STATUS_CODE is of type ENUM, represented by HttpStatusCode enum class, which corresponds to netty `HttpResponseStatus` and will be used to represent HTTP status of all error/warning messages.
 
 There is also the common interface `GenesisNackReply`, for NACK messages:
 
@@ -237,7 +237,7 @@ These are the main types of Nack (error or warning) message. Most of them are se
 
 #### Error codes
 
-Below is the list of standard error codes, along with their Http Status code. The framework implementation is standardised to provide error code `CODE` as Enum represented by `ErrorCode` class, but it also provides flexibility to provide any error code
+Below is the list of standard error codes, along with their HTTP Status code. The framework implementation is standardised to provide error code `CODE` as Enum represented by `ErrorCode` class, but it also provides the flexibility to include any error code.
 
 ##### ErrorCode class definition
 
@@ -247,7 +247,7 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 
 ##### List of error codes:
 
-| Error Code                           | Http status code          |
+| Error Code                           | HTTP status code          |
 |--------------------------------------|---------------------------|
 | GENERIC_ERROR                        | 500 Internal Server Error |
 | MISSING_FIELD                        | 400 Bad Request           |  
@@ -305,20 +305,18 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 | MISSING_HOSTNAME                     | 400 Bad Request           |
 | NUMBER_OF_RECORDS_DOES_NOT_MATCH     | 400 Bad Request           |
 
-##### Http status code
+##### HTTP status code
 
-We use standard HTTP status codes to represent response status. This is a well-known standard that is easy to understand. It is Internally represented by the `HttpStatusCode` enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html)
+We use standard HTTP status codes to represent the response status. This is a well-known standard that is easy to understand. It is Internally represented by the `HttpStatusCode` enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html).
 
-**Http Status Code for error message**
-Because we send back multiple errors in a single message, we need to consider what the status code is for the message itself. We will do that by adjusting message status code based on the errors’ status codes.
+**HTTP Status Code for error message**
+A single message can contain multiple errors and warnings. Here is how the response status code for the message is allocated:
 
-1. If the message contains a single error or the message contains multiple errors with all the same status code, then the message’s status code will be set to the same.
-2. If the message contains multiple errors with different status codes, then following approach is used to determine the response status code
-    - For multiple 5xx errors : response status code would be set to 500
-    - For multiple 4xx errors : response status code would be set to status code of first error
-    - If there are mix of 5xx and 4xx errors : response status code would be set to 500
-
-**Http Status Code for warning message**
-
-1. If we have mix of error and warning messages: response status would be status code of error message and above logic is used to find error status code
-2. If we have only warning messages:  response status would be set to 400
+- If the message contains a single error, then its code is used as the response status code for the message.
+- If the message contains multiple errors with the same code, then this is used as the response status code for the message:
+- If the message contains multiple errors with different status codes, then:
+    - for multiple 5xx errors, the response status code is set to 500
+    - for multiple 4xx errors, the response status code is set to the status code of first error
+    - for a mix of 5xx and 4xx errors, the response status code is set to 500
+- If there are both error and warning messages, the response status is set to the status code of the error message; the logic above is used to find the error status code.
+- If there are only warning messages, the response status is set to 400.
