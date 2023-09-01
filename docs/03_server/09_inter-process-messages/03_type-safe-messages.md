@@ -223,7 +223,7 @@ interface GenesisNackReply {
 
 Interface GenesisNackReply with MESSAGE_TYPE and SOURCE_REF fields represent whole error/warning message sent to the API client
 
-#### Different types of Nack messages
+#### Types of Nack message
 
 We have many type of Nack(error or warning) messages, of which most of them are either sent as EVENT_NACK or MSG_NACK.
 
@@ -239,7 +239,7 @@ Some Nack messages are listed here:
 | EVENT_LOGIN_DETAILS_NACK | This type of Nack is used when there is issue with provided login details i.e USER_NAME or SESSION_AUTH_TOKEN |
 | CREATE_MFA_SECRET_NACK   | This type of Nack is used when there is issue with creation of MFA secret                                     |
 
-#### Error Codes
+#### Error codes
 
 Below is the list of standard error codes we use along with their Http Status code, framework implementation is standardized to provide error code `CODE` as Enum represented by `ErrorCode` class but it also provides flexibility to provide any error code
 
@@ -309,7 +309,7 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 | MISSING_HOSTNAME                     | 400 Bad Request           |
 | NUMBER_OF_RECORDS_DOES_NOT_MATCH     | 400 Bad Request           |
 
-##### Http Status Code
+##### Http status code
 
 We use standard HTTP status codes to represent response status, which makes it easier to understand as it is an existing and well-known standard.
 Internally represented by HttpStatusCode enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html)
