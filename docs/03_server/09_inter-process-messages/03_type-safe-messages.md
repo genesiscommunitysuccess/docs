@@ -139,7 +139,7 @@ As an example, we shall look at `EventReply` and how Event Handlers work with ou
 
 ### Event Handler examples
 
-The default output message type to use in Event Handlers is `EventReply`. This is a Kotlin sealed class, which is most commonly represented by two subtypes: `EventAck` and `EventNack`. See their Kotlin definitions below:
+The default output message type to use in Event Handlers is `EventReply`. This is a Kotlin sealed class, which is most commonly represented by two subtypes: `EventAck` and `EventNack`. The Kotlin definitions of these are:
 
 ```kotlin
 data class EventAck(val generated: List<Map<String, Any>> = emptyList()) : EventReply()
@@ -164,11 +164,9 @@ These custom reply types allow a predetermined number of customised replies for 
 IMPORTANT! The success message should always end in `Ack` in order for the internal `eventHandler` logic to handle validation correctly.
 :::
 
-### Error Messages
+### Error messages
 
-We follow common format to represent error or warning messages sent between server and client. The message format will be same for all HTTP and WebSocket messages we support
-
-Message Format:
+There is a common format for error or warning messages sent between server and client. The message format is the same for all the HTTP and WebSocket messages we support:
 
 ```kotlin
 MESSAGE_TYPE = ...
@@ -191,7 +189,7 @@ WARNING = [
 ]
 ```
 
-All error/warnings are represented as implementations of GenesisError interface which is defined as follows
+All error/warnings are represented as implementations of the GenesisError interface. This is defined as follows:
 
 ```kotlin
 interface GenesisError {
@@ -202,17 +200,17 @@ interface GenesisError {
 }
 ```
 
-So by default all error/warning messages will have the following properties along with any extra properties that are needed to represent error:
+So by default, all error/warning messages have the following properties, along with any extra properties that are needed to represent error:
 
-CODE: Represents error code, which can be of two types:
-- [ErrorCode](../error-codes): This is the ENUM class which contains list of different error codes coming from server
-- String: This provides flexibility to pass any code which is not part of ErrorCode enum
+CODE is the error code, which can be of two types:
+- [ErrorCode](../error-codes) is the ENUM class that contains a list of different error codes coming from the server
+- String is used to pass any code that is not part of ErrorCode enum
 
-TEXT: Is of type String and contains more detail information about the error code that is being sent
+TEXT is of type String and contains more detailed information about the error code that is being sent
 
-STATUS_CODE: Is of type ENUM, represented by HttpStatusCode enum class, which corresponds to netty HttpResponseStatus and will be used to represent HTTP status of all error/warning messages
+STATUS_CODE is of type ENUM, represented by HttpStatusCode enum class, which corresponds to netty `HttpResponseStatus` and will be used to represent HTTP status of all error/warning messages
 
-Similar to GenesisError, we also have common interface called GenesisNackReply to represent all the NACK messages as shown below:
+There is also the common interface `GenesisNackReply`, for NACK messages:
 
 ```kotlin
 interface GenesisNackReply {
@@ -221,27 +219,25 @@ interface GenesisNackReply {
 }
 ```
 
-Interface GenesisNackReply with MESSAGE_TYPE and SOURCE_REF fields represent whole error/warning message sent to the API client
+Interface `GenesisNackReply` with MESSAGE_TYPE and SOURCE_REF fields represent whole error/warning message sent to the API client
 
 #### Types of Nack message
 
-We have many type of Nack(error or warning) messages, of which most of them are either sent as EVENT_NACK or MSG_NACK.
+These are the main types of Nack(error or warning) message. Most of them are sent either as EVENT_NACK or MSG_NACK:
 
-Some Nack messages are listed here:
-
-| Nack Message type        | Details                                                                                                       |
+| Nack message type        | Details                                                                                                       |
 |--------------------------|---------------------------------------------------------------------------------------------------------------|
-| EVENT_NACK               | Used as response for unsuccessful event                                                                       |
-| MSG_NACK                 | Used when something unexpected happens and on everything that is not an event                                 |
-| LOGOUT_NACK              | This type of Nack is used when there is issue with Logout Request                                             |
-| LOGIN_AUTH_NACK          | This type of Nack is used when there is issue with Login Request                                              |
-| LOGON_NACK               | This type of Nack is used when there is issue with data server subscription                                   |
-| EVENT_LOGIN_DETAILS_NACK | This type of Nack is used when there is issue with provided login details i.e USER_NAME or SESSION_AUTH_TOKEN |
-| CREATE_MFA_SECRET_NACK   | This type of Nack is used when there is issue with creation of MFA secret                                     |
+| EVENT_NACK               | used as response for unsuccessful event                                                                       |
+| MSG_NACK                 | used when something unexpected happens and on anything that is not an event                                 |
+| LOGOUT_NACK              | used when there is an issue with Logout Request                                             |
+| LOGIN_AUTH_NACK          | used when there is an issue with Login Request                                              |
+| LOGON_NACK               | used when there is an issue with Data Server subscription                                   |
+| EVENT_LOGIN_DETAILS_NACK | used when there is an issue with provided login details: USER_NAME or SESSION_AUTH_TOKEN |
+| CREATE_MFA_SECRET_NACK   | used when there is an issue with creation of MFA secret                                     |
 
 #### Error codes
 
-Below is the list of standard error codes we use along with their Http Status code, framework implementation is standardized to provide error code `CODE` as Enum represented by `ErrorCode` class but it also provides flexibility to provide any error code
+Below is the list of standard error codes, along with their Http Status code. The framework implementation is standardised to provide error code `CODE` as Enum represented by `ErrorCode` class, but it also provides flexibility to provide any error code
 
 ##### ErrorCode class definition
 
@@ -311,11 +307,10 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 
 ##### Http status code
 
-We use standard HTTP status codes to represent response status, which makes it easier to understand as it is an existing and well-known standard.
-Internally represented by HttpStatusCode enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html)
+We use standard HTTP status codes to represent response status. This is a well-known standard that is easy to understand. It is Internally represented by the `HttpStatusCode` enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html)
 
 **Http Status Code for error message**
-Due to the fact that we send back multiple errors in a single message we need to consider what the status code would be for the message itself. We will do that by adjusting message status code based on the errors’ status codes.
+Because we send back multiple errors in a single message, we need to consider what the status code is for the message itself. We will do that by adjusting message status code based on the errors’ status codes.
 
 1. If the message contains a single error or the message contains multiple errors with all the same status code, then the message’s status code will be set to the same.
 2. If the message contains multiple errors with different status codes, then following approach is used to determine the response status code
