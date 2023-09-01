@@ -307,7 +307,7 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 
 ##### HTTP status code
 
-We use standard HTTP status codes to represent the response status. This is a well-known standard that is easy to understand. It is Internally represented by the `HttpStatusCode` enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html).
+We use standard HTTP status codes to represent the response status. This is a well-known standard that is easy to understand. It is internally represented by the `HttpStatusCode` enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html).
 
 A single message can contain multiple errors and warnings. Here is how the response status code for the message is allocated:
 
