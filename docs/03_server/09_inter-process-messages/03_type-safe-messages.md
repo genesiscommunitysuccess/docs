@@ -189,7 +189,7 @@ WARNING = [
 ]
 ```
 
-All error/warnings are represented as implementations of the GenesisError interface. This is defined as follows:
+All errors and warnings are represented as implementations of the GenesisError interface. This is defined as follows:
 
 ```kotlin
 interface GenesisError {
@@ -200,7 +200,7 @@ interface GenesisError {
 }
 ```
 
-So by default, all error/warning messages have the following properties, along with any extra properties that are needed to represent error:
+So by default, all error/warning messages have the following properties, along with any extra properties that are needed to represent the error:
 
 CODE is the error code, which can be of two types:
 - [ErrorCode](../error-codes) is the ENUM class that contains a list of different error codes coming from the server
@@ -219,20 +219,20 @@ interface GenesisNackReply {
 }
 ```
 
-Interface `GenesisNackReply` with MESSAGE_TYPE and SOURCE_REF fields represent whole error/warning message sent to the API client
+The interface `GenesisNackReply` with MESSAGE_TYPE and SOURCE_REF fields represents the whole error or warning message that is sent to the API client.
 
 #### Types of Nack message
 
-These are the main types of Nack(error or warning) message. Most of them are sent either as EVENT_NACK or MSG_NACK:
+These are the main types of Nack (error or warning) message. Most of them are sent either as EVENT_NACK or MSG_NACK:
 
-| Nack message type        | Details                                                                                                       |
-|--------------------------|---------------------------------------------------------------------------------------------------------------|
-| EVENT_NACK               | used as response for unsuccessful event                                                                       |
-| MSG_NACK                 | used when something unexpected happens and on anything that is not an event                                 |
+| Nack message type        | Details                                                                                     |
+|--------------------------|---------------------------------------------------------------------------------------------|
+| EVENT_NACK               | used as response for unsuccessful event                                                     |
+| MSG_NACK                 | used when something unexpected happens and on anything that is not an event                 |
 | LOGOUT_NACK              | used when there is an issue with Logout Request                                             |
 | LOGIN_AUTH_NACK          | used when there is an issue with Login Request                                              |
 | LOGON_NACK               | used when there is an issue with Data Server subscription                                   |
-| EVENT_LOGIN_DETAILS_NACK | used when there is an issue with provided login details: USER_NAME or SESSION_AUTH_TOKEN |
+| EVENT_LOGIN_DETAILS_NACK | used when there is an issue with provided login details: USER_NAME or SESSION_AUTH_TOKEN    |
 | CREATE_MFA_SECRET_NACK   | used when there is an issue with creation of MFA secret                                     |
 
 #### Error codes
@@ -247,7 +247,7 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 
 ##### List of error codes:
 
-| Error Code                           | Http Status Code          |
+| Error Code                           | Http status code          |
 |--------------------------------------|---------------------------|
 | GENERIC_ERROR                        | 500 Internal Server Error |
 | MISSING_FIELD                        | 400 Bad Request           |  
