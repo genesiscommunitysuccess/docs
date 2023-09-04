@@ -1,11 +1,12 @@
 ---
-title: 'Inter-process messages - type-safe messages'
+title: 'Network messages - type-safe messages'
 sidebar_label: 'Type-safe messages'
 id: type-safe-messages
-keywords: [server, inter-process messages, type-safe messages, json schema, error code, error, http status, status, response status, error handling, error format, format, http]
+keywords: [server, network messages, inter-process, type-safe messages, json schema, error code, error, http status, status, response status, error handling, error format, format, http]
 tags:
   - server
-  - inter-process messages
+  - network messages
+  - inter-process
   - type-safe messages
   - json schema
   - error handling
@@ -63,7 +64,7 @@ For example:
 -	`@Title` could be used to provide a human-readable name for a metadata field to be displayed in a grid column.
 -	`@Description` could be used to provide tooltip information when hovering over that column header. 
 
-You can find more information in our page about [metadata annotations](../../../server/inter-process-messages/metadata-annotations/).
+You can find more information in our page about [metadata annotations](../../../server/network-messages/metadata-annotations/).
 
 ## Read-only values
 Read-only values can be exposed inside a Kotlin companion object and can be as complex as any other metadata field definition. In the example below, the enhanced `SetLogLevel` class provides information about the default LogLevel:

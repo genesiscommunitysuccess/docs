@@ -1,11 +1,11 @@
 ---
-title: 'Inter-process messages - metadata annotations'
+title: 'Network messages - metadata annotations'
 sidebar_label: 'Metadata annotations'
 id: metadata-annotations
-keywords: [server, inter-process messages, metadata, annotations, json schema]
+keywords: [server, network messages, metadata, annotations, json schema]
 tags:
   - server
-  - inter-process messages
+  - network messages
   - metadata
   - annotations
   - json schema
@@ -15,7 +15,7 @@ tags:
 
 The following annotations are found in the package `global.genesis.message.core.annotation` and can be applied when defining Kotlin data classes to be used as input `I` message types.
 
-As an example, these input types can be used in Event Handlers and custom Request Servers (see [type-safe messages](../../../server/inter-process-messages/type-safe-messages/)). 
+As an example, these input types can be used in Event Handlers and custom Request Servers (see [type-safe messages](../../../server/network-messages/type-safe-messages/)). 
 
 It is important to note that these annotations will influence the automatic generation of relevant [Json schema](https://json-schema.org/) definitions within the backend metadata system, as well as enforcing transparent validation checks.
 
