@@ -221,7 +221,7 @@ interface GenesisNackReply {
 
 The interface `GenesisNackReply` with MESSAGE_TYPE and SOURCE_REF fields represents the whole error or warning message that is sent to the API client.
 
-#### Types of Nack message
+## Types of Nack message
 
 These are the main types of Nack (error or warning) message. Most of them are sent either as EVENT_NACK or MSG_NACK:
 
@@ -235,17 +235,15 @@ These are the main types of Nack (error or warning) message. Most of them are se
 | EVENT_LOGIN_DETAILS_NACK | used when there is an issue with provided login details: USER_NAME or SESSION_AUTH_TOKEN    |
 | CREATE_MFA_SECRET_NACK   | used when there is an issue with creation of MFA secret                                     |
 
-#### Error codes
+### Error codes
 
-Below is the list of standard error codes, along with their HTTP Status code. The framework implementation is standardised to provide error code `CODE` as Enum represented by `ErrorCode` class, but it also provides the flexibility to include any error code.
-
-##### ErrorCode class definition
+The `ErrorCode` class definition is:
 
 ```kotlin
 enum class ErrorCode(private val readableString: String, val statusCode: HttpStatusCode)
 ```
 
-##### List of error codes:
+Below is the list of standard error codes, along with their HTTP Status code. The framework implementation is standardised to provide error code `CODE` as Enum represented by `ErrorCode` class, but it also provides the flexibility to include any error code.
 
 | Error Code                           | HTTP status code          |
 |--------------------------------------|---------------------------|

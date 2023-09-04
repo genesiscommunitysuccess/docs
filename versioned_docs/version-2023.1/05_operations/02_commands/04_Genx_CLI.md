@@ -331,11 +331,11 @@ This command can be used with the following parameters:
 
 ## Upgrade
 
-The `upgrade` command updates Foundation UI NPM module dependency versions regardless the range defined in your **package.json**. It can be plugged in into CI jobs for automated upgrade workflows.
+The `upgrade` command updates Foundation UI NPM module dependency versions regardless the range defined in your **package.json**. It can be plugged into CI jobs for automated upgrade workflows.
 
 This command can be used with the following parameters:
 
-|Parameter | Argument  | Description | Local ignature |
+|Parameter | Argument  | Description | Local signature |
 |----------|-----------|-------------|-----------|
 |`-r` or `--respect-version-ranges`| | Update within package.json version ranges (defaults to latest otherwise) | `genx upgrade --respect-version-ranges` |
 | `-x` or `--exclude` | `<list>` | Comma-separated list of packages to exclude | `genx upgrade --exclude tslib` |
