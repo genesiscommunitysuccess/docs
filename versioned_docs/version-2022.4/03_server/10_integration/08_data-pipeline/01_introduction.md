@@ -10,7 +10,7 @@ tags:
   - introduction
 ---
 
-Genesis Data Pipeline is a feature that allows you to stream data in and/or out of your Genesis application.
+Genesis Data Pipeline enables you to stream data into and out of your Genesis application.
 
 Each Data Pipeline defines a source, some mapping operation and a sink.
 
