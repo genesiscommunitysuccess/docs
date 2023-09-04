@@ -10,7 +10,7 @@ tags:
   - introduction
 ---
 
-Genesis Data Pipelines is a feature that allows you to stream data in and/or out of your Genesis application.
+Genesis Data Pipelines enable you to stream data into and out of your Genesis application.
 
 Each Data Pipeline defines a source, some mapping operations and a sink.
 
@@ -22,7 +22,7 @@ Each Data Pipeline defines a source, some mapping operations and a sink.
 
 ## Data Pipeline ingress
 
-You can define Pipelines that map data from an external source (database, file) to [tables](../../../../database/fields-tables-views/tables/) in your application. By default, the resulting Table objects are stored in the application database. If you want to change this behaviour, you can define [custom sink operations](../../../../server/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity).
+You can define Data Pipelines that map data from an external source (database, file) to [tables](../../../../database/fields-tables-views/tables/) in your application. By default, the resulting Table objects are stored in the application database. If you want to change this behaviour, you can define [custom sink operations](../../../../server/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity).
 
 Each Data Pipeline defines a source for the data and maps that data to each [field](../../../../database/fields-tables-views/fields/) in the table.
 
