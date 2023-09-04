@@ -29,10 +29,10 @@ requestReplies {
 
         request {
             ALTERNATE_TYPE withTransformation { type, _ ->
-                type?.toUpperCase() ?: "UNKNOWN"
+                type?.uppercase() ?: "UNKNOWN"
             }
             INSTRUMENT_CODE withTransformation { type, set ->
-                val value = if (set.fields["ALTERNATE_TYPE"].toString().toUpperCase() == "RIC") {
+                val value = if (set.fields["ALTERNATE_TYPE"].toString().uppercase() == "RIC") {
                     type
                 } else {
                     "NOT_RIC"
