@@ -16,8 +16,8 @@ Genesis makes this easy to configure and set up, allowing new processors to be d
 
 You can use Apache Camel for:
 
-* Receiving data [from the local filesystem](../../../../getting-started/use-cases/loading-feed-data/overview/)
-* Transmitting data [to or from an external location](../../../../getting-started/use-cases/loading-feed-data/sftp-and-encryption/).
+* Receiving data [from the local filesystem](../../../../getting-started/advanced-learning/loading-feed-data/overview/)
+* Transmitting data [to or from an external location](../../../../getting-started/advanced-learning/loading-feed-data/sftp-and-encryption/).
 * Consume data from email - [camel-mail](https://camel.apache.org/components/3.21.x/mail-component.html)
 * RESTful API integration - [camel-http](https://camel.apache.org/components/3.21.x/http-component.html)
 * Database integration - [camel-sql](https://camel.apache.org/components/3.21.x/sql-component.html).
