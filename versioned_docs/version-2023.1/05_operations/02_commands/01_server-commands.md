@@ -723,6 +723,7 @@ The `SendIt` command can take the following arguments:
 | -a       | --all                  | No        | import all the tables from all the csv files to the database | No                |
 | -d       | --delete               | No        | perform delete operations on all records                     | No                |
 | -f       | --file `<arg>`         | No        | name of the csv file where table is imported                 | No                |
+| -force   | --force                | No        | does the action without a prompt                             | No
 | -h       | --help                 | No        | show usage   information                                       | No                |
 | -m       | --modify `<arg>`       | No        | key name used to find original record                        | No                |
 | -mf      | --modifyFields `<arg>` | No        | specifies fields to modify                                     | No                |
