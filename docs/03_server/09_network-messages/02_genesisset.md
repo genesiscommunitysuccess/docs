@@ -1,11 +1,12 @@
 ---
-title: 'Inter-process messages - GenesisSet'
+title: 'Network messages - GenesisSet'
 sidebar_label: 'GenesisSet'
 id: genesisSet
-keywords: [server, inter-process messages, genesisSet]
+keywords: [server, network messages, inter-process, genesisSet]
 tags:
   - server
-  - inter-process messages
+  - network messages
+  - inter-process
   - genesisSet
 ---
 

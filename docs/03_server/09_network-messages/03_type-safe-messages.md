@@ -1,11 +1,12 @@
 ---
-title: 'Inter-process messages - type-safe messages'
+title: 'Network messages - type-safe messages'
 sidebar_label: 'Type-safe messages'
 id: type-safe-messages
-keywords: [server, inter-process messages, type-safe messages, json schema, error code, error, http status, status, response status, error handling, error format, format, http]
+keywords: [server, network messages, inter-process, type-safe messages, json schema, error code, error, http status, status, response status, error handling, error format, format, http]
 tags:
   - server
-  - inter-process messages
+  - network messages
+  - inter-process
   - type-safe messages
   - json schema
   - error handling
@@ -19,7 +20,7 @@ tags:
   - response status
 ---
 
-The Genesis low-code platform uses type-safe messages to perform message serialisation and deserialisation. In addition, it automatically extracts relevant metadata to expose this to the front end in the shape of a [Json Schema](https://json-schema.org/) definition that is compliant with the 2019-09 specification. These messages will be validated automatically in the back end, based on their definition. 
+The Genesis low-code platform uses type-safe messages to perform message serialisation and deserialisation. In addition, it automatically extracts relevant metadata to expose this to the front end in the shape of a [Json Schema](https://json-schema.org/) definition that is compliant with the 2019-09 specification. These messages will be validated automatically in the back end, based on their definition.
 
 These type-safe messages are most commonly used in Request Servers, GPAL Event Handlers and Event Handlers that have been [implemented as a set of classes](../../../server/api-reference/event-handler-api/).
 
@@ -44,15 +45,15 @@ data class SetLogLevel(
 
 In this example, the `SetLogLevel` data class has a single constructor that also defines the properties of the data class. Also note:
 
-- **Mandatory metadata field**. `processName` does not have a default value associated with it; therefore, a value is mandatory to construct this message. So, it will be exposed as a *mandatory* metadata field. 
+- **Mandatory metadata field**. `processName` does not have a default value associated with it; therefore, a value is mandatory to construct this message. So, it will be exposed as a *mandatory* metadata field.
 - **Optional metadata fields**. `logLevel`, `datadump` and `expiration` all have default values; they will therefore be exposed as *optional* metadata fields.
 
-You are free to use all the following types, as long as they are composed using the same elements: 
+You are free to use all the following types, as long as they are composed using the same elements:
 
 - Genesis metadata field basic types (Boolean, Short, Int, Long, Double, String, BigDecimal or Joda DateTime)
 - enumerated types (as you can see defined in `LogLevel` above)
 - basic collection types (List, Set and Map)
-- other Kotlin data classes 
+- other Kotlin data classes
 
 All these different types will be understood by the metadata system and exposed accordingly. Kotlin also has nullable and non-nullable types, and the metadata system will expose this information too.
 
@@ -60,12 +61,13 @@ Annotations such as `@Title` and `@Description` can be used to provide extra inf
 
 For example:
 
--	`@Title` could be used to provide a human-readable name for a metadata field to be displayed in a grid column.
--	`@Description` could be used to provide tooltip information when hovering over that column header. 
+- `@Title` could be used to provide a human-readable name for a metadata field to be displayed in a grid column.
+- `@Description` could be used to provide tooltip information when hovering over that column header.
 
-You can find more information in our page about [metadata annotations](../../../server/inter-process-messages/metadata-annotations/).
+You can find more information in our page about [metadata annotations](../../../server/network-messages/metadata-annotations/).
 
 ## Read-only values
+
 Read-only values can be exposed inside a Kotlin companion object and can be as complex as any other metadata field definition. In the example below, the enhanced `SetLogLevel` class provides information about the default LogLevel:
 
 ```kotlin
@@ -87,7 +89,7 @@ data class SetLogLevel(
 
 There is a significant disadvantage in using type-safe messages with support for default values; once the message has been deserialised, you don't know what the original payload contained.
 
-Following the previous example with the `SetLogLevel` data class, it is possible to receive a message with just a `processName` value; you will still have default values for all the other fields because of the automatic defaults. This causes problems where you have business logic where those fields were part of the original payload. 
+Following the previous example with the `SetLogLevel` data class, it is possible to receive a message with just a `processName` value; you will still have default values for all the other fields because of the automatic defaults. This causes problems where you have business logic where those fields were part of the original payload.
 
 For example, if you receive a value for the field `expiration` set as 0, you might want to define a different business logic than if the value was never sent in the first place - even though 0 is the same value as the default value.
 
@@ -121,7 +123,8 @@ sealed class DeserializedField {
 ```
 
 So, if we revisit a real-life example for `SetLogLevel` in which we only receive field values for `processName` and `datadump`, the content of `deserializedFields` will be a `Map` with the following key values:
-```
+
+``` javascript
 {
   "PROCESS_NAME" : DeserializedField.Simple
   "DATADUMP" : DeserializedField.Simple
@@ -129,7 +132,6 @@ So, if we revisit a real-life example for `SetLogLevel` in which we only receive
 ```
 
 If your message has nested arrays or objects, the `deserializedFields` property will also contain nested structures in the shape of `DeserializedField.Array` and `DeserializedField.Object` types.
-
 
 ## Output messages
 
@@ -158,7 +160,7 @@ sealed class EventSetLogLevelReply : Outbound() {
 }
 ```
 
-These custom reply types allow a predetermined number of customised replies for a single `eventHandler` codeblock, with their type information exposed in the metadata system. They need to be handled carefully, as the internal error-handling mechanism for the Event Handler is only able to handle `EventReply` messages. Therefore, non-captured exceptions and errors will break the type-safety guarantees of the reply. 
+These custom reply types allow a predetermined number of customised replies for a single `eventHandler` codeblock, with their type information exposed in the metadata system. They need to be handled carefully, as the internal error-handling mechanism for the Event Handler is only able to handle `EventReply` messages. Therefore, non-captured exceptions and errors will break the type-safety guarantees of the reply.
 
 :::warning
 IMPORTANT! The success message should always end in `Ack` in order for the internal `eventHandler` logic to handle validation correctly.
@@ -203,7 +205,7 @@ interface GenesisError {
 So by default, all error/warning messages have the following properties, along with any extra properties that are needed to represent the error:
 
 - CODE is the error code, which can be of two types:
-  - [ErrorCode](../error-codes) is the ENUM class that contains a list of different error codes coming from the server
+  - ErrorCode is the ENUM class that contains a list of different error codes coming from the server, as shown below
   - String is used to pass any code that is not part of ErrorCode enum
 
 - TEXT is of type String and contains more detailed information about the error code that is being sent.
@@ -245,7 +247,7 @@ Below is the list of standard error codes, along with their HTTP Status code. Th
 enum class ErrorCode(private val readableString: String, val statusCode: HttpStatusCode)
 ```
 
-##### List of error codes:
+##### List of error codes
 
 | Error Code                           | HTTP status code          |
 |--------------------------------------|---------------------------|
@@ -254,28 +256,28 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 | VALIDATION_ERROR                     | 400 Bad Request           |
 | INVALID_MESSAGE                      | 400 Bad Request           |
 | NOT_SUPPORTED_ENUM_VALUE             | 400 Bad Request           |
-| NOT_AUTHORISED                       | 403 Forbidden             | 
+| NOT_AUTHORISED                       | 403 Forbidden             |
 | DUPLICATE_KEY                        | 500 Internal Server Error |  
 | INVALID_MESSAGE_TYPE                 | 400 Bad Request           |
 | INVALID_DATASOURCE                   | 400 Bad Request           |
 | INVALID_PARAMETER                    | 400 Bad Request           |
-| LOGIN_ERROR                          | 401 Unauthorized          |    
+| LOGIN_ERROR                          | 401 Unauthorized          |
 | MULTIPLE_TABLES                      | 500 Internal Server Error |
-| MISSING_KEY                          | 400 Bad Request           |    
+| MISSING_KEY                          | 400 Bad Request           |
 | UNKNOWN_TABLE                        | 400 Bad Request           |  
 | UNKNOWN_FIELD                        | 400 Bad Request           |  
-| UNKNOWN                              | 500 Internal Server Error |        
+| UNKNOWN                              | 500 Internal Server Error |
 | NO_MESSAGE_TYPE                      | 400 Bad Request           |
 | NO_SOURCE_REF                        | 400 Bad Request           |  
-| NO_USER_NAME                         | 400 Bad Request           |   
-| UNAVAILABLE                          | 503 Service Unavailable   |    
+| NO_USER_NAME                         | 400 Bad Request           |
+| UNAVAILABLE                          | 503 Service Unavailable   |
 | UNKNOWN_MESSAGE_TYPE                 | 400 Bad Request           |
 | FEATURE_NOT_PROVIDED                 | 400 Bad Request           |
 | FEATURE_NOT_FOUND                    | 404 Not Found             |
 | JSON_SCHEMA_NOT_FOUND                | 404 Not Found             |
 | REJECT_RULE_DOES_NOT_EXIST           | 400 Bad Request           |
 | ERROR_CHECKING_EXISTING_RULE         | 400 Bad Request           |
-| NO_DS_NAME                           | 400 Bad Request           |     
+| NO_DS_NAME                           | 400 Bad Request           |
 | INVALID_DS_NAME                      | 404 Not Found             |
 | INVALID_INDEX                        | 400 Bad Request           |  
 | REJECT_RULE_MISSING                  | 404 Not Found             |
@@ -285,14 +287,14 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 | RECORD_NOT_FOUND                     | 404 Not Found             |
 | SERVICE_NOT_FOUND                    | 404 Not Found             |
 | DATABASE_FAILURE                     | 500 Internal Server Error |
-| DATABASE_ERROR                       | 500 Internal Server Error | 
+| DATABASE_ERROR                       | 500 Internal Server Error |
 | OPERATION_TIMEOUT                    | 408 Request Timeout       |
 | DEPENDENT_RECORD_FOUND               | 500 Internal Server Error |
 | REQUIRES_APPROVAL                    | 403 Forbidden             |
 | APPROVAL_MESSAGE_MISSING             | 400 Bad Request           |
-| INTERNAL_ERROR                       | 500 Internal Server Error | 
+| INTERNAL_ERROR                       | 500 Internal Server Error |
 | GATEWAY_ERROR                        | 400 Bad Request           |  
-| REQUEST_FAILED                       | 400 Bad Request           | 
+| REQUEST_FAILED                       | 400 Bad Request           |
 | UNABLE_TO_UPDATE_APPROVAL            | 500 Internal Server Error |
 | APPROVAL_SAME_USER_CANNOT_ACCEPT     | 400 Bad Request           |
 | APPROVAL_RECORD_NOT_FOUND            | 404 Not Found             |
@@ -312,20 +314,22 @@ We use standard HTTP status codes to represent the response status. This is a we
 A single message can contain multiple errors and warnings. Here is how the response status code for the message is allocated:
 
 **Messages with only errors**
+
 - If the message contains a single error, then its code is used as the response status code for the message
 - If the message contains multiple errors with the same code, then this is used as the response status code for the message
 - If the message contains multiple errors with different status codes, then:
-    - for multiple 5xx errors, the response status code is set to 500
-    - for multiple 4xx errors, the response status code is set to the status code of first error
-    - for a mix of 5xx and 4xx errors, the response status code is set to 500
+  - for multiple 5xx errors, the response status code is set to 500
+  - for multiple 4xx errors, the response status code is set to the status code of first error
+  - for a mix of 5xx and 4xx errors, the response status code is set to 500
 
 **Messages with only warnings**
+
 - If there are only warning messages, the response status is set to 400.
 
 **Messages with errors and warnings**
-- If there are both error messages and warning messages, the response status code is based on the error message or messages:
-    - for a single error message or multiple error messages of the same type, this error code is used as the response status code for the message
-    - for multiple 5xx errors, the response status code is set to 500
-    - for multiple 4xx errors, the response status code is set to the status code of first error
-    - for a mix of 5xx and 4xx errors, the response status code is set to 500
 
+- If there are both error messages and warning messages, the response status code is based on the error message or messages:
+  - for a single error message or multiple error messages of the same type, this error code is used as the response status code for the message
+  - for multiple 5xx errors, the response status code is set to 500
+  - for multiple 4xx errors, the response status code is set to the status code of first error
+  - for a mix of 5xx and 4xx errors, the response status code is set to 500
