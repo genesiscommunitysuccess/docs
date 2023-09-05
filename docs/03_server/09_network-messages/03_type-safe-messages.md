@@ -211,7 +211,7 @@ So by default, all error/warning messages have the following properties, along w
 
 - STATUS_CODE is of type ENUM, represented by HttpStatusCode enum class, which corresponds to netty `HttpResponseStatus` and will be used to represent HTTP status of all error/warning messages.
 
-There is also the common interface `GenesisNackReply`, for NACK messages:
+There is also the common interface `GenesisNackReply`, for NACK messages: 
 
 ```kotlin
 interface GenesisNackReply {
