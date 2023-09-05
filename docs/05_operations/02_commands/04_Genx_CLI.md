@@ -34,12 +34,12 @@ The `genx` command has several options available to create, configure or modify 
 | [lint](#lint)   |[folder]       | Lint TypesScript and style files |
 | [upgrade](#upgrade) | [folder]      | upgrade Foundation UI dependencies |
 
-## How to use it
+## How to use genx
 
 There are two main ways to run the Genx CLI:
 
-- standalone - outside of an existing project such as when scaffolding a new project
-- local - within an existing project such as when executing builds within a project
+- standalone - outside of an existing project, such as when scaffolding a new project
+- local - within an existing project, such as when executing builds within a project
 
 ### Standalone
 

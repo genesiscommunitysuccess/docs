@@ -144,7 +144,7 @@ GenesisSet(fields: MutableMap<String, Any?>) | Creates a GenesisSet object using
 | setGenesisSet | setGenesisSet(key: String, set: GenesisSet?) | Embed a set inside this set.  If the value exists in the set it is overwritten. |
 | setInteger | fun setInteger(key: String, value: Int?) | Set integer value.  If the value exists in the set it is overwritten. |
 | setLong | fun setLong(key: String, value: Long?) | Set long value.  If the value exists in the set it is overwritten. |
-| setString | fun setString(key: String, value: String? | Set string value.  If the value exists in the set it is overwritten. |
+| setString | fun setString(key: String, value: String?) | Set string value.  If the value exists in the set it is overwritten. |
 | toString | override fun toString(): String | Returns a pretty-print string. |
 | unSet | fun unSet(field: String) | Shorthand method to unset a single field. |
 | unSetDirect | tailrec fun unSetDirect(property: String, genesisSet: GenesisSet = this) | Shorthand method to unset a field that may be multiple sets deep |

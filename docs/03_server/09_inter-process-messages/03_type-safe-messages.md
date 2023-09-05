@@ -54,7 +54,7 @@ You are free to use all the following types, as long as they are composed using 
 - basic collection types (List, Set and Map)
 - other Kotlin data classes 
 
-All these different types will be understood by the metadata system and exposed accordingly. Kotlin also has nullable and non-nullable types, and the metadata system will expose this information too.
+All these types will be understood by the metadata system and exposed accordingly. Kotlin also has nullable and non-nullable types, and the metadata system exposes this information too.
 
 Annotations such as `@Title` and `@Description` can be used to provide extra information to the front end.
 
@@ -65,7 +65,7 @@ For example:
 
 You can find more information in our page about [metadata annotations](../../../server/inter-process-messages/metadata-annotations/).
 
-## Read-only values
+### Read-only values
 Read-only values can be exposed inside a Kotlin companion object and can be as complex as any other metadata field definition. In the example below, the enhanced `SetLogLevel` class provides information about the default LogLevel:
 
 ```kotlin
@@ -83,11 +83,11 @@ data class SetLogLevel(
 }
 ```
 
-## Deserialised fields
+### Deserialised fields
 
 There is a significant disadvantage in using type-safe messages with support for default values; once the message has been deserialised, you don't know what the original payload contained.
 
-Following the previous example with the `SetLogLevel` data class, it is possible to receive a message with just a `processName` value; you will still have default values for all the other fields because of the automatic defaults. This causes problems where you have business logic where those fields were part of the original payload. 
+Following the previous example with the `SetLogLevel` data class, it is possible to receive a message with just a `processName` value; but you will still have default values for all the other fields because of the automatic defaults. This causes problems where you have business logic where those fields were part of the original payload. 
 
 For example, if you receive a value for the field `expiration` set as 0, you might want to define a different business logic than if the value was never sent in the first place - even though 0 is the same value as the default value.
 
@@ -108,7 +108,7 @@ data class SetLogLevel(
 }
 ```
 
-Any message extending this class will have access to a property called `deserializedFields` of type `Map<String, DeserializedField>` This property provides enough information to reconstruct the values that were part of the original payload.
+Any message extending this class has access to a property called `deserializedFields` of type `Map<String, DeserializedField>` This property provides enough information to reconstruct the values that were part of the original payload.
 
 The `DeserializedField` sealed class definition looks like this:
 
@@ -164,7 +164,7 @@ These custom reply types allow a predetermined number of customised replies for 
 IMPORTANT! The success message should always end in `Ack` in order for the internal `eventHandler` logic to handle validation correctly.
 :::
 
-### Error messages
+## Error messages
 
 There is a common format for error or warning messages sent between server and client. The message format is the same for all HTTP and WebSocket messages that we support:
 
@@ -202,8 +202,8 @@ interface GenesisError {
 
 So by default, all error/warning messages have the following properties, along with any extra properties that are needed to represent the error:
 
-- CODE is the error code, which can be of two types:
-  - [ErrorCode](../error-codes) is the ENUM class that contains a list of different error codes coming from the server
+- [CODE](#error-codes) is the error code, which can be of two types:
+  - ErrorCode is the ENUM class that contains a list of different error codes coming from the server
   - String is used to pass any code that is not part of ErrorCode enum
 
 - TEXT is of type String and contains more detailed information about the error code that is being sent.
@@ -221,7 +221,7 @@ interface GenesisNackReply {
 
 The interface `GenesisNackReply` with MESSAGE_TYPE and SOURCE_REF fields represents the whole error or warning message that is sent to the API client.
 
-## Types of Nack message
+### Types of Nack message
 
 These are the main types of Nack (error or warning) message. Most of them are sent either as EVENT_NACK or MSG_NACK:
 
@@ -243,7 +243,7 @@ The `ErrorCode` class definition is:
 enum class ErrorCode(private val readableString: String, val statusCode: HttpStatusCode)
 ```
 
-Below is the list of standard error codes, along with their HTTP Status code. The framework implementation is standardised to provide error code `CODE` as Enum represented by `ErrorCode` class, but it also provides the flexibility to include any error code.
+Below is the list of standard error codes, along with their HTTP Status code. The framework implementation is standardised to provide error code `CODE` as Enum represented by the `ErrorCode` class, but it also provides the flexibility to include any error code.
 
 | Error Code                           | HTTP status code          |
 |--------------------------------------|---------------------------|
@@ -303,7 +303,7 @@ Below is the list of standard error codes, along with their HTTP Status code. Th
 | MISSING_HOSTNAME                     | 400 Bad Request           |
 | NUMBER_OF_RECORDS_DOES_NOT_MATCH     | 400 Bad Request           |
 
-##### HTTP status code
+#### HTTP status code
 
 We use standard HTTP status codes to represent the response status. This is a well-known standard that is easy to understand. It is internally represented by the `HttpStatusCode` enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html).
 
