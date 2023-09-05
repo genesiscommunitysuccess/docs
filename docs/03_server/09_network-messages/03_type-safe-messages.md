@@ -166,7 +166,7 @@ These custom reply types allow a predetermined number of customised replies for 
 IMPORTANT! The success message should always end in `Ack` in order for the internal `eventHandler` logic to handle validation correctly.
 :::
 
-### Error messages
+## Error messages
 
 There is a common format for error or warning messages sent between server and client. The message format is the same for all HTTP and WebSocket messages that we support:
 
@@ -223,7 +223,7 @@ interface GenesisNackReply {
 
 The interface `GenesisNackReply` with MESSAGE_TYPE and SOURCE_REF fields represents the whole error or warning message that is sent to the API client.
 
-#### Types of Nack message
+### Types of Nack message
 
 These are the main types of Nack (error or warning) message. Most of them are sent either as EVENT_NACK or MSG_NACK:
 
@@ -237,17 +237,16 @@ These are the main types of Nack (error or warning) message. Most of them are se
 | EVENT_LOGIN_DETAILS_NACK | used when there is an issue with provided login details: USER_NAME or SESSION_AUTH_TOKEN    |
 | CREATE_MFA_SECRET_NACK   | used when there is an issue with creation of MFA secret                                     |
 
-#### Error codes
+### Error codes
 
-Below is the list of standard error codes, along with their HTTP Status code. The framework implementation is standardised to provide error code `CODE` as Enum represented by `ErrorCode` class, but it also provides the flexibility to include any error code.
-
-##### ErrorCode class definition
+The `ErrorCode` class definition is:
 
 ```kotlin
 enum class ErrorCode(private val readableString: String, val statusCode: HttpStatusCode)
 ```
 
-##### List of error codes
+Below is the list of standard error codes, along with their HTTP Status code. The framework implementation is standardised to provide the error code `CODE` as Enum represented by `ErrorCode` class; however, it provides the flexibility to include any error code.
+
 
 | Error Code                           | HTTP status code          |
 |--------------------------------------|---------------------------|
@@ -307,7 +306,7 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 | MISSING_HOSTNAME                     | 400 Bad Request           |
 | NUMBER_OF_RECORDS_DOES_NOT_MATCH     | 400 Bad Request           |
 
-##### HTTP status code
+### HTTP status code
 
 We use standard HTTP status codes to represent the response status. This is a well-known standard that is easy to understand. It is internally represented by the `HttpStatusCode` enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html).
 
