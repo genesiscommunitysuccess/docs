@@ -204,7 +204,7 @@ interface GenesisError {
 So by default, all error/warning messages have the following properties, along with any extra properties that are needed to represent the error:
 
 - CODE is the error code, which can be of two types:
-  - [ErrorCode](../error-codes) is the ENUM class that contains a list of different error codes coming from the server
+  - ErrorCode is the ENUM class that contains a list of different error codes coming from the server, as shown below
   - String is used to pass any code that is not part of ErrorCode enum
 
 - TEXT is of type String and contains more detailed information about the error code that is being sent.

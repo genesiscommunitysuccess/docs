@@ -299,7 +299,7 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'INTER-PROCESS MESSAGES',
+      label: 'NETWORK MESSAGES',
       collapsed: true,
       items: [
         {
