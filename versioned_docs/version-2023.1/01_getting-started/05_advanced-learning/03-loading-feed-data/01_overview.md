@@ -56,7 +56,6 @@ GBP3M=135000,S,13387,150121
 ### A real example
 Reality is rarely that convenient. For this example, the incoming data is issuance data from Bloomberg, and its format is considerably more complex.
 
-Here is an [example of the data](../../../01_getting-started/05_advanced-learning/03-loading-feed-data/03_example-source-data.md/) you can download from the Bloomberg Issuance feed.
 
 Once you know this format, you need to create code that maps the fields so that they can be written to a table in your application.
 
@@ -88,8 +87,7 @@ The code does three things:
 -	It sets an initial delay before checking the file (5 seconds). It locks the source files in case you are running the application on multiple servers.
 -	It uses the Genesis class `FileEventHandlerProcessor` to create an Event Handler called `ISSUANCE_EVENT_HANDLER` and an event called `EVENT_FILE_IMPORT_BBG_ISSUANCE`. This class generates a single message containing the raw contents of file. (There is also a file process called `CSVEventHandlerProcessor`, which performs an initial parsing of the contents to generate messages of fields and data.)
 
-The code includes parameters, such as **move**.  There is a [huge range of other parameters]( https://camel.apache.org/components/2.x/file-component.html#_query_parameters_87_parameters
-) that can be used.
+The code includes parameters, such as **move**.  There is a [huge range of other parameters](https://camel.apache.org/components/4.0.x/file-component.html#_query_parameters_87_parameters) that can be used.
 
 ### Finding the generated messages
 
