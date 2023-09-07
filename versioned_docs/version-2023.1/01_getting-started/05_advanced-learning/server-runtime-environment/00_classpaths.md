@@ -68,7 +68,7 @@ This is what happens:
 
 This gives you two ways of creating a module, such as an Event Handler:
 
-- You can use the standard pal-eventhandler jar in the framework as the base module, and add custom types using the `classpath` tag.
+- You can use the standard pal-eventhandler jar in the framework as the base module, and add custom types using the `classpath` tag. This is, effectively the default.
 - Or, you can create a custom module in your project. You then add dependencies on the eventhandler jar from the framework, as well as any custom jars that the module needs. You can then use that jar as the base module in the process definition without any need for a `classpath` tag.
 
 Both these methods are equally valid.
