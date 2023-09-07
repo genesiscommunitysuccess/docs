@@ -40,7 +40,7 @@ The task we are particularly interested in here is called `Manifest Creation`. T
 
 If you want to see what this manifest file looks like, then you can look inside the jar file. A [jar file](https://www.geeksforgeeks.org/jar-files-java/) is just a fancy zip file, so you can unpack or open it with any standard archive manipulation tool, like WinZip or 7Zip on Windows, or the zip command-line utility on Unix.
 
-The manifest can be found in the **META-INF/MANIFEST.MF** file in the jar root.
+The manifest is located in the **META-INF/MANIFEST.MF** file in the jar root.
 
 ### Building the distribution
 The project distribution module contains all the configuration for creating a Genesis server distribution. The distribution is basically just a zip/tar file (both are produced, although the tar is less widely used) with a specific structure.
