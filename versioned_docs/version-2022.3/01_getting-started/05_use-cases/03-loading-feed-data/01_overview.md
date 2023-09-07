@@ -88,8 +88,7 @@ The code does three things:
 -	It sets an initial delay before checking the file (5 seconds). It locks the source files in case you are running the application on multiple servers.
 -	It uses the Genesis class `FileEventHandlerProcessor` to create an Event Handler called `ISSUANCE_EVENT_HANDLER` and an event called `EVENT_FILE_IMPORT_BBG_ISSUANCE`. This class generates a single message containing the raw contents of file. (There is also a file process called `CSVEventHandlerProcessor`, which performs an initial parsing of the contents to generate messages of fields and data.)
 
-The code includes parameters, such as **move**.  There is a [huge range of other parameters]( https://camel.apache.org/components/2.x/file-component.html#_query_parameters_87_parameters
-) that can be used.
+The code includes parameters, such as **move**.  There is a [huge range of other parameters](https://camel.apache.org/components/4.0.x/file-component.html#_query_parameters_87_parameters) that can be used.
 
 ### Finding the generated messages
 
