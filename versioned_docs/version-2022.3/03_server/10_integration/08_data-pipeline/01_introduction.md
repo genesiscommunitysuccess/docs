@@ -10,7 +10,7 @@ tags:
   - introduction
 ---
 
-Genesis Data Pipelines is a feature that allows you to stream data in and/or out of your Genesis application.
+Genesis Data Pipelines enables you to stream data into and out of your Genesis application.
 
 Each Data Pipeline defines a source, some mapping operations and a sink.
 
@@ -29,6 +29,7 @@ Each Data Pipeline defines a source for the data and maps that data to each [fie
 If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function that returns `Any`.
 
 Here is a sample configuration:
+
 ```kotlin
 pipelines {
 
@@ -75,6 +76,7 @@ Once your Genesis application is running, data ingestion will take place.
 Data Pipelines can also be defined to listen to changes within your application's database and react to these changes. These changes can be mapped and then sinked into an external database.
 
 Here is a sample configuration:
+
 ```kotlin
 val postgresConfig = postgresConfiguration(
     databaseName = "test",
@@ -133,9 +135,9 @@ The currently supported sources are:
 
 ## Supported sinks
 
-Ingress:
+**Ingress:**
 - Genesis database (default)
 - Custom sinks
 
-Egress:
+**Egress:**
 - All SQL based databases over JDBC are supported.

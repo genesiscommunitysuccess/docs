@@ -154,7 +154,7 @@ There are examples of how to retrieve properties from an application's system de
 Genesis enables you to store encrypted values in the configuration. You can access the encrypted values from custom components using:
 
 - `ByteArrayProvider`
-- [`getItem()`](../../inter-process-messages/genesisSet/#functions)
+- [`getItem()`](../../network-messages/genesisSet/#functions)
 
 By default, you can inject those values into your classes using a syntax such as: 
 

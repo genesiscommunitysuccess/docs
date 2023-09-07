@@ -188,7 +188,7 @@ eventHandler {
 }
 ```
 
-See more information about how to define type-safe messages [here](../../../server/inter-process-messages/type-safe-messages/).
+See more information about how to define type-safe messages [here](../../../server/network-messages/type-safe-messages/).
 
 ## Pending approvals
 
@@ -454,7 +454,7 @@ pendingApproval {
 
 You might have noticed that the original type-safe event message types are lost inside the **-approval.kts** file, as the content of `eventMessage` inside `APPROVAL` table (and also inside `PendingApprovalInsert`) is a serialised JSON string. You can deserialise the original type-safe objects using the `selectPredicate` method combined with multiple `onEvent` predicates. These methods are available in all the `pendingApproval` code blocks: `insert`, `accept`, `cancel` and `reject`.
 
-- `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function  provides a [GenesisSet](../../../server/inter-process-messages/genesisset/) object with the contents of the original message payload.
+- `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function  provides a [GenesisSet](../../../server/network-messages/genesisset/) object with the contents of the original message payload.
 - `onEvent` works very similarly to any other GPAL [Event Handler definition](#defining-an-event-handler-in-gpal). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
 
 
