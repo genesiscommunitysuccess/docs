@@ -335,7 +335,7 @@ The `upgrade` command updates Foundation UI NPM module dependency versions regar
 
 This command can be used with the following parameters:
 
-|Parameter | Argument  | Description | Local ignature |
+|Parameter | Argument  | Description | Local signature |
 |----------|-----------|-------------|-----------|
 |`-r` or `--respect-version-ranges`| | Update within package.json version ranges (defaults to latest otherwise) | `genx upgrade --respect-version-ranges` |
 | `-x` or `--exclude` | `<list>` | Comma-separated list of packages to exclude | `genx upgrade --exclude tslib` |
