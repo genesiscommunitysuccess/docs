@@ -20,7 +20,7 @@ Used in [Connected Data](../../../../../web/web-components/grids/grid-pro/grid-p
 
 - **`fields: boolean`**: Similar to `request` but for [Data Server](../../../../../server/data-server/introduction/) scenarios. This optional parameter allows you to select a subset of fields from the query if the client is not interested in receiving all of them. Example: "TRADE_ID QUANTITY PRICE INSTRUMENT_ID". By default all fields are returned if this option is not specified.
 
-- **`isSnapshot: boolean`**: Defaults to false. 
+- **`isSnapshot: boolean`**: Defaults to false.
 
 - **`max-rows: number`**: Maximum number of rows to be returned as part of the initial message, and as part of any additional MORE_ROWS messages
 
@@ -36,7 +36,7 @@ Used in [Connected Data](../../../../../web/web-components/grids/grid-pro/grid-p
 
 - **`reverse: boolean`**: This option changes the [Data Server index](../../../../../database/data-types/index-entities/) iteration. For example, if you are using the default index, they query will return rows from newest database records to oldest.
 
-- **`polling-interval: number`**: This option allows you to set a custom polling frequency (in milliseconds) for a [request server](../../../../server/request-server/introduction/) resource. Note that this option only works with request server, if you resource is a dataserver, your grid is updated in real time.
+- **`polling-interval: number`**: This option allows you to set a custom polling frequency (in milliseconds) for a [request server](../../../../../server/request-server/introduction/) resource. Note that this option only works with request server, if you resource is a dataserver, your grid is updated in real time.
 
 ### examples
 

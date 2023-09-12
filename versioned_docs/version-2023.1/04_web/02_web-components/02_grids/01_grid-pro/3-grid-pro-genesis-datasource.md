@@ -3,11 +3,11 @@ id: grid-pro-genesis-datasource
 title: Grid Pro - Genesis datasource
 keywords: [web, web components, grid, grid pro, datasource]
 tags:
-- web
-- web components
-- grid
-- grid pro
-- datasource
+    - web
+    - web components
+    - grid
+    - grid pro
+    - datasource
 ---
 
 Used in [Connected Data](../../../../../web/web-components/grids/grid-pro/grid-pro-connected/) scenarios, this will fetch data from a Genesis server (or any other server that implements the Genesis protocol).
@@ -36,7 +36,7 @@ Used in [Connected Data](../../../../../web/web-components/grids/grid-pro/grid-p
 
 - **`reverse: boolean`**: This option changes the [Data Server index](../../../../../database/data-types/index-entities/) iteration. For example, if you are using the default index, they query will return rows from newest database records to oldest.
 
-- **`polling-interval: number`**: This option allows you to set a custom polling frequency (in milliseconds) for a [request server](../../../../server/request-server/introduction/) resource. Note that this option only works with request server, if you resource is a dataserver, your grid is updated in real time.
+- **`polling-interval: number`**: This option allows you to set a custom polling frequency (in milliseconds) for a [request server](../../../../../server/request-server/introduction/) resource. Note that this option only works with request server, if you resource is a dataserver, your grid is updated in real time.
 
 ### examples
 
