@@ -40,9 +40,9 @@ Used in [Connected Data](../../../../../web/web-components/grids/grid-pro/grid-p
 
 ### examples
 
-Here is an example using `grid-pro-genesis-datasource` with a maximum number of displayed to 5 and setting up `moving_view`:
+Here is an example using `grid-pro-genesis-datasource` with a maximum number of displayed to 5 and setting up `moving-view`:
 
-```typescript title="Example of moving_view"
+```typescript title="Example of moving-view"
 <alpha-grid-pro>
     <grid-pro-genesis-datasource 
         resource-name="ALL_TRADE"
@@ -53,7 +53,7 @@ Here is an example using `grid-pro-genesis-datasource` with a maximum number of 
 ...
 ```
 
-Below you find an example of `grid-pro-genesis-datasource` including `max-row`, `max-view`, `moving_view`, `fields`, `isSnapshot` and `resource-name`
+Below you find an example of `grid-pro-genesis-datasource` including `max-row`, `max-view`, `moving-view`, `fields`, `isSnapshot` and `resource-name`
 
 ```typescript title="Using a grid-pro with grid-pro-genesis-datasource"
 <alpha-grid-pro>
