@@ -47,7 +47,7 @@ Here is an example using `grid-pro-genesis-datasource` with a maximum number of 
     <grid-pro-genesis-datasource 
         resource-name="ALL_TRADE"
         max-view="4"
-        max-view="true" />
+        moving-view="true" />
     ...
 </alpha-grid-pro>
 ...
@@ -63,7 +63,7 @@ Below you find an example of `grid-pro-genesis-datasource` including `max-row`, 
         fields="PROCESS_NAME LOG_LEVEL" 
         max-view="4"
         max-row="5"
-        max-view="true" />
+        moving-view="true" />
     ...
 </alpha-grid-pro>
 ...
