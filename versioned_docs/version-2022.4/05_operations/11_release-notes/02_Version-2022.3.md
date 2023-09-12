@@ -15,10 +15,10 @@ This is version v2022.3 of the documentation for the Genesis low-code platform.
 
 The basis of this version is:
 
-| part of stack | version | 
-|---------------|---------|
-| server        | 6.2.3   |  
-| web           | 5.0.0   |   
+| part of stack | initial version | final version |
+|---------------|-----------------|---------------|
+| server        | 6.2.3           | 6.3.3         |  
+| web           | 5.0.0           | 5.0.1         |    
 
 Release date: November 07, 2022. 
 

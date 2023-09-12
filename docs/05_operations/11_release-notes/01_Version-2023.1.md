@@ -17,8 +17,8 @@ The basis of this version is:
 
 | part of stack | version | 
 |---------------|---------|
-| server        | 6.5.1   |  
-| web           | 6.0.0   |   
+| server        | 6.5.1 **+**   |  
+| web           | 10.5.0 **+**  |   
 
 Release date: February 28, 2023. 
 
