@@ -44,8 +44,8 @@ The main steps in loading the data are:
 
 ## Source data
 ### A simple example
-The simplest example of a source file would be a csv, where row 1 would always be the headers. These headers could directly be mapped to fields in your application’s database.
-For example
+The simplest example of a source file is a csv, where row 1 is always the headers. These headers could directly be mapped to fields in your application’s database.
+For example:
 ```bash
 INSTRUMENT,QUANTITY,TRADEPRICE,DATE
 GBP1M=,80000,B,1.3211,140121
