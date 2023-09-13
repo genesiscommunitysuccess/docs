@@ -17,8 +17,8 @@ The basis of this version is:
 
 | part of stack | version | 
 |---------------|---------|
-| server        | 6.4.0   |  
-| web           | 6.0.0   |   
+| server        | 6.4.0 **+**  |  
+| web           | 6.0.0 **+**  | 
 
 Release date: December 19, 2022. 
 
