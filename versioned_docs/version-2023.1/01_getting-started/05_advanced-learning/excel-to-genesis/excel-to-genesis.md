@@ -124,7 +124,7 @@ fields {
 }
   
 ```
-You can see the whole file [here](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-5).
+You can see the whole file [here](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-11).
 ### Field types
 The fields are automatically sampled by the command to allocate a type. If it is not sure, it allocates the field as `STRING`. Most of these will be correct, but you will need to handle exceptions.
 ### Long names and illegal characters
@@ -164,7 +164,7 @@ tables {
     }
   
 ```
-You can see the whole table's file [here](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-12). Table IDs are sequential from the first one created, starting with the `-t` number supplied when you ran the script.
+You can see the complete file [here](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-12). Table IDs are sequential from the first one created, starting with the `-t` number supplied when you ran the script.
 ### Unable to parse
 If the conversion process was not able to parse a field, this is clearly marked by the comment. For example:
 ```kotlin

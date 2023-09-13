@@ -81,7 +81,7 @@ ExcelToGenesis -f euc\\ demo\\ cash\\ mgmt.xlsx -n cash -t 10000
 ```
 
 :::info
-The above command assumes you have already set up the genesis platform on your machine and have the `ExcelToGenesis` CLI tool available.
+The above command assumes you have already set up the Genesis low-code platform on your machine and have the `ExcelToGenesis` CLI tool available.
 :::
 
 The process is quick. It creates a number of tables. Each table has a numeric ID, starting with the number 10000 that you supplied in the command. The dictionary files produced all include the product name **Cash**, which you supplied with the command.
