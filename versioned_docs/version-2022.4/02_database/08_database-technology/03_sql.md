@@ -9,14 +9,19 @@ tags:
     - sql
 ---
 
-SQL support covers PostgreSQL, MS SQL Server and Oracle.
+If you want to use an SQL database for your Genesis application, the following technologies are supported:
 
-This page covers the common configuration required to get each of these databases working in your Genesis application, although additional configuration is required for PostgreSQL. Additional details can be found on the respective docs.
+- PostgreSQL
+- MS SQL Server
+- Oracle
 
-## System definitions
+This page covers the common configuration options for setting up these databases in your Genesis application. Then, for each technology, it gives details of jdbc URL formats for connecting to the database, along with any other specific requirements.
 
-The following system definition items should be present in your **genesis-system-definitions.kts** file:
+Finally, since the first thing you will need to do is to provide a username and password to connect, we provide some simple examples of configurations that achieve this.
 
+## Common system definitions
+
+Whichever SQL technology you are using, you need to configure it correctly in your **[genesis-system-definitions.kts](../../../server/configuring-runtime/system-definitions/)** file. The following settings are available for you to add. The `DbHost` setting is mandatory. *All settings apply at the JVM level.*
 
 | Setting                    | Description                                                                                                                                                                                                                                                                                                                                                              |  
 |----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -46,7 +51,7 @@ In addition to the standard connection parameters, the URL accepts several addit
 
 More information on connection configuration can be found [in the jdbc documentation](https://jdbc.postgresql.org/documentation/head/connect.html).
 
-If you want PostgreSQL to work with different namespaces/schemas you need to add following system definition items in your **genesis-system-definitions.kts** file:
+If you want PostgreSQL to work with different namespaces/schemas' you need to add following system definition items in your **genesis-system-definitions.kts** file:
 
 | Setting     | Description                                                                                                                                                                                                                           |
 |-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -55,7 +60,7 @@ If you want PostgreSQL to work with different namespaces/schemas you need to add
 
 ### MS SQL
 
-JDBC URI takes the following form:
+The JDBC URL takes the following form:
 
 `jdbc:sqlserver://serverName[\instanceName][:port]][;property=value[;property=value]`
 
@@ -75,14 +80,14 @@ You can also consult the SSL documentation for [MSSQL JDBC driver documentation]
 
 ### Oracle
 
-JDBC URI can take the following forms:
+The JDBC URL can take the following forms:
 
 `jdbc:oracle:thin:[username/password]@[protocol]//host[:port][/service_name]`
 
 `jdbc:oracle:thin:[username/password]@host[:port]:sid`
 
 - `username/password`, `protocol`, `port`, and `service_name` are optional
-- The default `username/password` are both null. If unprovided, a connection will attempt to use standard connection parameters
+- The default `username/password` are both null. If these are not provided, a connection will attempt to use standard connection parameters
 - The default protocol is `tcp`
 - The default value for `port` is `1521`
 
@@ -96,6 +101,7 @@ For a full list of connection properties, including encryption and certificate a
 ## Sample configurations
 
 ### User name and password as part of the Connection URL
+In this case, the username and password are unencrypted. This is not recommended for Production environments.
 
 ```kotlin
 systemDefinition {
@@ -110,6 +116,7 @@ systemDefinition {
 ```
 
 ### User name and password as system definition items
+In this case, the username and password are unencrypted. This is not recommended for Production environments.
 
 ```kotlin
 systemDefinition {
@@ -126,6 +133,7 @@ systemDefinition {
 ```
 
 ### User name and password as encrypted system environment variables
+In this case, the username and password have been encrypted.
 
 ```kotlin
 systemDefinition {

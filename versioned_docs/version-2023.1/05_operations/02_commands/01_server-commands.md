@@ -49,13 +49,20 @@ For full details, see our page on [DbMon](../../../operations/commands/dbmon).
 The `DropTable` command removes all rows from the specified tables.
 
 ### Syntax 
-The command takes a flag of `-t`, followed by a list of space-separated table names, for example:
+The command takes a flag of `-t`, followed by a list of space-separated table names:
+
+##
+| Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
+|----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
+| -t       | [TABLES]    | no        | the name of the table to have its rows removed; for more than one table, this must be a space-separated list | none | all records are removed from all tables |
+
+For example:
 
 ```bash
 DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
 ```
 
-The command will ask you to confirm the removal of each table.
+The command will ask you to confirm the removal of the contents from each table.
 
 ## DumpIt 
 
