@@ -53,7 +53,7 @@ All process configuration is stored within **$GC**.
 
 The `remap` command reads all the dictionary files from **$GC** and performs the following tasks:
 
-- remaps the memory-resident database, taking into account amy changes to the dictionary files 
+- remaps the memory-resident database, taking into account any changes to the dictionary files 
 - generates dao objects based on the dictionary tables, so you can perform database operations in a type-safe way
 - if you are running Aerospike or FDB, it updates the Genesis alias store; for Aerospike, it also generates UDFs (user defined functions)
 

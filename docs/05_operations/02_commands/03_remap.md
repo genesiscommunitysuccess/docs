@@ -17,8 +17,8 @@ Remap is a schema-migration tool that applies the current schema (defined in the
 
 Remap should be run in the following scenarios:
 
-- If the Genesis Server Framework or any Genesis server component has been upgraded, which could include schema changes.
-- If a new version of an application is deployed and any dictionary file has changed (this means changes to fields, tables, or views GPAL).
+- Whenever the Genesis Server Framework or any Genesis server component has been upgraded, which could include schema changes.
+- Whenever a new version of an application is deployed and any dictionary file has changed (this means changes to fields, tables, or views GPAL).
 
 ## Syntax
 
@@ -71,21 +71,22 @@ No changes
 To commit the changes to the database, use the `--commit` argument.
 
 :::note
-If no changes between the schema files and the current database schema are detected, remap will not perform any action.
+If no changes between the schema files and the current database schema are detected, remap does not perform any further action.
 :::
 
 ## How it works
 
 For clarity, we refer here to the schema being used by the database layer as "schema" and the current file system schema as "dictionaries".
 
-When you initially deploy your application to the platform, `remap` generates the schema from the dictionaries. No changes will be required as there is no existing schema.
-The next time you run `remap` this previously generated schema will be compared against the dictionaries to find any changes.
+When you initially deploy your application to the platform, `remap` generates the schema from the dictionaries. No changes will be required, as there is no existing schema.
 
-Once it has finished the comparison, it will print the change list (see above), and if the "--commit" option was provided, it will attempt to modify the current schema to match the deployed dictionaries.
+The next time you run `remap` this previously generated schema is compared with the dictionaries to find any changes.
 
-Once generated, `remap` then re-generates code (i.e. database entities and repositories) based on the schema to ensure that the deployed application works as expected. This step can be time- and memory-consuming, and we have already implemented the option to deploy the generated code directly as part of the application package, instead of relying on remap for re-generating the code every time.
+Once it has finished the comparison, it prints the change list (see above), and if the `"`--commit` option was provided, it attempts to modify the current schema to match the deployed dictionaries.
 
-The `remap` command will return `0` if everything is successful, and any other number if something has gone wrong.
+Once generated, `remap` then re-generates code (i.e. database entities and repositories), based on the schema to ensure that the deployed application works as expected. This step can be time- and memory-consuming, and we have already implemented the option to deploy the generated code directly as part of the application package, instead of relying on remap for re-generating the code every time.
+
+The `remap` command returns `0` if everything is successful, and any other number if something has gone wrong.
 
 ### Additional operations
 
