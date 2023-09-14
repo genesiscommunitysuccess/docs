@@ -143,6 +143,7 @@ You start by adding elements to the template:
 export const OrderTemplate = html<Order>`
 <div class="row-split-layout">
     <div class="column-split-layout">
+      <span>Instrument</span>
       <zero-select>Instrument</zero-select>
       <label>Last price</label>
       <zero-text-field type="number">Quantity</zero-text-field>
@@ -157,7 +158,6 @@ export const OrderTemplate = html<Order>`
 Add to your `order.styles.ts` the following, so you get a nice look on your forms
 
 ```ts title="order.styles.ts"
-export const OrderStyles = css`
 import {css} from "@microsoft/fast-element";
 import { mixinScreen } from '../../styles';
 
