@@ -81,7 +81,7 @@ ExcelToGenesis -f euc\\ demo\\ cash\\ mgmt.xlsx -n cash -t 10000
 ```
 
 :::info
-The above command assumes you have already set up the genesis platform on your machine and have the `ExcelToGenesis` CLI tool available.
+The above command assumes you have already set up the Genesis low-code platform on your machine and have the `ExcelToGenesis` CLI tool available.
 :::
 
 The process is quick. It creates a number of tables. Each table has a numeric ID, starting with the number 10000 that you supplied in the command. The dictionary files produced all include the product name **Cash**, which you supplied with the command.
@@ -124,7 +124,7 @@ fields {
 }
   
 ```
-You can see the whole file [here](../../../getting-started/use-cases/excel-to-genesis/Files/guide-5).
+You can see the whole file [here](../../../getting-started/use-cases/excel-to-genesis/Files/guide-11).
 #### Field types
 The fields are automatically sampled by the command to allocate a type. If it is not sure, it allocates the field as `STRING`. Most of these will be correct, but you will need to handle exceptions.
 #### Long names and illegal characters
@@ -164,7 +164,7 @@ tables {
     }
   
 ```
-You can see the whole table's file [here](../../../getting-started/use-cases/excel-to-genesis/Files/guide-12). Table IDs are sequential from the first one created, starting with the `-t` number supplied when you ran the script.
+You can see the complete file [here](../../../getting-started/use-cases/excel-to-genesis/Files/guide-12). Table IDs are sequential from the first one created, starting with the `-t` number supplied when you ran the script.
 #### Unable to parse
 If the conversion process was not able to parse a field, this is clearly marked by the comment. For example:
 ```kotlin

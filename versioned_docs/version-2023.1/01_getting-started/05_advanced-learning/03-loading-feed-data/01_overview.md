@@ -56,6 +56,7 @@ GBP3M=135000,S,13387,150121
 ### A real example
 Reality is rarely that convenient. For this example, the incoming data is issuance data from Bloomberg, and its format is considerably more complex.
 
+Here is an [example of the data](../../../01_getting-started/05_advanced-learning/03-loading-feed-data/03_example-source-data.md/) you can download from the Bloomberg Issuance feed.
 
 Once you know this format, you need to create code that maps the fields so that they can be written to a table in your application.
 
