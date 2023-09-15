@@ -60,13 +60,13 @@ The `DropTable` command removes all rows from the specified tables.
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
 | -t       | [TABLES]    | no        | the name of the table to have its rows removed; for more than one table, this must be a space-separated list | none | all records are removed from all tables |
 
-The example below removes the rows from three separate tables:
+The example below removes all the rows from three separate tables:
 
 ```bash
 DropTable -t EQUITY_ORDERS_GB EQUITY_ORDERS_DE EQUITY_ORDERS_IT
 ```
 
-The command will ask you to confirm the removal of each table.
+The command will ask you to confirm the removal of the content from each table.
 
 ## DumpIt
 To copy data from a Genesis database, use the `DumpIt` command.
