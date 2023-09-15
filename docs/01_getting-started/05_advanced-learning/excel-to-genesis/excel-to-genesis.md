@@ -171,7 +171,7 @@ If the conversion process was not able to parse a field, this is clearly marked 
 ```kotlin
    CURRENT_FUNDING_POSN                                                 // P unable to parse: IFERROR(VLOOKUP(A2,GLFHoldingsRange,3,FALSE),0); see log for details
  ```
-You will have to deal with this, perhaps by creating a consolidator.
+You will have to deal with this, perhaps by creating a Consolidator.
 ### Primary key
 The first column in each worksheet is always used as the primary key for the table.
 The process is able to handle concatenations in Excel. For example, in the Cash Mvmnt Orders sheet, column A contains a combination of columns B and C:
@@ -196,7 +196,7 @@ Consequently, the conversion has used both these fields to create the primary ke
     }
 ```
 ### The view file
-Inside the file `cash-view-dictionary.kts`, you can see that the script has been able to find where tables need joins. Exceptions are highlighted.
+Inside the file **cash-view-dictionary.kts**, you can see that the script has been able to find where tables need joins. Exceptions are highlighted.
 In the example here, the first worksheet has been converted. This has created a view with two joins successfully. But it has not been possible to create a third join:
 
 ```kotlin
