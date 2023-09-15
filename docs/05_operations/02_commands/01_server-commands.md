@@ -772,6 +772,16 @@ You need to provide:
 
 Remap is a schema-migration tool used to apply the current schema (defined in the deployed field and table GPAL dictionaries) to the underlying database layer used by the Genesis low-code platform.
 
+The `remap` command performs the following tasks:
+
+- It reads all dictionary files (fields.kts, tables.kts and view.kts) from **$GC** and compares these to the previously generated schema. It uses these changes to remap the memory-resident database.
+- It generates dao objects based on the dictionary tables, so you can perform database operations in a type-safe way.
+- If you are running Aerospike or FDB, it updates the Genesis alias store; for Aerospike, it also generates UDFs (user defined functions).
+
+If you run `remap` with no arguments, it simply gives a report of changes that exist in the configuration.
+
+If you want to commit the changes to the database, you must use the **--commit** argument:
+
 ```bash
 remap [-c | --commit]
 ```
@@ -779,7 +789,7 @@ remap [-c | --commit]
 For full details, see our page on [Remap](../../../operations/commands/remap).
 
 ## RenameFields 
-This script is used to rename a field name in a database without changing the dictionary or config files.
+This command is used to rename a field name in a database without changing the dictionary or config files.
 
 ### Syntax
 The `RenameFields` command takes two arguments; both of which are mandatory:
