@@ -132,8 +132,7 @@ webHandlers {
 
 ### File uploads
 
-To support file uploads, the `multipartEndpoint` function can be used. This function will parse the request body
-as a multipart request and make the files available in the `fileUploads` property of the `handleRequest` block.
+To support file uploads, use the `multipartEndpoint` function. This function parses the request body as a multipart request and makes the files available in the `fileUploads` property of the `handleRequest` block.
 
 ```kotlin
 webHandlers {
@@ -150,11 +149,10 @@ webHandlers {
 
 ## Permissioning and Authorization
 
-Endpoints support a permissioning model very similar to event handlers and request servers. The `permission` function
-has different options for: 
+Endpoints support a permissioning model very similar to Event Handlers and Request Servers. The `permission` function has different options for: 
 * requiring specific permission codes
-* entity level authorization on the input - similar to event handlers
-* entity level filtering on the output - similiar to request servers
+* entity-level authorization on the input - similar to Event Handlers
+* entity-level filtering on the output - similar to Request Servers
 
 Furthermore, endpoints can be made available to unauthenticated users in the config block.
 
@@ -175,10 +173,9 @@ webHandlers {
 }
 ```
 
-### Entity level authorization - input 
+### Entity-level authorisation - input 
 
-In this example, the `insert-trade` endpoint is available to all users, however, users can only insert trades in 
-currencies for which they have permission:
+In this example, the `insert-trade` endpoint is available to all users; however, users can only insert trades in currencies for which they have permission:
 
 ```kotlin 
 endpoint<Trade, InsertResult<Trade>>(POST, "auth") {
@@ -193,9 +190,9 @@ endpoint<Trade, InsertResult<Trade>>(POST, "auth") {
 }
 ```
 
-### Entity level filtering - output
+### Entity-level filtering - output
 
-In this example, the `all-trades` endpoint is available to all users, however, users can only see trades for those 
+In this example, the `all-trades` endpoint is available to all users; however, users can only see trades for those 
 currency for which they have access:
 
 ```kotlin
