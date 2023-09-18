@@ -73,7 +73,7 @@ webHandlers {
 
 By default, the returned value is serialised using the default serialiser. However, this is overruled if the return type specified is in the table below. 
 
-If you specify a return type, the value returned will be as per the table below, regardless of the `Accept` header. 
+If you specify a return type, the value returned and the behaviour will be as per the table below, regardless of the `Accept` header. 
 
 However, if the `produces` function is used, then the `Accept` header will always be respected. 
 
@@ -87,9 +87,7 @@ However, if the `produces` function is used, then the `Accept` header will alway
 
 ## Receiving input
 
-Endpoints can also receive input, where the http request includes a body. The body can be parsed
-and will be available in the `body` property of the `handleRequest` block. When endpoints receive input, it is
-necessary to provide type parameters for both the request body and the response type:
+Endpoints can also receive input, where the http request includes a body. The body can be parsed and will be available in the `body` property of the `handleRequest` block. When endpoints receive input, you must provide type parameters for both the request body and the response type:
 
 ```kotlin
 webHandlers {
@@ -103,9 +101,7 @@ webHandlers {
 
 ### Content type
 
-As with producing output, the content type of the request body can be specified using the `accepts` function. An 
-endpoint is able to accept multiple content type. If no content type is specified, then the endpoint will default to 
-accept `application/json`. 
+As with producing output, you can specify the content type of the request body using the `accepts` function. An endpoint is able to accept multiple content types. If no content type is specified, then the endpoint defaults to accept `application/json`. 
 
 These content types are supported out of the box:
 
@@ -130,8 +126,7 @@ webHandlers {
 
 ### File uploads
 
-To support file uploads, the `multipartEndpoint` function can be used. This function will parse the request body
-as a multipart request and make the files available in the `fileUploads` property of the `handleRequest` block.
+To support file uploads, use the `multipartEndpoint` function. This function parses the request body as a multipart request and makes the files available in the `fileUploads` property of the `handleRequest` block.
 
 ```kotlin
 webHandlers {
@@ -146,13 +141,12 @@ webHandlers {
 }
 ```
 
-## Permissioning and Authorization
+## Permissioning and authorisation
 
-Endpoints support a permissioning model very similar to event handlers and request servers. The `permission` function
-has different options for: 
+Endpoints support a permissioning model very similar to Event Handlers and Request Servers. The `permission` function has different options for: 
 * requiring specific permission codes
-* entity level authorization on the input - similar to event handlers
-* entity level filtering on the output - similiar to request servers
+* entity-level authorization on the input - similar to Event Handlers
+* entity-level filtering on the output - similar to Request Servers
 
 Furthermore, endpoints can be made available to unauthenticated users in the config block.
 
@@ -173,10 +167,9 @@ webHandlers {
 }
 ```
 
-### Entity level authorization - input 
+### Entity-level authorisation - input 
 
-In this example, the `insert-trade` endpoint is available to all users, however, users can only insert trades in 
-currencies for which they have permission:
+In this example, the `insert-trade` endpoint is available to all users. However, users can only insert trades in currencies for which they have permission:
 
 ```kotlin 
 endpoint<Trade, InsertResult<Trade>>(POST, "auth") {
@@ -191,10 +184,9 @@ endpoint<Trade, InsertResult<Trade>>(POST, "auth") {
 }
 ```
 
-### Entity level filtering - output
+### Entity-level filtering - output
 
-In this example, the `all-trades` endpoint is available to all users, however, users can only see trades for those 
-currency for which they have access:
+In this example, the `all-trades` endpoint is available to all users; however, users can only see trades for their permissioned currencies:
 
 ```kotlin
 webHandlers {
