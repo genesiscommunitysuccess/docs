@@ -10,21 +10,20 @@ tags:
   - configuring runtime
 ---
 
-Gpal custom endpoints require no configuration beyond the `web-handler.kts` file. No modifications to the
-`processes.xml` file are required. Files will be picked up automatically by the Genesis Router from /script folders.
+Gpal custom endpoints require no configuration beyond the **web-handler.kts** file. No modifications to the **processes.xml** file are required. Files will be picked up automatically by the Genesis Router from **/script** folders.
 
 ## Script modules
 
-If your custom endpoint requires additional dependencies; then these can the `ScriptModules` annotation.
+If your custom endpoint requires additional dependencies, then these can use the `ScriptModules` annotation.
 
-For example to add a dependency on `my-module`, add this to the top of your file:
+For example, to add a dependency on `my-module`, add this to the top of your file:
 
 ```kotlin
 @file:ScriptModules("my-module")
 ```
 
-Will try to find your `my-module` module and add it to the classpath of the script, including all it's dependencies. 
-This will work the same as adding a `<module>` tag to the `processes.xml` file, but on a script level. 
+This code tries to find your `my-module` module and add it to the classpath of the script, including all its dependencies. 
+This has the same effect as adding a `<module>` tag to the **processes.xml** file, but it works on a script level. 
 
 ### Configure Genesis Router
 
