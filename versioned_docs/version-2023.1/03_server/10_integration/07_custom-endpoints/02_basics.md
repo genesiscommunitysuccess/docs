@@ -12,12 +12,12 @@ tags:
 
 To create custom endpoints, you need to define a gpal file of `web-handler.kts`.
 
-Once a `web-handler.kts` is available within your `{product}/script` directory, it will become avaible as an endpoint
+Once a `web-handler.kts` is available within your `{product}/script` directory, it is immediately available as an endpoint
 in the router.
 
 ## Simple endpoint example
 
-Here is a simple custom endpoint that will provide all trades in the database:
+Here is a simple custom endpoint that provides all trades in the database:
 
 ```kotlin
 webHandlers {
@@ -29,15 +29,15 @@ webHandlers {
 }
 ```
 
-This endpoint, if defined in `trade-web-handler.kts` will be available at `trade/all-trades`, for more information
-on [paths see below](#paths).
+This endpoint, if defined in **trade-web-handler.kts**, is available at **trade/all-trades**; for more information on [paths, see below](#paths).
 
 ## Producing output
 
-By default, the `handleRequest` function will infer the output of the endpoint based on the return value of the block.
-This means that when only producing output and not receiving any input, type parameters are not needed.
-This value will be returned as json using the standard serialization mechanism. While this might be sufficient in most
-cases, options are available to customize the output.
+By default, the `handleRequest` function infers the output of the endpoint based on the return value of the block.
+
+So, when you are only producing output and not receiving any input, you do not need type parameters.
+
+The output value is returned as JSON using the standard serialisation mechanism. This is sufficient for most cases, but options are available to customise the output.
 
 ### Content type
 
