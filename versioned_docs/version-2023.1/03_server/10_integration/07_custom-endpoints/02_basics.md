@@ -71,11 +71,11 @@ webHandlers {
 
 ### Return types
 
-By default; the returned value is serialised using the default serialiser. However, this is overruled if the return type is in the table below. 
+By default, the returned value is serialised using the default serialiser. However, this is overruled if the return type specified is in the table below. 
 
 If you specify a return type, the value returned will be as per the table below, regardless of the `Accept` header. 
 
-However, if the `produces` function is used, then the `Accept` header will be respected. 
+However, if the `produces` function is used, then the `Accept` header will always be respected. 
 
 | Return type    | Behaviour                                    | Default Content-Type       |
 |----------------|----------------------------------------------|:---------------------------|
@@ -87,8 +87,8 @@ However, if the `produces` function is used, then the `Accept` header will be re
 
 ## Receiving input
 
-Endpoints can also receive input, this would be when the http request includes a body. The body can be parsed
-and will be available in the `body` property of the `handleRequest` block. When endpoints receive input, it becomes
+Endpoints can also receive input, where the http request includes a body. The body can be parsed
+and will be available in the `body` property of the `handleRequest` block. When endpoints receive input, it is
 necessary to provide type parameters for both the request body and the response type:
 
 ```kotlin
