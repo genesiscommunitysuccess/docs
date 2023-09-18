@@ -29,8 +29,7 @@ webHandlers {
 }
 ```
 
-This endpoint, if defined in the file **trade-web-handler.kts**, is available at `trade/all-trades`. For more information
-on [paths see below](#paths).
+This endpoint, if defined in the file **trade-web-handler.kts**, is available at **trade/all-trades**. For more information on [paths, see below](#paths).
 
 ## Producing output
 
