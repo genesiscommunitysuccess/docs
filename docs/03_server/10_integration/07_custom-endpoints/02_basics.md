@@ -12,12 +12,12 @@ tags:
 
 To create custom endpoints, you need to define a gpal file of `web-handler.kts`.
 
-Once a `web-handler.kts` is available within your `{product}/script` directory, it will become avaible as an endpoint
+Once a `web-handler.kts` is available within your `{product}/script` directory, it is immediately available as an endpoint
 in the router.
 
 ## Simple endpoint example
 
-Here is a simple custom endpoint that will provide all trades in the database:
+Here is a simple custom endpoint that provides all trades in the database:
 
 ```kotlin
 webHandlers {
@@ -29,20 +29,20 @@ webHandlers {
 }
 ```
 
-This endpoint, if defined in `trade-web-handler.kts` will be available at `trade/all-trades`, for more information
+This endpoint, if defined in the file **trade-web-handler.kts**, is available at `trade/all-trades`. For more information
 on [paths see below](#paths).
 
 ## Producing output
 
-By default, the `handleRequest` function will infer the output of the endpoint based on the return value of the block.
-This means that when only producing output and not receiving any input, type parameters are not needed.
-This value will be returned as json using the standard serialization mechanism. While this might be sufficient in most
-cases, options are available to customize the output.
+By default, the `handleRequest` function infers the output of the endpoint based on the return value of the block.
+
+So, if you are only producing output and not receiving any input, you do not need type parameters.
+
+The output value is returned as JSON using the standard serialisation mechanism. This is sufficient for most cases, but options are available to customise the output.
 
 ### Content type
 
-Calling `produces` with a content type will overwrite this default behaviour. The following content types are supported
-out of the box:
+If you want to override the default bahaviour, call `produces` with a content type. The following content types are supported out of the box:
 
 | Content type               | Name in code                           | Data   |
 |----------------------------|:---------------------------------------|--------|
@@ -52,8 +52,7 @@ out of the box:
 | `text/yaml`                | `ContentType.TEXT_YAML`                | YAML   |
 | `text/xml`                 | `ContentType.TEXT_XML`                 | XML    |
 
-Multiple content types can be set in the `produces` call; the client can specify which one is returned by setting the
-`Accept` header. If no `Accept` header is specified, then the first content type will be returned. 
+You can set multiple content types in the `produces` call; the client can specify which one is returned by setting the `Accept` header. If no `Accept` header is specified, then the first content type will be returned. 
 
 ```kotlin
 webHandlers {
@@ -75,23 +74,22 @@ webHandlers {
 
 ### Return types
 
-By default; the returned value will be serialized using the default serializer, however, this is overruled if the
-return type is in the table below. In this case the value will be returned as per the table, regardless of the 
-`Accpet` header. However, if the `produces` function is used, then the `Accept` header will be respected. 
+By default, the returned value will be serialised using the default serialiser; however, this is overruled if the return type is in the table below. 
+
+In this case the value will be returned as per the table, regardless of the 
+`Accept` header. However, if the `produces` function is used, then the `Accept` header will be respected. 
 
 | Return type    | Behaviour                                         | Default Content-Type       |
 |----------------|---------------------------------------------------|:---------------------------|
-| `Unit`         | No response will be returned                      | n/a                        |
-| `String`       | The string will be returned as the response       | n/a                        |
-| `ByteArray`    | The byte array will be returned as the response   | n/a                        |
-| `File`, `Path` | The file will be streamed as the response         | `application/octet-stream` |
-| `InputStream`  | The input stream will be streamed as the response | `application/octet-stream` |
+| `Unit`         | No response is returned                      | n/a                        |
+| `String`       | The string is returned as the response       | n/a                        |
+| `ByteArray`    | The byte array is returned as the response   | n/a                        |
+| `File`, `Path` | The file is streamed as the response         | `application/octet-stream` |
+| `InputStream`  | The input stream is streamed as the response | `application/octet-stream` |
 
 ## Receiving input
 
-Endpoints can also receive input, this would be when the http request includes a body. The body can be parsed
-and will be available in the `body` property of the `handleRequest` block. When endpoints receive input, it becomes
-necessary to provide type parameters for both the request body and the response type:
+Endpoints can also receive input. For this, the http request must include a body. The body can be parsed and will be available in the `body` property of the `handleRequest` block. When endpoints receive input, you must provide type parameters for both the request body and the response type:
 
 ```kotlin
 webHandlers {
@@ -105,9 +103,7 @@ webHandlers {
 
 ### Content type
 
-As with producing output, the content type of the request body can be specified using the `accepts` function. An 
-endpoint is able to accept multiple content type. If no content type is specified, then the endpoint will default to 
-accept `application/json`. 
+As with producing output, you can specify the content type of the request body using the `accepts` function. An endpoint is able to accept multiple content types. If no content type is specified, then the endpoint defaults to accept `application/json`. 
 
 These content types are supported out of the box:
 
@@ -147,11 +143,11 @@ webHandlers {
 }
 ```
 
-## Permissioning and Authorization
+## Permissioning and authorisation
 
 Endpoints support a permissioning model very similar to Event Handlers and Request Servers. The `permission` function has different options for: 
 * requiring specific permission codes
-* entity-level authorization on the input - similar to Event Handlers
+* entity-level authorisation on the input - similar to Event Handlers
 * entity-level filtering on the output - similar to Request Servers
 
 Furthermore, endpoints can be made available to unauthenticated users in the config block.
@@ -192,8 +188,7 @@ endpoint<Trade, InsertResult<Trade>>(POST, "auth") {
 
 ### Entity-level filtering - output
 
-In this example, the `all-trades` endpoint is available to all users; however, users can only see trades for those 
-currency for which they have access:
+In this example, the `all-trades` endpoint is available to all users; however, users can only see trades for the currencies they permissioned to view:
 
 ```kotlin
 webHandlers {
