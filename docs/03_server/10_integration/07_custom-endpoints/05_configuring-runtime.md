@@ -14,7 +14,7 @@ Gpal custom endpoints require no configuration beyond the **web-handler.kts** fi
 
 ## Script modules
 
-If your custom endpoint requires additional dependencies; then these can use the `ScriptModules` annotation. 
+If your custom endpoint requires additional dependencies, then these can use the `ScriptModules` annotation. 
 
 For example, to add a dependency on `my-module`, add this to the top of your file:
 
