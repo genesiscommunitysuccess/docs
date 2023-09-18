@@ -33,13 +33,13 @@ If you define the endpoint in **myapp-web-handler.kts**, it is available at **my
 
 ## Producing output
 
-By default, the `handleRequest` function infers the output of the endpoint based on the return value of the block. So, if you are only producing output and not receiving any input, you do not need type parameters. The output value is returned as JSON, using the standard serialisation mechanism. 
+By default, the `handleRequest` function infers the output of the endpoint from the return value of the block. So, if you are only producing output and not receiving any input, you do not need type parameters. The output value is returned as JSON, using the standard serialisation mechanism. 
 
 This is sufficient for most cases, but you can customise the output.
 
 ### Content type
 
-To override the default behaviour, call `produces` with a content type. The following content types are supported out of the box:
+To override the default behaviour and specify a content type, use the call `produces` with a content type. The following content types are supported out of the box:
 
 | Content type               | Name in code                           | Data   |
 |----------------------------|:---------------------------------------|--------|
@@ -71,14 +71,14 @@ webHandlers {
 
 ### Return types
 
-By default; the returned value is serialised using the default serialiser; however, this is overruled if the return type is in the table below. 
+By default; the returned value is serialised using the default serialiser. However, this is overruled if the return type is in the table below. 
 
 If you specify a return type, the value returned will be as per the table below, regardless of the `Accept` header. 
 
 However, if the `produces` function is used, then the `Accept` header will be respected. 
 
-| Return type    | Behaviour                                         | Default Content-Type       |
-|----------------|---------------------------------------------------|:---------------------------|
+| Return type    | Behaviour                                    | Default Content-Type       |
+|----------------|----------------------------------------------|:---------------------------|
 | `Unit`         | No response is returned                      | n/a                        |
 | `String`       | The string is returned as the response       | n/a                        |
 | `ByteArray`    | The byte array is returned as the response   | n/a                        |
