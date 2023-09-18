@@ -10,10 +10,9 @@ tags:
   - basics
 ---
 
-To create custom endpoints, you need to define a gpal file of `web-handler.kts`.
+To create custom endpoints, you need to define a gpal file called **web-handler.kts**.
 
-Once a `web-handler.kts` is available within your `{product}/script` directory, it is immediately available as an endpoint
-in the router.
+Once a **web-handler.kts** is available within your **{product}/script** directory, it is immediately available as an endpoint in the router.
 
 ## Simple endpoint example
 
@@ -29,19 +28,17 @@ webHandlers {
 }
 ```
 
-This endpoint, if defined in the file **trade-web-handler.kts**, is available at **trade/all-trades**. For more information on [paths, see below](#paths).
+If you define the file **myapp-web-handler.kts**, it is available at **trade/all-trades**. For more information on [paths, see below](#paths).
 
 ## Producing output
 
-By default, the `handleRequest` function infers the output of the endpoint based on the return value of the block.
+By default, the `handleRequest` function infers the output of the endpoint from the return value of the block. So, if you are only producing output and not receiving any input, you do not need type parameters. The output value is returned as JSON, using the standard serialisation mechanism. 
 
-So, if you are only producing output and not receiving any input, you do not need type parameters.
-
-The output value is returned as JSON using the standard serialisation mechanism. This is sufficient for most cases, but options are available to customise the output.
+This is sufficient for most cases, but you can customise the output.
 
 ### Content type
 
-If you want to override the default bahaviour, call `produces` with a content type. The following content types are supported out of the box:
+If you want to override the default behaviour and specify an output type, use the call `produces` with a content type. The following content types are supported out of the box:
 
 | Content type               | Name in code                           | Data   |
 |----------------------------|:---------------------------------------|--------|
@@ -73,13 +70,13 @@ webHandlers {
 
 ### Return types
 
-By default, the returned value will be serialised using the default serialiser; however, this is overruled if the return type is in the table below. 
+By default, the returned value is serialised using the default serialiser. However:
 
-In this case the value will be returned as per the table, regardless of the 
-`Accept` header. However, if the `produces` function is used, then the `Accept` header will be respected. 
+- if the return type is in the table below, then it is handled as indicated, regardless of the `Accept` header
+- if the `produces` function is used, then the `Accept` header will be respected 
 
-| Return type    | Behaviour                                         | Default Content-Type       |
-|----------------|---------------------------------------------------|:---------------------------|
+| Return type    | Behaviour                                    | Default Content-Type       |
+|----------------|----------------------------------------------|:---------------------------|
 | `Unit`         | No response is returned                      | n/a                        |
 | `String`       | The string is returned as the response       | n/a                        |
 | `ByteArray`    | The byte array is returned as the response   | n/a                        |
