@@ -72,7 +72,7 @@ webHandlers {
 
 By default, the returned value is serialised using the default serialiser. However, this is overruled if the return type specified is in the table below. 
 
-If you specify a return type, the value returned will be as per the table below, regardless of the `Accept` header. 
+If you specify a return type, the value returned amd the behaviour will be as per the table below, regardless of the `Accept` header. 
 
 However, if the `produces` function is used, then the `Accept` header will always be respected. 
 
