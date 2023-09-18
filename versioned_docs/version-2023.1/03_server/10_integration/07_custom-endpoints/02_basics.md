@@ -41,8 +41,7 @@ The output value is returned as JSON using the standard serialisation mechanism.
 
 ### Content type
 
-Calling `produces` with a content type will overwrite this default behaviour. The following content types are supported
-out of the box:
+To override the default behaviour, call `produces` with a content type. The following content types are supported out of the box:
 
 | Content type               | Name in code                           | Data   |
 |----------------------------|:---------------------------------------|--------|
@@ -52,8 +51,7 @@ out of the box:
 | `text/yaml`                | `ContentType.TEXT_YAML`                | YAML   |
 | `text/xml`                 | `ContentType.TEXT_XML`                 | XML    |
 
-Multiple content types can be set in the `produces` call; the client can specify which one is returned by setting the
-`Accept` header. If no `Accept` header is specified, then the first content type will be returned. 
+You can set multiple content types in the `produces` call. The client can specify which one is returned by setting the `Accept` header. If no `Accept` header is specified, then the first content type will be returned. 
 
 ```kotlin
 webHandlers {
@@ -75,17 +73,19 @@ webHandlers {
 
 ### Return types
 
-By default; the returned value will be serialized using the default serializer, however, this is overruled if the
-return type is in the table below. In this case the value will be returned as per the table, regardless of the 
-`Accpet` header. However, if the `produces` function is used, then the `Accept` header will be respected. 
+By default; the returned value is serialised using the default serialiser; however, this is overruled if the return type is in the table below. 
+
+If you specify a return type, the value returned will be as per the table below, regardless of the `Accept` header. 
+
+However, if the `produces` function is used, then the `Accept` header will be respected. 
 
 | Return type    | Behaviour                                         | Default Content-Type       |
 |----------------|---------------------------------------------------|:---------------------------|
-| `Unit`         | No response will be returned                      | n/a                        |
-| `String`       | The string will be returned as the response       | n/a                        |
-| `ByteArray`    | The byte array will be returned as the response   | n/a                        |
-| `File`, `Path` | The file will be streamed as the response         | `application/octet-stream` |
-| `InputStream`  | The input stream will be streamed as the response | `application/octet-stream` |
+| `Unit`         | No response is returned                      | n/a                        |
+| `String`       | The string is returned as the response       | n/a                        |
+| `ByteArray`    | The byte array is returned as the response   | n/a                        |
+| `File`, `Path` | The file is streamed as the response         | `application/octet-stream` |
+| `InputStream`  | The input stream is streamed as the response | `application/octet-stream` |
 
 ## Receiving input
 
