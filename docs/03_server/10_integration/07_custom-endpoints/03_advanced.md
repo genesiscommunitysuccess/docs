@@ -21,8 +21,7 @@ Within the context of `handleRequest`, the following properties are in scope:
 | `userName` | The user name of the user making the request | When logged in |
 | `request`  | The request object                           | Always         |
 
-Any write call to the `db` will create audit entries for auditable tables, and will be executed in a transaction, if
-supported by the database layer.
+Any write call to the `db` will create audit entries for auditable tables, and will be executed in a transaction, if supported by the database layer.
 
 Additionally, the `triggerEvent` function is available to trigger events from the endpoint:
 
@@ -38,12 +37,11 @@ endpoint<Trade, Trade>(POST, "insert-trade") {
 
 ## Endpoint Paths
 
-The endpoint by default will take it's root from the file name, for example, if the file is
-called `trade-web-handler.kts`, all endpoints are prefixed with `trade`. 
+The endpoint by default will take its root from the file name. For example, if the file is called **trade-web-handler.kts**, all endpoints are prefixed with **trade**. 
 
-### Overwriting base path
+### Overriding the base path
 
-This can be overridden by specifying a `basePath` in the `webHandlers` block:
+You can specify a `basePath` in the `webHandlers` block:
 
 ```kotlin {1}
 webHandlers("my-base-path") {
@@ -55,13 +53,13 @@ webHandlers("my-base-path") {
 }
 ```
 
-here the path would be:
+In the example above, the path would be:
 
-* `my-base-path/all-trades`
+* **my-base-path/all-trades**
 
 ### Adding additional path levels
 
-Additionally, extra path segments can be adding by using the `grouping` function like this.
+You can add extra path segments using the `grouping` function in this way:
 
 ```kotlin {2}
 webHandlers("tables") {
@@ -77,16 +75,19 @@ webHandlers("tables") {
 }
 ```
 
-here the paths would be:
+In the example above, the paths would be:
 
-* `tables/trade/all-trades`
-* `tables/trade/big-trades`
+* **tables/trade/all-trades**
+* **tables/trade/big-trades**
 
 ## Config
 
-The `config` function can be used to configure endpoints, and are supported on different levels: 
-at the `webHandlers`, `grouping` and `endpoint` levels. `config` calls in nested blocks override those 
-in parent blocks.  
+The `config` function can be used to configure endpoints, which are supported on different levels: 
+- `webHandlers` level
+- `grouping` level
+- `endpoint` levels
+
+ `config` calls in nested blocks override those in parent blocks.  
 
 ### Example 
 
@@ -132,14 +133,14 @@ config {
 | `composeResponse<TYPE, OUTPUT> { ... }`              | Defines a response composer for TYPE to OUTPUT                             |
 | `composeResponse<TYPE, OUTPUT>(contentType) { ... }` | Defines a response composer for TYPE to OUTPUT for a specific content type |
 
-### json options
+### JSON options
 
 | Syntax         | Description                                                           |
 |----------------|-----------------------------------------------------------------------|
 | `prettyPrint`  | Defines that JSON should be pretty printed                            |
 | `propertyCase` | Defines the case of JSON properties, either camel case, or snake case |
 
-### multipart options
+### Multipart options
 
 | Syntax        | Description                                          |
 |---------------|------------------------------------------------------|
@@ -148,20 +149,16 @@ config {
 | `baseDir`     | Defines the base directory for files written to disk |
 | `minSize`     | Defines the minimum size for files written to disk   |
 
-## Custom Type handling
+## Custom type handling
 
-`parseRequest` and `composeResponse` can be used to define custom type handling.
-This can be used if the framework doesn't support the required content type, or if you need 
-custom handling of the request or response. These blocks are available within the `config` block, 
-at each level. 
+Use `parseRequest` and `composeResponse` to define custom type handling. This is useful if the framework doesn't support the required content type, or if you need 
+custom handling of the request or response. These blocks are available within the `config` block, at each level. 
 
-To use these, you'll have to provide two types, the input type, and the output type and 
-optionally a content type. 
+To use these, you must provide two types: the input type, and the output type. Optionally, you can add a content type. 
 
 ### Request parsing
 
-When parsing a request, the input type tells the endpoint how to handle the initial parsing 
-of the request. For example, if you want to handle the input as a `String`, you can do this:
+When parsing a request, the input type tells the endpoint how to handle the initial parsing of the request. For example, if you want to handle the input as a `String`, you can do this:
 
 ```kotlin {3-10}
 endpoint<Trade, Trade>(RequestType.PUT, "test") {
@@ -182,15 +179,11 @@ endpoint<Trade, Trade>(RequestType.PUT, "test") {
 }
 ```
 
-Here, the input type is `String`, and the output type is `Trade`. The `parseRequest` block
-takes a lambda that takes the input type, and returns the output type. The output type is then 
-passed to the `handleRequest` block as the `body`.
+Here, the input type is `String`, and the output type is `Trade`. The `parseRequest` block takes a lambda that takes the input type, and returns the output type. The output type is then passed to the `handleRequest` block as the `body`.
     
 ### Response composing
 
-When composing a response, the output type tells the endpoint how to handle the final part 
-of the response, and it can be any type the endpoint supports. For example, if you want to
-produce an endpoint to produce a custom xml, you could do that like this: 
+When composing a response, the output type tells the endpoint how to handle the final part of the response; this can be any type the endpoint supports. For example, if you want to produce an endpoint to produce a custom xml, you could do this: 
 
 ```kotlin {3-12}
 endpoint<String, String>(RequestType.GET, "test") {
@@ -215,13 +208,13 @@ endpoint<String, String>(RequestType.GET, "test") {
 }
 ```
 
-## Http Status Codes
+## Http status codes
 
-By default, all endpoints will return a `200 OK` status code. 
+By default, all endpoints return a `200 OK` status code. 
 
 ### Default status code
 
-The default response status can be overwritten by setting the status:
+You can override the default response status by setting the status explicitly:
 
 ```kotlin {2}
 webHandlers {
@@ -235,12 +228,9 @@ webHandlers {
 
 ### `HttpResponseCode` annotation
 
-The `HttpResponseCode` annotation can be used to set the status code for a specific class. This
-can be especially useful with kotlin sealed classes, where different subclasses return a 
-different status code.
+Use the `HttpResponseCode` annotation to set the status code for a specific class. This can be especially useful with kotlin sealed classes, where different subclasses return different status codes.
 
-For example, if our endpoint returns `SealedResponse`, we will return a `200 OK` status code for
-`AllGood`, and a `404 Not Found` status code for `Missing`:
+In the example below, if our endpoint returns `SealedResponse`, we will return a `200 OK` status code for `AllGood`, and a `404 Not Found` status code for `Missing`:
 
 ```kotlin {2,5}
 sealed class SealedResponse {
@@ -254,8 +244,7 @@ sealed class SealedResponse {
 
 ### Exception handling
 
-Another way to handle different status codes is to handle exceptions. The `exceptionHandler` block
-will allow you catch specific exception provide a response, including a specific status code.
+Another way to handle different status codes is to handle exceptions. The `exceptionHandler` block enables you to catch specific exceptions and provide a response, including a specific status code.
 
 In this example, we return status code `406 Not Acceptable` for `IllegalArgumentException`:
 
@@ -279,24 +268,20 @@ webHandlers {
 
 ## Request parameters
 
-In addition to the body, endpoints can also take request parameters. These are defined in the
-`endpoint` block, and are available in the `handleRequest` block.
+In addition to the body, endpoints can also take request parameters. These are defined in the `endpoint` block, and are available in the `handleRequest` block.
 
 The framework supports the following parameter types:
 * query parameter
 * path parameter
 * header parameter
 
-These can be optional or required. If a required parameter is missing will not be matched. 
-If no matching endpoint is found, a `404 Not Found` will be returned.
+These can be optional or required. If a required parameter is missing, it will not be matched. If no matching endpoint is found, a `404 Not Found` will be returned.
 
-Parameters are defined using the `by` syntax. However, these variables are only available 
-within the `handleRequest` block. If they are accessed outside of this block, an exception 
-will be thrown.
+Use the `by` syntax to define parameters. Note that these variables are only available within the `handleRequest` block. If they are accessed outside this block, an exception will be thrown.
 
 ### Query parameters
 
-Query parameter are defined, as per the example below: 
+Here is a simple example of how to define a query parameter: 
 
 ```kotlin {2,5}
 endpoint(RequestType.GET, "test") {
@@ -308,7 +293,7 @@ endpoint(RequestType.GET, "test") {
 }
 ```
 
-An optional query parameter can be defined as per below. Optional parameters are always nullable.
+Here is an example of how to define an optional query parameter. Optional parameters are always nullable.
 
 ```kotlin {2,5}
 endpoint(RequestType.GET, "test") {
