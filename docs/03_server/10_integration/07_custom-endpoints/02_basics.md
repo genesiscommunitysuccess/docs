@@ -70,10 +70,11 @@ webHandlers {
 
 ### Return types
 
-By default, the returned value is serialised using the default serialiser. However:
+By default, the returned value is serialised using the default serialiser. However, this is overruled if the return type specified is in the table below. 
 
-- if the return type is in the table below, then it is handled as indicated, regardless of the `Accept` header
-- if the `produces` function is used, then the `Accept` header will be respected 
+If you specify a return type, the value returned will be as per the table below, regardless of the `Accept` header. 
+
+However, if the `produces` function is used, then the `Accept` header will always be respected. 
 
 | Return type    | Behaviour                                    | Default Content-Type       |
 |----------------|----------------------------------------------|:---------------------------|
