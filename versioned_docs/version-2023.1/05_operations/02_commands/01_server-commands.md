@@ -602,9 +602,9 @@ The `remap` command performs the following tasks:
 
 The dictionary files are:
 
-_application_**-fields-dictionary.kts**
-_application_**-tables-dictionary.kts**
-_application_**-view-dictionary.kts**
+- _application_**-fields-dictionary.kts**
+- _application_**-tables-dictionary.kts**
+- _application_**-view-dictionary.kts**
 
 When you run `remap`, the database is automatically locked to ensure that no other `remap` can run concurrently. 
 
