@@ -124,13 +124,39 @@ If the Event Handler message type is a database-generated entity that is auditab
 * AUDIT_EVENT_TEXT: Optional “REASON” value sent as part of the event message
 * AUDIT_EVENT_USER: Extracted from the event message
 
+To guarantee that the audit record is inserted into the audit table, Genesis provides a parameter to `eventhandler` blocks: `transactional = true | false`.
+
+[Transactional eventhandlers](../../../server/event-handler/basics/#transactional-event-handlers-acid) are [ACID](../../../getting-started/glossary/glossary/#acid)-compliant, which means that they use concept of transactions to guarantee that the audit record is inserted into the audit table. In other words, if `transactional = true` and the `eventHandler` triggered finishes its excecution, then it is guaranteed that the audit record is inserted.
+
+:::warning
+Make sure your database supports transactions.
+:::
+
+## Auto auditing for Java Event Handlers
+The advantage of using Kotlin is that you can set up automatic auditing with a single line of code. However, if you are working in Java, then you need to use [`RxEntityDb`](../../../database/database-interface/entity-db/) to interact with the database, and automatic auditing is not available.
+
+You can solve this by setting up a simple handler and using this in your `eventHandler` codeblock before you write to the table. This will provide your audited records when you insert, modify and delete on the table.
+
+For example:
+
+```java
+var auditEntityDb = db.audited(
+                    userName,
+                    eventType,
+                    auditText
+            );
+            auditEntityDb.modify(trade).subscribe();
+```
+
+There is more information about using Java in our page on [Java Event Handlers](../../../server/event-handler/java-event-handlers/)
+
 ## Defining state machines
 
 State machines, which define the conditions for moving from one state to another, are defined within your Event Handler files. See more details about these in the section on [Defining your state machines](../../../server/state-machine/introduction/).
 
 ## Disabling schema validation
 
-It is possible to disable the automatic Json Schema validation enforced by default for all type-safe messages for each individual `eventHandler`.
+It is possible to disable the automatic JSON Schema validation enforced by default for all type-safe messages for each individual `eventHandler`.
 
 To disable schema validation for a specific event, either:
 
