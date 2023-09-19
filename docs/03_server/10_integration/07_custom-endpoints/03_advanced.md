@@ -35,7 +35,7 @@ endpoint<Trade, Trade>(POST, "insert-trade") {
 }
 ```
 
-## Endpoint Paths
+## Endpoint paths
 
 The endpoint by default will take its root from the file name. For example, if the file is called **trade-web-handler.kts**, all endpoints are prefixed with **trade**. 
 
@@ -228,7 +228,7 @@ webHandlers {
 
 ### `HttpResponseCode` annotation
 
-Use the `HttpResponseCode` annotation to set the status code for a specific class. This can be especially useful with kotlin sealed classes, where different subclasses return different status codes.
+Use the `HttpResponseCode` annotation to set the status code for a specific class. This can be especially useful with Kotlin sealed classes, where different subclasses return different status codes.
 
 In the example below, if our endpoint returns `SealedResponse`, we will return a `200 OK` status code for `AllGood`, and a `404 Not Found` status code for `Missing`:
 
