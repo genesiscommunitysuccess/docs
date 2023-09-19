@@ -316,7 +316,7 @@ You can go on to check the INSTRUMENT table to see if your insert is there.
 
 ### Testing with an API client
 
-An API client is useful way of testing components. As a client, it is effectively a front end seeking information from the server.
+An API client, such as [Postman](https://www.postman.com/) or [Insomnia](https://insomnia.rest/product/automated-testing) is useful way of testing components. As a client, it is effectively a front end seeking information from the server.
 
 The API client enables you to create calls to the resources in your server - Data Servers, Request Servers and Event Handlers. Then you can just click to run a call and see what response you get.
 
