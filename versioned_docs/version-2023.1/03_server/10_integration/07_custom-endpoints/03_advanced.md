@@ -150,7 +150,7 @@ config {
 | `baseDir`     | Defines the base directory for files written to disk |
 | `minSize`     | Defines the minimum size for files written to disk   |
 
-## Custom Type handling
+## Custom type handling
 
 Use`parseRequest` and `composeResponse` to define custom type handling. This is useful if the framework doesn't support the required content type, or if you need custom handling of the request or response. These blocks are available within the `config` block, at each level. 
 
@@ -232,7 +232,7 @@ webHandlers {
 
 ### `HttpResponseCode` annotation
 
-Use the `HttpResponseCode` annotation to set the status code for a specific class. This can be especially useful with kotlin sealed classes, where different subclasses return different status codes.
+Use the `HttpResponseCode` annotation to set the status code for a specific class. This can be especially useful with Kotlin sealed classes, where different subclasses return different status codes.
 
 In the example below, if our endpoint returns `SealedResponse`, we will return a `200 OK` status code for `AllGood`, and a `404 Not Found` status code for `Missing`:
 
