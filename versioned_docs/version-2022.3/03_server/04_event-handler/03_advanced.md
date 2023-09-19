@@ -156,7 +156,7 @@ State machines, which define the conditions for moving from one state to another
 
 ## Disabling schema validation
 
-It is possible to disable the automatic Json Schema validation enforced by default for all type-safe messages for each individual `eventHandler`.
+It is possible to disable the automatic JSON Schema validation enforced by default for all type-safe messages for each individual `eventHandler`.
 
 To disable schema validation for a specific event, either:
 
