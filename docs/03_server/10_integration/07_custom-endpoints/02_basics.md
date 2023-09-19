@@ -28,7 +28,7 @@ webHandlers {
 }
 ```
 
-If you define the file **myapp-web-handler.kts**, it is available at **trade/all-trades**. For more information on [paths, see below](#paths).
+If you define the file **myapp-web-handler.kts**, it is available at **myapp/all-trades**. For more information on [paths, see below](#paths).
 
 ## Producing output
 
@@ -72,7 +72,7 @@ webHandlers {
 
 By default, the returned value is serialised using the default serialiser. However, this is overruled if the return type specified is in the table below. 
 
-If you specify a return type, the value returned amd the behaviour will be as per the table below, regardless of the `Accept` header. 
+If you specify a return type, the value returned and the behaviour will be as per the table below, regardless of the `Accept` header. 
 
 However, if the `produces` function is used, then the `Accept` header will always be respected. 
 
@@ -185,7 +185,7 @@ endpoint<Trade, InsertResult<Trade>>(POST, "auth") {
 
 ### Entity-level filtering - output
 
-In this example, the `all-trades` endpoint is available to all users; however, users can only see trades for the currencies they permissioned to view:
+In this example, the `all-trades` endpoint is available to all users; however, users can only see trades for the currencies they are permissioned to view:
 
 ```kotlin
 webHandlers {
