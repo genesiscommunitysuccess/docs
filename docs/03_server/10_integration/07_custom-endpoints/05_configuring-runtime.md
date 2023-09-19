@@ -10,32 +10,20 @@ tags:
   - configuring runtime
 ---
 
-### Configure processes.xml
+Gpal custom endpoints require no configuration beyond the **web-handler.kts** file. No modifications to the **processes.xml** file are required. Files will be picked up automatically by the Genesis Router from the **/script** folders.
 
-Whenever you have a module that uses Genesis Router, it is **essential** that you edit the Genesis Router definition in your application's [processes.xml](../../../../server/configuring-runtime/processes/) file to include these modules. This file is located in the **~/run/genesis/cfg** folder.
+## Script modules
 
-The file needs to include two entries:
+If your custom endpoint requires additional dependencies, then these can use the `ScriptModules` annotation. 
 
--  the [package](../../../../server/configuring-runtime/processes/#package) where the classes exist; in the example below, this is `foxtrot.custom.endpoint`
--  the [classpath](../../../../server/configuring-runtime/processes/#classpath) of the jar that contains the package; in the example below, this is `foxtrot-file-processor-*.jar`
+For example, to add a dependency on `my-module`, add this to the top of your file:
 
-
-```xml {6,10}
-<process name="GENESIS_ROUTER">
-        <start>true</start>
-        <groupId>GENESIS</groupId>
-        <options>-Xmx512m -DXSD_VALIDATE=false</options>
-        <module>router</module>
-        <package>global.genesis.router,global.genesis.console,foxtrot.custom.endpoint</package>
-        <config>router-process-config.kts</config>
-        <script>genesis-router.kts</script>
-        <language>pal</language>
-        <classpath>genesis-console-*.jar,foxtrot-file-processor-*.jar</classpath>
-        <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
-</process>
+```kotlin
+@file:ScriptModules("my-module")
 ```
 
-There is more information on how we define processes, in our page on [process.xml](../../../../server/configuring-runtime/processes).
+This code tries to find your `my-module` module and add it to the classpath of the script, including all its dependencies. 
+This has the same effect as adding a `<module>` tag to the **processes.xml** file, but it works on a script level. 
 
 ### Configure Genesis Router
 

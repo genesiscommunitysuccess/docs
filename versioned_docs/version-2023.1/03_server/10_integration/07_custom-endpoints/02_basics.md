@@ -2,7 +2,7 @@
 title: 'Custom endpoints - basics'
 sidebar_label: 'Basics'
 id: basics
-keywords: [server, integration, custom endpoints, basics]
+keywords: [ server, integration, custom endpoints, basics ]
 tags:
   - server
   - integration
@@ -10,192 +10,195 @@ tags:
   - basics
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+To create custom endpoints, you need to define a gpal file with the name `web-handler.kts`.
 
-To create custom endpoints, you need to create a custom module. 
+Once a **web-handler.kts** is available within your **{product}/script** directory, it is immediately available as an endpoint
+in the router.
 
-Before you define the additional endpoints, you need to add a dependency on `genesis-router` within your module. Then you can define classes that implement the `WebEndpoint` interface provided by Genesis Router.
+## Simple endpoint example
 
-In their initialisation, the classes need to call on the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
-
-:::warning
-Whenever you have a module that uses Genesis Router, it is **essential** that you [edit the Genesis Router definition](../../../../server/integration/custom-endpoints/configuring-runtime/) in your application's [processes.xml](../../../../server/configuring-runtime/processes/) file to include these modules.
-:::
-
-
-## FileProcessor class
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-<TabItem value="kotlin">
+Here is a simple custom endpoint that provides all trades in the database:
 
 ```kotlin
-@Module
-class FileProcessor @Inject constructor(
-    private val registry: WebEndpointRegistry
-) : WebEndpoint {
-    @PostConstruct
-    fun init() {
-        registry.registerEndpoint("file-handler", this)
+webHandlers {
+    endpoint(GET, "all-trades") {
+        handleRequest {
+            db.getBulk(TRADE)
+        }
     }
 }
 ```
 
-</TabItem>
-<TabItem value="java">
+If you define the endpoint in **myapp-web-handler.kts**, it is available at **myapp/all-trades**; for more information on [paths, see below](#paths).
 
-```java
-@Module
-public class FileProcessor implements WebEndpoint {
+## Producing output
 
-    private final WebEndpointRegistry registry;
+By default, the `handleRequest` function infers the output of the endpoint from the return value of the block. So, if you are only producing output and not receiving any input, you do not need type parameters. The output value is returned as JSON, using the standard serialisation mechanism. 
 
-    @Inject
-    public FileProcessor(WebEndpointRegistry registry) {
-        this.registry = registry;
-    }
+This is sufficient for most cases, but you can customise the output.
 
-    @PostConstruct
-    public void init() {
-        this.registry.registerEndpoint("file-handler", this);
-    }
-}
-```
+### Content type
 
-</TabItem>
-</Tabs>
+To override the default behaviour and specify a content type, use the call `produces` with a content type. The following content types are supported out of the box:
 
-## A simple example of a custom endpoint
+| Content type               | Name in code                           | Data   |
+|----------------------------|:---------------------------------------|--------|
+| `application/json`         | `ContentType.APPLICATION_JSON`         | JSON   |
+| `application/octet-stream` | `ContentType.APPLICATION_OCTET_STREAM` | Binary |
+| `text/csv`                 | `ContentType.TEXT_CSV`                 | CSV    |
+| `text/yaml`                | `ContentType.TEXT_YAML`                | YAML   |
+| `text/xml`                 | `ContentType.TEXT_XML`                 | XML    |
 
-Here is a simple example of a custom endpoint class. It defines an endpoint `file-handler/upload` that takes file-uploads and responds to their success with an HTTP 200 OK message.
-
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-<TabItem value="kotlin">
+You can set multiple content types in the `produces` call. The client can specify which one is returned by setting the `Accept` header. If no `Accept` header is specified, then the first content type will be returned. 
 
 ```kotlin
-@Module
-class FileProcessor @Inject constructor(
-    private val registry: WebEndpointRegistry
-) : WebEndpoint {
-    @PostConstruct
-    fun init() {
-        registry.registerEndpoint("file-handler", this)
-    }
-
-    override fun name(): String {
-        return "upload"
-    }
-
-    override fun allowedMethods(): Set<RequestType> {
-        return ALLOWED_HTTP_METHODS
-    }
-
-    override fun process(s: String, fullHttpRequest: FullHttpRequest, channel: Channel): Any {
-        LOG.debug("Hit {}/{} endpoint", "file-handler", name())
-        val responseJson = "{ \"Result\": \"Successful upload\"}".toByteArray(StandardCharsets.UTF_8)
-        val responseBuffer = Unpooled.wrappedBuffer(responseJson)
-        val response = DefaultFullHttpResponse(
-            HttpVersion.HTTP_1_1,
-            HttpResponseStatus.OK,
-            responseBuffer
-        )
-        response.headers().add(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
-        HttpUtil.setContentLength(response, responseJson.size.toLong())
-        return response
-    }
-
-    override fun requiresAuth(): Boolean {
-        return if (System.getProperty("TEST_MODE") != null) {
-            false
-        } else {
-            super.requiresAuth()
+webHandlers {
+    endpoint(GET, "all-trades") {
+        produces(ContentType.TEXT_CSV)
+        handleRequest {
+            db.getBulk(TRADE)
         }
     }
 
-    companion object {
-        private val LOG = LoggerFactory.getLogger(FileProcessorKotlin::class.java)
-        private val ALLOWED_HTTP_METHODS: Set<RequestType> = ImmutableSet.of(RequestType.POST)
-    }
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-```java
-@Module
-public class FileProcessor implements WebEndpoint {
-
-    private static final Logger LOG = LoggerFactory.getLogger(FileProcessor.class);
-    private static final Set<RequestType> ALLOWED_HTTP_METHODS = ImmutableSet.of(RequestType.POST);
-
-    private final WebEndpointRegistry registry;
-
-    @Inject
-    public FileProcessor(WebEndpointRegistry registry) {
-        this.registry = registry;
-    }
-
-    @PostConstruct
-    public void init() {
-        this.registry.registerEndpoint("file-handler", this);
-    }
-
-    @NotNull
-    @Override
-    public String name() {
-        return "upload";
-    }
-
-    @NotNull
-    @Override
-    public Set<RequestType> allowedMethods() {
-        return ALLOWED_HTTP_METHODS;
-    }
-
-    @NotNull
-    @Override
-    public Object process(@NotNull String s, @NotNull FullHttpRequest fullHttpRequest, @NotNull Channel channel) {
-        LOG.debug("Hit {}/{} endpoint", "file-handler", name());
-        final byte[] responseJson = "{ \"Result\": \"Successful upload\"}".getBytes(StandardCharsets.UTF_8);
-        final ByteBuf responseBuffer = Unpooled.wrappedBuffer(responseJson);
-        final DefaultFullHttpResponse response = new DefaultFullHttpResponse(
-                HttpVersion.HTTP_1_1,
-                HttpResponseStatus.OK,
-                responseBuffer
-        );
-        response.headers().add(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON);
-        HttpUtil.setContentLength(response, responseJson.length);
-        return response;
-    }
-
-    @Override
-    public boolean requiresAuth() {
-        if(System.getProperty("TEST_MODE") != null){
-            return false;
-        } else {
-            return WebEndpoint.super.requiresAuth();
+    endpoint(GET, "all-trades-multi") {
+        produces(ContentType.TEXT_CSV, ContentType.APPLICATION_JSON)
+        handleRequest {
+            db.getBulk(TRADE)
         }
     }
-
 }
 ```
 
-</TabItem>
-</Tabs>
+### Return types
 
-## Construction and initialisation
-The constructor should contain an instance of the `WebEndpointRegistry` class in order to call upon it during initialisation. This is necessary so that Genesis Router can automatically route appropriate traffic to this endpoint.
+By default, the returned value is serialised using the default serialiser. However, this is overruled if the return type specified is in the table below. 
 
-In the examples above, the initialisation step is annotated with `@PostConstruct`. This step calls on the `WebEndpointRegistry.registerEndpoint()` function with the subdirectory of the endpoint, and the endpoint itself. The registered endpoint is then reachable at a combination of this subdirectory, and the return value of the endpoint's `name()` function. In the example above, this would be `file-handler/upload`.
+If you specify a return type, the value returned and the behaviour will be as per the table below, regardless of the `Accept` header. 
 
-## Endpoint name
-The `name()` method must be overridden to provide the endpoint a name.
+However, if the `produces` function is used, then the `Accept` header will always be respected. 
 
-## Allowed methods
-The `allowedMethods()` function must be overridden and implemented to declare which of the HTTP request types are permitted for this endpoint. It must return a set of `RequestType` objects corresponding with the HTTP `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` functions.
+| Return type    | Behaviour                                    | Default Content-Type       |
+|----------------|----------------------------------------------|:---------------------------|
+| `Unit`         | No response is returned                      | n/a                        |
+| `String`       | The string is returned as the response       | n/a                        |
+| `ByteArray`    | The byte array is returned as the response   | n/a                        |
+| `File`, `Path` | The file is streamed as the response         | `application/octet-stream` |
+| `InputStream`  | The input stream is streamed as the response | `application/octet-stream` |
 
-## Processing requests
-The `process()` function must be overridden and implemented in order to add business logic to the endpoint.
+## Receiving input
 
-## Authentication
-The `requiresAuth()` function can be overridden to determine if the endpoint requires a `SESSION_AUTH_TOKEN` with the request, such as those made from authenticated sessions. Without a definition, this returns a default value of `true`. In the example above, this Authorisation is not required when the system is running in `TEST_MODE`, which is useful for testing these endpoints with integration tests.
+Endpoints can also receive input, where the http request includes a body. The body can be parsed and will be available in the `body` property of the `handleRequest` block. When endpoints receive input, you must provide type parameters for both the request body and the response type:
+
+```kotlin
+webHandlers {
+    endpoint<Trade, InsertResult<Trade>>(POST, "insert-trade") {
+        handleRequest {
+            db.insert(body)
+        }
+    }
+}
+```
+
+### Content type
+
+As with producing output, you can specify the content type of the request body using the `accepts` function. An endpoint is able to accept multiple content types. If no content type is specified, then the endpoint defaults to accept `application/json`. 
+
+These content types are supported out of the box:
+
+| Content type               | Name in code                           | Data   |
+|----------------------------|:---------------------------------------|--------|
+| `application/json`         | `ContentType.APPLICATION_JSON`         | JSON   |
+| `text/csv`                 | `ContentType.TEXT_CSV`                 | CSV    |
+| `text/yaml`                | `ContentType.TEXT_YAML`                | YAML   |
+| `text/xml`                 | `ContentType.TEXT_XML`                 | XML    |
+
+
+```kotlin
+webHandlers {
+    endpoint<Trade, InsertResult<Trade>>(POST, "insert-trade") {
+        accepts(ContentType.APPLICATION_JSON, ContentType.TEXT_XML)
+        handleRequest {
+            db.insert(body)
+        }
+    }
+}
+```
+
+### File uploads
+
+To support file uploads, use the `multipartEndpoint` function. This function parses the request body as a multipart request and makes the files available in the `fileUploads` property of the `handleRequest` block.
+
+```kotlin
+webHandlers {
+    val tmp = Files.createTempDirectory("test")
+    multipartEndpoint("test") {
+        handleRequest {
+            body.fileUploads.forEach {
+                it.copyTo(tmp.resolve(it.fileName))
+            }
+        }
+    }
+}
+```
+
+## Permissioning and authorisation
+
+Endpoints support a permissioning model very similar to Event Handlers and Request Servers. The `permission` function has different options for: 
+* requiring specific permission codes
+* entity-level authorization on the input - similar to Event Handlers
+* entity-level filtering on the output - similar to Request Servers
+
+Furthermore, endpoints can be made available to unauthenticated users in the config block.
+
+### Permission codes
+
+In this example, the `all-trades` endpoint is available to users with the `TRADER` permission code:
+
+```kotlin
+webHandlers {
+    endpoint(GET, "all-trades") {
+        permissioning {
+            permissionCodes("TRADER")
+        }
+        handleRequest {
+            db.getBulk(TRADE)
+        }
+    }
+}
+```
+
+### Entity-level authorisation - input 
+
+In this example, the `insert-trade` endpoint is available to all users. However, users can only insert trades in currencies for which they have permission:
+
+```kotlin 
+endpoint<Trade, InsertResult<Trade>>(POST, "auth") {
+    permissioning {
+        requestAuth("CCY") {
+            field { currencyId }
+        }
+    }
+    handleRequest {
+        db.insert(body)
+    }
+}
+```
+
+### Entity-level filtering - output
+
+In this example, the `all-trades` endpoint is available to all users; however, users can only see trades for their permissioned currencies:
+
+```kotlin
+webHandlers {
+    endpoint(GET, "all-trades") {
+        permissioning {
+            responseAuth("CCY", flow<Trade>()) {
+                field { currencyId }
+            }
+        }
+        handleRequest {
+            db.getBulk(TRADE)
+        }
+    }
+}
+```
