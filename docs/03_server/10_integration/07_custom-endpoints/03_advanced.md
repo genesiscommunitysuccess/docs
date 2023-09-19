@@ -378,8 +378,7 @@ endpoint(RequestType.GET, "test") {
 
 ## OpenAPI
 
-By default, the framework generates a basic OpenAPI specification for all endpoints. This 
-includes the path, and schemas of the request and response type, if supported. To enable this, you can use the `openapi` block to provide additional information, such as descriptions and examples.
+By default, the framework generates a basic OpenAPI specification for all endpoints. This includes the path and the schemas of the request and response type (if supported). To enable this, use the `openapi` block to provide additional information, such as descriptions and examples.
 
 We can provide the following information: 
 
@@ -405,9 +404,13 @@ endpoint(RequestType.GET, "test") {
 
 ### Response
 
-A schema for the response type used in the endpoint will be generated automatically, this schema
-includes support for sealed types. However, the schema can be customised if needed. Also examples
-and descriptions can be provided. Furthermore, additional responses can be defined. 
+A schema for the response type used in the endpoint is generated automatically. This schema includes support for sealed types. However, the schema can be customised if needed. YOu can also provide:
+
+- examples
+- descriptions 
+- additional responses 
+
+Here is an example:
 
 ```kotlin {2-13}
 endpoint<TestData>(RequestType.GET, "test") {
@@ -427,16 +430,13 @@ endpoint<TestData>(RequestType.GET, "test") {
 }
 ```
 
-Here we define that the standard response will be of type `TestData`. We also provide an example, 
-and a description. We also define that if the status code is `406 Not Acceptable`, then there will
-be no body. Further, if the status code is `404 Not Found`, then the body will be a string.
+The example above defines the standard response of type `TestData`. There is also an example and a description. We also define that if the status code is `406 Not Acceptable`, then there will be no body. Further, if the status code is `404 Not Found`, then the body will be a string.
 
-### Request Body
+### Request body
 
-As with responses, the request body schema will be generated automatically. However, this can be
-also be customised. Similarly, a description and example can be provided. Providing an example 
-for a request body will be very useful for testing the endpoint in the OpenAPI UI. As the 
-request is ready to go with the example data, which the user can modify to suit their needs.
+As with responses, the request body schema is generated automatically. However, this can also be customised. 
+
+Similarly, you can provide a description and example. Providing an example for a request body is very useful for testing the endpoint in the OpenAPI UI. The request is ready to go with the example data, which the user can modify to suit their needs.
 
 ```kotlin {2-9}
 endpoint<TestData, String>(RequestType.GET, "test") {
@@ -450,13 +450,12 @@ endpoint<TestData, String>(RequestType.GET, "test") {
 }
 ```
 
-Here we take `TestData` as the request body, and return a `String`. We also provide a description
+The example above takes `TestData` as the request body and returns a `String`. It also provides a description
 and example for the request body.
 
 ### Parameters
 
-By default the framework will describe parameters in the OpenAPI spec. However, additional
-information can be provided:
+By default, the framework describes parameters in the OpenAPI spec. However, you can provide additional information, for example:
 
 ```kotlin
 endpoint<String>(RequestType.GET, "users") {
