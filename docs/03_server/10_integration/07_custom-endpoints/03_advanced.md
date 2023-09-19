@@ -183,7 +183,7 @@ Here, the input type is `String`, and the output type is `Trade`. The `parseRequ
     
 ### Response composing
 
-When composing a response, the output type tells the endpoint how to handle the final part of the response; this can be any type the endpoint supports. For example, if you want to produce an endpoint to produce a custom xml, you could do this: 
+When composing a response, the output type tells the endpoint how to handle the final part of the response; this can be any type that the endpoint supports. For example, if you want to produce an endpoint to produce a custom xml, you could do this: 
 
 ```kotlin {3-12}
 endpoint<String, String>(RequestType.GET, "test") {
@@ -347,8 +347,7 @@ endpoint(RequestType.GET, "test") {
 
 #### Required values
 
-Headers can also have a set of required values. If the header is present, but the value does not
-match, then the endpoint will not be matched. Note that the required values are published as part of the OpenAPI specification, unless they are declared a secret.
+Headers can also have a set of required values. If the header is present, but the value does not match, then the endpoint will not be matched. Note that the required values are published as part of the OpenAPI specification, unless they are declared a secret.
 
 The below endpoint will only match if the `Test-Header` header is present with its value set to `test`:
 
@@ -378,7 +377,7 @@ endpoint(RequestType.GET, "test") {
 
 ## OpenAPI
 
-By default, the framework generates a basic OpenAPI specification for all endpoints. This includes the path and the schemas of the request and response type (if supported). To enable this, use the `openapi` block to provide additional information, such as descriptions and examples.
+By default, the framework generates a basic OpenAPI specification for all endpoints. This includes the path, and the schemas of the request and response type (if supported). To enable this, use the `openapi` block to provide additional information, such as descriptions and examples.
 
 We can provide the following information: 
 
@@ -404,7 +403,7 @@ endpoint(RequestType.GET, "test") {
 
 ### Response
 
-A schema for the response type used in the endpoint is generated automatically. This schema includes support for sealed types. However, the schema can be customised if needed. YOu can also provide:
+A schema for the response type used in the endpoint is generated automatically. This schema includes support for sealed types. However, the schema can be customised if needed. You can also provide:
 
 - examples
 - descriptions 
