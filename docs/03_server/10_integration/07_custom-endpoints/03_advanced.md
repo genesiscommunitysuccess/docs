@@ -307,7 +307,7 @@ endpoint(RequestType.GET, "test") {
 
 ### Path parameters
 
-Path parameters are defined, as per the example below, and are always required:
+Path parameters are always required. Here is an example of how to define one:
 
 ```kotlin {2,5}
 endpoint(RequestType.GET, "test/{name}") {
@@ -321,7 +321,7 @@ endpoint(RequestType.GET, "test/{name}") {
 
 ### Header parameters
 
-Header parameters are defined, as per the example below:
+Here is an example of how to define a header parameter:
 
 ```kotlin {2,5}
 endpoint(RequestType.GET, "test") {
@@ -333,7 +333,7 @@ endpoint(RequestType.GET, "test") {
 }
 ```
 
-An optional header parameter can be defined as per below. Optional parameters are always nullable.
+Here is an example of how to define an optional header parameter. Optional parameters are always nullable.
 
 ```kotlin {2,5}
 endpoint(RequestType.GET, "test") {
@@ -348,11 +348,9 @@ endpoint(RequestType.GET, "test") {
 #### Required values
 
 Headers can also have a set of required values. If the header is present, but the value does not
-match, then the endpoint will not be matched. Please note that the required values will be 
-published as part of the OpenAPI specification, unless they are declared a secret.
+match, then the endpoint will not be matched. Note that the required values are published as part of the OpenAPI specification, unless they are declared a secret.
 
-The below endpoint will only match is the `Test-Header` header is present with its value set to
-`test`:
+The below endpoint will only match if the `Test-Header` header is present with its value set to `test`:
 
 ```kotlin {2}
 endpoint(RequestType.GET, "test") {
@@ -366,7 +364,7 @@ endpoint(RequestType.GET, "test") {
 
 #### Secret values
 
-Secret headers are defined as: 
+Here is an example of how to define a secret header: 
 
 ```kotlin {2}
 endpoint(RequestType.GET, "test") {
@@ -380,9 +378,8 @@ endpoint(RequestType.GET, "test") {
 
 ## OpenAPI
 
-By default, the framework will generate an basic OpenAPI specification for all endpoints. This 
-includes the path, schemas of the request and response type, if supported. To enable this,
-the `openapi` block can be used to provide additional information, like descriptions and examples.
+By default, the framework generates a basic OpenAPI specification for all endpoints. This 
+includes the path, and schemas of the request and response type, if supported. To enable this, you can use the `openapi` block to provide additional information, such as descriptions and examples.
 
 We can provide the following information: 
 
