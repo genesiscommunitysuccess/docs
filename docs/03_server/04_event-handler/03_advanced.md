@@ -124,7 +124,7 @@ If the Event Handler message type is a database-generated entity that is auditab
 * AUDIT_EVENT_TEXT: Optional “REASON” value sent as part of the event message
 * AUDIT_EVENT_USER: Extracted from the event message
 
-To guarantee that the audit record is inserted into the audit table, Genesis provide a parameter to `eventhandler` blocks:`transactional = true | false`.
+To guarantee that the audit record is inserted into the audit table, Genesis provides a parameter to `eventhandler` blocks: `transactional = true | false`.
 
 [Transactional eventhandlers](../../../server/event-handler/basics/#transactional-event-handlers-acid) are [ACID](../../../getting-started/glossary/glossary/#acid)-compliant, which means that they use concept of transactions to guarantee that the audit record is inserted into the audit table. In other words, if `transactional = true` and the `eventHandler` triggered finishes its excecution, then it is guaranteed that the audit record is inserted.
 
@@ -156,7 +156,7 @@ State machines, which define the conditions for moving from one state to another
 
 ## Disabling schema validation
 
-It is possible to disable the automatic Json Schema validation enforced by default for all type-safe messages for each individual event handler.
+It is possible to disable the automatic JSON Schema validation enforced by default for all type-safe messages for each individual event handler.
 
 To disable schema validation for a specific event, either:
 
