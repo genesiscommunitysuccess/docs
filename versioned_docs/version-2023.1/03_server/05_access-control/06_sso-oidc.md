@@ -193,7 +193,7 @@ See this in the example below.
     <start>true</start>
     <options>-Xmx256m -DXSD_VALIDATE=false</options>
     <module>auth-manager</module>
-    <package>global.genesis.eventhandler,global.genesis.eventhandler.pal,global.genesis.auth.manager,global.genesis.auth.oidc</package>
+    <package>global.genesis.eventhandler,global.genesis.eventhandler.pal,global.genesis.auth.manager,global.genesis.auth.oidc.service,global.genesis.auth.oidc.script</package>
     <description>Controls the authentication/authorisation setup for users</description>
     <script>auth-preferences.kts,auth-user-eventhandler.kts,auth-profile-eventhandler.kts,auth-mfa-eventhandler.kts,auth-password-eventhandler.kts,position-oidc-config.kts</script>
     <classpath>auth-script-config*,auth-oidc-*.jar</classpath>
