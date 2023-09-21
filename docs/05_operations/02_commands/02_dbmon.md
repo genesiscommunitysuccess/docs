@@ -18,38 +18,39 @@ DbMon is the Genesis database client. It provides an interface to the underlying
 
 The commands available with DbMon are listed below. 
 
-| Command                             | Argument                                    | Description                                       |
-|-------------------------------------|---------------------------------------------|---------------------------------------------------|
-| writeMode                           |                                             | enables write mode                                |
-| help                                |                                             | lists all commands                                |
-| [showTables](#show-tables)          |                                             | display all tables in the schema                  |
-| [table](#table)                     | `<table_name>`                              | select an specified table                         |
-| [show](#show)                       |                                             | display the current record                        |
-| [displayFields](#display-fields)    | `<field_names>`                             | display only selected columns                     |
-| [count](#count-rows)                |                                             | counts the rows in the table                      |
-| [set](#set--unset)                  | `<field_name> <field_value>`                | sets a field                                      |
-| [unset](#set--unset)                | `<field>`                                   | sets a field to `null`                            |
-| [insert](#insert)                   |                                             | inserts the current                               |
-| [delete](#delete)                   |                                             | deletes the current row                           |
-| [deleteWhere](#deletewhere)         | `<condition>`                               | deletes all matching rows in the selected table   |
-| [update](#update)                   | `<key_name>` `<fields>`                     | updates the current row by key                    |
-| [updateWhere](#updatewhere)         | `<condition> <assignments>`                 | updates all records that matches a given condition|
-| [find](#find)                       | `<key_name>`                                | find an specific record in a index                |
-| [showKeys](#show-keys-indexes)      |                                             | display all indexes                               |
-| [first](#first-and-last)            | `<key_name>`                                | gets the first record by key                      |
-| [last](#first-and-last)             | `<key_name>`                                | gets the last record by key                       |
-| [next](#next)                       | `<key_name>`                                | gets the next record by key                       |
-| [clear](#displaying-a-record---set) |                                             | clears the current context                        |
-| [search](#search)                   | `<condition> [-l <limit>]`                  | return the records that matches with the criteria |
-| [distinct](#distinct)               | `<condition> [-where <limiting_condition>]` | show only distinct records                        |
-| sequenceNumber                      | `<sequence_name>`                           |                                                   |
-| autoIncrementNumber                 | `<field_name>`                              |                                                   |
-| forceAutoIncrementNumber            | `<field_name> <sequence_number>`            |                                                   |
-| forceSequenceNumber                 | `<sequence_name> <sequence_number>`         |                                                   |
-| listAll                             | `<key_name> <num_key_fields> <max_records>` |                                                   |
-| qsearch                             | `<condition> [-l <limit>]`                  |                                                   |
-| qshow                               |                                             |                                                   |
-
+| Command                              | Argument                                    | Description                                        |
+|--------------------------------------|---------------------------------------------|----------------------------------------------------|
+| autoIncrementNumber                  | `<field_name>`                              |                                                    |
+| [clear](#displaying-a-record---set)  |                                             | clears the current context                         |
+| [count](#count-rows)                 |                                             | counts the rows in the table/view                  |
+| [delete](#delete)                    |                                             | deletes the current row                            |
+| [deleteWhere](#deletewhere)          | `<condition>`                               | deletes all matching rows in the selected table    |
+| [distinct](#distinct)                | `<condition> [-where <limiting_condition>]` | show only distinct records                         |
+| [displayFields](#display-fields)     | `<field_names>`                             | display only selected columns                      |
+| [find](#find)                        | `<key_name>`                                | find an specific record in a index                 |
+| forceAutoIncrementNumber             | `<field_name> <sequence_number>`            |                                                    |
+| forceSequenceNumber                  | `<sequence_name> <sequence_number>`         |                                                    |
+| [first](#first-and-last)             | `<key_name>`                                | gets the first record by key                       |
+| help                                 |                                             | lists all commands                                 |
+| [insert](#insert)                    |                                             | inserts the current                                |
+| [last](#first-and-last)              | `<key_name>`                                | gets the last record by key                        |
+| listAll                              | `<key_name> <num_key_fields> <max_records>` |                                                    |
+| [next](#next)                        | `<key_name>`                                | gets the next record by key                        |
+| qsearch                              | `<condition> [-l <limit>]`                  |                                                    |
+| qshow                                |                                             |                                                    |
+| [search](#search)                    | `<condition> [-l <limit>]`                  | return the records that matches with the criteria  |
+| [set](#set-and-unset)                | `<field_name> <field_value>`                | sets a field                                       |
+| sequenceNumber                       | `<sequence_name>`                           |                                                    |
+| [show](#show)                        |                                             | display the current record                         |
+| [showKeys](#show-keys-indexes)       |                                             | display all indexes                                |
+| [showTables](#show-tables-and-views) |                                             | display all tables in the schema                   |
+| [showViews](#show-tables-and-views)  |                                             | display all views in the schema                    |
+| [table](#table)                      | `<table_name>`                              | select an specified table                          |
+| [unset](#set-and-unset)              | `<field>`                                   | sets a field to `null`                             |
+| [update](#update)                    | `<key_name>` `<fields>`                     | updates the current row by key                     |
+| [updateWhere](#updatewhere)          | `<condition> <assignments>`                 | updates all records that matches a given condition |
+| [view](#view)                        | `<view_name>`                               | select an specified view                           |
+| writeMode                            |                                             | enables write mode                                 |
 
 ## Starting DbMon
 
@@ -73,13 +74,13 @@ As you can see, once you are in a DbMon session, the `DbMon>` prompt is displaye
 
 To end a DbMon session, just type [`quit`](#dbmon-commands) at the DbMon prompt.
 
-## Working with tables
+## Working with tables and views
 
-Most of the time, you'll be using DbMon to examine tables in one way or another. 
+Most of the time, you'll be using DbMon to examine tables or views in one way or another. Write operations are not allowed on views. 
 
-### Show tables
+### Show tables and views
 
-To see a list of available tables, use the [`showtables`](#dbmon-commands) command. This displays an alphabetical list of available tables, for example:
+To see a list of available tables/views, use the [`showTables`](#dbmon-commands) or the [`showViews`](#dbmon-commands) commands. This displays an alphabetical list of available tables or views, for example:
 
 ```javascript
 ==================================
@@ -106,6 +107,10 @@ BROKER
 
 To look at the data held in a specific table, use the [`table`](#dbmon-commands) command followed by the table name: for example `table BROKER`. Once you have selected a table, the `DbMon` prompt changes to show the table name.
 
+### View
+
+To look at the data held in a specific view, use the [`view`](#dbmon-commands) command followed by the view name: for example `view POSITION_VIEW`. Once you have selected a view, the `DbMon` prompt changes to show the view name.
+
 ```javascript
 DbMon>table BROKER
 DbMon:BROKER>
@@ -113,7 +118,7 @@ DbMon:BROKER>
 
 ### Show
 
-To see the columns available in the selected table use the [`show`](#dbmon-commands) command. This displays the current record in the selected table. If no record has been selected, it displays an empty record (notice the value column below is not populated):
+To see the columns available in the selected table/view use the [`show`](#dbmon-commands) command. This displays the current record in the selected table/view. If no record has been selected, it displays an empty record (notice the value column below is not populated):
 
 ```javascript
 ==================================
@@ -145,7 +150,7 @@ VIEW_CODE                                                           STRING
 
 If you are only interested in seeing selected columns, use the [`displayFields`](#dbmon-commands) command and list the names of the columns you are interested in (separated by spaces). 
 
-Any subsequent [`show`](#dbmon-commands) commands will only display those columns, rather than all the columns in the table.
+Any subsequent [`show`](#dbmon-commands) commands will only display those columns, rather than all the columns in the table/view.
 
 
 ```javascript
@@ -168,7 +173,7 @@ To view all columns again, use the [`displayFields`](#dbmon-commands) command fo
 
 ### Count rows
 
-To discover how many rows of data there are in a table, use the [`count`](#dbmon-commands) command. For large tables, this could take some time to return:
+To discover how many rows of data there are in a table/view, use the [`count`](#dbmon-commands) command. For large database entities, this could take some time to return:
 
 ```javascript
 DbMon:BROKER>count
@@ -176,7 +181,7 @@ The table BROKER contains 114 records
 ```
 
 ### Set and Unset
-The `set` and `unset` commands are used to set the value of a specific field in the selected table. If you have previously selected a record, it will override its value; otherwise, it sets a new record (note that this is only local - to insert a new record to the table, use the insert command). In the case of the `set` command, specify the value you want to set. In the example below, we set a new value for the `QUANTITY` field:
+The `set` and `unset` commands are used to set the value of a specific field in the selected database entity. If you have previously selected a record, it will override its value; otherwise, it sets a new record (note that this is only local - to insert a new record to the table, use the insert command). In the case of the `set` command, specify the value you want to set. In the example below, we set a new value for the `QUANTITY` field:
 
 ``` javascript
 DbMon:TRADE>set QUANTITY = 10
@@ -296,15 +301,15 @@ Updated record: DbRecord [tableName=TRADE] [PRICE = 90.0, SYMBOL = EUR, QUANTITY
 To be able to use this command, you need to be in `writeMode`.
 :::
 
-## Finding data in a table
+## Finding data in a table or view
 
 ### Find
 
-In DbMon, you can only see one record at a time. To display the record you want, you must first locate it using the [`find`](#dbmon-commands) command, which searches the table’s indexes for a given key value.  
+In DbMon, you can only see one record at a time. To display the record you want, you must first locate it using the [`find`](#dbmon-commands) command, which searches the table’s or view’s indexes for a given key value.  
 
 ### Show keys (indexes)
 
-To see the indexes (or keys) on the selected table, use the [`showKeys`](#dbmon-commands) command. This displays a list of the index names and the fields you will need to supply to use the index:
+To see the indexes (or keys) on the selected table/view, use the [`showKeys`](#dbmon-commands) command. This displays a list of the index names and the fields you will need to supply to use the index:
 
 ```javascript
 ==================================
@@ -322,7 +327,7 @@ BROKER_BY_VIEW_CODE                VIEW_CODE                                Seco
 	------------------------------------------------------------------------------------------ 
 ```
 ### First and Last
-If you are interested in selecting the `first` or the `last` record, you can use the `first` or `last` along with the index name. After selecting a record, to be able to see it in the dbmon, you need to run the `show` command. In the following example, we are going to select the first record in the **TRADE** table using the index **TRADE_BY_ID**.
+If you are interested in selecting the `first` or the `last` record, you can use the `first` or `last` along with the index name. After selecting a record, to be able to see it in the dbmon, you need to run the `show` command. In the following example, we are going to select the first record in the **TRADE** table using the index **TRADE_BY_ID**, although we could perform the same operation using a view index.
 
 ```javascript
 DbMon:TRADE>first TRADE_BY_ID
@@ -370,7 +375,7 @@ TRADE_STATUS                             NEW                                    
 ```
 ### Displaying a record - Set
 
-To display a particular record from a table, use the [`set`](#dbmon-commands) command to populate an index field with the value you are searching for. Then use the [`find`](#dbmon-commands) command along with the appropriate index name.
+To display a particular record from a table or view, use the [`set`](#dbmon-commands) command to populate an index field with the value you are searching for. Then use the [`find`](#dbmon-commands) command along with the appropriate index name.
 
 The example below looks for a broker that has a `VIEW_CODE` value of “WALSH”. We have searched for the Key named `BROKER_BY_VIEW_CODE` and to use that key we whave set the `VIEW_CODE` to the value `WALSH`.
 
@@ -405,7 +410,7 @@ VIEW_CODE                 WALSH                                     STRING
 
 If you then want to [`find`](#dbmon-commands) a record with a different `VIEW_CODE`, you need to go back to having an empty record so that you can [`set`](#dbmon-commands) the `VIEW_CODE` again and perform another [`find`](#dbmon-commands). 
 
-To do this, use the [`clear`](#dbmon-commands) command.This resets your view onto the table so that you can start again. 
+To do this, use the [`clear`](#dbmon-commands) command.This resets your prompt onto the table or view so that you can start again. 
 
 :::note
 The [`clear`](#dbmon-commands) command does not have any effect on the data itself, just on your “window” into the database.
@@ -413,10 +418,10 @@ The [`clear`](#dbmon-commands) command does not have any effect on the data itse
 
 ### Search
 
-If you wish to look for a record (or a number of records) but your criterion does not match an index on the table, you can use the [`search`](#dbmon-commands) command.
+If you wish to look for a record (or a number of records) but your criterion does not match an index on the database entity, you can use the [`search`](#dbmon-commands) command.
 
 :::warning
-For larger tables, this can be slow and risks causing latency to your application's users.
+For larger entities, this can be slow and risks causing latency to your application's users.
 :::
 
 For example, if you wanted to find all the records in the `BROKER` table where the `COUNTRY_CODE` was IRL, and there is no index that can be used (and there might be multiple results), the [`search`](#dbmon-commands) command would look like this:
@@ -616,6 +621,16 @@ Total Results:  8
 Total Distinct Values Count:  6
 ```
 
+```jsx
+DbMon:BROKER>distinct COUNTRY_CODE -where REGION=='UK'&&COUNTRY_CODE!='GBR'
+Distinct Value                           Count
+===========================================================================================
+[null]                                   8    
+-------------------------------------------------------------------------------------------
+Total Results:  8
+Total Distinct Values Count:  1
+```
+
 ## Help
 
 Once inside `DbMon`, you can run the command [`help`](#dbmon-commands) to show all the available `DbMon` commands.
@@ -650,10 +665,12 @@ set <field_name> <field_value>
 show
 showKeys
 showTables
+showViews
 table <table_name>
 unset
 update <key_name>
 updateWhere <condition> <assignments>
+view    
 writeMode
 ```
 
