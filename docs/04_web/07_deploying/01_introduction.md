@@ -21,7 +21,7 @@ You can confirm this by looking at the nginx configuration file found at `/etc/n
 
 Here is what a default configuration file looks like:
 
-```
+```xml {8}
 server {
 
     listen 80;
@@ -102,7 +102,7 @@ server {
 }
 ```
 
-In this example, by looking at the 5th line we can tell that:
+In this example, by looking at the highlighted line we can tell that:
 - the _web root_ is `/data/client-x/web`
 - _product user_ is `client-x`
 
