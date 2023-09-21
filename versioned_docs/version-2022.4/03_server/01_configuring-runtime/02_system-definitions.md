@@ -105,9 +105,9 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 - For [PostgresSQL](../../../database/database-technology/sql/#postgresql): This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY, which is the default mode; it always stores the dictionary in a table called `dictionary` and a schema called `metadata`.
 
-**ResourcePollerTimeout**: This setting controls how often the genesis daemon process keeps the processes and their metadata up to date.
+**ResourcePollerTimeout**: This setting controls how often (in seconds) the genesis daemon process keeps the processes and their metadata up to date.
 
-**ReqRepTimeout**: This setting contains the default timeout for the request server resources in the system.
+**ReqRepTimeout**: This setting contains the default timeout (in seconds) for the request server resources in the system.
 
 **MetadataChronicleMapAverageKeySizeBytes**, **MetadataChronicleMapAverageValueSizeBytes**, **MetadataChronicleMapEntriesCount**: These are the settings for chronicle map and are related to the way processes store their own metadata resources inside **/runtime/proc_metadata**.
 
