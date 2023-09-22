@@ -12,7 +12,7 @@ tags:
 
 # DbMon
 
-DbMon is the Genesis database client. It provides an interface to the underlying database and hides the details about the specific database technology. Generic database clients can be used with the Genesis low-code platform, but we recommend that you use DbMon.  This page gives details of all the DbMon commands and provides practical examples of how you can use them.
+DbMon is the Genesis database client. It provides an interface to the underlying database and hides the details about the specific database technology. Generic database clients can be used with the Genesis low-code platform, but we recommend that you use DbMon. This page gives details of all the DbMon commands and provides practical examples of how you can use them.
 
 ## DbMon commands
 
@@ -21,36 +21,36 @@ The commands available with DbMon are listed below.
 | Command                              | Argument                                    | Description                                        |
 |--------------------------------------|---------------------------------------------|----------------------------------------------------|
 | autoIncrementNumber                  | `<field_name>`                              |                                                    |
-| [clear](#displaying-a-record---set)  |                                             | clears the current context                         |
-| [count](#count-rows)                 |                                             | counts the rows in the table/view                  |
-| [delete](#delete)                    |                                             | deletes the current row                            |
-| [deleteWhere](#deletewhere)          | `<condition>`                               | deletes all matching rows in the selected table    |
+| [clear](#displaying-a-record---set)  |                                             | clear the current context                         |
+| [count](#count-rows)                 |                                             | count the rows in the table/view                  |
+| [delete](#delete)                    |                                             | delete the current row                            |
+| [deleteWhere](#deletewhere)          | `<condition>`                               | delete all matching rows in the selected table    |
 | [distinct](#distinct)                | `<condition> [-where <limiting_condition>]` | show only distinct records                         |
 | [displayFields](#display-fields)     | `<field_names>`                             | display only selected columns                      |
-| [find](#find)                        | `<key_name>`                                | find an specific record in a index                 |
+| [find](#find)                        | `<key_name>`                                | find a specific record in a index                 |
 | forceAutoIncrementNumber             | `<field_name> <sequence_number>`            |                                                    |
 | forceSequenceNumber                  | `<sequence_name> <sequence_number>`         |                                                    |
-| [first](#first-and-last)             | `<key_name>`                                | gets the first record by key                       |
-| help                                 |                                             | lists all commands                                 |
-| [insert](#insert)                    |                                             | inserts the current                                |
-| [last](#first-and-last)              | `<key_name>`                                | gets the last record by key                        |
+| [first](#first-and-last)             | `<key_name>`                                | get the first record by key                       |
+| help                                 |                                             | list all commands                                 |
+| [insert](#insert)                    |                                             | insert the current                                |
+| [last](#first-and-last)              | `<key_name>`                                | get the last record by key                        |
 | listAll                              | `<key_name> <num_key_fields> <max_records>` |                                                    |
-| [next](#next)                        | `<key_name>`                                | gets the next record by key                        |
+| [next](#next)                        | `<key_name>`                                | get the next record by key                        |
 | qsearch                              | `<condition> [-l <limit>]`                  |                                                    |
 | qshow                                |                                             |                                                    |
-| [search](#search)                    | `<condition> [-l <limit>]`                  | return the records that matches with the criteria  |
-| [set](#set-and-unset)                | `<field_name> <field_value>`                | sets a field                                       |
+| [search](#search)                    | `<condition> [-l <limit>]`                  | return the records that match the criteria  |
+| [set](#set-and-unset)                | `<field_name> <field_value>`                | set a field                                       |
 | sequenceNumber                       | `<sequence_name>`                           |                                                    |
 | [show](#show)                        |                                             | display the current record                         |
 | [showKeys](#show-keys-indexes)       |                                             | display all indexes                                |
 | [showTables](#show-tables-and-views) |                                             | display all tables in the schema                   |
 | [showViews](#show-tables-and-views)  |                                             | display all views in the schema                    |
 | [table](#table)                      | `<table_name>`                              | select an specified table                          |
-| [unset](#set-and-unset)              | `<field>`                                   | sets a field to `null`                             |
-| [update](#update)                    | `<key_name>` `<fields>`                     | updates the current row by key                     |
-| [updateWhere](#updatewhere)          | `<condition> <assignments>`                 | updates all records that matches a given condition |
+| [unset](#set-and-unset)              | `<field>`                                   | set a field to `null`                             |
+| [update](#update)                    | `<key_name>` `<fields>`                     | update the current row by key                     |
+| [updateWhere](#updatewhere)          | `<condition> <assignments>`                 | update all records that matches a given condition |
 | [view](#view)                        | `<view_name>`                               | select an specified view                           |
-| writeMode                            |                                             | enables write mode                                 |
+| writeMode                            |                                             | enable write mode                                 |
 
 ## Starting DbMon
 
@@ -80,7 +80,7 @@ Most of the time, you'll be using DbMon to examine tables or views in one way or
 
 ### Show tables and views
 
-To see a list of available tables/views, use the [`showTables`](#dbmon-commands) or the [`showViews`](#dbmon-commands) commands. This displays an alphabetical list of available tables or views, for example:
+To see a list of available tables or views, use the [`showTables`](#dbmon-commands) or the [`showViews`](#dbmon-commands) commands. This displays an alphabetical list of available tables or views, for example:
 
 ```javascript
 ==================================
@@ -109,7 +109,7 @@ To look at the data held in a specific table, use the [`table`](#dbmon-commands)
 
 ### View
 
-To look at the data held in a specific view, use the [`view`](#dbmon-commands) command followed by the view name: for example `view POSITION_VIEW`. Once you have selected a view, the `DbMon` prompt changes to show the view name.
+To look at the data held in a specific view, use the [`view`](#dbmon-commands) command followed by the view name: for example `view BROKER`. Once you have selected a view, the `DbMon` prompt changes to show the view name.
 
 ```javascript
 DbMon>table BROKER
@@ -118,7 +118,7 @@ DbMon:BROKER>
 
 ### Show
 
-To see the columns available in the selected table/view use the [`show`](#dbmon-commands) command. This displays the current record in the selected table/view. If no record has been selected, it displays an empty record (notice the value column below is not populated):
+To see the columns available in the selected table or view, use the [`show`](#dbmon-commands) command. This displays the current record in the selected table or view. If no record has been selected, it displays an empty record (notice the value column in the example below is not populated):
 
 ```javascript
 ==================================
@@ -173,7 +173,7 @@ To view all columns again, use the [`displayFields`](#dbmon-commands) command fo
 
 ### Count rows
 
-To discover how many rows of data there are in a table/view, use the [`count`](#dbmon-commands) command. For large database entities, this could take some time to return:
+To discover how many rows of data there are in a table or view, use the [`count`](#dbmon-commands) command. For large database entities, this could take some time to return:
 
 ```javascript
 DbMon:BROKER>count
@@ -181,7 +181,7 @@ The table BROKER contains 114 records
 ```
 
 ### Set and Unset
-The `set` and `unset` commands are used to set the value of a specific field in the selected database entity. If you have previously selected a record, it will override its value; otherwise, it sets a new record (note that this is only local - to insert a new record to the table, use the insert command). In the case of the `set` command, specify the value you want to set. In the example below, we set a new value for the `QUANTITY` field:
+Use the `set` and `unset` commands to set the value of a specific field in the selected database entity. If you have previously selected a record, it will overwrite its value; otherwise, it sets a new record (note that this is only local - to insert a new record to the table, use the insert command). In the case of the `set` command, specify the value you want to set. In the example below, we set a new value for the `QUANTITY` field:
 
 ``` javascript
 DbMon:TRADE>set QUANTITY = 10
@@ -190,7 +190,7 @@ DbMon:TRADE>set QUANTITY = 10
 To set the value to **null**, use the `unset` command, for example:
 
 ``` javascript
-DbMon:TRADE>set QUANTITY = 10
+DbMon:TRADE>unset QUANTITY 
 ```
 
 :::tip
@@ -199,9 +199,9 @@ Changes performed by `set` and `unset` will not be reflected in the database unl
 
 ### Insert
 
-If you are interested in inserting a new record to the database, you can use the `insert`. This command wil insert a new record based on the current record selected. Before y insert this new record, you need to enable the `writeMode`. 
+To insert a new record into the database, use the `insert` command. This inserts a new record based on the current record selected. Before you insert this new record, you must enable `writeMode`. 
 
-In the example below, we make use of the `set` command to create a new record before inserting it into the database.
+In the example below, we use the `set` command to create a new record before inserting it into the database.
 
 ``` javascript
 DbMon:TRADE>set PRICE 80
@@ -232,11 +232,11 @@ Record saved
 
 ### Delete rows
 
-If you would like to delete a row from a table manually using DbMon, then you should use the `delete` or `deleteWhere`. Note that to perform a delete operation, you must run `writeMode` to enable the write mode.
+To delete a row from a table manually using DbMon, use the `delete` or `deleteWhere` command. before you perform a delete operation, you must run `writeMode` to enable write mode.
 
 #### Delete
 
-If you use the `delete` command, it will delete the selected record in the selected table. Here is an example of how to use `delete`, it is deleting the last record in the **TRADE** table:
+Use the `delete` command to delete the selected record in the selected table. The example below deletes the last record in the **TRADE** table:
 
 ```javascript
 DbMon:TRADE>writeMode
@@ -251,9 +251,9 @@ To be able to use this command, you need to be in `writeMode`.
 
 #### deleteWhere
 
-If you use the `deleteWhere` command, it will delete all records in the selected table that matches the specified criteria. After the confirmation, it will prompt all the records that have been deleted.
+The `deleteWhere` command finds all records that match the specified criteria in the currently selected table. Before deleting, it asks you to confirm the deletion.
 
-Here is an example of how to use `deleteWhere`. In this example, we are deleting all records in **TRADE** table with **QUANTITY** values grater than 100.
+In the example below, the currently selected table is **TRADE**. We delete all records that have a **QUANTITY** value greater than 100.
 
 ```javascript
 DbMon:TRADE>writeMode
@@ -270,10 +270,10 @@ To be able to use this command, you need to be in `writeMode`.
 :::
 
 ### Update rows
-If you would like to perform an update in the database manually using DbMon, then you should use the `update` or `updateWhere`. Note that to perform a update operation, you must run `writeMode` to enable the write mode.
+To perform an update in the database manually using DbMon, use the `update` or `updateWhere` command. Note that to perform an update operation, you must first run `writeMode` to enable write mode.
 
 #### Update
-If you use the `update` command, it will update the given fields in the selected row in the selected table. Use the commands `set` and `unset` to manipulate the selected row before you run `update`. To be able to use `update`, you need to provide a `key_name`. Here is an example of how to use the `update` command to update the field PRICE in the **TRADE** table.
+The `update` command updates the given fields in the selected row of the currently selected table. Use the commands `set` and `unset` to manipulate the selected row before you run `update`. To use `update`, you must provide a `key_name`. In the example below, **TRADE** is the currently selected table. We use the `set` command to set the PRICE field to 50, and then `update` command to update the TRADE_BY_UPDATE_PRICE.
 
 ```javascript
 DbMon:TRADE>writeMode
@@ -285,7 +285,7 @@ Record updated
 ```
 
 #### UpdateWhere
-If you use the `updateWhere` command, it will update all records in the selected table hat matches with the specified criteria. After the confirmation, it will prompt all the records that have been updated.
+Use the `updateWhere` command to update all records that match specific criteria. After the confirmation, it will prompt all the records that have been updated.
 
 Here is an example of how to use `updateWhere`. In this example, we are updating the `QUANTITY` value to 10 to all records in **TRADE** with `id = genesis1`.
 
@@ -530,7 +530,7 @@ Total Results:  3
 
 ## Datetime or Date
 
-When setting a DATE or DATETIME, the format must be specified as follow:
+When setting a DATE or DATETIME, the format must be specified as follows:
 
 - DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS Z"
 - DATE_FORMAT = "yyyy-MM-dd"
@@ -561,7 +561,7 @@ DbMon:BROKER>search MODIFIED_DATE>"20221008-14:20" && COUNTRY_CODE=='IRL'
 DbMon:BROKER>search MODIFIED_DATE=="20221008" || COUNTRY_CODE=='IRL'
 ```
 
-#### Using distinct command
+#### Using the distinct command
 
 ```jsx
 // if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database 
