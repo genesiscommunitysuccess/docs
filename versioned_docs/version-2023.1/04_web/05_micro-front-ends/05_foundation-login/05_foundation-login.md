@@ -45,7 +45,7 @@ If you build a project upon one of the Genesis seed apps, then the `Login` micro
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` or `$ npm run bootstrap:ignore-scripts` command again. You can see more information on the [package.json basics](../../../../web/micro-front-ends/foundation-login/) page.
+- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` or `$ npm run bootstrap:ignore-scripts` command again. You can see more information on the [package.json basics](../../basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -101,7 +101,7 @@ By default, a route that isn't marked public is not. However, a non-public route
 
 ## Authentication
 
-For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](../../../../server/access-control/introduction).
+For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](../../../server/access-control/introduction).
 
 ### Username & password
 
