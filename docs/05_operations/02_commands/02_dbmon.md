@@ -107,13 +107,18 @@ BROKER
 
 To look at the data held in a specific table, use the [`table`](#dbmon-commands) command followed by the table name: for example `table BROKER`. Once you have selected a table, the `DbMon` prompt changes to show the table name.
 
-### View
-
-To look at the data held in a specific view, use the [`view`](#dbmon-commands) command followed by the view name: for example `view BROKER`. Once you have selected a view, the `DbMon` prompt changes to show the view name.
-
 ```javascript
 DbMon>table BROKER
 DbMon:BROKER>
+```
+
+### View
+
+To look at the data held in a specific view, use the [`view`](#dbmon-commands) command followed by the view name: for example `view BROKER_VIEW`. Once you have selected a view, the `DbMon` prompt changes to show the view name.
+
+```javascript
+DbMon>view BROKER_VIEW
+DbMon:BROKER_VIEW>
 ```
 
 ### Show
@@ -181,7 +186,9 @@ The table BROKER contains 114 records
 ```
 
 ### Set and Unset
-Use the `set` and `unset` commands to set the value of a specific field in the selected database entity. If you have previously selected a record, it will overwrite its value; otherwise, it sets a new record (note that this is only local - to insert a new record to the table, use the insert command). In the case of the `set` command, specify the value you want to set. In the example below, we set a new value for the `QUANTITY` field:
+Use the `set` and `unset` commands to set the value of a specific field in the selected database entity. If you have previously selected a record, it will overwrite its value; otherwise, it sets a new record (note that this is only local - to insert a new record to the table, use the insert command). In the case of the `set` command, specify the value you want to set. 
+
+In the example below, we are viewing the **TRADE** table. The command sets a new value for the `QUANTITY` field:
 
 ``` javascript
 DbMon:TRADE>set QUANTITY = 10
@@ -351,7 +358,7 @@ TRADE_STATUS                             NEW                                    
 ```
 ### Next
 
-You can alo use the `next` command to select the next record in the sequence. Here is an example:
+You can also use the `next` command to select the next record in the sequence. Here is an example:
 
 ```javascript
 DbMon:TRADE>next TRADE_BY_ID
