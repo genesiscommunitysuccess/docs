@@ -101,7 +101,7 @@ By default, a route that isn't marked public is not. However, a non-public route
 
 ## Authentication
 
-For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](docs/03_server/05_access-control/01_introduction.md).
+For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](../../../../server/access-control/introduction).
 
 ### Username & password
 
