@@ -20,9 +20,9 @@ Generic database clients can be used with the Genesis low-code platform, but we 
 
 The commands available with DbMon are listed below. 
 
-| Command                              | Argument                                    | Description                                        |
-|--------------------------------------|---------------------------------------------|----------------------------------------------------|
-| autoIncrementNumber                  | `<field_name>`                              |                                                    |
+| Command                              | Argument                                    | Description                                       |
+|--------------------------------------|---------------------------------------------|---------------------------------------------------|
+| autoIncrementNumber                  | `<field_name>`                              |                                                   |
 | [clear](#displaying-a-record---set)  |                                             | clear the current context                         |
 | [count](#count-rows)                 |                                             | count the rows in the table/view                  |
 | [delete](#delete)                    |                                             | delete the current row                            |
@@ -75,6 +75,12 @@ As you can see, once you are in a DbMon session, the `DbMon>` prompt is displaye
 ## Exiting DbMon
 
 To end a DbMon session, just type [`quit`](#dbmon-commands) at the DbMon prompt.
+
+## Making changes safely
+
+When you run DbMon, it creates a local image of your database. This enables you to look at values and safely change them locally without writing to the database.
+
+If you then want to make changes to the database, you must first enable `writeMode`. 
 
 ## Working with tables and views
 
@@ -199,17 +205,21 @@ Use the `set` and `unset` commands to set the value of a specific field in the s
 In the example below, we are viewing the **TRADE** table. The command sets a new value for the `QUANTITY` field:
 
 ``` javascript
-DbMon:TRADE>set QUANTITY = 10
+DbMon:TRADE>set QUANTITY 10
 ```
+In the example below, we are viewing the **TRADE** table. We set new values for the `PRICE` and `QUANTITY` fields:
 
-To set the value to **null**, use the `unset` command, for example:
+``` javascript
+DbMon:TRADE>set PRICE,QUANTITY 523.1,9000
+```
+To set a value to **null**, use the `unset` command, for example:
 
 ``` javascript
 DbMon:TRADE>unset QUANTITY 
 ```
 
-:::tip
-Changes performed by `set` and `unset` will not be reflected in the database unless you use `insert` with `writeMode`.
+:::
+The `set` and `unset` commands will not be reflected in the database unless you use `insert` with `writeMode`.
 :::
 
 ### Insert
@@ -597,7 +607,7 @@ DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="20221008"
 
 ### Distinct
 
-In this example, the [`distinct`](#dbmon-commands) command is used to find out how many `BROKER` records there are for each unique `COUNTRY_CODE`.
+In the example below, the [`distinct`](#dbmon-commands) command is used to find out how many `BROKER` records there are for each unique `COUNTRY_CODE`.
 
 ```jsx
 DbMon:BROKER>distinct COUNTRY_CODE
