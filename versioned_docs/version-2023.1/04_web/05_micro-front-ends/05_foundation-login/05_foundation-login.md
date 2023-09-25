@@ -96,7 +96,7 @@ You may need to set up a `NavigationContributor` in your application's router co
 ```
 
 :::warningWarning
-By default, a route that isn't marked public is not. However, a non-public route isn't going to block non-authenticated users automatically from viewing them. This must be implemented in a `NavigationContributor`; see [example](./docs/api/foundation-login.login.md#example).
+By default, a route that isn't marked public is not public. However, a non-public route doesn't automatically block non-authenticated users from viewing it. The blocking must be implemented in a `NavigationContributor`; you can see this in this [example](./docs/api/foundation-login.login.md#example).
 :::
 
 ## Authentication
