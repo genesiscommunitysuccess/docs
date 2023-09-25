@@ -2,11 +2,12 @@
 title: 'Server configuration - Genesis Router'
 sidebar_label: 'Genesis Router'
 id: genesis-router
-keywords: [server, configuration, genesis router]
+keywords: [server, configuration, genesis router, cookie]
 tags:
   - server
   - configuration
   - genesis router
+  - cookie
 ---
 
 
@@ -55,6 +56,16 @@ router {
         entry("ALL_ORDERS")
         entry("ALL_TRADES")
         entry("ALL_ORDER_AUDITS")
+    }
+
+    cookieAuthentication {
+        enabled = false
+        httpOnly = false
+        secure = false
+        wrap = false
+        path = "/"
+        domain = null
+        sameSite = SameSite.Lax
     }
 }
 ```
@@ -116,9 +127,22 @@ The default resources that are always exposed are:
 - DATA_LOGOFF
 - DATA_GET
 
-**Message type**
-
 `entry` Is the additional accepted `messageType`.
+
+**Cookie authentication**
+Since GSF version 6.7, it is possible to configure the HTTP authentication flow to use a cookie based approach. When the cookie authentication mechanism is enabled it is expected that all login and logout events are called via HTTP and the information related to the session itself (e.g. session id, session token, refresh token) will be handled transparently using cookies instead. Given these expectations, login and logout operations via Websocket will not be allowed, and a Websocket connection to GENESIS_ROUTER will only be possible after a successful HTTP login.
+
+The configuration options are:
+  * `enabled` Defines whether the cookie authentication mechanism will be enabled or disabled at the router level. Default: false
+  * `httpOnly` Sets the generated cookies to be 'HttpOnly' (more information [here](https://owasp.org/www-community/HttpOnly)). Default: false
+  * `secure` Set the generated cookies to be 'Secure' (more information [here](https://owasp.org/www-community/controls/SecureCookieAttribute)). Default: false
+  * `wrap` Makes the value of the cookie itself wrapped around double quotes (i.e. ") Default: false
+  * `path` Sets the specific path attributed to the cookie values. Default: "/"
+  * `domain` Set the expected domain for the generated the cookie. Default: null
+  * `sameSite` Configures the behaviour of the cookie when used as part of cross-site requests. Cookies with undefined (i.e. null) `sameSite` configuration will default to SameSite.Lax . Available values: SameSite.None, SameSite.Lax, SameSite.Strict. Default: null (i.e. therefore SameSite.Lax)
+
+For more information about all the different cookie configuration options and the impact they have in terms of security, please refer to the OWASP cookie testing guide found [here](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes).
+
 
 ## Configuring runtime
 
