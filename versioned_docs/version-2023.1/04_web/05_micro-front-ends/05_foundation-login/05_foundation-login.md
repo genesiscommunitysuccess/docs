@@ -18,7 +18,7 @@ tags:
 
 ## Introduction
 
-This micro front-end includes a set of identity management functions, such as authentication (including via SSO) and password reset. Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
+This micro front-end includes a set of identity-management functions, such as authentication (including via SSO) and password reset. Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
 
 Login uses the [Credential Management API](https://developer.mozilla.org/en-US/docs/Web/API/Credential_Management_API), falling back to cookies when unavailable.
 
@@ -45,7 +45,7 @@ If you build a project upon one of the Genesis seed apps, then the `Login` micro
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` or `$ npm run bootstrap:ignore-scripts` command again. You can see more information on the [package.json basics](../../basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. 
 
 ```javascript
 {
@@ -56,10 +56,11 @@ To enable this micro front-end in your application, follow the steps below.
   ...
 }
 ```
-
 :::note
 This page assumes you're using the routing systems that are part of `foundation-ui`, and will cover set-up as part of that routing system.
 :::
+
+2. Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` or `$ npm run bootstrap:ignore-scripts` command again. You can see more information on the [package.json basics](../../basics/package-json-basics/) page.
 
 Once installed, you can either use `Login` as is or re-configure it. As with all our micro front-ends, you also have the option of lazy loading it.
 
@@ -113,12 +114,12 @@ Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables automati
 
 ### SSO
 
-SSO functionality allows the `Login` micro front-end to work with your company's existing authentication system, enabling them to have a single set of credentials - including those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
+SSO enables the `Login` micro front-end to work with your company's existing authentication system, so that your users can have a single set of credentials - including those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
 
 Setting up SSO is primarily [a back-end task](../../../server/access-control/sso-jwt/); however, there is a small amount of front-end [sso configuration](docs/api/foundation-login.loginconfig.sso.md) required.
 
 :::noteInfo
-The standard process of SSO is that the SSO authentication provider flow is opened via a redirect in the current page. However, many authentication providers block their system when running in an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). Because of this, if the `Login` micro front-end detects that it is running in an iframe, it opens up the authentication provider in a popup instead.
+The standard process of SSO is that the SSO authentication provider flow is opened via a redirect in the current page. However, many authentication providers block their system when running in an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). Because of this, if the `Login` micro front-end detects that it is running in an iframe, it opens up the authentication provider in a pop-up instead.
 :::
 
 ## Customising login
