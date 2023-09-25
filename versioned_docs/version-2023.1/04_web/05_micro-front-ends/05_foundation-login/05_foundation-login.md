@@ -14,25 +14,24 @@ tags:
 
 # Foundation Login
 
-Our [API](./docs/api) documentation is separate. Click on the link if you want to view it.
+[API](./docs/api/index.md)
 
 ## Introduction
 
-This micro front-end includes a set of identity management functions: authentication (including via SSO) and password reset, for example. Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
+This micro front-end includes a set of identity-management functions, such as authentication (including via SSO) and password reset. Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
 
-Here is an example of the main login screen: <br/>
+Login uses the [Credential Management API](https://developer.mozilla.org/en-US/docs/Web/API/Credential_Management_API), falling back to cookies when unavailable.
 
+An example of the main login screen: <br/>
 ![Main login screen example](./docs/img/foundation-login_login-standard.png)
 
-Here is an example of authentication via SSO: <br/>
-
+An example of authentication via SSO: <br/>
 ![Main login screen example](./docs/img/foundation-login_login-sso.png)
 
 <!-- An example of the forgotten password screen: <br/>
 ![Main login screen example](./docs/img/foundation-login_forgotten-password.png) -->
 
-Here is an example of the change password screen: <br/>
-
+An example of the change password screen: <br/>
 ![Main login screen example](./docs/img/foundation-login_change-password.png)
 
 <!-- An example of the request account screen: <br/>
@@ -41,12 +40,12 @@ Here is an example of the change password screen: <br/>
 ## Login set-up
 
 :::info
-If you build a project upon one of the Genesis seed apps, then the `Login` micro front-end will already be set-up for you.
+If you build a project upon one of the Genesis seed apps, then the `Login` micro front-end will already be set up for you.
 :::
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always you run the `$ npm run bootstrap` command again. You can see more information on the [package.json basics](../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. 
 
 ```javascript
 {
@@ -57,123 +56,79 @@ To enable this micro front-end in your application, follow the steps below.
   ...
 }
 ```
-
 :::note
-This page assumes you're using the Routing systems that are part of `foundation-ui`, and will cover set-up as part of that routing system.
+This page assumes you're using the routing systems that are part of `foundation-ui`, and will cover set-up as part of that routing system.
 :::
 
-- In the Router configuration for your application, import the `Login` class and the `Settings` type. As shown in this example, you might want to import `Settings` with an alias to avoid name clashes.
+2. Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` or `$ npm run bootstrap:ignore-scripts` command again. You can see more information on the [package.json basics](../../basics/package-json-basics/) page.
 
-```javascript
-import { Login, Settings as LoginSettings } from '@genesislcap/foundation-login';
-```
+Once installed, you can either use `Login` as is or re-configure it. As with all our micro front-ends, you also have the option of lazy loading it.
 
-- Next you'll want to ensure that your router config uses your `LoginSettings` as its generic type so you can configure the login route.
-```javascript
-export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
-	...
+### Basic usage
+
+[Basic usage example](./docs/api/foundation-login.login.md#example)
+
+### Advanced usage
+
+[Advanced usage example](./docs/api/foundation-login.configure.md#example)
+
+## Public and private routes
+
+You may need to set up a `NavigationContributor` in your application's router config class to handle `public` and `autoAuth` route settings:
+
+- `public`, which indicates that a route doesn't require the user to be authenticated to view it
+- `autoAuth`, where, if the user already has an authenticated session, they are automatically logged in again if they navigate away from a page and then return  
+
+```ts
+{
+    path: 'info',
+    element: Info,
+    title: 'Info',
+    name: 'info',
+    settings: { public: true },
+},
+{
+    path: 'admin',
+    element: Admin,
+    title: 'Admin',
+    name: 'admin',
+    settings: { autoAuth: true },
 }
 ```
 
-- Then add the required config to the Router config that you use. For example, you'll want to set up the `Login` class to be used on the `/login` route, and pass in its required settings. See [customising login](#customising-login).
-```javascript
-{ path: '', redirect: 'login' },
-{
-	path: 'login',
-	element: Login,
-	title: 'Login',
-	name: 'login',
-	layout: loginLayout,
-	// Login settings that are defined in the LoginSettings type
-	settings: {
-		defaultRedirectUrl: 'protected',
-		public: true,
-		resetPassword: true,
-		ssoToggle: true,
-		ssoEnable: false,
-	},
-	childRouters: true,
-},
-```
-
-- You also need to set up things like the `NavigationContributor` in this class.
-
-:::noteExample
-An example of this and other required settings for the Router configuration with regard to the login system can be found in the [example in the API reference](./docs/api/foundation-login.login/#example).
-:::
-
-- The functionality of the Login class is configured via the settings block on its route, but the other routes will also have customisation on them too. The main options to set here are:
-
-- `allowAutoAuth` which will log the user back in onto the page when they navigate away if they already have an authenticated session
-- `public` which will indicate that a route doesn't require the user to be authenticated to view
-
-```javascript
-{
-	path: 'admin',
-	element: Admin,
-	title: 'Admin',
-	name: 'admin',
-	settings: { allowAutoAuth: true },
-},
-{
-	path: 'info',
-	element: Info,
-	title: 'Info',
-	name: 'info',
-	settings: { public: true },
-},
-```
-
 :::warningWarning
-By default, a route that isn't marked public is not. However, a non-public route isn't going to block non-authenticated users automatically from viewing them. This must be implemented in the `NavigationContributor`, as shown in the [previously mentioned example](./docs/api/foundation-login.login/#example).
+By default, a route that isn't marked public is not public. However, a non-public route doesn't automatically block non-authenticated users from viewing it. The blocking must be implemented in a `NavigationContributor`; you can see this in this [example](./docs/api/foundation-login.login.md#example).
 :::
 
 ## Authentication
 
-For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](../../../server/access-control/introduction/).
+For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](../../../server/access-control/introduction).
 
 ### Username & password
 
 The standard authentication method is the user supplying their username and password. Even when SSO is enabled as an authentication method, the user will still have the option to sign in with their normal credentials.
 
 :::noteTip
-Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables will automatically populate the credentials in the login form, which can be useful during development so developers don't need to write out their credentials continuously.
+Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables automatically populates the credentials in the login form; this can be useful during development, so that developers don't need to write out their credentials continuously. However, the browser may also offer auto-filling if you have previously chosen to save your credentials, which can make setting these unnecessary.
 :::
 
 ### SSO
 
-SSO functionality allows the `Login` micro front-end to work with your company's existing authentication system, enabling them to have a single set of credentials - including those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
+SSO enables the `Login` micro front-end to work with your company's existing authentication system, so that your users can have a single set of credentials - including those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
 
-Setting up SSO is primarily [a back-end task] and it depends on whether you use [JWT](../../../server/access-control/sso-jwt/), (SAML)(../../../server/access-control/sso-saml/), or [OIDC](../../../server/access-control/sso-oidc/).
-
-However, we cover a small amount of configuration in the [customisation](#enable-sso) part of this documentation.
+Setting up SSO is primarily [a back-end task](../../../server/access-control/sso-jwt/); however, there is a small amount of front-end [sso configuration](docs/api/foundation-login.loginconfig.sso.md) required.
 
 :::noteInfo
-The standard process of SSO is that the SSO authentication provider flow is opened via a redirect in the current page. However, many authentication providers block their system when running in an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). Because of this, if the `Login` micro front-end detects that it is running in an iframe, it opens up the authentication provider in a popup instead.
+The standard process of SSO is that the SSO authentication provider flow is opened via a redirect in the current page. However, many authentication providers block their system when running in an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). Because of this, if the `Login` micro front-end detects that it is running in an iframe, it opens up the authentication provider in a pop-up instead.
 :::
 
 ## Customising login
 
-The `Login` micro front-end uses a parameterless constructor. Therefore, the configuration needs to be set via the settings javascript object in the router, as shown in the [set-up step](#login-set-up). See the full [settings API here](./docs/api/foundation-login.settings/#remarks).
-
-### Enabled functionality
-
-In the [introduction section](#introduction), the reset password functionality is shown. However, this flow must be enabled with the `resetPassword` option.
-
-### Logo
-
-You will probably want to use your company's logo instead of the Genesis logo. A custom logo can be configured with the `logoSrc`, `logoWidth`, `logoHeight` settings. If you don't want to use a logo, you can instead hide the logo with `hideLogo`.
-
-### Enable SSO
-
-As mentioned in the [authentication](#sso) section, SSO must be configured on the server, but some front-end configuration is required too.
-
-- Setting `ssoToggle` is required to enable the SSO authentication as an option for the user; the user can then enable that flow with a checkbox that controls `ssoEnable`.
-- Enabling `ssoEnable` at the route-level sets the SSO flow to be the default.
-
-- Finally, set `defaultRedirectUrl`, which controls where the `Login` micro front-end will take the user back to once they complete the SSO journey. For example, setting option to `/home` will take the user to the `/home` path if they successfully login via SSO.
-
+The `Login` micro front-end can be customised using an exported `configure` function. See [configure](docs/api/foundation-login.configure.md) in the API docs for more information.
 
 ## License
 
-Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform
