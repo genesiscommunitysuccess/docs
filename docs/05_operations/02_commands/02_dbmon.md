@@ -14,7 +14,7 @@ tags:
 
 DbMon is the Genesis database client. It provides a set of commands that enable you to view and change the database as necessary. DbMon hides the details of the specific database technology, so this does not affect your usage. 
 
-Generic database clients can be used with the Genesis low-code platform, but we recommend that you use DbMon. 
+You can use Generic database clients to work with the Genesis low-code platform, but we recommend that you use DbMon. 
 
 This page gives details of all the DbMon commands and provides practical examples of how you can use them.
 
@@ -37,7 +37,7 @@ As you can see, once you are in a DbMon session, the `DbMon>` prompt is displaye
 
 ## Exiting DbMon
 
-To end a DbMon session, just type [`quit`](#dbmon-commands) at the DbMon prompt.
+To end a DbMon session, just type [`quit`](#dbmon-commands) at the `DbMon>` prompt.
 
 ## Finding and viewing information
 
@@ -48,9 +48,8 @@ A Genesis database organises information in tables and views. DbMon enables you 
 - find all the views in your database (`showViews`)
 - select a view to examine (`view`)
 
-### Show tables and views
 
-To see a list of available tables or views, use the [`showTables`](#dbmon-commands) or the [`showViews`](#dbmon-commands) command. This displays an alphabetical list of available tables or views. For example, here we have used the command `showTables`:
+The [`showTables`](#dbmon-commands) and [`showViews`](#dbmon-commands) commands display an alphabetical list of available tables or views. For example, here we have used the command `showTables`:
 
 ```javascript
 ==================================
@@ -73,7 +72,7 @@ BROKER
 <<List continues...>>
 ```
 
-### Table
+### Selecting a table
 
 To look at the data held in a specific table, use the [`table`](#dbmon-commands) command followed by the table name: for example `table BROKER`. Once you have selected a table, the `DbMon` prompt changes to show the table name.
 
@@ -82,7 +81,7 @@ DbMon>table BROKER
 DbMon:BROKER>
 ```
 
-### View
+### Selecting a view
 
 To look at the data held in a specific view, use the [`view`](#dbmon-commands) command followed by the view name: for example `view BROKER_VIEW`. Once you have selected a view, the `DbMon` prompt changes to show the view name.
 
@@ -152,9 +151,10 @@ In DbMon you can only see one record at a time.
 
 To display the record you want, use the `find` command, which searches the table’s indices for a given key value.  
 
-So you need to know what the indices (keys) are for the currently selected table; use the `showKeys` command. This lists each key (index), along with the field name you need to supply to use the index.  In the example below, the BROKER table has a primary index (BROKER_BY_ID, where the relevant field is BROKER_ID) and three secondary indices.
+So you need to know what the indices (keys) are for the currently selected table or view; for this, use the `showKeys` command. This lists each key (index), along with the field name you need to supply to use the index.  In the example below, the BROKER table has a primary index (BROKER_BY_ID, where the relevant field is BROKER_ID) and three secondary indices.
 
 ```javascript
+DbMon:BROKER>showKeys
 ==================================
 BROKER
 ==================================
@@ -172,7 +172,7 @@ BROKER_BY_VIEW_CODE                VIEW_CODE                                Seco
 
 Now that you know the indices and the fields they require, you can find a record in the table or view.
 
-The example below looks for a broker that has a `VIEW_CODE` value of “WALSH”. 
+The example below looks for a broker that has a `VIEW_CODE` value of `WALSH`. 
 
 1. The `set` command sets the value of the `VIEW_CODE` to the value `WALSH`. _This is a local setting; it does not change the database._
 2. The `find` command looks for the index (key) `BROKER_BY_VIEW_CODE`.
@@ -207,12 +207,12 @@ REGION                    UK                                        STRING
 VIEW_CODE                 WALSH                                     STRING
 ```
 
-If you then want to [`find`](#dbmon-commands) a record with a different `VIEW_CODE`, you need to go back to having an empty record so that you can [`set`](#dbmon-commands) the `VIEW_CODE` again and perform another [`find`](#dbmon-commands). 
+If you then want to find a record with a different `VIEW_CODE`, use the [`clear`](#dbmon-commands) command to clear the record. You can then use [`set`](#dbmon-commands) and [`find`](#dbmon-commands) commands to locate the new record.
 
-To do this, use the [`clear`](#dbmon-commands) command. This resets your prompt onto the table or view so that you can start again. _This is a local setting; it does not change the database._
+_The `clear` command does not change the database._
 
 ## Searching for one or more records
-To look for a record (or a number of records) without using an index (key), use the `search` command. This lists all the records that match the criteria that you supply.
+To look for a record (or a number of records) without using an index (key), use the [`search`](#dbmon-commands) command. This lists all the records that match the criteria that you supply.
 
 :::warning
 For larger tables, this can be slow and could cause latency to users of your application.
@@ -279,7 +279,7 @@ Field Name                Value                                     Type
 Total Results:  3
 ```
 
-To string criteria together, use || for logical OR and && for logical AND. For example, if you want to [`search`](#dbmon-commands) for any `BROKER` where the `COUNTRY_CODE` is USA or IRL:
+To join criteria together, use || for logical OR and && for logical AND. For example, if you want to [`search`](#dbmon-commands) for any `BROKER` where the `COUNTRY_CODE` is USA or IRL:
 
 ```javascript
 DbMon:BROKER>search COUNTRY_CODE=='IRL'||COUNTRY_CODE=='USA'
@@ -306,7 +306,7 @@ The logical operators available are:
 
 ### Searching with wildcards
 
-You can search using the * wildcard. Note that this might be quite slow if running against a large dataset.
+You can search using the * wildcard. Note that this might be quite slow if running against a large dataset. For example:
 
 ```jsx
 DbMon:USER_ATTRIBUTES>search USER_NAME.matches('Dealer1.*')
@@ -321,21 +321,17 @@ Field Name                               Value                                  
 Total Results:  3
 ```
 
-### Searching for a Datetime or Date
+### Searching for a date or datetime
 
-When setting a DATE or DATETIME, the format must be specified as follows:
+When setting a DATE, the format must be specified as follows:
 
-- DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS Z"
-- DATE_FORMAT = "yyyy-MM-dd"
+- DATE_FORMAT = "yyyyMMdd"
 
-Accepted Datetime formats:
+When setting a DATETIME, the format must be specified as follows:
 
-- DateTime with milliseconds precision: yyyyMMdd-HH:mm:ss.SSS
-- DateTime with seconds precision: yyyyMMdd-HH:mm:ss
-- DateTime with minutes precision: yyyyMMdd-HH:mm
-
-Accepted Date formats:
-- yyyyMMdd
+- DateTime with milliseconds precision: DATETIME_FORMAT = "yyyyMMdd-HH:mm:ss.SSS"
+- DateTime with seconds precision: DATETIME_FORMAT = "yyyyMMdd-HH:mm:ss"
+- DateTime with minutes precision: DATETIME_FORMAT = "yyyyMMdd-HH:mm"
 
 Here are some examples of searches for datetimes and dates:
 
