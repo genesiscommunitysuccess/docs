@@ -4,14 +4,13 @@ sidebar_label: 'Text field'
 id: text-field
 keywords: [web, web components, text field]
 tags:
-    - web
-    - web components
-    - text field
+  - web
+  - web components
+  - text field
 ---
 
 A text field is an interactive or graphic web component that enables users to input and edit text.
 It is a fundamental component of forms, dialogs and user interfaces.
-
 ## Set-up
 
 ```ts
@@ -22,19 +21,22 @@ provideDesignSystem().register(alphaTextField());
 
 ## Attributes
 
-You define the following attributes in an `<alpha-text-field>`.
+You can define the following attributes in an `<alpha-text-field>`.
 
-| Name        | Type      | Description                                                                    |
-|-------------|-----------|--------------------------------------------------------------------------------|
-| autofocus   | `boolean` | When true, the component will be focused when the page has finished loading    |
-| appearance  | `string`  | Can be `outline` or `filled`                                                   |
-| maxlength   | `number`  | The maximum number of characters allowed                                       |
-| minlength   | `number`  | The minimum number of characters allowed                                       |
-| placeholder | `string`  | Sets a placeholder for the element                                             |
-| readOnly    | `boolean` | If true, the user cannot change the value in the field                         |
-| size        | `number`  | Sets the width of the component                                                |
-| type        | `string`  | Sets the type of text-field. Can be {"email", "password","tel","text","url"}   | 
-| value       | `string`  | Sets the value for this component                                              | 
+| Name        | Type      | Description                                                                          |
+|-------------|-----------|--------------------------------------------------------------------------------------|
+| autofocus   | `boolean` | When true, the component will be focused when the page has finished loading          |
+| appearance  | `string`  | Can be `outline` or `filled`                                                         |
+| disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                              |
+| maxlength   | `number`  | The maximum number of characters allowed                                             |
+| minlength   | `number`  | The minimum number of characters allowed                                             |
+| name        | `string`  | Define the name of the element                                                       |
+| placeholder | `string`  | Sets a placeholder for the element                                                   |
+| readonly    | `boolean` | If true, the user cannot change the value of this field                              |
+| size        | `number`  | Sets the width of the component                                                      |
+| step        | `number`  | **Only works with** `type="number`. It defines the incremental step in the component |
+| type        | `string`  | Sets the type of the text-field. Can be {"email", "password","tel","text","url"}     | 
+| value       | `string`  | Sets the value for this component                                                    | 
 
 These attributes must be defined alongside the declaration of the component.
 
@@ -52,11 +54,15 @@ of this component accordingly.
 ```
 - **Example 3**: a read-only text-field with a placeholder
 ```html title="Example 3"
-<alpha-text-field readOnly placeholder="you can't touch me">Name</alpha-text-field>
+<alpha-text-field readonly placeholder="you can't touch me">Name</alpha-text-field>
+```
+- **Example 4**: a text-field with type number and step 0.5
+```html title="Example 3"
+<alpha-text-field type="number" step="0.5">Name</alpha-text-field>
 ```
 
 ### Get the user input
-In order to use the value that is input to this component, follow these two steps:
+In order to use a value input to this component, follow these two steps:
 
 1. Create an `@observable` variable where you want to use this value:
 
@@ -64,9 +70,9 @@ In order to use the value that is input to this component, follow these two step
 import {... , observable} from '@microsoft/fast-element';
 ...
 export class TEMPLATE extends FASTElement {
-    ...
-    @observable text_field: string
-    ...
+...
+@observable text_field: string
+...
 }
 ```
 
