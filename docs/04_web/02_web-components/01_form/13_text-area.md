@@ -4,14 +4,14 @@ sidebar_label: 'Text area'
 id: text-area
 keywords: [web, web components, text area]
 tags:
-    - web
-    - web components
-    - text area
+  - web
+  - web components
+  - text area
 ---
 
 A text-area is a graphical user interface element that provides a region where users can input, edit or display text that spans in multiple lines.
 
-This component is an implementation of an [HTML textarea element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) as a form-connected Web Component. 
+This component is an implementation of an [HTML textarea element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) as a form-connected Web Component.
 ## Set-up
 
 ```ts
@@ -72,7 +72,7 @@ export class TEMPLATE extends FASTElement {
 }
 ```
 
-2. Use the `sync` function to insert the value from the component into the variable `text_field`:
+2. Use the `sync` function to insert the value from the component into the variable `text_area`:
 
 ```typescript tile="Example 4" {1,4}
 import {sync} from '@genesislcap/foundation-utils';

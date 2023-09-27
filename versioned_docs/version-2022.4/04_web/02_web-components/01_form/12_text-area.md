@@ -72,7 +72,7 @@ export class TEMPLATE extends FASTElement {
 }
 ```
 
-2. Use the `sync` function to insert the value from the component into the variable `text_field`:
+2. Use the `sync` function to insert the value from the component into the variable `text_area`:
 
 ```typescript tile="Example 4" {1,4}
 import {sync} from '@genesislcap/foundation-utils';
