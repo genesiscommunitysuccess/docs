@@ -174,9 +174,9 @@ Now that you know the indices and the fields they require, you can find a record
 
 The example below looks for a broker that has a `VIEW_CODE` value of `WALSH`. 
 
-1. The `set` command sets the value of the `VIEW_CODE` to the value `WALSH`. _This is a local setting; it does not change the database._
-2. The `find` command looks for the index (key) `BROKER_BY_VIEW_CODE`.
-3. The `show` command displays the result.
+1. The [`set`](#dbmon-commands) command sets the value of the `VIEW_CODE` to the value `WALSH`. _This is a local setting; it does not change the database._
+2. The [`find`]](#dbmon-commands) command looks for the index (key) `BROKER_BY_VIEW_CODE`.
+3. The [`show`]](#dbmon-commands) command displays the result.
 
 ```javascript
 DbMon:BROKER>set VIEW_CODE WALSH
@@ -349,7 +349,18 @@ DbMon:BROKER>search MODIFIED_DATE>"20221008-14:20" && COUNTRY_CODE=='IRL'
 DbMon:BROKER>search MODIFIED_DATE=="20221008" || COUNTRY_CODE=='IRL'
 ```
 
-Here are some examples of searches that use the distinct command to find records with a specific field value that were modified at a specific date or datetime:
+### Counting rows (records)
+
+To discover how many rows of data there are in the currently selected table or view, use the [`count`](#dbmon-commands) command. For large database entities, this could take some time to return:
+
+```javascript
+DbMon:BROKER>count
+The table BROKER contains 114 records
+```
+
+### Finding distinct records
+
+The `distinct` command provides another useful way of searching. Here are some examples of searches that use the distinct command to find records with a specific field value that were modified at a specific date or datetime:
 
 ```jsx
 // if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database 
@@ -365,10 +376,7 @@ DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE<"20221008-14:20" || IS_ACTI
 DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="20221008"
 ```
 
-
-## Counting records
-
-### Distinct
+The `distinct` command is also useful for counting records with specific characteristics.
 
 In the example below, the [`distinct`](#dbmon-commands) command is used to find out how many `BROKER` records there are for each unique `COUNTRY_CODE`.
 
@@ -391,11 +399,10 @@ Total Distinct Values Count:  8
 
 The [`distinct`](#dbmon-commands) command also accepts a `-where` parameter, which enables you to filter the rows that are counted. 
 
-This example retrieves the count of unique `COUNTRY_CODE` for `BROKER` records that have a `REGION` of UK, but which do not have the value of `GBP` for `COUNTRY_CODE`:
+The next example retrieves the count of unique `COUNTRY_CODE` for `BROKER` records that have a `REGION` of UK, but which do not have the value of `GBP` for `COUNTRY_CODE`:
 
 ```jsx
-count
-countcountDbMon:BROKER>distinct COUNTRY_CODE -where REGION=='UK'&&COUNTRY_CODE!='GBR'
+DbMon:BROKER>distinct COUNTRY_CODE -where REGION=='UK'&&COUNTRY_CODE!='GBR'
 Distinct Value                           Count
 ===========================================================================================
 AUS                                      1
@@ -408,16 +415,29 @@ NLD                                      2
 Total Results:  8
 Total Distinct Values Count:  6
 ```
+So, what has this found?
+
+- At the bottom, the Total Results is 8. There are 8 records where the region is UK but the country code is not GBR.
+- The Distinct Values is 6. There are 6 Country Codes where the region is UK but the country code is not GBR. These are the six rows displayed.
+ 
+Note that there is no validation of the field when you use the `distinct` command. So if we ran the previous example, but we incorrectly typed `COUNTRY_COD` instead of `COUNTRY_CODE`. The command would still work, but the result is potentially confusing.
 
 ```jsx
-DbMon:BROKER>distinct COUNTRY_CODE -where REGION=='UK'&&COUNTRY_CODE!='GBR'
+DbMon:BROKER>distinct COUNTRY_COD -where REGION=='UK'&&COUNTRY_CODE!='GBR'
 Distinct Value                           Count
 ===========================================================================================
-[null]                                   8    
+[null]                                   8
 -------------------------------------------------------------------------------------------
 Total Results:  8
 Total Distinct Values Count:  1
 ```
+
+So, what happened there?
+- There are no instances of `Country_COD`, so the only Distinct Value is [null].
+- However, the count is still 8 for this line, because there are 8 records where the region is UK but the country code is not GBR.
+- The Total Results value is the sum of the counts: 8. If your field was invalid, then the Total Results will always equal the count because there is only one value found - null.
+- The Total Distinct Values Count is effectively the number of rows: 1. Only one value was found  - null.
+ 
 ### Finding the first and last record
 If you are interested in selecting the `first` or the `last` record, you can use the `first` or `last` along with the index name. After selecting a record, to be able to see it in the dbmon, you need to run the `show` command. In the following example, we are going to select the first record in the **TRADE** table using the index **TRADE_BY_ID**, although we could perform the same operation using a view index.
 
@@ -441,7 +461,7 @@ TRADE_DATE                                                                      
 TRADE_ID                                 0350e01b-7064-4c60-8bcc-6084b6bee342T... STRING              
 TRADE_STATUS                             NEW                                      ENUM[NEW ALLOCATED CANCELLED]
 ```
-### Next
+### Displaying the next record
 
 You can also use the `next` command to select the next record in the sequence. Here is an example:
 
@@ -466,18 +486,21 @@ TRADE_ID                                 a4ce9a4c-21e1-416c-ae48-401eeef3f3b9T..
 TRADE_STATUS                             NEW                                      ENUM[NEW ALLOCATED CANCELLED]
 ```
 
-### Counting rows (records)
+## Changing the database
 
-To discover how many rows of data there are in the currently selected table or view, use the [`count`](#dbmon-commands) command. For large database entities, this could take some time to return:
+Whenever you make a change to the database, you must use first the command `writeMode`. This is designed to protect the database against casual or unintended changes.
 
-```javascript
-DbMon:BROKER>count
-The table BROKER contains 114 records
-```
+To change a field value:
+
+1. Find the table or view that the field belongs to.
+2. Select that table or view.
+3. Set the value of the field.
+4. Run `writeMode`.
+5. Insert the new value.
 
 
-### Setting field values
-Use the `set` and `unset` commands to set the value of a specific field in the selected table or view. If you have previously selected a record, it will overwrite its value; otherwise, it sets a new record (note that this is only local - to insert a new record to the table, use the insert command). In the case of the `set` command, specify the value you want to set. 
+### Changing the value of a field
+The `set` command enables you to set the value of a specific field in the selected table or view. You need to do this before you write to the database. The `set` command itself does not change the database.
 
 In the example below, we are viewing the **TRADE** table. The command sets a new value for the `QUANTITY` field:
 
@@ -496,16 +519,18 @@ DbMon:TRADE>unset QUANTITY
 ```
 
 :::
-The `set` and `unset` commands will not be reflected in the database unless you use `insert` with `writeMode`.
+The `set` and `unset` commands themselves do not change the database.
 :::
+### Inserting a new record
 
-## Changing the database
+To insert a new record into a table in the database, use the `insert` command. You will always be asked to confirm the command.
 
-### Insert
+1. Find and select the required table or view.
+2. Set the values of the required fields.
+3. Enable `writeMode`.
+4. Insert. 
 
-To insert a new record into the database, use the `insert` command. This inserts a new record based on the current record selected. Before you insert this new record, you must enable `writeMode`. 
-
-In the example below, we use the `set` command to create a new record before inserting it into the database.
+In the example below, we use the `set` command to create a new record before inserting it into the TRADE table of the database.
 
 ``` javascript
 DbMon:TRADE>set PRICE 80
@@ -534,13 +559,19 @@ y
 Record saved
 ```
 
-### Delete rows
+### Deleting rows
 
-To delete a row from a table manually using DbMon, use the `delete` or `deleteWhere` command. before you perform a delete operation, you must run `writeMode` to enable write mode.
+To delete a row from a table, use the `delete` command. 
 
-#### Delete
+1. Find the record you need to delete.
+2. Run `writeMode` to enable write mode.
+3. Run `delete`.
 
-Use the `delete` command to delete the selected record in the selected table. The example below deletes the last record in the **TRADE** table:
+:::warning
+If you do not select a record, the command will delete the last record in the table.
+:::
+
+The example below deletes the last record in the **TRADE** table:
 
 ```javascript
 DbMon:TRADE>writeMode
@@ -549,13 +580,14 @@ Are you sure you wish to execute the command? Y/N
 y
 Record deleted
 ```
-:::note
-To be able to use this command, you need to be in `writeMode`.
-:::
 
-#### deleteWhere
+### deleteWhere
 
-The `deleteWhere` command finds all records that match the specified criteria in the currently selected table. Before deleting, it asks you to confirm the deletion.
+The `deleteWhere` command finds all records that match the specified criteria in the currently selected table, and deletes them. You are always prompted to confirm that you wish to execute the command.
+
+1. Find and select the required table or view.
+2. Enable `writeMode`.
+3. Run `deleteWhere`.
 
 In the example below, the currently selected table is **TRADE**. We delete all records that have a **QUANTITY** value greater than 100.
 
@@ -569,15 +601,17 @@ Deleted record: DbRecord [tableName=TRADE] [PRICE = 76.0, SYMBOL = EUR, QUANTITY
 2 records deleted
 ```
 
-:::note
-To be able to use this command, you need to be in `writeMode`.
-:::
+### Updating rows
 
-### Update rows
-To perform an update in the database manually using DbMon, use the `update` or `updateWhere` command. Note that to perform an update operation, you must first run `writeMode` to enable write mode.
+The `update` command updates the specified fields in the selected row of the currently selected table. You must provide a `key_name`. You will always be prompted to confirm the update.
 
-#### Update
-The `update` command updates the given fields in the selected row of the currently selected table. Use the commands `set` and `unset` to manipulate the selected row before you run `update`. To use `update`, you must provide a `key_name`. In the example below, **TRADE** is the currently selected table. We use the `set` command to set the PRICE field to 50, and then `update` command to update the TRADE_BY_UPDATE_PRICE.
+1. Find and select the required table or view.
+2. Find and select the record that you want to update.
+3. Enable `writeMode`.
+5. Set the values of the required fields.
+4. Update. 
+
+In the example below, **TRADE** is the currently selected table. We use the `set` command to set the PRICE field to 50, and then `update` command to update the TRADE_BY_UPDATE_PRICE.
 
 ```javascript
 DbMon:TRADE>writeMode
@@ -588,10 +622,14 @@ y
 Record updated
 ```
 
-#### UpdateWhere
-Use the `updateWhere` command to update all records that match specific criteria. After the confirmation, it will prompt all the records that have been updated.
+### UpdateWhere
+Use the `updateWhere` command to update all records in the current table or view, which match specific criteria. You will always be prompted to confirm the update.
 
-Here is an example of how to use `updateWhere`. In this example, we are updating the `QUANTITY` value to 10 to all records in **TRADE** with `id = genesis1`.
+1. Find and select the required table or view.
+2. Enable `writeMode`.
+3. Run `updateWhere`.
+
+Here is an example of how to use `updateWhere`. In this example, we are updating the `QUANTITY` value to 10 for all records in **TRADE** with `id = genesis1`.
 
 ```javascript
 DbMon:TRADE>writeMode
@@ -601,17 +639,6 @@ y
 Updated record: DbRecord [tableName=TRADE] [PRICE = 90.0, SYMBOL = EUR, QUANTITY = 10, DIRECTION = BUY, TIMESTAMP = 2023-08-15 19:14:01.488(n:0,s:104) (7097294379760484456), TRADE_DATE = null, RECORD_ID = 7097293333759787097, COUNTERPARTY_ID = 1, TRADE_STATUS = NEW, TRADE_ID = genesis1, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
 1 records updated
 ```
-:::note
-To be able to use this command, you need to be in `writeMode`.
-:::
-
-
-```javascript
-DbMon:BROKER>search COUNTRY_CODE=='IRL'
-```
-
-
-
 
 ## Help
 
