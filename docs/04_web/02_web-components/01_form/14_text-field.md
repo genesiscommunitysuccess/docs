@@ -9,8 +9,9 @@ tags:
     - text field
 ---
 
-A text field is an interactive or graphical web component that allows users to input and edit textual information.
+A text field is an interactive or graphic web component that enables users to input and edit text.
 It is a fundamental component of forms, dialogs and user interfaces.
+
 ## Set-up
 
 ```ts
@@ -21,24 +22,24 @@ provideDesignSystem().register(alphaTextField());
 
 ## Attributes
 
-Below you will find the attributes accepted in the `<alpha-text-field>`.
+You define the following attributes in an `<alpha-text-field>`.
 
 | Name        | Type      | Description                                                                    |
 |-------------|-----------|--------------------------------------------------------------------------------|
-| autofocus   | `boolean` | When true, the component will focused when the  page finished loading          |
+| autofocus   | `boolean` | When true, the component will be focused when the page has finished loading    |
 | appearance  | `string`  | Can be `outline` or `filled`                                                   |
 | maxlength   | `number`  | The maximum number of characters allowed                                       |
 | minlength   | `number`  | The minimum number of characters allowed                                       |
 | placeholder | `string`  | Sets a placeholder for the element                                             |
-| readOnly    | `boolean` | If true, the user cannot change this its value                                 |
+| readOnly    | `boolean` | If true, the user cannot change the value in the field                         |
 | size        | `number`  | Sets the width of the component                                                |
-| type        | `string`  | Set the type of th text-field. Can be {"email", "password","tel","text","url"} | 
-| value       | `string`  | Set the value for this component                                               | 
+| type        | `string`  | Sets the type of text-field. Can be {"email", "password","tel","text","url"}   | 
+| value       | `string`  | Sets the value for this component                                              | 
 
-These attributes need to be defined alongside the declaration of the component.
+These attributes must be defined alongside the declaration of the component.
 
 ## Usage
-All examples below are using the `alpha-design-system`. If you are using any other design system, change the declaration
+All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration
 of this component accordingly.
 
 - **Example 1**: a text-field with a max length of 10 characters and a placeholder
@@ -49,13 +50,13 @@ of this component accordingly.
 ```html title="Example 2"
 <alpha-text-field size="30" type="password">Name</alpha-text-field>
 ```
-- **Example 3**: a text-field read only wit a placeholder
+- **Example 3**: a read-only text-field with a placeholder
 ```html title="Example 3"
 <alpha-text-field readOnly placeholder="you can't touch me">Name</alpha-text-field>
 ```
 
 ### Get the user input
-In order to use the value inputted in this component, you need to follow these two steps
+In order to use the value that is input to this component, follow these two steps:
 
 1. Create an `@observable` variable where you want to use this value:
 
@@ -80,7 +81,7 @@ import {sync} from '@genesislcap/foundation-utils';
 ...    
 ```
 
-That way, you can access the value of the component in your application.
+From this point, you can access the value of the component in your application.
 
 ## Try yourself
 
