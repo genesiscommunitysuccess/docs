@@ -9,7 +9,7 @@ tags:
   - text field
 ---
 
-A text field is an interactive or graphic web component that enables users to input and edit textual information.
+A text field is an interactive or graphic web component that enables users to input and edit text.
 It is a fundamental component of forms, dialogs and user interfaces.
 ## Set-up
 
@@ -33,7 +33,7 @@ You can define the following attributes in the `<alpha-text-field>`.
 | readOnly    | `boolean` | If true, the user cannot change this its value                                 |
 | size        | `number`  | Sets the width of the component                                                |
 | type        | `string`  | Sets the type of the text-field. Can be {"email", "password","tel","text","url"}| 
-| value       | `string`  | Set the value for this component                                               | 
+| value       | `string`  | Sets the value for this component                                              | 
 
 These attributes must be defined alongside the declaration of the component.
 
