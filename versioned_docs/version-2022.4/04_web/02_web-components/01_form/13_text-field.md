@@ -32,8 +32,8 @@ You can define the following attributes in an `<alpha-text-field>`.
 | placeholder | `string`  | Sets a placeholder for the element                                             |
 | readOnly    | `boolean` | If true, the user cannot change the value of this field                        |
 | size        | `number`  | Sets the width of the component                                                |
-| type        | `string`  | Set the type of the text-field. Can be {"email", "password","tel","text","url" | 
-| value       | `string`  | Set the value for this component                                               | 
+| type        | `string`  | Sets the type of the text-field. Can be {"email", "password","tel","text","url"| 
+| value       | `string`  | Sets the value for this component                                              | 
 
 These attributes must be defined alongside the declaration of the component.
 
@@ -55,7 +55,7 @@ of this component accordingly.
 ```
 
 ### Get the user input
-In order to use the value input to this component, follow these two steps:
+In order to use a value input to this component, follow these two steps:
 
 1. Create an `@observable` variable where you want to use this value:
 
