@@ -31,7 +31,7 @@ You can define the following attributes in an `<alpha-text-field>`.
 | maxlength   | `number`  | The maximum number of characters allowed                                             |
 | minlength   | `number`  | The minimum number of characters allowed                                             |
 | name        | `string`  | Define the name of the element                                                       |
-| placeholder | `string`  | Sets a placeholder for the element                                                   |
+| placeholder | `string`  | Sets placeholder text for the element (which disappears when the user starts typing) |
 | readonly    | `boolean` | If true, the user cannot change the value of this field                              |
 | size        | `number`  | Sets the width of the component                                                      |
 | step        | `number`  | **Only works with** `type="number`. It defines the incremental step in the component |
@@ -62,7 +62,7 @@ of this component accordingly.
 ```
 
 ### Get the user input
-In order to use a value input to this component, follow these two steps:
+Once the user has input a value to this component, you need to make that value or text accessible to the application:
 
 1. Create an `@observable` variable where you want to use this value:
 
