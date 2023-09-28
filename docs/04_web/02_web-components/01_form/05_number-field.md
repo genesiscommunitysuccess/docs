@@ -24,16 +24,16 @@ You can define the following attributes in an `<alpha-number-field>`.
 
 | Name           | Type      | Description                                                                                                              |
 |----------------|-----------|--------------------------------------------------------------------------------------------------------------------------|
-| appearance     | `string`  | Controls the general view of the element. It can be **filled** or **outline**                                          |
+| appearance     | `string`  | Controls the general view of the element. It can be **filled** or **outline**                                            |
 | autofocus      | `boolean` | When true, the component will be focused when the page has finished loading                                              |
-| disabled       | `boolean` | Disables this component, users will not be able to change its value                                                     |
-| hideStep       | `boolean` | Displays the step control of the element                                                                                 |
+| disabled       | `boolean` | Disables this component, users will not be able to change its value                                                      |
+| hideStep       | `boolean` | Hides the step control of the element                                                                                    |
 | locale         | `string`  | Defines a number formatting based on language and location. **Default: "en-US"**. Needs to be used with `withFormatting` |
 | max            | `number`  | Defines maximum number allowed                                                                                           |
 | maxlength      | `number`  | The maximum number of characters allowed                                                                                 |
 | min            | `number`  | Defines minimum number allowed                                                                                           |
 | minlength      | `number`  | The minimum number of characters allowed                                                                                 |
-| placeholder    | `string`  | Sets a placeholder for the element (which disappears when the user starts inputting                                      |
+| placeholder    | `string`  | Sets a placeholder for the element (which disappears when the user starts inputting)                                     |
 | size           | `number`  | Defines the width of the component                                                                                       |
 | step           | `number`  | Defines the step rate when using the arrows in the element                                                               |
 | value          | `string`  | Defines a value for the component when it is created                                                                     |
@@ -49,11 +49,11 @@ of this component accordingly.
 ```html title="Example 1"
 <alpha-number-field min="10" max="50" hidestep>number-field</alpha-number-field>
 ```
-- **Example 2**: a number-field formatting the number from "de-De" (German/Germany)
+- **Example 2**: a number-field in German format "de-De" (German/Germany)
 ```html title="Example 2"
 <alpha-number-field withFormatting locale="de-De">Number-field</alpha-number-field>
 ```
-- **Example 3**: a number-field with step 0.5
+- **Example 3**: a number-field with step 0.5 - each time the user clicks on a step arrow, the value increases or decreases by 0.5
 ```html title="Example 3"
 <alpha-number-field step="0.5">Number-field</alpha-number-field>
 ```
