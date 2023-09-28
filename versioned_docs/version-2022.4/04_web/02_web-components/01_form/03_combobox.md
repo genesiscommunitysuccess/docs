@@ -4,9 +4,9 @@ sidebar_label: 'Combobox'
 id: combobox
 keywords: [web, web components, combobox]
 tags:
-  - web
-  - web components
-  - combobox
+    - web
+    - web components
+    - combobox
 ---
 
 A combo-box is an input with an associated pop-up that enables users to select one value from a collection of possible values.
@@ -40,7 +40,7 @@ For `autocomplete`, this is how the component should behave:
 - `list`: while the user is typing in the combo-box, it will display a filtered combolix based on what the user has already typed.
 - `both`: it will behave as both `inline` and `list`
 - `none`: it will not autocomplete
-  :::
+:::
 
 ### Option Attributes
 
@@ -160,10 +160,10 @@ import {... , repeat} from '@microsoft/fast-element';
 ...    
 ```
 
-The `repeat` directive takes two arguments:
-- The first one is the array/object to be iterated. In the code above, we have `x => x.options` because the variable we created is a simple array named `options`.
+The `repeat` directive takes two arguments: 
+- The first one is the array/object to be iterated. In the code above, we have `x => x.options` because the variable we created is a simple array named `options`. 
 - The second is the component to be repeated as many times as elements that there are in the array/object passed in the first argument. In this case, we
-  are repeating the component `alpha-option`.
+are repeating the component `alpha-option`.
 
 In case you are not familiar with the `repeat` directive, take a look on the [Microsoft Fast documentation](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive).
 
