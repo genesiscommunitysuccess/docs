@@ -25,9 +25,9 @@ You can define the following attributes in an `<alpha-checkbox>`.
 
 | Name        | Type      | Description                                                                          |
 |-------------|-----------|--------------------------------------------------------------------------------------|
-| checked     | `boolean` | Sets and retrieve the current state of the component                                 |
+| checked     | `boolean` | Sets or retrieves the current state of the component                                 |
 | disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                              |
-| readonly    | `boolean` | If true, the user cannot change the value of this field                              |
+| readonly    | `boolean` | If true, the user cannot change the value of this checkbox (which is greyed out)     |
 
 These attributes must be defined alongside the declaration of the component.
 
@@ -35,11 +35,11 @@ These attributes must be defined alongside the declaration of the component.
 All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration
 of this component accordingly.
 
-- **Example 1**: a checkbox disabled
+- **Example 1**: a checkbox named **checkbox**, which is greyed out
 ```html title="Example 1"
 <alpha-checkbox disabled>Checkbox</alpha-checkbox>
 ```
-- **Example 2**: a checkbox starting checked `password`
+- **Example 2**: a checkbox named **password**, which is checked 
 ```html title="Example 2"
 <alpha-checkbox checked="true">Name</alpha-checkbox>
 ```
