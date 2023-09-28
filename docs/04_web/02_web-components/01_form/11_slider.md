@@ -10,8 +10,7 @@ tags:
     - slide label
 ---
 
-An implementation of a [range slider](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/range) as a form-connected Web Component. This component is used alongside with 
-`alpha-slide-label`
+An implementation of a [range slider](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/range) as a form-connected Web Component. This component is used together with the `alpha-slide-label`. It displays a slider that the user can move in either direction to reset the value.
 
 ## Set-up
 
@@ -29,10 +28,10 @@ You can define the following attributes in an `<alpha-slider>`.
 | disabled    | `boolean` | Similar to `readonly`, but with a blur layer in the component |
 | max         | `number`  | Defines maximum number of the slider                          |
 | min         | `number`  | Defines minimum number of the slider                          |
-| step        | `number`  | Defines the step of the slider                                |
-| readonly    | `boolean` | It blocks the user to interact with the element               |
+| step        | `number`  | Defines the value of each step of the slider                  |
+| readonly    | `boolean` | The slider is for display only, and cannot be changed by the user |
 | value       | `number`  | Defines a value for the component when it is created          |
-| orientation | `string`  | Define the orientation to `vertical` or `horizontal`          |
+| orientation | `string`  | Defines the orientation: `vertical` or `horizontal`           |
 
 These attributes must be defined alongside the declaration of the component.
 
@@ -42,8 +41,7 @@ go to your css and adjust the height of the component.
 :::
 
 ### slide-label
-You can use this component with a `<alpha-slide-label>`. This component creates a label along with the slider so you
-can point out some values. 
+You can use this component with an `<alpha-slide-label>`. This creates a label for the slider where you can display relevant values. 
 
 | Name     | Type     | Description                                                |
 |----------|----------|------------------------------------------------------------|
@@ -57,7 +55,7 @@ of this component accordingly.
 ```html title="Example 1"
 <alpha-slider min="0" max="100" value="70"></alpha-slider>
 ```
-- **Example 2**: a slider with min = 0 and max = 100 with 3 labels positioning in 0, 50 and 100 with step of 5
+- **Example 2**: a slider with min = 0 and max = 100 with 3 labels positioned at 0, 50 and 100 in steps of 5
 ```html title="Example 2"
 <alpha-slider min="0" max="100" step="5">
     <alpha-slider-label position="0"> low </alpha-slider-label>
@@ -71,8 +69,12 @@ of this component accordingly.
 ```
 
 ### Get the user input
-In order to use a value input to this component, you may have 2 options: retrieving the information in a number type using `valueAsNumber` or in 
-a string type using: `valueTextFormatter`. For both options, follow the following steps:
+Once the user has input a value to this component by moving the slider, there are two ways of retrieving the new value so that you can use it in the application:
+
+- as a number type, using `valueAsNumber` 
+- as a string type using: `valueTextFormatter`
+
+Both options work the same way:
 
 1. Create an `@observable` variable where you want to use this value. Remember to choose the right type.
 
