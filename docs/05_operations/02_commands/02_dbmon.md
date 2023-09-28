@@ -360,7 +360,7 @@ The table BROKER contains 114 records
 
 ### Finding distinct records
 
-The `distinct` command provides another useful way of searching. Here are some examples of searches that use the distinct command to find records with a specific field value that were modified at a specific date or datetime:
+The `distinct` command provides another useful way of searching. Here are some examples of searches that use the distinct command to find records with a specific field value, which were modified at a specific date or datetime:
 
 ```jsx
 // if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database 
