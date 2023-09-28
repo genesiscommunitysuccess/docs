@@ -39,9 +39,9 @@ of this component accordingly.
 ```html title="Example 1"
 <alpha-checkbox disabled>Checkbox</alpha-checkbox>
 ```
-- **Example 2**: a checkbox named **password**, which is checked 
+- **Example 2**: a checkbox named **checkbox**, which is checked 
 ```html title="Example 2"
-<alpha-checkbox checked="true">Name</alpha-checkbox>
+<alpha-checkbox checked="true">Checkbox</alpha-checkbox>
 ```
 
 ### Get the user input
