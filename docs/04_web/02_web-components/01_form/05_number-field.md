@@ -27,7 +27,6 @@ You can define the following attributes in an `<alpha-number-field>`.
 | appearance     | `string`  | Controls the general view of the element. It can be **filled** or **outline**                                            |
 | autofocus      | `boolean` | When true, the component will be focused when the page has finished loading                                              |
 | disabled       | `boolean` | Disables this component, users will not be able to change its value                                                      |
-| hideStep       | `boolean` | Hides the step control of the element                                                                                    |
 | locale         | `string`  | Defines a number formatting based on language and location. **Default: "en-US"**. Needs to be used with `withFormatting` |
 | max            | `number`  | Defines maximum number allowed                                                                                           |
 | maxlength      | `number`  | The maximum number of characters allowed                                                                                 |
@@ -35,11 +34,22 @@ You can define the following attributes in an `<alpha-number-field>`.
 | minlength      | `number`  | The minimum number of characters allowed                                                                                 |
 | placeholder    | `string`  | Sets a placeholder for the element (which disappears when the user starts inputting)                                     |
 | size           | `number`  | Defines the width of the component                                                                                       |
-| step           | `number`  | Defines the step rate when using the arrows in the element                                                               |
+| step           | `number`  | Defines the step rate when using the arrows in the element. **Default: `1`**                                             |
 | value          | `string`  | Defines a value for the component when it is created                                                                     |
 | withFormatting | `boolean` | Allows number formatting                                                                                                 |
 
 These attributes must be defined alongside the declaration of the component.
+
+### Custom options
+
+The `number-field` has 2 custom options:
+
+| Variable              | Type     | Default | Description                                                                          |
+|-----------------------|----------|---------|--------------------------------------------------------------------------------------|
+| maximumFractionDigits | `number` | 11      | Maximum number of decimal digits accepted                                            |
+| minimumFractionDigits | `number` | 0       | Minimum number of decimal digits. If minimum not reached, it will be filled with `0` |
+
+All these options needs to be used with `withFormatting` attribute.
 
 ## Usage
 All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration
@@ -56,6 +66,10 @@ of this component accordingly.
 - **Example 3**: a number-field with step 0.5 - each time the user clicks on a step arrow, the value increases or decreases by 0.5
 ```html title="Example 3"
 <alpha-number-field step="0.5">Number-field</alpha-number-field>
+```
+- **Example 4**: a number-field with a maximum digit number of 2 and minimum of 2
+```html title="Example 4"
+<alpha-number-field withFormatting :options=${() => ({maximumFractionDigits: 2, minimumFractionDigits: 2})}>Number-field</alpha-number-field>
 ```
 
 ### Get the user input
