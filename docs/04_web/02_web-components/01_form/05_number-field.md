@@ -24,16 +24,16 @@ You can define the following attributes in an `<alpha-number-field>`.
 
 | Name           | Type      | Description                                                                                                              |
 |----------------|-----------|--------------------------------------------------------------------------------------------------------------------------|
-| appearance     | `string`  | It changes the general view of the element. It can be **filled** or **outline**                                          |
+| appearance     | `string`  | Controls the general view of the element. It can be **filled** or **outline**                                          |
 | autofocus      | `boolean` | When true, the component will be focused when the page has finished loading                                              |
-| disabled       | `boolean` | It disables this component, not letting the user to change its value                                                     |
+| disabled       | `boolean` | Disables this component, users will not be able to change its value                                                     |
 | hideStep       | `boolean` | Displays the step control of the element                                                                                 |
 | locale         | `string`  | Defines a number formatting based on language and location. **Default: "en-US"**. Needs to be used with `withFormatting` |
 | max            | `number`  | Defines maximum number allowed                                                                                           |
 | maxlength      | `number`  | The maximum number of characters allowed                                                                                 |
 | min            | `number`  | Defines minimum number allowed                                                                                           |
 | minlength      | `number`  | The minimum number of characters allowed                                                                                 |
-| placeholder    | `string`  | Sets a placeholder for the element                                                                                       |
+| placeholder    | `string`  | Sets a placeholder for the element (which disappears when the user starts inputting                                      |
 | size           | `number`  | Defines the width of the component                                                                                       |
 | step           | `number`  | Defines the step rate when using the arrows in the element                                                               |
 | value          | `string`  | Defines a value for the component when it is created                                                                     |
