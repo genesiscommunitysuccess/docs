@@ -62,7 +62,7 @@ of this component accordingly.
 ```
 
 ### Get the user input
-Once the user has input a value to this component, you need to make that value or text accessible to the application:
+Once the user has input a value to this component, you need to make it accessible to the application:
 
 1. Create an `@observable` variable where you want to use this value:
 
