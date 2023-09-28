@@ -418,7 +418,7 @@ Total Distinct Values Count:  6
 So, what has this found?
 
 - At the bottom, the Total Results is 8. There are 8 records where the region is UK but the country code is not GBR.
-- The Distinct Values is 6. There are 6 Country Codes where the region is UK but the country code is not GBR. These are the six rows displayed.
+- The Distinct Values is 6. There are 6 Country Codes where the region is UK, but whose country code is not GBR. These are the six rows displayed.
  
 Note that there is no validation of the field when you use the `distinct` command. So if we ran the previous example, but we incorrectly typed `COUNTRY_COD` instead of `COUNTRY_CODE`. The command would still work, but the result is potentially confusing.
 
@@ -433,13 +433,16 @@ Total Distinct Values Count:  1
 ```
 
 So, what happened there?
+
 - There are no instances of `Country_COD`, so the only Distinct Value is [null].
 - However, the count is still 8 for this line, because there are 8 records where the region is UK but the country code is not GBR.
 - The Total Results value is the sum of the counts: 8. If your field was invalid, then the Total Results will always equal the count because there is only one value found - null.
 - The Total Distinct Values Count is effectively the number of rows: 1. Only one value was found  - null.
  
 ### Finding the first and last record
-If you are interested in selecting the `first` or the `last` record, you can use the `first` or `last` along with the index name. After selecting a record, to be able to see it in the dbmon, you need to run the `show` command. In the following example, we are going to select the first record in the **TRADE** table using the index **TRADE_BY_ID**, although we could perform the same operation using a view index.
+If you are interested in selecting the `first` or the `last` record, you can use the `first` or `last` along with the index name. You need to run the `show` command to view that record. 
+
+In the following example, we select the first record in the **TRADE** table using the index **TRADE_BY_ID**; we then use `show` to see the record.
 
 ```javascript
 DbMon:TRADE>first TRADE_BY_ID
@@ -463,7 +466,7 @@ TRADE_STATUS                             NEW                                    
 ```
 ### Displaying the next record
 
-You can also use the `next` command to select the next record in the sequence. Here is an example:
+To view the next record in the currently selected table or view, use the `next` command and then the `show` command.
 
 ```javascript
 DbMon:TRADE>next TRADE_BY_ID
@@ -490,19 +493,20 @@ TRADE_STATUS                             NEW                                    
 
 Whenever you make a change to the database, you must use first the command `writeMode`. This is designed to protect the database against casual or unintended changes.
 
-To change a field value:
+To change a field value in a record:
 
 1. Find the table or view that the field belongs to.
 2. Select that table or view.
-3. Set the value of the field.
-4. Run `writeMode`.
-5. Insert the new value.
+3. Find and show the record that you want to change.
+4. Set the value of the field.
+5. Run `writeMode`.
+6. Insert the new value.
 
 
 ### Changing the value of a field
-The `set` command enables you to set the value of a specific field in the selected table or view. You need to do this before you write to the database. The `set` command itself does not change the database.
+The `set` command enables you to set the value of a specific field in the record you are viewing from the currently selected table or view. You need to set the value before you write to the database. The `set` command itself does not change the database. This protects the database from casual changes.
 
-In the example below, we are viewing the **TRADE** table. The command sets a new value for the `QUANTITY` field:
+In the example below, we are viewing a record in the **TRADE** table. The command sets a new value for the `QUANTITY` field:
 
 ``` javascript
 DbMon:TRADE>set QUANTITY 10
