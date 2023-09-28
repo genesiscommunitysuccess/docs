@@ -382,7 +382,7 @@ TRADE_STATUS                             NEW                                    
 
 To display a particular record from a table, use the [`set`](#dbmon-commands) command to populate an index field with the value you are searching for. Then use the [`find`](#dbmon-commands) command along with the appropriate index name.
 
-The example below looks for a broker that has a `VIEW_CODE` value of “WALSH”. We have searched for the Key named `BROKER_BY_VIEW_CODE` and to use that key we whave set the `VIEW_CODE` to the value `WALSH`.
+The example below looks for a broker that has a `VIEW_CODE` value of “WALSH”. We have searched for the Key named `BROKER_BY_VIEW_CODE` and to use that key we have set the `VIEW_CODE` to the value `WALSH`.
 
 ```javascript
 DbMon:BROKER>set VIEW_CODE WALSH
