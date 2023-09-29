@@ -124,6 +124,23 @@ The consolidator can receive either a Trade or a List of Trades; it returns a Li
 
 Here is a simple example input-output Consolidator that handles this use case:
 
+```kotlin
+val trades:List<Trade> = createTrades()
+val tradeConsolidator = consolidator<Trade, TradeDetails> {
+    select {
+        sum { price * quantity } into TradeDetails::totalNotional
+        sum { quantity } into TradeDetails::totalQuantity
+    }
+    
+    groupBy { TradeDetails.byInstrumentId(currencyId) } into {
+        TradeDetails {
+            tradeDetailsId = groupId.tradeDetailsId
+        }
+    }
+}
+var tradeDetails:List<TradeDetails> = tradeConsolidator.consolidate(trades)
+```
+
 ### Read Input Table Consolidator
 
 This type of Consolidator reads a table where data is changed and then creates an output; the output can be anything. 
