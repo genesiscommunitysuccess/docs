@@ -47,15 +47,15 @@ If your application is called *Tiresias*, your configuration file is **tiresias-
 
 ## Consolidator on-demand (objects)
 
-Consolidator objects are classes that can be used in code elsewhere in your application. They can be used in custom services, as well as in Request Servers and Event Handlers.
+As an alternative to running a Consolidator as a service, you can create Consolidator objects as classes that can be used in code elsewhere in your application. They can be used in custom services, as well as in Request Servers and Event Handlers.
 
-These Consolidators perform on-demand consolidations where the input can be one of the following:
+These Consolidators perform on-demand consolidations where the input can be:
 
-- it can be read directly from the database
-- it can be provided at runtime
-- it can be a combination of both of these.
+- read directly from the database
+- provided at runtime
+- a combination of both of these
 
-Effectively, that gives you three types of Consolidator objects, which we shall introduce after the following simple example:
+Effectively, that gives you three types of Consolidator object, which we shall introduce after the following simple example:
 
 ```kotlin
 // consolidate database records:
@@ -68,12 +68,13 @@ val orders: List<Order> = tradeConsolidator.consolidate(trade1, trade2, trade3)
 val result = tradeConsolidator.whatIf(Trade.ByOrderId("2"), trade1, trade2)
 ```
 ### Three types of Consolidator object
-You can consider the following types of Consolidator object as different use cases:
+In practice, you can create three types of Consolidator object to cover different use cases:
+
 - **input-output**
 - **read input table**
 - **read output table**
 
-To showcase them the following simplified data models can be considered:
+To showcase them, the following simplified data models can be considered:
 
 **Trade**
 
