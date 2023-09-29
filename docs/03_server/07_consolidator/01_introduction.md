@@ -20,8 +20,8 @@ A Consolidator exists to aggregate data or perform calculations whenever the und
 Typical use cases are:
 
 - Calculate real-time positions based on intra-day price changes.
-- Calculate snapshot report of number of trades per day
-- Calculate snapshot numbers for a chart
+- Calculate snapshot report of number of trades per day.
+- Calculate snapshot numbers for a chart.
 
 Consolidators listen to updates on an underlying database object: either a view or a table. When there are changes to that object, the Consolidator aggregates those changes and then outputs the aggregated data to a specified type: the output type.
 
