@@ -4,9 +4,9 @@ sidebar_label: 'Button'
 id: button
 keywords: [web, web components, button]
 tags:
-    - web
-    - web components
-    - button
+  - web
+  - web components
+  - button
 ---
 
 <div class="button-examples">
@@ -20,59 +20,107 @@ import { provideDesignSystem, alphaButton } from '@genesislcap/alpha-design-syst
 
 provideDesignSystem().register(alphaButton());
 ```
+## Attributes
+
+You can define the following attributes in an `<alpha-button>`.
+
+| Name       | Type      | Description                                                                                                                             |
+|------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| autofocus  | `boolean` | When true, the component will be focused when the page has finished loading                                                             |
+| appearance | `string`  | Can be `neutral`, `accent`, `lightweight`, `outline` or `stealth`                                                                       |
+| disabled   | `boolean` | Similar to `readonly`, but with a blur on the component                                                                                 |
+| form       | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form |
+| name       | `string`  | Define the name of the element                                                                                                          |
+| type       | `string`  | Defines the mode of the button. I can be `button` or `reset`. Needs to be associated to a form. **Default:** `button` if not specified  | 
+| value      | `string`  | Defines the value associated  with `name`                                                                                               | 
+
+These attributes must be defined alongside the declaration of the component.
+
+### Types
+
+The `type` attribute changes the button mode from `reset` and `button`.
+
+#### `button`
+
+This is the default mode of this compnoent. It is a button that performs an action when clicked.
+
+#### `reset`
+
+This attribute changes the mode of the button to `reset` and can influence a group of component associated with the same form.
+
+The majority of components can be associated with a `<form>` by the attribute `form` passing the corresponding `id` of the form.
+Below you see an example of this association, wrapping up a `text-field`, `number-field`, `text-area` and `button`.
+```html title="Form example"
+<form id="user_information">
+    <alpha-text-field value="name" form="user_information">Name</alpha-text-field>
+    <alpha-number-field value="20" form="user_information">Age</alpha-number-field>
+    <alpha-text-area value="Address" form="user_information">address</alpha-text-area>
+    <alpha-button type="reset" form="user_information">Reset informations</alpha-button>
+</form>
+```
+
+:::tip
+In this case, you don't need to indicate the attribute `form` since it is wrapping up all the components. But in case you are not wrapping
+all the components up, then you must use this attribute.
+:::
+
+In this case, if the `button` is pressed, all components will have their values reset to the default values accordingly.
 
 ## Usage
 
-```html live
+All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration
+of this component accordingly.
+
+- **Example 1**: a button with a natural appearance
+```html title="Example 1"
+<alpha-button appearance="natural">Button</alpha-button>
+```
+- **Example 2**: a disabled button with a type reset
+```html title="Example 2"
+<alpha-button disabled type="reset">Button</alpha-button>
+```
+
+### Trigger an action
+When you place a button into your application, the user expects some actions to be triggered. This is how you trigger an action in the application:
+
+1. Create a function `functionName()` into the class of the component:
+
+```js {1,5}
+export class TEMPLATE extends FASTElement {
+    ...
+    functionName(){
+        // Write an action here
+    }
+    ...
+}
+```
+
+2. Use the event `@click` to call your function `functionName()`:
+
+```html tile="Example 4" {1,4}
+...
+<alpha-button @click=${x => x.functionName()}></alpha-button>
+... 
+```
+:::tip
+You can also create functions with arguments (`functionName(arg1: string)`). In that case, don't forget to pass the arguments you defined,
+otherwise it will be thrown a **missing argument** error
+:::
+
+From this point, your application can run the action after the button has been clicked.
+
+## Try yourself
+
+```html title="try yourself" live
 <alpha-button>Button</alpha-button>
-```
-
-## Appearance
-
-Button supports several visual appearances (accent, lightweight, neutral, outline, stealth):
-
-```html live
-<>
-  <alpha-button appearance="neutral">Button</alpha-button>
-  <alpha-button appearance="accent">Button</alpha-button>
-  <alpha-button appearance="lightweight">Button</alpha-button>
-  <alpha-button appearance="outline">Button</alpha-button>
-  <alpha-button appearance="stealth">Button</alpha-button>
-</>
-```
-
-## Disabled
-
-Disabled buttons prevent user interaction; they cannot be pressed or focused.
-
-```html live
-<>
-  <alpha-button appearance="neutral" disabled>Button</alpha-button>
-  <alpha-button appearance="accent" disabled>Button</alpha-button>
-  <alpha-button appearance="lightweight" disabled>Button</alpha-button>
-  <alpha-button appearance="outline" disabled>Button</alpha-button>
-  <alpha-button appearance="stealth" disabled>Button</alpha-button>
-</>
-```
-
-## Icons
-
-For simplicity, this example shows SVG data embedded inline. Typically, you would import it from an external file.
-
-```html live
-<alpha-button appearance="neutral">
-    Download
-    <span slot="start" class="icon">
-      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="15" viewBox="0 0 11 15">
-        <path d="M10.4309 13.8721C10.7451 13.872 11 14.1238 11 14.4345C11 14.7452 10.7454 14.9971 10.4312 14.9972L0.56913 15C0.254899 15.0001 0 14.7483 0 14.4376C0 14.127 0.25457 13.875 0.568801 13.8749L10.4309 13.8721ZM5.42279 0.0051353L5.5 0C5.78804 0 6.0261 0.211628 6.06377 0.486201L6.06897 0.562533L6.06821 10.8269L8.89165 8.03648C9.09367 7.83679 9.40976 7.81866 9.63248 7.98209L9.69629 8.03656C9.89827 8.23629 9.9166 8.54881 9.7513 8.76901L9.69621 8.8321L5.90489 12.5798C5.70299 12.7794 5.38711 12.7976 5.16438 12.6344L5.10057 12.58L1.30485 8.83233C1.08251 8.6128 1.08226 8.25662 1.3043 8.03679C1.50616 7.83694 1.82224 7.81857 2.04509 7.98182L2.10894 8.03625L4.93028 10.8216L4.93103 0.562533C4.93103 0.277745 5.14508 0.0423843 5.42279 0.0051353L5.5 0L5.42279 0.0051353Z"/>
-      </svg>
-    </span>
-</alpha-button>
 ```
 
 ## Use cases
 
-* Creating simple button or link elements
+- Submit forms
+- Trigger actions
+- Create interactive elements
+- Set options
 
 ## Additional resources
 
