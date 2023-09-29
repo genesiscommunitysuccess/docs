@@ -29,6 +29,7 @@ You can define the following attributes in an `<alpha-select>`. This component n
 | Name     | Type      | Description                                                                                                                           |
 |----------|-----------|---------------------------------------------------------------------------------------------------------------------------------------|
 | disabled | `boolean` | Similar to `readonly`, but with a blur on the component                                                                               |
+| form        | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form |
 | multiple | `boolean` | Allows the user to select more than one option. It automatically opens the selection and removed the side arrow. **Default:** `false` | 
 | name     | `string`  | Gives this component a name                                                                                                           |
 | open     | `boolean` | Defines whether the list starts opened or not. **Default:** `false`                                                                   |
