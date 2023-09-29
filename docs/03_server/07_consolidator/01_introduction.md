@@ -74,7 +74,7 @@ In practice, you can create three types of Consolidator object to cover differen
 - **read input table**
 - **read output table**
 
-To showcase them, the following simplified data models can be considered:
+To showcase each of these, we shall use simple examples based on the following simplified data models:
 
 **Trade**
 
@@ -88,7 +88,10 @@ To showcase them, the following simplified data models can be considered:
 
 ### Input - Output Consolidator
 
-This type of Consolidator is not limited to tables. It takes any input and produces any output; the output it creates can be used elsewhere in your application. For example, it could read a table of trades and create the sum of all trade values.
+This type of Consolidator is not limited to tables. It can take any input and produce any output; that output can be used elsewhere in your application. 
+
+For example, your Consolidator object can read a table of trades and create the sum of all trade values.
+
 ````mermaid
 graph LR
     B[Input] --> C[Consolidator on Demand]
@@ -96,7 +99,7 @@ graph LR
   
 ````
 
-The consolidator can receive either a Trade or a List of Trades and returns a List of TradeDetail. The consolidation process would be the following:
+The consolidator can receive either a Trade or a List of Trades; it returns a List of TradeDetail. The consolidation process is:
 
 <table>
 <tr><th>Trade List (Runtime) </th><th></th><th>TradeDetail List (Runtime)</th></tr>
@@ -119,12 +122,13 @@ The consolidator can receive either a Trade or a List of Trades and returns a Li
 
 </td></tr> </table>
 
-
-The following snippet showcases a simple usage of the input-output consolidator:
+Here is a simple example input-output Consolidator that handles this use case:
 
 ### Read Input Table Consolidator
 
-This type of Consolidator reads a table where data is changed and then creates an output; the output can be anything. For example, it could read updates to a table of orders and check the table of trades to find other trades that match that order (by order number or by counterparty, for example).
+This type of Consolidator reads a table where data is changed and then creates an output; the output can be anything. 
+
+For example, the Consolidator could read updates to a table of orders and check the table of trades to find other trades that match that order (by order number or by counterparty, for example).
 ````mermaid
 graph LR
     N[Consolidator On Demand]
@@ -133,7 +137,7 @@ graph LR
     N -->O[Output Runtime Entity]
 ````
 
-The consolidation process would be the following:
+The consolidation process for this is:
 
 <table>
 <tr><th>Trade List (Runtime + DB) </th><th></th><th>TradeDetails List (Runtime)</th></tr>
@@ -161,7 +165,7 @@ The consolidation process would be the following:
 
 </td></tr> </table>
 
-The following snippet showcases a simple usage of the read input table consolidator:
+Here is a simple example read-input-table Consolidator that handles this use case:
 
 ````kotlin
 val runtimeTrades:List<Trade> = createTrades()
@@ -193,7 +197,9 @@ var tradeDetails:List<TradeDetails> = tradeConsolidator.consolidate(runtimeTrade
 
 ### Read Output Table Consolidator
 
-This type of Consolidator can read any type of input, but the output must be a table. For example, it could read the output from a trade table (a new trade), and compare to an order in the order table. It could then calculate the effect of the change in terms of how much is outstanding and fulfilled in the order.
+This type of Consolidator can read any type of input, but the output must be a table. 
+
+For example, the Consolidator could read the output from a trade table (a new trade), and compare this to an order in the order table. It can then calculate the effect of the change in terms of how much of the order is outstanding and fulfilled.
 
 ````mermaid
 graph LR
@@ -202,7 +208,7 @@ L[Input Data] --> N[Consolidator On Demand]
 N -->O[Output Table]
 ````
 
-An example of this type of consolidation could be the following:
+The consolidation process for this is:
 
 <table>
 <tr><th>Trade List (Runtime) + TradeDetails(DB) </th><th></th><th>TradeDetails List (Runtime)</th></tr>
@@ -230,7 +236,7 @@ An example of this type of consolidation could be the following:
 </td></tr> </table>
 
 
-The following snippet showcases a simple usage of the read output table consolidator:
+Here is a simple example read-output-table Consolidator that handles this use case:
 
 ````kotlin
 val runtimeTrades:List<Trade> = createTrades()
