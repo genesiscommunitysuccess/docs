@@ -124,7 +124,7 @@ import {sync} from '@genesislcap/foundation-utils';
 
 From this point, you can access the value of the component in your application. Note that the value you get from the combo-box is the string defined in the `alpha-option`
 
-### Create a dynamic list
+### Create a list dynamically
 When you're developing your application, you normally want to generate the combolist instead of creating each option manually.
 
 To do this, follow the steps below:
