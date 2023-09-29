@@ -27,6 +27,7 @@ You can define the following attributes in an `<alpha-checkbox>`.
 |-------------|-----------|--------------------------------------------------------------------------------------|
 | checked     | `boolean` | Sets or retrieves the current state of the component                                 |
 | disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                              |
+| form        | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form |
 | readonly    | `boolean` | If true, the user cannot change the value of this checkbox (which is greyed out)     |
 
 These attributes must be defined alongside the declaration of the component.
