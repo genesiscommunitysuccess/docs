@@ -30,6 +30,7 @@ You can define the following attributes in an `<alpha-text-area>`.
 | appearance  | `string`  | Changes the general view of the element; this can be **filled** or **outline**                              |
 | autofocus   | `boolean` | When true, the component will be focused when the page has finished loading                                 |
 | cols        | `boolean` | Defines the size of the element horizontally. **Default: 20**                                               |
+| form        | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form |
 | disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                                                     |
 | maxlength   | `number`  | The maximum number of characters allowed                                                                    |
 | minlength   | `number`  | The minimum number of characters allowed                                                                    |
