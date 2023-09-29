@@ -20,7 +20,7 @@ provideDesignSystem().register(alphaCombobox(), alphaOption());
 ```
 ## Attributes
 
-You can define the following attributes in an `<alpha-combobox>`. This component needs to be used in combination with `<alpha-option>`
+You can define the following attributes when you declare an `<alpha-combobox>`. This component needs to be used in combination with `<alpha-option>`
 
 | Name         | Type      | Description                                                                                                                            |
 |--------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------|
@@ -31,13 +31,11 @@ You can define the following attributes in an `<alpha-combobox>`. This component
 | placeholder  | `string`  | Sets placeholder text for the element (which disappears when the user starts typing)                                                   |
 | value        | `string`  | Sets an initial value for this component                                                                                                      | 
 
-These attributes must be defined alongside the declaration of the component.
-
 :::note
-For `autocomplete`, this is how the component should behave:
+`autocomplete`has the following settings:
 
-- `inline`: while the user is typing in the combo-box, the component suggests valid options for completing the entry.
-- `list`: while the user is typing in the combo-box, the component suggests a filtered combo list based on specified filter criteria, such as columns in an array.
+- `inline`: as the user types in the combo-box, the component displays valid options for completing the entry within the combo-box.
+- `list`: as the user types in the combo-box, the component displays and filters the combolist above or below the combo-box.
 - `both`: the component behaves as both `inline` and `list`
 - `none`: the component does not provide autocomplete
 :::
@@ -45,7 +43,9 @@ For `autocomplete`, this is how the component should behave:
 ### Option attributes
 
 In order to use the combo-box, you need to create a list of options for the user to select from. You create this
-list using `<alpha-option>`. You can define the following attributes for an `<alpha-option>`:
+list using `<alpha-option>`. 
+
+When you declare an `<alpha-option>`, you can define the following attributes:
 
 | Name     | Type      | Description                                                                     |
 |----------|-----------|---------------------------------------------------------------------------------|
@@ -53,14 +53,14 @@ list using `<alpha-option>`. You can define the following attributes for an `<al
 | selected | `boolean` | Defines a default selection for the combo-box                                                |
 
 :::note
-If you place the `selected` attribute in more than one `option`, only the first occurrence will be activated.
+If you place the `selected` attribute in more than one `alpha-option`, only the first occurrence will be activated.
 :::
 
 ## Usage
 All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration
 of this component accordingly.
 
-- **Example 1**: a combo-box that autocompletes both inline (based on filtering) and list (suggesting valid options from a list); there are three options in the list, including one disabled
+- **Example 1**: a combo-box that autocompletes both inline (within the combo-box) and list (in the combolist); there are three options in the list, including one disabled
 ```html title="Example 1"
 <alpha-combobox autocomplete="both">
     <alpha-option disabled>Christopher Eccleston</alpha-option>
@@ -68,7 +68,7 @@ of this component accordingly.
     <alpha-option>Matt Smith</alpha-option>
 </alpha-combobox>
 ```
-- **Example 2**: a combo-box with combolist placed above; there are four items in the list and the first and the last have been marked as selected - the first one listed will be selected when the component is run; in this case, `Tom Baker`.
+- **Example 2**: a combo-box with combolist placed above; there are four items in the list and the first and the last have been marked as selected - the first one listed will be selected when the component is run - in this case, `Tom Baker`; there is no autocompletion
 ```html title="Example 2"
 <alpha-combobox position="above">
     <alpha-option selected>Tom Baker</alpha-option>
@@ -89,7 +89,7 @@ of this component accordingly.
 :::warning
 The native behaviour of a `combobox` component is to accept whatever entry the user inserts, even if it is not one of the options available.
 
-In order to avoid this, implement some protections manually.
+In order to avoid this, implement some protection manually.
 :::
 
 ### Get the user input
@@ -124,8 +124,8 @@ import {sync} from '@genesislcap/foundation-utils';
 
 From this point, you can access the value of the component in your application. Note that the value you get from the combo-box is the string defined in the `alpha-option`
 
-### Create a list dynamically
-When you're developing your application, you normally want to generate the combolist instead of creating each option manually.
+### Creating a list dynamically
+When you're developing your application, you normally want to generate the combolist instead of specifying each option manually.
 
 To do this, follow the steps below:
 
