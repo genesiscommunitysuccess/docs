@@ -27,6 +27,7 @@ You can define the following attributes in an `<alpha-slider>`.
 | Name        | Type      | Description                                                   |
 |-------------|-----------|---------------------------------------------------------------|
 | disabled    | `boolean` | Similar to `readonly`, but with a blur layer in the component |
+| form        | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form |
 | max         | `number`  | Defines maximum number of the slider                          |
 | min         | `number`  | Defines minimum number of the slider                          |
 | step        | `number`  | Defines the step of the slider                                |
