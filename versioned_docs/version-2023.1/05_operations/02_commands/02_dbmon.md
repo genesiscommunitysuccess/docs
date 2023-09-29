@@ -175,29 +175,36 @@ DbMon:BROKER>count
 The table BROKER contains 114 records
 ```
 
-### Set & Unset
+### Set and Unset
 
-If you use the `set` or `unset` commands, you are setting a value a specific field in the selected table. If you have previously selected a record, it will override its value, otherwise it will set a new record (note that it is only local, to insert a new record to the table, you need to use the insert command). In the case of the `set` command, you specify the value you want to set. In the example below, we set a new value for the `QUANTITY` field:
+The `set` command enables you to set the value of a specific field in the record you are viewing from the currently selected table or view. You need to set the value before you write to the database. The `set` command itself does not change the database. This protects the database from casual changes.
 
-``` javascript
-DbMon:TRADE>set QUANTITY = 10
-```
-
-In case you want to set the value as **null**, you need to use the `unset` command as the example below:
+In the example below, we are viewing a record in the **TRADE** table. The command sets a new value for the `QUANTITY` field:
 
 ``` javascript
-DbMon:TRADE>set QUANTITY = 10
+DbMon:TRADE>set QUANTITY 10
+```
+In the example below, we are viewing the **TRADE** table. We set new values for the `PRICE` and `QUANTITY` fields:
+
+``` javascript
+DbMon:TRADE>set PRICE,QUANTITY 523.1,9000
 ```
 
-:::tip
-Any changes performed by `set` and `unset` will not be reflected in the database unless you use `insert` with `writeMode`
+To set a value to **null**, use the `unset` command, for example:
+
+``` javascript
+DbMon:TRADE>unset QUANTITY 
+```
+
+:::
+The `set` and `unset` commands themselves do not change the database.
 :::
 
 ### Insert
 
-If you are interested in inserting a new record to the database, you can use the `insert`. This command wil insert a new record based on the current record selected. Before y insert this new record, you need to enable the `writeMode`. 
+To insert a new record into a table in the database, use the `insert`. This command inserts a new record based on the current record selected. Before you insert this new record, must enable `writeMode`. 
 
-In the example below, we make use of the `set` command to create a new record before inserting it into the database.
+In the example below, we use the `set` command to create a new record before inserting it into the database.
 
 ``` javascript
 DbMon:TRADE>set PRICE 80
@@ -228,11 +235,11 @@ Record saved
 
 ### Delete rows
 
-If you would like to delete a row from a table manually using DbMon, then you should use the `delete` or `deleteWhere`. Note that to perform a delete operation, you must run `writeMode` to enable the write mode.
+To delete a row from a table, use `delete` or `deleteWhere`. Note that to perform a delete operation, you must run `writeMode` to enable the write mode.
 
 #### Delete
 
-If you use the `delete` command, it will delete the selected record in the selected table. Here is an example of how to use `delete`, it is deleting the last record in the **TRADE** table:
+If you use the `delete` command, it deletes the selected record in the selected table. Here is an example of how to use `delete`, it is deleting the last record in the **TRADE** table:
 
 ```javascript
 DbMon:TRADE>writeMode
@@ -247,7 +254,7 @@ To be able to use this command, you need to be in `writeMode`.
 
 #### deleteWhere
 
-If you use the `deleteWhere` command, it will delete all records in the selected table that matches the specified criteria. After the confirmation, it will prompt all the records that have been deleted.
+If you use the `deleteWhere` command, it deletes all records that match the specified criteria from the currently selected table. After the confirmation, it tells you how many records have been deleted.
 
 Here is an example of how to use `deleteWhere`. In this example, we are deleting all records in **TRADE** table with **QUANTITY** values grater than 100.
 
@@ -347,7 +354,9 @@ TRADE_STATUS                             NEW                                    
 ```
 ### Next
 
-You can alo use the `next` command to select the next record in the sequence. Here is an example:
+To view the next record in the currently selected table or view, use the `next` command and then the `show` command. With the `next` command, you must always specify a valid index for the table.
+
+The following example displays the next record in the currently selected table (TRADE), where the index is TRADE_BY_ID.
 
 ```javascript
 DbMon:TRADE>next TRADE_BY_ID
@@ -373,7 +382,7 @@ TRADE_STATUS                             NEW                                    
 
 To display a particular record from a table, use the [`set`](#dbmon-commands) command to populate an index field with the value you are searching for. Then use the [`find`](#dbmon-commands) command along with the appropriate index name.
 
-The example below looks for a broker that has a `VIEW_CODE` value of “WALSH”. We have searched for the Key named `BROKER_BY_VIEW_CODE` and to use that key we whave set the `VIEW_CODE` to the value `WALSH`.
+The example below looks for a broker that has a `VIEW_CODE` value of “WALSH”. We have searched for the Key named `BROKER_BY_VIEW_CODE` and to use that key we have set the `VIEW_CODE` to the value `WALSH`.
 
 ```javascript
 DbMon:BROKER>set VIEW_CODE WALSH
@@ -533,15 +542,17 @@ When setting a DATE or DATETIME, the format must be specified as follow:
 
 ### Searching a Datetime or Date
 
-Accepted Datetime formats:
-- DateTime with milliseconds precision: yyyyMMdd-HH:mm:ss.SSS
-- DateTime with seconds precision: yyyyMMdd-HH:mm:ss
-- DateTime with minutes precision: yyyyMMdd-HH:mm
+When setting a DATE, the format must be specified as follows:
 
-Accepted Date formats:
-- yyyyMMdd
+- DATE_FORMAT = "yyyyMMdd"
 
-#### Using search command
+When setting a DATETIME, the format must be specified as follows:
+
+- DateTime with milliseconds precision: DATETIME_FORMAT = "yyyyMMdd-HH:mm:ss.SSS"
+- DateTime with seconds precision: DATETIME_FORMAT = "yyyyMMdd-HH:mm:ss"
+- DateTime with minutes precision: DATETIME_FORMAT = "yyyyMMdd-HH:mm"
+
+Here are some examples of searches for datetimes and dates:
 
 ```jsx
 // if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database 

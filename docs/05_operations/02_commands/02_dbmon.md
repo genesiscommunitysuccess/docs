@@ -466,7 +466,9 @@ TRADE_STATUS                             NEW                                    
 ```
 ### Displaying the next record
 
-To view the next record in the currently selected table or view, use the `next` command and then the `show` command.
+To view the next record in the currently selected table or view, use the `next` command and then the `show` command. With the `next` command, you must always specify a valid index for the table.
+
+The following example displays the next record in the currently selected table (TRADE), where the index is TRADE_BY_ID.
 
 ```javascript
 DbMon:TRADE>next TRADE_BY_ID
@@ -516,6 +518,7 @@ In the example below, we are viewing the **TRADE** table. We set new values for 
 ``` javascript
 DbMon:TRADE>set PRICE,QUANTITY 523.1,9000
 ```
+
 To set a value to **null**, use the `unset` command, for example:
 
 ``` javascript
@@ -529,7 +532,7 @@ The `set` and `unset` commands themselves do not change the database.
 
 To insert a new record into a table in the database, use the `insert` command. You will always be asked to confirm the command.
 
-1. Find and select the required table or view.
+1. Find and select the required table or view, and show the fields.
 2. Set the values of the required fields.
 3. Enable `writeMode`.
 4. Insert. 
@@ -563,6 +566,10 @@ y
 Record saved
 ```
 
+:::
+The `insert` command always inserts a new record with the values you have set. It does not (and cannot) change any existing record. You can only change an existing record using the `update` command.
+:::
+
 ### Deleting rows
 
 To delete a row from a table, use the `delete` command. 
@@ -572,7 +579,7 @@ To delete a row from a table, use the `delete` command.
 3. Run `delete`.
 
 :::warning
-If you do not select a record, the command will delete the last record in the table.
+If you do not select a record, the command deletes the last record in the table.
 :::
 
 The example below deletes the last record in the **TRADE** table:
