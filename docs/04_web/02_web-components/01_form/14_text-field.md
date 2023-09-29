@@ -23,20 +23,21 @@ provideDesignSystem().register(alphaTextField());
 
 You can define the following attributes in an `<alpha-text-field>`.
 
-| Name        | Type      | Description                                                                          |
-|-------------|-----------|--------------------------------------------------------------------------------------|
-| autofocus   | `boolean` | When true, the component will be focused when the page has finished loading          |
-| appearance  | `string`  | Can be `outline` or `filled`                                                         |
-| disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                              |
-| maxlength   | `number`  | The maximum number of characters allowed                                             |
-| minlength   | `number`  | The minimum number of characters allowed                                             |
-| name        | `string`  | Define the name of the element                                                       |
-| placeholder | `string`  | Sets placeholder text for the element (which disappears when the user starts typing) |
-| readonly    | `boolean` | If true, the user cannot change the value of this field                              |
-| size        | `number`  | Sets the width of the component                                                      |
-| step        | `number`  | **Only works with** `type="number`. It defines the incremental step in the component |
-| type        | `string`  | Sets the type of the text-field. Can be {"email", "password","tel","text","url"}     | 
-| value       | `string`  | Sets the value for this component                                                    | 
+| Name        | Type      | Description                                                                                                                             |
+|-------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| autofocus   | `boolean` | When true, the component will be focused when the page has finished loading                                                             |
+| appearance  | `string`  | Can be `outline` or `filled`                                                                                                            |
+| disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                                                                                 |
+| form        | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form |
+| maxlength   | `number`  | The maximum number of characters allowed                                                                                                |
+| minlength   | `number`  | The minimum number of characters allowed                                                                                                |
+| name        | `string`  | Define the name of the element                                                                                                          |
+| placeholder | `string`  | Sets placeholder text for the element (which disappears when the user starts typing)                                                    |
+| readonly    | `boolean` | If true, the user cannot change the value of this field                                                                                 |
+| size        | `number`  | Sets the width of the component                                                                                                         |
+| step        | `number`  | **Only works with** `type="number`. It defines the incremental step in the component                                                    |
+| type        | `string`  | Sets the type of the text-field. Can be {"email", "password","tel","text","url"}                                                        | 
+| value       | `string`  | Sets the value for this component                                                                                                       | 
 
 These attributes must be defined alongside the declaration of the component.
 
