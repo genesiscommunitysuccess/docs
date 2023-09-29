@@ -22,21 +22,22 @@ provideDesignSystem().register(alphaNumberField());
 
 You can define the following attributes in an `<alpha-number-field>`.
 
-| Name           | Type      | Description                                                                          |
-|----------------|-----------|--------------------------------------------------------------------------------------|
-| appearance     | `string`  | Controls the general view of the element. It can be **filled** or **outline**        |
-| autofocus      | `boolean` | When true, the component will be focused when the page has finished loading          |
-| disabled       | `boolean` | Disables this component, users will not be able to change its value                  |
-| hideStep       | `boolean` | Hides the step control of the element                                                |
-| max            | `number`  | Defines maximum number allowed                                                       |
-| maxlength      | `number`  | The maximum number of characters allowed                                             |
-| min            | `number`  | Defines minimum number allowed                                                       |
-| minlength      | `number`  | The minimum number of characters allowed                                             |
-| placeholder    | `string`  | Sets a placeholder for the element (which disappears when the user starts inputting) |
-| size           | `number`  | Defines the width of the component                                                   |
-| step           | `number`  | Defines the step rate when using the arrows in the element. **Default: `1`**         |
-| value          | `string`  | Defines a value for the component when it is created                                 |
-| withFormatting | `boolean` | Allows number formatting                                                             |
+| Name           | Type      | Description                                                                                                                             |
+|----------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| appearance     | `string`  | Controls the general view of the element. It can be **filled** or **outline**                                                           |
+| autofocus      | `boolean` | When true, the component will be focused when the page has finished loading                                                             |
+| disabled       | `boolean` | Disables this component, users will not be able to change its value                                                                     |
+| form           | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form |
+| hideStep       | `boolean` | Hides the step control of the element                                                                                                   |
+| max            | `number`  | Defines maximum number allowed                                                                                                          |
+| maxlength      | `number`  | The maximum number of characters allowed                                                                                                |
+| min            | `number`  | Defines minimum number allowed                                                                                                          |
+| minlength      | `number`  | The minimum number of characters allowed                                                                                                |
+| placeholder    | `string`  | Sets a placeholder for the element (which disappears when the user starts inputting)                                                    |
+| size           | `number`  | Defines the width of the component                                                                                                      |
+| step           | `number`  | Defines the step rate when using the arrows in the element. **Default: `1`**                                                            |
+| value          | `string`  | Defines a value for the component when it is created                                                                                    |
+| withFormatting | `boolean` | Allows number formatting                                                                                                                |
 
 These attributes must be defined alongside the declaration of the component.
 
