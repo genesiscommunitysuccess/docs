@@ -4,9 +4,9 @@ sidebar_label: 'Combobox'
 id: combobox
 keywords: [web, web components, combobox]
 tags:
-    - web
-    - web components
-    - combobox
+  - web
+  - web components
+  - combobox
 ---
 <div class="combobox-examples">
 
@@ -24,11 +24,11 @@ provideDesignSystem().register(alphaCombobox(), alphaOption());
 
 ```html live
 <alpha-combobox autocomplete="both">
-  <alpha-option>Christopher Eccleston</alpha-option>
-  <alpha-option>David Tennant</alpha-option>
-  <alpha-option>Matt Smith</alpha-option>
-  <alpha-option>Peter Capaldi</alpha-option>
-  <alpha-option>Jodie Whittaker</alpha-option>
+    <alpha-option>Christopher Eccleston</alpha-option>
+    <alpha-option>David Tennant</alpha-option>
+    <alpha-option>Matt Smith</alpha-option>
+    <alpha-option>Peter Capaldi</alpha-option>
+    <alpha-option>Jodie Whittaker</alpha-option>
 </alpha-combobox>
 ```
 
