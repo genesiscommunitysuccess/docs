@@ -59,7 +59,7 @@ list using `<alpha-option>`. You can define the following attributes for an `<al
 ## Usage
 All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration of this component accordingly.
 
-- **Example 1**: a select displaying 2 options at a time, users can scroll up or down to see other options in the list.
+- **Example 1**: a select displaying 2 options at a time; users can scroll up or down to see other options in the list
 ```html title="Example 1"
 <alpha-select size="2" open>
     <alpha-option value="s">Small</alpha-option>
@@ -68,7 +68,7 @@ All examples below use the `alpha-design-system`. If you are using any other des
     <alpha-option value="xl">Extra Large</alpha-option>
 </alpha-select>
 ```
-- **Example 2**: a disabled select greyed out so that users can not select an option; 2 options selected "s" and "l"
+- **Example 2**: a disabled select greyed out so that users can not select an option; 2 options selected: "s" and "l"
 ```html title="Example 2"
 <alpha-select disabled multiple>
     <alpha-option selected value="s">Small</alpha-option>
