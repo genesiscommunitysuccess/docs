@@ -223,6 +223,34 @@ this.$emit(eventType, eventDetail)
 ```
 Each event requires a certain detail to process the event - see [the map of events to their required details](./docs/api/foundation-layout.layoutreceiveeventsdetail.md).
 
+## Customising header buttons
+
+You can add custom buttons on layout items, and then control their behaviour. See [the custom button API](./docs/api/foundation-layout.custombutton.md) to see the full definition. Setting this is optional. If you do define it, you define it as an array which allow you to add multiple custom buttons if you wish.
+
+* The `svg` parameter controls the icon which your button displays. The format must be a base64 image definition. See the format as explained on the linked api document, and then replace the text around the `<< >>` part with a base64 encoded definition of the svg you wish to use.
+* The `onClick` parameter will register a callback with the button. When the user clicks the button, your callback will be called. The callback receives a reference to the clicked button element, and the element which is contained in the layout item associated with the clicked button.
+
+Different layout instances can have their own custom buttons, or share definitions. You are not able to have fine-grained control over each layout item though, so if a layout has a custom button then every item it contains will have the button.
+
+### Applying the custom button
+
+To ensure that every item gets the button as expected, you need to ensure that you apply the custom button definitions as early as possible. If you are using the html API then you'll likely want to apply the definitions in the template.
+
+```html
+<foundation-layout :customButtons=${() => buttonDefinition}>
+  ...
+</foundation-layout>
+```
+
+If you are only using the javascript API then you should just apply the property as soon as you can.
+```typescript
+layout.customButtons = buttonDefinition;
+```
+
+### Renaming example
+
+See [here](#custom-item-renaming-header-button) to see an example of creating a custom button to allow the user to rename an item.
+
 ## Autosaving layout
 
 There is opt-in functionality provided in the layout to autosave the layout in local storage as the user interacts with it. Set the `auto-save-key` attribute to a unique string on the root element to enable the feature, and this is the key in which the layout will be saved into. As the user performs the following actions: adding an item, removing an item, resizing items using the divider, and dragging items around the layout - the layout will be saved for later recall in local storage.
@@ -254,8 +282,12 @@ This section concerns the behaviour of elements inside the layout. If you are us
 
 ### Element lifecycle
 
-When an item is dragged around the layout, its lifecycle functions `connectedCallback` and `disconnectedCallback` are called.
-It is important that the element accounts for this, including such requirements as caching data, or resizing correctly.
+There are actions that the user can perform with items in the layout which will run the component lifecycle functions (`connectedCallback` and `disconnectedCallback`) at times when you don't want them to run:
+- When an item is dragged around the layout.
+- Potentially, when another item is removed from the layout
+- Potentially, when new items are added to the layout.
+
+For example, if you have a component with a loaded resource on the layout (such as a grid with a `grid-pro-genesis-datasource`) and you add a new item to the layout with the JavaScript API, then the component with the loaded resource will have to reload too. It is important that any such element accounts for this, including such requirements as caching data, or resizing correctly.
 
 In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin` which exposes two protected members:
 
@@ -264,14 +296,14 @@ In the `@genesislcap/foundation-utils` package, there is a mix-in class `Lifecyc
 
 These can be used to gate certain functionality.
 
-For example, if there are parts of `disconnectedCallback` that you don't want to run when the item is being dragged around the layout, you can gate it behind a `(!this.shouldRunDisconnect) return;` early return.
+For example, if there are parts of `disconnectedCallback` that you don't want to run when the item is being dragged around the layout, you can gate it behind a `(!this.shouldRunDisconnect) return;` early return. See [this example](#resource-intensive-component-resetting-in-layout) and [this example](#consuming-lifecycle-value-multiple-times).
 
 :::warning
 At the very least, you must run `super` calls to the lifecycle methods, or else your custom element will not work correctly.
 :::
 
 ### Resource-intensive components
-Throughout Foundation UI, there is no need to unregister a component that is registered in the layout while it is not in use.  However, if you have a component that is extremely resource-intensive, then you can use this lifecycle control method to ensure that it only consumes resources when it is in use.
+Throughout Foundation UI, there is no need to de-register a component that is registered in the layout while it is not in use.  However, if you have a component that is extremely resource-intensive, then you can use this lifecycle control method to ensure that it only consumes resources when it is in use.
 
 - When the element is part of the layout registry, then `shouldRunConnect` will be false and you can use this to ensure that your component isn't doing unnecessary work while part of the cache.
 
@@ -791,6 +823,34 @@ Only items _missing_ from the `requiredRegistrations` is an issue. If there are 
 If you are calling `registerItem` manually and are using the autosave feature, [see here](#reloading-the-layout).
 :::
 
+### Custom item renaming header button
+
+Here is an example of creating a custom button for the layout which when clicked will prompt the user for a name, and will rename the item in the layout.
+
+```typescript
+export const layoutCustomButtons: CustomButton[] = [
+  {
+    svg: LAYOUT_ICONS.renameSVG,
+    onClick: (button: HTMLElement, elem: HTMLElement) => {
+      const title = prompt('New name?');
+      const event: LayoutReceiveEventsDetail['changeTitle'] = {
+        title,
+        mode: 'replace',
+      };
+      elem.dispatchEvent(
+        new CustomEvent(LayoutReceiveEvents.changeTitle, { detail: event, bubbles: true }),
+      );
+    },
+  },
+];
+```
+
+You can import `LAYOUT_ICONS`, `CustomButton`, `LayoutReceiveEvents`, and `LayoutReceiveEventsDetail` from the foundation-layout package, to get strong typing.
+
+:::warning
+You'll likely want to improve this callback function to handle cases where the user doesn't enter a prompt value.
+:::
+
 ## Incorrect examples
 
 The following section contains examples of incorrect usage, which are useful for troubleshooting.
@@ -1046,6 +1106,132 @@ The user of your layout will move things around and this will cache the layout. 
 
 You and the user will only see the first two items like before. This is because the cached layout is being loaded, which does not contain the
 new item. To fix this you must [invalidate the cache](#invalidating-the-cache).
+
+### Resource intensive component resetting in layout
+
+Say you have a component which has to initialise a resource heavy or long awaited asynchronous task, such as the following:
+```typescript
+@customElement({
+  name: 'mock-connected',
+})
+export class MockConnected extends FASTElement {
+  @observable resource = '';
+
+  async connectedCallback(): Promise<void> {
+    super.connectedCallback();
+    // Simulate doing some work with an external service
+  }
+
+  async disconnectedCallback(): Promise<void> {
+    super.disconnectedCallback();
+    // Simulate cleaning an external service
+  }
+}
+```
+
+As explained in the [lifecycle info section](#element-lifecycle), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initialising a potentially heavy resource.
+
+Use the `LifecycleMixin` to be able to access properties on the class which can be used to more thoughtfully run lifecycle functionality. In the following example we split out the resource intensive work and conditionally call them when needed.
+
+```typescript
+@customElement({
+  name: 'mock-connected',
+})
+export class MockConnected extends LifecycleMixin(FASTElement) {
+  @observable resource = '';
+
+  async connectedCallback(): Promise<void> {
+    super.connectedCallback();
+    const shouldRunConnect = this.shouldRunConnect;
+    DOM.queueUpdate(async () => {
+      if (!shouldRunConnect) return;
+      await this.init();
+    });
+  }
+
+  async disconnectedCallback(): Promise<void> {
+    super.disconnectedCallback();
+    const shouldRunDisconnect = this.shouldRunDisconnect;
+    DOM.queueUpdate(async () => {
+      if (!shouldRunDisconnect) return;
+      await this.deInit();
+    });
+  }
+
+  // Simulate doing work with an external service
+  async init(): Promise<void> { }
+
+  // Simulate cleaning an external service
+  async deInit(): Promise<void> { }
+}
+```
+
+The above is quite a comprehensive example, it doesn't necessarily have to be so complicated. You may just want to exit early from the connected callback without using the `DOM.queueUpdate` functionality. However, using it can be useful to properly handle `async` setup process.
+
+:::warning
+The requirement to capture the parameter in the example above (e.g. `const shouldRunDisconnect = shouldRunDisconnect`) is to cache the information at the time of the lifecycle change, for use when the `DOM.queueUpdate` work is performed. This is not required if you run your lifecycle methods synchronously, but if you follow the above pattern you need to consider the `async` functionality being scheduled for after the layout considers the relevant lifecycle-gating functionality (such as dragging) to be over.
+:::
+
+### Consuming lifecycle value multiple times
+
+Consider the following example where you're gating multiple bits of functionality with `shouldRunConnect`:
+```typescript
+@customElement({
+  name: 'mock-connected',
+})
+export class MockConnected extends LifecycleMixin(FASTElement) {
+  @observable resource = '';
+
+  async connectedCallback(): Promise<void> {
+    super.connectedCallback();
+    console.log("shouldRunConnect: " + this.shouldRunConnect)
+    if (this.shouldRunConnect) {
+      await this.init();
+    }
+    await otherSetup(this.shouldRunConnect);
+  }
+
+  // Simulate doing work with an external service
+  async init(): Promise<void> { }
+  async otherSetup(connectToResource: boolean): Promise<void> {}
+  // Similar setup in disconnectedCallback...
+}
+```
+
+In this example when you have this item inside of the layout, the functionality will not correctly be gated when you add or remove other items as intended.
+
+This is because `shouldRunConnect` (and `shouldRunDisconnect`) perform a check to see whether the layout has performed an event which should gate functionality, and reading the value multiple times will incorrectly signal that there hasn't been another lifecycle event upon subsequent reads during the same cycle. The mental model you can use here is thinking of consuming the check when you read the variable.
+
+Therefore, if you want to use the value multiple times in the `connectedCallback` and `disconnectedCallback` functions you should cache the variable.
+
+** You should only read the variables `this.shouldRunConnect` and `this.shouldRunDisconnect` once per `shouldRunConnect` and `shouldRunDisconnect` cycle respectively. **
+
+```typescript
+  async connectedCallback(): Promise<void> {
+    super.connectedCallback();
+    if (this.shouldRunConnect) {
+      console.log("shouldRunConnect: " + this.shouldRunConnect)
+      await this.init();
+      await otherSetup(true);
+    } else {
+      await otherSetup(false);
+    }
+  }
+  // or....
+  async connectedCallback(): Promise<void> {
+    super.connectedCallback();
+    const runFullConnect = this.shouldRunConnect;
+    console.log("shouldRunConnect: " + runFullConnect)
+    if (runFullConnect) {
+      await this.init();
+    }
+    await otherSetup(runFullConnect);
+  }
+```
+
+:::danger
+The same limitation applies if you're checking the variable multiple times due to having a hierarchy of extending classes. Again, you should cache the variable for checking in this case.
+:::
 
 ## Supplementary information
 

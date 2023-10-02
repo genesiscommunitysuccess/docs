@@ -26,6 +26,7 @@
 |  --- | --- |
 |  [DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md) | <p>Default time in milliseconds for the layout to buffer calls to reloading the layout while the declarative API is loading.</p><p>During the first load of the layout, a loading spinner will be shown.</p> |
 |  [foundationLayoutComponents](./foundation-layout.foundationlayoutcomponents.md) | Registration object to register the layout with your design system. |
+|  [LAYOUT\_ICONS](./foundation-layout.layout_icons.md) | A collection of SVG icons in base64 format. |
 |  [LayoutEmitEvents](./foundation-layout.layoutemitevents.md) | <p>Defines events that the layout system emits</p><p>'firstLoaded' - emitted when the layout has finished loading the first time using the declarative API after [DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md) ms. <br/> 'itemAdded' - emitted when an item is added to the layout' <br/> 'itemRemoved' - emitted when an item is removed from the layout' <br/> 'itemResized' - emitted when the user drags the divider to resize elements</p> |
 |  [LayoutReceiveEvents](./foundation-layout.layoutreceiveevents.md) | <p>Defines events that the layout system listens for</p><p>'changeTitle' - emit this from a contained item to update the title of the window that contains it.</p> |
 |  [layoutStyles](./foundation-layout.layoutstyles.md) | <code>ElementStyles</code> which defines the css for [FoundationLayout](./foundation-layout.foundationlayout.md). |
@@ -35,6 +36,7 @@
 
 |  Type Alias | Description |
 |  --- | --- |
+|  [CustomButton](./foundation-layout.custombutton.md) | Definition of a custom button which will be added to all layout items. |
 |  [LayoutReceiveEventsDetail](./foundation-layout.layoutreceiveeventsdetail.md) | <p>Defines the shape of the detail that the layout listens works with for events it listens on</p><p>'changeTitle' - <code>title</code> is the string you want to set. For <code>mode</code>: <code>replace</code> will set the title to be <code>title</code>, <code>suffix</code> will append <code>title</code> to the end of the existing title.</p> |
 |  [LayoutRegionType](./foundation-layout.layoutregiontype.md) | Union type describing the three different types of region splits. Set on the <code>type</code> attribute on [FoundationLayoutRegion](./foundation-layout.foundationlayoutregion.md). |
 |  [Placement](./foundation-layout.placement.md) | Where to and how to add the new item(s) into the layout when using the [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md) API. |
