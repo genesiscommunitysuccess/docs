@@ -4,9 +4,9 @@ sidebar_label: 'Select'
 id: select
 keywords: [web, web components, select]
 tags:
-  - web
-  - web components
-  - select
+    - web
+    - web components
+    - select
 ---
 
 <div class="select-examples">
@@ -28,7 +28,7 @@ provideDesignSystem().register(alphaSelect(), alphaOption());
 
 ## Attributes
 
-This component needs to be used in combination with `<alpha-option>`. You can define the following attributes when you declare an `<alpha-select>`:
+This component needs to be used in combination with `<alpha-option>`. You can define the following attributes when you declare an `<alpha-select>`: 
 
 | Name     | Type      | Description                                                                                                                              |
 |----------|-----------|------------------------------------------------------------------------------------------------------------------------------------------|
@@ -57,7 +57,7 @@ In order to use the select component, you need to create a list of options for t
 
 :::note
 - If you specify a `selected` or `value` to more than one `option` while `multiple = false`, then the component selects only the first in the `alpha-option` list
-  :::
+:::
 
 ## Usage
 All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration of this component accordingly.
@@ -134,9 +134,9 @@ To do this, follow the steps below:
 import {... , observable} from '@microsoft/fast-element';
 ...
 export class TEMPLATE extends FASTElement {
-...
-@observable options: Array<{value: string, label: string}> = []
-...
+    ...
+    @observable options: Array<{value: string, label: string}> = []
+    ...
 }
 ```
 
@@ -155,11 +155,11 @@ With this variable created, you can generate any array you wish using a loop. He
 ```html {1,5}
 import {... , repeat} from '@microsoft/fast-element';
 ...
-...
-<alpha-select>
-    ${repeat(x => x.options, html` <alpha-option value=${x => x.value}>${x => x.label}</alpha-option>`)}
-</alpha-select>
-...
+    ...
+        <alpha-select>
+            ${repeat(x => x.options, html` <alpha-option value=${x => x.value}>${x => x.label}</alpha-option>`)}
+        </alpha-select>
+    ...
 ...    
 ```
 
@@ -174,10 +174,10 @@ If you are not familiar with the `repeat` directive, take a look at the [Microso
 
 ```html title="try yourself" live
 <alpha-select>
-    <alpha-option value="s">Small</alpha-option>
-    <alpha-option value="m">Medium</alpha-option>
-    <alpha-option value="l">Large</alpha-option>
-    <alpha-option value="xl">Extra Large</alpha-option>
+  <alpha-option value="s">Small</alpha-option>
+  <alpha-option value="m">Medium</alpha-option>
+  <alpha-option value="l">Large</alpha-option>
+  <alpha-option value="xl">Extra Large</alpha-option>
 </alpha-select>
 ```
 
