@@ -21,30 +21,28 @@ provideDesignSystem().register(alphaTextField());
 
 ## Attributes
 
-You can define the following attributes in an `<alpha-text-field>`.
+When you declare an `<alpha-text-field>`, you can define the following attributes: 
 
-| Name        | Type      | Description                                                                          |
-|-------------|-----------|--------------------------------------------------------------------------------------|
-| autofocus   | `boolean` | When true, the component will be focused when the page has finished loading          |
-| appearance  | `string`  | Can be `outline` or `filled`                                                         |
-| disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                              |
-| maxlength   | `number`  | The maximum number of characters allowed                                             |
-| minlength   | `number`  | The minimum number of characters allowed                                             |
-| name        | `string`  | Define the name of the element                                                       |
-| placeholder | `string`  | Sets placeholder text for the element (which disappears when the user starts typing) |
-| readonly    | `boolean` | If true, the user cannot change the value of this field                              |
-| size        | `number`  | Sets the width of the component                                                      |
-| step        | `number`  | **Only works with** `type="number`. It defines the incremental step in the component |
-| type        | `string`  | Sets the type of the text-field. Can be {"email", "password","tel","text","url"}     | 
-| value       | `string`  | Sets the value for this component                                                    | 
-
-These attributes must be defined alongside the declaration of the component.
+| Name        | Type      | Description                                                                                                                             |
+|-------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| autofocus   | `boolean` | When true, the component will be focused when the page has finished loading                                                             |
+| appearance  | `string`  | Can be `outline` or `filled`                                                                                                            |
+| disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                                                                                 |
+| form        | `string`  | Associates this component with a form. Form `id` needs to be passed. If no Id is provided, then it will be associated with the ancestor form |
+| maxlength   | `number`  | The maximum number of characters allowed                                                                                                |
+| minlength   | `number`  | The minimum number of characters allowed                                                                                                |
+| name        | `string`  | Defines the name of the element                                                                                                         |
+| placeholder | `string`  | Sets placeholder text for the element (which disappears when the user starts typing)                                                    |
+| readonly    | `boolean` | If true, the user cannot change the value of this field                                                                                 |
+| size        | `number`  | Sets the width of the component                                                                                                         |
+| step        | `number`  | **Only works with** `type="number`. Defines the amount the field value changes each time the user clicks to increase or decrease the field value |
+| type        | `string`  | Sets the type of the text-field. Can be {"email", "password","tel","number","text","url"}                                               | 
+| value       | `string`  | Sets the value for this component                                                                                                       | 
 
 ## Usage
-All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration
-of this component accordingly.
+All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration of the component accordingly.
 
-- **Example 1**: a text-field with a max length of 10 characters and a placeholder
+- **Example 1**: a text-field with a max length of 10 characters and placeholder text
 ```html title="Example 1"
 <alpha-text-field maxlength="10" placeholder="This is a placeholder">Name</alpha-text-field>
 ```
@@ -52,11 +50,11 @@ of this component accordingly.
 ```html title="Example 2"
 <alpha-text-field size="30" type="password">Name</alpha-text-field>
 ```
-- **Example 3**: a read-only text-field with a placeholder
+- **Example 3**: a read-only text-field with placeholder text
 ```html title="Example 3"
 <alpha-text-field readonly placeholder="you can't touch me">Name</alpha-text-field>
 ```
-- **Example 4**: a text-field with type number and step 0.5
+- **Example 4**: a text-field with type "number" and step 0.5
 ```html title="Example 3"
 <alpha-text-field type="number" step="0.5">Name</alpha-text-field>
 ```
