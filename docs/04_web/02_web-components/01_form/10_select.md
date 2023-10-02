@@ -33,7 +33,7 @@ This component needs to be used in combination with `<alpha-option>`. You can de
 | Name     | Type      | Description                                                                                                                              |
 |----------|-----------|------------------------------------------------------------------------------------------------------------------------------------------|
 | disabled | `boolean` | Similar to `readonly`, but with a blur on the component                                                                                  |
-| form     | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form  |
+| form     | `string`  | Associates this component with a form. Form `id` needs to be passed. If no Id is provided, then it will be associated with the ancestor form  |
 | multiple | `boolean` | Enables the user to select more than one option; this automatically opens the selection and removes the side arrow. **Default:** `false` | 
 | name     | `string`  | Gives this component a name                                                                                                              |
 | open     | `boolean` | Defines whether the list starts opened or not. **Default:** `false`                                                                      |
@@ -44,8 +44,7 @@ This component needs to be used in combination with `<alpha-option>`. You can de
 
 ### Option attributes
 
-In order to use the select component, you need to create a list of options for the user to select from. You create this
-list using `<alpha-option>`. You can define the following attributes for an `<alpha-option>`:
+In order to use the select component, you need to create a list of options for the user to select from. You create this list using `<alpha-option>`. You can define the following attributes for an `<alpha-option>`:
 
 | Name     | Type      | Description                                                                                  |
 |----------|-----------|----------------------------------------------------------------------------------------------|
