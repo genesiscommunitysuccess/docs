@@ -13,19 +13,29 @@ tags:
 
 This page describes the various configuration options available for authentication. These are located in your _application-name-_**auth-preferences.kts** file.
 
-Inside the file, all the configuration settings are wrapped within the `security` function.
+:::
+**Session tokens and refresh tokens**
+Session tokens and refresh tokens work in pairs together to enable you to control secure user sessions. These tokens always have an associated expiry date. This is in DATETIME format, and typically is a number of minutes in the future. 
+
+The expiry date of the refresh token is always further in the future than session token expiry date, so that session tokens can be refreshed. 
+
+Once a session token expires, you can use its associated refresh token to create a new user session - assuming the refresh token has not expired yet.
+:::
+
 
 ## The security function
 
-The `security` function wraps all other variables and functions within the **auth-preferences.kts** file. From this top level, you can set the following variables:
+All the configuration settings in the _application-name-_**auth-preferences.kts** file are wrapped within the `security` function. From this top level, you can set the following variables:
 
-* `sessionTimeoutMins` specifies a time out for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](../../../server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
+* `sessionTimeoutMins` specifies a time out (in minutes) for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](../../../server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
+* `refreshTokenExpirationMins` specifies a time out (in minutes) for the refresh token value that was provided on successful login. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. Default: 7200 minutes (i.e. 5 days)
 * `expiryCheckMins` specifies the time interval (in minutes) used to check for idle sessions in the system. Default: 5 minutes.
 * `maxSimultaneousUserLogins` specifies the maximum number of concurrent active sessions a user can maintain. Once this limit has been reached, the user cannot activate additional sessions until one or more of the active sessions has been logged out. So, a value of 1 means that only one session can be logged in at any time; a value of two allows two sessions to be logged in concurrently, and so on. If the value is zero, is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
 
 ```kotlin
 security {
   sessionTimeoutMins = 60 //60 minutes (not the default 30 minutes)
+  refreshTokenExpirationMins = 2880 // 2880 minutes (not the default 7200 minutes)
   expiryCheckMins = 10 //5 minutes (not the default 5 minutes)
   maxSimultaneousUserLogins = 5 //5 active sessions (not the default unlimited)
 }
@@ -109,6 +119,8 @@ The `retry` function enables you to configure settings for limiting the rate at 
 
 * `maxAttempts` specifies the maximum number of attempts allowed if a user enters a wrong password. Default: 3 attempts.
 * `waitTimeMins` specifies the time to wait in minutes when the maximum number of incorrect attempts is reached before allowing a user to try again. Default: 5 minutes.
+
+The user login attempts are stored in the USER_LOGIN_ATTEMPT table, so it is possible for an administrator to allow a specific user(s) to attempt to login again by deleting/amending the relevant record(s) in it.
 
 ### selfServiceReset 
 
