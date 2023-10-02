@@ -4,9 +4,9 @@ sidebar_label: 'Combobox'
 id: combobox
 keywords: [web, web components, combobox]
 tags:
-    - web
-    - web components
-    - combobox
+  - web
+  - web components
+  - combobox
 ---
 
 A combo-box is an input with an associated pop-up that enables users to select one value from a collection of possible values.
