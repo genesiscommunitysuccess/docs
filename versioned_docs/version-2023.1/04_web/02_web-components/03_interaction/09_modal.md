@@ -4,12 +4,12 @@ sidebar_label: 'Modal'
 id: modal
 keywords: [web, web components, modal]
 tags:
-    - web
-    - web components
-    - modal
+  - web
+  - web components
+  - modal
 ---
 
-A modal component will prevent the user from interacting with other content on the page. An alternative is the [dialog](../../../../web/web-components/interaction/dialog/) component.
+A modal is a type of `dialog` that prevents the user from interacting with other content on the page. An alternative is the [dialog](../../../../web/web-components/interaction/dialog/) component.
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#dialog_modal):
 
@@ -24,23 +24,104 @@ import { provideDesignSystem, alphaModal } from '@genesislcap/alpha-design-syste
 
 provideDesignSystem().register(alphaModal());
 ```
+## Methods
+
+When you declare an `<alpha-modal>`, you can duse the following methods:
+
+| Name    | Description                  |
+|---------|------------------------------|
+| show()  | It shows the referred modal  |
+| close() | It closes the referred modal |
 
 ## Usage
 
+Below you see the standard declaration of the modal:
+
 ```html
-<alpha-card id="alpha-modal">
-  <alpha-button id="js-alpha-show-modal" appearance="accent">Show Rapid Modal</alpha-button>
-  <alpha-modal>
-    <h5 slot="top">Modal title</h5>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit/</p> 
-    <alpha-button slot="bottom" id="js-alpha-close-modal">Close this modal</alpha-button>
-  </alpha-modal>
-</alpha-card>
+<alpha-modal>
+    This is a modal
+</alpha-modal>
+```
+
+### Interaction
+
+In order to interact with the modal component, you need to use the available methods. To do that, import modal from `@genesislcap/alpha-design-system`:
+
+``` typescript
+import { Modal as alphaModal } from '@genesislcap/alpha-design-system';
+```
+:::note
+If you are using `foundation-zero`, then you need to import using `@genesislcap/foundation-zero`
+:::
+
+After that, you need to define the local variable to be referred to, in this case `localModal`:
+
+```js {3}
+export class TEMPLATE extends FASTElement {
+    ...
+    localModal: alphaModal;
+    ...
+}
+```
+
+Now that you have your local variable, you can use the directive `ref` to link your component to this variable:
+
+```html {1,5-7}
+import {... , ref} from '@microsoft/fast-element';
+...
+export const yourTemplate = html<Template>`
+    ...
+    <alpha-modal ${ref('localModal')}>
+        This is a modal
+    </alpha-modal>
+}
+```
+
+If you are not familiar with the `ref` directive, take a look at the [Microsoft Fast documentation](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive).
+
+From this point, you can use both `show()` and `close()` as methods of `localModal`.
+
+### Examples
+
+Below we have two examples of how to use both methods:
+
+- Create a button to open a modal:
+
+```html {6}
+import {... , ref} from '@microsoft/fast-element';
+import {sync} from '@genesislcap/foundation-utils';
+...
+export const yourTemplate = html<Template>`
+    ...
+    <alpha-button @click=${x => x.localModal.show()}></alpha-button>
+    <alpha-modal ${ref('localModal')}>
+       This is a modal
+    </alpha-modal>
+}
+```
+
+- Create a button inside the modal to close it:
+
+```html {9}
+import {... , ref} from '@microsoft/fast-element';
+import {sync} from '@genesislcap/foundation-utils';
+...
+export const yourTemplate = html<Template>`
+    ...
+    <alpha-button @click=${x => x.localModal.show()}>Open modal</alpha-button>
+    <alpha-modal ${ref('localModal')}>
+       This is a modal
+       <alpha-button @click=${x => x.localModal.show()}>Close modal</alpha-button>
+    </alpha-modal>
+}
 ```
 
 ## Use cases
 
-* Confirmation pop-ups
+- Confirmation pop-ups
+- Alerts
+- Forms submissions
+- Contextual information
 
 ## Additional resources
 
