@@ -22,6 +22,7 @@ export interface MessageBuilder
 |  [createDataLogonMessage(resourceName, params)](./foundation-comms.messagebuilder.createdatalogonmessage.md) | Creates a message to logon to a DATASERVER. Used for data fetching. |
 |  [createForgotPasswordMessage(username, returnUrl, requester)](./foundation-comms.messagebuilder.createforgotpasswordmessage.md) | Creates a forgot password message. |
 |  [createForgotPasswordTokenMessage(username, resetToken, newPassword, requester)](./foundation-comms.messagebuilder.createforgotpasswordtokenmessage.md) | Creates a forgot password token message. |
+|  [createHTTPHeadersFromMessage(message, contentType)](./foundation-comms.messagebuilder.createhttpheadersfrommessage.md) | Create HTTP Headers from a message. |
 |  [createLoginMessage(credentials)](./foundation-comms.messagebuilder.createloginmessage.md) | Creates a login message. |
 |  [createLogoutMessage(loginResult)](./foundation-comms.messagebuilder.createlogoutmessage.md) | Creates a logout message. |
 |  [createMetaRequestMessage(resourceName, messageType)](./foundation-comms.messagebuilder.createmetarequestmessage.md) | Creates a metadata fetch message. |

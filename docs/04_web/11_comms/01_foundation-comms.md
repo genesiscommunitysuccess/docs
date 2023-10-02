@@ -26,3 +26,4 @@ Note: this project provides front-end dependencies and uses licensed components 
 
 ### Licensed components
 Genesis low-code platform
+

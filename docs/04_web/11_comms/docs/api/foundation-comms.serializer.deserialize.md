@@ -4,6 +4,11 @@
 
 ## Serializer.deserialize() method
 
+> Warning: This API is now obsolete.
+> 
+> - Use `deserialize` from `JSONSerializer` from `@genesislcap/foundation-utils` instead.
+> 
+
 Deserialize a Response object into the expected type T.
 
 **Signature:**
