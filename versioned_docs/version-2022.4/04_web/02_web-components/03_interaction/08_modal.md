@@ -24,14 +24,31 @@ import { provideDesignSystem, alphaModal } from '@genesislcap/alpha-design-syste
 
 provideDesignSystem().register(alphaModal());
 ```
+## Attributes
+
+When you declare an `<alpha-modal>`, you can use the following attribute:
+
+| Name     | Type   | Description                                                                     |
+|----------|--------|---------------------------------------------------------------------------------|
+| position | string | It places the modal to be on `right`, `centre` or `left`. **Default:** `centre` |
+
+These attributes must be defined alongside the declaration of the component.
+
+:::note
+If you set `position` to be `left` or `right`, the modal will assume `heigh: 100%` by default. To change it, make the appropriate css modifications.
+:::
+
+
 ## Methods
 
-When you declare an `<alpha-modal>`, you can duse the following methods:
+The following methods are available for the `alpha-modal` component:
 
 | Name    | Description                  |
 |---------|------------------------------|
 | show()  | It shows the referred modal  |
 | close() | It closes the referred modal |
+
+By default, the `modal-component` starts closed.
 
 ## Usage
 
@@ -72,9 +89,9 @@ import {... , ref} from '@microsoft/fast-element';
 export const yourTemplate = html<Template>`
     ...
     <alpha-modal ${ref('localModal')}>
-        This is a modal
+    This is a modal
     </alpha-modal>
-}
+    }
 ```
 
 If you are not familiar with the `ref` directive, take a look at the [Microsoft Fast documentation](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive).
@@ -85,6 +102,12 @@ From this point, you can use both `show()` and `close()` as methods of `localMod
 
 Below we have two examples of how to use both methods:
 
+- Create a modal positioned to the left:
+```html
+<alpha-modal position="left">
+    This is a modal
+</alpha-modal>
+```
 - Create a button to open a modal:
 
 ```html {6}
@@ -95,9 +118,9 @@ export const yourTemplate = html<Template>`
     ...
     <alpha-button @click=${x => x.localModal.show()}></alpha-button>
     <alpha-modal ${ref('localModal')}>
-       This is a modal
+    This is a modal
     </alpha-modal>
-}
+    }
 ```
 
 - Create a button inside the modal to close it:
@@ -110,10 +133,10 @@ export const yourTemplate = html<Template>`
     ...
     <alpha-button @click=${x => x.localModal.show()}>Open modal</alpha-button>
     <alpha-modal ${ref('localModal')}>
-       This is a modal
-       <alpha-button @click=${x => x.localModal.show()}>Close modal</alpha-button>
+    This is a modal
+    <alpha-button @click=${x => x.localModal.show()}>Close modal</alpha-button>
     </alpha-modal>
-}
+    }
 ```
 
 ## Use cases
@@ -125,4 +148,4 @@ export const yourTemplate = html<Template>`
 
 ## Additional resources
 
-- [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#dialog_modal)
+- [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#dialog_modal)~~
