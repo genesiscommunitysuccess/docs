@@ -39,6 +39,8 @@
 |  [defaultUser](./foundation-login.defaultuser.md) |  |
 |  [define](./foundation-login.define.md) | **_(BETA)_** Re-define the login micro frontend. |
 |  [definition](./foundation-login.definition.md) | **_(BETA)_** |
+|  [fetchIDPs](./foundation-login.fetchidps.md) | Request SSO identity provider list |
+|  [getSSOLoginURL](./foundation-login.getssologinurl.md) | Get SSO identity provider login URL |
 |  [hostEnv](./foundation-login.hostenv.md) |  |
 |  [hostUrl](./foundation-login.hosturl.md) |  |
 |  [Routes](./foundation-login.routes.md) |  |

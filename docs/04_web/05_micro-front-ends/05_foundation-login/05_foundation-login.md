@@ -45,7 +45,7 @@ If you build a project upon one of the Genesis seed apps, then the `Login` micro
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` or `$ npm run bootstrap:ignore-scripts` command again. You can see more information on the [package.json basics](../../../../web/micro-front-ends/foundation-login/) page.
+1. Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` or `$ npm run bootstrap:ignore-scripts` command again. You can see more information on the [package.json basics](../../../../web/micro-front-ends/foundation-login/) page.
 
 ```javascript
 {
@@ -76,7 +76,7 @@ Once installed, you can either use `Login` as is or re-configure it. As with all
 You may need to set up a `NavigationContributor` in your application's router config class to handle `public` and `autoAuth` route settings.
 
 - `public`, which indicates that a route doesn't require the user to be authenticated to view it
-- `autoAuth`, where, if the user already has an authenticated session, they are automatically logged in again if they navigate away from a page and then return  
+- `autoAuth`, where, if the user already has an authenticated session, they are automatically logged in again if they navigate away from a page and then return
 
 ```ts
 {
@@ -108,7 +108,7 @@ For authentication, most configuration is set in the back end. You should famili
 The standard authentication method is the user supplying their username and password. Even when SSO is enabled as an authentication method, the user will still have the option to sign in with their normal credentials.
 
 :::noteTip
-Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables automatically populates the credentials in the login form, which can be useful during development so developers don't need to write out their credentials continuously. However, the browser may also offer auto-filling if you have previously chosen to save your credentials, which can make setting these unnecessary.
+Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables will automatically populate the credentials in the login form, which can be useful during development so developers don't need to write out their credentials continuously. However, the browser may also offer auto-filling if you have previously chosen to save your credentials, which can make setting these unnecessary.
 :::
 
 ### SSO
@@ -131,3 +131,4 @@ Note: this project provides front-end dependencies and uses licensed components 
 
 ### Licensed components
 Genesis low-code platform
+
