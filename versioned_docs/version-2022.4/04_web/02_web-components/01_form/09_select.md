@@ -4,15 +4,19 @@ sidebar_label: 'Select'
 id: select
 keywords: [web, web components, select]
 tags:
-  - web
-  - web components
-  - select
+    - web
+    - web components
+    - select
 ---
 
 <div class="select-examples">
 
 An implementation of an [HTML select element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) as a form-connected Web Component. It is very similar to the [combo-box](../combobox/), but with some differences such as:
-users can only select from the list provided; there is no auto-completion; users can select multiple options and the value of the selected option can be different from its label.
+
+- Users can only select from the list provided.
+- There is no auto-completion.
+- Users can select multiple options.
+- The value of the selected option can be different from its label.
 
 ## Set-up
 
@@ -24,25 +28,23 @@ provideDesignSystem().register(alphaSelect(), alphaOption());
 
 ## Attributes
 
-You can define the following attributes in an `<alpha-select>`. This component needs to be used in combination with `<alpha-option>`
+This component needs to be used in combination with `<alpha-option>`. You can define the following attributes when you declare an `<alpha-select>`: 
 
-| Name     | Type      | Description                                                                                                                           |
-|----------|-----------|---------------------------------------------------------------------------------------------------------------------------------------|
-| disabled | `boolean` | Similar to `readonly`, but with a blur on the component                                                                               |
-| form        | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form |
-| multiple | `boolean` | Allows the user to select more than one option. It automatically opens the selection and removed the side arrow. **Default:** `false` | 
-| name     | `string`  | Gives this component a name                                                                                                           |
-| open     | `boolean` | Defines whether the list starts opened or not. **Default:** `false`                                                                   |
-| position | `string`  | Places the list **above** or **below** the select. It can be `above` or `below`. **Default:** it will try to fit with the page        | 
-| size     | `number`  | Defines the maximum number of options to be displayed. **Default:** it will try to fit with the page                                  | 
-| value    | `string`  | Sets a value for this component                                                                                                       | 
+| Name     | Type      | Description                                                                                                                              |
+|----------|-----------|------------------------------------------------------------------------------------------------------------------------------------------|
+| disabled | `boolean` | Similar to `readonly`, but with a blur on the component                                                                                  |
+| form     | `string`  | Associates this component with a form. Form `id` needs to be passed. If no Id is provided, then it will be associated with the ancestor form  |
+| multiple | `boolean` | Enables the user to select more than one option; this automatically opens the selection and removes the side arrow. **Default:** `false` | 
+| name     | `string`  | Gives this component a name                                                                                                              |
+| open     | `boolean` | Defines whether the list starts opened or not. **Default:** `false`                                                                      |
+| position | `string`  | Places the list **above** or **below** the component; can be `above` or `below`. **Default:** it will try to fit with the page           | 
+| size     | `number`  | Defines the maximum number of options to be displayed. **Default:** it will try to fit with the page                                     | 
+| value    | `string`  | Sets a value for this component                                                                                                          | 
 
-These attributes must be defined alongside the declaration of the component.
 
 ### Option attributes
 
-In order to use the select component, you need to create a list of options for the user to select from. You create this
-list using `<alpha-option>`. You can define the following attributes for an `<alpha-option>`:
+In order to use the select component, you need to create a list of options for the user to select from. You create this list using `<alpha-option>`. You can define the following attributes for an `<alpha-option>`:
 
 | Name     | Type      | Description                                                                                  |
 |----------|-----------|----------------------------------------------------------------------------------------------|
@@ -50,13 +52,13 @@ list using `<alpha-option>`. You can define the following attributes for an `<al
 | selected | `boolean` | Selects the option, so it turns to the selected mode                                         |
 
 :::note
-If you place the `selected` attribute in more than one `option` while the `multiple = false`, then only the first occurrence will be selected.
+- If you specify a `selected` or `value` to more than one `option` while `multiple = false`, then the component selects only the first in the `alpha-option` list
 :::
 
 ## Usage
 All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration of this component accordingly.
 
-- **Example 1**: a select displaying 2 options at a time, with an open list.
+- **Example 1**: a select displaying 2 options at a time; users can scroll up or down to see other options in the list
 ```html title="Example 1"
 <alpha-select size="2" open>
     <alpha-option value="s">Small</alpha-option>
@@ -65,7 +67,7 @@ All examples below use the `alpha-design-system`. If you are using any other des
     <alpha-option value="xl">Extra Large</alpha-option>
 </alpha-select>
 ```
-- **Example 2**: a select disabled with 2 options selected in multiple mode
+- **Example 2**: a disabled select greyed out so that users can not select an option; 2 options selected: "s" and "l"
 ```html title="Example 2"
 <alpha-select disabled multiple>
     <alpha-option selected value="s">Small</alpha-option>
@@ -74,9 +76,9 @@ All examples below use the `alpha-design-system`. If you are using any other des
     <alpha-option value="xl">Extra Large</alpha-option>
 </alpha-select>
 ```
-- **Example 3**: a select positioning the list above with a starting value of `xl`
+- **Example 3**: a select with a starting value of `xl`; when the user clicks, the list is displayed above the select
 ```html title="Example 3"
-<alpha-select position="above">
+<alpha-select position="above" value="xl">
     <alpha-option value="s">Small</alpha-option>
     <alpha-option value="m">Medium</alpha-option>
     <alpha-option value="l">Large</alpha-option>
