@@ -41,6 +41,10 @@ This component needs to be used in combination with `<alpha-option>`. You can de
 | size     | `number`  | Defines the maximum number of options to be displayed. **Default:** it will try to fit with the page                                     | 
 | value    | `string`  | Sets a value for this component                                                                                                          | 
 
+:::note
+Setting the `size` attribute will cause the component to display the number of options you defined in this attribute whether you
+click on it or not.
+:::
 
 ### Option attributes
 
