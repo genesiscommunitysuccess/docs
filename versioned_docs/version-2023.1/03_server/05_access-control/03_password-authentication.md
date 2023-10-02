@@ -452,7 +452,7 @@ Note the following:
     "ONLINE": true,
     "COMPANY_NAME": null,
     "STATUS": "ENABLED",
-    "EMAIL_ADDRESS": "jane.wolf@genesis.global",
+    "EMAIL_ADDRESS": "jane.smith@genesis.global",
     "COMPANY_ID": null,
     "USER_TYPE": "USER",
     "ACCESS_TYPE": "ENTITY",
