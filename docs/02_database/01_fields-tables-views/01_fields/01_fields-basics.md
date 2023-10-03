@@ -100,3 +100,15 @@ As sensitive fields, their values are displayed as asterisks on screen. For debu
 
 By default, sensitive fields are set to `false`, and this only applies on `toString()` output of GenesisSet and DbRecord objects.
 
+## Specifying storage precision and scale for BIGDECIMAL fields
+
+BIGDECIMAL fields can have their precision/scale configured - this only affects storage (how the columns are created), hence it is only applicable for SQL databases.
+
+For example:
+
+```kotlin
+field(name = "FX_RATE", type = BIGDECIMAL(18,8))
+```
+
+- When not specified, the default value of `(20,5)` is used;
+- When an invalid value is supplied (database vendor dependant), `remap` will fallback to the default value.
