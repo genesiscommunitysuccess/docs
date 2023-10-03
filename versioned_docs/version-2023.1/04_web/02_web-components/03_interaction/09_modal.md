@@ -100,7 +100,7 @@ From this point, you can use both `show()` and `close()` as methods of `localMod
 
 ### Examples
 
-Below we have two examples of how to use both methods:
+Below we have three examples of how to use both methods:
 
 - Create a modal positioned to the left:
 ```html
