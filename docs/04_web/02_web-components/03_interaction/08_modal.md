@@ -9,7 +9,7 @@ tags:
   - modal
 ---
 
-A modal is a type of `dialog` that prevents the user from interacting with other content on the page. Usually, when an active modal is displayed, all other content on the screen is dimmed. The user is unable to move focus to other windows or dialogs. The user is forced to deal with the modal before moving to other work with the application.
+A modal is a type of `dialog` that prevents the user from interacting with other content on the page. Usually, when an active modal is displayed, all other content on the screen is dimmed. The user is unable to move focus to other windows or dialogs. This forces the user to deal with the modal before moving to other work on the application.
 
 If you do not want this exclusive focus, use the [dialog](../../../../web/web-components/interaction/dialog/) component.
 
