@@ -9,9 +9,11 @@ tags:
   - modal
 ---
 
-A modal is a type of `dialog` that prevents the user from interacting with other content on the page. An alternative is the [dialog](../../../../web/web-components/interaction/dialog/) component.
+A modal is a type of `dialog` that prevents the user from interacting with other content on the page. Usually, when an active modal is displayed, all other content on the screen is dimmed. The user is unable to move focus to other windows or dialogs. This forces the user to deal with the modal before moving to other work on the application.
 
-As defined by the [W3C](https://w3c.github.io/aria-practices/#dialog_modal):
+If you do not want this exclusive focus, use the [dialog](../../../../web/web-components/interaction/dialog/) component.
+
+Here is the definition of a modal from the [W3C](https://w3c.github.io/aria-practices/#dialog_modal):
 
 > A dialog is a window overlaid on either the primary window or another dialog window. Windows under a modal dialog are inert. That is, users cannot interact with content outside an active dialog window. Inert content outside an active dialog is typically visually obscured or dimmed so it is difficult to discern; in some implementations, attempts to interact with the inert content cause the dialog to close.
 >
@@ -26,16 +28,14 @@ provideDesignSystem().register(alphaModal());
 ```
 ## Attributes
 
-When you declare an `<alpha-modal>`, you can use the following attribute:
+When you declare an `<alpha-modal>`, you can provide the following attribute:
 
 | Name     | Type   | Description                                                                     |
 |----------|--------|---------------------------------------------------------------------------------|
-| position | string | It places the modal to be on `right`, `centre` or `left`. **Default:** `centre` |
-
-These attributes must be defined alongside the declaration of the component.
+| position | string | Places the modal to the `right`, `centre` or `left` of the screen. **Default:** `centre` |
 
 :::note
-If you set `position` to be `left` or `right`, the modal will assume `heigh: 100%` by default. To change it, make the appropriate css modifications.
+If you set `position` to be `left` or `right`, the modal will assume `height: 100%` by default. To change this, make the appropriate css modifications.
 :::
 
 
@@ -45,8 +45,8 @@ The following methods are available for the `alpha-modal` component:
 
 | Name    | Description                  |
 |---------|------------------------------|
-| show()  | It shows the referred modal  |
-| close() | It closes the referred modal |
+| show()  | Shows the referred modal  |
+| close() | Closes the referred modal |
 
 By default, the `modal-component` starts closed.
 
