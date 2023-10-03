@@ -43,10 +43,12 @@ If you set `position` to be `left` or `right`, the modal will assume `height: 10
 
 The following methods are available for the `alpha-modal` component:
 
-| Name    | Description                  |
-|---------|------------------------------|
-| show()  | Shows the modal  |
-| close() | Closes the modal |
+| Name              | Description                              |
+|-------------------|------------------------------------------|
+| show()            | Shows the modal                          |
+| close()           | Closes the modal                         |
+| onShowCallback()  | Callback that runs before open the modal |
+| onCloseCallback() | Callback that runs after close the modal |
 
 By default, the `modal-component` starts closed.
 
@@ -97,6 +99,28 @@ export const yourTemplate = html<Template>`
 If you are not familiar with the `ref` directive, take a look at the [Microsoft Fast documentation](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive).
 
 From this point, you can use both `show()` and `close()` as methods of `localModal`.
+
+#### Callbacks
+
+The `modal` provides two callbacks `onShowCallback()` and `onCloseCallback()`. To work with them, you need to use them inside the
+`connectedCallback()`. Below we have an example using the variable `localDialog` defined before.
+
+```js
+connectedCallback(){
+    super.connectedCallback()
+    ...
+
+    this.localModal.onShowCallback = () => {
+        //Write your code here
+    }
+    
+    this.localModal.onCloseCallback = () => {
+        //Write your code here
+    }
+    
+    ...
+}
+```
 
 ### Examples
 
