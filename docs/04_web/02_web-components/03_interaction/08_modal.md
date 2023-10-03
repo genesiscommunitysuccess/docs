@@ -30,12 +30,12 @@ When you declare an `<alpha-modal>`, you can use the following attribute:
 
 | Name     | Type   | Description                                                                     |
 |----------|--------|---------------------------------------------------------------------------------|
-| position | string | It places the modal to be on `right`, `centre` or `left`. **Default:** `centre` |
+| position | string | Places the modal to be on `right`, `centre` or `left`. **Default:** `centre` |
 
-These attributes must be defined alongside the declaration of the component.
+When you declare a modal, you can provide the following attribute:
 
 :::note
-If you set `position` to be `left` or `right`, the modal will assume `heigh: 100%` by default. To change it, make the appropriate css modifications.
+If you set `position` to be `left` or `right`, the modal will assume `height: 100%` by default. To change it, make the appropriate css modifications.
 :::
 
 
@@ -45,8 +45,8 @@ The following methods are available for the `alpha-modal` component:
 
 | Name    | Description                  |
 |---------|------------------------------|
-| show()  | It shows the referred modal  |
-| close() | It closes the referred modal |
+| show()  | Shows the referred modal  |
+| close() | Closes the referred modal |
 
 By default, the `modal-component` starts closed.
 
