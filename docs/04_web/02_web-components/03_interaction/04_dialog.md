@@ -18,25 +18,150 @@ import { provideDesignSystem, alphaDialog } from '@genesislcap/alpha-design-syst
 
 provideDesignSystem().register(alphaDialog());
 ```
+## Attributes
+
+When you declare an `<alpha-dialog>`, you can provide the following attribute:
+
+| Name     | Type   | Description                                                                     |
+|----------|--------|---------------------------------------------------------------------------------|
+| position | string | Places the dialog to the `right`, `centre` or `left` of the screen. **Default:** `centre` |
+
+:::note
+Differently from the `modal` component, the `dialog` component is not positioned in a layer in front of the components.
+because of that, it appears where it is declared. Any changes of positioning needs to be addressed using css. 
+:::
+
+
+## Methods
+
+The following methods are available for the `alpha-dialog` component:
+
+| Name              | Description                               |
+|-------------------|-------------------------------------------|
+| show()            | Shows the dialog                          |
+| close()           | Closes the dialog                         |
+| onShowCallback()  | Callback that runs before open the dialog |
+| onCloseCallback() | Callback that runs after close the dialog |
+
+By default, the `dialog-component` starts closed.
 
 ## Usage
 
-```html
-<alpha-card id="alpha-dialog">
-  <h6>Dialog</h6>
-  <alpha-button id="js-alpha-show-dialog">Show Dialog</alpha-button>
+Below you see the standard declaration of the dialog:
 
-  <alpha-dialog>
-    <h5 slot="top">Dialog title</h5>
-    <p>Some text</p>
-    <alpha-button slot="bottom" id="js-alpha-close-dialog">Close dialog</alpha-button>
-  </alpha-dialog>
-</alpha-card>
+```html
+<alpha-dialog>
+    This is a dialog
+</alpha-dialog>
+```
+
+### Interaction
+
+In order to interact with the dialog component, you need to use the available methods. To do that, import dialog from `@genesislcap/alpha-design-system`:
+
+``` typescript
+import { Dialog as alphaDialog } from '@genesislcap/alpha-design-system';
+```
+:::note
+If you are using `foundation-zero`, then you need to import using `@genesislcap/foundation-zero`
+:::
+
+After that, you need to define the local variable to be referred to, in this case `localDialog`:
+
+```js {3}
+export class TEMPLATE extends FASTElement {
+    ...
+    localDialog: alphaDialog;
+    ...
+}
+```
+
+Now that you have your local variable, you can use the directive `ref` to link your component to this variable:
+
+```html {1,5-7}
+import {... , ref} from '@microsoft/fast-element';
+...
+export const yourTemplate = html<Template>`
+    ...
+    <alpha-dialog ${ref('localDialog')}>
+    This is a dialog
+    </alpha-dialog>
+    }
+```
+
+If you are not familiar with the `ref` directive, take a look at the [Microsoft Fast documentation](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive).
+
+From this point, you can use both `show()` and `close()` as methods of `localDialog`.
+
+#### Callbacks
+
+The `dialog` provides two callbacks `onShowCallback()` and `onCloseCallback()`. To work with them, you need to use them inside the
+`connectedCallback()`. Below we have an example using the variable `localDialog` defined before.
+
+```js
+connectedCallback(){
+    super.connectedCallback()
+    ...
+
+    this.localDialog.onShowCallback = () => {
+        //Write your code here
+    }
+    
+    this.localDialog.onCloseCallback = () => {
+        //Write your code here
+    }
+    
+    ...
+}
+```
+
+### Examples
+
+Below we have three examples of how to use both methods:
+
+- Create a dialog positioned to the left:
+```html
+<alpha-dialog position="left">
+    This is a dialog
+</alpha-dialog>
+```
+- Create a button to open a dialog:
+
+```html {6}
+import {... , ref} from '@microsoft/fast-element';
+import {sync} from '@genesislcap/foundation-utils';
+...
+export const yourTemplate = html<Template>`
+    ...
+    <alpha-button @click=${x => x.localDialog.show()}></alpha-button>
+    <alpha-dialog ${ref('localDialog')}>
+        This is a dialog
+    </alpha-dialog>
+    }
+```
+
+- Create a button inside the dialog to close it:
+
+```html {9}
+import {... , ref} from '@microsoft/fast-element';
+import {sync} from '@genesislcap/foundation-utils';
+...
+export const yourTemplate = html<Template>`
+    ...
+    <alpha-button @click=${x => x.localDialog.show()}>Open dialog</alpha-button>
+    <alpha-dialog ${ref('localDialog')}>
+        This is a dialog
+        <alpha-button @click=${x => x.localDialog.show()}>Close dialog</alpha-button>
+    </alpha-dialog>
+    }
 ```
 
 ## Use cases
 
-* Confirmation popups
+- Confirmation pop-ups
+- Alerts
+- Forms submissions
+- Contextual information
 
 ## Additional resources
 
