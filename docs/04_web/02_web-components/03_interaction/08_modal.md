@@ -9,9 +9,11 @@ tags:
   - modal
 ---
 
-A modal is a type of `dialog` that prevents the user from interacting with other content on the page. An alternative is the [dialog](../../../../web/web-components/interaction/dialog/) component.
+A modal is a type of `dialog` that prevents the user from interacting with other content on the page. Usually, when an active modal is displayed, all other content on the screen is dimmed. The user is unable to move focus to other windows or dialogs. The user is forced to deal with the modal before moving to other work with the application.
 
-As defined by the [W3C](https://w3c.github.io/aria-practices/#dialog_modal):
+If you do not want this exclusive focus, use the [dialog](../../../../web/web-components/interaction/dialog/) component.
+
+Here is the definition of a modal from the [W3C](https://w3c.github.io/aria-practices/#dialog_modal):
 
 > A dialog is a window overlaid on either the primary window or another dialog window. Windows under a modal dialog are inert. That is, users cannot interact with content outside an active dialog window. Inert content outside an active dialog is typically visually obscured or dimmed so it is difficult to discern; in some implementations, attempts to interact with the inert content cause the dialog to close.
 >
@@ -26,16 +28,14 @@ provideDesignSystem().register(alphaModal());
 ```
 ## Attributes
 
-When you declare an `<alpha-modal>`, you can use the following attribute:
+When you declare an `<alpha-modal>`, you can provide the following attribute:
 
 | Name     | Type   | Description                                                                     |
 |----------|--------|---------------------------------------------------------------------------------|
-| position | string | Places the modal to be on `right`, `centre` or `left`. **Default:** `centre` |
-
-When you declare a modal, you can provide the following attribute:
+| position | string | Places the modal to the `right`, `centre` or `left` of the screen. **Default:** `centre` |
 
 :::note
-If you set `position` to be `left` or `right`, the modal will assume `height: 100%` by default. To change it, make the appropriate css modifications.
+If you set `position` to be `left` or `right`, the modal will assume `height: 100%` by default. To change this, make the appropriate css modifications.
 :::
 
 
