@@ -8,8 +8,12 @@ tags:
     - concepts
 ---
 
-This section provides you with details about the three types of operation that you can perform on the database. 
+This section provides you with details on various database concepts. 
 
+Database operations:
 - [Read](../../../database/database-concepts/read/)
 - [Write](../../../database/database-concepts/write/)
-- [Subscribe](../../../database/database-concepts/subscribe/).
+- [Subscribe](../../../database/database-concepts/subscribe/)
+
+Other concepts:
+- [Optimistic Concurrency](../../../database/database-concepts/optimistic-concurrency/)
