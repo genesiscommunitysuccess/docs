@@ -45,8 +45,8 @@ The following methods are available for the `alpha-modal` component:
 
 | Name    | Description                  |
 |---------|------------------------------|
-| show()  | Shows the referred modal  |
-| close() | Closes the referred modal |
+| show()  | Shows the modal  |
+| close() | Closes the modal |
 
 By default, the `modal-component` starts closed.
 
