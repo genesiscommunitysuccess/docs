@@ -14,13 +14,13 @@ Optimistic Concurrency helps prevent users from updating or deleting a stale ver
 
 ## Configuration
 
-You need to configure Optimistic Concurrency by setting the `DbOptimisticConcurrencyMode` property to the Event Handler definition in your  _applicationName_**-processes.xml** file.
+If you want to use Optimistic Concurrency, you must configure it by setting the `DbOptimisticConcurrencyMode` property to the EVENT_HANDLER definition in your  _applicationName_**-processes.xml** file.
 
 The `DbOptimisticConcurrencyMode` property can have one of the following values: `STRICT`, `LAX` and `NONE`. Defaults to `NONE`.
 
 There are two simple ways of setting the property.
 
-In this first example, we simply specify it as one of the `options`
+In this first example, we simply specify STRICT Optimistic Concurrency as one of the `options`
 
 ```xml title="alpha-processes.xml"
 
@@ -37,7 +37,7 @@ In this first example, we simply specify it as one of the `options`
     <language>pal</language>
 </process>
 ```
-Alternatively, you can specify the option in a separate file and use the `configOverridesFile` property. The file here is called **alpha-sysdef.properties** and we have shown its content in a separate codeblock. 
+Alternatively, you can specify the option in a separate file and use the `configOverridesFile` property. In the example below, the file is called **alpha-sysdef.properties** and we have shown its content in a separate codeblock. 
 
 ```xml title="alpha-processes.xml"
 
@@ -82,8 +82,6 @@ The checks are dependent on the availability of a timestamp field.
 
 This `eventHandler` is called TRADE_MODIFY, and it is based on a generated entity.
 
-TRADE_MODIFY Event Handler
-
 ```kotlin title="trade-eventhandler.kts"
 eventHandler<Trade>(name = "TRADE_MODIFY") {
     onCommit { event ->
@@ -95,10 +93,6 @@ eventHandler<Trade>(name = "TRADE_MODIFY") {
 ```
 
 Below is an `eventHandler` called TRADE_CANCEL. It is based on a custom class called `TradeCancel`, which itself is described in the second codeblock. 
-
-#### Custom event class
-
-TRADE_CANCEL Event Handler
 
 ```kotlin title="trade-eventhandler.kts"
 eventHandler<TradeCancel> {
