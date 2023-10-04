@@ -30,9 +30,11 @@ provideDesignSystem().register(alphaModal());
 
 When you declare an `<alpha-modal>`, you can provide the following attribute:
 
-| Name     | Type   | Description                                                                     |
-|----------|--------|---------------------------------------------------------------------------------|
-| position | string | Places the modal to the `right`, `centre` or `left` of the screen. **Default:** `centre` |
+| Name            | Type      | Description                                                                              |
+|-----------------|-----------|------------------------------------------------------------------------------------------|
+| position        | string    | Places the modal to the `right`, `centre` or `left` of the screen. **Default:** `centre` |
+| show-close-icon | `boolean` | Enables the close button on the top-right corner. **Default:** `true`                    |
+
 
 :::note
 If you set `position` to be `left` or `right`, the modal will assume `height: 100%` by default. To change this, make the appropriate css modifications.
@@ -128,7 +130,7 @@ Below we have three examples of how to use both methods:
 
 - Create a modal positioned to the left:
 ```html
-<alpha-modal position="left">
+<alpha-modal position="left" show-close-icon="false">
     This is a modal
 </alpha-modal>
 ```
@@ -142,7 +144,7 @@ export const yourTemplate = html<Template>`
     ...
     <alpha-button @click=${x => x.localModal.show()}></alpha-button>
     <alpha-modal ${ref('localModal')}>
-    This is a modal
+        This is a modal
     </alpha-modal>
     }
 ```

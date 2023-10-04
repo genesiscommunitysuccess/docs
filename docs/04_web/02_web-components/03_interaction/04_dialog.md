@@ -22,9 +22,10 @@ provideDesignSystem().register(alphaDialog());
 
 When you declare an `<alpha-dialog>`, you can provide the following attribute:
 
-| Name     | Type   | Description                                                                     |
-|----------|--------|---------------------------------------------------------------------------------|
-| position | string | Places the dialog to the `right`, `centre` or `left` of the screen. **Default:** `centre` |
+| Name            | Type      | Description                                                                               |
+|-----------------|-----------|-------------------------------------------------------------------------------------------|
+| position        | `string`  | Places the dialog to the `right`, `centre` or `left` of the screen. **Default:** `centre` |
+| show-close-icon | `boolean` | Enables the close button on the top-right corner. **Default:** `true`                     |
 
 :::note
 Unlike the `modal` component, the `dialog` component is not positioned in a layer in front of other components. It appears where it is declared. Any change of positioning must be addressed using css. 
@@ -116,9 +117,9 @@ connectedCallback(){
 
 Below we have three practical examples where we create a dialog, plus buttons to open and close it:
 
-- Create a dialog positioned to the left:
+- Create a dialog positioned to the left with the close-icon desabled:
 ```html
-<alpha-dialog position="left">
+<alpha-dialog position="left" show-close-icon="false">
     This is a dialog
 </alpha-dialog>
 ```
