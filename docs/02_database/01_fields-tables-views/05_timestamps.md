@@ -18,7 +18,7 @@ An ID includes:
 - a node number (which represents the node id within a Genesis cluster)
 - a sequence number (used to differentiate IDs generated within the same millisecond)
 
-Timestamps are also important for Optimistic Concurrency which you can read about [here](../../database-concepts/optimistic-concurrency).
+Timestamps are essential if you use [Optimistic Concurrency](../../database-concepts/optimistic-concurrency).
 
 ## Format
 The GenesisFlake timestamp is made up of: 
