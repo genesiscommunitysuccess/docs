@@ -27,14 +27,12 @@ When you declare an `<alpha-dialog>`, you can provide the following attribute:
 | position | string | Places the dialog to the `right`, `centre` or `left` of the screen. **Default:** `centre` |
 
 :::note
-Differently from the `modal` component, the `dialog` component is not positioned in a layer in front of the components.
-because of that, it appears where it is declared. Any changes of positioning needs to be addressed using css. 
+Unlike the `modal` component, the `dialog` component is not positioned in a layer in front of other components. It appears where it is declared. Any change of positioning must be addressed using css. 
 :::
-
 
 ## Methods
 
-The following methods are available for the `alpha-dialog` component:
+When declaring an `alpha-dialog` component, the following methods are available:
 
 | Name              | Description                               |
 |-------------------|-------------------------------------------|
@@ -47,7 +45,7 @@ By default, the `dialog-component` starts closed.
 
 ## Usage
 
-Below you see the standard declaration of the dialog:
+Below is the standard declaration of the dialog:
 
 ```html
 <alpha-dialog>
@@ -95,8 +93,7 @@ From this point, you can use both `show()` and `close()` as methods of `localDia
 
 #### Callbacks
 
-The `dialog` provides two callbacks `onShowCallback()` and `onCloseCallback()`. To work with them, you need to use them inside the
-`connectedCallback()`. Below we have an example using the variable `localDialog` defined before.
+The `dialog` provides two callbacks `onShowCallback()` and `onCloseCallback()`. To work with them, you need to use them inside the `connectedCallback()`. Below is an example using the variable `localDialog` that was defined earlier.
 
 ```js
 connectedCallback(){
