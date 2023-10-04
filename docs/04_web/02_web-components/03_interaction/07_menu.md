@@ -25,19 +25,6 @@ import { provideDesignSystem, alphaMenu, alphaMenuItem } from '@genesislcap/alph
 provideDesignSystem().register(alphaMenu(), alphaMenuItem());
 ```
 
-
-
-## Events
-@change on the menu item applies to all sub items, and makes it available when using keyboard. It does not trigger 
-when clicking in a sub menu item. 
-
-@click on the menu item applies to ll sub items. When cicking in a nasted menu, it triggers too. 
-
-
-
-
-
-
 ## Usage
 
 ### Basic usage
