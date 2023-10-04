@@ -114,7 +114,7 @@ connectedCallback(){
 
 ### Examples
 
-Below we have three examples of how to use both methods:
+Below we have three practical examples where we create a dialog, plus buttons to open and close it:
 
 - Create a dialog positioned to the left:
 ```html
