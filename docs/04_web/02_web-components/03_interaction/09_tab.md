@@ -1,7 +1,7 @@
 ---
-title: 'Web Components - Tabs'
-sidebar_label: 'Tabs'
-id: tabs
+title: 'Web Components - Tab'
+sidebar_label: 'Tab'
+id: tab
 keywords: [web, web components, tab]
 tags:
     - web
