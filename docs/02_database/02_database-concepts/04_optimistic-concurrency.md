@@ -16,7 +16,7 @@ Optimistic Concurrency helps prevent users from updating or deleting a stale ver
 
 If you want to use Optimistic Concurrency, you must configure it by setting the `DbOptimisticConcurrencyMode` property to the EVENT_HANDLER definition in your  _applicationName_**-processes.xml** file.
 
-The `DbOptimisticConcurrencyMode` property can have one of the following values: `STRICT`, `LAX` and `NONE`. Defaults to `NONE`.
+The `DbOptimisticConcurrencyMode` property can have one of the following values: `STRICT`, `LAX` and `NONE`. These modes are detailed below. Defaults to `NONE`.
 
 There are two simple ways of setting the property.
 
