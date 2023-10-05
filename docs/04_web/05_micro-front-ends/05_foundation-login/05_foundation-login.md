@@ -96,7 +96,7 @@ You may need to set up a `NavigationContributor` in your application's router co
 ```
 
 :::warningWarning
-By default, a route that isn't marked public is not. However, a non-public route isn't going to block non-authenticated users automatically from viewing them. This must be implemented in a `NavigationContributor`; see [example](./docs/api/foundation-login.login.md#example).
+By default, a route that isn't marked public is not. However, a non-public route isn't automatically going to block non-authenticated users from viewing them. This must be implemented in a `NavigationContributor`; see [example](./docs/api/foundation-login.login.md#example).
 :::
 
 ## Authentication
@@ -108,7 +108,7 @@ For authentication, most configuration is set in the back end. You should famili
 The standard authentication method is the user supplying their username and password. Even when SSO is enabled as an authentication method, the user will still have the option to sign in with their normal credentials.
 
 :::noteTip
-Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables will automatically populate the credentials in the login form, which can be useful during development so developers don't need to write out their credentials continuously. However, the browser may also offer auto-filling if you have previously chosen to save your credentials, which can make setting these unnecessary.
+Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables automatically populates the credentials in the login form, which can be useful during development so developers don't need to write out their credentials continuously. However, the browser may also offer auto-filling if you have previously chosen to save your credentials, which can make setting these unnecessary.
 :::
 
 ### SSO
