@@ -235,7 +235,7 @@ Example grid view when managing profiles.
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. You can find more information in the [package.json basics](../../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. You can find more information in the [package.json basics](../../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -247,7 +247,7 @@ To enable this micro front-end in your application, follow the steps below.
 }
 ```
 
-- Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template html where required:
+2. Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template html where required:
 ```javascript
 // Import
 import { Profiles } from '@genesislcap/foundation-entity-management';
