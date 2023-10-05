@@ -120,23 +120,21 @@ data class TradeCancel(
 
 When sending an event to the server, the front end needs to know what timestamp to send as part of the payload.
 
-The front end side of Optimistic Concurrency is driven from [Entity Management](../../../web/micro-front-ends/foundation-entity-management). You will need to set up the relevant
-Data Server query or Req Rep for entity management.
+The front end of Optimistic Concurrency is driven from [Entity Management](../../../web/micro-front-ends/foundation-entity-management). You need to set up the relevant
+Data Server `query` or Request Server `requestReply` for entity management.
 
 ### Data Server
 
-- Automatically works when no specific fields have been defined for data server query.
-- Where specific fields have been defined for a data server query, you will need to add the TIMESTAMP field additionally.
+- If the 'query` has no specific fields defined, the checks work automatically.
+- If the 'query` has defined specific fields, you must add the TIMESTAMP field.
 
-#### Examples
-
-No specific fields defined:
+In this example, no specific fields have been defined:
 
 ```kotlin title="trade-dataserver.kts"
 query("ALL_TRADES", TRADE)
 ```
 
-Specific fields defined:
+In this example, specific fields have been defined, so we have added TIMESTAMP:
 
 ```kotlin title="trade-dataserver.kts"
 query("ALL_TRADES", TRADE) {
@@ -149,20 +147,20 @@ query("ALL_TRADES", TRADE) {
 }
 ```
 
-### Req Rep
+### Request Server
 
-- Automatically works when no specific fields have been defined for reply.
-- Where specific fields have been defined for the reply, you will need to add the TIMESTAMP field additionally.
+- If the 'requestReply` has no specific fields defined, the checks work automatically.
+- If the 'requestReply` has defined specific fields, you must add the TIMESTAMP field.
 
 #### Examples
 
-No specific fields defined:
+In this example, no specific fields have been defined:
 
 ```kotlin title = trade-reqrep.kts
 requestReply(TRADE)
 ```
 
-Specific fields defined:
+In this example, specific fields have been defined, so we have added TIMESTAMP:
 
 ```kotlin title = trade-reqrep.kts
 requestReply("TRADE", TRADE) {
