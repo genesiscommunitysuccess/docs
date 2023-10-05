@@ -152,8 +152,6 @@ query("ALL_TRADES", TRADE) {
 - If the 'requestReply` has no specific fields defined, the checks work automatically.
 - If the 'requestReply` has defined specific fields, you must add the TIMESTAMP field.
 
-#### Examples
-
 In this example, no specific fields have been defined:
 
 ```kotlin title = trade-reqrep.kts
