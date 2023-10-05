@@ -57,7 +57,7 @@ DbOptimisticConcurrencyMode=STRICT
 | `LAX`            | A check is performed on modify and delete database operations that the TIMESTAMP of the database record is the same as the TIMESTAMP provided on the event, if the event has provided a TIMESTAMP. If no timestamp is provided then no check is performed. |
 | `NONE` (Default) | Checks are disabled.                                                                                                                                                                                                                                       |
 
-## Event Handler entities
+## Event Handler
 
 - Automatically works for generated entities as they already have a timestamp field.
 - For custom classes used in event handlers, a timestamp field will need to be manually added. If the timestamp field is
@@ -104,4 +104,68 @@ data class TradeCancel(
     val tradeId: String,
     val timestamp: Long,
 )
+```
+
+## Linking with the front end
+
+When sending an event to the server, the front end needs to know what timestamp to send as part of the payload.
+
+The front end side of Optimistic Concurrency is driven from [Entity Management](../../../web/micro-front-ends/foundation-entity-management). You will need to set up the relevant
+Data Server query or Req Rep for entity management.
+
+### Data Server
+
+- Automatically works when no specific fields have been defined for data server query.
+- Where specific fields have been defined for a data server query, you will need to add the TIMESTAMP field additionally.
+
+#### Examples
+
+No specific fields defined:
+
+```kotlin title="trade-dataserver.kts"
+query("ALL_TRADES", TRADE)
+```
+
+Specific fields defined:
+
+```kotlin title="trade-dataserver.kts"
+query("ALL_TRADES", TRADE) {
+    fields {
+        TRADE_ID
+        QUANTITY
+        PRICE
+        TIMESTAMP
+    }
+}
+```
+
+### Req Rep
+
+- Automatically works when no specific fields have been defined for reply.
+- Where specific fields have been defined for the reply, you will need to add the TIMESTAMP field additionally.
+
+#### Examples
+
+No specific fields defined:
+
+```kotlin title = trade-reqrep.kts
+requestReply(TRADE)
+```
+
+Specific fields defined:
+
+```kotlin title = trade-reqrep.kts
+requestReply("TRADE", TRADE) {
+
+  request {
+    TRADE_ID
+  }
+
+  reply {
+    TRADE_ID
+    QUANTITY
+    PRICE
+    TIMESTAMP
+  }
+}
 ```
