@@ -13,7 +13,7 @@ As defined by the W3C:
 
 > A menu is a widget that offers a list of choices to the user, such as a set of actions or functions. Menu widgets behave like native operating system menus, such as the menus that pull down from the menubars commonly found at the top of many desktop application windows. A menu is usually opened, or made visible, by activating a menu button, choosing an item in a menu that opens a sub menu, or by invoking a command, such as Shift + F10 in Windows, that opens a context specific menu. When a user activates a choice in a menu, the menu usually closes unless the choice opened a submenu.
 
-While any DOM content is permissible as a child of the menu, only `alpha-menu-item`s and slotted content with a role of `menuitem`, `menuitemcheckbox`, or `menuitemradio` will receive keyboard support.
+While any DOM content is permissible as a child of the menu, only `alpha-menu-item`s and slotted content with a role of `menuitem`, `menuitemcheckbox`, or `menuitemradio` can receive keyboard support.
 
 ## Set-up
 
@@ -27,27 +27,27 @@ provideDesignSystem().register(alphaMenu(), alphaMenuItem());
 
 ### Methods
 
-You can use the following methods when you declare an `<alpha-menu>`:
+You can use the following method when you declare an `<alpha-menu>`:
 
 | Name                   | Description                     |
 |------------------------|---------------------------------|
-| collapseExpandedItem() | It collapses all expended menus |
+| collapseExpandedItem() | Collapses all expended menus |
 
 ### Menu-item attributes
 
-In order to use the menu component, you need to create its items so the user can interact with. You create this using `<alpha-menu-item>`.
+In order to use the menu component, you need to create the menu items for the user to interact with. You create this using `<alpha-menu-item>`.
 You can define the following attributes for an `<alpha-menu-item>`:
 
 | Name     | Type      | Description                                                                                                                                                  |
 |----------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| disabled | `boolean` | Disabled the menu-item                                                                                                                                       |
-| expanded | `boolean` | In case this menu-item has sub-menus, it starts expanded. **Default:** `false`                                                                               |
-| role     | `string`  | Changes the displayed item into a menu item, a radio or a checkbox. Values cen be:  `menuitem`, `menuitemcheckbox`, `menuitemradio`. **Default:** `menuitem` |
+| disabled | `boolean` | Disables the menu-item                                                                                                                                       |
+| expanded | `boolean` | If this menu-item has sub-menus, it starts expanded. **Default:** `false`                                                                               |
+| role     | `string`  | Changes the displayed item into a menu item, a radio or a checkbox. Values can be:  `menuitem`, `menuitemcheckbox`, `menuitemradio`. **Default:** `menuitem` |
 | checked  | `boolean` | **used with** `role`. Checks the item. **Default:** `false`                                                                                                  |
 
 ### Events
 
-In order to interact with this component, we need to use events. These events can trigger specific functions in your application:
+In order to interact with this component, you need to use events. These events can trigger specific functions in your application:
 
 | Name            | Description                                                                                             |
 |-----------------|---------------------------------------------------------------------------------------------------------|
@@ -57,8 +57,8 @@ In order to interact with this component, we need to use events. These events ca
 
 ## Usage
 
-Below you have some examples on how to use the `<alpha-menu>` component.
-All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration of this component accordingly.
+Below are some examples of how to use the `<alpha-menu>` component.
+All the examples use the `alpha-design-system`. If you are using any other design system, change the declaration of this component accordingly.
 
 - **Example 1**: a menu with three items
 ```html title="Example 1"
@@ -68,7 +68,7 @@ All examples below use the `alpha-design-system`. If you are using any other des
     <alpha-menu-item>Menu item 3</alpha-menu-item>
 </alpha-menu>
 ```
-- **Example 2**: a menu with 4 items with the 4th item having more 3 items
+- **Example 2**: a menu with 4 items, with the 4th item having more 3 items
 ```html title="Example 2"
 <alpha-menu>
     <alpha-menu-item>Menu item 1</alpha-menu-item>
@@ -94,9 +94,9 @@ All examples below use the `alpha-design-system`. If you are using any other des
 ```
 
 ### Trigger an action
-The `<alpha-menu>` and `<alpha-menu-item>`components have 3 custom events to be used.
+The `<alpha-menu>` and `<alpha-menu-item>`components have 3 custom events that can be used.
 
-1. Create a function `functionName1()`, `functionName2()` and `functionName3()` into the class of the component:
+1. Create a function `functionName1()`, `functionName2()` and `functionName3()` in the class of the component:
 
 ```js {3,6,9}
 export class TEMPLATE extends FASTElement {
@@ -131,16 +131,14 @@ export class TEMPLATE extends FASTElement {
     ...
 ```
 
-Remember that if your main `<alpha-menu>` has an event attached, then it will replicate to all components inside of it.
-So in case you have something like this:
+Remember that if your main `<alpha-menu>` has an event attached, then it will replicate to all components inside it.
+In this example, `funtionName1()` will be called twice:
 
 ```html
 <alpha-menu  @click=${x => x.functionName1()}>
     <alpha-menu-item @click=${x => x.functionName1()}>Menu item 1</alpha-menu-item>
 </alpha-menu>
 ```
-
-Then `funtionName1()` will be called twice.
 
 ### Try yourself
 
