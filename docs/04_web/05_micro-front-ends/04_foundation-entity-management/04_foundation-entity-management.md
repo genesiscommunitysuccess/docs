@@ -33,7 +33,7 @@ The grid contains an entity on each row and data in each column. Here is an exam
 
 ![Example entity management grid](./docs/img/foundation-entity-management-grid.png)
 
-The other component is the form. This is used to update an existing entity or to create a new one. Here is an example :
+The other component is the form. This is used to update an existing entity or to create a new one. Here is an example:
 
 ![Example entity management form](./docs/img/foundation-entity-management-form.png)
 
