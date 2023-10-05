@@ -27,13 +27,12 @@ In this first example, we simply specify STRICT Optimistic Concurrency as one of
 <process name="ALPHA_EVENT_HANDLER">
     <groupId>ALPHA</groupId>
     <start>true</start>
-    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false -DDbOptimisticConcurrencyMode=STRICT</options>
     <module>genesis-pal-eventhandler</module>
     <package>global.genesis.eventhandler.pal</package>
     <script>alpha-eventhandler.kts</script>
     <description>Handles events</description>
     <classpath>alpha-messages*,alpha-eventhandler*</classpath>
-    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false -DDbOptimisticConcurrencyMode=STRICT</options>
     <language>pal</language>
 </process>
 ```
