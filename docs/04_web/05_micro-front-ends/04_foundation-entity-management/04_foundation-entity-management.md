@@ -94,7 +94,7 @@ export const AdminTemplate: ViewTemplate = html`
 
 ### Config
 
-The functionality of the Entity Manager is customised through the properties you set on it in the HTML. This section covers the main properties that you need to customise. For a full list of all of the properties, [see here](./docs/api/foundation-entity-management.md#properties).
+The functionality of the Entity Manager is customised through the properties you set on it in the HTML. This section covers the main properties that you need to customise. For a full list of all availbale properties, [see here](./docs/api/foundation-entity-management.md#properties).
 
 #### Title
 
