@@ -9,7 +9,7 @@ tags:
     - tab
 ---
 
-_Tabs_ are a set of layered sections of content that display one panel of content at a time. Each tab panel has an associated tab element that, when activated, displays the panel. The list of tab elements is arranged along one edge of the currently displayed panel.
+_Tabs_ are displayed as a set of layered sections of content, where one selected panel of content is displayed above all the other sections. Each tab panel has an associated tab element that, when activated, displays the panel. The list of tab elements is arranged along one edge of the currently displayed panel.
 
 ## Set-up
 
@@ -28,22 +28,20 @@ When you declare an `<alpha-tabs>`, you can define the following attributes:
 | activeindicator | `boolean` | Activates or deactivates the selected tab indicator                                                   | 
 | orientation     | `string`  | Defines the orientation of the tabs. It can be: `horizontal` or `vertical`. **Default:** `horizontal` | 
 
-These attributes must be defined alongside the declaration of the component.
-
 ### alpha-tab
 
-In order to use the tabs, you need to create `<alpha-tab>`, you can define the following attributes:
+For each tab, you need to declare an `<alpha-tab>`, where you can define the following attributes:
 
 | Name        | Type      | Description                                                                                           |
 |-------------|-----------|-------------------------------------------------------------------------------------------------------|
-| disabled    | `boolean` | Disables the tab, so the user cannot interact with                                                    | 
+| disabled    | `boolean` | Disables the tab, so the user cannot interact with it                                                 | 
 | id          | `string`  | Sets the id for the tab                                                                               | 
 
-These attributes must be defined alongside the declaration of the component.
+
 
 ### alpha-tab-panel
 
-In order to use tab, you need to create `alpha-tab-panel`. This is the component that will host all the content available in each tab.
+For each tab, you must also declare an `alpha-tab-panel`. This is the component that hosts the content of the tab.
 
 | Name | Type     | Description                              |
 |------|----------|------------------------------------------|
@@ -59,15 +57,14 @@ These are the available events you can use:
 | click  | `<alpha-tabs>` and `<alpha-tab>` | Fires an event when clicking on a tab |
 
 :::warning
-If you use the event `@click` with `<alpha-tabs>` it will fire this event everytime this component is clicked, whether
-it is clicking in a tab or in its content.
+If you use the event `@click` with `<alpha-tabs>` it will fire this event every time this component is clicked, regardless of whether the click is in the tab or in its content.
 :::
 
 ## Examples
 
-Below you find three examples on how to use `tabs`, `tab` and `tab-panel`
+Below are three examples of how to use `tabs`, `tab` and `tab-panel`
 
-- Create three tabs, with the first one disabled:
+- Create three tabs, with the first one disabled (it is displayed, but once another tab is clicked, you cannot go back to it):
 ```html
 <alpha-tabs activeid="tab1">
     <alpha-tab disabled id="tab1">Tab 1</alpha-tab>
@@ -84,25 +81,29 @@ Below you find three examples on how to use `tabs`, `tab` and `tab-panel`
     </alpha-tab-panel>
 </alpha-tabs>
 ```
-- Create three tabs, vertically orientated:
+- Create four tabs, vertically orientated:
 ```html
 <alpha-tabs orientation="vertical">
     <alpha-tab id="tab1">Tab 1</alpha-tab>
     <alpha-tab id="tab2">Tab 2</alpha-tab>
     <alpha-tab id="tab3">Tab 3</alpha-tab>
+    <alpha-tab id="tab4">Tab 4</alpha-tab>
     <alpha-tab-panel id="tab1">
-      This is tab number 1
+      One for sorrow
     </alpha-tab-panel>
     <alpha-tab-panel id="tab2">
-      This is tab number 2
+     Two for joy
     </alpha-tab-panel>
     <alpha-tab-panel id="tab3">
-      This is tab number 3
+      Three for a girl
+    </alpha-tab-panel>
+    <alpha-tab-panel id="tab4">
+      Four for a boy
     </alpha-tab-panel>
 </alpha-tabs>
 ```
-- Create three tabs, with a `@change` event calling a function called `function()`. This function needs to be defined in
-  the main class of your application
+- Create three tabs, with an `@change` event calling a function called `function()`. This function needs to be defined in
+the main class of your application
 
 ```html
 <alpha-tabs @change=${(x) => x.function()}>
