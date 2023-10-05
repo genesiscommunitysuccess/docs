@@ -225,16 +225,16 @@ Each event requires a certain detail to process the event - see [the map of even
 
 ## Customising header buttons
 
-You can add custom buttons on layout items, and then control their behaviour. See [the custom button API](./docs/api/foundation-layout.custombutton.md) to see the full definition. Setting this is optional. If you do define it, you define it as an array which allow you to add multiple custom buttons if you wish.
+You can add custom buttons on layout items, and then control their behaviour. See [the custom button API](./docs/api/foundation-layout.custombutton.md) for the full definition. Setting this is optional. If you do define it, you must define it as an array, which enables you to add multiple custom buttons if you wish.
 
-* The `svg` parameter controls the icon which your button displays. The format must be a base64 image definition. See the format as explained on the linked api document, and then replace the text around the `<< >>` part with a base64 encoded definition of the svg you wish to use.
-* The `onClick` parameter will register a callback with the button. When the user clicks the button, your callback will be called. The callback receives a reference to the clicked button element, and the element which is contained in the layout item associated with the clicked button.
+* The `svg` parameter controls the icon that your button displays. The format must be a base64 image definition. See the format as explained on the linked api document, and then replace the text around the `<< >>` part with a base64 encoded definition of the svg you wish to use.
+* The `onClick` parameter will register a callback with the button. When the user clicks the button, your callback will be called. The callback receives a reference to the clicked button element, and to the element that is contained in the layout item associated with the clicked button.
 
-Different layout instances can have their own custom buttons, or share definitions. You are not able to have fine-grained control over each layout item though, so if a layout has a custom button then every item it contains will have the button.
+Different layout instances can have their own custom buttons, or they can share definitions. You are not able to have fine-grained control over each layout item, though; so if a layout has a custom button, then every item that it contains will have the button.
 
 ### Applying the custom button
 
-To ensure that every item gets the button as expected, you need to ensure that you apply the custom button definitions as early as possible. If you are using the html API then you'll likely want to apply the definitions in the template.
+To ensure that every item gets the button as expected, you need to ensure that you apply the custom button definitions as early as possible. If you are using the html API then you'll probably want to apply the definitions in the template.
 
 ```html
 <foundation-layout :customButtons=${() => buttonDefinition}>
@@ -249,32 +249,37 @@ layout.customButtons = buttonDefinition;
 
 ### Renaming example
 
-See [here](#custom-item-renaming-header-button) to see an example of creating a custom button to allow the user to rename an item.
+See [here](#custom-item-renaming-header-button) for an example of creating a custom button to allow the user to rename an item.
 
 ## Autosaving layout
 
-There is opt-in functionality provided in the layout to autosave the layout in local storage as the user interacts with it. Set the `auto-save-key` attribute to a unique string on the root element to enable the feature, and this is the key in which the layout will be saved into. As the user performs the following actions: adding an item, removing an item, resizing items using the divider, and dragging items around the layout - the layout will be saved for later recall in local storage.
+There is opt-in functionality provided in the layout to autosave the layout in local storage as the user interacts with it. Set the `auto-save-key` attribute to a unique string on the root element to enable the feature; the layout will be saved in this key. The layout will be saved for later recall in local storage whenever the user performs the following actions: 
 
-When you have enabled autosave you are still able to use the manual [serialising commands](#serialising-layout).
+- adding an item
+- removing an item
+- resizing items using the divider
+- dragging items around the layout 
+
+When you have enabled autosave, you are still able to use the manual [serialising commands](#serialising-layout).
 
 ### Reloading the layout
 
 The provided function [tryLoadLayoutFromLocalStorage()](./docs/api/foundation-layout.foundationlayout.tryloadlayoutfromlocalstorage.md) is used to rehydrate the layout from local storage, if `auto-save-key` is enabled.
-If you are using the declarative API then this function is automatically called for you.
+If you are using the declarative API, then this function is called for you automatically.
 
-If you are manually registering items (too) using the JavaScript API you must manually call this function, immediately after you have finishing registering all of the items. For an example [see here](#contained-example).
+If you are manually registering items (too) using the JavaScript API, you must call this function manually, immediately after you have finished registering all the items. For an example [see here](#contained-example).
 
 ### Layout placeholder
 
 If the layout is auto-loaded with items that are missing from the registration, then a placeholder item is displayed instead. Additionally, the close option is added to the pane. This accounts for you removing an item from a layout that a user has autosaved in their config.
 
-You can change the text of the placeholder using the observable binding `:missingItemPlaceholder`. This is a function which takes a string (the missing registration name) and returns the string to use as the placeholder. A default is set, but you can override it. See the override implementation [in this example](#contained-example).
+You can change the text of the placeholder using the observable binding `:missingItemPlaceholder`. This is a function that takes a string (the missing registration name) and returns the string to use as the placeholder. A default is set, but you can override it. See the override implementation [in this example](#contained-example).
 
 ### Invalidating the cache
 
-As explained in the previous section, a placeholder item is added if an item is no longer registered for the auto-loaded layout. This accounts for removing an item. However, there is the reverse issue: If you are only using the declarative API and you add a new item, if the user already has an autosaved layout then that will be loaded which will effectively hide the new item you've added.
+As explained in the previous section, a placeholder item is added if an item is no longer registered for the auto-loaded layout. This accounts for removing an item. However, there is the reverse issue if you are only using the declarative API; if you add a new item and the user already has an autosaved layout, then that will be loaded - which effectively hides the new item you've added.
 
-In this case you must invalidate the autosaved layout cache. The cleanest and easiest implementation for you is to add a hash onto the end of your `auto-save-key` which will start a new autosave for this table (and reload the default which will contain your new layout item).
+In this case, you must invalidate the autosaved layout cache. The cleanest and easiest implementation is to add a hash onto the end of your `auto-save-key`, which will start a new autosave for this table (and reload the default, containing your new layout item).
 
 ## Contained elements
 
@@ -848,7 +853,7 @@ export const layoutCustomButtons: CustomButton[] = [
 You can import `LAYOUT_ICONS`, `CustomButton`, `LayoutReceiveEvents`, and `LayoutReceiveEventsDetail` from the foundation-layout package, to get strong typing.
 
 :::warning
-You'll likely want to improve this callback function to handle cases where the user doesn't enter a prompt value.
+You'll probably want to improve this callback function to handle cases where the user doesn't enter a prompt value.
 :::
 
 ## Incorrect examples
@@ -1104,12 +1109,12 @@ The user of your layout will move things around and this will cache the layout. 
 </foundation-layout>
 ```
 
-You and the user will only see the first two items like before. This is because the cached layout is being loaded, which does not contain the
+You and the user will only see the first two items, like before. This is because the cached layout is being loaded, which does not contain the
 new item. To fix this you must [invalidate the cache](#invalidating-the-cache).
 
 ### Resource intensive component resetting in layout
 
-Say you have a component which has to initialise a resource heavy or long awaited asynchronous task, such as the following:
+Say you have a component which has to initialise a resource-heavy or long-awaited asynchronous task, such as the following:
 ```typescript
 @customElement({
   name: 'mock-connected',
@@ -1131,7 +1136,7 @@ export class MockConnected extends FASTElement {
 
 As explained in the [lifecycle info section](#element-lifecycle), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initialising a potentially heavy resource.
 
-Use the `LifecycleMixin` to be able to access properties on the class which can be used to more thoughtfully run lifecycle functionality. In the following example we split out the resource intensive work and conditionally call them when needed.
+Use `LifecycleMixin` to access properties on the class, which can be used to run lifecycle functionality more thoughtfully. In the following example, we split out the resource-intensive work and conditionally call them when needed.
 
 ```typescript
 @customElement({
@@ -1166,15 +1171,15 @@ export class MockConnected extends LifecycleMixin(FASTElement) {
 }
 ```
 
-The above is quite a comprehensive example, it doesn't necessarily have to be so complicated. You may just want to exit early from the connected callback without using the `DOM.queueUpdate` functionality. However, using it can be useful to properly handle `async` setup process.
+The above is quite a comprehensive example, but it doesn't necessarily have to be so complicated. You may just want to exit early from the connected callback without using the `DOM.queueUpdate` functionality. However, it is useful for handling the `async` setup process properly.
 
 :::warning
-The requirement to capture the parameter in the example above (e.g. `const shouldRunDisconnect = shouldRunDisconnect`) is to cache the information at the time of the lifecycle change, for use when the `DOM.queueUpdate` work is performed. This is not required if you run your lifecycle methods synchronously, but if you follow the above pattern you need to consider the `async` functionality being scheduled for after the layout considers the relevant lifecycle-gating functionality (such as dragging) to be over.
+The requirement to capture the parameter in the example above (e.g. `const shouldRunDisconnect = shouldRunDisconnect`) is to cache the information at the time of the lifecycle change, for use when the `DOM.queueUpdate` work is performed. This is not required if you run your lifecycle methods synchronously; however, if you follow the pattern above, you need to schedule the `async` functionality to run after the layout considers the relevant lifecycle-gating functionality (such as dragging) to be complete.
 :::
 
 ### Consuming lifecycle value multiple times
 
-Consider the following example where you're gating multiple bits of functionality with `shouldRunConnect`:
+Consider the following example, where multiple bits of functionality are being gated with `shouldRunConnect`:
 ```typescript
 @customElement({
   name: 'mock-connected',
@@ -1198,11 +1203,11 @@ export class MockConnected extends LifecycleMixin(FASTElement) {
 }
 ```
 
-In this example when you have this item inside of the layout, the functionality will not correctly be gated when you add or remove other items as intended.
+In this example, when you have this item inside the layout, the functionality will not correctly be gated when you add or remove other items as intended.
 
-This is because `shouldRunConnect` (and `shouldRunDisconnect`) perform a check to see whether the layout has performed an event which should gate functionality, and reading the value multiple times will incorrectly signal that there hasn't been another lifecycle event upon subsequent reads during the same cycle. The mental model you can use here is thinking of consuming the check when you read the variable.
+This is because `shouldRunConnect` (and `shouldRunDisconnect`) perform a check to see whether the layout has performed an event that should gate functionality; reading the value multiple times will incorrectly signal that there hasn't been another lifecycle event upon subsequent reads during the same cycle. The mental model you can use here is thinking of consuming the check when you read the variable.
 
-Therefore, if you want to use the value multiple times in the `connectedCallback` and `disconnectedCallback` functions you should cache the variable.
+Therefore, if you want to use the value multiple times in the `connectedCallback` and `disconnectedCallback` functions, you should cache the variable.
 
 ** You should only read the variables `this.shouldRunConnect` and `this.shouldRunDisconnect` once per `shouldRunConnect` and `shouldRunDisconnect` cycle respectively. **
 
@@ -1230,36 +1235,36 @@ Therefore, if you want to use the value multiple times in the `connectedCallback
 ```
 
 :::danger
-The same limitation applies if you're checking the variable multiple times due to having a hierarchy of extending classes. Again, you should cache the variable for checking in this case.
+The same limitation applies if you're checking the variable multiple times because you have a hierarchy of extending classes. Again, you should cache the variable for checking in this case.
 :::
 
 ## Supplementary information
 
 ### Custom components to handle bindings and event listeners
-As shown in [this example](#binding-events-inline-in-the-declarative-api) you need to wrap html that uses fast bindings and event listeners into their own custom
-components. This section is a technical explanation for why this is the case. It is required we make use of `cloneNode` to allow the layout to add multiple instances
+As shown in [this example](#binding-events-inline-in-the-declarative-api), you need to wrap html that uses fast bindings and event listeners into their own custom
+components. This section is a technical explanation for why this is the case. It is required that we make use of `cloneNode` to allow the layout to add multiple instances
 of a registered component.
 
-Consider the following which is the order of events of loading the layout when using html that includes bindings.
+Consider the following, which is the order of events for loading the layout when using html that includes bindings.
 
-1. As the DOM is parsed the elements inside of the layout are created. At this point the bindings are attached and the event listeners are created, and the `connectedCallback` lifecycle method executes.
-2. Once all of the layout’s contained elements are created, the layout itself initialises\*.
-3. As part of the initialisation process it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache.
+1. As the DOM is parsed, the elements inside the layout are created. At this point, the bindings are attached and the event listeners are created, and the `connectedCallback` lifecycle method executes.
+2. Once all the elements contained in the layout have been created, the layout itself initialises\*.
+3. As part of the initialisation process, it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache.
 4. We then load golden layout with the layout config and the registered items, where the registered items create a clone of the items in the document fragment.
 
 The issue occurs during step four - the clone from `cloneNode` doesn't have the event listeners, so the new copy (which is the one you see on the layout) has no event listeners. Compare this with the similar but different process if you've wrapped up the html into its own custom component.
 
-1. As the DOM is parsed the elements inside of the layout are created. At this point the bindings are attached and the event listeners are created, and the `connectedCallback` lifecycle method executes.
-2. Once all of the layout’s contained elements are created, the layout itself initialises\*.
-3. As part of the initialisation process it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache. This is just a tag such as `<filtered-chart></filtered-chart>` instead of a definition that includes bindings or event listeners.
+1. As the DOM is parsed, the elements inside the layout are created. At this point, the bindings are attached and the event listeners are created, and the `connectedCallback` lifecycle method executes.
+2. Once all the elements contained in the layout have been created, the layout itself initialises\*.
+3. As part of the initialisation process, it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache. This is just a tag, such as `<filtered-chart></filtered-chart>`, not a definition that includes bindings or event listeners.
 4. We then load golden layout with the layout config and the registered items, where the registered items create a clone of the items in the document fragment.
-5. When that clone is put on the DOM, because it is a custom element it calls the lifecycle method again `connectedCallback` as well as other initialisation methods which include attaching the event listener to the component as required.
+5. When that clone is put on the DOM, it is a custom element. And so it calls the lifecycle method again `connectedCallback` as well as other initialisation methods that include attaching the event listener to the component as required.
 
->>\* It initialises after the timeout specified by the `reload-buffer` attribute if using the declarative HTML API, or steps `3` and `4` occur during calls to `registerItem` and `addItem` respectively.
+>>\* It initialises after the timeout specified by the `reload-buffer` attribute if using the declarative HTML API, or if steps `3` and `4` occur during calls to `registerItem` and `addItem` respectively.
 
 ## License
 
-Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
 
 ### Licensed components
 Genesis low-code platform
