@@ -132,20 +132,6 @@ In this example, `funtionName1()` will be called twice if the sub-item 1 is sele
 </zero-tree-item>
 ```
 
-### Try yourself
-
-```html live
-<alpha-tree-item>
-    Root
-    <alpha-tree-item>
-        Item 1
-        <alpha-tree-item>Sub-item 1</alpha-tree-item>
-        <alpha-tree-item>Sub-item 2</alpha-tree-item>
-    </alpha-tree-item>
-    <alpha-tree-item>Item 3</alpha-tree-item>
-</alpha-tree-item>
-```
-
 ## Use cases
 
 - A hierarchical list such as a file system
