@@ -4,7 +4,7 @@
 
 ## DefaultConnect class
 
-The Connect implementation for WebSocket.
+The default implementation for the Connect interface (WS-only).
 
 **Signature:**
 

@@ -36,6 +36,9 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
+|  [asyncAdd](./foundation-entity-management.entitymanagement.asyncadd.md) |  | boolean | Whether to use the <code>applyTransactionAsync</code> function for \*add\* transactions |
+|  [asyncRemove](./foundation-entity-management.entitymanagement.asyncremove.md) |  | boolean | Whether to use the <code>applyTransactionAsync</code> function for \*remove\* transactions |
+|  [asyncUpdate](./foundation-entity-management.entitymanagement.asyncupdate.md) |  | boolean | Whether to use the <code>applyTransactionAsync</code> function for \*update\* transactions |
 |  [columns](./foundation-entity-management.entitymanagement.columns.md) |  | ColDef\[\] | Array which holds the column definitions. |
 |  [connect](./foundation-entity-management.entitymanagement.connect.md) | <code>protected</code> | Connect | DI connect object which is used to interact with the backend. |
 |  [createEvent](./foundation-entity-management.entitymanagement.createevent.md) |  | string | Name of the event handler on the Genesis server which handles creating an entity |
@@ -47,8 +50,9 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [editedEntity](./foundation-entity-management.entitymanagement.editedentity.md) |  | any | Disables the form while enabled to stop the user dispatching a large number of duplicate events |
 |  [editEntityModal](./foundation-entity-management.entitymanagement.editentitymodal.md) |  | any |  |
 |  [editModalVisible](./foundation-entity-management.entitymanagement.editmodalvisible.md) |  | boolean |  |
-|  [enableCellFlashing](./foundation-entity-management.entitymanagement.enablecellflashing.md) |  | boolean |  |
+|  [enableCellFlashing](./foundation-entity-management.entitymanagement.enablecellflashing.md) |  | boolean | If false, will disable cell flashing for all cells by default, unless otherwise defined in custom colDef |
 |  [enableFilterBar](./foundation-entity-management.entitymanagement.enablefilterbar.md) |  | boolean |  |
+|  [enableRowFlashing](./foundation-entity-management.entitymanagement.enablerowflashing.md) |  | boolean | If true, will enable row flashing for all rows for <code>add</code> async transactions |
 |  [entityLabel](./foundation-entity-management.entitymanagement.entitylabel.md) |  | string | Label for the entity which has usages such as being shown in the title of the modal wen editing the entity |
 |  [formUiSchema](./foundation-entity-management.entitymanagement.formuischema.md) |  | any |  |
 |  [gridOptions](./foundation-entity-management.entitymanagement.gridoptions.md) |  | GridOptions | GridOptions to be passed down from application |
@@ -77,4 +81,5 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [deepClone()](./foundation-entity-management.entitymanagement.deepclone.md) |  | Override the deepClone method to ensure that observable attributes are cloned |
 |  [editModalVisibleChanged()](./foundation-entity-management.entitymanagement.editmodalvisiblechanged.md) |  |  |
 |  [submitEntityChanges(e)](./foundation-entity-management.entitymanagement.submitentitychanges.md) |  | Event handler for when the user submits the action for the currently open form, either editing or adding the entity |
+|  [submitFailureNotification(e)](./foundation-entity-management.entitymanagement.submitfailurenotification.md) |  |  |
 

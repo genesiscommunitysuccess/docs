@@ -33,6 +33,7 @@ export declare class AuthError extends Error
 |  [getDetailsError()](./foundation-comms.autherror.getdetailserror.md) |  |  |
 |  [getMessageError()](./foundation-comms.autherror.getmessageerror.md) |  |  |
 |  [hasErrorCode(code)](./foundation-comms.autherror.haserrorcode.md) |  |  |
+|  [hasMFAError()](./foundation-comms.autherror.hasmfaerror.md) |  |  |
 |  [hasPasswordExpiredError()](./foundation-comms.autherror.haspasswordexpirederror.md) |  |  |
 |  [isIgnorableError()](./foundation-comms.autherror.isignorableerror.md) |  |  |
 

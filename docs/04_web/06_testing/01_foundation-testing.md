@@ -62,12 +62,12 @@ logic.test.ts
 If your test spans more than one file or is more of an end-to-end test, you may wish to add your test to your package's **/test** directory instead. An example structure might be:
 
 ```
-├── src 
+├── src
 │   └── logic.ts
 │   └── logic.test.ts
 │   └── component.ts
 │   └── component.test.ts
-├── test 
+├── test
 │   └── e2e
 │       └── baseline.e2e.ts
 │   └── unit
