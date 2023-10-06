@@ -27,6 +27,7 @@ You can define the following attributes in an `<alpha-number-field>`.
 | appearance     | `string`  | Controls the general view of the element. It can be **filled** or **outline**                                                           |
 | autofocus      | `boolean` | When true, the component will be focused when the page has finished loading                                                             |
 | disabled       | `boolean` | Disables this component, users will not be able to change its value                                                                     |
+| locale         | `string`  | Defines a number formatting based on language and location. **Default: "en-US"**. Needs to be used with `withFormatting`                |
 | form           | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form |
 | hideStep       | `boolean` | Hides the step control of the element                                                                                                   |
 | max            | `number`  | Defines maximum number allowed                                                                                                          |
@@ -41,6 +42,17 @@ You can define the following attributes in an `<alpha-number-field>`.
 
 These attributes must be defined alongside the declaration of the component.
 
+### Custom options
+
+The `number-field` has 2 custom options:
+
+| Variable              | Type     | Default | Description                               |
+|-----------------------|----------|---------|-------------------------------------------|
+| maximumFractionDigits | `number` | 11      | Maximum number of decimal digits accepted |
+| minimumFractionDigits | `number` | 0       | This field needs to be set `0`            |
+
+All these options needs to be used with `withFormatting` attribute.
+
 ## Usage
 All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration
 of this component accordingly.
@@ -53,6 +65,11 @@ of this component accordingly.
 - **Example 2**: a number-field with step 0.5 - each time the user clicks on a step arrow, the value increases or decreases by 0.5
 ```html title="Example 2"
 <alpha-number-field step="0.5">Number-field</alpha-number-field>
+```
+
+- **Example 3**: a number-field with a maximum digit number of 2 and minimum of 0
+```html title="Example 3"
+<alpha-number-field withFormatting :options=${() => ({maximumFractionDigits: 2, minimumFractionDigits: 0})}>Number-field</alpha-number-field>
 ```
 
 ### Get the user input
