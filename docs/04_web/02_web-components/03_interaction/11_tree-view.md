@@ -43,7 +43,7 @@ In order to interact with this component, you need to use events. These events c
 
 | Name            | Description                               |
 |-----------------|-------------------------------------------|
-| expanded-change | Fires this event when an item is expended |
+| expanded-change | Fires this event when an item is expanded |
 | selected-change | Fires this event when an item is selected |
 
 :::warning
@@ -86,7 +86,7 @@ All the examples use the `alpha-design-system`. If you are using any other desig
 ```
 
 ### Trigger an action
-The `<alpha-tree-view>` and `<alpha-tree-item>`components have 2 custom events that can be used.
+The `<alpha-tree-view>` and `<alpha-tree-item>` components have 2 custom events that can be used.
 
 1. Create a function `functionName1()`, `functionName2()` in the class of the component:
 
@@ -121,8 +121,8 @@ export class TEMPLATE extends FASTElement {
     ...
 ```
 
-Remember that if a `<alpha-tree-item>` has an event attached, then it will replicate to all components inside it.
-In this example, `funtionName1()` will be called twice in case the sub-item 1 is selected:
+Remember that if an `<alpha-tree-item>` has an event attached, then it will replicate to all components inside it.
+In this example, `funtionName1()` will be called twice if the sub-item 1 is selected:
 
 ```html
 <zero-tree-item @selected-change=${x => x.funtionName1()}>
