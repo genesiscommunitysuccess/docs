@@ -628,6 +628,7 @@ The `remap`command can take the following arguments:
 | -d       | --dumpSQL              | no        | Outputs the SQL DDL statements to the console instead of applying to the db           | No                |
 | -m       | --metadataOnly         | no        | Only updates the GSF dictionary and alias stores, does not apply any table changes    | No                |
 |          | --skip-unchanged       | no        | Forces remap to fail if the `--commit` option is used and schema changes are present  | No                |
+|          | --skipTableDump        | no        | Skips the backup of old data, making the process more efficient by not saving anything  | No                |
 
 
 ```bash
