@@ -11,7 +11,7 @@ tags:
 
 As defined by the [W3C](https://w3c.github.io/aria/#tree):
 
-> A tree view widget presents a hierarchical list. Any item in the hierarchy may have child items, and items that have children may be expanded or collapsed to show or hide the children. For example, in a file system navigator that uses a tree view to display folders and files, an item representing a folder can be expanded to reveal the contents of the folder, which may be files, folders, or both.
+> A tree view widget presents a hierarchical list. Any item in the hierarchy can have child items, and items that have children may be expanded or collapsed to show or hide the children. For example, in a file system navigator that uses a tree view to display folders and files, an item representing a folder can be expanded to reveal the contents of the folder, which could be files, folders, or both.
 
 ## Set-up
 
@@ -28,11 +28,11 @@ provideDesignSystem().register(alphaTreeView(), alphaTreeItem());
 ## Tree-item
 
 ### Attributes
-In order to use the `alpha-tree-view`, you need to use `<alpha-tree-item`. The following attributes are available:
+In order to use the `alpha-tree-view`, you need to use `<alpha-tree-item>`. When you declare an `<alpha-tree-item>`, the following attributes are available:
 
 | Name     | type      | Description                                |
 |----------|-----------|--------------------------------------------|
-| expended | `boolean` | Expends the node with child nodes attached |
+| expanded | `boolean` | Expands the node with child nodes attached |
 | selected | `boolean` | Selects the item                           |
 
 By default, the `tree-item` starts closed.
@@ -53,6 +53,7 @@ The `@click` event can also be used in this component, but it will be triggered 
 ## Usage
 
 Below are some examples of how to use the `<alpha-tree-view>` and `<alpha-tree-item>` component.
+
 All the examples use the `alpha-design-system`. If you are using any other design system, change the declaration of this component accordingly.
 
 - **Example 1**: A tree view with 3 items and three layers
