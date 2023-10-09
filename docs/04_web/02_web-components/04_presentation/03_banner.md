@@ -122,8 +122,9 @@ From this point, when you click on the **Close banner** button, the banner will 
 
 ### Interaction: create a banner dynamically
 
-If you create the banner in your file, it will be displayed automatically. However, Normally, you often need to display a banner subject to certain conditions. 
-Here is an example of how to create this component dynamically so that it is only displayed in specific circumstances:
+If you simply create the banner in your file, it will be displayed automatically in the application. However, you often need to display a banner only when certain conditions apply. 
+
+Here is an example of a banner that is not displayed automatically; it is created dynamically and displayed only when you call the function `createBanner()`:
 
 1. Import the `alphaBanner` from `@genesislcap/alpha-design-system`:
 
@@ -178,16 +179,16 @@ In this example, the following commands used are:
 
 - `document.createElement('alpha-banner')` creates an `alpha-banner` HTMLElement and stores it in the bannerElement variable.
 - `bannerElement.id` sets the ID for the component. Note that if you intend to create multiple banners, you should change their IDs dynamically.
-- `bannerElement.innerHTML` sets the HTML content of the component, defining what is wrapped within `<alpha-banner></alpha-banner>`.
+- `bannerElement.innerHTML` sets the HTML content and actions of the component, defining what is wrapped within `<alpha-banner></alpha-banner>`.
 - `this.shadowRoot.getElementById('BannerPlaceholder')` retrieves the placeholder `<div>` for the banner; we use `shadowRoot` instead of `document` because the web component uses shadow DOM.
 - `placeholderDiv.appendChild(bannerElement)` appends the newly created banner to the placeholder `<div>`.
 - `as Banner` specifies the type as `Banner`, if you don't do this, you won't be able to access the banner's methods.
-- `actionButton.addEventListener('click', function() {tempBanner.dismiss()});`: Adds a `@click` event to the button inside the banner.
+- `actionButton.addEventListener('click', function() {tempBanner.dismiss()});` adds a `@click` event to the button inside the banner.
 
 Now you can use the `createBanner()` function whenever you need to create a new banner in the `<div>` placeholder that you defined.
 
 :::warning
-Creating components dynamically is a valuable technique, but it's crucial to exercise caution when defining the `id`. Failing to do so may result in multiple components sharing the same `id`, potentially leading to a malfunctioning application.
+When creating a banner dynamically, make sure that your 'id's are unique. If they are not, you will be unable to dismiss one or more of your banners.
 :::
 
 ## Try yourself
