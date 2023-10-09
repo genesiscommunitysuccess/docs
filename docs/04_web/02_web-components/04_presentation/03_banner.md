@@ -11,9 +11,9 @@ tags:
 
 `foundation-banner` extends `foundation-element`.
 
-The `banner` displays an important, succinct message, such as actions for users to address. It requires a user action to be dismissed.
+The `banner` displays an important, succinct message, such as actions for users to address. It remains displayed until it is disimssed by the user
 
-Banners should be displayed at the top of the screen, below a top app bar. They’re persistent and nonmodal, allowing the user to ignore them or to interact with them at any time.
+Banners should be displayed at the top of the screen, below a top app bar. They’re persistent and nonmodal, so the user can either ignore the banner or to interact with it at any time.
 
 ## Set-up
 
