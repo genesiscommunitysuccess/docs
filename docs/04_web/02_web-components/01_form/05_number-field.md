@@ -9,7 +9,7 @@ tags:
   - number field
 ---
 
-A text field for numeric entry.
+A text field for numeric entry. By default, this includes steps - up and down arrows where the user can click to increase or decrease the number in the field.
 
 ## Set-up
 
@@ -20,27 +20,26 @@ provideDesignSystem().register(alphaNumberField());
 ```
 ## Attributes
 
-You can define the following attributes in an `<alpha-number-field>`.
+You can define the following attributes when you declare an `<alpha-number-field>`.
 
 | Name           | Type      | Description                                                                                                                             |
 |----------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| appearance     | `string`  | Controls the general view of the element. It can be **filled** or **outline**                                                           |
-| autofocus      | `boolean` | When true, the component will be focused when the page has finished loading                                                             |
-| disabled       | `boolean` | Disables this component, users will not be able to change its value                                                                     |
-| locale         | `string`  | Defines a number formatting based on language and location. **Default: "en-US"**. Needs to be used with `withFormatting`                |
-| form           | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form |
-| hideStep       | `boolean` | Hides the step control of the element                                                                                                   |
-| max            | `number`  | Defines maximum number allowed                                                                                                          |
+| appearance     | `string`  | Controls the general appearance of the element. It can be **filled** or **outline**                                                     |
+| autofocus      | `boolean` | When true, the component will be in focus when the page has finished loading                                                            |
+| disabled       | `boolean` | Disables this component; users will not be able to change its value                                                                     |
+| locale         | `string`  | Defines a number format based on language and location. **Default: "en-US"**. Needs to be used with `withFormatting`                    |
+| form           | `string`  | Associates this component with a form. Form `id` needs to be passed. If no Id is provided, then it will be associated with the ancestor form |
+| hideStep       | `boolean` | Hides the step control (up and down arrows) for the element                                                                             |
+| max            | `number`  | Defines the maximum value allowed                                                                                                       |
 | maxlength      | `number`  | The maximum number of characters allowed                                                                                                |
-| min            | `number`  | Defines minimum number allowed                                                                                                          |
-| minlength      | `number`  | The minimum number of characters allowed                                                                                                |
+| min            | `number`  | Defines minimum value allowed                                                                                                           |
+| minlength      | `number`  | The minimum number of characters required                                                                                               |
 | placeholder    | `string`  | Sets a placeholder for the element (which disappears when the user starts inputting)                                                    |
 | size           | `number`  | Defines the width of the component                                                                                                      |
-| step           | `number`  | Defines the step rate when using the arrows in the element. **Default: `1`**                                                            |
+| step           | `number`  | Defines the step rate for each user click on the arrows (steps) in the element. **Default: `1`**                                        |
 | value          | `string`  | Defines a value for the component when it is created                                                                                    |
 | withFormatting | `boolean` | Allows number formatting                                                                                                                |
 
-These attributes must be defined alongside the declaration of the component.
 
 ### Custom options
 
@@ -51,13 +50,13 @@ The `number-field` has 2 custom options:
 | maximumFractionDigits | `number` | 11      | Maximum number of decimal digits accepted |
 | minimumFractionDigits | `number` | 0       | This field needs to be set `0`            |
 
-All these options needs to be used with `withFormatting` attribute.
+These options need to be used with `withFormatting` attribute.
 
 ## Usage
 All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration
 of this component accordingly.
 
-- **Example 1**: a number-field with maximum number 50 and minimum 10 hiding the step control
+- **Example 1**: a number-field with maximum number 50 and minimum 10; the step control is hidden
 ```html title="Example 1"
 <alpha-number-field min="10" max="50" hidestep>number-field</alpha-number-field>
 ```
