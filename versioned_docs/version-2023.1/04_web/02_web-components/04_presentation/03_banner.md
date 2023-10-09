@@ -11,9 +11,9 @@ tags:
 
 `foundation-banner` extends `foundation-element`.
 
-The `banner` displays an important, succinct message, such as actions for users to address. It requires a user action to be dismissed.
+The `banner` displays an important, succinct message, such as actions for users to address. It remains displayed until it is dismissed by the user.
 
-Banners should be displayed at the top of the screen, below a top app bar. They’re persistent and nonmodal, allowing the user to ignore them or to interact with them at any time.
+Banners should be displayed at the top of the screen, below a top app bar. They’re persistent and nonmodal, so the user can either ignore the banner or interact with it at any time.
 
 ## Set-up
 
@@ -34,48 +34,46 @@ When you use an `<alpha-banner>`, you can use the following method:
 
 ## Slots
 
-When you use an `<alpha-banner>` you can use the following slots
+When you use an `<alpha-banner>` you can use the following slots to define content and actions:
 
 | Name    | Description                                                                   |
 |---------|-------------------------------------------------------------------------------|
 | content | The content to be displayed on the left side of the component                 |
-| action  | Defined the action components to be placed on the right side of the component |
+| action  | Defines the action components to be placed on the right side of the component |
 
 :::note
-Multiple content/action slots will be placed side by side.
+If you create multiple slots of content or actions, the slots will be placed side by side.
 :::
 
 ## Usage
 
 All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration of this component accordingly.
 
-- **Example 1**: A banner with no action buttons with a content slot
+- **Example 1**: A banner with a content slot and no action buttons 
 
 ```html title="Example 1"
 <alpha-banner>
     <div slot="content">
-        This is a banner
+        This is a banner that the user cannot remove
     </div>
 </alpha-banner>
 ```
 
-- **Example 2**: a banner with two action buttons and a content slot
+- **Example 2**: a banner with two action buttons and a message
 
 ```html title="Example 2"
 <alpha-banner>
     <div slot="content">
-        This is a banner
+        Båten min er ikke lenger sjødyktig
     </div>
     <alpha-button slot="action" appearance="lightweight">Button 1</alpha-button>
     <alpha-button slot="action" appearance="lightweight">Button 2</alpha-button>
 </alpha-banner>
 ```
 
-### Interaction
+### Interaction: dismiss a banner
 
-#### Dismiss a banner
-
-When you place a banner, you can use the method `dismiss()` to remove the banner. Below you see how to use this method:
+When you place a banner, you can use the method `dismiss()` to remove the banner. here is an example of how to use this method:
 
 1. Import the `alphaBanner` from `@genesislcap/alpha-design-system`:
 
@@ -97,7 +95,7 @@ export class TEMPLATE extends FASTElement {
 }
 ```
 
-2. Create a function `dismissBanner()` into the class of the component:
+2. Create a function `dismissBanner()` in the class of the component:
 
 ```js {1,5}
 export class TEMPLATE extends FASTElement {
@@ -120,12 +118,12 @@ export class TEMPLATE extends FASTElement {
 </alpha-banner>
 ```
 
-From this point, when you click on the **Close banner** button, the banner will be smoothly removed with a transition.
+From this point, when you click on the **Close banner** button, the banner will be removed with a smooth transition.
 
-#### Create a banner dynamically
+### Interaction: create a banner dynamically
 
-Normally you would prefer to choose when your banner appears to your user. But if you create the banner in your file, it will automatically
-show up in your application. In that case, here is an example of how to create this component dynamically so it appears whenever you set to:
+If you create the banner in your file, it will be displayed automatically. However, Normally, you often need to display a banner subject to certain conditions. 
+Here is an example of how to create this component dynamically so that it is only displayed in specific circumstances:
 
 1. Import the `alphaBanner` from `@genesislcap/alpha-design-system`:
 
@@ -155,7 +153,7 @@ createBanner(){
     // Sets the HTML content of the banner element
     bannerElement.innerHTML = `
         <div slot="content">
-            This is a banner
+            Vær tålmodig mens vi oppdaterer maskinen
         </div>
         <alpha-button id="button ${bannerElement.id}" slot="action" appearance="lightweight">Close Banner</alpha-button>
     `;
@@ -178,15 +176,15 @@ createBanner(){
 
 In this example, the following commands used are:
 
-- `document.createElement('alpha-banner')`: Creates an `alpha-banner` HTMLElement and stores it in the bannerElement variable.
-- `bannerElement.id`: Sets the ID for the component. Note that if you intend to create multiple banners, you should change their IDs dynamically.
-- `bannerElement.innerHTML`: Sets the HTML content of the component, defining what is wrapped within `<alpha-banner></alpha-banner>`.
-- `this.shadowRoot.getElementById('BannerPlaceholder')`: Retrieves the placeholder `<div>` for the banner. We use `shadowRoot` instead of `document` because the web component utilizes shadow DOM.
-- `placeholderDiv.appendChild(bannerElement)`: Appends the newly created banner to the placeholder `<div>`.
-- `as Banner`: You must specify the type as `Banner`, or else you won't be able to access the banner's methods.
+- `document.createElement('alpha-banner')` creates an `alpha-banner` HTMLElement and stores it in the bannerElement variable.
+- `bannerElement.id` sets the ID for the component. Note that if you intend to create multiple banners, you should change their IDs dynamically.
+- `bannerElement.innerHTML` sets the HTML content of the component, defining what is wrapped within `<alpha-banner></alpha-banner>`.
+- `this.shadowRoot.getElementById('BannerPlaceholder')` retrieves the placeholder `<div>` for the banner; we use `shadowRoot` instead of `document` because the web component uses shadow DOM.
+- `placeholderDiv.appendChild(bannerElement)` appends the newly created banner to the placeholder `<div>`.
+- `as Banner` specifies the type as `Banner`, if you don't do this, you won't be able to access the banner's methods.
 - `actionButton.addEventListener('click', function() {tempBanner.dismiss()});`: Adds a `@click` event to the button inside the banner.
 
-Now, you can use the `createBanner()` function whenever you need to create a new banner in the `<div>` placeholder we defined.
+Now you can use the `createBanner()` function whenever you need to create a new banner in the `<div>` placeholder that you defined.
 
 :::warning
 Creating components dynamically is a valuable technique, but it's crucial to exercise caution when defining the `id`. Failing to do so may result in multiple components sharing the same `id`, potentially leading to a malfunctioning application.
@@ -197,7 +195,7 @@ Creating components dynamically is a valuable technique, but it's crucial to exe
 ```jsx live
 <alpha-banner>
   <div slot="content">
-    This is a banner
+    Dette er et banner
   </div>
   <alpha-button slot="action" appearance="lightweight">Button 1</alpha-button>
   <alpha-button slot="action" appearance="lightweight">Button 2</alpha-button>
