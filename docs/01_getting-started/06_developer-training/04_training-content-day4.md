@@ -364,8 +364,18 @@ eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
 }
 ```
 
-:::info verify function
+:::note verify function
 The `verify` block you see above is part of the validation helper provided by the Platform to make it easier to verify conditions against the database. Outside the `verify` block, you can write any Kotlin code to validate whatever you want to.
+:::
+
+:::info
+Refactoring out the components is also required here due to a limitation with the
+[cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) and how it
+interacts with FAST bindings and event listeners. A clean way to solve this issue is to
+wrap up your layout contents into individual components as we are about to do.
+
+If your components were interacting with each other via the parent component then it is
+recommended to change them to interact via the `foundation-store` utility.
 :::
 
 ### Exercise 4.2: adding onValidate to Event Handlers
