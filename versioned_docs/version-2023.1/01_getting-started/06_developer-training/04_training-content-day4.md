@@ -24,9 +24,9 @@ This day covers:
 - [Adding logic to the event handler](#adding-logic-to-the-event-handler)
 - [Auditing​](#auditing)
 
-## State Management​
+## State management​
 
-State Machines enable you to control workflow by defining the transitions from state to state. This example enables you to build a very simple state machine so that you can add new trades. You will create a new field called TRADE_STATUS, which can have three possible states: NEW, ALLOCATED, CANCELLED.
+State Machines enable you to control workflow by defining the transitions from state to state. The example in this training enables you to build a very simple State Machine so that you can add new trades. You will create a new field called TRADE_STATUS, which can have three possible states: NEW, ALLOCATED, CANCELLED.
 
 * NEW can go to ALLOCATED or CANCELLED.
 * ALLOCATED and CANCELLED can’t go anywhere else.
@@ -34,7 +34,7 @@ State Machines enable you to control workflow by defining the transitions from s
 
 ![](/img/diagram-of-states.png)
 
-Once we have added add a new field to the data model, we will edit the Event Handler file to add controlled transitions from one state to another.
+Once we have added a new field to the data model, we will edit the Event Handler file to add controlled transitions from one state to another.
 
 ### 1. Data model
 
@@ -133,7 +133,7 @@ sealed class TradeEffect {
 ```
 
 ### 3. Add the module as a dependency in **build.gradle.kts**
-Add the module as a dependency in the **build.gradle.kts** inside **alpha-script-config** module.
+Add the module as a dependency in the **build.gradle.kts** inside the **alpha-script-config** module.
 
 ```
 ...
@@ -179,7 +179,7 @@ eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
 }
 ```
 
-Create two data classes that will be used in the cancel and allocated eventHandler codeblocks. These classes should be in **alpha-messages/src/main/kotlin/global/genesis/alpha/message/event**.
+Create two data classes that will be used in the cancel and allocated `eventHandler` codeblocks. These classes should be in **alpha-messages/src/main/kotlin/global/genesis/alpha/message/event**.
 
 * TradeAllocated
 * TradeCancelled
@@ -202,7 +202,7 @@ package global.genesis.alpha.message.event
 data class TradeCancelled(val tradeId: String)
 ```
 
-Create a new eventHandler codeblock called TRADE_CANCELLED to handle cancellations. Then integrate the State Machine in it.
+Create a new `eventHandler` codeblock called TRADE_CANCELLED to handle cancellations. Use the code below, which has the State Machine integrated in it.
 
 ```kotlin
 eventHandler<TradeCancelled>(name = "TRADE_CANCELLED", transactional = true) {
@@ -216,7 +216,7 @@ eventHandler<TradeCancelled>(name = "TRADE_CANCELLED", transactional = true) {
 }
 ```
 
-Create a new eventHandler codeblock called TRADE_ALLOCATED to handle completion. Integrate the State Machine in it.
+Create a new `eventHandler` codeblock called TRADE_ALLOCATED to handle completion. Use the code below, which has the State Machine integrated in it.
 
 ```kotlin
 eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
@@ -230,7 +230,7 @@ eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
 }
 ```
 
-Modify or add the TRADE_MODIFY eventHandler codeblock to use the State Machine.
+Modify or add the TRADE_MODIFY `eventHandler` codeblock to use the State Machine.
 
 ```kotlin {4}
 eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
@@ -242,7 +242,7 @@ eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
 }
 ```
 
-Remove the TRADE_DELETE eventHandler codeblock if you included it before. You only want to manage the state of the trade. If a trade is incorrect and needs to be deleted, similar functionality can be achieved by cancelling the trade.
+Remove the TRADE_DELETE `eventHandler` codeblock if you included it before. You only want to manage the state of the trade. If a trade is incorrect and needs to be deleted, similar functionality can be achieved by cancelling the trade.
 
 To test it, you can try to modify a TRADE and see the states changing accordingly. 
 
@@ -257,7 +257,7 @@ Open the **home.ts** file and add the TRADE_STATUS field in the const *COLUMNS*.
 
 ```kotlin {29-33}
 ...
-//grid columns that will be showed
+//grid columns that will be shown
 const COLUMNS = [
   {
     ...defaultColumnConfig,
@@ -365,31 +365,29 @@ eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
 ```
 
 :::note verify function
-The `verify` block you see above is part of the validation helper provided by the Platform to make it easier to verify conditions against the database. Outside the `verify` block, you can write any Kotlin code to validate whatever you want to.
+The `verify` block you see above is part of the validation helper provided by the platform to make it easier to verify conditions against the database. Outside the `verify` block, you can write any Kotlin code to validate whatever you want to.
 :::
 
 :::info
-Refactoring out the components is also required here due to a limitation with the
+There is a limitation with the
 [cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) and how it
-interacts with FAST bindings and event listeners. A clean way to solve this issue is to
-wrap up your layout contents into individual components as we are about to do.
+interacts with FAST bindings and event listeners. So you need to reactor out the components. A clean way to solve this issue is to wrap up your layout contents into individual components - as we are about to do.
 
-If your components were interacting with each other via the parent component then it is
-recommended to change them to interact via the `foundation-store` utility.
+If your components were interacting with each other via the parent component, then we recommend that you change them to interact via the `foundation-store` utility.
 :::
 
 ### Exercise 4.2: adding onValidate to Event Handlers
 :::info ESTIMATED TIME
 20 mins
 :::
-Add the same verification `onValidate` as in TRADE_INSERT to the TRADE_MODIFY eventHandler codeblock.
+Add the same verification `onValidate` as in TRADE_INSERT to the TRADE_MODIFY `eventHandler` codeblock.
 
 
-Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](../../../getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost:9064/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
+Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](../../../getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL **http://localhost:9064/EVENT_TRADE_MODIFY**; set the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
 
 ## Auditing​
 
-We want to be able to track the changes made to the various trades on the TRADE table, such that we could see the times and modifications made in the history of the trade. So, we are going to add basic auditing to the TRADE table in order to keep a record of the changing states of the trades.
+We want to be able to track the changes made to the various trades on the TRADE table, such that we can see the times and modifications made over the history of the trade. So, we are going to add basic auditing to the TRADE table.
 
 This can be useful for historical purposes, if you need to be able to produce an accurate course of events at a later date.
 
@@ -397,7 +395,7 @@ This can be useful for historical purposes, if you need to be able to produce an
 
 #### Adding audit to the table dictionary
 
-For basic auditing, the first step is to change the relevant table dictionary. In this instance, we will make changes to the **alpha-tables-dictionary.kts**, in order to add the parameter `audit = details()` to the table definition. It should resemble the following:
+For basic auditing, the first step is to change the relevant table dictionary. In this instance, we will make changes to the file **alpha-tables-dictionary.kts**, in order to add the parameter `audit = details()` to the table definition. It should look like this:
 
 ```kotlin {1}
 table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
@@ -420,11 +418,11 @@ table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
 
 The id parameter indicates the id of the newly created audit table, and must be different from any other table id.
 
-As we are using GPAL Event Handlers, this is sufficient to enable auditing on this table. A new table is created with the name of the original table, and the **_AUDIT** suffix added. In this instance, that would be the **TRADE_AUDIT** table.
+As we are using GPAL Event Handlers, this is sufficient to enable auditing on this table. A new table is created with the name of the original table, and the **_AUDIT** suffix added. In this instance, that is the **TRADE_AUDIT** table.
 
 #### Updating the State Machine to use auditing
 
-Next you need to extend the insert, and modify methods in the **TradeStateMachine.kt** file. Specifically, each method must have a second option so that the method signature uses the `AsyncMultiEntityReadWriteGenericSupport` parameter and the `internalState.withTransaction(transaction) { }` code block.  For example:
+Next, you need to extend the insert, and modify methods in the **TradeStateMachine.kt** file. Specifically, each method must have a second option so that the method signature uses the `AsyncMultiEntityReadWriteGenericSupport` parameter and the `internalState.withTransaction(transaction) { }` code block.  For example:
 
 ```kotlin {2,5,10,12,20,23}
     suspend fun insert(
@@ -507,7 +505,7 @@ Run the [generatedao](../../../getting-started/developer-training/training-conte
 :::info ESTIMATED TIME
 20 mins
 :::
-Try to insert or modify a TRADE and see the auditing happening accordingly. You can use DbMon or Genesis Console to check the data in table TRADE_AUDIT.
+Try to insert or modify a TRADE and see the auditing happening accordingly. You can use DbMon or Genesis Console to check the data in the table TRADE_AUDIT.
 
 :::info END OF DAY 4
 This is the end of day 4 of our training. To help your training journey, check out how your application should look at the end of day 4 [here](https://github.com/genesiscommunitysuccess/devtraining-seed/tree/Exercise_4.3).
