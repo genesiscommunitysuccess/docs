@@ -100,15 +100,22 @@ As sensitive fields, their values are displayed as asterisks on screen. For debu
 
 By default, sensitive fields are set to `false`, and this only applies on `toString()` output of GenesisSet and DbRecord objects.
 
-## Specifying storage precision and scale for BIGDECIMAL fields
+## SQL databases: storage precision and scale for BIGDECIMAL fields
 
-BIGDECIMAL fields can have their precision/scale configured - this only affects storage (how the columns are created), hence it is only applicable for SQL databases.
+For historical reasons, SQL databases have a default precision and scale for BIGDECIMAL fields: the maximum number of digits that can be stored is 20, of which 5 can be after the decimal point. 
 
-For example:
+However, you can change this if you need to store more characters or decimal places in your application's SQL database.
+
+For example, if you need 8 decimal places:
 
 ```kotlin
-field(name = "FX_RATE", type = BIGDECIMAL(18,8))
+field(name = "FX_RATE", type = BIGDECIMAL(20,8))
 ```
 
 - When not specified, the default value of `(20,5)` is used;
-- When an invalid value is supplied (database vendor dependant), `remap` will fallback to the default value.
+- When an invalid value is supplied (depending on the database vendor), `remap` will set the field to the default value.
+- You can increase the maximum number of characters, but how much depends on the database vendor. Check with them before trying this.
+
+:::
+This is not relevant to other database technologies.
+:::
