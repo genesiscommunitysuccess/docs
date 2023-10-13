@@ -4,9 +4,9 @@ sidebar_label: 'Combobox'
 id: combobox
 keywords: [web, web components, combobox]
 tags:
-  - web
-  - web components
-  - combobox
+    - web
+    - web components
+    - combobox
 ---
 
 A combo-box is an input with an associated pop-up that enables users to select one value from a collection of possible values.
@@ -22,15 +22,17 @@ provideDesignSystem().register(alphaCombobox(), alphaOption());
 
 You can define the following attributes when you declare an `<alpha-combobox>`. This component needs to be used in combination with `<alpha-option>`
 
-| Name         | Type      | Description                                                                                                                            |
-|--------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------|
-| autocomplete | `string`  | Defines how autocompletion works in the component. It can be "inline", "list", "both", "none". **Default:** `none`                     |
-| disabled     | `boolean` | Similar to `readonly`, but with a blur on the component                                                                                |
-| form        | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form |
-| open         | `boolean` | Defines whether the combolist starts opened or not. **Default:** `false`                                                               |
-| position     | `string`  | Places the combolist **above** or **below** the combo-box. It can be `above` or `below`. **Default:** it will try to fit with the page | 
-| placeholder  | `string`  | Sets placeholder text for the element (which disappears when the user starts typing)                                                   |
-| value        | `string`  | Sets an initial value for this component                                                                                                      | 
+| Name               | Type      | Description                                                                                                                             |
+|--------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| autocomplete       | `string`  | Defines how autocompletion works in the component. It can be "inline", "list", "both", "none". **Default:** `none`                      |
+| case-sensitive     | `boolean` | Sets whether to treat values in a case-sensitive matter. **Default:** `false`                                                           |
+| disabled           | `boolean` | Similar to `readonly`, but with a blur on the component                                                                                 |
+| form               | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form |
+| ignore-input-click | `boolean` | Sets whether to keep the dropdown closed when the input field is clicked. **Default:** `false`                                          |
+| open               | `boolean` | Defines whether the combolist starts opened or not. **Default:** `false`                                                                |
+| position           | `string`  | Places the combolist **above** or **below** the combo-box. It can be `above` or `below`. **Default:** it will try to fit with the page  | 
+| placeholder        | `string`  | Sets placeholder text for the element (which disappears when the user starts typing)                                                    |
+| value              | `string`  | Sets an initial value for this component                                                                                                | 
 
 :::note
 `autocomplete`has the following settings:
