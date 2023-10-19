@@ -323,15 +323,17 @@ Total Results:  3
 
 ### Searching for a date or datetime
 
-When setting a DATE, the format must be specified as follows:
+When searching for a DATE, the format must be specified as follows:
 
 - DATE_FORMAT = "yyyyMMdd"
 
-When setting a DATETIME, the format must be specified as follows:
+When searching for a DATETIME, the format must be specified as any of the following:
 
 - DateTime with milliseconds precision: DATETIME_FORMAT = "yyyyMMdd-HH:mm:ss.SSS"
 - DateTime with seconds precision: DATETIME_FORMAT = "yyyyMMdd-HH:mm:ss"
 - DateTime with minutes precision: DATETIME_FORMAT = "yyyyMMdd-HH:mm"
+- DateTime with day precision = "yyyyMMdd"
+- DateTime with day precision = "yyyy-MM-dd"
 
 Here are some examples of searches for datetimes and dates:
 
