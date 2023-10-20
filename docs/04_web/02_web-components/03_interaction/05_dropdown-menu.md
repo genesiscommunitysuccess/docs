@@ -32,16 +32,14 @@ When you declare an `<alpha-dropdown-menu>`, you can define the following attrib
 
 | Name       | Type      | Description                              |
 |------------|-----------|------------------------------------------------------|
-| autoclose  | `boolean` | Sets the component to close when user clicks on an item. **Default**: `true`                        |
+| autoclose  | `boolean` | Sets the component to close when the user clicks on an item. **Default**: `true`                        |
 | open       | `boolean` | Sets the component to start opened. **Default**: `false` |
 | name       | `string`  | Sets a name for the component. **Default**:`Dropdown Menu`|
-| buttonAppearance | `string`  | Changes the dropdown initial button. It can be `neutral`, `accent`, `lightweight`, `outline` or `stealth`  | 
-
-These attributes must be defined alongside the declaration of the component.
+| buttonAppearance | `string`  | Changes the initial button for the dropdown. This can be `neutral`, `accent`, `lightweight`, `outline` or `stealth`  | 
 
 ### Fields
 
-When you use `<alpha-drodown-menu>`, you can use the following method:
+When you use `<alpha-drodown-menu>`, you need to use the following method to define the items in the menu:
 
 | Name       | Type      | Description                              |
 |------------|-----------|------------------------------------------------------|
@@ -70,12 +68,12 @@ Below you see the description of each field:
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| name | `string` | The name that will appear in each menu item |
+| name | `string` | The name that appears in each menu item |
 | icon: variant | `string` | The type of the icon. E.g.: Solig, Brands, ... |
 | icon: name | `string` |  The name of the icon. E.g.: facebook <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/brands/facebook.svg" width="20" height="20" />, youtube <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/brands/youtube.svg" width="20" height="20" />, microphone <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/microphone.svg" width="20" height="20" /> , ... |
 | icon: size | `string` | 	The size of the icon according to Fa-size. E.g.: xs, sm, xl, ... |
-| color | `string` | color of the item to be displeyed |
-| submenu | `DropdownMenuItem[]` | It is a new block of code with all attributes listed here, to set up the new submenu items |
+| color | `string` | The colour of the item to be displayed |
+| submenu | `DropdownMenuItem[]` | A new block of code with all the attributes listed here, which sets up the new submenu items |
 | callback | `function()` | Define a callback function to trigger an action |
 | isDisabled | `boolean` | Define whether this particular item is enabled or disabled |
 
@@ -89,7 +87,7 @@ Here is an example of how to set up a `zero-dropdown-menu` with some subitems at
 <zero-dropdown-menu></zero-dropdown-menu>
 ```
 
-2. Write the codeblock that will create the subitems. In this example, menu item 3 has a submenu, which itself has two further submenus.
+2. Write the codeblock that creates the subitems. In this example, menu item 3 has a submenu, which itself has two further submenus.
 
 ```ts
 const DropdownMenuItems = [
