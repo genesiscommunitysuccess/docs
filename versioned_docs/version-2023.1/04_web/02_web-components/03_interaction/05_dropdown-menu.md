@@ -24,30 +24,25 @@ const { defaultConfig, shadowOptions, styles, template } = getExports(
 
 provideDesignSystem().register(zeroDropdowMmenu());
 ```
-## Parameters
 
-### Attributes
+## Attributes
 
 When you declare an `<alpha-dropdown-menu>`, you can define the following attributes:
 
 | Name       | Type      | Description                              |
 |------------|-----------|------------------------------------------------------|
-| autoclose  | `boolean` | Sets the component to close when user clicks on an item. **Default**: `true`                        |
+| autoclose  | `boolean` | Sets the component to close when the user clicks on an item. **Default**: `true`                        |
 | open       | `boolean` | Sets the component to start opened. **Default**: `false` |
 | name       | `string`  | Sets a name for the component. **Default**:`Dropdown Menu`|
-| buttonAppearance | `string`  | Changes the dropdown initial button. It can be `neutral`, `accent`, `lightweight`, `outline` or `stealth`  | 
+| buttonAppearance | `string`  | Changes the initial button for the dropdown. This can be `neutral`, `accent`, `lightweight`, `outline` or `stealth`  | 
 
-These attributes must be defined alongside the declaration of the component.
+## Defining the menu items
 
-### Fields
-
-When you use `<alpha-drodown-menu>`, you can use the following method:
+When you use `<alpha-drodown-menu>`, you need to use the following method to define the items in the menu:
 
 | Name       | Type      | Description                              |
 |------------|-----------|------------------------------------------------------|
 | items      | `DropdownMenuItem[]` | Creates a list of items to be displayed in the `dropdown-menu`|
-
-## DropdownMenuItem
 
 To define the menu items, you need to create an array of objects following the structure below:
 
@@ -70,12 +65,12 @@ Below you see the description of each field:
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| name | `string` | The name that will appear in each menu item |
+| name | `string` | The name that appears in each menu item |
 | icon: variant | `string` | The type of the icon. E.g.: Solig, Brands, ... |
 | icon: name | `string` |  The name of the icon. E.g.: facebook <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/brands/facebook.svg" width="20" height="20" />, youtube <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/brands/youtube.svg" width="20" height="20" />, microphone <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/microphone.svg" width="20" height="20" /> , ... |
 | icon: size | `string` | 	The size of the icon according to Fa-size. E.g.: xs, sm, xl, ... |
-| color | `string` | color of the item to be displeyed |
-| submenu | `DropdownMenuItem[]` | It is a new block of code with all attributes listed here, to set up the new submenu items |
+| color | `string` | The colour of the item to be displayed |
+| submenu | `DropdownMenuItem[]` | A new block of code with all the attributes listed here, which sets up the new submenu items |
 | callback | `function()` | Define a callback function to trigger an action |
 | isDisabled | `boolean` | Define whether this particular item is enabled or disabled |
 
@@ -83,7 +78,7 @@ Below you see the description of each field:
 
 Here is an example of how to set up a `zero-dropdown-menu` with some subitems attached:
 
-1. Create the structure of the dropdown menu
+1. Create the structure of the dropdown menu.
 
 ```html
 import {... , ref} import '@microsoft/fast-element';
@@ -92,7 +87,7 @@ import {... , ref} import '@microsoft/fast-element';
 ...
 ```
 
-2. Write the codeblock that will create the subitems. In this example, menu item 3 has a submenu, which itself has two further submenus.
+2. Write the codeblock that creates the subitems. In this example, menu item 3 has a submenu, which itself has two further submenus.
 
 ```ts
 const DropdownMenuItems = [
@@ -161,9 +156,9 @@ import {DropdownMenu} from '@genesislcap/foundation-zero';
 ...
 ```
 
-With these three samples of code, you would get a dropdownmenu as shown below:
+These three samples of code create a dropdown menu that looks like this:
 
-![dropdownMenuExample](../../../../../static/img/dropdown-example.png)
+![dropdownMenuExample](../../../../static/img/dropdown-example.png)
 
 ## Additional resources
 
