@@ -24,9 +24,8 @@ const { defaultConfig, shadowOptions, styles, template } = getExports(
 
 provideDesignSystem().register(zeroDropdowMmenu());
 ```
-## Parameters
 
-### Attributes
+## Attributes
 
 When you declare an `<alpha-dropdown-menu>`, you can define the following attributes:
 
@@ -37,15 +36,13 @@ When you declare an `<alpha-dropdown-menu>`, you can define the following attrib
 | name       | `string`  | Sets a name for the component. **Default**:`Dropdown Menu`|
 | buttonAppearance | `string`  | Changes the initial button for the dropdown. This can be `neutral`, `accent`, `lightweight`, `outline` or `stealth`  | 
 
-### Fields
+## Defining the menu items
 
 When you use `<alpha-drodown-menu>`, you need to use the following method to define the items in the menu:
 
 | Name       | Type      | Description                              |
 |------------|-----------|------------------------------------------------------|
 | items      | `DropdownMenuItem[]` | Creates a list of items to be displayed in the `dropdown-menu`|
-
-## DropdownMenuItem
 
 To define the menu items, you need to create an array of objects following the structure below:
 
