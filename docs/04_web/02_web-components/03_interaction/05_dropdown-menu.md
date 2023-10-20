@@ -78,7 +78,7 @@ Below you see the description of each field:
 
 Here is an example of how to set up a `zero-dropdown-menu` with some subitems attached:
 
-1. Create the structure of the dropdown menu.
+1. Create the structure of the dropdown menu
 
 ```html
 import {... , ref} import '@microsoft/fast-element';
@@ -156,7 +156,7 @@ import {DropdownMenu} from '@genesislcap/foundation-zero';
 ...
 ```
 
-These three samples of code create a dropdown menu that looks like this:
+With these three samples of code, you would get a dropdownmenu as shown below:
 
 ![dropdownMenuExample](/img/dropdown-example.png)
 
