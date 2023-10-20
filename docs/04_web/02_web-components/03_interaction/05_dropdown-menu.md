@@ -86,7 +86,10 @@ Here is an example of how to set up a `zero-dropdown-menu` with some subitems at
 1. Create the structure of the dropdown menu
 
 ```html
-<zero-dropdown-menu></zero-dropdown-menu>
+import {... , ref} import '@microsoft/fast-element';
+...
+    <zero-dropdown-menu ${ref('localDropdown')}></zero-dropdown-menu>
+...
 ```
 
 2. Write the codeblock that will create the subitems. In this example, menu item 3 has a submenu, which itself has two further submenus.
@@ -120,9 +123,6 @@ const DropdownMenuItems = [
           {
           name: 'Menu item 7',
           callback: () => console.log(`Menu item 7`),
-          icon: {
-            name: "apple",
-          },
           submenu: [
             {
             name: 'Menu item 9',
@@ -154,10 +154,16 @@ const DropdownMenuItems = [
 3. Assign the variable `DropdownMenuItems` to the field `items`:
 
 ```ts
-  dropdownMenu.items = DropdownMenuItems
+import {DropdownMenu} from '@genesislcap/foundation-zero';
+...
+    localDropdown: DropdownMenu
+    localDropdown.items = DropdownMenuItems
+...
 ```
 
-With these three samples of code, you are ready to use the dropdown menu.
+With these three samples of code, you would get a dropdownmenu as shown below:
+
+![dropdownMenuExample](../../../../../static/img/dropdown-example.png)
 
 ## Additional resources
 
