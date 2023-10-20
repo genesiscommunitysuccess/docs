@@ -158,7 +158,7 @@ import {DropdownMenu} from '@genesislcap/foundation-zero';
 
 With these three samples of code, you would get a dropdownmenu as shown below:
 
-![dropdownMenuExample](../../../../../static/img/dropdown-example.png)
+![dropdownMenuExample](../../../../static/img/dropdown-example.png)
 
 ## Additional resources
 
