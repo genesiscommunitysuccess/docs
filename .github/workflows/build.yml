@@ -23,8 +23,6 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-        registry-url: https://npm.pkg.github.com/
-        scope: '@genesislcap'
 
     - name: Install CDK dependencies
       working-directory: ./infra
@@ -35,16 +33,12 @@ jobs:
       run: npm test
 
     - name: Install Docusaurus dependencies
-      run: |
-        npm install
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
+      run: npm install
 
     - name: Build Docusaurus and check for broken links
       run: |
         export NODE_OPTIONS="--max-old-space-size=8192"
         npm run build
       env:
-          NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
           BRANCH: ${{ github.base_ref }}
           BASE_URL: /docs/
