@@ -45,20 +45,14 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-          registry-url: https://npm.pkg.github.com/
-          scope: '@genesislcap'
           
       - name: Bootstrap
         working-directory: ./client
         run: npm run bootstrap
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
 
       - name: Build
         working-directory: ./client/web
         run: npm run build
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
 
       - name: GitHub Pages action
           # You may pin to the exact commit or the version.
