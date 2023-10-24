@@ -130,12 +130,6 @@ module.exports = {
             '2023.1': {
               'banner': 'none'
             },
-            '2022.4': {
-              'banner': 'none'
-            },
-            '2022.3': {
-              'banner': 'none'
-            },
           },
         },
         theme: {
