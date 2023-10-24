@@ -48,7 +48,7 @@ For each tab, you must also declare an `alpha-tab-panel`. This is the component 
 | id   | `string` | Links the panel to its corresponding tab |
 
 :::note
-The `alpha-tab-panel` is linked to its corresponting `alpha-tab` based on the order. So it will be linked the first `alpha-tab` with the first `alpha-tab-panel`, the second `alpha-tab` with the second `alpha-tab-panel` and so on. 
+The `alpha-tab-panel` is linked to its corresponding `alpha-tab` based on the order. So the first `alpha-tab` is linked to the first `alpha-tab-panel`, the second `alpha-tab` is linked to the second `alpha-tab-panel`, and so on. 
 :::
 
 ### Event
