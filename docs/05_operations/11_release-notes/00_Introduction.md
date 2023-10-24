@@ -12,10 +12,11 @@ tags:
 
 Our documentation covers the following releases:
 
-- [2023.1](../../../operations/release-notes/version-2023-1/)
-- [2022.4](../../../operations/release-notes/version-2022-4/)
-- [2022.3](../../../operations/release-notes/version-2022-3/)
-- [2022.2](../../../operations/release-notes/version-2022-2/), which includes an update at [2022.2.1](../../../operations/release-notes/version-2022-2/#release-202221)
-- [2022.1](../../../operations/release-notes/version-2022-1/)
+- [current](../../../operations/release-notes/current/)
+- [previous](../../../operations/release-notes/previous/)
+
+Older versions of our documentation are archived.
+
+
 
 
