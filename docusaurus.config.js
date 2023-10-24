@@ -127,8 +127,12 @@ module.exports = {
           remarkPlugins: [require('mdx-mermaid')],
           includeCurrentVersion: BUILD_NEXT,
           versions: {
+            'OCT 23': {
+              'label': 'Current'
+            },
             '2023.1': {
-              'banner': 'none'
+              'banner': 'none',
+              'label': 'Previous'
             },
           },
         },
