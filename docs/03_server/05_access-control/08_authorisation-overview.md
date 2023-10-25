@@ -176,7 +176,7 @@ All `customPermissions` functions give you access to a property called `entityDb
 
 Generic permissions is a term used to name the optional permissions configuration that is available for a Genesis application; this is included as part of the Genesis Auth Module.
 
-To fully activate Generic permissions, you need to add the following values to your [system definition file](../../../server/configuring-runtime/system-definitions/) before you run `genesisInstall`.
+To fully activate Generic permissions, you need to add the following values to your product [system definition file](../../../server/configuring-runtime/system-definitions/) locate under the `config` project (for example `alpha-system-definition.kts`) before you run `genesisInstall`.
 
 These values specify which table column will be used to associate users with entities for fine-grained row permissions.
 
