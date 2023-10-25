@@ -45,4 +45,4 @@ document.getElementById('samplegrid').rowsData = [
 
 ## Additional resources
 
-- [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#grid)
+- [W3C Component Aria Practices](https://www.w3.org/WAI/ARIA/apg/patterns/grid/)

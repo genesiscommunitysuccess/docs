@@ -29,7 +29,9 @@
 
 |  Variable | Description |
 |  --- | --- |
+|  [delayedResolve](./foundation-testing.delayedresolve.md) | Delayed resolve utility. |
 |  [logger](./foundation-testing.logger.md) | Test logger |
+|  [timeout](./foundation-testing.timeout.md) | Timeout utility. |
 
 ## Type Aliases
 

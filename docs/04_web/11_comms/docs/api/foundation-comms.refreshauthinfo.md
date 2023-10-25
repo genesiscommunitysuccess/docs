@@ -13,6 +13,7 @@ export type RefreshAuthInfo = {
     type: AuthType & AuthType.REFRESH;
     username: string;
     refreshToken: string;
+    mfaToken: string;
 };
 ```
 **References:** [AuthType](./foundation-comms.authtype.md), [AuthType.REFRESH](./foundation-comms.authtype.md)
