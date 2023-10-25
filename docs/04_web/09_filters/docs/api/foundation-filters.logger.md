@@ -9,7 +9,7 @@ Client filter logger
 **Signature:**
 
 ```typescript
-logger: import("@genesislcap/foundation-utils").Logger
+logger: import("@genesislcap/foundation-logger").Logger
 ```
 
 ## Remarks
@@ -20,7 +20,7 @@ Exposed so that the logging level within this package can be tailored differentl
 
 
 ```ts
-import { LogLevel } from '@genesislcap/foundation-utils';
+import { LogLevel } from '@genesislcap/foundation-logger';
 import { logger as clientFilterLogger } from '@genesislcap/foundation-filters';
 clientFilterLogger.level = LogLevel.Error;
 ```

@@ -4,6 +4,11 @@
 
 ## Serializer.serialize() method
 
+> Warning: This API is now obsolete.
+> 
+> - Use `serialize` from `JSONSerializer` from `@genesislcap/foundation-utils` instead.
+> 
+
 Serialize the given object into a string.
 
 **Signature:**

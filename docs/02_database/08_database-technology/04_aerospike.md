@@ -11,14 +11,15 @@ tags:
 
 Genesis supports [Aerospike](https://aerospike.com/). To connect to Aerospike, use the [system definition items](../../../server/configuring-runtime/system-definitions/) listed below.
 
-| Setting | Description |
-| --- | --- |
-| `DbNamespace` | This value must contain the Aerospike namespace you want to use. |
-| `DbMode` | This can be one of two values: `VANILLA` for an Aerospike Community installation and `DURABLE_DELETE` if you are using Aerospike Enterprise. |
-| `DbHost` | This accepts a host value for the Aerospike server host to connect to. |
-| `DbPort` | This sets a port value for the Aerospike server host to connect to. |
-| `DbUsername` | This must be the db username. Supports encrypted values. |
-| `DbPassword` | This must be the db password. Supports encrypted values. |
+| Setting                        | Description                                                                                                                                      |
+|--------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| `DbNamespace`                  | This value must contain the Aerospike namespace you want to use.                                                                                 |
+| `DbMode`                       | This can be one of two values: `VANILLA` for an Aerospike Community installation and `DURABLE_DELETE` if you are using Aerospike Enterprise.     |
+| `DbHost`                       | This accepts a host value for the Aerospike server host to connect to.                                                                           |
+| `DbPort`                       | This sets a port value for the Aerospike server host to connect to.                                                                              |
+| `DbUsername`                   | This must be the db username. Supports encrypted values.                                                                                         |
+| `DbPassword`                   | This must be the db password. Supports encrypted values.                                                                                         |
+| `DbOptimisticConcurrencyMode`  | Set the [Optimistic Concurrency](../../database-concepts/optimistic-concurrency) mode. Available values: STRICT, LAX and NONE. Defaults to NONE. |
 
 Sample configurations[​](../../../database/database-technology/aerospike/#sample-configurationsdirect-link-to-heading)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

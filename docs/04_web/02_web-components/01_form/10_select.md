@@ -38,9 +38,12 @@ This component needs to be used in combination with `<alpha-option>`. You can de
 | name     | `string`  | Gives this component a name                                                                                                              |
 | open     | `boolean` | Defines whether the list starts opened or not. **Default:** `false`                                                                      |
 | position | `string`  | Places the list **above** or **below** the component; can be `above` or `below`. **Default:** it will try to fit with the page           | 
-| size     | `number`  | Defines the maximum number of options to be displayed. **Default:** it will try to fit with the page                                     | 
+| size     | `number`  | Defines the display size of the list. For example, if you set `size="2"`, then the list displays two items at a time for the user to scroll through; **Default:** it will try to fit with the page | 
 | value    | `string`  | Sets a value for this component                                                                                                          | 
 
+:::note
+If you set the `size`, the list is displayed by default (the user does not need to click to view it). This overrides any setting you make for `open`.
+:::
 
 ### Option attributes
 

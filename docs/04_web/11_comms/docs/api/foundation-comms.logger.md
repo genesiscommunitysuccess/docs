@@ -9,5 +9,5 @@ Logger for the foundation-comms package
 **Signature:**
 
 ```typescript
-logger: import("@genesislcap/foundation-utils").Logger
+logger: import("@genesislcap/foundation-logger").Logger
 ```
