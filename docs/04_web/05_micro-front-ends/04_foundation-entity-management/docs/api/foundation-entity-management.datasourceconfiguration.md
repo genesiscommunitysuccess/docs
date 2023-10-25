@@ -22,6 +22,8 @@ type DatasourceConfiguration = {
   isSnapshot?: boolean;
   maxRows?: number;
   maxView?: number;
+  movingView?: boolean;
+  pollingInterval?: number;
   orderBy?: string;
   reverse?: boolean;
 }

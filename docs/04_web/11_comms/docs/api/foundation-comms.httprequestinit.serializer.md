@@ -9,7 +9,7 @@ A serializer function to transform the request body.
 **Signature:**
 
 ```typescript
-serializer?: Serializer;
+serializer?: JSONSerializer;
 ```
 
 ## Remarks

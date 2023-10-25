@@ -4,8 +4,15 @@
 
 ## EntityManagement.enableCellFlashing property
 
+If false, will disable cell flashing for all cells by default, unless otherwise defined in custom colDef
+
 **Signature:**
 
 ```typescript
 enableCellFlashing: boolean;
 ```
+
+## Remarks
+
+Defaults to true
+

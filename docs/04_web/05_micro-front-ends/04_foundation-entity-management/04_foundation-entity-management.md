@@ -27,7 +27,7 @@ The Entity Management micro front-end is used to connect to a resource on the ba
 The buttons are accessed conditionally, based on the specified events. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to set the events so that they are conditional on user authorisations.
 :::
 
-Two core components are used to manage the entities - the grid and the form. 
+Two core components are used to manage the entities - the grid and the form.
 
 The grid contains an entity on each row and data in each column. Here is an example showing a grid used to manage counterparties:
 
@@ -94,7 +94,7 @@ export const AdminTemplate: ViewTemplate = html`
 
 ### Config
 
-The functionality of the Entity Manager is customised through the properties you set on it in the HTML. This section covers the main properties that you need to customise. For a full list of all properties, [see here](./docs/api/foundation-entity-management.md#properties).
+The functionality of the Entity Manager is customised through the properties you set on it in the HTML. This section covers the main properties that you need to customise. For a full list of all availbale properties, [see here](./docs/api/foundation-entity-management.md#properties).
 
 #### Title
 
@@ -106,7 +106,7 @@ The functionality of the Entity Manager is customised through the properties you
 
 - a `query` in a Data Server
 - a `ReqRep` definition in a Request Server
-- an `eventHandler`in the Event Handler
+- an `eventHandler`in the Event Handler.
 
  In the [above example](#set-up), we use `ALL_COUNTERPARTYS`, which is a `query` in a Data Server; by convention, these queries all start with `ALL_`.
 
@@ -248,7 +248,6 @@ To enable this micro front-end in your application, follow the steps below.
 ```
 
 2. Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template html where required:
- 
 ```javascript
 // Import
 import { Profiles } from '@genesislcap/foundation-entity-management';

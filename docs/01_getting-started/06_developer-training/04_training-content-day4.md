@@ -364,8 +364,16 @@ eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
 }
 ```
 
-:::info verify function
-The `verify` block you see above is part of the validation helper provided by the Platform to make it easier to verify conditions against the database. Outside the `verify` block, you can write any Kotlin code to validate whatever you want to.
+:::note verify function
+The `verify` block you see above is part of the validation helper provided by the platform to make it easier to verify conditions against the database. Outside the `verify` block, you can write any Kotlin code to validate whatever you want to.
+:::
+
+:::info
+There is a limitation with the
+[cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) and how it
+interacts with FAST bindings and event listeners. So you have to refactor out the components. A clean way to solve this issue is to wrap up your layout contents into individual components -  as we are about to do.
+
+If your components were interacting with each other via the parent component, then we recommend that you change them to interact via the `foundation-store` utility.
 :::
 
 ### Exercise 4.2: adding onValidate to Event Handlers
@@ -375,11 +383,11 @@ The `verify` block you see above is part of the validation helper provided by th
 Add the same verification `onValidate` as in TRADE_INSERT to the TRADE_MODIFY eventHandler codeblock.
 
 
-Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](../../../getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost:9064/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
+Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](../../../getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost:9064/EVENT_TRADE_MODIFY*, and you must set the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
 
 ## Auditing​
 
-We want to be able to track the changes made to the various trades on the TRADE table, such that we could see the times and modifications made in the history of the trade. So, we are going to add basic auditing to the TRADE table in order to keep a record of the changing states of the trades.
+We want to be able to track the changes made to the various trades in the TRADE table, such that we can see the modifications, the times and the changing states made over the history of the trade. So, we are going to add basic auditing to the TRADE table.
 
 This can be useful for historical purposes, if you need to be able to produce an accurate course of events at a later date.
 

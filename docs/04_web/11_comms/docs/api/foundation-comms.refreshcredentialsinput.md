@@ -12,5 +12,6 @@ Represents refresh credentials for a user.
 export type RefreshCredentialsInput = {
     username: string;
     refreshToken: string;
+    mfaToken?: string;
 };
 ```

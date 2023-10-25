@@ -17,5 +17,5 @@ export interface HttpRequestInit extends RequestInit
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [serializer?](./foundation-comms.httprequestinit.serializer.md) |  | [Serializer](./foundation-comms.serializer.md) | _(Optional)_ A serializer function to transform the request body. |
+|  [serializer?](./foundation-comms.httprequestinit.serializer.md) |  | JSONSerializer | _(Optional)_ A serializer function to transform the request body. |
 

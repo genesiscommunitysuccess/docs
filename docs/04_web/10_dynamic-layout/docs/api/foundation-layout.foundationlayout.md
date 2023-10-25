@@ -26,8 +26,11 @@ The constructor for this class is marked as internal. Third-party code should no
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [autoSaveKey?](./foundation-layout.foundationlayout.autosavekey.md) |  | string | _(Optional)_ Attribute which if set will auto save and load the layout as the user changes it. Omit this attribute to disable this feature. Set attribute using <code>auto-save-key</code>. |
+|  [class](./foundation-layout.foundationlayout.class.md) |  | "FoundationLayoutMain" | Identifier constant token. |
+|  [customButtons](./foundation-layout.foundationlayout.custombuttons.md) |  | [CustomButton](./foundation-layout.custombutton.md)\[\] | Set custom button definition on this property to add them to the layout header controls |
 |  [dragging](./foundation-layout.foundationlayout.dragging.md) |  | boolean | Set to true when the user is currently dragging the panes inside of the layout |
 |  [hasFirstLoaded](./foundation-layout.foundationlayout.hasfirstloaded.md) |  | boolean | Boolean signifies whether the layout has loaded for the first time or not. |
+|  [lifecycleUpdateToken](./foundation-layout.foundationlayout.lifecycleupdatetoken.md) |  | string \| undefined | Used to calculate whether a layout item should run its lifecycle methods or not |
 |  [missingItemPlaceholder](./foundation-layout.foundationlayout.missingitemplaceholder.md) |  | (missingItem: string) =&gt; string | Function which is used to generate the placeholder text when a layout is loaded with a missing item. |
 |  [reloadBuffer](./foundation-layout.foundationlayout.reloadbuffer.md) |  | number | Number describing how long to wait in ms before reloading the config when adding items declaratively by the html API. Default 500 (ms). |
 

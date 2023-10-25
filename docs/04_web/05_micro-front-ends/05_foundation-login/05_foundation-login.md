@@ -76,7 +76,7 @@ Once installed, you can either use `Login` as is or re-configure it. As with all
 You may need to set up a `NavigationContributor` in your application's router config class to handle `public` and `autoAuth` route settings.
 
 - `public`, which indicates that a route doesn't require the user to be authenticated to view it
-- `autoAuth`, where, if the user already has an authenticated session, they are automatically logged in again if they navigate away from a page and then return  
+- `autoAuth`, where, if the user already has an authenticated session, they are automatically logged in again if they navigate away from a page and then return
 
 ```ts
 {
@@ -96,7 +96,7 @@ You may need to set up a `NavigationContributor` in your application's router co
 ```
 
 :::warningWarning
-By default, a route that isn't marked public is not. However, a non-public route isn't going to block non-authenticated users automatically from viewing them. This must be implemented in a `NavigationContributor`; see [example](./docs/api/foundation-login.login.md#example).
+By default, a route that isn't marked public is not. However, a non-public route isn't automatically going to block non-authenticated users from viewing them. This must be implemented in a `NavigationContributor`; see [example](./docs/api/foundation-login.login.md#example).
 :::
 
 ## Authentication
@@ -131,3 +131,4 @@ Note: this project provides front-end dependencies and uses licensed components 
 
 ### Licensed components
 Genesis low-code platform
+

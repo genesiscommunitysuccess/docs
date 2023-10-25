@@ -11,8 +11,15 @@
 |  [AuthError](./foundation-comms.autherror.md) | Represents an error that occurs during authentication. |
 |  [CurrentUser](./foundation-comms.currentuser.md) | Represents the current user (i.e. the user that is currently logged in). |
 |  [DatasourceDefaults](./foundation-comms.datasourcedefaults.md) | Default values for a DatasourceConfig |
-|  [DefaultConnect](./foundation-comms.defaultconnect.md) | The Connect implementation for WebSocket. |
-|  [DefaultDatasource](./foundation-comms.defaultdatasource.md) | DefaultDatasource. |
+|  [DefaultAuth](./foundation-comms.defaultauth.md) | The default implementation for the Auth interface. |
+|  [DefaultConnect](./foundation-comms.defaultconnect.md) | The default implementation for the Connect interface (WS-only). |
+|  [DefaultCredentialManager](./foundation-comms.defaultcredentialmanager.md) | The default implementation for the CredentialManager interface. |
+|  [DefaultDatasource](./foundation-comms.defaultdatasource.md) | The default implementation for the Datasource interface. |
+|  [DefaultFoundationAnalytics](./foundation-comms.defaultfoundationanalytics.md) | The default implementation for the FoundationAnalytics interface. |
+|  [DefaultHttp](./foundation-comms.defaulthttp.md) | The default implementation of the Http interface. |
+|  [DefaultHttpConnect](./foundation-comms.defaulthttpconnect.md) | The default implementation for the Connect interface (HTTP-only). |
+|  [DefaultMetaCache](./foundation-comms.defaultmetacache.md) | The default implementation for the MetaCache interface. |
+|  [DefaultSession](./foundation-comms.defaultsession.md) | The default implementation for the Session interface. |
 |  [SocketMessageHandler](./foundation-comms.socketmessagehandler.md) | The Socket message handler definition. |
 |  [SocketObservable](./foundation-comms.socketobservable.md) | Observable that wraps a WebSocketSubject and provides an Observable interface for sending and receiving messages. |
 |  [SocketSubject](./foundation-comms.socketsubject.md) | Subject that wraps a WebSocketSubject and provides a Subject interface for sending and receiving messages. |
