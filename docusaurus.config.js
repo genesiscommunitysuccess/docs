@@ -60,7 +60,7 @@ module.exports = {
             // Redirect from /server-modules/team/X to /server/team/X
             return [existingPath.replace('/server', '/server-modules')];
           }
-          if (existingPath.includes('/web') && !existingPath includes('/tags')) {
+          if (existingPath.includes('/web') && !existingPath.includes('/tags')) {
             // Redirect from /front-end/team/X to /web/team/X
             return [existingPath.replace('/web', '/front-end')];
           }
@@ -102,16 +102,16 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           remarkPlugins: [require('mdx-mermaid')],
           includeCurrentVersion: BUILD_NEXT,
-          versions: {
+          /*versions: {
             current: {
               label: 'Current',
-              path: '',
+              //path: '',
             },
             previous: {
               label: 'Previous',
-              path: 'previous-versions', // Adjust this path as needed
+              //path: 'previous-versions', // Adjust this path as needed
             },
-          },
+          },*/
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
