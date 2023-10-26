@@ -77,6 +77,7 @@ module.exports = {
     }],
     'docusaurus-plugin-matomo',
     './plugins/webpack-options',
+    './plugins/disable-md-links',
   ],
   presets: [
     [
