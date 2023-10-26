@@ -7,6 +7,7 @@ const GTM_ID = process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, pr
 const DEV_ANALYTICS = 'https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS_dev_faea79accbcd255c7f124004.js';
 const PROD_ANALYTICS = 'https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS.js';
 const MATOMO_URL = GTM_ID === 'GTM-5GTR43J' ? DEV_ANALYTICS : PROD_ANALYTICS;
+const path = require('path');
 
 module.exports = {
   title: 'Low-code Platform For Financial Markets',
@@ -41,6 +42,7 @@ module.exports = {
     },
   ],
   plugins: [
+    './plugins/customRoutingPlugin',
     [
       '@docusaurus/plugin-client-redirects',
       {
@@ -55,6 +57,15 @@ module.exports = {
           }
           return undefined; // Return a false value: no redirect created
         },
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'archives',
+        path: 'archives',
+        routeBasePath: 'archives',
+        sidebarPath: require.resolve('./sidebarsArchives.js'),
       },
     ],
     [
@@ -114,7 +125,7 @@ module.exports = {
     },
     navbar: {
       items: [
-        { type: 'doc', docId: 'getting-started/introduction', label: 'Learning' },
+        { type: 'doc', docId: 'getting-started/introduction', label: 'Learning'},
         { type: 'doc', docId: 'database/database-landing', label: 'Database' },
         { type: 'doc', docId: 'server/server-modules', label: 'Server' },
         { type: 'doc', docId: 'web/front-end', label: 'Web' },

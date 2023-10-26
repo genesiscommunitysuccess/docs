@@ -32,7 +32,7 @@ To create a Streamer Client:
 </process>
 ```
 
-For more information on the above process tags, see the page on [configuring runtime processes](03_server/02_data-server/05_configuring-runtime.md).
+For more information on the above process tags, see the page on [configuring runtime processes](server/data-server/configuring-runtime).
 
 2. Create a Kotlin script file named **{app-name}-streamer-client.kts** under **jvm/{app-name}-script-config**. Add the following information:
     * A Streamer Client name
