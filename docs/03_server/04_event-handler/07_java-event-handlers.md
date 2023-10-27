@@ -24,8 +24,10 @@ We recommend using **Kotlin** to implement Event Handlers.
 
 To work with a Java Event Handler, there are two initial requirements:
 
-- In your -application_**-script-config** folder, you must create an empty folder called **src/main/java**. This ensures that the Java file will be compiled.
-- You must create the Java file for the Event Handler in the folder **src/main/java/resources/scripts**.
+- In your _application_**-script-config/src/main/** folder, you must create an empty folder called **java**. This ensures that the Java file will be compiled.
+- You must create the Java file for the Event Handler in the folder **src/main/resources/scripts**.
+
+![](/img/java-event-handlers.png)
 
 ## A simple example of a Java Event Handler
 
