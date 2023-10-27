@@ -127,12 +127,15 @@ module.exports = {
           remarkPlugins: [require('mdx-mermaid')],
           includeCurrentVersion: BUILD_NEXT,
           versions: {
-            'OCT 23': {
-              'label': 'Current'
-            },
-            '2023.1': {
+            'current': {
+              'label': 'Current',
               'banner': 'none',
-              'label': 'Previous'
+              'path': '.'
+            },
+            'OCT 23': {
+              'banner': 'none',
+              'label': 'Previous',
+              'path': 'previous'
             },
           },
         },
@@ -159,7 +162,7 @@ module.exports = {
     },
     navbar: {
       items: [
-        { type: 'docsVersionDropdown', className: 'version-menu ' + (BUILD_NEXT && !SHOW_NEXT ? 'version-menu--hide-next' : '') },
+        { type: 'docsVersionDropdown', className: 'version-menu ' },
         { type: 'doc', docId: 'getting-started/introduction', label: 'Learning' },
         { type: 'doc', docId: 'database/database-landing', label: 'Database' },
         { type: 'doc', docId: 'server/server-modules', label: 'Server' },
