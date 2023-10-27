@@ -132,7 +132,7 @@ module.exports = {
               'banner': 'none',
               'path': '.'
             },
-            'OCT 23': {
+            'previous': {
               'banner': 'none',
               'label': 'Previous',
               'path': 'previous'
