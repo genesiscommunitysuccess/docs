@@ -9,16 +9,6 @@ const DEV_ANALYTICS = 'https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/co
 const PROD_ANALYTICS = 'https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS.js';
 const MATOMO_URL = GTM_ID === 'GTM-5GTR43J' ? DEV_ANALYTICS : PROD_ANALYTICS;
 
-/**
- * For local / debug purposes.
- * If truthy it will include the current version (labeled as Next) in the version selector dropdown.
-**/
-const SHOW_NEXT = !!process.env.SHOW_NEXT
-/**
- * The above controls whether the user can see 'Next' in the dropdown, but this controls whether we actually build
- * the Next version of the docs at all. We do *not* want Next available on the live site, but do everywhere else
-**/
-const BUILD_NEXT = SHOW_NEXT || process.env.BRANCH === undefined || process.env.BRANCH !== 'master'
 
 module.exports = {
   title: 'Low-code Platform For Financial Markets',
@@ -125,14 +115,15 @@ module.exports = {
           routeBasePath,
           sidebarPath: require.resolve('./sidebars.js'),
           remarkPlugins: [require('mdx-mermaid')],
-          includeCurrentVersion: BUILD_NEXT,
+          lastVersion:'current',
           versions: {
-            'OCT 23': {
-              'label': 'Current'
-            },
-            '2023.1': {
+            current: {
+              'label': 'Current',
               'banner': 'none',
-              'label': 'Previous'
+            },
+            previous: {
+              'banner': 'none',
+              'label': 'Previous',
             },
           },
         },
@@ -159,7 +150,7 @@ module.exports = {
     },
     navbar: {
       items: [
-        { type: 'docsVersionDropdown', className: 'version-menu ' + (BUILD_NEXT && !SHOW_NEXT ? 'version-menu--hide-next' : '') },
+        { type: 'docsVersionDropdown', className: 'version-menu ' },
         { type: 'doc', docId: 'getting-started/introduction', label: 'Learning' },
         { type: 'doc', docId: 'database/database-landing', label: 'Database' },
         { type: 'doc', docId: 'server/server-modules', label: 'Server' },

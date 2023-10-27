@@ -5,7 +5,7 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "build": "npm run copy:dsc && docusaurus build",
-    "build:next": "SHOW_NEXT=true npm run copy:dsc && docusaurus build",
+    "build-main": "docusaurus build",
     "build:base_url": "BASE_URL=/docs/npm run copy:dsc && docusaurus build",
     "build:production": "BASE_URL=/docs/ BRANCH=master npm run copy:dsc && docusaurus build",
     "clear": "docusaurus clear",
@@ -13,7 +13,6 @@
     "serve": "docusaurus serve",
     "start": "docusaurus start --port 8080 --host 0.0.0.0",
     "start:copy-docs": "cross-env COPY_DOCS=true npm run start",
-    "start:next": "SHOW_NEXT=true docusaurus start --port 8080 --host 0.0.0.0",
     "swizzle": "docusaurus swizzle",
     "postinstall": "patch-package --error-on-fail && npm run generate:iife && npm run hack:iife",
     "generate:iife": "genx build -b rollup",
