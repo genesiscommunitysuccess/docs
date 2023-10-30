@@ -351,6 +351,35 @@ DbMon:BROKER>search MODIFIED_DATE>"20221008-14:20" && COUNTRY_CODE=='IRL'
 DbMon:BROKER>search MODIFIED_DATE=="20221008" || COUNTRY_CODE=='IRL'
 ```
 
+### Searching for Timestamps
+
+As mentioned [here](../../02_database/01_fields-tables-views/05_timestamps.md), timestamps are made of a timestamp in millis, the sequence id and the node id. For example,
+**2023-01-01 00:00:00.000 (n:0, s:1)**.
+
+Timestamps can be searched for using the same formats as Datetime. Those formats are:
+- yyyyMMdd-hh:mm:ss.SSS
+- yyyyMMdd-hh:mm:ss
+- yyyyMMdd-hh:mm
+- yyyyMMdd
+- yyyy-MM-dd
+
+To search for timestamps you must use ranges and cannot use specific values. For example, if you wanted to search for records with a timestamp of **2023-01-01 00:00:00.000** rather than searching:
+
+```
+search TIMESTAMP=="20230101"
+```
+
+you could do:
+```
+search TIMESTAMP>"20221231" && TIMESTAMP<"20230102"
+```
+
+You could also search for all records with a timestamp after a specific time. For example:
+
+```
+search TIMESTAMP>"20230817-06:12:52.313"
+```
+
 ### Counting rows (records)
 
 To discover how many rows of data there are in the currently selected table or view, use the [`count`](#dbmon-commands) command. For large database entities, this could take some time to return:
