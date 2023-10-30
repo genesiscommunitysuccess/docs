@@ -6,7 +6,7 @@ Documentation is written using [Markdown format](markdown-syntax.md).
 
 Now our community team is accepting contributions from all community members of genesis. All accepted contribution will be published to our [official website](https://learn.genesis.global/).
 
-For more details about what [types of contribution](./Type-of-contribution.md) we are accepting, please follow the link. 
+Please check our [Contributions guidr](https://www.notion.so/genesisglobal/Contributing-new-documentation-75953fb245f246ff872789035451a0c4) on Notion. 
 
 If you are willing to contribute, please follow the links below:
 - [Internal contributor](./how-to-contribute-Internal.md) if you are an internal contributor currently working at Genesis.
@@ -29,8 +29,6 @@ npm run start
 ```
 
 This command starts a local development server and opens a browser window. Most changes are reflected live without having to restart the server.
-
-Note that you need to prefix your url with `/next/` in order to see your updated changes locally. For example, `http://localhost:8080/operations/containerisation/healthchecks/` shows the most recently published docs version.  To view the next version - the one that will be published at the next platform release, add `/next/` to beginning of the url. For example, `http://localhost:8080/next/operations/containerisation/healthchecks/`
 
 ### Build
 

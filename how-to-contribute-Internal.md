@@ -5,9 +5,7 @@ Documentation is written using [Markdown format](markdown-syntax.md).
 ---
 
 
-The Genesis platform team has opened the docs repository and encourages everyone to be part of maintaining it.
-
-**Note** To be able to contribute to the documentation, please make sure you have access to the [docs repository](https://github.com/genesiscommunitysuccess/docs)
+To be able to contribute to the documentation, please make sure you have access to the [docs repository](https://github.com/genesiscommunitysuccess/docs)
 
 ## Guidance
 Below you ll find the steps to contribute to the documentation. please remember to follow the [guidelines](./Type-of-contribution.md)
@@ -41,10 +39,6 @@ Once your changes are done, it is extremely important to build your local websit
 
 After all changes have been done and you have checked a local build, it is time to create your [pull request](https://github.com/genesiscommunitysuccess/docs/compare). We have a simple template to create a pull request.
 
-**Note**: You don`t need a Jira number. But make sure you can answer those main questions:
-- Have you changed all relevant versions?
-- Have you made sure the links are safe?
-
 ---
 
-After you have followed these instructions, your request will be reviewed by the community team. Once your changes are accepted, approved and merged, you will be able to see the changes within a 1 hour. Thank you very much for your contribution. We appreciate it.
+After you have followed these instructions, your request will be reviewed by the Platform Learn Team team. Once your changes are accepted, approved and merged, you will be able to see the changes within a 1 hour. Thank you very much for your contribution. We appreciate it.
