@@ -4,17 +4,17 @@ Documentation is written using [Markdown format](markdown-syntax.md).
 
 ## Contribution
 
-Now our community team is accepting contributions from all community members of genesis. All accepted contribution will be published to our [official website](https://learn.genesis.global/).
+Now our community team is accepting contributions from all community members of Genesis. All accepted contributions will be published on our [official website](https://learn.genesis.global/).
 
 Please check our [Contributions guidr](https://www.notion.so/genesisglobal/Contributing-new-documentation-75953fb245f246ff872789035451a0c4) on Notion. 
 
 If you are willing to contribute, please follow the links below:
 - [Internal contributor](./how-to-contribute-Internal.md) if you are an internal contributor currently working at Genesis.
-- [External contributor](./how-to-contribute-external.md) if you are an external contributors not currently working at Genesis.
+- [External contributor](./how-to-contribute-external.md) if you are an external contributor not currently working at Genesis.
 
 ## Stack Overflow
 
-We have a Stack Overflow community, take a look if you have a [Genesis Login](https://stackoverflowteams.com/users/login?ssrc=channels&returnurl=%2fc%2fgenesis-global%2fquestions) or click here to get a [new genesis login](https://genesis.global/contact-us/). We are encouraging our teams, costumers and contributors to participate to this community. 
+We have a Stack Overflow community. If you have a [Genesis Login](https://stackoverflowteams.com/users/login?ssrc=channels&returnurl=%2fc%2fgenesis-global%2fquestions), take a look. Or, click here to get a [new genesis login](https://genesis.global/contact-us/). We are encouraging our teams, customers and contributors to participate in this community. 
 
 ## Installation
 
