@@ -73,3 +73,13 @@ The following examples in this section assume you have the following fields and 
     }
 ```
 :::
+
+## Open API
+
+:::important
+
+Open API support was introduced in version 7.0 of the Genesis platform.
+
+:::
+
+To help with external integration and testing, [Open API](../../integration/open-api/) specifications are generated for each request server resource.

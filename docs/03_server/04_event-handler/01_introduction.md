@@ -1,5 +1,5 @@
 ---
-title: 'Event Handler - introduction'
+title: 'Event Handler'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [server, event handler, introduction]
@@ -9,6 +9,7 @@ tags:
   - introduction
 ---
 
+## Introduction
 
 The Genesis low-code platform has a real-time event-driven architecture.
 
@@ -48,3 +49,13 @@ We recommend using **Kotlin** to implement Event Handlers.
 :::
 
 All events created in the Event Handler are exposed as HTTP/HTTPs [REST endpoints](../../../server/integration/rest-endpoints/introduction/) automatically by the Genesis platform. You can use any http client, such as postman, to access these custom endpoints.
+
+## Open API
+
+:::important
+
+Open API support was introduced in version 7.0 of the Genesis platform.
+
+:::
+
+To help with external integration and testing, [Open API](../../integration/open-api/) specifications are generated for each event handler resource.

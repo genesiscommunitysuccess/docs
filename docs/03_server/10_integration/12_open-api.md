@@ -1,7 +1,7 @@
 ---
-title: 'Open API - introduction'
-sidebar_label: 'Introduction'
-id: introduction
+title: 'Open API'
+sidebar_label: 'Open API'
+id: open-api
 keywords: [server, integration, open api, introduction]
 tags:
   - server
@@ -20,13 +20,13 @@ The Genesis low-code platform supports the use of [Open API](https://swagger.io/
 
 Genesis makes this easy to configure and set up, and an Open API specification is generated for the following resources:
 
-* [Request Server](../../../../server/request-server/basics/)
+* [Request Server](../../../../server/request-server/introduction/)
   * The specification is generated for every GPAL request server.
-* [Event Handler](../../../../server/event-handler/basics/)
+* [Event Handler](../../../../server/event-handler/introduction/)
   * The specification is generated for each GPAL event handler.
-* [Custom Endpoints](../../custom-endpoints/basics/)
+* [Custom Endpoints](../custom-endpoints/introduction/)
   * The specification is generated for each GPAL Custom Endpoints.
-  * The standard specification can be augmented using the `openapi { ... }` DSL, [see here for details](../../custom-endpoints/advanced/#openapi).
+  * The standard specification can be augmented using the `openapi { ... }` DSL, [see here for details](../custom-endpoints/advanced/#openapi).
 
 ## Accessing Open API specification
 
