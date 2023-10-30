@@ -6,7 +6,7 @@ The Genesis documentation is written using [Markdown format](markdown-syntax.md)
 
 Thank you for your interest in contributing to the Genesis documentation. The Genesis platform team now provides open access to the docs repository, and we encourage everyone to be part of it.
 
-Once you are an external contributor, you just need to follow the steps below to add your contribuitons to the [official website](https://learn.genesis.global).
+Follow the steps below to add your contribuitons to the [official website](https://learn.genesis.global).
 
 
 ## 1. Create a fork
@@ -44,4 +44,4 @@ After all changes have been done and you have checked your local build, it is ti
    
 ---
 
-After you have followed these instructions, your request will be reviewed by the Genesis Platform Learn team. Once your changes have been  accepted, approved and merged, you will be able to see the changes online within one hour. Thank you very much for your contribution. We appreciate it.
+After you have followed these instructions, your request will be reviewed by the Genesis Platform Learn team. Once your changes have been accepted, approved and merged, you will be able to see the changes online within one hour. Thank you very much for your contribution. We appreciate it.
