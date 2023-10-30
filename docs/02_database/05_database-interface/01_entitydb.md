@@ -21,13 +21,13 @@ entity. It supports read operations for views and tables and write operations fo
 
 The entity db differs from the generated repositories in that it can handle any table and most view entities. It differs from `RxDb` in that all operations are type-safe.
 
-The entity db is available in the kotlin Event Handler. 
+The entity db is available in the Kotlin Event Handler. 
 
 
 It can be injected in Kotlin using `AsyncEntityDb` and in Java using `RxEntityDb`.
 
 There are three versions available of the entity db:
-* `AsyncEntityDb` - this API support kotlin coroutines 
+* `AsyncEntityDb` - this API supports Kotlin coroutines 
 * `SyncEntityDb` - this API is blocking 
 * `RxEntityDb` - this API supports RxJava
 
@@ -39,15 +39,17 @@ The `SyncEntityDb` API was introduced in version 7.0 of the Genesis platform.
 
 ## Which version to use?
 
-The version to use depends on the context. It depends on whether you are writing code in kotlin or java, and also
-whether there is a need to write asynchronous (async) or synchronous (blocking) code.
+The version to use depends on:
+
+- whether you are writing code in Kotlin or Java
+- whether there is a need to write asynchronous (async) or synchronous (blocking) code
 
 |        | Asynchronous    | Blocking       |
 |--------|-----------------|----------------|
 | Kotlin | `AsyncEntityDb` | `SyncEntityDb` |
 | Java   | `RxEntityDb`    | `SyncEntityDb` |
 
-For more infomration on the differences between the APIs, see [Types of API](../../../database/types-of-api/types-of-API/).
+For more information on the differences between the APIs, see [Types of API](../../../database/types-of-api/types-of-API/).
 
 |                                                                                                        | [EntityDb](../../../database/database-interface/entity-db/)                                                     |
 |--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
@@ -69,8 +71,7 @@ For more infomration on the differences between the APIs, see [Types of API](../
 | Available in [Custom Request Servers](../../../server/request-server/advanced/#custom-request-servers) | ✔️                                                                                                      |
 
 
-When referring to indices in the database operations, the database accepts _index classes_ or _entity class_
-in combination with _index references_. For comparison:
+When referring to indices in the database operations, the database accepts _index classes_ or _entity class_ in combination with _index references_. For comparison:
 
 ## Type convention
 
@@ -90,7 +91,7 @@ in combination with _index references_. For comparison:
 | `KClass<E>`                        | The Kotlin class reference for E  | `Trade::class` |
 
 
-## Read Operations
+## Read operations
 
 ### get
 
