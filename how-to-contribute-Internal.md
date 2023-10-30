@@ -21,7 +21,7 @@ To access the docs repository, follow [this link](https://github.com/genesiscomm
 
 ### 3. Make your changes
 
-Now that you have your branch locally, you can make your changes. **Remember** to change all bot the Current and Previous wherever this is relevant. 
+Now that you have your branch locally, you can make your changes. **Remember** to change both the Current and Previous wherever this is relevant. 
 
 **Tip**: you can easily search all the errors across all versions using the search tool in your preferred code editor.
 
