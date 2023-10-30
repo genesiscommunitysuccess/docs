@@ -21,7 +21,49 @@ entity. It supports read operations for views and tables and write operations fo
 
 The entity db differs from the generated repositories in that it can handle any table and most view entities. It differs from `RxDb` in that all operations are type-safe.
 
-The entity db is available in the kotlin Event Handler. It can be injected in Kotlin using `AsyncEntityDb` and in Java using `RxEntityDb`.
+The entity db is available in the kotlin Event Handler. 
+
+
+It can be injected in Kotlin using `AsyncEntityDb` and in Java using `RxEntityDb`.
+
+There are three versions available of the entity db:
+* `AsyncEntityDb` - this API support kotlin coroutines 
+* `SyncEntityDb` - this API is blocking 
+* `RxEntityDb` - this API supports RxJava
+
+## Which version to use?
+
+The version to use depends on the context. It depends on whether you are writing code in kotlin or java, and also 
+whether there is a need to write asynchronous (async) or synchronous (blocking) code. 
+
+|        | Asynchronous    | Blocking       |
+|--------|-----------------|----------------|
+| Kotlin | `AsyncEntityDb` | `SyncEntityDb` |
+| Java   | `RxEntityDb`    | `SyncEntityDb` |
+
+The difference between blocking and async code is that if the code needs to wait on the database, in
+blocking code, the thread will block until the database responds. In async code, the thread will not block,
+rather it will resume once the database responds. The general rule is that blocking code is easier to write, and 
+async code is more performant. Another thing to bear in mind is that within a single code path, you should not 
+mix blocking and async code in a single code path. Doing so can lead to unexpected deadlocks.
+
+We have to flavours of async API, kotlin coroutines and RxJava. 
+
+Coroutines are a language feature of kotlin, and allow you to write async code in a blocking style. Functions are 
+marked as `suspend`, and can be called from other functions marked as `suspend` or from a context. However, 
+as this is a kotlin language feature, these functions cannot be called from java. 
+
+RxJava is a library that implements the reactive programming paradigm. It works with Java's type system, providing 
+generic return types that callers can then subscribe to and receive results. 
+
+Within the framework; especially in GPAL, a coroutine context is always provided, therefore in order to avoid mixing 
+blocking and async code, we recommend using the `AsyncEntityDb`.
+
+In all other cases it depends on your requirements. Especially when writing in java, RxJava code can be very verbose 
+and difficult to read. In these cases, we recommend using the `SyncEntityDb` when performance is not a concern. If 
+performance is a concern, we recommend using kotlin and the `AsyncEntityDb`. However, if this is not an option, then 
+the `RxEntityDb` is the best option.
+
 
 |                                                                                                        | [EntityDb](../../../database/database-interface/entity-db/)                                                     |
 |--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
@@ -81,7 +123,7 @@ The following overloads exist for get; `fields` is a `Set<String>`.
 
 #### Syntax
 
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java - RxJava', value: 'java', }, { label: 'Java - Blocking', value: 'java-sync', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
@@ -117,6 +159,22 @@ final var trade = db.get(trade,Trade.ByTypeId.Companion)
 // or you can access the index class from the entity
 final var trade = db.get(trade.byTypeId())
         .blockingGet();
+```
+</TabItem>
+<TabItem value="java-sync">
+
+```java
+// we can look up trades by passing in a unique index class:
+final var trade = db.get(Trade.byId("TRADE_1"))
+
+// a trade object with the primary key set 
+final var trade = db.get(trade)
+
+// a trade object and a reference to unique index
+final var trade = db.get(trade,Trade.ByTypeId.Companion)
+
+// or you can access the index class from the entity
+final var trade = db.get(trade.byTypeId())
 ```
 </TabItem>
 </Tabs>
