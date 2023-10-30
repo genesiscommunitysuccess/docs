@@ -10,7 +10,7 @@ tags:
   - types
 ---
 
-The version to use depends on:
+The API that you choose to use depends on:
 
 - whether you are writing code in Kotlin or Java
 - whether there is a need to write asynchronous (async) or synchronous (blocking) code
