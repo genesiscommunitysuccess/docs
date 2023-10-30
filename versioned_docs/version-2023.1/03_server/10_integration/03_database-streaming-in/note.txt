@@ -1,2 +1,0 @@
-We've decided not to migrate this content as it has been superseded by the new Data Pipeline DSL whose documentation is
-in pretty good shape. I've left the section in for now just to avoid renumbering a load of folders.
