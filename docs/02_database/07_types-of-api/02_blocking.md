@@ -12,18 +12,18 @@ tags:
   - blocking
 ---
 
-The blocking - or sync - API is the simplest API to access the genesis database to use.
+The blocking - or sync - API is the simplest API for accessing the Genesis database.
 
 ## Return values
 
-Get operations in this API are nullable. When getting a record, we should check if it is null
+Get operations in this API are nullable. When getting a record, you must check if it is null:
 
 ```kotlin
 val trade: Trade? = db.get(Trade.byId("TRADE_1"))
 if (trade == null) throw RuntimeException("Unable to find trade")
 ```
 
-Write operations return either a single return object, or a list of result object, for the `...All` operations,
+Write operations return either a single return object, or a list of result objects, for the `...All` operations,
 e.g. `updateAll`. These are never nullable.
 
 ```kotlin
@@ -37,9 +37,8 @@ val inserts: List<InsertResult<Trade>> = db.insertAll(myTrades)
 val trades: List<Trade> = db.getBulk(TRADE)
 ```
 
-Please note that this will load the entire table into memory, which is fine for smaller table and ranges, however, for
-large tables and ranges the `stream()` function is provided on the database. This will create a `Stream` that will 
-stream the data, rather than load it all in memory:
+Note that this will load the entire table into memory. This is fine for smaller tables and ranges. However, for
+large tables and ranges, the `stream()` function is provided on the database. This will create a `Stream` that streams the data, rather than loading it all in memory:
 
 ```kotlin
 val trades: Stream<Trade> = db.stream().getBulk(TRADE)
@@ -50,6 +49,4 @@ try {
 }
 ```
 
-Please note that while this is more memory efficient, the database connection will be kept open until the stream 
-is closed. As in the above example, always close the stream. Not closing these streams will lead to your application
-running out of database connections.
+While this is more memory-efficient, the database connection will be kept open until the stream is closed. As in the above example, always close the stream. Not closing these streams will lead to your application running out of database connections.
