@@ -243,7 +243,7 @@ Starting with the server, set up the USER and USER_ATTRIBUTES records for the sy
 If you are not sure how to read and write information from the Genesis database, see reference page covering the [`DbMon`](../../../operations/commands/server-commands/#dbmon-script) and [`SendIt`](../../../operations/commands/server-commands/#sendit-script) commands.
 :::
 
-Set two new key values in **site-specific/cfg/genesis-system-definition.kts** file in systemDefinition-global block This enables the COUNTERPARTY table and COUNTERPARTY_ID field to become part of the generic permissions system:
+Set two new key values in **alpha-config/src/main/resources/cfg/alpha-system-definition.kts** file in systemDefinition-global block This enables the COUNTERPARTY table and COUNTERPARTY_ID field to become part of the generic permissions system:
 
 ```kotlin {6,7}
 package genesis.cfg
