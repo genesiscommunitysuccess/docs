@@ -20,9 +20,9 @@ The Genesis low-code platform supports the use of [Open API](https://swagger.io/
 
 Genesis makes this easy to configure and set up, and an Open API specification is generated for the following resources:
 
-* [Request Server](../../../../server/request-server/introduction/)
+* [Request Server](../../../server/request-server/introduction/)
   * The specification is generated for every GPAL request server.
-* [Event Handler](../../../../server/event-handler/introduction/)
+* [Event Handler](../../../server/event-handler/introduction/)
   * The specification is generated for each GPAL event handler.
 * [Custom Endpoints](../custom-endpoints/introduction/)
   * The specification is generated for each GPAL Custom Endpoints.
