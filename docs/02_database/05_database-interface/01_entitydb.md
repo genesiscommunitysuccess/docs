@@ -31,6 +31,12 @@ There are three versions available of the entity db:
 * `SyncEntityDb` - this API is blocking 
 * `RxEntityDb` - this API supports RxJava
 
+:::important
+
+The `SyncEntityDb` API was introduced in version 7.0 of the Genesis platform.
+
+:::
+
 ## Which version to use?
 
 The version to use depends on the context. It depends on whether you are writing code in kotlin or java, and also 
