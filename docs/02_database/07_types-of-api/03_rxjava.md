@@ -1,5 +1,5 @@
 ---
-title: 'Types of API - RxJava API'
+title: 'Types of API - RxEntityDb'
 sidebar_label: 'RxJava'
 id: rxjava
 keywords: [database, types of api, api, types, rxjava]
