@@ -41,10 +41,9 @@ The Open API specification is generated at runtime and is available at the follo
 Full specification: 
 `https://{server-host}/gwf/open-api/spec/`
 
-Downloadable specification: 
-`https://{server-host}/gwf/open-api/spec.yaml`
-
 Service specific specification: 
 `https://{server-host}/gwf/open-api/spec/{service-name}`
 
 You can verify the specification by copying the contents into [Swagger Editor](https://editor-next.swagger.io/)
+
+For an example specification, [please see here](pathname:///file/openapi-sample.yaml).
