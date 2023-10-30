@@ -128,6 +128,9 @@ dataServer {
         linearScan = true
         excludedEmitters = listOf("PurgeTables")
         enableTypeAwareCriteriaEvaluator = true
+        serializationType = SerializationType.KRYO // Available from version 7.0.0 onwards
+        serializationBufferMode = SerializationBufferMode.ON_HEAP // Available from version 7.0.0 onwards
+        directBufferSize = 8096 // Available from version 7.0.0 onwards
     }
     query("SIMPLE_QUERY", SIMPLE_TABLE) {
         config {
@@ -162,6 +165,26 @@ lmdbAllocateSize = 2.GIGA_BYTE()
 // or
 lmdbAllocateSize = 512.MEGA_BYTE()
 ```
+
+`serializationType` (available from GSF version 7.0.0)
+
+This sets the serialization approach used to convert query rows into bytes and viceversa. There are two options available: SerializationType.KRYO and SerializationType.FURY
+
+* The KRYO option is the default setting if `serializationType` is left undefined. It uses the [Kryo library](https://github.com/EsotericSoftware/kryo).
+* The FURY option uses the [Fury library](https://github.com/alipay/fury) instead. Internal tests show that Fury can serialize and deserialize row objects 13-15x quicker than Kryo in our current dataserver implementation, which leads to faster LMDB read/write operations (i.e. up to 2x in some cases). This performance improvement has a great impact on the latency incurred when requesting rows from a dataserver query, whether this happens as part of the first subscription message (i.e. DATA_LOGON messages) or subsequent row request messages (i.e. MORE_ROWS messages). Unfortunately, the serialized byte array size of a Fury object can be 10-15% larger than a Kryo object, so there is a small penalty to pay for using this option.
+
+`serializationBufferMode` (available from GSF version 7.0.0)
+
+This option changes the buffer type used to read/write information from/to LMDB. There are two options available: SerializationBufferMode.ON_HEAP and SerializationBufferMode.OFF_HEAP.
+
+* The ON_HEAP option is the default setting if `serializationBufferMode` is left undefined. It uses a custom cache of Java HeapByteBuffer objects that exist within the JVM addressable space.
+* The OFF_HEAP option uses DirectByteBuffer objects instead, so memory can be addressed directly to access LMDB buffers natively in order to write and read data. OFF_HEAP buffers permit zero-copy serialization/deserialization to LMDB, and these type of buffers are generally more efficient as they allow Java to exchange bytes directly with the operating system for I/O operations. OFF_HEAP buffer support in its current implementation requires the buffer size to be specified ahead of time (i.e. see `directBufferSize` setting), which could be problematic problems if the serialized query row object size is not known ahead of time.
+
+`directBufferSize`
+
+This option sets the buffer size used by the `serializationBufferMode` option when the `SerializationBufferMode.OFF_HEAP` setting is configured.
+
+By default, the size is 8096 bytes.
 
 ### Query-level global settings
 The following settings can be applied at a query-level.
