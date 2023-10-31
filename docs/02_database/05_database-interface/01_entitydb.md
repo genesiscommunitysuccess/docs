@@ -26,7 +26,8 @@ The entity db is available in the Kotlin Event Handler.
 
 It can be injected in Kotlin using `AsyncEntityDb` and in Java using `RxEntityDb`.
 
-There are three versions available of the entity db:
+There are three versions of the entity db:
+
 * `AsyncEntityDb` - this API supports Kotlin coroutines 
 * `SyncEntityDb` - this API is blocking 
 * `RxEntityDb` - this API supports RxJava
