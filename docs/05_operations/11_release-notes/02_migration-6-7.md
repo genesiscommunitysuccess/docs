@@ -40,7 +40,7 @@ afterEvaluate {
         }
 ```
 
-![](/img/java-refs.png)
+![](/img/gradle-properties-copyd.png)
 
 3. In the ** server/jvm/-application_-site-specific/build.gradle.kts ** file, add `copyDependencies`.
 
