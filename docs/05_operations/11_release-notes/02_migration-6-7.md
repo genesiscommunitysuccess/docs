@@ -63,7 +63,7 @@ distTar {
 ![](/img/disttar.png)
 
 ## Finishing
-After modifying the gradle files, open a terminal in the folder where you have your project; then run gradle wrapper:
+After modifying the gradle files, open a terminal in the folder where you have your project; then upgrade the gradle wrapper:
 
 ```
 gradle wrapper --gradle-version=8.3
