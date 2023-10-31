@@ -52,7 +52,7 @@ copyDependencies {
 
 ![](/img/java-refs.png)
 
-4. In the file **server/jvm/-application_- distribution/build.gradle.kts** file add the `distTar`:
+4. In the file **server/jvm/-application_- distribution/build.gradle.kts** file, configure the `distTar` task:
 
 ```
 distTar {
