@@ -24,7 +24,7 @@ authVersion=7.0.0
 deployPluginVersion=7.0.0
 ```
 ## Modify the build
-1. Update your **server/jvm/build.gradle.kts** file so that it references Java 17 and Kotlin 1.9.
+1. Update your **server/jvm/build.gradle.kts** file so that it references Java 17 (including compiler options) and Kotlin 1.9.
 
 ![](/img/java-refs.png)
 
