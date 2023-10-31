@@ -37,6 +37,23 @@ Next, we'll install the Genesis Foundation packages, along with supporting libra
 npm install --save @genesislcap/alpha-design-system lodash-es
 ```
 
+## Updating TypeScript Configuration
+
+Ater installing the Genesis Foundation packages, it's important to update your TypeScript configuration. Open your project’s `tsconfig.json` file.
+
+Add the skipLibCheck property under the compilerOptions section and set its value to true.
+
+```json
+{
+  "compilerOptions": {
+    // ... other options ...
+    "skipLibCheck": true
+  }
+}
+```
+
+This change will take effect the next time you run your build process. Keep in mind that while this setting is helpful for development, it's advisable to ensure thorough type checking in other environments, like testing or production, to catch potential issues early.
+
 ## Using the components
 
 With all the basic pieces in place, let's run our app in dev mode with `ng serve --open`. The Angular CLI should build your project and make it available on localhost. Right now, it displays a basic welcome message, since we haven't added any code or interesting HTML. Let's change that.
@@ -80,15 +97,27 @@ export class AppComponent {
 }
 ```
 
-To allow an NgModule to contain Non-Angular element names, add the following code in your `app/app.module.ts` file:
+To allow an NgModule to contain Non-Angular element names and to enable form-related features in your Angular application, some additions to your `app/app.module.ts` file are necessary.
+
+Firstly, you will need to import the FormsModule from the @angular/forms package. This module is crucial for template-driven forms in Angular, enabling the use of directives like `ngModel`.
+Additionally, to support Non-Angular element names, you must include the CUSTOM_ELEMENTS_SCHEMA.
+
+Update your `app/app.module.ts` with this:
 
 ```ts 
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({  
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+ imports: [
+    // ... other modules ...
+    FormsModule
+  ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+  // ... other NgModule properties ...
 }) 
 ```
+With these changes, your Angular module will be configured to not only accommodate Non-Angular element names but also harness the full capabilities of Angular’s template-driven forms.
 
 To add a splash of style, replace the `app/app.component.css` file contents with this:
 
