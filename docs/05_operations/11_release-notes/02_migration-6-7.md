@@ -28,7 +28,7 @@ deployPluginVersion=7.0.0
 
 ![](/img/java-refs.png)
 
-2. Add the `copyDependencies` to this file.
+2. configure the `copyDependencies` task in this file:
 
 ```
 afterEvaluate {
@@ -42,7 +42,7 @@ afterEvaluate {
 
 ![](/img/gradle-properties-copyd.png)
 
-3. In the ** server/jvm/-application_-site-specific/build.gradle.kts ** file, add `copyDependencies`.
+3. In the ** server/jvm/-application_-site-specific/build.gradle.kts ** file, configure the `copyDependencies` task:
 
 ```
 copyDependencies {
