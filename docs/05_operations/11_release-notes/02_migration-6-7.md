@@ -15,7 +15,7 @@ Version 7.0.0 of the Genesis platform requires Java version 17 and gradle versio
 If you have an existing application running on version 6 of the Genesis platform and you are using gradle, these instructions will enable you to migrate to version 7 of the platform without difficulties.
 For applications running on older versions of the platform, please contact your Genesis representative.
 :::
-## Upgrade references to the artifacts.
+## Upgrade references to the artifacts
 To migrate an existing application to version 7.0.0:
 1. In your **gradle.properties** file, bump up `genesisVersion` and all modules in the application to 7.0.0.
 ```
@@ -76,5 +76,5 @@ gradle wrapper --gradle-version=8.3
 ```
 
 After you have done this:
--	If everything has worked, go ahead and compile `gradlew assemble`.
+-	If everything has worked, a distribution will be generated - congratulations! You have migrated your application to Genesis 7.
 -	If there are errors, you need to search through the release notes for all your modules to check for breaking changes.
