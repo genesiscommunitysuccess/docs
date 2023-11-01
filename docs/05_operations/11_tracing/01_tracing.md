@@ -8,18 +8,16 @@ tags:
   - tracing
 ---
 
-The Genesis Tracing module enables you to capture tracing for your application through its integration
-with [OpenTelemetry](https://opentelemetry.io/). OpenTelemetry is a vendor-neutral open-source observability framework
-and has become an industry-standard.
+Tracing is the act of following what happens when a request is made to an application. The Genesis Tracing module enables you to generate tracing data for your application through an integration
+with [OpenTelemetry](https://opentelemetry.io/). OpenTelemetry is a vendor-neutral open-source observability framework and has become an industry-standard.
 
-To enable tracing you need to provide the OpenTelemetry java agent to the application's JVM options. You can read more
-about the OpenTelemetry java agent [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation).
-In short, the java agent dynamically injects bytecode to capture telemetry from a number of popular libraries and
-frameworks. Genesis takes advantage of this along with its own manual instrumentation.
+To enable tracing, you need to provide the OpenTelemetry Java agent to your application's JVM options. You can read more
+about the OpenTelemetry Java agent [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation).
+In short, the Java agent dynamically injects bytecode to capture telemetry from a number of popular libraries and frameworks. Genesis takes advantage of this, along with its own manual instrumentation.
 
 ## What's instrumented
 
-The following is currently instrumented:
+The following are currently instrumented:
 
 - Inbound messages over HTTP and WebSockets
 - Inter-process messaging
@@ -35,9 +33,7 @@ code, http method etc. The following Genesis-specific attributes are added to th
 - Username (if present)
 - Payload
 
-### Example
-
-The below shows example values for the Genesis-specific attributes listed previously. Screenshots of traces in Zipkin
+The table below shows example values for the Genesis-specific attributes listed above. Screenshots of traces in Zipkin
 can be seen at the bottom of the page.
 
 | Attribute            | Value                                                                                                                                                                                                                                                                               |
@@ -49,7 +45,7 @@ can be seen at the bottom of the page.
 
 ## Set-up
 
-The OpenTelemetry agent jar is bundled with the Genesis platform in the `lib` folder so, minimally, you need to specify
+The OpenTelemetry agent jar is bundled with the Genesis platform in the **lib** folder so, minimally, you need to specify
 the path to it in the "JVM_OPTIONS" system definition property, like so:
 
 ```kotlin
@@ -59,20 +55,16 @@ item(
 )
 ```
 
-The OpenTelemetry java agent is highly configurable. You can find more information about how to configure
-it [here](https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/).
+The OpenTelemetry Java agent is highly configurable. You can find more information about how to configure it [in the OpenTelemetry documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/).
 
-There are defaults for where the OpenTelemetry java agent exports the data to,
-see [here](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#exporters)
-for more details.
+There are defaults for where the OpenTelemetry Java agent exports the data, see [here](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#exporters) for more details.
 
 By default, the `otel.service.name` property is set to the Genesis process name.
 
 ### Example
 
-As a simple example, if you wanted to export traces to [Zipkin](https://zipkin.io/) then you could specify the below "JVM_OPTIONS". 
-Also note that metrics exporting has been disabled as, by default, the agent will try and export metrics
-which can pollute the logs.
+The simple example below enables you to export traces to [Zipkin](https://zipkin.io/), then you could specify the below "JVM_OPTIONS". 
+Note that **metrics exporting has been disabled**, because, by default, the agent will try and export metrics that can pollute the logs.
 
 ```kotlin
 item(
