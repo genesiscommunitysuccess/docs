@@ -28,7 +28,7 @@ To make use of the metric calls:
 
 ## Set-up (example using SLF4J and GRAPHITE)
 
-In this example, we use a SLF4J log, a Graphite server to capture metrics and a Datadog reporter. Detailed set-up of a Graphite server is beyond the scope of this document, but it can be run in a docker container as described [here](https://registry.hub.docker.com/r/hopsoft/graphite-statsd#!)
+In this example, we use a SLF4J log, a Graphite server to capture metrics, and a Datadog reporter. Detailed set-up of a Graphite server is beyond the scope of this document, but it can be [run in a Docker container](https://registry.hub.docker.com/r/hopsoft/graphite-statsd#!)
 
 ```kotlin
 item(name = "MetricsEnabled", value = "true")
@@ -183,7 +183,7 @@ class UserAuthentication {
 </TabItem>
 </Tabs>
 
-### Gauges and Gauge Counters
+### Gauges and gauge counters
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -325,7 +325,7 @@ class UserAuthentication {
 
 ### Summaries
 
-Histograms are built into Distribution Summaries, which track the distribution of events similar to timers but don't represent units of time.
+Histograms are built into Distribution Summaries. These track the distribution of events in a similar way to timers, but they don't represent units of time.
 For instance, Distribution Summaries can measure payload sizes of incoming requests.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
