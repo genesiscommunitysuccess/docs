@@ -17,12 +17,14 @@ Any metrics system will have an effect on the performance of the application it 
 
 Genesis uses the well-known [metrics](https://micrometer.io/) library, which is commonly used in Java apps. In all known Genesis applications, the impact is negligible; the benefits far outweigh the very tiny impact on performance. 
 
-To make use of the metric calls, you must set `MetricsEnabled` to `true` in the [system definition file](../../../server/configuring-runtime/system-definitions/). In addition, you should define the `MetricsReportType` to include a comma-separated list of `MetricsReportType` outputs, which should include at least one of the following:
+To make use of the metric calls:
 
-* DATADOG - will send metrics to [Datadog](https://www.datadoghq.com/)
-* SLF4J - will append metrics to an [SLF4J](http://www.slf4j.org/) Logger
-* GRAPHITE - will send metrics to a [Graphite](https://graphiteapp.org/) service, which needs to be up and running
-    * This requires some additional settings for `MetricsGraphiteURL` and `MetricsGraphitePort` which identify the Graphite server.
+- Set `MetricsEnabled` to `true` in the [system-definition file](../../../server/configuring-runtime/system-definitions/).
+- Define the `MetricsReportType` to include a comma-separated list of `MetricsReportType` outputs, which should include at least one of the following:
+
+	* DATADOG - will send metrics to [Datadog](https://www.datadoghq.com/)
+	* SLF4J - will append metrics to an [SLF4J](http://www.slf4j.org/) Logger
+	* GRAPHITE - will send metrics to a [Graphite](https://graphiteapp.org/) service, which needs to be up and running; GRAPHITE requires some additional settings for `MetricsGraphiteURL` and `MetricsGraphitePort`, which identify the Graphite server.
 
 ## Set-up (example using SLF4J and GRAPHITE)
 
