@@ -61,10 +61,7 @@ There are defaults for where the OpenTelemetry Java agent exports the data, see 
 
 By default, the `otel.service.name` property is set to the Genesis process name.
 
-### Example
-
-The simple example below enables you to export traces to [Zipkin](https://zipkin.io/), then you could specify the below "JVM_OPTIONS". 
-Note that **metrics exporting has been disabled**, because, by default, the agent will try and export metrics that can pollute the logs.
+To use the Genesis tracing module, you must make a 'JVM_OPTIONS' entry in your application's [system-definition file](../../../server/configuring-runtime/system-definitions/) to add the Java agent. The simple example below enables you to export traces to [Zipkin](https://zipkin.io/):
 
 ```kotlin
 item(
@@ -72,6 +69,7 @@ item(
     value = "-javaagent:${env["GENESIS_HOME"]}/genesis/lib/opentelemetry-javaagent.jar -Dotel.traces.exporter=zipkin -Dotel.metrics.exporter=none"
 )
 ```
+Note that **metrics exporting has been disabled**, because, by default, the agent will try and export metrics that can pollute the logs.
 
 ## Example screenshots
 
