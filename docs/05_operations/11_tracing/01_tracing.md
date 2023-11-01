@@ -8,11 +8,9 @@ tags:
   - tracing
 ---
 
-Tracing is the act of following what happens when a request is made to an application. The Genesis Tracing module enables you to generate tracing data for your application through an integration
-with [OpenTelemetry](https://opentelemetry.io/). OpenTelemetry is a vendor-neutral open-source observability framework and has become an industry-standard.
+Tracing is the act of following what happens when a request is made to an application. The Genesis Tracing module enables you to generate tracing data for your application through an integration with [OpenTelemetry](https://opentelemetry.io/). OpenTelemetry is a vendor-neutral open-source observability framework and has become an industry-standard.
 
-To enable tracing, you need to provide the OpenTelemetry Java agent to your application's JVM options. You can read more
-about the OpenTelemetry Java agent [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation).
+To enable tracing, you need to provide the OpenTelemetry Java agent to your application's JVM options. You can read more about the OpenTelemetry Java agent [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation).
 In short, the Java agent dynamically injects bytecode to capture telemetry from a number of popular libraries and frameworks. Genesis takes advantage of this, along with its own manual instrumentation.
 
 ## What's instrumented
@@ -25,8 +23,7 @@ The following are currently instrumented:
 
 ## Span attributes
 
-Each span contains a number of attributes. For instance, an HTTP request span will have attributes detailing status
-code, http method etc. The following Genesis-specific attributes are added to the inbound message spans:
+Each span contains a number of attributes. For instance, an HTTP request span will have attributes detailing status code, http method etc. The following Genesis-specific attributes are added to the inbound message spans:
 
 - Message Type
 - Source Ref
@@ -45,8 +42,7 @@ can be seen at the bottom of the page.
 
 ## Set-up
 
-The OpenTelemetry agent jar is bundled with the Genesis platform in the **lib** folder so, minimally, you need to specify
-the path to it in the "JVM_OPTIONS" system definition property, like so:
+The OpenTelemetry agent jar is bundled with the Genesis platform in the **lib** folder, so you just need to specify the path to it in the "JVM_OPTIONS" system definition property:
 
 ```kotlin
 item(
@@ -57,7 +53,7 @@ item(
 
 The OpenTelemetry Java agent is highly configurable. You can find more information about how to configure it [in the OpenTelemetry documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/).
 
-There are defaults for where the OpenTelemetry Java agent exports the data, see [here](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#exporters) for more details.
+The OpenTelemetry Java agent provides [defaults](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#exporters) for where it exports the data.
 
 By default, the `otel.service.name` property is set to the Genesis process name.
 
