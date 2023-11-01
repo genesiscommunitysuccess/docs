@@ -1419,7 +1419,7 @@ No functional changes.
 
 ## Genesis 6.5.6(genesis-server)
 
-## Features
+### Features
 - Add rollback dump for remap
 
 ### Fixes
