@@ -12,7 +12,7 @@ This page relates to Server logging.
 
 ## Logging level
 
-The logging level can be modified in the processes xml file. See [here](../../../server/configuring-runtime/processes/#logginglevel) for more details.
+The logging level can be modified in the [processes xml](../../../server/configuring-runtime/processes/#logginglevel) file.
 
 ## Logging context
 
@@ -43,7 +43,7 @@ The below shows example values for the Genesis-specific attributes listed previo
 
 ## Set-up
 
-To enable Genesis attributes to be added to the Logging context, set the `LoggingContextEnabled` system definition property to `true`. This property defaults to `false`.
+To enable Genesis attributes to be added to the logging context, set the `LoggingContextEnabled` system definition property to `true`. This property defaults to `false`.
 
 ```kotlin
 item(name = "LoggingContextEnabled", value = "true")
