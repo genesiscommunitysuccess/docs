@@ -17,10 +17,10 @@ For this release of the documentation, we are updating dynamically.
 
 The starting point for the documentation is the following versions of the platform soaftware:
 
-| part of stack | version | 
-|---------------|---------|
-| server       | 6.7.9 **+**  |  
-| web          | 14.92.5 **+** |   
+| part of stack | version       |
+|---------------|---------------|
+| server        | 6.7.9 **+**   |
+| web           | 14.92.5 **+** |
 
 As soon as changes are made to the platform, this version of the documentation will be updated to show the changes.
 
