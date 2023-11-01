@@ -17,7 +17,9 @@ For applications running on older versions of the platform, please contact your 
 :::
 ## Upgrade references to the artifacts
 To migrate an existing application to version 7.0.0:
-1. In your **gradle.properties** file, bump up `genesisVersion` and all modules in the application to 7.0.0.
+
+In your **gradle.properties** file, bump up `genesisVersion` and all modules in the application to 7.0.0.
+
 ```
 genesisVersion=7.0.0
 authVersion=7.0.0
@@ -28,7 +30,7 @@ deployPluginVersion=7.0.0
 
 ![](/img/java-refs.png)
 
-2. configure the `copyDependencies` task in this file:
+2. Configure the `copyDependencies` task in this file:
 
 ```
 afterEvaluate {
