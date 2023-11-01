@@ -1,6 +1,6 @@
 ---
-title: 'Types of API - Async API'
-sidebar_label: 'Async'
+title: 'Types of API - AsyncEntityDb'
+sidebar_label: 'AsyncEntityDb'
 id: async
 keywords: [database, types of api, api, types, async]
 tags:

@@ -1,7 +1,7 @@
 ---
 title: 'Release notes - documentation version OCT 23'
 sidebar_label: 'Current (OCT 23)'
-sidebar_position: 2
+sidebar_position: 3
 id: current
 keywords: [operations, release notes, OCT 2023]
 tags:

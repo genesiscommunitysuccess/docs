@@ -20,14 +20,21 @@ We recommend using **Kotlin** to implement Event Handlers.
 - **Java** Event Handlers can only be implemented using [**RxJava3**](#rx3) [**Sync**](#sync) Event Handlers.
 - Async Event Handlers are widely used in Kotlin events and cannot be used for Java events, as there is no implementation for Kotlin coroutines in Java.
 
-
-
 :::
 
-## A simple example of an Event Handler
+To work with a Java Event Handler, there are two initial requirements:
+
+- In your _application_**-script-config/src/main/** folder, you must create an empty folder called **java**. This ensures that the Java file will be compiled.
+- You must create the Java file for the Event Handler in the folder **src/main/resources/scripts**.
+
+![](/img/java-event-handlers.png)
+
+## A simple example of a Java Event Handler
 
 - This method passes the input message type `CounterParty` as a parameter and expects the output message type `EventReply` to be returned.
 - The default name will be `EVENT_<input message type name>`. So, for an input message type declared as `CounterParty`, the event with the name `EVENT_COUNTERPARTY` is automatically registered.
+- Any Java Event Handler classes you create must be placed in the same folder as the Java Event Handler module itself.
+
 
 ```java
         @Module
