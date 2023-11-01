@@ -51,7 +51,7 @@ item(name = "LoggingContextEnabled", value = "true")
 
 You can then configure your logging configuration file as normal to show MDC attributes.
 
-If [Tracing](../11_tracing/01_tracing.md) is enabled, then additional tracing information is also available in MDC, see [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/docs/logger-mdc-instrumentation.md) for more details.
+If [Tracing](../../../operations/tracing/tracing) is enabled, then additional tracing information is also available in MDC, see [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/docs/logger-mdc-instrumentation.md) for more details.
 
 ### Example log4j2 configuration
 
