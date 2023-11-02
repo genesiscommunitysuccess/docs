@@ -1,7 +1,7 @@
 ---
 title: 'Release notes - documentation version OCT 23'
 sidebar_label: 'Current (OCT 23)'
-sidebar_position: 2
+sidebar_position: 3
 id: current
 keywords: [operations, release notes, OCT 2023]
 tags:
@@ -13,14 +13,14 @@ tags:
 ## Release notes
 This is version OCT 23 of the documentation for the Genesis low-code platform.
 
-For this release of the documentation, we are updating dynamically. 
+For this release of the documentation, we are updating dynamically.
 
-The starting point for the documentation is the following versions of the platform soaftware:
+The starting point for the documentation is the following versions of the platform software:
 
-| part of stack | version | 
-|---------------|---------|
-| server       | 6.7.9 **+**  |  
-| web          | 14.92.5 **+** |   
+| part of stack | version       | 
+|---------------|---------------|
+| server        | 6.7.9 **+**   |  
+| web           | 14.92.5 **+** |   
 
 As soon as changes are made to the platform, this version of the documentation will be updated to show the changes.
 

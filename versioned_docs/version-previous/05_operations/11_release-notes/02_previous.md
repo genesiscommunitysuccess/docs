@@ -1,7 +1,7 @@
 ---
 title: 'Release notes - 2023.1'
 sidebar_label: 'Previous (2023.1)'
-sidebar_position: 2
+sidebar_position: 3
 id: previous
 keywords: [operations, release notes, v-2023.1]
 tags:
