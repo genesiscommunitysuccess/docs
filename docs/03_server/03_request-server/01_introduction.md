@@ -82,8 +82,6 @@ Open API support was introduced in version 7.0 of the Genesis platform.
 
 :::
 
-To help with external integration and testing, [Open API](../../integration/open-api/) specifications are generated for each request server resource.
+To help with external integration and testing, [Open API](../../integration/open-api/) specifications are generated for each resource in the Request Server.
 
-Internally, the framework will use metadata system to generate JSON schemas for input and return objects in the Open API spec. For more
-details on this please see [here](../../network-messages/type-safe-messages) and
-[here](../../network-messages/metadata-annotations) 
+Internally, the framework uses metadata system to generate JSON schemas for input and return objects in the Open API spec. For more details on this, see our pages on [Network messages - type-safe messages](../../network-messages/type-safe-messages) and [metadata annotations](../../network-messages/metadata-annotations).
