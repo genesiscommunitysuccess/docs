@@ -168,10 +168,10 @@ lmdbAllocateSize = 512.MEGA_BYTE()
 
 `serializationType` (available from GSF version 7.0.0)
 
-This sets the serialization approach used to convert query rows into bytes and viceversa. There are two options available: SerializationType.KRYO and SerializationType.FURY
+This sets the serialization approach used to convert query rows into bytes and vice versa. There are two options available: SerializationType.KRYO and SerializationType.FURY
 
 * The KRYO option is the default setting if `serializationType` is left undefined. It uses the [Kryo library](https://github.com/EsotericSoftware/kryo).
-* The FURY option uses the [Fury library](https://github.com/alipay/fury) instead. Internal tests show that Fury can serialize and deserialize row objects 13-15x quicker than Kryo in our current dataserver implementation, which leads to faster LMDB read/write operations (i.e. up to 2x in some cases). This performance improvement has a great impact on the latency incurred when requesting rows from a dataserver query, whether this happens as part of the first subscription message (i.e. DATA_LOGON messages) or subsequent row request messages (i.e. MORE_ROWS messages). Unfortunately, the serialized byte array size of a Fury object can be 10-15% larger than a Kryo object, so there is a small penalty to pay for using this option.
+* The FURY option uses the [Fury library](https://github.com/alipay/fury) instead. Internal tests show that Fury can serialize and deserialize row objects 13-15 times more quickly  than Kryo in our current Data Server implementation; this leads to faster LMDB read/write operations (up to twice as quick in some cases). This performance improvement has a great impact on the latency incurred when requesting rows from a Data Server query, whether this happens as part of the first subscription message (DATA_LOGON messages) or subsequent row request messages (MORE_ROWS messages). However, the serialized byte array size of a Fury object can be between 10 to 15% larger than a Kryo object, so there is a small penalty to pay for using this option.
 
 `serializationBufferMode` (available from GSF version 7.0.0)
 
