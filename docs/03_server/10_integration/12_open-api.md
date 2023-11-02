@@ -28,11 +28,9 @@ Genesis makes this easy to configure and set up, and an Open API specification i
   * The specification is generated for each GPAL Custom Endpoints.
   * The standard specification can be augmented using the `openapi { ... }` DSL, [see here for details](../custom-endpoints/advanced/#openapi).
 
-Internally, the framework will use metadata system to generate JSON schemas for input and return objects in the Open 
-API spec. For more details on this please see [here](../../network-messages/type-safe-messages) and 
-[here](../../network-messages/metadata-annotations).
+Internally, the framework uses a metadata system to generate JSON schemas for input and return objects in the Open API spec. For more details on this please see our pages on [Network messages - type-safe messages](../../network-messages/type-safe-messages) and [metadata annotations](../../network-messages/metadata-annotations).
 
-## Accessing Open API specification
+## Accessing the Open API specification
 
 :::important
 
@@ -50,4 +48,4 @@ Service specific specification:
 
 You can verify the specification by copying the contents into [Swagger Editor](https://editor-next.swagger.io/)
 
-For an example specification, [please see here](pathname:///file/openapi-sample.yaml).
+For an example specification, [see here](pathname:///file/openapi-sample.yaml).
