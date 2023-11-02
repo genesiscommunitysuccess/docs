@@ -1,5 +1,5 @@
 ---
-title: 'Custom endpoints - introduction'
+title: 'Custom endpoints'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [server, integration, custom endpoints, introduction]
@@ -9,6 +9,8 @@ tags:
   - custom endpoints
   - introduction
 ---
+
+## Introduction
 
 The resources you create via the Request Server, Data Server and Event Handler are exposed to the front end as a series of [REST endpoints](../../../../server/integration/rest-endpoints/introduction/).
 
@@ -20,3 +22,14 @@ Example uses for these custom endpoints include:
 - integration with external systems
 
 ![](/img/custom-endpoints.png)
+
+## Open API
+
+:::important
+
+Open API support was introduced in version 7.0 of the Genesis platform.
+
+:::
+
+To help with external integration and testing, [Open API](../../open-api/) specifications are generated for each custom endpoint.
+See [our advanced page](../advanced/#openapi) for details of how you can customise this output.
