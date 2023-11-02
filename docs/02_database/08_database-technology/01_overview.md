@@ -13,10 +13,13 @@ Your Genesis application data model can be configured without any concern about 
 
 Genesis supports the following database technologies for the data storage:
 
-| Database | [FoundationDB](../../../database/database-technology/foundationdb/) | [Postgresql](../../../database/database-technology/sql/#postgresql) | [Aerospike](../../../database/database-technology/aerospike/) | [MSSQL](../../../database/database-technology/sql/#ms-sql) | [Oracle](../../../database/database-technology/sql/#oracle) |
-| --- | --- | --- | --- |---------------------------------------------------|-----------------------------------------------------|
-| Technology | NOSQL | SQL | NOSQL | SQL                                               | SQL                                                 |
-| Supports transactions | ✔️ | ✔️ | ❌ | ✔️                                                | ✔️                                                  |
-| Returns sorted data | ✔️ | ✔️ | ❌ | ✔️                                                | ✔️                                                  |
-| Unlimited operation size | ❌ | ✔️ | ✔️ | ✔️                                                | ✔️                                                  |
+| Database | [FoundationDB](../../../database/database-technology/foundationdb/) | [Postgresql](../../../database/database-technology/sql/#postgresql) | [MSSQL](../../../database/database-technology/sql/#ms-sql) | [Oracle](../../../database/database-technology/sql/#oracle) |
+| --- | --- | --- | ---------------------------------------------------|-----------------------------------------------------|
+| Technology | NOSQL | SQL | SQL                                               | SQL                                                 |
+| Supports transactions | ✔️ | ✔️ | ✔️                                                | ✔️                                                  |
+| Returns sorted data | ✔️ | ✔️ | ✔️                                                | ✔️                                                  |
+| Unlimited operation size | ❌ | ✔️ | ✔️                                                | ✔️                                                  |
 
+:::
+From version 7.0 onwards, Aerospike technology is not supported.
+:::
