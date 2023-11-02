@@ -45,7 +45,7 @@ The table below shows example values for the Genesis-specific attributes listed 
 
 ## Set-up
 
-The OpenTelemetry agent jar is bundled with the Genesis platform in the **lib** folder, so you just need to specify the path to it in the "JVM_OPTIONS" system definition property:
+The OpenTelemetry agent jar is bundled with the Genesis platform in the **lib** folder. You must specify a path to this folder by making a 'JVM_OPTIONS' entry in your application's [system-definition file](../../../server/configuring-runtime/system-definitions/) :
 
 ```kotlin
 item(
@@ -53,14 +53,7 @@ item(
     value = "-javaagent:${env["GENESIS_HOME"]}/genesis/lib/opentelemetry-javaagent.jar"
 )
 ```
-
-The OpenTelemetry Java agent is highly configurable. You can find more information about how to configure it [in the OpenTelemetry documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/).
-
-The OpenTelemetry Java agent provides [defaults](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#exporters) for where it exports the data.
-
-By default, the `otel.service.name` property is set to the Genesis process name.
-
-To use the Genesis tracing module, you must make a 'JVM_OPTIONS' entry in your application's [system-definition file](../../../server/configuring-runtime/system-definitions/) to add the Java agent. The simple example below enables you to export traces to [Zipkin](https://zipkin.io/):
+The Java agent has a number of options that can be used. When you specify the path, you can include these. For example, if you want to use the zipkin exporter:
 
 ```kotlin
 item(
@@ -68,7 +61,17 @@ item(
     value = "-javaagent:${env["GENESIS_HOME"]}/genesis/lib/opentelemetry-javaagent.jar -Dotel.traces.exporter=zipkin -Dotel.metrics.exporter=none"
 )
 ```
-Note that **metrics exporting has been disabled**, because, by default, the agent will try and export metrics that can pollute the logs.
+
+:::
+In the example above, **metrics exporting has been disabled**. This is because, by default, the agent will try and export metrics that can pollute the Genesis logs.
+:::
+
+### Other configurations
+The OpenTelemetry Java agent is highly configurable. You can find more information about how to configure it [in the OpenTelemetry documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/agent-config/).
+
+The OpenTelemetry Java agent provides [defaults](https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#exporters) for where it exports the data.
+
+By default, the `otel.service.name` property is set to the Genesis process name.
 
 ## Example screenshots
 
