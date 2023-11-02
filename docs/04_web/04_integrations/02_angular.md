@@ -39,9 +39,11 @@ npm install --save @genesislcap/alpha-design-system lodash-es
 
 ## Updating TypeScript Configuration
 
-Ater installing the Genesis Foundation packages, it's important to update your TypeScript configuration. Open your project’s `tsconfig.json` file.
+Ater installing the Genesis Foundation packages, it's important to update your TypeScript configuration: 
 
-Add the skipLibCheck property under the compilerOptions section and set its value to true.
+1. Open your project’s `tsconfig.json` file.
+
+2. Add the skipLibCheck property under the compilerOptions section and set its value to true.
 
 ```json
 {
@@ -52,7 +54,7 @@ Add the skipLibCheck property under the compilerOptions section and set its valu
 }
 ```
 
-This change will take effect the next time you run your build process. Keep in mind that while this setting is helpful for development, it's advisable to ensure thorough type checking in other environments, like testing or production, to catch potential issues early.
+This change will take effect the next time you run your build process. Keep in mind that while this setting is helpful for development, you should thoroughly type-check other environments, such as testing or production, to catch potential issues early.
 
 ## Using the components
 
