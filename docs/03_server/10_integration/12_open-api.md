@@ -21,14 +21,14 @@ The Genesis low-code platform supports the use of [Open API](https://swagger.io/
 Genesis makes this easy to configure and set up, and an Open API specification is generated for the following resources:
 
 * [Request Server](../../../server/request-server/introduction/)
-  * The specification is generated for every GPAL request server.
+  * The specification is generated for every GPAL requestReply` codeblock`.
 * [Event Handler](../../../server/event-handler/introduction/)
-  * The specification is generated for each GPAL event handler.
+  * The specification is generated for each GPAL `eventHandler` codeblock.
 * [Custom Endpoints](../custom-endpoints/introduction/)
   * The specification is generated for each GPAL Custom Endpoints.
-  * The standard specification can be augmented using the `openapi { ... }` DSL, [see here for details](../custom-endpoints/advanced/#openapi).
+  * The standard specification can be augmented using the `openapi { ... }` DSL, [described in our Advanced page](../custom-endpoints/advanced/#openapi).
 
-Internally, the framework uses a metadata system to generate JSON schemas for input and return objects in the Open API spec. For more details on this please see our pages on [Network messages - type-safe messages](../../network-messages/type-safe-messages) and [metadata annotations](../../network-messages/metadata-annotations).
+Internally, the framework uses a metadata system to generate JSON schemas for input and return objects in the Open API spec. For more details, see our pages on [Network messages - type-safe messages](../../network-messages/type-safe-messages) and [metadata annotations](../../network-messages/metadata-annotations).
 
 ## Accessing the Open API specification
 
