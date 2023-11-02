@@ -178,7 +178,7 @@ This sets the serialization approach used to convert query rows into bytes and v
 This option changes the buffer type used to read/write information from/to LMDB. There are two options available: SerializationBufferMode.ON_HEAP and SerializationBufferMode.OFF_HEAP.
 
 * The ON_HEAP option is the default setting if `serializationBufferMode` is left undefined. It uses a custom cache of Java HeapByteBuffer objects that exist within the JVM addressable space.
-* The OFF_HEAP option uses DirectByteBuffer objects instead, so memory can be addressed directly to access LMDB buffers natively in order to write and read data. OFF_HEAP buffers permit zero-copy serialization/deserialization to LMDB, and these type of buffers are generally more efficient as they allow Java to exchange bytes directly with the operating system for I/O operations. OFF_HEAP buffer support in its current implementation requires the buffer size to be specified ahead of time (i.e. see `directBufferSize` setting), which could be problematic problems if the serialized query row object size is not known ahead of time.
+* The OFF_HEAP option uses DirectByteBuffer objects instead, so memory can be addressed directly to access LMDB buffers natively in order to write and read data. OFF_HEAP buffers permit zero-copy serialization/deserialization to LMDB; buffers of this type are generally more efficient as they allow Java to exchange bytes directly with the operating system for I/O operations. To use OFF_HEAP, you **must** specify the buffer size in advance (see `directBufferSize` setting); consider this carefully if you do not know the size of the serialized query row object in advance.
 
 `directBufferSize`
 
