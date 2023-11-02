@@ -8,14 +8,16 @@ tags:
   - tracing
 ---
 
-Tracing is the act of following what happens when a request is made to an application. The Genesis Tracing module enables you to generate tracing data for your application through an integration with [OpenTelemetry](https://opentelemetry.io/). OpenTelemetry is a vendor-neutral open-source observability framework and has become an industry-standard.
+Tracing is the act of following what happens when a request is made to an application. The Genesis Tracing module enables you to generate tracing data for your application through an integration with industry-standard [OpenTelemetry](https://opentelemetry.io/). 
+
+OpenTelemetry is an Observability framework and toolkit designed to create and manage telemetry data, such as traces, metrics, and logs. This data enables you to understand the internal state of a system and the way that the server responds to requests from the front end.
 
 To enable tracing, you need to provide the OpenTelemetry Java agent to your application's JVM options. You can read more about the OpenTelemetry Java agent [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation).
 In short, the Java agent dynamically injects bytecode to capture telemetry from a number of popular libraries and frameworks. Genesis takes advantage of this, along with its own manual instrumentation.
 
 ## What's instrumented
 
-The following are currently instrumented:
+Data is generated on the following activities (is [instrumented](https://opentelemetry.io/docs/concepts/instrumentation/), as OpenTelemetry would say):
 
 - Inbound messages over HTTP and WebSockets
 - Inter-process messaging
@@ -23,15 +25,16 @@ The following are currently instrumented:
 
 ## Span attributes
 
-Each span contains a number of attributes. For instance, an HTTP request span will have attributes detailing status code, http method etc. The following Genesis-specific attributes are added to the inbound message spans:
+OpenTelemetry organises data within [spans](https://opentelemetry.io/docs/concepts/signals/traces/#spans). A span is a unit of work or operation. It tracks specific operations that a request makes, so that you can see what happened during the time in which that operation was executed.
+
+Each span contains a number of attributes. For instance, an HTTP request span has attributes detailing status code, http method etc. The following Genesis-specific attributes are added to the inbound message spans:
 
 - Message Type
 - Source Ref
 - Username (if present)
 - Payload
 
-The table below shows example values for the Genesis-specific attributes listed above. Screenshots of traces in Zipkin
-can be seen at the bottom of the page.
+The table below shows example values for the Genesis-specific attributes listed above. Screenshots of traces in Zipkin can be seen at the bottom of the page.
 
 | Attribute            | Value                                                                                                                                                                                                                                                                               |
 |----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
