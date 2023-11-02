@@ -12,7 +12,7 @@ Tracing is the act of following what happens when a request is made to an applic
 
 OpenTelemetry is an Observability framework and toolkit designed to create and manage telemetry data, such as traces, metrics, and logs. This data enables you to understand the internal state of a system and the way that the server responds to requests from the front end.
 
-To enable tracing, you need to provide the OpenTelemetry Java agent to your application's JVM options. You can read more about the OpenTelemetry Java agent [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation).
+To enable tracing, you need to add the OpenTelemetry Java agent to your application's JVM options. You can read more about the OpenTelemetry Java agent [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation).
 In short, the Java agent dynamically injects bytecode to capture telemetry from a number of popular libraries and frameworks. Genesis takes advantage of this, along with its own manual instrumentation.
 
 ## What's instrumented
