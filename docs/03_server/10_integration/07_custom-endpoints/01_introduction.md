@@ -32,4 +32,4 @@ Open API support was introduced in version 7.0 of the Genesis platform.
 :::
 
 To help with external integration and testing, [Open API](../../open-api/) specifications are generated for each custom endpoint.
-Please see [here](../advanced/#openapi) on how to customise this output.
+See [our advanced page](../advanced/#openapi) for details of how you can customise this output.
