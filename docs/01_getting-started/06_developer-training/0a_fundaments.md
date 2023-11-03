@@ -37,9 +37,7 @@ The Genesis Low-code platform has specific software architecture, application de
 
 Gartner, 2022
 
-The Genesis Platform is targeted at developers.
-
-With this, we aim to increase time to market speed, application velocity and lower the cost of development.
+The Genesis Platform is targeted at developers. We help them to decrease time-to-market, increase application velocity and lower the cost of development.
 
 
 ### What can I build with the Genesis Platform?
@@ -50,59 +48,57 @@ Here are some examples:
 
 #### Non-functional
 
-- Real-time data subscriptions. 
-- Low latency feed ingestion. 
-- High transaction volume. 
-- Secure APIs. 
-- High availability and clustering. 
-- Integration with LDAP or SAML (SSO).
+- real-time data subscriptions
+- low-latency feed ingestion 
+- high transaction volume
+- secure APIs
+- high availability and clustering.
+- integration with LDAP or SAML (SSO)
 
 #### Data
 
-- Aggregated data views.
-- Ad-hoc req/response queries.
-- Stream data from/to external relational databases.
-- Full audit trail is automatically provided.
+- aggregated data views
+- ad-hoc req/response queries
+- stream data from/to external relational databases
+- full audit trail is automatically provided
 
 #### Application
 
-- Event handlers for applying custom business logic.
-- Permissioned access. 
-- Workflow & auditing requirements. 
-- Responsive, rich user workflows and UI.
+- event handlers for applying custom business logic
+- permissioned access 
+- workflow and auditing requirements 
+- responsive, rich user workflows and UI
 
 #### Functional
 
-- Process financial instruments.
-- Event-driven processing triggered by user actions or rules. 
-- Calculation of positions, data consolidation in general.
+- process financial instruments
+- event-driven processing triggered by user actions or rules 
+- calculation of positions, data consolidation in general
 
 ## Building blocks
 
-### Back to the dDefinition
+### Back to the definition
 
-A low-code application platform is an application platform that supports rapid application development, one-step deployment, and execution and management using declarative, high-level programming abstractions, such as model-driven and metadata-based programming languages. They support the development of user interfaces, business logic and data services; improve productivity; and are typically delivered as cloud services.
-
-The components in the library enable quick, flexible and scalable application development.
+A low-code application platform is an application platform that supports rapid application development, one-step deployment, and execution and management using declarative, high-level programming abstractions, such as model-driven and metadata-based programming languages. These features support the development of user interfaces, business logic and data services. They improve productivity, and the resulting products are typically delivered as cloud services.
 
 ### Core platform components
 
-The core platform components form a common base and work with other platform elements to enable enterprise-ready features with little or no build effort.
+The core platform components form a common base; they work with other platform elements to enable enterprise-ready features with very little build effort.
 
 Here are some examples for you to consider:
 
-| BUILDING BLOCKS / COMPONENTS	        |                                 CAPABILITIES                              | 
-|--------------------------------------|:-------------------------------------------------------------------------:|
-| Auth Manager, Perms Manager	         |   Provides industrial-strength authentication and entitlements management.|
-| Cluster                              |               Enables high-availability and horizontal scaling            |
-| Router, Connect, Services Repository |            UI connectivity and load balancing to server services.         |
-| Database API, NOSQL, SQL             |High-performance persistence supporting next-generation database technologies.|
+| BUILDING BLOCKS / COMPONENTS	         |                                  CAPABILITIES                                  | 
+|---------------------------------------|:------------------------------------------------------------------------------:|
+| Auth Manager, Perms Manager	         |   Provides industrial-strength authentication and entitlements management.     |
+| Cluster                               |               Enables high-availability and horizontal scaling.                |
+| Router, Connect, Services Repository  |             UI connectivity and load balancing to server services.             |
+| Database API, NOSQL, SQL              | High-performance persistence supporting next-generation database technologies. |
 
 ### Technical components
 
-The technical components enable development of scalable apps quickly and efficiently, leveraging event-driven architecture and real-time data distribution.
+The technical components enable you to develop scalable apps quickly and efficiently, based on event-driven architecture and real-time data distribution.
 
-Examples of technical components can be found in the table below:
+Examples of technical components are:
 
 | EXAMPLE BUILDING BLOCKS / COMPONENTS	 |                                     CAPABILITIES                                      | 
 |---------------------------------------|:-------------------------------------------------------------------------------------:|
@@ -113,9 +109,7 @@ Examples of technical components can be found in the table below:
 
 ### Business components
 
-Business components combine with technical components for financial markets-specific integration and functionality.
-
-These components and their capabilities can be seen here:
+Business components combine with technical components to provide key functionality and connections for working in financial markets:
 
 | EXAMPLE BUILDING BLOCKS / COMPONENTS	 |                    CAPABILITIES                    | 
 |---------------------------------------|:--------------------------------------------------:|
@@ -173,13 +167,13 @@ When it comes to creating applications using the Genesis Platform, there are som
 - Create User Interfaces.
 - Control Access.
 
-These five steps are a roadmap for creating an application, so you will these in the tutorials that following.
+These five steps are a roadmap for creating an application, and they are the basis of the tutorials in this course.
 
 ### The elements of any application
 
 #### GPAL
 
-The elements of any Genesis Platform app are powered by a type-safe layered system which combines an easy to learn Kotlin-based Domain Specific Language (DSL) with transparent references between layers to ensure code changes are minimal when working with our technical components (e.g. dataservers, event handlers, request replies, etc) and our data schema layer.
+The elements of any Genesis Platform app are powered by a type-safe layered system which combines an easy-to-learn Kotlin-based Domain Specific Language (DSL) with transparent references between layers to ensure code changes are minimal when working with our technical components (e.g. Data Servers, Event Handlers, Request Servers, etc) and our data schema layer.
 
 - The different layers of the architecture are: configuration | fields schema, tables schema | view schema | runtime.
 - Each layer has its own Kotlin DSL plus specific code generation attached to it. 
@@ -308,7 +302,7 @@ dataServer{
 
 ### Business logic
 
-A typical event handler file can be seen below:
+A typical Event Handler file can be seen below:
 
 ```kotlin
 eventHandler{
@@ -343,30 +337,30 @@ Microservices and resources built as part of any Genesis application will have a
 
 ### Integrations
 
-Genesis supports a wide range of 3rd party integrations. Some of these are listed here:
+Genesis supports a wide range of third-party integrations. Some of these are listed here:
 
 ![](/img/integrations-2.png)
 
 ### Data model configuration
 
-- Built for the financial markets.
-- Based on Web Components (leveraging Microsoft FAST) for performance & accessibility.
-- Composed into micro front-ends.
+- built for the financial markets
+- based on Web Components (Microsoft FAST) for performance and accessibility
+- composed into micro front-ends
 
-Web Components allow us to provide reusable building blocks and app functionality which work seamlessly with today’s popular web frameworks and any that may become popular in the future.
+Web Components allow us to provide reusable building blocks and app functionality that works seamlessly with today’s popular web frameworks - and any that might become popular in the future.
 
 
 ### Platform capabilities
 
-- Supercharging developers: Enhancing productivity of professional developers with full-stack development expertise.
-- Powerful framework, runtime & tools: Full-featured framework and tools for building financial markets applications.
-- Proven enterprise-grade solutions: Range of standalone applications in production across use cases, from spreadsheet replacements to high-performance core applications.
+- supercharging developers: enhancing productivity of professional developers with full-stack development expertise
+- powerful framework, runtime & tools: full-featured framework and tools for building financial-markets applications
+- proven enterprise-grade solutions: Range of standalone applications in production across use cases, from spreadsheet replacements to high-performance core applications
 
 The Genesis Platform has been developed on the back of years of experience delivering software applications for some of the largest financial firms in the world. There was a clear need for a more targeted approach to support the requirements of financial markets software.
 
 Custom logic and behaviour can be added where needed and being built on the JVM, it enables access to a mature ecosystem of libraries used in the industry.
 
-The platform includes a modern, high-performance web application solution, enabling developers to build branded UIs quickly using data models and the real-time features of the server.
+The platform includes a modern, high-performance web-application solution, enabling developers to build branded UIs quickly using data models and the real-time features of the server.
 
 Our web stack is built using modern web platform features, integrating easily with existing web stacks such as Angular and React.
 
