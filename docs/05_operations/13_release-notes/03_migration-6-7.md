@@ -1,7 +1,7 @@
 ---
 title: 'Migration guide: version 6.0 to 7.0'
 sidebar_label: 'Migration guide'
-sidebar_position: 2
+sidebar_position: 3
 id: migration-6-7
 keywords: [operations, release notes, OCT 2023]
 tags:

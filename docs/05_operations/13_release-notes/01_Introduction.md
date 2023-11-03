@@ -13,7 +13,7 @@ tags:
 Our documentation covers the following releases:
 
 - [current](../../../operations/release-notes/current/). Documentation releases from now on are separate from platform releases. As soon as changes are made to the platform, this version of the documentation will be updated to show the changes.
-- [previous](../../../operations/release-notes/previous/)
+- previous
 
 Older versions of our documentation are archived.
 
