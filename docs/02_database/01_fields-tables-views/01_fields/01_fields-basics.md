@@ -116,6 +116,6 @@ field(name = "FX_RATE", type = BIGDECIMAL(20,8))
 - When an invalid value is supplied (depending on the database vendor), `remap` will set the field to the default value.
 - You can increase the maximum number of characters, but how much depends on the database vendor. Check with them before trying this.
 
-:::
+:::note
 This is not relevant to other database technologies.
 :::

@@ -15,7 +15,7 @@ This is version OCT 23 of the documentation for the Genesis low-code platform.
 
 For this release of the documentation, we are updating dynamically.
 
-The starting point for the documentation is the following versions of the platform software:
+This release of the documentation covers the following versions of the platform software:
 
 | part of stack | version       | 
 |---------------|---------------|
