@@ -1,5 +1,5 @@
 ---
-title: Developer training - Fundamentals
+title: Developer training - fundamentals
 sidebar_label: Fundamentals
 sidebar_position: 1
 id: fundamentals
