@@ -23,7 +23,7 @@ The aim of this page is to give you a high-level understanding of the Genesis lo
 - application elements
 - demo
 
-## Genesis Low-code platform
+## Genesis low-code platform
 
 ### What is a platform?
 
