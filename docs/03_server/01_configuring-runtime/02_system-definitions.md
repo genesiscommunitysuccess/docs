@@ -109,10 +109,10 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
 
-**DbMode**: This setting is used by Aerospike and PostgreSQL database only; for other databases, this property is ignored
-- For [Aerospike](../../../database/database-technology/aerospike/) database: This can be one of two values: VANILLA for an Aerospike Community installation and DURABLE_DELETE if you are using Aerospike Enterprise
+**DbMode**: This setting is only used for [PostgresSQL](../../../database/database-technology/sql/#postgresql); it can be one of two values: 
 
-- For [PostgresSQL](../../../database/database-technology/sql/#postgresql): This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY, which is the default mode; it always stores the dictionary in a table called `dictionary` and a schema called `metadata`.
+- POSTGRESQL if you want PostgreSQL to work with namespaces/schemas
+- LEGACY, which is the default mode; this stores the dictionary in a table called `dictionary` and a schema called `metadata`
 
 **ResourcePollerTimeout**: This setting controls how often (in seconds) the genesis daemon process keeps the processes and their metadata up to date.
 
@@ -126,7 +126,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **DbNamespace**: This item defines different things, depending on the databases in use as specified below
 - For [FoundationDB](../../../database/database-technology/foundationdb/): It will be used when creating internal DirectoryLayers
-- For [Aerospike](../../../database/database-technology/aerospike/), [Postgres](../../../database/database-technology/sql/#postgresql), [MSSQL](../../../database/database-technology/sql/#ms-sql) and [ORACLE](../../../database/database-technology/sql/#oracle): It refers to namespace/schema of database. This enables you to segregate data from multiple apps while using a single database.
+- For [Postgres](../../../database/database-technology/sql/#postgresql), [MSSQL](../../../database/database-technology/sql/#ms-sql) and [ORACLE](../../../database/database-technology/sql/#oracle), this refers to namespace/schema of database. This enables you to segregate data from multiple apps while using a single database.
 
 **ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.
 
