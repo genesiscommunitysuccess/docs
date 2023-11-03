@@ -15,10 +15,10 @@ This is version v2023.1 of the documentation for the Genesis low-code platform.
 
 The basis of this version is:
 
-| part of stack | version | final version |
-|---------------|---------|---------------|
-| server  (GSF) | 6.5.1   | 6.7.9         |
-| web  (FUI)    | 10.5.0  | 14.92.4       |
+| part of stack | initial version | final version |
+|---------------|-----------------|---------------|
+| server  (GSF) | 6.5.1           | 6.7.9         |
+| web  (FUI)    | 10.5.0          | 14.92.5       |
 
 Release date: 28 February, 2023. 
 

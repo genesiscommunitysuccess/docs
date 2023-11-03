@@ -19,7 +19,7 @@ This release of the documentation covers the following versions of the platform 
 
 | part of stack | version       | 
 |---------------|---------------|
-| server        | 6.7.9 **+**   |  
+| server        | 7.0.0 **+**   |  
 | web           | 14.92.5 **+** |   
 
 As soon as changes are made to the platform, this version of the documentation will be updated to show the changes.

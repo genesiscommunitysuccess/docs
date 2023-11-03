@@ -15,6 +15,11 @@ This is version OCT 23 of the documentation for the Genesis low-code platform.
 
 The basis of this version is:
 
+| part of stack | version | final version |
+|---------------|---------|---------------|
+| server  (GSF) | 6.5.1   | 6.7.9         |
+| web  (FUI)    | 10.5.0  | 14.92.5       |
+
 | part of stack | version | 
 |---------------|---------|
 | server       | 6.7.9 **+**  |  
