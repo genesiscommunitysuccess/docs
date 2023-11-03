@@ -77,15 +77,15 @@ Here are some examples:
 - Event-driven processing triggered by user actions or rules. 
 - Calculation of positions, data consolidation in general.
 
-## Building Blocks
+## Building blocks
 
-### Back to the Definition
+### Back to the dDefinition
 
 A low-code application platform is an application platform that supports rapid application development, one-step deployment, and execution and management using declarative, high-level programming abstractions, such as model-driven and metadata-based programming languages. They support the development of user interfaces, business logic and data services; improve productivity; and are typically delivered as cloud services.
 
 The components in the library enable quick, flexible and scalable application development.
 
-### Core Platform Components
+### Core platform components
 
 The core platform components form a common base and work with other platform elements to enable enterprise-ready features with little or no build effort.
 
@@ -98,7 +98,7 @@ Here are some examples for you to consider:
 | Router, Connect, Services Repository |            UI connectivity and load balancing to server services.         |
 | Database API, NOSQL, SQL             |High-performance persistence supporting next-generation database technologies.|
 
-### Technical Components
+### Technical components
 
 The technical components enable development of scalable apps quickly and efficiently, leveraging event-driven architecture and real-time data distribution.
 
@@ -111,7 +111,7 @@ Examples of technical components can be found in the table below:
 | Data Server                           | Real-time data distribution in highly performant, low latency and complex structures. |
 | Consolidation Manager                 |                      Efficient data consolidation and analytics.                      |
 
-### Business Components
+### Business components
 
 Business components combine with technical components for financial markets-specific integration and functionality.
 
@@ -130,13 +130,13 @@ These components and their capabilities can be seen here:
 Custom components configure purpose-specific microservice components that extend functionality while remaining scalable.
 This allows you to do the following:
 
-- Create using your choice of languages including Java, Python, Groovy, or R.
+- Create using your choice of languages, including Java, Groovy, or R.
 - Enable seamless app functionality with database access, component management, and component orchestration.
-- Deliver lasting benefits with resiliency and scalability.
+- Deliver lasting benefits with resilience and scalability.
 
-## Platform Tooling
+## Platform tooling
 
-Genesis tools allow developers to bring their visions to life, quickly.
+Genesis tools enable developers to bring their visions to life, quickly.
 
 In the table below we can see a number of Genesis tools, their uses and capabilities. 
 
@@ -144,8 +144,8 @@ In the table below we can see a number of Genesis tools, their uses and capabili
 |---------|-------------------|:-------------------------------------------------------------------------------------------:|
 | Create  | Genesis Studio    |            Graphical environment for building Genesis applications with No Code.            |
 | Create  | Genesis SDK       | Framework for building Genesis applications in Low Code with the Genesis Platform Language. |
-| Migrate | Excel Integration |  Transform Excel worksheets into Genesis applications and synchronize cells in real-time.   |
-| Migrate | DB Integration    | Transform relational databases into Genesis applications and synchronize data in real-time. |
+| Migrate | Excel Integration |  Transform Excel worksheets into Genesis applications and synchronize cells in real time.   |
+| Migrate | DB Integration    | Transform relational databases into Genesis applications and synchronize data in real time. |
 | Operate | GEM               |               Cloud-agnostic management and auditing of Genesis environments.               |
 | Operate | Console           |            Monitoring status, exploring log files and querying application data.            |
 
@@ -161,11 +161,11 @@ Below we have a diagram demonstrating the components within the User Interface a
 
 ![](/img/platform-architecture.png)
 
-## Application Elements
+## Application elements
 
-### Elements of any Application
+### Elements of any application
 
-When it comes to creating applications using the Genesis Platform, there are some elements that an application usually consists of and steps that we would recommend following. These are as follows:
+When it comes to creating applications using the Genesis Platform, there are some elements will be in almost every application. So we recommend five main steps:
 
 - Define your Data Model.
 - Define you Business Logic.
@@ -173,9 +173,9 @@ When it comes to creating applications using the Genesis Platform, there are som
 - Create User Interfaces.
 - Control Access.
 
-These five steps are a roadmap for creating and application and will be the five steps used in the tutorials following this page.
+These five steps are a roadmap for creating an application, so you will these in the tutorials that following.
 
-### The Elements of any Application
+### The elements of any application
 
 #### GPAL
 
@@ -261,7 +261,7 @@ table(name = "COUNTERPARTY", id = 11002, audit = details(id = 11002, sequence = 
 }
 ```
 
-### Data Views
+### Data views
 
 ```kotlin
 view ("TRADE_VIEW", TRADE) {
@@ -288,7 +288,7 @@ view ("TRADE_VIEW", TRADE) {
     }
   }
 ```
-### Distributing Data
+### Distributing data
 
 As can be seen via the code snippets below, the platform handles connection management and data streaming out of the box and binds actions to event handlers.
 
@@ -306,7 +306,7 @@ dataServer{
 
 ![](/img/UI.png)
 
-### Business Logic
+### Business logic
 
 A typical event handler file can be seen below:
 
@@ -336,7 +336,7 @@ With GPAL all layers are well integrated and a single change is propagated to th
 This makes it easy to learn and removes a lot of unnecessary code.
 :::
 
-### Automatic Integration
+### Automatic integration
 
 Microservices and resources built as part of any Genesis application will have automatic and native API support.
 ![](/img/automatic-integration.png)
@@ -347,7 +347,7 @@ Genesis supports a wide range of 3rd party integrations. Some of these are liste
 
 ![](/img/integrations-2.png)
 
-### Data Model Configuration
+### Data model configuration
 
 - Built for the financial markets.
 - Based on Web Components (leveraging Microsoft FAST) for performance & accessibility.
@@ -372,6 +372,6 @@ Our web stack is built using modern web platform features, integrating easily wi
 
 As well as this, the Genesis Platform provides some foundational components for high-performance, low-latency applications. Central to our architecture is an event-driven system that can scale to millions of events per day with easy fan-out to connected web clients.
 
-### Next Steps
+### Next steps
 
 Let's get you set up!
