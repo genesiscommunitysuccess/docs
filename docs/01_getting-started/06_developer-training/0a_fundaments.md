@@ -125,7 +125,7 @@ These components and their capabilities can be seen here:
 | ION Trading                           |        Integration to the Fidessa OMS.             |
 | Pershing                              |        Comprehensive integration to Nexus.         |
 | SS&C Geneva                           | Trades, positions, balances & margin requirements. |
-### Custom Components
+### Custom components
 
 Custom components configure purpose-specific microservice components that extend functionality while remaining scalable.
 This allows you to do the following:
@@ -149,7 +149,7 @@ In the table below we can see a number of Genesis tools, their uses and capabili
 | Operate | GEM               |               Cloud-agnostic management and auditing of Genesis environments.               |
 | Operate | Console           |            Monitoring status, exploring log files and querying application data.            |
 
-## Platform Architecture
+## Platform architecture
 
 The Genesis low-code platform has a real-time event-driven architecture built with microservices:
 
@@ -204,7 +204,7 @@ systemDefinition {
     }
 }
 ````
-### Fields File
+### Fields file
 
 ```Kotlin
 fields {
@@ -223,7 +223,7 @@ fields {
 }
 ```
 
-### Data Model and Configuration
+### Data model and configuration
 
 As seen in the code sample below, automatic auditing and the reuse of fields with intellisense are allowed for. As well as this, data model changes can be made without DBA.
 
@@ -356,7 +356,7 @@ Genesis supports a wide range of 3rd party integrations. Some of these are liste
 Web Components allow us to provide reusable building blocks and app functionality which work seamlessly with today’s popular web frameworks and any that may become popular in the future.
 
 
-### Platform Capabilities
+### Platform capabilities
 
 - Supercharging developers: Enhancing productivity of professional developers with full-stack development expertise.
 - Powerful framework, runtime & tools: Full-featured framework and tools for building financial markets applications.
