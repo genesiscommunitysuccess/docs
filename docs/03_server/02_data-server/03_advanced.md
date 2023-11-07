@@ -106,15 +106,16 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
 
 ```
 
-## Index based data server queries
+## Index-based Data Server queries
 
-These type of Data Server queries only read a defined range within a table or view using indices, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](../../../database/database-interface/entity-db/#getrange).
-We have the following options to write index based queries
+Index-based Data Server queries only read a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](../../../database/database-interface/entity-db/#getrange).
+
+You can use the following options when you create index-based queries:
 
 ### Advanced `where`
 
-Provides set of data equal to specified index
-Advanced `where` accepts index and the provided index is used to get similar records from database. Below data server query returns all the trade data whose quantity is equal to 42. You can optionally refresh keys using the `refresh` keyword, which sets a periodic refresh of keys, as shown in examples below
+This provides a set of data equal to specified index. 
+Advanced `where` accepts index and the provided index is used to get similar records from database. The Data Server query returns all the trade data whose quantity is equal to 42. You can optionally refresh keys using the `refresh` keyword, which sets a periodic refresh of keys, as shown in examples below:
 
 ```kotlin
 query("TRADE_RANGE_BY_QUANTITY", TRADE) {
@@ -130,12 +131,13 @@ query("TRADE_RANGE_USD_REFRESH", TRADE) {
 }
 ```
 
-The example below shows how advanced where queries differs from basic where queries.
+The example below shows how advanced `where` queries differ from basic where queries.
+
 The scenario is this: you want to get trade records where the `currencyId` is `USD`. You can write a Data Server query in two ways, which affects how much data is cached:
 
-- Method 1 uses basic where. It initially reads all the table/view data (which could be very large) and then applies the `where` clause to confine the range to USD, so it can take a long time to get the Data Server query up and running.
-- Method 2 uses advanced where. It uses a database range search operation [getRange](../../../database/database-interface/entity-db/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
-  `where` clause is applied at database level, the data returned by the database operation already contains the correct rows.
+- Method 1 uses basic `where`. It initially reads all the table/view data (which could be very large) and then applies the `where` clause to confine the range to USD, so it can take a long time to get the Data Server query up and running.
+- Method 2 uses advanced `where`. It uses a database range search operation [getRange](../../../database/database-interface/entity-db/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
+  The `where` clause is applied at database level, the data returned by the database operation already contains the correct rows.
 
 ```kotlin
 // Method 1:

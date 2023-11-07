@@ -276,6 +276,8 @@ dataServer {
 
 ## Indices
 
+A query can optionally include an `indices` block to defines additional indexing at the query level. When an index is specified in the query, all rows returned by the query are ordered by the fields specified, in ascending order. The definition and the behaviour of an index in a query are exactly the same as when you [define an index in a table](../../../database/fields-tables-views/tables/tables-basics/#indices).
+
 Here is an example of a simple index:
 
 ```kotlin
@@ -291,16 +293,14 @@ dataServer {
 }
 ```
 
-### Index definition
-The `indices` (optional) block defines additional indexing at the query level. When an index is used, it will order all query rows by the fields specified, in ascending order. This definition is identical to the one defined in data modelling for dictionary tables.
+There are two scenarios where an index is useful:
 
-There are two scenarios in which an index can be used:
-* Optimising query criteria search. If a Data Server client specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, the Data Server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means we don't need to scan all the query rows stored in the Data Server memory-mapped file cache; instead, we perform a very efficient indexed search.
-* Index specified in the Data Server client. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the Data Server will use a specific index to query the data. The data will be returned to the client in ascending order, based on the index field definition. See more at Advanced technical details.
+* **Optimising query criteria search**. in the example above, the if the front end request specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, then the Data Server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means that the platform doesn't need to scan all the query rows stored in the Data Server memory-mapped file cache; instead, it performs a very efficient indexed search.
+* **Where the front end request specifies an index**. You can specify one or more indices in your Data Server query. And the [front end can specify which index to use](../../../server/data-server/advanced/#client-side-runtime-options) by supplying `ORDER_BY` as part of the `DATA_LOGON` process. The Data Server will use that index to query the data. The data will be returned to the client in ascending order, based on the index field definition.  
 
-*Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add SIMPLE_ID to the index definition to ensure we maintain uniqueness.
+*Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add `SIMPLE_ID` to the index definition to ensure we maintain uniqueness.
 
-# Auto-generated REST endpoints
+## Auto-generated REST endpoints
 
 As we have mentioned before, all queries created in the dataserver file are automatically exposed as a [REST endpoints](../../../server/integration/rest-endpoints/introduction/).
 
