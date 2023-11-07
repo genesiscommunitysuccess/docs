@@ -123,7 +123,7 @@ java -version
 gradle -version
 ```
 
-Also, make sure your environment variables are set properly, specially `JAVA_HOME` and `Path`.
+Also, make sure your environment variables are set properly, specially `JAVA_HOME` and `PATH`.
 :::
 
 After modifying the gradle files, open a terminal in the folder where you have your project; then upgrade the gradle wrapper:
