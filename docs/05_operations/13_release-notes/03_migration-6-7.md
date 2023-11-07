@@ -116,7 +116,7 @@ tasks {
 
 ## Finishing
 :::warning Double check
-Before running the final command, make sure your Java and Gradle are running using the required versions (Java 17+ and Gradle 8.3+).
+Before running the final command, make sure your Java and Gradle are running using the required versions (Java 17 and Gradle 8.3).
 
 ```bash
 java -version
