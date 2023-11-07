@@ -311,6 +311,19 @@ enum class ErrorCode(private val readableString: String, val statusCode: HttpSta
 
 We use standard HTTP status codes to represent the response status. This is a well-known standard that is easy to understand. It is internally represented by the `HttpStatusCode` enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html).
 
+To get appropriate status code for error messages, you need to enable it at router level by using the property called `strictHttpStatusCode` as shown in below example.
+`strictHttpStatusCode` is set to `false` by default, with default behaviour appropriate status code is not guaranteed as you will get `200 OK` for some error messages.
+
+Example **genesis-router.kts** file to enable `strictHttpStatusCode`
+```kotlin
+router {
+    webPort = 9064
+    socketPort = 9065
+    strictHttpStatusCode = true
+    nettyLoggingEnabled = true
+}
+```
+
 A single message can contain multiple errors and warnings. Here is how the response status code for the message is allocated:
 
 **Messages with only errors**
