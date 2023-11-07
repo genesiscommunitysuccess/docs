@@ -4,7 +4,7 @@
 
 ## DefaultDatasource class
 
-DefaultDatasource.
+The default implementation for the Datasource interface.
 
 **Signature:**
 

@@ -45,7 +45,7 @@ If you build a project upon one of the Genesis seed apps, then the `Login` micro
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` or `$ npm run bootstrap:ignore-scripts` command again. You can see more information on the [package.json basics](../../../../web/micro-front-ends/foundation-login/) page.
+- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` or `$ npm run bootstrap:ignore-scripts` command again. You can see more information on the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -76,7 +76,7 @@ Once installed, you can either use `Login` as is or re-configure it. As with all
 You may need to set up a `NavigationContributor` in your application's router config class to handle `public` and `autoAuth` route settings.
 
 - `public`, which indicates that a route doesn't require the user to be authenticated to view it
-- `autoAuth`, where, if the user already has an authenticated session, they are automatically logged in again if they navigate away from a page and then return  
+- `autoAuth`, where, if the user already has an authenticated session, they are automatically logged in again if they navigate away from a page and then return
 
 ```ts
 {
@@ -96,12 +96,12 @@ You may need to set up a `NavigationContributor` in your application's router co
 ```
 
 :::warningWarning
-By default, a route that isn't marked public is not. However, a non-public route isn't going to block non-authenticated users automatically from viewing them. This must be implemented in a `NavigationContributor`; see [example](./docs/api/foundation-login.login.md#example).
+By default, a route that isn't marked public is not. However, a non-public route isn't automatically going to block non-authenticated users from viewing them. This must be implemented in a `NavigationContributor`; see [example](./docs/api/foundation-login.login.md#example).
 :::
 
 ## Authentication
 
-For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](docs/03_server/05_access-control/01_introduction.md).
+For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](../../../server/access-control/introduction).
 
 ### Username & password
 
@@ -115,7 +115,7 @@ Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables automati
 
 SSO functionality allows the `Login` micro front-end to work with your company's existing authentication system, enabling them to have a single set of credentials - including those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
 
-Setting up SSO is primarily [a back-end task](docs/03_server/05_access-control/04_sso_jwt.md); however, there is a small amount of front-end [sso configuration](docs/api/foundation-login.loginconfig.sso.md) required.
+Setting up SSO is primarily [a back-end task](../../../server/access-control/SSO-jwt); however, there is a small amount of front-end [sso configuration](docs/api/foundation-login.loginconfig.sso.md) required.
 
 :::noteInfo
 The standard process of SSO is that the SSO authentication provider flow is opened via a redirect in the current page. However, many authentication providers block their system when running in an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). Because of this, if the `Login` micro front-end detects that it is running in an iframe, it opens up the authentication provider in a popup instead.
@@ -131,3 +131,4 @@ Note: this project provides front-end dependencies and uses licensed components 
 
 ### Licensed components
 Genesis low-code platform
+

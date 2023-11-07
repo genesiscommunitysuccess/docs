@@ -29,15 +29,12 @@ You can customise:
 - the contents of the flyout menu
 
 Here is an example of the navigation bar with three navigation items, and all three control buttons shown.
-
 ![Header with the standard genesis logo](./docs/img/foundation-header-standard.png)
 
 This next example is the same as the previous example, except the Genesis logo is replaced with a custom icon.
-
 ![Header with a customised logo](./docs/img/foundation-header-replaced-img.png)
 
 In this next example, we have put a set of example options set in the flyout menu.
-
 ![The sidebar included with the header opened with some example content](./docs/img/foundation-header-sidebar.png)
 
 ## Header set-up
@@ -56,7 +53,7 @@ The `allRoutes` array, which you need to change to set the navigation buttons on
 
 To enable this micro front-end in your application, follow the steps below.
 
-1. Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [package.json basics](../../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -75,7 +72,7 @@ It is possible for you to set up routing manually, but that won't be covered in 
 :::
 
 2. In the top-level class of your application, import the Navigation class and inject it as a dependency.
-   
+3.
 ```javascript {1,6}
 import { Navigation } from '@genesislcap/foundation-header';
 
@@ -102,7 +99,7 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 ```
 
 4. Add the `foundation-header` tag as part of the html that you set as the markup for the `defaultLayout` in your router configuration.
- 
+
 ```javascript {3}
 export const defaultLayout = new FASTElementLayout(html`
 <div class="container">

@@ -25,13 +25,14 @@ System definitions[​](../../../database/database-technology/foundationdb/#syst
 
 For FDB and FDB2 layers, there are additional system definition items that you can apply in the [genesis-system-definitions.kts](../../../database/database-technology/sql/#system-definitions) file:
 
-| Setting | Description |
-| --- | --- |
-| `FdbClusterFile` | A path to an fdb.cluster file. If this item is not defined, the default fdb.cluster file will be used. This file is located in **/etc/foundationdb/fdb.cluster** |
-| `DbNamespace` | A name for the internal FDB directory to use. |
-| `DbThreadsMin` | The minimum number of threads to be created in the FDB layer thread pool. Defaults to the minimum of 4 or the number of processing units |
-| `DbThreadsMax` | The maximum number of threads to be created in the FDB layer thread pool. Defaults to the maximum of 4 or the number of processing units multiplied by 2 |
-| `DbThreadKeepAliveSeconds` | Sets how many seconds a thread created over the `DbThreadsMin` value can live. If a thread is idle for a total of `DbThreadKeepAliveSeconds` and it was created as an additional thread (i.e. outside the `DbThreadsMin` threshold), it will be destroyed. Defaults to 5 minutes |
+| Setting                       | Description                                                                                                                                                                                                                                                                |
+|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `FdbClusterFile`              | A path to an fdb.cluster file. If this item is not defined, the default fdb.cluster file will be used. This file is located in **/etc/foundationdb/fdb.cluster**                                                                                                           |
+| `DbNamespace`                 | A name for the internal FDB directory to use.                                                                                                                                                                                                                              |
+| `DbThreadsMin`                | The minimum number of threads to be created in the FDB layer thread pool. Defaults to the minimum of 4 or the number of processing units                                                                                                                                   |
+| `DbThreadsMax`                | The maximum number of threads to be created in the FDB layer thread pool. Defaults to the maximum of 4 or the number of processing units multiplied by 2                                                                                                                   |
+| `DbThreadKeepAliveSeconds`    | Sets how many seconds a thread created over the `DbThreadsMin` value can live. If a thread is idle for a total of `DbThreadKeepAliveSeconds` and it was created as an additional thread (i.e. outside the `DbThreadsMin` threshold), it will be destroyed. Defaults to 5 minutes |
+| `DbOptimisticConcurrencyMode` | Set the [Optimistic Concurrency](../../database-concepts/optimistic-concurrency) mode. Available values: STRICT, LAX and NONE. Defaults to NONE.                                                                                                                           |
 
 Sample configurations[​](../../../database/database-technology/foundationdb/#sample-configurationsdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

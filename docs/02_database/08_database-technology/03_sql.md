@@ -9,13 +9,19 @@ tags:
     - sql
 ---
 
-SQL support covers PostgreSQL, MS SQL Server and Oracle.
+ If you want to use an SQL database for your Genesis application, the following technologies are supported:
+ 
+- PostgreSQL
+- MS SQL Server
+- Oracle
 
-This page covers the common configuration required to get each of these databases working in your Genesis application, although additional configuration is required for PostgreSQL. Additional details can be found on the respective docs.
+This page covers the common configuration options for setting up these databases in your Genesis application. Then, for each technology, it gives details of jdbc URL formats for connecting to the database, along with any other specific requirements.
 
-## System definitions
+Finally, since the first thing you will need to do is to provide a username and password to connect, we provide some simple examples of configurations that achieve this. 
 
-The following system definition items should be present in your **genesis-system-definitions.kts** file:
+## Common system definitions
+
+Whichever SQL technology you are using, you need to configure it correctly in your **[genesis-system-definitions.kts](../../../server/configuring-runtime/system-definitions/)** file. The following settings are available for you to add. The `DbHost` setting is mandatory. *All settings apply at the JVM level.*
 
 
 | Setting                             | Description                                                                                                                                                                                                                                                                                                                                                              |  
@@ -23,29 +29,30 @@ The following system definition items should be present in your **genesis-system
 | `DbHost`                            | JDBC URL needed to connect to the SQL database. We accept JDBC URL formats for PostgreSQL and MSSQL. This JDBC URL contains other important information, such as port and target database name                                                                                                                                                                           |
 | `DbUsername`                        | The db username                                                                                                                                                                                                                                                                                                                                                          |  
 | `DbPassword`                        | The db password                                                                                                                                                                                                                                                                                                                                                          |
-| `DbSqlConnectionPoolSize`           | This property is **deprecated** in favour of DbSqlMaxPoolSize.                                                                                                                                                                                                                                                                                                               |  
+| `DbSqlConnectionPoolSize`           | This property is **deprecated** in favour of DbSqlMaxPoolSize.                                                                                                                                                                                                                                                                                                           |  
 | `DbSqlMaxPoolSize`                  | For each JVM process (Data Server, Request Server, etc) that connects to the database, this is the maximum number of SQL connections to be held by the SQL connection pool                                                                                                                                                                                               |
 | `DbQuotedIdentifiers`               | If set to true, all SQL tables and fields will be queried using quotes for each identifier to avoid potential name clashes. For example, when the db layer queries the TRADE table with a particular TRADE_ID for all fields, it will do something like `SELECT t_trade WHERE "TRADE_ID" = 1`. However, if set to false, it will use `SELECT t_trade WHERE TRADE_ID = 1` |  
 | `DbThreadsMin`                      | The minimum number of threads to be created in the SQL layer thread pool. Defaults to the minimum of 4 or the number of processing units (CPUs)                                                                                                                                                                                                                          |
 | `DbThreadsMax`                      | The maximum number of threads to be created in the SQL layer thread pool. Defaults to the maximum of 4 or the number of processing units (CPUs) multiplied by 2                                                                                                                                                                                                          |
-| `DbSqlConnectionTimeoutMillis`      | Controls the maximum number of milliseconds that a client will wait for a connection from the pool. When exceeded, an SQLException will be thrown (Default: 30000ms)                                                                                                                                                                                                      |
-| `DbSqlIdleTimeoutMillis`            | Controls the maximum time that a connection is allowed to sit idle in the pool. The minimum allowed value is 10000ms (10 seconds). Default: 600000 (10 minutes)                                                                                                                                                                                                |
+| `DbSqlConnectionTimeoutMillis`      | Controls the maximum number of milliseconds that a client will wait for a connection from the pool. When exceeded, an SQLException will be thrown (Default: 30000ms)                                                                                                                                                                                                     |
+| `DbSqlIdleTimeoutMillis`            | Controls the maximum time that a connection is allowed to sit idle in the pool. The minimum allowed value is 10000ms (10 seconds). Default: 600000 (10 minutes)                                                                                                                                                                                                          |
 | `DbSqlKeepaliveTimeMillis`          | Controls how frequently the pool manager will attempt to keep a connection alive, in order to prevent it from being timed out by the database or network infrastructure. Default: 0 (disabled)                                                                                                                                                                           |
 | `DbSqlMaxLifetimeMillis`            | Controls the maximum lifetime of a connection in the pool.                                                                                                                                                                                                                                                                                                               |
-| `DbSqlConnectionTestQuery`          | This is the query that will be executed just before a connection is given to you from the pool in order to validate that the connection to the database is still alive.                                                                                                                                                                                                           |
+| `DbSqlConnectionTestQuery`          | This is the query that will be executed just before a connection is given to you from the pool in order to validate that the connection to the database is still alive.                                                                                                                                                                                                  |
 | `DbSqlMinimumIdleMillis`            | Controls the minimum number of idle connections that the connection library tries to maintain in the pool. Default: same as maximumPoolSize                                                                                                                                                                                                                              |
 | `DbSqlCatalog`                      | Sets the default catalog for databases that support the concept of catalogs. If this property is not specified, the default catalog defined by the JDBC driver is used. Default: driver default                                                                                                                                                                          |
-| `DbSqlConnectionInitSql`            | Sets an SQL statement that will be executed after every new connection is created before adding it to the pool. If this SQL is not valid or throws an exception, it will be treated as a connection failure and the standard retry logic will be followed. Default: none                                                                                                   |
-| `DbSqlValidationTimeoutMillis`      | Controls the maximum length of time for which a connection will be tested to determine whether it is still alive. This value must be less than the connectionTimeout. Lowest acceptable validation timeout is 250 ms. Default: 5000                                                                                                                                           |
+| `DbSqlConnectionInitSql`            | Sets an SQL statement that will be executed after every new connection is created before adding it to the pool. If this SQL is not valid or throws an exception, it will be treated as a connection failure and the standard retry logic will be followed. Default: none                                                                                                 |
+| `DbSqlValidationTimeoutMillis`      | Controls the maximum length of time for which a connection will be tested to determine whether it is still alive. This value must be less than the connectionTimeout. Lowest acceptable validation timeout is 250 ms. Default: 5000                                                                                                                                      |
 | `DbSqlLeakDetectionThresholdMillis` | Controls the length of time that a connection can be out of the pool before a message is logged indicating a possible connection leak. Lowest acceptable value for enabling leak detection is 2000 (2 seconds). Default: 0 (disabled)                                                                                                                                    |
 | `DbSqlCachePrepStmts`               | Enable or disable prepared statement cache. Default: true                                                                                                                                                                                                                                                                                                                |
 | `DbSqlPrepStmtCacheSize`            | Set the maximum number of cached prepared statements. Default: 250                                                                                                                                                                                                                                                                                                       |
 | `DbSqlPrepStmtCacheSqlLimit`        | Define the maximum length of SQL statements that can be cached. Default: 2048                                                                                                                                                                                                                                                                                            |
+| `DbOptimisticConcurrencyMode`       | Set the [Optimistic Concurrency](../../database-concepts/optimistic-concurrency) mode. Available values: STRICT, LAX and NONE. Defaults to NONE.                                                                                                                                                                                                                         |
 
 
 ### PostgreSQL
 
-JDBC URI takes the following form:
+The JDBC URL for PostgreSQL takes the following form:
 
 `jdbc:postgresql://host:port/database`
 
@@ -61,7 +68,7 @@ In addition to the standard connection parameters, the URL accepts several addit
 
 More information on connection configuration can be found [in the jdbc documentation](https://jdbc.postgresql.org/documentation/head/connect.html).
 
-If you want PostgreSQL to work with different namespaces/schemas you need to add following system definition items in your **genesis-system-definitions.kts** file:
+If you want PostgreSQL to work with different namespaces/schemas, you must add the following system definition items to your **genesis-system-definitions.kts** file:
 
 | Setting     | Description                                                                                                                                                                                                                           |
 |-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -70,7 +77,7 @@ If you want PostgreSQL to work with different namespaces/schemas you need to add
 
 ### MS SQL
 
-JDBC URI takes the following form:
+The JDBC URL for MS SQL takes the following form:
 
 `jdbc:sqlserver://serverName[\instanceName][:port]][;property=value[;property=value]`
 
@@ -90,14 +97,14 @@ You can also consult the SSL documentation for [MSSQL JDBC driver documentation]
 
 ### Oracle
 
-JDBC URI can take the following forms:
+The JDBC URL for Oracle can take the following forms:
 
 `jdbc:oracle:thin:[username/password]@[protocol]//host[:port][/service_name]`
 
 `jdbc:oracle:thin:[username/password]@host[:port]:sid`
 
 - `username/password`, `protocol`, `port`, and `service_name` are optional
-- The default `username/password` are both null. If unprovided, a connection will attempt to use standard connection parameters
+- The default `username/password` are both null. If these are not provided, a connection will attempt to use standard connection parameters
 - The default protocol is `tcp`
 - The default value for `port` is `1521`
 
@@ -112,6 +119,8 @@ For a full list of connection properties, including encryption and certificate a
 
 ### User name and password as part of the Connection URL
 
+In this case, the username and password are unencrypted. This is not recommended for Production environments.
+
 ```kotlin
 systemDefinition {
     global {
@@ -125,6 +134,8 @@ systemDefinition {
 ```
 
 ### User name and password as system definition items
+
+In this case, the username and password are unencrypted. This is not recommended for Production environments.
 
 ```kotlin
 systemDefinition {
@@ -141,6 +152,8 @@ systemDefinition {
 ```
 
 ### User name and password as encrypted system environment variables
+
+In this case, the username and password have been encrypted. 
 
 ```kotlin
 systemDefinition {

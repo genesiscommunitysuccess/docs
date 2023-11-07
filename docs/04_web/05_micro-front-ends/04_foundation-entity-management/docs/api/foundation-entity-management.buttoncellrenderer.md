@@ -8,29 +8,5 @@
 **Signature:**
 
 ```typescript
-buttonCellRenderer: (title: any, clickHandler: any) => {
-    field: string;
-    width: number;
-    pinned: string;
-    enableCellChangeFlash: boolean;
-    cellStyle: {
-        padding: string;
-        lineHeight: string;
-    };
-    filter: boolean;
-    suppressFiltersToolPanel: boolean;
-    suppressColumnsToolPanel: boolean;
-    headerName: string;
-    minWidth: number;
-    maxWidth: number;
-    resizable: boolean;
-    cellRendererSelector: (params: any) => {
-        component: string;
-        params: {
-            actionClick: any;
-            actionName: any;
-            appearance: string;
-        };
-    };
-}
+buttonCellRenderer: (title: any, clickHandler: any) => ColDef
 ```
