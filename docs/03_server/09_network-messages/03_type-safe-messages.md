@@ -20,7 +20,7 @@ tags:
   - response status
 ---
 
-The Genesis low-code platform uses type-safe messages to perform message serialisation and deserialisation. In addition, it automatically extracts relevant metadata to expose this to the front end in the shape of a [Json Schema](https://json-schema.org/) definition that is compliant with the 2019-09 specification. These messages will be validated automatically in the back end, based on their definition.
+The Genesis low-code platform uses type-safe messages to perform message serialisation and deserialisation. In addition, it automatically extracts relevant metadata to expose this to the front end in the form of a [Json Schema](https://json-schema.org/) definition that is compliant with the 2019-09 specification. These messages will be validated automatically in the back end, based on their definition.
 
 These type-safe messages are most commonly used in Request Servers, GPAL Event Handlers and Event Handlers that have been [implemented as a set of classes](../../../server/api-reference/event-handler-api/).
 
@@ -166,7 +166,7 @@ These custom reply types allow a predetermined number of customised replies for 
 IMPORTANT! The success message should always end in `Ack` in order for the internal `eventHandler` logic to handle validation correctly.
 :::
 
-## Error messages
+### Error messages
 
 There is a common format for error or warning messages sent between server and client. The message format is the same for all HTTP and WebSocket messages that we support:
 
@@ -204,7 +204,7 @@ interface GenesisError {
 
 So by default, all error/warning messages have the following properties, along with any extra properties that are needed to represent the error:
 
-- [CODE](#error-codes) is the error code, which can be of two types:
+- CODE is the error code, which can be of two types:
   - ErrorCode is the ENUM class that contains a list of different error codes coming from the server, as shown below
   - String is used to pass any code that is not part of ErrorCode enum
 
@@ -239,14 +239,13 @@ These are the main types of Nack (error or warning) message. Most of them are se
 
 ### Error codes
 
-The `ErrorCode` class definition is:
+Below is the list of standard error codes, along with their HTTP Status code. The framework implementation is standardised to provide error code `CODE` as Enum represented by `ErrorCode` class, but it also provides the flexibility to include any error code.
+
+##### ErrorCode class definition
 
 ```kotlin
 enum class ErrorCode(private val readableString: String, val statusCode: HttpStatusCode)
 ```
-
-Below is the list of standard error codes, along with their HTTP Status code. The framework implementation is standardised to provide the error code `CODE` as Enum represented by `ErrorCode` class; however, it provides the flexibility to include any error code.
-
 
 | Error Code                           | HTTP status code          |
 |--------------------------------------|---------------------------|
@@ -310,10 +309,10 @@ Below is the list of standard error codes, along with their HTTP Status code. Th
 
 We use standard HTTP status codes to represent the response status. This is a well-known standard that is easy to understand. It is internally represented by the `HttpStatusCode` enum class, which corresponds to netty [HttpResponseStatus](https://netty.io/4.0/api/io/netty/handler/codec/http/HttpResponseStatus.html).
 
-To get appropriate status code for error messages, you need to enable it at router level by using the property called `strictHttpStatusCode` as shown in below example.
-`strictHttpStatusCode` is set to `false` by default, with default behaviour appropriate status code is not guaranteed as you will get `200 OK` for some error messages.
+To get the appropriate status code for an error message, you need to enable this at router-level. You do this using the property `strictHttpStatusCode`.
 
-Example **genesis-router.kts** file to enable `strictHttpStatusCode`
+For example, `strictHttpStatusCode` is set to `false` by default. Because of this, you will get `200 OK` for some error messages, and you cannot guarantee that you will always receive the appropriate status code. So, we set `strictHttpStatusCode` to `true` in the **genesis-router.kts** file:
+
 ```kotlin
 router {
     webPort = 9064
