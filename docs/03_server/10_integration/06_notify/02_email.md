@@ -57,7 +57,7 @@ notify {
 
 ### Using system definition in the notify.kts script
 
-Include the following in your aplication's **genesis-system-definition.kts** file:
+Include the following in your application's **genesis-system-definition.kts** file:
 
 ```kotlin
 systemDefinition {
@@ -116,3 +116,6 @@ email(id = "email1") {
 | ENTITY_ID | String identifying the entity to send to. |
 | ENTITY_ID_TYPE | One of USER_NAME, PROFILE_NAME, ALL, SELF. An additional value will be available that matches the ENTITY_ADMIN_PERMISSION_FIELD, if it is defined in Sysdef. | 
 | NOTIFY_ROUTE_ID | Reference to a primary KEY in the NOTIFY_ROUTE table. |
+
+## Configuring more than one service
+You can configure Notify to work with more than one service at a time. There is an example in our page on [Symphony](../../../../server/integration/notify/symphony/#configuring-more-than-one-service).

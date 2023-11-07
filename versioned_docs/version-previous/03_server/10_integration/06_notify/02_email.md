@@ -57,7 +57,7 @@ notify {
 
 ### Using system definition in the notify.kts script
 
-Include the following in your aplication's **genesis-system-definition.kts** file:
+Include the following in your application's **genesis-system-definition.kts** file:
 
 ```kotlin
 systemDefinition {
