@@ -30,41 +30,102 @@ deployPluginVersion=7.0.0
 
 ![](/img/java-refs.png)
 
-2. Configure the `copyDependencies` task in this file:
+2. Configure the `copyDependencies` task and replace JavaLanguageVersion in this file:
 
-```
-afterEvaluate {
+```kotlin {13-19,28-30,34-36} title="server/jvm/build.gradle.kts"
+...
+subprojects  {
+    ...
+    tasks {
+        ...
+        //testing should use H2 mem db
+        test {
+            systemProperty("DbLayer", "SQL")
+            systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+            systemProperty("DbQuotedIdentifiers", "true")
+        } 
+
+        afterEvaluate {
 	        val copyDependencies = tasks.findByName("copyDependencies") ?: return@afterEvaluate
 
             tasks.withType<Jar> {
                 dependsOn(copyDependencies)
             }
+        }           
+    }
+}
+tasks {
+    ...
+}
+allprojects {
+    ...
+    kotlin {
+        jvmToolchain {
+            (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(17))
         }
+    }
+    ...
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
+    ...
+}
 ```
 
 ![](/img/gradle-properties-copyd.png)
 
 3. In the ** server/jvm/-application_-site-specific/build.gradle.kts ** file, configure the `copyDependencies` task:
 
-```
-copyDependencies {
-	    enabled = false
+```kotlin {4-6}
+...
+// To give custom name to the distribution package
+tasks {
+    copyDependencies {
+        enabled = false
+    }    
+    distZip {
+        archiveBaseName.set("alpha-site-specific")
+        archiveClassifier.set("bin")
+        archiveExtension.set("zip")
     }
+}
+...
 ```
 
-![](/img/java-refs.png)
+![](/img/copy-dependencies.png)
 
 4. In the file **server/jvm/-application_- distribution/build.gradle.kts** file, configure the `distTar` task:
 
-```
-distTar {
-	    mustRunAfter(":alpha-deploy:copyDependencies")
+```kotlin {3-5}
+...
+tasks {
+    distTar {
+        mustRunAfter(":alpha-deploy:copyDependencies")
+    }    
+    distZip {
+        ...
     }
+    ...
+}
+...
 ```
 
 ![](/img/disttar.png)
 
 ## Finishing
+:::warning Double check
+Before running the final command, make sure your Java and Gradle are running using the required versions (Java 17+ and Gradle 8.3+).
+
+```bash
+java -version
+gradle -version
+```
+
+Also, make sure your environment variables are set properly, specially `JAVA_HOME` and `Path`.
+:::
+
 After modifying the gradle files, open a terminal in the folder where you have your project; then upgrade the gradle wrapper:
 
 ```
