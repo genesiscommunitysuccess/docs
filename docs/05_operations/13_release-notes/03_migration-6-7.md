@@ -30,41 +30,138 @@ deployPluginVersion=7.0.0
 
 ![](/img/java-refs.png)
 
-2. Configure the `copyDependencies` task in this file:
+Still in the **server/jvm/build.gradle.kts** file, add the required directives to support Junit 5 and properties to run tests.
 
+```kotlin {10,14-25} title="server/jvm/build.gradle.kts"
+...
+subprojects  {
+    ...
+    tasks {
+        ...
+        test {
+            systemProperty("DbLayer", "SQL")
+            systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+            systemProperty("DbQuotedIdentifiers", "true")
+            useJUnitPlatform()
+
+            // Add exports and opens so ChronicleQueue can continue working in JDK 17.
+            // More info in: https://chronicle.software/chronicle-support-java-17/
+            jvmArgs = jvmArgs!! + listOf(
+                "--add-exports=java.base/jdk.internal.ref=ALL-UNNAMED",
+                "--add-exports=java.base/sun.nio.ch=ALL-UNNAMED",
+                "--add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED",
+                "--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED",
+                "--add-opens=jdk.compiler/com.sun.tools.javac=ALL-UNNAMED",
+                "--add-opens=java.base/java.lang=ALL-UNNAMED",
+                "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
+                "--add-opens=java.base/java.io=ALL-UNNAMED",
+                "--add-opens=java.base/java.util=ALL-UNNAMED",
+                "--add-opens=java.base/java.nio=ALL-UNNAMED" // this one is opened for LMDB
+            )
+        }
+        ...
+    }
+}
+...
 ```
-afterEvaluate {
+![](/img/junit5-directives.png)
+
+Lastly, configure the `copyDependencies` task and replace JavaLanguageVersion.
+
+```kotlin {13-19,28-30,34-36} title="server/jvm/build.gradle.kts"
+...
+subprojects  {
+    ...
+    tasks {
+        ...
+        //testing should use H2 mem db
+        test {
+            systemProperty("DbLayer", "SQL")
+            systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+            systemProperty("DbQuotedIdentifiers", "true")
+        } 
+
+        afterEvaluate {
 	        val copyDependencies = tasks.findByName("copyDependencies") ?: return@afterEvaluate
 
             tasks.withType<Jar> {
                 dependsOn(copyDependencies)
             }
+        }           
+    }
+}
+tasks {
+    ...
+}
+allprojects {
+    ...
+    kotlin {
+        jvmToolchain {
+            (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(17))
         }
+    }
+    ...
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
+    ...
+}
 ```
 
 ![](/img/gradle-properties-copyd.png)
 
-3. In the ** server/jvm/-application_-site-specific/build.gradle.kts ** file, configure the `copyDependencies` task:
+2. In the ** server/jvm/-application_-site-specific/build.gradle.kts ** file, configure the `copyDependencies` task:
 
-```
-copyDependencies {
-	    enabled = false
+```kotlin {4-6}
+...
+// To give custom name to the distribution package
+tasks {
+    copyDependencies {
+        enabled = false
+    }    
+    distZip {
+        archiveBaseName.set("alpha-site-specific")
+        archiveClassifier.set("bin")
+        archiveExtension.set("zip")
     }
+}
+...
 ```
 
-![](/img/java-refs.png)
+![](/img/copy-dependencies.png)
 
-4. In the file **server/jvm/-application_- distribution/build.gradle.kts** file, configure the `distTar` task:
+3. In the file **server/jvm/-application_- distribution/build.gradle.kts** file, configure the `distTar` task:
 
-```
-distTar {
-	    mustRunAfter(":alpha-deploy:copyDependencies")
+```kotlin {3-5}
+...
+tasks {
+    distTar {
+        mustRunAfter(":alpha-deploy:copyDependencies")
+    }    
+    distZip {
+        ...
     }
+    ...
+}
+...
 ```
 
 ![](/img/disttar.png)
 
 ## Finishing
+:::warning Double check
+Before running the final commands, make sure your Java and Gradle are running using the required versions (Java 17 and Gradle 8.3).
+
+```bash
+java -version
+gradle -version
+```
+
+Also, make sure your environment variables are set properly, specially `JAVA_HOME` and `PATH`.
+:::
+
 After modifying the gradle files, open a terminal in the folder where you have your project; then upgrade the gradle wrapper:
 
 ```
