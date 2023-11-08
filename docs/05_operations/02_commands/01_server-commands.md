@@ -548,13 +548,13 @@ This command shows the status of the overall system, so you can see if the serve
 
                                 GENESIS Monitor
 
-                            Version:  GENESIS 5.0.0.0
+                            Version:  GENESIS 6.0.0.0
 
 ***************************************************************************
 
 
 
-Start: 2021-08-22 12:46:48                                  Uptime: 5 hours
+Start: 2022-08-22 12:46:48                                  Uptime: 5 hours
 
 Date:  20121-08-22 17:47:10                               Cluster status: OK
 
@@ -572,6 +572,9 @@ PID     Process Name                  Port        Status         CPU       Memor
 
 9419    AUTH_PERMS                    8003        RUNNING        0.30      1.80
 ```
+:::info
+If you are using a development environment and you are running a local build via the IntelliJ plugin, you cannot run the `mon` command. The plugin provides a **Mon** tab where you can monitor the status of each process and start and stop each one.
+:::
 
 ### Syntax
 The `mon` command can take the following arguments:
