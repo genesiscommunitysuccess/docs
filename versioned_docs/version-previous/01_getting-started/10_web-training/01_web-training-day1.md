@@ -711,12 +711,12 @@ html`
 	<zero-button
 		slot="routes"
 		value="1"
-		@click=${(x, c) => c.parent.navigation.navigateTo("home")}
+		@click=${(x) => x.navigation.navigateTo("home")}
 	>Home</zero-button>
 ></foundation-header>`;
 ```
 
-The `navigation` object referenced via the `parent` object is why the `navigation` object is added as an attribute to the `fast-router` in the [setup step](#header-setup). From it, the `navigateTo` method can be called, which allows the user to navigate around the finished application from the navigation buttons.
+From it, the `navigateTo` method can be called, which allows the user to navigate around the finished application from the navigation buttons.
 
 Moving on from this basic example, a dynamic set of routes can be configured, using the `repeat` directive from FAST.
 
