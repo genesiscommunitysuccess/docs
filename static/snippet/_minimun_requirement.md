@@ -18,7 +18,7 @@
 | [npm](https://docs.npmjs.com/cli/v6/commands/npm-install)                                                       | 8                  |
 | [Gradle](https://gradle.org/install/)                                                                           | 8.3                |
 | [Chrome](https://www.google.com/intl/pt-BR/chrome/)                                                             | 88.0               |
-| Kotlin                                                                                                          | 1.7.10             |       
+| Kotlin                                                                                                          | 1.9.0             |       
 
 You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the Genesis Platform Abstraction Language (**GPAL**) prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
