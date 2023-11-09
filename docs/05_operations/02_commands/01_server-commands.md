@@ -583,6 +583,7 @@ By default, the command shows the following columns of information:
 The key column in the display is **Status**, which can have the following values:
 
 - **RUNNING** the process has just started and is still initialising.
+- **STARTING** the process has completed initialisation; it is running but hasn't yet signalled to the monitor that it has completed its internal health checks.
 - **HEALTHY** the process is fully available.
 - **STANDBY** the process is in standby mode; it will take it over if the node becomes Primary
 - **MISSING** there has been an error and the process has not started correctly.
