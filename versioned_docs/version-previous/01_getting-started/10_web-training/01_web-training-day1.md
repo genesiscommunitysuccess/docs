@@ -703,7 +703,7 @@ Change the logo of the header so it uses this image: `https://icotar.com/avatar/
 
 ##### Navigation items
 
-You can add navigation items to the left-hand side of the navigation bar. For each element, you can set `slot="routes"` attribute, so that navigation is controlled via a `@click` event. The following is a really basic example for adding a 'Home' button:
+You can add navigation items to the left-hand side of the navigation bar. For each element, you can set `slot="routes"` attribute, so that navigation is controlled via a `@click` event. Here is a really basic example for adding a 'Home' button:
 
 ```javascript
 html`
@@ -716,7 +716,7 @@ html`
 ></foundation-header>`;
 ```
 
-From it, the `navigateTo` method can be called, which allows the user to navigate around the finished application from the navigation buttons.
+From here, the `navigateTo` method can be called, which allows the user to navigate around the finished application from the navigation buttons.
 
 Moving on from this basic example, a dynamic set of routes can be configured, using the `repeat` directive from FAST.
 
@@ -737,12 +737,12 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 :::tip
 If you look at the `icon` and `variant` properties, you'll see that you can change the icon displayed on the top menu bar.
 
-Take a look on the [fontawesome](https://fontawesome.com/) icons. You can customize it by changing its properties' values. Try to use `icon: 'gear'` and check.
+Take a look at the [fontawesome](https://fontawesome.com/) icons. You can customize it by changing its properties' values. Try to use `icon: 'gear'` and check.
 :::
 
 - Now, when setting the navigation items, we can use the `repeat` directive to iterate over the defined routes and create a navigation item for each.
 
-Look at the `default.ts` and you'll see how we create a button with an associated logo for each of the three defined routes:
+Look at the **default.ts** and you'll see how we create a button with an associated logo for each of the three defined routes:
 
 ```js {3,4} title='client/web/src/layouts/default.ts'
 html` <foundation-header
