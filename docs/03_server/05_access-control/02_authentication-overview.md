@@ -24,15 +24,17 @@ Some of these techniques support [Multi-factor Authentication (MFA)](https://en.
 
 Each of these requires its own configuration settings in the application's _application-name-_**auth-preferences.kts** file.
 
-## Authentication Workflow
+## Authentication workflow
 Regardless of which authentication method is used, the process for logging in remains the same. The client (either a Genesis UI or an API client) sends a request to the EVENT_LOGIN_AUTH endpoint. 
-The body of this request will contain different fields depending on the target authentication mechanism. For example, the field SSO_TOKEN is only valid for SAML and OIDC authenticators, whereas USERNAME and PASSWORD must be provided if using GenesisPassword or LDAP.
-Each authenticator will be tried in turn, and return one of three possible responses, Succcess, Failure or Incompatible. 
-On the first success received, a USER_SESSION record will be created, and a SESSION_AUTH_TOKEN and a REFRESH_AUTH_TOKEN will be issued, and returned on the EVENT_LOGIN_AUTH_ACK message.
+The body of this request contains different fields depending on the target authentication mechanism. For example, the field SSO_TOKEN is only valid for SAML and OIDC authenticators, whereas USERNAME and PASSWORD must be provided if using GenesisPassword or LDAP.
+Each authenticator is tried in turn, and returns one of three possible responses, Succcess, Failure or Incompatible. 
+On the first success received, a USER_SESSION record is created; a SESSION_AUTH_TOKEN and REFRESH_AUTH_TOKEN are issued and returned on the EVENT_LOGIN_AUTH_ACK message.
 If all configured authenticators return a Failure or Incompatible, then a NACK message will be sent to the client with an error.
 
 The session token must be included on all future requests sent from the client in this session.
-The refresh token is a one time use to create a new session, without having to re-enter credentials.
+
+The refresh token is a one-time use to create a new session, without having to re-enter credentials.
+
 If the client is set up for MFA, and the second factor verification stage fails, a short-lived temporary session will be created so that first factor credentials do not have to be re-entered.
 
 ## Username and password authentication
