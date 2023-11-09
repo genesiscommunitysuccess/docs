@@ -2,13 +2,14 @@
 title: 'FIX Gateways and Streamers - FIX-Xlator'
 sidebar_label: 'FIX-Xlator'
 id: fix-xlator
-keywords: [server, integration, gateways, streamers, fix-xlator]
+keywords: [server, integration, gateways, streamers, fix-xlator, FIX]
 tags:
   - server
   - integration
   - gateways
   - streamers
   - fix-xlator
+  - FIX
 ---
 
 The FIX Xlator is a plugin for the Streamer and Streamer client, which enables type-safe handling of FIX messages. It also gives access to a set of vital integration features, such as FIX_IN, EXECUTION_REPORT and CUSTOM_FIX.

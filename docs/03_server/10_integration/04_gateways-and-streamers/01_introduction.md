@@ -2,13 +2,14 @@
 title: 'FIX Gateways and Streamers - introduction'
 sidebar_label: 'Introduction'
 id: introduction
-keywords: [server, integration, gateways, streamers, introduction]
+keywords: [server, integration, gateways, streamers, introduction, FIX]
 tags:
   - server
   - integration
   - gateways
   - streamers
   - introduction
+  - FIX
 ---
 If your application needs to integrate with external systems through a [FIX](https://www.fixtrading.org/) gateway, you need to be able to interpret incoming messages in the format of the external system and you need to be able to reformat information from the Genesis database when you send messages out to that system.
 

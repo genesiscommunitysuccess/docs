@@ -2,13 +2,14 @@
 title: 'FIX Gateways and Streamers - Streamer'
 sidebar_label: 'Streamer'
 id: streamer
-keywords: [server, integration, gateways, streamers, streamer]
+keywords: [server, integration, gateways, streamers, streamer, FIX]
 tags:
   - server
   - integration
   - gateways
   - streamers
   - streamer
+  - FIX
 ---
 
 This page shows you how to create a Streamer.

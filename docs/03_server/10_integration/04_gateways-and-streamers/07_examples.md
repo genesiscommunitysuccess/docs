@@ -2,13 +2,14 @@
 title: 'FIX Gateways and Streamers - examples'
 sidebar_label: 'Examples'
 id: examples
-keywords: [server, integration, gateways, streamers, examples]
+keywords: [server, integration, gateways, streamers, examples, FIX]
 tags:
   - server
   - integration
   - gateways
   - streamers
   - examples
+  - FIX
 ---
 
 ## Streamer

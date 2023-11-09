@@ -2,13 +2,14 @@
 title: 'FIX Gateways and Streamers - Streamer Client'
 sidebar_label: 'Streamer Client'
 id: streamer-client
-keywords: [server, integration, gateways, streamers, streamer client]
+keywords: [server, integration, gateways, streamers, streamer client, FIX]
 tags:
   - server
   - integration
   - gateways
   - streamers
   - streamer client
+  - FIX
 ---
 
 This page shows you how to create a Streamer Client. It also looks at the syntax of the two types of Streamer Client that are available:
