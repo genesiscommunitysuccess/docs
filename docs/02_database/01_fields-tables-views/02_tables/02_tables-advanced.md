@@ -9,6 +9,53 @@ tags:
     - advanced
 ---
 
+## Sequences
+
+:::info
+It is recommended to use `AUTO INCREMENT` fields rather than sequences.
+:::
+
+Sequences allow a combination of auto generated sequential numbers and parameters defined under System definition. For example, a table having a field `TRADE_ID` defined as:
+
+```kotlin
+table (name = "TRADE", id = 2000) {
+        sequence(TRADE_ID, "TR")
+        QUANTITY
+        PRICE
+        SYMBOL
+        DIRECTION
+
+        primaryKey {
+            TRADE_ID
+        }
+    }
+```
+
+Will generate `TRADE_ID` fields in the following format: `SEQUENTIAL_VALUE` (padded by `paddingSize`) + `SEQUENCE` + `LOCATION` + 1 (fixed)
+
+Hence, using the default settings (see details below), the value generated for the field defined above will be: `000000000000001TRLO1`
+
+### SQL Databases
+
+In SQL databases, for compatibility reasons this behavior is **disabled by default**, and a `UUID` is generated instead.
+
+> This feature is intended for 
+
+To enable and configure this feature:
+
+1. Set/modify the following keys under `site-specifics/product-system-definition` :
+
+| Item | Default Value | Description
+| ---- | ------------- | -----------
+| Location | 'LO' | 
+| SqlSequencePaddingSize| 15 | The number of zeros used to pad the sequential number
+| SqlEnableSequenceGeneration | false | Must be set to true.
+
+> Remap will now generate Database sequences for sequences defined as of this setting has been published via `genesisInstall`.
+
+2. If there are existing fields using sequences, run the server command [CreateMissingSqlSequences](../../../05_operations/02_commands/01_server-commands.md#createmissingsqlsequences)
+
+3. (Optional) relevant to data migration scenario: Adjust the initial value of the sequences using the server command [SetSequence](../../../05_operations/02_commands/01_server-commands.md#setsequence)
 
 ## Subtables
 

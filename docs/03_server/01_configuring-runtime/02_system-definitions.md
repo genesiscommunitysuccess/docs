@@ -133,6 +133,8 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 **Location**: This item contains a 2-character value used to generate **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR",
 then the generated ID will be `000000000001TRLO1` where "LO" represents Location string.
 
+> Check more information around compatibility and behavior of sequences in [Tables advanced](../../02_database/01_fields-tables-views/02_tables/02_tables-advanced.md)
+
 **LogFramework**: Contains name of the logging framework. Supported framework: LOG4J2
 
 **LogFrameworkConfig**: Contains name of the log framework configuration file.
