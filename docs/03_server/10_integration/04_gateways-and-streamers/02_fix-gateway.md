@@ -29,7 +29,7 @@ To create a Gateway:
     <script>position-fix-gateway.kts</script>
     <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
     <description>FIX Drop Copy Gateway</description>
-	<language>pal</language>
+    <language>pal</language>
 </process>
 ```
 
@@ -42,8 +42,8 @@ In order to use file driven configuration, you must provide a path to a file in 
 
 ```kotlin
 fix {
-	QuickFIXJ Config = GenesisPaths.genesisHome() + "generated/cfg/default-QuickFIXJ .cfg"
-	disableDatabaseGateways = true
+    QuickFIXJ Config = GenesisPaths.genesisHome() + "generated/cfg/default-QuickFIXJ .cfg"
+    disableDatabaseGateways = true
     disableConfigGateways = false
 }
 ```
@@ -108,7 +108,7 @@ An example GPAL configuration to enable database sessions.
 ```kotlin
 fix {
     databaseSessionTemplates("default-QuickFIXJ .cfg")
-	disableDatabaseGateways = false
+    disableDatabaseGateways = false
     disableConfigGateways = true
 }
 ```
@@ -127,7 +127,7 @@ It is also possible to use both database configuration and config configuration 
 | isOutboundInHeader                     | true             | True if the value of `outboundRoutingTag` should be obtained from the message header, rather than the body.                                                                     |
 | isInboundInHeader                      | true             | True if the value of `inboundRoutingTag` should be obtained from the message header, rather than the body.                                                                      |
 | fileLogPath                            | null             | Path to the directory where QuickFIXJ  session logs will be stored, if using logFactoryImpl = FILE.                                                                             |
-| QuickFIXJ Config                         | null           | Path to the QuickFIXJ  session configuration file, if using file driven configuration.                                                                                          |
+| QuickFIXJ Config                       | null             | Path to the QuickFIXJ  session configuration file, if using file driven configuration.                                                                                          |
 | isFixLoggingEnabled                    | true             | Set to true to enable FIX session logs using the configured `LogFactoryImpl` .                                                                                                  |
 | isPersistToFixIn                       | false            | Set to true to enable persistence of inbound messages to FIX_IN table.                                                                                                          |
 | isPersistToFixOut                      | false            | Set to true to enable persistence of outbound messages to FIX_OUT table.                                                                                                        |
