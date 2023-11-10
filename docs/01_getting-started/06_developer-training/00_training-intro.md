@@ -48,7 +48,7 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 - [Day five](../../../getting-started/developer-training/training-content-day5/): Schedulers, notifications, permissions​, key server commands​ and how to get help​.
 
 ## Genesis low-code platform version
-Back end (GSF)  7.0.0
+Back end (GSF)  7.0.1
 
 Front end (FUI) 14.101.1
 

@@ -132,16 +132,7 @@ sealed class TradeEffect {
 }
 ```
 
-### 3. Add the module as a dependency in **build.gradle.kts**
-Add the module as a dependency in the **build.gradle.kts** inside **alpha-script-config** module.
-
-```
-...
-api(project(":alpha-eventhandler"))
-...
-```
-
-### 4. Add an integrated State Machine to the Event Handler
+### 3. Add an integrated State Machine to the Event Handler
 
 Let's edit the Event Handler to add an integrated State Machine. First, in the **alpha-eventhandler.kts** file, add the imports below and declare a variable to be visible to all events by injecting the class `TradeStateMachine`, which we have just created. 
 
