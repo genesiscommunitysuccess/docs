@@ -245,9 +245,8 @@ If you are not sure how to read and write information from the Genesis database,
 
 Set two new key values in **alpha-config/src/main/resources/cfg/alpha-system-definition.kts** file in systemDefinition-global block This enables the COUNTERPARTY table and COUNTERPARTY_ID field to become part of the generic permissions system:
 
-```kotlin {6,7}
-package genesis.cfg
-
+```kotlin {5,6}  title="alpha-system-definition.kts"
+...
 systemDefinition {
     global {
         ...
