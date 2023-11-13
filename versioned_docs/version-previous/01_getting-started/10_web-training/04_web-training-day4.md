@@ -119,6 +119,20 @@ The aim of this section is to implement the `foundation-layout` component, which
 
 In order to prevent the components becoming excessivly large, we need to refactor the **orders.ts**.
 
+Before we add the dynamic layout this is a good time to refactor the four components inside
+**home.ts** we've built into their own components. This will help stop the components getting
+excessively large.
+
+:::info
+Refactoring out the components is also required here due to a limitation with the
+[cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) and how it
+interacts with FAST bindings and event listeners. A clean way to solve this issue is to
+wrap up your layout contents into individual components as we are about to do.
+
+If your components were interacting with each other via the parent component then it is
+recommended to change them to interact via the `foundation-store` utility.
+:::
+
 #### Orders grid
 
 We'll start with the most straightforward component. Create a directory called **orders-grid** in the  **orders** folder and add these two files to it:
