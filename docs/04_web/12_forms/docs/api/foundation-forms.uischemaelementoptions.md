@@ -9,6 +9,7 @@
 
 ```typescript
 export type UiSchemaElementOptions = {
+    async?: boolean;
     allOptionsResourceName?: string;
     datasourceConfig?: DatasourceOptions;
     hidden?: boolean;

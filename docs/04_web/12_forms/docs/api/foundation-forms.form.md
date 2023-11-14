@@ -4,7 +4,7 @@
 
 ## Form class
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
 > 
 
 Foundation form component for automatically generated forms based on json schema obtained from the api, supplied initial data or supplied JSON schema. Allowing customisable form elements using UI schema and set of custom renderers

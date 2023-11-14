@@ -9,9 +9,9 @@ module.exports = {
      * the manifest.json files itself. Removing this static package ref will always re-process enabled packages.
      */
     "@genesislcap/foundation-comms": "14.104.0",
-    // "@genesislcap/foundation-entity-management": "14.104.0",
+    "@genesislcap/foundation-entity-management": "14.104.0",
     "@genesislcap/foundation-filters": "14.104.0",
-    "@genesislcap/foundation-forms": "14.104.0",
+    // "@genesislcap/foundation-forms": "14.104.0",
     "@genesislcap/foundation-header": "14.104.0",
     "@genesislcap/foundation-layout": "14.104.0",
     "@genesislcap/foundation-login": "14.104.0",
