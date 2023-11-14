@@ -23,5 +23,5 @@ Attempt to load an autosaved layout from local storage, keyed on the `auto-save-
 
 This function is automatically called when loading the layout via the declarative API so if you're not registering components via the JavaScript API then you don't need to call this function. If you \*are\* calling [FoundationLayout.registerItem()](./foundation-layout.foundationlayout.registeritem.md) then you should call this function immediately afterwards.
 
-Will load the layout with `handleMissingItem = 'placeholder` so placeholder text will be shown for any missing items.
+Will load the layout with `handleMissingItem = 'placeholder` so placeholder text will be shown for any missing items. Loads layout config with the cache disabled (this will likely only be called after the page has refreshed anyway, so there would have been no cached elements to try and recover).
 

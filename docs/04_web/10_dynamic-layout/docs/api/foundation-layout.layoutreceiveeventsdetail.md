@@ -6,7 +6,7 @@
 
 Defines the shape of the detail that the layout listens works with for events it listens on
 
-'changeTitle' - `title` is the string you want to set. For `mode`: `replace` will set the title to be `title`, `suffix` will append `title` to the end of the existing title.
+'changeTitle' - `title` is the string you want to set. For `mode`: `replace` will set the title to be `title`, `suffix` will append `title` to the end of the existing title. 'autosave' - no other parameters.
 
 **Signature:**
 
@@ -16,5 +16,6 @@ export type LayoutReceiveEventsDetail = {
         title: string;
         mode: 'replace' | 'suffix';
     };
+    autosave: void;
 };
 ```

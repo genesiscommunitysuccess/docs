@@ -203,11 +203,13 @@ To enable autosaving the layout see [here](#autosaving-layout).
 
 #### [Get Layout](./docs/api/foundation-layout.foundationlayout.getlayout.md)
 
-Get an object describing the current layout so that it can be restored at a later date. This does not save any data internally to the layout. It is up to the client to store this state where appropriate for later recall (browser local storage, persistence layer, etc.)
+Get an object describing the current layout so that it can be restored at a later date. This does not save any data internally to the layout. It is up to the client to store this state where appropriate for later recall (browser local storage, persistence layer, etc.). Use the [autosaving layout](#autosaving-layout) feature to get the layout to do this for you with local storage.
+
+You can store state for an instance of an item, and that will be saved inline. See [managing state](#managing-state).
 
 #### [Load Layout](./docs/api/foundation-layout.foundationlayout.loadlayout.md)
 
-Loads a serialised layout. All items that are described in the config to load must already be registered with the layout system - using either the declarative or JavaScript API. If there are items missing (could be due either to missing items or to a mismatch of registered names) then a `LayoutUsageError` will be thrown containing the names of the missing items.
+Loads a serialised layout. All items that are described in the config to load must already be registered with the layout system - using either the declarative or JavaScript API. If there are items missing (could be due either to missing items or to a mismatch of registered names) then a `LayoutUsageError` will be thrown containing the names of the missing items. Alternatively, you can request placeholder items to be added.
 
 ## Events
 
@@ -253,12 +255,12 @@ See [here](#custom-item-renaming-header-button) for an example of creating a cus
 
 ## Autosaving layout
 
-There is opt-in functionality provided in the layout to autosave the layout in local storage as the user interacts with it. Set the `auto-save-key` attribute to a unique string on the root element to enable the feature; the layout will be saved in this key. The layout will be saved for later recall in local storage whenever the user performs the following actions: 
+There is opt-in functionality provided in the layout to autosave the layout in local storage as the user interacts with it. Set the `auto-save-key` attribute to a unique string on the root element to enable the feature; the layout will be saved in this key. The layout will be saved for later recall in local storage whenever the user performs the following actions:
 
 - adding an item
 - removing an item
 - resizing items using the divider
-- dragging items around the layout 
+- dragging items around the layout
 
 When you have enabled autosave, you are still able to use the manual [serialising commands](#serialising-layout).
 
@@ -289,8 +291,9 @@ This section concerns the behaviour of elements inside the layout. If you are us
 
 There are actions that the user can perform with items in the layout which will run the component lifecycle functions (`connectedCallback` and `disconnectedCallback`) at times when you don't want them to run:
 - When an item is dragged around the layout.
-- Potentially, when another item is removed from the layout
+- Potentially, when another item is removed from the layout.
 - Potentially, when new items are added to the layout.
+- When an item is maximised or minimised.
 
 For example, if you have a component with a loaded resource on the layout (such as a grid with a `grid-pro-genesis-datasource`) and you add a new item to the layout with the JavaScript API, then the component with the loaded resource will have to reload too. It is important that any such element accounts for this, including such requirements as caching data, or resizing correctly.
 
@@ -313,6 +316,22 @@ Throughout Foundation UI, there is no need to de-register a component that is re
 - When the element is part of the layout registry, then `shouldRunConnect` will be false and you can use this to ensure that your component isn't doing unnecessary work while part of the cache.
 
 - Once the component is actually initialised in the layout on the DOM, then `shouldRunConnect` will be true, and you can then perform all the required initialisation.
+
+### Managing state
+
+Items inside of the layout can save and restore state using various methods, but it can become difficult to manage state if you're adding the same item to the layout multiple times (multiple instances of the same web component).
+
+You can implement the [LayoutComponentWithState](./docs/api/foundation-layout.layoutcomponentwithstate.md) interface which will allow you to save and load state *per instance* of your components. See the linked interface and the associated functions API documentation for examples and explanations of usage.
+
+Usage of this interface is optional, if you do not need to manage state for your components in this way then simply do not implement the interface.
+
+:::warning
+The layout system is only interacting with the immediately contained items - so if you have components that contain other components, the top level components will need to interact with the contained components to manage their state.
+:::
+
+:::danger
+Each layout item can contain multiple components, and most of the time there are no extra considerations when doing this. However, the state of each component in an instance is saved in order of the components on the DOM, so if the serialised state is manually changed to have the items out of order with their state, then the incorrect states will be passed into each item. This should not occur during defined behaviour, but is possible if the end-user is able to change the state passed into `loadLayout()` manually.
+:::
 
 ### Element cloning
 
