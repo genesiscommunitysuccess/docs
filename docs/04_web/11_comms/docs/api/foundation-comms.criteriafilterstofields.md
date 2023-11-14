@@ -24,5 +24,29 @@ Record&lt;string, string&gt;
 
 ## Remarks
 
-For filtering REQUEST\_SERVER resources. Maps concatenated criteria filters from a grid to a request fields object, eg: `foo == 'bar' && asd == 'zxc', into { foo: 'bar', asd: 'zxc' }`
+For filtering REQUEST\_SERVER resources. Maps concatenated criteria filters from a grid to a request fields object. Date/datetime groovy expressions will append `_FROM` and `_TO` onto field names appropriately
+
+eg: converts
+
+```
+foo == 'bar' &&
+asd == 'zxc' &&
+Expr.containsIgnoreCase(FIELD, 'abc') &&
+Expr.dateIsToday(DATE) &&
+Expr.dateTimeIsGreaterEqual(DATETIME, '20231110-03:23') &&
+Expr.dateTimeIsLessEqual(DATETIME, '20231115-03:23')
+```
+into
+
+```
+{
+  foo: 'bar',
+  asd: 'zxc',
+  FIELD: '*abc*',
+  DATE_FROM: '20231110-00:00',
+  DATE_TO: '20231111-00:00',
+  DATETIME_FROM: '20231110-03:23',
+  DATETIME_TO: '20231115-03:23',
+}
+```
 

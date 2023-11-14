@@ -14,6 +14,7 @@ TYPES_MAP: {
     ENUM: FieldTypeEnum;
     BOOLEAN: FieldTypeEnum;
     INT: FieldTypeEnum;
+    LONG: FieldTypeEnum;
     DOUBLE: FieldTypeEnum;
     BIGDECIMAL: FieldTypeEnum;
     DATE: FieldTypeEnum;
