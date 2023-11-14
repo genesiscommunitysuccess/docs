@@ -287,13 +287,13 @@ In this case, you must invalidate the autosaved layout cache. The cleanest and e
 
 This section concerns the behaviour of elements inside the layout. If you are using simple elements or Genesis-supplied elements, this is less of a concern; but if you are building complex custom components yourself, you need this information.
 
-### Element lifecycle
+### Element lifecycle (gating)
 
-There are actions that the user can perform with items in the layout which will run the component lifecycle functions (`connectedCallback` and `disconnectedCallback`) at times when you don't want them to run:
-- When an item is dragged around the layout.
-- Potentially, when another item is removed from the layout.
-- Potentially, when new items are added to the layout.
-- When an item is maximised or minimised.
+Some actions that the user can perform with items in the layout will run the component lifecycle functions (`connectedCallback` and `disconnectedCallback`) when you don't want them to run:
+- when an item is dragged around the layout
+- potentially, when another item is removed from the layout
+- potentially, when new items are added to the layout
+- When an item is maximised or minimised
 
 For example, if you have a component with a loaded resource on the layout (such as a grid with a `grid-pro-genesis-datasource`) and you add a new item to the layout with the JavaScript API, then the component with the loaded resource will have to reload too. It is important that any such element accounts for this, including such requirements as caching data, or resizing correctly.
 
