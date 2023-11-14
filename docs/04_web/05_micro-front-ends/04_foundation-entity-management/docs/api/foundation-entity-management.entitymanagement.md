@@ -54,6 +54,7 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [enableFilterBar](./foundation-entity-management.entitymanagement.enablefilterbar.md) |  | boolean |  |
 |  [enableRowFlashing](./foundation-entity-management.entitymanagement.enablerowflashing.md) |  | boolean | If true, will enable row flashing for all rows for <code>add</code> async transactions |
 |  [entityLabel](./foundation-entity-management.entitymanagement.entitylabel.md) |  | string | Label for the entity which has usages such as being shown in the title of the modal wen editing the entity |
+|  [formRenderers](./foundation-entity-management.entitymanagement.formrenderers.md) |  | RendererEntry\[\] | Array with renderers used by foundation-forms |
 |  [formUiSchema](./foundation-entity-management.entitymanagement.formuischema.md) |  | any |  |
 |  [gridOptions](./foundation-entity-management.entitymanagement.gridoptions.md) |  | GridOptions | GridOptions to be passed down from application |
 |  [hideDelete](./foundation-entity-management.entitymanagement.hidedelete.md) |  | boolean |  |
