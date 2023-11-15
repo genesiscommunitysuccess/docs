@@ -114,7 +114,7 @@ Each `identityProvider` configuration has the following properties:
 | client | The client id and secret | Yes | No default value | Object |
 | config | Holds the endpoint and verification configuration for the OIDC provider | Yes if `remoteConfig` is not present | No default value | Object |
 | remoteConfig | If the OIDC provider has the configuration endpoint `remoteConfig`, this can be used to point to that endpoint for automatic `endpoint` and `verification` configuration | Yes if `config` is not present | No default value | Object |
-| scopes | Requested scopes on authorisation | No | `openid profile email` | Set |
+| [scopes](https://auth0.com/docs/get-started/apis/scopes/openid-connect-scopes) | Requested scopes on authorisation | No | `openid profile email` | Set |
 | onNewUser | Predefined action when a new user logs in. **This property is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess` | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
 | tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | Yes | No default value | Int |
