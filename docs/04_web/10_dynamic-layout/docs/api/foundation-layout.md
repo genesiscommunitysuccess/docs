@@ -18,6 +18,7 @@
 
 |  Interface | Description |
 |  --- | --- |
+|  [LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md) | Interface to implement on an item which is a component of the layout and you wish to serialise state with. This is saved separately for each instance of the component, which allows you to restore multiple instances of the same component with different state. |
 |  [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) | The parameters that can be set on a new item when being added by the [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md) API |
 
 ## Variables
@@ -28,7 +29,7 @@
 |  [foundationLayoutComponents](./foundation-layout.foundationlayoutcomponents.md) | Registration object to register the layout with your design system. |
 |  [LAYOUT\_ICONS](./foundation-layout.layout_icons.md) | A collection of SVG icons in base64 format. |
 |  [LayoutEmitEvents](./foundation-layout.layoutemitevents.md) | <p>Defines events that the layout system emits</p><p>'firstLoaded' - emitted when the layout has finished loading the first time using the declarative API after [DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md) ms. <br/> 'itemAdded' - emitted when an item is added to the layout' <br/> 'itemRemoved' - emitted when an item is removed from the layout' <br/> 'itemResized' - emitted when the user drags the divider to resize elements</p> |
-|  [LayoutReceiveEvents](./foundation-layout.layoutreceiveevents.md) | <p>Defines events that the layout system listens for</p><p>'changeTitle' - emit this from a contained item to update the title of the window that contains it.</p> |
+|  [LayoutReceiveEvents](./foundation-layout.layoutreceiveevents.md) | <p>Defines events that the layout system listens for</p><p>'changeTitle' - emit this from a contained item to update the title of the window that contains it. 'autosave' - emit this from a contained item to hint to the layout system that it should autosave the layout. A contained item should do this if it has just changed some state it would like to persist. See [LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md).</p> |
 |  [layoutStyles](./foundation-layout.layoutstyles.md) | <code>ElementStyles</code> which defines the css for [FoundationLayout](./foundation-layout.foundationlayout.md). |
 |  [layoutTemplate](./foundation-layout.layouttemplate.md) | <code>ViewTemplate</code> which defines the html for [FoundationLayout](./foundation-layout.foundationlayout.md). |
 
@@ -37,7 +38,7 @@
 |  Type Alias | Description |
 |  --- | --- |
 |  [CustomButton](./foundation-layout.custombutton.md) | Definition of a custom button which will be added to all layout items. |
-|  [LayoutReceiveEventsDetail](./foundation-layout.layoutreceiveeventsdetail.md) | <p>Defines the shape of the detail that the layout listens works with for events it listens on</p><p>'changeTitle' - <code>title</code> is the string you want to set. For <code>mode</code>: <code>replace</code> will set the title to be <code>title</code>, <code>suffix</code> will append <code>title</code> to the end of the existing title.</p> |
+|  [LayoutReceiveEventsDetail](./foundation-layout.layoutreceiveeventsdetail.md) | <p>Defines the shape of the detail that the layout listens works with for events it listens on</p><p>'changeTitle' - <code>title</code> is the string you want to set. For <code>mode</code>: <code>replace</code> will set the title to be <code>title</code>, <code>suffix</code> will append <code>title</code> to the end of the existing title. 'autosave' - no other parameters.</p> |
 |  [LayoutRegionType](./foundation-layout.layoutregiontype.md) | Union type describing the three different types of region splits. Set on the <code>type</code> attribute on [FoundationLayoutRegion](./foundation-layout.foundationlayoutregion.md). |
 |  [Placement](./foundation-layout.placement.md) | Where to and how to add the new item(s) into the layout when using the [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md) API. |
 |  [SerialisedLayout](./foundation-layout.serialisedlayout.md) | Versioned layout config objects. <code>v</code> is the version and <code>c</code> contains the layout config. |

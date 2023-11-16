@@ -8,5 +8,5 @@
 **Signature:**
 
 ```typescript
-buttonCellRenderer: (title: any, clickHandler: any) => ColDef
+buttonCellRenderer: (title: any, clickHandler: any, contentTemplate: any) => ColDef
 ```
