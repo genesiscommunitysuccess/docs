@@ -13,7 +13,7 @@ const MATOMO_URL = GTM_ID === 'GTM-5GTR43J' ? DEV_ANALYTICS : PROD_ANALYTICS;
 module.exports = {
   title: 'Low-code Platform For Financial Markets',
   tagline: 'The Platform with 50+ Modern Building Blocks to Accelerate App Development.',
-  url: 'https://genesis.global/',
+  url: 'https://learn.genesis.global/',
   baseUrl,
   favicon: 'img/favicon.ico',
   organizationName: 'genesislcap',
