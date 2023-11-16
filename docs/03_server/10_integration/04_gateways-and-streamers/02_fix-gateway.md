@@ -35,7 +35,12 @@ To create a Gateway:
 
 2. Create a Kotlin script file named **{app-name}-fix-gateway.kts** under **jvm/{app-name}-script-config**.
 
-There are two ways to configure a FIX gateway. Using **file driven configuration**, or **database driven configuration**. Each approach has different benefits.
+There are two ways to configure a FIX gateway. 
+
+- **File-driven configuration**
+- **database-driven configuration**.
+
+ Each approach has different benefits.
 
 **File-driven configuration**
 In order to use file-driven configuration, you must provide a path to a file in the configuration format expected by the QuickFIXJ  engine. This is specified using the `QuickFIXJ Config` property:
@@ -48,12 +53,12 @@ fix {
 }
 ```
 
-To see the format and options of QuickFIXJ  configuration, take a look at the [QuickFIXJ  config](https://www.QuickFIXJ j.org/usermanual/2.3.0/usage/configuration.html).
+To see the format of QuickFIXJ  and the configuration options, take a look at the [QuickFIXJ  config](https://www.QuickFIXJ j.org/usermanual/2.3.0/usage/configuration.html).
 
 File-driven configuration enables multiple sessions to use the same port, which is more efficient in terms of performance. However, sessions cannot be started and stopped independently of each other.
 
 **Database-driven configuration**
-Below is an example of configuring the gateway to use database-driven configuration.
+Below is an example of configuring the Gateway for database-driven configuration.
 
 In a database-driven configuration, a single FIX session is created for each record in the FIX_SESSION table in the Genesis Application database.
 
@@ -105,7 +110,8 @@ ValidateUserDefinedFields=N
 AllowUnknownMsgFields=Y
 ```
 
-An example GPAL configuration to enable database sessions.
+An example GPAL configuration to enable database sessions:
+
 ```kotlin
 fix {
     databaseSessionTemplates("default-QuickFIXJ .cfg")
@@ -114,8 +120,9 @@ fix {
 }
 ```
 
-Database-driven enables sessions to be created dynamically, started and stopped at runtime while the system is up, completely independently from one another. 
-However, each session must specify a unique port (if accepting connection), which is less efficient in terms of IO performance.
+Database-driven configuration enables sessions to be created dynamically, and to be started and stopped at runtime while the system is up, completely independently from one another. 
+
+Each session must specify a unique port (if accepting connection), which is less efficient in terms of IO performance.
 
 It is also possible to use both database configuration and config configuration at the same time.
 
@@ -136,14 +143,14 @@ It is also possible to use both database configuration and config configuration 
 | isPersistToFixInBatching               | false            | Set to true to ensure writes to the FIX_IN table are batched. This is more performant, but at the risk of potential data loss.                                           |
 | batchSize                              | 0                | Max number of records per write batch when using `isPersistToFixInBatching`.                                                                                                    |
 | batchIntervalMs                        | 0                | Max time between write batches when using `isPersistToFixInBatching`.                                                                                                           |
-| stopOnDatabaseInsertFailure            | false            | Set to true to forcibly trigger a session disconnection and sequence recovery when a record fails to be written to FIX_IN. Used with `isPersistToFixIn`.                        |
+| stopOnDatabaseInsertFailure            | false            | Set to true to trigger a forced session disconnection and sequence recovery when a record fails to be written to FIX_IN. Used with `isPersistToFixIn`.                        |
 | recoverFromLastFixInTargetSequence     | false            | Set to true to use the FIX_IN table to determine the expected target sequence number when session is started.                                                                   |
 | disableConfigGateways                  | false            | Set to true to disable initialisation of FIX sessions from configuration files.                                                                                                 |
 | disableDatabaseGateways                | false            | Set to true to disable initialisation of FIX sessions from database records.                                                                                                    |                         
 | disableProcessStatusCheck              | false            | Set to true to prevent individual FIX sessions from setting the process state to WARNING when a session is not connected during its expected schedule.                          |
-| authenticateLogonCredentials           | false            | Set to true to do application level verification of session username and password on session Logon based on records in the `FIX_SESSION_AUTH` table.                            |
+| authenticateLogonCredentials           | false            | Set to true to do application-level verification of session username and password on session Logon based on records in the `FIX_SESSION_AUTH` table.                            |
 | passwordSalt                           | ""               | Optional salt to be used when validating passwords. Use with `authenticateLogonCredentials`.                                                                                    |
-| threadModel                            | SINGLE           | Thread handling model for QuickFIXJ  sessions. Options are `SINGLE`, `THREAD_PER_SESSION` and `IO_THREAD`. This is a delicate setting and should be used with care.             |
+| threadModel                            | SINGLE           | Thread-handling model for QuickFIXJ  sessions. Options are `SINGLE`, `THREAD_PER_SESSION` and `IO_THREAD`. This is a delicate setting and should be used with care.             |
 | messageStoreImpl                       | MEMORY           | QuickFIXJ J message store implementation for sequence number storage and session recovery. Valid values are `MEMORY`, `FILE` and `DATABASE`.                                    |
 | logFactoryImpl                         | FILE             | QuickFIXJ J log factory implementation for session logs. Valid values are `FILE`, `CONSOLE`, `SLF4J` and `NONE`.                                                                |
 | validateSessionStatusOnLogon           | false            | Set to true to enable safeguard mechanism to prevent the same FIX session logging on twice. Used when running multiple FIX gateway processes in an active-active configuration. |
@@ -153,15 +160,15 @@ It is also possible to use both database configuration and config configuration 
 ### Thread model
 The threadModel configuration property is related to performance and high-volume FIX streams, such as market-data feeds. 
 
-`SINGLE` mode uses a single thread to process messages across all sessions. This is the default configuration, and a good way of keeping the hardware footprint on the FIX Gateway processes relatively small.
-`THREAD_PER_SESSION` uses a single message-processing thread per session. It is a good option if you have a large number of sessions or if sessions are latency-sensitive when processing messages, because messages from one session will never be queued behind those from another session.
-`IO_THREAD` is for high-performance FIX message streams only, and should be used with care. In this mode, there is no hand-off to a processing thread from the MINA IO Thread. When using the other thread model options, the default behaviour of the FIX engine is to queue messages on an unbounded in-memory queue. The MINA IO thread writes to the queue, and the message-processor thread reads from this queue. 
-However, under extremely high message volumes, this queue can fill up and cause memory pressure and significant garbage collection overhead, which can degrade application performance. Removing this queue prevents this issue, pushing back pressure all the way to the TCP/IP stack and preventing application failure. However, it is *imperative* that the FIX processing logic is written in such a way that there are no blocking operations performed on the IO thread. 
+- `SINGLE` mode uses a single thread to process messages across all sessions. This is the default configuration, and a good way of keeping the hardware footprint on the FIX Gateway processes relatively small.
+- `THREAD_PER_SESSION` uses a single message-processing thread per session. It is a good option if you have a large number of sessions or if sessions are latency-sensitive when processing messages, because messages from one session will never be queued behind those from another session.
+- `IO_THREAD` is for high-performance FIX message streams only, and should be used with care. In this mode, there is no hand-off to a processing thread from the MINA IO Thread. When using the other thread model options, the default behaviour of the FIX engine is to queue messages on an unbounded in-memory queue. The MINA IO thread writes to the queue, and the message-processor thread reads from this queue. 
+However, under extremely high message volumes, this queue can fill up and cause memory pressure and significant garbage collection overhead, which can degrade application performance. Removing this queue prevents this issue, pushing back pressure all the way to the TCP/IP stack and preventing application failure. It is *imperative* that the FIX processing logic is written in such a way that there are no blocking operations performed on the IO thread. 
 This means avoiding using `MessageStoreImpl.DATABASE` and any blocking ops in any custom message publishers. Any delay in processing TCP traffic can cause significant performance degradation, due to the data-throttling method in the TCP protocol.
 
 ### Session status validation
 Session status validation is a feature that was introduced for applications running multiple clustered FIX gateways in an active-active configuration, using a TCP load balancer to balance sessions across a pool of instances.
 
-To prevent clients connecting to the system on multiple nodes, you can enable `validateSessionStatusOnLogon`. This causse the node that has an active session to update the `FIX_SESSION_STATUS` table every *N* milliseconds, where N is defined by `updateSessionStatusInterval` configuration key.
+To prevent clients connecting to the system on multiple nodes, you can enable `validateSessionStatusOnLogon`. This causes the node that has an active session to update the `FIX_SESSION_STATUS` table every *N* milliseconds, where N is defined by `updateSessionStatusInterval` configuration key.
 
 When processing any FIX Logon message, the node checks the status and the write time of the corresponding `FIX_SESSION_STATUS` record in the Genesis database. If the record shows the session as connected, and the write time is within the period defined by `sessionStatusValidityPeriod`, the logon will be rejected.
