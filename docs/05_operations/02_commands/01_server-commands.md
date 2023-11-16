@@ -955,6 +955,18 @@ The example below uses the file **autoIncVals** to set autoincrement values for 
 SetAutoIncrement -f autoIncVals.csv
 ```
 
+## CreateMissingSqlSequences
+
+Creates all required sequences in the database for ID fields that rely on auto-generated sequential values.
+
+This command is applicable only for SQL databases and should only be executed when [enabling Sequences for SQL databases](../../02_database/01_fields-tables-views/02_tables/02_tables-advanced.md#sql-databases).
+
+### Syntax
+
+The `CreateMissingSqlSequences` doesn't take any parameters.
+
+The command checks to see which sequences exist already, and only creates new sequences where they do not exist. Consequently, if you run the command more than once, you will get the same result each time.
+
 ### Working with different databases
 The behaviour of this command depends on which database implementation your application uses. 
 
@@ -966,7 +978,7 @@ And remember, only use this command when all your applications have been stopped
 
 ## SetSequence
 
-This enables you to set one or more sequence numbers. This can either be a single sequence number in a specific table,or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`). 
+This enables you to set one or more sequence numbers. This can either be a single sequence number in a specific table, or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`). 
 
 To set the value for a single sequence, use the `-v` argument.
 

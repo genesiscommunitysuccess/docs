@@ -130,8 +130,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.
 
-**Location**: This item contains a 2-character value used to generate **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR",
-then the generated ID will be `000000000001TRLO1` where "LO" represents Location string.
+**Location**: This item contains a 2-character value used to generate the **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR", then the generated ID will be `000000000001TRLO1` where "LO" represents Location string. There is more information around compatibility and behaviour of sequences in our page on [Tables advanced](../../02_database/01_fields-tables-views/02_tables/02_tables-advanced.md)
 
 **LogFramework**: Contains name of the logging framework. Supported framework: LOG4J2
 
