@@ -155,15 +155,26 @@ query("TRADE_RANGED_USD", TRADE) {
 
 ### Ranged Data Server queries
 
-Provides range of data based on specified  from and to indices
+Use the `ranged` keyword to create a query that provides a range of data. You need to provide the index and the number of key fields:
 
-The following conditions apply to a ranged Data Server query:
-- You can specify the start index and end index using these keywords:
-   `from` specifies the start of the data range. It is mandatory when you use `from-to` condition.
-   `to` specifies the end of the data range. It is optional. When `to` is not specified, the `from` clause works in a same way as advanced `where` specified above. We recommend using advanced `where` when `to` is optional for better readability.
-- You can optionally refresh keys using the `refresh` keyword, which sets a periodic refresh of keys, as shown in examples below
+- The `index` property must be a unique [index](../../../database/data-types/index-entities/#types). However, you can have what is effectively a non-unique index by adding a field that is not unique (such as QUANTITY) and a field that is unique (such as TRADE_ID) to create a compound unique index:
 
-The examples below include comments to ease understanding.
+```
+unique {
+ QUANTITY
+ TRADE_ID
+}
+```
+
+:::info
+To create the default query index, a Data Server always uses the internal RECORD_ID value of the database records. This is equivalent to indexing records by their creation date. Data Servers do not use table indices. To query records efficiently, you need to recreate indices at the Data Server level.
+:::
+
+- Use the `numKeyFields` property to specify the number of fields to use from an index. The fields are always selected in the order they are specified in the index.
+- Use `from` to specify the start of the data range. This is mandatory.
+- Use `to` to specify the end of the data range. This is optional, but highly recommended. When `to` is not specified, the `from` clause works in a same way as advanced `where`, specified above. For these cases, we recommend using advanced `where` for better readability.
+- Optionally, you can use the `refresh` keyword to refresh the keys. This sets a periodic refresh of keys, as shown in examples below, (which include comments to ease understanding):
+
 
 ```kotlin
 query("TRADE_RANGED_LAST_2_HOURS", TRADE) {
@@ -225,11 +236,6 @@ query("TRADE_RANGED_LAST_2_HOURS", TRADE) {
 ```
 
 With refresh queries, rows that move out of the filter range will be removed from the cache, while rows that move into the filter will be added.
-
-The `numKeyFields` property specifies the number of fields to use from an index. The fields
-are always selected in the order they are specified in the index.
-
-The `index` property can have unique and non-unique [indexes](../../../database/data-types/index-entities/#types)
 
 Examples when: `numKeyFields > 1`
 
