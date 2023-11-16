@@ -2,13 +2,14 @@
 title: 'FIX Gateways and Streamers - customisation'
 sidebar_label: 'Customisation'
 id: customisation
-keywords: [server, integration, gateways, streamers, customisation]
+keywords: [server, integration, gateways, streamers, customisation, FIX]
 tags:
   - server
   - integration
   - gateways
   - streamers
   - customisation
+  - FIX
 ---
 
 While the standard architecture of the FIX gateway is more than sufficient for most use cases, it is not ideal for more demanding architectures.
