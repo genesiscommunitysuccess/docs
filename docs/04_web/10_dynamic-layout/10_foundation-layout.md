@@ -293,7 +293,7 @@ Some actions that the user can perform with items in the layout will run the com
 - when an item is dragged around the layout
 - potentially, when another item is removed from the layout
 - potentially, when new items are added to the layout
-- When an item is maximised or minimised
+- when an item is maximised or minimised
 
 For example, if you have a component with a loaded resource on the layout (such as a grid with a `grid-pro-genesis-datasource`) and you add a new item to the layout with the JavaScript API, then the component with the loaded resource will have to reload too. It is important that any such element accounts for this, including such requirements as caching data, or resizing correctly.
 
@@ -302,7 +302,7 @@ In the `@genesislcap/foundation-utils` package, there is a mix-in class `Lifecyc
 -  `shouldRunConnect`
 -  `shouldRunDisconnect`
 
-These can be used to gate certain functionality.
+These can be used to gate specific functionality.
 
 For example, if there are parts of `disconnectedCallback` that you don't want to run when the item is being dragged around the layout, you can gate it behind a `(!this.shouldRunDisconnect) return;` early return. See [this example](#resource-intensive-component-resetting-in-layout) and [this example](#consuming-lifecycle-value-multiple-times).
 
@@ -317,16 +317,16 @@ Throughout Foundation UI, there is no need to de-register a component that is re
 
 - Once the component is actually initialised in the layout on the DOM, then `shouldRunConnect` will be true, and you can then perform all the required initialisation.
 
-### Managing state
+### Managing the state
 
-Items inside of the layout can save and restore state using various methods, but it can become difficult to manage state if you're adding the same item to the layout multiple times (multiple instances of the same web component).
+Items inside the layout can save and restore the state using various methods, but it can become difficult to manage the state if you're adding the same item to the layout multiple times (multiple instances of the same web component).
 
-You can implement the [LayoutComponentWithState](./docs/api/foundation-layout.layoutcomponentwithstate.md) interface which will allow you to save and load state *per instance* of your components. See the linked interface and the associated functions API documentation for examples and explanations of usage.
+You can implement the [LayoutComponentWithState](./docs/api/foundation-layout.layoutcomponentwithstate.md) interface, which enables you to save and load the state *per instance* of your components. See the linked interface and the associated functions API documentation for examples and explanations of usage.
 
-Usage of this interface is optional, if you do not need to manage state for your components in this way then simply do not implement the interface.
+Usage of this interface is optional, if you do not need to manage the state for your components in this way, then simply do not implement the interface.
 
 :::warning
-The layout system is only interacting with the immediately contained items - so if you have components that contain other components, the top level components will need to interact with the contained components to manage their state.
+The layout system is only interacting with the immediately contained items - so if you have components that contain other components, the top-level components need to interact with the contained components to manage their states.
 :::
 
 :::danger
@@ -340,10 +340,10 @@ This is the case both when items are added with `.addItem()`, and when they are 
 There are certain limitations to this function, especially when using custom elements with the shadow DOM. [See troubleshooting example](#binding-events-inline-in-the-declarative-api).
 
 :::tip
-As a general rule, if you need to have elements with FAST bindings inside of the layout, wrap them in custom elements.
+As a general rule, if you need to have elements with FAST bindings inside the layout, wrap them in custom elements.
 :::
 
-If you are writing your own custom element which needs to work inside of the layout follow these steps.
+If you are writing your own custom element which needs to work inside the layout, follow these steps.
 In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin` which overrides the `cloneNode` API.
 
 ```typescript
