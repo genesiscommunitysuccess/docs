@@ -94,7 +94,7 @@ export const AdminTemplate: ViewTemplate = html`
 
 ### Config
 
-The functionality of the Entity Manager is customised through the properties you set on it in the HTML. This section covers the main properties that you need to customise. For a full list of all available properties, [see here](./docs/api/foundation-entity-management.md#properties).
+The functionality of the Entity Manager is customised through the properties you set on it in the HTML. This section covers the main properties that you need to customise. For a full list of properties, [see here](./docs/api/foundation-entity-management.md#properties).
 
 #### Title
 
@@ -181,7 +181,7 @@ export const AdminTemplate: ViewTemplate = html`
 
 ### Config
 
-You can customise the functionality of User Management through the properties you set in the html. This section covers the main properties that you can customise. For a full list of all of the properties, [see here](./docs/api/foundation-entity-management.users.md).
+You can customise the functionality of User Management through the properties you set in the html. This section covers the main properties that you can customise. For a full list of properties, [see here](./docs/api/foundation-entity-management.users.md).
 
 #### Columns
 
@@ -229,6 +229,7 @@ Profile Management is a concrete use case of the [Entity Management](#entity-man
 :::
 
 Example grid view when managing profiles.
+
 ![Example profile management grid](./docs/img/foundation-profile-management.png)
 
 ### Set-up
