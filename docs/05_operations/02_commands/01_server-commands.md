@@ -938,15 +938,15 @@ SetAutoIncrement -f autoIncVals.csv
 
 ## CreateMissingSqlSequences
 
-Creates all required sequences in the Database for ID fields that rely on auto generated sequential values
+Creates all required sequences in the database for ID fields that rely on auto-generated sequential values.
 
-This command is applicable only for SQL databases and should only be executed when [enabling Sequences for SQL databases](../../02_database/01_fields-tables-views/02_tables/02_tables-advanced.md#sql-databases)
+This command is applicable only for SQL databases and should only be executed when [enabling Sequences for SQL databases](../../02_database/01_fields-tables-views/02_tables/02_tables-advanced.md#sql-databases).
 
 ### Syntax
 
 The `CreateMissingSqlSequences` doesn't take any parameters.
 
-Running this command multiple times yield the same results, as a check is performed to check the existence of each sequence and only creates if if non-existent.
+The command checks to see which sequences exist already, and only creates new sequences where they do not exist. Consequently, if you run the command more than once, you will get the same result each time.
 
 ### Working with different databases
 The behaviour of this command depends on which database implementation your application uses. 
