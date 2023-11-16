@@ -45,9 +45,6 @@ This is the most common use case for Grid Pro component. When connecting to a [D
 |grid-autosizing | `boolean` | `false` | Controls whether the grid autosizes the columns upon interaction. This will disable the column widths from being manually set, and doesn't save the widths in local storage if you are using `persist-column-state-key` attribute. |
 |columnComponentName | `string` | - | The name of the custom [Column](../../../../../web/web-components/grids/grid-pro/grid-pro-genesis-column/) config component to be used for custom/extra column definitions. Defaults to **'grid-pro-column'** but can be replaced with something else (keep in mind that we're expecting a **definition** prop, without it the slotted config won't work/tale place). |
 |enable-row-flashing | `boolean` | `false` | If true, will enable row flashing for all rows. |
-|async-add | `boolean` | `false` | Whether to use the `applyTransactionAsync` function for *add* transactions. If used with `enable-row-flashing`, it will flashes when the row is added. |
-|async-update | `boolean` | `true` | Whether to use the `applyTransactionAsync` function for *update* transactions. If used with `enable-row-flashing`, it will flashes when the row is updated. |
-|async-remove | `boolean` | `empty` | Whether to use the `applyTransactionAsync` function for *remove* transactions.. |
 |eventsAndCallbacks | `any` | - | The events and callbacks |
 |headerHeight | `number` | 32 | The height of the header in pixels. |
 |onlyTemplateColDefs | `boolean` | `false` | Whether to use only the template column definitions (no extra column definitions) |
@@ -61,7 +58,7 @@ All these attributes can be used with the ag-grid. Since we have different use c
 
 ## Grid Options
 
-The grid has a very important method called: `gridOption`. In this method, you define all options available in the grid. T
+The grid has a very important method called: `gridOption`. In this method, you define all options available in the grid. Take a look in [this link](https://www.ag-grid.com/javascript-data-grid/grid-options/) so you get used with all available options.
 
 ## Default overrides
 

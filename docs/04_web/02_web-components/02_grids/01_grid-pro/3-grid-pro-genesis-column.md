@@ -10,7 +10,7 @@ tags:
     - column
 ---
 
-This is a `slotted` component that allows a more "visual approach" when defining columns. Each `grid-pro-column` takes a `ColDef` typed object.
+This is a `slotted` component that allows a more "visual approach" when defining columns. Each `grid-pro-column` takes a `ColDef` typed object. To check all the available fields in a variable type of `coldef`, take a [look here](https://www.ag-grid.com/javascript-data-grid/column-properties/).
 
 :::tip 
 Customising column definitions using this approach is useful when on **connected data** cases, where the data will be dynamic but there's still a need for extra definitions (e.g. events, transformers, etc).
@@ -55,7 +55,7 @@ public myOtherSingleCustomColumnConfigObj: ColDef = [
 ];
 ```
 
-When using `ColDef` objects, it's up to you to decide the approach (array of definitions + repeat or one by one; there's no right or wrong here, as the goal is flexibility):
+When using `ColDef` objects, it's up to you to decide the approach. You can wheter use the directive **repeat** to iteract an array of definitions, or you can create one column by one. 
 
 ```html title="Using the ColDef array of objects with an extra single object"
 <foundation-grid-pro>
