@@ -13,9 +13,7 @@ The examples below use JSX syntax. Real-world scenarions might be different, dep
 
 ## Set-up
 
-:::info
 In the examples below, we refer to a sample `@genesislcap/alpha-design-system` design system with an `alpha` prefix. Your design system would probably have a different name/prefix while still exposing the same API.
-:::
 
 ```ts
 import { provideDesignSystem, alphaAgGrid } from '@genesislcap/alpha-design-system';
@@ -23,6 +21,10 @@ import { foundationGridComponents } from '@genesislcap/grid-pro';
 
 provideDesignSystem().register(alphaAgGrid(), foundationGridComponents);
 ```
+
+## Some title
+
+In order to use the grid-pro with simple data, you need to provide two
 
 ## Usage
 
