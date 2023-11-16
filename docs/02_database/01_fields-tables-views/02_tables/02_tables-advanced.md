@@ -49,11 +49,11 @@ To enable and configure this feature:
 | SqlSequencePaddingSize| 15 | The number of zeros used to pad the sequential number.
 | SqlEnableSequenceGeneration | false | Must be set to true.
 
-    Remap will now generate database sequences for sequences using these settings once you have run `genesisInstall`.
+2. If you have any new or changed sequences, run 'genesisInstall` to apply the settings you made to the system definition, then run `remap` to generate the new database sequences.
 
-2. If there are existing fields using sequences, run the server command [CreateMissingSqlSequences](../../../05_operations/02_commands/01_server-commands.md#createmissingsqlsequences).
+3. If there are existing fields using sequences, run the server command [CreateMissingSqlSequences](../../../05_operations/02_commands/01_server-commands.md#createmissingsqlsequences).
 
-3. If you need to adjust the initial value of the sequences (for example if you are migrating data), use the server command [SetSequence](../../../05_operations/02_commands/01_server-commands.md#setsequence).
+4. If you need to adjust the initial value of the sequences (for example if you are migrating data), use the server command [SetSequence](../../../05_operations/02_commands/01_server-commands.md#setsequence).
 
 ## Subtables
 
