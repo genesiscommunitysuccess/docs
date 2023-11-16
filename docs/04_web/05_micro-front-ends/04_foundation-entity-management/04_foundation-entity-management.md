@@ -194,7 +194,7 @@ The primary way to configure the User Management functionality is via the column
 ```
 The default columns are contained in the [UserColumnConfig](./docs/api/foundation-entity-management.userscolumnconfig.md) variable. The `Entity` and `Status` columns are always added to the grid.
 
-To configure the columns yourself, set the `columns` attribute when you define the User Management in the html. You can mix in your custom column config with the default user columns config, using the javascript `spread` operator.
+To configure the columns yourself, set the `columns` attribute when you define the User Management in the HTML. You can mix in your custom column config with the default user columns config, using the javascript `spread` operator.
 ```javascript
 // Custom usage, will contain the "default" columns:
 //    username, first name, last name, email, last login
@@ -235,7 +235,7 @@ Example grid view when managing profiles.
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -247,7 +247,7 @@ To enable this micro front-end in your application, follow the steps below.
 }
 ```
 
-- Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template html where required:
+2. Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template HTML where required:
 ```javascript
 // Import
 import { Profiles } from '@genesislcap/foundation-entity-management';
@@ -255,7 +255,7 @@ import { Profiles } from '@genesislcap/foundation-entity-management';
 // Declare class
 Profiles;
 
-// Example html with the profile management
+// Example HTML with the profile management
 export const AdminTemplate: ViewTemplate = html`
   <zero-tabs>
     <zero-tab-panel slot="tabpanel">
@@ -269,7 +269,7 @@ export const AdminTemplate: ViewTemplate = html`
 
 ### Config
 
-The functionality of the profile manager is customised through the properties you set in the html. This section covers the main properties that you will want to customise. For a full list of all of the properties, [see here](./docs/api/foundation-entity-management.profiles.md).
+The functionality of the profile manager is customised through the properties you set in the HTML. This section covers the main properties that you will want to customise. For a full list of properties, [see here](./docs/api/foundation-entity-management.profiles.md).
 
 #### Permissions
 
