@@ -22,14 +22,12 @@ import { foundationGridComponents } from '@genesislcap/grid-pro';
 provideDesignSystem().register(alphaAgGrid(), foundationGridComponents);
 ```
 
-## Some title
+## Usage
 
 In order to use the grid-pro with simple data, you need to provide at least these two options to the `gridOptions`. The `columnDefs` and `rowData`:
 
 - `columnDef`: a set of configuration for the given column. This option is the type of `ColDef`. To check the available configuration, take a [look here](https://www.ag-grid.com/javascript-data-grid/column-properties/).
 - `rowData`: sets the data to be displayed in the grid.
-
-## Usage
 
 The following example creates a **grid-pro** with three columns defined in `columnDefs` and seven rows defined in `rowData`:
 
