@@ -55,6 +55,7 @@ The **foundation-layout** component has 2 custom events:
 The **foundation-layout** component has the following method:
 
 - **reset()**: resets all fields contained in the form. It can be used after a successful submission, for example.
+
 ### 1. Register components
 
 ```ts
@@ -73,12 +74,12 @@ Form
 This should generate a working form based on the `JSON schema` for that endpoint.
 
 :::tip
-DevTools console will output an auto-generated `UI schema`, which you can use to configure the form
+DevTools console will output an auto-generated `UI schema`, which you can use to configure the form.
 :::
 
 ### 3. Configure form using UI schema
 
-The **foundation-forms** component enables you to customize the generated form using a UI schema. Note that it does not change how the message is requested or received from the server. It only changes how it is displayed
+The **foundation-forms** component enables you to customise the generated form using a UI schema. Note that it does not change how the message is requested or received from the server. It only changes how it is displayed
 
 ```ts
 const sampleUISchema = {
@@ -187,7 +188,7 @@ const sampleUiSchema = {
 Use this when you want to avoid fetching metadata from the server, but be aware that it could get out of sync if metadata changes on the server.
 :::
 
-#### 5. Pre-fill forms with data (optional)
+### 5. Pre-fill forms with data (optional)
 
 Use the `data` attribute, which allows you to pre-fill the form with ready-made information.
 
@@ -310,7 +311,7 @@ const sampleUiSchema = {
 Use this when you want to avoid fetching metadata from the server, but be aware that it could get out of sync if metadata changes on the server.
 :::
 
-#### 5. An example of synchronizing values with datasource criteria
+### 5. An example of synchronizing values with datasource criteria
 
 ```html
   <zero-card>
@@ -494,9 +495,9 @@ const categoryUISchema = {
 };
 ```
 
-#### 6. Group layout
+### 6. Group layout
 
-Group layout similarly to Categorization layout divides forms, but this time into groups. They are visible on the same tab, but they are separated from each other by their own labels.
+Group layout is similar to Categorization; it divides forms into groups. They are visible on the same tab, but they are separated from each other by their own labels.
 
 ```ts
 const groupUISchema = {
@@ -597,7 +598,7 @@ const numberJsonSchema = {
 };
 ```
 
-#### 3. Boolean renderer
+### 3. Boolean renderer
 
 The boolean renderer creates a `checkbox-field`.
 
@@ -693,7 +694,7 @@ const dateJsonSchema = {
 ```
 
 ## Filter renderers
-There are specific renderers for filters. here we look at each one and provide examples.
+There are specific renderers for filters. Here we look at each one and provide examples.
 
 ### 1. Filter date renderer
 
