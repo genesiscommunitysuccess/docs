@@ -26,9 +26,9 @@ import { foundationGridComponents } from '@genesislcap/grid-pro';
 provideDesignSystem().register(alphaAgGrid(), foundationGridComponents);
 ```
 
-## Grid Pro Genesis data source
+## Grid Pro Genesis datasource
 
-Below you find the attributes that need to be used with the `<grid-pro-genesis-datasource>`: 
+The following attributes can be used with the `<grid-pro-genesis-datasource>`: 
 
 |Name|Type|Default|Description|
 |----|----|-------|-----------|
@@ -50,7 +50,7 @@ Below are some examples of how to use the **grid-pro** with connected data.
 
 This example creates a grid with a snapshot of the ALL_PROCESS_STATUS query.
 
-```html title="Example 4"
+```html title="Example 1"
 
 <alpha-grid-pro>
     <grid-pro-genesis-datasource 
@@ -62,7 +62,7 @@ This example creates a grid with a snapshot of the ALL_PROCESS_STATUS query.
 
 This example creates a grid that displays 5 rows of data. When a new record is added, the oldest record is removed from the display.
 
-```html title="Example 1"
+```html title="Example 2"
 <alpha-grid-pro>
     <grid-pro-genesis-datasource 
         resource-name="ALL_TRADE"
@@ -75,7 +75,7 @@ This example creates a grid that displays 5 rows of data. When a new record is a
 
 This example creates a grid with snapshot data for two specified fields. It loads up to 5 rows of data.
 
-```html title="Example 2"
+```html title="Example 3"
 <alpha-grid-pro>
     <grid-pro-genesis-datasource 
         resource-name="ALL_PROCESSES_STATUS" 
@@ -91,7 +91,7 @@ This example creates a grid with snapshot data for two specified fields. It load
 
 This example creates a grid with a polling frequency of 10 seconds. Remember that this is only relevant for Request Server resources.
 
-```html title="Example 3"
+```html title="Example 4"
 <alpha-grid-pro>
     <grid-pro-genesis-datasource 
         resource-name="REQUEST_SERVER_ALL_TRADE"
