@@ -26,7 +26,7 @@ import { foundationGridComponents } from '@genesislcap/grid-pro';
 provideDesignSystem().register(alphaAgGrid(), foundationGridComponents);
 ```
 
-## Grid Pro Genesis datasource
+## Grid Pro Genesis data source
 
 Below you find the attributes that need to be used with the `<grid-pro-genesis-datasource>`: 
 
@@ -48,20 +48,32 @@ Below you find the attributes that need to be used with the `<grid-pro-genesis-d
 
 Below are some examples of how to use the **grid-pro** with connected data. 
 
-This example creates a grid set up with `moving-view` and a maximum of 5 displayed rows:
+This example creates a grid with a snapshot of the ALL_PROCESS_STATUS query.
+
+```html title="Example 4"
+
+<alpha-grid-pro>
+    <grid-pro-genesis-datasource 
+      resourceName="ALL_PROCESSES_STATUS" 
+      isSnapshot="true" />
+  ...
+</alpha-grid-pro>
+...
+
+This example creates a grid that displays 5 rows of data. When a new record is added, the oldest record is removed from the display.
 
 ```html title="Example 1"
 <alpha-grid-pro>
     <grid-pro-genesis-datasource 
         resource-name="ALL_TRADE"
-        max-view="4"
+        max-view="5"
         moving-view="true" />
     ...
 </alpha-grid-pro>
 ...
 ```
 
-This example creates a grid including `max-row`, `max-view`, `moving-view`, `fields`, `isSnapshot` and `resource-name` attributes:
+This example creates a grid with snapshot data for two specified fields. It loads up to 5 rows of data.
 
 ```html title="Example 2"
 <alpha-grid-pro>
@@ -77,7 +89,7 @@ This example creates a grid including `max-row`, `max-view`, `moving-view`, `fie
 ...
 ```
 
-This example creates a grid with a pulling frequency of 10 seconds. Remember that this is only relevant for Request Server resources.
+This example creates a grid with a polling frequency of 10 seconds. Remember that this is only relevant for Request Server resources.
 
 ```html title="Example 3"
 <alpha-grid-pro>
@@ -89,14 +101,3 @@ This example creates a grid with a pulling frequency of 10 seconds. Remember tha
 ...
 ```
 
-This example creates a grid with a snapshot of the ALL_PROCESS_STATUS query.
-
-```html title="Example 4"
-
-<alpha-grid-pro>
-    <grid-pro-genesis-datasource 
-      resourceName="ALL_PROCESSES_STATUS" 
-      isSnapshot="true" />
-  ...
-</alpha-grid-pro>
-...
