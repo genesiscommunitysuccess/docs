@@ -9,12 +9,11 @@ tags:
     - grid pro
 ---
 
-The examples below use JSX syntax. Real-world scenarions might be different, depending on the client application tooling and structure.
+The examples below use JSX syntax. Real-world scenarios might be different, depending on the client application tooling and structure.
 
 ## Set-up
 
-:::info
-In the examples below, we refer to a sample `@genesislcap/alpha-design-system` design system with an `alpha` prefix. Your design system would probably have a different name/prefix while still exposing the same API.
+::🎵The examples below are based on an example application called "alpha", so we refer to a design system called `@genesislcap/alpha-design-system`, which has the prefix `alpha`. In practice, you decide on the name and prefix of your design system, but it exposes the same API.
 :::
 
 ```ts
@@ -26,6 +25,12 @@ provideDesignSystem().register(alphaAgGrid(), foundationGridComponents);
 
 ## Usage
 
+In order to use the grid-pro with simple data, you need to provide at least these two options to the `gridOptions`. The `columnDefs` and `rowData`:
+
+- `columnDef`: a set of configuration for the given column. This option is the type of `ColDef`. To check the available configuration, take a [look here](https://www.ag-grid.com/javascript-data-grid/column-properties/).
+- `rowData`: sets the data to be displayed in the grid.
+
+The following example creates a **grid-pro** with three columns defined in `columnDefs` and seven rows defined in `rowData`:
 ```jsx live 
 function SimpleAgGrid(props) {
 

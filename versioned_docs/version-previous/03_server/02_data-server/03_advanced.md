@@ -333,7 +333,7 @@ remote_host,process_a,monitor_a
 
 ## Client-side (runtime) options
 
-In order to receive data from the Data Server, a front-end client supplies a datasource configuration, such as a [Grid Pro](../../../web/web-components/grids/grid-pro/grid-pro-genesis-datasource/), which initiates a subscription and controls the flow of data that is returned by the connection. 
+In order to receive data from the Data Server, a front-end client supplies a datasource configuration, such as a [Grid Pro](../../../web/web-components/grids/grid-pro/grid-pro-connected/), which initiates a subscription and controls the flow of data that is returned by the connection. 
 
 These configurations are handled automatically by sending a **DATA_LOGON** message. Here we describe the options that can be sent as part of the DATA_LOGON message. They are all optional.
 

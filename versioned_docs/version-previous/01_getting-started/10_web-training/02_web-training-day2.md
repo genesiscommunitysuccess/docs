@@ -488,7 +488,7 @@ export class Order extends FASTElement {
 ```
 
 ### Adding a simple Orders data grid
-In the template file, let's add the Genesis [data source](../../../web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [grid-pro](../../../web/web-components/grids/grid-pro/grid-pro-intro/).
+In the template file, let's add the Genesis [data source](../../../web/web-components/grids/grid-pro/grid-pro-connected/) pointing to the `ALL_ORDERS` resource and wrap it in [grid-pro](../../../web/web-components/grids/grid-pro/grid-pro-intro/).
 
 Add this code to the end of html template code:
 ```html {4-11} title="order.template.ts"
