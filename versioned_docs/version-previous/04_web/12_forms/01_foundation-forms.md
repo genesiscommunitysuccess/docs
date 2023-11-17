@@ -714,7 +714,7 @@ const dateJsonSchema = {
 
 ### 2. Filter number renderer
 
-The filter number renderer creates two `number-fields` with minimum and maximum value.
+The filter number renderer creates two `number-fields` with minimum and maximum values.
 
 ```ts
 const numberJsonSchema = {
