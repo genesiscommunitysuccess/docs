@@ -24,33 +24,32 @@ tags:
 The following example shows the usage of the declarative API with `zero-charts` and the output that it produces.
 ```html
 <foundation-layout ${ref('analyticsLayout')}>
-	<foundation-layout-region>
-		<foundation-layout-region type="horizontal">
-			<foundation-layout-item title="Static Data Bar" registration="bar" closable>
-				<foundation-g2plot-chart
-					type="bar"
-					:config=${(x) => x.barConfig}
-					:data=${(x) => x.barData}
-				></foundation-g2plot-chart>
-			</foundation-layout-item>
-		<foundation-layout-region type="vertical">
-			<foundation-layout-item title="Static Data Stock" registration="stock" closable>
-				<foundation-g2plot-chart
-					type="stock"
-					:config=${(x) => x.stockConfiguration}
-					:data=${(x) => x.stockData}
-				></foundation-g2plot-chart>
-			</foundation-layout-item>
-			<foundation-layout-item title="Static Data Rose" registration="rose" closable>
-				<foundation-g2plot-chart
-					type="rose"
-					:config=${(x) => x.roseConfig}
-					:data=${(x) => x.roseData}
-					:legendParser=${(x) => x.roseLegendParser()}
-				></foundation-g2plot-chart>
-			</foundation-layout-item>
-		</foundation-layout-region>
-	</foundation-layout-region>
+  <foundation-layout-region type="horizontal">
+    <foundation-layout-item title="Static Data Bar" registration="bar" closable>
+      <foundation-g2plot-chart
+        type="bar"
+        :config=${(x) => x.barConfig}
+        :data=${(x) => x.barData}
+      ></foundation-g2plot-chart>
+    </foundation-layout-item>
+    <foundation-layout-region type="vertical">
+      <foundation-layout-item title="Static Data Stock" registration="stock" closable>
+        <foundation-g2plot-chart
+          type="stock"
+          :config=${(x) => x.stockConfiguration}
+          :data=${(x) => x.stockData}
+        ></foundation-g2plot-chart>
+      </foundation-layout-item>
+      <foundation-layout-item title="Static Data Rose" registration="rose" closable>
+        <foundation-g2plot-chart
+          type="rose"
+          :config=${(x) => x.roseConfig}
+          :data=${(x) => x.roseData}
+          :legendParser=${(x) => x.roseLegendParser()}
+        ></foundation-g2plot-chart>
+      </foundation-layout-item>
+    </foundation-layout-region>
+  </foundation-layout-region>
 </foundation-layout>
 ```
 
