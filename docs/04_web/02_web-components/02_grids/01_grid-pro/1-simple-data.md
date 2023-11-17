@@ -13,7 +13,7 @@ The examples below use JSX syntax. Real-world scenarios might be different, depe
 
 ## Set-up
 
-The examples below are based on an example application called "alpha", so we refer to a sample `@genesislcap/alpha-design-system` design system with an `alpha` prefix. In practice, you assign a name and a prefix to your design system; but it exposes the same API.
+The examples below are based on an example application called "alpha", so we refer to a design system with the prefix  `alpha` - `@genesislcap/alpha-design-system`. In practice, you decide on the name and a prefix of your design system; but it exposes the same API.
 
 ```ts
 import { provideDesignSystem, alphaAgGrid } from '@genesislcap/alpha-design-system';
