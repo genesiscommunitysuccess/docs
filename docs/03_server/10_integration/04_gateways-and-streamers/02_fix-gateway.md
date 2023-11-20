@@ -43,17 +43,17 @@ There are two ways to configure a FIX gateway.
  Each approach has different benefits.
 
 **File-driven configuration**
-In order to use file-driven configuration, you must provide a path to a file in the configuration format expected by the QuickFIXJ  engine. This is specified using the `QuickFIXJ Config` property:
+In order to use file-driven configuration, you must provide a path to a file in the configuration format expected by the QuickFIXJ engine. This is specified using the `quickFixConfig` property:
 
 ```kotlin
 fix {
-    QuickFIXJ Config = GenesisPaths.genesisHome() + "generated/cfg/default-QuickFIXJ .cfg"
+    quickFixConfig = GenesisPaths.genesisHome() + "generated/cfg/default-quickfix.cfg"
     disableDatabaseGateways = true
     disableConfigGateways = false
 }
 ```
 
-To see the format of QuickFIXJ  and the configuration options, take a look at the [QuickFIXJ  config](https://www.QuickFIXJ j.org/usermanual/2.3.0/usage/configuration.html).
+To see the format of QuickFIXJ and the configuration options, take a look at the [QuickFIXJ config](https://www.quickfixj.org/usermanual/2.3.0/usage/configuration.html).
 
 File-driven configuration enables multiple sessions to use the same port, which is more efficient in terms of performance. However, sessions cannot be started and stopped independently of each other.
 
@@ -89,7 +89,7 @@ The table exposes the following properties to define a session:
 | TARGET_LOCATION_ID                 | STRING                                             |
 | TARGET_SUB_ID                      | STRING                                             |
 
-You must also define a QuickFIXJ  config file to use as template for the session configuration. The template defines the default properties that are common across multiple sessions.
+You must also define a QuickFIXJ config file to use as template for the session configuration. The template defines the default properties that are common across multiple sessions.
 
 Each session defined in the database references which template to use as the source for common properties through the `FIX_SESSION_TEMPLATE` field. 
 
@@ -114,7 +114,7 @@ An example GPAL configuration to enable database sessions:
 
 ```kotlin
 fix {
-    databaseSessionTemplates("default-QuickFIXJ .cfg")
+    databaseSessionTemplates("default-quickfix.cfg")
     disableDatabaseGateways = false
     disableConfigGateways = true
 }
@@ -134,8 +134,8 @@ It is also possible to use both database configuration and config configuration 
 | inboundRoutingTag                      | 0                | Used for inbound messages. Value from this tag number will be set on the INTERNAL_TARGET field on the resulting FIX_IN record.                                                  |
 | isOutboundInHeader                     | true             | True if the value of `outboundRoutingTag` should be obtained from the message header, rather than the body.                                                                     |
 | isInboundInHeader                      | true             | True if the value of `inboundRoutingTag` should be obtained from the message header, rather than the body.                                                                      |
-| fileLogPath                            | null             | Path to the directory where QuickFIXJ  session logs will be stored, if using logFactoryImpl = FILE.                                                                             |
-| QuickFIXJ Config                       | null             | Path to the QuickFIXJ  session configuration file, if using file-driven configuration.                                                                                          |
+| fileLogPath                            | null             | Path to the directory where QuickFIXJ session logs will be stored, if using logFactoryImpl = FILE.                                                                             |
+| quickFixConfig                         | null             | Path to the QuickFIXJ  session configuration file, if using file-driven configuration.                                                                                          |
 | isFixLoggingEnabled                    | true             | Set to true to enable FIX session logs using the configured `LogFactoryImpl`.                                                                                                  |
 | isPersistToFixIn                       | false            | Set to true to enable persistence of inbound messages to FIX_IN table.                                                                                                          |
 | isPersistToFixOut                      | false            | Set to true to enable persistence of outbound messages to FIX_OUT table.                                                                                                        |
@@ -151,8 +151,8 @@ It is also possible to use both database configuration and config configuration 
 | authenticateLogonCredentials           | false            | Set to true to do application-level verification of session username and password on session Logon based on records in the `FIX_SESSION_AUTH` table.                            |
 | passwordSalt                           | ""               | Optional salt to be used when validating passwords. Use with `authenticateLogonCredentials`.                                                                                    |
 | threadModel                            | SINGLE           | Thread-handling model for QuickFIXJ  sessions. Options are `SINGLE`, `THREAD_PER_SESSION` and `IO_THREAD`. This is a delicate setting and should be used with care.             |
-| messageStoreImpl                       | MEMORY           | QuickFIXJ J message store implementation for sequence number storage and session recovery. Valid values are `MEMORY`, `FILE` and `DATABASE`.                                    |
-| logFactoryImpl                         | FILE             | QuickFIXJ J log factory implementation for session logs. Valid values are `FILE`, `CONSOLE`, `SLF4J` and `NONE`.                                                                |
+| messageStoreImpl                       | MEMORY           | QuickFIXJ message store implementation for sequence number storage and session recovery. Valid values are `MEMORY`, `FILE` and `DATABASE`.                                    |
+| logFactoryImpl                         | FILE             | QuickFIXJ log factory implementation for session logs. Valid values are `FILE`, `CONSOLE`, `SLF4J` and `NONE`.                                                                |
 | validateSessionStatusOnLogon           | false            | Set to true to enable safeguard mechanism to prevent the same FIX session logging on twice. Used when running multiple FIX gateway processes in an active-active configuration. |
 | updateSessionStatusInterval            | 0                | The time between session status update writes to the database, as part of `validateSessionStatusOnLogon`.                                                                       |
 | sessionStatusValidityPeriod            | 30000            | The amount of time that must elapse before the system treats a record in FIX_SESSION_STATUS as stale. Used as part of `validateSessionStatusOnLogon`                      |
