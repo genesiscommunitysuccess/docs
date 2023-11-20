@@ -9,7 +9,7 @@ tags:
     - chart
 ---
 
-A chart component is a graphical representation of a certain amount of data, that can have multiple forms. Genesis charts are base on [g2plot](https://g2plot.antv.antgroup.com/)
+A chart component is a graphical representation of a set of data, that can have multiple forms. Genesis charts are based on [g2plot](https://g2plot.antv.antgroup.com/)
 
 ## Attributes and props
 
@@ -17,19 +17,19 @@ When you declare an `<alpha-g2plot-chart>`, you can provide the following attrib
 
 | Name            | Type      | Description                                                                               |
 |-----------------|-----------|-------------------------------------------------------------------------------------------|
-| type            | `string`  | Chooses the type of the chart. **Default: Bar** |
+| type            | `string`  | Sets the type of the chart. **Default: Bar** |
 | config          | - | Sets the configuration for the chart. For more information about its field, [checkout here](https://g2plot.antv.antgroup.com/api/plot-api).                     |
-| data            | - | Sets the data manually to be displayed in the chart                     |
+| data            | - | Provides the data to be displayed in the chart                     |
 
 
 ## Chart datasource
 
-When using charts, you are offered a component called `<chart-datasource>`. This component handles the communication and integration with the server. This component has two available attrbiutes:
+When using charts, you are offered a component called `<chart-datasource>`. This component handles the communication and integration with the server. This component has two attributes:
 
 | Name              | Description                               |
 |-------------------|-------------------------------------------|
-| resourceName      | Sets the resource that can be a [dataserver](../../../../server/data-server/introduction/) or a [request server](../../../../server/request-server/introduction/)|
-| server-fields     | This attribute defines the selection of fields from the server, and it abides to by the following convention: first field - Used for the x-axis; second field - Employed for the y-axis and lastly the third field - Designated as the series field. |
+| resourceName      | Identifies the resource that provides the data; this can be a [Data Server](../../../../server/data-server/introduction/) or a [Request Server](../../../../server/request-server/introduction/)|
+| server-fields     | Defines the fields of data to be charted; the first field provides data for the x-axis; the second field provides data for the y-axis; the third field provides the data series |
 
 ### Example
 
