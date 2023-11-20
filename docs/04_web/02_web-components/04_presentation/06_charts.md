@@ -9,7 +9,7 @@ tags:
     - chart
 ---
 
-A chart component is a graphical representation of a set of data, that can have multiple forms. Genesis charts are based on [g2plot](https://g2plot.antv.antgroup.com/)
+A chart component is a graphical representation of a set of data. A range of different chart types can be used. Genesis charts are based on [g2plot](https://g2plot.antv.antgroup.com/en/).
 
 ## Attributes and props
 
@@ -18,8 +18,8 @@ When you declare an `<alpha-g2plot-chart>`, you can provide the following attrib
 | Name            | Type      | Description                                                                               |
 |-----------------|-----------|-------------------------------------------------------------------------------------------|
 | type            | `string`  | Sets the type of the chart. **Default: Bar** |
-| config          | - | Sets the configuration for the chart. For more information about its field, [checkout here](https://g2plot.antv.antgroup.com/api/plot-api).                     |
-| data            | - | Provides the data to be displayed in the chart                     |
+| config          | - | Sets the [configuration for the chart](https://g2plot.antv.antgroup.com/api/plot-api)                     |
+| data            | - | where you are not using the `<chart-datasource>` component (see below), this provides the data to be displayed in the chart                     |
 
 
 ## Chart datasource
@@ -28,7 +28,7 @@ When using charts, you are offered a component called `<chart-datasource>`. This
 
 | Name              | Description                               |
 |-------------------|-------------------------------------------|
-| resourceName      | Identifies the resource that provides the data; this can be a [Data Server](../../../../server/data-server/introduction/) or a [Request Server](../../../../server/request-server/introduction/)|
+| resourceName      | Identifies the resource that provides the data; this can be a [Data Server](../../../../server/data-server/introduction/) `query` or a [Request Server](../../../../server/request-server/introduction/) `requestReply`|
 | server-fields     | Defines the fields of data to be charted; the first field provides data for the x-axis; the second field provides data for the y-axis; the third field provides the data series |
 
 ### Example
@@ -42,7 +42,7 @@ chartConfiguration = {
         yField: 'value',
     };
 ```
-- Below you see the declaration of a chart with a type: column with the component `chart-datasource`, retreiving information from the `ALL_STROCKS` query:
+- Below is the declaration of a chart with a type: column with the component `chart-datasource`, retrieving information from the `ALL_STROCKS` query:
 
 ```javascript title="chart declaration"
 <zero-g2plot-chart type="column" :config=${(x) => x.chartConfiguration}>
