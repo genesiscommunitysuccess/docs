@@ -923,6 +923,30 @@ You can register your own design system to make your app(s) look and feel cohesi
 Other developers will simply reuse the same design system.
 :::
 
+### Design System Configurator
+
+The Design System Configurator (DSC) allows you to personalize and adjust the design system to suit your particular requirements.
+
+To the left, you'll find the Editor, providing you the freedom to make any desired modifications. On the right side, the Preview displays the outcomes of those adjustments.
+
+<div class="demo-view">
+  <img
+    id="shadowed-img"
+    src={require("@site/static/img/DSC-checkbox.PNG").default}
+    alt="Image capture of DSC app"
+  />
+  <div>
+    <a class="overlay-link" href="/dsc/" target="_blank">
+      Launch DSC &#x2197;
+    </a>
+  </div>
+</div>
+<br/>
+
+Experiment with adjusting the configurations and observe the corresponding changes reflected on the right side. To use the Web Developer Training starting repository you cloned from [here](https://github.com/genesiscommunitysuccess/webtraining-seed), simply launch the DSC, customize the desired look and feel, click on "Save Changes," copy the text from the pop-up CSS, and replace the content of the [design-tokens.json](https://github.com/genesiscommunitysuccess/webtraining-seed/tree/main/client/web/src/styles/design-tokens.json) file. After reloading, you should see the applied changes.
+
+For additional information about the DSC, refer to [this link](../../../web/design-systems/preview/).
+
 
 ### Exercise 4.3 Overriding some components using Design System
 <!--
