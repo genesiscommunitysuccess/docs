@@ -943,11 +943,11 @@ To the left, you'll find the Editor, which gives you the freedom to make any des
 </div>
 <br/>
 
-Experiment with adjusting the configurations and observe the corresponding changes on the right side. To use the Web Developer Training starting repository you cloned from [here](https://github.com/genesiscommunitysuccess/webtraining-seed):
+Experiment with adjusting the configurations and observe the corresponding changes on the right side. To use the [Web Developer Training starting repository that you cloned][here](https://github.com/genesiscommunitysuccess/webtraining-seed):
 
 1. Launch the DSC.
 2. Customise the look and feel, then click on **Save Changes**.
-3. Copy the text from the pop-up CSS and create the content of the **design-tokens.json** under [client/web/src/styles/](https://github.com/genesiscommunitysuccess/webtraining-seed/tree/main/client/web/src/styles/).
+3. Copy the text from the pop-up CSS, and replace the content of the [design-tokens.json](https://github.com/genesiscommunitysuccess/webtraining-seed/tree/main/client/web/src/styles/design-tokens.json) file.
 
 After reloading, you should see the applied changes.
 
