@@ -947,7 +947,7 @@ Experiment with adjusting the configurations and observe the corresponding chang
 
 1. Launch the DSC.
 2. Customise the look and feel, then click on **Save Changes**.
-3. Copy the text from the pop-up CSS, and replace the content of the [design-tokens.json](https://github.com/genesiscommunitysuccess/webtraining-seed/tree/main/client/web/src/styles/design-tokens.json) file.
+3. Copy the text from the pop-up CSS and create the content of the **design-tokens.json** under [client/web/src/styles/](https://github.com/genesiscommunitysuccess/webtraining-seed/tree/main/client/web/src/styles/).
 
 After reloading, you should see the applied changes.
 
