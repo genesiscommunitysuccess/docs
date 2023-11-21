@@ -737,7 +737,7 @@ The Genesis [design system](../../../web/design-systems/introduction/) implement
 
 When you generate a design system using the Genesis scaffolding CLI tool [GenX](../../../getting-started/quick-start/create-a-new-project/) it will automatically extend a base design system that we have provided. This highly configurable design system is called Genesis Foundation UI. Our design system starts in [Axure](https://www.axure.com/) and has been lab-tested to meet the needs of financial markets.
 
-Design system are highly configurable and can be shared across multiple applications. When performing customisations, you can control the scope as follows:
+Design systems are highly configurable and can be shared across multiple applications. When performing customisations, you can control the scope as follows:
 
 * [Customisation (general)](#customisation-general) - applied to the design system itself, affecting all applications that use the system. 
 * [Customisation (app-specific)](#customisation-app-specific) - this is only applied to a single application. Other applications using the same system are not affected.
@@ -925,9 +925,9 @@ Other developers will simply reuse the same design system.
 
 ### Design System Configurator
 
-The Design System Configurator (DSC) allows you to personalize and adjust the design system to suit your particular requirements.
+The Design System Configurator (DSC) allows you to personalise and adjust the design system to suit your particular requirements.
 
-To the left, you'll find the Editor, providing you the freedom to make any desired modifications. On the right side, the Preview displays the outcomes of those adjustments.
+To the left, you'll find the Editor, which gives you the freedom to make any desired modifications. On the right, the Preview displays the outcomes of those adjustments.
 
 <div class="demo-view">
   <img
@@ -943,9 +943,15 @@ To the left, you'll find the Editor, providing you the freedom to make any desir
 </div>
 <br/>
 
-Experiment with adjusting the configurations and observe the corresponding changes reflected on the right side. To use the Web Developer Training starting repository you cloned from [here](https://github.com/genesiscommunitysuccess/webtraining-seed), simply launch the DSC, customize the desired look and feel, click on "Save Changes," copy the text from the pop-up CSS, and replace the content of the [design-tokens.json](https://github.com/genesiscommunitysuccess/webtraining-seed/tree/main/client/web/src/styles/design-tokens.json) file. After reloading, you should see the applied changes.
+Experiment with adjusting the configurations and observe the corresponding changes on the right side. To use the Web Developer Training starting repository you cloned from [here](https://github.com/genesiscommunitysuccess/webtraining-seed):
 
-For additional information about the DSC, refer to [this link](../../../web/design-systems/preview/).
+1. Launch the DSC.
+2. Customise the look and feel, then click on **Save Changes**.
+3. Copy the text from the pop-up CSS, and replace the content of the [design-tokens.json](https://github.com/genesiscommunitysuccess/webtraining-seed/tree/main/client/web/src/styles/design-tokens.json) file.
+
+After reloading, you should see the applied changes.
+
+There is more information about the DSC, in [the relevant page of our documentation](../../../web/design-systems/preview/).
 
 ### Exercise 4.3 Overriding some components using Design System
 <!--
