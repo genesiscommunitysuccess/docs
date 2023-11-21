@@ -55,7 +55,7 @@ To enable and configure this feature:
 
 4. If there are existing fields using sequences, run the server command [CreateMissingSqlSequences](../../../05_operations/02_commands/01_server-commands.md#createmissingsqlsequences).
 
-5. If you need to adjust the initial value of the sequences (for example if you are migrating data), use the server command [SetSequence](../../../05_operations/02_commands/01_server-commands.md#setsequence).
+5. If you need to adjust the initial value of the sequences (for example if you are migrating data), use the server command [SetAutoIncrement](../../../05_operations/02_commands/01_server-commands.md#setautoincrement).
 
 ## Subtables
 
