@@ -951,7 +951,7 @@ Experiment with adjusting the configurations and observe the corresponding chang
 
 After reloading, you should see the applied changes.
 
-There is more information about the DSC, in [the relevant page of our documentation](../../../web/design-systems/preview/).
+There is more information about the DSC in [the relevant page of our documentation](../../../web/design-systems/preview/).
 
 ### Exercise 4.3 Overriding some components using Design System
 <!--
