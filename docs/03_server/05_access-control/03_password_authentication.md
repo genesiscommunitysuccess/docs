@@ -137,9 +137,9 @@ The `selfServiceReset` function  has the following options:
 * `timeoutInMinutes` - the time in minutes for which a reset link remains valid 
 * `coolDownInMinutes` - the time in minutes before the next password reset can be made 
 * `notifyTopic` - the email topic in Genesis Notify to be used 
-* `redirectUrl` - the url that will direct the user to the web-page containing the form used for they to input their new password using the token provided in the email notification.
+* `redirectUrl` - the url that will direct the user to the web-page containing the form used for them to input their new password using the token provided in the email notification.
 
-> This will normally shall be set to https://$HOSTNAME/login/reset-password 
+> This is normally set to https://$HOSTNAME/login/reset-password 
 
 * `acceptClientUrl` - boolean flag; if true, the reset will use the client-provided reset url
 
@@ -167,7 +167,7 @@ Both the subject and the body support templating. Values surrounded by double cu
 The `mfa` function enables you to configure [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function, you can choose between different implementations of MFA providers.
 
 ### qrCode
-This method of MFA generates a qrCode that can be imported into apps such as Google and Microsfoft authenticator; the code generates a one-time-only time-based password to use as multi-factor codes to login. This block exposes the following configuaration items:
+This method of MFA generates a qrCode that can be imported into apps such as Google and Microsfoft authenticator; the code generates a one-time-only time-based password to use as multi-factor codes to login. This block exposes the following configuration items:
 
 * `codePeriodSeconds` specifies how many seconds a Time-based One-time Password (TOTP) remains valid. Default: 30 seconds.
 * `codePeriodDiscrepancy` specifies the allowed discrepancy to the TOTP. 1 would mean a single block of each `codePeriodSeconds` either side of the time window. Default: 1.
