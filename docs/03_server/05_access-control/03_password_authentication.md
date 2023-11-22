@@ -17,7 +17,7 @@ This page describes the various configuration options available for authenticati
 **Session tokens and refresh tokens**
 Session tokens and refresh tokens work in pairs together to enable you to control secure user sessions. These tokens always have an associated expiry date. This is in DATETIME format, and is typically a number of minutes in the future. 
 
-The expiry date of the refresh token are always further in the future than the expiry date of the session token, so that session tokens can be refreshed. 
+The expiry date of the refresh token is always further in the future than the expiry date of the session token, so that session tokens can be refreshed. 
 
 Once a session token expires, you can use its associated refresh token to create a new user session - assuming the refresh token has not expired yet.
 :::
