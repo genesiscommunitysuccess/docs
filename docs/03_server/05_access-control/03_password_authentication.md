@@ -17,7 +17,7 @@ This page describes the various configuration options available for authenticati
 **Session tokens and refresh tokens**
 Session tokens and refresh tokens work in pairs together to enable you to control secure user sessions. These tokens always have an associated expiry date. This is in DATETIME format, and typically is a number of minutes in the future. 
 
-The expiry date of the refresh token is always further in the future than session token expiry date, so that session tokens can be refreshed. 
+The expiry date of the refresh token is always further in the future than the session token expiry date, so that session tokens can be refreshed. 
 
 Once a session token expires, you can use its associated refresh token to create a new user session - assuming the refresh token has not expired yet.
 :::
@@ -44,7 +44,7 @@ security {
 Within `security` there is a further range of functions you can call in order to configure the username and password authentication. These are detailed below.
 
 ## authentication
-The `authentication` function is used to define Which authenticator implementations will be used.
+The `authentication` function is used to define which authenticator implementations will be used.
 
 ### LDAP
 Within the scope of the `authentication` function, you can insert an `ldap` block in order to define connections to one or more LDAP servers. 
@@ -60,7 +60,7 @@ The following variables are used to configure an LDAP connection; these are only
 * `port` specifies the LDAP server port. Default: 389.
 * `searchBases` defines the location(s) in the directory in which the LDAP search begins. Default: an organisational unit of `temp` with a domain component of `temp` (`ou=temp,dc=temp`).
   * This is set by first invoking the `searchBases` function, and repeatedly invoking `searchBase(location)` function(s) within it, where `location` is the exact name of the application on the LDAP server.
-* `userGroups` defines the group(s) that the user needs to belong with the LDAP server in order to log in. Default: no groups.
+* `userGroups` defines the group(s) that the user needs to belong to on the LDAP server in order to log in. Default: no groups.
   * This is set by first invoking the `userGroups` function, and repeatedly invoking `userGroup(group)` function(s) within it, where `group` is the specific name of a group.
 * `userPrefix` specifies a prefix added to every username when communicating with the LDAP server. Default: an empty string.
 * `bindDn` specifies the exact name of the application within the LDAP server. Normally, LDAP servers do not allow anonymous searches, so this name is essential. If `bindDn` is not specified, no bindings will be used. Default: null
@@ -70,12 +70,12 @@ The following variables are used to configure an LDAP connection; these are only
     * using the `uid` attribute (Userid)
     * using the `cn` attribute (Common Name)
     * using the `sAMAccountName` in Windows
-* `bypassLoginInternalAuth` this is a boolean flag that prevents internal authorisation checks on login
+* `bypassLoginInternalAuth` is a boolean flag that prevents internal authorisation checks on login.
 * `onFirstLogin` is a function that is called the first time a user who doesn't already exist in the database has been authenticated. Here you can define two things:
   * how the `User` and its `UserAttributes` will be created from the token after the user has been authenticated, using the `createUser` function
   * which user permissions are allocated, using `createUserPermissions`
-* `onLoginSuccess` this is a function which is invoked on a successful LDAP login; for example, it allows you to insert a user into the database when it exists in LDAP but not yet in the database.
-* `useTLS` this is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
+* `onLoginSuccess` is a function that is invoked on a successful LDAP login; for example, it allows you to insert a user into the database when it exists in LDAP but not yet in the database.
+* `useTLS` is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
 
 For more information about the various authentication types, see the [Authentication overview](../../../server/access-control/authentication-overview/).
 
