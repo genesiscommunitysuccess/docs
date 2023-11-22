@@ -943,7 +943,7 @@ To the left, you'll find the Editor, which gives you the freedom to make any des
 </div>
 <br/>
 
-Experiment with adjusting the configurations and observe the corresponding changes on the right side. To use the [Web Developer Training starting repository that you cloned][here](https://github.com/genesiscommunitysuccess/webtraining-seed):
+Experiment with adjusting the configurations and observe the corresponding changes on the right side. To use the Web Developer Training starting repository that you cloned [here](https://github.com/genesiscommunitysuccess/webtraining-seed):
 
 1. Launch the DSC.
 2. Customise the look and feel, then click on **Save Changes**.
