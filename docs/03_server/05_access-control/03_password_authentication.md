@@ -11,13 +11,13 @@ tags:
 ---
 
 
-This page describes the various configuration options available for authentication. These are located in your _application-name_-script-config/src/main/resources/**auth-preferences.kts** file.
+This page describes the various configuration options available for authentication. These are located in your _application-name_**-script-config/src/main/resources/auth-preferences.kts** file.
 
 :::info
 **Session tokens and refresh tokens**
-Session tokens and refresh tokens work in pairs together to enable you to control secure user sessions. These tokens always have an associated expiry date. This is in DATETIME format, and typically is a number of minutes in the future. 
+Session tokens and refresh tokens work in pairs together to enable you to control secure user sessions. These tokens always have an associated expiry date. This is in DATETIME format, and is typically a number of minutes in the future. 
 
-The expiry date of the refresh token is always further in the future than the session token expiry date, so that session tokens can be refreshed. 
+The expiry date of the refresh token are always further in the future than the expiry date of the session token, so that session tokens can be refreshed. 
 
 Once a session token expires, you can use its associated refresh token to create a new user session - assuming the refresh token has not expired yet.
 :::
@@ -28,7 +28,7 @@ Once a session token expires, you can use its associated refresh token to create
 All the configuration settings in the **auth-preferences.kts** file are wrapped within the `security` function. From this top level, you can set the following variables:
 
 * `sessionTimeoutMins` specifies a time out (in minutes) for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](../../../server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
-* `refreshTokenExpirationMins` specifies a time out (in minutes) for the refresh token value that was provided on successful login. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. Default: 7200 minutes (i.e. 5 days)
+* `refreshTokenExpirationMins` specifies a time out (in minutes) for the refresh token value that was provided on successful login. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. Default: 7200 minutes (5 days).
 * `expiryCheckMins` specifies the time interval (in minutes) used to check for idle sessions in the system. Default: 5 minutes.
 * `maxSimultaneousUserLogins` specifies the maximum number of concurrent active sessions a user can maintain. Once this limit has been reached, the user cannot activate additional sessions until one or more of the active sessions has been logged out. So, a value of 1 means that only one session can be logged in at any time; a value of two allows two sessions to be logged in concurrently, and so on. If the value is zero, is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
 
@@ -74,7 +74,7 @@ The following variables are used to configure an LDAP connection; these are only
 * `onFirstLogin` is a function that is called the first time a user who doesn't already exist in the database has been authenticated. Here you can define two things:
   * how the `User` and its `UserAttributes` will be created from the token after the user has been authenticated, using the `createUser` function
   * which user permissions are allocated, using `createUserPermissions`
-* `onLoginSuccess` is a function that is invoked on a successful LDAP login; for example, it allows you to insert a user into the database when it exists in LDAP but not yet in the database.
+* `onLoginSuccess` is a function that is invoked on a successful LDAP login; for example, it allows you to insert a user into the database when it exists in LDAP but not yet in your application's database.
 * `useTLS` is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
 
 For more information about the various authentication types, see the [Authentication overview](../../../server/access-control/authentication-overview/).
@@ -97,7 +97,7 @@ The following variables can be used to configure the application's password vali
     * `minimumLength` specifies the minimum length of password. If null or undefined, this assumes there is no minimum limit. Default: null.
     * `maximumLength` specifies the maximum length of password. If null or undefined, this assumes there is no maximum limit. Default: null.
     * `minDigits` specifies the minimum number of numeric digits required in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
-    * `maxRepeatCharacters` specifies the maximum number of the same characters across an entire password. This does not just include consecutive repeat characters, which is controlled by the `repeatCharacterRestrictSize` variable below. If null or undefined, this assumes there is no maximum limit. Default: null.
+    * `maxRepeatCharacters` specifies the maximum number of the same characters across an entire password. This does not just include consecutive repeat characters, which is controlled by the `repeatCharacterRestrictSize` variable, below. If null or undefined, this assumes there is no maximum limit. Default: null.
     * `minUppercaseCharacters` specifies the minimum number of upper-case characters in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
     * `minLowercaseCharacters` specifies the minimum number of lower-case characters in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
     * `minNonAlphaNumericCharacters` specifies the minimum number of non-alphanumeric characters, such as punctuation and other special characters. If null or undefined, this assumes there is no minimum limit. Default: null.
@@ -137,7 +137,7 @@ The `selfServiceReset` function  has the following options:
 * `timeoutInMinutes` - the time in minutes for which a reset link remains valid 
 * `coolDownInMinutes` - the time in minutes before the next password reset can be made 
 * `notifyTopic` - the email topic in Genesis Notify to be used 
-* `redirectUrl` - the url that will direct the user to the web-page containing the form used for them to input their new password using the token provided in the email notification.
+* `redirectUrl` - the url that will direct the user to the web page containing the form used for them to input their new password using the token provided in the email notification.
 
 > This is normally set to https://$HOSTNAME/login/reset-password 
 
