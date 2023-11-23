@@ -13,11 +13,11 @@ tags:
 
 This page describes the various configuration options available for authentication. These are located in your _application-name-_**auth-preferences.kts** file.
 
-:::
+:::info
 **Session tokens and refresh tokens**
-Session tokens and refresh tokens work in pairs together to enable you to control secure user sessions. These tokens always have an associated expiry date. This is in DATETIME format, and typically is a number of minutes in the future. 
+Session tokens and refresh tokens work in pairs together to enable you to control secure user sessions. These tokens always have an associated expiry date. This is in DATETIME format, and is typically a number of minutes in the future. 
 
-The expiry date of the refresh token is always further in the future than session token expiry date, so that session tokens can be refreshed. 
+The expiry date of the refresh token is always further in the future than the expiry date of the session token, so that session tokens can be refreshed. 
 
 Once a session token expires, you can use its associated refresh token to create a new user session - assuming the refresh token has not expired yet.
 :::
@@ -25,10 +25,10 @@ Once a session token expires, you can use its associated refresh token to create
 
 ## The security function
 
-All the configuration settings in the _application-name-_**auth-preferences.kts** file are wrapped within the `security` function. From this top level, you can set the following variables:
+All the configuration settings in the **auth-preferences.kts** file are wrapped within the `security` function. From this top level, you can set the following variables:
 
 * `sessionTimeoutMins` specifies a time out (in minutes) for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](../../../server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
-* `refreshTokenExpirationMins` specifies a time out (in minutes) for the refresh token value that was provided on successful login. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. Default: 7200 minutes (i.e. 5 days)
+* `refreshTokenExpirationMins` specifies a time out (in minutes) for the refresh token value that was provided on successful login. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. Default: 7200 minutes (5 days).
 * `expiryCheckMins` specifies the time interval (in minutes) used to check for idle sessions in the system. Default: 5 minutes.
 * `maxSimultaneousUserLogins` specifies the maximum number of concurrent active sessions a user can maintain. Once this limit has been reached, the user cannot activate additional sessions until one or more of the active sessions has been logged out. So, a value of 1 means that only one session can be logged in at any time; a value of two allows two sessions to be logged in concurrently, and so on. If the value is zero, is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
 
@@ -44,7 +44,7 @@ security {
 Within `security` there is a further range of functions you can call in order to configure the username and password authentication. These are detailed below.
 
 ## authentication
-The `authentication` function is used to define Which authenticator implementations will be used.
+The `authentication` function is used to define which authenticator implementations will be used.
 
 ### LDAP
 Within the scope of the `authentication` function, you can insert an `ldap` block in order to define connections to one or more LDAP servers. 
@@ -60,7 +60,7 @@ The following variables are used to configure an LDAP connection; these are only
 * `port` specifies the LDAP server port. Default: 389.
 * `searchBases` defines the location(s) in the directory in which the LDAP search begins. Default: an organisational unit of `temp` with a domain component of `temp` (`ou=temp,dc=temp`).
   * This is set by first invoking the `searchBases` function, and repeatedly invoking `searchBase(location)` function(s) within it, where `location` is the exact name of the application on the LDAP server.
-* `userGroups` defines the group(s) that the user needs to belong with the LDAP server in order to log in. Default: no groups.
+* `userGroups` defines the group(s) that the user needs to belong to on the LDAP server in order to log in. Default: no groups.
   * This is set by first invoking the `userGroups` function, and repeatedly invoking `userGroup(group)` function(s) within it, where `group` is the specific name of a group.
 * `userPrefix` specifies a prefix added to every username when communicating with the LDAP server. Default: an empty string.
 * `bindDn` specifies the exact name of the application within the LDAP server. Normally, LDAP servers do not allow anonymous searches, so this name is essential. If `bindDn` is not specified, no bindings will be used. Default: null
@@ -70,12 +70,12 @@ The following variables are used to configure an LDAP connection; these are only
     * using the `uid` attribute (Userid)
     * using the `cn` attribute (Common Name)
     * using the `sAMAccountName` in Windows
-* `bypassLoginInternalAuth` this is a boolean flag that prevents internal authorisation checks on login
+* `bypassLoginInternalAuth` is a boolean flag that prevents internal authorisation checks on login
 * `onFirstLogin` is a function that is called the first time a user who doesn't already exist in the database has been authenticated. Here you can define two things:
   * how the `User` and its `UserAttributes` will be created from the token after the user has been authenticated, using the `createUser` function
   * which user permissions are allocated, using `createUserPermissions`
-* `onLoginSuccess` this is a function which is invoked on a successful LDAP login; for example, it allows you to insert a user into the database when it exists in LDAP but not yet in the database.
-* `useTLS` this is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
+* `onLoginSuccess` is a function that is invoked on a successful LDAP login; for example, it allows you to insert a user into the database when it exists in LDAP but not yet in your application's database.
+* `useTLS` is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
 
 For more information about the various authentication types, see the [Authentication overview](../../../server/access-control/authentication-overview/).
 
@@ -97,7 +97,7 @@ The following variables can be used to configure the application's password vali
     * `minimumLength` specifies the minimum length of password. If null or undefined, this assumes there is no minimum limit. Default: null.
     * `maximumLength` specifies the maximum length of password. If null or undefined, this assumes there is no maximum limit. Default: null.
     * `minDigits` specifies the minimum number of numeric digits required in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
-    * `maxRepeatCharacters` specifies the maximum number of the same characters across an entire password. This does not just include consecutive repeat characters, which is controlled by the `repeatCharacterRestrictSize` variable below. If null or undefined, this assumes there is no maximum limit. Default: null.
+    * `maxRepeatCharacters` specifies the maximum number of the same characters across an entire password. This does not just include consecutive repeat characters, which is controlled by the `repeatCharacterRestrictSize` variable, below. If null or undefined, this assumes there is no maximum limit. Default: null.
     * `minUppercaseCharacters` specifies the minimum number of upper-case characters in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
     * `minLowercaseCharacters` specifies the minimum number of lower-case characters in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
     * `minNonAlphaNumericCharacters` specifies the minimum number of non-alphanumeric characters, such as punctuation and other special characters. If null or undefined, this assumes there is no minimum limit. Default: null.
@@ -137,7 +137,9 @@ The `selfServiceReset` function  has the following options:
 * `timeoutInMinutes` - the time in minutes for which a reset link remains valid 
 * `coolDownInMinutes` - the time in minutes before the next password reset can be made 
 * `notifyTopic` - the email topic in Genesis Notify to be used 
-* `redirectUrl` - the url to use for the redirect
+* `redirectUrl` - the url that will direct the user to the web page containing the form used for them to input their new password using the token provided in the email notification.
+
+> This is normally set to https://$HOSTNAME/login/reset-password
 * `acceptClientUrl` - boolean flag; if true, the reset will use the client-provided reset url
 
 :::warning
@@ -164,7 +166,7 @@ Both the subject and the body support templating. Values surrounded by double cu
 The `mfa` function enables you to configure [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function, you can choose between different implementations of MFA providers.
 
 ### qrCode
-This method of MFA generates a qrCode that can be imported into apps such as Google and Microsfoft authenticator; the code generates a one-time-only time-based password to use as multi-factor codes to login. This block exposes the following configuaration items:
+This method of MFA generates a qrCode that can be imported into apps such as Google and Microsfoft authenticator; the code generates a one-time-only time-based password to use as multi-factor codes to login. This block exposes the following configuration items:
 
 * `codePeriodSeconds` specifies how many seconds a Time-based One-time Password (TOTP) remains valid. Default: 30 seconds.
 * `codePeriodDiscrepancy` specifies the allowed discrepancy to the TOTP. 1 would mean a single block of each `codePeriodSeconds` either side of the time window. Default: 1.
