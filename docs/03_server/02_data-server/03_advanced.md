@@ -346,8 +346,28 @@ To control the flow of data and allow for filtering  and ordering, the following
 | ORDER_BY       |           | This option can be used to select a [Data Server index](../../../database/data-types/index-entities/) in the Data Server query that is being queried (the index must be defined in the query itself); this is useful if you want the data to be sorted in a specific way. By default, Data Server rows will be returned in the order they were created (from oldest database record to newest) |
 | REVERSE        | **false** | This option changes the [Data Server index](../../../database/data-types/index-entities/) iteration. For example, if you are using the default index, the query will return rows from newest database records to oldest                                                                                                                                                                        |
 
-### How MORE_ROWS and MAX_VIEWS behave
-#### MAX_ROWS
+Using Postman to send messages to the endpoint
+Once the application has been built, your Data Server queries are all endpoints. They are accessible from any API client that knows how to log in. So you can use a client such as Postman to request data. To do this, you nede to be able to provide the relevant options that appear in the the equivalent DATA_LOGON message.
+
+For example, here we use Postman to test a query called ALL_TRADES in the server:
+
+1. Set your request to post
+2. Configure the URL according to your request. In this example we are using the ALL_TRADES query.
+3. In the "Body" section, select "RAW" and "JSON" and insert the options under the field "DETAILS"
+
+{
+"DETAILS": {
+"CRITERIA_MATCH": "QUANTITY > 200",
+"MOVING_VIEW": true,
+"FIELDS": "TRADE_ID QUANTITY PRICE INSTRUMENT_ID",
+"MAX_ROWS": 10
+}
+}
+
+4. After that you are ready to send the request.
+
+## How MORE_ROWS and MAX_VIEWS behave
+### MAX_ROWS
 MAX_ROWS determines how many rows will be sent when the front end requests data. It also determines how many rows are sent when the front end makes a [MORE_ROWS request](../../../server/integration/rest-endpoints/basics/#more_rows). 
 
 The rows are queried based on the REVERSE setting (which only applies to non-real-time updates). So it is important to note the following behaviour. 
@@ -358,7 +378,7 @@ For example, when a DATA_LOGON is received with MAX_ROWS set to 500, and REVERSE
 
 - **If real-time updates occur on the server** these are sent to the front end regardless of order, and they will count towards the MAX_VIEW.
 
-#### MAX_VIEW and MOVING_VIEW
+### MAX_VIEW and MOVING_VIEW
 What happens when you reach MAX_VIEW depends on the MOVING_VIEW setting. 
 
 - If MOVING_VIEW is set to true, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows. So if you already have 2000 rows in your view and a new row is inserted, the oldest row in your view will be deleted (the Data Server sends a delete message) and the new row will be sent (the Data Server sends an insert message for that row). 

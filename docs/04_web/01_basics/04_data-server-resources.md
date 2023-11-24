@@ -64,7 +64,7 @@ The following operations are available:
 
     For example:
 ```
-````Expr.dateIsBefore(TRADE_DATE,'20150518')`
+Expr.dateIsBefore(TRADE_DATE,'20150518')`
 ```
 
 - `dateIsAfter(date as DateTime|String|Long, String)`
@@ -74,7 +74,7 @@ The following operations are available:
     For example:
 
 ```
-````Expr.dateIsAfter(TRADE_DATE,'20150518')`
+Expr.dateIsAfter(TRADE_DATE,'20150518')`
 ```
 
 - `dateIsGreaterEqual(date as DateTime|String|Long, String)`
