@@ -29,3 +29,26 @@ For example, where you need to create a large number of table fields, say `ALGO_
     field(name = algoParamPrefix + i, type = STRING)
   }
 ```
+
+## Default empty values and non-nullable STRING fields
+
+One can define an `empty` and `non-nullable` **STRING** field as:
+
+```kotlin
+field(name = "REFERENCE", type = STRING, default = "", nullable = false)
+```
+
+:::danger
+
+Although this is a valid setup by ANSI SQL standards, Oracle currently doesn't support this configuration, leading to failed database writes.
+If you still want to pursue this setup in Oracle, you can either:
+- Change all default values to have **at least one character**;
+- Provide a `SysDef` level override property: `OracleEmptyStringFieldDefaultValue` having **at least one character**.
+
+:::
+
+For maximum simplicity and compatibility, consider simply declaring the field as `nullable`:
+
+```
+field(name = "REFERENCE", type = STRING)
+```
