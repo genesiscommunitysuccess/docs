@@ -350,12 +350,12 @@ Here is an example message:
 
 ```
 {
-"DETAILS": {
-"CRITERIA_MATCH": "QUANTITY > 200",
-"MOVING_VIEW": true,
-"FIELDS": "TRADE_ID QUANTITY PRICE INSTRUMENT_ID",
-"MAX_ROWS": 10
-}
+    "DETAILS": {
+        "CRITERIA_MATCH": "QUANTITY > 200",
+        "MOVING_VIEW": true,
+        "FIELDS": "TRADE_ID QUANTITY PRICE INSTRUMENT_ID",
+        "MAX_ROWS": 10
+    }
 }
 ```
 
