@@ -346,14 +346,7 @@ To control the flow of data and allow for filtering  and ordering, the following
 | ORDER_BY       |           | This option can be used to select a [Data Server index](../../../database/data-types/index-entities/) in the Data Server query that is being queried (the index must be defined in the query itself); this is useful if you want the data to be sorted in a specific way. By default, Data Server rows will be returned in the order they were created (from oldest database record to newest) |
 | REVERSE        | **false** | This option changes the [Data Server index](../../../database/data-types/index-entities/) iteration. For example, if you are using the default index, the query will return rows from newest database records to oldest                                                                                                                                                                        |
 
-## Using Postman to send messages to the endpoint
-Once the application has been built, your Data Server queries are all endpoints. They are accessible from any API client that knows how to log in. So you can use a client such as Postman to request data. To do this, you nede to be able to provide the relevant options that appear in the the equivalent DATA_LOGON message.
-
-For example, here we use Postman to test a query called ALL_TRADES in the server:
-
-1. Set your request to **Post**.
-2. Configure the URL according to your request. In this example we are using the ALL_TRADES query.
-3. In the **Body** section, select **RAW** and **JSON** and insert the options under the **DETAILS** field.
+Here is an example message:
 
 ```
 {
@@ -364,9 +357,17 @@ For example, here we use Postman to test a query called ALL_TRADES in the server
 "MAX_ROWS": 10
 }
 }
-...
+```
 
-4. After that you are ready to send the request.
+## Using Postman to send messages to the endpoint
+Once the application has been built, your Data Server queries are all endpoints. They are accessible from any API client that knows how to log in. So you can use a client such as Postman to request data. To do this, you need to be able to provide the relevant options that appear in the the equivalent **DATA_LOGON** message.
+
+For example, here we use Postman to test a query called ALL_TRADES in the server:
+
+1. Set your request to **Post**.
+2. Configure the URL according to your request. In this example we are using the ALL_TRADES query.
+3. In the **Body** section, select **RAW** and **JSON** and insert a **DATA_LOGON** message (like the one above, for example) in the **DETAILS** field.
+4. Click to **Send** the request.
 
 ## How MORE_ROWS and MAX_VIEWS behave
 ### MAX_ROWS
