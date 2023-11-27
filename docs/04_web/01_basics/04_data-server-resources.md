@@ -11,7 +11,7 @@ tags:
 
 The [Data Server](../../../server/data-server/introduction/) is your source of streaming data. It provides a set of queries, each of which serves some or all fields from a specific table or view. These are your resources (along with the resources in the Request Server and the Event Handler). You need to know which queries are available to you, and more importantly, exactly what is available in each query.
 
-When you request streaming data for an element, such as a [Grid Pro](../../../web/web-components/grids/grid-pro/grid-pro-connected/#grid-pro-genesis-datasource), the platform sends a **DATA_LOGON** message that includes any attributes you have defined for the element (such as `max-rows` and `max-view`. These attributes enable you to limit the number of rows returned, for example. 
+When you request streaming data for an element, such as a [Grid Pro](../../../web/web-components/grids/grid-pro/grid-pro-connected/#grid-pro-genesis-datasource), the platform sends a **DATA_LOGON** message that includes any attributes you have defined for the element (such as `max-rows` and `max-view`). These attributes enable you to limit the number of rows returned, for example. 
 
 The platform creates the **DATA_LOGON** message automatically; you can view the details in our section on the [Data Server](../../../server/data-server/advanced/#incoming-data_logon-messages).
  
