@@ -12,22 +12,45 @@ tags:
 
 ## Subtables
 
-A subtable provides a unique point of view on the data schema, which goes further than a simple join relationship. It gives extra functionality to a main table.
+Within the body of the table definition, you can use `subtables` to define one or more subtables. A subtable provides a unique point of view on the data schema, which goes further than a simple join relationship. It gives extra functionality to a main table.
 
-For example, a financial instrument can be modelled as an INSTRUMENT table, but this table on its own isn’t enough to represent all the possible symbologies for an instrument. So, we could add a subtable called ALT_INSTRUMENT_ID, in which the relationship is one-to-many from INSTRUMENT to ALT_INSTRUMENT_ID.
+For example, you might have an EXECUTION_VENUE table to provide details of different exchanges and trading venues. This table on its own probably cannot represent all the possible symbologies for an exchange. So, you could add a subtable called ALT_VENUE_CODE, in which the relationship is one-to-many from EXECUTION_VENUE_ID to ALT_VENUE_CODE.
 
-ALT_INSTRUMENT_ID is likely to inherit key fields from the INSTRUMENT table, and it simply acts as a lookup table for INSTRUMENT records.
+ALT_VENUE_CODE inherits key fields from the EXECUTION_VENUE table, and it simply acts as a lookup table for EXECUTION_VENUE records.
 
-This requirement occurs for different tables (e.g. COUNTERPARTY → ALT_COUNTERPARTY_ID, GENESIS_PROCESS → GENESIS_PROCESS_MONITOR, etc).
+The example below shows this.
 
-Subtables are defined within the body of the table definition. 
+After the fields and the primary key have been defined, you can see the subtable `ALT_VENUE_CODE`.
 
-The example below shows the `GENESIS_PROCESS` monitoring table.
+- The EXECUTION_VENUE_ID field is used to generate the join operation. This field is inherited automatically.
+- Then the additional fields ALT_VENUE_CODE and ALT_VENUE_CODE_TYPE are defined.
+- Then the key for the subtable is defined.
 
-After the fields and the primary key have been defined, you can see the subtable `GENESIS_PROCESS_MONITOR`.
+```kotlin
+    table(name = "EXECUTION_VENUE", id = 5043) {
+        Fields.COUNTRY_CODE
+        Fields.OPERATING_MIC
+        Fields.DESCRIPTION
+        Fields.EXECUTION_VENUE_ID
 
-Within this subtable, the fields that are used to generate the join operation are defined first. These fields are inherited automatically. Then the additional fields and keys are defined.
+        primaryKey(name = "EXECUTION_VENUE_BY_EXECUTION_VENUE_ID", id = 1){
+            Fields.EXECUTION_VENUE_ID
+        }
+        subTables {
+            fields(Fields.EXECUTION_VENUE_ID)
+                .joiningNewTable(name = "ALT_VENUE_CODE", id = 5044) {
+                    Fields.ALT_VENUE_CODE
+                    Fields.ALT_VENUE_CODE_TYPE
 
+                    primaryKey(name = "ALT_VENUE_CODE_BY_EXECUTION_VENUE_ID_ALT_VENUE_CODE_TYPE", id = 1) {
+                        Fields.EXECUTION_VENUE_ID
+                        Fields.ALT_VENUE_CODE_TYPE
+                    }
+                }
+        }
+    }
+```
+Some tables provided by the platform have subtables. The example below shows the `GENESIS_PROCESS` monitoring table, which includes a subtable called `GENESIS_PROCESS_MONITOR`.
 
 ```kotlin
 table(name = "GENESIS_PROCESS", id = 12) {
@@ -56,7 +79,7 @@ table(name = "GENESIS_PROCESS", id = 12) {
                 MONITOR_MESSAGE
                 MONITOR_STATE
 
-            primaryKey(name = "GENESIS_PROCESS_MONITOR_BY_HOSTNAME", id = 1) {
+                primaryKey(name = "GENESIS_PROCESS_MONITOR_BY_HOSTNAME", id = 1) {
                     PROCESS_HOSTNAME
                     PROCESS_NAME
                     MONITOR_NAME
