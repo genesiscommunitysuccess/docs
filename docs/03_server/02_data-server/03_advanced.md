@@ -336,15 +336,15 @@ To initiate a stream from a Data Server, the front end sends a DATA_LOGON messag
 
 To control the flow of data and allow for filtering  and ordering, the following options can be included in the DATA_LOGON message.
 
-| Option         | Default   | Description                                                                                                                                                                                                                                                                                                                                                                                    |
-| -------------- | --------- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| MAX_ROWS       | 250       | Maximum number of rows to be returned as part of the initial message, and as part of any additional [MORE_ROWS](../../../server/integration/rest-endpoints/basics/#more_rows) requests; see below for more information                                                                                                                                                                         |
-| MAX_VIEW       | 1000      | Maximum number of rows to track as part of a front-end view; see below for more information                                                                                                                                                                                                                                                                                                    |
-| MOVING_VIEW    | **true**  | Defines the behaviour of the front-end view when it receives new rows in real time. If `MOVING_VIEW` is set to `true`, and `MAX_VIEW` is reached, any new rows arriving from the query will start replacing the oldest rows in the view. This guarantees that only the most recent rows are shown by default                                                                                   |
-| CRITERIA_MATCH |           | Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: `Expr.dateIsBefore(TRADE_DATE,'20150518')` or `QUANTITY > 10000`                                                                                                                                                                               |
-| FIELDS         |           | This optional parameter enables the front end to select a subset of fields from the query. Example: `TRADE_ID QUANTITY PRICE INSTRUMENT_ID`. By default, all fields are returned if this option is not specified                                                                                                                      |
+| Option         | Default   | Description                                                                                                                                                                                                                                                                                                                                                                                   |
+| -------------- | --------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| MAX_ROWS       | 250       | Maximum number of rows to be returned as part of the initial message, and as part of any additional [MORE_ROWS](../../../server/integration/rest-endpoints/basics/#more_rows) requests; see below for more information                                                                                                                                                                        |
+| MAX_VIEW       | 1000      | Maximum number of rows to track as part of a front-end view; see below for more information                                                                                                                                                                                                                                                                                                   |
+| MOVING_VIEW    | **true**  | Defines the behaviour of the front-end view when it receives new rows in real time. If `MOVING_VIEW` is set to `true`, and `MAX_VIEW` is reached, any new rows arriving from the query will start replacing the oldest rows in the view. This guarantees that only the most recent rows are shown by default                                                                                  |
+| CRITERIA_MATCH |           | The front end can send a common rxpression or a Groovy expression to perform filtering on the query server; these remain active for the life of the subscription. For example: `Expr.dateIsBefore(TRADE_DATE,'20150518')` or `QUANTITY > 10000`                                                                                                                                               |
+| FIELDS         |           | This parameter enables the front end to select a subset of fields from the query. Example: `TRADE_ID QUANTITY PRICE INSTRUMENT_ID`. If this option is not specified, all fields are returned                                                                                                                                                                                          |
 | ORDER_BY       |           | This option can be used to select a [Data Server index](../../../database/data-types/index-entities/) in the Data Server query that is being queried (the index must be defined in the query itself); this is useful if you want the data to be sorted in a specific way. By default, Data Server rows will be returned in the order they were created (from oldest database record to newest) |
-| REVERSE        | **false** | This option changes the [Data Server index](../../../database/data-types/index-entities/) iteration. For example, if you are using the default index, the query will return rows from newest database records to oldest                                                                                                                                                                        |
+| REVERSE        | **false** | This option changes the [Data Server index](../../../database/data-types/index-entities/) iteration. For example, if you are using the default index, the query will return rows from newest database records to oldest                                                                                                                                                                       |
 
 Here is an example message:
 
@@ -368,6 +368,9 @@ For example, here we use Postman to test a query called ALL_TRADES in the server
 2. Configure the URL according to your request. In this example we are using the ALL_TRADES query.
 3. In the **Body** section, select **RAW** and **JSON** and insert a **DATA_LOGON** message (like the one above, for example) in the **DETAILS** field.
 4. Click to **Send** the request.
+
+Note that, whenever you use an API client to send a request to the server, you first need to send a login message. See more information in our page on [testing](../../../operations/testing/component-testing/#using-an-api-client).
+
 
 ## How MORE_ROWS and MAX_VIEWS behave
 ### MAX_ROWS
@@ -405,7 +408,8 @@ Let's summarise all that.
 
 ## Criteria matching
 
-The incoming data **DATA_LOGON** message can also include filtering to control the rows returned. This can be based on common expressions and Groovy expressions. See more detail in our page in the [Web section of our documentation](../../../web/basics/data-server-resources/).
+The incoming data **DATA_LOGON** message can also include filtering to control the rows returned. The incoming filtering is specified in the CRITERIA_MATCH option.
 
-The incoming filtering is specified in the CRITERIA_MATCH option.
+The filters can be specified using common expressions, Groovy expressions, or even a mix of the two. See more detail in our page in the [Web section of our documentation](../../../web/basics/data-server-resources/).
+
 
