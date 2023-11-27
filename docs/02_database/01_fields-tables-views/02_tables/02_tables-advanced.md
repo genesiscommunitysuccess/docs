@@ -59,7 +59,7 @@ To enable and configure this feature:
 
 ## Subtables
 
-Within the body of the table definition, you use `subtables` to define one or more subtables. A subtable provides a unique point of view on the data schema, which goes further than a simple join relationship. It gives extra functionality to a main table.
+Within the body of the table definition, you can use `subtables` to define one or more subtables. A subtable provides a unique point of view on the data schema, which goes further than a simple join relationship. It gives extra functionality to a main table.
 
 For example, you might have an EXECUTION_VENUE table to provide details of different exchanges and trading venues. This table on its own probably cannot represent all the possible symbologies for an exchange. So, you could add a subtable called ALT_VENUE_CODE, in which the relationship is one-to-many from EXECUTION_VENUE_ID to ALT_VENUE_CODE.
 
@@ -97,9 +97,7 @@ After the fields and the primary key have been defined, you can see the subtable
         }
     }
 ```
-Some tables provided by the platform have subtables, such as COUNTERPARTY → ALT_COUNTERPARTY_ID, or GENESIS_PROCESS → GENESIS_PROCESS_MONITOR.
-
-The example below shows the `GENESIS_PROCESS` monitoring table, which includes a subtable called `GENESIS_PROCESS_MONITOR`.
+Some tables provided by the platform have subtables. The example below shows the `GENESIS_PROCESS` monitoring table, which includes a subtable called `GENESIS_PROCESS_MONITOR`.
 
 ```kotlin
 table(name = "GENESIS_PROCESS", id = 12) {
