@@ -53,7 +53,13 @@ For full details, see our page on [DbMon](../../../operations/commands/dbmon).
 
 ## DropTable
 
-The `DropTable` command removes all rows from the specified tables.
+The `DropTable` command removes all rows from the specified tables. 
+
+:::warning
+If you do not specify any tables, then **all** rows will be removed from **all** tables in the database. 
+
+Use with care!
+:::
 
 ### Syntax 
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
