@@ -2,20 +2,50 @@
 title: 'Tables - advanced'
 sidebar_label: 'Tables - advanced'
 id: tables-advanced
-keywords: [database, tables, advanced]
+keywords: [database, tables, advanced, autoincrement. sequence]
 tags:
     - database
     - tables
     - advanced
+    - autoincrement
+    - sequence
 ---
 
 ## Sequences
 
-:::info
-It is recommended that you use `AUTO INCREMENT` fields rather than sequences.
+To create a field that automatically generates the next number in a sequence when a new record is created, use the `autoIncrement` keyword. This needs a field of type INT.
+
+So for example, if you want to generate a numeric trade ID for every new trade, you would have the following field in your **fields-dictionary.kts**:
+
+```
+field("TRADE_ID_INT", type = INT)
+```
+
+And you would use the `autoIncrement` keyword in your table definition:
+
+```kotlin
+table (name= "EXTERNAL_TRADE", id = 2100) {
+    autoIncrement(TRADE_ID_INT)
+
+    QUANTITY
+    PRICE
+    SYMBOL
+    COUNTERPARTY_ID
+
+    primaryKey { 
+       TRADE_ID_INT
+    }
+}
+```
+
+### Use autoIncrement, not sequence
+
+:::note
+Always use the `autoIncrement` keyword to create sequence numbers. 
+Here we discuss the use of the `sequence` keyword, which is still available, but which carries some legacy issues that are worth avoiding.
 :::
 
-Sequences allow a combination of auto-generated sequential numbers and parameters defined in your application's System definition. For example, a table with the field `TRADE_ID` defined as:
+Earlier versions of the Genesis platform use the keyword `sequence` to generate sequence numbers. These allow a combination of auto-generated sequential numbers and parameters defined in your application's System definition. For example, a table with the field `TRADE_ID` defined as:
 
 ```kotlin
 table (name = "TRADE", id = 2000) {
