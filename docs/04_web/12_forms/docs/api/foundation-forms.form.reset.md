@@ -9,8 +9,15 @@ Reset the form state
 **Signature:**
 
 ```typescript
-reset(): void;
+reset(clearData?: boolean): void;
 ```
+
+## Parameters
+
+|  Parameter | Type | Description |
+|  --- | --- | --- |
+|  clearData | boolean | _(Optional)_ |
+
 **Returns:**
 
 void

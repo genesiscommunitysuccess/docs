@@ -26,6 +26,7 @@
 |  Type Alias | Description |
 |  --- | --- |
 |  [RendererEntry](./foundation-forms.rendererentry.md) |  |
+|  [StepperOrientationType](./foundation-forms.stepperorientationtype.md) |  |
 |  [UiSchema](./foundation-forms.uischema.md) |  |
 |  [UiSchemaElement](./foundation-forms.uischemaelement.md) |  |
 |  [UiSchemaElementOptions](./foundation-forms.uischemaelementoptions.md) |  |

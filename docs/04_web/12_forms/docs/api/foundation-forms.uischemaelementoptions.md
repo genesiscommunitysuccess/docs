@@ -10,6 +10,7 @@
 ```typescript
 export type UiSchemaElementOptions = {
     async?: boolean;
+    orientation?: StepperOrientationType;
     allOptionsResourceName?: string;
     datasourceConfig?: DatasourceOptions;
     hidden?: boolean;
@@ -26,5 +27,5 @@ export type UiSchemaElementOptions = {
     };
 };
 ```
-**References:** [UiSchema](./foundation-forms.uischema.md)
+**References:** [StepperOrientationType](./foundation-forms.stepperorientationtype.md), [UiSchema](./foundation-forms.uischema.md)
 

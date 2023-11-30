@@ -12,7 +12,8 @@ export type UiSchema = {
     type: UiSchemaElementType;
     elements: UiSchemaElement[];
     dsPrefix?: string;
+    options?: UiSchemaElementOptions;
 };
 ```
-**References:** [UiSchemaElementType](./foundation-forms.uischemaelementtype.md), [UiSchemaElement](./foundation-forms.uischemaelement.md)
+**References:** [UiSchemaElementType](./foundation-forms.uischemaelementtype.md), [UiSchemaElement](./foundation-forms.uischemaelement.md), [UiSchemaElementOptions](./foundation-forms.uischemaelementoptions.md)
 

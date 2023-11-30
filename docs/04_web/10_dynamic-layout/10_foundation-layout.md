@@ -288,7 +288,7 @@ This section concerns the behaviour of elements inside the layout. If you are us
 
 ### Element lifecycle (gating)
 
-Some actions that the user can perform with items in the layout will run the component lifecycle functions (`connectedCallback` and `disconnectedCallback`) when you don't want them to run:
+Some actions that the user can perform with items in the layout which will run the component lifecycle functions (`connectedCallback` and `disconnectedCallback`) at times when you don't want them to run:
 - when an item is dragged around the layout
 - potentially, when another item is removed from the layout
 - potentially, when new items are added to the layout
@@ -318,14 +318,14 @@ Throughout Foundation UI, there is no need to de-register a component that is re
 
 ### Managing the state
 
-Items inside the layout can save and restore the state using various methods, but it can become difficult to manage the state if you're adding the same item to the layout multiple times (multiple instances of the same web component).
+Items inside the layout can save and restore state using various methods, but it can become difficult to manage the state if you're adding the same item to the layout multiple times (multiple instances of the same web component).
 
-You can implement the [LayoutComponentWithState](./docs/api/foundation-layout.layoutcomponentwithstate.md) interface, which enables you to save and load the state *per instance* of your components. See the linked interface and the associated functions API documentation for examples and explanations of usage.
+You can implement the [LayoutComponentWithState](./docs/api/foundation-layout.layoutcomponentwithstate.md) interface which enables you to save and load the state *per instance* of your components. See the linked interface and the associated functions API documentation for examples and explanations of usage.
 
-Usage of this interface is optional, if you do not need to manage the state for your components in this way, then simply do not implement the interface.
+Usage of this interface is optional, if you do not need to manage the state for your components in this way then simply do not implement the interface.
 
 :::warning
-The layout system is only interacting with the immediately contained items - so if you have components that contain other components, the top-level components need to interact with the contained components to manage their states.
+The layout system is only interacting with the immediately contained items - so if you have components that contain other components, the top-level components will need to interact with the contained components to manage their state.
 :::
 
 :::danger
@@ -342,7 +342,7 @@ There are certain limitations to this function, especially when using custom ele
 As a general rule, if you need to have elements with FAST bindings inside the layout, wrap them in custom elements.
 :::
 
-If you are writing your own custom element which needs to work inside the layout, follow these steps.
+If you are writing your own custom element which needs to work inside of the layout, follow these steps.
 In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin` which overrides the `cloneNode` API.
 
 ```typescript

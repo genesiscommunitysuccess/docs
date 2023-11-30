@@ -13,5 +13,6 @@ export type NavEventDetailMap = {
     'luminance-icon-clicked': void;
     'misc-icon-clicked': void;
     'notification-icon-clicked': void;
+    'language-changed': void;
 };
 ```

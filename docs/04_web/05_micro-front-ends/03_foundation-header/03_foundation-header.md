@@ -72,7 +72,7 @@ It is possible for you to set up routing manually, but that won't be covered in 
 :::
 
 2. In the top-level class of your application, import the Navigation class and inject it as a dependency.
-
+3.
 ```javascript {1,6}
 import { Navigation } from '@genesislcap/foundation-header';
 
