@@ -2,13 +2,41 @@
 title: 'Tables - advanced'
 sidebar_label: 'Tables - advanced'
 id: tables-advanced
-keywords: [database, tables, advanced]
+keywords: [database, tables, advanced, autoIncrement, subtable]
 tags:
     - database
     - tables
     - advanced
+    - autoIncrement
+    - subtable
 ---
 
+## Sequences
+
+To create a field that automatically generates the next number in a sequence when a new record is created, use the `autoIncrement` keyword. This needs a field of type INT.
+
+So for example, if you want to generate a numeric trade ID for every new trade, you would have the following field in your **fields-dictionary.kts**:
+
+```
+field("TRADE_ID_INT", type = INT)
+```
+
+And you would use the `autoIncrement` keyword in your table definition:
+
+```kotlin
+table (name= "EXTERNAL_TRADE", id = 2100) {
+    autoIncrement(TRADE_ID_INT)
+
+    QUANTITY
+    PRICE
+    SYMBOL
+    COUNTERPARTY_ID
+
+    primaryKey { 
+       TRADE_ID_INT
+    }
+}
+```
 
 ## Subtables
 

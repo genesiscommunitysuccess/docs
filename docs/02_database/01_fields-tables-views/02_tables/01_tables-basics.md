@@ -18,21 +18,21 @@ Then you can look closer at all the elements that can go into a table definition
 ```kotlin
 tables {
 
-  table(name = "POSITION", id = 11002) {
-    sequence(POSITION_ID, "PS")
-    INSTRUMENT_ID
-    QUANTITY
-    NOTIONAL
+    table (name= "EXTERNAL_TRADE", id = 2100) {
+        autoIncrement(POSITION_ID)
+        INSTRUMENT_ID
+        QUANTITY
+        NOTIONAL
 
-    primaryKey { 
-      POSITION_ID
+       primaryKey { 
+           POSITION_ID
     }
   }
 
 }
 ```
 
-
+The `autoIncrement` keyword is used to set this field automatically to the next number in the sequence when a new record is written to the database. We shall discuss this further in the [Advanced](../../../../database/fields-tables-views/tables/tables-advanced/) page.
 
 ## Table name
 
@@ -62,7 +62,7 @@ If you are using intelliJ IDE, it will auto-suggest the available fields; any re
 ```kotlin
 
   table(name = "POSITION", id = 11002) {
-    sequence(POSITION_ID, "PS")
+    autoIncrement(POSITION_ID)
     INSTRUMENT_ID
     QUANTITY
     NOTIONAL
@@ -85,7 +85,7 @@ The example below shows a `primaryKey` with a single field: `POSITION_ID`:
 tables {
 
   table(name = "POSITION", id = 11002) {
-    sequence(POSITION_ID, "PS")
+    autoIncrement(POSITION_ID)
     INSTRUMENT_ID
     QUANTITY
     NOTIONAL

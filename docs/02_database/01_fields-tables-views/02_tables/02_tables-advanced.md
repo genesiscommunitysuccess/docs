@@ -2,13 +2,14 @@
 title: 'Tables - advanced'
 sidebar_label: 'Tables - advanced'
 id: tables-advanced
-keywords: [database, tables, advanced, autoincrement. sequence]
+keywords: [database, tables, advanced, autoincrement. sequence, subtable]
 tags:
     - database
     - tables
     - advanced
     - autoincrement
     - sequence
+    - subtable
 ---
 
 ## Sequences
