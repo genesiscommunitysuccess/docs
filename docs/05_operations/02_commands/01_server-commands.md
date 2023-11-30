@@ -292,7 +292,7 @@ There are two environment variables that can be used to configure how much RAM t
 There is a separate wrapper, `JvmRun` for Java main class scripts.
 
 ## GetAutoIncrementCount
-This gets the current auto increment INT values defined in dictionaries for all the sequences in the system. By default, the values aer printed on screen (to the terminal), but they can be written to a file so they can be reused by the `SetAutoIncrement` script (see below).
+This gets the current auto increment INT values defined in dictionaries for all the sequences in the system. By default, the values are printed on screen (to the terminal), but they can be written to a file so they can be reused by the `SetAutoIncrement` script (see below).
 
 :::warning
 Stop all your application's processes before using this command. 
