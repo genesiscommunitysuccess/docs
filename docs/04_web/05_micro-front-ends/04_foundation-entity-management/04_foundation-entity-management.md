@@ -248,7 +248,7 @@ To enable this micro front-end in your application, follow the steps below.
 }
 ```
 
-2. Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template html where required:
+2. Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template HTML where required:
 ```javascript
 // Import
 import { Profiles } from '@genesislcap/foundation-entity-management';
