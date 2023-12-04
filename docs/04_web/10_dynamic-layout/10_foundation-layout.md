@@ -197,7 +197,7 @@ Use this function over `.layoutRequiredRegistrations(layout: SerialisedLayout)` 
 
 ### Serialising layout
 
-The JavaScript API can be used to manually save and load layout states. This only describes the state of the dynamic layout itself. It is the responsibility of any components contained within their layout to serialise their own state, if required.
+The JavaScript API can be used to manually save and load layout states. This only describes the state of the dynamic layout itself. It is the responsibility of each component within the layout to serialise its own state, if required.
 To enable autosaving the layout see [here](#autosaving-layout).
 
 #### [Get Layout](./docs/api/foundation-layout.foundationlayout.getlayout.md)
@@ -322,10 +322,10 @@ Items inside the layout can save and restore the state using various methods, bu
 
 You can implement the [LayoutComponentWithState](./docs/api/foundation-layout.layoutcomponentwithstate.md) interface, which enables you to save and load the state *per instance* of your components. See the linked interface and the associated functions API documentation for examples and explanations of usage.
 
-Usage of this interface is optional, if you do not need to manage the state for your components in this way, then simply do not implement the interface.
+Usage of this interface is optional; if you do not need to manage the state for your components in this way, then simply do not implement the interface.
 
 :::warning
-The layout system is only interacting with the immediately contained items - so if you have components that contain other components, the top-level components need to interact with the contained components to manage their states.
+The layout system is only interacting with the immediately contained items - so if you have components that contain other components, each top-level component must interact with the contained components to manage their states.
 :::
 
 :::danger
@@ -342,8 +342,8 @@ There are certain limitations to this function, especially when using custom ele
 As a general rule, if you need to have elements with FAST bindings inside the layout, wrap them in custom elements.
 :::
 
-If you are writing your own custom element which needs to work inside the layout, follow these steps.
-In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin` which overrides the `cloneNode` API.
+If you are writing your own custom element that needs to work inside the layout, follow these steps.
+In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin`, which overrides the `cloneNode` API.
 
 ```typescript
 // Make a call to `deepClone` and manually clone children

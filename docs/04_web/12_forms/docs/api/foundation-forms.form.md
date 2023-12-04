@@ -21,6 +21,8 @@ export declare class Form extends FoundationElement
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [data](./foundation-forms.form.data.md) |  | any | Initial data for the form |
+|  [hideSubmit](./foundation-forms.form.hidesubmit.md) |  | boolean | **_(BETA)_** |
+|  [isSubmitHidden](./foundation-forms.form.issubmithidden.md) | <code>readonly</code> | boolean | **_(BETA)_** |
 |  [jsonSchema](./foundation-forms.form.jsonschema.md) |  | JSONSchema7 | Alternatively to providing [Form.resourceName](./foundation-forms.form.resourcename.md) you can hardcode the JSON schema on the client. |
 |  [readonly](./foundation-forms.form.readonly.md) |  | boolean | **_(BETA)_** |
 |  [renderers](./foundation-forms.form.renderers.md) |  | [RendererEntry](./foundation-forms.rendererentry.md)\[\] | Allows to provide set of renderers used by the form. If not provided it will default to text-field inputs |
@@ -31,7 +33,6 @@ export declare class Form extends FoundationElement
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [connectedCallback()](./foundation-forms.form.connectedcallback.md) |  | **_(BETA)_** |
 |  [disconnectedCallback()](./foundation-forms.form.disconnectedcallback.md) |  | **_(BETA)_** |
-|  [reset()](./foundation-forms.form.reset.md) |  | Reset the form state |
+|  [reset(clearData)](./foundation-forms.form.reset.md) |  | Reset the form state |
 

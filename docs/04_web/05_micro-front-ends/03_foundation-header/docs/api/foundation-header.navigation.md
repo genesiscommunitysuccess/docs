@@ -24,10 +24,13 @@ export declare class Navigation extends Navigation_base
 |  [auth](./foundation-header.navigation.auth.md) |  | Auth |  |
 |  [credentialManager](./foundation-header.navigation.credentialmanager.md) |  | CredentialManager |  |
 |  [hideSideBar](./foundation-header.navigation.hidesidebar.md) |  | boolean | Boolean attribute which controls whether to include the sideNav component Control via<code>hide-side-bar</code> |
+|  [i18next](./foundation-header.navigation.i18next.md) |  | I18next |  |
+|  [languageOptions](./foundation-header.navigation.languageoptions.md) |  | [LanguageOptions](./foundation-header.languageoptions.md) |  |
 |  [logoSrc](./foundation-header.navigation.logosrc.md) |  | any | Optional attribute which controls the icon to show on the navigation bar and flyout Control via <code>logo-src</code> |
 |  [ready](./foundation-header.navigation.ready.md) |  | boolean |  |
 |  [routeButtons](./foundation-header.navigation.routebuttons.md) |  | Array&lt;{ index: number; path: string; title: string; icon: string; variant: string; }&gt; | If present the defined route buttons will be rendered in the header 'routes' slot |
 |  [showConnectionIndicator](./foundation-header.navigation.showconnectionindicator.md) |  | boolean | Boolean attribute which controls whether to show the connection indicator on the navigation bar Control via <code>show-connection-indicator</code> |
+|  [showLanguageSelector](./foundation-header.navigation.showlanguageselector.md) |  | boolean | Boolean attribute which controls whether to show the language selector on the navigation bar Control via <code>show-language-selector</code> |
 |  [showLuminanceToggleButton](./foundation-header.navigation.showluminancetogglebutton.md) |  | boolean | Boolean attribute which controls whether to show the luminance (moon) icon on the navigation bar Control via<code>show-luminance-toggle-button</code> |
 |  [showMiscToggleButton](./foundation-header.navigation.showmisctogglebutton.md) |  | boolean | Boolean attribute which controls whether to show the miscellaneous (menu) icon on the navigation bar Control via <code>show-luminance-toggle-button</code> |
 |  [showNotificationsButton](./foundation-header.navigation.shownotificationsbutton.md) |  | boolean | Boolean attribute which controls whether to show the notification (bell) icon on the navigation bar Control via <code>show-notification-button</code> |
@@ -38,6 +41,7 @@ export declare class Navigation extends Navigation_base
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
+|  [changeLanguage(e)](./foundation-header.navigation.changelanguage.md) |  | Changes the language of the application |
 |  [connectedCallback()](./foundation-header.navigation.connectedcallback.md) |  |  |
 |  [logout()](./foundation-header.navigation.logout.md) |  | Logs the user out of their session |
 |  [navigateTo(path)](./foundation-header.navigation.navigateto.md) |  | Changes the route of the current page |

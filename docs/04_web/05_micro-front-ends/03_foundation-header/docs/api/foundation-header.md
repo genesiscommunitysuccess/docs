@@ -21,5 +21,6 @@
 
 |  Type Alias | Description |
 |  --- | --- |
+|  [LanguageOptions](./foundation-header.languageoptions.md) | Options for the language selector |
 |  [NavEventDetailMap](./foundation-header.naveventdetailmap.md) | Events dispatched by the navigation control buttons |
 
