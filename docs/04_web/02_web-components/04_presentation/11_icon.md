@@ -19,7 +19,7 @@ You can use any free publicly-available icon from fontawesome. These are availab
 
 To find an icon name,
 
-1. Go to the relevant link and search for a relevant word (for example, **microphone**).
+1. Go to the relevant link and search for a word that describes the icon you are looking for (for example, **microphone**).
 2. In the list displayed, you can see the icons and their names. You can use any name that is not marked as **pro**.
 3. Use that name to declare the icon; for example:
 
