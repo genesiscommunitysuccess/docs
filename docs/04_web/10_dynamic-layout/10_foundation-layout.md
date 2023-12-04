@@ -325,7 +325,7 @@ You can implement the [LayoutComponentWithState](./docs/api/foundation-layout.la
 Usage of this interface is optional; if you do not need to manage the state for your components in this way, then simply do not implement the interface.
 
 :::warning
-The layout system is only interacting with the immediately contained items - so if you have components that contain other components, the top-level components need to interact with the contained components to manage their state.
+The layout system is only interacting with the immediately contained items - so if you have components that contain other components, each top-level component must interact with the contained components to manage their states.
 :::
 
 :::danger
