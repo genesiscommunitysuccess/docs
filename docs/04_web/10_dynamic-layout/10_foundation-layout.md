@@ -197,7 +197,7 @@ Use this function over `.layoutRequiredRegistrations(layout: SerialisedLayout)` 
 
 ### Serialising layout
 
-The JavaScript API can be used to manually save and load layout states. This only describes the state of the dynamic layout itself. It is the responsibility of any components contained within their layout to serialise their own state, if required.
+The JavaScript API can be used to manually save and load layout states. This only describes the state of the dynamic layout itself. It is the responsibility of each component within the layout to serialise its own state, if required.
 To enable autosaving the layout see [here](#autosaving-layout).
 
 #### [Get Layout](./docs/api/foundation-layout.foundationlayout.getlayout.md)
