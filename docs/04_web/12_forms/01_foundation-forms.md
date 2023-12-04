@@ -314,9 +314,7 @@ Use this when you want to avoid fetching metadata from the server, but be aware 
 
 ### Default layout renderers and examples
 
-#### 1. VerticalLayout
-
-This is the default layout that is defined if no `uiSchema` is specified. This arranges our control elements vertically.
+This is the default layout for `VerticalLayout`, which is defined if no `uiSchema` is specified. This arranges the control elements vertically.
 
 ```ts
 const VerticalUISchema = {
@@ -327,9 +325,7 @@ const VerticalUISchema = {
 };
 ```
 
-#### 2. VerticalLayout - two columns
-
-This arranges our control elements in 2 columns vertically.
+This example arranges the control elements in two columns vertically.
 
 ```ts
 const VerticalColumnsUISchema = {
@@ -339,8 +335,6 @@ const VerticalColumnsUISchema = {
   ],
 };
 ```
-
-#### 3. HorizontalLayout
 
 This arranges our control elements horizontally.
 
@@ -353,11 +347,9 @@ const horizontalUISchema = {
 };
 ```
 
-#### 4. Array Layout
+An array Layout enables you to create a dynamic form with the ability to add, for example, multiple users.
 
-Array Layout allows you to create a dynamic form with the ability to add, for example, multiple users.
-
-It is more complicated when it comes to customisation because it needs proper `jsonSchema` and `uiSchema`.
+It is more complicated when it comes to customisation, because it needs proper `jsonSchema` and `uiSchema`.
 
 ```ts
 const arrayUISchema = {
@@ -420,9 +412,7 @@ const arrayJsonSchema = {
 };
 ```
 
-#### 5. Categorization layout
-
-Categorization layout allows you to create more complex forms that can be divided into appropriate categories (for example, personal information and address), which will be in separate tabs.
+Categorization layout enables you to create more complex forms that can be divided into appropriate categories (for example, personal information and address), which will be in separate tabs.
 
 ```ts
 const categoryUISchema = {
@@ -476,9 +466,7 @@ const categoryUISchema = {
 };
 ```
 
-#### 6. Group layout
-
-Group layout similarly to Categorization layout divides forms, but this time into groups. They are visible on the same tab, but they are separated from each other by their own labels.
+Group layout is similar to Categorization layout; it divides forms into groups. These are visible on the same tab, but they are separated from each other by their own labels.
 
 ```ts
 const groupUISchema = {
@@ -533,14 +521,12 @@ const groupUISchema = {
 };
 ```
 
-#### 7. Stepper Layout
+Stepper layout enables you to create more complex forms that can be divided into appropriate groups (for example, personal information and address), which will be in separate steps.
 
-Stepper layout allows you to create more complex forms that can be divided into appropriate steps (for example, personal information and address), which will be in separate steps.
-
-It is more complicated when it comes to customisation because it needs proper `jsonSchema` and `uiSchema` so that validation and data saving work properly.
+It is more complicated when it comes to customisation, because it needs proper `jsonSchema` and `uiSchema` so that validation and data saving work properly.
 
 :::info
-Remember to add `hide-submit-button` attribute to `foundation-forms` because in this case submit is built directly into stepper-layout
+Remember to add a `hide-submit-button` attribute to `foundation-forms`, because in this case, submit is built directly into stepper-layout.
 :::
 
 ```ts
@@ -712,9 +698,7 @@ const jsonSchemaStepper = {
 
 Most renderers are defined directly in the `jsonSchema` that comes from the server, but there are also those that you can add via `uiSchema`.
 
-#### 1. String renderer
-
-This is the default renderer, which creates a `text-field`.
+String renderer is the default renderer, which creates a `text-field`.
 
 ```ts
 const stringJsonSchema = {
@@ -738,8 +722,6 @@ const stringJsonSchema = {
 };
 ```
 
-#### 2. Number renderer
-
 The number renderer creates a `number-field`.
 
 ```ts
@@ -754,8 +736,6 @@ const numberJsonSchema = {
 };
 ```
 
-#### 3. Boolean renderer
-
 The boolean renderer creates a `checkbox-field`.
 
 ```ts
@@ -769,9 +749,7 @@ const booleanJsonSchema = {
 };
 ```
 
-#### 4. Connected Multiselect Renderer
-
-The multiselect renderer creates a `multiselect` component with options from datasource.
+The connected multiselect renderer creates a `multiselect` component with options from datasource.
 
 ```ts
 const connectedMultiselectUISchema = {
@@ -801,9 +779,7 @@ const connectedMultiselectUISchema = {
 };
 ```
 
-#### 5. Connected Select renderer
-
-This is a select renderer that creates a `select` component with options.
+Connected Select renderer is a select renderer that creates a `select` component with options.
 
 ```ts
 const connectedSelectUISchema = {
@@ -833,8 +809,6 @@ const connectedSelectUISchema = {
 };
 ```
 
-#### 6. Date renderer
-
 The date renderer creates a `date-field`.
 
 ```ts
@@ -851,8 +825,6 @@ const dateJsonSchema = {
 
 ### Specific renderers for filters and examples
 
-#### 1. Filter date renderer
-
 The filter date renderer creates two `date-fields` with minimum and maximum value.
 
 ```ts
@@ -866,8 +838,6 @@ const dateJsonSchema = {
   },
 };
 ```
-
-#### 2. Filter number renderer
 
 The filter number renderer creates two `number-fields` with minimum and maximum value.
 
