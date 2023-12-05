@@ -77,7 +77,7 @@ To enable and configure this feature:
 | Item | Default Value | Description
 | ---- | ------------- | -----------
 | Location | 'LO' | 
-| SqlSequencePaddingSize| 15 | The number of zeros used to pad the sequential number.
+| SqlSequencePaddingSize| 15 | The number of zeros used to pad the sequence number.
 | SqlEnableSequenceGeneration | false | Must be set to true.
 
 2. Run 'genesisInstall` to apply the settings.
@@ -172,8 +172,8 @@ The following details can be added when you use the `audit = details()`parameter
 The audit table that is created has the same name as the source table, plus the suffix **_AUDIT**. Here is an example table definition, which creates a table called `EUR_TRADES` and an audit table called `EUR_TRADES_AUDIT`:
 
 ```kotlin {1}
-table (name = "EUR_TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
-    sequence(TRADE_ID, "TR")
+table (name = "EUR_TRADE", id = 2000, audit = details(id = 2100)) {
+    autoIncrement(TRADE_ID, "TR")
     COUNTERPARTY_ID 
     INSTRUMENT_ID not null
     QUANTITY
