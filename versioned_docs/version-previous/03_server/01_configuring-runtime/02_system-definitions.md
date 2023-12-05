@@ -11,7 +11,7 @@ tags:
 
 The system-definition file **genesis-system-definition.kts** is the main configuration file for your application. 
 
-It is located in the [site-specific](../../../server/configuring-runtime/site-specific/) area.
+It is located in the [site-specific](../../../server/configuring-runtime/site-specific/) folder.
 
 Within the **site-specific** folder, the default location is:
 

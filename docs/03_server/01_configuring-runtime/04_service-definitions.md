@@ -68,7 +68,7 @@ systemDefinition {
 ```
 
 :::warning
-The global-service-definitions.xml file and the processes.xml file are are erased and re-generated every time you run `genesisInstall`. (You should never change these files, because any changes will be lost the next time you run genesisInstall.)
+The global-service-definitions.xml file and the processes.xml file are are erased and re-generated every time you run `genesisInstall`. (You should never change the generated files, because any changes will be lost the next time you run genesisInstall.)
 
 Therefore, it is essential that you set the **service-definitions.xml** file this way for every service or module for which you want to enable SSL.
 :::
