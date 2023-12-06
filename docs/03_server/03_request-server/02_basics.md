@@ -34,7 +34,7 @@ requestReplies {
 
 ## Adding a name
 
-Every `requestReply` in your .kts must have a unique name. The Genesis platform will add the prefix `REQ_` to the resource name. For example, the following code block specify a `requestReply` called `ALL_COUNTERPARTIES`:
+Every `requestReply` in your .kts must have a unique name. The Genesis platform will add the prefix `REQ_` to the resource name. For example, the following code block specifies a `requestReply` called `ALL_COUNTERPARTIES`:
 
 ```kotlin
 requestReplies {
