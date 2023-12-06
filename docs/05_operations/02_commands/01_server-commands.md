@@ -919,40 +919,41 @@ Do not use `SendIt` to update User details in any way. This can easily cause dat
 
 ## SetAutoIncrement
 
-This enables you to set autoincrement values for one or more tables. 
+:::warning
+Stop all your application's processes before using this command.
+:::
 
-You can set the value for a single table using the `-v` argument.
+This command enables you to set the next number to be generated for one or more autoincrementing fields. 
 
-You can set values for more than one table by supplying the details in a csv file and using the `-f` argument. The file should take the following format:
+You can set the value for a single field using the `-v` argument.
+
+You can set values for more than one field by supplying the details in a csv file and using the `-f` argument. The file should take the following format:
 
 ```
 table, field, value
 TRADE, TRADE_ID, 1
-ORDER, ORDER_ID, 10
+ORDER, ORDER_ID, 10538
 ```
-By default, this command expects the file to be called **AutoIncrementValues.csv**, but you can specify a different file name.
 
-:::warning
-Stop all your application's processes before using this command. 
-:::
+By default, this command expects the file to be called **AutoIncrementValues.csv**, but you can specify a different file name.
 
 ### Syntax
 The `SetAutoIncrement` command can take the following arguments:
 
-| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values | Default |
-|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|-------|      
-| -f       | --file `<arg>`     | no | name of the csv file containing the increment values (this overrides any --value option supplied) | none | AutoIncrementValues.csv |
-| -h       | --help             | no | displays help on using this command | none  | none | 
-| -s       | --field `<arg>`    | no | name of the auto-increment field (when setting the autoincrement for a single field)    | none | none |
-| -t       | --table `<arg>`    | no | name of the table that has the auto-increment (when setting the autoincrement for a single field)       | none | none |
-| -v       | --value `<arg>`    | no | new integer value for the autoincrement (when setting the autoincrement for a single field) | none | none |
+| Argument | Argument long name | Mandatory | Description                                                                                          | Restricted values | Default |
+|----------|--------------------|-----------|------------------------------------------------------------------------------------------------------|-------------------|-------|      
+| -f       | --file `<arg>`     | no | name of the csv file containing the increment values (this overrides any --value option supplied)    | none | AutoIncrementValues.csv |
+| -h       | --help             | no | displays help on using this command                                                                  | none  | none | 
+| -s       | --field `<arg>`    | no | name of the auto-increment field (when setting the autoincrement for a single field)                 | none | none |
+| -t       | --table `<arg>`    | no | name of the table that has the auto-increment (when setting the autoincrement for a single field)    | none | none |
+| -v       | --value `<arg>`    | no | integer value of the next number to be generated (when setting the autoincrement for a single field) | none | none |
 
-Note that all fields are optional in principle. But you must provide a `-t` `-s` and `-v` when setting a single autoincrement. 
+Note that all fields are optional in principle. But you must provide a `-t` `-s` and `-v` when setting a single field value. 
 
-The example below sets a single autoincrement value of 10 for the TRADE_ID field in the TRADE table.
+The example below sets the number 101 as the next number to be generated for the TRADE_ID field in the TRADE table.
 
 ```bash
-SetAutoIncrement -t TRADE -s TRADE_ID -v 10
+SetAutoIncrement -t TRADE -s TRADE_ID -v 101
 ```
 
 The example below uses the file **autoIncVals** to set autoincrement values for multiple fields.
