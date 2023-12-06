@@ -913,7 +913,7 @@ Do not use `SendIt` to update User details in any way. This can easily cause dat
 
 ## SetAutoIncrement
 
-This enables you to set autoincrement values for one or more tables. 
+This enables you to set autoincrement values for one or more tables that have [autoincrementing](../../../database/fields-tables-views/tables/tables-advanced/#sequences) fields. 
 
 You can set the value for a single table using the `-v` argument.
 
