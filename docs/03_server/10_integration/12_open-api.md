@@ -38,6 +38,13 @@ Genesis Open API supports Open API version 3.1.
 
 :::
 
+:::important
+
+Please note that all requests to the rest endpoints below need to be authenticated, for details please refer
+to [Authentication](../../integration/rest-endpoints/basics/).
+
+:::
+
 The Open API specification is generated at runtime and is available at the following endpoints:
 
 Full specification: 
