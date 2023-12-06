@@ -34,17 +34,23 @@ requestReplies {
 
 ## Adding a name
 
-Every `requestReply` in your .kts must have a unique name. If you do not provide one, it will be allocated automatically. In the previous example, the `requestReply` will automatically be named as `REQ_INSTRUMENT_DETAILS` - based on the table name.
-
-## Multiple Request Servers
-
-Almost certainly, your application will need to have more than one `requestReply`. So, let us state the obvious and show you a file with two `requestReply` codeblocks. Again, each is the simplest kind you could possibly have.
+Every `requestReply` in your .kts must have a unique name. The Genesis platform will add a prefix `REQ_` to the resource name. For example, the following code block specify a `requestReply` called `ALL_COUNTERPARTIES`:
 
 ```kotlin
 requestReplies {
-    requestReply(COUNTERPARTY)
+    requestReply("ALL_COUNTERPARTIES", COUNTERPARTY)
+    ...
+}
+```
 
+To access this request server, you need to call `REQ_ALL_COUNTERPARTIES`.
+
+If you do not provide one, it will be allocated automatically. In the following example, the `requestReply` will automatically be named as `REQ_INSTRUMENT_DETAILS` - based on the table name.
+
+```kotlin
+requestReplies {
     requestReply(INSTRUMENT_DETAILS)
+    ...
 }
 ```
 
