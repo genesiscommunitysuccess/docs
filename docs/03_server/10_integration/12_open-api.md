@@ -16,7 +16,7 @@ Open API support was introduced in version 7.0 of the Genesis platform.
 
 :::
 
-The Genesis low-code platform supports the use of [Open API](https://swagger.io/specification/) in order to integrate with external systems. 
+The Genesis low-code platform uses [Open API](https://swagger.io/specification/) to integrate with external systems. 
 
 Genesis makes this easy to configure and set up, and an Open API specification is generated for the following resources:
 
@@ -35,6 +35,12 @@ Internally, the framework uses a metadata system to generate JSON schemas for in
 :::important
 
 Genesis Open API supports Open API version 3.1.
+
+:::
+
+:::important
+
+All requests to the rest endpoints below need to be [authenticated](../../integration/rest-endpoints/basics/).
 
 :::
 
