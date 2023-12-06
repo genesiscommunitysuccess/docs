@@ -95,9 +95,9 @@ Note the following:
 
 ## Specifying derived fields
 
-You can define derived fields to be included on the reply, where the input for the derived field is the reply entity. 
+You can also define derived fields in a Request Server, to supplement the fields supplied by the table or view. The input for the derived field is the reply entity. All fields are available for use.
 
-Derived fields cannot be used within a `where` block.
+In the example below, we add a new boolean derived field:
 
 ```kotlin
 requestReplies {
@@ -110,6 +110,28 @@ requestReplies {
     }
 }
 ```
+
+You can use any logic you would like inside the `derivedField` codeblock, such as `if`, `switch` and so on. Here is a simple example of how to use `if` inside the `derivedField`:
+
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS) {
+        derivedFields {
+            derivedField("IS_BUY", BOOLEAN) {
+                if (DIRECTION.toString() == "BUY"){
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+    }
+}
+```
+
+:::note
+Derived fields cannot be used within a `where` block.
+:::
 
 ## Using an index
 
