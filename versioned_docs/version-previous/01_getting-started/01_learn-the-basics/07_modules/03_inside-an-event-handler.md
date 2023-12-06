@@ -1,6 +1,6 @@
 ---
 title: 'Modules - inside an Event Handler'
-sidebar_label: 'inside an Event Handler'
+sidebar_label: 'Inside an Event Handler'
 id: inside-an-event-handler
 keywords: [getting started, basics, modules, event handler]
 tags:
