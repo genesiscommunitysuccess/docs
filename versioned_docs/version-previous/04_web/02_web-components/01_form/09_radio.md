@@ -41,7 +41,7 @@ You can define the following events when using the `alpha-radio` component:
 
 | Name    | Description                                 |
 |---------|---------------------------------------------|
-| @change | Fires the event when radio change its state |
+| @change | Fires the event when the radio component changes its state |
 
 ## Usage
 All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration
@@ -87,6 +87,7 @@ From this point, you can access the value of the component in your application.
 :::tip
 Once the radio has been checked, the user cannot uncheck it.
 :::
+
 ## Try yourself
 
 ```html live
@@ -99,7 +100,7 @@ Once the radio has been checked, the user cannot uncheck it.
 
 ## Use cases
 
-Selecting multiple options in the same input: You could have a set of broker codes, for example, and the user could select one or more of those codes.
+Selecting multiple options in the same input; you could have a set of broker codes, for example, and the user could select one or more of those codes.
 
 ## Additional resources
 
