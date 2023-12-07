@@ -948,12 +948,12 @@ The `SetAutoIncrement` command can take the following arguments:
 | -t       | --table `<arg>`    | no | name of the table that has the auto-increment (when setting the next sequence number for a single field) | none | none |
 | -v       | --value `<arg>`    | no | new sequence number (integer) for the autoincrement (when setting the autoincrement for a single field) | none | none |
 
-Note that all fields are optional in principle. But when setting a single field value, you must provide `-t` `-s` and `-v`. 
+Note that all fields are optional in principle. But when setting a single field value, you must provide `-t` `-s` and `-v`.
 
-The example below sets a single autoincrement value of 10 for the TRADE_ID field in the TRADE table.
+The example below sets the number 101 as the next number to be generated for the TRADE_ID field in the TRADE table.
 
 ```bash
-SetAutoIncrement -t TRADE -s TRADE_ID -v 10
+SetAutoIncrement -t TRADE -s TRADE_ID -v 101
 ```
 
 The example below uses the file **autoIncVals** to set autoincrement values for multiple fields.
