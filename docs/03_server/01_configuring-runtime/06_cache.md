@@ -27,7 +27,6 @@ The options for both XML and GPAL are:
 * **expireAfterAccess**. The period of time that an entry will be cached since the last time it was read. This option uses the **timeUnit** attribute in the same way as **expireAfterWrite** to define the unit of time for the period. Default: 300 seconds.
 * **initialCapacity**. This is the number of entries the cache will be able to hold without extending its size since the start of the process. Default: 10000.
 * **maximumEntries** . This is the limit of entries we can hold in our cache. If the limit is achieved, entries will be replaced with an LRU algorithm. Default: 10000.
-* **concurrencyLevel**. This sets the way the cache is structured internally, so it controls the extent of concurrency that is achieved with multi-threaded operations. It is a sensitive configuration parameter and can potentially worsen performance. Use it for fine-tuning - or not at all. You have been warned! Default: 4.
 * **multipleKeys**. This setting has been deprecated and has no effect as of 2022.2 release. In order to achieve similar functionality, the **indices** option for each table has been introduced.
 * **update**. This setting implies the cache will update currently cached records with the latest information as they are updated in the database layer. Default: false.
 * **loadOnStart**. This global option enables pre-loading database tables in cache before the process starts and it applies as a default for all tables defined in the tables section. Default: false.
@@ -49,7 +48,6 @@ Choosing the right index definition is paramount to improving view query perform
     			<expireAfterAccess timeUnit="SECONDS">300</expireAfterAccess>
     			<initialCapacity>10000</initialCapacity>
     			<maximumEntries>10000</maximumEntries>
-    			<concurrencyLevel>4</concurrencyLevel>
     			<update>false</update>
     			<insertNewEntries>false</insertNewEntries>
                 <loadOnStart>true</loadOnStart>
