@@ -919,35 +919,36 @@ Do not use `SendIt` to update User details in any way. This can easily cause dat
 
 ## SetAutoIncrement
 
-This enables you to set autoincrement values for one or more tables. 
+:::warning
+Stop all your application's processes before using this command.
+:::
 
-You can set the value for a single table using the `-v` argument.
+This command enables you to set the next number to be generated for one or more autoincrementing fields.
 
-You can set values for more than one table by supplying the details in a csv file and using the `-f` argument. The file should take the following format:
+You can set the value for a single field using the `-v` argument.
+
+You can set values for more than one field by supplying the details in a csv file and using the `-f` argument. The file should take the following format:
 
 ```
 table, field, value
 TRADE, TRADE_ID, 1
-ORDER, ORDER_ID, 10
+ORDER, ORDER_ID, 10538
 ```
-By default, this command expects the file to be called **AutoIncrementValues.csv**, but you can specify a different file name.
 
-:::warning
-Stop all your application's processes before using this command. 
-:::
+By default, this command expects the file to be called **AutoIncrementValues.csv**, but you can specify a different file name.
 
 ### Syntax
 The `SetAutoIncrement` command can take the following arguments:
 
-| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values | Default |
-|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|-------|      
-| -f       | --file `<arg>`     | no | name of the csv file containing the increment values (this overrides any --value option supplied) | none | AutoIncrementValues.csv |
-| -h       | --help             | no | displays help on using this command | none  | none | 
-| -s       | --field `<arg>`    | no | name of the auto-increment field (when setting the autoincrement for a single field)    | none | none |
-| -t       | --table `<arg>`    | no | name of the table that has the auto-increment (when setting the autoincrement for a single field)       | none | none |
-| -v       | --value `<arg>`    | no | new integer value for the autoincrement (when setting the autoincrement for a single field) | none | none |
+| Argument | Argument long name | Mandatory | Description                                                                                           | Restricted values | Default |
+|----------|--------------------|-----------|-------------------------------------------------------------------------------------------------------|-------------------|-------|      
+| -f       | --file `<arg>`     | no | name of the csv file containing the new sequence numbers (this overrides any --value option supplied) | none | AutoIncrementValues.csv |
+| -h       | --help             | no | displays help on using this command                                                                   | none | none | 
+| -s       | --field `<arg>`    | no | name of the auto-increment field (when setting the next sequence number for a single field)           | none | none |
+| -t       | --table `<arg>`    | no | name of the table that has the auto-increment (when setting the next sequence number for a single field) | none | none |
+| -v       | --value `<arg>`    | no | new sequence number (integer) for the autoincrement (when setting the autoincrement for a single field) | none | none |
 
-Note that all fields are optional in principle. But you must provide a `-t` `-s` and `-v` when setting a single autoincrement. 
+Note that all fields are optional in principle. But when setting a single field value, you must provide `-t` `-s` and `-v`. 
 
 The example below sets a single autoincrement value of 10 for the TRADE_ID field in the TRADE table.
 
@@ -970,45 +971,49 @@ The behaviour of this command depends on which database implementation your appl
 
 And remember, only use this command when all your applications have been stopped. After running `SetAutoIncrement`, you need to restart the server.
 
-## SetSequence
+## SetAutoIncrement
 
-This enables you to set one or more sequence numbers. This can either be a single sequence number in a specific table,or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`). 
+:::warning
+Stop all your application's processes before using this command.
+:::
 
-To set the value for a single sequence, use the `-v` argument.
+This command enables you to set the next number to be generated for one or more autoincrementing fields.
 
-To set values for more than one sequence, supply the details in a csv file and use the `-f` argument. The file should take the following format:
+You can set the value for a single field using the `-v` argument.
+
+You can set values for more than one field by supplying the details in a csv file and using the `-f` argument. The file should take the following format:
 
 ```
-"Table","Sequence","Value"
-"USER","US","1303"
-"PROFILE","PR","0"
-"RIGHT","RI","0"
+table, field, value
+TRADE, TRADE_ID, 1
+ORDER, ORDER_ID, 10538
 ```
 
-`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
+By default, this command expects the file to be called **AutoIncrementValues.csv**, but you can specify a different file name.
 
 ### Syntax
-The `SetSequence` command can take the following arguments:
+The `SetAutoIncrement` command can take the following arguments:
 
-| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values | Default|
-|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|---------------|-------|       
-| -f       | --file `<arg>`     | no        | name of csv file containing table-sequence-value sets (these override any sequence and --value option supplied) | none | none |
-| -h       | --help             | no        | displays help on how to use the command                                                                | none | none |
-| -s       | --sequence `<arg>` | no        | two-character ID for the sequence (if setting an individual value)                                     | none | none |
-| -t       | --table `<arg>`    | no        | name of the table that contains the sequence (when setting the sequence for a single field)            | none | none |
-| -v       | --value `<arg>`    | no        | new integer value to be set (if setting an individual value)                                           | none | none |
+| Argument | Argument long name | Mandatory | Description                                                                                          | Restricted values | Default |
+|----------|--------------------|-----------|------------------------------------------------------------------------------------------------------|-------------------|-------|      
+| -f       | --file `<arg>`     | no | name of the csv file containing the increment values (this overrides any --value option supplied)    | none | AutoIncrementValues.csv |
+| -h       | --help             | no | displays help on using this command                                                                  | none  | none | 
+| -s       | --field `<arg>`    | no | name of the auto-increment field (when setting the autoincrement for a single field)                 | none | none |
+| -t       | --table `<arg>`    | no | name of the table that has the auto-increment (when setting the autoincrement for a single field)    | none | none |
+| -v       | --value `<arg>`    | no | integer value of the next number to be generated (when setting the autoincrement for a single field) | none | none |
 
-All fields are optional in principle. But if you are setting the value for a single sequence, you must provide a `-t` `-s` and `-v`. 
+Note that all fields are optional in principle. But you must provide a `-t` `-s` and `-v` when setting a single field value.
 
-The example below sets the sequence AA in the table TRADE to 10 for the TRADE_ID field in the TRADE table.
-
-```
-SetSequence-t TRADE -s AA -v 10
-```
-The example below uses the file **SeqVals** to set sequence values for multiple sequences.
+The example below sets the number 101 as the next number to be generated for the TRADE_ID field in the TRADE table.
 
 ```bash
-SetSequence -f SeqVals.csv
+SetAutoIncrement -t TRADE -s TRADE_ID -v 101
+```
+
+The example below uses the file **autoIncVals** to set autoincrement values for multiple fields.
+
+```bash
+SetAutoIncrement -f autoIncVals.csv
 ```
 
 ## startProcess 

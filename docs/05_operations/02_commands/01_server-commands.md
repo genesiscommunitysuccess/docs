@@ -940,15 +940,15 @@ By default, this command expects the file to be called **AutoIncrementValues.csv
 ### Syntax
 The `SetAutoIncrement` command can take the following arguments:
 
-| Argument | Argument long name | Mandatory | Description                                                                                          | Restricted values | Default |
-|----------|--------------------|-----------|------------------------------------------------------------------------------------------------------|-------------------|-------|      
-| -f       | --file `<arg>`     | no | name of the csv file containing the increment values (this overrides any --value option supplied)    | none | AutoIncrementValues.csv |
-| -h       | --help             | no | displays help on using this command                                                                  | none  | none | 
-| -s       | --field `<arg>`    | no | name of the auto-increment field (when setting the autoincrement for a single field)                 | none | none |
-| -t       | --table `<arg>`    | no | name of the table that has the auto-increment (when setting the autoincrement for a single field)    | none | none |
-| -v       | --value `<arg>`    | no | integer value of the next number to be generated (when setting the autoincrement for a single field) | none | none |
+| Argument | Argument long name | Mandatory | Description                                                                                           | Restricted values | Default |
+|----------|--------------------|-----------|-------------------------------------------------------------------------------------------------------|-------------------|-------|      
+| -f       | --file `<arg>`     | no | name of the csv file containing the new sequence numbers (this overrides any --value option supplied) | none | AutoIncrementValues.csv |
+| -h       | --help             | no | displays help on using this command                                                                   | none | none | 
+| -s       | --field `<arg>`    | no | name of the auto-increment field (when setting the next sequence number for a single field)           | none | none |
+| -t       | --table `<arg>`    | no | name of the table that has the auto-increment (when setting the next sequence number for a single field) | none | none |
+| -v       | --value `<arg>`    | no | new sequence number (integer) for the autoincrement (when setting the autoincrement for a single field) | none | none |
 
-Note that all fields are optional in principle. But you must provide a `-t` `-s` and `-v` when setting a single field value. 
+Note that all fields are optional in principle. But when setting a single field value, you must provide `-t` `-s` and `-v`.
 
 The example below sets the number 101 as the next number to be generated for the TRADE_ID field in the TRADE table.
 
