@@ -120,7 +120,9 @@ The `retry` function enables you to configure settings for limiting the rate at 
 * `maxAttempts` specifies the maximum number of attempts allowed if a user enters a wrong password. Default: 3 attempts.
 * `waitTimeMins` specifies the time to wait in minutes when the maximum number of incorrect attempts is reached before allowing a user to try again. Default: 5 minutes.
 
-The user login attempts are stored in the USER_LOGIN_ATTEMPT table. If a user exceeds the allowed limit of password entry attempts, the system updates the corresponding record in the USER_LOGIN_ATTEMPT table, and lock the user. In such cases, an administrator has the authority to unlock specific users by either deleting or amending the relevant record(s) in the USER_LOGIN_ATTEMPT table. This allows the administrator to grant the affected user(s) the opportunity to attempt to log in again, resolving issues related to exceeded password entry limits.
+User login attempts are stored in the USER_LOGIN_ATTEMPT table. If a user exceeds the allowed limit of password entry attempts, the system updates the corresponding record in the USER_LOGIN_ATTEMPT table, and locks the user. 
+
+To assist users who have exceeded their limit of password retries, an administrator can delete or amend the relevant record(s) in the USER_LOGIN_ATTEMPT table. The user can then try to login again.
 
 ### selfServiceReset 
 
