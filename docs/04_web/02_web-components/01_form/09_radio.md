@@ -41,7 +41,7 @@ You can define the following events when using the `alpha-radio` component:
 
 | Name    | Description                                 |
 |---------|---------------------------------------------|
-| @change | Fires the event when radio change its state |
+| @change | Fires the event when the radio component changes its state |
 
 ## Usage
 All examples below use the `alpha-design-system`. If you are using any other design system, change the declaration
