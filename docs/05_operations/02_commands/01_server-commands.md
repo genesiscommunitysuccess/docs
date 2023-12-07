@@ -968,7 +968,7 @@ SetAutoIncrement -f autoIncVals.csv
 Stop all your application's processes before using this command.
 :::
 
-This command enables you to set the next sequence number for one or more sequence fields. one or more sequence numbers. This can either be a single sequence number in a specific table, or a bulk change from a csv file.
+This command enables you to set the next sequence number for one or more sequence fields. 
 
 - To set the value for a single sequence, use the `-v` argument.
 
