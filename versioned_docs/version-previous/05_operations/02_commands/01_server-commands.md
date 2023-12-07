@@ -919,40 +919,41 @@ Do not use `SendIt` to update User details in any way. This can easily cause dat
 
 ## SetAutoIncrement
 
-This enables you to set autoincrement values for one or more tables. 
+:::warning
+Stop all your application's processes before using this command.
+:::
 
-You can set the value for a single table using the `-v` argument.
+This command enables you to set the next number to be generated for one or more autoincrementing fields.
 
-You can set values for more than one table by supplying the details in a csv file and using the `-f` argument. The file should take the following format:
+You can set the value for a single field using the `-v` argument.
+
+You can set values for more than one field by supplying the details in a csv file and using the `-f` argument. The file should take the following format:
 
 ```
 table, field, value
 TRADE, TRADE_ID, 1
-ORDER, ORDER_ID, 10
+ORDER, ORDER_ID, 10538
 ```
-By default, this command expects the file to be called **AutoIncrementValues.csv**, but you can specify a different file name.
 
-:::warning
-Stop all your application's processes before using this command. 
-:::
+By default, this command expects the file to be called **AutoIncrementValues.csv**, but you can specify a different file name.
 
 ### Syntax
 The `SetAutoIncrement` command can take the following arguments:
 
-| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values | Default |
-|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|-------|      
-| -f       | --file `<arg>`     | no | name of the csv file containing the increment values (this overrides any --value option supplied) | none | AutoIncrementValues.csv |
-| -h       | --help             | no | displays help on using this command | none  | none | 
-| -s       | --field `<arg>`    | no | name of the auto-increment field (when setting the autoincrement for a single field)    | none | none |
-| -t       | --table `<arg>`    | no | name of the table that has the auto-increment (when setting the autoincrement for a single field)       | none | none |
-| -v       | --value `<arg>`    | no | new integer value for the autoincrement (when setting the autoincrement for a single field) | none | none |
+| Argument | Argument long name | Mandatory | Description                                                                                           | Restricted values | Default |
+|----------|--------------------|-----------|-------------------------------------------------------------------------------------------------------|-------------------|-------|      
+| -f       | --file `<arg>`     | no | name of the csv file containing the new sequence numbers (this overrides any --value option supplied) | none | AutoIncrementValues.csv |
+| -h       | --help             | no | displays help on using this command                                                                   | none | none | 
+| -s       | --field `<arg>`    | no | name of the auto-increment field (when setting the next sequence number for a single field)           | none | none |
+| -t       | --table `<arg>`    | no | name of the table that has the auto-increment (when setting the next sequence number for a single field) | none | none |
+| -v       | --value `<arg>`    | no | new sequence number (integer) for the autoincrement (when setting the autoincrement for a single field) | none | none |
 
-Note that all fields are optional in principle. But you must provide a `-t` `-s` and `-v` when setting a single autoincrement. 
+Note that all fields are optional in principle. But when setting a single field value, you must provide `-t` `-s` and `-v`.
 
-The example below sets a single autoincrement value of 10 for the TRADE_ID field in the TRADE table.
+The example below sets the number 101 as the next number to be generated for the TRADE_ID field in the TRADE table.
 
 ```bash
-SetAutoIncrement -t TRADE -s TRADE_ID -v 10
+SetAutoIncrement -t TRADE -s TRADE_ID -v 101
 ```
 
 The example below uses the file **autoIncVals** to set autoincrement values for multiple fields.
@@ -961,22 +962,17 @@ The example below uses the file **autoIncVals** to set autoincrement values for 
 SetAutoIncrement -f autoIncVals.csv
 ```
 
-### Working with different databases
-The behaviour of this command depends on which database implementation your application uses. 
-
-- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
-
-- **If you are using Oracle**, you can **not** set a sequence value directly. This command increments the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values that are already assigned in the cache, as the increment is also applied to these values.
-
-And remember, only use this command when all your applications have been stopped. After running `SetAutoIncrement`, you need to restart the server.
-
 ## SetSequence
 
-This enables you to set one or more sequence numbers. This can either be a single sequence number in a specific table,or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`). 
+:::warning
+Stop all your application's processes before using this command.
+:::
 
-To set the value for a single sequence, use the `-v` argument.
+This command enables you to set the next sequence number for one or more sequence fields. 
 
-To set values for more than one sequence, supply the details in a csv file and use the `-f` argument. The file should take the following format:
+- To set the value for a single sequence, use the `-v` argument.
+
+- To set values for more than one sequence, supply the details in a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`) and use the `-f` argument. The file should take the following format:
 
 ```
 "Table","Sequence","Value"
@@ -990,22 +986,22 @@ To set values for more than one sequence, supply the details in a csv file and u
 ### Syntax
 The `SetSequence` command can take the following arguments:
 
-| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values | Default|
-|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|---------------|-------|       
-| -f       | --file `<arg>`     | no        | name of csv file containing table-sequence-value sets (these override any sequence and --value option supplied) | none | none |
-| -h       | --help             | no        | displays help on how to use the command                                                                | none | none |
-| -s       | --sequence `<arg>` | no        | two-character ID for the sequence (if setting an individual value)                                     | none | none |
-| -t       | --table `<arg>`    | no        | name of the table that contains the sequence (when setting the sequence for a single field)            | none | none |
-| -v       | --value `<arg>`    | no        | new integer value to be set (if setting an individual value)                                           | none | none |
+| Argument | Argument long name | Mandatory | Description                                                                                                        | Restricted values | Default|
+|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------------------|---------------|-------|       
+| -f       | --file `<arg>`     | no        | name of csv file containing table-sequence-value sets (these override any --sequence and --value options supplied) | none | none |
+| -h       | --help             | no        | displays help on how to use the command                                                                            | none | none |
+| -s       | --sequence `<arg>` | no        | two-character ID for the sequence (if setting an individual value)                                                 | none | none |
+| -t       | --table `<arg>`    | no        | name of the table that contains the sequence (if setting an individual value)                        | none | none |
+| -v       | --value `<arg>`    | no        | new integer value to be set (if setting an individual value)                                                       | none | none |
 
-All fields are optional in principle. But if you are setting the value for a single sequence, you must provide a `-t` `-s` and `-v`. 
+All fields are optional in principle. But if you are setting the value for a single sequence, you must provide a `-t` `-s` and `-v`.
 
-The example below sets the sequence AA in the table TRADE to 10 for the TRADE_ID field in the TRADE table.
+The example below sets the sequence AA in the table TRADE for the TRADE_ID field; the next sequence number to be generated is set to 1001.
 
 ```
-SetSequence-t TRADE -s AA -v 10
+SetSequence-t TRADE -s AA -v 1001
 ```
-The example below uses the file **SeqVals** to set sequence values for multiple sequences.
+The example below uses the file **SeqVals** to set the next sequence number for multiple sequences.
 
 ```bash
 SetSequence -f SeqVals.csv
@@ -1119,6 +1115,30 @@ The `loggingLevel` tag defines the default log level for the process, which is b
 
 The `classpath` tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a lib folder for one of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
 
+## CreateMissingSqlSequences
+
+:::warning
+Stop all your application's processes before using this command.
+:::
+
+This command creates sequences in the database for ID fields that rely on auto-generated sequence values.
+
+The command checks to see which sequences exist already, and only creates new sequences where they do not exist. Consequently, if you run the command more than once, you will get the same result each time.
+
+This command is applicable only for SQL databases and should only be executed when you are [enabling Sequences for SQL databases](../../02_database/01_fields-tables-views/02_tables/02_tables-advanced.md#sql-databases).
+
+### Syntax
+
+The `CreateMissingSqlSequences` command has no parameters.
+
+### Working with different databases
+The behaviour of this command depends on which database implementation your application uses.
+
+- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
+
+- **If you are using Oracle**, you can **not** set a sequence value directly. This command increments the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values that are already assigned in the cache, as the increment is also applied to these values.
+
+And remember, only use this command when all your applications have been stopped. After running `SetAutoIncrement`, you need to restart the server.
 
 ## DictionaryBuilder
 
