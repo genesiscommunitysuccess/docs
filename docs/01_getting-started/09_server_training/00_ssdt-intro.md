@@ -9,6 +9,8 @@ tags:
     - server training
     - introduction
 ---
+# Genesis Server Developer training
+![](/img/dev-training-book-cover.png)
 
 ## What you'll learn​
 
