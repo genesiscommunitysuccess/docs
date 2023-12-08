@@ -9,13 +9,18 @@ tags:
     - advanced
 ---
 
-## Sequences
+There are two keywords that enable you to define a field that automatically generates a sequence number ways (such as you would need for identifying a new trade or a new order):
+
+- `autoIncrement` which simply generates an integer value in sequence
+- `sequence`, which generates either a [UUID](https://www.uuidtools.com/what-is-uuid) or a value in a Genesis format (see below), depending on the database technology you are using
 
 :::info
-It is recommended that you use `AUTO INCREMENT` fields rather than sequences.
+For all new development, we recommended that you use `autoIncrement` fields rather than sequences.
 :::
 
-Sequences allow a combination of auto-generated sequential numbers and parameters defined in your application's System definition. For example, a table with the field `TRADE_ID` defined as:
+## Default format when using sequence
+
+When you use the keyword `sequence` to generate sequence numbers, the value generated is actually a combination of sequence number and other parameters defined in your application's System definition. For example, a table with the field `TRADE_ID` defined as:
 
 ```kotlin
 table (name = "TRADE", id = 2000) {
@@ -35,11 +40,11 @@ will generate `TRADE_ID` fields in the following format: `SEQUENTIAL_VALUE` (pad
 
 Using the default settings (see details below), the value generated for the field defined above will be: `000000000000001TRLO1`
 
-### SQL databases
+### Using sequence with an SQL database (UUID)
 
-In SQL databases, for compatibility reasons, this behaviour is **disabled by default**, and a `UUID` is generated instead.
+If you are using an SQL database, `sequence` behaves differently by default; it generates a `UUID`.
 
-To enable and configure this feature:
+To switch off UUID generation and use the default Genesis format for `sequence`:
 
 1. Add or modify the following keys in the file **site-specific/genesis-system-definition.kts**:
 
