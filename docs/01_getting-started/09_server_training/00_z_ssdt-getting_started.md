@@ -16,7 +16,7 @@ Make sure you have completed the [Environment set-up](../../../getting-started/d
 
 ## Start the project baseline
 
-Clone the Developer Training repo [here](https://github.com/genesiscommunitysuccess/devtraining-alpha). Open it using IntelliJ and follow the next steps:
+Clone the Server Developer Training starting repo [here](https://github.com/genesiscommunitysuccess/servertraining-seed). Open it using IntelliJ and follow the next steps:
 
 - Build the server. In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha/Tasks/Build/Assemble**.
 - Make sure you are ok with all the [pre-requisites](../../../getting-started/prerequisites/introduction/).
