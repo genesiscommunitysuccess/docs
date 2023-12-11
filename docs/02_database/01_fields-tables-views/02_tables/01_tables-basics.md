@@ -85,7 +85,7 @@ The example below shows a `primaryKey` with a single field: `POSITION_ID`:
 tables {
 
   table(name = "POSITION", id = 11002) {
-      autoIncrement(POSITION_ID, "PS")
+      autoIncrement(POSITION_ID)
       INSTRUMENT_ID
       QUANTITY
       NOTIONAL

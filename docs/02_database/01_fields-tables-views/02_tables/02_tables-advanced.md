@@ -9,13 +9,15 @@ tags:
     - advanced
 ---
 
-There are two keywords that enable you to define a field that automatically generates a sequence number ways (such as you would need for identifying a new trade or a new order):
+## Automatically generated sequences
 
-- `autoIncrement` which simply generates an integer value in sequence
+There are two keywords that enable you to define a field that automatically generates a sequence number (such as you would need for identifying a new trade or a new order):
+
+- `autoIncrement`, which simply generates an integer value in sequence
 - `sequence`, which generates either a [UUID](https://www.uuidtools.com/what-is-uuid) or a value in a Genesis format (see below), depending on the database technology you are using
 
 :::info
-For all new development, we recommended that you use `autoIncrement` fields rather than sequences.
+For all new development, we recommended that you use `autoIncrement` fields rather than `sequence`.
 :::
 
 ## Default format when using sequence
@@ -38,7 +40,7 @@ table (name = "TRADE", id = 2000) {
 
 will generate `TRADE_ID` fields in the following format: `SEQUENTIAL_VALUE` (padded by `paddingSize`) + `SEQUENCE` + `LOCATION` + 1 (fixed)
 
-Using the default settings (see details below), the value generated for the field defined above will be: `000000000000001TRLO1`
+Using the default settings (see details below), the first value generated for the field defined above will be: `000000000000001TRLO1`
 
 ### Using sequence with an SQL database (UUID)
 
