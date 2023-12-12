@@ -4,9 +4,10 @@
 
 ## UiSchemaElementType type
 
+The layouts and control types, which allow you to customize the arrangement of forms.
 
 **Signature:**
 
 ```typescript
-export type UiSchemaElementType = 'Control' | 'VerticalLayout' | any;
+export type UiSchemaElementType = 'Control' | 'VerticalLayout' | 'LayoutVertical2Columns' | 'Categorization' | 'Group' | 'Stepper' | 'HorizontalLayout';
 ```

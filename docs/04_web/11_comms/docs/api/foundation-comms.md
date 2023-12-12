@@ -43,6 +43,8 @@
 |  --- | --- |
 |  [criteriaFiltersToFields(filters)](./foundation-comms.criteriafilterstofields.md) | Criteria filters to fields. |
 |  [dataServerResultFilter(result, rowId)](./foundation-comms.dataserverresultfilter.md) | Data server result filter. |
+|  [getConnect()](./foundation-comms.getconnect.md) | Get Connect from the DI container. |
+|  [getDatasource()](./foundation-comms.getdatasource.md) | Get Datasource from the DI container. |
 |  [normaliseCriteria(criteria, delimiter)](./foundation-comms.normalisecriteria.md) | Normalise criteria. |
 |  [until(conditionFunc, timeoutMs)](./foundation-comms.until.md) | Polls a condition function until it returns true or a timeout is reached. |
 

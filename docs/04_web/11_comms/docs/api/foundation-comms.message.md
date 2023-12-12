@@ -27,6 +27,7 @@ export type Message<T = void | any> = {
     SESSION_ID?: string;
     SOURCE_REF?: string;
     USER_NAME?: string;
+    WARNING?: any[];
 };
 ```
 **References:** [MessageCode](./foundation-comms.messagecode.md), [MessageError](./foundation-comms.messageerror.md), [MessageType](./foundation-comms.messagetype.md), [EventMessageType](./foundation-comms.eventmessagetype.md)
