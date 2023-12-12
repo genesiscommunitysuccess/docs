@@ -13,7 +13,7 @@ tags:
 
 There are two keywords that enable you to define a field that automatically generates a sequence number (such as you would need for identifying a new trade or a new order):
 
-- `autoIncrement`, which simply generates an integer value in sequence
+- `autoIncrement`, which simply generates an integer value in sequence; by default, the first number generated will be 1
 - `sequence`, which generates either a [UUID](https://www.uuidtools.com/what-is-uuid) or a value in a Genesis format (see below), depending on the database technology you are using
 
 :::info
