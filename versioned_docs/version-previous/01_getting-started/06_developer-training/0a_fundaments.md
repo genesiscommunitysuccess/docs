@@ -156,8 +156,8 @@ In the table below we can see a number of Genesis tools, their uses and capabili
 | Operate | Console           |            Monitoring status, exploring log files and querying application data.            |
 | Operate | Intellij Plugin   |            Enables you to run the full stack of a Genesis application locally within IntelliJ, so you can check and test your development work as you progress.           |
 | Assistance | Genny | An AI bot to provide code examples and clarification about genesis and all its components. |
-| Assistance | Genesis copilot | an AI code assistant to provide suggestions of code while the developer is coding. |
-| Assistance | Platform AI Service | We have desisgned a Platform AI service layer offering prebuildt AI_powered business components. |
+| Assistance | Genesis copilot | An AI code assistant to provide suggestions of code while the developer is coding. |
+| Assistance | Platform AI Service | We have designed a Platform AI service layer offering prebuilt AI powered business components. |
 
 ## Platform architecture
 
