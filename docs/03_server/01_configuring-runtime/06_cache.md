@@ -60,6 +60,9 @@ Choosing the right index definition is paramount to improving view query perform
     	</cacheConfig>
 ```
 ### GPAL example
+The example below shows the GPAL **process-config** being used to override system-definition values on a per microservice basis. Any process that uses this config is given a bigger Db connection pool size.
+
+
 ```kotlin
     import java.util.concurrent.TimeUnit
     
@@ -86,8 +89,6 @@ Choosing the right index definition is paramount to improving view query perform
         }
     }
 ```
-
-As the example above shows, the GPAL **process-config** file can override system definition values on a per microservice basis as well. For example in this example we can give the process(es) using this config a bigger Db connection pool size.
 
 ### GPAL processes.xml example
 ```xml
