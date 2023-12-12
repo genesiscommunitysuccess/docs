@@ -4,6 +4,7 @@
 
 ## StepperOrientationType type
 
+Available orientation for stepper renderer.
 
 **Signature:**
 

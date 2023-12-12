@@ -24,6 +24,7 @@ export declare class Form extends FoundationElement
 |  [hideSubmit](./foundation-forms.form.hidesubmit.md) |  | boolean | **_(BETA)_** |
 |  [isSubmitHidden](./foundation-forms.form.issubmithidden.md) | <code>readonly</code> | boolean | **_(BETA)_** |
 |  [jsonSchema](./foundation-forms.form.jsonschema.md) |  | JSONSchema7 | Alternatively to providing [Form.resourceName](./foundation-forms.form.resourcename.md) you can hardcode the JSON schema on the client. |
+|  [prefix](./foundation-forms.form.prefix.md) |  | string | Name of the design system prefix that will be used in renderers. |
 |  [readonly](./foundation-forms.form.readonly.md) |  | boolean | **_(BETA)_** |
 |  [renderers](./foundation-forms.form.renderers.md) |  | [RendererEntry](./foundation-forms.rendererentry.md)\[\] | Allows to provide set of renderers used by the form. If not provided it will default to text-field inputs |
 |  [resourceName](./foundation-forms.form.resourcename.md) |  | string | Name of the backend resource which will provide metadata used to generate form and later used for submitting data |

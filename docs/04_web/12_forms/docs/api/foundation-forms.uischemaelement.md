@@ -4,6 +4,7 @@
 
 ## UiSchemaElement type
 
+A UiSchemaElement that displays property values in a user interface element.
 
 **Signature:**
 

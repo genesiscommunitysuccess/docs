@@ -4,28 +4,12 @@
 
 ## UiSchemaElementOptions type
 
+All configuration options that are available.
 
 **Signature:**
 
 ```typescript
-export type UiSchemaElementOptions = {
-    async?: boolean;
-    orientation?: StepperOrientationType;
-    allOptionsResourceName?: string;
-    datasourceConfig?: DatasourceOptions;
-    hidden?: boolean;
-    isPassword?: boolean;
-    validateFn?: (data: any, path: string, label: string) => ErrorObject[];
-    valueField?: string;
-    labelField?: string;
-    textarea?: boolean;
-    data?: any[];
-    childUiSchema?: UiSchema;
-    childElements?: UiSchema[];
-    i18n?: {
-        [key: string]: any;
-    };
-};
+export type UiSchemaElementOptions = ConnectedRenderersOptions | ArrayRendererOptions | CategorizationRendererOptions | GroupRendererOptions | StepperRendererOptions | StringRendererOptions | StandardRendererOptions;
 ```
-**References:** [StepperOrientationType](./foundation-forms.stepperorientationtype.md), [UiSchema](./foundation-forms.uischema.md)
+**References:** [ConnectedRenderersOptions](./foundation-forms.connectedrenderersoptions.md), [ArrayRendererOptions](./foundation-forms.arrayrendereroptions.md), [CategorizationRendererOptions](./foundation-forms.categorizationrendereroptions.md), [GroupRendererOptions](./foundation-forms.grouprendereroptions.md), [StepperRendererOptions](./foundation-forms.stepperrendereroptions.md), [StringRendererOptions](./foundation-forms.stringrendereroptions.md), [StandardRendererOptions](./foundation-forms.standardrendereroptions.md)
 
