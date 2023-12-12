@@ -11,7 +11,7 @@ module.exports = {
     "@genesislcap/foundation-comms": "14.126.0",
     "@genesislcap/foundation-entity-management": "14.126.0",
     "@genesislcap/foundation-filters": "14.126.0",
-    // "@genesislcap/foundation-forms": "14.126.0",
+    "@genesislcap/foundation-forms": "14.126.0",
     "@genesislcap/foundation-header": "14.126.0",
     "@genesislcap/foundation-layout": "14.126.0",
     "@genesislcap/foundation-login": "14.126.0",
