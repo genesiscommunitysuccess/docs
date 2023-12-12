@@ -111,7 +111,7 @@ Examples of technical components are:
 
 With our expertise, we can combine business with technical components to provide key functionality and connections for working in financial markets:
 
-| EXAMPLE BUILDING BLOCKS / COMPONENTS	 |                    CAPABILITIES                    | 
+| EXAMPLE	 |                    CAPABILITIES                    | 
 |---------------------------------------|:--------------------------------------------------:|
 | FIX                                   |                   FIX messaging.                   |
 | Bloomberg TOMS                        |        Bloomberg TOMS for treasury trading.        |
