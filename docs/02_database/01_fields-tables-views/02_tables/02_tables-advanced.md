@@ -18,6 +18,8 @@ There are two keywords that enable you to define a field that automatically gene
 
 :::info
 For all new development, we recommended that you use `autoIncrement` fields rather than `sequence`.
+
+There is no known efficiency between one keyword and the other. But `autoIncrement`is easier to define and generates a simple integer with no padding or leading zeroes; it keeps things simple.
 :::
 
 ## Default format when using sequence
