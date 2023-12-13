@@ -10,9 +10,45 @@ tags:
   - introduction
 ---
 
-
+**DO NOT USE THIS FILE**
+** IT IS FOR TEST PURPOSES ONLY**
 
 Data Servers monitor specific tables or views in the database. When a change in data occurs, the Data Server sends the updates to all its subscribers.
+
+SINGLE POINT OF ENTRY
+
+```mermaid
+graph TD
+    A[INCOMING TRADE INFORMATION] -- 6=10.02, 30=1000, 55=VOD --> B(BTIG USTP FIX Gateway)
+    A -- 32=10.02, 30=1000, 55=VOD --> C(BMO GMTC FIX Gateway)
+    A -- 6=10.02, 30=1000, 8015=VOD --> D(Stonex IRESS FIX Gateway)
+B --> E("USTP FIX STREAMER
+    mapping and normalisation")
+C --> F("GMTC FIX STREAMER
+    mapping and normalisation")
+D --> G("IRESS FIX STREAMER 
+        mapping and normalisation")   
+E --> H(USTP FIX STREAMER CLIENT)
+F --> I(GMTC FIX STREAMER  CLIENT)
+G --> J(IRESS FIX STREAMER CLIENT) 
+H --> K("TAM Trade Instruction Service
+    more information here")
+I --> K
+J --> K
+K --> L[(DATABASE)]
+```
+LALALAL
+
+```mermaid
+graph TD
+    A[INCOMING TRADE INFORMATION] 
+    B(USTP)
+B --> E(USTP STREAMER)
+C --> F(GMTC STREAMER)
+D --> G(IRESS STREAMER)    
+E --> H((DATABASE))
+```
+
 
 ```mermaid
 graph TD
@@ -21,6 +57,43 @@ B -->|Initial data| A
 B --> |Updates| A
 B -->|Connection| C[Database]
 C --> |Changes in table/view trigger a read|B
+```
+
+NOW GET THIS
+
+```mermaid
+graph TD
+A[USTP FIX Gateway] -->  B(DTCC USTP FIX Streamer)
+A[GMTC FIX Gateway] -->  B(DTCC USTP FIX Streamer)
+B[BTIG USTP FIX Streamer] -->  C(USTP Streamer Client)
+C[USTP Streamer Client] -->  D(Trade Instruction Service)
+D[Trade Instruction Service Lots more info in here]
+```
+LOROX
+
+```mermaid
+graph TD
+A[USTP FIX Gateway] -->  B(DTCC USTP FIX Streamer)
+A[GMTC FIX Gateway] 
+B[BTIG USTP FIX Streamer] 
+C[USTP Streamer Client] 
+D[Trade Instruction Service Lots more info in here]
+```
+
+BORROCKS MERMAID
+
+```mermaid
+graph TD
+A[USTP FIX Gateway] --> |Connection| B(DTCC USTP FIX Streamer)
+A[GMTC FIX Gateway] --> B(GMTC FIX Streamer)
+A[IRESS FIX Gateway] --> |Connection| B(Stonex IRESS FIX Streamer)
+B[BTIG USTP FIX Streamer] --> |Connection| C(USTP Streamer Client)
+B[GMTC FIX Streamer] --> |Connection| C(GMTC Streamer Client)
+B[Stonex IRESS FIX Streamer] --> |Connection| C(IRESS Streamer Client)
+C[USTP Streamer Client] --> |Connection| D(Trade Instruction Service)
+C[GMTC Streamer Client] --> |Connection| D(Trade Instruction Service)
+C[IRESS Streamer Client] --> |Connection| D(Trade Instruction Service)
+D[Trade Instruction Service]
 ```
 
 The Data Server configuration is refreshingly light, because all the hard work is done by the table or views.
