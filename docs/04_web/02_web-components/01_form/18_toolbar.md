@@ -45,7 +45,7 @@ provideDesignSystem().register(alphaToolbar());
 
 ## Use cases
 
-* Used anywhere someone may want to visually and structurally group related interactive controls.
+* Used anywhere someone may want to group related interactive controls visually and structurally.
 
 ## Additional resources
 
