@@ -38,6 +38,15 @@ document.getElementById('samplegrid').rowsData = [
   { item1: 'value 1-3', item2: 'value 2-3' },
 ];
 ```
+## Connected data
+
+It is possible to use the `<data-grid>` with dataservers and request servers, so you can retrieve information from the back end. To do that, you need to use the following component: `<data-grid-datasource>`. Below you find an example of how to use this component:
+
+```html
+<zero-data-grid>
+  <data-grid-datasource resourceName="ALL_TRADES"></data-grid-datasource>
+</zero-data-grid>
+```
 
 ## Use cases
 
@@ -45,4 +54,4 @@ document.getElementById('samplegrid').rowsData = [
 
 ## Additional resources
 
-- [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#grid)
+- [W3C Component Aria Practices](https://www.w3.org/WAI/ARIA/apg/patterns/grid/)
