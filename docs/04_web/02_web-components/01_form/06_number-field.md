@@ -34,7 +34,7 @@ You can define the following attributes when you declare an `<alpha-number-field
 | maxlength      | `number`  | The maximum number of characters allowed                                                                                                |
 | min            | `number`  | Defines minimum value allowed                                                                                                           |
 | minlength      | `number`  | The minimum number of characters required                                                                                               |
-| placeholder    | `string`  | Sets a placeholder for the element (which disappears when the user starts inputting)                                                    |
+| placeholder    | `string`  | Sets placeholder text for the element (which disappears when the user starts inputting)                                                    |
 | size           | `number`  | Defines the width of the component                                                                                                      |
 | step           | `number`  | Defines the step rate for each user click on the arrows (steps) in the element. **Default: `1`**                                        |
 | value          | `string`  | Defines a value for the component when it is created                                                                                    |
@@ -71,7 +71,7 @@ of this component accordingly.
 ```
 
 ### Get the user input
-In order to use a value input to this component, follow these two steps:
+In order to use a value that has been input to this component, follow these two steps:
 
 1. Create an `@observable` variable where you want to use this value:
 
