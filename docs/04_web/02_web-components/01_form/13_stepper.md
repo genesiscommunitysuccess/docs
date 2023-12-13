@@ -9,10 +9,10 @@ tags:
     - stepper
 ---
 
-The `<alpha-stepper>` component offers a versatile solution for guiding users through a multi-step process or dynamic form. Configurable attributes such as orientation and validation conditions provide flexibility, allowing developers to tailor the stepper's behavior to specific use cases. 
+The `<alpha-stepper>` component offers a versatile solution for guiding users through a multi-step process or dynamic form. Configurable attributes such as orientation and validation conditions provide flexibility, allowing you to tailor the stepper's behavior to specific use cases. 
 
 :::note
-Available only from foundation versions grater than **14.114.0**
+Available only from foundation versions greater than **14.114.0**
 :::
 
 ## Attributes
@@ -44,11 +44,11 @@ The validation field is used to set the condition for when the stepper permits t
 
 The index of each array element is related to the corresponding tab position. E.g.: index number 1 is related to the first tab of the stepper, index number 2 is related to the second tab of the stepper, etc.
 
-The corresponding tab will only allow the user to proceed to the next step when the field `isValid` receives a `true` value. You can define it as the example above, or you can call a fuction to perform more complicated logic tests. 
+The corresponding tab will only allow the user to proceed to the next step when the field `isValid` receives a `true` value. You can define it as in the example above, or you can call a function to perform more complicated logic tests. 
 
 ### Events
 
-You can use the following events when implements the `<alpha-stepper>`:
+You can use the following events when implementing the `<alpha-stepper>`:
 
 |Event | Description |
 |------|-------------|
@@ -58,13 +58,13 @@ Below you see a simple example of how to implement it.
 
 ```html
   <zero-stepper
-    @submit=${() => alert('You completed form')}
+    @submit=${() => alert('You completed the form')}
   >
 ```
 
 ### `Tab` & `Panel`
 
-Alongside the `<alpha-stepper>`, you must use the `<zero-stepper-tab>` and `<zero-stepper-tab-panel>`. Below you find the description of these two new components:
+Alongside the `<alpha-stepper>`, you must use the `<zero-stepper-tab>` and `<zero-stepper-tab-panel>`. We describe these two new components below.
 
 | Name | Description |
 |------|-------------|
