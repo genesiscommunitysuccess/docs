@@ -9,7 +9,7 @@ tags:
     - picker
 ---
 
-A selection input with support for selection of multiple options.
+A selection input that enables the user to select multiple options.
 
 ## Set-up
 
