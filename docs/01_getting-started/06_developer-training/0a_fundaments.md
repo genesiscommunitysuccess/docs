@@ -107,26 +107,39 @@ Examples of technical components are:
 | Data Server                           | Real-time data distribution in highly performant, low latency and complex structures. |
 | Consolidation Manager                 |                      Efficient data consolidation and analytics.                      |
 
-### Business components
+### Business integration
 
-Business components combine with technical components to provide key functionality and connections for working in financial markets:
+With our expertise, we can combine business with technical components to provide key functionality and connections for working in financial markets:
 
-| EXAMPLE BUILDING BLOCKS / COMPONENTS	 |                    CAPABILITIES                    | 
+| EXAMPLE	 |                    CAPABILITIES                    | 
 |---------------------------------------|:--------------------------------------------------:|
 | FIX                                   |                   FIX messaging.                   |
 | Bloomberg TOMS                        |        Bloomberg TOMS for treasury trading.        |
 | Murex                                 |       Integration with legacy vendor Murex.        |
-| ION Trading                           |        Integration to the Fidessa OMS.             |
+| ION Trading                           |        Integration with the Fidessa OMS.             |
 | Pershing                              |        Comprehensive integration to Nexus.         |
 | SS&C Geneva                           | Trades, positions, balances & margin requirements. |
+
 ### Custom components
 
 Custom components configure purpose-specific microservice components that extend functionality while remaining scalable.
-This allows you to do the following:
+This allows you to :
 
-- Create using your choice of languages, including Java, Groovy, or R.
-- Enable seamless app functionality with database access, component management, and component orchestration.
-- Deliver lasting benefits with resilience and scalability.
+- create using your choice of languages, including Java, Groovy, or R
+- enable seamless app functionality with database access, component management, and component orchestration
+- deliver lasting benefits with resilience and scalability
+
+### Micro front-ends
+Micro-front-end architecture is a design approach in which a front-end app is decomposed into individual, semi-independent micro applications working loosely together.
+
+We've built out a number of re-usable micro-front-ends that can be used by Genesis-powered applications:
+
+| MICRO FRONT-END	         |                                  CAPABILITIES                                  | 
+|---------------------------------------|:------------------------------------------------------------------------------:|
+| Foundation Reporting          |  The Reporting micro front-end enables your users to create report specifications, run them, or save them for later use.    |
+| Foundation Header             |  The Header micro front-end is a semi-batteries-included component. It consists of a navigation bar and flyout menu, with routing and account-logout capabilities.                |
+| Foundation Entity Management  |  The Entity Management micro front-end is used to connect to a resource on the back end and manage it from the front end. |
+| Foundation Login              |  This Login micro front-end includes a set of identity management functions, such as authentication (including via SSO) and password reset. |
 
 ## Platform tooling
 
@@ -136,12 +149,15 @@ In the table below we can see a number of Genesis tools, their uses and capabili
 
 | USE	    | EXAMPLE TOOLS	    |                                        CAPABILITIES                                         |
 |---------|-------------------|:-------------------------------------------------------------------------------------------:|
-| Create  | Genesis Studio    |            Graphical environment for building Genesis applications with No Code.            |
 | Create  | Genesis SDK       | Framework for building Genesis applications in Low Code with the Genesis Platform Language. |
 | Migrate | Excel Integration |  Transform Excel worksheets into Genesis applications and synchronize cells in real time.   |
 | Migrate | DB Integration    | Transform relational databases into Genesis applications and synchronize data in real time. |
 | Operate | GEM               |               Cloud-agnostic management and auditing of Genesis environments.               |
 | Operate | Console           |            Monitoring status, exploring log files and querying application data.            |
+| Operate | Intellij Plugin   |            Enables you to run the full stack of a Genesis application locally within IntelliJ, so you can check and test your development work as you progress.           |
+| Assistance | Genny | An AI bot to provide code examples and clarification about Genesis and all its components. |
+| Assistance | Genesis copilot | An AI code assistant to provide suggestions of code while the developer is coding. |
+| Assistance | Platform AI Service | We have designed a Platform AI service layer offering prebuilt AI powered business components. |
 
 ## Platform architecture
 
@@ -162,7 +178,7 @@ Below we have a diagram demonstrating the components within the User Interface a
 When it comes to creating applications using the Genesis Platform, there are some elements will be in almost every application. So we recommend five main steps:
 
 - Define your Data Model.
-- Define you Business Logic.
+- Define your Business Logic.
 - Integrate with other Systems.
 - Create User Interfaces.
 - Control Access.
@@ -284,7 +300,7 @@ view ("TRADE_VIEW", TRADE) {
 ```
 ### Distributing data
 
-As can be seen via the code snippets below, the platform handles connection management and data streaming out of the box and binds actions to event handlers.
+As can be seen in the code snippets below, the platform handles connection management and data streaming out of the box and binds actions to event handlers.
 
 ```kotlin
 dataServer{
