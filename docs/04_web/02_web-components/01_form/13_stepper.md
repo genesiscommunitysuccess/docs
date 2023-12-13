@@ -31,7 +31,7 @@ These attributes must be defined alongside the declaration of the component.
 The validation field is used to set the condition for when the stepper permits the user to move forward. You define the validation attribute as follows:
 
 ```html title="validation"
-  <zero-stepper
+  <alpha-stepper
     :validation=${(x) => [
       {
         isValid: () => x.valid === '123' && x.valid2 === 'abc' && x.valid3 === 'test',
@@ -57,19 +57,19 @@ You can use the following events when implementing the `<alpha-stepper>`:
 Below you see a simple example of how to implement it.
 
 ```html
-  <zero-stepper
+  <alpha-stepper
     @submit=${() => alert('You completed the form')}
   >
 ```
 
 ### `Tab` & `Panel`
 
-Alongside the `<alpha-stepper>`, you must use the `<zero-stepper-tab>` and `<zero-stepper-tab-panel>`. We describe these two new components below.
+Alongside the `<alpha-stepper>`, you must use the `<alpha-stepper-tab>` and `<alpha-stepper-tab-panel>`. We describe these two new components below.
 
 | Name | Description |
 |------|-------------|
-|`<zero-stepper-tab>` | Defines the name of each step of the stepper |
-|`<zero-stepper-tab-panel>` | Defines the content of each step of the stepper |
+|`<alpha-stepper-tab>` | Defines the name of each step of the stepper |
+|`<alpha-stepper-tab-panel>` | Defines the content of each step of the stepper |
 
 
 ## Usage
@@ -77,7 +77,7 @@ Below you find an example using the `alpha-design-system`. If you are using any 
 of this component accordingly.
 
 ```html title="Stepper"
-  <zero-stepper
+  <alpha-stepper
     :validation=${(x) => [
       {
         isValid: () => x.valid === '123' && x.valid2 === 'abc' && x.valid3 === 'test',
@@ -87,33 +87,33 @@ of this component accordingly.
     ]}
     @submit=${() => alert('You completed form')}
   >
-    <zero-stepper-tab>Step 1</zero-stepper-tab>
-    <zero-stepper-tab>Step 2</zero-stepper-tab>
-    <zero-stepper-tab>Step 3</zero-stepper-tab>
-    <zero-stepper-tab-panel>
-      <zero-text-field style="margin-left: 10px;" value=${sync((x) => x.valid)}>
+    <alpha-stepper-tab>Step 1</alpha-stepper-tab>
+    <alpha-stepper-tab>Step 2</alpha-stepper-tab>
+    <alpha-stepper-tab>Step 3</alpha-stepper-tab>
+    <alpha-stepper-tab-panel>
+      <alpha-text-field style="margin-left: 10px;" value=${sync((x) => x.valid)}>
         Must be equal to: 123
-      </zero-text-field>
-      <zero-text-field style="margin-left: 10px;" value=${sync((x) => x.valid2)}>
+      </alpha-text-field>
+      <alpha-text-field style="margin-left: 10px;" value=${sync((x) => x.valid2)}>
         Must be equal to: abc
-      </zero-text-field>
-      <zero-text-field style="margin-left: 10px;" value=${sync((x) => x.valid3)}>
+      </alpha-text-field>
+      <alpha-text-field style="margin-left: 10px;" value=${sync((x) => x.valid3)}>
         Must be equal to: test
-      </zero-text-field>
-    </zero-stepper-tab-panel>
-    <zero-stepper-tab-panel>
+      </alpha-text-field>
+    </alpha-stepper-tab-panel>
+    <alpha-stepper-tab-panel>
       <h5>Must be equal to: abc</h5>
-      <zero-select style="margin: 10px 0 0 10px;" :value=${sync((x) => x.valid4)}>
-        <zero-option>123</zero-option>
-        <zero-option>abc</zero-option>
-      </zero-select>
-    </zero-stepper-tab-panel>
-    <zero-stepper-tab-panel>
-      <zero-text-field style="margin-left: 10px;" value=${sync((x) => x.valid5)}>
+      <alpha-select style="margin: 10px 0 0 10px;" :value=${sync((x) => x.valid4)}>
+        <alpha-option>123</alpha-option>
+        <alpha-option>abc</alpha-option>
+      </alpha-select>
+    </alpha-stepper-tab-panel>
+    <alpha-stepper-tab-panel>
+      <alpha-text-field style="margin-left: 10px;" value=${sync((x) => x.valid5)}>
         Must be equal to: finish
-      </zero-text-field>
-    </zero-stepper-tab-panel>
-  </zero-stepper>
+      </alpha-text-field>
+    </alpha-stepper-tab-panel>
+  </alpha-stepper>
 ```
 
 ## Use cases
