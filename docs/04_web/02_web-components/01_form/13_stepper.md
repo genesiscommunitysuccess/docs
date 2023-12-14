@@ -9,7 +9,7 @@ tags:
     - stepper
 ---
 
-The `<alpha-stepper>` component offers a versatile solution for guiding users through a multi-step process or dynamic form. Configurable attributes such as orientation and validation conditions provide flexibility, allowing you to tailor the stepper's behavior to specific use cases. 
+The `<alpha-stepper>` enables you to provide a multi-step process or dynamic form that the user can follow. Configurable attributes such as orientation and validation conditions provide flexibility, allowing you to tailor the stepper's behaviour to specific use cases. 
 
 :::note
 Available only from foundation versions greater than **14.114.0**
@@ -17,18 +17,16 @@ Available only from foundation versions greater than **14.114.0**
 
 ## Attributes
 
-You can define the following attributes in an `<alpha-stepper>`.
+When you declare an `<alpha-stepper>`, you can define the following attributes:
 
 | Name        | Type      | Description                                                   |
 |-------------|-----------|---------------------------------------------------------------|
 | orientation | `string`  | Defines the orientation: `vertical` or `horizontal`. **Default: `Vertical`**            |
 | validation  | - | An array of objects to define the condition for each step to be completed |
 
-These attributes must be defined alongside the declaration of the component.
-
 ### validation
 
-The validation field is used to set the condition for when the stepper permits the user to move forward. You define the validation attribute as follows:
+Use the validation field to set the condition for when the stepper permits the user to move forward. You define the validation attribute as follows:
 
 ```html title="validation"
   <alpha-stepper
@@ -44,7 +42,7 @@ The validation field is used to set the condition for when the stepper permits t
 
 The index of each array element is related to the corresponding tab position. E.g.: index number 1 is related to the first tab of the stepper, index number 2 is related to the second tab of the stepper, etc.
 
-The corresponding tab will only allow the user to proceed to the next step when the field `isValid` receives a `true` value. You can define it as in the example above, or you can call a function to perform more complicated logic tests. 
+The corresponding tab will only allow the user to proceed to the next step when the field `isValid` receives a `true` value. You can define this as in the example above, or you can call a function to perform more complicated logic tests. 
 
 ### Events
 
@@ -54,7 +52,7 @@ You can use the following events when implementing the `<alpha-stepper>`:
 |------|-------------|
 | @submit | Possibility to pass the function to be performed in the last step after clicking submit. |
 
-Below you see a simple example of how to implement it.
+Below you see a simple example of how to implement this.
 
 ```html
   <alpha-stepper
@@ -73,7 +71,7 @@ Alongside the `<alpha-stepper>`, you must use the `<alpha-stepper-tab>` and `<al
 
 
 ## Usage
-Below you find an example using the `alpha-design-system`. If you are using any other design system, change the declaration
+Below is an example using the `alpha-design-system`. If you are using any other design system, change the declaration
 of this component accordingly.
 
 ```html title="Stepper"
@@ -119,4 +117,4 @@ of this component accordingly.
 ## Use cases
 
 - Create dynamic forms
-- Display processes ongoing
+- Create controlled processes 
