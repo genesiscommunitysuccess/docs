@@ -1,6 +1,6 @@
 ---
 id: grid-pro-connected
-title: Grid Pro - connected data
+title: Grid Pro - Connected data
 keywords: [web, web components, grid, grid pro]
 tags:
     - web
