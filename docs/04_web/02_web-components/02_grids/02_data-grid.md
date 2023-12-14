@@ -40,7 +40,7 @@ document.getElementById('samplegrid').rowsData = [
 ```
 ## Connected data
 
-It is possible to use the `<data-grid>` with dataservers and request servers, so you can retrieve information from the back end. To do that, you need to use the following component: `<data-grid-datasource>`. Below you find an example of how to use this component:
+To retrieve information from Data Servers and Request Servers, you need to use the `<data-grid>` with the `<data-grid-datasource>` component. Here is an example:
 
 ```html
 <zero-data-grid>
