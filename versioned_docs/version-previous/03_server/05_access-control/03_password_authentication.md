@@ -11,7 +11,7 @@ tags:
 ---
 
 
-This page describes the various configuration options available for authentication. These are located in your _application-name-_**auth-preferences.kts** file.
+This page describes the various configuration options available for authentication. Remember that if you want to override the default configuration of the **auth-preferences.kts**, you need to modify or create the following file: {_application-name_}**-script-config/src/main/resources/scripts/auth-preferences.kts**.
 
 :::info
 **Session tokens and refresh tokens**

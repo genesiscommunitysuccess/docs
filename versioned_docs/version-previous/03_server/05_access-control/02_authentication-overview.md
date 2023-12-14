@@ -18,11 +18,12 @@ There are many different ways for your application to perform authentication. Ea
 * [JWT (JSON Web Token)](https://jwt.io/introduction) SSO
 * SSO Token
 
+
 SSO Token authentication covers both [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language) and [OIDC](https://openid.net/connect/)
 
 Some of these techniques support [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication) to bring additional security.
 
-Each of these requires its own configuration settings in the application's _application-name-_**auth-preferences.kts** file.
+Each of these requires its own configuration settings in the application's **auth-preferences.kts** file. To change the default **auth-preferences.kts** you need to create a new **auth-preferences.kts** under this path: {application-name-script}**-config/src/main/resources/scripts/**.
 
 ## Username and password authentication
 
@@ -41,7 +42,9 @@ Genesis Password authentication uses internally stored hashed credentials to aut
 - Passwords can be required to conform to a configurable standard.
 - Users can reset or change their password (assuming they can log in first).
 
+
 ```kotlin
+security {
     authentication {
         genesisPassword {
             validation {
@@ -76,6 +79,7 @@ Genesis Password authentication uses internally stored hashed credentials to aut
             }
         }
 	}
+}
 ```
 
 ### LDAP
@@ -93,6 +97,7 @@ For more information on configuring LDAP authentication, see [Username and passw
 The example below shows LDAP authentication specified, with `userIdType` set to `cn` for the search for the username.
 
 ```kotlin
+security {
     authentication {
 		ldap {
 		    connection {
@@ -109,6 +114,7 @@ The example below shows LDAP authentication specified, with `userIdType` set to 
 			}
 		}
     }
+}
 ```
 
 ## SSO authentication
