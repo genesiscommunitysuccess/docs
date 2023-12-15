@@ -594,7 +594,7 @@ The key column in the display is **Status**, which can have the following values
 - **STANDBY** the process is in standby mode; it will take it over if the node becomes Primary
 - **MISSING** there has been an error and the process has not started correctly.
 
-- :::info
+:::info
 If you are using a development environment and you are running a local build via the IntelliJ plugin, you cannot run the `mon` command. The plugin provides a **Mon** tab where you can monitor the status of each process and start and stop each one.
 :::
 
