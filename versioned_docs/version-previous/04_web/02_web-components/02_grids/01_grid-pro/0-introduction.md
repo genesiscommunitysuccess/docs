@@ -36,6 +36,7 @@ The **connected data** use case is when you have a [Data Server](../../../../../
 This is the most common use case for the Grid Pro component. When connecting to a [Data Server](../../../../../server/data-server/introduction/) or [Request Server](../../../../../server/request-server/introduction/).
 :::
 
+
 ## Attributes and props
 
 | Name | Type | Default | Description |
@@ -52,15 +53,16 @@ This is the most common use case for the Grid Pro component. When connecting to 
 |theme | `string` | `ag-theme-rapid` for zero-grid-pro and `ag-theme-alpine` for foundation-grid-pro | The theme to use for the grid. You can access the available themes [here](https://www.ag-grid.com/javascript-data-grid/themes/) |
 |persist-column-state-key | `string` | - | Controls the persistence of the column's states (order, size, etc.) across sessions. Column state will not be persisted without this key. The persisted data is stored in the user's local storage in an object, keyed with this key if it is set - so each table must have a unique key in your application. |
 
-
 All these attributes can be used with the ag-grid. Since we have different use cases, you can follow the [simple data](../grid-pro-simple/) or [connected data](../grid-pro-connected/) for further examples.
 
 
-## Grid Options
+## Grid options
 
 The grid has a very important method called: `gridOption`. In this method, you define all options available in the grid. Take a look at [this link](https://www.ag-grid.com/javascript-data-grid/grid-options/) to see all the available options.
 
-## Default overrides
+## Grid events and callbacks
+
+There is a large number of events and callbacks provided by the grid. You can find details of these on the [ag.com site](https://www.ag-grid.com/javascript-data-grid/grid-events/) site. There is a lot of potential in these, and this site is well worth exploring at length.
 
 ## Default overrides
 

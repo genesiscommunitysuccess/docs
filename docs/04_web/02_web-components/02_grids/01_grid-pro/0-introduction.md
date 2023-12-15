@@ -60,6 +60,10 @@ All these attributes can be used with the ag-grid. Since we have different use c
 
 The grid has a very important method called: `gridOption`. In this method, you define all options available in the grid. Take a look at [this link](https://www.ag-grid.com/javascript-data-grid/grid-options/) to see all the available options.
 
+## Grid events and callbacks
+
+There is a large number of events and callbacks provided by the grid. You can find details of these on the [ag.com site](https://www.ag-grid.com/javascript-data-grid/grid-events/) site. There is a lot of potential in these, and this site is well worth exploring at length.
+
 ## Default overrides
 
 A custom [Design System](../../../../../web/design-systems/introduction/) can have its own Grid Pro variant, extending the base `foundation-grid-pro` and overriding the `theme` attribute and its `themeChanged` event for custom style/theme-related logic. See the example below:
