@@ -17,3 +17,7 @@ getLayout(): SerialisedLayout;
 
 - latest version of [SerialisedLayout](./foundation-layout.serialisedlayout.md) describing the layout
 
+## Remarks
+
+Includes any state for a contained component exposed by the [LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md) interface.
+

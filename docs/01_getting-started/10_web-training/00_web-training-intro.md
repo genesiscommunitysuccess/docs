@@ -37,9 +37,9 @@ Estimated total effort: <b>Daily four-hour sessions for four days</b>.
 - [Day four](../../../getting-started/web-training/web-training-day4/): Design systems, styling, charts, micro front-ends
 
 ## Genesis low-code platform version
-Back end (GSF) 6.5.3
+Back end (GSF) 7.0.0
 
-Front end (FUI) 14.15.2
+Front end (FUI) 14.101.1
 
 ## Source code
 The complete source code of this training is available on [GitHub](https://github.com/genesiscommunitysuccess/webtraining-alpha).

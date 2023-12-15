@@ -4,7 +4,7 @@
 
 ## EntityManagement.enableRowFlashing property
 
-If true, will enable row flashing for all rows for `add` async transactions
+If true, will enable row flashing for all rows for `add` transactions
 
 **Signature:**
 

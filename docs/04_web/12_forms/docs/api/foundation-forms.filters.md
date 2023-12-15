@@ -4,7 +4,7 @@
 
 ## Filters class
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
+> This API is provided as a beta preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
 > 
 
 Foundation filters component for automatically generated filters based on json schema obtained from the api, supplied initial data or supplied JSON schema. Allowing customisable filters elements using UI schema and set of custom renderers

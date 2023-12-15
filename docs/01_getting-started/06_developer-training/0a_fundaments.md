@@ -1,5 +1,5 @@
 ---
-title: Developer training - Fundamentals
+title: Developer training - fundamentals
 sidebar_label: Fundamentals
 sidebar_position: 1
 id: fundamentals
@@ -23,7 +23,7 @@ The aim of this page is to give you a high-level understanding of the Genesis lo
 - application elements
 - demo
 
-## Genesis Low-code platform
+## Genesis low-code platform
 
 ### What is a platform?
 
@@ -37,9 +37,7 @@ The Genesis Low-code platform has specific software architecture, application de
 
 Gartner, 2022
 
-The Genesis Platform is targeted at developers.
-
-With this, we aim to increase time to market speed, application velocity and lower the cost of development.
+The Genesis Platform is targeted at developers. We help them to decrease time-to-market, increase application velocity and lower the cost of development.
 
 
 ### What can I build with the Genesis Platform?
@@ -50,59 +48,57 @@ Here are some examples:
 
 #### Non-functional
 
-- Real-time data subscriptions. 
-- Low latency feed ingestion. 
-- High transaction volume. 
-- Secure APIs. 
-- High availability and clustering. 
-- Integration with LDAP or SAML (SSO).
+- real-time data subscriptions
+- low-latency feed ingestion 
+- high transaction volume
+- secure APIs
+- high availability and clustering.
+- integration with LDAP or SAML (SSO)
 
 #### Data
 
-- Aggregated data views.
-- Ad-hoc req/response queries.
-- Stream data from/to external relational databases.
-- Full audit trail is automatically provided.
+- aggregated data views
+- ad-hoc req/response queries
+- stream data from/to external relational databases
+- full audit trail is automatically provided
 
 #### Application
 
-- Event handlers for applying custom business logic.
-- Permissioned access. 
-- Workflow & auditing requirements. 
-- Responsive, rich user workflows and UI.
+- event handlers for applying custom business logic
+- permissioned access 
+- workflow and auditing requirements 
+- responsive, rich user workflows and UI
 
 #### Functional
 
-- Process financial instruments.
-- Event-driven processing triggered by user actions or rules. 
-- Calculation of positions, data consolidation in general.
+- process financial instruments
+- event-driven processing triggered by user actions or rules 
+- calculation of positions, data consolidation in general
 
-## Building Blocks
+## Building blocks
 
-### Back to the Definition
+### Back to the definition
 
-A low-code application platform is an application platform that supports rapid application development, one-step deployment, and execution and management using declarative, high-level programming abstractions, such as model-driven and metadata-based programming languages. They support the development of user interfaces, business logic and data services; improve productivity; and are typically delivered as cloud services.
+A low-code application platform is an application platform that supports rapid application development, one-step deployment, and execution and management using declarative, high-level programming abstractions, such as model-driven and metadata-based programming languages. These features support the development of user interfaces, business logic and data services. They improve productivity, and the resulting products are typically delivered as cloud services.
 
-The components in the library enable quick, flexible and scalable application development.
+### Core platform components
 
-### Core Platform Components
-
-The core platform components form a common base and work with other platform elements to enable enterprise-ready features with little or no build effort.
+The core platform components form a common base; they work with other platform elements to enable enterprise-ready features with very little build effort.
 
 Here are some examples for you to consider:
 
-| BUILDING BLOCKS / COMPONENTS	        |                                 CAPABILITIES                              | 
-|--------------------------------------|:-------------------------------------------------------------------------:|
-| Auth Manager, Perms Manager	         |   Provides industrial-strength authentication and entitlements management.|
-| Cluster                              |               Enables high-availability and horizontal scaling            |
-| Router, Connect, Services Repository |            UI connectivity and load balancing to server services.         |
-| Database API, NOSQL, SQL             |High-performance persistence supporting next-generation database technologies.|
+| BUILDING BLOCKS / COMPONENTS	         |                                  CAPABILITIES                                  | 
+|---------------------------------------|:------------------------------------------------------------------------------:|
+| Auth Manager, Perms Manager	         |   Provides industrial-strength authentication and entitlements management.     |
+| Cluster                               |               Enables high-availability and horizontal scaling.                |
+| Router, Connect, Services Repository  |             UI connectivity and load balancing to server services.             |
+| Database API, NOSQL, SQL              | High-performance persistence supporting next-generation database technologies. |
 
-### Technical Components
+### Technical components
 
-The technical components enable development of scalable apps quickly and efficiently, leveraging event-driven architecture and real-time data distribution.
+The technical components enable you to develop scalable apps quickly and efficiently, based on event-driven architecture and real-time data distribution.
 
-Examples of technical components can be found in the table below:
+Examples of technical components are:
 
 | EXAMPLE BUILDING BLOCKS / COMPONENTS	 |                                     CAPABILITIES                                      | 
 |---------------------------------------|:-------------------------------------------------------------------------------------:|
@@ -111,45 +107,59 @@ Examples of technical components can be found in the table below:
 | Data Server                           | Real-time data distribution in highly performant, low latency and complex structures. |
 | Consolidation Manager                 |                      Efficient data consolidation and analytics.                      |
 
-### Business Components
+### Business integration
 
-Business components combine with technical components for financial markets-specific integration and functionality.
+With our expertise, we can combine business with technical components to provide key functionality and connections for working in financial markets:
 
-These components and their capabilities can be seen here:
-
-| EXAMPLE BUILDING BLOCKS / COMPONENTS	 |                    CAPABILITIES                    | 
+| EXAMPLE	 |                    CAPABILITIES                    | 
 |---------------------------------------|:--------------------------------------------------:|
 | FIX                                   |                   FIX messaging.                   |
 | Bloomberg TOMS                        |        Bloomberg TOMS for treasury trading.        |
 | Murex                                 |       Integration with legacy vendor Murex.        |
-| ION Trading                           |        Integration to the Fidessa OMS.             |
+| ION Trading                           |        Integration with the Fidessa OMS.             |
 | Pershing                              |        Comprehensive integration to Nexus.         |
 | SS&C Geneva                           | Trades, positions, balances & margin requirements. |
-### Custom Components
+
+### Custom components
 
 Custom components configure purpose-specific microservice components that extend functionality while remaining scalable.
-This allows you to do the following:
+This allows you to :
 
-- Create using your choice of languages including Java, Python, Groovy, or R.
-- Enable seamless app functionality with database access, component management, and component orchestration.
-- Deliver lasting benefits with resiliency and scalability.
+- create using your choice of languages, including Java, Groovy, or R
+- enable seamless app functionality with database access, component management, and component orchestration
+- deliver lasting benefits with resilience and scalability
 
-## Platform Tooling
+### Micro front-ends
+Micro-front-end architecture is a design approach in which a front-end app is decomposed into individual, semi-independent micro applications working loosely together.
 
-Genesis tools allow developers to bring their visions to life, quickly.
+We've built out a number of re-usable micro-front-ends that can be used by Genesis-powered applications:
+
+| MICRO FRONT-END	         |                                  CAPABILITIES                                  | 
+|---------------------------------------|:------------------------------------------------------------------------------:|
+| Foundation Reporting          |  The Reporting micro front-end enables your users to create report specifications, run them, or save them for later use.    |
+| Foundation Header             |  The Header micro front-end is a semi-batteries-included component. It consists of a navigation bar and flyout menu, with routing and account-logout capabilities.                |
+| Foundation Entity Management  |  The Entity Management micro front-end is used to connect to a resource on the back end and manage it from the front end. |
+| Foundation Login              |  This Login micro front-end includes a set of identity management functions, such as authentication (including via SSO) and password reset. |
+
+## Platform tooling
+
+Genesis tools enable developers to bring their visions to life, quickly.
 
 In the table below we can see a number of Genesis tools, their uses and capabilities. 
 
 | USE	    | EXAMPLE TOOLS	    |                                        CAPABILITIES                                         |
 |---------|-------------------|:-------------------------------------------------------------------------------------------:|
-| Create  | Genesis Studio    |            Graphical environment for building Genesis applications with No Code.            |
 | Create  | Genesis SDK       | Framework for building Genesis applications in Low Code with the Genesis Platform Language. |
-| Migrate | Excel Integration |  Transform Excel worksheets into Genesis applications and synchronize cells in real-time.   |
-| Migrate | DB Integration    | Transform relational databases into Genesis applications and synchronize data in real-time. |
+| Migrate | Excel Integration |  Transform Excel worksheets into Genesis applications and synchronize cells in real time.   |
+| Migrate | DB Integration    | Transform relational databases into Genesis applications and synchronize data in real time. |
 | Operate | GEM               |               Cloud-agnostic management and auditing of Genesis environments.               |
 | Operate | Console           |            Monitoring status, exploring log files and querying application data.            |
+| Operate | Intellij Plugin   |            Enables you to run the full stack of a Genesis application locally within IntelliJ, so you can check and test your development work as you progress.           |
+| Assistance | Genny | An AI bot to provide code examples and clarification about Genesis and all its components. |
+| Assistance | Genesis copilot | An AI code assistant to provide suggestions of code while the developer is coding. |
+| Assistance | Platform AI Service | We have designed a Platform AI service layer offering prebuilt AI powered business components. |
 
-## Platform Architecture
+## Platform architecture
 
 The Genesis low-code platform has a real-time event-driven architecture built with microservices:
 
@@ -161,25 +171,25 @@ Below we have a diagram demonstrating the components within the User Interface a
 
 ![](/img/platform-architecture.png)
 
-## Application Elements
+## Application elements
 
-### Elements of any Application
+### Elements of any application
 
-When it comes to creating applications using the Genesis Platform, there are some elements that an application usually consists of and steps that we would recommend following. These are as follows:
+When it comes to creating applications using the Genesis Platform, there are some elements will be in almost every application. So we recommend five main steps:
 
 - Define your Data Model.
-- Define you Business Logic.
+- Define your Business Logic.
 - Integrate with other Systems.
 - Create User Interfaces.
 - Control Access.
 
-These five steps are a roadmap for creating and application and will be the five steps used in the tutorials following this page.
+These five steps are a roadmap for creating an application, and they are the basis of the tutorials in this course.
 
-### The Elements of any Application
+### The elements of any application
 
 #### GPAL
 
-The elements of any Genesis Platform app are powered by a type-safe layered system which combines an easy to learn Kotlin-based Domain Specific Language (DSL) with transparent references between layers to ensure code changes are minimal when working with our technical components (e.g. dataservers, event handlers, request replies, etc) and our data schema layer.
+The elements of any Genesis Platform app are powered by a type-safe layered system which combines an easy-to-learn Kotlin-based Domain Specific Language (DSL) with transparent references between layers to ensure code changes are minimal when working with our technical components (e.g. Data Servers, Event Handlers, Request Servers, etc) and our data schema layer.
 
 - The different layers of the architecture are: configuration | fields schema, tables schema | view schema | runtime.
 - Each layer has its own Kotlin DSL plus specific code generation attached to it. 
@@ -204,7 +214,7 @@ systemDefinition {
     }
 }
 ````
-### Fields File
+### Fields file
 
 ```Kotlin
 fields {
@@ -223,7 +233,7 @@ fields {
 }
 ```
 
-### Data Model and Configuration
+### Data model and configuration
 
 As seen in the code sample below, automatic auditing and the reuse of fields with intellisense are allowed for. As well as this, data model changes can be made without DBA.
 
@@ -261,7 +271,7 @@ table(name = "COUNTERPARTY", id = 11002, audit = details(id = 11002, sequence = 
 }
 ```
 
-### Data Views
+### Data views
 
 ```kotlin
 view ("TRADE_VIEW", TRADE) {
@@ -288,9 +298,9 @@ view ("TRADE_VIEW", TRADE) {
     }
   }
 ```
-### Distributing Data
+### Distributing data
 
-As can be seen via the code snippets below, the platform handles connection management and data streaming out of the box and binds actions to event handlers.
+As can be seen in the code snippets below, the platform handles connection management and data streaming out of the box and binds actions to event handlers.
 
 ```kotlin
 dataServer{
@@ -306,9 +316,9 @@ dataServer{
 
 ![](/img/UI.png)
 
-### Business Logic
+### Business logic
 
-A typical event handler file can be seen below:
+A typical Event Handler file can be seen below:
 
 ```kotlin
 eventHandler{
@@ -336,42 +346,42 @@ With GPAL all layers are well integrated and a single change is propagated to th
 This makes it easy to learn and removes a lot of unnecessary code.
 :::
 
-### Automatic Integration
+### Automatic integration
 
 Microservices and resources built as part of any Genesis application will have automatic and native API support.
 ![](/img/automatic-integration.png)
 
 ### Integrations
 
-Genesis supports a wide range of 3rd party integrations. Some of these are listed here:
+Genesis supports a wide range of third-party integrations. Some of these are listed here:
 
 ![](/img/integrations-2.png)
 
-### Data Model Configuration
+### Data model configuration
 
-- Built for the financial markets.
-- Based on Web Components (leveraging Microsoft FAST) for performance & accessibility.
-- Composed into micro front-ends.
+- built for the financial markets
+- based on Web Components (Microsoft FAST) for performance and accessibility
+- composed into micro front-ends
 
-Web Components allow us to provide reusable building blocks and app functionality which work seamlessly with today’s popular web frameworks and any that may become popular in the future.
+Web Components allow us to provide reusable building blocks and app functionality that works seamlessly with today’s popular web frameworks - and any that might become popular in the future.
 
 
-### Platform Capabilities
+### Platform capabilities
 
-- Supercharging developers: Enhancing productivity of professional developers with full-stack development expertise.
-- Powerful framework, runtime & tools: Full-featured framework and tools for building financial markets applications.
-- Proven enterprise-grade solutions: Range of standalone applications in production across use cases, from spreadsheet replacements to high-performance core applications.
+- supercharging developers: enhancing productivity of professional developers with full-stack development expertise
+- powerful framework, runtime & tools: full-featured framework and tools for building financial-markets applications
+- proven enterprise-grade solutions: Range of standalone applications in production across use cases, from spreadsheet replacements to high-performance core applications
 
 The Genesis Platform has been developed on the back of years of experience delivering software applications for some of the largest financial firms in the world. There was a clear need for a more targeted approach to support the requirements of financial markets software.
 
 Custom logic and behaviour can be added where needed and being built on the JVM, it enables access to a mature ecosystem of libraries used in the industry.
 
-The platform includes a modern, high-performance web application solution, enabling developers to build branded UIs quickly using data models and the real-time features of the server.
+The platform includes a modern, high-performance web-application solution, enabling developers to build branded UIs quickly using data models and the real-time features of the server.
 
 Our web stack is built using modern web platform features, integrating easily with existing web stacks such as Angular and React.
 
 As well as this, the Genesis Platform provides some foundational components for high-performance, low-latency applications. Central to our architecture is an event-driven system that can scale to millions of events per day with easy fan-out to connected web clients.
 
-### Next Steps
+### Next steps
 
 Let's get you set up!

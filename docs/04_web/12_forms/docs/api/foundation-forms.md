@@ -25,9 +25,18 @@
 
 |  Type Alias | Description |
 |  --- | --- |
+|  [ArrayRendererOptions](./foundation-forms.arrayrendereroptions.md) | Configuration options available for array renderer. |
+|  [CategorizationRendererOptions](./foundation-forms.categorizationrendereroptions.md) | Configuration options available for categorization renderer. |
+|  [ConnectedRenderersOptions](./foundation-forms.connectedrenderersoptions.md) | Available configuration options for connected combobox/multiselect. |
+|  [GroupRendererOptions](./foundation-forms.grouprendereroptions.md) | Configuration options available for group renderer. |
 |  [RendererEntry](./foundation-forms.rendererentry.md) |  |
-|  [UiSchema](./foundation-forms.uischema.md) |  |
-|  [UiSchemaElement](./foundation-forms.uischemaelement.md) |  |
-|  [UiSchemaElementOptions](./foundation-forms.uischemaelementoptions.md) |  |
-|  [UiSchemaElementType](./foundation-forms.uischemaelementtype.md) |  |
+|  [StandardRendererOptions](./foundation-forms.standardrendereroptions.md) | Standard configuration options available for all renderers. |
+|  [StepperOrientationOptions](./foundation-forms.stepperorientationoptions.md) | Orientation options available for stepper renderer. |
+|  [StepperOrientationType](./foundation-forms.stepperorientationtype.md) | Available orientation for stepper renderer. |
+|  [StepperRendererOptions](./foundation-forms.stepperrendereroptions.md) | Configuration options available for stepper renderer. |
+|  [StringRendererOptions](./foundation-forms.stringrendereroptions.md) | Configuration options available for string renderer. |
+|  [UiSchema](./foundation-forms.uischema.md) | The UI schema, which is passed to JSON Forms, describes the general layout of a form and is just a regular JSON object. It describes the form by means of different UI schema elements, which can often be categorized into either Controls or Layouts. |
+|  [UiSchemaElement](./foundation-forms.uischemaelement.md) | A UiSchemaElement that displays property values in a user interface element. |
+|  [UiSchemaElementOptions](./foundation-forms.uischemaelementoptions.md) | All configuration options that are available. |
+|  [UiSchemaElementType](./foundation-forms.uischemaelementtype.md) | The layouts and control types, which allow you to customize the arrangement of forms. |
 

@@ -9,7 +9,7 @@ Restores a layout described in the config from [getLayout()](./foundation-layout
 **Signature:**
 
 ```typescript
-loadLayout(layout: SerialisedLayout, handleMissingItem?: 'placeholder' | 'error'): void;
+loadLayout(layout: SerialisedLayout, handleMissingItem?: 'placeholder' | 'error', disableCache?: boolean): void;
 ```
 
 ## Parameters
@@ -18,6 +18,7 @@ loadLayout(layout: SerialisedLayout, handleMissingItem?: 'placeholder' | 'error'
 |  --- | --- | --- |
 |  layout | [SerialisedLayout](./foundation-layout.serialisedlayout.md) | any version of [SerialisedLayout](./foundation-layout.serialisedlayout.md) object describing the layout |
 |  handleMissingItem | 'placeholder' \| 'error' | _(Optional)_ what to do if the layout contains items that are not currently registered with the layout system. Defaults to 'error' which will throw an error. If set to 'placeholder' then any missing items will be replaced with a placeholder element. You can control the text of the placeholder element with [FoundationLayout.missingItemPlaceholder](./foundation-layout.foundationlayout.missingitemplaceholder.md). |
+|  disableCache | boolean | _(Optional)_ if set to true then the layout will give you a new instance of every item, even if it has a currently cached item to use. Using this will not stop you from saving and loading state via the [LayoutComponentWithState](./foundation-layout.layoutcomponentwithstate.md) interface. Defaults to false. |
 
 **Returns:**
 

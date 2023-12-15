@@ -104,5 +104,7 @@ fields {
     field(name = "MONITOR_NAME", type = STRING)
     field(name = "MONITOR_MESSAGE", type = STRING)
     field(name = "MONITOR_STATE", type = STRING)
+    field(name = "QUANTITY", type = BIGDECIMAL)
+    field(name = "FX_RATE", type = BIGDECIMAL(18,8))
 }
 ```

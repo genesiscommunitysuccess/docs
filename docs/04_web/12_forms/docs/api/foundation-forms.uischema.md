@@ -4,6 +4,7 @@
 
 ## UiSchema type
 
+The UI schema, which is passed to JSON Forms, describes the general layout of a form and is just a regular JSON object. It describes the form by means of different UI schema elements, which can often be categorized into either Controls or Layouts.
 
 **Signature:**
 
@@ -11,8 +12,8 @@
 export type UiSchema = {
     type: UiSchemaElementType;
     elements: UiSchemaElement[];
-    dsPrefix?: string;
+    options?: StepperOrientationOptions;
 };
 ```
-**References:** [UiSchemaElementType](./foundation-forms.uischemaelementtype.md), [UiSchemaElement](./foundation-forms.uischemaelement.md)
+**References:** [UiSchemaElementType](./foundation-forms.uischemaelementtype.md), [UiSchemaElement](./foundation-forms.uischemaelement.md), [StepperOrientationOptions](./foundation-forms.stepperorientationoptions.md)
 

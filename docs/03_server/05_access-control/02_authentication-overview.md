@@ -22,7 +22,20 @@ SSO Token authentication covers both [SAML](https://en.wikipedia.org/wiki/Securi
 
 Some of these techniques support [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication) to bring additional security.
 
-Each of these requires its own configuration settings in the application's _application-name-_**auth-preferences.kts** file.
+Each of these requires its own configuration settings in the application's **auth-preferences.kts** file. To change the default **auth-preferences.kts** you need to create a new **auth-preferences.kts** under this path: {application-name-script}**-config/src/main/resources/scripts/**.
+
+## Authentication workflow
+Regardless of which authentication method is used, the process for logging in remains the same. The client (either a Genesis UI or an API client) sends a request to the EVENT_LOGIN_AUTH endpoint. 
+The body of this request contains different fields depending on the target authentication mechanism. For example, the field SSO_TOKEN is only valid for SAML and OIDC authenticators, whereas USERNAME and PASSWORD must be provided if using GenesisPassword or LDAP.
+Each authenticator is tried in turn, and returns one of three possible responses, Succcess, Failure or Incompatible. 
+On the first success received, a USER_SESSION record is created; a SESSION_AUTH_TOKEN and REFRESH_AUTH_TOKEN are issued and returned on the EVENT_LOGIN_AUTH_ACK message.
+If all configured authenticators return a Failure or Incompatible, then a NACK message will be sent to the client with an error.
+
+The session token must be included on all future requests sent from the client in this session.
+
+The refresh token is a one-time use to create a new session, without having to re-enter credentials.
+
+If the client is set up for MFA, and the second factor verification stage fails, a short-lived temporary session will be created so that first factor credentials do not have to be re-entered.
 
 ## Username and password authentication
 
@@ -42,6 +55,7 @@ Genesis Password authentication uses internally stored hashed credentials to aut
 - Users can reset or change their password (assuming they can log in first).
 
 ```kotlin
+security {
     authentication {
         genesisPassword {
             validation {
@@ -76,6 +90,7 @@ Genesis Password authentication uses internally stored hashed credentials to aut
             }
         }
 	}
+}
 ```
 
 ### LDAP
@@ -93,6 +108,7 @@ For more information on configuring LDAP authentication, see [Username and passw
 The example below shows LDAP authentication specified, with `userIdType` set to `cn` for the search for the username.
 
 ```kotlin
+security {
     authentication {
 		ldap {
 		    connection {
@@ -109,6 +125,7 @@ The example below shows LDAP authentication specified, with `userIdType` set to 
 			}
 		}
     }
+}
 ```
 
 ## SSO authentication

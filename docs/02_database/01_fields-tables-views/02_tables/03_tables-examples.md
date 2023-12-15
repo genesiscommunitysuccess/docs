@@ -2,29 +2,72 @@
 title: 'Tables - examples'
 sidebar_label: 'Tables - examples'
 id: tables-examples
-keywords: [database, tables, examples]
+keywords: [database, tables, examples, autoincrement, audit table, sequence]
 tags:
     - database
     - tables
     - examples
+    - autoincrement
+    - audit table
+    - sequence
 ---
 
+## Simple table with autoincrement
+This very simple table contains one field (POSITION_ID) that uses `autoIncrement` to generate the next sequence number. This field is also the primary key for the table.
 
+```kotlin
+tables {
 
-Our example below shows an application's **tables-dictionary.kts** file containing two tables. The first contains trades and the second contains simple position information for each instrument.
+  table(name = "POSITION", id = 11002) {
+    autoIncrement(POSITION_ID)
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
 
-However, note that the first table has been declared with an audit table, so this creates two tables: one called TRADE and one called TRADE_AUDIT. The schema will actually have three tables:
+    primaryKey { 
+      POSITION_ID
+    }
+  }
+
+}
+```
+
+## Simple table with sequence
+This very simple table contains one field (POSITION_ID) that uses `sequence` to generate the next sequence number. A sequence must always have a unique two-character id - in this case, PS. The POSITION_ID field is also the primary key for the table.
+
+```kotlin
+tables {
+
+  table(name = "POSITION", id = 11002) {
+    sequence(POSITION_ID, "PS")
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
+
+    primaryKey { 
+      POSITION_ID
+    }
+  }
+
+}
+```
+
+## Two tables and an audit table
+Our example below shows an application's **tables-dictionary.kts** file containing two tables. The first contains trades and the second contains simple position information for each instrument (as seen in the first example).
+
+Note that the first table has been declared with an audit table, so this creates two tables: one called TRADE and one called TRADE_AUDIT. The TRADE_AUDIT table automatically logs all changes to the TRADE table. The schema will actually have three tables:
 
 - TRADE
 - TRADE_AUDIT
 - POSITION
 
+Audit tables use `sequence` to generate the sequence number for each entry in the table. In this example, the sequence has the id TR.
 
 ```kotlin
 tables {
   table(name = "TRADE", id = 11000, audit = details(id = 11001, sequence = "TR", tsKey = true)) {
     // Source: Trade
-    sequence(TRADE_ID, "TR")
+    autoIncrement(TRADE_ID)
     INSTRUMENT_ID not null
     COUNTERPARTY_ID not null
     QUANTITY not null
@@ -46,7 +89,7 @@ tables {
   }
 
   table(name = "POSITION", id = 11002) {
-    sequence(POSITION_ID, "PS")
+    autoIncrement(POSITION_ID)
     INSTRUMENT_ID
     QUANTITY
     NOTIONAL

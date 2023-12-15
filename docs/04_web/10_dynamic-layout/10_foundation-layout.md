@@ -24,33 +24,32 @@ tags:
 The following example shows the usage of the declarative API with `zero-charts` and the output that it produces.
 ```html
 <foundation-layout ${ref('analyticsLayout')}>
-	<foundation-layout-region>
-		<foundation-layout-region type="horizontal">
-			<foundation-layout-item title="Static Data Bar" registration="bar" closable>
-				<foundation-g2plot-chart
-					type="bar"
-					:config=${(x) => x.barConfig}
-					:data=${(x) => x.barData}
-				></foundation-g2plot-chart>
-			</foundation-layout-item>
-		<foundation-layout-region type="vertical">
-			<foundation-layout-item title="Static Data Stock" registration="stock" closable>
-				<foundation-g2plot-chart
-					type="stock"
-					:config=${(x) => x.stockConfiguration}
-					:data=${(x) => x.stockData}
-				></foundation-g2plot-chart>
-			</foundation-layout-item>
-			<foundation-layout-item title="Static Data Rose" registration="rose" closable>
-				<foundation-g2plot-chart
-					type="rose"
-					:config=${(x) => x.roseConfig}
-					:data=${(x) => x.roseData}
-					:legendParser=${(x) => x.roseLegendParser()}
-				></foundation-g2plot-chart>
-			</foundation-layout-item>
-		</foundation-layout-region>
-	</foundation-layout-region>
+  <foundation-layout-region type="horizontal">
+    <foundation-layout-item title="Static Data Bar" registration="bar" closable>
+      <foundation-g2plot-chart
+        type="bar"
+        :config=${(x) => x.barConfig}
+        :data=${(x) => x.barData}
+      ></foundation-g2plot-chart>
+    </foundation-layout-item>
+    <foundation-layout-region type="vertical">
+      <foundation-layout-item title="Static Data Stock" registration="stock" closable>
+        <foundation-g2plot-chart
+          type="stock"
+          :config=${(x) => x.stockConfiguration}
+          :data=${(x) => x.stockData}
+        ></foundation-g2plot-chart>
+      </foundation-layout-item>
+      <foundation-layout-item title="Static Data Rose" registration="rose" closable>
+        <foundation-g2plot-chart
+          type="rose"
+          :config=${(x) => x.roseConfig}
+          :data=${(x) => x.roseData}
+          :legendParser=${(x) => x.roseLegendParser()}
+        ></foundation-g2plot-chart>
+      </foundation-layout-item>
+    </foundation-layout-region>
+  </foundation-layout-region>
 </foundation-layout>
 ```
 
@@ -198,16 +197,18 @@ Use this function over `.layoutRequiredRegistrations(layout: SerialisedLayout)` 
 
 ### Serialising layout
 
-The JavaScript API can be used to manually save and load layout states. This only describes the state of the dynamic layout itself. It is the responsibility of any components contained within their layout to serialise their own state, if required.
+The JavaScript API can be used to manually save and load layout states. This only describes the state of the dynamic layout itself. It is the responsibility of each component within the layout to serialise its own state, if required.
 To enable autosaving the layout see [here](#autosaving-layout).
 
 #### [Get Layout](./docs/api/foundation-layout.foundationlayout.getlayout.md)
 
-Get an object describing the current layout so that it can be restored at a later date. This does not save any data internally to the layout. It is up to the client to store this state where appropriate for later recall (browser local storage, persistence layer, etc.)
+Get an object describing the current layout so that it can be restored at a later date. This does not save any data internally to the layout. It is up to the client to store this state where appropriate for later recall (browser local storage, persistence layer, etc.). Use the [autosaving layout](#autosaving-layout) feature to get the layout to do this for you with local storage.
+
+You can store state for an instance of an item, and that will be saved inline. See [managing state](#managing-state).
 
 #### [Load Layout](./docs/api/foundation-layout.foundationlayout.loadlayout.md)
 
-Loads a serialised layout. All items that are described in the config to load must already be registered with the layout system - using either the declarative or JavaScript API. If there are items missing (could be due either to missing items or to a mismatch of registered names) then a `LayoutUsageError` will be thrown containing the names of the missing items.
+Loads a serialised layout. All items that are described in the config to load must already be registered with the layout system - using either the declarative or JavaScript API. If there are items missing (could be due either to missing items or to a mismatch of registered names) then a `LayoutUsageError` will be thrown containing the names of the missing items. Alternatively, you can request placeholder items to be added.
 
 ## Events
 
@@ -253,12 +254,12 @@ See [here](#custom-item-renaming-header-button) for an example of creating a cus
 
 ## Autosaving layout
 
-There is opt-in functionality provided in the layout to autosave the layout in local storage as the user interacts with it. Set the `auto-save-key` attribute to a unique string on the root element to enable the feature; the layout will be saved in this key. The layout will be saved for later recall in local storage whenever the user performs the following actions: 
+There is opt-in functionality provided in the layout to autosave the layout in local storage as the user interacts with it. Set the `auto-save-key` attribute to a unique string on the root element to enable the feature; the layout will be saved in this key. The layout will be saved for later recall in local storage whenever the user performs the following actions:
 
 - adding an item
 - removing an item
 - resizing items using the divider
-- dragging items around the layout 
+- dragging items around the layout
 
 When you have enabled autosave, you are still able to use the manual [serialising commands](#serialising-layout).
 
@@ -285,12 +286,13 @@ In this case, you must invalidate the autosaved layout cache. The cleanest and e
 
 This section concerns the behaviour of elements inside the layout. If you are using simple elements or Genesis-supplied elements, this is less of a concern; but if you are building complex custom components yourself, you need this information.
 
-### Element lifecycle
+### Element lifecycle (gating)
 
-There are actions that the user can perform with items in the layout which will run the component lifecycle functions (`connectedCallback` and `disconnectedCallback`) at times when you don't want them to run:
-- When an item is dragged around the layout.
-- Potentially, when another item is removed from the layout
-- Potentially, when new items are added to the layout.
+Some actions that the user can perform with items in the layout will run the component lifecycle functions (`connectedCallback` and `disconnectedCallback`) when you don't want them to run:
+- when an item is dragged around the layout
+- potentially, when another item is removed from the layout
+- potentially, when new items are added to the layout
+- when an item is maximised or minimised
 
 For example, if you have a component with a loaded resource on the layout (such as a grid with a `grid-pro-genesis-datasource`) and you add a new item to the layout with the JavaScript API, then the component with the loaded resource will have to reload too. It is important that any such element accounts for this, including such requirements as caching data, or resizing correctly.
 
@@ -299,7 +301,7 @@ In the `@genesislcap/foundation-utils` package, there is a mix-in class `Lifecyc
 -  `shouldRunConnect`
 -  `shouldRunDisconnect`
 
-These can be used to gate certain functionality.
+These can be used to gate specific functionality.
 
 For example, if there are parts of `disconnectedCallback` that you don't want to run when the item is being dragged around the layout, you can gate it behind a `(!this.shouldRunDisconnect) return;` early return. See [this example](#resource-intensive-component-resetting-in-layout) and [this example](#consuming-lifecycle-value-multiple-times).
 
@@ -314,6 +316,22 @@ Throughout Foundation UI, there is no need to de-register a component that is re
 
 - Once the component is actually initialised in the layout on the DOM, then `shouldRunConnect` will be true, and you can then perform all the required initialisation.
 
+### Managing the state
+
+Items inside the layout can save and restore the state using various methods, but it can become difficult to manage the state if you're adding the same item to the layout multiple times (multiple instances of the same web component).
+
+You can implement the [LayoutComponentWithState](./docs/api/foundation-layout.layoutcomponentwithstate.md) interface, which enables you to save and load the state *per instance* of your components. See the linked interface and the associated functions API documentation for examples and explanations of usage.
+
+Usage of this interface is optional; if you do not need to manage the state for your components in this way, then simply do not implement the interface.
+
+:::warning
+The layout system is only interacting with the immediately contained items - so if you have components that contain other components, each top-level component must interact with the contained components to manage their states.
+:::
+
+:::danger
+Each layout item can contain multiple components, and most of the time there are no extra considerations when doing this. However, the state of each component in an instance is saved in order of the components on the DOM, so if the serialised state is manually changed to have the items out of order with their state, then the incorrect states will be passed into each item. This should not occur during defined behaviour, but is possible if the end-user is able to change the state passed into `loadLayout()` manually.
+:::
+
 ### Element cloning
 
 To enable you to add multiple items from the same `registration`, the layout system clones elements to add to the layout.
@@ -321,11 +339,11 @@ This is the case both when items are added with `.addItem()`, and when they are 
 There are certain limitations to this function, especially when using custom elements with the shadow DOM. [See troubleshooting example](#binding-events-inline-in-the-declarative-api).
 
 :::tip
-As a general rule, if you need to have elements with FAST bindings inside of the layout, wrap them in custom elements.
+As a general rule, if you need to have elements with FAST bindings inside the layout, wrap them in custom elements.
 :::
 
-If you are writing your own custom element which needs to work inside of the layout follow these steps.
-In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin` which overrides the `cloneNode` API.
+If you are writing your own custom element that needs to work inside the layout, follow these steps.
+In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin`, which overrides the `cloneNode` API.
 
 ```typescript
 // Make a call to `deepClone` and manually clone children

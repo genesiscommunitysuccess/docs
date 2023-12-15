@@ -323,15 +323,17 @@ Total Results:  3
 
 ### Searching for a date or datetime
 
-When setting a DATE, the format must be specified as follows:
+To search for a DATE, you must specify the date in the format:
 
 - DATE_FORMAT = "yyyyMMdd"
 
-When setting a DATETIME, the format must be specified as follows:
+To search for a datetime, you can specify any of the following formats:
 
 - DateTime with milliseconds precision: DATETIME_FORMAT = "yyyyMMdd-HH:mm:ss.SSS"
 - DateTime with seconds precision: DATETIME_FORMAT = "yyyyMMdd-HH:mm:ss"
 - DateTime with minutes precision: DATETIME_FORMAT = "yyyyMMdd-HH:mm"
+- DateTime with day precision = "yyyyMMdd"
+- DateTime with day precision = "yyyy-MM-dd"
 
 Here are some examples of searches for datetimes and dates:
 
@@ -347,6 +349,35 @@ DbMon:BROKER>search MODIFIED_DATE>"20221008-14:20" && COUNTRY_CODE=='IRL'
 
 // if MODIFIED_DATE is 2022-10-08 in database 
 DbMon:BROKER>search MODIFIED_DATE=="20221008" || COUNTRY_CODE=='IRL'
+```
+
+### Searching for timestamps
+
+[Timestamps](../../02_database/01_fields-tables-views/05_timestamps.md), are made of a timestamp in milliseconds, the sequence id and the node id: for example,
+**2023-01-01 00:00:00.000 (n:0, s:1)**.
+
+You can search for a timestamp using the same formats as datetime. Those formats are:
+- yyyyMMdd-hh:mm:ss.SSS
+- yyyyMMdd-hh:mm:ss
+- yyyyMMdd-hh:mm
+- yyyyMMdd
+- yyyy-MM-dd
+
+To search for timestamps, you must use ranges - you cannot use specific values. For example, if you wanted to search for records with a timestamp of **2023-01-01 00:00:00.000** rather than searching:
+
+```
+search TIMESTAMP=="20230101"
+```
+
+you could do:
+```
+search TIMESTAMP>"20221231" && TIMESTAMP<"20230102"
+```
+
+You could also search for all records with a timestamp after a specific time. For example:
+
+```
+search TIMESTAMP>"20230817-06:12:52.313"
 ```
 
 ### Counting rows (records)

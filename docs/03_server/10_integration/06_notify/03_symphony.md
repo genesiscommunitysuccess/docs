@@ -201,3 +201,30 @@ You can find out how to set this up in the [Symphony Documentation](https://docs
 ```kotlin
 item(name = "SYMPHONY_APP_ID", value = "GENESIS_EXTENSION_APP")
 ```
+
+## Configuring more than one service
+You can configure Notify to work with more than one service at a time. For example, if you wanted to set up both Symphony and Email to be integrated with your application, you could configure them like this in your **notify.kts** file:
+
+```kotlin
+notify {
+    gateways {
+        email(id = "email1") {
+            smtpHost = "smtp.office365.com"
+            smtpPort = 587
+            smtpUser = "default@genesis.global"
+            smtpPw = "xxxxxxxxxxx"
+            smtpProtocol = TransportStrategy.SMTP_TLS
+            systemDefaultUserName = "Genesis System"
+            systemDefaultEmail = "genesis@global.com"
+        }
+
+        symphony(id = "symphony1") {
+            sessionAuthHost = "apod.symphony.com"
+            botUsername = "abotuser@genesis.global"
+            botPrivateKeyPath = "~/symphony/rsa/"
+            botPrivateKeyName = "privatekey.pem"
+        }
+    }
+}
+```
+

@@ -53,7 +53,7 @@ The `allRoutes` array, which you need to change to set the navigation buttons on
 
 To enable this micro front-end in your application, follow the steps below.
 
-1. Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [package.json basics](../../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -72,7 +72,7 @@ It is possible for you to set up routing manually, but that won't be covered in 
 :::
 
 2. In the top-level class of your application, import the Navigation class and inject it as a dependency.
-3.
+
 ```javascript {1,6}
 import { Navigation } from '@genesislcap/foundation-header';
 

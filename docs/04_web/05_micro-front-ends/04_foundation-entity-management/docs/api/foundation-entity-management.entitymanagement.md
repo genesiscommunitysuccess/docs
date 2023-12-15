@@ -52,8 +52,9 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [editModalVisible](./foundation-entity-management.entitymanagement.editmodalvisible.md) |  | boolean |  |
 |  [enableCellFlashing](./foundation-entity-management.entitymanagement.enablecellflashing.md) |  | boolean | If false, will disable cell flashing for all cells by default, unless otherwise defined in custom colDef |
 |  [enableFilterBar](./foundation-entity-management.entitymanagement.enablefilterbar.md) |  | boolean |  |
-|  [enableRowFlashing](./foundation-entity-management.entitymanagement.enablerowflashing.md) |  | boolean | If true, will enable row flashing for all rows for <code>add</code> async transactions |
+|  [enableRowFlashing](./foundation-entity-management.entitymanagement.enablerowflashing.md) |  | boolean | If true, will enable row flashing for all rows for <code>add</code> transactions |
 |  [entityLabel](./foundation-entity-management.entitymanagement.entitylabel.md) |  | string | Label for the entity which has usages such as being shown in the title of the modal wen editing the entity |
+|  [formRenderers](./foundation-entity-management.entitymanagement.formrenderers.md) |  | RendererEntry\[\] | Array with renderers used by foundation-forms |
 |  [formUiSchema](./foundation-entity-management.entitymanagement.formuischema.md) |  | any |  |
 |  [gridOptions](./foundation-entity-management.entitymanagement.gridoptions.md) |  | GridOptions | GridOptions to be passed down from application |
 |  [hideDelete](./foundation-entity-management.entitymanagement.hidedelete.md) |  | boolean |  |

@@ -18,7 +18,7 @@ You can send messages to:
 * Symphony
 * Microsoft Teams
 
-The Notify module provides a single Microservice: GENESIS_NOTIFY. The Notify service listens to updates on the NOTIFY table in the database and takes care of sending the notifications where they need to go.
+The Notify module provides a single Microservice: GENESIS_NOTIFY. The Notify service listens to updates on the NOTIFY table in the database and takes care of sending the notifications where they need to go. It is possible to send to multiple destinations, such as Email and Symphony.
 
 Here, we shall give you a high-level view of the configuration items and why they are needed. 
 There are separate configuration details for each service that you connect to (Email, Teams and Symphony), along with useful examples.

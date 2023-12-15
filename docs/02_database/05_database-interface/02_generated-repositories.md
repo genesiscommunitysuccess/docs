@@ -10,7 +10,15 @@ tags:
     - repositories
 ---
 
+:::warning
+IMPORTANT! From GSF version 7.0.0 onwards, code generation for database repositories is disabled by default. To re-enable code generation, change the **generateRepositories** setting inside the **build.gradle.kts** files for the **genesis-generated-dao** and **genesis-generated-view** modules, as shown below:
 
+```{kotlin}
+codeGen {
+    generateRepositories = true
+}
+```
+:::
 
 During the code generation phase, repository classes are generated for every table and view in the system. These repositories provide a type-safe way of accessing the database.
 

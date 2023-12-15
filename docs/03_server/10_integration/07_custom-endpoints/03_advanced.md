@@ -377,6 +377,12 @@ endpoint(RequestType.GET, "test") {
 
 ## OpenAPI
 
+:::important
+
+Open API support was introduced in version 7.0 of the Genesis platform.
+
+:::
+
 By default, the framework generates a basic OpenAPI specification for all endpoints. This includes the path, and the schemas of the request and response type (if supported). To enable this, use the `openapi` block to provide additional information, such as descriptions and examples.
 
 We can provide the following information: 
