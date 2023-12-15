@@ -62,8 +62,7 @@ The grid has a very important method called: `gridOption`. In this method, you d
 
 ## Grid events and callbacks
 
-
-Optimizing your application experience is made easy with the extensive array of events and callbacks provided by the grid. Explore the full spectrum of features and possibilities by referring to our comprehensive [list of grid events and callbacks](https://www.ag-grid.com/javascript-data-grid/grid-events/). This resource will empower you to harness the full potential of the grid for a seamlessly enhanced application.
+There is a large number of events and callbacks provided by the grid. You can find details of these on the [ag.com site](https://www.ag-grid.com/javascript-data-grid/grid-events/) site. There is a lot of potential in these, and this site is well worth exploring at length.
 
 ## Default overrides
 
