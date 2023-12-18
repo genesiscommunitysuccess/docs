@@ -175,7 +175,7 @@ const sampleUiSchema = {
 Use this when you want to avoid fetching metadata from the server, but be aware that it could get out of sync if metadata changes on the server.
 :::
 
-### 5. Pre-fill forms with data (optional)
+### Pre-fill forms with data (optional)
 
 Use the `data` attribute, which allows you to pre-fill the form with ready-made information.
 
