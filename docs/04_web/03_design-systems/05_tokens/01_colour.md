@@ -21,7 +21,7 @@ Genesis design systems implement an adaptive colour system that provides some un
 In practice, typical adaptive colour workflow looks like this:
 
 ```mermaid
-flowchart LR
+graph LR
     A[Choose Base Colours] --> B
     B[Set Dark/Light Mode] --> C
     C[Adjust Colour Variations] --> D
