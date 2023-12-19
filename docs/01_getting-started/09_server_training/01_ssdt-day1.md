@@ -132,7 +132,7 @@ You can optimize your resource usage, such as memory and CPU, when running Genes
 
 In terms of System definitions, you can incorporate the `DbSqlMaxPoolSize` [setting](../../../database/database-technology/sql/#common-system-definitions). For each JVM process (Data Server, Request Server, etc.) connecting to the database, this setting determines the maximum number of SQL connections held by the SQL connection pool.
 
-As for the genesisInstall command, you can utilize the [option](../../../operations/commands/server-commands/#syntax-4) `--compactProcesses`, which consolidates compatible services into a single process, reducing the number of services running in the container.
+As for the genesisInstall command, you can utilize the [option](../../../operations/commands/server-commands/#syntax-4) `--compactProcesses`, which consolidates compatible services (like DataServer, RequestServer, Notify, EventHandler, Streamer) into a single process, called **GENESIS_COMPACT_PROCESS**, reducing the number of services running in the container.
 
 The System definition is already included in the Server Developer Training starting repository you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed). Please ensure you modify the genesisInstall command to include the `--compactProcesses` option.
 
