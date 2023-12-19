@@ -73,10 +73,9 @@ ENTITY_ID,ENTITY_ID_TYPE,TOPIC_MATCH,GATEWAY_ID
 
 ### Add connection details to the system definition
 
-Open the **genesis-system-definition.kts** file and add the details of the connection for the SMTP server:
-```kotlin {6-12}
-package genesis.cfg
-
+Open the **alpha-system-definition.kts** file and add the details of the connection for the SMTP server:
+```kotlin {5-11}
+...
 systemDefinition {
     global {
         ...
