@@ -47,7 +47,7 @@ Whenever you change the dependencies of your project, run the `$ npm run bootstr
 
 ### Register components
 
-All routes that you create must register the components in the file where you define the class of your route.
+Every route that uses `foundation-forms` must register the components in the file where you define the class of your route.
 
 So for example, if I have a route called *home*, then you need to register the components in the file **home.ts**.
 
@@ -93,7 +93,7 @@ export const sampleUISchema = {
 In the template file for the route, you need to import the schema you have created:
 
 ```html
-import { sampleUISchema } from './schemas';
+import { sampleUISchema } from './schema';
  ...
  export const HomeTemplate = html<Home>`
 	...
@@ -104,10 +104,12 @@ import { sampleUISchema } from './schemas';
 
 ### Configure form using JSON schema (optional)
 
-Instead of providing `resourceName`, you can hard-code the `JSON schema` on the client.
+For a customised approach, you can hard-code the `JSON schema` on the client, instead of providing a `resourceName`. The `resourceName` gives you all the fields that have been specified in the event on the server. But, with a hard-coded schema, you can change the fields and the order. However, note that if a field changes name or type on the server, you will have to change this in the schema, or it will not work.
+
+The **JsonSchema.ts** file should be in the same folder as the file where you define the class of your route.
 
 ```ts
-const sampleJsonSchema = {
+export const sampleJsonSchema = {
   type: 'object',
   properties: {
     ISSUER_NAME: {
@@ -134,75 +136,34 @@ const sampleJsonSchema = {
 };
 ```
 
-```ts
-const sampleUiSchema = {
-  type: 'VerticalLayout',
-  elements: [
-    {
-      type: 'Control',
-      label: 'Issuer Name',
-      scope: '#/properties/ISSUER_NAME',
-    },
-    {
-      type: 'Control',
-      label: 'Phone',
-      scope: '#/properties/MAIN_CONTACT',
-    },
-    {
-      type: 'Control',
-      label: 'Price',
-      scope: '#/properties/PRICE',
-    },
-    {
-      type: 'Control',
-      scope: '#/properties/COUNTERPARTY',
-      options: {
-        allOptionsResourceName: 'COUNTERPARTY',
-        valueField: 'COUNTERPARTY_ID',
-        labelField: 'COUNTERPARTY_ID',
-        datasourceConfig: {
-          request: {
-            COUNTERPARTY_ID: 'ACME',
-          },
-        },
-      },
-    },
-    {
-      type: 'Control',
-      label: 'Password',
-      scope: '#/properties/PASSWORD',
-      options: {
-        isPassword: true,
-      },
-    },
-  ],
-};
-```
-
 ```html
-<foundation-form :jsonSchema=${() => sampleJsonSchema} :uischema=${() => sampleUISchema}></foundation-form>
+import { sampleJsonSchema } from './JsonSchema';
+ ...
+ export const HomeTemplate = html<Home>`
+	...
+ 	<foundation-form :jsonSchema=${() => sampleJsonSchema}  > </foundation-form>
+	...
+`;
 ```
-
-:::info
-Use this when you want to avoid fetching metadata from the server, but be aware that it could get out of sync if metadata changes on the server.
-:::
 
 ### Pre-fill forms with data (optional)
 
-Use the `data` attribute, which allows you to pre-fill the form with ready-made information.
+Use the `data` attribute to pre-fill the form with ready-made information. In this example, we only have a short set of data, so we have included it in the _route._**template.ts** for the component:
 
-```ts
+```html
+...
 const sampleData = {
     ISSUER_NAME: 'Some Issuer',
     INVIS: 'Invisible value!',
-    USER: 'JohnDoe',
+    USER: 'HerbertProhaska',
   };
+...
+export const HomeTemplate = html<Home>`
+	...
+  	<foundation-form resourceName="EVENT_TRADE_INSERT" :data=${() => sampleData}></foundation-form>
+	...
+`;
 ```
-
-```html
-<foundation-form resourceName="EVENT_TRADE_INSERT" :uischema=${() => sampleUISchema} :data=${() => sampleData}></foundation-form>
-```
-
 
 ## Filters
 
