@@ -1,7 +1,7 @@
 ---
 title: 'Foundation Forms - advanced customisation'
-sidebar_label: 'Foundation Forms - advanced customisation`
-id: foundation-forms
+sidebar_label: 'Foundation Forms - advanced customisation'
+id: foundation-forms-customisation
 keywords: [filters, genesis, foundation, ui, forms, smart forms]
 tags:
   - customisation
