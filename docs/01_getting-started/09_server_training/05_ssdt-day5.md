@@ -224,11 +224,10 @@ We are going to create CSV Upload Endpoints. Let's create the possibility to upl
 
 To do that, create a new server module `alpha-file-handler`, and add it to be build and deployed (*server/jvm/settings.gradle.kts*, *alpha-deploy/build.gradle.kts*, *alpha-distribution/build.gradle.kts*, **). In this new module, create the classes and add your logic to complete the task.
 
-Create a new item to limit the size of the CSVs to 4 megabytes. You can add a new item in **genesis-system-definition.kts** as below.
+Create a new item to limit the size of the CSVs to 4 megabytes. You can add a new item in **alpha-system-definition.kts** as below.
 
-```kotlin {6}
-package genesis.cfg
-
+```kotlin {5}
+...
 systemDefinition {
     global {
         ...
