@@ -134,7 +134,7 @@ In terms of System definitions, you can incorporate the `DbSqlMaxPoolSize` [sett
 
 As for the genesisInstall command, you can utilize the [option](../../../operations/commands/server-commands/#syntax-4) `--compactProcesses`, which consolidates compatible services into a single process, reducing the number of services running in the container.
 
-The System definition is already included in the Server Developer Training starting repository you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed). Ensure you modify the genesisInstall command to include the `--compactProcesses` option.
+The System definition is already included in the Server Developer Training starting repository you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed). Please ensure you modify the genesisInstall command to include the `--compactProcesses` option.
 
 By adopting this approach, you will certainly save memory and startup time. However, keep in mind that drawbacks include increased process restart time and, in some cases, potential difficulty in managing SQL connections. For this training, where multiple processes are added locally, we recommend using both approaches to optimize resources and startup time.
 
