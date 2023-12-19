@@ -128,7 +128,7 @@ This example creates a stream called `ORDER_OUT`, based on the `ORDERS_OUT` tabl
 ```xml {3}
 <configuration>
     ...
-    <service host="localhost" name="ALPHA_STREAMER" port="11006"/>
+    <service host="localhost" name="ALPHA_STREAMER" port="11005"/>
 </configuration>
 ```
 
@@ -295,7 +295,7 @@ sendFormatted("QUOTE_HANDLER", "QUOTE_EVENT") {
 ```xml {3}
 <configuration>
     ...
-    <service host="localhost" name="ALPHA_STREAMER_CLIENT" port="11007"/>
+    <service host="localhost" name="ALPHA_STREAMER_CLIENT" port="11006"/>
 </configuration>
 ```
 
@@ -322,6 +322,12 @@ tables {
 
 :::tip
 Don't forget to change the fields and tables files, as well as run the tasks to [generateFields](../../../getting-started/developer-training/training-content-day1/#generatefields) and [generateDao](../../../getting-started/developer-training/training-content-day1/#generatedao).
+
+Remember we are installing genesis using the **--compactProcesses** [option](../../../operations/commands/server-commands/#syntax-4), therefore, the ´send´ message should use *GENESIS_COMPACT_PROCESS* instead of *ALPHA EVENT_HANDLER* like below.
+
+```kotlin
+send("GENESIS_COMPACT_PROCESS", "EVENT_TRADE_AUDIT_STREAM")
+```
 :::
 
 

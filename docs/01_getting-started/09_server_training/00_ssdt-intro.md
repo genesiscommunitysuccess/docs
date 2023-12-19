@@ -44,7 +44,7 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 - [Day five](../../../getting-started/server_training/05_ssdt-day5/): Custom endpoints, camel module, data pipeline​.
 
 ## Genesis low-code platform version
-Back end (GSF) 7.0.1
+Back end (GSF) 7.0.4
 
 Front end (FUI) 14.101.1
 

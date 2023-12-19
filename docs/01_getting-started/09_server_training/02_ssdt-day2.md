@@ -18,42 +18,19 @@ This day covers:
 
 ## Notify
 
-The Genesis platform has a notification module named by default *GENESIS_NOTIFY*. It does not run by default. To change this, we are adding a customised module to our project. 
+The Genesis platform includes a notification module called *GENESIS_NOTIFY* by default. It does not run automatically and, starting from GSF version 6.6.x, there is a package available for it: ´genesis-notify´.
 
-To do that, create a process called `ALPHA_NOTIFY` and add it to the file **alpha-processes.xml** in your project folder **server/jvm/alpha-config/src/main/resources/cfg**, using the code below.
+As you have already cloned the Server Developer Training starting repository from [here](https://github.com/genesiscommunitysuccess/servertraining-seed), you have everything you need to run it.
 
-```xml {3-12}
-<processes>
-    ...
-    <process name="ALPHA_NOTIFY">
-        <start>true</start>
-        <groupId>ALPHA</groupId>
-        <options>-Xmx128m -DXSD_VALIDATE=false</options>
-        <module>genesis-notify</module>
-        <package>global.genesis.notify</package>
-        <script>genesis-notify.kts</script>
-        <language>pal</language>
-        <description>Notify Mechanism for sending messages to external systems, such as Email and Symphony</description>
-    </process>
-</processes>
-```
-Add the `ALPHA_EVALUATOR` to the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** using the code below. 
+However, the manual steps to use the ´genesis-notify´ package are not difficult. Essentially, you need to add a reference to your *<app>-dictionary-cache* **build.gradle.kts** file, like [this](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/alpha-dictionary-cache/build.gradle.kts#L11), and add a reference to your *<app>-deploy* **build.gradle.kts** file, like [this](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/alpha-deploy/build.gradle.kts#L27). Additionally, make sure to include a variable indicating the 'genesis-notify' version, as demonstrated [here](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/gradle.properties#L7).
 
-```xml {3}
-<configuration>
-    ...
-    <service host="localhost" name="ALPHA_NOTIFY" port="11005"/>
-</configuration>
-```
 
 Run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) tasks to verify that the new process works as expected.
 
 Run `mon`.
-You should be able to see the process is present.
-![](/img/standbysmall-alpha-notify.png)
+You should be able to see the *GENESIS_NOTIFY* process is present.
 
 ### Set up GENESIS_NOTIFY in the database
-
 
 Create a file GATEWAY.csv as shown below and insert it in the table GATEWAY using the command `SendIt`.
 
@@ -95,13 +72,12 @@ Run [build and deploy](../../../getting-started/developer-training/training-cont
 
 ### Switch on data dumps
 
-Data dumps need to be switched on for both EVALUATOR and NOTIFY so we can see some additional data in the logs.
+Data dumps need to be switched on for EVALUATOR so we can see some additional data in the logs.
 
 Run the [LogLevel](../../../operations/commands/server-commands/#loglevel-script) command to do this:
 
 ```shell
 LogLevel -p ALPHA_EVALUATOR -DATADUMP_ON -l DEBUG
-LogLevel -p ALPHA_NOTIFY -DATADUMP_ON -l DEBUG
 ```
 
 And then to see the logs run:

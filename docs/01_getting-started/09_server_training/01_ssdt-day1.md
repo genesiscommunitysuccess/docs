@@ -39,6 +39,7 @@ systemDefinition {
         item(name = "ZeroMQProxyOutboundPort", value = "5000")
 
         item(name = "DbHost", value = "localhost")
+        item(name = "DbSqlMaxPoolSize", value = "4")
         item(name = "DbMode", value = "VANILLA")
         item(name = "GenesisNetProtocol", value = "V2")
         item(name = "ResourcePollerTimeout", value = "5")
@@ -127,6 +128,17 @@ val permissionsField = SysDef.ADMIN_PERMISSION_ENTITY_FIELD
 
 Further information regarding the system definitions such as items defined, HashiCorp Vault, and more can be found [here](../../../server/configuring-runtime/system-definitions/).
 
+### Saving resources
+
+You can optimize your resource usage, such as memory and CPU, when running Genesis by leveraging System definitions and the genesisInstall command.
+
+In terms of System definitions, you can incorporate the ´DbSqlMaxPoolSize´ [setting](../../../database/database-technology/sql/#common-system-definitions). For each JVM process (Data Server, Request Server, etc.) connecting to the database, this setting determines the maximum number of SQL connections held by the SQL connection pool.
+
+As for the genesisInstall command, you can utilize the [option](../../../operations/commands/server-commands/#syntax-4) ´--compactProcesses´, which consolidates compatible services into a single process, reducing the number of services running in the container.
+
+The System definition is already included in the Server Developer Training starting repository you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed). Ensure you modify the genesisInstall command to include the ´--compactProcesses´ option.
+
+By adopting this approach, you will certainly save memory and startup time. However, keep in mind that drawbacks include increased process restart time and, in some cases, potential difficulty in managing SQL connections. For this training, where multiple processes are added locally, we recommend using both approaches to optimize resources and startup time.
 
 ### Exercise 1.1 System Definitions
 :::info ESTIMATED TIME

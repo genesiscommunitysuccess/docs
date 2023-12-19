@@ -319,7 +319,7 @@ The `routeHandler` defines the possible routes for information to flow into and 
 ```xml {3}
 <configuration>
     ...
-    <service host="localhost" name="ALPHA_CAMEL" port="11008"/>
+    <service host="localhost" name="ALPHA_CAMEL" port="11007"/>
 </configuration>
 ```
 
