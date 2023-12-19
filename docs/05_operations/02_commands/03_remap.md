@@ -26,19 +26,20 @@ Remap should be run in the following scenarios:
 remap [-c | --commit]
 ```
 
-| Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values |
-|----------|------------------------|-----------|----------------------------------------------------------------------------------------|-------------------|
-| -f       | --force                | no        | Forces the unlocking of a locked database                                              | No                |
-| -c       | --commit               | no        | Applies dictionary changes to the database                                             | No                |
-|          | --force-dao-generation | no        | Forces the re-generation of DAOs on the given host                                     | No                |
-|          | --skip-dao-generation  | no        | Skips the re-generation of DAOs on the given host                                      | No                |
-|          | --ask-db-password      | no        | Prompts for a DB user password to be manually entered                                   | No                |
-| -d       | --dumpSQL              | no        | Outputs the SQL DDL statements to the console instead of applying them to the db        | No                |
-| -m       | --metadataOnly         | no        | Only updates the GSF dictionary and alias stores; does not apply any table changes    | No                |
-|          | --skip-unchanged       | no        | Forces remap to fail if the `--commit` option is used and schema changes are present  | No                |
-| -dm      | --dumpMode             | no        | Determines where the DDL statements are outputted when using `--dumpSQL`. The user will have the option of specifying the CONSOLE or a .sql file. | Yes: CONSOLE, FILE |
-|          | --db-username          | no        | Allows the user to enter the username for override credentials via the cli. This command works with fdb and Oracle.                               | No                 |
-|          | --db-password          | no        | Allows the user to enter the password for override credentials via the cli. This command works with fdb and Oracle.                               | No                 |
+| Argument | Argument long name     | Mandatory | Description                                                                                                                                                                                                    | Restricted values |
+|----------|------------------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+| -f       | --force                | no        | Forces the unlocking of a locked database                                                                                                                                                                      | No                |
+| -c       | --commit               | no        | Applies dictionary changes to the database                                                                                                                                                                     | No                |
+|          | --force-dao-generation | no        | Forces the re-generation of DAOs on the given host                                                                                                                                                             | No                |
+|          | --skip-dao-generation  | no        | Skips the re-generation of DAOs on the given host                                                                                                                                                              | No                |
+|          | --ask-db-password      | no        | Prompts for a DB user password to be manually entered                                                                                                                                                          | No                |
+| -d       | --dumpSQL              | no        | Outputs the SQL DDL statements to the console instead of applying them to the db                                                                                                                               | No                |
+| -m       | --metadataOnly         | no        | Only updates the GSF dictionary and alias stores; does not apply any table changes                                                                                                                             | No                |
+|          | --skip-unchanged       | no        | Forces remap to fail if the `--commit` option is used and the schema has been changed                                                                                                                          | No                |
+|          | --skipTableDump        | no        | Skips the back-up of old data and runs much quicker; **use with caution** - you will not be able to [roll back](../../../operations/commands/Remap/#rollback) unless you have specifically made a full back-up | No                 |
+| -dm      | --dumpMode             | no        | Determines where the DDL statements are outputted when using `--dumpSQL`. The user will have the option of specifying the CONSOLE or an .sql file.                                                             | Yes: CONSOLE, FILE |
+|          | --db-username          | no        | Allows the user to enter the username to override credentials via the cli. This command works with fdb and Oracle.                                                                                             | No                 |
+|          | --db-password          | no        | Allows the user to enter the password to override credentials via the cli. This command works with fdb and Oracle.                                                                                             | No                 |
 
 If you run `remap` with no arguments, it simply gives a report of changes that exist in the configuration:
 
