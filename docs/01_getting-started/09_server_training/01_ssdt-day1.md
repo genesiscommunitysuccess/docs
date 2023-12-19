@@ -34,10 +34,8 @@ systemDefinition {
         item(name = "DictionarySource", value = "DB")
         item(name = "AliasSource", value = "DB")
         item(name = "MetricsEnabled", value = "false")
-
         item(name = "ZeroMQProxyInboundPort", value = "5001")
         item(name = "ZeroMQProxyOutboundPort", value = "5000")
-
         item(name = "DbHost", value = "localhost")
         item(name = "DbSqlMaxPoolSize", value = "4")
         item(name = "DbMode", value = "VANILLA")
@@ -132,11 +130,11 @@ Further information regarding the system definitions such as items defined, Hash
 
 You can optimize your resource usage, such as memory and CPU, when running Genesis by leveraging System definitions and the genesisInstall command.
 
-In terms of System definitions, you can incorporate the ´DbSqlMaxPoolSize´ [setting](../../../database/database-technology/sql/#common-system-definitions). For each JVM process (Data Server, Request Server, etc.) connecting to the database, this setting determines the maximum number of SQL connections held by the SQL connection pool.
+In terms of System definitions, you can incorporate the `DbSqlMaxPoolSize` [setting](../../../database/database-technology/sql/#common-system-definitions). For each JVM process (Data Server, Request Server, etc.) connecting to the database, this setting determines the maximum number of SQL connections held by the SQL connection pool.
 
-As for the genesisInstall command, you can utilize the [option](../../../operations/commands/server-commands/#syntax-4) ´--compactProcesses´, which consolidates compatible services into a single process, reducing the number of services running in the container.
+As for the genesisInstall command, you can utilize the [option](../../../operations/commands/server-commands/#syntax-4) `--compactProcesses`, which consolidates compatible services into a single process, reducing the number of services running in the container.
 
-The System definition is already included in the Server Developer Training starting repository you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed). Ensure you modify the genesisInstall command to include the ´--compactProcesses´ option.
+The System definition is already included in the Server Developer Training starting repository you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed). Ensure you modify the genesisInstall command to include the `--compactProcesses` option.
 
 By adopting this approach, you will certainly save memory and startup time. However, keep in mind that drawbacks include increased process restart time and, in some cases, potential difficulty in managing SQL connections. For this training, where multiple processes are added locally, we recommend using both approaches to optimize resources and startup time.
 
@@ -145,7 +143,7 @@ By adopting this approach, you will certainly save memory and startup time. Howe
 20 mins
 :::
 
-Let´s start the hands-on training with the first exercise. We are going to create a global custom definition to set the nullability for the Trade table fields. 
+Let's start the hands-on training with the first exercise. We are going to create a global custom definition to set the nullability for the Trade table fields. 
 
 Create a new item in the system definition file and use it in the fields definition file. We should edit the local system definition file to do that.
 

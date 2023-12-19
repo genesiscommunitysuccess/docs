@@ -18,11 +18,11 @@ This day covers:
 
 ## Notify
 
-The Genesis platform includes a notification module called *GENESIS_NOTIFY* by default. It does not run automatically and, starting from GSF version 6.6.x, there is a package available for it: ´genesis-notify´.
+The Genesis platform includes a notification module called *GENESIS_NOTIFY* by default. It does not run automatically and, starting from GSF version 6.6.x, there is a package available for it: `genesis-notify`.
 
 As you have already cloned the Server Developer Training starting repository from [here](https://github.com/genesiscommunitysuccess/servertraining-seed), you have everything you need to run it.
 
-However, the manual steps to use the ´genesis-notify´ package are not difficult. Essentially, you need to add a reference to your *server/jvm/alpha-dictionary-cache* **build.gradle.kts** file, like [this](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/alpha-dictionary-cache/build.gradle.kts#L11), and add a reference to your *server/jvm/alpha-deploy* **build.gradle.kts** file, like [this](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/alpha-deploy/build.gradle.kts#L27). Additionally, make sure to include a variable indicating the ´genesis-notify´ version, as demonstrated [here](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/gradle.properties#L7).
+However, the manual steps to use the `genesis-notify` package are not difficult. Essentially, you need to add a reference to your *server/jvm/alpha-dictionary-cache* **build.gradle.kts** file, like [this](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/alpha-dictionary-cache/build.gradle.kts#L11), and add a reference to your *server/jvm/alpha-deploy* **build.gradle.kts** file, like [this](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/alpha-deploy/build.gradle.kts#L27). Additionally, make sure to include a variable indicating the `genesis-notify` version, as demonstrated [here](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/gradle.properties#L7).
 
 
 Run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) tasks to verify that the new process works as expected.
