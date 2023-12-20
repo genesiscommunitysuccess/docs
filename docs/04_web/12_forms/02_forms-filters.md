@@ -133,53 +133,56 @@ If you want to synchronise a datagrid with a filter, you need to follow these st
 
 1. Register your component in the file where you define the class of your route. 
 
-```
-htmlimport { Form } from '@genesislcap/foundation-forms';
+```ts
+import { Form } from '@genesislcap/foundation-forms';
+...
 Form;
 ```
 
-2. Create an `@observable` variable where you want to use this value:
+2. In the same file, create an `@observable` variable to store the criteria used in the `foundation-filter`:
 
-```html {1,5}
+```ts {1,5}
 import {... , observable} from '@microsoft/fast-element';
 ...
 export class TEMPLATE extends FASTElement {
 ...
-@observable allUsersfilters: string
+@observable allTradesFilters: string
 ...
 }
 ```
 
-2. Use the `sync` function to save the criteria value from the foundation filter into the variable `allUsersfilters`:
+3. In your template, use the `sync` function to save the criteria value from the foundation filter into the variable `allTradesFilters`:
 
 ```typescript tile="Example 4" {1,4}
 import {sync} from '@genesislcap/foundation-utils';
 ...
-    ...
-        <alpha-text-field value=${sync((x) => x.text_field)}>TEXT</alpha-text-field>
-    ...
+  ...
+    <foundation-filters
+      resourceName="ALL_USERS"
+      :value=${sync((x) => x.allTradesfilters)}>
+    </foundation-filters>
+  ...
 ...    
 ```
 
-From this point, you can access the value of the component in your application. Now you can use 'sync` to ensure that both components share the same information.
+From this point, the criteria used in the foundation-filter is stored into the `allTradesFilters` variable. You can use this variable with the `<grid-pro-genesis-datasource>` in order to match the same criteria used in the foundation filter. 
 
-Here is a simple example where we create a foundation filter that fetches all fields from the ALL_USERS endpoint and then synchronises the criteria with a zero-grid-pro.
+4. Assign the `allTradesFilters` to the `criteria` attribute of the `<grid-pro-genesis-datasource>`.:
 
 ```html
-  <zero-card>
-    <foundation-filters
-            resourceName="ALL_USERS"
-            :value=${sync((x) => x.allUsersfilters)}>
-    </foundation-filters>
-</zero-card>
 <zero-grid-pro>
     <grid-pro-genesis-datasource
-            resource-name="ALL_USERS"
-            criteria=${(x) => x.allUsersfilters}
+            resource-name="ALL_TRADES"
+            criteria=${(x) => x.allTradesFilters}
     ></grid-pro-genesis-datasource>
 </zero-grid-pro>
 ```
-The outcome is that the foundation-filter displays a form showing all the available columns. Beneath this, the zero-grid-pro displays all trades. When the user filters the information - for example, by selecting only BUY trades - then only those trades will be displayed in the zero-grid-pro.
+
+The outcome is that the foundation-filter displays a form showing all the available fields in the resource, allowing the user to select specific criteria for each field. Beneath this, the zero-grid-pro displays the data filtered by the input criteria.
+
+:::tip
+It is crucial to manipulate the style of the foundation-filter in order to see the `zero-grid-pro` beneath it.
+:::
 
 ## License
 
