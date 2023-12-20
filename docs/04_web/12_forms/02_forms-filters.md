@@ -93,12 +93,11 @@ import { sampleUISchema } from './schema';
 
 ## Configure form using JSON schema (optional)
 
-For a customised approach, you can hard-code the `JSON schema` on the client, instead of providing a `resourceName`. The `resourceName` gives you all the fields that have been specified in the event on the server. But, with a hard-coded schema, you can change the fields and the order. However, note that if a field changes name or type on the server, you will have to change this in the schema, or it will not work.
+You can configure the information that is retrieved from the server by providing a `JSON schema` on the client, instead of providing a `resourceName`. The `resourceName` gives you all the fields that have been specified in the event on the server. But, with a hard-coded schema, you can change the fields and their order. However, note that if a field changes name or type on the server, you will have to change this in the schema, or it will not work.
 
 The **JsonSchema.ts** file should be in the same folder as the file where you define the class of your route.
 
-Here is an example of a **JsonSchema.ts** file that would customise the `SampleUISchema` that we saw in the previous example:
-
+Here is an example of a **JsonSchema.ts** file that configures the information that is returned by the server:
 ```ts
 export const sampleJsonSchema = {
   type: 'object',
@@ -116,6 +115,8 @@ export const sampleJsonSchema = {
 };
 ```
 
+In the template file for the route, you need to import this schema:
+
 ```html
 import { sampleJsonSchema } from './JsonSchema';
  ...
@@ -127,6 +128,42 @@ import { sampleJsonSchema } from './JsonSchema';
 ```
 
 ## Synchronising values with datasource criteria
+
+If you want to synchronise a datagrid with a filter, you need to follow these steps:
+
+1. Register your component in the file where you define the class of your route. 
+
+```
+htmlimport { Form } from '@genesislcap/foundation-forms';
+Form;
+```
+
+2. Create an `@observable` variable where you want to use this value:
+
+```html {1,5}
+import {... , observable} from '@microsoft/fast-element';
+...
+export class TEMPLATE extends FASTElement {
+...
+@observable allUsersfilters: string
+...
+}
+```
+
+2. Use the `sync` function to save the criteria value from the foundation filter into the variable `allUsersfilters`:
+
+```typescript tile="Example 4" {1,4}
+import {sync} from '@genesislcap/foundation-utils';
+...
+    ...
+        <alpha-text-field value=${sync((x) => x.text_field)}>TEXT</alpha-text-field>
+    ...
+...    
+```
+
+From this point, you can access the value of the component in your application. Now you can use 'sync` to ensure that both components share the same information.
+
+Here is a simple example where we create a foundation filter that fetches all fields from the ALL_USERS endpoint and then synchronises the criteria with a zero-grid-pro.
 
 ```html
   <zero-card>
@@ -142,6 +179,7 @@ import { sampleJsonSchema } from './JsonSchema';
     ></grid-pro-genesis-datasource>
 </zero-grid-pro>
 ```
+The outcome is that the foundation-filter displays a form showing all the available columns. Beneath this, the zero-grid-pro displays all trades. When the user filters the information - for example, by selecting only BUY trades - then only those trades will be displayed in the zero-grid-pro.
 
 ## License
 
