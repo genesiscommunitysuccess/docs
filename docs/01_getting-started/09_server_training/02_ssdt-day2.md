@@ -22,13 +22,19 @@ The Genesis platform includes a notification module called *GENESIS_NOTIFY* by d
 
 As you have already cloned the Server Developer Training starting repository from [here](https://github.com/genesiscommunitysuccess/servertraining-seed), you have everything you need to run it.
 
-However, the manual steps to use the `genesis-notify` package are not difficult. Essentially, you need to add a reference to your *server/jvm/alpha-dictionary-cache* **build.gradle.kts** file, such as [this](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/alpha-dictionary-cache/build.gradle.kts#L11), and add a reference to your *server/jvm/alpha-deploy* **build.gradle.kts** file, like [this](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/alpha-deploy/build.gradle.kts#L27). Additionally, make sure to include a variable indicating the `genesis-notify` version, as demonstrated [here](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/gradle.properties#L7).
+The manual steps to use the `genesis-notify` package are not difficult: 
 
+1. Add a reference to your *server/jvm/alpha-dictionary-cache* **build.gradle.kts** file, such as [this](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/alpha-dictionary-cache/build.gradle.kts#L11).
 
-Run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) tasks to verify that the new process works as expected.
+2. Add a reference to your *server/jvm/alpha-deploy* **build.gradle.kts** file, like [this](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/alpha-deploy/build.gradle.kts#L27).
+
+3. Finally, include a variable indicating the `genesis-notify` version, as demonstrated [here](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/gradle.properties#L7).
+
+Now you can run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) tasks to verify that the new process works as expected.
 
 Run `mon`.
-As we are building using the genesisInstall command with the `--compactProcesses` option, the *GENESIS_NOTIFY* process will be running under *GENESIS_COMPACT_PROCESS*.
+
+As we are building using the `genesisInstall` command with the `--compactProcesses` option, the *GENESIS_NOTIFY* process will be running under *GENESIS_COMPACT_PROCESS*.
 
 ### Set up GENESIS_NOTIFY in the database
 
