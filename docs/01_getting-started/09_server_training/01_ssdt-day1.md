@@ -128,9 +128,9 @@ Further information regarding the system definitions such as items defined, Hash
 
 ### Saving resources
 
-You can optimize your resource usage, such as memory and CPU, when running Genesis by leveraging System definitions and the genesisInstall command.
+There are some important settings that enable you to optimise your usage of resources such as memory and CPU.
 
-In terms of System definitions, you can incorporate the `DbSqlMaxPoolSize` [setting](../../../database/database-technology/sql/#common-system-definitions). For each JVM process (Data Server, Request Server, etc.) connecting to the database, this setting determines the maximum number of SQL connections held by the SQL connection pool.
+In your system definitions, you can include the `DbSqlMaxPoolSize` [setting](../../../database/database-technology/sql/#common-system-definitions). For each JVM process (Data Server, Request Server, etc.) connecting to the database, this setting determines the maximum number of SQL connections held by the SQL connection pool.
 
 As for the genesisInstall command, you can utilize the [option](../../../operations/commands/server-commands/#syntax-4) `--compactProcesses`, which consolidates compatible services (like DataServer, RequestServer, Notify, EventHandler, Streamer) into a single process, called **GENESIS_COMPACT_PROCESS**, reducing the number of services running in the container.
 
