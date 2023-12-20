@@ -32,7 +32,7 @@ The manual steps to use the `genesis-notify` package are not difficult:
 
 Now you can run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) tasks to verify that the new process works as expected.
 
-Run `mon`.
+You can then run `mon`.
 
 As we are building using the `genesisInstall` command with the `--compactProcesses` option, the *GENESIS_NOTIFY* process will be running under *GENESIS_COMPACT_PROCESS*.
 
