@@ -133,9 +133,9 @@ Further information regarding the system definitions such as items defined, Hash
 20 mins
 :::
 
-Let's start the hands-on training with the first exercise. We are going to create a global custom definition to set the nullability for the Trade table fields. 
+Let's start the first exercise. We are going to create a global custom definition to set the nullability for the Trade table fields. 
 
-Create a new item in the system definition file and use it in the fields definition file. We should edit the local system definition file to do that.
+Create a new item in the system definition file and use it in the fields definition file. You should edit the local system definition file to do that.
 
 
 :::tip changing alpha-system-definition configurations 
