@@ -1,7 +1,7 @@
 ---
 title: 'Foundation Forms - filters'
 sidebar_label: 'Foundation Forms - filters'
-id: foundation-forms-filters
+id: forms-filters
 keywords: [filters, genesis, foundation, ui, forms, smart forms]
 tags:
   - filters
@@ -17,7 +17,7 @@ tags:
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 
-## [API Docs](./docs/api/index.md)
+## API Docs
 
 
 ## Filters - basic install

@@ -1,7 +1,7 @@
 ---
 title: 'Foundation Forms'
 sidebar_label: 'Foundation Forms'
-id: foundation-forms
+id: 'foundation-forms'
 keywords: [genesis, foundation, ui, forms, smart forms]
 tags:
   - genesis
@@ -16,7 +16,7 @@ tags:
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 
-## [API Docs](./docs/api/index.md)
+## API Docs
 
 `foundation-forms` is a library for building complex forms and filters at speed and at scale.
 
