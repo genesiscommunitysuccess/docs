@@ -323,7 +323,7 @@ tables {
 :::tip
 Don't forget to change the fields and tables files, as well as run the tasks to [generateFields](../../../getting-started/developer-training/training-content-day1/#generatefields) and [generateDao](../../../getting-started/developer-training/training-content-day1/#generatedao).
 
-Remember we are installing Genesis using the **--compactProcesses** [option](../../../operations/commands/server-commands/#syntax-4), so the `send` message should use *GENESIS_COMPACT_PROCESS* instead of *ALPHA EVENT_HANDLER* like below.
+Remember we are installing Genesis using the **--compactProcesses** [option](../../../operations/commands/server-commands/#syntax-4), so the `send` message should use *GENESIS_COMPACT_PROCESS* instead of *ALPHA EVENT_HANDLER*, as you can see here:
 
 ```kotlin
 send("GENESIS_COMPACT_PROCESS", "EVENT_TRADE_AUDIT_STREAM")
