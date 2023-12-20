@@ -16,7 +16,9 @@ tags:
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 
-## API Docs
+:::tip
+You can click to view our [API documentation](./docs/api/index.md) in a separate area.
+:::
 
 `foundation-forms` is a library for building complex forms and filters at speed and at scale.
 
@@ -25,9 +27,7 @@ Foundation forms is defined by using two schemata:
 - `resourceName`/`jsonSchema` defines the underlying data to be shown in the UI (objects, properties, and their types).
 - `uiSchema` defines how this data is rendered as a form, e.g. the order of controls, their visibility, and the layout.
 
-## Forms
-
-### Basic install
+## Basic install
 
 To enable this module in your application, add `@genesislcap/foundation-forms` as a dependency in your **package.json** file. 
 
@@ -45,7 +45,7 @@ To enable this module in your application, add `@genesislcap/foundation-forms` a
 
 Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again. You can find more information on the [package.json basics](../../../web/basics/package-json-basics/) page.
 
-### Register components
+## Register components
 
 Every route that uses `foundation-forms` must register the components in the file where you define the class of your route.
 
@@ -58,7 +58,7 @@ Form
 ...
 ```
 
-### Add component to the template
+## Add component to the template
 
 Below is an example of a `foundation-form` using the `resourceName` attribute. This attribute must be an event defined in your server's _*application-name*_-eventhandler.kts** file; in this case, the event is called EVENT_TRADE_INSERT, and it is designed to insert all information provided in the forms to the database.
 
@@ -68,7 +68,7 @@ The example generates a working form based on the `JSON schema` for the EVENT_TR
 <foundation-form resourceName="EVENT_TRADE_INSERT"></foundation-form>
 ```
 
-### Configure form using UI schema
+## Configure form using UI schema
 
 You can also provide a `UI schema` to the `foundation-forms` in order to customise which fields should be displayed in the forms. The **schema.ts** file should be in the same folder as the file where you define the class of your route. In the example below, we set only the fields `QUANTITY` and `SIDE`.
 
@@ -102,11 +102,13 @@ import { sampleUISchema } from './schema';
 `;
 ```
 
-### Configure form using JSON schema (optional)
+## Configure form using JSON schema (optional)
 
 For a customised approach, you can hard-code the `JSON schema` on the client, instead of providing a `resourceName`. The `resourceName` gives you all the fields that have been specified in the event on the server. But, with a hard-coded schema, you can change the fields and the order. However, note that if a field changes name or type on the server, you will have to change this in the schema, or it will not work.
 
 The **JsonSchema.ts** file should be in the same folder as the file where you define the class of your route.
+
+Here is an example of a **JsonSchema.ts** file that would customise the `SampleUISchema` that we saw in the previous example:
 
 ```ts
 export const sampleJsonSchema = {
@@ -135,6 +137,7 @@ export const sampleJsonSchema = {
   required: ['ISSUER_NAME', 'MAIN_CONTACT'],
 };
 ```
+In the template file for the route, you need to import the Json schema and the UI schema that you have created:you have created:
 
 ```html
 import { sampleJsonSchema } from './JsonSchema';
@@ -146,7 +149,7 @@ import { sampleJsonSchema } from './JsonSchema';
 `;
 ```
 
-### Pre-fill forms with data (optional)
+## Pre-fill forms with data (optional)
 
 Use the `data` attribute to pre-fill the form with ready-made information. In this example, we only have a short set of data, so we have included it in the _route._**template.ts** for the component:
 
@@ -163,674 +166,6 @@ export const HomeTemplate = html<Home>`
   	<foundation-form resourceName="EVENT_TRADE_INSERT" :data=${() => sampleData}></foundation-form>
 	...
 `;
-```
-
-## Filters
-
-### Basic install
-
-To enable this module in your application, follow the steps below.
-
-1. Add `@genesislcap/foundation-forms` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
-
-```javascript
-{
-  ...
-  "dependencies": {
-    "@genesislcap/foundation-forms": "latest"
-  },
-  ...
-}
-```
-
-### Register components
-
-```ts
-import { Filters } from '@genesislcap/foundation-forms';
-...
-Filters
-...
-```
-
-### Add a component to the template
-
-```html
-<foundation-filters resourceName="ALL_TRADES"></foundation-filters>
-```
-
-This should generate a working form based on the `JSON schema` for that endpoint.
-The DevTools console will output an autogenerated `UI schema` that you can use to configure the filters
-
-### Configure form using UI schema
-
-```ts
-const sampleUISchema = {
-  type: "VerticalLayout",
-  elements: [
-    {
-      type: "Control",
-      scope: "#/properties/QUANTITY",
-      label: "Quantity",
-    },
-    {
-      type: "Control",
-      scope: "#/properties/SIDE",
-      label: "Side",
-    },
-  ],
-};
-```
-
-```html
-<foundation-filters resourceName="ALL_TRADES" :uischema=${() => sampleUISchema}></foundation-filters>
-```
-
-### Configure form using JSON schema (optional)
-
-Instead of providing `resourceName`, you can hard-code the `JSON schema` on the client.
-
-```ts
-const sampleJsonSchema = {
-  type: 'object',
-  properties: {
-    INSTRUMENT_ID: {
-      type: 'string',
-      minLength: 3,
-      description: 'kotlin.String',
-    },
-    QUANTITY: {
-      type: 'number',
-      description: 'kotlin.Double',
-    },
-  },
-};
-```
-
-```ts
-const sampleUiSchema = {
-  type: 'VerticalLayout',
-  elements: [
-    {
-      type: 'Control',
-      label: 'Instrument ID',
-      scope: '#/properties/INSTRUMENT_ID',
-    },
-    {
-      type: 'Control',
-      label: 'Quantity',
-      scope: '#/properties/QUANTITY',
-    },
-  ],
-};
-```
-
-```html
-<foundation-filters :jsonSchema=${() => sampleJsonSchema} :uischema=${() => sampleUISchema}></foundation-filters>
-```
-
-:::info
-Use this when you want to avoid fetching metadata from the server, but be aware that it could get out of sync if metadata changes on the server.
-:::
-
-### An example of synchronising values with datasource criteria
-
-```html
-  <zero-card>
-    <foundation-filters
-      resourceName="ALL_USERS"
-      :value=${sync((x) => x.allUsersfilters)}>
-    </foundation-filters>
-  </zero-card>
-  <zero-grid-pro>
-    <grid-pro-genesis-datasource
-      resource-name="ALL_USERS"
-      criteria=${(x) => x.allUsersfilters}
-    ></grid-pro-genesis-datasource>
-  </zero-grid-pro>
-```
-
-
-## Advanced customisation
-
-### Default layout renderers and examples
-
-This is the default layout for `VerticalLayout`, which is defined if no `uiSchema` is specified. This arranges the control elements vertically.
-
-```ts
-const VerticalUISchema = {
-  type: 'VerticalLayout',
-  elements: [
-    ...
-  ],
-};
-```
-
-This example arranges the control elements in two columns vertically.
-
-```ts
-const VerticalColumnsUISchema = {
-  type: 'LayoutVertical2Columns',
-  elements: [
-    ...
-  ],
-};
-```
-
-This arranges our control elements horizontally.
-
-```ts
-const horizontalUISchema = {
-  type: 'HorizontalLayout',
-  elements: [
-    ...
-  ],
-};
-```
-
-An array layout enables you to create a dynamic form with the ability to add, for example, multiple users.
-
-It is more complicated when it comes to customisation, because it needs proper `jsonSchema` and `uiSchema`.
-
-```ts
-const arrayUISchema = {
-  type: "VerticalLayout",
-  elements: [
-    {
-      type: "Control",
-      scope: "#/properties/users",
-      options: {
-        childUiSchema: {
-          type: "HorizontalLayout",
-          elements: [
-            {
-              type: "Control",
-              scope: "#/properties/firstname",
-              label: "First Name",
-            },
-            {
-              type: "Control",
-              scope: "#/properties/lastname",
-              label: "Last Name",
-            },
-            {
-              type: "Control",
-              scope: "#/properties/email",
-              label: "Email",
-            },
-          ],
-        },
-      },
-    },
-  ],
-};
-```
-
-```ts
-const arrayJsonSchema = {
-  type: "object",
-  properties: {
-    users: {
-      type: "array",
-      items: {
-        type: "object",
-        title: "Users",
-        properties: {
-          firstname: {
-            type: "string",
-          },
-          lastname: {
-            type: "string",
-          },
-          email: {
-            type: "string",
-            format: "email",
-          },
-        },
-      },
-    },
-  },
-};
-```
-
-The Categorization layout enables you to create more complex forms that can be divided into appropriate categories (for example, personal information and address), which are displayed in separate tabs.
-
-```ts
-const categoryUISchema = {
-  type: "Categorization",
-  elements: [
-    {
-      type: "Control",
-      scope: "#/properties/basic",
-      label: "Personal information",
-      options: {
-        childElements: [
-          {
-            type: "HorizontalLayout",
-            elements: [
-              {
-                type: "Control",
-                scope: "#/properties/firstName",
-              },
-              {
-                type: "Control",
-                scope: "#/properties/secondName",
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "Control",
-      label: "Address",
-      scope: "#/properties/address",
-      options: {
-        childElements: [
-          {
-            type: "HorizontalLayout",
-            elements: [
-              {
-                type: "Control",
-                scope: "#/properties/address/properties/street",
-              },
-              {
-                type: "Control",
-                scope: "#/properties/address/properties/streetNumber",
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
-```
-
-Group layout divides forms into groups. These are visible on the same tab, but they are separated from each other by their own labels (unlike Categorization, which displays groups in separate tabs).
-
-```ts
-const groupUISchema = {
-  type: "VerticalLayout",
-  elements: [
-    {
-      type: "Group",
-      label: "Person",
-      scope: "#/properties/person",
-      options: {
-        childElements: [
-          {
-            type: "LayoutVertical2Columns",
-            elements: [
-              {
-                type: "Control",
-                label: "First Name",
-                scope: "#/properties/person/properties/firstName",
-              },
-              {
-                type: "Control",
-                scope: "#/properties/person/properties/lastName",
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: "Group",
-      label: "Address",
-      scope: "#/properties/address/",
-      options: {
-        childElements: [
-          {
-            type: "VerticalLayout",
-            elements: [
-              {
-                type: "Control",
-                scope: "#/properties/person/properties/shippingAddress",
-              },
-              {
-                type: "Control",
-                scope: "#/properties/address/properties/street",
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
-```
-
-Stepper layout enables you to create complex forms that can be divided into appropriate groups (for example, personal information and address), which are in separate steps.
-
-It is more complicated when it comes to customisation, because it needs proper `jsonSchema` and `uiSchema` so that validation and data saving work properly.
-
-:::info
-Remember to add a `hide-submit-button` attribute to `foundation-forms`, because in this case, submit is built directly into stepper-layout.
-:::
-
-```ts
-const uiSchemaStepper = {
-  type: 'Stepper',
-  elements: [
-    {
-      type: 'Control',
-      scope: '#/properties/person',
-      label: 'Entity',
-      options: {
-        childElements: [
-          {
-            type: 'HorizontalLayout',
-            elements: [
-              {
-                type: 'Control',
-                scope: '#/properties/person/properties/firstName',
-              },
-              {
-                type: 'Control',
-                scope: '#/properties/person/properties/secondName',
-              },
-            ],
-          },
-          {
-            type: 'HorizontalLayout',
-            elements: [
-              {
-                type: 'Control',
-                scope: '#/properties/person/properties/birthDate',
-              },
-              {
-                type: 'Control',
-                scope: '#/properties/person/properties/nationality',
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: 'Control',
-      label: 'Doc',
-      scope: '#/properties/address',
-      options: {
-        childElements: [
-          {
-            type: 'HorizontalLayout',
-            elements: [
-              {
-                type: 'Control',
-                scope: '#/properties/address/properties/street',
-              },
-              {
-                type: 'Control',
-                scope: '#/properties/address/properties/streetNumber',
-              },
-            ],
-          },
-          {
-            type: 'HorizontalLayout',
-            elements: [
-              {
-                type: 'Control',
-                scope: '#/properties/address/properties/city',
-              },
-              {
-                type: 'Control',
-                scope: '#/properties/address/properties/postalCode',
-              },
-            ],
-          },
-        ],
-      },
-    },
-    {
-      type: 'Control',
-      label: 'Primary doc',
-      scope: '#/properties/vegetarianOptions',
-      options: {
-        childElements: [
-          {
-            type: 'VerticalLayout',
-            elements: [
-              {
-                type: 'Control',
-                scope: '#/properties/vegetarianOptions/properties/favoriteVegetable',
-              },
-              {
-                type: 'Control',
-                scope: '#/properties/vegetarianOptions/properties/otherFavoriteVegetable',
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
-```
-
-```ts
-const jsonSchemaStepper = {
-  type: 'object',
-  properties: {
-    person: {
-      type: 'object',
-      properties: {
-        firstName: {
-          type: 'string',
-          minLength: 3,
-          description: 'Please enter your first name',
-        },
-        secondName: {
-          type: 'string',
-          minLength: 3,
-          description: 'Please enter your second name',
-        },
-        birthDate: {
-          type: 'string',
-          format: 'date',
-          description: 'Please enter your birth date.',
-        },
-        nationality: {
-          type: 'string',
-          description: 'Please enter your nationality.',
-        },
-      },
-      required: ['firstName', 'secondName'],
-    },
-    address: {
-      type: 'object',
-      properties: {
-        street: {
-          type: 'string',
-        },
-        streetNumber: {
-          type: 'string',
-        },
-        city: {
-          type: 'string',
-        },
-        postalCode: {
-          type: 'string',
-          maxLength: 5,
-        },
-      },
-      required: ['postalCode'],
-    },
-    vegetarianOptions: {
-      type: 'object',
-      properties: {
-        favoriteVegetable: {
-          type: 'string',
-          enum: ['Tomato', 'Potato', 'Salad', 'Aubergine', 'Cucumber', 'Other'],
-        },
-        otherFavoriteVegetable: {
-          type: 'string',
-        },
-      },
-      required: ['otherFavoriteVegetable'],
-    },
-  },
-};
-```
-
-### Default control renderers and examples
-
-Most renderers are defined directly in the `jsonSchema` that comes from the server, but there are also those that you can add via `uiSchema`.
-
-String renderer is the default renderer, which creates a `text-field`.
-
-```ts
-const stringJsonSchema = {
-  type: "object",
-  properties: {
-    ISSUER_NAME: {
-      type: "string",
-      minLength: 3,
-      description: "kotlin.String",
-    },
-    USER: {
-      type: "string",
-      description: "kotlin.String",
-    },
-    MAIN_CONTACT: {
-      type: "string",
-      pattern: "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$",
-      description: "kotlin.String",
-    },
-  },
-};
-```
-
-The number renderer creates a `number-field`.
-
-```ts
-const numberJsonSchema = {
-  type: "object",
-  properties: {
-    PRICE: {
-      type: "number",
-      description: "kotlin.Double",
-    },
-  },
-};
-```
-
-The boolean renderer creates a `checkbox-field`.
-
-```ts
-const booleanJsonSchema = {
-  type: "object",
-  properties: {
-    vegetarian: {
-      type: "boolean",
-    },
-  },
-};
-```
-
-The connected multiselect renderer creates a `multiselect` component with options from datasource.
-
-```ts
-const connectedMultiselectUISchema = {
-  type: "HorizontalLayout",
-  elements: [
-    {
-      type: 'Control',
-      label: 'Rights',
-      scope: '#/properties/RIGHT_CODES',
-      options: {
-        allOptionsResourceName: 'RIGHT',
-        valueField: 'CODE',
-        labelField: 'CODE',
-      },
-    },
-    {
-      type: 'Control',
-      label: 'Users',
-      scope: '#/properties/USER_NAMES',
-      options: {
-        allOptionsResourceName: 'USER',
-        valueField: 'USER_NAME',
-        labelField: 'USER_NAME',
-      },
-    },
-  ],
-};
-```
-
-Connected Select renderer is a select renderer that creates a `select` component with options.
-
-```ts
-const connectedSelectUISchema = {
-  type: "HorizontalLayout",
-  elements: [
-    {
-      type: "Control",
-      scope: "#/properties/COUNTERPARTY_ID",
-      options: {
-        data: CounterpartyOptions,
-        valueField: "value",
-        labelField: "name",
-      },
-      label: "Counterparty",
-    },
-    {
-      type: "Control",
-      scope: "#/properties/INSTRUMENT_ID",
-      options: {
-        data: InstrumentOptions,
-        valueField: "value",
-        labelField: "name",
-      },
-      label: "Instrument",
-    },
-  ],
-};
-```
-
-The date renderer creates a `date-field`.
-
-```ts
-const dateJsonSchema = {
-  type: "object",
-  properties: {
-    tradeDate: {
-      type: "string",
-      description: "org.joda.time.DateTime",
-    },
-  },
-};
-```
-
-### Specific renderers for filters and examples
-
-The filter date renderer creates two `date-fields` with minimum and maximum value.
-
-```ts
-const dateJsonSchema = {
-  type: "object",
-  properties: {
-    tradeDate: {
-      type: "string",
-      description: "org.joda.time.DateTime",
-    },
-  },
-};
-```
-
-The filter number renderer creates two `number-fields` with minimum and maximum value.
-
-```ts
-const numberJsonSchema = {
-  type: "object",
-  properties: {
-    PRICE: {
-      type: "number",
-      description: "kotlin.Double",
-    },
-  },
-};
 ```
 
 ## License

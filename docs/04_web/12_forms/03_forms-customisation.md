@@ -12,11 +12,18 @@ tags:
   - smart forms
 ---
 
-## Advanced customisation
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 
-### Default layout renderers and examples
+:::tip
+You can click to view our [API documentation](./docs/api/index.md) in a separate area.
+:::
 
-This is the default layout for `VerticalLayout`, which is defined if no `uiSchema` is specified. This arranges the control elements vertically.
+## Layout renderers
+
+### Vertical and horizontal
+
+`VerticalLayout` has a default layout, which is used if no `uiSchema` is specified. This arranges the control elements vertically.
 
 ```ts
 const VerticalUISchema = {
@@ -27,7 +34,7 @@ const VerticalUISchema = {
 };
 ```
 
-This example arranges the control elements in two columns vertically.
+If you specify a `uiSchema`, you can control the layout detail. This example arranges the control elements in two columns vertically.
 
 ```ts
 const VerticalColumnsUISchema = {
@@ -38,7 +45,7 @@ const VerticalColumnsUISchema = {
 };
 ```
 
-This arranges our control elements horizontally.
+The example below specifies a `uiSchema` that controls the elements horizontally.
 
 ```ts
 const horizontalUISchema = {
@@ -49,9 +56,10 @@ const horizontalUISchema = {
 };
 ```
 
+### Arrays (dynamic forms)
 An array layout enables you to create a dynamic form with the ability to add, for example, multiple users.
 
-It is more complicated when it comes to customisation, because it needs proper `jsonSchema` and `uiSchema`.
+For this, you need both a `uiSchema``jsonSchema` and a `jsonSchema`.
 
 ```ts
 const arrayUISchema = {
@@ -114,7 +122,9 @@ const arrayJsonSchema = {
 };
 ```
 
-The Categorization layout enables you to create more complex forms that can be divided into appropriate categories (for example, personal information and address), which are displayed in separate tabs.
+### Grouping information
+
+The Categorization layout enables you to create more complex forms that are divided into appropriate categories (for example, personal information and address), which are displayed in separate tabs.
 
 ```ts
 const categoryUISchema = {
@@ -223,9 +233,9 @@ const groupUISchema = {
 };
 ```
 
-Stepper layout enables you to create complex forms that can be divided into appropriate groups (for example, personal information and address), which are in separate steps.
+Stepper layout enables you to create complex forms that are divided into separate steps.
 
-It is more complicated when it comes to customisation, because it needs proper `jsonSchema` and `uiSchema` so that validation and data saving work properly.
+For this, you need both a  `uiSchema` and a `jsonSchema` so that validation and data saving can work properly.
 
 :::info
 Remember to add a `hide-submit-button` attribute to `foundation-forms`, because in this case, submit is built directly into stepper-layout.
@@ -396,9 +406,9 @@ const jsonSchemaStepper = {
 };
 ```
 
-### Default control renderers and examples
+### Control renderers
 
-Most renderers are defined directly in the `jsonSchema` that comes from the server, but there are also those that you can add via `uiSchema`.
+Most renderers are defined directly in the `jsonSchema` that comes from the server, but you can also add these in your `uiSchema`.
 
 String renderer is the default renderer, which creates a `text-field`.
 
@@ -525,7 +535,7 @@ const dateJsonSchema = {
 };
 ```
 
-### Specific renderers for filters and examples
+### Specific renderers for filters
 
 The filter date renderer creates two `date-fields` with minimum and maximum value.
 
