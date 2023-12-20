@@ -10,18 +10,28 @@ tags:
     - getting started
 ---
 
-## Environment set-up
+# Environment set-up
 
 Make sure you have completed the [Environment set-up](../../../getting-started/developer-training/environment-setup/), just as you did in the [Developer Training](../../../getting-started/developer-training/training-intro/).
 
-## Start the project baseline
+## Training requirements set-up
 
-Clone the Server Developer Training starting repo [here](https://github.com/genesiscommunitysuccess/servertraining-seed). Open it using IntelliJ and follow the next steps:
+### Start the project baseline
 
-- Build the server. In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha/Tasks/Build/Assemble**.
-- Make sure you are ok with all the [pre-requisites](../../../getting-started/prerequisites/introduction/).
-- Do the [Deployment process](../../../getting-started/developer-training/training-content-day1/#5-deployment).
-- Run the application [locally](../../../getting-started/developer-training/training-content-day2/#running-the-application-locally)
+Clone the Server Developer Training starting repo [here](https://github.com/genesiscommunitysuccess/servertraining-seed), and open it using IntelliJ. 
+
+
+### Running the back end
+
+Here again, we will use the [IntelliJ plugin](../../../server/tooling/intellij-plugin/) provided by Genesis.
+
+Just follow the [build and deploy steps](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process), and then double-check that you can see the processes running properly as [explained](../../../server/tooling/intellij-plugin/#starting-processes). You must see all processes up and running or in standby mode.
+
+### Running the front end
+
+Next, [run the web application locally](../../../getting-started/developer-training/training-content-day2/#running-the-application-locally).
+
+If you don't get any errors, you're all set!
 
 The application will open at `http://localhost:6060/login`.
 

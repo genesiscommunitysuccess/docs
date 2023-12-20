@@ -34,11 +34,10 @@ systemDefinition {
         item(name = "DictionarySource", value = "DB")
         item(name = "AliasSource", value = "DB")
         item(name = "MetricsEnabled", value = "false")
-
         item(name = "ZeroMQProxyInboundPort", value = "5001")
         item(name = "ZeroMQProxyOutboundPort", value = "5000")
-
         item(name = "DbHost", value = "localhost")
+        item(name = "DbSqlMaxPoolSize", value = "4")
         item(name = "DbMode", value = "VANILLA")
         item(name = "GenesisNetProtocol", value = "V2")
         item(name = "ResourcePollerTimeout", value = "5")
@@ -127,23 +126,35 @@ val permissionsField = SysDef.ADMIN_PERMISSION_ENTITY_FIELD
 
 Further information regarding the system definitions such as items defined, HashiCorp Vault, and more can be found [here](../../../server/configuring-runtime/system-definitions/).
 
+### Saving resources
 
-### Exercise 1.1 System Definitions
+There are some important settings that enable you to optimise your usage of resources such as memory and CPU.
+
+- In your system definitions, you can include the `DbSqlMaxPoolSize` [setting](../../../database/database-technology/sql/#common-system-definitions). For each JVM process (Data Server, Request Server, etc.) connecting to the database, this setting determines the maximum number of SQL connections held by the SQL connection pool.
+
+- When you use the `genesisInstal`l command, you can use the [option](../../../operations/commands/server-commands/#syntax-4) `--compactProcesses`, which consolidates compatible services (like DataServer, RequestServer, Notify, EventHandler, Streamer) into a single process, called **GENESIS_COMPACT_PROCESS**, reducing the number of services running in the container. To do this, go to the Genesis Intellij plugin; and under the tab **tasks**, click on **Setup**. There you will find a script called: **genesisInstall --ignoreHooks --compactProcesses** as you can see below:
+
+![](/img/genesis-compact-process.png)
+
+The System definition is already included in the Server Developer Training starting repository that you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed). But please ensure that you modify the `genesisInstall` command to include the `--compactProcesses` option.
+
+This will certainly save memory and start-up time. However, keep in mind that drawbacks include increased process restart time and, in some cases, potential difficulty in managing SQL connections. For this training, where multiple processes are added locally, we recommend using both approaches to optimise resources and start-up time.
+
+### Exercise 1.1 System definitions
 :::info ESTIMATED TIME
 20 mins
 :::
 
-Let´s start the hands-on training with the first exercise. We are going to create a global custom definition to set the nullability for the Trade table fields. 
+Let's start the first exercise. We are going to create a global custom definition to set the nullability for the Trade table fields. 
 
-Create a new item in the system definition file and use it in the fields definition file. We should edit the local system definition file to do that.
+Create a new item in the system definition file and use it in the fields definition file. You should edit the local system definition file to do that.
 
 
 :::tip changing alpha-system-definition configurations 
-To do this exercise, go to the file **alpha-system-definition.kts** and do the changes. Then, go to the fields definition file and set *nullable* using SysDef. 
+To do this exercise, go to the file **alpha-system-definition.kts** and make the changes. Then, go to the fields definition file and set *nullable* using SysDef. 
 
 After the changes, don't forget to run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 :::
-
 
 ## Advanced Event Handlers
 

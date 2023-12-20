@@ -1073,7 +1073,7 @@ The [Front-end reporting](../../../web/micro-front-ends/front-end-reporting/foun
 
 #### Server configuration
 
-This component requires a server-side module to be installed and running. Please access the [reporting distribution 6.5.0](https://genesisglobal.jfrog.io/ui/native/libs-release-local/global/genesis/reporting-distribution/6.5.0/reporting-distribution-6.5.0-bin.zip) and export the files into your **.genesis-home** directory.
+This component requires a server-side module to be installed and running. Please access the [reporting distribution 7.0.0](https://genesisglobal.jfrog.io/ui/native/libs-release-local/global/genesis/reporting-distribution/7.0.0/reporting-distribution-7.0.0-bin.zip) and export the files into your **.genesis-home** directory.
 
 To make data available to users so that they can create reports, you must insert entries into the `REPORT_DATASOURCES` table. This table determines which data resources can be reported on.
 
@@ -1098,7 +1098,7 @@ To enable this micro front-end in your application, follow the steps below.
   ...
   "dependencies": {
     ...
-    "@genesislcap/foundation-reporting": "14.15.2",
+    "@genesislcap/foundation-reporting": "14.101.1",
   },
   ...
 }

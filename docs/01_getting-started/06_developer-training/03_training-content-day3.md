@@ -109,7 +109,7 @@ Moving on, for our app to be able to keep positions based on the trades, we now 
 
 ### Adding new fields​
 
-Let´s add new fields to the Trade table​. 
+Let's add new fields to the Trade table​. 
 
 ```kotlin {3-5} title="alpha-fields-dictionary.kts"
 fields {
