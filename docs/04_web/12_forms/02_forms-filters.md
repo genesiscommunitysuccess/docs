@@ -1,7 +1,7 @@
 ---
 title: 'Foundation Forms - filters'
 sidebar_label: 'Foundation Forms - filters'
-id: foundation-forms
+id: forms-filters
 keywords: [filters, genesis, foundation, ui, forms, smart forms]
 tags:
   - filters
