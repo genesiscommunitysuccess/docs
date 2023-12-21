@@ -165,7 +165,7 @@ import {sync} from '@genesislcap/foundation-utils';
 ...    
 ```
 
-From this point, the criteria used in the foundation-filter is stored into the `allTradesFilters` variable. You can use this variable with the `<grid-pro-genesis-datasource>` in order to match the same criteria used in the foundation filter. 
+From this point, the criteria used in the foundation-filter are stored in the `allTradesFilters` variable. You can use this variable with the `<grid-pro-genesis-datasource>` to match the criteria used in the foundation filter. 
 
 4. Assign the `allTradesFilters` to the `criteria` attribute of the `<grid-pro-genesis-datasource>`.:
 
@@ -178,7 +178,7 @@ From this point, the criteria used in the foundation-filter is stored into the `
 </zero-grid-pro>
 ```
 
-The outcome is that the foundation-filter displays a form showing all the available fields in the resource, allowing the user to select specific criteria for each field. Beneath this, the zero-grid-pro displays the data filtered by the input criteria.
+The outcome is that the foundation-filter displays a form showing all the available fields in the resource. This enables the user to select specific criteria for each field. Beneath this, the zero-grid-pro displays the data filtered by the input criteria.
 
 :::tip
 It is crucial to manipulate the style of the foundation-filter in order to see the `zero-grid-pro` beneath it.
