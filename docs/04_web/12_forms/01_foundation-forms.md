@@ -20,8 +20,6 @@ tags:
 You can click to view our [API documentation](./docs/api/index.md) in a separate area.
 :::
 
-`foundation-forms` is a library for building complex forms and filters at speed and at scale.
-
 A form enables a user to enter data, such as details of a new trade or a new user. When you create a form, you have to specify two main things.
 
 - The underlying data to be shown (objects, properties, and their types) must be retrieved either from a specific resource on the server (such as a Data Server) or from a JSON schema that you specify in your front-end code.
@@ -44,14 +42,17 @@ To enable this module in your application, add `@genesislcap/foundation-forms` a
   ...
 }
 ```
+`foundation-forms` is a library for building complex forms and filters at speed and at scale.
 
+:::tip
 Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again. You can find more information on the [package.json basics](../../../web/basics/package-json-basics/) page.
+:::
 
 ## Register components
 
-Every route that uses `foundation-forms` must register the components in the file where you define the class of your route.
+Every component that uses `foundation-forms` must register the component in the file where you define its class.
 
-So for example, if I have a route called *home*, then you need to register the components in the file **home.ts**.
+So for example, if I have component called *home*, then you need to register the component in the file **home.ts**.
 
 ```ts
 import { Form } from '@genesislcap/foundation-forms';
@@ -153,9 +154,9 @@ import { sampleJsonSchema } from './JsonSchema';
 
 ## Pre-fill forms with data (optional)
 
-Use the `data` attribute to pre-fill the form with ready-made information. In this example, we only have a short set of data, so we have included it in the _route._**template.ts** for the component:
+Use the `data` attribute to pre-fill the form with ready-made information. In this example, we only have a short set of data, so we have included it in the _component._**template.ts** for the component:
 
-```html
+```ts
 ...
 const sampleData = {
     ISSUER_NAME: 'Some Issuer',
