@@ -2,7 +2,7 @@
 title: 'Foundation Forms - advanced customisation'
 sidebar_label: 'Foundation Forms - advanced customisation'
 id: forms-customisation
-keywords: [filters, genesis, foundation, ui, forms, smart forms]
+keywords: [customisation, genesis, foundation, ui, forms, smart forms]
 tags:
   - customisation
   - genesis
@@ -18,6 +18,13 @@ tags:
 :::tip
 You can click to view our [API documentation](./docs/api/index.md) in a separate area.
 :::
+
+You can control the display of information using layout renderers. Typically a renderer requires an accompanying schema to specify the layout, but in some cases there are defaults.
+
+- vertical and horizontal layouts
+- arrays (dynamic form)
+- groups of related information
+- steps
 
 ## Layout renderers
 
@@ -59,7 +66,7 @@ const horizontalUISchema = {
 ### Arrays (dynamic forms)
 An array layout enables you to create a dynamic form with the ability to add, for example, multiple users.
 
-For this, you need both a `uiSchema``jsonSchema` and a `jsonSchema`.
+For this, you need both a `uiSchema` and a `jsonSchema`.
 
 ```ts
 const arrayUISchema = {
