@@ -67,6 +67,12 @@ import Example3 from '/examples/requestserver/_reqrep3.md'
 
 You can specify a timeout (in seconds) for a Request Server using the property `timeout`. In this example, we set a timeout of 15 seconds.
 
+If timeout is not set for a given requestReply definition, the default value will take the following precedence:
+
+1. the timeout value of the outer reqestReplies block
+2. else the timeout value of the `ReqRepTimeout` system definition item
+3. else 60 seconds
+
 <Example3 />
 
 ## Ranges
