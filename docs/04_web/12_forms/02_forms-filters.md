@@ -19,6 +19,18 @@ tags:
 You can click to view our [API documentation](./docs/api/index.md) in a separate area.
 :::
 
+A filter is a display that connects to a server resource, such as a Data Server. It enables the user to set one or more fields from the resource to filter information. For example, the user could select trades with a specific broker or trades within a specified value range.
+
+To create a filter, your main tasks are:
+
+- Specify the server resource where the underlying information is coming from.
+
+- Configure the layout using a UI schema.
+
+:::
+In order to display the filtered information, you need to specify another component and synchronise it with the information in the filter.
+:::
+
 ## Filters - basic install
 
 To enable this module in your application, add `@genesislcap/foundation-forms` as a dependency in your **package.json** file.
@@ -32,6 +44,7 @@ To enable this module in your application, add `@genesislcap/foundation-forms` a
   ...
 }
 ```
+
 Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ## Register components
@@ -129,7 +142,7 @@ import { sampleJsonSchema } from './JsonSchema';
 
 ## Synchronising values with datasource criteria
 
-If you want to synchronise a datagrid with a filter, you need to follow these steps:
+If you want to synchronise your filter with another display (such as a data grid), follow these steps:
 
 1. Register your component in the file where you define the class of your route. 
 
