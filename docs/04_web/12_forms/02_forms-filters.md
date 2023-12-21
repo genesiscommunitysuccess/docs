@@ -75,7 +75,7 @@ Below is an example of a `foundation-filters` using the `resourceName` attribute
 
 ## Configure form using UI schema
 
-You can also provide a `UISchema` to the `filter` in order to customise which fields should be displayed in the filter forms. The **schema.ts** file should be in the same folder as the file where you define the class of your route. In the example below, we set only the fields `QUANTITY` and `SIDE`.
+You can provide a `UISchema` to the `filter` in order to customise which fields should be displayed in the filter forms. The **schema.ts** file should be in the same folder as the file where you define the class of your route. In the example below, we set only the fields `QUANTITY` and `SIDE`.
 
 ```ts
 export const sampleUISchema = {
@@ -95,7 +95,7 @@ export const sampleUISchema = {
 };
 ```
 
-In the template file for your, you need to import the schema you have created:
+In the template file for your component, you need to import the schema you have created:
 
 ```html
 import { sampleUISchema } from './schema';
