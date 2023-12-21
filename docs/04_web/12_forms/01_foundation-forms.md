@@ -22,10 +22,12 @@ You can click to view our [API documentation](./docs/api/index.md) in a separate
 
 `foundation-forms` is a library for building complex forms and filters at speed and at scale.
 
-Foundation forms is defined by using two schemata:
+A form enables a user to enter data, such as details of a new trade or a new user. When you create a form, you have to specify two main things.
 
-- `resourceName`/`jsonSchema` defines the underlying data to be shown in the UI (objects, properties, and their types).
-- `uiSchema` defines how this data is rendered as a form, e.g. the order of controls, their visibility, and the layout.
+- The underlying data to be shown (objects, properties, and their types) must be retrieved either from a specific resource on the server (such as a Data Server) or from a JSON schema that you specify in your front-end code.
+
+- Separately, you need to supply a UI schema to control how this information is rendered as a form (including the order of controls, visibility and layout).
+
 
 ## Basic install
 
