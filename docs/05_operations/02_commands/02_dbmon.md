@@ -556,9 +556,10 @@ To set a value to **null**, use the `unset` command, for example:
 DbMon:TRADE>unset QUANTITY 
 ```
 
-:::
+:::info
 The `set` and `unset` commands themselves do not change the database.
 :::
+
 ### Inserting a new record
 
 To insert a new record into a table in the database, use the `insert` command. You will always be asked to confirm the command.
@@ -597,7 +598,7 @@ y
 Record saved
 ```
 
-:::
+:::info
 The `insert` command always inserts a new record with the values you have set. It does not (and cannot) change any existing record. You can only change an existing record using the `update` command.
 :::
 
