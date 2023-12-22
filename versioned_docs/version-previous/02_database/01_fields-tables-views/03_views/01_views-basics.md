@@ -16,7 +16,7 @@ A view definition is made up of **joins** and **fields**.
 
 ## Joins
 
-Joins enable you to bring other related tables into a view so we can serve up their fields in a single query row.
+Joins enable you to bring other related tables into a view so we can serve up their fields in a single query row. In order to use joins, one of the fields to be used in the join must be an [index](../../tables/tables-basics#indices). 
 
 For example, you might want to join a `TRADE` to an `INSTRUMENT` in order to pull in `INSTRUMENT` fields such as the `NAME` or `CURRENCY` to serve up to a grid.
 
