@@ -304,31 +304,11 @@ requestReplies {
 
 ### Limit the number of rows returned
 
-You can limit the number of rows returned using the property `rowReturnLimit`. In this example, we limit it to 2.
+You can limit the number of rows returned using the property `rowReturnLimit`. In this example, we limit it to 5.
 
-```kotlin {4}
-requestReplies {
-    requestReply(INSTRUMENT_DETAILS) {
+import Example3 from '/examples/requestserver/_reqrep3.md'
 
-        rowReturnLimit = 2
-
-        request {
-            ALTERNATE_TYPE
-            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
-        }
-
-        reply {
-            INSTRUMENT_ID
-            INSTRUMENT_NAME
-            LAST_TRADED_PRICE
-            VWAP
-            SPREAD
-            TRADED_CURRENCY
-            EXCHANGE_ID
-        }
-    }
-}
-```
+<Example3 />
 
 ### Timeout
 
@@ -357,6 +337,13 @@ requestReplies {
     }
 }
 ```
+:::note
+If timeout is not set for a given requestReply definition, the default value will take the following precedence:
+
+1. the timeout value of the outer reqestReplies block
+2. else the timeout value of the `ReqRepTimeout` system definition item
+3. else 60 seconds
+:::
 
 ### Ranges
 
