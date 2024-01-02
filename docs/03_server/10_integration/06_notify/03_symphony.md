@@ -17,14 +17,18 @@ To make Symphony services available to Genesis, you need to provision [symphony 
 Symphony is a separate module of the Genesis low-code platform. This gives platform users a better way to manage third-party dependencies, as the Symphony BDK has a number of transitive dependencies.
 
 ### Adding the Symphony module data schema
-In order to add the Symphony route tables to your application, add the following in your application dictionary cache module: 
+In order to add the Symphony route tables to your application, add the following line to the **build.gradle.kts** file in your application's **dictionary-cache** folder: 
 
-```kotlin
-api("global.genesis:genesis-symphony-config")
+```kotlin {3}
+dependencies {
+  ...
+  api("global.genesis:genesis-symphony-config")
+  ...
+}
 ```
 
 ### Adding the Symphony module to deployment
-In order to add the Symphony distribution to your application deployment, add the following in your application deployment module: 
+In order to add the Symphony route tables to your application deployment, add the following line to the **build.gradle.kts** file in your application's **deploy** folder:
 
 ```kotlin
 genesisServer(
@@ -37,11 +41,17 @@ genesisServer(
 ```
 
 ### Adding the Symphony module endpoints to GENESIS_NOTIFY
-In order to add the Symphony endpoints to your GENESIS_NOTIFY process, add the following package in your process definition: 
+In order to add the Symphony endpoints to your GENESIS_NOTIFY process, make two changes to your application's **processes.xml** file: 
+
+First, add or edit the `<script>` tag:
+
+```xml
+<script>genesis-symphony-dataserver.kts, genesis-symphony-eventhandler.kts, genesis-symphony-reqrep.kts</script>
 ```
-global.genesis.symphony.gateway.endpoints
-```
-and the following jar to the GENESIS_NOTIFY_PROCESS classpath
+
+Second, add or edit the the `<classpath>` tag:
+
+ and the following jar to the GENESIS_NOTIFY_PROCESS classpath
 ```
 genesis-symphony-manager*
 ```
