@@ -75,13 +75,13 @@ As you can see from the example, you can define items at global, system and host
 * **System**: These properties contain information about a particular system and can have a free text field. Each system is associated with a host or hosts. The content should specify the type of environment the system is running in. 
 Local values can be specified in this block. **These values override the global values**.
 * **Host**: In this section you can define properties of host or hosts (if running in a cluster environment). Host block can exist under the system section as shown in the above example.
-  The host name defines what environment you are running in. By default, only one host will be used and change its value to current machine hostname.
+  The host name defines what environment you are running in. By default, only one host will be used, and you must change its value to the current machine hostname.
 
 ### Items defined
 
-In the system definitions file, there are several items to be used as default values or even change configurations to adapt the application. 
+In the system definitions file, there are several items to be used as default values. You can also change important configurations for your application.
 
-For instance, to change the database configuration to any one of the [technologies supported](../../../database/database-technology/overview/), you should change the items `DbLayer`, `DbHost`, and possibly `system/hosts`. The code bellow show us how we could do this.
+For instance, to change the database configuration to any one of the [technologies supported](../../../database/database-technology/overview/), you should change the items `DbLayer`, `DbHost`, and possibly `system/hosts`. The code below shows us how we could do this.
 
 ```kotlin {6,8,13-16}
 package genesis.cfg
