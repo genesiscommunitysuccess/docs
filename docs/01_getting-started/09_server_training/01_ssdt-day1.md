@@ -105,7 +105,7 @@ systemDefinition {
 }
 ```
 
-Additionally, it is possible to create a global custom definition to be used like the code below.
+Additionally, you can create a global custom definition like this:
 
 ```kotlin {4}
 systemDefinition {
