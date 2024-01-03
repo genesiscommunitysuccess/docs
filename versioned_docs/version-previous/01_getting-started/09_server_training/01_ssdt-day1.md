@@ -71,7 +71,7 @@ systemDefinition {
 ### Global, System and Host levels
 
 As you can see from the example, you can define items at global, system and host level.
-* **Global**: These properties will be available to all systems. Represented by 
+* **Global**: These properties will be available to all systems. 
 * **System**: These properties contain information about a particular system and can have a free text field. Each system is associated with a host or hosts. The content should specify the type of environment the system is running in. 
 Local values can be specified in this block. **These values override the global values**.
 * **Host**: In this section you can define properties of host or hosts (if running in a cluster environment). Host block can exist under the system section as shown in the above example.
