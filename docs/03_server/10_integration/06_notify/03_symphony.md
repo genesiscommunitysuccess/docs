@@ -14,7 +14,7 @@ tags:
 To make Symphony services available to Genesis, you need to provision [symphony service](https://symphony.com/participate) and configure a [symphony bot](https://docs.developers.symphony.com/developer-tools/developer-tools/bdk-2.0).
 
 ## Importing Symphony
-Symphony is a separate module of the Genesis low-code platform. This gives platform users a better way to manage third-party dependencies, as the Symphony BDK has a number of transitive dependencies.
+Symphony is a separate module of the Genesis low-code platform. This gives you a better way to manage third-party dependencies, as the Symphony BDK has a number of transitive dependencies.
 
 ### Adding the Symphony module data schema
 In order to add the Symphony route tables to your application, add the following line to the **build.gradle.kts** file in your application's **dictionary-cache** folder: 
@@ -28,47 +28,63 @@ dependencies {
 ```
 
 ### Adding the Symphony module to deployment
-In order to add the Symphony route tables to your application deployment, add the following line to the **build.gradle.kts** file in your application's **deploy** folder:
+To add the Symphony route tables to your application deployment, add the following line to the **build.gradle.kts** file in your application's **deploy** folder:
 
 ```kotlin
-genesisServer(
+dependencies {
+  ...
+  genesisServer(
     group = "global.genesis",
     name = "genesis-symphony-distribution",
     version = properties["symphonyVersion"].toString(),
     classifier = "bin",
     ext = "zip"
   )
+  ...
+}
 ```
 
-### Adding the Symphony module endpoints to GENESIS_NOTIFY
-In order to add the Symphony endpoints to your GENESIS_NOTIFY process, make two changes to your application's **processes.xml** file: 
+## Running locally
+To run locally, you need to copy your **genesis-notify-processes.xml** file. If you are using the IntelliJ plugin, you can find this in the folder **.genesis-home/genesis-notify/cfg/**.
 
-First, add or edit the `<script>` tag:
+Paste this file into the **site-specific** folder at **server/jvm/alpha-site-specific/src/main/resources/cfg/**.
+
+Then you need to make the following changes:
+
+1. Add or edit the `<script>` tag:
 
 ```xml
 <script>genesis-symphony-dataserver.kts, genesis-symphony-eventhandler.kts, genesis-symphony-reqrep.kts</script>
 ```
 
-Second, add or edit the the `<classpath>` tag:
+2. Add or edit the the `<classpath>` tag as follows:
 
- and the following jar to the GENESIS_NOTIFY_PROCESS classpath
-```
-genesis-symphony-manager*
+
+```xml
+<classpath>genesis-symphony-manager*</classpath>
 ```
 
-### Adding Symphony extensions for notify GPAL scripts
-To configure symphony gateways, you need to import extensions for the Notify GPAL configuration. Add the following dependency to your application script-config module:
+Next, you need to import the extensions for the Notify GPAL configuration. This enables intellisense to work for your Notify scripts. 
+
+To do this, add the following dependency to the **build.gradle.kts** file in your application's **server/jvm/gradle** folder:
 
 ```kotlin
-compileOnly("global.genesis:genesis-symphony-manager:$symphonyVersion")
+...
+dependencies {
+    ...
+    compileOnly("global.genesis:genesis-symphony-manager:${properties["symphonyVersion"]}")
+    ...
+}
 ```
+
+After you have made these changes, perform a **deploy**. If you are using the Intellij plugin, this also performs a `genesisInstall` automatically. If you are working manually, then you need to run `genesisInstall` separately.
+
 
 ## Symphony configuration
 
 Genesis requires the use of Symphony POD, Symphony Bot and the generation of private/public key pairs. This is covered extensively in the Symphony [documentation](https://docs.developers.symphony.com/building-bots-on-symphony/overview-of-rest-api/pod-api).  
 
-Symphony must be configured in your **notify.kts** file. Here is an example configuration with connection details. 
-
+You configure Symphony in your **notify.kts** file. Here is an example configuration with connection details. 
 
 
 ```kotlin
