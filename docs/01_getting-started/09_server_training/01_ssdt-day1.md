@@ -80,7 +80,7 @@ Local values can be specified in this block. **These values override the global 
 
 In the system definitions file, there are several items to be used as default values. You can also change important configurations for your application. 
 
-For instance, to change the database configuration to any one of the [technologies supported](../../../database/database-technology/overview/), you should change the items `DbLayer`, `DbHost`, and possibly `system/hosts`. The code bellow shows us how we could do this.
+For instance, to change the database configuration to any one of the [technologies supported](../../../database/database-technology/overview/), you should change the items `DbLayer`, `DbHost`, and possibly `system/hosts`. The code below shows us how we could do this.
 
 ```kotlin {6,8,13-16}
 package genesis.cfg
@@ -105,7 +105,7 @@ systemDefinition {
 }
 ```
 
-Additionally, it is possible to create a global custom definition to be used like the code below.
+Additionally, you can create a global custom definition like this:
 
 ```kotlin {4}
 systemDefinition {
