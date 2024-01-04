@@ -10,29 +10,6 @@ tags:
 ---
 
 
-
-Event Handlers can be written in Java using Event Handler [APIs](../../../server/api-reference/event-handler-api). On this page, we look at Event Handlers written using the [Rx3 Event handlers](../../../server/api-reference/event-handler-api/#rx3eventhandler)
-
-:::note
-
-We recommend using **Kotlin** to implement Event Handlers.
-
-- **Java** Event Handlers can only be implemented using [**RxJava3**](#rx3) [**Sync**](#sync) Event Handlers.
-- Async Event Handlers are widely used in Kotlin events and cannot be used for Java events, as there is no implementation for Kotlin coroutines in Java.
-
----
-title: 'Java Event Handlers'
-sidebar_label: 'Java Event Handlers'
-id: java-event-handlers
-keywords: [server, event handler, java event handlers]
-tags:
-- server
-- event handler
-- java event handlers
----
-
-
-
 Event Handlers can be written in Java using Event Handler [APIs](../../../server/api-reference/event-handler-api). On this page, we look at Event Handlers written using the [Rx3 Event handlers](../../../server/api-reference/event-handler-api/#rx3eventhandler)
 
 :::note
@@ -47,9 +24,7 @@ We recommend using **Kotlin** to implement Event Handlers.
 To work with a Java Event Handler, there are two initial requirements:
 
 - In your _application_**-script-config/src/main/** folder, you must create an empty folder called **java**. This ensures that the Java file will be compiled.
-- You must create the Java file for the Event Handler in the folder **src/main/resources/scripts**.
-
-![](/img/java-event-handlers.png)
+- You must create the Java file for the Event Handler in the folder **src/main/java**. Typically, you would need an additional folder structure to represent the Java package. So the final structure might be **src/main/java/global/genesis/**_appname_
 
 ## A simple example of a Java Event Handler
 

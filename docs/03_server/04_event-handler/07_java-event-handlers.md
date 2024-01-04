@@ -25,9 +25,7 @@ We recommend using **Kotlin** to implement Event Handlers.
 To work with a Java Event Handler, there are two initial requirements:
 
 - In your _application_**-script-config/src/main/** folder, you must create an empty folder called **java**. This ensures that the Java file will be compiled.
-- You must create the Java file for the Event Handler in the folder **src/main/resources/scripts**.
-
-![](/img/java-event-handlers.png)
+- You must create the Java file for the Event Handler in the folder **src/main/java**. Typically, you would need an additional folder structure to represent the Java package. So the final structure might be **src/main/java/global/genesis/**_appname_
 
 ## A simple example of a Java Event Handler
 
