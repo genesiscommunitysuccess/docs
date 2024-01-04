@@ -66,7 +66,7 @@ Then you need to make the following changes:
 
 Next, you need to import the extensions for the Notify GPAL configuration. This enables intellisense to work for your Notify scripts. 
 
-To do this, add the following dependency to the **build.gradle.kts** file in your application's **server/jvm/gradle** folder:
+To do this, add the following dependency to the **build.gradle.kts** file in your application's **server/jvm/**_appname_**-script-config/** folder:
 
 ```kotlin
 ...
