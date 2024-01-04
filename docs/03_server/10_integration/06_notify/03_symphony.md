@@ -47,7 +47,7 @@ dependencies {
 ## Running locally
 To run locally, you need to copy your **genesis-notify-processes.xml** file. If you are using the IntelliJ plugin, you can find this in the folder **.genesis-home/genesis-notify/cfg/**.
 
-Paste this file into the **site-specific** folder at **server/jvm/alpha-site-specific/src/main/resources/cfg/**.
+Paste this file into the **site-specific** folder at **server/jvm/**_appname_**-site-specific/src/main/resources/cfg/**.
 
 Then you need to make the following changes:
 
