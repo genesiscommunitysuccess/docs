@@ -22,17 +22,31 @@ We recommend using **Kotlin** to implement Event Handlers.
 
 :::
 
-To work with a Java Event Handler, there are two initial requirements:
+To work with a Java Event Handler:
 
-- In your _application_**-script-config/src/main/** folder, you must create an empty folder called **java**. This ensures that the Java file will be compiled.
-- You must create the Java file for the Event Handler in the folder **src/main/java**. Typically, you would need an additional folder structure to represent the Java package. So the final structure might be **src/main/java/global/genesis/**_appname_
+1. In your _application_**-eventhandler/src/main/** folder, create an empty folder called **java**. This ensures that the Java file will be compiled.
+2. In your _application_**-eventhandler** folder, create a package for your Java Event Handler. Make sure that your package name is specific - this will be used to start the Event Handler process.
+
+![](/img/java-eventhandler.png)
+
+3. You can then create the file for the Java Event Handler in this folder.
+4. Update your-application_**processes.xml** file to include the details of the new module. For example:
+
+```xml
+<process name="JAVA_EVENT_HANDLER">
+    <groupId>MYAPP</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+    <module>myapp-eventhandler</module>
+    <package>global.genesis.eventhandler,genesis.global.trades</package>
+    <description>Handles events</description>
+</process>
+```
 
 ## A simple example of a Java Event Handler
+This method passes the input message type `CounterParty` as a parameter and expects the output message type `EventReply` to be returned.
 
-- This method passes the input message type `CounterParty` as a parameter and expects the output message type `EventReply` to be returned.
-- The default name will be `EVENT_<input message type name>`. So, for an input message type declared as `CounterParty`, the event with the name `EVENT_COUNTERPARTY` is automatically registered.
-- Any Java Event Handler classes you create must be placed in the same folder as the Java Event Handler module itself.
-
+The default name will be `EVENT_<input message type name>`. So, for an input message type declared as `CounterParty`, the event with the name `EVENT_COUNTERPARTY` is registered automatically.
 
 ```java
         @Module
@@ -52,6 +66,11 @@ To work with a Java Event Handler, there are two initial requirements:
             }
         }
 ```
+
+:::info
+Any Java Event Handler classes you create must be placed in the same folder as the Java Event Handler module itself.
+:::
+
 
 ## Adding a name
 Every `eventHandler` must have a unique name. If you do not provide one, it will be allocated a default name automatically, as shown in the previous example.
@@ -223,4 +242,27 @@ In order to optimise database look-up operations, you might want to use data obt
             }
         }
     }
+```
+## Using both Java Event Handlers and Kotlin Event Handlers
+You can use both Java and Kotlin Event Handlers in the same application.
+
+Make sure that both types of Event Handler are included in your application's **processes.xml** file. In the example below:
+
+- The Kotlin Event Handler is `<module>genesis-pal-eventhandler</module>`.
+- The `<script>` and `<language>` for the Kotlin file are registered.
+- The Kotlin and Java Event Handlers are both registered in the `<package>`. (In this case, the Java files are located in the package **genesis.global.trades**.)
+- The jar files for the Java Event Handler are registered in the `<classpath>`.
+
+```xml
+<process name="JAVA_KOTLIN_EVENT_HANLDERS">
+    <groupId>MYAPP</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+    <module>genesis-pal-eventhandler</module>
+    <package>global.genesis.eventhandler.pal,genesis.global.trades</package>
+    <script>Myapp-eventhandler.kts</script>
+    <language>pal</language>
+    <classpath>myapp-eventhandler*.jar</classpath>
+    <description>Handles events</description>
+</process>
 ```
