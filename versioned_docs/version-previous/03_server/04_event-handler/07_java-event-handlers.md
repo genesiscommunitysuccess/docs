@@ -10,7 +10,6 @@ tags:
 ---
 
 
-
 Event Handlers can be written in Java using Event Handler [APIs](../../../server/api-reference/event-handler-api). On this page, we look at Event Handlers written using the [Rx3 Event handlers](../../../server/api-reference/event-handler-api/#rx3eventhandler)
 
 :::note
