@@ -1,6 +1,6 @@
 ---
-title: 'Notify - configuration'
-sidebar_label: 'Configuring'
+title: 'Notify - introduction'
+sidebar_label: 'Introduction'
 id: configuring
 keywords: [server, integration, notify, configuration]
 tags:
@@ -37,16 +37,18 @@ Notifications are represented by the NOTIFY table in the database. They are gene
 To create a notification in a Genesis System, all you need to do is create a NOTIFY record in the database. GENESIS_NOTIFY will take care of the rest, based on the routes that are configured.
 
 ### Routes
-A route determines how the notification will get sent. Different gateways support different route types, but all route types have certain common fields: an identifier and a topic match field. 
-If the topic on a notification is a match for the topic on the route, the notificiation will be sent on that route.
+A route determines how the notification will get sent. Different gateways support different route types, but there are fields that are common to all types: 
+
+- identifier
+- topic match: where the topic on a notification is a match for the topic on the route, the notificiation will be sent on that route
 
 Each route type is a view across the NOTIFY_ROUTE base table, and a specific extension table that defines the fields for that view type. 
-All of the metadata management APIs deal directly with the views, so you can think of each route type as an extension to the core NOTIFY_ROUTE table, similar to polymorphic classes in Java.
+All the metadata-management APIs deal directly with the views, so you can think of each route type as an extension to the core NOTIFY_ROUTE table, similar to polymorphic classes in Java.
 
 ### Entity types
 Some route types are used for sending notifications directly to users of the application. For example, a SCREEN_ROUTE can send toast notifications directly to a user's screen, and an EMAIL_USER_ROUTE can send a notification directly to a user's email address. In contrast, an EMAIL_DISTRIBUTION_ROUTE can send a notification to email addresses that are not tied to a specific user in the system.
 
-For the routes that are used to send to application users, two fields are present on the route object: ENTITY_ID and ENTITY_ID_TYPE. These two fields represent a user or set of users to deliver the notification to.
+For routes that are used to send to application users, two fields are present on the route object: ENTITY_ID and ENTITY_ID_TYPE. These fields represent a user or set of users to deliver the notification to.
 
 ENTITY_ID_TYPE is an enumeration with the following possible values.
 
