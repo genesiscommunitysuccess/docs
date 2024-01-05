@@ -168,7 +168,7 @@ final var trade = db.get(trade.byTypeId())
 ### getAll
 
 Get all will take multiple _unique_ index class instances and return the type entity type for the record. It takes
-a `List<Pair<String, NonUniqueEntityIndex<E>>>`, where the `String` is a unique reference to each request.
+a `List<Pair<String, UniqueEntityIndex<E>>>`, where the `String` is a unique reference to each request.
 
 #### Overloads
 
@@ -184,7 +184,7 @@ val recordB = map["B"]
 
 ### getAllAsList
 
-This operation is similar to the one above, but takes a `List<NonUniqueEntityIndex<E>>`, and will return a `List<E?>`.
+This operation is similar to the one above, but takes a `List<UniqueEntityIndex<E>>`, and will return a `List<E?>`.
 The results are returned in the order they were requested and will be `null` if no record was found. The result
 list is guaranteed to be the same count as the input.
 
