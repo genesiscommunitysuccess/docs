@@ -137,6 +137,8 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 
 **LogFrameworkConfig**: Contains name of the log framework configuration file.
 
+**GlobalClasspathAdditions**: A list of delimited (':'), fully-qualified paths to any JVM files to be included on the classpath for all processes.
+
 If you want to enable SSL for your process communication, this is done in the [service definition](../../../server/configuring-runtime/service-definitions/#enable-ssl-for-processes).
 
 ## Setting system-definition values from environment variables
