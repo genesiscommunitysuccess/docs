@@ -110,13 +110,14 @@ yum update
 
 ```none title="CentOS"
 yum groupinstall base
-
 ```
 
-2. Install Java 17 or scp jdk from local binaries folder and install:
+2. In CentOS, install Java 17 or scp jdk from local binaries folder and install:
 
 ```none title="CentOS"
-sudo yum install java-17-openjdk-devel
+sudo yum -y install wget vim
+wget https://download.oracle.com/java/17/latest/jdk-17_linux-x64_bin.rpm
+sudo yum -y install ./jdk-17_linux-x64_bin.rpm
 ```
 
 Once you have set this up, it is a good idea to export the distribution:
