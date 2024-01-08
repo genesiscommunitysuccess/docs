@@ -113,10 +113,10 @@ yum groupinstall base
 
 ```
 
-2. Install Java 11 or scp jdk from local binaries folder and install:
+2. Install Java 17 or scp jdk from local binaries folder and install:
 
 ```none title="CentOS"
-sudo yum install java-11-openjdk-devel
+sudo yum install java-17-openjdk-devel
 ```
 
 Once you have set this up, it is a good idea to export the distribution:
