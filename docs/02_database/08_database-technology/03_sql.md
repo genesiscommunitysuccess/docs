@@ -47,10 +47,8 @@ Whichever SQL technology you are using, you need to configure it correctly in yo
 | `DbSqlCachePrepStmts`               | Enable or disable prepared statement cache. Default: true                                                                                                                                                                                                                                                                                                                |
 | `DbSqlPrepStmtCacheSize`            | Set the maximum number of cached prepared statements. Default: 250                                                                                                                                                                                                                                                                                                       |
 | `DbSqlPrepStmtCacheSqlLimit`        | Define the maximum length of SQL statements that can be cached. Default: 2048                                                                                                                                                                                                                                                                                            |
-| `DbOptimisticConcurrencyMode`       | Set the [Optimistic Concurrency](../../database-concepts/optimistic-concurrency) mode. Available values: STRICT, LAX and NONE. Defaults to NONE.                      
-
-| `SqlMaxParametersPerRequest`    | For Postgres and SQL Server databases only. Set to enable bulk operations for the database (`insertAll`, `getAllAsList`, etc). This speeds up priming (in views, Genesis uses `getAllAsList` internally to get joined records) and makes modify, delete and insert operations much faster. Other database technologies ignore this setting. 
-
+| `DbOptimisticConcurrencyMode`       | Set the [Optimistic Concurrency](../../database-concepts/optimistic-concurrency) mode. Available values: STRICT, LAX and NONE. Defaults to NONE.                      |
+| `SqlMaxParametersPerRequest`    | For Postgres and SQL Server databases only. Set to enable bulk operations for the database (`insertAll`, `getAllAsList`, etc). This speeds up priming (in views, Genesis uses `getAllAsList` internally to get joined records) and makes modify, delete and insert operations much faster. Other database technologies ignore this setting. |
 
 ### PostgreSQL
 
