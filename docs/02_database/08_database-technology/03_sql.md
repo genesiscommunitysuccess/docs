@@ -49,7 +49,7 @@ Whichever SQL technology you are using, you need to configure it correctly in yo
 | `DbSqlPrepStmtCacheSqlLimit`        | Define the maximum length of SQL statements that can be cached. Default: 2048                                                                                                                                                                                                                                                                                            |
 | `DbOptimisticConcurrencyMode`       | Set the [Optimistic Concurrency](../../database-concepts/optimistic-concurrency) mode. Available values: STRICT, LAX and NONE. Defaults to NONE.                      
 
-| `SqlMaxParametersPerRequest`    | Set to enable fast priming of dataservers. The setting increases the number of SQL parameters sent by the platform. -1 sets to Platform default which is 5000 for Postgres and 2000 for SQL Server. Other databases are unsupported. 
+| `SqlMaxParametersPerRequest`    | Set to enable fast priming of dataservers. The setting increases the number of SQL parameters sent by the platform. -1 sets to Platform default, which is 5000 for Postgres and 2000 for SQL Server. Other databases are not supported. 
 
 
 ### PostgreSQL
