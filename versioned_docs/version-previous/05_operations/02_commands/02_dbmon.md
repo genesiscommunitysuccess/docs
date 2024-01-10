@@ -652,6 +652,34 @@ Updated record: DbRecord [tableName=TRADE] [PRICE = 90.0, SYMBOL = EUR, QUANTITY
 1 records updated
 ```
 
+### Copying a record
+
+You can use `DbMon`to insert a copy of a record into the database, but note that:
+
+- You must `unset` any generated fields before proceeding; a generated field must always be unique.
+- You must `unset` any fields that are unique indices before proceeding; any field that is a unique index must contain a unique value. 
+
+To insert a copy of a record:
+
+1. Find the record that you want to copy. This is now the current record.
+2. Use `unset` to clear any generated fields or any field that is a unique index.
+3. `writeMode`.
+4. `insert`.
+
+For example, the sequence of commands below finds a record in the COUNTERPARTY table, unsets the COUNTERPARTY_ID field, which is generated, and inserts a new record with all the other details identical.
+In this case, there are no fields that are unique indices.
+
+```bash
+DbMon>tables COUNTERPARTY
+DbMon:COUNTERPARTY>search 1
+DbMon:COUNTERPARTY>unset COUNTERPARTY_ID
+DbMon:writeMode
+DbMon:COUNTERPARTY>insert
+Are you sure you wish to execute the command? Y/N
+y
+Record saved
+```
+
 ## Help
 
 Once inside `DbMon`, you can run the command [`help`](#dbmon-commands) to show all the available `DbMon` commands.
