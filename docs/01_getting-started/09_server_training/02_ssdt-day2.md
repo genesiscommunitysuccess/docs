@@ -169,7 +169,7 @@ joining(INSTRUMENT, JoinType.INNER) {
 
 
 #### Dictionary-joined tables
-When tables are joined in the dictionary, you are able to join to those tables in views directly, without having to specify the fields on which to join. This does not currently work with aliased tables.
+When tables are joined in the dictionary, for example, when you create a subtable in the tables definition, you are able to join to those tables in views directly, without having to specify the fields on which to join. This does not currently work with aliased tables.
 
 Joining on fields:
 
@@ -207,56 +207,6 @@ view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
 ```
 
 So for the above, if we had a Request Server using the view, it would make `ALTERNATE_TYPE` available as a field input parameter.
-
-### Dynamic joins
-These have a shared syntax with derived fields. However, rather than specifying a field name and type, the view should always return an entity index type of the table you’re joining on.
-
-As with derived fields, you can use the `withEntity` and the `withInput` syntax. However, the lambda should always return an entity index object or null. Also, it should always return the same type. It is not possible to switch dynamically between indices, so it should always return the same type or null. It is possible to add further `and` clauses afterwards.
-
-#### Examples
-
-##### Example 1
-Before:
-```kotlin
-joining(fix, backwardsJoin = true) {
-   on(TRADE_TO_SIDE { FIX_ID } to fix { SIDE_ID })
-      .and(fix { SIDE_TYPE } to SideType.FIX)
-      .joining(fixCal, JoinType.INNER, backwardsJoin = true) {
-        on(fix { CALENDAR_ID } to fixCal { CALENDAR_ID })
-      }
-```
-After:
-```kotlin
-joining(fix, backwardsJoin = true) {
-   on {
-      withEntity(TRADE_TO_SIDE) { tradeToSide ->
-        TradeSide.BySideId(tradeToSide.fixId)
-      }
-   }
-   .and(fix { SIDE_TYPE } to SideType.FIX)
-   .joining(fixCal, JoinType.INNER, backwardsJoin = true)
-```
-
-##### Example 2
-Before:
-```kotlin
-joining(fixCal, JoinType.INNER, backwardsJoin = true) {
-    on(fix { CALENDAR_ID } to fixCal { CALENDAR_ID })
-}
-```
-After:
-```kotlin
-.joining(fixCal, JoinType.INNER, backwardsJoin = true) {
-   on {
-      withInput(fix { CALENDAR_ID }) { calendarId ->
-         when (calendarId) {
-            null -> null
-            else -> TradeCalendar.ByCalendarId(calendarId)
-         }
-      }
-   }
-}
-```
 
 ### Exercise 2.2 Changing TRADE_VIEW JOINs
 
