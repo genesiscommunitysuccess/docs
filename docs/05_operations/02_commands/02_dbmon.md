@@ -687,12 +687,12 @@ Updated record: DbRecord [tableName=TRADE] [PRICE = 90.0, SYMBOL = EUR, QUANTITY
 
 You can use `DbMon`to insert a copy of a record into the database, but note that:
 
-- You must `unset` any generated fields before proceeding; you cannot copy a generated field.
-- You must `unset` any fields that are unique indices before proceeding; you cannot copy the value of any field that is a unique index. 
+- You must `unset` any generated fields before proceeding; a generated field must always be unique.
+- You must `unset` any fields that are unique indices before proceeding; any field that is a unique index must contain a unique value. 
 
-To copy a record:
+To insert a copy of a record:
 
-1. Find the the record that you want to copy. This is now the current record.
+1. Find the record that you want to copy. This is now the current record.
 2. Use `unset` to clear any generated fields or any field that is a unique index.
 3. `writeMode`.
 4. `insert`.
