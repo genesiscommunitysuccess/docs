@@ -159,7 +159,7 @@ module.exports = {
         {
           type: "html",
           position: "right",
-          value: '<a href="https://github.com/genesiscommunitysuccess/docs/issues/new?title=New+Feedback+from+learn.genesis.global&body=Thank+you+for+giving+us+your+feedback.%20Please+provide+it+below.%0a%0a%23%23+My+Issue/Idea/Suggestion%0a%0a" target="_blank" class="feedback" style="text-decoration:none">Give us Feedback</a>',
+          value: '<a href=\'\' onclick="window.open(\'https://github.com/genesiscommunitysuccess/docs/issues/new?title=New+Feedback+from+learn.genesis.global&body=Thank+you+for+giving+us+your+feedback.%20Please+provide%20it%20below.%0a%0a%23%23%20My%20Issue/Idea/Suggestion%0a%0a%23%23%20Current%20Page%0a%0a\'+window.location.href+window.location.hash,\'_blank\')" class="feedback" style="text-decoration:none">Give us Feedback</a>',
         },
         {
           href: "https://stackoverflow.com/c/genesis-global/questions",
@@ -199,4 +199,3 @@ module.exports = {
     },
   },
 };
-
