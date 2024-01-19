@@ -753,12 +753,12 @@ purgers {
 
 ### Purge bulk data
 
-You can purge data of whole table by using
+You can purge data from the whole table using:
 
 ```kotlin
 bulkPurger(USER_SESSION)
 ```
-You can purge data of table based on some conditions
+You can purge data from the table based on some conditions:
 
 ```kotlin
 purgers {
@@ -904,7 +904,7 @@ SendIt -t FUND -m FUND_BY_ID
 
 Modify fields (`-mf`) is a special parameter that can be added to `-m` operations. SendIt only attempts to modify the record fields specified in this comma-separated list parameter.
 
-To upsert records, similar to modifying, you need to specify the key of the table which will be used to identify the original record (if it exists) from each row in the csv file. 
+To upsert records, you need to specify the key that identifies the original record from each row in the csv file (if it exists). 
 
 ```bash
 SendIt -t FUND -u FUND_BY_ID
