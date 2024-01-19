@@ -52,6 +52,10 @@ Whichever SQL technology you are using, you need to configure it correctly in yo
 
 ### PostgreSQL
 
+:::info
+For optimum performance using PostgreSQL, set the `SqlMaxParametersPerRequest` parameter to -1 in your application's **system-definitions.kts** file.
+:::
+
 The JDBC URL for PostgreSQL takes the following form:
 
 `jdbc:postgresql://host:port/database`
@@ -75,9 +79,13 @@ If you want PostgreSQL to work with different namespaces/schemas, you must add t
 | DbMode      | This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY, which is the default mode; it always stores the dictionary in a table called `dictionary` and a schema called `metadata`. |
 | DbNamespace | This is the namespace/schema of database. This allows you to segregate data from different Genesis apps whilst using a single database.     |
 
-### MS SQL
+### SQL Server
 
-The JDBC URL for MS SQL takes the following form:
+:::info
+For optimum performance using SQL Server, set the `SqlMaxParametersPerRequest` parameter to -1 in your application's **system-definitions.kts** file.
+:::
+
+The JDBC URL for MS SQL Server takes the following form:
 
 `jdbc:sqlserver://serverName[\instanceName][:port]][;property=value[;property=value]`
 
