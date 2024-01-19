@@ -377,7 +377,7 @@ count { feeAmount }                 // counts the records with a FEE_AMOUNT
 // etc.
 ```
 
-Note that you can also create [custom functions](../advanced).
+Note that you can also create [custom functions](../advanced/#custom-functions).
 
 ### Assigning functions to fields
 
