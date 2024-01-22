@@ -730,37 +730,37 @@ writeMode
 
 Here is a full list of DbMon commands and their arguments.
 
-| Command                              | Argument                                    | Description                                                       |
-|--------------------------------------|---------------------------------------------|-------------------------------------------------------------------|
-| autoIncrementNumber                  | `<field_name>`                              |                                                                   |
-| [clear](#displaying-a-record---set)  |                                             | clear the current context                                         |
-| [count](#count-rows)                 |                                             | count the rows in the table/view                                  |
-| [delete](#delete)                    |                                             | delete the current row                                            |
-| [deleteWhere](#deletewhere)          | `<condition>`                               | delete all matching rows in the selected table                    |
-| [distinct](#distinct)                | `<condition> [-where <limiting_condition>]` | show only distinct records                                        |
-| [displayFields](#display-fields)     | `<field_names>`                             | display only selected columns                                     |
-| [find](#find)                        | `<key_name>`                                | find a specific record in a index                                 |
-| forceAutoIncrementNumber             | `<field_name> <sequence_number>`            |                                                                   |
-| forceSequenceNumber                  | `<sequence_name> <sequence_number>`         |                                                                   |
-| [first](#first-and-last)             | `<key_name>`                                | get the first record by key                                       |
-| help                                 |                                             | list all commands                                                 |
-| [insert](#insert)                    |                                             | insert the current                                                |
-| [last](#first-and-last)              | `<key_name>`                                | get the last record by key                                        |
-| listAll                              | `<key_name> <num_key_fields> <max_records>` |                                                                   |
-| [next](#next)                        | `<key_name>`                                | get the next record by key                                        |
-| qsearch                              | `<condition> [-l <limit>]`                  |                                                                   |
-| qshow                                |                                             |                                                                   |
-| [search](#search)                    | `<condition> [-l <limit>]`                  | return the records that match the criteria                        |
-| [set](#set-and-unset)                | `<field_name> <field_value>`                | set a field                                                       |
-| sequenceNumber                       | `<sequence_name>`                           | displays the last generated sequence number for the table or view |
-| [show](#show)                        |                                             | display the current record                                        |
-| [showKeys](#show-keys-indexes)       |                                             | display all indexes                                               |
-| [showTables](#show-tables-and-views) |                                             | display all tables in the schema                                  |
-| [showViews](#show-tables-and-views)  |                                             | display all views in the schema                                   |
-| [table](#table)                      | `<table_name>`                              | select an specified table                                         |
-| [unset](#set-and-unset)              | `<field>`                                   | set a field to `null`                                             |
-| [update](#update)                    | `<key_name>` `<fields>`                     | update the current row by key                                     |
-| [updateWhere](#updatewhere)          | `<condition> <assignments>`                 | update all records that matches a given condition                 |
-| [view](#view)                        | `<view_name>`                               | select an specified view                                          |
-| writeMode                            |                                             | enable write mode                                                 |
+| Command                              | Argument                                    | Description                                                            |
+|--------------------------------------|---------------------------------------------|------------------------------------------------------------------------|
+| autoIncrementNumber                  | `<field_name>`                              | displays the last generated autoIncrement number for the table or view |
+| [clear](#displaying-a-record---set)  |                                             | clear the current context                                              |
+| [count](#count-rows)                 |                                             | count the rows in the table/view                                       |
+| [delete](#delete)                    |                                             | delete the current row                                                 |
+| [deleteWhere](#deletewhere)          | `<condition>`                               | delete all matching rows in the selected table                         |
+| [distinct](#distinct)                | `<condition> [-where <limiting_condition>]` | show only distinct records                                             |
+| [displayFields](#display-fields)     | `<field_names>`                             | display only selected columns                                          |
+| [find](#find)                        | `<key_name>`                                | find a specific record in a index                                      |
+| forceAutoIncrementNumber             | `<field_name> <sequence_number>`            |                                                                        |
+| forceSequenceNumber                  | `<sequence_name> <sequence_number>`         |                                                                        |
+| [first](#first-and-last)             | `<key_name>`                                | get the first record by key                                            |
+| help                                 |                                             | list all commands                                                      |
+| [insert](#insert)                    |                                             | insert the current                                                     |
+| [last](#first-and-last)              | `<key_name>`                                | get the last record by key                                             |
+| listAll                              | `<key_name> <num_key_fields> <max_records>` |                                                                        |
+| [next](#next)                        | `<key_name>`                                | get the next record by key                                             |
+| qsearch                              | `<condition> [-l <limit>]`                  |                                                                        |
+| qshow                                |                                             |                                                                        |
+| [search](#search)                    | `<condition> [-l <limit>]`                  | return the records that match the criteria                             |
+| [set](#set-and-unset)                | `<field_name> <field_value>`                | set a field                                                            |
+| sequenceNumber                       | `<sequence_name>`                           | displays the last generated sequence number for the table or view      |
+| [show](#show)                        |                                             | display the current record                                             |
+| [showKeys](#show-keys-indexes)       |                                             | display all indexes                                                    |
+| [showTables](#show-tables-and-views) |                                             | display all tables in the schema                                       |
+| [showViews](#show-tables-and-views)  |                                             | display all views in the schema                                        |
+| [table](#table)                      | `<table_name>`                              | select an specified table                                              |
+| [unset](#set-and-unset)              | `<field>`                                   | set a field to `null`                                                  |
+| [update](#update)                    | `<key_name>` `<fields>`                     | update the current row by key                                          |
+| [updateWhere](#updatewhere)          | `<condition> <assignments>`                 | update all records that matches a given condition                      |
+| [view](#view)                        | `<view_name>`                               | select an specified view                                               |
+| writeMode                            |                                             | enable write mode                                                      |
 
