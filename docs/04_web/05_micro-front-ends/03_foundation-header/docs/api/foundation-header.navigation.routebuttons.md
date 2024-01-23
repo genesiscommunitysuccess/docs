@@ -4,6 +4,11 @@
 
 ## Navigation.routeButtons property
 
+> Warning: This API is now obsolete.
+> 
+> - Use `routeNavItems` instead.
+> 
+
 If present the defined route buttons will be rendered in the header 'routes' slot
 
 **Signature:**
