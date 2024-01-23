@@ -46,6 +46,7 @@ The constructor for this class is marked as internal. Third-party code should no
 |  [loadLayout(layout, handleMissingItem, disableCache)](./foundation-layout.foundationlayout.loadlayout.md) |  | Restores a layout described in the config from [getLayout()](./foundation-layout.foundationlayout.getlayout.md) |
 |  [registeredItems()](./foundation-layout.foundationlayout.registereditems.md) |  | Gets all of the currently registered names |
 |  [registerItem(registration, elements)](./foundation-layout.foundationlayout.registeritem.md) |  | Register a collection of <code>Element</code> and associate them with an <code>ID</code> with the layout system for later use. |
+|  [removeItems(registration, force)](./foundation-layout.foundationlayout.removeitems.md) |  | Removes all instances of a specified registered item from the layout. |
 |  [tryActivatePopoutMode()](./foundation-layout.foundationlayout.tryactivatepopoutmode.md) |  | **_(BETA)_** If in a popout window from the dynamic layout, this function will run the flow to put the component in popout mode. This function is automatically called if using the declarative HTML API, but if only using the JavaScript API then you will need to call this function manually. |
 |  [tryLoadLayoutFromLocalStorage()](./foundation-layout.foundationlayout.tryloadlayoutfromlocalstorage.md) |  | Try to load a layout from local storage, or return false. Only required if manually calling [FoundationLayout.registerItem()](./foundation-layout.foundationlayout.registeritem.md) |
 

@@ -183,6 +183,10 @@ This API enables you to register an item at runtime, but it will not be displaye
 
 Add an item or items that have previously been registered with the layout.
 
+#### [Remove Items](./docs/api/foundation-layout.foundationlayout.removeitems.md)
+
+Dynamically remove items from the layout. See linked API for side effects and options.
+
 #### [Layout Required Registrations](./docs/api/foundation-layout.foundationlayout.layoutrequiredregistrations.md)
 
 Static function to read a layout config. It returns a list of all the required registrations required to load it in the layout system. [See this example](#loading-serialised-layouts).
