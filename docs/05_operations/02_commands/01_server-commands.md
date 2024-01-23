@@ -866,7 +866,7 @@ This would result in an error, as PRICE is of type DOUBLE while FIRST_NAME is of
 
 ## SendIt 
 
-To send data into the database, use the `SendIt` command.
+To insert data into the database, use the `SendIt` command.
 
 ### Syntax
 The `SendIt` command can take the following arguments:
@@ -877,7 +877,7 @@ The `SendIt` command can take the following arguments:
 | -a       | --all                  | no        | import all the tables from all the csv files to the database | no                    | none    |
 | -d       | --delete               | no        | perform delete operations on all records           | no                    | none    |
 | -cf      | --columnFormat         | no        | set specific date format for column                   | no                    | none    |
-| -f       | --file `<arg>`         | no        | name of the csv file to which the table is imported  | no                    | the name of the new file with the data matches the name of the source table      |
+| -f       | --file `<arg>`         | no        | name of the csv file to which the table is imported  | no                    | Genesis looks for a new .csv file whose name matches the name of the source table    |
 | -fm      | --formatMode `<arg>`   | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY  | LEGACY  |
 | -h       | --help                 | no        | show help on how to use this command                         | no                    | none    |
 | -m       | --modify `<arg>`       | no        | key name used to find original record                        | no                    | none    |
@@ -896,7 +896,10 @@ SendIt -t FUND -f FUND.csv
 
 This reads the **FUND.csv** file in the local directory and inserts the data from the file into the FUND table.
 
-To modify records, you need to specify the key that will be used to identify the original record from each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
+To modify records, create a .csv file of the records that need to be modified, including the key value and the modified values for each record. Then use SendIt with the `-m` flag to specify the key that identifies the record or records to be modified. **You cannot modify the key that you supply here - although you can modify other key fields (with care).** If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key. 
+
+The following example looks for a file called **FUND.csv** by default. It looks through the table FUND, compares each record in the table with the record that has the same ID in the csv file. It applies any changes seen the csv record to the record in the table.
+
 
 ```bash
 SendIt -t FUND -m FUND_BY_ID
