@@ -904,7 +904,11 @@ Before making any changes to the database, you should switch off all processes.
 
 To **modify** records, create a .csv file of the records that need to be modified, including the key value and the modified values for each record. Then use SendIt with the `-m` flag to specify the key that identifies the record or records to be modified. **You cannot modify the key that you supply here - although you can modify other key fields (with care).** For example, you can't change an ID in the file and then modify on_BY_ID key. 
 
-The following example looks for a file called **FUND.csv** by default. It looks through the table FUND, compares each record in the table with the record that has the same ID in the csv file. It applies any changes in the csv record to the record in the table.
+The following example:
+
+- looks for a file called **FUND.csv** by default.
+- compares each record in the FUND table with the record that has the same ID in the csv file
+- applies any changes in the csv record to the record in the table
 
 ```bash
 SendIt -t FUND -m FUND_BY_ID
@@ -918,7 +922,11 @@ SendIt -t ALL_TRADES -m TRADE_BY_TRADE_ID -mf TRADE_PRICE, TRADE_QUANTITY
 
 To **upsert** records, create a .csv file of the records that need to be modified or inserted, including the key value and the relevant values for each record. Then use SendIt with the `-u` flag to specify the key that identifies the original record from each row in the csv file. 
 
-The following example looks for a file called **FUND.csv** by default. It looks through the table FUND, compares each record in the table with the record that has the same ID in the csv file. For these, it applies any changes in the csv record to the record in the table. For any record in the csv file that has no matching ID in the table, the record is inserted into the Fund table.
+The following example:
+
+- looks for a file called **FUND.csv** by default
+- for each record in the FUND table that has a matching ID in the csv, it applies the csv changes to the table
+- for any record in the csv file that has no matching ID in the FUND table, the record is inserted into the table
 
 ```bash
 SendIt -t FUND -u FUND_BY_ID
