@@ -63,7 +63,6 @@ Once you know this format, you need to create code that maps the fields so that 
 #### Retrieving this data
 You need to decide how to retrieve the data from the feed and write it to a staging area for your application. For example:
 
-
 -	scheduled SFTP download every 15 minutes from the Bloomberg feed, writing the source files to a folder called **/runtime/inbound/bbg**
 -	a Camel job created to do the same thing
 -	simple copy and paste
@@ -115,14 +114,13 @@ drwxrwxr-x. 3 briss briss 4096 Nov 11 14:10 ..
 ## Creating the Event Handler
 
 
-To handle the incoming content from Bloomberg, create an Event Handler called `ISSUANCE_EVENT_HANDLER`, and a newly created event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`.  (By the way, there is nothing stopping you from having multiple processors generating the same event to be handled by a single Event Handler.)
+To handle the incoming content from Bloomberg, create an `eventHandler` called `ISSUANCE_EVENT_HANDLER`, and a newly created event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`.  (By the way, there is nothing stopping you from having multiple processors generating the same event to be handled by a single `eventHandler`.)
 
-Bloomberg has a very specific file structure. It would be possible to perform all the initial parsing with a specialized process and generate processed fields and data. However, in our example we use a basic **FileEventHandlerProcessor**. The parsing and formatting of the data is performed by a BBG-specific Event Handler (event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`).
+Bloomberg has a very specific file structure. It would be possible to perform all the initial parsing with a specialized process and generate processed fields and data. However, in our example we use a basic **FileEventHandlerProcessor**. The parsing and formatting of the data is performed by a BBG-specific `eventHandler` (event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`).
 
+An `eventHandler` handles a specific single event. In this case, it implements the **Rx3ValidatingEventHandler** interface.
 
-An Event Handler handles a specific single event. In this case, the Event Handler implements the **Rx3ValidatingEventHandler** interface.
-
-Event handlers specify their message metadata and payload using type-safe classes. In this case, we know the input message from the Camel process will contain two string fields: "FILE" and "FILE_NAME". To allow our eventhandler to parse these fields automatically, it is possible to declare Kotlin data class like the one shown below:
+Each `eventHandler` specifies its message metadata and payload using type-safe classes. In this case, we know the input message from the Camel process will contain two string fields: "FILE" and "FILE_NAME". To allow our `eventHandler` to parse these fields automatically, you could declare a Kotlin data class like the one shown below:
 
 ```kotlin
 data class BbgIssuanceFileImport(
@@ -141,11 +139,17 @@ class BbgIssuanceFileImportEvent @Inject constructor(
 ) : Rx3ValidatingEventHandler<BbgIssuanceFileImport, EventReply> {
 ```
 
-In the Event Handler, there are two code blocks that you need to specify:
+In the `eventHandler`, there are two code blocks that you need to specify:
+
 - `onValidate`. This is where you validate the message before processing; return an `ack()` or `nack()`. If you do not want to add any validation, simply return an `ack()`.
-- `onCommit`. This is where you specify the parsing that converts the raw data (defined as collection of key-value pairs in the shape of a Map<String,String>) to Genesis format and sends it to a staging table for use in the application.
-  You also need to define any additional methods required to provide additional details about this event handler. For example, `messageType()` is required if the name of the event handler doesn't match the name of the class. You can also add any additional modules that are required to perform the work via dependency injection, such as the `RxEntityDb` and the `BbgFileImportReaderProvider` which is a utility class created with the purpose of providing reading utilities to handle Bloomberg issuance files.
-  In the following example, you can see a basic implementation overriding the message type and returning ack for both `onValidate` and `onCommit` functions.
+- `onCommit`. This is where you specify the parsing that converts the raw data (defined as collection of key-value pairs in the shape of a Map<String,String>) to Genesis format, and then sends it to a staging table for use in the application.
+
+You also need to define any additional methods required to provide additional details about this `eventHandler`. For example, if the name of the `eventHandler` doesn't match the name of the class, you must provide a `messageType()`. 
+
+You can also add any additional modules that are required to perform the work via dependency injection, such as the `RxEntityDb` and the `BbgFileImportReaderProvider`, which is a utility class created to provide reading utilities for handling Bloomberg issuance files.
+
+In the following example, you can see a basic implementation overriding the message type and returning ack for both `onValidate` and `onCommit` functions.
+
 ```kotlin
 @Module
 class BbgIssuanceFileImportEvent @Inject constructor(
@@ -168,16 +172,18 @@ class BbgIssuanceFileImportEvent @Inject constructor(
 }
 ```
 :::note
-Annotations of @Module and @Inject are required for Genesis Dependency Injection and Inversion of Control patterns. The @Module will be loaded at runtime, and the dependencies are injected into the BbgIssuanceFileImport Event Handler. In this case, the dependency is just RxEntityDb, which is being used to insert the data into the **ISSUANCE_DATA** table.
+Annotations of @Module and @Inject are required for Genesis Dependency Injection and Inversion of Control patterns. The @Module will be loaded at runtime, and the dependencies are injected into the BbgIssuanceFileImport `eventHandler`. In this case, the dependency is just RxEntityDb, which is being used to insert the data into the **ISSUANCE_DATA** table.
 :::
 
 All the work is performed in the `onCommit` block. The details can be found within the event message. This contains the `Map<String, String>` object specified as part of the class definition to get the message details.
 For this handler, we are interested in the `FILE` property of the `Map`, which is the content of the file as a string.
+
 - Here we split it by any end-of-line (EOLN) convention and then use a helper `BbgFileImportReader` class to parse the complex BBG structure and generate a list of fields and data elements.
 - Each data row then calls the mapRow method to convert them one at a time into the `IssuanceData` object, and add them to a collection.
 - Any exceptions are caught and added to an error list, which will be logged.
 - A final NACK is issued if any errors are found.
 - If there are no exceptions, then the `IssuanceData` elements generated are inserted into the ISSUANCE_DATA table using the associated repository.
+
 ```kotlin
 override fun onCommit(message: Event<BbgIssuanceFileImport>): Single<EventReply> {
     LOG.info("New file received")
@@ -248,8 +254,8 @@ override fun onCommit(message: Event<BbgIssuanceFileImport>): Single<EventReply>
     }
 }
 ```
-Other examples of event handlers that load files probably have a different **onCommit** block. For example, the **CSVEventHandlerProcessor** processor discussed in the configuration section has already performed part of the processing, so within the GenesisSet there is a DETAILS.ROW that is a collection of rows, each being a GenesisSet (field/value pairs).
-In that case a different message class needs to be defined:
+Other examples of `eventHandler` that load files probably have a different **onCommit** block. For example, the **CSVEventHandlerProcessor** processor discussed in the configuration section has already performed part of the processing, so within the GenesisSet there is a DETAILS.ROW that is a collection of rows, each being a GenesisSet (field/value pairs).
+In that case, a different message class needs to be defined:
 
 ```kotlin
 data class BbgIssuanceFileImport(
@@ -265,10 +271,11 @@ for (val currentRow in details.row) {
 ```
 
 ## Testing
-It is wise to create some tests around the Event Handler.
+It is wise to create some tests around the `eventHandler`.
 ### Unit Tests
 Due to the complexity of the Bloomberg feed, we should create unit tests around the parsing of the feed file (the `BbgFileImportReader` class). But separately, we can also create unit tests for this event. 
-In order to test the event, we use the `onCommit` block of the `BbgIssuanceFileImportEvent` class as well as **Mockito** to mock object behaviour..
+In order to test the event, we use the `onCommit` block of the `BbgIssuanceFileImportEvent` class as well as **Mockito** to mock object behaviour.
+
 ```kotlin
 @Test
 fun testPrelOnCommitSuccess() {
@@ -295,10 +302,14 @@ fun testPrelOnCommitSuccess() {
 ```
 ### Troubleshooting
 Once you have deployed the new build, if it does not work first time, here is a check list to help identify common mistakes:
+
 -	On start-up, look at the **Logs** directory for errors in **ISSUANCE_CAMEL.log** and **ISSUANCE_EVENT_HANDLER.log**.
 -	Check that the Camel log has registered your route.
 -	Check in the Event Handler log file that your new event has been registered.
--	Drop a test file into the staging directory and see the logs consume the file in the Camel log and log the contents with the Event Handler logs. In the BBG example below, the handler log shows the file contents and then an NACK error. In this example, we can see **^M** characters are causing parse failures on dates. Copying between email attachments and downloads, DOS and LINUX copies, we have introduced a EOLN issue on split-line file contents.
+-	Drop a test file into the staging directory and see the logs consume the file in the Camel log and log the contents with the Event Handler logs. In the BBG example below, the handler log shows the file contents and then an NACK error.
+
+In this example, we can see **^M** characters are causing parse failures on dates. Copying between email attachments and downloads, DOS and LINUX copies, we have introduced a EOLN issue on split-line file contents.
+
 ```bash
 |60.71| |N.S.|200000000.00|;2;3;3;13;200000.00;1; ;5;10/21/2021;13;150000.00;1; ;5;10/21/2021;13;100000.00;1; ;5;10/21/2021;|N.D.| |MIDSWAPS|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|^M
 END-OF-DATA^M
@@ -314,5 +325,6 @@ SOURCE_REF = 1
 SOURCE_REF = 1
 ```
 -	Finally, use DbMon to check the related staging table in the DATA_SERVER for the relevant rows – in this case, the ISSUANCE_DATA table.
-## Conclusion ##
+-	
+## Conclusion 
 That's it. You've seen how files can be fetched, parsed and placed on a staging table in an application.
