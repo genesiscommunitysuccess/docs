@@ -882,10 +882,10 @@ The `SendIt` command can take the following arguments:
 | -h       | --help                 | no        | show help on how to use this command                         | no                    | none    |
 | -m       | --modify `<arg>`       | no        | key name used to find original record                        | no                    | none    |
 | -mf      | --modifyFields `<arg>` | no        | specifies fields to modify (only used with `-m`)             | no                    | none    |
-| -u       | --upsert `<arg>`       | no        | table key name used to upsert records                        | no                    | none    |
 | -quiet   | --quietMode            | no        | make database changes without triggering real-time updates in update queue layer | no                    | none    |
 | -r       | --recover              | no        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | no                    | none    |
 | -t       | --table `<arg>`        | yes       | the name of the database table to be updated or amended      | must be a valid table | none    |
+| -u       | --upsert `<arg>`       | no        | table key name used to upsert records                        | no                    | none    |
 | -v       | --verbose              | no        | log every error line to output                               | no                    | none    |
 
 For example:
