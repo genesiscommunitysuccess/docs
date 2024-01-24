@@ -269,7 +269,7 @@ fun main(args: Array<String>) {
 }
 ```
 
-Consider another example; we have a migration script called migrateDictionary.sh as an install hook; this internally executes [MigrateDictionary](01_server-commands.md/#migratedictionary) as shown below:
+Consider another example; we have a migration script called migrateDictionary.sh as an install hook; this internally executes [MigrateDictionary](./01_server-commands.md#migratedictionary) as shown below:
 
 ```shell
 #!/bin/bash

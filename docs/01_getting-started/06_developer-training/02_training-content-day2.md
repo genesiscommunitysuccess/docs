@@ -52,7 +52,7 @@ At Genesis, we use a number of technologies to enable this functionality, includ
 Our components are distributed as npm packages, such as:
 
 #### `@genesislcap/foundation-ui` 
-When you generate a [design system](web/design-systems/introduction/) using the CLI, it automatically extends a base design system that we have provided. This highly configurable design system is called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options to provide everything you need for your application.
+When you generate a [design system](../../04_web/03_design-systems/01_introduction.md) using the CLI, it automatically extends a base design system that we have provided. This highly configurable design system is called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options to provide everything you need for your application.
 
 #### `@genesislcap/foundation-zero` 
 Our design system variant is called Zero Design System. This provides the standard components, such as buttons and data grids (wrappers around Microsoft FAST components); these can be easily integrated with the back end using component attributes such as 'resourceName', which displays and updates data in real time from a Data Server resource.
