@@ -21,6 +21,11 @@
 
 |  Type Alias | Description |
 |  --- | --- |
+|  [ElementTargetId](./foundation-header.elementtargetid.md) | Package element integration targets. |
+|  [HeaderTargetId](./foundation-header.headertargetid.md) | Header integration targets. |
 |  [LanguageOptions](./foundation-header.languageoptions.md) | Options for the language selector |
 |  [NavEventDetailMap](./foundation-header.naveventdetailmap.md) | Events dispatched by the navigation control buttons |
+|  [NavTargetId](./foundation-header.navtargetid.md) | Nav integration targets. |
+|  [SideNavTargetId](./foundation-header.sidenavtargetid.md) | Side nav integration targets. |
+|  [StyleTargetId](./foundation-header.styletargetid.md) | Package style integration targets. |
 

@@ -4,6 +4,11 @@
 
 ## Navigation.showNotificationsButton property
 
+> Warning: This API is now obsolete.
+> 
+> - Add/Remove PBC Notify via `genx` instead.
+> 
+
 Boolean attribute which controls whether to show the notification (bell) icon on the navigation bar Control via `show-notification-button`
 
 **Signature:**

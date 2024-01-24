@@ -4,6 +4,11 @@
 
 ## configure() function
 
+> Warning: This API is now obsolete.
+> 
+> - Please use foundation-auth instead.
+> 
+
 Configure the login micro frontend settings.
 
 **Signature:**
