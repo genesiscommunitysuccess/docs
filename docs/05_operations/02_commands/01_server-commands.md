@@ -866,7 +866,7 @@ This would result in an error, as PRICE is of type DOUBLE while FIRST_NAME is of
 
 ## SendIt 
 
-To insert data into the database, use the `SendIt` command. The data you want to insert should be in a .csv file, and the name of the file (or files) should match the name of the table where the data is to be inserted. If you use a different filename, you must specify this using the `-f` argument.
+To send data into the database (inserts, modifies and upserts), use the `SendIt` command. The data you want to send should be in a .csv file, and the name of the file (or files) should match the name of the table where the new or amended data is to be sent. If you use a different filename, you must specify this using the `-f` argument.
 
 ### Syntax
 The `SendIt` command can take the following arguments:
