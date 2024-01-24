@@ -898,8 +898,8 @@ This reads the **FUND.csv** file in the local directory and inserts the data fro
 
 ### Modifying and upserting
 
-:::warning
-Before making any changes to the database, you should switch off all processes.
+:::info
+You can use SendIt to make changes to the database while the application is running; Data Servers and Consolidators will process any changes in the normal way (for example). But if you are in any doubt that your changes might clash with other changes happening in the application, you should switch off all processes before using SendIt.
 :::
 
 To **modify** records, create a .csv file of the records that need to be modified, including the key value and the modified values for each record. Then use SendIt with the `-m` flag to specify the key that identifies the record or records to be modified. **You cannot modify the key that you supply here - although you can modify other key fields (with care).** For example, you can't change an ID in the file and then modify on_BY_ID key. 
