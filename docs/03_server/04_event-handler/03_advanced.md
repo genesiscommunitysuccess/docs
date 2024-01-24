@@ -40,7 +40,7 @@ sealed class CustomTradeEventReply : Outbound() {
 }
 ```
 
-Add `CustomTradeEventReply` under **{app-name}-messages** and assemble. Once you have built, add `api(project(":{app-name}-messages"))` to your build.gradle.kts file under **{app-name}-script-config/build.gradle.kts**.
+Add `CustomTradeEventReply` under **&#123;app-name}-messages** and assemble. Once you have built, add `api(project(":&#123;app-name}-messages"))` to your build.gradle.kts file under **&#123;app-name}-script-config/build.gradle.kts**.
 
 ...you can now use the following example Event Handler:
 
@@ -64,7 +64,7 @@ Add `CustomTradeEventReply` under **{app-name}-messages** and assemble. Once you
     }
 ```
 
-The following code assumes you have built your fields and tables after you created your `TradeEvent` under **jvm/{app-name}-config** with a primary key of `tradeId`. If intelliJ can't find your `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](../../../getting-started/learn-the-basics/data-model/).
+The following code assumes you have built your fields and tables after you created your `TradeEvent` under **jvm/&#123;app-name}-config** with a primary key of `tradeId`. If intelliJ can't find your `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](../../../getting-started/learn-the-basics/data-model/).
 
 ### onException
 
@@ -97,7 +97,7 @@ In the below example we use a generated database entity called `Company` as mess
 If you use custom class instead of generated database entities as message-type of events, we recommend that you locate your classes within the messages module of your application. This is where we place all the custom message types for our application. You need to ensure that the _app-name_**-script-config** module has a dependency on the messages module.
 
 ```bash
-    api(project(":{app-name}-messages"))
+    api(project(":&#123;app-name}-messages"))
 ```
 ### Permission codes
 
@@ -568,9 +568,9 @@ if (client == null || !client.isConnected) {
                 )
                 when (reply) {
                     is EventReply.EventAck ->
-                        println("Successfully rejected APPROVAL_ID: ${approval.approvalId}")
+                        println("Successfully rejected APPROVAL_ID: $&#123;approval.approvalId}")
                     is EventReply.EventNack ->
-                        println("Failed to rejected APPROVAL_ID: ${approval.approvalId}: $reply")
+                        println("Failed to rejected APPROVAL_ID: $&#123;approval.approvalId}: $reply")
                     else ->
                         println("Unexpected response from pending approval system: $reply")
                 }

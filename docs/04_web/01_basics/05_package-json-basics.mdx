@@ -71,8 +71,7 @@ Last but not least, the `dependencies` section contains a list of your app's dep
 This includes **@genesislcap** dependencies. This is where you can change the dependency versions to upgrade to a newer version of the platform.
 :::
 
-<code>
-
+```json
 "dependencies": {
     "@genesislcap/foundation-comms": <FoundationUi/>,
     "@genesislcap/foundation-entity-management": <FoundationUi/>,
@@ -88,7 +87,7 @@ This includes **@genesislcap** dependencies. This is where you can change the de
     "rxjs": "^7.4.0",
     "tslib": "^2.3.1"
     }
-</code>
+```
 
 :::tip
 You can use the `lerna add` command (instead of `npm install`) if you need to add more dependencies, because the app is a [lerna-managed](https://lerna.js.org/) monorepo.

@@ -23,7 +23,7 @@ SSO Token authentication covers both [SAML](https://en.wikipedia.org/wiki/Securi
 
 Some of these techniques support [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication) to bring additional security.
 
-Each of these requires its own configuration settings in the application's **auth-preferences.kts** file. To change the default **auth-preferences.kts** you need to create a new **auth-preferences.kts** under this path: {application-name-script}**-config/src/main/resources/scripts/**.
+Each of these requires its own configuration settings in the application's **auth-preferences.kts** file. To change the default **auth-preferences.kts** you need to create a new **auth-preferences.kts** under this path: &#123;application-name-script}**-config/src/main/resources/scripts/**.
 
 ## Username and password authentication
 

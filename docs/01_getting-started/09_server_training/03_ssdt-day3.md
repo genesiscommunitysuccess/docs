@@ -373,7 +373,7 @@ By defining your own Request Servers, you have maximum flexibility. You can spec
 
 It is recommended to locate your classes within the messages module of your application. Here, we place all the custom message types for our application. You will need to ensure that the script-config module has a dependency on the messages module.
 
-```kotlin {3} title='/server/jvm/{appName}-script-config/build.gradle.kts'
+```kotlin {3} title='/server/jvm/appName-script-config/build.gradle.kts'
 dependencies {
     ...
     api(project(":alpha-messages"))

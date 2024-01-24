@@ -97,10 +97,6 @@ properties, and Consolidator properties will overwrite both.
 
 In the select block, you can specify functions and outputs, for example:
 
-
-<Tabs defaultValue="tables" values={[{ label: 'Tables', value: 'tables', }, { label: 'Classes', value: 'classes', }]}>
-<TabItem value="tables">
-
 ```kotlin
 select {
     // add the output table here for a more concise syntax
@@ -112,10 +108,6 @@ select {
 }
 ```
 
-</TabItem>
-<TabItem value="classes">
-
-
 ```kotlin
 select {
     sum { feeAmount } into CommissionAndFeesSummary::feeAmount
@@ -123,8 +115,6 @@ select {
     sum { splitFeeAmount } into CommissionAndFeesSummary::splitFeeAmount
 }
 ```
-</TabItem>
-</Tabs>
 
 ### logging
 For debugging purposes, the `select` block also supports logging. By default, the Consolidator logs all events with default level **TRACE**, but this can be overwritten with custom messages. To do this, use the `logJoin`, `logLeave` and `logNoop` blocks:
@@ -164,9 +154,6 @@ The syntax of `groupBy` is significantly different for standard Consolidators an
 For object Consolidators, table syntax is more complex, as records need to be loaded and created. Also, the table syntax supports
 index scans, which need to be configured.
 
-<Tabs defaultValue="tables" values={[{ label: 'Tables', value: 'tables', }, { label: 'Classes', value: 'classes', }]}>
-<TabItem value="tables">
-
 The `groupBy`-`into` syntax determines:
 - how records are grouped `groupBy { ... } `
 - how the Consolidator interacts with the database `into { ... }`
@@ -183,10 +170,6 @@ groupBy { /* return group id*/ } into {
 }
 ```
 
-
-</TabItem>
-<TabItem value="classes">
-
 The `groupBy`-`into` syntax determines:
 - how records are grouped `groupBy { ... } `
 - how output records are constructed `into { ... }`
@@ -195,8 +178,6 @@ Syntax:
 ```kotlin
 groupBy { /* return group id*/ } into { /* return new output record */ }
 ```
-</TabItem>
-</Tabs>
 
 ### groupBy
 
@@ -245,9 +226,6 @@ groupBy { OrderSummary.byGroupId("${orderDate.year}-${orderDate.monthOfYear}") }
 
 The `into` statement is different for standard and object Consolidators:
 
-<Tabs defaultValue="tables" values={[{ label: 'Tables', value: 'tables', }, { label: 'Classes', value: 'classes', }]}>
-<TabItem value="tables">
-
 #### lookup
 
 The `lookup` block is optional when grouping by a unique index on the output table. In all other cases, the lookup
@@ -288,9 +266,6 @@ groupBy { Order.ById(orderid) } into {
 }
 ```
 
-</TabItem>
-<TabItem value="classes">
-
 Consolidator objects need to be able to build output objects on demand. There is no need to interact with the
 database at this point.
 
@@ -301,8 +276,7 @@ groupBy { orderId } into {
     }
 }
 ```
-</TabItem>
-</Tabs>
+
 
 ### where block (optional)
 
@@ -386,24 +360,17 @@ Note that functions can only be applied to fields that match in type. For exampl
 to a `DOUBLE` field.
 
 
-<Tabs defaultValue="tables" values={[{ label: 'Tables', value: 'tables', }, { label: 'Classes', value: 'classes', }]}>
-<TabItem value="tables">
-
 ```kotlin
 sum { feeAmount } into FEE_AMOUNT
 sum { originalFeeAmount } into ORIGINAL_FEE_AMOUNT
 sum { splitFeeAmount } into SPLIT_FEE_AMOUNT
 ```
-</TabItem>
-<TabItem value="classes">
 
 ```kotlin
 sum { feeAmount } into Order::feeAmount
 sum { originalFeeAmount } into Order::originalFeeAmount
 sum { splitFeeAmount } into Order::splitFeeAmount
 ```
-</TabItem>
-</Tabs>
 
 ### Transformations on functions
 

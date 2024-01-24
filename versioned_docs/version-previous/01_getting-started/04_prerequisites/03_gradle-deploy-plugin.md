@@ -22,7 +22,7 @@ on WSL.
 ### Adding the deployment plugin to your project
 
 The Genesis Gradle deploy plugin uses the project classpath to resolve dependent resources. So, in order not to not
-interfere with any of your other project modules, it is best to add a **${projectName}-deploy** module to your project.
+interfere with any of your other project modules, it is best to add a **$&#123;projectName}-deploy** module to your project.
 
 If you follow the Quick Start in this Learning Area, this module will provide you with part of the project template.
 
