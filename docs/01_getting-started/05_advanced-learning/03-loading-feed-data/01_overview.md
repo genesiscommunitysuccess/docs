@@ -114,11 +114,9 @@ drwxrwxr-x. 3 briss briss 4096 Nov 11 14:10 ..
 ```
 ## Creating the Event Handler
 
-
 To handle the incoming content from Bloomberg, create an `eventHandler` called `ISSUANCE_EVENT_HANDLER`, and a newly created event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`.  (By the way, there is nothing stopping you from having multiple processors generating the same event to be handled by a single `eventHandler`.)
 
 Bloomberg has a very specific file structure. It would be possible to perform all the initial parsing with a specialized process and generate processed fields and data. However, in our example we use a basic **FileEventHandlerProcessor**. The parsing and formatting of the data is performed by a BBG-specific `eventHandler` (event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`).
-
 
 An `eventHandler` handles a specific single event. In this case, it implements the **Rx3ValidatingEventHandler** interface.
 
@@ -149,7 +147,7 @@ You also need to define any additional methods required to provide additional de
 
 You can also add any additional modules that are required to perform the work via dependency injection, such as the `RxEntityDb` and the `BbgFileImportReaderProvider`, which is a utility class created to provide reading utilities for handling Bloomberg issuance files.
 
-  In the following example, you can see a basic implementation overriding the message type and returning ack for both `onValidate` and `onCommit` functions.
+In the following example, you can see a basic implementation overriding the message type and returning ack for both `onValidate` and `onCommit` functions.
   
 ```kotlin
 @Module
@@ -178,12 +176,13 @@ Annotations of @Module and @Inject are required for Genesis Dependency Injection
 
 All the work is performed in the `onCommit` block. The details can be found within the event message. This contains the `Map<String, String>` object specified as part of the class definition to get the message details.
 For this handler, we are interested in the `FILE` property of the `Map`, which is the content of the file as a string.
+
 - Here we split it by any end-of-line (EOLN) convention and then use a helper `BbgFileImportReader` class to parse the complex BBG structure and generate a list of fields and data elements.
 - Each data row then calls the mapRow method to convert them one at a time into the `IssuanceData` object, and add them to a collection.
 - Any exceptions are caught and added to an error list, which will be logged.
 - A final NACK is issued if any errors are found.
 - If there are no exceptions, then the `IssuanceData` elements generated are inserted into the ISSUANCE_DATA table using the associated repository.
-- 
+ 
 ```kotlin
 override fun onCommit(message: Event<BbgIssuanceFileImport>): Single<EventReply> {
     LOG.info("New file received")
