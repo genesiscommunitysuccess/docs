@@ -139,8 +139,8 @@ with a tab for each child. The tabs are ordered according to which child the lay
 
 ### [Layout Item `<foundation-layout-item>`](./docs/api/foundation-layout.foundationlayoutitem.md)
 
-Wrapper component that lives inside a layout section and wraps the client content. All content must be inside a layout item,
-otherwise a runtime error will be thrown when the layout attempts to render itself on screen.
+Wrapper component that lives inside a layout section and wraps the client content. All content must be inside a layout item;
+otherwise, a runtime error will be thrown when the layout attempts to render itself on screen.
 
 - **title**: string defining the title of the pane that contains the content. Defaults to `Item x`, where `x` is the pane number.
 - **closable**: boolean defining whether this element is closable - Default false.
@@ -185,7 +185,7 @@ Add an item or items that have previously been registered with the layout.
 
 #### [Remove Items](./docs/api/foundation-layout.foundationlayout.removeitems.md)
 
-Dynamically remove items from the layout. See linked API for side effects and options.
+Dynamically remove items from the layout. See the API documentation (link above) for side effects and options.
 
 #### [Layout Required Registrations](./docs/api/foundation-layout.foundationlayout.layoutrequiredregistrations.md)
 
@@ -201,8 +201,8 @@ Use this function over `.layoutRequiredRegistrations(layout: SerialisedLayout)` 
 
 ### Serialising layout
 
-The JavaScript API can be used to manually save and load layout states. This only describes the state of the dynamic layout itself. It is the responsibility of each component within the layout to serialise its own state, if required.
-To enable autosaving the layout see [here](#autosaving-layout).
+The JavaScript API can be used to save and load layout states manually. This only describes the state of the dynamic layout itself. It is the responsibility of each component within the layout to serialise its own state, if required.
+To enable autosaving the layout, see [here](#autosaving-layout).
 
 #### [Get Layout](./docs/api/foundation-layout.foundationlayout.getlayout.md)
 
@@ -218,11 +218,12 @@ Loads a serialised layout. All items that are described in the config to load mu
 
 ### [Emitted Events](./docs/api/foundation-layout.layoutemitevents.md)
 
-Certain actions that are performed by the user interacting with the layout emit events. See the API document linked for the events and when they're emitted. Interacting with these events allows your client code to dynamically interact with the layout, such as enabling/disabling buttons to add items to the layout when they're removed/added.
+Certain actions that are performed by the user interacting with the layout emit events. See the API document (in the link above) for the events and when they're emitted. Interacting with these events allows your client code to  interact dynamically with the layout, such as enabling/disabling buttons to add items to the layout when they're removed/added.
 
 ### [Received Events](./docs/api/foundation-layout.layoutreceiveevents.md)
 
-Certain events are listened to by the container for each component, enabling the component to interact with the layout. For example, a component could emit an event to change the title of the containing window.
+Certain events are listened to by the container for each component, enabling the component to interact with the layout. For example, a component could emit an event to change the title of the containing window:
+
 ```typescript
 this.$emit(eventType, eventDetail)
 ```
@@ -230,9 +231,9 @@ Each event requires a certain detail to process the event - see [the map of even
 
 ## Customising header buttons
 
-You can add custom buttons on layout items, and then control their behaviour. See [the custom button API](./docs/api/foundation-layout.custombutton.md) for the full definition. Setting this is optional. If you do define it, you must define it as an array, which enables you to add multiple custom buttons if you wish.
+You can add custom buttons on layout items, and then control their behaviour. See [the custom button API](./docs/api/foundation-layout.custombutton.md) for the full definition. Setting this is optional. If you do define it, you must define it as an array, which enables you to add multiple custom buttons.
 
-* The `svg` parameter controls the icon that your button displays. The format must be a base64 image definition. See the format as explained on the linked api document, and then replace the text around the `<< >>` part with a base64 encoded definition of the svg you wish to use.
+* The `svg` parameter controls the icon that is displayed for your button. The format must be a base64 image definition. See the format (as explained in the linked api document above), and then replace the text around the `<< >>` part with a base64 encoded definition of the svg you wish to use.
 * The `onClick` parameter will register a callback with the button. When the user clicks the button, your callback will be called. The callback receives a reference to the clicked button element, and to the element that is contained in the layout item associated with the clicked button.
 
 Different layout instances can have their own custom buttons, or they can share definitions. You are not able to have fine-grained control over each layout item, though; so if a layout has a custom button, then every item that it contains will have the button.
@@ -254,11 +255,11 @@ layout.customButtons = buttonDefinition;
 
 ### Renaming example
 
-See [here](#custom-item-renaming-header-button) for an example of creating a custom button to allow the user to rename an item.
+See this example of [creating a custom button](#custom-item-renaming-header-button), which enables the user to rename an item.
 
 ## Autosaving layout
 
-There is opt-in functionality provided in the layout to autosave the layout in local storage as the user interacts with it. Set the `auto-save-key` attribute to a unique string on the root element to enable the feature; the layout will be saved in this key. The layout will be saved for later recall in local storage whenever the user performs the following actions:
+You can set the layout to autosave in local storage as the user interacts with it. To do this, set the `auto-save-key` attribute to a unique string on the root element; the layout will be saved in this key. The layout will be saved for later recall in local storage whenever the user performs the following actions:
 
 - adding an item
 - removing an item
@@ -269,10 +270,10 @@ When you have enabled autosave, you are still able to use the manual [serialisin
 
 ### Reloading the layout
 
-The provided function [tryLoadLayoutFromLocalStorage()](./docs/api/foundation-layout.foundationlayout.tryloadlayoutfromlocalstorage.md) is used to rehydrate the layout from local storage, if `auto-save-key` is enabled.
+The function [tryLoadLayoutFromLocalStorage()](./docs/api/foundation-layout.foundationlayout.tryloadlayoutfromlocalstorage.md) is used to rehydrate the layout from local storage, when `auto-save-key` is enabled.
 If you are using the declarative API, then this function is called for you automatically.
 
-If you are manually registering items (too) using the JavaScript API, you must call this function manually, immediately after you have finished registering all the items. For an example [see here](#contained-example).
+If you are manually registering items (too) using the JavaScript API, you must [call this function manually](#contained-example) immediately after you have finished registering all the items. 
 
 ### Layout placeholder
 
@@ -314,7 +315,7 @@ At the very least, you must run `super` calls to the lifecycle methods, or else 
 :::
 
 ### Resource-intensive components
-Throughout Foundation UI, there is no need to de-register a component that is registered in the layout while it is not in use.  However, if you have a component that is extremely resource-intensive, then you can use this lifecycle control method to ensure that it only consumes resources when it is in use.
+You do not need to de-register a component that is registered in the layout while it is not in use.  However, if you have a component that is extremely resource-intensive, then you can use this lifecycle control method to ensure that it only consumes resources when it is in use.
 
 - When the element is part of the layout registry, then `shouldRunConnect` will be false and you can use this to ensure that your component isn't doing unnecessary work while part of the cache.
 
@@ -329,7 +330,7 @@ You can implement the [LayoutComponentWithState](./docs/api/foundation-layout.la
 Usage of this interface is optional; if you do not need to manage the state for your components in this way, then simply do not implement the interface.
 
 :::warning
-The layout system is only interacting with the immediately contained items - so if you have components that contain other components, each top-level component must interact with the contained components to manage their states.
+The layout system only interacts with the immediately contained items - so if you have components that contain other components, each top-level component must interact with the contained components to manage their states.
 :::
 
 :::danger
@@ -347,7 +348,8 @@ As a general rule, if you need to have elements with FAST bindings inside the la
 :::
 
 If you are writing your own custom element that needs to work inside the layout, follow these steps.
-In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin`, which overrides the `cloneNode` API.
+
+1. In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin`, which overrides the `cloneNode` API.
 
 ```typescript
 // Make a call to `deepClone` and manually clone children
@@ -369,7 +371,8 @@ deepClone(): Node {
 }
 ```
 
-You can then extend the cloning functionality for your specific requirements. For example, our charts component needs to copy over `config` and `data` parameters.
+2. You can then extend the cloning functionality for your specific requirements. For example, our charts component needs to copy over `config` and `data` parameters.
+
 ```typescript
 export class G2PlotChart extends LifecycleMixin(FoundationElement) {
 	...
@@ -509,7 +512,7 @@ This would render the following:
 |             |                                       |
 +-------------+---------------------------------------+
 ```
-Component 1 has a Close button. Component 1 takes up 25% of the initial width. Components 2,3,4 take up a third of the _remaining_ width between them
+Component 1 has a **Close** button. Component 1 takes up 25% of the initial width. Components 2,3,4 take up a third of the _remaining_ width between them
 (default behaviour) and 5 and 6 are tabbed.
 
 ### `repeat` directive
@@ -598,9 +601,8 @@ You would see both items rendered like this:
 If you had `showIndexFunds = false;` then only the `Stocks Chart` would be rendered.
 
 :::danger
-Directives are for initialising the layout only and should *not* be used with changing `@observable` attributes which would cause the
-layout to reinitialise incorrectly - this will duplicate the panels. For example, you can use the
-`when` directive to conditionally render a pane during initialisation, but not to toggle whether to show/hide the pane afterwards.
+Directives are for initialising the layout only and should *not* be used with changing `@observable` attributes, which would cause the
+layout to reinitialise incorrectly - this will duplicate the panels. For example, you can use the `when` directive to conditionally render a pane during initialisation, but not to toggle whether to show/hide the pane afterwards.
 See [this example](#observables-with-directives).
 :::
 
@@ -652,9 +654,9 @@ This is just an example; you could have more than two layouts on a page or style
 
 ### Adding items dynamically
 
-This is an example of using the JavaScript API to add items onto the layout at runtime. Before reading this example you should familiarise yourself with the [API Section](#javascript-api).
+This is an example of using the JavaScript API to add items to the layout at runtime. Before reading this example, you should familiarise yourself with the [API Section](#javascript-api).
 
-Say you want the user to be able to choose between three different types of item tht can be put onto the layout - a profile-management table, and a pie & column chart.
+Say you want the user to be able to choose between three different types of item that can be put onto the layout - a profile-management table, a pie chart, and a column chart.
 
 ```typescript
 // Can either create an element and initialise it completely using JavaScript
@@ -843,7 +845,7 @@ layout.registerItem(test, [element]);
 ```
 
 :::info
-Only items _missing_ from the `requiredRegistrations` is an issue. If there are items in the `currentRegistrations` that are not in `requiredRegistrations`, this is *not* an issue - because these will simply be unused registrations.
+Only items _missing_ from the `requiredRegistrations` are an issue. If there are items in the `currentRegistrations` that are not in `requiredRegistrations`, this is *not* an issue - because these will simply be unused registrations.
 :::
 
 :::warning
@@ -852,7 +854,7 @@ If you are calling `registerItem` manually and are using the autosave feature, [
 
 ### Custom item renaming header button
 
-Here is an example of creating a custom button for the layout which when clicked will prompt the user for a name, and will rename the item in the layout.
+Here is an example of creating a custom button for the layout. When the button is clicked, it prompts the user for a name, and will rename the item in the layout.
 
 ```typescript
 export const layoutCustomButtons: CustomButton[] = [
@@ -1037,7 +1039,7 @@ var template = html<Analytics>`
 `;
 ```
 
-Initially you will see both items correctly rendered like this:
+Initially, you will see both items correctly rendered like this:
 ```
 +---------------------------------------------+
 |              Stocks Chart                   |
@@ -1131,10 +1133,10 @@ The user of your layout will move things around and this will cache the layout. 
 </foundation-layout>
 ```
 
-You and the user will only see the first two items, like before. This is because the cached layout is being loaded, which does not contain the
-new item. To fix this you must [invalidate the cache](#invalidating-the-cache).
+You and the user will still only see the first two items. This is because the cached layout is being loaded, which does not contain the
+new item. To fix this, you must [invalidate the cache](#invalidating-the-cache).
 
-### Resource intensive component resetting in layout
+### Resource-intensive component resetting in layout
 
 Say you have a component which has to initialise a resource-heavy or long-awaited asynchronous task, such as the following:
 ```typescript
@@ -1158,7 +1160,7 @@ export class MockConnected extends FASTElement {
 
 As explained in the [lifecycle info section](#element-lifecycle), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initialising a potentially heavy resource.
 
-Use `LifecycleMixin` to access properties on the class, which can be used to run lifecycle functionality more thoughtfully. In the following example, we split out the resource-intensive work and conditionally call them when needed.
+Use `LifecycleMixin` to access properties on the class, which can be used to run lifecycle functionality more thoughtfully. In the following example, the resource-intensive tasks are called conditionally - only when needed.
 
 ```typescript
 @customElement({
@@ -1193,10 +1195,10 @@ export class MockConnected extends LifecycleMixin(FASTElement) {
 }
 ```
 
-The above is quite a comprehensive example, but it doesn't necessarily have to be so complicated. You may just want to exit early from the connected callback without using the `DOM.queueUpdate` functionality. However, it is useful for handling the `async` setup process properly.
+The above is quite a comprehensive example, but it doesn't necessarily have to be so complicated. You might just want to exit early from the connected callback without using the `DOM.queueUpdate` functionality. However, it is useful for handling the `async` setup process properly.
 
 :::warning
-The requirement to capture the parameter in the example above (e.g. `const shouldRunDisconnect = shouldRunDisconnect`) is to cache the information at the time of the lifecycle change, for use when the `DOM.queueUpdate` work is performed. This is not required if you run your lifecycle methods synchronously; however, if you follow the pattern above, you need to schedule the `async` functionality to run after the layout considers the relevant lifecycle-gating functionality (such as dragging) to be complete.
+It is important to capture the parameter in the example above (e.g. `const shouldRunDisconnect = shouldRunDisconnect`) so that the information is cached at the time of the lifecycle change, for use when the `DOM.queueUpdate` work is performed. This is not required if you run your lifecycle methods synchronously; however, if you follow the pattern above, you need to schedule the `async` functionality to run after the layout considers the relevant lifecycle-gating functionality (such as dragging) to be complete.
 :::
 
 ### Consuming lifecycle value multiple times
@@ -1264,7 +1266,7 @@ The same limitation applies if you're checking the variable multiple times becau
 
 ### Custom components to handle bindings and event listeners
 As shown in [this example](#binding-events-inline-in-the-declarative-api), you need to wrap html that uses fast bindings and event listeners into their own custom
-components. This section is a technical explanation for why this is the case. It is required that we make use of `cloneNode` to allow the layout to add multiple instances
+components. This section is a technical explanation for why this is necessary. It is required that we make use of `cloneNode` to allow the layout to add multiple instances
 of a registered component.
 
 Consider the following, which is the order of events for loading the layout when using html that includes bindings.
