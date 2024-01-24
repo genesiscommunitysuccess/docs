@@ -129,7 +129,7 @@ module.exports = async function createConfigAsync() {
             breadcrumbs: false,
             routeBasePath,
             sidebarPath: require.resolve("./sidebars.js"),
-            remarkPlugins: [require("mdx-mermaid")],
+            remarkPlugins: [(await import("mdx-mermaid")).default],
             lastVersion: "current",
             versions: {
               current: {
