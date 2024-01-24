@@ -9,7 +9,7 @@
     "docusaurus": "docusaurus",
     "build": "npm run copy:dsc && docusaurus build",
     "build-main": "docusaurus build",
-    "build:base_url": "BASE_URL=/docs/npm run copy:dsc && docusaurus build",
+    "build:base_url": "BASE_URL=/docs/ npm run copy:dsc && docusaurus build",
     "build:production": "BASE_URL=/docs/ BRANCH=master npm run copy:dsc && docusaurus build",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
