@@ -1,0 +1,10 @@
+{
+  "name": "api-docs-sync",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tool to sync foundation ui docs into the learn repo",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
