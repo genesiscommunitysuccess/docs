@@ -753,12 +753,12 @@ purgers {
 
 ### Purge bulk data
 
-You can purge data of whole table by using
+You can purge data from the whole table using:
 
 ```kotlin
 bulkPurger(USER_SESSION)
 ```
-You can purge data of table based on some conditions
+You can purge data from the table based on some conditions:
 
 ```kotlin
 purgers {
@@ -866,26 +866,27 @@ This would result in an error, as PRICE is of type DOUBLE while FIRST_NAME is of
 
 ## SendIt 
 
-To send data into the database, use the `SendIt` command.
+To send data into the database (inserts, modifies and upserts), use the `SendIt` command. The data you want to send should be in a .csv file, and the name of the file (or files) should match the name of the table where the new or amended data is to be sent. If you use a different filename, you must specify this using the `-f` argument.
 
 ### Syntax
 The `SendIt` command can take the following arguments:
 
 
-| Argument | Argument long name     | Mandatory | Description                                                    | Restricted values | Default |
-|----------|------------------------|-----------|----------------------------------------------------------------|-------------------|--------|
-| -a       | --all                  | no        | import all the tables from all the csv files to the database | no                | none    |
-| -d       | --delete               | no        | perform delete operations on all records           | no                | none    |
-| -cf      | --columnFormat         | no        | set specific date format for column                   | no                | none    |
-| -f       | --file `<arg>`         | no        | name of the csv file to which the table is imported  |no                | the name of the new file with the data matches the name of the source table      |
-| -fm      | --formatMode `<arg>`   | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY | LEGACY  |
-| -h       | --help                 | no        | show help on how to use this command                         | no                | none    |
-| -m       | --modify `<arg>`       | no        | key name used to find original record                        | no                | none    |
-| -mf      | --modifyFields `<arg>` | no        | specifies fields to modify                                   | no                | none    |
-| -quiet   | --quietMode            | no        | make database changes without triggering real-time updates in update queue layer | no | none    |
-| -r       | --recover              | no        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | no                | none    |
-| -t       | --table `<arg>`        | yes       | the name of the table to import to the database              | must be a valid table |   |
-| -v       | --verbose              | no        | log every error line to output                               | no                | none    |
+| Argument | Argument long name     | Mandatory | Description                                                    | Restricted values     | Default |
+|----------|------------------------|-----------|----------------------------------------------------------------|-----------------------|--------|
+| -a       | --all                  | no        | import all the tables from all the csv files to the database | no                    | none    |
+| -d       | --delete               | no        | perform delete operations on all records                     | no                    | none    |
+| -cf      | --columnFormat         | no        | set specific date format for column                          | no                    | none    |
+| -f       | --file `<arg>`         | no        | name of the csv file that contains the data                  | no                    | Genesis looks for a new .csv file whose name matches the name of the source table    |
+| -fm      | --formatMode `<arg>`   | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY  | LEGACY  |
+| -h       | --help                 | no        | show help on how to use this command                         | no                    | none    |
+| -m       | --modify `<arg>`       | no        | key name used to find original record                        | no                    | none    |
+| -mf      | --modifyFields `<arg>` | no        | specifies fields to modify (only used with `-m`)             | no                    | none    |
+| -quiet   | --quietMode            | no        | make database changes without triggering real-time updates in update queue layer | no                    | none    |
+| -r       | --recover              | no        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | no                    | none    |
+| -t       | --table `<arg>`        | yes       | the name of the database table to be updated or amended      | must be a valid table | none    |
+| -u       | --upsert `<arg>`       | no        | table key name used to upsert records                        | no                    | none    |
+| -v       | --verbose              | no        | log every error line to output                               | no                    | none    |
 
 For example:
 
@@ -895,21 +896,48 @@ SendIt -t FUND -f FUND.csv
 
 This reads the **FUND.csv** file in the local directory and inserts the data from the file into the FUND table.
 
-To modify records, you need to specify the key that will be used to identify the original record from each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
+### Modifying and upserting
+
+:::info
+You can use SendIt to make changes to the database while the application is running; Data Servers and Consolidators will process any changes in the normal way (for example). But if you are in any doubt that your changes might clash with other changes happening in the application, you should switch off all processes before using SendIt.
+:::
+
+To **modify** records, create a .csv file of the records that need to be modified, including the key value and the modified values for each record. Then use SendIt with the `-m` flag to specify the key that identifies the record or records to be modified. **You cannot modify the key that you supply here - although you can modify other key fields (with care).** For example, you can't change an ID in the file and then modify on_BY_ID key. 
+
+The following example:
+
+- looks for a file called **FUND.csv** by default.
+- compares each record in the FUND table with the record that has the same ID in the csv file
+- applies any changes in the csv record to the record in the table
 
 ```bash
 SendIt -t FUND -m FUND_BY_ID
 ```
 
-Modify fields (`-mf`) is a special parameter that can be added to `-m` operations. SendIt only attempts to modify the record fields specified in this comma-separated list parameter.
+Modify fields (`-mf`) is an extra parameter that can be added to `-m` operations. SendIt only attempts to modify the record fields specified in this comma-separated list. For example:
 
-To delete records, specify `-d` (or `--delete`)
+```bash
+SendIt -t ALL_TRADES -m TRADE_BY_TRADE_ID -mf TRADE_PRICE, TRADE_QUANTITY
+```
+
+To **upsert** records, create a .csv file of the records that need to be modified or inserted, including the key value and the relevant values for each record. Then use SendIt with the `-u` flag to specify the key that identifies the original record from each row in the csv file. 
+
+The following example:
+
+- looks for a file called **FUND.csv** by default
+- for each record in the FUND table that has a matching ID in the csv, it applies the csv changes to the table
+- for any record in the csv file that has no matching ID in the FUND table, the record is inserted into the table
+
+```bash
+SendIt -t FUND -u FUND_BY_ID
+```
+### Deleting
+To **delete** records, specify `-d` (or `--delete`)
 
 ```bash
 SendIt -t FUND -d
 ```
-
-If no file parameter is specified, `.csv` is assumed and read from the local directory.
+### Verbose mode
 
 Verbose mode additionally outputs line-by-line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes `SendIt` useful for scheduled or automated jobs (e.g. daily data loads).
 
