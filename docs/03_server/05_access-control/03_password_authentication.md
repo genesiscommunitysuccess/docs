@@ -325,29 +325,63 @@ All requests below are capable of returning an error with a code of INTERNAL_ERR
 ---
 
 ## Pre-authentication
-Pre-authentication messages can be sent by a client without the user being logged in.
+Pre-authentication messages can be sent by a client without the user being logged in. There are four messages that can be used without being logged in.
 
-### Login preferences
-You must make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knows this before any user logs in.
-Currently, this is the only preference published.
-#### Request
-    MESSAGE_TYPE = EVENT_LOGIN_PREFS
-#### Response
-    MESSAGE_TYPE = EVENT_LOGIN_PREFS_ACK
-        DETAILS.PASSWORD_RESET_TYPE = ADMIN/EMAIL
+### Self-service password reset
+
+It is possible to initiate a self-service password message workflow assuming it is configured appropriately (see more [here](#selfServiceReset)).
+
+The message to request a self-service password reset looks like this:
+
+    MESSAGE_TYPE = EVENT_SELF_SERVICE_PASSWORD_RESET
+    DETAILS.USER_NAME = JohnWolf
+
+It is also possible to provide a RETURN_URL field as part of the details block if the URL used by the backend configuration is not suitable.
+
+Once this event has been triggered, the password reset link will be sent through the appropriate channels (e.g. e-mail) and the password reset action can be triggered.
+
+    MESSAGE_TYPE = EVENT_PASSWORD_RESET_ACTION
+    DETAILS.USER_NAME = JohnWolf
+    DETAILS.RESET_TOKEN = 1329048120a0sdf
+    DETAILS.NEW_PASSWORD = *******
+    DETAILS.INVALIDATE_ACTIVE_SESSIONS = true
+
+In this message sample we can identify the RESET_TOKEN field as the code provided to the user when the reset operation was requested, the NEW_PASSWORD field as the new password to be used for the user, and optionally, an INVALIDATE_ACTIVE_SESSIONS field to log out any currently logged in sessions.
+
+### Change password
+
+The change password message is available whether the user is currently logged in or not. This is important, as the first time a user logs in their newly created one-time password will be in a PASSWORD_EXPIRED state, which will force a "Change password" workflow before they can actually log in for the first time.
+
+The message structure for a change password message looks like this:
+
+    MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD
+    DETAILS.USER_NAME = JohnWolf
+    DETAILS.OLD_PASSWORD = *******
+    DETAILS.NEW_PASSWORD = *******
+
+The naming convention for the fields is also self-explanatory.
+
+### Logout
+A logout request can be triggered before a user has logged in, in the case limits have been set for a maximum number of user sessions. This message workflow allows to terminate an existing active session so a new session can be created.
+
+A sample message would look like this:
+
+    MESSAGE_TYPE = EVENT_LOGOUT
+    DETAILS.USER_NAME = JohnWolf
+    DETAILS.SESSION_ID = *******
 
 ---
 
 ## Authentication
-Once you have a list of preferences, you can show the correct login dialog and let the user make a login attempt.  The password is provided in plain text, as it is expected that you will secure the connection using TLS.
+The password is provided in plain text, as it is expected that you will secure the connection using TLS.
 ### Login request
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH
     DETAILS.USER_NAME = JohnWolf
-    DETAILS.PASSWORD = FullMoon1
+    DETAILS.PASSWORD = ******
 
 ### Login response
-If successful:
+If successful, a message could look like this:
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH_ACK
     DETAILS.SYSTEM.DATE = 2014-06-18 12:27:01
@@ -360,19 +394,22 @@ If successful:
 If there is a problem, the server will return the standard error set with CODE/TEXT details and the error code `LOGIN_AUTH_NACK`.  The following error codes can be provided:
 
 - `UNKNOWN_ACCOUNT` - User is unknown
+- `MAX_ACTIVE_SESSIONS_REACHED` - Maximum number of sessions reached.
 - `INCORRECT_CREDENTIALS` - User/password combination is invalid
 - `LOCKED_ACCOUNT` - Account is locked and needs to be [re-activated by administrator](#retry)
 - `PASSWORD_EXPIRED` - Password must be changed
 - `LOGIN_FAIL` - Generic error code
 
 ### Password change
-If the response is `PASSWORD_EXPIRED`, then the GUI can allow the user to change the password, provided they know their existing password.
+
+As explained in the previous section, if the response for the login attempt is `PASSWORD_EXPIRED`, then the GUI can allow the user to change the password, provided they know their existing password.
 
 #### Change request
+
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD
     DETAILS.USER_NAME = JohnWolf
-    DETAILS.OLD_PASSWORD = Password123
-    DETAILS.NEW_PASSWORD = Password456
+    DETAILS.OLD_PASSWORD = ******
+    DETAILS.NEW_PASSWORD = ******
 
 #### Change response
 If successful:
@@ -387,23 +424,47 @@ The error codes that can be returned are currently:
 - `INSUFFICIENT_CHARACTERS` - covers a few cases, so text field may be required, used for things like no digits provided when 1 digit is required.
 - `ILLEGAL_MATCH` - covers a few cases so text field may be required, used for things like repeating characters in password.
 - `ILLEGAL_WHITESPACE` - if password contains white space.
-- `INSUFFICIENT_CHARACTERISTICS` - can be provided if you have configured passwords to be successful if only 2 of 5.strength checks pass. Should be provided alongside "real" error codes.
+- `INSUFFICIENT_CHARACTERISTICS` - can be provided if you have configured passwords to be successful only if a predetermined set of strength checks pass. Should be provided alongside "real" error codes.
 - `ILLEGAL_SEQUENCE` - Numeric/alphabetic sequence detected.
 
-### Reset password
-This can only be called by an administrator; it simply specifies a user name and sets the password to blank.
+### Logout
 
-#### Reset request
-    MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD
-    DETAILS.USER_NAME = JohnWolf
+As explained in the previous section, if the response for the login attempt is `MAX_ACTIVE_SESSIONS_REACHED`, the server will reply with a list of active sessions, so the client can optionally terminate one of them. In this scenario, the client would need to send a LOGOUT message with the specific SESSION_ID value of the session to terminate.
 
-#### Reset response
-    MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD_ACK
+The response message in that case would look like this:
+
+```
+MESSAGE_TYPE = EVENT_LOGIN_AUTH_NACK
+ERROR[0].@type = LoginError
+ERROR[0].CODE = MAX_ACTIVE_SESSIONS_REACHED
+ERROR[0].TEXT = Problem logging in
+ERROR[0].STATUS_CODE = 403 Forbidden
+ERROR[0].DETAILS.SESSION[0].SESSION_ID = abb8f6be-8009-4370-a474-3a0ded4dc2cf
+ERROR[0].DETAILS.SESSION[0].HOST = host1
+ERROR[0].DETAILS.SESSION[0].LAST_ACCESS_TIME = 2024-01-25 14:27:54.925 (1706192874925)
+ERROR[0].DETAILS.SESSION[1].SESSION_ID = c8c04ba5-d450-48f7-a863-2a500fe0a4e7
+ERROR[0].DETAILS.SESSION[1].HOST = host2
+ERROR[0].DETAILS.SESSION[1].LAST_ACCESS_TIME = 2024-01-25 14:27:55.037 (1706192875037)
+ERROR[0].DETAILS.SESSION[2].SESSION_ID = f6255056-952f-4985-b984-6e48c822c3a4
+ERROR[0].DETAILS.SESSION[2].HOST = host3
+ERROR[0].DETAILS.SESSION[2].LAST_ACCESS_TIME = 2024-01-25 14:27:55.235 (1706192875235)
+ERROR[0].DETAILS.SESSION[3].SESSION_ID = 29220a26-0753-4408-9c28-9f00457e98ac
+ERROR[0].DETAILS.SESSION[3].HOST = host4
+ERROR[0].DETAILS.SESSION[3].LAST_ACCESS_TIME = 2024-01-25 14:27:55.438 (1706192875438)
+```
+
+A logout message to terminate the first session would look like this:
+
+```
+MESSAGE_TYPE = EVENT_LOGOUT
+DETAILS.USER_NAME = JohnWolf
+DETAILS.SESSION_ID = abb8f6be-8009-4370-a474-3a0ded4dc2cf
+```
 
 ## Post-authentication
-Once the user has been authenticated, the server expects heartbeat messages, as defined in the interval setting on the ACK message. If the GUI misses a configurable number of heartbeats, the session will automatically expire. In response to a heartbeat, the GUI will receive a list of available services and their details.
+Once the user has been authenticated, the server can optionally receive heartbeat messages, as defined in the interval setting on the ACK message. In response to a heartbeat, the GUI will receive a list of available services and their details, which could include multiple hostnames if the environment is configured to not use Consul as the cluster mode.
 
-These services should be contacted on the hosts in the order they are defined in the list. This order could change if the server implements a load-balancing strategy. Existing connections can simply ignore the order changes, but in the event of failover or reconnection, the order should be adhered to.
+Assuming your application is not web based and the backend is not using the Consul cluster mode, a client could use the services in this list in the order they are defined. Existing connections can simply ignore the order changes, but in the event of failover or reconnection, the order should be adhered to.
 
 ### Heartbeat
 
@@ -427,20 +488,30 @@ These services should be contacted on the hosts in the order they are defined in
     DETAILS.SERVICE[1].HOST[1].NAME = genesisserv2
     DETAILS.SERVICE[1].HOST[1].PORT = 9002
 
+### Change password
+A password can expire in three different scenarios: time based, user based or admin based. The end result is always the same, the user will need to change the password on the next login, as their previous one has now expired.
+
+The password expiry mechanism can be triggered by sending a message like this:
+
+    MESSAGE_TYPE = EVENT_EXPIRE_USER_PASSWORD
+    DETAILS.USER_NAME = JohnWolf
+
+It is common for administrators to help users recover their account credentials by expiring the current User record `STATUS` with a new one-time password, and this action will force users to change it on their first login. In this case the message can optionally receive a one-time password like shown below:
+
+    MESSAGE_TYPE = EVENT_EXPIRE_USER_PASSWORD
+    DETAILS.USER_NAME = JohnWolf
+    DETAILS.PASSWORD = ******
 
 ### Rights polling
-The GUI can receive rights from a process called `AUTH_DATASERVER`. The view `USER_RIGHTS` displays all users and codes. A logged-in user should automatically set the Filter expression to be `USER_NAME`=='xxx' to receive push updates to user privileges.
+The GUI can receive rights from a process called `GENESIS_AUTH_DATASERVER`. The view `ALL_USER_RIGHTS` displays all users and codes. A logged-in user should automatically set the Filter expression to be `USER_NAME`=='xxx' to receive push updates to user privileges.
 
 ## Entity management
 In the Genesis low-code platform, there are profiles, users and rights. A profile is a group of users, which can be permissioned. For example, you could have a SALES_TRADER group in which all users must have the same permissions. In all cases where you specify either a right for a user/profile, or a user in a profile, the event represents what you want the entity to look like; i.e. if you amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
 
 Note the following:
 
-* 2-phase validation is not currently supported
-* metadata is not supported on the following transactions.
-  User/profile `STATUS` field can be set to `ENABLED`, `DISABLED`, `PASSWORD_EXPIRED` and `PASSWORD_RESET`.
-  `PASSWORD_EXPIRED` should prompt the user to enter a new password.
-  `PASSWORD_RESET` should do the same but the server expects a blank "current password" field.
+* User `STATUS` field can be set to `ENABLED`, `DISABLED` or `PASSWORD_EXPIRED`. A User set up with `PASSWORD_EXPIRED` should prompt the user to enter a new password on next login.
+* Profile `STATUS` field can be set to `ENABLED`, `DISABLED`.
 
 ### Insert profile
 
@@ -578,3 +649,35 @@ Note the following:
 
 ### Delete response
     MESSAGE_TYPE = EVENT_DELETE_USER_ACK
+
+## Full permissions list
+
+Most of the message workflows described in this page are permissioned based on a set of default rights which are provided in the form of a CSV file as part of the platform authentication distribution. Most permissions and their relationship to events have been explained in their own sections, and the whole table can be found below for reference:
+
+| Code           | Description                    |
+|----------------|--------------------------------|
+| INSERT_PROFILE | Add a new Profile              |
+| INSERT_USER    | Add a new User                 |
+| AMEND_PROFILE  | Amend an existing Profile      |
+| AMEND_USER     | Amend an existing User         |
+| CHANGE_PWD     | Change another User's password |
+| DELETE_PROFILE | Delete a Profile               |
+| DELETE_USER    | Delete a User                  |
+| DISABLE_USER   | Disable a User                 |
+| ENABLE_USER    | Enable a User                  |
+| EXPIRE_PWD     | Expire another User's password |
+
+A default Profile record is also provided named USER_ADMIN which contains all the previous rights.
+
+:::info
+Users can change their own password as well as expire their own password (assuming they are logged in). However, it is only possible to change/expire another user's password if you have administrator rights.
+:::
+
+## Event auditing
+
+Each one of these events is audited in one way or another, either by using the automatic mechanism provided at the table definition level (e.g. PROFILE, PROFILE_RIGHT, PROFILE_USER, PASSWORD_RESET, USER and USER_ATTRIBUTES), or by providing custom tables with the audit information.
+
+In the first case scenario, auditing works as it would do for any other genesis table: AUDIT_EVENT_TYPE reflects the event message type (i.e. EVENT_INSERT_USER), AUDIT_EVENT_TEXT may contain a free text field provided by the user calling the event, AUDIT_EVENT_DATETIME is autogenerated with the current date and time the change happened and AUDIT_EVENT_USER corresponds to the user who triggered the event in question.
+
+In the second case scenario, we have automatic events to log changes in USER_AUDIT and USER_ATTRIBUTES when a passwords expires. And we also have specific handling for USER_LOGIN audits. The USER_LOGIN_AUDIT table will contain entries for the following events: LOGIN, LOGOUT, SESSION_EXPIRED, REJECTED (only available if a maximum number of user sessions has been configured), FAILED_LOGIN, and FAILED_LOGOUT (if an incorrect session ID or user name has been provided).
+
