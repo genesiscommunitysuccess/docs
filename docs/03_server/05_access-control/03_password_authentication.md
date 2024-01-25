@@ -593,14 +593,10 @@ Note the following:
     DETAILS.NAME = SALES_TRADERS
     DETAILS.DESCRIPTION = Sales Traders
     DETAILS.STATUS = ENABLED
-    DETAILS.RIGHT[0].ID = 00000000000001RISP0
-    DETAILS.RIGHT[0].CODE = ORDEN
-    DETAILS.RIGHT[1].ID = 00000000000002RISP0
-    DETAILS.RIGHT[1].CODE = ORDAM
-    DETAILS.USER[0].ID = 00000000000001USSP0
-    DETAILS.USER[0].USER_NAME = JohnWolf
-    DETAILS.USER[1].ID = 00000000000002USSP0
-    DETAILS.USER[1].USER_NAME = james
+    DETAILS.RIGHT_CODES[0].CODE = ORDEN
+    DETAILS.RIGHT_CODES[1].CODE = ORDAM
+    DETAILS.USER_NAMES[0].USER_NAME = JohnWolf
+    DETAILS.USER_NAMES[1].USER_NAME = james
 
 #### Insert response
     MESSAGE_TYPE = EVENT_INSERT_PROFILE_ACK
@@ -608,60 +604,23 @@ Note the following:
 ### Amend profile
 
 #### Amend request
-  In the example below, the logged-in user (in the second line) is JohnWolf, who is modifying the profile of JaneDoe to give her the profile name JANE SMITH. 
+
+This amend request removes the "ORDAM" right and the "james" user name from the SALES_TRADERS profile.
 
 ```
-    {
-  "SOURCE_REF": "1786d2ca-23fd-40c8-a52b-fe002a0fa1f6",
-  "USER_NAME": "JohnWolf",
-  "SESSION_AUTH_TOKEN": "sIsXX3IBqyIESUD38AgA71ycR8W7KVzg",
-  "MESSAGE_TYPE": "EVENT_AMEND_USER",
-  "DETAILS": {
-    "USER_NAME": "JaneDoe",
-    "LAST_LOGIN": 1670236873948,
-    "LAST_NAME": "Smith",
-    "FIRST_NAME": "Jane",
-    "ONLINE": true,
-    "COMPANY_NAME": null,
-    "STATUS": "ENABLED",
-    "EMAIL_ADDRESS": "jane.doe@genesis.global",
-    "COMPANY_ID": null,
-    "USER_TYPE": "USER",
-    "ACCESS_TYPE": "ENTITY",
-    "ADDRESS_LINE1": null,
-    "ADDRESS_LINE2": null,
-    "ADDRESS_LINE3": null,
-    "ADDRESS_LINE4": null,
-    "CITY": null,
-    "REGION": null,
-    "POSTAL_CODE": null,
-    "COUNTRY": null,
-    "TITLE": null,
-    "WEBSITE": null,
-    "MOBILE_NUMBER": null,
-    "TELEPHONE_NUMBER_DIRECT": null,
-    "TELEPHONE_NUMBER_OFFICE": null,
-    "COUNTERPARTY_ID": null,
-    "ROW_REF": "6889579003422704324",
-    "USER_PROFILES": [
-      "SUPPORT",
-      "TRADER",
-      "USER_ADMIN"
-    ]
-  },
-  "IGNORE_WARNINGS": true,
-  "VALIDATE": false
-}
+    MESSAGE_TYPE = EVENT_AMEND_PROFILE
+    USER_NAME = JohnWolf
+    DETAILS.NAME = SALES_TRADERS
+    DETAILS.DESCRIPTION = Sales Traders
+    DETAILS.STATUS = ENABLED
+    DETAILS.RIGHT_CODES[0].CODE = ORDEN
+    DETAILS.USER_NAMES[0].USER_NAME = JohnWolf
 ```
 
 #### Amend response
 
 ```
-{
-  "GENERATED": [],
-  "MESSAGE_TYPE": "EVENT_ACK",
-  "SOURCE_REF": "1786d2ca-23fd-40c8-a52b-fe002a0fa1f6"
-}
+    MESSAGE_TYPE = EVENT_ACK
 ```
 
 ### Delete profile
@@ -672,54 +631,50 @@ Note the following:
     DETAILS.NAME = SALES_TRADERS
 
 #### Delete response
-    MESSAGE_TYPE = EVENT_DELETE_PROFILE_ACK
+    MESSAGE_TYPE = EVENT_ACK
 
 ### Insert User
 
 #### Insert request
     MESSAGE_TYPE = EVENT_INSERT_USER
-    USER_NAME = jwolf
+    USER_NAME = JohnDoe
     DETAILS.USER_NAME = JohnWolf
     DETAILS.FIRST_NAME = John
     DETAILS.LAST_NAME = Wolf
     DETAILS.EMAIL_ADDRESS = john.wolf@genesis.global
     DETAILS.STATUS = ENABLED
-    DETAILS.RIGHT[0].ID = 00000000000001RISP0
-    DETAILS.RIGHT[0].CODE = ORDEN
-    DETAILS.RIGHT[1].ID = 00000000000002RISP0
-    DETAILS.RIGHT[1].CODE = ORDAM
+    DETAILS.USER_PROFILES[0] = USER_ADMIN
 
 #### Insert response
-    MESSAGE_TYPE = EVENT_INSERT_USER_ACK
+    MESSAGE_TYPE = EVENT_ACK
 
 ### Amend user
 
+In the example below, the logged-in user (in the second line) is JohnDoe, who is modifying the profile of JohnWolf to give him the last name: Smith.
+
 #### Amend request
     MESSAGE_TYPE = EVENT_AMEND_USER
-    USER_NAME = jwolf
+    USER_NAME = JohnDoe
     DETAILS.ID = 00000000000001USSP0
     DETAILS.USER_NAME = JohnWolf
     DETAILS.FIRST_NAME = John
-    DETAILS.LAST_NAME = Doe
+    DETAILS.LAST_NAME = Smith
     DETAILS.EMAIL_ADDRESS = john.wolf@genesis.global
     DETAILS.STATUS = ENABLED
-    DETAILS.RIGHT[0].ID = 00000000000001RISP0
-    DETAILS.RIGHT[0].CODE = ORDEN
-    DETAILS.RIGHT[1].ID = 00000000000002RISP0
-    DETAILS.RIGHT[1].CODE = ORDAM
+    DETAILS.USER_PROFILES[0] = USER_ADMIN
 
 #### Amend response
-    MESSAGE_TYPE = EVENT_AMEND_USER_ACK
+    MESSAGE_TYPE = EVENT_ACK
 
 ### Delete user
 
 #### Delete request
     MESSAGE_TYPE = EVENT_DELETE_USER
     USER_NAME = JohnDoe
-    DETAILS.USER_NAME = james
+    DETAILS.USER_NAME = JohnWolf
 
 ### Delete response
-    MESSAGE_TYPE = EVENT_DELETE_USER_ACK
+    MESSAGE_TYPE = EVENT_ACK
 
 ## Full permissions list
 
