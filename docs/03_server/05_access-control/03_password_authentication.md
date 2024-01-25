@@ -325,7 +325,7 @@ All requests below are capable of returning an error with a code of INTERNAL_ERR
 ---
 
 ## Pre-authentication
-Pre-authentication messages can be sent by a client without the user being logged in. There are four messages that can be used without being logged in.
+Pre-authentication messages can be sent by a client without the user being logged in. There are three messages that can be used without being logged in.
 
 ### Self-service password reset
 
