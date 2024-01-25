@@ -383,13 +383,38 @@ The password is provided in plain text, as it is expected that you will secure t
 ### Login response
 If successful, a message could look like this:
 
-    MESSAGE_TYPE = EVENT_LOGIN_AUTH_ACK
-    DETAILS.SYSTEM.DATE = 2014-06-18 12:27:01
-    DETAILS.HEARTBEAT_INTERVAL_SECS = 30
-    DETAILS.SYSTEM.PRODUCT[0].NAME = SBL
-    DETAILS.SYSTEM.PRODUCT[0].VERSION = 1.0.0-RELEASE
-    DETAILS.SYSTEM.PRODUCT[1].NAME = AUTH
-    DETAILS.SYSTEM.PRODUCT[1].VERSION = 1.0.1.RELEASE
+      MESSAGE_TYPE = EVENT_LOGIN_AUTH_ACK
+      SESSION_AUTH_TOKEN = ********
+      REFRESH_AUTH_TOKEN = ********
+      SESSION_ID = c4eb5f62-2d11-4028-98cb-018ff45d7035
+      USER_NAME = JohnWolf
+      DETAILS.HEARTBEAT_INTERVAL_SECONDS = 30
+      DETAILS.SESSION_TIMEOUT_MINS = 20
+      DETAILS.REFRESH_TOKEN_EXPIRATION_MINS = 7200
+      DETAILS.FAILED_LOGIN_ATTEMPTS = 0
+      DETAILS.REJECTED_LOGIN_ATTEMPTS = 0
+      DETAILS.LAST_LOGIN_DATE_TIME = 2024-01-25 15:48:33.413 (1706197713413)
+      DETAILS.DAYS_TO_PASSWORD_EXPIRY = 730
+      DETAILS.NOTIFY_EXPIRY = 8
+      DETAILS.MFA_CODE = null
+      DETAILS.MFA_CODE_EXPIRY_MINS = null
+      DETAILS.SYSTEM.DATE = Thu Jan 25 15:48:33 UTC 2024
+      PERMISSION[0] = AMEND_PROFILE
+      PERMISSION[1] = AMEND_USER
+      PERMISSION[2] = CHANGE_PWD
+      PERMISSION[3] = DELETE_PROFILE
+      PERMISSION[4] = DELETE_USER
+      PERMISSION[5] = DISABLE_USER
+      PERMISSION[6] = ENABLE_USER
+      PERMISSION[7] = EXPIRE_PWD
+      PERMISSION[8] = INSERT_PROFILE
+      PERMISSION[9] = INSERT_USER
+      PERMISSION[10] = MFA_CONFIRM
+      PERMISSION[11] = MFA_CREATE
+      PERMISSION[12] = MFA_DISABLE
+      PERMISSION[13] = MFA_ENABLE
+      PROFILE[0] = ADMIN
+      PROFILE[1] = USER_ADMIN
 
 If there is a problem, the server will return the standard error set with CODE/TEXT details and the error code `LOGIN_AUTH_NACK`.  The following error codes can be provided:
 
@@ -488,9 +513,10 @@ Assuming your application is not web based and the backend is not using the Cons
     DETAILS.SERVICE[1].HOST[1].NAME = genesisserv2
     DETAILS.SERVICE[1].HOST[1].PORT = 9002
 
-### Change password
+### Expire password
 A password can expire in three different scenarios: time based, user based or admin based. The end result is always the same, the user will need to change the password on the next login, as their previous one has now expired.
 
+#### Expire password request
 The password expiry mechanism can be triggered by sending a message like this:
 
     MESSAGE_TYPE = EVENT_EXPIRE_USER_PASSWORD
@@ -501,6 +527,51 @@ It is common for administrators to help users recover their account credentials 
     MESSAGE_TYPE = EVENT_EXPIRE_USER_PASSWORD
     DETAILS.USER_NAME = JohnWolf
     DETAILS.PASSWORD = ******
+
+### Login details
+In the event the client needs to re-receive the information provided by the login response for whatever reason (i.e. re-reading user preferences), it is possible to send an EVENT_LOGIN_DETAILS message to the server. The response will be equivalent to the response received by the login message, without actively logging in the system for a second time.
+
+### Login details request
+
+    MESSAGE_TYPE = EVENT_LOGIN_DETAILS
+    DETAILS.SESSION_AUTH_TOKEN = *******
+
+The SESSION_AUTH_TOKEN value is returned as part of the first login operation, so it is only possible to call EVENT_LOGIN_DETAILS after a successful login.
+
+### Login details reply
+
+    MESSAGE_TYPE = EVENT_LOGIN_DETAILS_ACK
+    SESSION_AUTH_TOKEN = ********
+    REFRESH_AUTH_TOKEN = ********
+    SESSION_ID = c4eb5f62-2d11-4028-98cb-018ff45d7035
+    USER_NAME = JohnWolf
+    DETAILS.HEARTBEAT_INTERVAL_SECONDS = 30
+    DETAILS.SESSION_TIMEOUT_MINS = 20
+    DETAILS.REFRESH_TOKEN_EXPIRATION_MINS = 7200
+    DETAILS.FAILED_LOGIN_ATTEMPTS = 0
+    DETAILS.REJECTED_LOGIN_ATTEMPTS = 0
+    DETAILS.LAST_LOGIN_DATE_TIME = 2024-01-25 15:48:33.413 (1706197713413)
+    DETAILS.DAYS_TO_PASSWORD_EXPIRY = 730
+    DETAILS.NOTIFY_EXPIRY = 8
+    DETAILS.MFA_CODE = null
+    DETAILS.MFA_CODE_EXPIRY_MINS = null
+    DETAILS.SYSTEM.DATE = Thu Jan 25 15:48:33 UTC 2024
+    PERMISSION[0] = AMEND_PROFILE
+    PERMISSION[1] = AMEND_USER
+    PERMISSION[2] = CHANGE_PWD
+    PERMISSION[3] = DELETE_PROFILE
+    PERMISSION[4] = DELETE_USER
+    PERMISSION[5] = DISABLE_USER
+    PERMISSION[6] = ENABLE_USER
+    PERMISSION[7] = EXPIRE_PWD
+    PERMISSION[8] = INSERT_PROFILE
+    PERMISSION[9] = INSERT_USER
+    PERMISSION[10] = MFA_CONFIRM
+    PERMISSION[11] = MFA_CREATE
+    PERMISSION[12] = MFA_DISABLE
+    PERMISSION[13] = MFA_ENABLE
+    PROFILE[0] = ADMIN
+    PROFILE[1] = USER_ADMIN
 
 ### Rights polling
 The GUI can receive rights from a process called `GENESIS_AUTH_DATASERVER`. The view `ALL_USER_RIGHTS` displays all users and codes. A logged-in user should automatically set the Filter expression to be `USER_NAME`=='xxx' to receive push updates to user privileges.
