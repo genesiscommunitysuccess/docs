@@ -74,18 +74,13 @@ function copyDirectoryFiles(packageRootDir, outputRootDir) {
             yield fs.ensureDir(outputFullDir);
             const filesInDir = yield fs.readdir(inputFullDir);
             try {
-                for (var _d = true, filesInDir_1 = __asyncValues(filesInDir), filesInDir_1_1; filesInDir_1_1 = yield filesInDir_1.next(), _a = filesInDir_1_1.done, !_a;) {
+                for (var _d = true, filesInDir_1 = __asyncValues(filesInDir), filesInDir_1_1; filesInDir_1_1 = yield filesInDir_1.next(), _a = filesInDir_1_1.done, !_a; _d = true) {
                     _c = filesInDir_1_1.value;
                     _d = false;
-                    try {
-                        const fileName = _c;
-                        const inputFile = path.join(inputFullDir, fileName);
-                        const outputFile = path.join(outputFullDir, fileName);
-                        yield copyFn(inputFile, outputFile);
-                    }
-                    finally {
-                        _d = true;
-                    }
+                    const fileName = _c;
+                    const inputFile = path.join(inputFullDir, fileName);
+                    const outputFile = path.join(outputFullDir, fileName);
+                    yield copyFn(inputFile, outputFile);
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -108,38 +103,33 @@ function copyApiDocs(manifest, processedMap) {
             return;
         }
         try {
-            for (var _d = true, packagesToProcess_1 = __asyncValues(packagesToProcess), packagesToProcess_1_1; packagesToProcess_1_1 = yield packagesToProcess_1.next(), _a = packagesToProcess_1_1.done, !_a;) {
+            for (var _d = true, packagesToProcess_1 = __asyncValues(packagesToProcess), packagesToProcess_1_1; packagesToProcess_1_1 = yield packagesToProcess_1.next(), _a = packagesToProcess_1_1.done, !_a; _d = true) {
                 _c = packagesToProcess_1_1.value;
                 _d = false;
-                try {
-                    const pkg = _c;
-                    const packageRootDir = path.join(process.cwd(), "node_modules", pkg.name);
-                    const outputRootDir = path.join(process.cwd(), pkg.output.directory);
-                    yield fs.ensureDir(outputRootDir);
-                    const copyDirFiles = copyDirectoryFiles(packageRootDir, outputRootDir);
-                    if (pkg.api_docs && pkg.output.api_docs) {
-                        yield copyDirFiles({
-                            inputDir: pkg.api_docs,
-                            outputDir: pkg.output.api_docs,
-                            copyFn: createApiDoc,
-                        });
-                    }
-                    if (pkg.img_dir && pkg.output.img_dir) {
-                        yield copyDirFiles({
-                            inputDir: pkg.img_dir,
-                            outputDir: pkg.output.img_dir,
-                            copyFn: copyImgFile,
-                        });
-                    }
-                    const readmeStreamTransformer = createUrlTransformerSteam(pkg.output);
-                    const packageReadmeFile = path.join(packageRootDir, pkg.readme);
-                    yield createReadme(packageReadmeFile, outputRootDir, pkg.output, readmeStreamTransformer);
-                    const packageJson = yield fs.readJson(path.join(packageRootDir, "package.json"));
-                    processedMap[pkg.name] = packageJson.version;
+                const pkg = _c;
+                const packageRootDir = path.join(process.cwd(), "node_modules", pkg.name);
+                const outputRootDir = path.join(process.cwd(), pkg.output.directory);
+                yield fs.ensureDir(outputRootDir);
+                const copyDirFiles = copyDirectoryFiles(packageRootDir, outputRootDir);
+                if (pkg.api_docs && pkg.output.api_docs) {
+                    yield copyDirFiles({
+                        inputDir: pkg.api_docs,
+                        outputDir: pkg.output.api_docs,
+                        copyFn: createApiDoc,
+                    });
                 }
-                finally {
-                    _d = true;
+                if (pkg.img_dir && pkg.output.img_dir) {
+                    yield copyDirFiles({
+                        inputDir: pkg.img_dir,
+                        outputDir: pkg.output.img_dir,
+                        copyFn: copyImgFile,
+                    });
                 }
+                const readmeStreamTransformer = createUrlTransformerSteam(pkg.output);
+                const packageReadmeFile = path.join(packageRootDir, pkg.readme);
+                yield createReadme(packageReadmeFile, outputRootDir, pkg.output, readmeStreamTransformer);
+                const packageJson = yield fs.readJson(path.join(packageRootDir, "package.json"));
+                processedMap[pkg.name] = packageJson.version;
             }
         }
         catch (e_2_1) { e_2 = { error: e_2_1 }; }
