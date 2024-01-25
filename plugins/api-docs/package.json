@@ -10,7 +10,8 @@
     "./processedMap": "./dist/processedMap.js"
   },
   "scripts": {
-    "build": "tsc -p ./src/tsconfig.json"
+    "build": "tsc -p ./src/tsconfig.json",
+    "build:watch": "npm run build -- --watch"
   },
   "devDependencies": {
     "typescript": "^5.3.3"
