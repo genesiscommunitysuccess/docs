@@ -107,7 +107,8 @@ alpha-card > alpha-button {
   align-self: flex-end;
 }
 ```
+## Congratulations!
 
-Congratulations! You're now set up to use Genesis Foundation and Angular!
+🎉 Congratulations! You're now set up to use Genesis Foundation and Angular! 🎉
 
 ![Angular basic demo](/integrations/angular/angular-basic-demo.gif)

@@ -135,4 +135,4 @@ ng serve --open
 
 🎉 Congratulations on successfully integrating and handling events with a web component from Foundation UI in your Angular application! 🎉
 
-![Angular basic demo](/integrations/angular/angular-flyout-demo.gif)
+![Angular flyout demo](/integrations/angular/angular-flyout-demo.gif)
