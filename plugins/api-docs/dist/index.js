@@ -13,7 +13,7 @@ async function createApiDoc(inputFile, outputFile) {
     let content = await fs_extra_1.default.readFile(inputFile, { encoding: "utf8" });
     if (path_1.default.basename(outputFile) === "index.md") {
         content =
-            (await fs_extra_1.default.readFile("./plugins/api-docs/api-preamble.md", {
+            (await fs_extra_1.default.readFile(require.resolve('api-docs-sync/api-preamble'), {
                 encoding: "utf8",
             })) +
                 "\n" +
