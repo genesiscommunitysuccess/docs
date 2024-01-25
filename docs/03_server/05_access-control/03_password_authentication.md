@@ -655,7 +655,6 @@ In the example below, the logged-in user (in the second line) is JohnDoe, who is
 #### Amend request
     MESSAGE_TYPE = EVENT_AMEND_USER
     USER_NAME = JohnDoe
-    DETAILS.ID = 00000000000001USSP0
     DETAILS.USER_NAME = JohnWolf
     DETAILS.FIRST_NAME = John
     DETAILS.LAST_NAME = Smith
