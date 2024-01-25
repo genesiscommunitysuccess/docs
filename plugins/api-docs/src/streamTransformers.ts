@@ -1,12 +1,12 @@
 import { Transform } from "stream";
 import { StringDecoder } from "string_decoder";
-import { Package } from "./types";
+import { PackageConfig } from "./types";
 
 const GENESIS_DOC_URL_HOST_REGEX =
   /https?:\/\/learn\.genesis\.global\/secure\//g;
 
 export const createUrlTransformerSteam = (
-  manifestSettings: Package["output"],
+  manifestSettings: PackageConfig["output"],
 ) =>
   new Transform({
     transform(chunk, encoding, callback) {

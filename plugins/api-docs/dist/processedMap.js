@@ -1,5 +1,6 @@
 "use strict";
-module.exports = {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
     "@genesislcap/foundation-comms": "14.137.0",
     "@genesislcap/foundation-entity-management": "14.137.0",
     "@genesislcap/foundation-filters": "14.137.0",

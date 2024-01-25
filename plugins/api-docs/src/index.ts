@@ -1,6 +1,14 @@
-const fs = require("fs-extra");
-const path = require("path");
-const { createUrlTransformerSteam } = require("./streamTransformers");
+// @ts-ignore
+import fs from "fs-extra";
+import path from "path";
+import { createUrlTransformerSteam } from "./streamTransformers";
+import { PackageConfig } from "./types";
+import { Transform } from "stream";
+
+type PluginOptions = {
+  manifest: { packages: Array<PackageConfig> };
+  processedMap: Record<string, string>;
+};
 
 /**
  * Docusaurus / mdx build can't process empty comments in markdown.
@@ -19,11 +27,11 @@ const { createUrlTransformerSteam } = require("./streamTransformers");
  *
  * Replacing html tags like <b> with their markdown equivalent `**` fixes the issue, as the line starts with markdown.
  */
-function cleanseMarkdownContent(input) {
+function cleanseMarkdownContent(input: string) {
   return input.replace(/<!-- -->/g, "").replace(/<b>|<\/b>/g, "**");
 }
 
-async function createApiDoc(inputFile, outputFile) {
+async function createApiDoc(inputFile: string, outputFile: string) {
   let content = await fs.readFile(inputFile, { encoding: "utf8" });
   if (path.basename(outputFile) === "index.md") {
     content =
@@ -36,12 +44,17 @@ async function createApiDoc(inputFile, outputFile) {
   return fs.writeFile(outputFile, cleanseMarkdownContent(content));
 }
 
-async function copyImgFile(inputFile, outputFile) {
+async function copyImgFile(inputFile: string, outputFile: string) {
   const content = await fs.readFile(inputFile);
   return fs.writeFile(outputFile, content);
 }
 
-async function createReadme(inputFile, outputDir, output, transformer) {
+async function createReadme(
+  inputFile: string,
+  outputDir: string,
+  output: PackageConfig["output"],
+  transformer: Transform,
+) {
   const tags = output.tags
     ? output.tags.map((tag) => `  - ${tag}`).join("\n")
     : "";
@@ -56,7 +69,7 @@ async function createReadme(inputFile, outputDir, output, transformer) {
 title: '${output.title}'
 sidebar_label: '${output.sidebar_label}'
 id: ${output.id}
-`
+`,
   );
 
   if (keywords) {
@@ -73,8 +86,16 @@ id: ${output.id}
   readStream.pipe(transformer).pipe(writeStream);
 }
 
-function copyDirectoryFiles(packageRootDir, outputRootDir) {
-  return async function ({ inputDir, outputDir, copyFn }) {
+function copyDirectoryFiles(packageRootDir: string, outputRootDir: string) {
+  return async function({
+    inputDir,
+    outputDir,
+    copyFn,
+  }: {
+    inputDir: string;
+    outputDir: string;
+    copyFn: (inputFile: string, outputFile: string) => Promise<void>;
+  }) {
     const inputFullDir = path.join(packageRootDir, inputDir);
     const outputFullDir = path.join(outputRootDir, outputDir);
     await fs.ensureDir(outputFullDir);
@@ -91,10 +112,13 @@ function copyDirectoryFiles(packageRootDir, outputRootDir) {
   };
 }
 
-async function copyApiDocs(manifest, processedMap) {
+async function copyApiDocs(
+  manifest: PluginOptions["manifest"],
+  processedMap: PluginOptions["processedMap"],
+) {
   const { packages } = manifest;
   const packagesToProcess = packages.filter(
-    (pkg) => pkg.enabled && !(pkg.name in processedMap)
+    (pkg) => pkg.enabled && !(pkg.name in processedMap),
   );
   if (!packagesToProcess.length) {
     console.log("[api-docs-plugin] No packages awaiting processing.");
@@ -131,45 +155,46 @@ async function copyApiDocs(manifest, processedMap) {
       packageReadmeFile,
       outputRootDir,
       pkg.output,
-      readmeStreamTransformer
+      readmeStreamTransformer,
     );
 
     /**
      * Mark as processed
      */
     const packageJson = await fs.readJson(
-      path.join(packageRootDir, "package.json")
+      path.join(packageRootDir, "package.json"),
     );
     processedMap[pkg.name] = packageJson.version;
   }
 }
 
-module.exports = async function (context, options) {
+export default async function(_context: any, options: PluginOptions) {
   let { manifest, processedMap } = options;
+  console.log({ manifest, processedMap });
   if (!manifest) {
     throw new Error("[api-docs-plugin] Please provide a manifest file.");
   }
   if (!processedMap) {
     throw new Error(
-      "[api-docs-plugin] Please provide a processedMap instance."
+      "[api-docs-plugin] Please provide a processedMap instance.",
     );
   }
   let status = true;
-  let error;
+  let error: Error | null;
   try {
     await copyApiDocs(manifest, processedMap);
-  } catch (e) {
+  } catch (e: unknown) {
     status = false;
-    error = e;
+    error = e as Error;
   }
   return {
     name: "api-docs-plugin",
     async loadContent() {
       if (!status) {
         throw new Error(
-          `[api-docs-plugin] Failed to process api documentation. ${error.toString()}`
+          `[api-docs-plugin] Failed to process api documentation. ${error?.toString()}`,
         );
       }
     },
   };
-};
+}

@@ -2,7 +2,7 @@
  * Maintains a processed map instance as a hot reload workaround to avoid re-processing and entering an infinite loop.
  * TODO: Ideally the plugin should run just once in both dev and prod mode, or be skipped during hot reloads.
  */
-module.exports = {
+export default {
     /**
      * I've processed this package already, and tailored the readme output, so including it statically here will stop it
      * from reprocessing during re-builds and retain my changes as final. You can also toggle "enabled": true/false in
