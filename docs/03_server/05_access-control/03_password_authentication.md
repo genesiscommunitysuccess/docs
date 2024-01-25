@@ -165,6 +165,19 @@ Both the subject and the body support templating. Values surrounded by double cu
 * `USER` the user record, properties on this record should be accessed using lowerCamelCase, e.g. `{{ USER.firstName }}`
 * any system definition or environment variable available
 
+example: 
+```kotlin
+authentication {
+    genesisPassword {
+        selfServiceReset {
+            timeoutInMinutes = 20
+            notifyTopic = "smtpEmail"
+            redirectUrl = "https://genesis.global/login/password-reset"
+        }
+    }
+}
+```
+
 ### mfa
 The `mfa` function enables you to configure [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function, you can choose between different implementations of MFA providers.
 
