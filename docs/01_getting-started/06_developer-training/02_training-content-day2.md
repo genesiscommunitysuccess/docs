@@ -52,7 +52,7 @@ At Genesis, we use a number of technologies to enable this functionality, includ
 Our components are distributed as npm packages, such as:
 
 #### `@genesislcap/foundation-ui` 
-When you generate a [design system](web/design-systems/introduction/) using the CLI, it automatically extends a base design system that we have provided. This highly configurable design system is called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options to provide everything you need for your application.
+When you generate a [design system](../../04_web/03_design-systems/01_introduction.md) using the CLI, it automatically extends a base design system that we have provided. This highly configurable design system is called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options to provide everything you need for your application.
 
 #### `@genesislcap/foundation-zero` 
 Our design system variant is called Zero Design System. This provides the standard components, such as buttons and data grids (wrappers around Microsoft FAST components); these can be easily integrated with the back end using component attributes such as 'resourceName', which displays and updates data in real time from a Data Server resource.
@@ -176,7 +176,7 @@ export class Home extends FASTElement {
 
 We can now insert the grid into our page. Open the file **home.template.ts** and insert the *entity-management* tag using the class attributes we just created.
 
-```ts {5-11}
+```jsx {5-11}
 import {html, } from '@microsoft/fast-element';
 import type {Home} from './home';
 
@@ -186,7 +186,7 @@ export const HomeTemplate = html<Home>`
       title = "Trades"
       entityLabel="Trades"
       createEvent = "EVENT_TRADE_INSERT"
-      :columns=${x => x.columns}
+      :columns=${(x) => x.columns}
   ></entity-management>
 `;
 ```
@@ -390,7 +390,7 @@ export const tradeFormUpdateSchema = tradeFormSchema(true);
 Note that the `tradeFormSchema` variable, declared above, pretty much describes the JSON schema for the endpoints defined including the fields and definitions. It is also possible to add filling using [Request Server](../../../server/request-server/introduction/) or [Data Server](../../../server/data-server/introduction/) queries (like Instrument and Counterparty ones), and further validation by way of annotation or custom validations on data classes.
 
 Go back to the **home.template.ts** file to import the variables schema and add the properties  `createFormUiSchema` `updateFormUiSchema`.
-```typescript {3,14,15}
+```jsx {3,14,15}
 import {html, repeat, when, ref} from '@microsoft/fast-element';
 import type {Home} from './home';
 import { tradeFormCreateSchema, tradeFormUpdateSchema } from './schemas';
@@ -403,7 +403,7 @@ export const HomeTemplate = html<Home>`
     createEvent = "EVENT_TRADE_INSERT"
     updateEvent = "EVENT_TRADE_MODIFY"
     deleteEvent = "EVENT_TRADE_DELETE"
-    :columns=${x => x.columns}
+    :columns=${(x) => x.columns}
     :createFormUiSchema=${() => tradeFormCreateSchema}
     :updateFormUiSchema=${() => tradeFormUpdateSchema}
   ></entity-management>

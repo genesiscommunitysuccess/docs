@@ -56,7 +56,7 @@ GBP3M=135000,S,13387,150121
 ### A real example
 Reality is rarely that convenient. For this example, the incoming data is issuance data from Bloomberg, and its format is considerably more complex.
 
-Here is an [example of the data](../../../01_getting-started/05_advanced-learning/03-loading-feed-data/03_example-source-data.md/) you can download from the Bloomberg Issuance feed.
+Here is an [example of the data](./03_example-source-data.md) you can download from the Bloomberg Issuance feed.
 
 Once you know this format, you need to create code that maps the fields so that they can be written to a table in your application.
 
@@ -139,16 +139,20 @@ public BbgIssuanceFileImport(final EventManager eventManager,
     this.issuanceDataRx3Repository = issuanceDataRx3Repository;
 }
 ```
+
 :::note
 Annotations of @Module and @Inject are required for Genesis Dependency Injection and Inversion of Control patterns. The @Module will be loaded at runtime, and the dependencies are injected into the BbgInsuranceFileImport Event Handler. In this case, the dependencies are EventManager, and IssuanceDataRx3Repository, which is being used to insert the data into the **ISSUANCE_DATA** table.
 :::
+
 If you don’t want to perform any validation, then you can set up the **onValidate** block to ensure that the event manager returns an ACK in every case.
+
 ```java
 @Override
 public void onValidate(Message message, boolean b) {
     eventManager.sendAck(message);
 }
 ```
+
 All the work is performed in the `onCommit` block. The details can be found with the message. This contains the GenesisSet to get message details.
 For this handler, we are interested in the `DETAILS.FILE` property of the GenesisSet, which is the content of the file as a string.
 - Here we split it by any end-of-line (EOLN) convention and then use a helper `BbgFileImportReader` class to parse the complex BBG structure and generate a list of fields and data elements.

@@ -166,7 +166,7 @@ By defining your own Request Servers, you have maximum flexibility.
 We recommend that you locate your classes within the messages module of your application. This is where we place all the custom message types for our application. You need to ensure that the _app-name_**-script-config** module has a dependency on the messages module.
 
 ```bash
-    api(project(":{app-name}-messages"))
+    api(project(":_app-name_-messages"))
 ```
 
 The `requestReply` code blocks can be as simple or complex as your requirements. They are useful, for example, if you want to request data from a number of different tables and views that are not related. By nesting and joining all the relevant data in your `requestReply` statement, you create your own metadata for the Request Server, so it can then be used anywhere in the module.

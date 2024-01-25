@@ -65,14 +65,14 @@ export const OrderTemplate = html<Order>`
 This component is able to retrieve the meta-data from the `EVENT_ORDER_INSERT` backend resource (an Event Handler) and automatically builds a simple form for you. In simple scenarios, it can be good enough.
 
 Try to run it now and you'll notice that, even though the form is displayed, nothing happens when you click on Submit. We have to bind the submit button to a function, like this:
-```html {4} title='order.template.ts'
+```jsx {4} title='order.template.ts'
   <foundation-form
     class="order-entry-form"
     resourceName="EVENT_ORDER_INSERT"
     @submit=${(x, c) => x.insertOrder(c.event as CustomEvent)}>
   </foundation-form>
 ```
-:::tip what is the @submit=${(x, c)} ?
+:::tip what is the @submit ?
 This is related to binding as we briefly explained in the previous day. If it's still unclear, make sure to check [Understanding bindings](https://www.fast.design/docs/fast-element/declaring-templates#understanding-bindings) and [Events](https://www.fast.design/docs/fast-element/declaring-templates#events)
 :::
 
@@ -218,22 +218,22 @@ We can do it in the traditional way by adding `@change` [event handler](https://
 
 Let's add it to each form element:
 
-```ts {3,6-17} title='order.template.ts'
+```jsx {3,6-17} title='order.template.ts'
 import {html} from '@microsoft/fast-element';
 import type {Order} from './order';
 import { sync } from '@genesislcap/foundation-utils';
 
 export const OrderTemplate = html<Order>`
 <span>Instrument</span>
-<zero-select :value=${sync(x=> x.instrument)}></zero-select>
+<zero-select :value=${sync((x)=> x.instrument)}></zero-select>
 
-<span>Last price: ${x => x.lastPrice}</span>
-<zero-text-field :value=${sync(x=> x.quantity)}>Quantity</zero-text-field>
-<zero-text-field :value=${sync(x=> x.price)}>Price</zero-text-field>
-<span>Total: ${x => x.quantity * x.price}</span>
+<span>Last price: ${(x) => x.lastPrice}</span>
+<zero-text-field :value=${sync((x)=> x.quantity)}>Quantity</zero-text-field>
+<zero-text-field :value=${sync((x)=> x.price)}>Price</zero-text-field>
+<span>Total: ${(x) => x.quantity * x.price}</span>
 <span>Direction</span>
-<zero-select :value=${sync(x=> x.direction)}>Direction</zero-select>
-<zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
+<zero-select :value=${sync((x)=> x.direction)}>Direction</zero-select>
+<zero-text-area :value=${sync((x)=> x.notes)}>Notes</zero-text-area>
 `;
 ```
 
@@ -280,18 +280,18 @@ Once we have the list of instruments from the server we can make use of it in th
 
 To dynamically include list of options we use [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items.
 
-```ts {1,5-9} title='order.template.ts'
+```jsx {1,5-9} title='order.template.ts'
 import {html, repeat} from '@microsoft/fast-element';
 ...
 export const OrderTemplate = html<Order>`
 <span>Instrument</span>
-<zero-select :value=${sync(x=> x.instrument)}>
-  ${repeat(x => x.allInstruments, html`
-    <zero-option value=${x => x.value}>${x => x.label}</zero-option>
+<zero-select :value=${sync((x)=> x.instrument)}>
+  ${repeat((x) => x.allInstruments, html`
+    <zero-option value=${(x) => x.value}>${(x) => x.label}</zero-option>
   `)}
 </zero-select>
 ...
-<zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
+<zero-text-area :value=${sync((x)=> x.notes)}>Notes</zero-text-area>
 `;
 ```
 
@@ -299,16 +299,16 @@ You should see the instrument field populated now with the instruments from the 
 
 Now let's get the **direction** field sorted. We could just add two static options BUY and SELL like this:
 
-```html {5-8} title='order.template.ts' 
+```jsx {5-8} title='order.template.ts' 
 ...
 export const OrderTemplate = html<Order>`
 ...
 <span>Direction</span>
-<zero-select :value=${sync(x=> x.direction)}>
+<zero-select :value=${sync((x)=> x.direction)}>
     <zero-option>BUY</zero-option>
     <zero-option>SELL</zero-option>
 </zero-select>
-<zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
+<zero-text-area :value=${sync((x)=> x.notes)}>Notes</zero-text-area>
 `;
 ```
 
@@ -338,17 +338,17 @@ public async connectedCallback() {
 
 Next, let's just use the ***repeat*** directive again to iterate through the ***directionOptions***:
 
-```typescript {5-10} title='order.template.ts' 
+```jsx {5-10} title='order.template.ts' 
 ...
 export const OrderTemplate = html<Order>`
 ...
 <span>Direction</span>
-<zero-select :value=${sync(x=> x.direction)}>
-  ${repeat(x => x.directionOptions, html`
-    <zero-option value=${x => x.value}>${x => x.label}</zero-option>
+<zero-select :value=${sync((x)=> x.direction)}>
+  ${repeat((x) => x.directionOptions, html`
+    <zero-option value=${(x) => x.value}>${(x) => x.label}</zero-option>
   `)}
 </zero-select>
-<zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
+<zero-text-area :value=${sync((x)=> x.notes)}>Notes</zero-text-area>
 `;
 ```
 
@@ -388,14 +388,14 @@ export class Order extends FASTElement {
 ```
 
 And change the template to make the ***instrument field*** like this:
-```ts {4-9} title='order.template.ts'
+```jsx {4-9} title='order.template.ts'
 ...
 export const OrderTemplate = html<Order>`
 <span>Instrument</span>
-<zero-select :value=${sync(x=> x.instrument)} @change=${x => x.getMarketData()}>
-  <zero-option :selected=${sync(x => x.instrument==undefined)}>-- Select --</zero-option>
-  ${repeat(x => x.allInstruments, html`
-    <zero-option value=${x => x.value}>${x => x.label}</zero-option>
+<zero-select :value=${sync((x)=> x.instrument)} @change=${(x) => x.getMarketData()}>
+  <zero-option :selected=${sync((x) => x.instrument==undefined)}>-- Select --</zero-option>
+  ${repeat((x) => x.allInstruments, html`
+    <zero-option value=${(x) => x.value}>${(x) => x.label}</zero-option>
   `)}
 </zero-select>
 ...
@@ -423,13 +423,13 @@ Server resources to be used: ALL_INSTRUMENTS and INSTRUMENT_MARKET_DATA.
 Now when we gathered all the data we're ready to send it over the wire:
 
 Let's add a simple button with click event handler:
-```html {6} title='order.template.ts'
+```jsx {6} title='order.template.ts'
 ...
 export const OrderTemplate = html<Order>`
   ...
   ...
-    <zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
-    <zero-button @click=${x=> x.insertOrder()}>Add Order</zero-button>
+    <zero-text-area :value=${sync((x)=> x.notes)}>Notes</zero-text-area>
+    <zero-button @click=${(x)=> x.insertOrder()}>Add Order</zero-button>
 </div>
 `;
   

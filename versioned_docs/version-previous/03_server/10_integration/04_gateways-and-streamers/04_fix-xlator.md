@@ -26,7 +26,7 @@ To enable the plugin:
 </dependency>
 ```
 
-2. Add a dependency on the class path for the module called {applicationName}-fix-messages. This file is generated using the [fix-codegen-plugin](/03_server/10_integration/04_gateways-and-streamers/04_fix-xlator.md#fix-code-generation-plugin).
+2. Add a dependency on the class path for the module called &#123;applicationName}-fix-messages. This file is generated using the [fix-codegen-plugin](/03_server/10_integration/04_gateways-and-streamers/04_fix-xlator.md#fix-code-generation-plugin).
 
 3. Add the following code block at the beginning of the configuration file for the Streamer or Streamer Client:
 
@@ -165,11 +165,11 @@ genesisSet.setWithDefault("REPORTED_YIELD", executionReport.yield, executionRepo
 
 Fix code generation plugin is used to generate Java sources from a QuickFIX XML dictionary.
 
-Create a new maven module called {applicationName}-fix-messages. Add the following plugin dependency to the module pom file.
+Create a new maven module called &#123;applicationName}-fix-messages. Add the following plugin dependency to the module pom file.
 
 If you need to create multiple modules, the name of each module must be:
 
-{applicationName}-fix-{type}-messages.
+&#123;applicationName}-fix-&#123;type}-messages.
 
 For example:
 
