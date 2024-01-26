@@ -134,9 +134,9 @@ SSO authentication enables users to use a single set of credentials to access a 
 
 SSO authentication is a more involved process to enable; it requires additional file changes, which are detailed in the following pages:
 
-- [SSO - JWT](../../../server/access-control/SSO-jwt/)
-- [SSO - SAML](../../../server/access-control/SSO-saml/)
-- [SSO - OIDC](../../../server/access-control/SSO-oidc/)
+- [SSO - JWT](../../03_server/05_access-control/04_sso_jwt.md)
+- [SSO - SAML](../../03_server/05_access-control/05_sso_saml.md)
+- [SSO - OIDC](../../03_server/05_access-control/06_sso_oidc.md)
 
 ## Using more than one authentication type
 Your application can use two or more authentication types concurrently; the use of one does not mandate or prevent the use of the other. Each configured authenticator will be tried in turn to see if a logon message can be successfully authenticated.
