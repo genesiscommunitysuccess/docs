@@ -1,9 +1,11 @@
 export type PackageConfig = {
   name: string;
   enabled: boolean;
-  api_docs?: string;
-  img_dir?: string;
-  readme: string;
+  src: {
+    api_docs?: string;
+    img_dir?: string;
+    readme: string;
+  };
   output: {
     title: string;
     sidebar_label: string;
@@ -14,5 +16,5 @@ export type PackageConfig = {
     readme: string;
     keywords?: string[];
     tags?: string[];
-  }
-}
+  };
+};

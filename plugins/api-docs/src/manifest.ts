@@ -5,8 +5,10 @@ export default {
     {
       name: "@genesislcap/foundation-testing",
       enabled: true,
-      api_docs: "./docs/api",
-      readme: "./README.md",
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
       output: {
         title: "Foundation Testing",
         sidebar_label: "Foundation Testing",
@@ -31,8 +33,10 @@ export default {
     {
       name: "@genesislcap/foundation-filters",
       enabled: true,
-      api_docs: "./docs/api",
-      readme: "./README.md",
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
       output: {
         title: "Foundation Filters",
         sidebar_label: "Foundation Filters",
@@ -63,9 +67,11 @@ export default {
     {
       name: "@genesislcap/foundation-header",
       enabled: true,
-      api_docs: "./docs/api",
-      img_dir: "docs/img",
-      readme: "./README.md",
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
       output: {
         title: "Foundation Header",
         sidebar_label: "Foundation Header",
@@ -196,8 +202,10 @@ export default {
     {
       name: "@genesislcap/foundation-comms",
       enabled: true,
-      api_docs: "./docs/api",
-      readme: "./README.md",
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
       output: {
         title: "Foundation Comms",
         sidebar_label: "Foundation Comms",
@@ -218,8 +226,10 @@ export default {
     {
       name: "@genesislcap/foundation-forms",
       enabled: true,
-      api_docs: "./docs/api",
-      readme: "./README.md",
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
       output: {
         title: "Foundation Forms",
         sidebar_label: "Foundation Forms",

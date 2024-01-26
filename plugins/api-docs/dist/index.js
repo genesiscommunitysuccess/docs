@@ -72,22 +72,22 @@ async function copyApiDocs(manifest, processedMap) {
         const outputRootDir = path_1.default.join(process.cwd(), pkg.output.directory);
         await fs_extra_1.default.ensureDir(outputRootDir);
         const copyDirFiles = copyDirectoryFiles(packageRootDir, outputRootDir);
-        if (pkg.api_docs && pkg.output.api_docs) {
+        if (pkg.src.api_docs && pkg.output.api_docs) {
             await copyDirFiles({
-                inputDir: pkg.api_docs,
+                inputDir: pkg.src.api_docs,
                 outputDir: pkg.output.api_docs,
                 copyFn: createApiDoc,
             });
         }
-        if (pkg.img_dir && pkg.output.img_dir) {
+        if (pkg.src.img_dir && pkg.output.img_dir) {
             await copyDirFiles({
-                inputDir: pkg.img_dir,
+                inputDir: pkg.src.img_dir,
                 outputDir: pkg.output.img_dir,
                 copyFn: copyImgFile,
             });
         }
         const readmeStreamTransformer = (0, streamTransformers_1.createUrlTransformerSteam)(pkg.output);
-        const packageReadmeFile = path_1.default.join(packageRootDir, pkg.readme);
+        const packageReadmeFile = path_1.default.join(packageRootDir, pkg.src.readme);
         await createReadme(packageReadmeFile, outputRootDir, pkg.output, readmeStreamTransformer);
         const packageJson = await fs_extra_1.default.readJson(path_1.default.join(packageRootDir, "package.json"));
         processedMap[pkg.name] = packageJson.version;

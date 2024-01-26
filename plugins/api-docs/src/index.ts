@@ -131,16 +131,16 @@ async function copyApiDocs(
 
     const copyDirFiles = copyDirectoryFiles(packageRootDir, outputRootDir);
 
-    if (pkg.api_docs && pkg.output.api_docs) {
+    if (pkg.src.api_docs && pkg.output.api_docs) {
       await copyDirFiles({
-        inputDir: pkg.api_docs,
+        inputDir: pkg.src.api_docs,
         outputDir: pkg.output.api_docs,
         copyFn: createApiDoc,
       });
     }
-    if (pkg.img_dir && pkg.output.img_dir) {
+    if (pkg.src.img_dir && pkg.output.img_dir) {
       await copyDirFiles({
-        inputDir: pkg.img_dir,
+        inputDir: pkg.src.img_dir,
         outputDir: pkg.output.img_dir,
         copyFn: copyImgFile,
       });
@@ -150,7 +150,7 @@ async function copyApiDocs(
      * Write readme file, use git to merge in acceptable changes to existing file after write occurs
      */
     const readmeStreamTransformer = createUrlTransformerSteam(pkg.output);
-    const packageReadmeFile = path.join(packageRootDir, pkg.readme);
+    const packageReadmeFile = path.join(packageRootDir, pkg.src.readme);
     await createReadme(
       packageReadmeFile,
       outputRootDir,
