@@ -1,0 +1,20 @@
+{
+  "name": "api-docs-sync",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tool to sync foundation ui docs into the learn repo",
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./manifest": "./dist/manifest.js",
+    "./processedMap": "./processedMap.js",
+    "./api-preamble": "./data/api-preamble.md"
+  },
+  "scripts": {
+    "build": "tsc -p ./src/tsconfig.json",
+    "build:watch": "npm run build -- --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
