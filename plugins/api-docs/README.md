@@ -3,7 +3,7 @@
 This is a custom docusaurus plugin to move the api docs and readme files from select foundation-ui npm packages into the
 docs project.
 
-Create a manifest ts file containing the package and output information of each package you wish the plugin to process.
+Edit the manifest ts file containing the package and output information of each package you wish the plugin to process.
 ```json
 {
   "packages": [
