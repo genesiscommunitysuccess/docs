@@ -88,7 +88,7 @@ module.exports = {
     }],
     (process.env["COPY_DOCS"] === 'true' ? [require.resolve('api-docs-sync'), {
       manifest: require(require.resolve('api-docs-sync/manifest')).default,
-      processedMap: require(require.resolve('api-docs-sync/processedMap')).default,
+      processedMap: require(require.resolve('api-docs-sync/processedMap')),
     }] : null),
     'docusaurus-plugin-matomo',
     './plugins/webpack-options'

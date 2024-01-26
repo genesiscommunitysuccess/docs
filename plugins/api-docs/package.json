@@ -7,7 +7,7 @@
   "exports": {
     ".": "./dist/index.js",
     "./manifest": "./dist/manifest.js",
-    "./processedMap": "./dist/processedMap.js",
+    "./processedMap": "./processedMap.js",
     "./api-preamble": "./data/api-preamble.md"
   },
   "scripts": {
