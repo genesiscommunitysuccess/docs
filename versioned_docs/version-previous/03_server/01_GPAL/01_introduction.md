@@ -9,61 +9,62 @@ tags:
   - introduction
 ---
 
-Genesis Platform Abstraction Language (GPAL) is our own scripting language, which plugs into IntelliJ. 
+The Genesis Platform Abstraction Language (GPAL) is a set of custom Kotlin script definitions which allow developers to quickly stand up genesis services,
+as well as provide consistent functionality set with the same look and feel.
 
-GPAL gives you access to lots of functions. 
-Some functions are generic (available to all modules) other functions are specific to a module.
+Some of its most notable characteristics are:
+* "Intellisense" support for automatic discovery of syntax, code completion, error checking, etc.
+* Context aware properties and default imports to facilitate quick definitions.
+* Self-describing code with documentation samples.
+* Reusable common code blocks in multiple GPAL definitions.
+* Tiered architecture conjoined with code generation system (e.g. sysdef to fields, fields to tables, tables to views, etc)
+* Dependency injection is available and therefore custom code can be provided to enhance available functionality.
+* Plugin based architecture to enable additional syntax for specific GPAL definitions (i.e. FIX Xlator plugin for streamer/streamerclient)
+* GPAL Script definitions are debuggable and therefore provide additional troubleshooting capabilities when compared to other dynamic configuration languages.
+* Overriding capabilities at different levels for more flexibility. For example, field nullability can be defined within the GPAL fields definition, but also overridden at the GPAL tables definition level.
 
-Once you define an object in GPAL (such as a View), you can use it in multiple components.
 
-## Kotlin functions libraries
 
-![](/img/kotlin-functions-edit.png)
+## GPAL Default imports
 
-Camel
-Purge
-Notify
-Consolidator
-Data Pipeline
-Data Server
-Event Handler
-ReqRep
-Streamer
-Streamer Client
-Router
-Sys Def
-Fields
-Tables
-Process Config
-View
+The following imports are automatically available inside all GPAL definitions
 
-## Kotlin function examples
-
-The following imports are automatically available inside GPAL Event Handlers:
 
 ```kotlin
-import CodeBlock from '@theme/CodeBlock';
-import Imports from '!!raw-loader!/examples/server/java/event-handlers/imports.java';
-
-<CodeBlock className="language-java">{Imports}</CodeBlock>
+    global.genesis.gen.config.tables.*"
+    global.genesis.gen.config.view.*"
+    global.genesis.gen.dao.enums.*"
+    global.genesis.gen.view.entity.*"
+    global.genesis.gen.dao.*"
+    global.genesis.commons.model.GenesisSet
+    global.genesis.commons.model.GenesisSet.genesisSet   
+    org.joda.time.DateTime
+    org.joda.time.DateTime.now
+    global.genesis.config.dsl.ScriptModules
+    gpal.extn.shared.*
+    global.genesis.message.core.common.*
 ```
 
+Some imports are context aware and will change depending on the application you are building and the GPAL definition you are using. As an example, GPAL files can automatically add imports for any classes defined under
+`global.genesis.$productName.message.common.*` and `global.genesis.$productName.message.$messageType.*` where `$productName` is the name of the application you are building (i.e. position) and `$messageType` matches different GPAL definitions (i.e. request for request servers, event for eventhandlers, etc.).
+
+Some GPAL definitions will also have additional default imports to complement the functionality offered by them. For example, GPAL Event handlers have the additional imports available in scope:
+
 ```kotlin
-val systemDefinition: SystemDefinitionService
-val rxDb: RxDb
-val entityDb: AsyncEntityDb
-val metaData: MetaDataRegistry
-val evaluatorPool: EvaluatorPool
-val messageDelegator: MessageDelegator
-val networkConfiguration: NetworkConfiguration
-val serviceDetailProvider: ServiceDetailProvider
-val genesisHFT: GenesisHFT
-val injector: Injector
-val clientConnectionsManager: ClientConnectionsManager
-val typedEventManager: TypedEventManager
+        kotlinx.coroutines.async
+        kotlinx.coroutines.flow.*
+        kotlinx.coroutines.rx3.await
+        global.genesis.message.core.event.EventReply
+        global.genesis.db.DbRecord.Companion.dbRecord
+        global.genesis.db.EntityModifyDetails
+        global.genesis.eventhandlertDatabaseWrapper
+        global.genesis.eventhandler.pal.state.*
 ```
 
 ### GPAL example
+
+A simple example for the GPAL process configuration definition can be seen below.
+
 ```kotlin
     import java.util.concurrent.TimeUnit
     
@@ -94,8 +95,9 @@ val typedEventManager: TypedEventManager
     }
 ```
 
-As the example above shows, the GPAL **process-config** file can override system definition values on a per-module basis as well.
+In this example it is possible to identify a few of the characteristics described in this introductory page:
 
-Further information about how it works can be found at [type safe builders](https://kotlinlang.org/docs/type-safe-builders.html).
-
-Further information about functions can be found at [kotlin function scope](https://kotlinlang.org/docs/functions.html#function-scope).
+* Java/Kotlin classes can be imported to bring additional functionality, as shown by the TimeUnit import.
+* We can override system definition values at the process level, which in turn are defined in the GPAL System definition file. Thanks to the code-like nature of the GPAL definitions, the same syntax and underlying implementation can be reused to provide the override capabilities.
+* GPAL table configurations are available by default (e.g. TRADE, INSTRUMENT, ALT_INSTRUMENT_ID, MARKET, EXCHANGE, CURRENCY). Furthermore, if one of these tables is removed from the GPAL table definition, this process configuration file becomes incorrect, as it references a non-existent table, and it will automatically validate this issue as a compilation error.
+* Simple syntax that can be easily understood in an English-like language.
