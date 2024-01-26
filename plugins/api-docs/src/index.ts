@@ -170,7 +170,6 @@ async function copyApiDocs(
 
 export default async function(_context: any, options: PluginOptions) {
   let { manifest, processedMap } = options;
-  console.log({ manifest, processedMap });
   if (!manifest) {
     throw new Error("[api-docs-plugin] Please provide a manifest file.");
   }

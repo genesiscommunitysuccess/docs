@@ -1,7 +1,7 @@
 import { PackageConfig } from "./types";
 
 export default {
-  packages: <Array<PackageConfig>>[
+  packages: <PackageConfig[]>[
     {
       name: "@genesislcap/foundation-testing",
       enabled: true,
