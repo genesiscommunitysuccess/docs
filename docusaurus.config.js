@@ -1,9 +1,8 @@
 require("dotenv").config();
 
-const baseUrl = process.env.BASE_URL || "/";
-const routeBasePath = "/";
-const processedMap = require("./plugins/api-docs/processedMap");
-const GTM_ID = process.env.GTM_ID || "GTM-5GTR43J"; // default to uat GTM_ID, prod one should be set on CI (master)
+const baseUrl = process.env.BASE_URL || '/';
+const routeBasePath = '/';
+const GTM_ID = process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, prod one should be set on CI (master)
 
 const DEV_ANALYTICS =
   "https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS_dev_faea79accbcd255c7f124004.js";
@@ -96,15 +95,10 @@ module.exports = async function createConfigAsync() {
           id: GTM_ID,
         },
       ],
-      process.env["COPY_DOCS"] === "true"
-        ? [
-            "./plugins/api-docs",
-            {
-              manifest: require("./plugins/api-docs/manifest.json"),
-              processedMap,
-            },
-          ]
-        : null,
+      (process.env["COPY_DOCS"] === 'true' ? [require.resolve('api-docs-sync'), {
+        manifest: require(require.resolve('api-docs-sync/manifest')).default,
+        processedMap: require(require.resolve('api-docs-sync/processedMap')),
+      }] : null),
       "docusaurus-plugin-matomo",
       "./plugins/webpack-options",
     ],

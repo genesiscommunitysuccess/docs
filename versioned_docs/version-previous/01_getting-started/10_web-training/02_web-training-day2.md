@@ -65,14 +65,16 @@ export const OrderTemplate = html<Order>`
 This component is able to retrieve the meta-data from the `EVENT_ORDER_INSERT` backend resource (an Event Handler) and automatically builds a simple form for you. In simple scenarios, it can be good enough.
 
 Try to run it now and you'll notice that, even though the form is displayed, nothing happens when you click on Submit. We have to bind the submit button to a function, like this:
+
 ```jsx {4} title='order.template.ts'
   <foundation-form
     class="order-entry-form"
     resourceName="EVENT_ORDER_INSERT"
     @submit=${(x, c) => x.insertOrder(c.event as CustomEvent)}>
   </foundation-form>
-```f
-:::tip what is the @submit=${(x, c)} ?
+```
+
+:::tip what is the @submit ?
 This is related to binding as we briefly explained in the previous day. If it's still unclear, make sure to check [Understanding bindings](https://www.fast.design/docs/fast-element/declaring-templates#understanding-bindings) and [Events](https://www.fast.design/docs/fast-element/declaring-templates#events)
 :::
 
