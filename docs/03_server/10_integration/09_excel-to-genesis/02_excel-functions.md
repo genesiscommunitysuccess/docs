@@ -22,9 +22,9 @@ The following Excel functions are currently supported by `ExcelToGenesis`.
 | Add | A + B |
 | Minus | A – B |
 | Equal | A = B |
-| Not Equal | A <\> B |
+| Not Equal | A &lt;\\> B |
 | Less Than | A < B |
-| Less than or equal | A <= B |
+| Less than or equal | A &lt;&#61; B |
 | Greater Than | A > B |
 | Greater than or equal | A >= B |
 | Power | A^B |

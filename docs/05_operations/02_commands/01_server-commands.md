@@ -269,7 +269,7 @@ fun main(args: Array<String>) {
 }
 ```
 
-Consider another example; we have a migration script called migrateDictionary.sh as an install hook; this internally executes [MigrateDictionary](01_server-commands.md/#migratedictionary) as shown below:
+Consider another example; we have a migration script called migrateDictionary.sh as an install hook; this internally executes [MigrateDictionary](./01_server-commands.md#migratedictionary) as shown below:
 
 ```shell
 #!/bin/bash
@@ -315,7 +315,7 @@ The `GetAutoIncrementCount` command can take the following arguments:
 
 The behaviour of this command depends on which database implementation your application uses. 
 
-- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
+- **If you are using a NOSQL database**, such as Foundation DB, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
 
 - **Similarly, if you are using Oracle**, auto-incremented values are cached in memory in configurable block sizes. This command only retrieves the current value of the counter stored on disk.
 
@@ -484,7 +484,7 @@ LogLevel -DATADUMP_NACK_ON
 
 ## MigrateAliases
 
-This migrates the Genesis alias store from database storage to file storage and vice versa. This is useful for debugging when you have FDB or Aerospike database technology. 
+This migrates the Genesis alias store from database storage to file storage and vice versa. This is useful for debugging when you have FDB database technology. 
 
 ### Syntax
 The `MigrateAliases` command can take the following arguments:
@@ -502,7 +502,7 @@ MigrateAliases -dst=DB
 ```
 
 ### Database technology
-Aerospike and FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
+FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
 
 - If you are running Genesis on a single node, use a file store.
 - If you are running Genesis on more than one node, use database mode.
@@ -679,7 +679,7 @@ To use this tool, you must have an _application_**-purger.kts* file in the appli
 
 In order to enable syntax highlighting and autocompletion for purger files, you must add **genesis-environment** as a dependency of your application's **-config** module. See simple examples below for purger definitions:
 
-A log file called **purge_{*time_of_run*}** will be created under the **$GENESIS_HOME/runtime/logs/** folder.
+A log file called **purge_&#123;*time_of_run*&#125;** will be created under the **$GENESIS_HOME/runtime/logs/** folder.
 
 The functions and filters below give you different ways of purging data.
 
@@ -801,7 +801,7 @@ The `remap` command performs the following tasks:
 
 - It reads all dictionary files (fields.kts, tables.kts and view.kts) from **$GC** and compares these to the previously generated schema. It uses these changes to remap the memory-resident database.
 - It generates dao objects based on the dictionary tables, so you can perform database operations in a type-safe way.
-- If you are running Aerospike or FDB, it updates the Genesis alias store; for Aerospike, it also generates UDFs (user defined functions).
+- If you are running FDB, it updates the Genesis alias store.
 
 If you run `remap` with no arguments, it simply gives a report of changes that exist in the configuration.
 
@@ -811,7 +811,7 @@ If you want to commit the changes to the database, you must use the **--commit**
 remap [-c | --commit]
 ```
 
-For full details, see our page on [Remap](../../../operations/commands/remap).
+For full details, see our page on [Remap](../../05_operations/02_commands/03_remap.md).
 
 ## RenameFields 
 This command is used to rename a field name in a database without changing the dictionary or config files.
@@ -1163,7 +1163,7 @@ The `CreateMissingSqlSequences` command has no parameters.
 ### Working with different databases
 The behaviour of this command depends on which database implementation your application uses.
 
-- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
+- **If you are using a NOSQL database**, such as Foundation DB, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
 
 - **If you are using Oracle**, you can **not** set a sequence value directly. This command increments the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values that are already assigned in the cache, as the increment is also applied to these values.
 
@@ -1267,7 +1267,7 @@ because the tables being compared are in separate databases. Therefore, these fi
 
 | Argument | Argument long name | Mandatory | Description | Restricted Values |
 | -- | -- | -- | -- | -- |
-| -d | --dblayer | true | Database Layer type | Yes: FDB, FDB2, AEROSPIKE, SQL, SIMPLE |
+| -d | --dblayer | true | Database Layer type | Yes: FDB, FDB2, SQL, SIMPLE |
 | -f | --fdb | false | FDB cluster file name |No |
 | -H | --host | false | Remote DB hostname |No |
 | -P | --port | false | Remote DB port |Yes: Number > 0 |

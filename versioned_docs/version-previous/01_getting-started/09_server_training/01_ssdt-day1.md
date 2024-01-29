@@ -13,7 +13,18 @@ tags:
 This day covers:
 
 - [System definitions​](#system-definitions)
+  - [Global, System and Host levels](#global-system-and-host-levels)
+  - [Items defined](#items-defined)
+  - [Exercise 1.1 System Definitions](#exercise-11-system-definitions)
 - [Advanced Event Handlers](#advanced-event-handlers)
+  - [Database API](#database-api)
+    - [Syntax](#syntax)
+  - [Exercise 1.2 entityDb ReadOperation getBulk](#exercise-12-entitydb-readoperation-getbulk)
+  - [Exception handling](#exception-handling)
+  - [Exercise 1.3 Exception handling](#exercise-13-exception-handling)
+  - [Custom reply message type](#custom-reply-message-type)
+    - [onException](#onexception)
+  - [Exercise 1.4 Event Handler custom message](#exercise-14-event-handler-custom-message)
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -313,7 +324,7 @@ data class TradeEvent(
 }
 ```
 
-... and  a custom message reply type called `CustomTradeEventReply` added under {app-name}-messages defined as:
+... and  a custom message reply type called `CustomTradeEventReply` added under &#123;app-name}-messages defined as:
 
 ```kotlin
 sealed class CustomTradeEventReply : Outbound() {

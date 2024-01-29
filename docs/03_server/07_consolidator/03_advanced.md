@@ -11,7 +11,7 @@ tags:
 ---
 
 ## Consolidator groups
-Consolidator groups are essential if you are using a non-transaction database (such as Aerospike).
+Consolidator groups are essential if you are using a non-transaction database.
 
 `groupName` identifies a group of Consolidators. 
 
@@ -21,7 +21,7 @@ groupName = "_name_"
 
 If you include this statement in your `consolidator` block, then the Consolidator will belong to the named group.
 
-In a non-transaction database (for example, Aerospike), a group is designed to offer consistent consolidation in the absence of ACID guarantees at the database level. Consolidators in the same group will not interfere with each other's calculations as they update - particularly where they output to the same table. 
+In a non-transaction database, a group is designed to offer consistent consolidation in the absence of ACID guarantees at the database level. Consolidators in the same group will not interfere with each other's calculations as they update - particularly where they output to the same table. 
 
 :::note 
 This is limited to Consolidator updates within a group in a single process. Updates in other groups, other processes or other nodes could still interfere. You must plan this carefully.

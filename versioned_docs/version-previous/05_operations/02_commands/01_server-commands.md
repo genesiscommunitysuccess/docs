@@ -269,7 +269,7 @@ fun main(args: Array<String>) {
 }
 ```
 
-Consider another example; we have a migration script called migrateDictionary.sh as an install hook; this internally executes [MigrateDictionary](01_server-commands.md/#migratedictionary) as shown below:
+Consider another example; we have a migration script called migrateDictionary.sh as an install hook; this internally executes [MigrateDictionary](./01_server-commands.md#migratedictionary) as shown below:
 
 ```shell
 #!/bin/bash
@@ -679,7 +679,7 @@ To use this tool, you must have an _application_**-purger.kts* file in the appli
 
 In order to enable syntax highlighting and autocompletion for purger files, you must add **genesis-environment** as a dependency of your application's **-config** module. See simple examples below for purger definitions:
 
-A log file called **purge_{*time_of_run*}** will be created under the **$GENESIS_HOME/runtime/logs/** folder.
+A log file called **purge_&#123;*time_of_run*&#125;** will be created under the **$GENESIS_HOME/runtime/logs/** folder.
 
 The functions and filters below give you different ways of purging data.
 
@@ -811,7 +811,7 @@ If you want to commit the changes to the database, you must use the **--commit**
 remap [-c | --commit]
 ```
 
-For full details, see our page on [Remap](../../../operations/commands/remap).
+For full details, see our page on [Remap](../../05_operations/02_commands/03_remap.md).
 
 ## RenameFields 
 This command is used to rename a field name in a database without changing the dictionary or config files.

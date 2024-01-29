@@ -3,7 +3,7 @@
 This is a custom docusaurus plugin to move the api docs and readme files from select foundation-ui npm packages into the
 docs project.
 
-Create a manifest json file containing the package and output information of each package you wish the plugin to process.
+Edit the manifest ts file containing the package and output information of each package you wish the plugin to process.
 ```json
 {
   "packages": [
@@ -31,7 +31,7 @@ Create a manifest json file containing the package and output information of eac
 }
 ```
 
-Supply the manifest json file and a processedMap object to the plugin during bootstrap:
+Supply the manifest js file and a processedMap object to the plugin during bootstrap:
 
 ```js
 // docusaurus.config.js
@@ -46,14 +46,20 @@ const processedMap = {
 module.exports = {
     plugins: [
         ...
-        ['./plugins/api-docs', {
-            manifest: require('./plugins/api-docs/manifest.json'),
-            processedMap,
+        [require.resolve('api-docs-sync'), {
+            manifest: require(require.resolve('api-docs-sync/manifest')).default,
+            processedMap: require(require.resolve('api-docs-sync/processedMap')).default,
         }],
     ],
     ...
 }
 ```
+
+## Usage
+
+Use `npm run build` and `npm run build:watch` to transpile the typescript `/src` files to `dist/*.js` files for docusaurus to use.
+
+We are checking in the javascript files in `/dist` so the wider learn team do not need to worry about extra build steps to initialise this package before running docusaurus.
 
 ## TODOs
 

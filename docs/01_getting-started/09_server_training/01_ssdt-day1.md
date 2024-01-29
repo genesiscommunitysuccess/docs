@@ -257,7 +257,7 @@ db.updateAll(Trade.class, trade -> {
 </TabItem>
 </Tabs>
 
-If the underlying database supports transactions, then the entityDb provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions. Currently, transactions are supported on **FoundationDb** and **Postgresql**. Using transaction on **Aerospike** will result in a failure. Further details regarding transactions can be found [here](../../../database/database-interface/entity-db/#transactions).
+If the underlying database supports transactions, then the entityDb provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions. Currently, transactions are supported on **FoundationDb** and **Postgresql**. Further details regarding transactions can be found [here](../../../database/database-interface/entity-db/#transactions).
 
 Using entityDb, it is also possible to subscribe operations, starting a database listener that receives updates to tables or views. When subscribing to view updates, only updates to the root table will be published. Further details regarding subscribe operations can be found [here](../../../database/database-interface/entity-db/#subscribe-operations).
 
@@ -324,7 +324,7 @@ data class TradeEvent(
 }
 ```
 
-... and  a custom message reply type called `CustomTradeEventReply` added under {app-name}-messages defined as:
+... and  a custom message reply type called `CustomTradeEventReply` added under &#123;app-name}-messages defined as:
 
 ```kotlin
 sealed class CustomTradeEventReply : Outbound() {

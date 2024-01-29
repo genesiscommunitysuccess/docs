@@ -212,80 +212,9 @@ jdbc:h2:file:~/run/path/to/h2;AUTO_SERVER=TRUE
 
 In your **genesis-system-definition.kts** file, set `DbLayer=SQL`, `DictionarySource=FILE` and `DbQuotedIdentifiers=true`.
 
-### Running Aerospike from Docker
-
-You can run Aerospike with the following Docker command:
-
-```none title="CentOS"
-docker run --name aerospike -tid -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:3003 aerospike/aerospike-server:3.15.1.4
-```
-
-This creates a download and runs Aerospike in a Docker container.
-
-To check if the container is running, use the `docker container ls -a` command. This will show the id and name of the Aerospike container. You need these to interact with the container.
-
-```none title="CentOS"
-# docker container ls -a
-CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS                      PORTS               NAMES
-c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   2 minutes ago       Exited (0) 32 seconds ago                       priceless_bardeen
-```
-
-To start or stop the container, use `docker start|stop ${containerName}`:
-
-```none title="CentOS"
-# docker stop priceless_bardeen
-priceless_bardeen
-# docker container ls -a
-CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS
-        PORTS               NAMES
-c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   5 minutes ago       Exited (0) 3 minutes ago                       priceless_bardeen
-# docker start priceless_bardeen
-priceless_bardeen
-# docker container ls -a
-CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS
- PORTS                              NAMES
-c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   5 minutes ago       Up 4 seconds        0.0.0.0:3000-3003->3000-3003/tcp   priceless_bardeen
-```
-
-To remove the container, use `docker rm ${containerName}`:
-
-```none title="CentOS"
-# docker rm priceless_bardeen
-priceless_bardeen
-# docker container ls -a
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS
-NAMES
-```
-
-After removing, you can create a fresh container using the same command as above:
-
-```none title="CentOS"
-# docker run -tid -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:3003 aerospike/aerospike-server:3.15.1.4
-41e9aee4246ca1aaaa5d5fb4e832e0778ba541cf56ad37869c675bc96c1ceb3e
-# docker container ls -a
-CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS
- PORTS                              NAMES
-41e9aee4246c        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   6 seconds ago       Up 5 seconds        0.0.0.0:3000-3003->3000-3003/tcp   sweet_sinoussi
-```
-
-By default, the Aerospike Docker database only has the **test** namespace, so you need to change the namespace in the
-file **genesis-system-definition.kts**:
-
-```kotlin
-    ...
-    systems {
-        system(name = "DEV") {
-            ...
-            item(name = "DbNamespace", value = "test")
-            ...
-        }
-    }
-    ...
-```
-
 ### Running Postgres from Docker
 
-Running Postgres from Docker is very similar to running Aerospike:
+Running Postgres from Docker is very simple:
 
 ```none title="CentOS"
 docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c shared_buffers=80MB -c max_connections=250

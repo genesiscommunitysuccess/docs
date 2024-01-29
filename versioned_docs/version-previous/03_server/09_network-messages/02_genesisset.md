@@ -113,7 +113,7 @@ genesisSet.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
 | Signature | Description |
 |---|---|
 GenesisSet(expectedSize: Int = 32) | Creates a GenesisSet object with a predetermined expected number of key-value pairs.
-GenesisSet(fields: MutableMap<String, Any?>) | Creates a GenesisSet object using an already existing `Map` object containing key-value pairs.
+GenesisSet(fields: MutableMap&lt;String, Any?>) | Creates a GenesisSet object using an already existing `Map` object containing key-value pairs.
 
 ## Functions
 
@@ -141,7 +141,7 @@ GenesisSet(fields: MutableMap<String, Any?>) | Creates a GenesisSet object using
 | setDirect | fun setDirect(property: String, value: Any?) | Shorthand method to set a field that may be multiple sets deep. |
 | setDirectNull | fun setDirectNull(property: String, value: Any?, defaultValue: Any) | Shorthand method to set a field that may be multiple sets deep, and accepts a default value for null parameters. |
 | setDouble | fun setDouble(key: String, value: Double?) | Set integer value.  If the value exists in the set it is overwritten. |
-| setFullArray | fun setFullArray(key: String, array: Iterable<*>) | Set a full list of values. |
+| setFullArray | fun setFullArray(key: String, array: Iterable&lt;*>) | Set a full list of values. |
 | setGenesisSet | setGenesisSet(key: String, set: GenesisSet?) | Embed a set inside this set.  If the value exists in the set it is overwritten. |
 | setInteger | fun setInteger(key: String, value: Int?) | Set integer value.  If the value exists in the set it is overwritten. |
 | setLong | fun setLong(key: String, value: Long?) | Set long value.  If the value exists in the set it is overwritten. |

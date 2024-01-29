@@ -1,27 +1,26 @@
-const { Transform } = require("stream");
-const { StringDecoder } = require("string_decoder");
+import { Transform } from "stream";
+import { StringDecoder } from "string_decoder";
+import { PackageConfig } from "./types";
 
 const GENESIS_DOC_URL_HOST_REGEX =
   /https?:\/\/learn\.genesis\.global\/secure\//g;
 
-const createUrlTransformerSteam = (manifestSettings) =>
+export const createUrlTransformerSteam = (
+  manifestSettings: PackageConfig["output"],
+) =>
   new Transform({
     transform(chunk, encoding, callback) {
       let chunkString = new StringDecoder("utf8").write(chunk);
 
       const relativeRoot = "../".repeat(
-        manifestSettings.directory.split("/").length - 1
+        manifestSettings.directory.split("/").length - 1,
       );
 
       chunkString = chunkString.replace(
         GENESIS_DOC_URL_HOST_REGEX,
-        relativeRoot
+        relativeRoot,
       );
 
       callback(null, chunkString);
     },
   });
-
-module.exports = {
-  createUrlTransformerSteam,
-};

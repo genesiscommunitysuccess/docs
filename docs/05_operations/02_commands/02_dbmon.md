@@ -300,7 +300,7 @@ The logical operators available are:
 | ==     | Equality (Equal To)         |
 | !=     | Non-Equality (Not Equal To) |
 | >      | Greater Than                |
-| <      | Less Than                   |
+| &lt;   | Less Than                   |
 | &&     | Logical And                 |
 | ![](/img/logical-or.png)    | Logical Or                  |
 
