@@ -59,7 +59,7 @@ Some GPAL definitions also have additional default imports to complement their f
 
 ### GPAL example
 
-Here is a simple example for the GPAL process configuration definition:
+Here is a simple example of a GPAL process configuration:
 
 ```kotlin
     import java.util.concurrent.TimeUnit
@@ -91,9 +91,9 @@ Here is a simple example for the GPAL process configuration definition:
     }
 ```
 
-In this example it is possible to identify a few of the characteristics described in this introductory page:
+From the example above, you can see some of the GPAL characteristics:
 
-* Java/Kotlin classes can be imported to bring additional functionality, as shown by the TimeUnit import.
-* We can override system definition values at the process level, which in turn are defined in the GPAL System definition file. Thanks to the code-like nature of the GPAL definitions, the same syntax and underlying implementation can be reused to provide the override capabilities.
-* GPAL table configurations are available by default (e.g. TRADE, INSTRUMENT, ALT_INSTRUMENT_ID, MARKET, EXCHANGE, CURRENCY). Furthermore, if one of these tables is removed from the GPAL table definition, this process configuration file becomes incorrect, as it references a non-existent table, and it will automatically validate this issue as a compilation error.
+* At the beginning, the Java `TimeUnit` is imported - Java/Kotlin classes can be imported to bring additional functionality.
+* We can override system-definition values (defined in the GPAL System definition file) at the process level. Thanks to the code-like nature of the GPAL definitions, the same syntax and underlying implementation can be reused to provide override capabilities.
+* GPAL table configurations are available by default (e.g. TRADE, INSTRUMENT, ALT_INSTRUMENT_ID, MARKET, EXCHANGE, CURRENCY). But note, if one of these tables is removed from the GPAL table definition, our example process configuration file becomes incorrect, as it references a non-existent table, and it will automatically identify this issue as a compilation error.
 * Simple syntax that can be easily understood in an English-like language.
