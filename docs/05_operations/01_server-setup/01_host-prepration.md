@@ -48,7 +48,6 @@ Other packages needed to manage and run Genesis applications are:
 Genesis supports several types of database. The currently supported list is:
 
 * [FoundationDB](https://www.foundationdb.org/) (default)
-* [Aerospike](https://aerospike.com/)
 * [PostgreSQL](https://www.postgresql.org/) (local or RDS within AWS)
 * [MSSQL](https://www.microsoft.com/en-gb/sql-server/sql-server-2016) (Windows environments)
 * [Oracle](https://www.oracle.com/uk/database/)

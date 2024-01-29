@@ -53,14 +53,13 @@
     "docusaurus-gtm-plugin": "^0.0.2",
     "docusaurus-plugin-matomo": "^0.0.8",
     "esbuild": "0.19.12",
-    "esbuild-loader": "^4.0.3",
     "fs-extra": "^11.2.0",
     "mdx-mermaid": "2.0.0",
     "mermaid": "^10.7.0",
     "raw-loader": "^4.0.2",
-    "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-player": "^2.14.1",
+    "react": "^18.2.0",
     "tslib": "^2.6.2",
     "webpack": "^5.90.0"
   },
@@ -77,9 +76,9 @@
     ]
   },
   "devDependencies": {
-    "api-docs-sync": "file:./plugins/api-docs",
     "@genesislcap/genx": "14.137.0",
     "@types/mocha": "^10.0.6",
+    "api-docs-sync": "file:./plugins/api-docs",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.1",
