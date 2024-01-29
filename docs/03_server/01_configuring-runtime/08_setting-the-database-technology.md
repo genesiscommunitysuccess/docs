@@ -49,7 +49,7 @@ systemDefinition {
 ```
 
 
-Then, insert a line in the **hosts** block to identify the JDBC connection string for the database. This points the system to the local Postgres, MSSQL server. For example:
+Then, insert a line in the **hosts** block to identify the JDBC connection string for the database. This points the system to the local Postgres, Oracle or MSSQL server. For example:
 
 ```kotlin
 item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432")
