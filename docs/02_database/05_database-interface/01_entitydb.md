@@ -500,7 +500,7 @@ db.updateAll(Trade.class, trade -> {
 
 If the underlying database supports transactions, then the entity db provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions.
 
-Currently, transactions are supported on **FoundationDb** and **Postgresql**.
+Currently, transactions are supported on **FoundationDb**, **MS SQL**, **Oracle** and **Postgresql**.
 
 When code is expected to run on multiple database types, transactions should be used when available. You can use `safeReadTransaction` and `safeWriteTransaction`. These will run operations in the block in a single transaction, if supported.
 
