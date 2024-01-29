@@ -15,7 +15,7 @@ The Genesis low-code platform supports the following database technology:
 * FoundationDB
 * Postgres (PostgreSQL)
 * MSSQL
-* Aerospike
+* Oracle
 
 Because we abstract from the underlying technology, you can easily toggle between any of these four.
 
@@ -37,7 +37,7 @@ Edit the [system definition file](../../../server/configuring-runtime/system-def
 
 You need to make two changes.
 
-First, go to the line item for **DbLayer** and change the **value** from **FDB** to **SQL** (for Postgres and MSSQL) or **AEROSPIKE**.
+First, go to the line item for **DbLayer** and change the **value** from **FDB** to **SQL** (for Postgres and MSSQL).
 
 ```kotlin
 systemDefinition {
@@ -49,7 +49,7 @@ systemDefinition {
 ```
 
 
-Then, insert a line in the **hosts** block to identify the JDBC connection string for the database. This points the system to the local Postgres, MSSQL or Aerospike server. For example:
+Then, insert a line in the **hosts** block to identify the JDBC connection string for the database. This points the system to the local Postgres, MSSQL server. For example:
 
 ```kotlin
 item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432")
@@ -73,8 +73,6 @@ systems {
         }
     }
 ```
-
-For Aerospike, you might also want to update the **DbNamespace** and **DbMode** properties in the [system definition file](../../../server/configuring-runtime/system-definitions/). 
 
 If you are using Postgres and you want to use a reserved keyword as a column name, then you need to add the setting below to your system definition file. This enables Quoted Identifiers to be used:
 
