@@ -37,7 +37,7 @@ Edit the [system definition file](../../../server/configuring-runtime/system-def
 
 You need to make two changes.
 
-First, go to the line item for **DbLayer** and change the **value** from **FDB** to **SQL** (for Postgres and MSSQL).
+First, go to the line item for **DbLayer** and change the **value** from **FDB** to **SQL** (for Postgres, Oracle or MSSQL).
 
 ```kotlin
 systemDefinition {
