@@ -11,7 +11,7 @@ tags:
 ---
 
 
-This page describes the various configuration options available for authentication. Remember that if you want to override the default configuration of the **auth-preferences.kts**, you need to modify or create the following file: {_application-name_}**-script-config/src/main/resources/scripts/auth-preferences.kts**.
+This page describes the configuration options for authentication. Remember that if you want to override the default configuration of the **auth-preferences.kts**, you need to modify or create the following file: _application-name_**-script-config/src/main/resources/scripts/auth-preferences.kts**.
 
 :::info
 **Session tokens and refresh tokens**
@@ -21,7 +21,6 @@ The expiry date of the refresh token is always further in the future than the ex
 
 Once a session token expires, you can use its associated refresh token to create a new user session - assuming the refresh token has not expired yet.
 :::
-
 
 ## The security function
 
@@ -336,7 +335,7 @@ The message to request a self-service password reset looks like this:
     MESSAGE_TYPE = EVENT_SELF_SERVICE_PASSWORD_RESET
     DETAILS.USER_NAME = JohnWolf
 
-It is also possible to provide a RETURN_URL field as part of the details block if the URL used by the backend configuration is not suitable.
+It is also possible to provide a RETURN_URL field as part of the details block if the URL used by the back-end configuration is not suitable.
 
 Once this event has been triggered, the password reset link will be sent through the appropriate channels (e.g. e-mail) and the password reset action can be triggered.
 
@@ -346,11 +345,15 @@ Once this event has been triggered, the password reset link will be sent through
     DETAILS.NEW_PASSWORD = *******
     DETAILS.INVALIDATE_ACTIVE_SESSIONS = true
 
-In this message sample we can identify the RESET_TOKEN field as the code provided to the user when the reset operation was requested, the NEW_PASSWORD field as the new password to be used for the user, and optionally, an INVALIDATE_ACTIVE_SESSIONS field to log out any currently logged in sessions.
+In the example message above, you can see that:
+
+- the RESET_TOKEN field has the code provided to the user when the reset operation was requested
+- the NEW_PASSWORD field has the new password to be used for the user
+- the optional INVALIDATE_ACTIVE_SESSIONS field has been set to true, to log out any currently logged in sessions
 
 ### Change password
 
-The change password message is available whether the user is currently logged in or not. This is important, as the first time a user logs in their newly created one-time password will be in a PASSWORD_EXPIRED state, which will force a "Change password" workflow before they can actually log in for the first time.
+The change password message is available whether the user is currently logged in or not. This is important, because the first time a user logs in, their newly created one-time password will be in a PASSWORD_EXPIRED state; this forces a "Change password" workflow before they can actually log in for the first time.
 
 The message structure for a change password message looks like this:
 
@@ -362,7 +365,7 @@ The message structure for a change password message looks like this:
 The naming convention for the fields is also self-explanatory.
 
 ### Logout
-A logout request can be triggered before a user has logged in, in the case limits have been set for a maximum number of user sessions. This message workflow allows to terminate an existing active session so a new session can be created.
+A logout request can be triggered before a user has logged in, if limits have been set for a maximum number of user sessions. This message workflow enables you to terminate an existing active session so that a new session can be created.
 
 A sample message would look like this:
 
@@ -427,7 +430,7 @@ If there is a problem, the server will return the standard error set with CODE/T
 
 ### Password change
 
-As explained in the previous section, if the response for the login attempt is `PASSWORD_EXPIRED`, then the GUI can allow the user to change the password, provided they know their existing password.
+As explained in the previous section, if the response for the login attempt is `PASSWORD_EXPIRED`, then the GUI can allow the user to change the password - provided they know their existing password.
 
 #### Change request
 
@@ -454,9 +457,9 @@ The error codes that can be returned are currently:
 
 ### Logout
 
-As explained in the previous section, if the response for the login attempt is `MAX_ACTIVE_SESSIONS_REACHED`, the server will reply with a list of active sessions, so the client can optionally terminate one of them. In this scenario, the client would need to send a LOGOUT message with the specific SESSION_ID value of the session to terminate.
+As explained in the previous section, if the response for the login attempt is `MAX_ACTIVE_SESSIONS_REACHED`, the server will reply with a list of active sessions; this gives the client the option to terminate one of them. In this scenario, the client would need to send a LOGOUT message with the specific SESSION_ID value of the session to terminate.
 
-The response message in that case would look like this:
+The response message for this scenario would look like this:
 
 ```
 MESSAGE_TYPE = EVENT_LOGIN_AUTH_NACK
@@ -514,7 +517,13 @@ Assuming your application is not web based and the backend is not using the Cons
     DETAILS.SERVICE[1].HOST[1].PORT = 9002
 
 ### Expire password
-A password can expire in three different scenarios: time based, user based or admin based. The end result is always the same, the user will need to change the password on the next login, as their previous one has now expired.
+A password can expire in three different ways: 
+
+- time-based
+- user-based
+- admin-based
+
+The end result is always the same, the user will need to change the password on the next login, as their previous one has now expired.
 
 #### Expire password request
 The password expiry mechanism can be triggered by sending a message like this:
@@ -522,14 +531,14 @@ The password expiry mechanism can be triggered by sending a message like this:
     MESSAGE_TYPE = EVENT_EXPIRE_USER_PASSWORD
     DETAILS.USER_NAME = JohnWolf
 
-It is common for administrators to help users recover their account credentials by expiring the current User record `STATUS` with a new one-time password, and this action will force users to change it on their first login. In this case the message can optionally receive a one-time password like shown below:
+It is common for administrators to help users recover their account credentials by expiring the current User record `STATUS` with a new one-time password;  this action forces users to change it on their first login. In this case, the message can optionally receive a one-time password, as shown below:
 
     MESSAGE_TYPE = EVENT_EXPIRE_USER_PASSWORD
     DETAILS.USER_NAME = JohnWolf
     DETAILS.PASSWORD = ******
 
 ### Login details
-In the event the client needs to re-receive the information provided by the login response for whatever reason (i.e. re-reading user preferences), it is possible to send an EVENT_LOGIN_DETAILS message to the server. The response will be equivalent to the response received by the login message, without actively logging in the system for a second time.
+If the client needs to re-receive the information provided by the login response for some reason (such as re-reading user preferences), it is possible to send an EVENT_LOGIN_DETAILS message to the server. The response will be equivalent to the response received by the login message, without actively logging in the system for a second time.
 
 ### Login details request
 
@@ -677,7 +686,7 @@ In the example below, the logged-in user (in the second line) is JohnDoe, who is
 
 ## Full permissions list
 
-Most of the message workflows described in this page are permissioned based on a set of default rights which are provided in the form of a CSV file as part of the platform authentication distribution. Most permissions and their relationship to events have been explained in their own sections, and the whole table can be found below for reference:
+Most of the message workflows described on this page are permissioned on the basis of a set of default rights. These are provided in the form of a CSV file as part of the platform authentication distribution. Most permissions and their relationship to events have been explained in their own sections. For reference, here is the whole table:
 
 | Code           | Description                    |
 |----------------|--------------------------------|
@@ -692,7 +701,7 @@ Most of the message workflows described in this page are permissioned based on a
 | ENABLE_USER    | Enable a User                  |
 | EXPIRE_PWD     | Expire another User's password |
 
-A default Profile record is also provided named USER_ADMIN which contains all the previous rights.
+A default Profile record named USER_ADMIN is also provided. This contains all the previous rights.
 
 :::info
 Users can change their own password as well as expire their own password (assuming they are logged in). However, it is only possible to change/expire another user's password if you have administrator rights.
@@ -700,9 +709,9 @@ Users can change their own password as well as expire their own password (assumi
 
 ## Event auditing
 
-Each one of these events is audited in one way or another, either by using the automatic mechanism provided at the table definition level (e.g. PROFILE, PROFILE_RIGHT, PROFILE_USER, PASSWORD_RESET, USER and USER_ATTRIBUTES), or by providing custom tables with the audit information.
+Each authentication event is audited in one way or another, either using the automatic mechanism provided at the table definition level (e.g. PROFILE, PROFILE_RIGHT, PROFILE_USER, PASSWORD_RESET, USER and USER_ATTRIBUTES), or by providing custom tables with the audit information.
 
-In the first case scenario, auditing works as it would do for any other genesis table: AUDIT_EVENT_TYPE reflects the event message type (i.e. EVENT_INSERT_USER), AUDIT_EVENT_TEXT may contain a free text field provided by the user calling the event, AUDIT_EVENT_DATETIME is autogenerated with the current date and time the change happened and AUDIT_EVENT_USER corresponds to the user who triggered the event in question.
+In the first case scenario, auditing works as it would do for any other Genesis table: AUDIT_EVENT_TYPE reflects the event message type (i.e. EVENT_INSERT_USER), AUDIT_EVENT_TEXT may contain a free text field provided by the user calling the event, AUDIT_EVENT_DATETIME is autogenerated with the current date and time the change happened and AUDIT_EVENT_USER corresponds to the user who triggered the event in question.
 
 In the second case scenario, we have automatic events to log changes in USER_AUDIT and USER_ATTRIBUTES when a password expires. And we also have specific handling for USER_LOGIN audits. The USER_LOGIN_AUDIT table will contain entries for the following events: LOGIN, LOGOUT, SESSION_EXPIRED, REJECTED (only available if a maximum number of user sessions has been configured), FAILED_LOGIN, and FAILED_LOGOUT (if an incorrect session ID or user name has been provided). 
 
