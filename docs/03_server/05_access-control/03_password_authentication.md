@@ -718,7 +718,7 @@ In the second case scenario, we have automatic events to log changes in USER_AUD
 
 Additionally, all USER_LOGIN audit events are logged to a file at INFO level in the following format:
 
-    25 Jan 2024 16:31:18.823 12729 [dbCoroutinesContext-4 @coroutine#994] INFO  global.genesis.auth.manager.controller.LoginAuditController - AuditLoginEvent: UserLoginAudit{serialVersionUID='1',userLoginAuditId={not-set}, userName=JohnDoe, authAction=LOGIN, ipAddress=/127.0.0.1, reason=, recordId={not-set}, timestamp={not-set}}
+`[25 Jan 2024 16:31:18.823 12729 [dbCoroutinesContext-4 @coroutine#994] INFO  global.genesis.auth.manager.controller.LoginAuditController - AuditLoginEvent: UserLoginAudit{serialVersionUID='1',userLoginAuditId={not-set}, userName=JohnDoe, authAction=LOGIN, ipAddress=/127.0.0.1, reason=, recordId={not-set}, timestamp={not-set}}]`
 
 
 
