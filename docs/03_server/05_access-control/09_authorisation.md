@@ -640,10 +640,9 @@ All permission rules are held in the **auth-permissions.xml** file.  In this fil
 
 We have a `preExpression` block inside our file, which is applied to all entities. This makes the definition `isUserEnabled` available to all entities.
 
-
+```xml
     <preExpression>
         <![CDATA[
-
 		    /*
 		     * Check user status
 		     */
@@ -652,6 +651,7 @@ We have a `preExpression` block inside our file, which is applied to all entitie
 		     }
         ]]>
     </preExpression>
+```
 
 We can now call `isUserEnabled` from any entity block.
 

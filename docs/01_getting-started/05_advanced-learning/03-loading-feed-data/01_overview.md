@@ -56,7 +56,7 @@ GBP3M=135000,S,13387,150121
 ### A real example
 Reality is rarely that convenient. For this example, the incoming data is issuance data from Bloomberg, and its format is considerably more complex.
 
-Here is an [example of the data](../../../01_getting-started/05_advanced-learning/03-loading-feed-data/03_example-source-data.md/) you can download from the Bloomberg Issuance feed.
+Here is an [example of the data](./03_example-source-data.md) you can download from the Bloomberg Issuance feed.
 
 Once you know this format, you need to create code that maps the fields so that they can be written to a table in your application.
 
@@ -141,7 +141,7 @@ class BbgIssuanceFileImportEvent @Inject constructor(
 
 In the `eventHandler`, there are two code blocks that you need to specify:
 - `onValidate`. This is where you validate the message before processing; return an `ack()` or `nack()`. If you do not want to add any validation, simply return an `ack()`.
-- `onCommit`. This is where you specify the parsing that converts the raw data (defined as a collection of key-value pairs in the shape of a Map<String,String>) to Genesis format, and then sends it to a staging table for use in the application.
+- `onCommit`. This is where you specify the parsing that converts the raw data (defined as a collection of key-value pairs in the shape of a `Map<String,String>`) to Genesis format, and then sends it to a staging table for use in the application.
 
 You also need to define any additional methods required to provide additional details about this `eventHandler`. For example, if the name of the `eventHandler` doesn't match the name of the class, you need to provide a `messageType()`. 
 
@@ -170,6 +170,7 @@ class BbgIssuanceFileImportEvent @Inject constructor(
     override fun messageType(): String = "FILE_IMPORT_BBG_ISSUANCE"
 }
 ```
+
 :::note
 Annotations of @Module and @Inject are required for Genesis Dependency Injection and Inversion of Control patterns. The @Module will be loaded at runtime, and the dependencies are injected into the BbgIssuanceFileImport `eventHandler`. In this case, the dependency is just RxEntityDb, which is being used to insert the data into the **ISSUANCE_DATA** table.
 :::

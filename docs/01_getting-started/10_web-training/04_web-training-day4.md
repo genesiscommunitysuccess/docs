@@ -453,7 +453,7 @@ Now we are going to look at some of the dynamic interactions that are available 
 - set up the component to autosave the layout as the user interacts with it
 - add a button to reset the layout
 
-To see what else you can do with the JavaScript API, see the [main documentation in the API documentation](../../04_web/10_dynamic-layout/docs/api/foundation-layout.foundationlayout.md/#methods).
+To see what else you can do with the JavaScript API, see the [main documentation in the API documentation](../../04_web/10_dynamic-layout/docs/api/foundation-layout.foundationlayout.loadlayout.md).
 
 ### Autosaving layout
 

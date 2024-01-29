@@ -13,8 +13,21 @@ tags:
 This day covers:
 
 - [Custom endpoints](#custom-endpoints)
-- [Camel module​](#camel-module)
-- [Data pipeline](#data-pipeline)
+  - [FileEndpointCommon](#fileendpointcommon)
+  - [FileProcessor](#fileprocessor)
+  - [Construction and initialisation](#construction-and-initialisation)
+  - [Endpoint name](#endpoint-name)
+  - [Allowed methods](#allowed-methods)
+  - [Processing requests](#processing-requests)
+  - [Authentication](#authentication)
+  - [Configure processes.xml](#configure-processesxml)
+  - [Exercise 5.1 Creating CSV Upload Endpoints](#exercise-51-creating-csv-upload-endpoints)
+- [Camel module](#camel-module)
+  - [Configuration](#configuration)
+  - [Exercise 5.2 Reading from an SFTP server](#exercise-52-reading-from-an-sftp-server)
+- [Data Pipeline](#data-pipeline)
+  - [Configuration](#configuration-1)
+  - [Exercise 5.3 Ingesting external data](#exercise-53-ingesting-external-data)
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -268,7 +281,7 @@ The Genesis low-code platform only includes the `camel-core` dependency. You wil
 
 ### Configuration
 
-- Add the `genesis-pal-camel` and `camel-core` dependencies in your *{applicationName}*-script-config\build.gradle.kts" file. In this training our file is **alpha-script-config\build.gradle.kts**:
+- Add the `genesis-pal-camel` and `camel-core` dependencies in your *&#123;applicationName}*-script-config\build.gradle.kts" file. In this training our file is **alpha-script-config\build.gradle.kts**:
 
 ```kotlin {3,4}
 dependencies {
@@ -281,7 +294,7 @@ dependencies {
 description = "alpha-script-config"
 ```
 
-- Create a Kotlin script file named *{applicationName}-camel.kts* file in your *{applicationName}*-script-config/src/main/resources/scripts folder. In this example our file **alpha-camel.kts** defines a single route using a range of Camel configuration options, which we'll explore in a little more detail below:
+- Create a Kotlin script file named *&#123;applicationName}-camel.kts* file in your *&#123;applicationName}*-script-config/src/main/resources/scripts folder. In this example our file **alpha-camel.kts** defines a single route using a range of Camel configuration options, which we'll explore in a little more detail below:
 ```kotlin
 camel {
     routeHandler {
@@ -295,7 +308,7 @@ camel {
 The `routeHandler` defines the possible routes for information to flow into and out of our system.  The example above defines one route. First, it defines the `pathStr` using the `GenesisPaths` class to find the `GENESIS_HOME` system environment variable. Next, it defines the route itself. The route in the example comes from the filesystem determined by the `file:` specifier at the start of the string. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that can act as a [consumer](https://camel.apache.org/manual/camelcontext.html#_consumer). Further `routeHandler` parameters and explanation can be found [here](../../../server/integration/apache-camel/basics/#routehandler).
 
 
-- Add the configuration for the Camel module to the *{applicationName}-processes.xml* file. In this training our file is **alpha-processes.xml**:
+- Add the configuration for the Camel module to the *&#123;applicationName}-processes.xml* file. In this training our file is **alpha-processes.xml**:
 
 ```xml {3-13}
 <processes>
@@ -314,7 +327,7 @@ The `routeHandler` defines the possible routes for information to flow into and 
 </processes>
 ```
 
-- Add the service definition to the *{applicationName}-service-definitions.xml* file. In this training our file is **alpha-service-definitions.xml**:
+- Add the service definition to the *&#123;applicationName}-service-definitions.xml* file. In this training our file is **alpha-service-definitions.xml**:
 
 ```xml {3}
 <configuration>

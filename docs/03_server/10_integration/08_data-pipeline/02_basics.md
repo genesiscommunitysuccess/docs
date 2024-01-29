@@ -273,7 +273,7 @@ errorStrategy = StopOnFirstFailure()
 
 The All Or Nothing strategy processes all rows in a single transaction using the Genesis Entity DB API. If one row fails, then none of the rows are committed.
 
-This is only relevant to [databases that support Entity DB transactions](../../../02_database/05_database-interface/01_entitydb.md/#transactions).
+This is only relevant to [databases that support Entity DB transactions](../../../02_database/05_database-interface/01_entitydb.md#transactions).
 
 ```kotlin
 errorStrategy = AllOrNothing()

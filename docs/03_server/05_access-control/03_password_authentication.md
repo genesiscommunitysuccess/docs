@@ -11,7 +11,7 @@ tags:
 ---
 
 
-This page describes the various configuration options available for authentication. Remember that if you want to override the default configuration of the **auth-preferences.kts**, you need to modify or create the following file: {_application-name_}**-script-config/src/main/resources/scripts/auth-preferences.kts**.
+This page describes the various configuration options available for authentication. Remember that if you want to override the default configuration of the **auth-preferences.kts**, you need to modify or create the following file: &#123;_application-name_}**-script-config/src/main/resources/scripts/auth-preferences.kts**.
 
 :::info
 **Session tokens and refresh tokens**
@@ -207,7 +207,7 @@ The following functions will be invoked on this table or view:
 - The `customLoginAck` function enables you to modify the list of permissions, profiles and user preferences returned to the client as part of the `LOGIN_ACK` message. For this purpose, the `User` entity is provided as a parameter, as well as three properties:
     * permissions - a mutable list containing all the right codes associated with the user. Given its mutability, codes can be added or removed.
     * profiles - a mutable list containing all the profiles associated with the user.  Given its mutability, profiles can be added or removed.
-    * userPreferences - a [GenesisSet](../../../server/network-messages/genesisset/) object containing additional fields provided as part of the [loginAck](#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
+    * userPreferences - a [GenesisSet](../../03_server/09_network-messages/02_genesisset.md) object containing additional fields provided as part of the [loginAck](#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
 
 Here is an example configuration:
 

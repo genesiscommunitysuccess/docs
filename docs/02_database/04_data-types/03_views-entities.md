@@ -28,6 +28,7 @@ You can also construct an index entity from a view entity. `byPrimaryKey()` wi
 
 Generated ViewEntities are Kotlin data classes and can be built using the primary constructor. Just before the object is built, the object is validated to make sure all [required fields](../../../database/data-types/table-entities/) have been set. In addition to [DbEntity](../../../database/data-types/dbentity/) methods, there are some useful methods/properties, which are described below:
 
+```markup
 | Name | Signature | Description |
 | --- | --- | --- |
 | byPrimaryKey | `fun byPrimaryKey(): UniqueEntityIndex<*, *>` | gets entity by primaryKey |
@@ -35,6 +36,7 @@ Generated ViewEntities are Kotlin data classes and can be built using the primar
 | toString | fun toString(): String | gets the string representation of the view with sensitive fields masked (for example, passwords) |
 | toStringWithSensitivesUnmasked | `fun toStringWithSensitivesUnmasked(): String` | gets the string representation of view with sensitive fields(Ex: Password) unmasked |
 | fieldToPropertyMap | `val fieldToPropertyMap: Map<String, KProperty1<V, Any?>>` | this is a class property that maps a field name to its property |
+```
 
 ## Examples
 

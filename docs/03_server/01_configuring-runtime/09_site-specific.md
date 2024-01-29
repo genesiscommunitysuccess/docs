@@ -12,7 +12,7 @@ tags:
 
 Site-specific is an area of the run directory where you can override the standard definitions found elsewhere in your application. By default, its location is:
 
-<strong><em>application-name</em>\server\jvm\<em>application-name</em>-site-specific</strong>
+<strong><em>application-name</em>\server\jvm\\<em>application-name</em>-site-specific</strong>
 
 
 ## Changing system definitions
@@ -55,7 +55,7 @@ systemDefinition {
 
 ## Overriding scripts
 
-If you want to override any scripts in your application such as **{app-name}-dataserver.kts**, **{app-name}-eventhandler.kts**, etc, you need to go to **site-specific/main/src/main/resources/scripts** folder and create the new script file with the same name as the script you want to override.
+If you want to override any scripts in your application such as **&#123;app-name}-dataserver.kts**, **&#123;app-name}-eventhandler.kts**, etc, you need to go to **site-specific/main/src/main/resources/scripts** folder and create the new script file with the same name as the script you want to override.
 
 To see the changes, you need to deploy your application, and if you are using intellij plugin, you shall see these files under your **.genesis-home/site-specific**
 

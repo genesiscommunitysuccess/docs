@@ -91,7 +91,7 @@ TradeAudit = trade.toAuditEntity(
 
 
 ## Some of the most useful methods
-
+```markup
 | Name | Signature | Description |
 | --- | --- | --- |
 | byPrimaryKey | `fun byPrimaryKey(): UniqueEntityIndex<*, *>` | gets entity by primaryKey |
@@ -99,6 +99,7 @@ TradeAudit = trade.toAuditEntity(
 | toString | fun toString(): String | gets the string representation of the view with sensitive fields masked (for example, passwords) |
 | toStringWithSensitivesUnmasked | `fun toStringWithSensitivesUnmasked(): String` | gets the string representation of view with sensitive fields(Ex: Password) unmasked |
 | set | `operator fun <T> set(field: TableField<*, T>, value: T?)` | to set table field with provided value |
+```
 
 ## Examples
 
