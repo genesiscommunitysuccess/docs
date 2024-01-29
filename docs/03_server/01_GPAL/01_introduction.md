@@ -9,25 +9,22 @@ tags:
   - introduction
 ---
 
-The Genesis Platform Abstraction Language (GPAL) is a set of custom Kotlin script definitions which allow developers to quickly stand up genesis services,
-as well as provide consistent functionality set with the same look and feel.
+The Genesis Platform Abstraction Language (GPAL) is a set of custom Kotlin script definitions that enable you to quickly stand up Genesis services at speed. The scripts also provide a consistent functionality set with the same look and feel throughout.
 
-Its most notable characteristics are:
-* "Intellisense" support for automatic discovery of syntax, code completion, error checking, etc.
-* Context-aware properties and default imports to facilitate quick definitions.
-* Self-describing code with documentation samples.
-* Reusable common code blocks in multiple GPAL definitions.
+The most notable characteristics of GPAL are:
+* "Intellisense" provides automatic discovery of syntax, code completion, error checking and more
+* Context-aware properties and default imports facilitate quick definitions
+* Self-describing code with documentation samples
+* Reusable common code blocks in multiple GPAL definitions
 * Tiered architecture conjoined with code generation system (e.g. sysdef to fields, fields to tables, tables to views, etc)
-* Dependency injection is available and therefore custom code can be provided to enhance available functionality.
-* Plugin-based architecture to enable additional syntax for specific GPAL definitions (i.e. FIX Xlator plugin for streamer/streamerclient)
-* GPAL Script definitions are debuggable and therefore provide additional troubleshooting capabilities when compared to other dynamic configuration languages.
-* Overriding capabilities at different levels for more flexibility. For example, field nullability can be defined within the GPAL fields definition, but also overridden at the GPAL tables definition level.
-
-
+* Dependency injection is available - so custom code can be used to enhance available functionality
+* Plugin-based architecture enables additional syntax for specific GPAL definitions (i.e. FIX Xlator plugin for streamer/streamerclient)
+* GPAL Script definitions are debuggable and therefore provide additional troubleshooting capabilities when compared to other dynamic configuration languages
+* Overriding capabilities at different levels for more flexibility; for example, field nullability can be defined within the GPAL fields definition, but also overridden at the GPAL tables definition level
 
 ## GPAL Default imports
 
-The following imports are automatically available inside all GPAL definitions
+The following imports are automatically available inside all GPAL definitions:
 
 ```kotlin
     global.genesis.gen.config.tables.*"
@@ -45,9 +42,9 @@ The following imports are automatically available inside all GPAL definitions
 ```
 
 Some imports are context-aware and will change depending on the application you are building and the GPAL definition you are using. For example, GPAL files can automatically add imports for any classes defined under
-`global.genesis.$productName.message.common.*` and `global.genesis.$productName.message.$messageType.*` where `$productName` is the name of the application you are building (i.e. position) and `$messageType` matches different GPAL definitions (i.e. request for request servers, event for eventhandlers, etc.).
+`global.genesis.$productName.message.common.*` and `global.genesis.$productName.message.$messageType.*` where `$productName` is the name of the application you are building and `$messageType` matches different GPAL definitions (such as request for request servers, event for eventhandlers, etc.).
 
-Some GPAL definitions will also have additional default imports to complement the functionality offered by them. For example, GPAL Event handlers have the additional imports available in scope:
+Some GPAL definitions also have additional default imports to complement their functionality. For example, GPAL Event handlers have the additional imports available in scope:
 
 ```kotlin
         kotlinx.coroutines.async
@@ -62,7 +59,7 @@ Some GPAL definitions will also have additional default imports to complement th
 
 ### GPAL example
 
-A simple example for the GPAL process configuration definition can be seen below.
+Here is a simple example for the GPAL process configuration definition:
 
 ```kotlin
     import java.util.concurrent.TimeUnit
