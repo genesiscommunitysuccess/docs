@@ -112,3 +112,5 @@ alpha-card > alpha-button {
 🎉 Congratulations! You're now set up to use Genesis Foundation and Angular! 🎉
 
 ![Angular basic demo](/integrations/angular/angular-basic-demo.gif)
+
+[repository with working code from the example](https://github.com/genesiscommunitysuccess/integration-examples/tree/main/angular/alpha-angular)

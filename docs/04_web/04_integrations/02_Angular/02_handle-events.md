@@ -136,3 +136,5 @@ ng serve --open
 🎉 Congratulations on successfully integrating and handling events with a web component from Foundation UI in your Angular application! 🎉
 
 ![Angular flyout demo](/integrations/angular/angular-flyout-demo.gif)
+
+[repository with working code from the example](https://github.com/genesiscommunitysuccess/integration-examples/tree/main/angular/alpha-handle-events)

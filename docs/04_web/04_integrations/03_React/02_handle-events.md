@@ -130,3 +130,5 @@ npm start
 🎉 Congratulations on successfully integrating and handling events with a web component from Foundation UI in your React application! 🎉
 
 ![React flyout demo](/integrations/react/react-flyout-demo.gif)
+
+[repository with working code from the example](https://github.com/genesiscommunitysuccess/integration-examples/tree/main/react/alpha-handle-events)

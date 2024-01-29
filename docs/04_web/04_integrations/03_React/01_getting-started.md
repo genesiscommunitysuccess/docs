@@ -153,3 +153,5 @@ alpha-card > alpha-button {
 
 
 ![React basic demo](/integrations/react/react-basic-demo.gif)
+
+[repository with working code from the example](https://github.com/genesiscommunitysuccess/integration-examples/tree/main/react/alpha-react)
