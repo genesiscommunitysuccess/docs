@@ -491,32 +491,6 @@ DETAILS.SESSION_ID = abb8f6be-8009-4370-a474-3a0ded4dc2cf
 ```
 
 ## Post-authentication
-Once the user has been authenticated, the server can optionally receive heartbeat messages, as defined in the interval setting on the ACK message. In response to a heartbeat, the GUI receives a list of available services and their details; if the environment is configured not to use Consul as the cluster mode, this can include multiple hostnames.
-
-If your application is not web-based and the back end is not using the Consul cluster mode, a client can use the services in this list in the order they are defined. Existing connections can simply ignore the order changes, but in the event of failover or reconnection, the order should be adhered to.
-
-### Heartbeat
-
-#### Heartbeat request
-
-    MESSAGE_TYPE = EVENT_HEARTBEAT
-    USER_NAME = JohnWolf
-
-#### Heartbeat response
-    MESSAGE_TYPE = EVENT_HEARTBEAT_ACK
-    DETAILS.SERVICE[0].NAME = SBL_EVENT_HANDLER
-    DETAILS.SERVICE[0].ENCRYPTED = false
-    DETAILS.SERVICE[0].HOST[0].NAME = genesisserv1
-    DETAILS.SERVICE[0].HOST[0].PORT = 9001
-    DETAILS.SERVICE[0].HOST[1].NAME = genesisserv2
-    DETAILS.SERVICE[0].HOST[1].PORT = 9001
-    DETAILS.SERVICE[1].NAME = SBL_DATA_SERVER
-    DETAILS.SERVICE[1].ENCRYPTED = false
-    DETAILS.SERVICE[1].HOST[0].NAME = genesisserv1
-    DETAILS.SERVICE[1].HOST[0].PORT = 9002
-    DETAILS.SERVICE[1].HOST[1].NAME = genesisserv2
-    DETAILS.SERVICE[1].HOST[1].PORT = 9002
-
 ### Expire password
 A password can expire in three different ways: 
 
@@ -586,6 +560,33 @@ The SESSION_AUTH_TOKEN value is returned as part of the first login operation, s
 ### Rights polling
 The GUI can receive rights from a process called `GENESIS_AUTH_DATASERVER`. The view `ALL_USER_RIGHTS` displays all users and codes. A logged-in user should automatically set the Filter expression to be `USER_NAME`=='xxx' to receive push updates to user privileges.
 
+### Working with heartbeats (non-web applications only)
+If you are building a desktop application that does not connect to a web host, the server can be set up to receive heartbeat messages after the user has been authenticated (as defined in the interval setting on the ACK message). 
+
+In response to a heartbeat, the GUI receives a list of available services to connect to, along with their details; if the environment is configured not to use Consul as the cluster mode, this can include multiple hostnames.
+
+If the back end of your non-web application is not using the Consul cluster mode, a client can use the services in this list in the order that they are defined. Existing connections can simply ignore the order changes, but in the event of failover or reconnection, the order must be adhered to.
+
+#### Heartbeat request
+
+    MESSAGE_TYPE = EVENT_HEARTBEAT
+    USER_NAME = JohnWolf
+
+#### Heartbeat response
+    MESSAGE_TYPE = EVENT_HEARTBEAT_ACK
+    DETAILS.SERVICE[0].NAME = SBL_EVENT_HANDLER
+    DETAILS.SERVICE[0].ENCRYPTED = false
+    DETAILS.SERVICE[0].HOST[0].NAME = genesisserv1
+    DETAILS.SERVICE[0].HOST[0].PORT = 9001
+    DETAILS.SERVICE[0].HOST[1].NAME = genesisserv2
+    DETAILS.SERVICE[0].HOST[1].PORT = 9001
+    DETAILS.SERVICE[1].NAME = SBL_DATA_SERVER
+    DETAILS.SERVICE[1].ENCRYPTED = false
+    DETAILS.SERVICE[1].HOST[0].NAME = genesisserv1
+    DETAILS.SERVICE[1].HOST[0].PORT = 9002
+    DETAILS.SERVICE[1].HOST[1].NAME = genesisserv2
+    DETAILS.SERVICE[1].HOST[1].PORT = 9002
+
 ## Entity management
 In the Genesis low-code platform, there are profiles, users and rights. A profile is a group of users, which can be permissioned. For example, you could have a SALES_TRADER group in which all users have the same permissions. In all cases where you specify either a right for a user/profile, or a user in a profile, the event represents what you want the entity to look like; i.e. if you amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
 
@@ -615,7 +616,10 @@ Note the following:
 
 #### Amend request
 
-This amend request removes the "ORDAM" right and the "james" user name from the SALES_TRADERS profile.
+This amend request supplies a new set of details that changes the SALES_TRADERS profile (inserted in the previous example) in two ways:
+
+- There is no `ORDAM`right code.
+- There is no "james" user name.
 
 ```
     MESSAGE_TYPE = EVENT_AMEND_PROFILE
