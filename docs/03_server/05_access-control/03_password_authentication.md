@@ -420,7 +420,7 @@ If successful, a message could look like this:
       PROFILE[0] = ADMIN
       PROFILE[1] = USER_ADMIN
 
-If there is a problem, the server will return the standard error set with CODE/TEXT details and the error code `LOGIN_AUTH_NACK`.  The following error codes can be provided:
+If there is a problem, the server returns the standard error set with CODE/TEXT details and the error code `LOGIN_AUTH_NACK`.  The following error codes can be provided:
 
 - `UNKNOWN_ACCOUNT` - User is unknown
 - `MAX_ACTIVE_SESSIONS_REACHED` - Maximum number of sessions reached.
@@ -491,9 +491,9 @@ DETAILS.SESSION_ID = abb8f6be-8009-4370-a474-3a0ded4dc2cf
 ```
 
 ## Post-authentication
-Once the user has been authenticated, the server can optionally receive heartbeat messages, as defined in the interval setting on the ACK message. In response to a heartbeat, the GUI will receive a list of available services and their details, which could include multiple hostnames if the environment is configured to not use Consul as the cluster mode.
+Once the user has been authenticated, the server can optionally receive heartbeat messages, as defined in the interval setting on the ACK message. In response to a heartbeat, the GUI receives a list of available services and their details; if the environment is configured not to use Consul as the cluster mode, this can include multiple hostnames.
 
-Assuming your application is not web based and the backend is not using the Consul cluster mode, a client could use the services in this list in the order they are defined. Existing connections can simply ignore the order changes, but in the event of failover or reconnection, the order should be adhered to.
+If your application is not web-based and the back end is not using the Consul cluster mode, a client can use the services in this list in the order they are defined. Existing connections can simply ignore the order changes, but in the event of failover or reconnection, the order should be adhered to.
 
 ### Heartbeat
 
@@ -587,12 +587,12 @@ The SESSION_AUTH_TOKEN value is returned as part of the first login operation, s
 The GUI can receive rights from a process called `GENESIS_AUTH_DATASERVER`. The view `ALL_USER_RIGHTS` displays all users and codes. A logged-in user should automatically set the Filter expression to be `USER_NAME`=='xxx' to receive push updates to user privileges.
 
 ## Entity management
-In the Genesis low-code platform, there are profiles, users and rights. A profile is a group of users, which can be permissioned. For example, you could have a SALES_TRADER group in which all users must have the same permissions. In all cases where you specify either a right for a user/profile, or a user in a profile, the event represents what you want the entity to look like; i.e. if you amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
+In the Genesis low-code platform, there are profiles, users and rights. A profile is a group of users, which can be permissioned. For example, you could have a SALES_TRADER group in which all users have the same permissions. In all cases where you specify either a right for a user/profile, or a user in a profile, the event represents what you want the entity to look like; i.e. if you amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
 
 Note the following:
 
-* User `STATUS` field can be set to `ENABLED`, `DISABLED` or `PASSWORD_EXPIRED`. A User set up with `PASSWORD_EXPIRED` should prompt the user to enter a new password on next login.
-* Profile `STATUS` field can be set to `ENABLED`, `DISABLED`.
+* The User `STATUS` field can be set to `ENABLED`, `DISABLED` or `PASSWORD_EXPIRED`. A User set up with `PASSWORD_EXPIRED` should prompt the user to enter a new password on next login.
+* The Profile `STATUS` field can be set to `ENABLED` or `DISABLED`.
 
 ### Insert profile
 
