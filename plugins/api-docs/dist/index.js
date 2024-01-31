@@ -7,25 +7,7 @@ const fs_extra_1 = __importDefault(require("fs-extra"));
 const path_1 = __importDefault(require("path"));
 const fileStreams_1 = require("./fileStreams");
 const stream_1 = require("stream");
-function cleanseMarkdownContent(input) {
-    return input.replace(/<!-- -->/g, "").replace(/<b>|<\/b>/g, "**");
-}
-async function createApiDoc(inputFile, outputFile) {
-    let content = await fs_extra_1.default.readFile(inputFile, { encoding: "utf8" });
-    if (path_1.default.basename(outputFile) === "index.md") {
-        content =
-            (await fs_extra_1.default.readFile(require.resolve("api-docs-sync/api-preamble"), {
-                encoding: "utf8",
-            })) +
-                "\n" +
-                content;
-    }
-    return fs_extra_1.default.writeFile(outputFile, cleanseMarkdownContent(content));
-}
-async function copyImgFile(inputFile, outputFile) {
-    const content = await fs_extra_1.default.readFile(inputFile);
-    return fs_extra_1.default.writeFile(outputFile, content);
-}
+const copyFunctions_1 = require("./copyFunctions");
 function copyDirectoryFiles(packageRootDir, outputRootDir) {
     return async function ({ inputDir, outputDir, copyFn, }) {
         const inputFullDir = path_1.default.join(packageRootDir, inputDir);
@@ -39,7 +21,7 @@ function copyDirectoryFiles(packageRootDir, outputRootDir) {
         }
     };
 }
-async function copyApiDocs(manifest, processedMap) {
+async function copyPackageFiles(manifest, processedMap) {
     const { packages } = manifest;
     const packagesToProcess = packages.filter((pkg) => pkg.enabled && !(pkg.name in processedMap));
     if (!packagesToProcess.length) {
@@ -55,14 +37,14 @@ async function copyApiDocs(manifest, processedMap) {
             await copyDirFiles({
                 inputDir: pkg.src.api_docs,
                 outputDir: pkg.output.api_docs,
-                copyFn: createApiDoc,
+                copyFn: copyFunctions_1.createApiDoc,
             });
         }
         if (pkg.src.img_dir && pkg.output.img_dir) {
             await copyDirFiles({
                 inputDir: pkg.src.img_dir,
                 outputDir: pkg.output.img_dir,
-                copyFn: copyImgFile,
+                copyFn: copyFunctions_1.copyImgFile,
             });
         }
         const readmeStreamTransformer = (0, fileStreams_1.createUrlTransformerSteam)(pkg.output);
@@ -91,7 +73,7 @@ async function default_1(_ctx, options) {
     let status = true;
     let error;
     try {
-        await copyApiDocs(manifest, processedMap);
+        await copyPackageFiles(manifest, processedMap);
     }
     catch (e) {
         status = false;

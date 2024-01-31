@@ -7,6 +7,7 @@ import {
 } from "./fileStreams";
 import { PackageConfig } from "./types";
 import { pipeline } from "stream";
+import { copyImgFile, createApiDoc } from "./copyFunctions";
 
 type PluginOptions = {
   manifest: { packages: Array<PackageConfig> };
@@ -14,44 +15,10 @@ type PluginOptions = {
 };
 
 /**
- * Docusaurus / mdx build can't process empty comments in markdown.
- *
- * In MDX 1 there is a behaviour that will lead to links not being rendered as clickable links. See
- * https://github.com/mdx-js/mdx/issues/1571#issuecomment-853384939
- *
- * This causes:
- *  <b>Implements:</b> [Percentage](./foundation-filters.percentage.md)
- *  <b>Extends:</b> [ClientFilter](./foundation-filters.clientfilter.md)&lt;[NodeEnvParams](./foundation-filters.nodeenvparams.md)&gt;
- *  etc.
- *
- * ...to render unlinked, so users actually see text like this instead:
- *
- * Implements: [NodeEnv](/web/filters/docs/api/foundation-filters.nodeenv)
- *
- * Replacing html tags like <b> with their markdown equivalent `**` fixes the issue, as the line starts with markdown.
+ * Curried function which copies files from an input directory to an output directory,
+ * using a provided copy function.
+ * The copy function is used to differentiate between file types
  */
-function cleanseMarkdownContent(input: string) {
-  return input.replace(/<!-- -->/g, "").replace(/<b>|<\/b>/g, "**");
-}
-
-async function createApiDoc(inputFile: string, outputFile: string) {
-  let content = await fs.readFile(inputFile, { encoding: "utf8" });
-  if (path.basename(outputFile) === "index.md") {
-    content =
-      (await fs.readFile(require.resolve("api-docs-sync/api-preamble"), {
-        encoding: "utf8",
-      })) +
-      "\n" +
-      content;
-  }
-  return fs.writeFile(outputFile, cleanseMarkdownContent(content));
-}
-
-async function copyImgFile(inputFile: string, outputFile: string) {
-  const content = await fs.readFile(inputFile);
-  return fs.writeFile(outputFile, content);
-}
-
 function copyDirectoryFiles(packageRootDir: string, outputRootDir: string) {
   return async function ({
     inputDir,
@@ -78,7 +45,7 @@ function copyDirectoryFiles(packageRootDir: string, outputRootDir: string) {
   };
 }
 
-async function copyApiDocs(
+async function copyPackageFiles(
   manifest: PluginOptions["manifest"],
   processedMap: PluginOptions["processedMap"],
 ) {
@@ -155,7 +122,7 @@ export default async function (_ctx: any, options: PluginOptions) {
   let status = true;
   let error: Error | null;
   try {
-    await copyApiDocs(manifest, processedMap);
+    await copyPackageFiles(manifest, processedMap);
   } catch (e: unknown) {
     status = false;
     error = e as Error;
@@ -168,7 +135,9 @@ export default async function (_ctx: any, options: PluginOptions) {
           `[api-docs-plugin] Failed to process api documentation. ${error?.toString()}`,
         );
       } else {
-        console.log("[api-docs-plugin] Finished processing api documentation.\n");
+        console.log(
+          "[api-docs-plugin] Finished processing api documentation.\n",
+        );
       }
     },
   };
