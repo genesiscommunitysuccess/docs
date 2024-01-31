@@ -5,48 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const path_1 = __importDefault(require("path"));
-const streamTransformers_1 = require("./streamTransformers");
-function cleanseMarkdownContent(input) {
-    return input.replace(/<!-- -->/g, "").replace(/<b>|<\/b>/g, "**");
-}
-async function createApiDoc(inputFile, outputFile) {
-    let content = await fs_extra_1.default.readFile(inputFile, { encoding: "utf8" });
-    if (path_1.default.basename(outputFile) === "index.md") {
-        content =
-            (await fs_extra_1.default.readFile(require.resolve('api-docs-sync/api-preamble'), {
-                encoding: "utf8",
-            })) +
-                "\n" +
-                content;
-    }
-    return fs_extra_1.default.writeFile(outputFile, cleanseMarkdownContent(content));
-}
-async function copyImgFile(inputFile, outputFile) {
-    const content = await fs_extra_1.default.readFile(inputFile);
-    return fs_extra_1.default.writeFile(outputFile, content);
-}
-async function createReadme(inputFile, outputDir, output, transformer) {
-    const tags = output.tags
-        ? output.tags.map((tag) => `  - ${tag}`).join("\n")
-        : "";
-    const keywords = output.keywords ? `[${output.keywords.join(", ")}]` : "";
-    const outputFile = path_1.default.join(outputDir, output.readme);
-    const readStream = fs_extra_1.default.createReadStream(inputFile, { encoding: "utf8" });
-    const writeStream = fs_extra_1.default.createWriteStream(outputFile, { encoding: "utf8" });
-    writeStream.write(`---
-title: '${output.title}'
-sidebar_label: '${output.sidebar_label}'
-id: ${output.id}
-`);
-    if (keywords) {
-        writeStream.write(`keywords: ${keywords}\n`);
-    }
-    if (tags) {
-        writeStream.write(`tags:\n${tags}\n`);
-    }
-    writeStream.write(`---\n\n`);
-    readStream.pipe(transformer).pipe(writeStream);
-}
+const fileStreams_1 = require("./fileStreams");
+const stream_1 = require("stream");
+const copyFunctions_1 = require("./copyFunctions");
 function copyDirectoryFiles(packageRootDir, outputRootDir) {
     return async function ({ inputDir, outputDir, copyFn, }) {
         const inputFullDir = path_1.default.join(packageRootDir, inputDir);
@@ -60,7 +21,7 @@ function copyDirectoryFiles(packageRootDir, outputRootDir) {
         }
     };
 }
-async function copyApiDocs(manifest, processedMap) {
+async function copyPackageFiles(manifest, processedMap) {
     const { packages } = manifest;
     const packagesToProcess = packages.filter((pkg) => pkg.enabled && !(pkg.name in processedMap));
     if (!packagesToProcess.length) {
@@ -72,28 +33,36 @@ async function copyApiDocs(manifest, processedMap) {
         const outputRootDir = path_1.default.join(process.cwd(), pkg.output.directory);
         await fs_extra_1.default.ensureDir(outputRootDir);
         const copyDirFiles = copyDirectoryFiles(packageRootDir, outputRootDir);
-        if (pkg.api_docs && pkg.output.api_docs) {
+        if (pkg.src.api_docs && pkg.output.api_docs) {
             await copyDirFiles({
-                inputDir: pkg.api_docs,
+                inputDir: pkg.src.api_docs,
                 outputDir: pkg.output.api_docs,
-                copyFn: createApiDoc,
+                copyFn: copyFunctions_1.createApiDoc,
             });
         }
-        if (pkg.img_dir && pkg.output.img_dir) {
+        if (pkg.src.img_dir && pkg.output.img_dir) {
             await copyDirFiles({
-                inputDir: pkg.img_dir,
+                inputDir: pkg.src.img_dir,
                 outputDir: pkg.output.img_dir,
-                copyFn: copyImgFile,
+                copyFn: copyFunctions_1.copyImgFile,
             });
         }
-        const readmeStreamTransformer = (0, streamTransformers_1.createUrlTransformerSteam)(pkg.output);
-        const packageReadmeFile = path_1.default.join(packageRootDir, pkg.readme);
-        await createReadme(packageReadmeFile, outputRootDir, pkg.output, readmeStreamTransformer);
+        const readmeStreamTransformer = (0, fileStreams_1.createUrlTransformerSteam)(pkg.output);
+        const readmeDuplexStream = (0, fileStreams_1.createOutputDuplexStream)(pkg.output, outputRootDir, readmeStreamTransformer);
+        const packageReadmeFile = path_1.default.join(packageRootDir, pkg.src.readme);
+        const readStream = fs_extra_1.default.createReadStream(packageReadmeFile, {
+            encoding: "utf8",
+        });
+        (0, stream_1.pipeline)(readStream, readmeDuplexStream, (err) => {
+            if (err) {
+                console.error(`Pipeline failed. ${err}`);
+            }
+        });
         const packageJson = await fs_extra_1.default.readJson(path_1.default.join(packageRootDir, "package.json"));
         processedMap[pkg.name] = packageJson.version;
     }
 }
-async function default_1(_context, options) {
+async function default_1(_ctx, options) {
     let { manifest, processedMap } = options;
     if (!manifest) {
         throw new Error("[api-docs-plugin] Please provide a manifest file.");
@@ -104,7 +73,7 @@ async function default_1(_context, options) {
     let status = true;
     let error;
     try {
-        await copyApiDocs(manifest, processedMap);
+        await copyPackageFiles(manifest, processedMap);
     }
     catch (e) {
         status = false;
@@ -115,6 +84,9 @@ async function default_1(_context, options) {
         async loadContent() {
             if (!status) {
                 throw new Error(`[api-docs-plugin] Failed to process api documentation. ${error?.toString()}`);
+            }
+            else {
+                console.log("[api-docs-plugin] Finished processing api documentation.\n");
             }
         },
     };

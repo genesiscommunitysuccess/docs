@@ -5,12 +5,11 @@ export default {
     {
       name: "@genesislcap/foundation-testing",
       enabled: true,
-      api_docs: "./docs/api",
-      readme: "./README.md",
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
       output: {
-        title: "Foundation Testing",
-        sidebar_label: "Foundation Testing",
-        id: "foundation-testing",
         directory: "./docs/04_web/06_testing",
         api_docs: "docs/api",
         readme: "01_foundation-testing.md",
@@ -26,22 +25,35 @@ export default {
           "uvu",
           "playwright",
         ],
+        pages: [
+          {
+            title: "Foundation Testing",
+            id: "foundation-testing",
+            sidebar_label: "Foundation Testing",
+          },
+        ],
       },
     },
     {
       name: "@genesislcap/foundation-filters",
       enabled: true,
-      api_docs: "./docs/api",
-      readme: "./README.md",
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
       output: {
-        title: "Foundation Filters",
-        sidebar_label: "Foundation Filters",
-        id: "foundation-filters",
         directory: "./docs/04_web/09_filters",
         api_docs: "docs/api",
         readme: "01_foundation-filters.md",
         keywords: ["genesis", "foundation", "ui", "filters"],
         tags: ["filter", "feature", "flags", "conditions"],
+        pages: [
+          {
+            title: "Foundation Filters",
+            sidebar_label: "Foundation Filters",
+            id: "foundation-filters",
+          },
+        ],
       },
     },
     {
@@ -50,26 +62,29 @@ export default {
       img_dir: "docs/img",
       readme: "./README.md",
       output: {
-        title: "Foundation Reporting",
-        sidebar_label: "Foundation Reporting",
-        id: "foundation-reporting",
         directory: "./docs/04_web/05_micro-front-ends/02_front-end-reporting",
         img_dir: "docs/img",
         readme: "02_foundation-reporting.md",
         keywords: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
         tags: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
+        pages: [
+          {
+            title: "Foundation Reporting",
+            sidebar_label: "Foundation Reporting",
+            id: "foundation-reporting",
+          },
+        ],
       },
     },
     {
       name: "@genesislcap/foundation-header",
       enabled: true,
-      api_docs: "./docs/api",
-      img_dir: "docs/img",
-      readme: "./README.md",
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
       output: {
-        title: "Foundation Header",
-        sidebar_label: "Foundation Header",
-        id: "foundation-header",
         directory: "./docs/04_web/05_micro-front-ends/03_foundation-header",
         api_docs: "docs/api",
         img_dir: "docs/img",
@@ -92,18 +107,24 @@ export default {
           "web",
           "micro frontends",
         ],
+        pages: [
+          {
+            title: "Foundation Header",
+            sidebar_label: "Foundation Header",
+            id: "foundation-header",
+          },
+        ],
       },
     },
     {
       name: "@genesislcap/foundation-entity-management",
       enabled: true,
-      api_docs: "./docs/api",
-      img_dir: "docs/img",
-      readme: "./README.md",
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
       output: {
-        title: "Foundation Entity Management",
-        sidebar_label: "Foundation Entity Management",
-        id: "foundation-entity-management",
         directory:
           "./docs/04_web/05_micro-front-ends/04_foundation-entity-management",
         api_docs: "docs/api",
@@ -127,18 +148,24 @@ export default {
           "user management",
           "web",
         ],
+        pages: [
+          {
+            title: "Foundation Entity Management",
+            sidebar_label: "Foundation Entity Management",
+            id: "foundation-entity-management",
+          },
+        ],
       },
     },
     {
       name: "@genesislcap/foundation-login",
       enabled: true,
-      api_docs: "./docs/api",
-      img_dir: "docs/img",
-      readme: "./README.md",
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
       output: {
-        title: "Foundation Login",
-        sidebar_label: "Foundation Login",
-        id: "foundation-login",
         directory: "./docs/04_web/05_micro-front-ends/05_foundation-login",
         api_docs: "docs/api",
         img_dir: "docs/img",
@@ -159,18 +186,24 @@ export default {
           "ui",
           "micro-front-ends",
         ],
+        pages: [
+          {
+            title: "Foundation Login",
+            sidebar_label: "Foundation Login",
+            id: "foundation-login",
+          },
+        ],
       },
     },
     {
       name: "@genesislcap/foundation-layout",
       enabled: true,
-      api_docs: "./docs/api",
-      img_dir: "docs/img",
-      readme: "./README.md",
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
       output: {
-        title: "Foundation Layout",
-        sidebar_label: "Foundation Layout",
-        id: "foundation-layout",
         directory: "./docs/04_web/10_dynamic-layout",
         api_docs: "docs/api",
         img_dir: "docs/img",
@@ -191,17 +224,23 @@ export default {
           "ui",
           "golden layout",
         ],
+        pages: [
+          {
+            title: "Foundation Layout",
+            sidebar_label: "Foundation Layout",
+            id: "foundation-layout",
+          },
+        ],
       },
     },
     {
       name: "@genesislcap/foundation-comms",
       enabled: true,
-      api_docs: "./docs/api",
-      readme: "./README.md",
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
       output: {
-        title: "Foundation Comms",
-        sidebar_label: "Foundation Comms",
-        id: "foundation-comms",
         directory: "./docs/04_web/11_comms",
         api_docs: "docs/api",
         readme: "01_foundation-comms.md",
@@ -213,22 +252,35 @@ export default {
           "stream",
           "snapshot",
         ],
+        pages: [
+          {
+            title: "Foundation Comms",
+            sidebar_label: "Foundation Comms",
+            id: "foundation-comms",
+          },
+        ],
       },
     },
     {
       name: "@genesislcap/foundation-forms",
       enabled: true,
-      api_docs: "./docs/api",
-      readme: "./README.md",
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
       output: {
-        title: "Foundation Forms",
-        sidebar_label: "Foundation Forms",
-        id: "foundation-forms",
         directory: "./docs/04_web/12_forms",
         api_docs: "docs/api",
         readme: "01_foundation-forms.md",
         keywords: ["genesis", "foundation", "ui", "forms", "smart forms"],
         tags: ["genesis", "foundation", "ui", "forms", "smart forms"],
+        pages: [
+          {
+            title: "Foundation Forms",
+            sidebar_label: "Foundation Forms",
+            id: "foundation-forms",
+          },
+        ],
       },
     },
   ],

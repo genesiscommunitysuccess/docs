@@ -1,9 +1,13 @@
 // @ts-ignore
 import fs from "fs-extra";
 import path from "path";
-import { createUrlTransformerSteam } from "./streamTransformers";
+import {
+  createOutputDuplexStream,
+  createUrlTransformerSteam,
+} from "./fileStreams";
 import { PackageConfig } from "./types";
-import { Transform } from "stream";
+import { pipeline } from "stream";
+import { copyImgFile, createApiDoc } from "./copyFunctions";
 
 type PluginOptions = {
   manifest: { packages: Array<PackageConfig> };
@@ -11,83 +15,12 @@ type PluginOptions = {
 };
 
 /**
- * Docusaurus / mdx build can't process empty comments in markdown.
- *
- * In MDX 1 there is a behaviour that will lead to links not being rendered as clickable links. See
- * https://github.com/mdx-js/mdx/issues/1571#issuecomment-853384939
- *
- * This causes:
- *  <b>Implements:</b> [Percentage](./foundation-filters.percentage.md)
- *  <b>Extends:</b> [ClientFilter](./foundation-filters.clientfilter.md)&lt;[NodeEnvParams](./foundation-filters.nodeenvparams.md)&gt;
- *  etc.
- *
- * ...to render unlinked, so users actually see text like this instead:
- *
- * Implements: [NodeEnv](/web/filters/docs/api/foundation-filters.nodeenv)
- *
- * Replacing html tags like <b> with their markdown equivalent `**` fixes the issue, as the line starts with markdown.
+ * Curried function which copies files from an input directory to an output directory,
+ * using a provided copy function.
+ * The copy function is used to differentiate between file types
  */
-function cleanseMarkdownContent(input: string) {
-  return input.replace(/<!-- -->/g, "").replace(/<b>|<\/b>/g, "**");
-}
-
-async function createApiDoc(inputFile: string, outputFile: string) {
-  let content = await fs.readFile(inputFile, { encoding: "utf8" });
-  if (path.basename(outputFile) === "index.md") {
-    content =
-      (await fs.readFile(require.resolve('api-docs-sync/api-preamble'), {
-        encoding: "utf8",
-      })) +
-      "\n" +
-      content;
-  }
-  return fs.writeFile(outputFile, cleanseMarkdownContent(content));
-}
-
-async function copyImgFile(inputFile: string, outputFile: string) {
-  const content = await fs.readFile(inputFile);
-  return fs.writeFile(outputFile, content);
-}
-
-async function createReadme(
-  inputFile: string,
-  outputDir: string,
-  output: PackageConfig["output"],
-  transformer: Transform,
-) {
-  const tags = output.tags
-    ? output.tags.map((tag) => `  - ${tag}`).join("\n")
-    : "";
-  const keywords = output.keywords ? `[${output.keywords.join(", ")}]` : "";
-  const outputFile = path.join(outputDir, output.readme);
-
-  const readStream = fs.createReadStream(inputFile, { encoding: "utf8" });
-  const writeStream = fs.createWriteStream(outputFile, { encoding: "utf8" });
-
-  writeStream.write(
-    `---
-title: '${output.title}'
-sidebar_label: '${output.sidebar_label}'
-id: ${output.id}
-`,
-  );
-
-  if (keywords) {
-    writeStream.write(`keywords: ${keywords}\n`);
-  }
-  if (tags) {
-    writeStream.write(`tags:\n${tags}\n`);
-  }
-  writeStream.write(`---\n\n`);
-
-  /**
-   * TODO: Remap any api docs links contained in the README.md file to the target outputApiDocsDir
-   */
-  readStream.pipe(transformer).pipe(writeStream);
-}
-
 function copyDirectoryFiles(packageRootDir: string, outputRootDir: string) {
-  return async function({
+  return async function ({
     inputDir,
     outputDir,
     copyFn,
@@ -112,7 +45,7 @@ function copyDirectoryFiles(packageRootDir: string, outputRootDir: string) {
   };
 }
 
-async function copyApiDocs(
+async function copyPackageFiles(
   manifest: PluginOptions["manifest"],
   processedMap: PluginOptions["processedMap"],
 ) {
@@ -131,16 +64,16 @@ async function copyApiDocs(
 
     const copyDirFiles = copyDirectoryFiles(packageRootDir, outputRootDir);
 
-    if (pkg.api_docs && pkg.output.api_docs) {
+    if (pkg.src.api_docs && pkg.output.api_docs) {
       await copyDirFiles({
-        inputDir: pkg.api_docs,
+        inputDir: pkg.src.api_docs,
         outputDir: pkg.output.api_docs,
         copyFn: createApiDoc,
       });
     }
-    if (pkg.img_dir && pkg.output.img_dir) {
+    if (pkg.src.img_dir && pkg.output.img_dir) {
       await copyDirFiles({
-        inputDir: pkg.img_dir,
+        inputDir: pkg.src.img_dir,
         outputDir: pkg.output.img_dir,
         copyFn: copyImgFile,
       });
@@ -150,16 +83,24 @@ async function copyApiDocs(
      * Write readme file, use git to merge in acceptable changes to existing file after write occurs
      */
     const readmeStreamTransformer = createUrlTransformerSteam(pkg.output);
-    const packageReadmeFile = path.join(packageRootDir, pkg.readme);
-    await createReadme(
-      packageReadmeFile,
-      outputRootDir,
+    const readmeDuplexStream = createOutputDuplexStream(
       pkg.output,
+      outputRootDir,
       readmeStreamTransformer,
     );
+    const packageReadmeFile = path.join(packageRootDir, pkg.src.readme);
+    const readStream = fs.createReadStream(packageReadmeFile, {
+      encoding: "utf8",
+    });
+    pipeline(readStream, readmeDuplexStream, (err) => {
+      if (err) {
+        console.error(`Pipeline failed. ${err}`);
+      }
+    });
 
     /**
      * Mark as processed
+     * TODO: I think this doesn't actually work
      */
     const packageJson = await fs.readJson(
       path.join(packageRootDir, "package.json"),
@@ -168,7 +109,7 @@ async function copyApiDocs(
   }
 }
 
-export default async function(_context: any, options: PluginOptions) {
+export default async function (_ctx: any, options: PluginOptions) {
   let { manifest, processedMap } = options;
   if (!manifest) {
     throw new Error("[api-docs-plugin] Please provide a manifest file.");
@@ -181,7 +122,7 @@ export default async function(_context: any, options: PluginOptions) {
   let status = true;
   let error: Error | null;
   try {
-    await copyApiDocs(manifest, processedMap);
+    await copyPackageFiles(manifest, processedMap);
   } catch (e: unknown) {
     status = false;
     error = e as Error;
@@ -192,6 +133,10 @@ export default async function(_context: any, options: PluginOptions) {
       if (!status) {
         throw new Error(
           `[api-docs-plugin] Failed to process api documentation. ${error?.toString()}`,
+        );
+      } else {
+        console.log(
+          "[api-docs-plugin] Finished processing api documentation.\n",
         );
       }
     },
