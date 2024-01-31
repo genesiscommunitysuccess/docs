@@ -54,8 +54,8 @@ const createFrontMatterTransformerStream = (
         : "";
       const keywordsText = allKeywords ? `[${allKeywords.join(", ")}]` : "";
 
-      const chunkString = new StringDecoder("utf8");
-      chunkString.write(
+      const stringDecoder = new StringDecoder("utf8");
+      stringDecoder.write(
         `---
 title: '${page.title}'
 sidebar_label: '${page.sidebar_label}'
@@ -63,15 +63,15 @@ id: ${page.id}
 `,
       );
       if (keywordsText) {
-        chunkString.write(`keywords: ${keywordsText}\n`);
+        stringDecoder.write(`keywords: ${keywordsText}\n`);
       }
       if (tagsText) {
-        chunkString.write(`tags:\n${tagsText}\n`);
+        stringDecoder.write(`tags:\n${tagsText}\n`);
       }
-      chunkString.write(`---\n\n`);
-      chunkString.write(chunk);
+      stringDecoder.write(`---\n\n`);
+      stringDecoder.write(chunk);
 
-      callback(null, chunkString);
+      callback(null, stringDecoder.end());
     },
   });
 
@@ -89,7 +89,7 @@ export const createOutputDuplexStream = (
   readmeStreamTransformer: Transform,
 ) =>
   new Duplex({
-    write(chunk, encoding, callback) {
+    write(chunk, _, callback) {
       const buffer: string = chunk.toString();
       const pages = buffer.split(PAGE_DELIMETER);
 
