@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const path_1 = __importDefault(require("path"));
-const streamTransformers_1 = require("./streamTransformers");
+const fileStreams_1 = require("./fileStreams");
 const stream_1 = require("stream");
 function cleanseMarkdownContent(input) {
     return input.replace(/<!-- -->/g, "").replace(/<b>|<\/b>/g, "**");
@@ -65,8 +65,8 @@ async function copyApiDocs(manifest, processedMap) {
                 copyFn: copyImgFile,
             });
         }
-        const readmeStreamTransformer = (0, streamTransformers_1.createUrlTransformerSteam)(pkg.output);
-        const readmeDuplexStream = (0, streamTransformers_1.createOutputDuplexStream)(pkg.output, outputRootDir, readmeStreamTransformer);
+        const readmeStreamTransformer = (0, fileStreams_1.createUrlTransformerSteam)(pkg.output);
+        const readmeDuplexStream = (0, fileStreams_1.createOutputDuplexStream)(pkg.output, outputRootDir, readmeStreamTransformer);
         const packageReadmeFile = path_1.default.join(packageRootDir, pkg.src.readme);
         const readStream = fs_extra_1.default.createReadStream(packageReadmeFile, {
             encoding: "utf8",

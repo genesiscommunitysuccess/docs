@@ -4,7 +4,7 @@ import path from "path";
 import {
   createOutputDuplexStream,
   createUrlTransformerSteam,
-} from "./streamTransformers";
+} from "./fileStreams";
 import { PackageConfig } from "./types";
 import { pipeline } from "stream";
 
@@ -51,43 +51,6 @@ async function copyImgFile(inputFile: string, outputFile: string) {
   const content = await fs.readFile(inputFile);
   return fs.writeFile(outputFile, content);
 }
-
-// async function createReadme(
-// inputFile: string,
-// outputDir: string,
-// output: PackageConfig["output"],
-// transformer: Transform,
-// ) {
-// const tags = output.tags
-// ? output.tags.map((tag) => `  - ${tag}`).join("\n")
-// : "";
-// const keywords = output.keywords ? `[${output.keywords.join(", ")}]` : "";
-// const outputFile = path.join(outputDir, output.readme);
-//
-// const readStream = fs.createReadStream(inputFile, { encoding: "utf8" });
-// const writeStream = fs.createWriteStream(outputFile, { encoding: "utf8" });
-//
-// writeStream.write(
-// `---
-// title: '${output.title}'
-// sidebar_label: '${output.sidebar_label}'
-// id: ${output.id}
-// `,
-// );
-//
-// if (keywords) {
-// writeStream.write(`keywords: ${keywords}\n`);
-// }
-// if (tags) {
-// writeStream.write(`tags:\n${tags}\n`);
-// }
-// writeStream.write(`---\n\n`);
-//
-// /**
-// * TODO: Remap any api docs links contained in the README.md file to the target outputApiDocsDir
-// */
-// readStream.pipe(transformer).pipe(writeStream);
-// }
 
 function copyDirectoryFiles(packageRootDir: string, outputRootDir: string) {
   return async function ({
@@ -167,16 +130,10 @@ async function copyApiDocs(
         console.error(`Pipeline failed. ${err}`);
       }
     });
-    // const packageReadmeFile = path.join(packageRootDir, pkg.src.readme);
-    // await createReadme(
-    // packageReadmeFile,
-    // outputRootDir,
-    // pkg.output,
-    // readmeStreamTransformer,
-    // );
 
     /**
      * Mark as processed
+     * TODO: I think this doesn't actually work
      */
     const packageJson = await fs.readJson(
       path.join(packageRootDir, "package.json"),
