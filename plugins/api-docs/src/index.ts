@@ -1,9 +1,12 @@
 // @ts-ignore
 import fs from "fs-extra";
 import path from "path";
-import { createUrlTransformerSteam } from "./streamTransformers";
+import {
+  createOutputDuplexStream,
+  createUrlTransformerSteam,
+} from "./streamTransformers";
 import { PackageConfig } from "./types";
-import { Transform } from "stream";
+import { pipeline } from "stream";
 
 type PluginOptions = {
   manifest: { packages: Array<PackageConfig> };
@@ -35,7 +38,7 @@ async function createApiDoc(inputFile: string, outputFile: string) {
   let content = await fs.readFile(inputFile, { encoding: "utf8" });
   if (path.basename(outputFile) === "index.md") {
     content =
-      (await fs.readFile(require.resolve('api-docs-sync/api-preamble'), {
+      (await fs.readFile(require.resolve("api-docs-sync/api-preamble"), {
         encoding: "utf8",
       })) +
       "\n" +
@@ -49,45 +52,45 @@ async function copyImgFile(inputFile: string, outputFile: string) {
   return fs.writeFile(outputFile, content);
 }
 
-async function createReadme(
-  inputFile: string,
-  outputDir: string,
-  output: PackageConfig["output"],
-  transformer: Transform,
-) {
-  const tags = output.tags
-    ? output.tags.map((tag) => `  - ${tag}`).join("\n")
-    : "";
-  const keywords = output.keywords ? `[${output.keywords.join(", ")}]` : "";
-  const outputFile = path.join(outputDir, output.readme);
-
-  const readStream = fs.createReadStream(inputFile, { encoding: "utf8" });
-  const writeStream = fs.createWriteStream(outputFile, { encoding: "utf8" });
-
-  writeStream.write(
-    `---
-title: '${output.title}'
-sidebar_label: '${output.sidebar_label}'
-id: ${output.id}
-`,
-  );
-
-  if (keywords) {
-    writeStream.write(`keywords: ${keywords}\n`);
-  }
-  if (tags) {
-    writeStream.write(`tags:\n${tags}\n`);
-  }
-  writeStream.write(`---\n\n`);
-
-  /**
-   * TODO: Remap any api docs links contained in the README.md file to the target outputApiDocsDir
-   */
-  readStream.pipe(transformer).pipe(writeStream);
-}
+// async function createReadme(
+// inputFile: string,
+// outputDir: string,
+// output: PackageConfig["output"],
+// transformer: Transform,
+// ) {
+// const tags = output.tags
+// ? output.tags.map((tag) => `  - ${tag}`).join("\n")
+// : "";
+// const keywords = output.keywords ? `[${output.keywords.join(", ")}]` : "";
+// const outputFile = path.join(outputDir, output.readme);
+//
+// const readStream = fs.createReadStream(inputFile, { encoding: "utf8" });
+// const writeStream = fs.createWriteStream(outputFile, { encoding: "utf8" });
+//
+// writeStream.write(
+// `---
+// title: '${output.title}'
+// sidebar_label: '${output.sidebar_label}'
+// id: ${output.id}
+// `,
+// );
+//
+// if (keywords) {
+// writeStream.write(`keywords: ${keywords}\n`);
+// }
+// if (tags) {
+// writeStream.write(`tags:\n${tags}\n`);
+// }
+// writeStream.write(`---\n\n`);
+//
+// /**
+// * TODO: Remap any api docs links contained in the README.md file to the target outputApiDocsDir
+// */
+// readStream.pipe(transformer).pipe(writeStream);
+// }
 
 function copyDirectoryFiles(packageRootDir: string, outputRootDir: string) {
-  return async function({
+  return async function ({
     inputDir,
     outputDir,
     copyFn,
@@ -150,13 +153,27 @@ async function copyApiDocs(
      * Write readme file, use git to merge in acceptable changes to existing file after write occurs
      */
     const readmeStreamTransformer = createUrlTransformerSteam(pkg.output);
-    const packageReadmeFile = path.join(packageRootDir, pkg.src.readme);
-    await createReadme(
-      packageReadmeFile,
-      outputRootDir,
+    const readmeDuplexStream = createOutputDuplexStream(
       pkg.output,
+      outputRootDir,
       readmeStreamTransformer,
     );
+    const packageReadmeFile = path.join(packageRootDir, pkg.src.readme);
+    const readStream = fs.createReadStream(packageReadmeFile, {
+      encoding: "utf8",
+    });
+    pipeline(readStream, readmeDuplexStream, (err) => {
+      if (err) {
+        console.error(`Pipeline failed. ${err}`);
+      }
+    });
+    // const packageReadmeFile = path.join(packageRootDir, pkg.src.readme);
+    // await createReadme(
+    // packageReadmeFile,
+    // outputRootDir,
+    // pkg.output,
+    // readmeStreamTransformer,
+    // );
 
     /**
      * Mark as processed
@@ -168,7 +185,7 @@ async function copyApiDocs(
   }
 }
 
-export default async function(_context: any, options: PluginOptions) {
+export default async function (_context: any, options: PluginOptions) {
   let { manifest, processedMap } = options;
   if (!manifest) {
     throw new Error("[api-docs-plugin] Please provide a manifest file.");
