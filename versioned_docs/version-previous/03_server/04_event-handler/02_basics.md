@@ -219,7 +219,34 @@ As the  example shows, there is an additional type defined for the context Event
 
 Because the example creates a validation context, the function `validationAck()` is used at the end of the `onValidate` block, and not just `ack()`.
 
-# Auto-generated REST endpoints
+## Handling delete events
+
+There are two ways of handling a delete event:
+
+- you can create a separate class
+- you can use a key set as metadata
+
+Using the key reference (key set) reduces code and is also more robust in case of changes to the fields in the key.
+
+Here is an example of using a key set to handle a delete event:
+
+```kotlin
+eventHandler<Trade.ById>(name = "TRADE_DELETE") {
+  permissioning {
+    permissionCodes = listOf("TRADER")
+  }
+  onValidate { event ->
+    ack()
+  }
+  onCommit { event ->
+    val trade = event.details
+    entityDb.delete(trade)
+    ack()
+  }
+}
+```
+
+## Auto-generated REST endpoints
 
 As we have mentioned before, all events created in the eventhandler file are automatically exposed as a [REST endpoints](../../../server/integration/rest-endpoints/introduction/).
 
