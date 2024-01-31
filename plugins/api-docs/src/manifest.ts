@@ -204,7 +204,6 @@ export default {
         readme: "./README.md",
       },
       output: {
-        id: "foundation-layout",
         directory: "./docs/04_web/10_dynamic-layout",
         api_docs: "docs/api",
         img_dir: "docs/img",
@@ -229,6 +228,7 @@ export default {
           {
             title: "Foundation Layout",
             sidebar_label: "Foundation Layout",
+            id: "foundation-layout",
           },
         ],
       },

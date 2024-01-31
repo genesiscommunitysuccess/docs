@@ -80,7 +80,7 @@ async function copyApiDocs(manifest, processedMap) {
         processedMap[pkg.name] = packageJson.version;
     }
 }
-async function default_1(_context, options) {
+async function default_1(_ctx, options) {
     let { manifest, processedMap } = options;
     if (!manifest) {
         throw new Error("[api-docs-plugin] Please provide a manifest file.");
@@ -102,6 +102,9 @@ async function default_1(_context, options) {
         async loadContent() {
             if (!status) {
                 throw new Error(`[api-docs-plugin] Failed to process api documentation. ${error?.toString()}`);
+            }
+            else {
+                console.log("[api-docs-plugin] Finished processing api documentation.\n");
             }
         },
     };

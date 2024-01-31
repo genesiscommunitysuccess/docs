@@ -185,7 +185,7 @@ async function copyApiDocs(
   }
 }
 
-export default async function (_context: any, options: PluginOptions) {
+export default async function (_ctx: any, options: PluginOptions) {
   let { manifest, processedMap } = options;
   if (!manifest) {
     throw new Error("[api-docs-plugin] Please provide a manifest file.");
@@ -210,6 +210,8 @@ export default async function (_context: any, options: PluginOptions) {
         throw new Error(
           `[api-docs-plugin] Failed to process api documentation. ${error?.toString()}`,
         );
+      } else {
+        console.log("[api-docs-plugin] Finished processing api documentation.\n");
       }
     },
   };

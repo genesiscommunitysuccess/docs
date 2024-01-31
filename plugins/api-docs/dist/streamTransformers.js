@@ -31,21 +31,20 @@ const createFrontMatterTransformerStream = (manifestSettings, pageIndex) => new 
             ? allTags.map((tag) => `  - ${tag}`).join("\n")
             : "";
         const keywordsText = allKeywords ? `[${allKeywords.join(", ")}]` : "";
-        const stringDecoder = new string_decoder_1.StringDecoder("utf8");
-        stringDecoder.write(`---
+        this.push(`---
 title: '${page.title}'
 sidebar_label: '${page.sidebar_label}'
 id: ${page.id}
 `);
         if (keywordsText) {
-            stringDecoder.write(`keywords: ${keywordsText}\n`);
+            this.push(`keywords: ${keywordsText}\n`);
         }
         if (tagsText) {
-            stringDecoder.write(`tags:\n${tagsText}\n`);
+            this.push(`tags:\n${tagsText}\n`);
         }
-        stringDecoder.write(`---\n\n`);
-        stringDecoder.write(chunk);
-        callback(null, stringDecoder.end());
+        this.push(`---\n\n`);
+        this.push(chunk);
+        callback();
     },
 });
 const createStream = (str) => {

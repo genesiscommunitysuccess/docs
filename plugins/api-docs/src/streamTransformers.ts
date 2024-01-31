@@ -54,8 +54,7 @@ const createFrontMatterTransformerStream = (
         : "";
       const keywordsText = allKeywords ? `[${allKeywords.join(", ")}]` : "";
 
-      const stringDecoder = new StringDecoder("utf8");
-      stringDecoder.write(
+      this.push(
         `---
 title: '${page.title}'
 sidebar_label: '${page.sidebar_label}'
@@ -63,15 +62,15 @@ id: ${page.id}
 `,
       );
       if (keywordsText) {
-        stringDecoder.write(`keywords: ${keywordsText}\n`);
+        this.push(`keywords: ${keywordsText}\n`);
       }
       if (tagsText) {
-        stringDecoder.write(`tags:\n${tagsText}\n`);
+        this.push(`tags:\n${tagsText}\n`);
       }
-      stringDecoder.write(`---\n\n`);
-      stringDecoder.write(chunk);
+      this.push(`---\n\n`);
+      this.push(chunk);
 
-      callback(null, stringDecoder.end());
+      callback();
     },
   });
 
