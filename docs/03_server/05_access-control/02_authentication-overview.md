@@ -22,7 +22,7 @@ SSO Token authentication covers both [SAML](https://en.wikipedia.org/wiki/Securi
 
 Some of these techniques support [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication) to bring additional security.
 
-Each of these requires its own configuration settings in the application's **auth-preferences.kts** file. To change the default **auth-preferences.kts** you need to create a new **auth-preferences.kts** under this path: {application-name-script}**-config/src/main/resources/scripts/**.
+Each of these requires its own configuration settings in the application's **auth-preferences.kts** file. To change the default **auth-preferences.kts** you need to create a new **auth-preferences.kts** under this path: &#123;application-name-script}**-config/src/main/resources/scripts/**.
 
 ## Authentication workflow
 Regardless of which authentication method is used, the process for logging in remains the same. The client (either a Genesis UI or an API client) sends a request to the EVENT_LOGIN_AUTH endpoint. 
@@ -134,9 +134,9 @@ SSO authentication enables users to use a single set of credentials to access a 
 
 SSO authentication is a more involved process to enable; it requires additional file changes, which are detailed in the following pages:
 
-- [SSO - JWT](../../../server/access-control/SSO-jwt/)
-- [SSO - SAML](../../../server/access-control/SSO-saml/)
-- [SSO - OIDC](../../../server/access-control/SSO-oidc/)
+- [SSO - JWT](../../03_server/05_access-control/04_sso_jwt.md)
+- [SSO - SAML](../../03_server/05_access-control/05_sso_saml.md)
+- [SSO - OIDC](../../03_server/05_access-control/06_sso_oidc.md)
 
 ## Using more than one authentication type
 Your application can use two or more authentication types concurrently; the use of one does not mandate or prevent the use of the other. Each configured authenticator will be tried in turn to see if a logon message can be successfully authenticated.

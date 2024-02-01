@@ -4,6 +4,11 @@
 
 ## Login class
 
+> Warning: This API is now obsolete.
+> 
+> - Please use foundation-auth instead.
+> 
+
 Defines the login class which handles account authentication from the front-end
 
 **Signature:**

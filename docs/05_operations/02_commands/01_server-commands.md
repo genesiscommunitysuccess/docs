@@ -269,7 +269,7 @@ fun main(args: Array<String>) {
 }
 ```
 
-Consider another example; we have a migration script called migrateDictionary.sh as an install hook; this internally executes [MigrateDictionary](01_server-commands.md/#migratedictionary) as shown below:
+Consider another example; we have a migration script called migrateDictionary.sh as an install hook; this internally executes [MigrateDictionary](./01_server-commands.md#migratedictionary) as shown below:
 
 ```shell
 #!/bin/bash
@@ -315,7 +315,7 @@ The `GetAutoIncrementCount` command can take the following arguments:
 
 The behaviour of this command depends on which database implementation your application uses. 
 
-- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
+- **If you are using a NOSQL database**, such as Foundation DB, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
 
 - **Similarly, if you are using Oracle**, auto-incremented values are cached in memory in configurable block sizes. This command only retrieves the current value of the counter stored on disk.
 
@@ -484,7 +484,7 @@ LogLevel -DATADUMP_NACK_ON
 
 ## MigrateAliases
 
-This migrates the Genesis alias store from database storage to file storage and vice versa. This is useful for debugging when you have FDB or Aerospike database technology. 
+This migrates the Genesis alias store from database storage to file storage and vice versa. This is useful for debugging when you have FDB database technology. 
 
 ### Syntax
 The `MigrateAliases` command can take the following arguments:
@@ -502,7 +502,7 @@ MigrateAliases -dst=DB
 ```
 
 ### Database technology
-Aerospike and FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
+FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
 
 - If you are running Genesis on a single node, use a file store.
 - If you are running Genesis on more than one node, use database mode.
@@ -679,7 +679,7 @@ To use this tool, you must have an _application_**-purger.kts* file in the appli
 
 In order to enable syntax highlighting and autocompletion for purger files, you must add **genesis-environment** as a dependency of your application's **-config** module. See simple examples below for purger definitions:
 
-A log file called **purge_{*time_of_run*}** will be created under the **$GENESIS_HOME/runtime/logs/** folder.
+A log file called **purge_&#123;*time_of_run*&#125;** will be created under the **$GENESIS_HOME/runtime/logs/** folder.
 
 The functions and filters below give you different ways of purging data.
 
@@ -753,12 +753,12 @@ purgers {
 
 ### Purge bulk data
 
-You can purge data of whole table by using
+You can purge data from the whole table using:
 
 ```kotlin
 bulkPurger(USER_SESSION)
 ```
-You can purge data of table based on some conditions
+You can purge data from the table based on some conditions:
 
 ```kotlin
 purgers {
@@ -801,7 +801,7 @@ The `remap` command performs the following tasks:
 
 - It reads all dictionary files (fields.kts, tables.kts and view.kts) from **$GC** and compares these to the previously generated schema. It uses these changes to remap the memory-resident database.
 - It generates dao objects based on the dictionary tables, so you can perform database operations in a type-safe way.
-- If you are running Aerospike or FDB, it updates the Genesis alias store; for Aerospike, it also generates UDFs (user defined functions).
+- If you are running FDB, it updates the Genesis alias store.
 
 If you run `remap` with no arguments, it simply gives a report of changes that exist in the configuration.
 
@@ -811,7 +811,7 @@ If you want to commit the changes to the database, you must use the **--commit**
 remap [-c | --commit]
 ```
 
-For full details, see our page on [Remap](../../../operations/commands/remap).
+For full details, see our page on [Remap](../../05_operations/02_commands/03_remap.md).
 
 ## RenameFields 
 This command is used to rename a field name in a database without changing the dictionary or config files.
@@ -866,26 +866,27 @@ This would result in an error, as PRICE is of type DOUBLE while FIRST_NAME is of
 
 ## SendIt 
 
-To send data into the database, use the `SendIt` command.
+To send data into the database (inserts, modifies and upserts), use the `SendIt` command. The data you want to send should be in a .csv file, and the name of the file (or files) should match the name of the table where the new or amended data is to be sent. If you use a different filename, you must specify this using the `-f` argument.
 
 ### Syntax
 The `SendIt` command can take the following arguments:
 
 
-| Argument | Argument long name     | Mandatory | Description                                                    | Restricted values | Default |
-|----------|------------------------|-----------|----------------------------------------------------------------|-------------------|--------|
-| -a       | --all                  | no        | import all the tables from all the csv files to the database | no                | none    |
-| -d       | --delete               | no        | perform delete operations on all records           | no                | none    |
-| -cf      | --columnFormat         | no        | set specific date format for column                   | no                | none    |
-| -f       | --file `<arg>`         | no        | name of the csv file to which the table is imported  |no                | the name of the new file with the data matches the name of the source table      |
-| -fm      | --formatMode `<arg>`   | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY | LEGACY  |
-| -h       | --help                 | no        | show help on how to use this command                         | no                | none    |
-| -m       | --modify `<arg>`       | no        | key name used to find original record                        | no                | none    |
-| -mf      | --modifyFields `<arg>` | no        | specifies fields to modify                                   | no                | none    |
-| -quiet   | --quietMode            | no        | make database changes without triggering real-time updates in update queue layer | no | none    |
-| -r       | --recover              | no        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | no                | none    |
-| -t       | --table `<arg>`        | yes       | the name of the table to import to the database              | must be a valid table |   |
-| -v       | --verbose              | no        | log every error line to output                               | no                | none    |
+| Argument | Argument long name     | Mandatory | Description                                                    | Restricted values     | Default |
+|----------|------------------------|-----------|----------------------------------------------------------------|-----------------------|--------|
+| -a       | --all                  | no        | import all the tables from all the csv files to the database | no                    | none    |
+| -d       | --delete               | no        | perform delete operations on all records                     | no                    | none    |
+| -cf      | --columnFormat         | no        | set specific date format for column                          | no                    | none    |
+| -f       | --file `<arg>`         | no        | name of the csv file that contains the data                  | no                    | Genesis looks for a new .csv file whose name matches the name of the source table    |
+| -fm      | --formatMode `<arg>`   | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY  | LEGACY  |
+| -h       | --help                 | no        | show help on how to use this command                         | no                    | none    |
+| -m       | --modify `<arg>`       | no        | key name used to find original record                        | no                    | none    |
+| -mf      | --modifyFields `<arg>` | no        | specifies fields to modify (only used with `-m`)             | no                    | none    |
+| -quiet   | --quietMode            | no        | make database changes without triggering real-time updates in update queue layer | no                    | none    |
+| -r       | --recover              | no        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | no                    | none    |
+| -t       | --table `<arg>`        | yes       | the name of the database table to be updated or amended      | must be a valid table | none    |
+| -u       | --upsert `<arg>`       | no        | table key name used to upsert records                        | no                    | none    |
+| -v       | --verbose              | no        | log every error line to output                               | no                    | none    |
 
 For example:
 
@@ -895,21 +896,48 @@ SendIt -t FUND -f FUND.csv
 
 This reads the **FUND.csv** file in the local directory and inserts the data from the file into the FUND table.
 
-To modify records, you need to specify the key that will be used to identify the original record from each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
+### Modifying and upserting
+
+:::info
+You can use SendIt to make changes to the database while the application is running; Data Servers and Consolidators will process any changes in the normal way (for example). But if you are in any doubt that your changes might clash with other changes happening in the application, you should switch off all processes before using SendIt.
+:::
+
+To **modify** records, create a .csv file of the records that need to be modified, including the key value and the modified values for each record. Then use SendIt with the `-m` flag to specify the key that identifies the record or records to be modified. **You cannot modify the key that you supply here - although you can modify other key fields (with care).** For example, you can't change an ID in the file and then modify on_BY_ID key. 
+
+The following example:
+
+- looks for a file called **FUND.csv** by default.
+- compares each record in the FUND table with the record that has the same ID in the csv file
+- applies any changes in the csv record to the record in the table
 
 ```bash
 SendIt -t FUND -m FUND_BY_ID
 ```
 
-Modify fields (`-mf`) is a special parameter that can be added to `-m` operations. SendIt only attempts to modify the record fields specified in this comma-separated list parameter.
+Modify fields (`-mf`) is an extra parameter that can be added to `-m` operations. SendIt only attempts to modify the record fields specified in this comma-separated list. For example:
 
-To delete records, specify `-d` (or `--delete`)
+```bash
+SendIt -t ALL_TRADES -m TRADE_BY_TRADE_ID -mf TRADE_PRICE, TRADE_QUANTITY
+```
+
+To **upsert** records, create a .csv file of the records that need to be modified or inserted, including the key value and the relevant values for each record. Then use SendIt with the `-u` flag to specify the key that identifies the original record from each row in the csv file. 
+
+The following example:
+
+- looks for a file called **FUND.csv** by default
+- for each record in the FUND table that has a matching ID in the csv, it applies the csv changes to the table
+- for any record in the csv file that has no matching ID in the FUND table, the record is inserted into the table
+
+```bash
+SendIt -t FUND -u FUND_BY_ID
+```
+### Deleting
+To **delete** records, specify `-d` (or `--delete`)
 
 ```bash
 SendIt -t FUND -d
 ```
-
-If no file parameter is specified, `.csv` is assumed and read from the local directory.
+### Verbose mode
 
 Verbose mode additionally outputs line-by-line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes `SendIt` useful for scheduled or automated jobs (e.g. daily data loads).
 
@@ -1135,7 +1163,7 @@ The `CreateMissingSqlSequences` command has no parameters.
 ### Working with different databases
 The behaviour of this command depends on which database implementation your application uses.
 
-- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
+- **If you are using a NOSQL database**, such as Foundation DB, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
 
 - **If you are using Oracle**, you can **not** set a sequence value directly. This command increments the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values that are already assigned in the cache, as the increment is also applied to these values.
 
@@ -1239,7 +1267,7 @@ because the tables being compared are in separate databases. Therefore, these fi
 
 | Argument | Argument long name | Mandatory | Description | Restricted Values |
 | -- | -- | -- | -- | -- |
-| -d | --dblayer | true | Database Layer type | Yes: FDB, FDB2, AEROSPIKE, SQL, SIMPLE |
+| -d | --dblayer | true | Database Layer type | Yes: FDB, FDB2, SQL, SIMPLE |
 | -f | --fdb | false | FDB cluster file name |No |
 | -H | --host | false | Remote DB hostname |No |
 | -P | --port | false | Remote DB port |Yes: Number > 0 |

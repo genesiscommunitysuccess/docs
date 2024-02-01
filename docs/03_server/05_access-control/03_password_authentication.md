@@ -11,7 +11,8 @@ tags:
 ---
 
 
-This page describes the various configuration options available for authentication. Remember that if you want to override the default configuration of the **auth-preferences.kts**, you need to modify or create the following file: {_application-name_}**-script-config/src/main/resources/scripts/auth-preferences.kts**.
+
+This page describes the configuration options for authentication. Remember that if you want to override the default configuration of the **auth-preferences.kts**, you need to modify or create the following file: _application-name_**-script-config/src/main/resources/scripts/auth-preferences.kts**.
 
 :::info
 **Session tokens and refresh tokens**
@@ -21,7 +22,6 @@ The expiry date of the refresh token is always further in the future than the ex
 
 Once a session token expires, you can use its associated refresh token to create a new user session - assuming the refresh token has not expired yet.
 :::
-
 
 ## The security function
 
@@ -165,6 +165,19 @@ Both the subject and the body support templating. Values surrounded by double cu
 * `USER` the user record, properties on this record should be accessed using lowerCamelCase, e.g. `{{ USER.firstName }}`
 * any system definition or environment variable available
 
+example: 
+```kotlin
+authentication {
+    genesisPassword {
+        selfServiceReset {
+            timeoutInMinutes = 20
+            notifyTopic = "smtpEmail"
+            redirectUrl = "https://genesis.global/login/password-reset"
+        }
+    }
+}
+```
+
 ### mfa
 The `mfa` function enables you to configure [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function, you can choose between different implementations of MFA providers.
 
@@ -207,7 +220,7 @@ The following functions will be invoked on this table or view:
 - The `customLoginAck` function enables you to modify the list of permissions, profiles and user preferences returned to the client as part of the `LOGIN_ACK` message. For this purpose, the `User` entity is provided as a parameter, as well as three properties:
     * permissions - a mutable list containing all the right codes associated with the user. Given its mutability, codes can be added or removed.
     * profiles - a mutable list containing all the profiles associated with the user.  Given its mutability, profiles can be added or removed.
-    * userPreferences - a [GenesisSet](../../../server/network-messages/genesisset/) object containing additional fields provided as part of the [loginAck](#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
+    * userPreferences - a [GenesisSet](../../03_server/09_network-messages/02_genesisset.md) object containing additional fields provided as part of the [loginAck](#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
 
 Here is an example configuration:
 
@@ -325,54 +338,120 @@ All requests below are capable of returning an error with a code of INTERNAL_ERR
 ---
 
 ## Pre-authentication
-Pre-authentication messages can be sent by a client without the user being logged in.
+Pre-authentication messages can be sent by a client without the user being logged in. There are three messages that can be used without being logged in.
 
-### Login preferences
-You must make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knows this before any user logs in.
-Currently, this is the only preference published.
-#### Request
-    MESSAGE_TYPE = EVENT_LOGIN_PREFS
-#### Response
-    MESSAGE_TYPE = EVENT_LOGIN_PREFS_ACK
-        DETAILS.PASSWORD_RESET_TYPE = ADMIN/EMAIL
+### Self-service password reset
+
+It is possible to initiate a self-service password message workflow assuming it is configured appropriately (see more [here](#selfServiceReset)).
+
+The message to request a self-service password reset looks like this:
+
+    MESSAGE_TYPE = EVENT_SELF_SERVICE_PASSWORD_RESET
+    DETAILS.USER_NAME = JohnWolf
+
+It is also possible to provide a RETURN_URL field as part of the details block if the URL used by the back-end configuration is not suitable.
+
+Once this event has been triggered, the password reset link will be sent through the appropriate channels (e.g. e-mail) and the password reset action can be triggered.
+
+    MESSAGE_TYPE = EVENT_PASSWORD_RESET_ACTION
+    DETAILS.USER_NAME = JohnWolf
+    DETAILS.RESET_TOKEN = 1329048120a0sdf
+    DETAILS.NEW_PASSWORD = *******
+    DETAILS.INVALIDATE_ACTIVE_SESSIONS = true
+
+In the example message above, you can see that:
+
+- the RESET_TOKEN field has the code provided to the user when the reset operation was requested
+- the NEW_PASSWORD field has the new password to be used for the user
+- the optional INVALIDATE_ACTIVE_SESSIONS field has been set to true, to log out any currently logged in sessions
+
+### Change password
+
+The change password message is available whether the user is currently logged in or not. This is important, because the first time a user logs in, their newly created one-time password will be in a PASSWORD_EXPIRED state; this forces a "Change password" workflow before they can actually log in for the first time.
+
+The message structure for a change password message looks like this:
+
+    MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD
+    DETAILS.USER_NAME = JohnWolf
+    DETAILS.OLD_PASSWORD = *******
+    DETAILS.NEW_PASSWORD = *******
+
+The naming convention for the fields is also self-explanatory.
+
+### Logout
+A logout request can be triggered before a user has logged in, if limits have been set for a maximum number of user sessions. This message workflow enables you to terminate an existing active session so that a new session can be created.
+
+A sample message would look like this:
+
+    MESSAGE_TYPE = EVENT_LOGOUT
+    DETAILS.USER_NAME = JohnWolf
+    DETAILS.SESSION_ID = *******
 
 ---
 
 ## Authentication
-Once you have a list of preferences, you can show the correct login dialog and let the user make a login attempt.  The password is provided in plain text, as it is expected that you will secure the connection using TLS.
+The password is provided in plain text, as it is expected that you will secure the connection using TLS.
 ### Login request
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH
     DETAILS.USER_NAME = JohnWolf
-    DETAILS.PASSWORD = FullMoon1
+    DETAILS.PASSWORD = ******
 
 ### Login response
-If successful:
+If successful, a message could look like this:
 
-    MESSAGE_TYPE = EVENT_LOGIN_AUTH_ACK
-    DETAILS.SYSTEM.DATE = 2014-06-18 12:27:01
-    DETAILS.HEARTBEAT_INTERVAL_SECS = 30
-    DETAILS.SYSTEM.PRODUCT[0].NAME = SBL
-    DETAILS.SYSTEM.PRODUCT[0].VERSION = 1.0.0-RELEASE
-    DETAILS.SYSTEM.PRODUCT[1].NAME = AUTH
-    DETAILS.SYSTEM.PRODUCT[1].VERSION = 1.0.1.RELEASE
+      MESSAGE_TYPE = EVENT_LOGIN_AUTH_ACK
+      SESSION_AUTH_TOKEN = ********
+      REFRESH_AUTH_TOKEN = ********
+      SESSION_ID = c4eb5f62-2d11-4028-98cb-018ff45d7035
+      USER_NAME = JohnWolf
+      DETAILS.HEARTBEAT_INTERVAL_SECONDS = 30
+      DETAILS.SESSION_TIMEOUT_MINS = 20
+      DETAILS.REFRESH_TOKEN_EXPIRATION_MINS = 7200
+      DETAILS.FAILED_LOGIN_ATTEMPTS = 0
+      DETAILS.REJECTED_LOGIN_ATTEMPTS = 0
+      DETAILS.LAST_LOGIN_DATE_TIME = 2024-01-25 15:48:33.413 (1706197713413)
+      DETAILS.DAYS_TO_PASSWORD_EXPIRY = 730
+      DETAILS.NOTIFY_EXPIRY = 8
+      DETAILS.MFA_CODE = null
+      DETAILS.MFA_CODE_EXPIRY_MINS = null
+      DETAILS.SYSTEM.DATE = Thu Jan 25 15:48:33 UTC 2024
+      PERMISSION[0] = AMEND_PROFILE
+      PERMISSION[1] = AMEND_USER
+      PERMISSION[2] = CHANGE_PWD
+      PERMISSION[3] = DELETE_PROFILE
+      PERMISSION[4] = DELETE_USER
+      PERMISSION[5] = DISABLE_USER
+      PERMISSION[6] = ENABLE_USER
+      PERMISSION[7] = EXPIRE_PWD
+      PERMISSION[8] = INSERT_PROFILE
+      PERMISSION[9] = INSERT_USER
+      PERMISSION[10] = MFA_CONFIRM
+      PERMISSION[11] = MFA_CREATE
+      PERMISSION[12] = MFA_DISABLE
+      PERMISSION[13] = MFA_ENABLE
+      PROFILE[0] = ADMIN
+      PROFILE[1] = USER_ADMIN
 
-If there is a problem, the server will return the standard error set with CODE/TEXT details and the error code `LOGIN_AUTH_NACK`.  The following error codes can be provided:
+If there is a problem, the server returns the standard error set with CODE/TEXT details and the error code `LOGIN_AUTH_NACK`.  The following error codes can be provided:
 
 - `UNKNOWN_ACCOUNT` - User is unknown
+- `MAX_ACTIVE_SESSIONS_REACHED` - Maximum number of sessions reached.
 - `INCORRECT_CREDENTIALS` - User/password combination is invalid
 - `LOCKED_ACCOUNT` - Account is locked and needs to be [re-activated by administrator](#retry)
 - `PASSWORD_EXPIRED` - Password must be changed
 - `LOGIN_FAIL` - Generic error code
 
 ### Password change
-If the response is `PASSWORD_EXPIRED`, then the GUI can allow the user to change the password, provided they know their existing password.
+
+As explained in the previous section, if the response for the login attempt is `PASSWORD_EXPIRED`, then the GUI can allow the user to change the password - provided they know their existing password.
 
 #### Change request
+
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD
     DETAILS.USER_NAME = JohnWolf
-    DETAILS.OLD_PASSWORD = Password123
-    DETAILS.NEW_PASSWORD = Password456
+    DETAILS.OLD_PASSWORD = ******
+    DETAILS.NEW_PASSWORD = ******
 
 #### Change response
 If successful:
@@ -387,25 +466,119 @@ The error codes that can be returned are currently:
 - `INSUFFICIENT_CHARACTERS` - covers a few cases, so text field may be required, used for things like no digits provided when 1 digit is required.
 - `ILLEGAL_MATCH` - covers a few cases so text field may be required, used for things like repeating characters in password.
 - `ILLEGAL_WHITESPACE` - if password contains white space.
-- `INSUFFICIENT_CHARACTERISTICS` - can be provided if you have configured passwords to be successful if only 2 of 5.strength checks pass. Should be provided alongside "real" error codes.
+- `INSUFFICIENT_CHARACTERISTICS` - can be provided if you have configured passwords to be successful only if a predetermined set of strength checks pass. Should be provided alongside "real" error codes.
 - `ILLEGAL_SEQUENCE` - Numeric/alphabetic sequence detected.
 
-### Reset password
-This can only be called by an administrator; it simply specifies a user name and sets the password to blank.
+### Logout
 
-#### Reset request
-    MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD
-    DETAILS.USER_NAME = JohnWolf
+As explained in the previous section, if the response for the login attempt is `MAX_ACTIVE_SESSIONS_REACHED`, the server will reply with a list of active sessions; this gives the client the option to terminate one of them. In this scenario, the client would need to send a LOGOUT message with the specific SESSION_ID value of the session to terminate.
 
-#### Reset response
-    MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD_ACK
+The response message for this scenario would look like this:
+
+```
+MESSAGE_TYPE = EVENT_LOGIN_AUTH_NACK
+ERROR[0].@type = LoginError
+ERROR[0].CODE = MAX_ACTIVE_SESSIONS_REACHED
+ERROR[0].TEXT = Problem logging in
+ERROR[0].STATUS_CODE = 403 Forbidden
+ERROR[0].DETAILS.SESSION[0].SESSION_ID = abb8f6be-8009-4370-a474-3a0ded4dc2cf
+ERROR[0].DETAILS.SESSION[0].HOST = host1
+ERROR[0].DETAILS.SESSION[0].LAST_ACCESS_TIME = 2024-01-25 14:27:54.925 (1706192874925)
+ERROR[0].DETAILS.SESSION[1].SESSION_ID = c8c04ba5-d450-48f7-a863-2a500fe0a4e7
+ERROR[0].DETAILS.SESSION[1].HOST = host2
+ERROR[0].DETAILS.SESSION[1].LAST_ACCESS_TIME = 2024-01-25 14:27:55.037 (1706192875037)
+ERROR[0].DETAILS.SESSION[2].SESSION_ID = f6255056-952f-4985-b984-6e48c822c3a4
+ERROR[0].DETAILS.SESSION[2].HOST = host3
+ERROR[0].DETAILS.SESSION[2].LAST_ACCESS_TIME = 2024-01-25 14:27:55.235 (1706192875235)
+ERROR[0].DETAILS.SESSION[3].SESSION_ID = 29220a26-0753-4408-9c28-9f00457e98ac
+ERROR[0].DETAILS.SESSION[3].HOST = host4
+ERROR[0].DETAILS.SESSION[3].LAST_ACCESS_TIME = 2024-01-25 14:27:55.438 (1706192875438)
+```
+
+A logout message to terminate the first session would look like this:
+
+```
+MESSAGE_TYPE = EVENT_LOGOUT
+DETAILS.USER_NAME = JohnWolf
+DETAILS.SESSION_ID = abb8f6be-8009-4370-a474-3a0ded4dc2cf
+```
 
 ## Post-authentication
-Once the user has been authenticated, the server expects heartbeat messages, as defined in the interval setting on the ACK message. If the GUI misses a configurable number of heartbeats, the session will automatically expire. In response to a heartbeat, the GUI will receive a list of available services and their details.
+### Expire password
+A password can expire in three different ways: 
 
-These services should be contacted on the hosts in the order they are defined in the list. This order could change if the server implements a load-balancing strategy. Existing connections can simply ignore the order changes, but in the event of failover or reconnection, the order should be adhered to.
+- time-based
+- user-based
+- admin-based
 
-### Heartbeat
+The end result is always the same, the user will need to change the password on the next login, as their previous one has now expired.
+
+#### Expire password request
+The password expiry mechanism can be triggered by sending a message like this:
+
+    MESSAGE_TYPE = EVENT_EXPIRE_USER_PASSWORD
+    DETAILS.USER_NAME = JohnWolf
+
+It is common for administrators to help users recover their account credentials by expiring the current User record `STATUS` with a new one-time password;  this action forces users to change it on their first login. In this case, the message can optionally receive a one-time password, as shown below:
+
+    MESSAGE_TYPE = EVENT_EXPIRE_USER_PASSWORD
+    DETAILS.USER_NAME = JohnWolf
+    DETAILS.PASSWORD = ******
+
+### Login details
+If the client needs to re-receive the information provided by the login response for some reason (such as re-reading user preferences), it is possible to send an EVENT_LOGIN_DETAILS message to the server. The response will be equivalent to the response received by the login message, without actively logging in the system for a second time.
+
+### Login details request
+
+    MESSAGE_TYPE = EVENT_LOGIN_DETAILS
+    DETAILS.SESSION_AUTH_TOKEN = *******
+
+The SESSION_AUTH_TOKEN value is returned as part of the first login operation, so it is only possible to call EVENT_LOGIN_DETAILS after a successful login.
+
+### Login details reply
+
+    MESSAGE_TYPE = EVENT_LOGIN_DETAILS_ACK
+    SESSION_AUTH_TOKEN = ********
+    REFRESH_AUTH_TOKEN = ********
+    SESSION_ID = c4eb5f62-2d11-4028-98cb-018ff45d7035
+    USER_NAME = JohnWolf
+    DETAILS.HEARTBEAT_INTERVAL_SECONDS = 30
+    DETAILS.SESSION_TIMEOUT_MINS = 20
+    DETAILS.REFRESH_TOKEN_EXPIRATION_MINS = 7200
+    DETAILS.FAILED_LOGIN_ATTEMPTS = 0
+    DETAILS.REJECTED_LOGIN_ATTEMPTS = 0
+    DETAILS.LAST_LOGIN_DATE_TIME = 2024-01-25 15:48:33.413 (1706197713413)
+    DETAILS.DAYS_TO_PASSWORD_EXPIRY = 730
+    DETAILS.NOTIFY_EXPIRY = 8
+    DETAILS.MFA_CODE = null
+    DETAILS.MFA_CODE_EXPIRY_MINS = null
+    DETAILS.SYSTEM.DATE = Thu Jan 25 15:48:33 UTC 2024
+    PERMISSION[0] = AMEND_PROFILE
+    PERMISSION[1] = AMEND_USER
+    PERMISSION[2] = CHANGE_PWD
+    PERMISSION[3] = DELETE_PROFILE
+    PERMISSION[4] = DELETE_USER
+    PERMISSION[5] = DISABLE_USER
+    PERMISSION[6] = ENABLE_USER
+    PERMISSION[7] = EXPIRE_PWD
+    PERMISSION[8] = INSERT_PROFILE
+    PERMISSION[9] = INSERT_USER
+    PERMISSION[10] = MFA_CONFIRM
+    PERMISSION[11] = MFA_CREATE
+    PERMISSION[12] = MFA_DISABLE
+    PERMISSION[13] = MFA_ENABLE
+    PROFILE[0] = ADMIN
+    PROFILE[1] = USER_ADMIN
+
+### Rights polling
+The GUI can receive rights from a process called `GENESIS_AUTH_DATASERVER`. The view `ALL_USER_RIGHTS` displays all users and codes. A logged-in user should automatically set the Filter expression to be `USER_NAME`=='xxx' to receive push updates to user privileges.
+
+### Working with heartbeats (non-web applications only)
+If you are building a desktop application that does not connect to a web host, the server can be set up to receive heartbeat messages after the user has been authenticated (as defined in the interval setting on the ACK message). 
+
+In response to a heartbeat, the GUI receives a list of available services to connect to, along with their details; if the environment is configured not to use Consul as the cluster mode, this can include multiple hostnames.
+
+If the back end of your non-web application is not using the Consul cluster mode, a client can use the services in this list in the order that they are defined. Existing connections can simply ignore the order changes, but in the event of failover or reconnection, the order must be adhered to.
 
 #### Heartbeat request
 
@@ -427,20 +600,13 @@ These services should be contacted on the hosts in the order they are defined in
     DETAILS.SERVICE[1].HOST[1].NAME = genesisserv2
     DETAILS.SERVICE[1].HOST[1].PORT = 9002
 
-
-### Rights polling
-The GUI can receive rights from a process called `AUTH_DATASERVER`. The view `USER_RIGHTS` displays all users and codes. A logged-in user should automatically set the Filter expression to be `USER_NAME`=='xxx' to receive push updates to user privileges.
-
 ## Entity management
-In the Genesis low-code platform, there are profiles, users and rights. A profile is a group of users, which can be permissioned. For example, you could have a SALES_TRADER group in which all users must have the same permissions. In all cases where you specify either a right for a user/profile, or a user in a profile, the event represents what you want the entity to look like; i.e. if you amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
+In the Genesis low-code platform, there are profiles, users and rights. A profile is a group of users, which can be permissioned. For example, you could have a SALES_TRADER group in which all users have the same permissions. In all cases where you specify either a right for a user/profile, or a user in a profile, the event represents what you want the entity to look like; i.e. if you amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
 
 Note the following:
 
-* 2-phase validation is not currently supported
-* metadata is not supported on the following transactions.
-  User/profile `STATUS` field can be set to `ENABLED`, `DISABLED`, `PASSWORD_EXPIRED` and `PASSWORD_RESET`.
-  `PASSWORD_EXPIRED` should prompt the user to enter a new password.
-  `PASSWORD_RESET` should do the same but the server expects a blank "current password" field.
+* The User `STATUS` field can be set to `ENABLED`, `DISABLED` or `PASSWORD_EXPIRED`. A User set up with `PASSWORD_EXPIRED` should prompt the user to enter a new password on next login.
+* The Profile `STATUS` field can be set to `ENABLED` or `DISABLED`.
 
 ### Insert profile
 
@@ -451,14 +617,10 @@ Note the following:
     DETAILS.NAME = SALES_TRADERS
     DETAILS.DESCRIPTION = Sales Traders
     DETAILS.STATUS = ENABLED
-    DETAILS.RIGHT[0].ID = 00000000000001RISP0
-    DETAILS.RIGHT[0].CODE = ORDEN
-    DETAILS.RIGHT[1].ID = 00000000000002RISP0
-    DETAILS.RIGHT[1].CODE = ORDAM
-    DETAILS.USER[0].ID = 00000000000001USSP0
-    DETAILS.USER[0].USER_NAME = JohnWolf
-    DETAILS.USER[1].ID = 00000000000002USSP0
-    DETAILS.USER[1].USER_NAME = james
+    DETAILS.RIGHT_CODES[0].CODE = ORDEN
+    DETAILS.RIGHT_CODES[1].CODE = ORDAM
+    DETAILS.USER_NAMES[0].USER_NAME = JohnWolf
+    DETAILS.USER_NAMES[1].USER_NAME = james
 
 #### Insert response
     MESSAGE_TYPE = EVENT_INSERT_PROFILE_ACK
@@ -466,60 +628,26 @@ Note the following:
 ### Amend profile
 
 #### Amend request
-  In the example below, the logged-in user (in the second line) is JohnWolf, who is modifying the profile of JaneDoe to give her the profile name JANE SMITH. 
+
+This amend request supplies a new set of details that changes the SALES_TRADERS profile (inserted in the previous example) in two ways:
+
+- There is no `ORDAM`right code.
+- There is no "james" user name.
 
 ```
-    {
-  "SOURCE_REF": "1786d2ca-23fd-40c8-a52b-fe002a0fa1f6",
-  "USER_NAME": "JohnWolf",
-  "SESSION_AUTH_TOKEN": "sIsXX3IBqyIESUD38AgA71ycR8W7KVzg",
-  "MESSAGE_TYPE": "EVENT_AMEND_USER",
-  "DETAILS": {
-    "USER_NAME": "JaneDoe",
-    "LAST_LOGIN": 1670236873948,
-    "LAST_NAME": "Smith",
-    "FIRST_NAME": "Jane",
-    "ONLINE": true,
-    "COMPANY_NAME": null,
-    "STATUS": "ENABLED",
-    "EMAIL_ADDRESS": "jane.doe@genesis.global",
-    "COMPANY_ID": null,
-    "USER_TYPE": "USER",
-    "ACCESS_TYPE": "ENTITY",
-    "ADDRESS_LINE1": null,
-    "ADDRESS_LINE2": null,
-    "ADDRESS_LINE3": null,
-    "ADDRESS_LINE4": null,
-    "CITY": null,
-    "REGION": null,
-    "POSTAL_CODE": null,
-    "COUNTRY": null,
-    "TITLE": null,
-    "WEBSITE": null,
-    "MOBILE_NUMBER": null,
-    "TELEPHONE_NUMBER_DIRECT": null,
-    "TELEPHONE_NUMBER_OFFICE": null,
-    "COUNTERPARTY_ID": null,
-    "ROW_REF": "6889579003422704324",
-    "USER_PROFILES": [
-      "SUPPORT",
-      "TRADER",
-      "USER_ADMIN"
-    ]
-  },
-  "IGNORE_WARNINGS": true,
-  "VALIDATE": false
-}
+    MESSAGE_TYPE = EVENT_AMEND_PROFILE
+    USER_NAME = JohnWolf
+    DETAILS.NAME = SALES_TRADERS
+    DETAILS.DESCRIPTION = Sales Traders
+    DETAILS.STATUS = ENABLED
+    DETAILS.RIGHT_CODES[0].CODE = ORDEN
+    DETAILS.USER_NAMES[0].USER_NAME = JohnWolf
 ```
 
 #### Amend response
 
 ```
-{
-  "GENERATED": [],
-  "MESSAGE_TYPE": "EVENT_ACK",
-  "SOURCE_REF": "1786d2ca-23fd-40c8-a52b-fe002a0fa1f6"
-}
+    MESSAGE_TYPE = EVENT_ACK
 ```
 
 ### Delete profile
@@ -530,51 +658,84 @@ Note the following:
     DETAILS.NAME = SALES_TRADERS
 
 #### Delete response
-    MESSAGE_TYPE = EVENT_DELETE_PROFILE_ACK
+    MESSAGE_TYPE = EVENT_ACK
 
 ### Insert User
 
 #### Insert request
     MESSAGE_TYPE = EVENT_INSERT_USER
-    USER_NAME = jwolf
+    USER_NAME = JohnDoe
     DETAILS.USER_NAME = JohnWolf
     DETAILS.FIRST_NAME = John
     DETAILS.LAST_NAME = Wolf
     DETAILS.EMAIL_ADDRESS = john.wolf@genesis.global
     DETAILS.STATUS = ENABLED
-    DETAILS.RIGHT[0].ID = 00000000000001RISP0
-    DETAILS.RIGHT[0].CODE = ORDEN
-    DETAILS.RIGHT[1].ID = 00000000000002RISP0
-    DETAILS.RIGHT[1].CODE = ORDAM
+    DETAILS.USER_PROFILES[0] = USER_ADMIN
 
 #### Insert response
-    MESSAGE_TYPE = EVENT_INSERT_USER_ACK
+    MESSAGE_TYPE = EVENT_ACK
 
 ### Amend user
 
+In the example below, the logged-in user (in the second line) is JohnDoe, who is modifying the profile of JohnWolf to give him the last name: Smith.
+
 #### Amend request
     MESSAGE_TYPE = EVENT_AMEND_USER
-    USER_NAME = jwolf
-    DETAILS.ID = 00000000000001USSP0
+    USER_NAME = JohnDoe
     DETAILS.USER_NAME = JohnWolf
     DETAILS.FIRST_NAME = John
-    DETAILS.LAST_NAME = Doe
+    DETAILS.LAST_NAME = Smith
     DETAILS.EMAIL_ADDRESS = john.wolf@genesis.global
     DETAILS.STATUS = ENABLED
-    DETAILS.RIGHT[0].ID = 00000000000001RISP0
-    DETAILS.RIGHT[0].CODE = ORDEN
-    DETAILS.RIGHT[1].ID = 00000000000002RISP0
-    DETAILS.RIGHT[1].CODE = ORDAM
+    DETAILS.USER_PROFILES[0] = USER_ADMIN
 
 #### Amend response
-    MESSAGE_TYPE = EVENT_AMEND_USER_ACK
+    MESSAGE_TYPE = EVENT_ACK
 
 ### Delete user
 
 #### Delete request
     MESSAGE_TYPE = EVENT_DELETE_USER
     USER_NAME = JohnDoe
-    DETAILS.USER_NAME = james
+    DETAILS.USER_NAME = JohnWolf
 
 ### Delete response
-    MESSAGE_TYPE = EVENT_DELETE_USER_ACK
+    MESSAGE_TYPE = EVENT_ACK
+
+## Full permissions list
+
+Most of the message workflows described on this page are permissioned on the basis of a set of default rights. These are provided in the form of a CSV file as part of the platform authentication distribution. Most permissions and their relationship to events have been explained in their own sections. For reference, here is the whole table:
+
+| Code           | Description                    |
+|----------------|--------------------------------|
+| INSERT_PROFILE | Add a new Profile              |
+| INSERT_USER    | Add a new User                 |
+| AMEND_PROFILE  | Amend an existing Profile      |
+| AMEND_USER     | Amend an existing User         |
+| CHANGE_PWD     | Change another User's password |
+| DELETE_PROFILE | Delete a Profile               |
+| DELETE_USER    | Delete a User                  |
+| DISABLE_USER   | Disable a User                 |
+| ENABLE_USER    | Enable a User                  |
+| EXPIRE_PWD     | Expire another User's password |
+
+A default Profile record named USER_ADMIN is also provided. This contains all the previous rights.
+
+:::info
+Users can change their own password as well as expire their own password (assuming they are logged in). However, it is only possible to change/expire another user's password if you have administrator rights.
+:::
+
+## Event auditing
+
+Each authentication event is audited in one way or another, either using the automatic mechanism provided at the table definition level (e.g. PROFILE, PROFILE_RIGHT, PROFILE_USER, PASSWORD_RESET, USER and USER_ATTRIBUTES), or by providing custom tables with the audit information.
+
+In the first case scenario, auditing works as it would do for any other Genesis table: AUDIT_EVENT_TYPE reflects the event message type (i.e. EVENT_INSERT_USER), AUDIT_EVENT_TEXT may contain a free text field provided by the user calling the event, AUDIT_EVENT_DATETIME is autogenerated with the current date and time the change happened and AUDIT_EVENT_USER corresponds to the user who triggered the event in question.
+
+In the second case scenario, we have automatic events to log changes in USER_AUDIT and USER_ATTRIBUTES when a password expires. And we also have specific handling for USER_LOGIN audits. The USER_LOGIN_AUDIT table will contain entries for the following events: LOGIN, LOGOUT, SESSION_EXPIRED, REJECTED (only available if a maximum number of user sessions has been configured), FAILED_LOGIN, and FAILED_LOGOUT (if an incorrect session ID or user name has been provided). 
+
+Additionally, all USER_LOGIN audit events are logged to a file at INFO level in the following format:
+
+`[25 Jan 2024 16:31:18.823 12729 [dbCoroutinesContext-4 @coroutine#994] INFO  global.genesis.auth.manager.controller.LoginAuditController - AuditLoginEvent: UserLoginAudit{serialVersionUID='1',userLoginAuditId={not-set}, userName=JohnDoe, authAction=LOGIN, ipAddress=/127.0.0.1, reason=, recordId={not-set}, timestamp={not-set}}]`
+
+
+

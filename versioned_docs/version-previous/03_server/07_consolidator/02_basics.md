@@ -97,10 +97,6 @@ properties, and Consolidator properties will overwrite both.
 
 In the select block, you can specify functions and outputs, for example:
 
-
-<Tabs defaultValue="tables" values={[{ label: 'Tables', value: 'tables', }, { label: 'Classes', value: 'classes', }]}>
-<TabItem value="tables">
-
 ```kotlin
 select {
     // add the output table here for a more concise syntax
@@ -112,10 +108,6 @@ select {
 }
 ```
 
-</TabItem>
-<TabItem value="classes">
-
-
 ```kotlin
 select {
     sum { feeAmount } into CommissionAndFeesSummary::feeAmount
@@ -123,8 +115,6 @@ select {
     sum { splitFeeAmount } into CommissionAndFeesSummary::splitFeeAmount
 }
 ```
-</TabItem>
-</Tabs>
 
 ### logging
 For debugging purposes, the `select` block also supports logging. By default, the Consolidator logs all events with default level **TRACE**, but this can be overwritten with custom messages. To do this, use the `logJoin`, `logLeave` and `logNoop` blocks:
@@ -164,9 +154,6 @@ The syntax of `groupBy` is significantly different for standard Consolidators an
 For object Consolidators, table syntax is more complex, as records need to be loaded and created. Also, the table syntax supports
 index scans, which need to be configured.
 
-<Tabs defaultValue="tables" values={[{ label: 'Tables', value: 'tables', }, { label: 'Classes', value: 'classes', }]}>
-<TabItem value="tables">
-
 The `groupBy`-`into` syntax determines:
 - how records are grouped `groupBy { ... } `
 - how the Consolidator interacts with the database `into { ... }`
@@ -184,9 +171,6 @@ groupBy { /* return group id*/ } into {
 ```
 
 
-</TabItem>
-<TabItem value="classes">
-
 The `groupBy`-`into` syntax determines:
 - how records are grouped `groupBy { ... } `
 - how output records are constructed `into { ... }`
@@ -195,8 +179,6 @@ Syntax:
 ```kotlin
 groupBy { /* return group id*/ } into { /* return new output record */ }
 ```
-</TabItem>
-</Tabs>
 
 ### groupBy
 
@@ -245,9 +227,6 @@ groupBy { OrderSummary.byGroupId("${orderDate.year}-${orderDate.monthOfYear}") }
 
 The `into` statement is different for standard and object Consolidators:
 
-<Tabs defaultValue="tables" values={[{ label: 'Tables', value: 'tables', }, { label: 'Classes', value: 'classes', }]}>
-<TabItem value="tables">
-
 #### lookup
 
 The `lookup` block is optional when grouping by a unique index on the output table. In all other cases, the lookup
@@ -288,9 +267,6 @@ groupBy { Order.ById(orderid) } into {
 }
 ```
 
-</TabItem>
-<TabItem value="classes">
-
 Consolidator objects need to be able to build output objects on demand. There is no need to interact with the
 database at this point.
 
@@ -301,8 +277,6 @@ groupBy { orderId } into {
     }
 }
 ```
-</TabItem>
-</Tabs>
 
 ### where block (optional)
 
@@ -333,22 +307,53 @@ Some consolidations might require periodic reprocessing of data. This will trigg
 
 ## Functions
 
-Functions are the base building blocks of the select statement.
+Functions are the building blocks of the `select` block.
 
-All functions except for for `count` require an input. With `count` input is optional.
-For the required input, use the syntax `sum { feeAmount }`.
-Within the curly brackets of the function, you can access all fields on the row, and you can use any kotlin operation on the row. The function will be applied over the result, unless the result is null, in which case it will be ignored.
+With one exception, all functions require input.
+
+The exception is `count`, which can either have an input or no input.
+
+The syntax for an input to a GPAL function is sum `{ feeAmount }`.
+
+Within the curly brackets of the function, you can access all the fields on a row, and you can use any Kotlin operation on the row. The function will be applied over the result, unless the result is null, in which case it will be ignored.
+
+| Function      | Description                               | Input      | Output        | Index Scan    |
+|:--------------|-------------------------------------------|------------|---------------|---------------|
+| sum           | sums values in the value field            | any number | same as input | never         |
+| count         | counts all records                        | -          | INTEGER       | never         |
+|               | counts records that have a value          | anything   | INTEGER       | never         |
+| countDistinct | counts distinct value values              | anything   | INTEGER       | always        |
+| countBig      | counts all records                        | -          | LONG          | never         |
+|               | counts records that have a value          | any value  | LONG          | never         |
+| avg           | average value                             | any number | same as input | always        |
+| min           | minimum value                             | any number | same as input | sometimes `*` |
+| max           | maximum value                             | any number | same as input | sometimes `*` |
+| stdev         | standard deviation for value              | any number | DOUBLE        | always        |
+| stdevp        | population standard deviation for value   | any number | DOUBLE        | always        |
+| variance      | statistical variance for value            | any number | DOUBLE        | always        |
+| variancep     | population statistical variance for value | any number | DOUBLE        | always        |
+| stringAgg     | string concatenation                      | any string | STRING        | sometimes `+` |
+| checksum      | calculates a hash over the input          | any value  | LONG          | always        |
+
+`*` if previous `min` or `max` value is removed<br />
+`+` if any previous value is changed
 
 ### Function examples
 
-There is a full reference of functions in the [Advanced](../../../server/consolidator/advanced/) page on Consolidators.
+Here are some simple examples of functions:
 
 ```kotlin
 sum { feeAmount }                   // sums the FEE_AMOUNT
 sum { feeAmount + otherAmount }     // sums the total of FEE_AMOUNT plus OTHER_AMOUNT
 sum { feeAmount ?: otherAmount }    // sum FEE_AMOUNT or OTHER_AMOUNT if FEE_AMOUNT is null
+count ()                            // counts the number of records
+count { feeAmount }                 // counts the records with a FEE_AMOUNT
 // etc.
 ```
+
+Note that you can also create [custom functions](../advanced/#custom-functions).
+
+
 ### Assigning functions to fields
 
 After a function is defined, its output can be directed to an output field. To do this, use the `into` keyword.
@@ -356,24 +361,17 @@ Note that functions can only be applied to fields that match in type. For exampl
 to a `DOUBLE` field.
 
 
-<Tabs defaultValue="tables" values={[{ label: 'Tables', value: 'tables', }, { label: 'Classes', value: 'classes', }]}>
-<TabItem value="tables">
-
 ```kotlin
 sum { feeAmount } into FEE_AMOUNT
 sum { originalFeeAmount } into ORIGINAL_FEE_AMOUNT
 sum { splitFeeAmount } into SPLIT_FEE_AMOUNT
 ```
-</TabItem>
-<TabItem value="classes">
 
 ```kotlin
 sum { feeAmount } into Order::feeAmount
 sum { originalFeeAmount } into Order::originalFeeAmount
 sum { splitFeeAmount } into Order::splitFeeAmount
 ```
-</TabItem>
-</Tabs>
 
 ### Transformations on functions
 
@@ -482,5 +480,3 @@ consolidators {
 }
 }
 ```
-
-

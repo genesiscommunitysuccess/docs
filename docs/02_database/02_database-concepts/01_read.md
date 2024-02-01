@@ -11,7 +11,7 @@ tags:
 
 
 
-Genesis supports a number of different read operations. Although the specifics vary between the different [interfaces](../../../database/types-of-api/types-of-api/), the underlying principles remain the same. This page explains these principles, without going into specific calls.
+Genesis supports a number of different read operations. Although the specifics vary between the different [interfaces](../../02_database/07_types-of-api/00_index.md), the underlying principles remain the same. This page explains these principles, without going into specific calls.
 
 Fields[​](../../../database/database-concepts/read/#fieldsdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------

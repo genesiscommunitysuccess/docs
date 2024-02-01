@@ -4,11 +4,11 @@ sidebar_label: 'Loading feed data'
 id: overview
 keywords: [getting started, quick start, use cases, loading feed data, overview]
 tags:
-    - getting started
-    - quick start
-    - use cases
-    - loading feed data
-    - overview
+- getting started
+- quick start
+- use cases
+- loading feed data
+- overview
 ---
 Some feeds provide static sets of data that you can download for processing by your application. A good example is traded data from an exchange. This exercise shows you the key points for loading these data files. In this case, we shall use Bloomberg issuance data. We shall load this, parse it to reformat it to Genesis format, then place it in a staging table in a Genesis application. Once it is in the staging table, the data can be passed to other tables within the application.
 
@@ -16,7 +16,7 @@ Some feeds provide static sets of data that you can download for processing by y
 This guide is intended for:
 - users who already have experience of creating a Genesis application
 - users with a working knowledge of [Camel](../../../01_getting-started/07_glossary/01_glossary.md#camel-apache-camel)
-:::
+  :::
 
 
 ## Prerequisites ##
@@ -56,7 +56,7 @@ GBP3M=135000,S,13387,150121
 ### A real example
 Reality is rarely that convenient. For this example, the incoming data is issuance data from Bloomberg, and its format is considerably more complex.
 
-Here is an [example of the data](../../../01_getting-started/05_advanced-learning/03-loading-feed-data/03_example-source-data.md/) you can download from the Bloomberg Issuance feed.
+Here is an [example of the data](./03_example-source-data.md) you can download from the Bloomberg Issuance feed.
 
 Once you know this format, you need to create code that maps the fields so that they can be written to a table in your application.
 
@@ -114,157 +114,203 @@ drwxrwxr-x. 3 briss briss 4096 Nov 11 14:10 ..
 ```
 ## Creating the Event Handler
 
+To handle the incoming content from Bloomberg, create an `eventHandler` called `ISSUANCE_EVENT_HANDLER`, and a newly created event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`.  (By the way, there is nothing stopping you from having multiple processors generating the same event to be handled by a single `eventHandler`.)
 
-To handle the incoming content from Bloomberg, create an Event Handler called `ISSUANCE_EVENT_HANDLER`, and a newly created event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`.  (By the way, there is nothing stopping you from having multiple processors generating the same event to be handled by a single Event Handler.)
+Bloomberg has a very specific file structure. It would be possible to perform all the initial parsing with a specialized process and generate processed fields and data. However, in our example we use a basic **FileEventHandlerProcessor**. The parsing and formatting of the data is performed by a BBG-specific `eventHandler` (event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`).
 
-Bloomberg has a very specific file structure. It would be possible to perform all the initial parsing with a specialized process and generate processed fields and data. However, in our example we use a basic **FileEventHandlerProcessor**. The parsing and formatting of the data is performed by a BBG-specific Event Handler (event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`).
+An `eventHandler` handles a specific single event. In this case, it implements the **Rx3ValidatingEventHandler** interface.
 
+Each `eventHandler` specifies its message metadata and payload using type-safe classes. In this case, we know the input message from the Camel process will contain two string fields: "FILE" and "FILE_NAME". To allow our `eventHandler` to parse these fields automatically, you could declare a Kotlin data class like the one shown below:
 
-An Event Handler handles a specific single event. In this case, the Event Handler inherits from the **AbstractEventHandler** class.
+```kotlin
+data class BbgIssuanceFileImport(
+    val file: String,
+    val fileName: String
+)
+```
 
-```java
+So the core class definition would look like the example below:
+
+```kotlin
 @Module
-public class BbgIssuanceFileImport extends AbstractEventHandler {
+class BbgIssuanceFileImportEvent @Inject constructor(
+    private val bbgFileImportReaderProvider: BbgFileImportReaderProvider,
+    private val entityDb: RxEntityDb
+) : Rx3ValidatingEventHandler<BbgIssuanceFileImport, EventReply> {
 ```
-In the Event Handler, there are two code blocks that you need to specify:
-- `onValidate`. This is where you validate the message before processing; return an **ACK** or **NAK**. If you do not want to add any validation, simply return an **ACK**.
-- `onCommit`. This is where you specify the parsing that converts the raw data to Genesis format and sends it to a staging table for use in the application.
-  You also need to define a construct that passes the details to the parent class. This must identify the `EventManager`, the `EventType`, and `MetaData`, as well as any additional modules that are required to perform the work, such as a data table repository.
-  In the following example, we have left the metadata empty (this has to be passed).
-```java
-public BbgIssuanceFileImport(final EventManager eventManager,
-                             final IssuanceDataRx3Repository issuanceDataRx3Repository) {
-    super(eventManager, EVENT_NAME, getMetaData());
-    this.eventManager = eventManager;
-    this.issuanceDataRx3Repository = issuanceDataRx3Repository;
+
+In the `eventHandler`, there are two code blocks that you need to specify:
+- `onValidate`. This is where you validate the message before processing; return an `ack()` or `nack()`. If you do not want to add any validation, simply return an `ack()`.
+- `onCommit`. This is where you specify the parsing that converts the raw data (defined as a collection of key-value pairs in the shape of a `Map<String,String>`) to Genesis format, and then sends it to a staging table for use in the application.
+
+You also need to define any additional methods required to provide additional details about this `eventHandler`. For example, if the name of the `eventHandler` doesn't match the name of the class, you need to provide a `messageType()`. 
+
+You can also add any additional modules that are required to perform the work via dependency injection, such as the `RxEntityDb` and the `BbgFileImportReaderProvider`, which is a utility class created to provide reading utilities for handling Bloomberg issuance files.
+
+In the following example, you can see a basic implementation overriding the message type and returning ack for both `onValidate` and `onCommit` functions.
+  
+```kotlin
+@Module
+class BbgIssuanceFileImportEvent @Inject constructor(
+    private val bbgFileImportReaderProvider: BbgFileImportReaderProvider,
+    private val entityDb: RxEntityDb
+) : Rx3ValidatingEventHandler<BbgIssuanceFileImport, EventReply> {
+    companion object {
+        private val LOG = LoggerFactory.getLogger(BbgIssuanceFileImport::class.java)
+    }
+
+    override fun onValidate(message: Event<BbgIssuanceFileImport>): Single<EventReply> {
+        return ack()
+    }
+
+    override fun onCommit(message: Event<BbgIssuanceFileImport>): Single<EventReply> {
+        return ack()
+    }
+
+    override fun messageType(): String = "FILE_IMPORT_BBG_ISSUANCE"
 }
 ```
+
 :::note
-Annotations of @Module and @Inject are required for Genesis Dependency Injection and Inversion of Control patterns. The @Module will be loaded at runtime, and the dependencies are injected into the BbgInsuranceFileImport Event Handler. In this case, the dependencies are EventManager, and IssuanceDataRx3Repository, which is being used to insert the data into the **ISSUANCE_DATA** table.
+Annotations of @Module and @Inject are required for Genesis Dependency Injection and Inversion of Control patterns. The @Module will be loaded at runtime, and the dependencies are injected into the BbgIssuanceFileImport `eventHandler`. In this case, the dependency is just RxEntityDb, which is being used to insert the data into the **ISSUANCE_DATA** table.
 :::
-If you don’t want to perform any validation, then you can set up the **onValidate** block to ensure that the event manager returns an ACK in every case.
-```java
-@Override
-public void onValidate(Message message, boolean b) {
-    eventManager.sendAck(message);
-}
-```
-All the work is performed in the `onCommit` block. The details can be found with the message. This contains the GenesisSet to get message details.
-For this handler, we are interested in the `DETAILS.FILE` property of the GenesisSet, which is the content of the file as a string.
+
+All the work is performed in the `onCommit` block. The details can be found within the event message. This contains the `Map<String, String>` object specified as part of the class definition to get the message details.
+For this handler, we are interested in the `FILE` property of the `Map`, which is the content of the file as a string.
+
 - Here we split it by any end-of-line (EOLN) convention and then use a helper `BbgFileImportReader` class to parse the complex BBG structure and generate a list of fields and data elements.
 - Each data row then calls the mapRow method to convert them one at a time into the `IssuanceData` object, and add them to a collection.
 - Any exceptions are caught and added to an error list, which will be logged.
 - A final NACK is issued if any errors are found.
 - If there are no exceptions, then the `IssuanceData` elements generated are inserted into the ISSUANCE_DATA table using the associated repository.
-```java
-@Override
-public void onCommit(final Message message, boolean b) {
-    LOG.info("New file received");
-    final GenesisSet details = message.getGenesisSet().getGenesisSet(DETAILS);
-    assert details != null;
-    final String fileName = details.getString("FILE_NAME");
-    final List<IssuanceData> issuanceList = new ArrayList<>();
-    final List<String> errorMessages = new ArrayList<>();
-    final List<String> headers = new ArrayList<>();
-    boolean fileHasErrors = false;
-    final String[] lines =
-            Objects.requireNonNull(message.getGenesisSet().getString("DETAILS.FILE")).split("\r\n|\r|\n");
+ 
+```kotlin
+override fun onCommit(message: Event<BbgIssuanceFileImport>): Single<EventReply> {
+    LOG.info("New file received")
+    val details: Map<String, String> = message.details
+    val fileName = details.fileName
+    val issuanceList = mutableListOf<IssuanceData>()
+    val errorMessages = mutableListOf<String?>()
+    var fileHasErrors = false
+    val lines = details.file.split("\r\n|\r|\n")
     try {
-        final BbgFileImportReader reader = BbgFileImportReader.instance(fileName, lines);
-        final int rowCount = reader.getRowCount();
-        for (int i = 0; i < rowCount; i++) {
-            LOG.debug("line number {}", i);
+        val reader = bbgFileImportReaderProvider.readerInstance(fileName, lines)
+        val rowCount: Int = reader.getRowCount()
+        for (i in 0 until rowCount) {
+            LOG.debug("line number {}", i)
             try {
-                issuanceList.add(mapRow(reader, i));
-            } catch (ParseException ex) {
-                errorMessages.add(ex.getMessage());
-                LOG.error("Encountered an error processing row {}", i, ex);
-                fileHasErrors = true;
+                issuanceList.add(mapRow(reader, i))
+            } catch (ex: ParseException) {
+                errorMessages.add(ex.message)
+                LOG.error("Encountered an error processing row {}", i, ex)
+                fileHasErrors = true
             }
         }
-    } catch (ParseException | IOException ex) {
-        LOG.error("Unable to process the file: " + fileName, ex);
-        errorMessages.add(ex.getMessage());
-        fileHasErrors = true;
+    } catch (ex: ParseException) {
+        LOG.error("Unable to process the file: $fileName", ex)
+        errorMessages.add(ex.message)
+        fileHasErrors = true
+    } catch (ex: IOException) {
+        LOG.error("Unable to process the file: $fileName", ex)
+        errorMessages.add(ex.message)
+        fileHasErrors = true
     }
+
     //We don't update anything in DB if there's a single error
     if (fileHasErrors) {
-        LOG.error("There were errors detected in the file. Not loading any rows.\n\nErrors :\n\n{}", String.join("\n", errorMessages));
-        eventManager.handleError(
-                new SetProblem("ERRORS_IN_FILE", "Rejecting file as it contained one or more errors. See process logs for details"),
-                message);
+        LOG.error(
+            "There were errors detected in the file. Not loading any rows.\n\nErrors :\n\n{}",
+            errorMessages.joinToString(separator = "\n")
+        )
+        return Single.just(
+            EventReply.EventNack(
+                error = listOf(
+                    StandardError(
+                        code = "ERRORS_IN_FILE",
+                        text = "Rejecting file as it contained one or more errors. See process logs for details"
+                    )
+                )
+            )
+        )
     } else {
-        WriteResult writeResult = issuanceDataRx3Repository.insertAll(issuanceList).blockingGet();
-        if (writeResult.isError()) {
-            eventManager.handleError(
-                    new SetProblem("ERRORS_IN_FILE", "Rejecting file as one or more errors saving to database. See process logs for details"),
-                    message);
-        } else {
-            LOG.info("{} Records successfully inserted for provided data ", issuanceList.size());
-            eventManager.sendAck(message);
-        }
+        return entityDb.insertAll(issuanceList)
+            .flatMap {
+                ack()
+            }
+            .onErrorReturn { exception ->
+                LOG.error("Error inserting issuance records in database: {}", issuanceList, exception)
+                EventReply.EventNack(
+                    error = listOf(
+                        StandardError(
+                            errorCode = ErrorCode.DATABASE_ERROR,
+                            text = "Database error when inserting issuance records. See logs for more details."
+                        )
+                    )
+                )
+            }
+            .doOnSuccess {
+                LOG.info("{} Records successfully inserted for provided data ", issuanceList.size)
+            }
     }
 }
 ```
-Other examples of event handlers that load files probably have a different **onCommit** block. For example, the **CSVEventHandlerProcessor** processor discussed in the configuration section has already performed part of the processing, so within the GenesisSet there is a DETAILS.ROW that is a collection of rows, each being a GenesisSet (field/value pairs). For this reason, the **for** loops look something like this:
-```java
-for (GenesisSet row : Objects.requireNonNull(Objects.requireNonNull(details).getArray("ROW", GenesisSet.class))) {
+Other examples of `eventHandler` that load files probably have a different **onCommit** block. For example, the **CSVEventHandlerProcessor** processor discussed in the configuration section has already performed part of the processing, so within the GenesisSet there is a DETAILS.ROW that is a collection of rows, each being a GenesisSet (field/value pairs).
+In that case, a different message class needs to be defined:
+
+```kotlin
+data class BbgIssuanceFileImport(
+    val file: String,
+    val fileName: String,
+    val row: List<Map<String, String>> = emptyList()
+)
 ```
+
+For this reason, the **for** loops would look something like this:
+```kotlin
+for (val currentRow in details.row) {
+```
+
 ## Testing
-It is wise to create some tests around the Event Handler.
+It is wise to create some tests around the `eventHandler`.
 ### Unit Tests
-Due to the complexity of the Bloomberg feed, we create unit tests around the parsing of the feed file (the `BbgFileImportReader` class). Again, we use the `onCommit` block of the `BbgIssuanceFileImport` class.
-```java
+Due to the complexity of the Bloomberg feed, we should create unit tests around the parsing of the feed file (the `BbgFileImportReader` class). But separately, we can also create unit tests for this event.
+
+In order to test the event, we use the `onCommit` block of the `BbgIssuanceFileImportEvent` class as well as **Mockito** to mock object behaviour.
+
+```kotlin
 @Test
-    @SuppressWarnings("unchecked")
-    public void testPrelOnCommitSuccess() throws IOException {
-        EventManager eventManager = Mockito.mock(EventManager.class);
-        IssuanceDataRx3Repository issuanceDataRx3Repository = Mockito.mock(IssuanceDataRx3Repository.class);
-        IssuanceKeyMapRx3Repository issuanceKeyMapRx3Repository = Mockito.mock(IssuanceKeyMapRx3Repository.class);
-        DatatypeMapRx3Repository datatypeMapRx3Repository = Mockito.mock(DatatypeMapRx3Repository.class);
-        Mockito.when(issuanceKeyMapRx3Repository.getByIssuanceDataKey(Mockito.any(String.class))).thenReturn(Maybe.empty());
-        Mockito.when(datatypeMapRx3Repository.getRangeByDatasourceIdDatasourceFieldDatasourceFromValue("BBG")).thenReturn(Flowable.empty());
-        BbgIssuanceFileImport processor =
-                new BbgIssuanceFileImport(eventManager, issuanceDataRx3Repository, issuanceKeyMapRx3Repository, datatypeMapRx3Repository);
-        Message message = Mockito.mock(Message.class);
-        GenesisSet genesisSet = Mockito.mock(GenesisSet.class);
-        GenesisSet detailsGenesisSet = Mockito.mock(GenesisSet.class);
-        Mockito.when(message.getGenesisSet()).thenReturn(genesisSet);
-        Mockito.when(genesisSet.getGenesisSet(DETAILS)).thenReturn(detailsGenesisSet);
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(Objects.requireNonNull(classLoader.getResource("inbound/PREL_sample.out.20211021")).getFile());
-        String content = Files.readString(file.toPath(), StandardCharsets.UTF_8);
-        Mockito.when(detailsGenesisSet.getString("FILE_NAME")).thenReturn(file.toString());
-        Mockito.when(genesisSet.getString("DETAILS.FILE")).thenReturn(content);
-        WriteResult writeResult = Mockito.mock(WriteResult.class);
-        Single<WriteResult> singleWriteResult = Mockito.mock(Single.class);
-        Mockito.when(writeResult.isError()).thenReturn(false);
-        Mockito.when(singleWriteResult.blockingGet()).thenReturn(writeResult);
-        Mockito.when(issuanceDataRx3Repository.insertAll(Mockito.any(List.class))).thenReturn(singleWriteResult);
-        ArgumentCaptor<List<IssuanceData>> captor = ArgumentCaptor.forClass(List.class);
-        processor.onCommit(message, false);
-        Mockito.verify(issuanceDataRx3Repository).insertAll(captor.capture());
-        List<IssuanceData> issuanceDataLists = captor.getValue();
-        Assertions.assertEquals(426, issuanceDataLists.size());
-        IssuanceData issuanceData0 = issuanceDataLists.get(0);
-        IssuanceData issuanceDataN = issuanceDataLists.get(issuanceDataLists.size() - 1);
-        Assertions.assertEquals("SDIPRO 1e-06 12/31/24 1001", issuanceData0.getIssuanceDataKey());
-        Assertions.assertEquals("TWD", issuanceData0.getCurrencyCode());
-        Assertions.assertNull(issuanceData0.getMaturityDate());
-        Assertions.assertTrue(Objects.requireNonNull(issuanceData0.getMessageUrl()).endsWith("PREL_sample.out.20211021#123"));
-        //Assertions.assertEquals("file://C:\\Workspace\\briss-server\\primary-issuance-event-handler\\target\\test-classes\\inbound\\PREL_sample.out.20211021#123", issuanceData0.getMessageUrl());
-        Assertions.assertEquals("MINEMK 0 12/31/26 ICPS", issuanceDataN.getIssuanceDataKey());
-        Assertions.assertEquals( new DateTime(2026,12, 31, 0, 0), issuanceDataN.getMaturityDate());
-        Assertions.assertEquals("file://PREL_sample.out.20211021#562", issuanceDataN.getMessageUrl());
-        Mockito.verify(eventManager, Mockito.times(1)).sendAck(Mockito.any(Message.class));
-    }Collapse
+fun testPrelOnCommitSuccess() {
+    val rxEntityDb = Mockito.mock(RxEntityDb::class.java)
+    val bbgFileImportReaderProvider = Mockito.mock(BbgFileImportReaderProvider::class.java)
+    val bbgFileImportReader = Mockito.mock(BbgFileImportReader::class.java)
+    Mockito.`when`(bbgFileImportReader.getRowCount()).thenReturn(1)
+    val issuanceData = Mockito.mock(IssuanceData::class.java)
+    Mockito.`when`(bbgFileImportReader.mapRow(ArgumentMatchers.anyInt())).thenReturn(issuanceData)
+    Mockito.`when`(bbgFileImportReaderProvider.readerInstance(any(), any())).thenReturn(bbgFileImportReader)
+    val insertResult = Mockito.mock(InsertResult::class.java) as InsertResult<IssuanceData>
+    Mockito.`when`(rxEntityDb.insertAll(any<List<IssuanceData>>())).thenReturn(Single.just(listOf(insertResult)))
+    val processor = BbgIssuanceFileImportEvent(bbgFileImportReaderProvider, rxEntityDb)
+    val result = processor.onCommit(
+        Event(
+            details = BbgIssuanceFileImport(
+                fileName = "PREL_sample.out.20211021",
+                file = ""
+            )
+        )
+    ).blockingGet()
+    Assertions.assertTrue(result is EventReply.EventAck)
+}
 ```
 ### Troubleshooting
 Once you have deployed the new build, if it does not work first time, here is a check list to help identify common mistakes:
+
 -	On start-up, look at the **Logs** directory for errors in **ISSUANCE_CAMEL.log** and **ISSUANCE_EVENT_HANDLER.log**.
 -	Check that the Camel log has registered your route.
 -	Check in the Event Handler log file that your new event has been registered.
--	Drop a test file into the staging directory and see the logs consume the file in the Camel log and log the contents with the Event Handler logs. In the BBG example below, the handler log shows the file contents and then an NACK error. In this example, we can see **^M** characters are causing parse failures on dates. Copying between email attachments and downloads, DOS and LINUX copies, we have introduced a EOLN issue on split-line file contents.
+-	Drop a test file into the staging directory and see the logs consume the file in the Camel log and log the contents with the Event Handler logs. In the BBG example below, the handler log shows the file contents and then an NACK error.
+
+In this example, we can see **^M** characters are causing parse failures on dates. Copying between email attachments and downloads, DOS and LINUX copies, we have introduced a EOLN issue on split-line file contents.
+
 ```bash
 |60.71| |N.S.|200000000.00|;2;3;3;13;200000.00;1; ;5;10/21/2021;13;150000.00;1; ;5;10/21/2021;13;100000.00;1; ;5;10/21/2021;|N.D.| |MIDSWAPS|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|^M
 END-OF-DATA^M
@@ -280,5 +326,5 @@ SOURCE_REF = 1
 SOURCE_REF = 1
 ```
 -	Finally, use DbMon to check the related staging table in the DATA_SERVER for the relevant rows – in this case, the ISSUANCE_DATA table.
-## Conclusion ##
+## Conclusion 
 That's it. You've seen how files can be fetched, parsed and placed on a staging table in an application.

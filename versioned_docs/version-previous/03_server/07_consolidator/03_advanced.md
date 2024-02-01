@@ -63,51 +63,6 @@ Below is an example where we have declared two `consolidator` blocks. Each has `
     }
 ```	
 
-## Select statement: standard functions
-
-In this section, we look in more detail at the functions that are the building blocks of the select statement in a `Consolidator` specification.
-
-With one exception, all functions require input. 
-
-The exception is `count`, which can either have an input or no input.
-
-The syntax for an input to a GPAL function is `sum { feeAmount }`
-
-Within the curly brackets of the function, you can access all the fields on a row, and you can use any Kotlin operation on the row. The function will be applied over the result, unless the result is null, in which case it will be ignored.
-
-
-| Function      | Description                               | Input      | Output        | Index Scan    |
-|:--------------|-------------------------------------------|------------|---------------|---------------|
-| sum           | sums values in the value field            | any number | same as input | never         |
-| count         | counts all records                        | -          | INTEGER       | never         |
-|               | counts records that have a value          | anything   | INTEGER       | never         |
-| countDistinct | counts distinct value values              | anything   | INTEGER       | always        |
-| countBig      | counts all records                        | -          | LONG          | never         |
-|               | counts records that have a value          | any value  | LONG          | never         |
-| avg           | average value                             | any number | same as input | always        |
-| min           | minimum value                             | any number | same as input | sometimes `*` |
-| max           | maximum value                             | any number | same as input | sometimes `*` |
-| stdev         | standard deviation for value              | any number | DOUBLE        | always        |
-| stdevp        | population standard deviation for value   | any number | DOUBLE        | always        |
-| variance      | statistical variance for value            | any number | DOUBLE        | always        |
-| variancep     | population statistical variance for value | any number | DOUBLE        | always        |
-| stringAgg     | string concatenation                      | any string | STRING        | sometimes `+` |
-| checksum      | calculates a hash over the input          | any value  | LONG          | always        |
-
-`*` if previous min or max value is removed<br />
-`+` if previous any value is changed
-
-### Example
-
-```kotlin
-sum { feeAmount }                   // sums the FEE_AMOUNT
-sum { feeAmount + otherAmount }     // sums the total of FEE_AMOUNT plus OTHER_AMOUNT
-sum { feeAmount ?: otherAmount }    // sum FEE_AMOUNT or OTHER_AMOUNT if FEE_AMOUNT is null
-count ()                            // counts the number of records
-count { feeAmount }                 // counts the records with a FEE_AMOUNT
-// etc.
-```
-
 ## Custom functions
 
 Consolidators also support custom functions that allow you to specify behaviour for join, leave and noop

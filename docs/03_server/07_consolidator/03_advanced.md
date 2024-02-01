@@ -11,7 +11,7 @@ tags:
 ---
 
 ## Consolidator groups
-Consolidator groups are essential if you are using a non-transaction database (such as Aerospike).
+Consolidator groups are essential if you are using a non-transaction database.
 
 `groupName` identifies a group of Consolidators. 
 
@@ -21,7 +21,7 @@ groupName = "_name_"
 
 If you include this statement in your `consolidator` block, then the Consolidator will belong to the named group.
 
-In a non-transaction database (for example, Aerospike), a group is designed to offer consistent consolidation in the absence of ACID guarantees at the database level. Consolidators in the same group will not interfere with each other's calculations as they update - particularly where they output to the same table. 
+In a non-transaction database, a group is designed to offer consistent consolidation in the absence of ACID guarantees at the database level. Consolidators in the same group will not interfere with each other's calculations as they update - particularly where they output to the same table. 
 
 :::note 
 This is limited to Consolidator updates within a group in a single process. Updates in other groups, other processes or other nodes could still interfere. You must plan this carefully.
@@ -62,51 +62,6 @@ Below is an example where we have declared two `consolidator` blocks. Each has `
         groupBy { OrderSummary.byGroupId("${orderDate.year}-${orderDate.monthOfYear}") }
     }
 ```	
-
-## Select statement: standard functions
-
-In this section, we look in more detail at the functions that are the building blocks of the select statement in a `Consolidator` specification.
-
-With one exception, all functions require input. 
-
-The exception is `count`, which can either have an input or no input.
-
-The syntax for an input to a GPAL function is `sum { feeAmount }`
-
-Within the curly brackets of the function, you can access all the fields on a row, and you can use any Kotlin operation on the row. The function will be applied over the result, unless the result is null, in which case it will be ignored.
-
-
-| Function      | Description                               | Input      | Output        | Index Scan    |
-|:--------------|-------------------------------------------|------------|---------------|---------------|
-| sum           | sums values in the value field            | any number | same as input | never         |
-| count         | counts all records                        | -          | INTEGER       | never         |
-|               | counts records that have a value          | anything   | INTEGER       | never         |
-| countDistinct | counts distinct value values              | anything   | INTEGER       | always        |
-| countBig      | counts all records                        | -          | LONG          | never         |
-|               | counts records that have a value          | any value  | LONG          | never         |
-| avg           | average value                             | any number | same as input | always        |
-| min           | minimum value                             | any number | same as input | sometimes `*` |
-| max           | maximum value                             | any number | same as input | sometimes `*` |
-| stdev         | standard deviation for value              | any number | DOUBLE        | always        |
-| stdevp        | population standard deviation for value   | any number | DOUBLE        | always        |
-| variance      | statistical variance for value            | any number | DOUBLE        | always        |
-| variancep     | population statistical variance for value | any number | DOUBLE        | always        |
-| stringAgg     | string concatenation                      | any string | STRING        | sometimes `+` |
-| checksum      | calculates a hash over the input          | any value  | LONG          | always        |
-
-`*` if previous min or max value is removed<br />
-`+` if previous any value is changed
-
-### Example
-
-```kotlin
-sum { feeAmount }                   // sums the FEE_AMOUNT
-sum { feeAmount + otherAmount }     // sums the total of FEE_AMOUNT plus OTHER_AMOUNT
-sum { feeAmount ?: otherAmount }    // sum FEE_AMOUNT or OTHER_AMOUNT if FEE_AMOUNT is null
-count ()                            // counts the number of records
-count { feeAmount }                 // counts the records with a FEE_AMOUNT
-// etc.
-```
 
 ## Custom functions
 

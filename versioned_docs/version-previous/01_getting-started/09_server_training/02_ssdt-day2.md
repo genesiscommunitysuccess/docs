@@ -18,42 +18,25 @@ This day covers:
 
 ## Notify
 
-The Genesis platform has a notification module named by default *GENESIS_NOTIFY*. It does not run by default. To change this, we are adding a customised module to our project. 
+The Genesis platform includes a notification module called *GENESIS_NOTIFY* by default. It does not run automatically and, starting from GSF version 6.6.x, there is a package available for it: `genesis-notify`.
 
-To do that, create a process called `ALPHA_NOTIFY` and add it to the file **alpha-processes.xml** in your project folder **server/jvm/alpha-config/src/main/resources/cfg**, using the code below.
+As you have already cloned the Server Developer Training starting repository from [here](https://github.com/genesiscommunitysuccess/servertraining-seed), you have everything you need to run it.
 
-```xml {3-12}
-<processes>
-    ...
-    <process name="ALPHA_NOTIFY">
-        <start>true</start>
-        <groupId>ALPHA</groupId>
-        <options>-Xmx128m -DXSD_VALIDATE=false</options>
-        <module>genesis-notify</module>
-        <package>global.genesis.notify</package>
-        <script>genesis-notify.kts</script>
-        <language>pal</language>
-        <description>Notify Mechanism for sending messages to external systems, such as Email and Symphony</description>
-    </process>
-</processes>
-```
-Add the `ALPHA_EVALUATOR` to the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** using the code below. 
+The manual steps to use the `genesis-notify` package are not difficult: 
 
-```xml {3}
-<configuration>
-    ...
-    <service host="localhost" name="ALPHA_NOTIFY" port="11005"/>
-</configuration>
-```
+1. Add a reference to your *server/jvm/alpha-dictionary-cache* **build.gradle.kts** file, such as [this](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/alpha-dictionary-cache/build.gradle.kts#L11).
 
-Run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) tasks to verify that the new process works as expected.
+2. Add a reference to your *server/jvm/alpha-deploy* **build.gradle.kts** file, like [this](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/alpha-deploy/build.gradle.kts#L27).
 
-Run `mon`.
-You should be able to see the process is present.
-![](/img/standbysmall-alpha-notify.png)
+3. Finally, include a variable indicating the `genesis-notify` version, as demonstrated [here](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/gradle.properties#L7).
+
+Now you can run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) tasks to verify that the new process works as expected.
+
+You can then run `mon`.
+
+As we are building using the `genesisInstall` command with the `--compactProcesses` option, the *GENESIS_NOTIFY* process will be running under *GENESIS_COMPACT_PROCESS*.
 
 ### Set up GENESIS_NOTIFY in the database
-
 
 Create a file GATEWAY.csv as shown below and insert it in the table GATEWAY using the command `SendIt`.
 
@@ -95,13 +78,12 @@ Run [build and deploy](../../../getting-started/developer-training/training-cont
 
 ### Switch on data dumps
 
-Data dumps need to be switched on for both EVALUATOR and NOTIFY so we can see some additional data in the logs.
+Data dumps need to be switched on for EVALUATOR so we can see some additional data in the logs.
 
 Run the [LogLevel](../../../operations/commands/server-commands/#loglevel-script) command to do this:
 
 ```shell
 LogLevel -p ALPHA_EVALUATOR -DATADUMP_ON -l DEBUG
-LogLevel -p ALPHA_NOTIFY -DATADUMP_ON -l DEBUG
 ```
 
 And then to see the logs run:
@@ -187,7 +169,7 @@ joining(INSTRUMENT, JoinType.INNER) {
 
 
 #### Dictionary-joined tables
-When tables are joined in the dictionary, you are able to join to those tables in views directly, without having to specify the fields on which to join. This does not currently work with aliased tables.
+When tables are joined in the dictionary, for example, when you create a subtable in the tables definition, you are able to join to those tables in views directly, without having to specify the fields on which to join. This does not currently work with aliased tables.
 
 Joining on fields:
 
@@ -225,56 +207,6 @@ view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
 ```
 
 So for the above, if we had a Request Server using the view, it would make `ALTERNATE_TYPE` available as a field input parameter.
-
-### Dynamic joins
-These have a shared syntax with derived fields. However, rather than specifying a field name and type, the view should always return an entity index type of the table you’re joining on.
-
-As with derived fields, you can use the `withEntity` and the `withInput` syntax. However, the lambda should always return an entity index object or null. Also, it should always return the same type. It is not possible to switch dynamically between indices, so it should always return the same type or null. It is possible to add further `and` clauses afterwards.
-
-#### Examples
-
-##### Example 1
-Before:
-```kotlin
-joining(fix, backwardsJoin = true) {
-   on(TRADE_TO_SIDE { FIX_ID } to fix { SIDE_ID })
-      .and(fix { SIDE_TYPE } to SideType.FIX)
-      .joining(fixCal, JoinType.INNER, backwardsJoin = true) {
-        on(fix { CALENDAR_ID } to fixCal { CALENDAR_ID })
-      }
-```
-After:
-```kotlin
-joining(fix, backwardsJoin = true) {
-   on {
-      withEntity(TRADE_TO_SIDE) { tradeToSide ->
-        TradeSide.BySideId(tradeToSide.fixId)
-      }
-   }
-   .and(fix { SIDE_TYPE } to SideType.FIX)
-   .joining(fixCal, JoinType.INNER, backwardsJoin = true)
-```
-
-##### Example 2
-Before:
-```kotlin
-joining(fixCal, JoinType.INNER, backwardsJoin = true) {
-    on(fix { CALENDAR_ID } to fixCal { CALENDAR_ID })
-}
-```
-After:
-```kotlin
-.joining(fixCal, JoinType.INNER, backwardsJoin = true) {
-   on {
-      withInput(fix { CALENDAR_ID }) { calendarId ->
-         when (calendarId) {
-            null -> null
-            else -> TradeCalendar.ByCalendarId(calendarId)
-         }
-      }
-   }
-}
-```
 
 ### Exercise 2.2 Changing TRADE_VIEW JOINs
 
