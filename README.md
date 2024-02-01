@@ -42,7 +42,7 @@ If you prefer to run a local build only, we recommend using `npm run build-main`
 npm run build-main
 ```
 
-This command generates static content into the **build** directory.
+Both commands generate static content into the **build** directory.
 
 ### Clear
 
