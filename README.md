@@ -32,12 +32,12 @@ This command starts a local development server and opens a browser window. Most 
 
 ### Build
 
-Full build you can run `npm run build`
+For a complete build, execute `npm run build`:
 ```
 npm run build
 ```
 
-If you just want to run a local build, we do recomend `npm run build-main`
+If you prefer to run a local build only, we recommend using `npm run build-main`:
 ```
 npm run build-main
 ```
