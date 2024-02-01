@@ -32,8 +32,14 @@ This command starts a local development server and opens a browser window. Most 
 
 ### Build
 
+Full build you can run `npm run build`
 ```
 npm run build
+```
+
+If you just want to run a local build, we do recomend `npm run build-main`
+```
+npm run build-main
 ```
 
 This command generates static content into the **build** directory.
