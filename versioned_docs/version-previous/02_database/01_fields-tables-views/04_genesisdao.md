@@ -48,6 +48,19 @@ Each of the following has a sub-menu that takes you to the `assemble` build task
 |HFT|`genesis-generated-hft`|
 |Views|`genesis-generated-view`|
 
+### Bundling generated code with product distribution
+
+The generated code can also be bundled with the product distribution. This will shorten the deployment time as this allows
+remap to skip the code generation step.
+
+To bundle the generated code with the product distribution, the following gradle property must be set to true when you build the distribution:
+
+```properties
+bundleGeneratedCode=true
+```
+
+In addition to this, you must also set the "DEPLOYED_PRODUCT" System Definition property. You can read more about that [here](../../../server/configuring-runtime/system-definitions/#items-defined).
+
 ### Troubleshooting
 
 #### Gradle build errors in project and no gradle commands listed in IntelliJ 
