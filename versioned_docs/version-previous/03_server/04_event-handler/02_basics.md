@@ -223,12 +223,12 @@ Because the example creates a validation context, the function `validationAck()`
 
 There are two ways of handling a delete event:
 
+- you can use an index entity as metadata
 - you can create a separate class
-- you can use a key set as metadata
 
-Using the key reference (key set) reduces code and is also more robust in case of changes to the fields in the key.
+Using the index entity reduces code and is also more robust in case of changes to the fields in the key.
 
-Here is an example of using a key set to handle a delete event:
+Here is an example of using an index entity to handle a delete event:
 
 ```kotlin
 eventHandler<Trade.ById>(name = "TRADE_DELETE") {
