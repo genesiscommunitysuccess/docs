@@ -59,7 +59,7 @@ To bundle the generated code with the product distribution, the following gradle
 bundleGeneratedCode=true
 ```
 
-In addition to this, you must also set the "DEPLOY_PRODUCT" System Definition property. You can read more about that [here](../../../server/configuring-runtime/system-definitions/#items-defined).
+In addition to this, you must also set the "DEPLOYED_PRODUCT" System Definition property. You can read more about that [here](../../../server/configuring-runtime/system-definitions/#items-defined).
 
 ### Troubleshooting
 
