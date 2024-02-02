@@ -79,19 +79,20 @@ To copy data from a Genesis database, use the `DumpIt` command.
 
 ### Syntax
 The `DumpIt` command can take the following arguments:
+<!-- The DumpIt command has an exaustive list of arguments -a -f -fields -h -s -t -cem -fm -qi -where all described below -->
 
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
-| -a       | --all              | no        | exports all tables to csv                              | none              | none    |
-| -f       | --file `<arg>`     | no        | name of the csv file where table is exported           | none              | none    |
-|          | -fields `<arg>`    | no        | space separated field list e.g. "FIRST_NAME LAST_NAME" | none              | none    |
-| -h       | --help             | no        | show help on how to use the command                    | none              | none    |
-| -s       | --sql `<arg>`      | no        | name of the sql file to export the table to            | none              | none    |
-| -t       | --table `<arg>`    | no        | the name of the table to export to csv                 | none              | none    |
-| -cem     | --criteriaEvaluatorMode `<arg>` | no        | the type of criteria evaluator to be used | TYPE_AWARE or LEGACY | LEGACY |
-| -fm      | --formatMode `<arg>`     | no        | indicates whether field formats should be taken into account  | FORMATTED (takes field formats into account) or LEGACY (does not take field formats into account) | none    |
-| -qi      | --quoteIdentifiers | no        | if present, all sql identifiers (e.g. column names) will be quoted     | none  | none   |
-|          | -where `<arg>`     | no        | match criteria e.g. "USER_NAME=='John'"                | none              | none    |
+| -a <!-- DumpIt -a -->      | --all <!-- DumpIt --all -->             | no        | exports all tables to csv                              | none              | none    |
+| -f <!-- DumpIt -f -->      | --file `<arg>` <!-- DumpIt --file -->    | no        | name of the csv file where table is exported           | none              | none    |
+|          | -fields `<arg>` <!-- DumpIt -fields -->   | no        | space separated field list e.g. "FIRST_NAME LAST_NAME" | none              | none    |
+| -h <!-- DumpIt -h -->      | --help  <!-- DumpIt --help -->           | no        | show help on how to use the command                    | none              | none    |
+| -s  <!-- DumpIt -s -->     | --sql `<arg>` <!-- DumpIt --sql -->     | no        | name of the sql file to export the table to            | none              | none    |
+| -t  <!-- DumpIt -t -->     | --table `<arg>` <!-- DumpIt --table -->   | no        | the name of the table to export to csv. for several use a space separated field list.                 | none              | none    |
+| -cem <!-- DumpIt -cem -->    | --criteriaEvaluatorMode `<arg>` <!-- DumpIt --criteriaEvaluatorMode --> | no        | the type of criteria evaluator to be used | TYPE_AWARE or LEGACY | LEGACY |
+| -fm <!-- DumpIt -fm -->     | --formatMode `<arg>` <!-- DumpIt --formatMode -->    | no        | indicates whether field formats should be taken into account  | FORMATTED (takes field formats into account) or LEGACY (does not take field formats into account) | none    |
+| -qi <!-- DumpIt -qi -->     | --quoteIdentifiers <!-- DumpIt --quoteIdentifiers --> | no        | if present, all sql identifiers (e.g. column names) will be quoted     | none  | none   |
+|          | -where `<arg>` <!-- DumpIt -where -->    | no        | match criteria e.g. "USER_NAME=='John'"                | none              | none    |
 
 Here are some examples:
 
