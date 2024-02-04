@@ -13,13 +13,20 @@ tags:
 
 ## Introduction
 
-This tutorial will guide you through creating a responsive Angular application with layout using the `grid-layout` component. Additionally, it will demonstrate the integration of an entity manager for handling trade and position data, as well as the incorporation of a donut chart to visualize the data. The tutorial assumes you have a basic understanding of Angular and have already set up your project.
+This tutorial will guide you through creating a responsive Angular application with layout using the `grid-layout` component. Additionally, it will demonstrate the integration of an entity manager for handling trade and position data, as well as the incorporation of a donut chart to visualize the data. The tutorial assumes you have a basic understanding of Angular.
+To set up your project run the following command 
+```shell
+git clone -b ak/angular-blank-app-seed --single-branch https://github.com/genesiscommunitysuccess/integration-examples.git
+cd integration-examples/angular/blank-app-seed
+npm install
+npm start
+```
 
 ## Step 1: Set Up the Grid Layout
 
 ### 1.1 Create a Grid Layout with Tiles
 
-```html
+```html title="protected.component.html"
 <zero-grid-layout row-count="2" col-count="2" class="content-around spacing-4x">
   <!-- Tile 1: Positions -->
   <zero-grid-layout-item col-number="1" row-number="1" width="1" height="1">
@@ -46,7 +53,7 @@ This tutorial will guide you through creating a responsive Angular application w
 
 ### 2.1 Add Positions Grid with grid-pro
 
-```html
+```html title="protected.component.html"
 <!-- Tile 1: Positions -->
 <zero-grid-layout-item col-number="1" row-number="1" width="1" height="1">
   <zero-grid-pro>
@@ -59,7 +66,7 @@ This tutorial will guide you through creating a responsive Angular application w
 
 ### 2.2 Add Entity Management for Trades
 
-```html
+```html title="protected.component.html"
 <!-- Tile 2: Entity Management - Trades -->
 <zero-grid-layout-item col-number="2" row-number="1" width="1" height="1">
   <entity-management
@@ -73,7 +80,7 @@ This tutorial will guide you through creating a responsive Angular application w
 </zero-grid-layout-item>
 ```
 
-```typescript
+```typescript title="protected.component.ts"
 // In your component.ts file
 addTradeFormSchema = {
   type: 'VerticalLayout',
@@ -118,7 +125,7 @@ addTradeFormSchema = {
 
 ### 3.1 Add Positions Donut Chart with Configuration
 
-```html
+```html title="protected.component.html"
 <!-- Tile 3: Donut Chart -->
 <zero-grid-layout-item col-number="1" row-number="2" width="1" height="1">
   <zero-g2plot-chart type="donut" [config]="donutChartConfig">
@@ -133,7 +140,7 @@ addTradeFormSchema = {
 </zero-grid-layout-item>
 ```
 
-```typescript
+```typescript title="protected.component.ts"
 // In your component.ts file
 donutChartConfig = {
   angleField: 'value',
@@ -157,7 +164,7 @@ allocationCriteria = ''; // Empty string initially
 
 In your component HTML template, add an event handler for row selection change:
 
-```html
+```html title="protected.component.html"
  <zero-grid-pro
     // highlight-next-line
     (rowClicked)="onRowClicked($event)"
@@ -171,7 +178,7 @@ In your component HTML template, add an event handler for row selection change:
 
 Now, implement the `onRowClicked` function in your `component.ts` file:
 
-```typescript
+```typescript title="protected.component.ts"
 // In your component.ts file
 onRowClicked(e: Event) {
     this.allocationCriteria = `((INSTRUMENT_ID == '${(e as CustomEvent).detail.data.INSTRUMENT_ID}'))`;
