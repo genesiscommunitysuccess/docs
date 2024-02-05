@@ -181,7 +181,7 @@ If you use a relative file path and there is a mistake in the file path, no erro
 You can also pass arguments to the URI to change the behaviour of the source.
 
 `file:directoryName[?options]`
-<!-- The file:directoryName has a list of possible arguments: delete, fileName, recursive -->
+<!--  file:directoryName has a list of possible arguments: delete, fileName, recursive -->
 
 | Argument | Default value | Description |
 |---|---|---|
