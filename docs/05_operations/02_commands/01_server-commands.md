@@ -79,13 +79,13 @@ To copy data from a Genesis database, use the `DumpIt` command.
 
 ### Syntax
 The `DumpIt` command can take the following arguments:
-<!-- The DumpIt command has an exaustive list of arguments -a -f -fields -h -s -t -cem -fm -qi -where all described below -->
+<!-- The DumpIt command has the following arguments: -a -f -fields -h -s -t -cem -fm -qi -where All arguments are described in the table below. -->
 
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
 | -a <!-- DumpIt -a -->      | --all <!-- DumpIt --all -->             | no        | exports all tables to csv                              | none              | none    |
 | -f <!-- DumpIt -f -->      | --file `<arg>` <!-- DumpIt --file -->    | no        | name of the csv file where table is exported           | none              | none    |
-|          | -fields `<arg>` <!-- DumpIt -fields -->   | no        | space separated field list e.g. "FIRST_NAME LAST_NAME" | none              | none    |
+|          | -fields `<arg>` <!-- DumpIt -fields -->   | no        | space-separated field list e.g. "FIRST_NAME LAST_NAME" | none              | none    |
 | -h <!-- DumpIt -h -->      | --help  <!-- DumpIt --help -->           | no        | show help on how to use the command                    | none              | none    |
 | -s  <!-- DumpIt -s -->     | --sql `<arg>` <!-- DumpIt --sql -->     | no        | name of the sql file to export the table to            | none              | none    |
 | -t  <!-- DumpIt -t -->     | --table `<arg>` <!-- DumpIt --table -->   | no        | the name of the table to export to csv. for several use a space separated field list.                 | none              | none    |
@@ -124,7 +124,6 @@ This copies all the tables in the system, creating one .csv file for each table 
 
 ### Interactive mode
 You can run `DumpIt` without any arguments to enter interactive mode.
-
 
 ## FixEnumValues
 
