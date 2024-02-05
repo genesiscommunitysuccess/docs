@@ -100,7 +100,47 @@ tables {
 
 ## Indices
 
-Indices are used in the following scenarios:
+An index (plural: indices) provides a way of querying the data in your table. Every table must have at least one way of querying the data, and that is the primary key.
+
+In many cases, you will want to provide other indices so that all the useful ways of looking at the table are made possible.
+
+There are two types of index that you can specify:
+
+- A unique index ensures that no two records in the table can have the same value for the specified field or fields. For example, this could be a TRADE_ID in a TRADES table, where the unique value is generated via autoIncrement or sequence. Or it could be a CURRENCY_SYMBOL in a table of CURRENCIES.  
+- A non-unique index can be on any field or fields within the table. For example, you  might want to be able to find all records for a specific date or date range. If an index is made up of multiple fields, then searches can be made on all or some of those fields, but there are specific rules for this (see below).
+
+Here is a simple example showing a unique and a non-unique index.
+
+- Each index has only one field.
+- Neither index has had a name specified. So Genesis will generate the names: MY_TABLE_BY_SESSION_AUTH_TOKEN and MY_TABLE_BY_USER_NAME (see below).
+
+```
+  table(name = "TRADE", id = 1010) {
+      autoIncrement(TRADE_ID)
+      INSTRUMENT_ID
+      TRADE_TYPE
+      TRADE_DATE
+      CURRENCY_ID
+      QUANTITY
+      PRICE
+      
+      primaryKey {
+          TRADE_ID 
+      }
+      indices {
+          unique {
+                   INSTRUMENT_ID
+          }
+          nonUnique {
+                   CURRENCY_ID
+          }
+      }
+ }
+
+}
+```
+
+- Indices are used in the following scenarios:
 
 - Creating additional unique constraints to the table's primary key
 - Providing a performant record lookup (`unique` index)
