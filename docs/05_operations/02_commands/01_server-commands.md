@@ -528,7 +528,7 @@ The `remap` operation updates the alias store, so if you are running a Genesis c
 This migrates the Genesis dictionary from the Database Dictionary Store to the File Dictionary Store storage and vice versa.
 
 The `MigrateAliases` command can take the following arguments:
-<!-- The MigrateAliases command has a list of possible arguments: -a -f -fields -h -s -t -cem -fm -qi -where -->
+<!-- The MigrateAliases command has a list of possible arguments: -h -o -dst -->
 
 | Argument | Argument long name                   | Mandatory | Description                                                     | Restricted values | Default |
 |----------|--------------------------------------|-----------|-----------------------------------------------------------------|-------------------|---------|
