@@ -20,7 +20,7 @@ Usage:
 ```bash
 generateSQLToRDB [options]
 ```
-<!-- The generateSQLToRDB has the following arguments: -cfg, -dbName, -dbType, -f, -h, -t -->
+<!-- The generateSQLToRDB script has the following arguments: -cfg, -dbName, -dbType, -f, -h, -t -->
 | Argument | Argument long name      | Mandatory |               Description                    | Restricted values         |
 |----------|-------------------------|-----------|----------------------------------------------|---------------------------|       
 | -cfg <!-- generateSQLToRDB -cfg -->    |  --configFile `<arg>` <!-- generateSQLToRDB --configFile <args> -->  | No        | genesistodb config xml file to be modified   | No                        |                   
