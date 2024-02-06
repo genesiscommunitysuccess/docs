@@ -41,7 +41,7 @@ The other component is the form. This is used to update an existing entity or to
 
 To enable this micro-front-end in your application, follow the steps below.
 
-1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again. For more information, see the [package.json basics](../../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again. For more information, see the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -145,7 +145,7 @@ Here is an example grid view for managing users:
 
 To enable this micro-front-end in your application, follow the steps below:
 
-1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -236,7 +236,7 @@ Example grid view when managing profiles.
 
 To enable this micro front-end in your application, follow the steps below.
 
-1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. You can find more information in the [package.json basics](../../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
