@@ -409,9 +409,9 @@ The `killProcess` command can take the following arguments:
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                      | Restricted values | Default |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|-------|
-| -s   HOSTNAME [HOSTNAME ...]  <!-- killProcess -s [HOSTNAME ...] -->| --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] <!-- killProcess --hostname [HOSTNAME ...] | no        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | none              | none |
+| -s   HOSTNAME [HOSTNAME ...]  <!-- killProcess -s [HOSTNAME ...] --> | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] <!-- killProcess --hostname --> [HOSTNAME ...] | no        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | none              | none |
 | -f   <!-- killProcess -f --> | --force   <!-- killProcess --force -->  |           | forcefully kills a process (using kill -9)       | none              | none |
-| -w WAIT   <!-- killProcess -w --> | --wait WAIT     <!-- killProcess -wait -->        | no        | specifies how many seconds to wait before forcing the kill       | none         |  10 |
+| -w WAIT   <!-- killProcess -w --> | --wait WAIT     <!-- killProcess --wait -->        | no        | specifies how many seconds to wait before forcing the kill       | none         |  10 |
 | -c     <!-- killProcess -c -->    | --cluster         <!-- killProcess --cluster -->  | no        | kills the process on every node in the cluster             | none              | none |
 
 The example below kills the GENESIS_AUTH_PERMS process.
