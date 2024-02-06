@@ -409,7 +409,7 @@ The `killProcess` command can take the following arguments:
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                      | Restricted values | Default |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|-------|
-| -s   HOSTNAME [HOSTNAME ...]  <!-- killProcess -s [HOSTNAME ...] --> | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] <!-- killProcess --hostname --> [HOSTNAME ...] | no        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | none              | none |
+| -s   HOSTNAME [HOSTNAME ...]  <!-- killProcess -s [HOSTNAME ...] --> | --hostname HOSTNAME [HOSTNAME ...] <!-- killProcess --hostname --> [HOSTNAME ...] | no        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | none              | none |
 | -f   <!-- killProcess -f --> | --force   <!-- killProcess --force -->  |           | forcefully kills a process (using kill -9)       | none              | none |
 | -w WAIT   <!-- killProcess -w --> | --wait WAIT     <!-- killProcess --wait -->        | no        | specifies how many seconds to wait before forcing the kill       | none         |  10 |
 | -c     <!-- killProcess -c -->    | --cluster         <!-- killProcess --cluster -->  | no        | kills the process on every node in the cluster             | none              | none |
@@ -1054,15 +1054,14 @@ This command starts a Genesis process.
 The command must be followed by the name of the process that you want to start.
 
 The following arguments are also available:
+<!-- The startProcess command has a list of possible arguments: -s, -v, --dump -->
 
 | Argument                   | Argument long name                          | Mandatory | Description                                                                                                                                                                                         | Restricted values | Default |
 |----------------------------|---------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|-------|
-| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | no        | where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | none                |	none   |  
-| -c                         | --cluster                                   | no       | starts the process on every node in the cluster     | none                | none   |  
-| -v                         | --verbose                                   | no        | starts in verbose mode; logs to the terminal so you can view on screen   | none                | none   |  
-|                            | --dump                                      | no        | displays progress of the process, which is useful for debugging                                                                                                                          | none                |		none   |  
-   
-
+| -s HOSTNAME [HOSTNAME ...] <!-- startProcess -s [HOSTNAME ...] -->  | --hostname HOSTNAME [HOSTNAME ...] <!-- startProcess --hostname [HOSTNAME ...]  --> | no        | where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | none                |	none   |  
+| -v    <!-- startProcess -v  -->                                     | --verbose   <!-- startProcess --verbose  -->                                | no        | starts in verbose mode; logs to the terminal so you can view on screen   | none                | none   |  
+|                                                                     | --dump   <!-- startProcess --dump  -->                 | no        | displays progress of the process, which is useful for debugging                                                                                                                          | none                |		none   |  
+ 
 The following example starts the process called APP_EVALUATOR:
 
 ```bash
@@ -1095,24 +1094,25 @@ This command starts the server of an application. It reads the **$GC/processes.x
 ### Syntax
 
 The `startServer` command can take the following arguments:
+<!-- The startServer command has a list of possible arguments: -s, -c, -i, -v -->
 
 | Argument                    | Argument long name                   | Mandatory | Description                                                                                                                                                                                | Restricted values | Default |
 |-----------------------------|--------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|--------|
-|  -s HOSTNAME [HOSTNAME ...] | --hostname   HOSTNAME [HOSTNAME ...] | no        | if the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node). Specify the Host Name | none | none |
-|  -c                         | --cluster                            | no        | starts the server on every node in the cluster | none |none |
-|  -i                         | --ignoreDaemon                       | no        | avoids killing/starting the daemon | none | none |
-| -v                          | --verbose                            | no        | starts in verbose mode; logs to the terminal so you can view on screen   | none   | none   |  
+|  -s HOSTNAME [HOSTNAME ...] <!-- startServer -s [HOSTNAME ...] --> | --hostname   HOSTNAME [HOSTNAME ...] <!-- startServer --hostname [HOSTNAME ...] -->| no        | if the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node). Specify the Host Name | none | none |
+|  -c  <!-- startServer -c  -->                                      | --cluster   <!-- startServer --cluster  -->                                        | no        | starts the server on every node in the cluster | none |none |
+|  -i  <!-- startServer -i  -->                                      | --ignoreDaemon  <!-- startServer --ignoreDaemon  -->                               | no        | avoids killing/starting the daemon | none | none |
+| -v   <!-- startServer -v  -->                                      | --verbose   <!-- startServer --verbose  -->                                        | no        | starts in verbose mode; logs to the terminal so you can view on screen   | none   | none   |  
 
 The example below starts the server.
 
 ```
-startserver
+startServer
 ```
 
 The example below starts the server on node1 without starting/killing the daemon.
 
 ```
-startserver  -s node1 -i
+startServer  -s node1 -i
 ```
 
 The **processes.xml** file looks like this:
