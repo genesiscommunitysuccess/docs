@@ -24,10 +24,12 @@ By default, a count is given for every table in the database.
 
 If you only want the record count for specific tables, you can specify the table name or names.
 
+<!-- The CountRecords command has one argument where you can send a space-separated list of tables -->
+
 ### Syntax
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
-|          |          [TABLES]  | no        | the name of the table whose rows are to be counted; for more than one table, this must be a space-separated list            | none                | a record count is provided for all tables in the database    |
+|          |          [TABLES] <!-- CountRecords [TABLES] -->  | no        | the name of the table whose rows are to be counted; for more than one table, this must be a space-separated list            | none                | a record count is provided for all tables in the database    |
 
 This example gives a record count for all tables:
 
@@ -61,10 +63,12 @@ If you do not specify any tables, then **all** rows will be removed from **all**
 Use with care!
 :::
 
+<!-- The DropTable command has one possible argument: -t -->
+
 ### Syntax 
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
-| -t       | [TABLES]    | no        | the name of the table to have its rows removed; for more than one table, this must be a space-separated list | none | all records are removed from all tables |
+| -t <!-- DropTable -t [TABLES] -->      | [TABLES]    | no        | the name of the table to have its rows removed; for more than one table, this must be a space-separated list | none | all records are removed from all tables |
 
 The example below removes all the rows from three separate tables:
 
@@ -79,19 +83,20 @@ To copy data from a Genesis database, use the `DumpIt` command.
 
 ### Syntax
 The `DumpIt` command can take the following arguments:
+<!-- The DumpIt command has a list of possible arguments: -a, -f, -fields, -h, -s, -t, -cem, -fm, -qi, -where -->
 
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
-| -a       | --all              | no        | exports all tables to csv                              | none              | none    |
-| -f       | --file `<arg>`     | no        | name of the csv file where table is exported           | none              | none    |
-|          | -fields `<arg>`    | no        | space separated field list e.g. "FIRST_NAME LAST_NAME" | none              | none    |
-| -h       | --help             | no        | show help on how to use the command                    | none              | none    |
-| -s       | --sql `<arg>`      | no        | name of the sql file to export the table to            | none              | none    |
-| -t       | --table `<arg>`    | no        | the name of the table to export to csv                 | none              | none    |
-| -cem     | --criteriaEvaluatorMode `<arg>` | no        | the type of criteria evaluator to be used | TYPE_AWARE or LEGACY | LEGACY |
-| -fm      | --formatMode `<arg>`     | no        | indicates whether field formats should be taken into account  | FORMATTED (takes field formats into account) or LEGACY (does not take field formats into account) | none    |
-| -qi      | --quoteIdentifiers | no        | if present, all sql identifiers (e.g. column names) will be quoted     | none  | none   |
-|          | -where `<arg>`     | no        | match criteria e.g. "USER_NAME=='John'"                | none              | none    |
+| -a <!-- DumpIt -a -->      | --all <!-- DumpIt --all -->             | no        | exports all tables to csv                              | none              | none    |
+| -f <!-- DumpIt -f -->      | --file `<arg>` <!-- DumpIt --file <args> -->    | no        | name of the csv file where table is exported           | none              | none    |
+|          | -fields `<arg>` <!-- DumpIt --fields <args> -->   | no        | space separated field list e.g. "FIRST_NAME LAST_NAME" | none              | none    |
+| -h <!-- DumpIt -h -->      | --help  <!-- DumpIt --help -->           | no        | show help on how to use the command                    | none              | none    |
+| -s  <!-- DumpIt -s -->     | --sql `<arg>` <!-- DumpIt --sql <args> -->     | no        | name of the sql file to export the table to            | none              | none    |
+| -t  <!-- DumpIt -t -->     | --table `<arg>` <!-- DumpIt --table <args> -->   | no        | specify the name of the table you want to export to CSV. If there are multiple tables to include, provide a list separated by spaces.                 | none              | none    |
+| -cem <!-- DumpIt -cem -->    | --criteriaEvaluatorMode `<arg>` <!-- DumpIt --criteriaEvaluatorMode <args> --> | no        | the type of criteria evaluator to be used | TYPE_AWARE or LEGACY | LEGACY |
+| -fm <!-- DumpIt -fm -->     | --formatMode `<arg>` <!-- DumpIt --formatMode <args> -->    | no        | indicates whether field formats should be taken into account  | FORMATTED (takes field formats into account) or LEGACY (does not take field formats into account) | none    |
+| -qi <!-- DumpIt -qi -->     | --quoteIdentifiers <!-- DumpIt --quoteIdentifiers --> | no        | if present, all sql identifiers (e.g. column names) will be quoted     | none  | none   |
+|          | -where `<arg>` <!-- DumpIt -where <args> -->    | no        | match criteria e.g. "USER_NAME=='John'"                | none              | none    |
 
 Here are some examples:
 
@@ -124,7 +129,6 @@ This copies all the tables in the system, creating one .csv file for each table 
 ### Interactive mode
 You can run `DumpIt` without any arguments to enter interactive mode.
 
-
 ## FixEnumValues
 
 Converts non-matching enum values in the database to SNAKE_CASE. This command is intended for use after a dictionary change that adds new enum values. It will only update the data if the converted value matches the list of enum values in the dictionary.
@@ -137,12 +141,13 @@ Stop all processes before using this command.
 
 ### Syntax
 The `FixEnumValues` command can take the following arguments:
+<!-- The FixEnumValues command has a list of possible arguments: -c, -h -->
 
 | Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values | Default |
 |----------|------------------------|-----------|----------------------------------------------------------------------------------------|----------------|--------|
-| -c       | --commit               | no        | applies dictionary changes to the database                                             | none    | none |
-|          | [TABLES]               | no        | a space-separated list of specific tables to be changed; if no list is supplied, all tables are changed                                              | none              | none |
-| -h       | --help             | no        | shows help on how to use the command                    | none   | none    |
+| -c  <!-- FixEnumValues -c -->     | --commit  <!-- FixEnumValues --commit -->             | no        | applies dictionary changes to the database                                             | none    | none |
+|          | [TABLES] <!-- FixEnumValues --commit [TABLES] -->              | no        | a space-separated list of specific tables to be changed; if no list is supplied, all tables are changed                                              | none              | none |
+| -h <!-- FixEnumValues -h -->      | --help  <!-- FixEnumValues --help -->           | no        | shows help on how to use the command                    | none   | none    |
 
 In the example below, the changes are applied to the database for two tables: TRADE and POSITION.
 
@@ -191,13 +196,16 @@ Following this, when you start any process, the `startProcess` command reads fro
 ### Syntax
 The `genesisInstall` command can take the following arguments:
 
+<!-- The genesisInstall command has a list of possible arguments: --ignore, --ignoreHooks, --compactProcesses, --repeatedHooks, --hostDiff -->
+
+
 | Argument | Argument long name | Mandatory | Description                                                                                                               | Restricted values | Default |
 |----------|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------|--------|
-|          | --ignore           | no        | If supplied, will ignore errors in the configuration files                                                                            | none              | none |
-|          | --ignoreHooks      | no        | If supplied, will ignore any install hooks found                                                                                      | none              | none |
-|          | --compactProcesses | no        | When set to `true`, combines compatible services into a single process, which reduces the number of services running in the container | none                | none |
-|          | --repeatedHooks    | no        | If supplied, will repeat the specified install hooks                                                                                      | none              | none |
-|          | --hostDiff         | no        | If supplied, will compare all the files in every Genesis server in the cluster to make sure that the files are in sync  | none              | none |
+|          | --ignore  <!-- genesisInstall --ignore -->         | no        | If supplied, will ignore errors in the configuration files                                                                            | none              | none |
+|          | --ignoreHooks <!-- genesisInstall --ignoreHooks -->      | no        | If supplied, will ignore any install hooks found                                                                                      | none              | none |
+|          | --compactProcesses <!-- genesisInstall --compactProcesses -->  | no        | When set to `true`, combines compatible services into a single process, which reduces the number of services running in the container | none                | none |
+|          | --repeatedHooks <!-- genesisInstall --repeatedHooks -->    | no        | If supplied, will repeat the specified install hooks                                                                                      | none              | none |
+|          | --hostDiff  <!-- genesisInstall --hostDiff -->        | no        | If supplied, will compare all the files in every Genesis server in the cluster to make sure that the files are in sync  | none              | none |
 
 Once complete, all configuration files will be copied and, where necessary, merged into the **~/run/generated/cfg** file, which we alias as **$GC**.
 
@@ -306,12 +314,13 @@ Stop all your application's processes before using this command.
 
 ### Syntax
 The `GetAutoIncrementCount` command can take the following arguments:
+<!-- The GetAutoIncrementCount command has a list of possible arguments: -f, -h, -p -->
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
-| -f       | --file `<arg>`     | no        | name of file to receive the values      | none              | AutoIncrementValues |
-| -h       | --help             | no        | displays help on the command            | none              | none    |
-| -p       | --print            | no        | if sending to a file, then use this if you also want to print to screen | none             | true (unless -f is supplied) |
+| -f  <!-- GetAutoIncrementCount -f -->     | --file `<arg>` <!-- GetAutoIncrementCount --file <args> -->    | no        | name of file to receive the values      | none              | AutoIncrementValues |
+| -h <!-- GetAutoIncrementCount -h -->      | --help   <!-- GetAutoIncrementCount --help -->          | no        | displays help on the command            | none              | none    |
+| -p  <!-- GetAutoIncrementCount -p -->     | --print  <!-- GetAutoIncrementCount --print -->          | no        | if sending to a file, then use this if you also want to print to screen | none             | true (unless -f is supplied) |
 
 The behaviour of this command depends on which database implementation your application uses. 
 
@@ -334,12 +343,14 @@ This gets the current sequence number for all the sequences in the system. The v
 
 ### Syntax
 The `GetSequenceCount` command can take the following arguments:
+<!-- The GetSequenceCount command has a list of possible arguments: -f, -h, -p -->
+
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
-| -f       | --file `<arg>`     | no        | name of the file to contain the sequence numbers | none     | SEQUENCE.csv |
-| -h       | --help             | no        | show help on how to use thus command             | none     | none |
-| -p       | --print            | no        |                                                  | none     | true (unless -f is supplied) |
+| -f  <!-- GetSequenceCount -f -->     | --file `<arg>` <!-- GetSequenceCount --file <args> -->     | no        | name of the file to contain the sequence numbers | none     | SEQUENCE.csv |
+| -h <!-- GetSequenceCount -h -->       | --help <!-- GetSequenceCount --help -->             | no        | show help on how to use thus command             | none     | none |
+| -p <!-- GetSequenceCount -p -->       | --print  <!-- GetSequenceCount --print -->           | no        |                                                  | none     | true (unless -f is supplied) |
 
 The example below puts the numbers for all sequences in the database in the file **/home/user/run/sequenceCount**. 
 ```
@@ -360,12 +371,14 @@ In the example above, the table USER_AUDIT has 103 rows, so the next sequence nu
 
 ### Syntax
 The `GetSequenceNumbers` command can take the following arguments:
+<!-- The GetSequenceNumbers command has a list of possible arguments: -f, -h, -p -->
+
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
-| -f       | --file `<arg>`     | no        | name of the file to contain the sequence numbers | none     | SequenceValues.csv |
-| -h       | --help             | no        | show help on how to use this command             | none     | none |
-| -p       | --print            | no        |                                         | none              | true (unless -f is supplied) |
+| -f  <!-- GetSequenceNumbers -f -->     | --file `<arg>` <!-- GetSequenceNumbers --file <args> -->    | no        | name of the file to contain the sequence numbers | none     | SequenceValues.csv |
+| -h  <!-- GetSequenceNumbers -h -->     | --help   <!-- GetSequenceNumbers --help -->          | no        | show help on how to use this command             | none     | none |
+| -p  <!-- GetSequenceNumbers -p -->     | --print  <!-- GetSequenceNumbers --print -->          | no        |                                         | none              | true (unless -f is supplied) |
 
 The example below displays the next sequence number of each table, using the format described above.
 ```bash
@@ -392,13 +405,14 @@ This command is used to terminate a specified process.
 
 ### Syntax
 The `killProcess` command can take the following arguments:
+<!-- The killProcess command has a list of possible arguments: -s, -f, -w, -c -->
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                      | Restricted values | Default |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|-------|
-| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | no        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | none              | none |
-| -f                           | --force                                       |           | forcefully kills a process (using kill -9)       | none              | none |
-| -w WAIT                      | --wait WAIT                                   | no        | specifies how many seconds to wait before forcing the kill       | none         |  10 |
-| -c                           | --cluster                                     | no        | kills the process on every node in the cluster             | none              | none |
+| -s   HOSTNAME [HOSTNAME ...]  <!-- killProcess -s [HOSTNAME ...] --> | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] <!-- killProcess --hostname --> [HOSTNAME ...] | no        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | none              | none |
+| -f   <!-- killProcess -f --> | --force   <!-- killProcess --force -->  |           | forcefully kills a process (using kill -9)       | none              | none |
+| -w WAIT   <!-- killProcess -w --> | --wait WAIT     <!-- killProcess --wait -->        | no        | specifies how many seconds to wait before forcing the kill       | none         |  10 |
+| -c     <!-- killProcess -c -->    | --cluster         <!-- killProcess --cluster -->  | no        | kills the process on every node in the cluster             | none              | none |
 
 The example below kills the GENESIS_AUTH_PERMS process.
 
@@ -423,13 +437,14 @@ This command kills the server. It reads the **$GC/processes.xml** file to determ
 
 ### Syntax
 The `killServer` command can take the following arguments:
+<!-- The killServer command has a list of possible arguments: -s, -f, --all, -c -->
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                                                          | Restricted values | Default |
 |------------------------------|------------------------------|-----------|------------------------------------|-------------------|--------|
-| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | no        | Where the application is running  on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node). Specify the Host Name, Host Names or "cluster" for all hosts | none | none |
-| -f                           | --force                                       | no        | forcefully kills a process (using kill -9)                                                                                                                                                                                         | none              | none |
-|                              | --all                                         | no        | kills all processes, including   GENESIS_CLUSTER                                                                                                                                                                                     | none              | none |
-| -c                           | --cluster                                     | no        | kills the server on all the nodes in the cluster                                                                                                                                                                                   | none              |    none | 
+| -s   HOSTNAME [HOSTNAME ...]  <!-- killServer -h [HOSTNAME ...] --> | --hostname HOSTNAME [HOSTNAME ...] <!-- killServer --hostname [HOSTNAME ...] --> | no        | Where the application is running  on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node). Specify the Host Name, Host Names or "cluster" for all hosts | none | none |
+| -f   <!-- killServer -f -->  | --force   <!-- killServer --force -->         | no        | forcefully kills a process (using kill -9)                                                                                                                                                                                         | none              | none |
+|                              | --all     <!-- killServer --all -->           | no        | kills all processes, including   GENESIS_CLUSTER                                                                                                                                                                                     | none              | none |
+| -c  <!-- killServer -c --> | --cluster   <!-- killServer --cluster -->       | no        | kills the server on all the nodes in the cluster                                                                                                                                                                                   | none              |    none | 
 
 In the example below, there is a single node; this command kills all processes for the application, including GENESIS_CLUSTER.
 
@@ -449,21 +464,22 @@ To change the logging levels by code (dynamically) on any Genesis process, use t
 
 ### Syntax
 The `LogLevel` command can take the following arguments:
+<!-- The LogLevel command has a list of possible arguments: -c, -DATADUMP_NACK_OFF, -DATADUMP_NACK_ON, -DATADUMP_OFF, -DATADUMP_ON,-h, -l, -p, -r, -STATUSDUMP_OFF, -STATUSDUMP_ON, -t -->
 
 | Argument                               | Argument long name                   | Mandatory | Description                                 | Restricted values | Default |
 |----------------------------------------|--------------------------------------|-----------|---------------------------------------------------------------------------------------|-------------------|-------|
-| -c                                     |  --class `<class name>`              | no         | changes log level on the defined class       | none                | none |
-|                                        | -DATADUMP_NACK_OFF                   | no         | changes log level to INFO for Genesis messages   | none   | none  |
-|                                        | -DATADUMP_NACK_ON                    | no         | changes log level to TRACE and captures only _NACK messages from Genesis messages     | none    | none  |
-|                                        |  -DATADUMP_OFF                       | no         | changes the log level to info for Genesis messages   | none | none  |
-|                                        |  -DATADUMP_ON                        | no         | changes the log level to trace for Genesis messages   | none | none  |
-| -h                                     |  --help                              | no         | show help on the command                     | none  | none  |
-| -l                                     |  --level `<log level>`               | no         | log level - if log level is not correct it will be set automatically to   DEBUG level | none     | none  |
-| -p _process-name_,..,_process-name_  |                                      | no         | attaches processes to the command     | none  | none  |
-| -r _process-name_,..,_process-name_`  |                                      | no         | remove processes       | none        | none  |
-|                                        | -STATUSDUMP_OFF                      | no         | changes the log level to info for status updates    | none  | none  |
-|                                        | -STATUSDUMP_ON                       | no         | changes the log level to trace for status updates  | none   | none  |
-| -t `<time>`                            |                                      | no         | duration of log level change in min/sec Eg: 1m, 1000s   | none | none  |
+| -c   <!-- LogLevel -c -->              |  --class `<class name>` <!-- LogLevel --class [CLASS NAME] -->   | no         | changes log level on the defined class       | none               | none |
+|                                        | -DATADUMP_NACK_OFF  <!-- LogLevel -DATADUMP_NACK_OFF -->         | no         | changes log level to INFO for Genesis messages   | none   | none  |
+|                                        | -DATADUMP_NACK_ON   <!-- LogLevel -DATADUMP_NACK_ON -->          | no         | changes log level to TRACE and captures only _NACK messages from Genesis messages     | none    | none  |
+|                                        |  -DATADUMP_OFF   <!-- LogLevel -DATADUMP_OFF -->                 | no         | changes the log level to info for Genesis messages   | none | none  |
+|                                        |  -DATADUMP_ON    <!-- LogLevel -DATADUMP_ON -->                  | no         | changes the log level to trace for Genesis messages   | none | none  |
+| -h   <!-- LogLevel -h -->              |  --help  <!-- LogLevel --help -->                                | no         | show help on the command                     | none  | none  |
+| -l  <!-- LogLevel -l -->               |  --level `<log level>`  <!-- LogLevel [LOG LEVEL] -->            | no         | log level - if log level is not correct, it will be set automatically to   DEBUG level | none     | none  |
+| -p _process-name_,..,_process-name_ <!-- LogLevel -p --> |                                       | no         | attaches processes to the command     | none  | none  |
+| -r _process-name_,..,_process-name_`<!-- LogLevel -r --> |                                       | no         | remove processes       | none        | none  |
+|                                        | -STATUSDUMP_OFF   <!-- -STATUSDUMP_OFF -->              | no         | changes the log level to info for status updates    | none  | none  |
+|                                        | -STATUSDUMP_ON    <!-- -STATUSDUMP_ON -->               | no         | changes the log level to trace for status updates  | none   | none  |
+| -t `<time>`  <!-- LogLevel -t   -->    |                                                         | no         | duration of log level change in min/sec Eg: 1m, 1000s   | none | none  |
 
 The example below sets the logging level for the GENESIS_AUTH_DATASERVER process to TRACE.
 
@@ -488,12 +504,13 @@ This migrates the Genesis alias store from database storage to file storage and 
 
 ### Syntax
 The `MigrateAliases` command can take the following arguments:
+<!-- The MigrateAliases command has a list of possible arguments: -h, -o, -dst -->
 
 | Argument | Argument long name                   | Mandatory | Description                                                     | Restricted values | Default |
 |----------|--------------------------------------|-----------|-----------------------------------------------------------------|-------------------|---------|
-| -h   | --help        | no	 | show help on the command | none | none |
-| -o   | --override    | no	 | overwrite existing alias store if it exists in the destination | none | none |
-| -dst | --destination | yes | destination dictionary store | DB or FILE | none |
+| -h <!-- MigrateAliases -h -->  | --help <!-- MigrateAliases --help -->       | no	 | show help on the command | none | none |
+| -o <!-- MigrateAliases -o -->  | --override <!-- MigrateAliases --override -->   | no	 | overwrite existing alias store if it exists in the destination | none | none |
+| -dst <!-- MigrateAliases -dst --> | --destination <!-- MigrateAliases --destination --> | yes | destination dictionary store | DB or FILE | none |
 
 The example below migrates the Genesis alias store to DB. It overwrites any existing dictionary in the destination.
 
@@ -514,12 +531,13 @@ The `remap` operation updates the alias store, so if you are running a Genesis c
 This migrates the Genesis dictionary from the Database Dictionary Store to the File Dictionary Store storage and vice versa.
 
 The `MigrateAliases` command can take the following arguments:
+<!-- The MigrateAliases command has a list of possible arguments: -h -o -dst -->
 
 | Argument | Argument long name                   | Mandatory | Description                                                     | Restricted values | Default |
 |----------|--------------------------------------|-----------|-----------------------------------------------------------------|-------------------|---------|
-| -h   | --help        | no	 | show help on the command | none | none |
-| -o   | --override    | no	 | overwrite existing alias store if it exists in the destination | none | none |
-| -dst | --destination | yes | destination dictionary store | DB or FILE | none |
+| -h <!-- MigrateAliases -h -->  | --help <!-- MigrateAliases --help -->       | no	 | show help on the command | none | none |
+| -o <!-- MigrateAliases -o -->  | --override <!-- MigrateAliases --override -->   | no	 | overwrite existing alias store if it exists in the destination | none | none |
+| -dst <!-- MigrateAliases -dst --> | --destination <!-- MigrateAliases --destination --> | yes | destination dictionary store | DB or FILE | none |
 
 The example below migrates the Genesis dictionary from DB to FILE, it also overwrites any existing dictionary in the destination
 
@@ -600,24 +618,25 @@ If you are using a development environment and you are running a local build via
 
 ### Syntax
 The `mon` command can take the following arguments:
+<!-- The mon command has a list of possible arguments: -h, -v, -c, -a, -m, -u, --down, --warning, --error, --unknown, --missing, --running, --starting, --standby, --healthy  -->
 
 | Argument | Argument long name | Mandatory | Description                                                               | Restricted values | Default |
 |----------|--------------------|-----------|---------------------------------------------------------------------------|-------------------|---------|
-| -h       | --help             | no        | show help on the mon commands                                             | none              | none    |
-| -v       | --version          | no        | show installed product versions                                           | none              | none    |
-| -c       | --cfg              | no        | show the config files used by each process                                | none              | none    |
-| -a       | --all              | no        | show all information                                                      | none              | none    |
-| -m       | --monitors         | no        | show state monitors  (the **Message** column heading becomes **Monitor**) | none              | none    |
-| -u       | --unhealthy        | no        | show unhealthy processes only                                             | none              | none    |
-|          | --down             | no        | show DOWN processes                                                       | none              | none    |
-|          | --warning          | no        | show WARNING processes                                                    | none              | none    |
-|          | --error            | no        | show ERROR processes                                                      | none              | none    |
-|          | --unknown          | no        | show UNKNOWN processes                                                    | none              | none    |
-|          | --missing          | no        | show MISSING processes                                                    | none              | none    |
-|          | --running          | no        | show RUNNING processes                                                    | none              | none    |
-|          | --starting         | no        | show STARTING processes                                                   | none              | none    |
-|          | --standby          | no        | show STANDBY processes                                                    | none              | none    |
-|          | --healthy          | no        | show HEALTHY processes                                                    | none              | none    |
+| -h  <!-- mon -h -->     | --help  <!-- mon --help -->           | no        | show help on the mon commands                                             | none              | none    |
+| -v  <!-- mon -v -->     | --version  <!-- mon --version -->        | no        | show installed product versions                                           | none              | none    |
+| -c  <!-- mon -c -->     | --cfg <!-- mon --cfg -->             | no        | show the config files used by each process                                | none              | none    |
+| -a <!-- mon -a -->      | --all <!-- mon --all -->             | no        | show all information                                                      | none              | none    |
+| -m  <!-- mon -m -->     | --monitors  <!-- mon --monitors -->       | no        | show state monitors  (the **Message** column heading becomes **Monitor**) | none              | none    |
+| -u  <!-- mon -u -->     | --unhealthy <!-- mon --unhealthy -->       | no        | show unhealthy processes only                                             | none              | none    |
+|          | --down  <!-- mon --down -->           | no        | show DOWN processes                                                       | none              | none    |
+|          | --warning  <!-- mon --warning -->        | no        | show WARNING processes                                                    | none              | none    |
+|          | --error   <!-- mon --error -->         | no        | show ERROR processes                                                      | none              | none    |
+|          | --unknown  <!-- mon --unknown -->        | no        | show UNKNOWN processes                                                    | none              | none    |
+|          | --missing  <!-- mon --missing -->        | no        | show MISSING processes                                                    | none              | none    |
+|          | --running  <!-- mon --running -->        | no        | show RUNNING processes                                                    | none              | none    |
+|          | --starting  <!-- mon --starting -->       | no        | show STARTING processes                                                   | none              | none    |
+|          | --standby  <!-- mon --standby -->        | no        | show STANDBY processes                                                    | none              | none    |
+|          | --healthy  <!-- mon --healthy -->        | no        | show HEALTHY processes                                                    | none              | none    |
 
 :::info
 
@@ -655,13 +674,14 @@ This command populates the Holidays table with holidays, based on a specific yea
 
 ### Syntax
 The `PopulateHolidays` command can take the following arguments:
+<!-- The PopulateHolidays command has a list of possible arguments: -c, -h, -r, -y -->
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|
-| -c       | --country `<arg>`  | No        | the country name to search for holidays | No                |
-| -h       | --help             | No        | show help on this command               | No                |
-| -r       | --region `<arg>`   | No        | the region name to search for holidays  | No                |
-| -y       | --year `<arg>`     | No        | the year of holidays                    | No                |
+| -c  <!-- PopulateHolidays -c -->     | --country `<arg>` <!-- PopulateHolidays --country <args> -->  | No        | the country name to search for holidays | No                |
+| -h  <!-- PopulateHolidays -h -->     | --help <!-- PopulateHolidays --help -->            | No        | show help on this command               | No                |
+| -r  <!-- PopulateHolidays -r -->     | --region `<arg>` <!-- PopulateHolidays --region <args> -->  | No        | the region name to search for holidays  | No                |
+| -y <!-- PopulateHolidays -y -->      | --year `<arg>` <!-- PopulateHolidays --year <args> -->    | No        | the year of holidays                    | No                |
 
 For example: 
 
@@ -822,12 +842,13 @@ The `RenameFields` command takes two arguments; both of which are mandatory:
 ```bash
 RenameFields [-i <[current name of field]>] [-o  <[new name of field]>]
 ```
+<!-- The RenameFields command has a list of possible arguments: -i, -o, -h -->
 
 | Argument | Argument long name | Mandatory | Description                              | Restricted values | Default |
 |----------|--------------------|-----------|------------------------------------------|-------------------|---------|
-| -i       | --input            | yes       | name of field that you want to change    | none              | none    |
-| -o       | --output           | yes       | name you want the field to be changed to | none              | none    |
-| -h       | --help             | no        | show help on using this command          | none              | none    |
+| -i <!-- RenameFields -i -->      | --input <!-- RenameFields --input -->           | yes       | name of field that you want to change    | none              | none    |
+| -o <!-- RenameFields -o -->      | --output <!-- RenameFields --output -->          | yes       | name you want the field to be changed to | none              | none    |
+| -h <!-- RenameFields -h -->      | --help  <!-- RenameFields --help -->           | no        | show help on using this command          | none              | none    |
 
 
 The `--input` argument represents the name of the field you would like to change. The argument must be an existing field name in the database.
@@ -870,23 +891,23 @@ To send data into the database (inserts, modifies and upserts), use the `SendIt`
 
 ### Syntax
 The `SendIt` command can take the following arguments:
-
+<!-- The SendIt command has a list of possible arguments: -a, -d, -cf, -f, -fm, -h, -m, -mf, -quiet, -r, -t, -u, -v -->
 
 | Argument | Argument long name     | Mandatory | Description                                                    | Restricted values     | Default |
 |----------|------------------------|-----------|----------------------------------------------------------------|-----------------------|--------|
-| -a       | --all                  | no        | import all the tables from all the csv files to the database | no                    | none    |
-| -d       | --delete               | no        | perform delete operations on all records                     | no                    | none    |
-| -cf      | --columnFormat         | no        | set specific date format for column                          | no                    | none    |
-| -f       | --file `<arg>`         | no        | name of the csv file that contains the data                  | no                    | Genesis looks for a new .csv file whose name matches the name of the source table    |
-| -fm      | --formatMode `<arg>`   | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY  | LEGACY  |
-| -h       | --help                 | no        | show help on how to use this command                         | no                    | none    |
-| -m       | --modify `<arg>`       | no        | key name used to find original record                        | no                    | none    |
-| -mf      | --modifyFields `<arg>` | no        | specifies fields to modify (only used with `-m`)             | no                    | none    |
-| -quiet   | --quietMode            | no        | make database changes without triggering real-time updates in update queue layer | no                    | none    |
-| -r       | --recover              | no        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | no                    | none    |
-| -t       | --table `<arg>`        | yes       | the name of the database table to be updated or amended      | must be a valid table | none    |
-| -u       | --upsert `<arg>`       | no        | table key name used to upsert records                        | no                    | none    |
-| -v       | --verbose              | no        | log every error line to output                               | no                    | none    |
+| -a <!-- SendIt -a -->      | --all  <!-- SendIt --all -->                | no        | import all the tables from all the csv files to the database | no                    | none    |
+| -d <!-- SendIt -d -->      | --delete <!-- SendIt --delete  -->              | no        | perform delete operations on all records                     | no                    | none    |
+| -cf <!-- SendIt -cf -->     | --columnFormat <!-- SendIt --columnFormat -->        | no        | set specific date format for column                          | no                    | none    |
+| -f  <!-- SendIt -f -->     | --file `<arg>` <!-- SendIt --file <args> -->        | no        | name of the csv file that contains the data                  | no                    | Genesis looks for a new .csv file whose name matches the name of the source table    |
+| -fm <!-- SendIt -fm -->     | --formatMode `<arg>` <!-- SendIt --formatMode <args> -->  | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY  | LEGACY  |
+| -h  <!-- SendIt -h -->     | --help <!-- SendIt --help -->                | no        | show help on how to use this command                         | no                    | none    |
+| -m  <!-- SendIt -m -->     | --modify `<arg>` <!-- SendIt --modify <args> -->      | no        | key name used to find original record                        | no                    | none    |
+| -mf <!-- SendIt -mf -->     | --modifyFields `<arg>` <!-- SendIt --modifyFields <args> --> | no        | specifies fields to modify (only used with `-m`)             | no                    | none    |
+| -quiet <!-- SendIt -quiet -->   | --quietMode  <!-- SendIt --quietMode -->          | no        | make database changes without triggering real-time updates in update queue layer | no                    | none    |
+| -r <!-- SendIt -r -->      | --recover <!-- SendIt --recover -->             | no        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | no                    | none    |
+| -t <!-- SendIt -t -->      | --table `<arg>` <!-- SendIt --table <args> -->        | yes       | the name of the database table to be updated or amended      | must be a valid table | none    |
+| -u  <!-- SendIt -u -->     | --upsert `<arg>` <!-- SendIt --upsert <args> -->      | no        | table key name used to upsert records                        | no                    | none    |
+| -v <!-- SendIt -v -->      | --verbose <!-- SendIt --verbose -->             | no        | log every error line to output                               | no                    | none    |
 
 For example:
 
@@ -967,14 +988,15 @@ By default, this command expects the file to be called **AutoIncrementValues.csv
 
 ### Syntax
 The `SetAutoIncrement` command can take the following arguments:
+<!-- The SetAutoIncrement command has a list of possible arguments: -f, -h, -s, -t, -v -->
 
 | Argument | Argument long name | Mandatory | Description                                                                                           | Restricted values | Default |
 |----------|--------------------|-----------|-------------------------------------------------------------------------------------------------------|-------------------|-------|      
-| -f       | --file `<arg>`     | no | name of the csv file containing the new sequence numbers (this overrides any --value option supplied) | none | AutoIncrementValues.csv |
-| -h       | --help             | no | displays help on using this command                                                                   | none | none | 
-| -s       | --field `<arg>`    | no | name of the auto-increment field (when setting the next sequence number for a single field)           | none | none |
-| -t       | --table `<arg>`    | no | name of the table that has the auto-increment (when setting the next sequence number for a single field) | none | none |
-| -v       | --value `<arg>`    | no | new sequence number (integer) for the autoincrement (when setting the autoincrement for a single field) | none | none |
+| -f <!-- SetAutoIncrement -f -->      | --file `<arg>` <!-- SetAutoIncrement --file <arg> -->    | no | name of the csv file containing the new sequence numbers (this overrides any --value option supplied) | none | AutoIncrementValues.csv |
+| -h <!-- SetAutoIncrement -h -->      | --help <!-- SetAutoIncrement --help -->            | no | displays help on using this command                                                                   | none | none | 
+| -s <!-- SetAutoIncrement -s -->      | --field `<arg>` <!-- SetAutoIncrement --field <arg> -->   | no | name of the auto-increment field (when setting the next sequence number for a single field)           | none | none |
+| -t <!-- SetAutoIncrement -t -->      | --table `<arg>` <!-- SetAutoIncrement --table <arg> -->   | no | name of the table that has the auto-increment (when setting the next sequence number for a single field) | none | none |
+| -v <!-- SetAutoIncrement -v -->      | --value `<arg>`  <!-- SetAutoIncrement --value <arg> -->  | no | new sequence number (integer) for the autoincrement (when setting the autoincrement for a single field) | none | none |
 
 Note that all fields are optional in principle. But when setting a single field value, you must provide `-t` `-s` and `-v`.
 
@@ -1013,14 +1035,15 @@ This command enables you to set the next sequence number for one or more sequenc
 
 ### Syntax
 The `SetSequence` command can take the following arguments:
+<!-- The SetSequence command has a list of possible arguments: -f, -h, -s, -t, -v -->
 
 | Argument | Argument long name | Mandatory | Description                                                                                                        | Restricted values | Default|
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------------------|---------------|-------|       
-| -f       | --file `<arg>`     | no        | name of csv file containing table-sequence-value sets (these override any --sequence and --value options supplied) | none | none |
-| -h       | --help             | no        | displays help on how to use the command                                                                            | none | none |
-| -s       | --sequence `<arg>` | no        | two-character ID for the sequence (if setting an individual value)                                                 | none | none |
-| -t       | --table `<arg>`    | no        | name of the table that contains the sequence (if setting an individual value)                        | none | none |
-| -v       | --value `<arg>`    | no        | new integer value to be set (if setting an individual value)                                                       | none | none |
+| -f <!-- SetSequence -f -->      | --file `<arg>` <!-- SetSequence --file <arg> -->    | no        | name of csv file containing table-sequence-value sets (these override any --sequence and --value options supplied) | none | none |
+| -h <!-- SetSequence -h -->      | --help <!-- SetSequence --help -->            | no        | displays help on how to use the command                                                                            | none | none |
+| -s  <!-- SetSequence -s -->     | --sequence `<arg>` <!-- SetSequence --sequence <arg> --> | no        | two-character ID for the sequence (if setting an individual value)                                                 | none | none |
+| -t <!-- SetSequence -t -->      | --table `<arg>` <!-- SetSequence --table <arg> -->   | no        | name of the table that contains the sequence (if setting an individual value)                        | none | none |
+| -v  <!-- SetSequence -v -->     | --value `<arg>` <!-- SetSequence --value <arg> -->   | no        | new integer value to be set (if setting an individual value)                                                       | none | none |
 
 All fields are optional in principle. But if you are setting the value for a single sequence, you must provide a `-t` `-s` and `-v`.
 
@@ -1044,13 +1067,13 @@ This command starts a Genesis process.
 The command must be followed by the name of the process that you want to start.
 
 The following arguments are also available:
+<!-- The startProcess command has a list of possible arguments: -s, -v, --dump -->
 
 | Argument                   | Argument long name                          | Mandatory | Description                                                                                                                                                                                         | Restricted values | Default |
 |----------------------------|---------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|-------|
-| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | no        | where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | none                |	none   |  
-| -c                         | --cluster                                   | no       | starts the process on every node in the cluster     | none                | none   |  
-| -v                         | --verbose                                   | no        | starts in verbose mode; logs to the terminal so you can view on screen   | none                | none   |  
-|                            | --dump                                      | no        | displays progress of the process, which is useful for debugging                                                                                                                          | none                |		none   |  
+| -s HOSTNAME [HOSTNAME ...] <!-- startProcess -s [HOSTNAME ...] -->  | --hostname HOSTNAME [HOSTNAME ...] <!-- startProcess --hostname [HOSTNAME ...]  --> | no        | where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | none                |	none   |  
+| -v    <!-- startProcess -v  -->                                     | --verbose   <!-- startProcess --verbose  -->                                | no        | starts in verbose mode; logs to the terminal so you can view on screen   | none                | none   |  
+|                                                                     | --dump   <!-- startProcess --dump  -->                 | no        | displays progress of the process, which is useful for debugging                                                                                                                          | none                |		none   |  
    
 
 The following example starts the process called APP_EVALUATOR:
@@ -1077,7 +1100,6 @@ The script looks in the **processes.xml** file (see startServer below) to find o
 java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
 ```
 
-
 ## startServer 
 
 This command starts the server of an application. It reads the **$GC/processes.xml** file to determine which processes to start and how to start them.
@@ -1085,24 +1107,25 @@ This command starts the server of an application. It reads the **$GC/processes.x
 ### Syntax
 
 The `startServer` command can take the following arguments:
+<!-- The startServer command has a list of possible arguments: -s, -c, -i, -v -->
 
 | Argument                    | Argument long name                   | Mandatory | Description                                                                                                                                                                                | Restricted values | Default |
 |-----------------------------|--------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|--------|
-|  -s HOSTNAME [HOSTNAME ...] | --hostname   HOSTNAME [HOSTNAME ...] | no        | if the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node). Specify the Host Name | none | none |
-|  -c                         | --cluster                            | no        | starts the server on every node in the cluster | none |none |
-|  -i                         | --ignoreDaemon                       | no        | avoids killing/starting the daemon | none | none |
-| -v                          | --verbose                            | no        | starts in verbose mode; logs to the terminal so you can view on screen   | none   | none   |  
+|  -s HOSTNAME [HOSTNAME ...] <!-- startServer -s [HOSTNAME ...] --> | --hostname   HOSTNAME [HOSTNAME ...] <!-- startServer --hostname [HOSTNAME ...] -->| no        | if the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node). Specify the Host Name | none | none |
+|  -c  <!-- startServer -c  -->                                      | --cluster   <!-- startServer --cluster  -->                                        | no        | starts the server on every node in the cluster | none |none |
+|  -i  <!-- startServer -i  -->                                      | --ignoreDaemon  <!-- startServer --ignoreDaemon  -->                               | no        | avoids killing/starting the daemon | none | none |
+| -v   <!-- startServer -v  -->                                      | --verbose   <!-- startServer --verbose  -->                                        | no        | starts in verbose mode; logs to the terminal so you can view on screen   | none   | none   |  
 
 The example below starts the server.
 
 ```
-startserver
+startServer
 ```
 
 The example below starts the server on node1 without starting/killing the daemon.
 
 ```
-startserver  -s node1 -i
+startServer  -s node1 -i
 ```
 
 The **processes.xml** file looks like this:
@@ -1175,24 +1198,26 @@ And remember, only use this command when all your applications have been stopped
 
 The script accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc).
 
+<!-- The DictionaryBuilder command has a list of possible arguments: -c, -d, -h, -H, -i, -l, -o, -p, -P, -R, -s, -t, -U, -V -->
+
 ### Syntax
 
 | Short | Long Argument                          | Mandatory | Description                                                                                                               |
 |----|----------------------------------------|----|--------------------------------------------------------------------------------------------------------------------------|
-| -c | --comments                             |  | Include original SQL in Comments defaults to true                                                                         |
-| -d | --databaseName=\<databaseName\>        | Yes | Database name                                                                                                             |
-| -h | --help                                 |  | Show this help message and exit.                                                                                          |
-| -H | --host=\<hostname\>                    | Yes | The database hostname.                                                                                                    |
-| -i | --tableid=\<tableIdStart\>             |  | Table Id start number, defaults = 0                                                                                       |
-| -l | --tables=\<tables\>\[,\<tables\>...\]  |  | table list to include, default is all tables                                                                              |
-| -o | --output=\<outputDirectory\>           |  | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created             |
-| -p | --port=\<port\>                        | Yes | The database port                                                                                                        |
-| -P | --password\[=\<password\>\]            | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively |
-| -R | --product=\<productName\>              | Yes | Represents the product name and affects the output file                                                                 |
-| -s | --sid=\<oracleSidId\>                  |  | The Oracle System ID if using oracle, or the schema ID if using MSSQL                                                    |
-| -t | --type=\<databaseType\>                | Yes | Database type, valid values: MSSQL, Oracle, Postgres                                                                      |
-| -U | --username=\<username\>                | Yes | Username                                                                                                                  |
-| -V | --version                              |  | Print version information and exit                                                                                       |
+| -c <!-- DictionaryBuilder -c  -->  | --comments  <!-- DictionaryBuilder -c  -->                                      |     | Include original SQL in Comments defaults to true                                                                         |
+| -d <!-- DictionaryBuilder -d  -->  | --databaseName=\<databaseName\>  <!-- DictionaryBuilder --databaseName=\  -->   | Yes | Database name                                                                                                             |
+| -h <!-- DictionaryBuilder -h  -->  | --help  <!-- DictionaryBuilder --help  -->                                      |     | Show this help message and exit.                                                                                          |
+| -H <!-- DictionaryBuilder -H  -->  | --host=\<hostname\>   <!-- DictionaryBuilder --host=[HOST]  -->                 | Yes | The database hostname.                                                                                                    |
+| -i <!-- DictionaryBuilder -i  -->  | --tableid=\<tableIdStart\>  <!-- DictionaryBuilder --tableid=[TABLE ID]  -->    |     | Table Id start number, defaults = 0                                                                                       |
+| -l <!-- DictionaryBuilder -l  -->  | --tables=\<tables\>\[,\<tables\>...\] <!-- DictionaryBuilder --tables=\  -->    |     | table list to include, default is all tables                                                                              |
+| -o <!-- DictionaryBuilder -o  -->  | --output=\<outputDirectory\>  <!-- DictionaryBuilder --output=[DIRECTORY]  -->  |     | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created             |
+| -p <!-- DictionaryBuilder -p  -->  | --port=\<port\>  <!-- DictionaryBuilder --port=[PORT]  -->                      | Yes | The database port                                                                                                        |
+| -P <!-- DictionaryBuilder -P  -->  | --password\[=\<password\>\]  <!-- DictionaryBuilder --password=[PASSWORD]  -->  | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively |
+| -R <!-- DictionaryBuilder -R  -->  | --product=\<productName\>   <!-- DictionaryBuilder --productName=[NAME]  -->    | Yes | Represents the product name and affects the output file                                                                 |
+| -s <!-- DictionaryBuilder -s  -->  | --sid=\<oracleSidId\>  <!-- DictionaryBuilder --sid=[ID]  -->                   |     | The Oracle System ID if using oracle, or the schema ID if using MSSQL                                                    |
+| -t <!-- DictionaryBuilder -t  -->  | --type=\<databaseType\>  <!-- DictionaryBuilder --type=[DB TYPE]  -->           | Yes | Database type, valid values: MSSQL, Oracle, Postgres                                                                      |
+| -U <!-- DictionaryBuilder -U  -->  | --username=\<username\>  <!-- DictionaryBuilder --username=[USERNAME]  -->      | Yes | Username                                                                                                                  |
+| -V <!-- DictionaryBuilder -V  -->  | --version   <!-- DictionaryBuilder --version=[VERSION]  -->                     |     | Print version information and exit                                                                                       |
 
 You can use double-dash notation for any argument.
 
@@ -1240,6 +1265,8 @@ Strings parsed in lower-camel-case format (camelCase) will be transformed to upp
 
 ## ReconcileDatabaseSync
 
+<!-- The ReconcileDatabaseSync command has a list of possible arguments: -d, -f, -H, -P, -u, -p, -s, -n, -i, -h -->
+
 This is used to check if there are differences between a local DB and a remote DB with common dictionary tables.
 
 Typically, this would be used to reconcile tables that are being kept in sync by the GENESIS_SYNC process.
@@ -1267,16 +1294,16 @@ because the tables being compared are in separate databases. Therefore, these fi
 
 | Argument | Argument long name | Mandatory | Description | Restricted Values |
 | -- | -- | -- | -- | -- |
-| -d | --dblayer | true | Database Layer type | Yes: FDB, FDB2, SQL, SIMPLE |
-| -f | --fdb | false | FDB cluster file name |No |
-| -H | --host | false | Remote DB hostname |No |
-| -P | --port | false | Remote DB port |Yes: Number > 0 |
-| -u | --username | false | DB user username |No |
-| -p | --password | false | DB user password |No |
-| -s | --nullstring | false | Evaluate null and empty strings as equal |No value required |
-| -n | --numdays | false | Only compare records with timestamps between now and the number of days specified. If either DB has matching records outside this timestamp range, this will not be flagged as a reconciliation difference |Yes: Number > 0 |
-| -i | --ignorefields | false | Comma-separated list of additional fields to ignore ("RECORD_ID" and "TIMESTAMP" are always ignored) |No |
-| -h | --help | false | Show usage information |No |
+| -d <!-- ReconcileDatabaseSync -d --> | --dblayer <!-- ReconcileDatabaseSync --dblayer --> | true | Database Layer type | Yes: FDB, FDB2, SQL, SIMPLE |
+| -f <!-- ReconcileDatabaseSync -f --> | --fdb <!-- ReconcileDatabaseSync --fdb --> | false | FDB cluster file name |No |
+| -H <!-- ReconcileDatabaseSync -H --> | --host <!-- ReconcileDatabaseSync --host --> | false | Remote DB hostname |No |
+| -P <!-- ReconcileDatabaseSync -P --> | --port <!-- ReconcileDatabaseSync --port --> | false | Remote DB port |Yes: Number > 0 |
+| -u <!-- ReconcileDatabaseSync -u --> | --username <!-- ReconcileDatabaseSync --username --> | false | DB user username |No |
+| -p <!-- ReconcileDatabaseSync -p --> | --password <!-- ReconcileDatabaseSync --password --> | false | DB user password |No |
+| -s <!-- ReconcileDatabaseSync -s --> | --nullstring <!-- ReconcileDatabaseSync --nullstring --> | false | Evaluate null and empty strings as equal |No value required |
+| -n <!-- ReconcileDatabaseSync -n --> | --numdays <!-- ReconcileDatabaseSync --numdays --> | false | Only compare records with timestamps between now and the number of days specified. If either DB has matching records outside this timestamp range, this will not be flagged as a reconciliation difference |Yes: Number > 0 |
+| -i <!-- ReconcileDatabaseSync -i --> | --ignorefields <!-- ReconcileDatabaseSync --ignorefields --> | false | Comma-separated list of additional fields to ignore ("RECORD_ID" and "TIMESTAMP" are always ignored) |No |
+| -h <!-- ReconcileDatabaseSync -h --> | --help <!-- ReconcileDatabaseSync --help --> | false | Show usage information |No |
 
 ### Examples
 
@@ -1294,6 +1321,8 @@ ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p db
 
 
 ## AppGen
+
+<!-- The AppGen command has a list of possible arguments: -d, -t, -p, -pn  -->
 
 AppGen can be used to generate a fully working application from a dictionary file.
 
@@ -1319,10 +1348,10 @@ Deletes will have reduced metadata, as it is only necessary for the columns to s
 
 | Argument | Argument long name | Mandatory | Description | Restricted Values |
 | -- | -- | -- | -- | -- |
-| -d | dictionary file name | true | the name of the dictionary to read at startup |No |
-| -t | table name(s) | false | the table name(s) within the dictionary to read at startup. Multiple tables must be separated by spaces |No |
-| -p | port offset | true | the port range to use when generating the services file |No |
-| -pn | product name | true | the name of the product to create |No |
+| -d <!-- AppGen -d --> | dictionary file name | true | the name of the dictionary to read at startup |No |
+| -t <!-- AppGen -t --> | table name(s) | false | the table name(s) within the dictionary to read at startup. Multiple tables must be separated by spaces |No |
+| -p <!-- AppGen -p --> | port offset | true | the port range to use when generating the services file |No |
+| -pn <!-- AppGen -pn --> | product name | true | the name of the product to create |No |
 
 ### Examples
 

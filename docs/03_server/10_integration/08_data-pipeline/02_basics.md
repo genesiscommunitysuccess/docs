@@ -181,42 +181,45 @@ If you use a relative file path and there is a mistake in the file path, no erro
 You can also pass arguments to the URI to change the behaviour of the source.
 
 `file:directoryName[?options]`
+<!--  file:directoryName has a list of possible arguments: delete, fileName, recursive -->
 
 | Argument | Default value | Description |
 |---|---|---|
-| delete | true | Should delete the file after processing |
-| fileName | | Only listen for files with the exact name |
-| recursive | false | Should check sub directories |
+| delete <!-- file:directoryName delete --> | true | Should delete the file after processing |
+| fileName <!-- file:directoryName fileName --> | | Only listen for files with the exact name |
+| recursive <!-- file:directoryName recursive --> | false | Should check sub directories |
 
 ### S3
 
 To use S3 as a file source, you need access to an S3-like service such as AWS S3 or Dell ECS.
 
 `aws2-s3://bucketNameOrArn[?options]`
+<!-- The aws2-s3://bucketNameOrArn has a list of possible arguments: region, deleteAfterRead, destinationBucket, moveAfterRead, fileName, accessKey, secretKey  -->
 
 | Argument | Default value | Description |
 |---|---|---|
-| region | | the region in which S3 client needs to work |
-| deleteAfterRead | true | delete objects from S3 after they have been retrieved |
-| destinationBucket | | the destination bucket where an object must be moved when moveAfterRead is set to true |
-| moveAfterRead | false | move objects from S3 bucket to a different bucket after they have been retrieved |
-| fileName | | file name of the bucket to get the object from |
-| accessKey | | Amazon AWS Access Key |
-| secretKey | | Amazon AWS Secret Key |
+| region <!-- aws2-s3://bucketNameOrArn region --> | | the region in which S3 client needs to work |
+| deleteAfterRead <!-- aws2-s3://bucketNameOrArn deleteAfterRead --> | true | delete objects from S3 after they have been retrieved |
+| destinationBucket <!-- aws2-s3://bucketNameOrArn destinationBucket --> | | the destination bucket where an object must be moved when moveAfterRead is set to true |
+| moveAfterRead <!-- aws2-s3://bucketNameOrArn moveAfterRead --> | false | move objects from S3 bucket to a different bucket after they have been retrieved |
+| fileName <!-- aws2-s3://bucketNameOrArn fileName --> | | file name of the bucket to get the object from |
+| accessKey <!-- aws2-s3://bucketNameOrArn accessKey --> | | Amazon AWS Access Key |
+| secretKey <!-- aws2-s3://bucketNameOrArn secretKey --> | | Amazon AWS Secret Key |
 
 ### SFTP
 
 `sftp:host:port/directoryName[?options]`
+<!-- The sftp:host:port/directoryName has a list of possible arguments: username, password, knownHostUri, privateKeyUri, delete, fileName, recursive -->
 
 | Argument | Default value | Description |
 |---|---|---|
-| username | | username to use for login |
-| password | | password to use for login |
-| knownHostsUri | | set the known_hosts file (loaded from classpath by default), so that the SFTP endpoint can do host key verification |
-| privateKeyUri | | set the private key file (loaded from classpath by default) so that the SFTP endpoint can do private key verification |
-| delete | true | delete the file after processing |
-| fileName | | only listen for files with the exact name |
-| recursive | false | check sub directories |
+| username <!-- sftp:host:port/directoryName username --> | | username to use for login |
+| password <!-- sftp:host:port/directoryName password --> | | password to use for login |
+| knownHostsUri <!-- sftp:host:port/directoryName knownHostsUri --> | | set the known_hosts file (loaded from classpath by default), so that the SFTP endpoint can do host key verification |
+| privateKeyUri <!-- sftp:host:port/directoryName privateKeyUri --> | | set the private key file (loaded from classpath by default) so that the SFTP endpoint can do private key verification |
+| delete <!-- sftp:host:port/directoryName delete --> | true | delete the file after processing |
+| fileName <!-- sftp:host:port/directoryName fileName --> | | only listen for files with the exact name |
+| recursive <!-- sftp:host:port/directoryName recursive --> | false | check sub directories |
 
 ### Genesis Table
 
@@ -561,12 +564,13 @@ pipelines {
 ```
 
 The `sink` function has three optional settings:
+<!-- The sink function has a list of possible arguments: onInsert, onModify, onDelete -->
 
 | Argument | Default value | Description |
 |---|---|---|
-| onInsert | null | operation to run on Genesis DB insert operation |
-| onModify | null | operation to run on Genesis DB modify operation |
-| onDelete | null | operation to run on Genesis DB delete operation |
+| onInsert <!-- sink onInsert --> | null | operation to run on Genesis DB insert operation |
+| onModify <!-- sink onModify --> | null | operation to run on Genesis DB modify operation |
+| onDelete <!-- sink onDelete --> | null | operation to run on Genesis DB delete operation |
 
 All these operations are executed via SQL and take the order of the mapped field entities as they are found in your map configuration.
 
