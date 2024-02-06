@@ -405,13 +405,14 @@ This command is used to terminate a specified process.
 
 ### Syntax
 The `killProcess` command can take the following arguments:
+<!-- The killProcess command has a list of possible arguments: -s, -f, -w, -c -->
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                      | Restricted values | Default |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|-------|
-| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | no        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | none              | none |
-| -f                           | --force                                       |           | forcefully kills a process (using kill -9)       | none              | none |
-| -w WAIT                      | --wait WAIT                                   | no        | specifies how many seconds to wait before forcing the kill       | none         |  10 |
-| -c                           | --cluster                                     | no        | kills the process on every node in the cluster             | none              | none |
+| -s   HOSTNAME [HOSTNAME ...]  <!-- killProcess -s [HOSTNAME ...] -->| --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] <!-- killProcess --hostname [HOSTNAME ...] | no        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | none              | none |
+| -f   <!-- killProcess -f --> | --force   <!-- killProcess --force -->  |           | forcefully kills a process (using kill -9)       | none              | none |
+| -w WAIT   <!-- killProcess -w --> | --wait WAIT     <!-- killProcess -wait -->        | no        | specifies how many seconds to wait before forcing the kill       | none         |  10 |
+| -c     <!-- killProcess -c -->    | --cluster         <!-- killProcess --cluster -->  | no        | kills the process on every node in the cluster             | none              | none |
 
 The example below kills the GENESIS_AUTH_PERMS process.
 
@@ -436,13 +437,14 @@ This command kills the server. It reads the **$GC/processes.xml** file to determ
 
 ### Syntax
 The `killServer` command can take the following arguments:
+<!-- The killServer command has a list of possible arguments: -s, -f, --all, -c -->
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                                                          | Restricted values | Default |
 |------------------------------|------------------------------|-----------|------------------------------------|-------------------|--------|
-| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | no        | Where the application is running  on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node). Specify the Host Name, Host Names or "cluster" for all hosts | none | none |
-| -f                           | --force                                       | no        | forcefully kills a process (using kill -9)                                                                                                                                                                                         | none              | none |
-|                              | --all                                         | no        | kills all processes, including   GENESIS_CLUSTER                                                                                                                                                                                     | none              | none |
-| -c                           | --cluster                                     | no        | kills the server on all the nodes in the cluster                                                                                                                                                                                   | none              |    none | 
+| -s   HOSTNAME [HOSTNAME ...]  <!-- killServer -h [HOSTNAME ...] --> | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] <!-- killServer --hostname [HOSTNAME ...] --> | no        | Where the application is running  on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node). Specify the Host Name, Host Names or "cluster" for all hosts | none | none |
+| -f   <!-- killServer -f -->  | --force   <!-- killServer --force -->         | no        | forcefully kills a process (using kill -9)                                                                                                                                                                                         | none              | none |
+|                              | --all     <!-- killServer --all -->           | no        | kills all processes, including   GENESIS_CLUSTER                                                                                                                                                                                     | none              | none |
+| -c  <!-- killServer -c --> | --cluster   <!-- killServer --cluster -->       | no        | kills the server on all the nodes in the cluster                                                                                                                                                                                   | none              |    none | 
 
 In the example below, there is a single node; this command kills all processes for the application, including GENESIS_CLUSTER.
 
