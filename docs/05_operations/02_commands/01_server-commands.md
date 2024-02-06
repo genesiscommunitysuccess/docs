@@ -1107,24 +1107,25 @@ This command starts the server of an application. It reads the **$GC/processes.x
 ### Syntax
 
 The `startServer` command can take the following arguments:
+<!-- The startServer command has a list of possible arguments: -s, -c, -i, -v -->
 
 | Argument                    | Argument long name                   | Mandatory | Description                                                                                                                                                                                | Restricted values | Default |
 |-----------------------------|--------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|--------|
-|  -s HOSTNAME [HOSTNAME ...] | --hostname   HOSTNAME [HOSTNAME ...] | no        | if the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node). Specify the Host Name | none | none |
-|  -c                         | --cluster                            | no        | starts the server on every node in the cluster | none |none |
-|  -i                         | --ignoreDaemon                       | no        | avoids killing/starting the daemon | none | none |
-| -v                          | --verbose                            | no        | starts in verbose mode; logs to the terminal so you can view on screen   | none   | none   |  
+|  -s HOSTNAME [HOSTNAME ...] <!-- startServer -s [HOSTNAME ...] --> | --hostname   HOSTNAME [HOSTNAME ...] <!-- startServer --hostname [HOSTNAME ...] -->| no        | if the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node). Specify the Host Name | none | none |
+|  -c  <!-- startServer -c  -->                                      | --cluster   <!-- startServer --cluster  -->                                        | no        | starts the server on every node in the cluster | none |none |
+|  -i  <!-- startServer -i  -->                                      | --ignoreDaemon  <!-- startServer --ignoreDaemon  -->                               | no        | avoids killing/starting the daemon | none | none |
+| -v   <!-- startServer -v  -->                                      | --verbose   <!-- startServer --verbose  -->                                        | no        | starts in verbose mode; logs to the terminal so you can view on screen   | none   | none   |  
 
 The example below starts the server.
 
 ```
-startserver
+startServer
 ```
 
 The example below starts the server on node1 without starting/killing the daemon.
 
 ```
-startserver  -s node1 -i
+startServer  -s node1 -i
 ```
 
 The **processes.xml** file looks like this:
