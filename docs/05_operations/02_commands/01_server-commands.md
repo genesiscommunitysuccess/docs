@@ -1067,13 +1067,13 @@ This command starts a Genesis process.
 The command must be followed by the name of the process that you want to start.
 
 The following arguments are also available:
+<!-- The startProcess command has a list of possible arguments: -s, -v, --dump -->
 
 | Argument                   | Argument long name                          | Mandatory | Description                                                                                                                                                                                         | Restricted values | Default |
 |----------------------------|---------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|-------|
-| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | no        | where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | none                |	none   |  
-| -c                         | --cluster                                   | no       | starts the process on every node in the cluster     | none                | none   |  
-| -v                         | --verbose                                   | no        | starts in verbose mode; logs to the terminal so you can view on screen   | none                | none   |  
-|                            | --dump                                      | no        | displays progress of the process, which is useful for debugging                                                                                                                          | none                |		none   |  
+| -s HOSTNAME [HOSTNAME ...] <!-- startProcess -s [HOSTNAME ...] -->  | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] <!-- startProcess --hostname [HOSTNAME ...]  --> | no        | where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | none                |	none   |  
+| -v    <!-- startProcess -v  -->                                     | --verbose   <!-- startProcess --verbose  -->                                | no        | starts in verbose mode; logs to the terminal so you can view on screen   | none                | none   |  
+|                                                                     | --dump   <!-- startProcess --dump  -->                 | no        | displays progress of the process, which is useful for debugging                                                                                                                          | none                |		none   |  
    
 
 The following example starts the process called APP_EVALUATOR:
@@ -1099,7 +1099,6 @@ The script looks in the **processes.xml** file (see startServer below) to find o
 ```bash
 java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
 ```
-
 
 ## startServer 
 
