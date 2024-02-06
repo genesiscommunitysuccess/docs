@@ -1198,24 +1198,26 @@ And remember, only use this command when all your applications have been stopped
 
 The script accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc).
 
+<!-- The DictionaryBuilder command has a list of possible arguments: -c, -d, -h, -H, -i, -l, -o, -p, -P, -R, -s, -t, -U, -V -->
+
 ### Syntax
 
 | Short | Long Argument                          | Mandatory | Description                                                                                                               |
 |----|----------------------------------------|----|--------------------------------------------------------------------------------------------------------------------------|
-| -c | --comments                             |  | Include original SQL in Comments defaults to true                                                                         |
-| -d | --databaseName=\<databaseName\>        | Yes | Database name                                                                                                             |
-| -h | --help                                 |  | Show this help message and exit.                                                                                          |
-| -H | --host=\<hostname\>                    | Yes | The database hostname.                                                                                                    |
-| -i | --tableid=\<tableIdStart\>             |  | Table Id start number, defaults = 0                                                                                       |
-| -l | --tables=\<tables\>\[,\<tables\>...\]  |  | table list to include, default is all tables                                                                              |
-| -o | --output=\<outputDirectory\>           |  | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created             |
-| -p | --port=\<port\>                        | Yes | The database port                                                                                                        |
-| -P | --password\[=\<password\>\]            | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively |
-| -R | --product=\<productName\>              | Yes | Represents the product name and affects the output file                                                                 |
-| -s | --sid=\<oracleSidId\>                  |  | The Oracle System ID if using oracle, or the schema ID if using MSSQL                                                    |
-| -t | --type=\<databaseType\>                | Yes | Database type, valid values: MSSQL, Oracle, Postgres                                                                      |
-| -U | --username=\<username\>                | Yes | Username                                                                                                                  |
-| -V | --version                              |  | Print version information and exit                                                                                       |
+| -c <!-- DictionaryBuilder -c  -->  | --comments  <!-- DictionaryBuilder -c  -->                                      |     | Include original SQL in Comments defaults to true                                                                         |
+| -d <!-- DictionaryBuilder -d  -->  | --databaseName=\<databaseName\>  <!-- DictionaryBuilder --databaseName=\  -->   | Yes | Database name                                                                                                             |
+| -h <!-- DictionaryBuilder -h  -->  | --help  <!-- DictionaryBuilder --help  -->                                      |     | Show this help message and exit.                                                                                          |
+| -H <!-- DictionaryBuilder -H  -->  | --host=\<hostname\>   <!-- DictionaryBuilder --host=[HOST]  -->                 | Yes | The database hostname.                                                                                                    |
+| -i <!-- DictionaryBuilder -i  -->  | --tableid=\<tableIdStart\>  <!-- DictionaryBuilder --tableid=[TABLE ID]  -->    |     | Table Id start number, defaults = 0                                                                                       |
+| -l <!-- DictionaryBuilder -l  -->  | --tables=\<tables\>\[,\<tables\>...\] <!-- DictionaryBuilder --tables=\  -->    |     | table list to include, default is all tables                                                                              |
+| -o <!-- DictionaryBuilder -o  -->  | --output=\<outputDirectory\>  <!-- DictionaryBuilder --output=[DIRECTORY]  -->  |     | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created             |
+| -p <!-- DictionaryBuilder -p  -->  | --port=\<port\>  <!-- DictionaryBuilder --port=[PORT]  -->                      | Yes | The database port                                                                                                        |
+| -P <!-- DictionaryBuilder -P  -->  | --password\[=\<password\>\]  <!-- DictionaryBuilder --password=[PASSWORD]  -->  | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively |
+| -R <!-- DictionaryBuilder -R  -->  | --product=\<productName\>   <!-- DictionaryBuilder --productName=[NAME]  -->    | Yes | Represents the product name and affects the output file                                                                 |
+| -s <!-- DictionaryBuilder -s  -->  | --sid=\<oracleSidId\>  <!-- DictionaryBuilder --sid=[ID]  -->                   |     | The Oracle System ID if using oracle, or the schema ID if using MSSQL                                                    |
+| -t <!-- DictionaryBuilder -t  -->  | --type=\<databaseType\>  <!-- DictionaryBuilder --type=[DB TYPE]  -->           | Yes | Database type, valid values: MSSQL, Oracle, Postgres                                                                      |
+| -U <!-- DictionaryBuilder -U  -->  | --username=\<username\>  <!-- DictionaryBuilder --username=[USERNAME]  -->      | Yes | Username                                                                                                                  |
+| -V <!-- DictionaryBuilder -V  -->  | --version   <!-- DictionaryBuilder --version=[VERSION]  -->                     |     | Print version information and exit                                                                                       |
 
 You can use double-dash notation for any argument.
 
