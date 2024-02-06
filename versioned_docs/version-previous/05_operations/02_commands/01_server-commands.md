@@ -467,18 +467,18 @@ The `LogLevel` command can take the following arguments:
 
 | Argument                               | Argument long name                   | Mandatory | Description                                 | Restricted values | Default |
 |----------------------------------------|--------------------------------------|-----------|---------------------------------------------------------------------------------------|-------------------|-------|
-| -c   <!-- LogLevel -c -->              |  --class `<class name>` <!--class [CLASS NAME] -->   | no         | changes log level on the defined class       | none                | none |
-|                                        | -DATADUMP_NACK_OFF  <!-DATADUMP_NACK_OFF -->         | no         | changes log level to INFO for Genesis messages   | none   | none  |
-|                                        | -DATADUMP_NACK_ON   <!-DATADUMP_NACK_ON -->          | no         | changes log level to TRACE and captures only _NACK messages from Genesis messages     | none    | none  |
-|                                        |  -DATADUMP_OFF   <!-DATADUMP_OFF -->                 | no         | changes the log level to info for Genesis messages   | none | none  |
-|                                        |  -DATADUMP_ON    <!-DATADUMP_ON -->                  | no         | changes the log level to trace for Genesis messages   | none | none  |
-| -h   <!-- LogLevel -h -->              |  --help  <!--help -->                                | no         | show help on the command                     | none  | none  |
-| -l  <!-- LogLevel -l -->               |  --level `<log level>`  <!--loglevel [LOG LEVEL] --> | no         | log level - if log level is not correct, it will be set automatically to   DEBUG level | none     | none  |
-| -p _process-name_,..,_process-name_ <!-- LogLevel -p --> |                                    | no         | attaches processes to the command     | none  | none  |
-| -r _process-name_,..,_process-name_`<!-- LogLevel -r --> |                                    | no         | remove processes       | none        | none  |
-|                                        | -STATUSDUMP_OFF   <!-STATUSDUMP_OFF -->              | no         | changes the log level to info for status updates    | none  | none  |
-|                                        | -STATUSDUMP_ON    <!-STATUSDUMP_ON -->               | no         | changes the log level to trace for status updates  | none   | none  |
-| -t `<time>`  <!-- LogLevel -t   -->    |                                                      | no         | duration of log level change in min/sec Eg: 1m, 1000s   | none | none  |
+| -c   <!-- LogLevel -c -->              |  --class `<class name>` <!-- LogLevel --class [CLASS NAME] -->   | no         | changes log level on the defined class       | none               | none |
+|                                        | -DATADUMP_NACK_OFF  <!-- LogLevel -DATADUMP_NACK_OFF -->         | no         | changes log level to INFO for Genesis messages   | none   | none  |
+|                                        | -DATADUMP_NACK_ON   <!-- LogLevel -DATADUMP_NACK_ON -->          | no         | changes log level to TRACE and captures only _NACK messages from Genesis messages     | none    | none  |
+|                                        |  -DATADUMP_OFF   <!-- LogLevel -DATADUMP_OFF -->                 | no         | changes the log level to info for Genesis messages   | none | none  |
+|                                        |  -DATADUMP_ON    <!-- LogLevel -DATADUMP_ON -->                  | no         | changes the log level to trace for Genesis messages   | none | none  |
+| -h   <!-- LogLevel -h -->              |  --help  <!-- LogLevel --help -->                                | no         | show help on the command                     | none  | none  |
+| -l  <!-- LogLevel -l -->               |  --level `<log level>`  <!-- LogLevel [LOG LEVEL] -->            | no         | log level - if log level is not correct, it will be set automatically to   DEBUG level | none     | none  |
+| -p _process-name_,..,_process-name_ <!-- LogLevel -p --> |                                       | no         | attaches processes to the command     | none  | none  |
+| -r _process-name_,..,_process-name_`<!-- LogLevel -r --> |                                       | no         | remove processes       | none        | none  |
+|                                        | -STATUSDUMP_OFF   <!-- -STATUSDUMP_OFF -->              | no         | changes the log level to info for status updates    | none  | none  |
+|                                        | -STATUSDUMP_ON    <!-- -STATUSDUMP_ON -->               | no         | changes the log level to trace for status updates  | none   | none  |
+| -t `<time>`  <!-- LogLevel -t   -->    |                                                         | no         | duration of log level change in min/sec Eg: 1m, 1000s   | none | none  |
 
 The example below sets the logging level for the GENESIS_AUTH_DATASERVER process to TRACE.
 
