@@ -159,7 +159,7 @@ In the the PROJECT_USERS table, you only need two fields:
 - PROJ_ID
 - USER_ID
 
-Each record in this table states that PROJ_ID= x has USER_ID=y. But it is important that you do not duplicate any of these records - which could cause problems. So, in your PROJECT_USERS table, make PROJ_ID the primary index and add a unique index on PROJ_ID and USER_ID. The database will now prevent you from entering a record that has exactly the same PROJ_ID and USER_ID as an existing record.
+Each record in this table states that PROJ_ID = x has USER_ID = y. However, we require that each unique combination of PROJ_ID and USER_ID can only occur once in the table. So in our table, we define the primary key on PROJ_ID and USER_ID. We can rely on the database to ensure uniqueness; an attempt to insert a record with a PROJ_ID and USER_ID combination that already exists will fail.
 
 Here is our table definition for this:
 
