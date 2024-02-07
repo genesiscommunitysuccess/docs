@@ -12,7 +12,7 @@ tags:
 [Indices](../../../database/fields-tables-views/tables/tables-basics/#indices) are key components of any database. In the Genesis platform, every table must have at least one index: the [primary key](../../../database/fields-tables-views/tables/tables-basics/#primary-key). This is vital for controlling how data is [read](../../../database/database-concepts/read/) by an application.
 
 - Unique indices are required for `get` operations.
-- An index is essential for `getRange` operations
+- An index is required for `getRange` operations. This can be either unique or non-unique.
 - In `getBulk` operations, the index determines the order in which records are returned.
 
 ## Operations and indices
