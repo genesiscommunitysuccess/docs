@@ -2,11 +2,16 @@
 title: 'Tables - basics'
 sidebar_label: 'Tables - basics'
 id: tables-basics
-keywords: [database, tables, basics]
+keywords: [database, tables, primary key, index, indices, nonunique index, unique index]
 tags:
     - database
     - tables
-    - basics
+    - primary key
+    - index
+    - indices
+    - nonunique index
+    - unique index
+
 ---
 
  
@@ -106,13 +111,10 @@ In many cases, you will want to provide other indices so that all the useful way
 
 There are two types of index that you can specify:
 
-- A unique index ensures that no two records in the table can have the same value for the specified field or fields. For example, this could be a TRADE_ID in a TRADES table, where the unique value is generated via autoIncrement or sequence. Or it could be a CURRENCY_SYMBOL in a table of CURRENCIES.  
-- A non-unique index can be on any field or fields within the table. For example, you  might want to be able to find all records for a specific date or date range. If an index is made up of multiple fields, then searches can be made on all or some of those fields, but there are specific rules for this (see below).
+- A **unique index** ensures that no two records in the table can have the same value for the specified field or fields. For example, this could be a TRADE_ID in a TRADES table, where the unique value is generated via autoIncrement or sequence. Or it could be a CURRENCY_SYMBOL in a table of CURRENCIES.  
+- A **non-unique index** is useful when uniqueness is not important or not possible. For example, you could add a non-unique index on the ORDER_ID field in your TRADE table. This enables you to find all the trades that match a specified order.  (ORDER_ID would be unique in the ORDERS table, but the order can be filled by multiple trades.) 
 
-Here is a simple example showing a unique and a non-unique index.
-
-- Each index has only one field.
-- Neither index has had a name specified. So Genesis will generate the names: MY_TABLE_BY_SESSION_AUTH_TOKEN and MY_TABLE_BY_USER_NAME (see below).
+Here is a simple example showing a unique and a non-unique index.  Each index has only one field.
 
 ```
   table(name = "TRADE", id = 1010) {
@@ -140,37 +142,75 @@ Here is a simple example showing a unique and a non-unique index.
 }
 ```
 
-- Indices are used in the following scenarios:
+See our page on [operations and indices](../../../../database/data-structures/indices/) for information on the operations that can be used to perform look-ups on an index.
 
-- Creating additional unique constraints to the table's primary key
-- Providing a performant record lookup (`unique` index)
-- Providing an index for a performant ranged lookup (`nonUnique` index, else `unique` index but searching on part of the key)
+### Enforcing uniqueness
+We have already noted that a unique index enforces uniqueness on that field. So you can add a unique index to a table to create a further constraint on the primary index.
 
-You can define indices on a table in a similar fashion to `primaryKey`. As with keys, indices are made up of one or more fields from the table. Where the indices are made up of multiple fields, the order of the fields matters if you want to search based on a partial index. This affects performance.
+Imagine a scenario where you have projects and users.
+
+- You have a PROJECTS table where each project has a unique PROJ_ID.
+- You have a USERS table where each project has a unique USER_ID.
+
+There is a many-to-many relationship between the two tables - projects can have more than one user, and users can belong to more than one project. To allocate users to projects, you need a third table: PROJECT_USERS.
+
+In the the PROJECT_USERS table, you only need two fields:
+
+- PROJ_ID
+- USER_ID
+
+Each record in this table states that PROJ_ID= x has USER_ID=y. But it is important that you do not duplicate any of these records - which could cause problems. So, in your PROJECT_USERS table, make PROJ_ID the primary index and add a unique index on PROJ_ID and USER_ID. The database will now prevent you from entering a record that has exactly the same PROJ_ID and USER_ID as an existing record.
+
+Here is our table definition for this:
 
 ```kotlin
-    indices {
-        unique {
-            SESSION_AUTH_TOKEN
-        }
-        nonUnique {
-            USER_NAME
-        }
-    }
+  table(name = "PROJECT_USERS", id = 11020) {
+      PROJ_ID
+      USER_ID
+      primaryKey {
+          PROJ_ID
+      }
+     indices {
+         unique {
+             PROJ_ID
+             USER_ID
+         }
+         nonUnique {
+             USER_ID
+         }
+     }
+  }
 ```
+You can clearly see the unique index on the two fields in the table above. As well as enforcing uniqueness, it also enables you to search for a record where USER_ID=y and USER_ID=y - so you can see if project x includes user y (and you can also make a partial search - see below).
+
+Note that the example also includes a non-unique index on USER_ID. This enables you to search for all records where USER_ID=y - so you can see exactly which projects the user belongs to.
+
+### Indices with multiple fields
+Any index you create - the primary key or other unique or non-unique indices - can have multiple fields.
+
+If you create an index with multiple fields, it is possible to make a search based on all the fields specified or to make a partial search based on some of the fields. However, there are strict limits to this.
+
+Consider an index that has three fields; A, B and C:
+
+- The search **must** always use the first field: A. It is also possible to search only on this field.
+- The search **can** use all the fields. The field values must be specified in the order that they are specified in the index.
+- The search **can** use the first and second fields only: A and B.
+- The search **cannot** use the first and third fields (A and C) only.
+- The search **cannot** use the second and third fields (B and C) only.
+
+Bear these restrictions in mind when you create an index with multiple fields; the order of the fields is important if you want partial searches to be useful and efficient.
 
 When you define an index, you cannot supply exactly the same fields in exactly the same order as the primary key or another index on the same table.
 
 ### Primary key and index names
 
-It is not mandatory to give a primary key or an index a name. If you don't provide a name, it will be inferred:
+It is not mandatory to give a name to a primary key or an index. If you don't provide a name, it will be inferred:
 
  `[TABLE_NAME]_BY_[FIELD_1](_[FIELD_N])`
  
  where FIELD_1 - FIELD_N are all the fields that make up the key/index in the order specified.
 
 One exception is the common use case where the primary key is made up of a single field with a name of format `[TABLE_NAME]_[ID]`. In this case, the inferred name is `[TABLE_NAME]_BY_ID`.
-
 
 Let's see some examples. Below, the table name is `POSITION`. The inferred names are shown in the comment before each primary key.
 
