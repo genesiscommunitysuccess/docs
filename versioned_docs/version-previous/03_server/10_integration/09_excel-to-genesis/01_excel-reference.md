@@ -18,14 +18,15 @@ The process of conversion handles the [functions](#functions), [columns/field na
 ## ExcelToGenesis
 
 This script converts the Excel spreadsheet into a Genesis data model, which can then be used to generate a working server.
+<!-- The ExcelToGenesis script has a list of possible arguments: -f, -n, -t -->
 
 ### Options
 
 | Argument | Argument long name      | Mandatory |               Description                                 | Restricted values         |
 |----------|-------------------------|-----------|-----------------------------------------------------------|---------------------------|       
-| -f       | --file                  | Yes       | the name of the worksheet you are going to convert.       | No                        |        
-| -n       | --name                  | Yes       | the name of the project (application) you want to create. | No                        |              
-| -t       | --table                 | Yes       | the start of the table id sequence (see note below).      | No                        |        
+| -f  <!-- ExcelToGenesis -f -->     | --file <!-- ExcelToGenesis --file -->                 | Yes       | the name of the worksheet you are going to convert.       | No                        |        
+| -n  <!-- ExcelToGenesis -n -->     | --name  <!-- ExcelToGenesis --name -->                | Yes       | the name of the project (application) you want to create. | No                        |              
+| -t  <!-- ExcelToGenesis -t -->     | --table <!-- ExcelToGenesis --table -->                | Yes       | the start of the table id sequence (see note below).      | No                        |        
 
 
 

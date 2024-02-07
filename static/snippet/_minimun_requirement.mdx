@@ -11,7 +11,7 @@
 |----------------------------------------------------------------------------------------------------------------|:------------------:|
 | [IntelliJ](https://www.jetbrains.com/idea/download/?fromIDE=#section=windows)	                                 | 2022.3 or above    |
 | [Java SDK or JDK](https://www.oracle.com/java/technologies/downloads/) (Choose the **x64 installer** download) |         17         |
-| [NodeJS](https://nodejs.org/download/release/latest-gallium/)                                                  |       16 LTS       |
+| [NodeJS](https://nodejs.org/download/release/latest-iron/)                                                  |       20 LTS       |
 | [Genesis Intellij plugin](../../../server/tooling/intellij-plugin/) (Depending on your runtime environment)    |        0.1.2       |
 | [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (Depending on your runtime environment)           |        0.1.2       |
 | [Postman](https://www.postman.com/downloads/) (optional)	                                                      |         8          | 
