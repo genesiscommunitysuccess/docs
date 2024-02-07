@@ -49,7 +49,7 @@ You should ignore any other seed version listings.
 ## Prerequisites
 
 - Recommended Operating system : Windows 10 Pro
-- [Node.js](https://nodejs.org/en/download/) version 16
+- [Node.js](https://nodejs.org/en/download/) version 20
 
 ## Launching genx
 

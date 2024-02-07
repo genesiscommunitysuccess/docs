@@ -35,7 +35,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -78,7 +78,7 @@ pipeline {
 
 
    tools {
-        nodejs '16.13.2'
+        nodejs '20.10.0'
     }
     environment {
         REPO_NAME = sh (
