@@ -23,9 +23,9 @@ This day covers:
 
 ## Quick review of the platform
 
-The Genesis low-code platform is the only low-code platform designed to build and run mission-critical systems for the financial markets, based on event-driven and microservice architecture. 
+The Genesis low-code platform is the only low-code platform designed to build and run mission-critical systems for the financial markets, based on event-driven and microservice architecture.
 
-The platform enables your application to handle events and distribute data in real time from the start by using its building blocks, such as Data Servers, Request Servers and Event Handlers. These resources are powered by Genesis Platform Abstraction Language (**GPAL**), which plugs into IntelliJ, allowing for code autocompletion, compilation and syntax highlighting as you code. 
+The platform enables your application to handle events and distribute data in real time from the start by using its building blocks, such as Data Servers, Request Servers and Event Handlers. These resources are powered by Genesis Platform Abstraction Language (**GPAL**), which plugs into IntelliJ, allowing for code autocompletion, compilation and syntax highlighting as you code.
 
 <b>Genesis Low-Code Platform</b>
 
@@ -33,7 +33,7 @@ The platform enables your application to handle events and distribute data in re
 
 At the heart of the server is the data persistence layer and the **data model**. You model your data by defining fields, then tables, then views.
 
-Once you have a data model defined, you can start bringing your application to life by creating **events** in an Event Handler process, which have access to the data layer importing auto-generated data repositories, to handle the business logic with code written in languages such as Kotlin and/or Java. 
+Once you have a data model defined, you can start bringing your application to life by creating **events** in an Event Handler process, which have access to the data layer importing auto-generated data repositories, to handle the business logic with code written in languages such as Kotlin and/or Java.
 
 When it comes to displaying the data, you can configure a **Data Server** to distribute the data to the front end. The Data Server is a GPAL component that streams the data in real time to subscribers, such as a data grid component in the front end. You can also bind a button in the UI to an event (action) defined in your Event Handler.
 
@@ -59,7 +59,7 @@ Now let's take a closer look at the server architecture.
 
 ![](/img/server-architecture.png)
 
-Surrounding the core, operational tools enable you to run and monitor the application, while cluster services enable you to run across multiple nodes. Auth and permissions enable you control access and build sophisticated and granular access to data and functions. 
+Surrounding the core, operational tools enable you to run and monitor the application, while cluster services enable you to run across multiple nodes. Auth and permissions enable you control access and build sophisticated and granular access to data and functions.
 
 You will get familiar with all these concepts in the next lessons.
 
@@ -90,7 +90,7 @@ With a lack of imagination we hope you will find trustworthy, we are going to ca
 
 To create a new project, you can use the `genx` CLI tool, which enables you to seed projects. Further details can be found [here](../../../getting-started/quick-start/create-a-new-project/).
 
-In our case, we just want to extend a blank full-stack application project, so we are using the [training seed](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you have followed the Environment set-up and done the step [Start the project baseline](../../../getting-started/developer-training/environment-setup/#start-the-project-baseline), where you cloned the repository locally. 
+In our case, we just want to extend a blank full-stack application project, so we are using the [training seed](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you have followed the Environment set-up and done the step [Start the project baseline](../../../getting-started/developer-training/environment-setup/#start-the-project-baseline), where you cloned the repository locally.
 
 Here's a quick overview of the repository that you cloned:
 
@@ -136,7 +136,7 @@ After you have saved this file, run [genesis-generated-fields](../../../database
 
 ### generateFields
 
-import GenerateFields from '/snippet/_generate_fields.md';
+import GenerateFields from '/snippet/_generate_fields.mdx';
 
 <GenerateFields />
 
@@ -168,7 +168,7 @@ tables {
             TRADE_ID
         }
     }
-    
+
 }
 ```
 
@@ -176,7 +176,7 @@ After you have saved this file, run [genesis-generated-dao](../../../database/fi
 
 ### generateDao
 
-import GenerateDao from '/snippet/_generate_DAO.md'
+import GenerateDao from '/snippet/_generate_DAO.mdx'
 
 <GenerateDao />
 
@@ -294,7 +294,7 @@ After the Gradle tasks, when first using the plugin with a project, you must cre
 
 ![Genesis Install](/img/intellij-install.png)
 
-This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes. 
+This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes.
 
 :::note
 On the first run, this could take up to 20 minutes, because it performs a full build of your application.
@@ -340,7 +340,7 @@ wsl-distro=TrainingCentOS
 wsl-user=genesis
 ```
 
-| Entry  |  Description | 
+| Entry  |  Description |
 |---|---|
 |`genesis-home`|  This is a mandatory property that is a path on the WSL distribution. |
 |`wsl-distro`|  This is a mandatory property that is the name of the WSL distribution. |
@@ -383,7 +383,7 @@ As our application will override the standard definitions using the site-specifi
 
 In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip**.
 
-![](/img/install-site-specific.png) 
+![](/img/install-site-specific.png)
 
 ```shell title='Running install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip from the command line'
 ./gradlew :genesisproduct-alpha:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip
@@ -400,7 +400,7 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**a
 ![](/img/deploy-alpha-product.png)
 
 ```shell title='Running deploy-genesisproduct-alpha.zip from the command line'
-./gradlew :genesisproduct-alpha:alpha-deploy:deploy-genesisproduct-alpha.zip 
+./gradlew :genesisproduct-alpha:alpha-deploy:deploy-genesisproduct-alpha.zip
 ```
 </TabItem>
 </Tabs>
@@ -423,7 +423,7 @@ However, after the first Build and Deploy, you need to send the login informatio
 
 <h3>Create a new schema</h3>
 
-Before you can run your application, you need to create a new schema for the database; this is where all tables will be created. To do that, 
+Before you can run your application, you need to create a new schema for the database; this is where all tables will be created. To do that,
 
 Run the `remap`.
 
@@ -446,7 +446,7 @@ After that, you have all the data to start the application.
 
 <details>
   <summary>Want to check if your data has been sent?</summary>
-  To check your database, Genesis Intellij plugin has the following script 
+  To check your database, Genesis Intellij plugin has the following script
 
   ![](/img/DbMon-script.png)
 
@@ -462,22 +462,22 @@ DbMon:USER>search 1
 ==================================
 USER
 ==================================
-Field Name                               Value                                    Type                
+Field Name                               Value                                    Type
 ===========================================================================================
-TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)      NANO_TIMESTAMP      
-COMPANY_ID                                                                        STRING              
-COMPANY_NAME                             GENESIS                                  STRING              
-DOMAIN                                                                            STRING              
-EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING              
-FIRST_NAME                               Jane                                     STRING              
-LAST_LOGIN                               2016-04-28                               DATE                
-LAST_NAME                                Dee                                      STRING              
-ONLINE                                   false                                    BOOLEAN             
-PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING              
-PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
-REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
-STATUS                                   ENABLED                                  STRING              
-USER_NAME                                JaneDee                                  STRING              
+TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)      NANO_TIMESTAMP
+COMPANY_ID                                                                        STRING
+COMPANY_NAME                             GENESIS                                  STRING
+DOMAIN                                                                            STRING
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING
+FIRST_NAME                               Jane                                     STRING
+LAST_LOGIN                               2016-04-28                               DATE
+LAST_NAME                                Dee                                      STRING
+ONLINE                                   false                                    BOOLEAN
+PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING
+PASSWORD_EXPIRY_DATETIME                                                          DATETIME
+REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING
+STATUS                                   ENABLED                                  STRING
+USER_NAME                                JaneDee                                  STRING
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1
@@ -489,7 +489,7 @@ DbMon:USER>
 
 <TabItem value = 'Docker'>
 
-We shall run the task `loadInitialData`. This adds the data in a file called USER.csv to be imported into the USER table in your database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously. 
+We shall run the task `loadInitialData`. This adds the data in a file called USER.csv to be imported into the USER table in your database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously.
 
 In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**loadInitialData**.
 
@@ -522,22 +522,22 @@ DbMon:USER>search 1
 ==================================
 USER
 ==================================
-Field Name                               Value                                    Type                
+Field Name                               Value                                    Type
 ===========================================================================================
-TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)      NANO_TIMESTAMP      
-COMPANY_ID                                                                        STRING              
-COMPANY_NAME                             GENESIS                                  STRING              
-DOMAIN                                                                            STRING              
-EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING              
-FIRST_NAME                               Jane                                     STRING              
-LAST_LOGIN                               2016-04-28                               DATE                
-LAST_NAME                                Dee                                      STRING              
-ONLINE                                   false                                    BOOLEAN             
-PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING              
-PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
-REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
-STATUS                                   ENABLED                                  STRING              
-USER_NAME                                JaneDee                                  STRING              
+TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)      NANO_TIMESTAMP
+COMPANY_ID                                                                        STRING
+COMPANY_NAME                             GENESIS                                  STRING
+DOMAIN                                                                            STRING
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING
+FIRST_NAME                               Jane                                     STRING
+LAST_LOGIN                               2016-04-28                               DATE
+LAST_NAME                                Dee                                      STRING
+ONLINE                                   false                                    BOOLEAN
+PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING
+PASSWORD_EXPIRY_DATETIME                                                          DATETIME
+REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING
+STATUS                                   ENABLED                                  STRING
+USER_NAME                                JaneDee                                  STRING
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1
@@ -549,7 +549,7 @@ DbMon:USER>
 
 <TabItem value = 'WSL'>
 
-We shall run the task `loadInitialData`. This adds the data in a file called USER.csv to be imported into the USER table in your database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously. 
+We shall run the task `loadInitialData`. This adds the data in a file called USER.csv to be imported into the USER table in your database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously.
 
 In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**loadInitialData**.
 
@@ -582,22 +582,22 @@ DbMon:USER>search 1
 ==================================
 USER
 ==================================
-Field Name                               Value                                    Type                
+Field Name                               Value                                    Type
 ===========================================================================================
-TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)      NANO_TIMESTAMP      
-COMPANY_ID                                                                        STRING              
-COMPANY_NAME                             GENESIS                                  STRING              
-DOMAIN                                                                            STRING              
-EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING              
-FIRST_NAME                               Jane                                     STRING              
-LAST_LOGIN                               2016-04-28                               DATE                
-LAST_NAME                                Dee                                      STRING              
-ONLINE                                   false                                    BOOLEAN             
-PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING              
-PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
-REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
-STATUS                                   ENABLED                                  STRING              
-USER_NAME                                JaneDee                                  STRING              
+TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)      NANO_TIMESTAMP
+COMPANY_ID                                                                        STRING
+COMPANY_NAME                             GENESIS                                  STRING
+DOMAIN                                                                            STRING
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING
+FIRST_NAME                               Jane                                     STRING
+LAST_LOGIN                               2016-04-28                               DATE
+LAST_NAME                                Dee                                      STRING
+ONLINE                                   false                                    BOOLEAN
+PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING
+PASSWORD_EXPIRY_DATETIME                                                          DATETIME
+REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING
+STATUS                                   ENABLED                                  STRING
+USER_NAME                                JaneDee                                  STRING
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1
@@ -703,7 +703,7 @@ See [here](/getting-started/prerequisites/gradle-deploy-plugin/) for extra detai
 
 ## Testing the back end
 
-There are multiple ways you can test the back end of your application. It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as HTTP endpoints automatically by the Genesis low-code platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. 
+There are multiple ways you can test the back end of your application. It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as HTTP endpoints automatically by the Genesis low-code platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman.
 
 Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
 
