@@ -20,14 +20,14 @@ To enable the plugin:
 1. Add an Xlator plugin dependency to the module pom for the Streamer or Streamer-Client.
 
 ```xml
-<dependency> 
+<dependency>
     <groupId>global.genesis</groupId>
     <artifactId>fix-xlator</artifactId>
     <version>${fix.distribution-version}</version>
 </dependency>
 ```
 
-2. Add a dependency on the class path for the module called &#123;applicationName}-fix-messages. This file is generated using the [fix-codegen-plugin](/03_server/10_integration/04_gateways-and-streamers/05_fix-xlator.md#fix-code-generation-plugin).
+2. Add a dependency on the class path for the module called &#123;applicationName}-fix-messages. This file is generated using the [fix-codegen-plugin](/03_server/10_integration/04_gateways-and-streamers/05_fix-xlator.mdx#fix-code-generation-plugin).
 
 3. Add the following code block at the beginning of the configuration file for the Streamer or Streamer Client:
 
@@ -55,7 +55,7 @@ FIX Streams are enhanced stream definitions that come with a few useful defaults
 There are three separate types of fixStream configuration:
 
 ```kotlin
-fixStream("FIX_IN") 
+fixStream("FIX_IN")
 
 fixStream<ExecutionReport>("EXECUTION_REPORT")
 

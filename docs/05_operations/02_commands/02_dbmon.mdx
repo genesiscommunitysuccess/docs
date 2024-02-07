@@ -12,9 +12,9 @@ tags:
 
 # DbMon
 
-DbMon is the Genesis database client. It provides a set of commands that enable you to view and change the database as necessary. DbMon hides the details of the specific database technology, so this does not affect your usage. 
+DbMon is the Genesis database client. It provides a set of commands that enable you to view and change the database as necessary. DbMon hides the details of the specific database technology, so this does not affect your usage.
 
-You can use Generic database clients to work with the Genesis low-code platform, but we recommend that you use DbMon. 
+You can use Generic database clients to work with the Genesis low-code platform, but we recommend that you use DbMon.
 
 This page gives details of all the DbMon commands and provides practical examples of how you can use them.
 
@@ -41,7 +41,7 @@ To end a DbMon session, just type [`quit`](#dbmon-commands) at the `DbMon>` prom
 
 ## Finding and viewing information
 
-A Genesis database organises information in tables and views. DbMon enables you to: 
+A Genesis database organises information in tables and views. DbMon enables you to:
 
 - find all the tables in your database (`showTables`)
 - select a table to examine (`table`)
@@ -122,7 +122,7 @@ VIEW_CODE                                                           STRING
 
 ### Viewing selected columns
 
-If you are only interested in seeing selected columns, use the [`displayFields`](#dbmon-commands) command and list the names of the columns you are interested in (separated by spaces). 
+If you are only interested in seeing selected columns, use the [`displayFields`](#dbmon-commands) command and list the names of the columns you are interested in (separated by spaces).
 
 While you continue to work on the selected table or view, subsequent [`show`](#dbmon-commands) commands will only display those columns. To view all the columns again, use the [`displayFields`](#dbmon-commands) command followed by no column names.
 
@@ -149,7 +149,7 @@ Display fields reset!
 
 In DbMon you can only see one record at a time.
 
-To display the record you want, use the `find` command, which searches the table’s indices for a given key value.  
+To display the record you want, use the `find` command, which searches the table’s indices for a given key value.
 
 So you need to know what the indices (keys) are for the currently selected table or view; for this, use the `showKeys` command. This lists each key (index), along with the field name you need to supply to use the index.  In the example below, the BROKER table has a primary index (BROKER_BY_ID, where the relevant field is BROKER_ID) and three secondary indices.
 
@@ -167,12 +167,12 @@ BROKER_BY_ID                       BROKER_ID                                Prim
 BROKER_BY_TIMESTAMP                TIMESTAMP                                Secondary
 ------------------------------------------------------------------------------------------
 BROKER_BY_VIEW_CODE                VIEW_CODE                                Secondary
-	------------------------------------------------------------------------------------------ 
+	------------------------------------------------------------------------------------------
 ```
 
 Now that you know the indices and the fields they require, you can find a record in the table or view.
 
-The example below looks for a broker that has a `VIEW_CODE` value of `WALSH`. 
+The example below looks for a broker that has a `VIEW_CODE` value of `WALSH`.
 
 1. The [`set`](#dbmon-commands) command sets the value of the `VIEW_CODE` to the value `WALSH`. _This is a local setting; it does not change the database._
 2. The [`find`]](#dbmon-commands) command looks for the index (key) `BROKER_BY_VIEW_CODE`.
@@ -201,7 +201,7 @@ IS_ACTIVE                 true                                      BOOLEAN
 LEI_NUMBER                MP6I5ZYZBEU3UXPYFY54                      STRING
 MODIFIED_DATE             2022-03-14 09:44:25.703 +0000             DATETIME
 MODIFIED_USER             ismail.augustine                              STRING
-NAME                      WALSH Bank Plc                            STRING 
+NAME                      WALSH Bank Plc                            STRING
 NETTING_GROUP_ID                                                    INT
 REGION                    UK                                        STRING
 VIEW_CODE                 WALSH                                     STRING
@@ -250,7 +250,7 @@ VIEW_CODE                 SISS                                      STRING
 Total Results:  1
 ```
 
-The example above found only one record, so it displayed it. If there are multiple records that match the search criteria, these are listed one after the other on the screen. 
+The example above found only one record, so it displayed it. If there are multiple records that match the search criteria, these are listed one after the other on the screen.
 
 ```javascript
 DbMon:BROKER>search COUNTRY_CODE=='USA'
@@ -264,7 +264,7 @@ Field Name                Value                                     Type
 -------------------------------------------------------------------------------------------
 Total Results:  6
 ```
-To limit the number of results, you can supply the limit (-l) parameter to the [`search`](#dbmon-commands) command. In the example below, we repeat the previous search, but limit the number of results to the first three. 
+To limit the number of results, you can supply the limit (-l) parameter to the [`search`](#dbmon-commands) command. In the example below, we repeat the previous search, but limit the number of results to the first three.
 
 ```javascript
 DbMon:BROKER>search COUNTRY_CODE=='USA' -l 3
@@ -338,22 +338,22 @@ To search for a datetime, you can specify any of the following formats:
 Here are some examples of searches for datetimes and dates:
 
 ```jsx
-// if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database 
+// if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database
 DbMon:BROKER>search MODIFIED_DATE=="20221008-14:20:17.400"
 
-// if MODIFIED_DATE is 2022-10-08 14:20:17 in database 
+// if MODIFIED_DATE is 2022-10-08 14:20:17 in database
 DbMon:BROKER>search MODIFIED_DATE=="20221008-14:20:17"
 
-// if MODIFIED_DATE is 2022-10-08 14:20 in database 
+// if MODIFIED_DATE is 2022-10-08 14:20 in database
 DbMon:BROKER>search MODIFIED_DATE>"20221008-14:20" && COUNTRY_CODE=='IRL'
 
-// if MODIFIED_DATE is 2022-10-08 in database 
+// if MODIFIED_DATE is 2022-10-08 in database
 DbMon:BROKER>search MODIFIED_DATE=="20221008" || COUNTRY_CODE=='IRL'
 ```
 
 ### Searching for timestamps
 
-[Timestamps](../../02_database/01_fields-tables-views/05_timestamps.md), are made of a timestamp in milliseconds, the sequence id and the node id: for example,
+[Timestamps](../../02_database/01_fields-tables-views/05_timestamps.mdx), are made of a timestamp in milliseconds, the sequence id and the node id: for example,
 **2023-01-01 00:00:00.000 (n:0, s:1)**.
 
 You can search for a timestamp using the same formats as datetime. Those formats are:
@@ -394,16 +394,16 @@ The table BROKER contains 114 records
 The `distinct` command provides another useful way of searching. Here are some examples of searches that use the distinct command to find records with a specific field value, which were modified at a specific date or datetime:
 
 ```jsx
-// if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database 
+// if MODIFIED_DATE is 2022-10-08 14:20:17.400 in database
 DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="20221008-14:20:17.400"
 
-// if MODIFIED_DATE is 2022-10-08 14:20:17 in database 
+// if MODIFIED_DATE is 2022-10-08 14:20:17 in database
 DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE>"20221008-14:20:17" && IS_ACTIVE=='true'
 
-// if MODIFIED_DATE is 2022-10-08 14:20 in database 
+// if MODIFIED_DATE is 2022-10-08 14:20 in database
 DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE<"20221008-14:20" || IS_ACTIVE=='true'
 
-// if MODIFIED_DATE is 2022-10-08 in database 
+// if MODIFIED_DATE is 2022-10-08 in database
 DbMon:BROKER>distinct BROKER_ID -where MODIFIED_DATE=="20221008"
 ```
 
@@ -428,7 +428,7 @@ Total Results:  128
 Total Distinct Values Count:  8
 ```
 
-The [`distinct`](#dbmon-commands) command also accepts a `-where` parameter, which enables you to filter the rows that are counted. 
+The [`distinct`](#dbmon-commands) command also accepts a `-where` parameter, which enables you to filter the rows that are counted.
 
 The next example retrieves the count of unique `COUNTRY_CODE` for `BROKER` records that have a `REGION` of UK, but which do not have the value of `GBP` for `COUNTRY_CODE`:
 
@@ -450,7 +450,7 @@ So, what has this found?
 
 - At the bottom, the Total Results is 8. There are 8 records where the region is UK but the country code is not GBR.
 - The Distinct Values is 6. There are 6 Country Codes where the region is UK, but whose country code is not GBR. These are the six rows displayed.
- 
+
 Note that there is no validation of the field when you use the `distinct` command. So if we ran the previous example, but we incorrectly typed `COUNTRY_COD` instead of `COUNTRY_CODE`. The command would still work, but the result is potentially confusing.
 
 ```jsx
@@ -469,9 +469,9 @@ So, what happened there?
 - However, the count is still 8 for this line, because there are 8 records where the region is UK but the country code is not GBR.
 - The Total Results value is the sum of the counts: 8. If your field was invalid, then the Total Results will always equal the count because there is only one value found - null.
 - The Total Distinct Values Count is effectively the number of rows: 1. Only one value was found  - null.
- 
+
 ### Finding the first and last record
-If you are interested in selecting the `first` or the `last` record, you can use the `first` or `last` along with the index name. You need to run the `show` command to view that record. 
+If you are interested in selecting the `first` or the `last` record, you can use the `first` or `last` along with the index name. You need to run the `show` command to view that record.
 
 In the following example, we select the first record in the **TRADE** table using the index **TRADE_BY_ID**; we then use `show` to see the record.
 
@@ -481,18 +481,18 @@ DbMon:TRADE>show
 ==================================
 TRADE
 ==================================
-Field Name                               Value                                    Type                
+Field Name                               Value                                    Type
 ===========================================================================================
-TIMESTAMP                                2023-08-15 12:09:47.802(n:0,s:112)       NANO_TIMESTAMP      
-COUNTERPARTY_ID                          3                                        STRING              
-DIRECTION                                BUY                                      ENUM[BUY SELL]      
-ENTERED_BY                               JaneDee                                  STRING              
-INSTRUMENT_ID                            1                                        STRING              
-PRICE                                    76.0                                     DOUBLE              
-QUANTITY                                 99                                       INT                 
-SYMBOL                                   EUR                                      STRING              
-TRADE_DATE                                                                        DATE                
-TRADE_ID                                 0350e01b-7064-4c60-8bcc-6084b6bee342T... STRING              
+TIMESTAMP                                2023-08-15 12:09:47.802(n:0,s:112)       NANO_TIMESTAMP
+COUNTERPARTY_ID                          3                                        STRING
+DIRECTION                                BUY                                      ENUM[BUY SELL]
+ENTERED_BY                               JaneDee                                  STRING
+INSTRUMENT_ID                            1                                        STRING
+PRICE                                    76.0                                     DOUBLE
+QUANTITY                                 99                                       INT
+SYMBOL                                   EUR                                      STRING
+TRADE_DATE                                                                        DATE
+TRADE_ID                                 0350e01b-7064-4c60-8bcc-6084b6bee342T... STRING
 TRADE_STATUS                             NEW                                      ENUM[NEW ALLOCATED CANCELLED]
 ```
 ### Displaying the next record
@@ -507,18 +507,18 @@ DbMon:TRADE>show
 ==================================
 TRADE
 ==================================
-Field Name                               Value                                    Type                
+Field Name                               Value                                    Type
 ===========================================================================================
-TIMESTAMP                                2023-08-15 12:09:10.992(n:0,s:103)       NANO_TIMESTAMP      
-COUNTERPARTY_ID                          3                                        STRING              
-DIRECTION                                BUY                                      ENUM[BUY SELL]      
-ENTERED_BY                               JaneDee                                  STRING              
-INSTRUMENT_ID                            1                                        STRING              
-PRICE                                    76.0                                     DOUBLE              
-QUANTITY                                 99                                       INT                 
-SYMBOL                                   EUR                                      STRING              
-TRADE_DATE                                                                        DATE                
-TRADE_ID                                 a4ce9a4c-21e1-416c-ae48-401eeef3f3b9T... STRING              
+TIMESTAMP                                2023-08-15 12:09:10.992(n:0,s:103)       NANO_TIMESTAMP
+COUNTERPARTY_ID                          3                                        STRING
+DIRECTION                                BUY                                      ENUM[BUY SELL]
+ENTERED_BY                               JaneDee                                  STRING
+INSTRUMENT_ID                            1                                        STRING
+PRICE                                    76.0                                     DOUBLE
+QUANTITY                                 99                                       INT
+SYMBOL                                   EUR                                      STRING
+TRADE_DATE                                                                        DATE
+TRADE_ID                                 a4ce9a4c-21e1-416c-ae48-401eeef3f3b9T... STRING
 TRADE_STATUS                             NEW                                      ENUM[NEW ALLOCATED CANCELLED]
 ```
 
@@ -553,7 +553,7 @@ DbMon:TRADE>set PRICE,QUANTITY 523.1,9000
 To set a value to **null**, use the `unset` command, for example:
 
 ``` javascript
-DbMon:TRADE>unset QUANTITY 
+DbMon:TRADE>unset QUANTITY
 ```
 
 :::info
@@ -567,7 +567,7 @@ To insert a new record into a table in the database, use the `insert` command. Y
 1. Find and select the required table or view, and show the fields.
 2. Set the values of the required fields.
 3. Enable `writeMode`.
-4. Insert. 
+4. Insert.
 
 In the example below, we use the `set` command to create a new record before inserting it into the TRADE table of the database.
 
@@ -579,18 +579,18 @@ DbMon:TRADE>show
 ==================================
 TRADE
 ==================================
-Field Name                               Value                                    Type                
+Field Name                               Value                                    Type
 ===========================================================================================
-TIMESTAMP                                                                         NANO_TIMESTAMP      
-COUNTERPARTY_ID                          1                                        STRING              
-DIRECTION                                BUY                                      ENUM[BUY SELL]      
-ENTERED_BY                               JaneDee                                  STRING              
-INSTRUMENT_ID                            1                                        STRING              
-PRICE                                    80.0                                     DOUBLE              
-QUANTITY                                 70                                       INT                 
-SYMBOL                                   EUR                                      STRING              
-TRADE_DATE                                                                        DATE                
-TRADE_ID                                 DbMonTest                                STRING              
+TIMESTAMP                                                                         NANO_TIMESTAMP
+COUNTERPARTY_ID                          1                                        STRING
+DIRECTION                                BUY                                      ENUM[BUY SELL]
+ENTERED_BY                               JaneDee                                  STRING
+INSTRUMENT_ID                            1                                        STRING
+PRICE                                    80.0                                     DOUBLE
+QUANTITY                                 70                                       INT
+SYMBOL                                   EUR                                      STRING
+TRADE_DATE                                                                        DATE
+TRADE_ID                                 DbMonTest                                STRING
 TRADE_STATUS                             NEW                                      ENUM[NEW ALLOCATED CANCELLED]
 DbMon:TRADE>insert
 Are you sure you wish to execute the command? Y/N
@@ -604,7 +604,7 @@ The `insert` command always inserts a new record with the values you have set. I
 
 ### Deleting rows
 
-To delete a row from a table, use the `delete` command. 
+To delete a row from a table, use the `delete` command.
 
 1. Find the record you need to delete.
 2. Run `writeMode` to enable write mode.
@@ -652,7 +652,7 @@ The `update` command updates the specified fields in the selected row of the cur
 2. Find and select the record that you want to update.
 3. Enable `writeMode`.
 5. Set the values of the required fields.
-4. Update. 
+4. Update.
 
 In the example below, **TRADE** is the currently selected table. We use the `set` command to set the PRICE field to 50, and then `update` command to update the TRADE_BY_UPDATE_PRICE.
 
@@ -688,7 +688,7 @@ Updated record: DbRecord [tableName=TRADE] [PRICE = 90.0, SYMBOL = EUR, QUANTITY
 You can use `DbMon`to insert a copy of a record into the database, but note that:
 
 - You must `unset` any generated fields before proceeding; a generated field must always be unique.
-- You must `unset` any fields that are unique indices before proceeding; any field that is a unique index must contain a unique value. 
+- You must `unset` any fields that are unique indices before proceeding; any field that is a unique index must contain a unique value.
 
 To insert a copy of a record:
 
@@ -750,7 +750,7 @@ table <table_name>
 unset
 update <key_name>
 updateWhere <condition> <assignments>
-view    
+view
 writeMode
 ```
 

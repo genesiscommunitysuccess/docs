@@ -11,7 +11,7 @@ tags:
 
 
 
-Genesis supports a number of different read operations. Although the specifics vary between the different [interfaces](../../02_database/07_types-of-api/00_index.md), the underlying principles remain the same. This page explains these principles, without going into specific calls.
+Genesis supports a number of different read operations. Although the specifics vary between the different [interfaces](../../02_database/07_types-of-api/00_index.mdx), the underlying principles remain the same. This page explains these principles, without going into specific calls.
 
 Fields[​](../../../database/database-concepts/read/#fieldsdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ To request a single record from the database, a unique index must be specified. 
 
 ### getAll[​](../../../database/database-concepts/read/#getalldirect-link-to-heading)
 
-`getAll` bundles multiple `get` operations into a single request. Each request must have a unique index identifier and a unique reference for the request. 
+`getAll` bundles multiple `get` operations into a single request. Each request must have a unique index identifier and a unique reference for the request.
 
 The result will be a map, where the unique reference is the key, and the value is the record, or `null` if not found.
 

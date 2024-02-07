@@ -49,7 +49,7 @@ The currently supported sources are:
 
 ### External database
 
-All databases share a common configuration. 
+All databases share a common configuration.
 
 | Parameter     | Default value | Sample usage                            | Value type    | Description                               |
 |---------------|---------------|-----------------------------------------|---------------|-------------------------------------------|
@@ -58,8 +58,8 @@ All databases share a common configuration.
 | port          | 5432          | `port = 5432`                           | Integer       | set the port on which Database is running |
 | username      | N/A           | `username = "postgres"`                 | String        | set the database user                     |
 | password      | N/A           | `password = "db-password"`              | String        | set the database user password            |
-| databaseName  | N/A           | `databaseName = "postgres"`             | String        | set the name of the database              | 
-| errorStrategy | BestEffort    | `errorStrategy = StopOnFirstFailure()"` | ErrorStrategy | Set the source's error strategy           | 
+| databaseName  | N/A           | `databaseName = "postgres"`             | String        | set the name of the database              |
+| errorStrategy | BestEffort    | `errorStrategy = StopOnFirstFailure()"` | ErrorStrategy | Set the source's error strategy           |
 
 ```kotlin
 pipelines {
@@ -107,7 +107,7 @@ Below, you can see what options are available for each:
 | hasHeader | true | `hasHeader = true` | Boolean | set whether the file has headers  |
 | headerOverrides | null | `headerOverrides = arrayListOf("id", "name")` | List | set the column names to be used. If the file has a header, it is ignored and the specified names are used  |
 | readLazily | false | `readLazily = true` | Boolean | Set lazy reading  |
-| errorStrategy | BestEffort    | `errorStrategy = StopOnFirstFailure()"` | ErrorStrategy | set the source's error strategy           | 
+| errorStrategy | BestEffort    | `errorStrategy = StopOnFirstFailure()"` | ErrorStrategy | set the source's error strategy           |
 
 ```kotlin
 pipelines {
@@ -117,7 +117,7 @@ pipelines {
     map("mapper-name", TABLE) {
 
     }
-    
+
     onCompletion {
         val successfulRows = result.successfulRows
         val failedRows = result.failedRows
@@ -137,7 +137,7 @@ pipelines {
 | location  | N/A | `location = "file://runtime/testFiles?fileName=trades_array.json"` | String | set the location of the XML or Json file. See details below |
 | tagName   | N/A | `tagName = "Trade"` | String | set the root tag of the XML (does not apply to Json) |
 | rootAt    | "$.[*]" | `rootAt = "$.[*]"` | String | set the root of the Json/XML tree |
-| errorStrategy | BestEffort    | `errorStrategy = StopOnFirstFailure()"` | ErrorStrategy | set the source's error strategy           | 
+| errorStrategy | BestEffort    | `errorStrategy = StopOnFirstFailure()"` | ErrorStrategy | set the source's error strategy           |
 
 ```kotlin
 pipelines {
@@ -174,7 +174,7 @@ File location denotes where to watch for files. This can be one of the following
 
 Listening for files in a directory on the local filesystem is as simple as pointing at the directory in the `location` argument prepended by "file://".
 
-You can define a path as absolute or relative, but we recommend that you specify the absolute filepath; this ensures that you get the right files in the right place. 
+You can define a path as absolute or relative, but we recommend that you specify the absolute filepath; this ensures that you get the right files in the right place.
 
 If you use a relative file path and there is a mistake in the file path, no error message is generated. A new folder is created if the one specified does not exist, for example. The Data Pipeline is based on Apache Camel and you can find further details of this in the [Camel documentation](https://camel.apache.org/components/3.18.x/languages/file-language.html).
 
@@ -220,7 +220,7 @@ To use S3 as a file source, you need access to an S3-like service such as AWS S3
 
 ### Genesis Table
 
-The Genesis Table source attaches a listener to a chosen table in your application. 
+The Genesis Table source attaches a listener to a chosen table in your application.
 
 All inserts, modifications and deletions to the table will be processed. Records from before pipeline start-up will not be replayed.
 
@@ -273,7 +273,7 @@ errorStrategy = StopOnFirstFailure()
 
 The All Or Nothing strategy processes all rows in a single transaction using the Genesis Entity DB API. If one row fails, then none of the rows are committed.
 
-This is only relevant to [databases that support Entity DB transactions](../../../02_database/05_database-interface/01_entitydb.md#transactions).
+This is only relevant to [databases that support Entity DB transactions](../../../02_database/05_database-interface/01_entitydb.mdx#transactions).
 
 ```kotlin
 errorStrategy = AllOrNothing()
@@ -570,7 +570,7 @@ The `sink` function has three optional settings:
 
 All these operations are executed via SQL and take the order of the mapped field entities as they are found in your map configuration.
 
-#### onInsert 
+#### onInsert
 
 Takes either `insertInto("table name")` or `callProcedure("stored proc name")`
 

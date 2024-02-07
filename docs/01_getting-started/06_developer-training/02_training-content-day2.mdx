@@ -31,19 +31,19 @@ Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](ht
 
 ### Web Components
 
-[Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) are at the very heart of our strategy, based on native browsers and a standards-based component model. 
+[Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) are at the very heart of our strategy, based on native browsers and a standards-based component model.
 
 Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable components, which do not clash or interfere with the rest of application. They are future-proof and interoperable with traditional web frameworks such as Angular, React and Vue.
 
-We currently offer around 40 Web Components such as [Button](../../../web/web-components/form/button/) and [Text Field](../../../web/web-components/form/text-field/), which are ready to go. That number is growing (and we can work with you if you need to create bespoke web components for specific needs). 
+We currently offer around 40 Web Components such as [Button](../../../web/web-components/form/button/) and [Text Field](../../../web/web-components/form/text-field/), which are ready to go. That number is growing (and we can work with you if you need to create bespoke web components for specific needs).
 
 Frameworks like React, Angular, Vue and so on, have traditionally offered component models to developers. However, Web Components are literally the standard component model of the web, written into the html specification. Applications themselves can be fully encapsulated web components too; for example, YouTube is a Web Component, made up of many smaller Web Components.
 
 ### Micro front-ends
 
-On a higher level, the Genesis low-code platform also offers a number of re-usable micro front-ends for common functions, such as user management, entity management ([CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)), reporting and so on. 
+On a higher level, the Genesis low-code platform also offers a number of re-usable micro front-ends for common functions, such as user management, entity management ([CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)), reporting and so on.
 
-This architecture is a design approach in which a front-end app is decomposed into individual, semi-independent micro applications working loosely together. The micro-front-end concept is vaguely inspired by, and named after, microservices. Independent development teams can collaborate on a front-end app more easily using this approach, and can each have their own release cadence. 
+This architecture is a design approach in which a front-end app is decomposed into individual, semi-independent micro applications working loosely together. The micro-front-end concept is vaguely inspired by, and named after, microservices. Independent development teams can collaborate on a front-end app more easily using this approach, and can each have their own release cadence.
 
 At Genesis, we use a number of technologies to enable this functionality, including [Webpack 5 Module Federation](https://webpack.js.org/concepts/module-federation/).
 
@@ -51,16 +51,16 @@ At Genesis, we use a number of technologies to enable this functionality, includ
 
 Our components are distributed as npm packages, such as:
 
-#### `@genesislcap/foundation-ui` 
-When you generate a [design system](../../04_web/03_design-systems/01_introduction.md) using the CLI, it automatically extends a base design system that we have provided. This highly configurable design system is called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options to provide everything you need for your application.
+#### `@genesislcap/foundation-ui`
+When you generate a [design system](../../04_web/03_design-systems/01_introduction.mdx) using the CLI, it automatically extends a base design system that we have provided. This highly configurable design system is called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options to provide everything you need for your application.
 
-#### `@genesislcap/foundation-zero` 
+#### `@genesislcap/foundation-zero`
 Our design system variant is called Zero Design System. This provides the standard components, such as buttons and data grids (wrappers around Microsoft FAST components); these can be easily integrated with the back end using component attributes such as 'resourceName', which displays and updates data in real time from a Data Server resource.
 
-#### `@genesislcap/foundation-utils` 
+#### `@genesislcap/foundation-utils`
 These are useful components like loggers, formatters, environment related components etc to be used in your templates.
 
-#### `@genesislcap/foundation-comms` 
+#### `@genesislcap/foundation-comms`
 This is the core Foundation UI communication system with the server. It provides, among other things, connection components that you can use to connect to the server and do things like subscribing to data streams, commit events or request data.
 
 There are many more packages, but that's what we need for now to develop our application.
@@ -115,9 +115,9 @@ const name = 'home-route';
 Now, still in the **home.ts** file, let's add two constants to define:
 
 - the columns config (*defaultColumnConfig*)
-- the fields available (*COLUMNS*). 
+- the fields available (*COLUMNS*).
 
-We need to declare the columns and permissions in the Home class as well. 
+We need to declare the columns and permissions in the Home class as well.
 
 ```ts {5-10,13-39,47}
 ...
@@ -167,7 +167,7 @@ const COLUMNS = [
 })
 export class Home extends FASTElement {
   @observable columns: any = COLUMNS;
-  
+
   constructor() {
     super();
   }
@@ -193,7 +193,7 @@ export const HomeTemplate = html<Home>`
 
 At this point, the application is now able to display and insert data.
 
-### Running the application locally 
+### Running the application locally
 
 Now you are ready to run the application you have created for the front end.
 
@@ -221,7 +221,7 @@ SET NODE_OPTIONS=--openssl-legacy-provider
 :::
 
 :::tip
-If you try to run the application and there is already a process using the same port, check the process. If you are certain that it should not be running (for example, if it is the result of caching or old runs), you can run the command-line below as Administrator to search for the process and kill it. 
+If you try to run the application and there is already a process using the same port, check the process. If you are certain that it should not be running (for example, if it is the result of caching or old runs), you can run the command-line below as Administrator to search for the process and kill it.
 
 ```shell
 netstat -ano | findstr :<yourPortNumber>
@@ -230,7 +230,7 @@ taskkill /PID <typeyourPIDhere> /F
 :::
 
 ### CONGRATULATIONS
-You have completed your first application with the Genesis Platform! 
+You have completed your first application with the Genesis Platform!
 
 :::note Great things come from great people!
 Now take some time to enjoy it, play with your application for a few minutes.
@@ -267,7 +267,7 @@ We want to build a real-time positions application, where trades can be entered,
 
 Let's extend the data model and create a CRUD. You will:
 
-- add the tables **Counterparty** and **Instrument** as per the definition below. 
+- add the tables **Counterparty** and **Instrument** as per the definition below.
 - add the fields *COUNTERPARTY_ID* and *INSTRUMENT_ID* to the **Trade** table.
 
 Use all the previous knowledge you've got.
@@ -424,7 +424,7 @@ When we test our resources using an HTTP client as described here, we're taking 
 
 :::
 
-##### Logging in 
+##### Logging in
 Whichever client you are using, you need to log in before you can send test requests to the server. This involves two things:
 - providing a SOURCE_REF - this can be any string that identifies all your activity while you are logged in
 - retrieving a SESSION_AUTH_TOKEN, which you can copy and use to authorise all your test requests
@@ -433,8 +433,8 @@ For example, to log in using Postman:
 1. Create a new query in Postman.
 2. In front of the URL, set the call to **POST**.
 3. For the URL, you need to supply your server instance, then **:9064** (which sends you to the application's Router), and then **event-login-auth**. For example:
-**http://localhost:9064/event-login-auth**. 
-4. Set the Body to JSON and insert the message below (substituting your correct user name and password) in the main body. 
+**http://localhost:9064/event-login-auth**.
+4. Set the Body to JSON and insert the message below (substituting your correct user name and password) in the main body.
 
 ```
 {
@@ -509,7 +509,7 @@ The url consists of:
 - if necessary, some extra routing
 - the name of the request server
 
-Set the body to **JSON**. There is no need for any information in the body. Simply insert a pair of curly brackets **{}**. 
+Set the body to **JSON**. There is no need for any information in the body. Simply insert a pair of curly brackets **{}**.
 
 ![](/img/test-eh-check-insertion-alpha.png)
 

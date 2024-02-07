@@ -11,10 +11,10 @@ tags:
 
 The Genesis low-code platform uses ZeroMQ out of the box to provide a zero-configuration decentralised peer-to-peer update queue.
 
-It works because the GENESIS_CLUSTER process knows (via [clustering](../03_clustering/01_overview.md)) all the nodes within the cluster - so it can broadcast and consume appropriately.
+It works because the GENESIS_CLUSTER process knows (via [clustering](../03_clustering/01_overview.mdx)) all the nodes within the cluster - so it can broadcast and consume appropriately.
 
 - ZeroMQ is best suited for fixed-sized deployments.
-- [MQTT](03_mqtt.md) is recommended for set-ups that require dynamic scaling.
+- [MQTT](03_mqtt.mdx) is recommended for set-ups that require dynamic scaling.
 
 ### Proxy mode
 All processes have a ZeroMQ port, which is their process port + 10000. Additionally, GENESIS_CLUSTER has two additional ports (`ZeroMQProxyInboundPort` and `ZeroMQProxyOutboundPort`) to act as proxy ports. This is necessary so that:

@@ -52,7 +52,7 @@ Add `CustomTradeEventReply` under **&#123;app-name}-messages** and assemble. Onc
         onValidate {
             val tradeEvent = it.details
             val notional = tradeEvent.price?.times(tradeEvent.quantity!!.toDouble())
-            
+
             require(notional!! < 1_000_000) { "Trade notional is too high" }
             CustomTradeEventReply.TradeEventValidateAck()
         }
@@ -82,7 +82,7 @@ In the below example we use a generated database entity called `Company` as mess
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
         permissioning {
             auth(mapName = "COMPANY"){
-                field { companyName } 
+                field { companyName }
             }
         }
 
@@ -160,7 +160,7 @@ It is possible to disable the automatic JSON Schema validation enforced by defau
 
 To disable schema validation for a specific event, either:
 
-- Override the `schemaValidation` method to `false` in the custom Event Handler definitions. 
+- Override the `schemaValidation` method to `false` in the custom Event Handler definitions.
 or
 - Set the `schemaValidation` property to `false` in a GPAL Event Handler.
 
@@ -175,7 +175,7 @@ import global.genesis.message.core.event.EventReply
 class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply> {
     // Override schemaValidation here to disable schema validation
     override fun schemaValidation(): Boolean = false
-    
+
     override suspend fun onValidate(message: Event<Company>): EventReply {
         val company = message.details
         // custom code block..
@@ -210,14 +210,14 @@ See more information about how to define type-safe messages [here](../../../serv
 
 ## Pending approvals
 
-The Genesis low-code platform has an in-built pending approval mechanism that can be used with Event Handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check". 
+The Genesis low-code platform has an in-built pending approval mechanism that can be used with Event Handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check".
 
 
 ### Set an event to require approval
 
 To enable the pending approval workflow for an Event Handler implementation, either:
 
-- Override the `requiresPendingApproval` method with an appropriate function in the custom Event Handler definitions. 
+- Override the `requiresPendingApproval` method with an appropriate function in the custom Event Handler definitions.
 
 or
 
@@ -279,11 +279,11 @@ class TestCompanyHandlerAsyncContext : AsyncContextValidatingEventHandler<Compan
 
 ### Pending approval workflow
 
-Events going through a pending approval workflow are validated as usual (i.e. the `onValidate` method is run).  If the validation is successful, the “delayed” event is stored in the `APPROVAL` table in JSON format. 
+Events going through a pending approval workflow are validated as usual (i.e. the `onValidate` method is run).  If the validation is successful, the “delayed” event is stored in the `APPROVAL` table in JSON format.
 
-Assuming the event is inserting, updating or deleting a target database record, it is possible to have multiple `APPROVAL` records associated with a single database entity. So, you should use the event `onValidate` method to check for pre-existing approvals against the entities related to the event if you need to ensure there is only one pending approval per record. 
+Assuming the event is inserting, updating or deleting a target database record, it is possible to have multiple `APPROVAL` records associated with a single database entity. So, you should use the event `onValidate` method to check for pre-existing approvals against the entities related to the event if you need to ensure there is only one pending approval per record.
 
-The `APPROVAL` record is keyed on an auto-generated `APPROVAL_ID` and does not have a direct link to the original record(s). You have to create one or many links by adding “approval entity” details to the payload returned within an `approvableAck` inside the `onValidate` method. These details include the `entityTable` (e.g COUNTERPARTY), `entityKey` (e.g. COUNTERPARTY_ID), as well as an optional `approvalType` to describe what operation is happening on the entity itself (e.g. NEW, UPDATE or REMOVE). 
+The `APPROVAL` record is keyed on an auto-generated `APPROVAL_ID` and does not have a direct link to the original record(s). You have to create one or many links by adding “approval entity” details to the payload returned within an `approvableAck` inside the `onValidate` method. These details include the `entityTable` (e.g COUNTERPARTY), `entityKey` (e.g. COUNTERPARTY_ID), as well as an optional `approvalType` to describe what operation is happening on the entity itself (e.g. NEW, UPDATE or REMOVE).
 
 This approach enables you to decide how to identify the original record (e.g. creating a compound key in the case of multi-field keys). When the approval entity details are provided, the platform creates one or several records in the `APPROVAL_ENTITY` table; it populates it (them) with the details provided and the `APPROVAL_ID` of the `APPROVAL` record. There is also an `APPROVAL_ENTITY_COUNTER`, which is populated by the GENESIS_AUTH_CONSOLIDATOR process by default; this can be handy when you need to know how many approvals are pending for a given entity.
 
@@ -339,19 +339,19 @@ The platform provides two Data Server queries that contain Pending approval info
 
 ```
 -------------------------------------------------------------------------------------------
-TIMESTAMP                                2023-02-27 15:33:42.364(n:0,s:1019)      NANO_TIMESTAMP      
-ACTIONED_BY                              JaneDee                                  STRING              
-APPROVAL_ID                              fdef7802-6bd1-4c51-a232-6a4bc2325598A... STRING              
-APPROVAL_KEY                             fac1be9f-1653-4ecf-9050-d13cc2d2cdb4A... STRING              
-APPROVAL_MESSAGE                         Cancelled                                STRING              
-APPROVAL_REQUESTED_AT                    2023-02-27 15:33:38.450 +0000            DATETIME            
+TIMESTAMP                                2023-02-27 15:33:42.364(n:0,s:1019)      NANO_TIMESTAMP
+ACTIONED_BY                              JaneDee                                  STRING
+APPROVAL_ID                              fdef7802-6bd1-4c51-a232-6a4bc2325598A... STRING
+APPROVAL_KEY                             fac1be9f-1653-4ecf-9050-d13cc2d2cdb4A... STRING
+APPROVAL_MESSAGE                         Cancelled                                STRING
+APPROVAL_REQUESTED_AT                    2023-02-27 15:33:38.450 +0000            DATETIME
 APPROVAL_STATUS                          CANCELLED                                ENUM[PENDING APPROVED CANCELLED REJECTED_BY_USER REJECTED_BY_SERVICE]
 APPROVAL_TYPE                            REMOVE                                   ENUM[NEW UPDATE REMOVE UNKNOWN]
-DESTINATION                              COUNTERPARTY_EVENT_HANDLER               STRING              
-EVENT_DETAILS                            ISSUER_ID = 3                            STRING              
-EVENT_MESSAGE                            {"DETAILS":{"COUNTERPARTY_ID":3},"MES... STRING              
-MESSAGE_TYPE                             EVENT_COUNTERPARTY_DELETE                STRING              
-USER_NAME                                JaneDee                                  STRING              
+DESTINATION                              COUNTERPARTY_EVENT_HANDLER               STRING
+EVENT_DETAILS                            ISSUER_ID = 3                            STRING
+EVENT_MESSAGE                            {"DETAILS":{"COUNTERPARTY_ID":3},"MES... STRING
+MESSAGE_TYPE                             EVENT_COUNTERPARTY_DELETE                STRING
+USER_NAME                                JaneDee                                  STRING
 -------------------------------------------------------------------------------------------
 ```
 
@@ -359,17 +359,17 @@ USER_NAME                                JaneDee                                
 
 ```
 -------------------------------------------------------------------------------------------
-TIMESTAMP                                2023-02-27 15:33:38.459(n:0,s:1004)      NANO_TIMESTAMP      
-APPROVAL_ID                              fdef7802-6bd1-4c51-a232-6a4bc2325598A... STRING              
+TIMESTAMP                                2023-02-27 15:33:38.459(n:0,s:1004)      NANO_TIMESTAMP
+APPROVAL_ID                              fdef7802-6bd1-4c51-a232-6a4bc2325598A... STRING
 APPROVAL_TYPE                            REMOVE                                   ENUM[NEW UPDATE REMOVE UNKNOWN]
-ENTITY_ID                                3                                        STRING              
-ENTITY_TABLE                             COUNTERPARTY                             STRING              
+ENTITY_ID                                3                                        STRING
+ENTITY_TABLE                             COUNTERPARTY                             STRING
 -------------------------------------------------------------------------------------------
 ```
 
 ### Available pending approval events
 
-Once in the `APPROVAL` table, the pending event can be cancelled, rejected or accepted by sending the following event messages to GENESIS_CLUSTER: 
+Once in the `APPROVAL` table, the pending event can be cancelled, rejected or accepted by sending the following event messages to GENESIS_CLUSTER:
 
 - EVENT_PENDING_APPROVAL_ACCEPT
 - EVENT_PENDING_APPROVAL_CANCEL
@@ -379,7 +379,7 @@ All messages require a valid `APPROVAL_ID` and `APPROVAL_MESSAGE` in their metad
 
 ### Configuring allowed approvers: basic
 
-The platform ensures that users cannot approve or reject their own events, but they can cancel them. To complement this, users that have not created a specific pending approval event can only accept or reject, not cancel. 
+The platform ensures that users cannot approve or reject their own events, but they can cancel them. To complement this, users that have not created a specific pending approval event can only accept or reject, not cancel.
 
 Additional levels of control (e.g. based on user groups) can be added at three points:
 
@@ -389,7 +389,7 @@ Additional levels of control (e.g. based on user groups) can be added at three p
 
 To configure the allowed approvers using server-side configuration:
 
-1. Create a new GPAL approval file; its name must end in **-approval.kts** (e.g. **_test_-approval.kts**). 
+1. Create a new GPAL approval file; its name must end in **-approval.kts** (e.g. **_test_-approval.kts**).
 
 2. Add the file name to the GENESIS_CLUSTER `<script></script>` element in the site-specific version of the **genesis-processes.xml**. See the sample file below:
 
@@ -472,7 +472,7 @@ pendingApproval {
 
 You might have noticed that the original type-safe event message types are lost inside the **-approval.kts** file, as the content of `eventMessage` inside `APPROVAL` table (and also inside `PendingApprovalInsert`) is a serialised JSON string. You can deserialise the original type-safe objects using the `selectPredicate` method combined with multiple `onEvent` predicates. These methods are available in all the `pendingApproval` code blocks: `insert`, `accept`, `cancel` and `reject`.
 
-- `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function  provides a [GenesisSet](../../03_server/09_network-messages/02_genesisset.md) object with the contents of the original message payload.
+- `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function  provides a [GenesisSet](../../03_server/09_network-messages/02_genesisset.mdx) object with the contents of the original message payload.
 - `onEvent` works very similarly to any other GPAL [Event Handler definition](#defining-an-event-handler-in-gpal). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
 
 
@@ -530,14 +530,14 @@ An approval process deliberately delays events. So it is possible that by the ti
 
 The platform provides an event designed to help you to reject events directly from the back end without human intervention. "EVENT_PENDING_APPROVAL_SYSTEM_REJECT" is an event that can be used to satisfy any specific requirements that fall outside the functionality of the pending approval system. The event is only accessible by back-end services. It takes two parameters:
 
-- `approvalMessage` is the text of the message to be sent when the message is rejected. 
+- `approvalMessage` is the text of the message to be sent when the message is rejected.
 - `approvalKey` is a unique identifier for each pending approval record. This identifier is never exposed to the front end, so only back-end services have access to it. That makes it impossible to trigger this event unless you have access to the database system. You need to obtain the `approvalKey` programatically so that you can supply it as a parameter value.
 
 Let us look at an example. Consider a solution that needs to submit trades to an external system every day at midnight for confirmation purposes. Once the trades have been submitted, their content cannot be changed anymore, unless a separate amendment process is started outside the Genesis application. The system has a pending approval system that enables users to amend the content of each "Trade" database record to provide extra security.
 
 Once a "Trade" record has been submitted at midnight, you need to prevent any pending approval events from amending the content of the trade records in the system, as this could cause inconsistencies between the external system and the Genesis system. To prevent this, you could run a job that automatically rejects all pending approval records at midnight every day.
 
-Here is an example GPAL script that could be run every day at midnight to reject all the pending records. 
+Here is an example GPAL script that could be run every day at midnight to reject all the pending records.
 
 ```kotlin
 import global.genesis.clustersupport.service.ServiceDiscovery

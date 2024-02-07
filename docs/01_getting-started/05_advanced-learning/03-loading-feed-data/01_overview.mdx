@@ -15,7 +15,7 @@ Some feeds provide static sets of data that you can download for processing by y
 :::note
 This guide is intended for:
 - users who already have experience of creating a Genesis application
-- users with a working knowledge of [Camel](../../../01_getting-started/07_glossary/01_glossary.md#camel-apache-camel)
+- users with a working knowledge of [Camel](../../../01_getting-started/07_glossary/01_glossary.mdx#camel-apache-camel)
   :::
 
 
@@ -56,7 +56,7 @@ GBP3M=135000,S,13387,150121
 ### A real example
 Reality is rarely that convenient. For this example, the incoming data is issuance data from Bloomberg, and its format is considerably more complex.
 
-Here is an [example of the data](./03_example-source-data.md) you can download from the Bloomberg Issuance feed.
+Here is an [example of the data](./03_example-source-data.mdx) you can download from the Bloomberg Issuance feed.
 
 Once you know this format, you need to create code that maps the fields so that they can be written to a table in your application.
 
@@ -143,12 +143,12 @@ In the `eventHandler`, there are two code blocks that you need to specify:
 - `onValidate`. This is where you validate the message before processing; return an `ack()` or `nack()`. If you do not want to add any validation, simply return an `ack()`.
 - `onCommit`. This is where you specify the parsing that converts the raw data (defined as a collection of key-value pairs in the shape of a `Map<String,String>`) to Genesis format, and then sends it to a staging table for use in the application.
 
-You also need to define any additional methods required to provide additional details about this `eventHandler`. For example, if the name of the `eventHandler` doesn't match the name of the class, you need to provide a `messageType()`. 
+You also need to define any additional methods required to provide additional details about this `eventHandler`. For example, if the name of the `eventHandler` doesn't match the name of the class, you need to provide a `messageType()`.
 
 You can also add any additional modules that are required to perform the work via dependency injection, such as the `RxEntityDb` and the `BbgFileImportReaderProvider`, which is a utility class created to provide reading utilities for handling Bloomberg issuance files.
 
 In the following example, you can see a basic implementation overriding the message type and returning ack for both `onValidate` and `onCommit` functions.
-  
+
 ```kotlin
 @Module
 class BbgIssuanceFileImportEvent @Inject constructor(
@@ -183,7 +183,7 @@ For this handler, we are interested in the `FILE` property of the `Map`, which i
 - Any exceptions are caught and added to an error list, which will be logged.
 - A final NACK is issued if any errors are found.
 - If there are no exceptions, then the `IssuanceData` elements generated are inserted into the ISSUANCE_DATA table using the associated repository.
- 
+
 ```kotlin
 override fun onCommit(message: Event<BbgIssuanceFileImport>): Single<EventReply> {
     LOG.info("New file received")
@@ -326,5 +326,5 @@ SOURCE_REF = 1
 SOURCE_REF = 1
 ```
 -	Finally, use DbMon to check the related staging table in the DATA_SERVER for the relevant rows – in this case, the ISSUANCE_DATA table.
-## Conclusion 
+## Conclusion
 That's it. You've seen how files can be fetched, parsed and placed on a staging table in an application.

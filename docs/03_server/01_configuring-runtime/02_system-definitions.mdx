@@ -9,7 +9,7 @@ tags:
   - server
 ---
 
-The system-definition file **genesis-system-definition.kts** is the main configuration file for your application. 
+The system-definition file **genesis-system-definition.kts** is the main configuration file for your application.
 
 It is located in the [site-specific](../../../server/configuring-runtime/site-specific/) folder.
 
@@ -69,8 +69,8 @@ systemDefinition {
 ## Global, System and Host levels
 
 As you can see from the example, you can define items at global, system and host level.
-* **Global**: These properties will be available to all systems. 
-* **System**: These properties contain information about a particular system and can have a free text field. Each system is associated with a host or hosts. The content should specify the type of environment the system is running in. 
+* **Global**: These properties will be available to all systems.
+* **System**: These properties contain information about a particular system and can have a free text field. Each system is associated with a host or hosts. The content should specify the type of environment the system is running in.
 Local values can be specified in this block. **These values override the global values**.
 
 * **Host**: In this section you can define the properties of the host or hosts (if running in a cluster environment). A Host block can only exist under the system section, as you can see in the above example.
@@ -109,7 +109,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
 
-**DbMode**: This setting is only used for [PostgresSQL](../../../database/database-technology/sql/#postgresql); it can be one of two values: 
+**DbMode**: This setting is only used for [PostgresSQL](../../../database/database-technology/sql/#postgresql); it can be one of two values:
 
 - POSTGRESQL if you want PostgreSQL to work with namespaces/schemas
 - LEGACY, which is the default mode; this stores the dictionary in a table called `dictionary` and a schema called `metadata`
@@ -130,7 +130,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.
 
-**Location**: This item contains a 2-character value used to generate the **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR", then the generated ID will be `000000000001TRLO1` where "LO" represents Location string. There is more information around compatibility and behaviour of sequences in our page on [Tables advanced](../../02_database/01_fields-tables-views/02_tables/02_tables-advanced.md)
+**Location**: This item contains a 2-character value used to generate the **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR", then the generated ID will be `000000000001TRLO1` where "LO" represents Location string. There is more information around compatibility and behaviour of sequences in our page on [Tables advanced](../../02_database/01_fields-tables-views/02_tables/02_tables-advanced.mdx)
 
 **LogFramework**: Contains name of the logging framework. Supported framework: LOG4J2
 
@@ -157,11 +157,11 @@ Genesis enables you to store encrypted values in the configuration. You can acce
 - `ByteArrayProvider`
 - [`getItem()`](../../network-messages/genesisSet/#functions)
 
-By default, you can inject those values into your classes using a syntax such as: 
+By default, you can inject those values into your classes using a syntax such as:
 
 `@Named("DBUSERNAME") val passwordString: String`
 
-This is then decrypted by the platform into memory. 
+This is then decrypted by the platform into memory.
 
 ### Protecting against memory scanning
 To reduce the risk of a malicious attacker being able to run a memory scan on a running instance and acquire the decrypted value, the platform enables you to:
@@ -183,7 +183,7 @@ There are various ways you can pull an encrypted value into a Kotlin class.
 class TestModule
 @Inject
 constructor(
-    
+
     @Named("DBUSERNAME") val passwordString: String,
     @Named("DBUSERNAME") val passwordByteArray: ByteArray,
     @Named("DBUSERNAME") val passwordByteArrayProvider: Provider<ByteArray>,
@@ -195,7 +195,7 @@ constructor(
 
         assertThat(passwordByteArrayProvider.get().toString(Charsets.UTF_8)).isEqualTo("johndoe")
         assertThat(passwordByteArray.toString(Charsets.UTF_8)).isEqualTo("johndoe")
-    }    
+    }
 }
 ```
 
@@ -207,48 +207,48 @@ This feature is supported from version 6.0
 
 :::
 
-Services can also load their configuration from HashiCorp vault. 
+Services can also load their configuration from HashiCorp vault.
 This can be done by adding a `vault` tag in the `global`, `system` or `host`
-tags. 
+tags.
 
 The `vault` tag has three sub tags, `config`, `sslConfig` and `readSecrets`. Of
 these three, `config` and `readSecrets` are required:
 
 ```kotlin
 vault {
-  config {  
+  config {
     ...
   }
 
-  sslConfig { 
+  sslConfig {
     ...
   }
 
-  readSecrets { 
+  readSecrets {
     ...
   }
 }
 ```
 
-### Config 
+### Config
 
-This part of the configuration tells the service where to read secrets from: 
+This part of the configuration tells the service where to read secrets from:
 
 ```kotlin
 config {
     address("http://localhost:8200")     // Defaults to "VAULT_ADDR" environment variable
     token("s.NSxyuF4ClXxd4YoSFvKwil0i")  // Defaults to "VAULT_TOKEN" environment variable
     openTimeout(5)                       // Defaults to "VAULT_OPEN_TIMEOUT" environment variable
-    readTimeout(30)                      // Defaults to "VAULT_READ_TIMEOUT" environment variable 
+    readTimeout(30)                      // Defaults to "VAULT_READ_TIMEOUT" environment variable
 }
 ```
 
 ### sslConfig
 
-This part of the configuration tells the service how to handle the ssl hand 
+This part of the configuration tells the service how to handle the ssl hand
 shake with the vault server. For details regarding the ssl config, please see
 [here](https://github.com/BetterCloud/vault-java-driver#ssl-config).
-Note that the `SslConfig` object will be passed as the receiver within 
+Note that the `SslConfig` object will be passed as the receiver within
 the `sslConfig` tag.
 
 ### readSecrets
@@ -274,11 +274,11 @@ This feature is supported from version 6.0
 
 :::
 
-When reading secrets from external systems, the keys to these secrets might 
-not map directly to the required properties in Genesis. To help with this, the platform supports the linking of properties. 
+When reading secrets from external systems, the keys to these secrets might
+not map directly to the required properties in Genesis. To help with this, the platform supports the linking of properties.
 
-The links can be applied as tags at `global`, 
-`system` or `host` level. 
+The links can be applied as tags at `global`,
+`system` or `host` level.
 
 To create a link, use `link`, as per below, where we link `DbHost` to `secret.db.host`:
 
@@ -291,5 +291,5 @@ systemDefinition {
 }
 ```
 
-Multiple levels of linking are supported. However, `genesisInstall` will fail if a circular link is detected, or if the `source` of a link is not found. 
+Multiple levels of linking are supported. However, `genesisInstall` will fail if a circular link is detected, or if the `source` of a link is not found.
 

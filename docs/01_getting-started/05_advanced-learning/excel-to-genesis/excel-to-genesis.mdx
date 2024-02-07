@@ -10,7 +10,7 @@ tags:
     - quick guide
 ---
 
-## Introduction 
+## Introduction
 
 ![](/img/intro3-xtg.png)
 All across the financial sector, you can find operational functions sitting in Excel workbooks. And this sometimes includes functions that are mission-critical.
@@ -58,7 +58,7 @@ By default, the conversion process will convert each separate worksheet into a t
 
 ### Functions
 
-The conversion script will turn the Excel functions in the workbook into Kotlin code for use by your application. The most [common Excel functions](/03_server/10_integration/09_excel-to-genesis/02_excel-functions.md) are all covered.
+The conversion script will turn the Excel functions in the workbook into Kotlin code for use by your application. The most [common Excel functions](/03_server/10_integration/09_excel-to-genesis/02_excel-functions.mdx) are all covered.
 
 
 ### Column headings
@@ -122,7 +122,7 @@ fields {
     field(name = "ACCT_CODE", type = STRING)
     field(name = "ACTION", type = STRING)
 }
-  
+
 ```
 You can see the whole file [here](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-11).
 ### Field types
@@ -163,7 +163,7 @@ tables {
     primaryKey {
       ACCT_CODE
     }
-  
+
 ```
 You can see the complete file [here](../../../getting-started/advanced-learning/excel-to-genesis/Files/guide-12). Table IDs are sequential from the first one created, starting with the `-t` number supplied when you ran the script.
 ### Unable to parse
@@ -228,7 +228,7 @@ The conversion has created derived fields - simple calculations based on other f
 ```kotlin
 derivedField("FINAL_QUANTITY", DOUBLE) {
         // F: I2
-        withInput(CASH_MVMNT_ORDERS.ACCOUNT, CASH_MGMT_DASHBOARD.POTENTIAL_ADDITIONAL_TBILLS_DEPOSIT) { ACCOUNT, CASH_MGMT_DASHBOARD_POTENTIAL_ADDITIONAL_TBILLS_DEPOSIT -> 
+        withInput(CASH_MVMNT_ORDERS.ACCOUNT, CASH_MGMT_DASHBOARD.POTENTIAL_ADDITIONAL_TBILLS_DEPOSIT) { ACCOUNT, CASH_MGMT_DASHBOARD_POTENTIAL_ADDITIONAL_TBILLS_DEPOSIT ->
           if(ACCOUNT == null) return@withInput null
           if(CASH_MGMT_DASHBOARD_POTENTIAL_ADDITIONAL_TBILLS_DEPOSIT == null) return@withInput null
           val SUGGESTED_QUANTITY = (CASH_MGMT_DASHBOARD_POTENTIAL_ADDITIONAL_TBILLS_DEPOSIT / 10000.0) * 10000.0
