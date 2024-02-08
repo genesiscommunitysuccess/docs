@@ -19,6 +19,13 @@ async function createApiDoc(inputFile, outputFile) {
                 "\n" +
                 content;
     }
+    else {
+        content =
+            `---
+format: md
+---
+` + content;
+    }
     return fs_extra_1.default.writeFile(outputFile, cleanseMarkdownContent(content));
 }
 exports.createApiDoc = createApiDoc;

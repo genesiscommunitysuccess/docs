@@ -15,9 +15,9 @@ This page describes the various configuration options available for authenticati
 
 :::info
 **Session tokens and refresh tokens**
-Session tokens and refresh tokens work in pairs together to enable you to control secure user sessions. These tokens always have an associated expiry date. This is in DATETIME format, and is typically a number of minutes in the future. 
+Session tokens and refresh tokens work in pairs together to enable you to control secure user sessions. These tokens always have an associated expiry date. This is in DATETIME format, and is typically a number of minutes in the future.
 
-The expiry date of the refresh token is always further in the future than the expiry date of the session token, so that session tokens can be refreshed. 
+The expiry date of the refresh token is always further in the future than the expiry date of the session token, so that session tokens can be refreshed.
 
 Once a session token expires, you can use its associated refresh token to create a new user session - assuming the refresh token has not expired yet.
 :::
@@ -47,14 +47,14 @@ Within `security` there is a further range of functions you can call in order to
 The `authentication` function is used to define which authenticator implementations will be used.
 
 ### LDAP
-Within the scope of the `authentication` function, you can insert an `ldap` block in order to define connections to one or more LDAP servers. 
+Within the scope of the `authentication` function, you can insert an `ldap` block in order to define connections to one or more LDAP servers.
 
-- To define a connection to a single server, call the `connection` function and set the relevant details. 
+- To define a connection to a single server, call the `connection` function and set the relevant details.
 - To define connections to more than one server, simply call the `connection` function multiple times.
 
 When using multiple LDAP connections, the connections will be used in the order specified to authenticate a login request. Only one server need return a successful result for the login to be successful.
 
-The following variables are used to configure an LDAP connection; these are only used when the `type` is either `AuthType.LDAP` or `AuthType.HYBRID`. 
+The following variables are used to configure an LDAP connection; these are only used when the `type` is either `AuthType.LDAP` or `AuthType.HYBRID`.
 
 * `url` specifies the LDAP server hostname. Default: `localhost`.
 * `port` specifies the LDAP server port. Default: 389.
@@ -65,7 +65,7 @@ The following variables are used to configure an LDAP connection; these are only
 * `userPrefix` specifies a prefix added to every username when communicating with the LDAP server. Default: an empty string.
 * `bindDn` specifies the exact name of the application within the LDAP server. Normally, LDAP servers do not allow anonymous searches, so this name is essential. If `bindDn` is not specified, no bindings will be used. Default: null
 * `bindPassword` specifies the password for the `bindDn`account. If `bindDn` is not specified, this value is not used. Default: null.
-* `userIdType` defines the attribute to match in the directory search against the provided username. Default: `cn`. 
+* `userIdType` defines the attribute to match in the directory search against the provided username. Default: `cn`.
   * Amongst the most common LDAP implementations, you can find three main ways of configuring usernames:
     * using the `uid` attribute (Userid)
     * using the `cn` attribute (Common Name)
@@ -86,13 +86,13 @@ The `genesisPassword` authenticator defines the configuration for validating use
 The `passwordRetry` function has been deprecated in favour of the `retry` function within the `genesisPassword` configuration.
 
 ### validation
-The `validation` function enables password validation, and is used to set the variables relating to this validation. 
+The `validation` function enables password validation, and is used to set the variables relating to this validation.
 
 The following variables can be used to configure the application's password validation; these can only be used when `type` is either `AuthType.INTERNAL` or `AuthType.HYBRID`.
 
 * `passwordSalt` defines a system-specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different applications built on the Genesis low-code platform are stored as different hashes. Default: empty string indicating no additional salting.
 
-* `passwordStrength` can be called to set a range of configuration variables. These enable you to specify in detail the mandatory characteristics for the password. 
+* `passwordStrength` can be called to set a range of configuration variables. These enable you to specify in detail the mandatory characteristics for the password.
 
     * `minimumLength` specifies the minimum length of password. If null or undefined, this assumes there is no minimum limit. Default: null.
     * `maximumLength` specifies the maximum length of password. If null or undefined, this assumes there is no maximum limit. Default: null.
@@ -122,7 +122,7 @@ The `retry` function enables you to configure settings for limiting the rate at 
 
 The user login attempts are stored in the USER_LOGIN_ATTEMPT table, so it is possible for an administrator to allow a specific user(s) to attempt to login again by deleting/amending the relevant record(s) in it.
 
-### selfServiceReset 
+### selfServiceReset
 
 The `selfServiceReset` function enables the self-service reset workflow for users. In this, users authenticated with the internal auth type can request an email to reset their password. For this workflow, you must have Genesis Notify configured with a working email gateway. When a user requests a reset, an email with a link to a password reset page is sent to their configured email address. This link is valid for a preconfigured timeout.
 
@@ -132,11 +132,11 @@ In the interest of security, this response will always receive an ACK, even if t
 
 :::
 
-The `selfServiceReset` function  has the following options: 
+The `selfServiceReset` function  has the following options:
 
-* `timeoutInMinutes` - the time in minutes for which a reset link remains valid 
-* `coolDownInMinutes` - the time in minutes before the next password reset can be made 
-* `notifyTopic` - the email topic in Genesis Notify to be used 
+* `timeoutInMinutes` - the time in minutes for which a reset link remains valid
+* `coolDownInMinutes` - the time in minutes before the next password reset can be made
+* `notifyTopic` - the email topic in Genesis Notify to be used
 * `redirectUrl` - the url that will direct the user to the web page containing the form used for them to input their new password using the token provided in the email notification.
 
 > This is normally set to https://$HOSTNAME/login/reset-password
@@ -144,18 +144,18 @@ The `selfServiceReset` function  has the following options:
 
 :::warning
 
-You can set `acceptClientUrl` to `true` in a development environment. For security, always set it to `false` in all other environments. Always. 
+You can set `acceptClientUrl` to `true` in a development environment. For security, always set it to `false` in all other environments. Always.
 
 :::
 
 ### resetMessage
 
-The `resetMessage` function enables your application's users to configure the email sent when a reset is requested. It has the following options: 
+The `resetMessage` function enables your application's users to configure the email sent when a reset is requested. It has the following options:
 
 * `subject` the subject line of the email
 * `body` the body of the email
 
-Both the subject and the body support templating. Values surrounded by double curly braces `{{ }}` will be replaced when the email is sent. The following values are available: 
+Both the subject and the body support templating. Values surrounded by double curly braces `{{ }}` will be replaced when the email is sent. The following values are available:
 
 * `RESET_URL` the reset url
 * `TIMEOUT` the time the url is valid for
@@ -178,12 +178,12 @@ This method of MFA generates a qrCode that can be imported into apps such as Goo
 * `secretEncryptKey` specifies the key that is used to encrypt Secrets in the database. If this is null or undefined, Secrets will not be encrypted in the database. Default: null.
 * `usernameTableLookUpSalt` specifies the salt with which a username is hashed when stored in the database with the above Secret. If this is null or undefined, the username will not be hashed in the database. Default: null.
 
-### notify 
-This method of MFA generates a one-time login link that is sent via the Genesis Notify module. 
+### notify
+This method of MFA generates a one-time login link that is sent via the Genesis Notify module.
 
 Each time a login is unsuccessful, a new one-time link is generated, using a temporary code with a short-timed expiry.
 
-When login is successful using a temporary code, an active code is generated with the configured expiry. This can either be stored or saved as a cookie, preventing the need for the user to perform a second-factor authentication again until it has expired. 
+When login is successful using a temporary code, an active code is generated with the configured expiry. This can either be stored or saved as a cookie, preventing the need for the user to perform a second-factor authentication again until it has expired.
 
 This block exposes the following configuration items:
 
@@ -195,7 +195,7 @@ This block exposes the following configuration items:
 * `messageBody` is the body of the resulting message.
 
 ### loginAck
-The `loginAck` function enables you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message. When you call the `loginAck` function, you have to supply a table or view as a parameter. 
+The `loginAck` function enables you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message. When you call the `loginAck` function, you have to supply a table or view as a parameter.
 
 The following functions will be invoked on this table or view:
 
@@ -270,7 +270,7 @@ security {
                 maxAttempts = 3
                 waitTimeMins = 5
             }
-        }    
+        }
     }
 
     sso {
@@ -376,7 +376,7 @@ If successful:
 
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD_ACK
 
-If there's a problem, you will receive a standard error set with type `CHANGE_USER_PASSWORD_NACK`.  
+If there's a problem, you will receive a standard error set with type `CHANGE_USER_PASSWORD_NACK`.
 
 The error codes that can be returned are currently:
 - `TOO_SHORT` - password length too short.
@@ -463,7 +463,7 @@ Note the following:
 ### Amend profile
 
 #### Amend request
-  In the example below, the logged-in user (in the second line) is JohnWolf, who is modifying the profile of JaneDoe to give her the profile name JANE SMITH. 
+  In the example below, the logged-in user (in the second line) is JohnWolf, who is modifying the profile of JaneDoe to give her the profile name JANE SMITH.
 
 ```
     {
