@@ -28,7 +28,7 @@ provideDesignSystem().register(alphaAgGrid(), foundationGridComponents);
 
 ## Grid Pro Genesis datasource
 
-The following attributes can be used with the `<grid-pro-genesis-datasource>`: 
+The following attributes can be used with the `<grid-pro-genesis-datasource>`:
 
 |Name|Type|Default|Description|
 |----|----|-------|-----------|
@@ -46,15 +46,15 @@ The following attributes can be used with the `<grid-pro-genesis-datasource>`:
 
 ## Examples
 
-Below are some examples of how to use the **grid-pro** with connected data. 
+Below are some examples of how to use the **grid-pro** with connected data.
 
 This example creates a grid with a snapshot of the ALL_PROCESS_STATUS query.
 
 ```html title="Example 1"
 
 <alpha-grid-pro>
-    <grid-pro-genesis-datasource 
-      resourceName="ALL_PROCESSES_STATUS" 
+    <grid-pro-genesis-datasource
+      resourceName="ALL_PROCESSES_STATUS"
       isSnapshot="true" />
   ...
 </alpha-grid-pro>
@@ -64,7 +64,7 @@ This example creates a grid that displays 5 rows of data. When a new record is a
 
 ```html title="Example 2"
 <alpha-grid-pro>
-    <grid-pro-genesis-datasource 
+    <grid-pro-genesis-datasource
         resource-name="ALL_TRADE"
         max-view="5"
         moving-view="true" />
@@ -77,10 +77,10 @@ This example creates a grid with snapshot data for two specified fields. It load
 
 ```html title="Example 3"
 <alpha-grid-pro>
-    <grid-pro-genesis-datasource 
-        resource-name="ALL_PROCESSES_STATUS" 
-        isSnapshot="true" 
-        fields="PROCESS_NAME LOG_LEVEL" 
+    <grid-pro-genesis-datasource
+        resource-name="ALL_PROCESSES_STATUS"
+        isSnapshot="true"
+        fields="PROCESS_NAME LOG_LEVEL"
         max-view="4"
         max-row="5"
         moving-view="true" />
@@ -93,7 +93,7 @@ This example creates a grid with a polling frequency of 10 seconds. Remember tha
 
 ```html title="Example 4"
 <alpha-grid-pro>
-    <grid-pro-genesis-datasource 
+    <grid-pro-genesis-datasource
         resource-name="REQUEST_SERVER_ALL_TRADE"
         polling-interval="10000" />
     ...

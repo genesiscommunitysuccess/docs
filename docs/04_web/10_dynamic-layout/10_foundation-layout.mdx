@@ -110,7 +110,7 @@ storage. See [here](#autosaving-layout) for more.
 
 :::tip
 This only applies for usage with the declarative HTML API. When the layout first loads after this amount of time,
-it emits an [event](#event).
+it emits an [event](#events).
 :::
 
 ### [Layout Regions](./docs/api/foundation-layout.foundationlayoutregion.md)
@@ -208,7 +208,7 @@ To enable autosaving the layout, see [here](#autosaving-layout).
 
 Get an object describing the current layout so that it can be restored at a later date. This does not save any data internally to the layout. It is up to the client to store this state where appropriate for later recall (browser local storage, persistence layer, etc.). Use the [autosaving layout](#autosaving-layout) feature to get the layout to do this for you with local storage.
 
-You can store state for an instance of an item, and that will be saved inline. See [managing state](#managing-state).
+You can store state for an instance of an item, and that will be saved inline. See [managing state](#managing-the-state).
 
 #### [Load Layout](./docs/api/foundation-layout.foundationlayout.loadlayout.md)
 
@@ -273,7 +273,7 @@ When you have enabled autosave, you are still able to use the manual [serialisin
 The function [tryLoadLayoutFromLocalStorage()](./docs/api/foundation-layout.foundationlayout.tryloadlayoutfromlocalstorage.md) is used to rehydrate the layout from local storage, when `auto-save-key` is enabled.
 If you are using the declarative API, then this function is called for you automatically.
 
-If you are manually registering items (too) using the JavaScript API, you must [call this function manually](#contained-example) immediately after you have finished registering all the items. 
+If you are manually registering items (too) using the JavaScript API, you must [call this function manually](#contained-example) immediately after you have finished registering all the items.
 
 ### Layout placeholder
 
@@ -1158,7 +1158,7 @@ export class MockConnected extends FASTElement {
 }
 ```
 
-As explained in the [lifecycle info section](#element-lifecycle), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initialising a potentially heavy resource.
+As explained in the [lifecycle info section](#element-lifecycle-gating), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initialising a potentially heavy resource.
 
 Use `LifecycleMixin` to access properties on the class, which can be used to run lifecycle functionality more thoughtfully. In the following example, the resource-intensive tasks are called conditionally - only when needed.
 

@@ -86,7 +86,7 @@ export const orderColumnDefs: ColDef[] = [
     {field: 'PRICE', headerName: 'Price', valueFormatter: formatNumber(2), type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
     {field: 'DIRECTION', headerName: 'Order Side', sort: 'desc', flex: 2},
     {field: 'NOTES', headerName: 'Notes', sort: 'desc', flex: 2},
-    
+
 ];
 ```
 To stop automatic generation of columns, you need to add the `only-template-col-defs` attribute to the zero-grid-pro.
@@ -148,7 +148,7 @@ If you struggle, make sure to revisit this previous lesson on [calling event han
 :::
 
 ## An example of own grid component
-It's possible to create your own grid component if you want something completely customized. We can do that creating a new customElement. 
+It's possible to create your own grid component if you want something completely customized. We can do that creating a new customElement.
 
 In the example below, the component is called `positions-grid-pro`. Go to the folder **components** and create a new folder called "order-grid". We are going to create our brand new component there.
 
@@ -183,7 +183,7 @@ export const positionsAgGridStyles: ElementStyles = css`
     align-items: center;
     margin-left: 6px;
   }
-  
+
   .status-cell::after {
     content: "";
     position: absolute;
@@ -265,7 +265,7 @@ Looks good, doesn't it?
 Create a new component called `OrdersAgGrid` extending `ZeroGridPro`. Apply the same style on the `SIDE` field of the `PositionsAgGrid` in the `OrdersAgGrid` - so that SIDE will be green when ***BUY*** and red when ***SELL***.
 
 :::tip
-To do this, remember to create an **order-grid** folder below **client\web\src\components** and create the files needed to create a class, template and styles (e.g. **order-grid.ts**, **order-grid.template.ts** and **order-grid.styles.ts**). Apply the necessary changes that we saw above. 
+To do this, remember to create an **order-grid** folder below **client\web\src\components** and create the files needed to create a class, template and styles (e.g. **order-grid.ts**, **order-grid.template.ts** and **order-grid.styles.ts**). Apply the necessary changes that we saw above.
 
 Finally, create a new route called custom-order (as we did with playground, order, etc) and then add the order-grid you just created.
 :::
@@ -274,7 +274,7 @@ Finally, create a new route called custom-order (as we did with playground, orde
 
 The way we have been using grid-pro so far is encapsulating a Genesis datasource to have access to Data Server resources. This makes it easier to retrieve data without worrying about the connection, handling update events and so on. This is called [connected data](../../../web/web-components/grids/grid-pro/grid-pro-connected/).
 
-[Genesis datasource](../../../web/web-components/grids/grid-pro/grid-pro-connected/) offers some [attributes](../../../web/web-components/grids/grid-pro/grid-pro-connected/#attributes-and-props) to parameterise how to retrieve the data. Some commonly used attributes are:
+[Genesis datasource](../../../web/web-components/grids/grid-pro/grid-pro-connected/) offers some [attributes](../../../web/web-components/grids/grid-pro/grid-pro-connected/#grid-pro-genesis-datasource) to parameterise how to retrieve the data. Some commonly used attributes are:
 
 - **`criteria: string`**: a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: Expr.dateIsBefore(TRADE_DATE,'20150518') or QUANTITY > 10000.
 
@@ -282,7 +282,7 @@ The way we have been using grid-pro so far is encapsulating a Genesis datasource
 
 - **`resource-name: string`**: The target [Data Server](../../../server/data-server/introduction/) or [Request Server](../../../server/request-server/introduction/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
 
-As you may have noticed, we've already used `resource-name` and `order-by` when we used the grid-pro-genesis-datasource for the first time. 
+As you may have noticed, we've already used `resource-name` and `order-by` when we used the grid-pro-genesis-datasource for the first time.
 
 Now, let's see how we'd use `criteria` to add some filters to the data grid. In the example below, only orders whose side is BUY would be displayed:
 
@@ -362,7 +362,7 @@ const userReq = await this.connect.snapshot('ALL_USERS', {
 To see a list of all attributes look at [Data server client-side options](../../../server/data-server/advanced/#client-side-runtime-options).
 
 :::info user session
-As a side note, the code above also tells us how to retrieve the current logged-in user from the session, which is actually stored in the local storage of the browser. 
+As a side note, the code above also tells us how to retrieve the current logged-in user from the session, which is actually stored in the local storage of the browser.
 
 To find out more, inspect the Local Storage of your browser to see all the data that is being stored. In Chrome, press F12 to open DevTools, then go to `Application -> Storage -> Local Storage -> http://localhost:6060/`.
 :::
