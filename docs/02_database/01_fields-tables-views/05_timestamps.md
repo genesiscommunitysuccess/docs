@@ -45,4 +45,4 @@ To find the most recent change to table in your database:
 1. Add an index on the TIMESTAMP field for the table.
 2. Perform `a getRangeFromEnd` for that index. This returns all the records, beginning with the most recent.
 3. Keep only the first record.
-4. 
+
