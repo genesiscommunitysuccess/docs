@@ -9,7 +9,7 @@ tags:
   - genesisflake
 ---
 
-When you generate a database on the Genesis low-code platform, every table in the database is given a timestamp field. This contains a timestamp value that is generated automatically by GenesisFlake.
+When you generate a database on the Genesis low-code platform, every table in the database is given a TIMESTAMP field. This contains a timestamp value that is generated automatically by GenesisFlake.
 
 To create these values, GenesisFlake generates IDs in a similar manner to Twitter’s [snowflake](https://developer.twitter.com/en/docs/basics/twitter-ids). It is able to generate these IDs without having to perform database-level synchronisation - which ensures high performance. 
 
@@ -39,4 +39,10 @@ The result in decimal corresponds to 1579785813861, which can be checked in http
 
 ![](/img/epoch.png)
 
+## Finding the most recent change to a table
+To find the most recent change to table in your database:
 
+1. Add an index on the TIMESTAMP field for the table.
+2. Perform `a getRangeFromEnd` for that index. This returns all the records, beginning with the most recent.
+3. Keep only the first record.
+4. 
