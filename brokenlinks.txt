@@ -1,0 +1,26 @@
+- Broken anchor on source page path = /previous/getting-started/web-training/web-training-day3/:
+   -> linking to ../../../web/web-components/grids/grid-pro/grid-pro-connected/#attributes-and-props (resolved as: /previous/web/web-components/grids/grid-pro/grid-pro-connected/#attributes-and-props)
+- Broken anchor on source page path = /previous/getting-started/web-training/web-training-day4/:
+   -> linking to #saving-user-preferences (resolved as: /previous/getting-started/web-training/web-training-day4/#saving-user-preferences)
+   -> linking to #registration-prefix (resolved as: /previous/getting-started/web-training/web-training-day4/#registration-prefix)
+   -> linking to ../../../web/micro-front-ends/foundation-entity-management/#User-management (resolved as: /previous/web/micro-front-ends/foundation-entity-management/#User-management)
+- Broken anchor on source page path = /previous/web/basics/prerequisites/:
+   -> linking to ../../../web/basics/inserting-a-grid/#going-further (resolved as: /previous/web/basics/inserting-a-grid/#going-further)
+- Broken anchor on source page path = /previous/web/dynamic-layout/foundation-layout/:
+   -> linking to #event (resolved as: /previous/web/dynamic-layout/foundation-layout/#event)
+- Broken anchor on source page path = /previous/web/micro-front-ends/foundation-entity-management/:
+   -> linking to /previous/web/micro-front-ends/foundation-entity-management/docs/api/foundation-entity-management/#properties
+- Broken anchor on source page path = /getting-started/web-training/web-training-day3/:
+   -> linking to ../../../web/web-components/grids/grid-pro/grid-pro-connected/#attributes-and-props (resolved as: /web/web-components/grids/grid-pro/grid-pro-connected/#attributes-and-props)
+- Broken anchor on source page path = /getting-started/web-training/web-training-day4/:
+   -> linking to #saving-user-preferences (resolved as: /getting-started/web-training/web-training-day4/#saving-user-preferences)
+   -> linking to #registration-prefix (resolved as: /getting-started/web-training/web-training-day4/#registration-prefix)
+   -> linking to ../../../web/micro-front-ends/foundation-entity-management/#User-management (resolved as: /web/micro-front-ends/foundation-entity-management/#User-management)
+- Broken anchor on source page path = /web/basics/prerequisites/:
+   -> linking to ../../../web/basics/inserting-a-grid/#going-further (resolved as: /web/basics/inserting-a-grid/#going-further)
+- Broken anchor on source page path = /web/dynamic-layout/foundation-layout/:
+   -> linking to #event (resolved as: /web/dynamic-layout/foundation-layout/#event)
+   -> linking to #managing-state (resolved as: /web/dynamic-layout/foundation-layout/#managing-state)
+   -> linking to #element-lifecycle (resolved as: /web/dynamic-layout/foundation-layout/#element-lifecycle)
+- Broken anchor on source page path = /web/micro-front-ends/foundation-entity-management/:
+   -> linking to /web/micro-front-ends/foundation-entity-management/docs/api/foundation-entity-management/#properties
