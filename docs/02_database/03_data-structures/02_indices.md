@@ -38,7 +38,12 @@ by a specific ORDER_ID.
 
 ### Partial searches
 
-On [indices with multiple fields](../../../database/fields-tables-views/tables/tables-basics/#indices-with-multiple-fields), look-ups can also be done on a subset of fields - but the look-up must start at the first field and cannot skip a field. On an index with 3 fields, you can search on the first field, the first and second fields, and all three fields. You cannot look up on field 1 and field 3 only. The partial search behaves like a non-unique index, even if the index itself is unique.
+On [indices with multiple fields](../../../database/fields-tables-views/tables/tables-basics/#indices-with-multiple-fields), look-ups can also be done on a subset of fields - but the look-up must start at the first field and cannot skip a field. On an index with 3 fields. You can search on:
 
-Fields should always be provided in order. 
+-  the first field
+-  the first and second fields
+-  all three fields
 
+You **cannot** look up on field 1 and field 3 only. The partial search behaves like a non-unique index, even if the index itself is unique.
+
+Fields must always be provided in order. 
