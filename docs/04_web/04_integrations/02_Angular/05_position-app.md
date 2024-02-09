@@ -89,7 +89,7 @@ Browser should reload automatically, and you should be able to see grid with pop
     title="TRADES"
     createEvent="EVENT_TRADE_INSERT"
     updateEvent="EVENT_TRADE_MODIFY"
-    deleteEvent="EVENT_TRADE_DELETE"
+    deleteEvent="EVENT_TRADE_CANCEL"
   ></entity-management>
 ```
 
