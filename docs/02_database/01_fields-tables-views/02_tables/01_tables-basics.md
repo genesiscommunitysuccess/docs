@@ -78,13 +78,11 @@ If you are using intelliJ IDE, it will auto-suggest the available fields; any re
 
 ## Primary key
 
-A table must have a single primary key.
+By default, a table is a set of columns (fields), where you can insert and maintain a number of rows (records). You need to provide ways to query the database so that a specific record or records can be found. So you need to provide one or more indices.
 
-It is common to use a single sequenced/autoIncrement field in the table as a `primaryKey`.
+The most important index (plural: indices) is called the primary key, and this is mandatory.
 
-The `primaryKey` needs to contain one or more fields in the table. Where using more than one field, the order of the fields matters in the case of wanting to search performantly based on a partial key.
-
-The example below shows a `primaryKey` with a single field: `POSITION_ID`:
+So let's add a simple primary key to the example above. It is on the on the POSITION_ID field, so that we can find a specific record or range of records. It is common to use a single sequenced/autoIncrement field as a `primaryKey` in this way:
 
 ```kotlin
 tables {
@@ -103,9 +101,7 @@ tables {
 }
 ```
 
-## Indices
-
-An index (plural: indices) provides a way of querying the data in your table. Every table must have at least one way of querying the data, and that is the primary key.
+## Providing other indices
 
 In many cases, you will want to provide other indices so that all the useful ways of looking at the table are made possible.
 
@@ -114,40 +110,7 @@ There are two types of index that you can specify:
 - A **unique index** ensures that no two records in the table can have the same value for the specified field or fields. For example, this could be a TRADE_ID in a TRADES table, where the unique value is generated via autoIncrement or sequence. Or it could be a CURRENCY_SYMBOL in a table of CURRENCIES.  
 - A **non-unique index** is useful when uniqueness is not important or not possible. For example, you could add a non-unique index on the ORDER_ID field in your TRADE table. This enables you to find all the trades that match a specified order.  (ORDER_ID would be unique in the ORDERS table, but the order can be filled by multiple trades.) 
 
-Here is a simple example showing a unique and a non-unique index.  Each index has only one field.
-
-```
-  table(name = "TRADE", id = 1010) {
-      autoIncrement(TRADE_ID)
-      INSTRUMENT_ID
-      TRADE_TYPE
-      TRADE_DATE
-      CURRENCY_ID
-      QUANTITY
-      PRICE
-      
-      primaryKey {
-          TRADE_ID 
-      }
-      indices {
-          unique {
-                   INSTRUMENT_ID
-          }
-          nonUnique {
-                   CURRENCY_ID
-          }
-      }
- }
-
-}
-```
-
-See our page on [operations and indices](../../../../database/data-structures/indices/) for information on the operations that can be used to perform look-ups on an index.
-
-### Enforcing uniqueness
-We have already noted that a unique index enforces uniqueness on that field. So you can add a unique index to a table to create a further constraint on the primary index.
-
-Imagine a scenario where you have projects and users.
+So how does that work in practice? Imagine a scenario where you have projects and users.
 
 - You have a PROJECTS table where each project has a unique PROJ_ID.
 - You have a USERS table where each project has a unique USER_ID.
@@ -161,7 +124,7 @@ In the the PROJECT_USERS table, you only need two fields:
 
 Each record in this table states that PROJ_ID = x has USER_ID = y. However, we require that each unique combination of PROJ_ID and USER_ID can only occur once in the table. So in our table, we define the primary key on PROJ_ID and USER_ID. We can rely on the database to ensure uniqueness; an attempt to insert a record with a PROJ_ID and USER_ID combination that already exists will fail.
 
-Here is our table definition for this:
+Here is our table definition for PROJECT_USERS:
 
 ```kotlin
   table(name = "PROJECT_USERS", id = 11020) {
@@ -181,9 +144,33 @@ Here is our table definition for this:
      }
   }
 ```
-You can clearly see the unique index on the two fields in the table above. As well as enforcing uniqueness, it also enables you to search for a record where USER_ID=y and USER_ID=y - so you can see if project x includes user y (and you can also make a partial search - see below).
+ 
+In the above example:
 
-Note that the example also includes a non-unique index on USER_ID. This enables you to search for all records where USER_ID=y - so you can see exactly which projects the user belongs to.
+- We can query on the primary key just on PROJ_ID to find the users associated with that project. 
+- We can also query the primary key on both PROJ_ID and USER_ID to find if a specific user is associated with a specific project.
+- However, we **cannot skip** a field and query the primary key on only USER_ID. So, we have provided the non-unique index on USER_ID, which enables us to find all projects associated with a specific user.
+
+### Indices with multiple fields
+Any index you create - the primary key or other unique or non-unique indices - can have multiple fields.
+
+If you create an index with multiple fields, it is possible to make a search based on all the fields specified or to make a partial search based on some of the fields. However, there are strict limits to this.
+
+Consider an index that has three fields; A, B and C:
+
+- The search **must** always use the first field: A. It is also possible to search only on this field.
+- The search **can** use all the fields. The field values must be specified in the order that they are specified in the index.
+- The search **can** use the first and second fields only: A and B.
+- The search **cannot** use the first and third fields (A and C) only.
+- The search **cannot** use the second and third fields (B and C) only.
+
+Bear these restrictions in mind when you create an index with multiple fields; the order of the fields is important if you want partial searches to be useful and efficient.
+
+When you define an index, you cannot supply exactly the same fields in exactly the same order as the primary key or another index on the same table.
+
+### How is data retrieved from the database?
+
+See our page on [operations and indices](../../../../database/data-structures/indices/) for information on the operations that can be used to perform look-ups on an index.
 
 ### Indices with multiple fields
 Any index you create - the primary key or other unique or non-unique indices - can have multiple fields.
