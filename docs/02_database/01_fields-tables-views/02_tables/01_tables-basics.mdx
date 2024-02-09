@@ -160,17 +160,28 @@ Also note:
 
 See our page on [operations and indices](../../../../database/data-structures/indices/) for information on the operations that can be used to perform look-ups on an index.
 
-### Primary key and index names
+### Naming the primary index and other indices
 
-It is not mandatory to give a name to a primary key or an index. If you don't provide a name, it will be inferred:
+It is best practice for you to give each primary key or index a name when you declare it. 
+
+Use the `name` parameter to specify the name of a primary key or index, for example:
+
+```kotlin
+    primaryKey(name = "POSITION_PRIMARY_KEY") {
+      POSITION_ID
+    }
+```
+
+### Accepting default names
+It is not mandatory to specify a name for a primary key or index. If you don't provide one, Genesis creates one using the following rule:
 
  `[TABLE_NAME]_BY_[FIELD_1](_[FIELD_N])`
  
  where FIELD_1 - FIELD_N are all the fields that make up the key/index in the order specified.
 
-One exception is the common use case where the primary key is made up of a single field with a name of format `[TABLE_NAME]_[ID]`. In this case, the inferred name is `[TABLE_NAME]_BY_ID`.
+There is one exception; this is the common use case where the primary key is made up of a single field with a name in the format `[TABLE_NAME]_[ID]`. In this case, Genesis creates the name in the format `[TABLE_NAME]_BY_ID`.
 
-Let's see some examples. Below, the table name is `POSITION`. The inferred names are shown in the comment before each primary key.
+Let's see some examples. Below, the table name is `POSITION`. The names created by Genesis are shown in the comment before each primary key.
 
 
 ```kotlin
@@ -191,13 +202,3 @@ Let's see some examples. Below, the table name is `POSITION`. The inferred names
         ANOTHER_FIELD
     }
 ```
-
-In this example, we have specified the name of the primary key in the `name` parameter.
-
-```kotlin
-    primaryKey(name = "POSITION_PRIMARY_KEY") {
-      POSITION_ID
-    }
-```
-
-Indices work the same way; either you specify the name in the `name` parameter or the name will be automatically inferred.
