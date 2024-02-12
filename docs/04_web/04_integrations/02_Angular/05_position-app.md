@@ -18,10 +18,10 @@ This tutorial will guide you through creating a responsive Angular application w
 ### Project setup
 To set up your project run the following command 
 ```shell
-git clone -b ak/angular-blank-app-seed --single-branch https://github.com/genesiscommunitysuccess/integration-examples.git
+git clone https://github.com/genesiscommunitysuccess/integration-examples.git
 ```
 ```shell
-cd integration-examples/angular/blank-app-seed
+cd integration-examples/angular/position-app-starter
 ```
 ```shell
 npm install
