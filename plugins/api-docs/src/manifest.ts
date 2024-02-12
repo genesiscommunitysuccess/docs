@@ -44,7 +44,7 @@ export default {
       output: {
         directory: "./docs/04_web/09_filters",
         api_docs: "docs/api",
-        readme: "01_foundation-filters.md",
+        readme: "01_foundation-filters.mdx",
         keywords: ["genesis", "foundation", "ui", "filters"],
         tags: ["filter", "feature", "flags", "conditions"],
         pages: [
@@ -88,7 +88,7 @@ export default {
         directory: "./docs/04_web/05_micro-front-ends/03_foundation-header",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "03_foundation-header.md",
+        readme: "03_foundation-header.mdx",
         keywords: [
           "header",
           "sidebar",
@@ -207,7 +207,7 @@ export default {
         directory: "./docs/04_web/10_dynamic-layout",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "10_foundation-layout.md",
+        readme: "10_foundation-layout.mdx",
         keywords: [
           "web",
           "layout",
@@ -271,7 +271,7 @@ export default {
       output: {
         directory: "./docs/04_web/12_forms",
         api_docs: "docs/api",
-        readme: "01_foundation-forms.md",
+        readme: "01_foundation-forms.mdx",
         keywords: ["genesis", "foundation", "ui", "forms", "smart forms"],
         tags: ["genesis", "foundation", "ui", "forms", "smart forms"],
         pages: [
