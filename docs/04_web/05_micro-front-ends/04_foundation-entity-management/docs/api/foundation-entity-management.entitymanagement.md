@@ -56,10 +56,13 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [enableCellFlashing](./foundation-entity-management.entitymanagement.enablecellflashing.md) |  | boolean | If false, will disable cell flashing for all cells by default, unless otherwise defined in custom colDef |
 |  [enableFilterBar](./foundation-entity-management.entitymanagement.enablefilterbar.md) |  | boolean |  |
 |  [enableRowFlashing](./foundation-entity-management.entitymanagement.enablerowflashing.md) |  | boolean | If true, will enable row flashing for all rows for <code>add</code> transactions |
+|  [enableSearchBar](./foundation-entity-management.entitymanagement.enablesearchbar.md) |  | boolean |  |
 |  [entityLabel](./foundation-entity-management.entitymanagement.entitylabel.md) |  | string | Label for the entity which has usages such as being shown in the title of the modal wen editing the entity |
 |  [formRenderers](./foundation-entity-management.entitymanagement.formrenderers.md) |  | RendererEntry\[\] | Array with renderers used by foundation-forms |
 |  [formUiSchema](./foundation-entity-management.entitymanagement.formuischema.md) |  | any |  |
 |  [gridOptions](./foundation-entity-management.entitymanagement.gridoptions.md) |  | GridOptions | GridOptions to be passed down from application |
+|  [headerCaseType](./foundation-entity-management.entitymanagement.headercasetype.md) |  | GridProCaseType | The case type to use for the header names. If not set, the default CONSTANT\_CASE will be used. |
+|  [headerTempalate](./foundation-entity-management.entitymanagement.headertempalate.md) | <code>readonly</code> | import("@microsoft/fast-element").ViewTemplate&lt;[EntityManagement](./foundation-entity-management.entitymanagement.md), any&gt; |  |
 |  [hideDelete](./foundation-entity-management.entitymanagement.hidedelete.md) |  | boolean |  |
 |  [hideEdit](./foundation-entity-management.entitymanagement.hideedit.md) |  | boolean |  |
 |  [modalPosition](./foundation-entity-management.entitymanagement.modalposition.md) |  | 'centre' \| 'left' \| 'right' | Determines where the modal dialog will appear on screen |
@@ -68,6 +71,7 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [readEventFn](./foundation-entity-management.entitymanagement.readeventfn.md) |  | (...args: any\[\]) =&gt; {} |  |
 |  [readonly](./foundation-entity-management.entitymanagement.readonly.md) |  | boolean |  |
 |  [resourceName](./foundation-entity-management.entitymanagement.resourcename.md) |  | string | Name of the backend resource which contain the entities to manage |
+|  [searchBarConfig](./foundation-entity-management.entitymanagement.searchbarconfig.md) |  | AvailableOption\[\] |  |
 |  [selectedEntity](./foundation-entity-management.entitymanagement.selectedentity.md) |  | any | Reference to the currently selected entity from the grid. |
 |  [sizeColumnsToFit](./foundation-entity-management.entitymanagement.sizecolumnstofit.md) |  | boolean |  |
 |  [submitting](./foundation-entity-management.entitymanagement.submitting.md) |  | boolean |  |
@@ -84,6 +88,7 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [criteriaChanged(e)](./foundation-entity-management.entitymanagement.criteriachanged.md) |  |  |
 |  [deepClone()](./foundation-entity-management.entitymanagement.deepclone.md) |  | Override the deepClone method to ensure that observable attributes are cloned |
 |  [editModalVisibleChanged()](./foundation-entity-management.entitymanagement.editmodalvisiblechanged.md) |  |  |
+|  [searchChanged(event)](./foundation-entity-management.entitymanagement.searchchanged.md) |  |  |
 |  [submitEntityChanges(e)](./foundation-entity-management.entitymanagement.submitentitychanges.md) |  | Event handler for when the user submits the action for the currently open form, either editing or adding the entity |
 |  [submitFailureNotification(e)](./foundation-entity-management.entitymanagement.submitfailurenotification.md) |  |  |
 

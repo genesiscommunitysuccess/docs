@@ -128,7 +128,7 @@ exports.default = {
                 directory: "./docs/04_web/05_micro-front-ends/04_foundation-entity-management",
                 api_docs: "docs/api",
                 img_dir: "docs/img",
-                readme: "04_foundation-entity-management.md",
+                readme: "04_foundation-entity-management.mdx",
                 keywords: [
                     "entity management",
                     "frontend",
