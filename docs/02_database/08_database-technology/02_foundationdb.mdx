@@ -20,8 +20,7 @@ Each mode has implications in terms of database limitations, as FDB can only sto
 
 Therefore, for applications using small table records, FDB2 is more efficient. For applications using large table records, FDB is more efficient.
 
-System definitions[​](../../../database/database-technology/foundationdb/#system-definitionsdirect-link-to-heading)
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## System definitions
 
 For FDB and FDB2 layers, there are additional system definition items that you can apply in the [genesis-system-definitions.kts](../../../database/database-technology/sql/#system-definitions) file:
 
@@ -34,9 +33,7 @@ For FDB and FDB2 layers, there are additional system definition items that you c
 | `DbThreadKeepAliveSeconds`    | Sets how many seconds a thread created over the `DbThreadsMin` value can live. If a thread is idle for a total of `DbThreadKeepAliveSeconds` and it was created as an additional thread (i.e. outside the `DbThreadsMin` threshold), it will be destroyed. Defaults to 5 minutes |
 | `DbOptimisticConcurrencyMode` | Set the [Optimistic Concurrency](../../database-concepts/optimistic-concurrency) mode. Available values: STRICT, LAX and NONE. Defaults to NONE.                                                                                                                           |
 
-Sample configurations[​](../../../database/database-technology/foundationdb/#sample-configurationsdirect-link-to-heading)
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+Sample configurations
 ### Min and max thread count[​](../../../database/database-technology/foundationdb/#min-and-max-thread-countdirect-link-to-heading)
 
 ```kotlin
