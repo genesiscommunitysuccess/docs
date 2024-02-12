@@ -14,6 +14,7 @@ Error definition for a message result
 ```typescript
 export type MessageError = {
     CODE: MessageCode | string;
+    STATUS_CODE?: string;
     TEXT: string;
 };
 ```

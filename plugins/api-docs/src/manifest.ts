@@ -243,7 +243,7 @@ export default {
       output: {
         directory: "./docs/04_web/11_comms",
         api_docs: "docs/api",
-        readme: "01_foundation-comms.md",
+        readme: "01_foundation-comms.mdx",
         keywords: ["genesis", "foundation", "ui", "comms"],
         tags: [
           "data server",

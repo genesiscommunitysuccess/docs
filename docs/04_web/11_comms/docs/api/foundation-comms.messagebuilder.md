@@ -32,4 +32,5 @@ export interface MessageBuilder
 |  [createMoreRowsMessage(sourceRef)](./foundation-comms.messagebuilder.createmorerowsmessage.md) | Creates a message to request more rows. |
 |  [createRefreshTokenMessage()](./foundation-comms.messagebuilder.createrefreshtokenmessage.md) | Creates an auth message specific for token refresh. |
 |  [createRequestMessage(resourceName, params)](./foundation-comms.messagebuilder.createrequestmessage.md) | Creates a request message. |
+|  [createResourcesMessage(params)](./foundation-comms.messagebuilder.createresourcesmessage.md) | Creates a message for getting list of resources. |
 

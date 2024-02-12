@@ -32,6 +32,7 @@ export interface Connect
 |  [connect(host)](./foundation-comms.connect.connect.md) | Connects to a server at the specified host. |
 |  [dataLogoff(sourceRef)](./foundation-comms.connect.datalogoff.md) | Logs off from the specified data source. |
 |  [disconnect()](./foundation-comms.connect.disconnect.md) | Disconnects from the server. |
+|  [getAvailableResources(params)](./foundation-comms.connect.getavailableresources.md) | Sends a request to the server to get available resources. |
 |  [getJSONSchema(resourceName)](./foundation-comms.connect.getjsonschema.md) | Retrieves the JSON schema for the specified resource. |
 |  [getMetadata(resourceName, useCache)](./foundation-comms.connect.getmetadata.md) | Retrieves the metadata for the specified resource. |
 |  [getMoreRows(sourceRef)](./foundation-comms.connect.getmorerows.md) | Requests additional rows of data for the specified source reference. |
