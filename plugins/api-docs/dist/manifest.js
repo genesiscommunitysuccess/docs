@@ -12,7 +12,7 @@ exports.default = {
             output: {
                 directory: "./docs/04_web/06_testing",
                 api_docs: "docs/api",
-                readme: "01_foundation-testing.md",
+                readme: "01_foundation-testing.mdx",
                 keywords: ["genesis", "foundation", "ui", "testing"],
                 tags: [
                     "test",
