@@ -168,7 +168,7 @@ exports.default = {
                 directory: "./docs/04_web/05_micro-front-ends/05_foundation-login",
                 api_docs: "docs/api",
                 img_dir: "docs/img",
-                readme: "05_foundation-login.md",
+                readme: "05_foundation-login.mdx",
                 keywords: [
                     "web",
                     "login",
