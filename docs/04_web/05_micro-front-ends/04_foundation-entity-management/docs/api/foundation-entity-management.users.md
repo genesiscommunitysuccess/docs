@@ -61,6 +61,7 @@ const userColumns = [
 |  [columns](./foundation-entity-management.users.columns.md) |  | any | Column definition, default to the UsersColumnConfig |
 |  [createEvent](./foundation-entity-management.users.createevent.md) |  | string | String which contains event if we have permission to insert user of empty string if not |
 |  [deleteEvent](./foundation-entity-management.users.deleteevent.md) |  | string | String which contains event if we have permission to delete user of empty string if not |
+|  [gridOptions](./foundation-entity-management.users.gridoptions.md) |  | GridOptions | GridOptions to be passed down from application |
 |  [persistColumnStateKey](./foundation-entity-management.users.persistcolumnstatekey.md) |  | string | This attribute controls whether and how the user manager stores the state of the columns when the user edits them. Defaulted to <code>entity_users_management</code>. |
 |  [updateEvent](./foundation-entity-management.users.updateevent.md) |  | string | String which contains event if we have permission to update user of empty string if not |
 

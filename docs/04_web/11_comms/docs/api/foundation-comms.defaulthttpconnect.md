@@ -41,6 +41,7 @@ export declare class DefaultHttpConnect implements Connect
 |  [connect(host)](./foundation-comms.defaulthttpconnect.connect.md) |  |  |
 |  [dataLogoff(streamSourceRef)](./foundation-comms.defaulthttpconnect.datalogoff.md) |  |  |
 |  [disconnect()](./foundation-comms.defaulthttpconnect.disconnect.md) |  |  |
+|  [getAvailableResources(params)](./foundation-comms.defaulthttpconnect.getavailableresources.md) |  |  |
 |  [getJSONSchema(resourceName)](./foundation-comms.defaulthttpconnect.getjsonschema.md) |  |  |
 |  [getMetadata(resourceName, useCache)](./foundation-comms.defaulthttpconnect.getmetadata.md) |  |  |
 |  [getMoreRows(sourceRef)](./foundation-comms.defaulthttpconnect.getmorerows.md) |  |  |

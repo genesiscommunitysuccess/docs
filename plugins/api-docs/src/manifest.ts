@@ -12,7 +12,7 @@ export default {
       output: {
         directory: "./docs/04_web/06_testing",
         api_docs: "docs/api",
-        readme: "01_foundation-testing.md",
+        readme: "01_foundation-testing.mdx",
         keywords: ["genesis", "foundation", "ui", "testing"],
         tags: [
           "test",
@@ -44,7 +44,7 @@ export default {
       output: {
         directory: "./docs/04_web/09_filters",
         api_docs: "docs/api",
-        readme: "01_foundation-filters.md",
+        readme: "01_foundation-filters.mdx",
         keywords: ["genesis", "foundation", "ui", "filters"],
         tags: ["filter", "feature", "flags", "conditions"],
         pages: [
@@ -59,12 +59,14 @@ export default {
     {
       name: "@genesislcap/foundation-reporting",
       enabled: true,
-      img_dir: "docs/img",
-      readme: "./README.md",
+      src: {
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
       output: {
         directory: "./docs/04_web/05_micro-front-ends/02_front-end-reporting",
         img_dir: "docs/img",
-        readme: "02_foundation-reporting.md",
+        readme: "02_foundation-reporting.mdx",
         keywords: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
         tags: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
         pages: [
@@ -88,7 +90,7 @@ export default {
         directory: "./docs/04_web/05_micro-front-ends/03_foundation-header",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "03_foundation-header.md",
+        readme: "03_foundation-header.mdx",
         keywords: [
           "header",
           "sidebar",
@@ -129,7 +131,7 @@ export default {
           "./docs/04_web/05_micro-front-ends/04_foundation-entity-management",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "04_foundation-entity-management.md",
+        readme: "04_foundation-entity-management.mdx",
         keywords: [
           "entity management",
           "frontend",
@@ -169,7 +171,7 @@ export default {
         directory: "./docs/04_web/05_micro-front-ends/05_foundation-login",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "05_foundation-login.md",
+        readme: "05_foundation-login.mdx",
         keywords: [
           "web",
           "login",
@@ -207,7 +209,7 @@ export default {
         directory: "./docs/04_web/10_dynamic-layout",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "10_foundation-layout.md",
+        readme: "10_foundation-layout.mdx",
         keywords: [
           "web",
           "layout",
@@ -243,7 +245,7 @@ export default {
       output: {
         directory: "./docs/04_web/11_comms",
         api_docs: "docs/api",
-        readme: "01_foundation-comms.md",
+        readme: "01_foundation-comms.mdx",
         keywords: ["genesis", "foundation", "ui", "comms"],
         tags: [
           "data server",
@@ -271,7 +273,7 @@ export default {
       output: {
         directory: "./docs/04_web/12_forms",
         api_docs: "docs/api",
-        readme: "01_foundation-forms.md",
+        readme: "01_foundation-forms.mdx",
         keywords: ["genesis", "foundation", "ui", "forms", "smart forms"],
         tags: ["genesis", "foundation", "ui", "forms", "smart forms"],
         pages: [

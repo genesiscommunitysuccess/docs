@@ -40,6 +40,7 @@ export declare class DefaultConnect implements Connect
 |  [connect(host)](./foundation-comms.defaultconnect.connect.md) |  |  |
 |  [dataLogoff(streamSourceRef)](./foundation-comms.defaultconnect.datalogoff.md) |  |  |
 |  [disconnect()](./foundation-comms.defaultconnect.disconnect.md) |  |  |
+|  [getAvailableResources(params)](./foundation-comms.defaultconnect.getavailableresources.md) |  |  |
 |  [getJSONSchema(resourceName, useCache)](./foundation-comms.defaultconnect.getjsonschema.md) |  |  |
 |  [getMetadata(resourceName, useCache)](./foundation-comms.defaultconnect.getmetadata.md) |  |  |
 |  [getMoreRows(sourceRef)](./foundation-comms.defaultconnect.getmorerows.md) |  |  |

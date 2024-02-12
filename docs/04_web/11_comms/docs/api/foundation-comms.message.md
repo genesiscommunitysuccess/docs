@@ -21,6 +21,7 @@ export type Message<T = void | any> = {
     MESSAGE_TYPE?: MessageType | EventMessageType | string;
     PERMISSION?: string[];
     PROFILE?: string[];
+    RESOURCES?: any[];
     REFRESH_AUTH_TOKEN?: string;
     ROW?: any[];
     ROWS_COUNT?: number;
