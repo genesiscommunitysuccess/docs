@@ -14,7 +14,7 @@ module.exports = {
 	"@genesislcap/foundation-forms": "14.148.0",
 	"@genesislcap/foundation-header": "14.148.0",
 	"@genesislcap/foundation-layout": "14.148.0",
-	// "@genesislcap/foundation-login": "14.148.0",
-	"@genesislcap/foundation-reporting": "14.148.0",
+	"@genesislcap/foundation-login": "14.148.0",
+	// "@genesislcap/foundation-reporting": "14.148.0",
 	"@genesislcap/foundation-testing": "14.148.0",
 };

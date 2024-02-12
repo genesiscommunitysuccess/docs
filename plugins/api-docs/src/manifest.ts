@@ -59,12 +59,14 @@ export default {
     {
       name: "@genesislcap/foundation-reporting",
       enabled: true,
-      img_dir: "docs/img",
-      readme: "./README.md",
+      src: {
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
       output: {
         directory: "./docs/04_web/05_micro-front-ends/02_front-end-reporting",
         img_dir: "docs/img",
-        readme: "02_foundation-reporting.md",
+        readme: "02_foundation-reporting.mdx",
         keywords: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
         tags: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
         pages: [
