@@ -139,7 +139,7 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 
 **GlobalClasspathAdditions**: A list of delimited (':'), fully-qualified paths to any JVM files to be included on the classpath for all processes.
 
-**DEPLOYED_PRODUCT**: This specifies that the product's generated code is bundled in the product's distribution, therefore remap can skip the code generation step. This property's value should be the name of the product. To bundle the generated code into the distribution see [here](../../../database/fields-tables-views/genesisdao/#bundling-generated-code-with-product-distribution).
+**DEPLOYED_PRODUCT**: This specifies that the product's generated code is bundled in the product's distribution, therefore remap can skip the code generation step. This property's value should be the name of the product. To bundle the generated code into the distribution see [here](../../../database/fields-tables-views/genesisDao/#bundling-generated-code-with-product-distribution).
 
 If you want to enable SSL for your process communication, this is done in the [service definition](../../../server/configuring-runtime/service-definitions/#enable-ssl-for-processes).
 
