@@ -93,10 +93,8 @@ export const createOutputDuplexStream = (
       const pages = buffer.split(PAGE_DELIMETER);
 
       if (pages.length !== manifestSettings.pages.length) {
-        callback(
-          new Error(
-            `Page splits and page config counts do not match for package ${manifestSettings.directory}`,
-          ),
+        throw new Error(
+          `Page splits (${pages.length}) and page config counts (${manifestSettings.pages.length}) do not match for package "${manifestSettings.directory}"`,
         );
       }
 
