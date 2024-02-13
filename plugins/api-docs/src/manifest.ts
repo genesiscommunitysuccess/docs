@@ -12,7 +12,6 @@ export default {
       output: {
         directory: "./docs/04_web/06_testing",
         api_docs: "docs/api",
-        readme: "01_foundation-testing.mdx",
         keywords: ["genesis", "foundation", "ui", "testing"],
         tags: [
           "test",
@@ -27,6 +26,7 @@ export default {
         ],
         pages: [
           {
+            filename: "01_foundation-testing.mdx",
             title: "Foundation Testing",
             id: "foundation-testing",
             sidebar_label: "Foundation Testing",
@@ -44,11 +44,11 @@ export default {
       output: {
         directory: "./docs/04_web/09_filters",
         api_docs: "docs/api",
-        readme: "01_foundation-filters.mdx",
         keywords: ["genesis", "foundation", "ui", "filters"],
         tags: ["filter", "feature", "flags", "conditions"],
         pages: [
           {
+            filename: "01_foundation-filters.mdx",
             title: "Foundation Filters",
             sidebar_label: "Foundation Filters",
             id: "foundation-filters",
@@ -90,7 +90,6 @@ export default {
         directory: "./docs/04_web/05_micro-front-ends/03_foundation-header",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "03_foundation-header.mdx",
         keywords: [
           "header",
           "sidebar",
@@ -111,6 +110,7 @@ export default {
         ],
         pages: [
           {
+            filename: "03_foundation-header.mdx",
             title: "Foundation Header",
             sidebar_label: "Foundation Header",
             id: "foundation-header",
@@ -131,7 +131,6 @@ export default {
           "./docs/04_web/05_micro-front-ends/04_foundation-entity-management",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "04_foundation-entity-management.mdx",
         keywords: [
           "entity management",
           "frontend",
@@ -152,6 +151,7 @@ export default {
         ],
         pages: [
           {
+            filename: "04_foundation-entity-management.mdx",
             title: "Foundation Entity Management",
             sidebar_label: "Foundation Entity Management",
             id: "foundation-entity-management",
@@ -171,7 +171,6 @@ export default {
         directory: "./docs/04_web/05_micro-front-ends/05_foundation-login",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "05_foundation-login.mdx",
         keywords: [
           "web",
           "login",
@@ -190,6 +189,7 @@ export default {
         ],
         pages: [
           {
+            filename: "05_foundation-login.mdx",
             title: "Foundation Login",
             sidebar_label: "Foundation Login",
             id: "foundation-login",
@@ -209,7 +209,6 @@ export default {
         directory: "./docs/04_web/10_dynamic-layout",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "10_foundation-layout.mdx",
         keywords: [
           "web",
           "layout",
@@ -228,6 +227,7 @@ export default {
         ],
         pages: [
           {
+            filename: "10_foundation-layout.mdx",
             title: "Foundation Layout",
             sidebar_label: "Foundation Layout",
             id: "foundation-layout",
@@ -245,7 +245,6 @@ export default {
       output: {
         directory: "./docs/04_web/11_comms",
         api_docs: "docs/api",
-        readme: "01_foundation-comms.mdx",
         keywords: ["genesis", "foundation", "ui", "comms"],
         tags: [
           "data server",
@@ -256,6 +255,7 @@ export default {
         ],
         pages: [
           {
+            filename: "01_foundation-comms.mdx",
             title: "Foundation Comms",
             sidebar_label: "Foundation Comms",
             id: "foundation-comms",
@@ -273,11 +273,11 @@ export default {
       output: {
         directory: "./docs/04_web/12_forms",
         api_docs: "docs/api",
-        readme: "01_foundation-forms.mdx",
         keywords: ["genesis", "foundation", "ui", "forms", "smart forms"],
         tags: ["genesis", "foundation", "ui", "forms", "smart forms"],
         pages: [
           {
+            filename: "01_foundation-forms.mdx",
             title: "Foundation Forms",
             sidebar_label: "Foundation Forms",
             id: "foundation-forms",

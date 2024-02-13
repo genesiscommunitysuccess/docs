@@ -100,7 +100,7 @@ export const createOutputDuplexStream = (
 
       for (let i = 0; i < pages.length; i++) {
         const writeStream = fs.createWriteStream(
-          path.join(outputDir, manifestSettings.readme),
+          path.join(outputDir, manifestSettings.pages[i].filename),
           { encoding: "utf8" },
         );
         createStream(pages[i])
