@@ -68,6 +68,9 @@ id: ${page.id}
         this.push(`tags:\n${tagsText}\n`);
       }
       this.push(`---\n\n`);
+      this.push(
+        `<!-- this is an auto-generated file, to make changes please edit the associated readme in foundation ui repo -->\n`,
+      );
       this.push(chunk);
 
       callback();
@@ -85,7 +88,6 @@ const PAGE_DELIMETER = "<!-- page-split -->";
 export const createOutputDuplexStream = (
   manifestSettings: PackageConfig["output"],
   outputDir: string,
-  readmeStreamTransformer: Transform,
 ) =>
   new Duplex({
     write(chunk, _, callback) {
@@ -105,7 +107,7 @@ export const createOutputDuplexStream = (
         );
         createStream(pages[i])
           .pipe(createFrontMatterTransformerStream(manifestSettings, i))
-          .pipe(readmeStreamTransformer)
+          .pipe(createUrlTransformerSteam(manifestSettings))
           .pipe(writeStream);
       }
       callback();

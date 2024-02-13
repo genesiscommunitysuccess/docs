@@ -47,8 +47,7 @@ async function copyPackageFiles(manifest, processedMap) {
                 copyFn: copyFunctions_1.copyImgFile,
             });
         }
-        const readmeStreamTransformer = (0, fileStreams_1.createUrlTransformerSteam)(pkg.output);
-        const readmeDuplexStream = (0, fileStreams_1.createOutputDuplexStream)(pkg.output, outputRootDir, readmeStreamTransformer);
+        const readmeDuplexStream = (0, fileStreams_1.createOutputDuplexStream)(pkg.output, outputRootDir);
         const packageReadmeFile = path_1.default.join(packageRootDir, pkg.src.readme);
         const readStream = fs_extra_1.default.createReadStream(packageReadmeFile, {
             encoding: "utf8",

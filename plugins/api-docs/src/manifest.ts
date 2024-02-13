@@ -232,6 +232,18 @@ export default {
             sidebar_label: "Foundation Layout",
             id: "foundation-layout",
           },
+          {
+            filename: "10_02_layout-items.mdx",
+            title: "Layout Items",
+            sidebar_label: "Layout Items",
+            id: "foundation-layout-items",
+          },
+          {
+            filename: "10_02_layout-examples.mdx",
+            title: "Layout Examples",
+            sidebar_label: "Layout Examples",
+            id: "foundation-layout-examples",
+          },
         ],
       },
     },
