@@ -11,6 +11,17 @@ tags:
 
 A chart component is a graphical representation of a set of data. A range of different chart types can be used. Genesis charts are based on [g2plot](https://g2plot.antv.antgroup.com/en/).
 
+## Set-up
+
+The examples below are based on an example application called "alpha", so we refer to a design system called `@genesislcap/alpha-design-system`, which has the prefix `alpha`. In practice, you decide on the name and prefix of your design system, but it exposes the same API.
+
+```ts
+import { provideDesignSystem, alphaAgGrid } from '@genesislcap/alpha-design-system';
+import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
+
+provideDesignSystem().register(alphaAgGrid(), g2plotChartsComponents);
+```
+
 ## Attributes and properties
 
 When you declare an `<alpha-g2plot-chart>`, you can provide the following attributes:
@@ -45,12 +56,12 @@ chartConfiguration = {
 - Below is the declaration of a chart that uses the above configuration. The chart type is `column`. It uses the `chart-datasource` component to retrieve two fields from the `ALL_STOCKS` resource: SYMBOL (x axis) and TRADING_VOLUME (y axis).
 
 ```javascript title="chart declaration"
-<zero-g2plot-chart type="column" :config=${(x) => x.chartConfiguration}>
+<alpha-g2plot-chart type="column" :config=${(x) => x.chartConfiguration}>
     <chart-datasource
         resourceName = "ALL_STOCKS"
         server-fields = "SYMBOL TRADING_VOLUME"
     ></chart-datasource>
-</zero-g2plot-chart>
+</alpha-g2plot-chart>
 ```
 
 ## Use cases
