@@ -1,6 +1,6 @@
 ---
-title: 'Angular - Sharing data'
-sidebar_label: 'Sharing data'
+title: 'Angular - sharing data'
+sidebar_label: 'sharing data'
 id: angular-sharing-data
 keywords: [web, integrations, angular, sharing-data]
 tags:
@@ -8,14 +8,16 @@ tags:
     - integrations
     - angular
 ---
-This section of the documentation explores how to pass data from an Angular application to web components. Understanding the nuances of sharing data is crucial for seamless integration and functionality. We will discuss how to pass both primitive and non-primitive values.
+This section of the documentation explores how to pass data from an Angular application to web components. It is critical to get this correct to ensure seamless integration and functionality. 
 
-## Passing Values (Primitive and Non-Primitive)
+Here, we look at how to pass both primitive and non-primitive values.
 
-In Angular, both primitive values (such as strings, numbers, and boolean values) and non-primitive values (like objects and arrays) can be passed directly as attributes from Angular to web components, similar to how data is passed to Angular components.
+## Passing values (primitive and non-primitive)
 
-### Primitive Values
-For primitive values like strings, numbers, and boolean values (`true`/`false`), you can bind them in the HTML template like so:
+In Angular, both primitive values (such as strings, numbers, and boolean values) and non-primitive values (such as objects and arrays) can be passed directly as attributes from Angular to web components. This is similar to the way that data is passed between Angular components.
+
+### Primitive values
+You can bind primitive values in the HTML template in this way:
 
 ```html
 <your-web-component stringProp="Hello" numberProp="123"></your-web-component>
@@ -27,8 +29,8 @@ For boolean values, use Angular's property binding to ensure the correct boolean
 <your-web-component [booleanProp]="true"></your-web-component>
 ```
 
-### Non-Primitive Values (Objects and Arrays)
-For non-primitive values such as objects and arrays, you can also pass them directly, leveraging Angular's property binding. Here's how you can do it:
+### Non-primitive values (objects and arrays)
+You can also pass non-primitive values directly, using Angular's property binding. Here's how you can do it:
 
 ```html
 <your-web-component [objectProp]="{ key: 'value' }" [arrayProp]="[1, 2, 3]"></your-web-component>
@@ -38,6 +40,6 @@ Ensure that the properties (`objectProp` and `arrayProp` in the example) are pro
 
 ## Conclusion
 
-Mastering data sharing between Angular and web components simplifies the process of building dynamic and interactive web applications. Whether dealing with simple primitives or complex objects and arrays, Angular provides robust solutions to integrate seamlessly with web components, paving the way for a flexible and scalable application architecture.
+Sharing data between Angular and web components is simple, but it is critical to the process of building dynamic and interactive web applications. Whether dealing with simple primitives or complex objects and arrays, Angular can integrate seamlessly with web components, paving the way for a flexible and scalable application architecture.
 
 Remember to test thoroughly and ensure data integrity when passing complex data structures to maintain application stability and performance.
