@@ -34,13 +34,23 @@ loadRemotes({});
  */
 export { LoadRemotesOptions, loadRemotes };
 
-export default function Highlight({ children, color }) {
+export default function FoundationLayoutDemo({ children, color }) {
 	return (
-		<div style={{ width: "500px", height: "500px" }}>
+		<div style={{ width: "600px", height: "500px" }}>
 			<foundation-layout>
-				<foundation-layout-item title="test">
-					<p>Test Item</p>
-				</foundation-layout-item>
+				<foundation-layout-region>
+					<foundation-layout-region type="vertical">
+						<foundation-layout-item title="Button">
+							<button>Click me!</button>
+						</foundation-layout-item>
+						<foundation-layout-item title="Checkbox">
+							<input type="checkbox" />
+						</foundation-layout-item>
+					</foundation-layout-region>
+					<foundation-layout-item title="Test P">
+						<p>Test p tag</p>
+					</foundation-layout-item>
+				</foundation-layout-region>
 			</foundation-layout>
 		</div>
 	);
