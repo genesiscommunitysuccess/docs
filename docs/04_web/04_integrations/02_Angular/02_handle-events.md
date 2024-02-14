@@ -9,24 +9,25 @@ tags:
     - angular
 ---
 
-In this section, we will deal with handling events emitted by web components in an Angular application. It is worth noting that handling events from web components is not significantly different from handling events from Angular components themselves.
+This section looks at how to handle events emitted by web components in an Angular application. It is worth noting that this is not significantly different from handling events from Angular components themselves.
 
 ## Configuration
 
-The base of our application is a standard Angular project initialized with
+1. The base of our application is a standard Angular project. To initialise this, run:
+
 ```shell
 ng new alpha-handle-events
 ```
 
-Next install the Genesis Foundation packages. Run this command from your project folder:
+2. Install the Genesis Foundation packages. Run this command from your project folder:
 
 ```shell
 npm install --save @genesislcap/alpha-design-system
 ```
 
-The next step involves the integration of a web component named `flyout`. 
+3. Integrate the `flyout` web component. 
 
-The `flyout` component is designed to display an additional sliding layer on the page. It accepts an attribute named `closed`. When this attribute is set to `false`, the layer becomes visible. Notably, the component emits a `closed` event when the close button is clicked.
+This component displays an additional sliding layer on the page. It accepts an attribute named `closed`. When this attribute is set to `false`, the layer becomes visible. Notably, the component emits a `closed` event when the close button is clicked.
 
 To register the `<alpha-flyout>` component, open your **src/main.ts** file and add the following code:
 
@@ -35,9 +36,9 @@ import Example from '!!raw-loader!/examples/ui/alphaFlyoutImports';
 
 <CodeBlock className="language-ts">{Example}</CodeBlock>
 
-## Preparing the Angular Component
+## Preparing the Angular component
 
-We will prepare an Angular component that will interact with the `flyout` web component. Our Angular component will maintain a boolean variable, responsible for controlling the display of the `flyout`. This boolean will be bound to the `closed` attribute of the `flyout` component.
+Now prepare an Angular component to interact with the `flyout` web component. The Angular component must maintain a boolean variable, responsible for controlling the display of the `flyout`. This boolean must be bound to the `closed` attribute of the `flyout` component.
 
 Your component file **/src/app/app.components.ts** should look like:
 
@@ -45,30 +46,31 @@ import ExampleFlyout from '!!raw-loader!/examples/ui/angular/flyout.ts';
 
 <CodeBlock className="language-ts">{ExampleFlyout}</CodeBlock>
 
-Component contains the following properties and methods:
+The component contains the following properties and methods:
 
-- `displayFlyout`: A boolean property that determines the visibility of the `flayout` component. It is initialized to `false`, indicating that the `flayout` is not visible initially.
+- `displayFlyout`: A boolean property that determines the visibility of the `flyout` component. It is initialised as `false`, so that the `flyout` is not visible initially.
 
-- `showFlyout()`: A method that sets the `displayFlyout` property to `true`. When this method is invoked, the `flayout` becomes visible. This method can be triggered by user actions, such as clicking a button, to show the `flayout`.
+- `showFlyout()`: A method that sets the `displayFlyout` property to `true`. When this method is invoked, the `flyout` becomes visible. This can be triggered by user actions, such as clicking a button.
 
-- `hideFlyout()`: A method that sets the `displayFlyout` property to `false`. When this method is called, it hides the `flayout`. This can be used in response to certain events, for example, when a user clicks the 'close' button on the `flayout`, indicating the intention to hide it.
+- `hideFlyout()`: A method that sets the `displayFlyout` property to `false`. When this method is called, it hides the `flayout`. This can be used in response to certain events, for example, when a user clicks the 'close' button on the `flyout`.
 
-These methods provide a simple interface for showing and hiding the `flayout`, effectively controlling the component's visibility based on user interactions.
+These methods provide a simple interface for showing and hiding the `flyout`, effectively controlling the component's visibility based on user interactions.
 
 The component's html (**/src/app/app.components.html**) should look like this:
 
 import ExampleFlyoutHtml from '!!raw-loader!/examples/ui/angular/flyout.html';
 
 <CodeBlock className="language-html">{ExampleFlyoutHtml}</CodeBlock>
-Here's a breakdown of the template's structure and functionality:
+
+Here is a breakdown of the template's structure and functionality:
 
 - **Show flyout button**:
     ```html
     <button (click)="showFlyout()">show Flyout</button>
     ```
-    - A button element that, when clicked, triggers the `showFlyout()` method. This method sets the `displayFlyout` property to `true`, making the `alpha-flyout` visible.
+    - This is a button element. When clicked, it triggers the `showFlyout()` method. This method sets the `displayFlyout` property to `true`, making the `alpha-flyout` visible.
 
-- **alpha-flyout Component**:
+- **alpha-flyout component**:
     ```html
     <alpha-flyout
         position="right"
@@ -79,11 +81,11 @@ Here's a breakdown of the template's structure and functionality:
     </alpha-flyout>
     ```
     - The `alpha-flyout` component is a custom web component responsible for displaying additional content in a flyout panel.
-    - `position="right"`: This attribute sets the position of the flyout. In this case, the flyout is positioned to the right.
-    - `(closed)="hideFlyout()"`: An event binding that listens for the `closed` event emitted by the `alpha-flyout`. When this event occurs (typically when the user clicks a close button within the flyout), the `hideFlyout()` method is invoked, setting `displayFlyout` to `false` and hiding the flyout.
-    - `[closed]="!displayFlyout"`: A property binding that binds the `closed` property of the `alpha-flyout` to the negation of the `displayFlyout` property in the component class. This ensures that the flyout's visibility is controlled by the `displayFlyout` property.
+    - `position="right"`: this attribute sets the position of the flyout. In this case, the flyout is positioned to the right.
+    - `(closed)="hideFlyout()"`: an event binding that listens for the `closed` event emitted by the `alpha-flyout`. When this event occurs (typically when the user clicks a close button within the flyout), the `hideFlyout()` method is invoked, setting `displayFlyout` to `false` and hiding the flyout.
+    - `[closed]="!displayFlyout"`: a property binding that binds the `closed` property of the `alpha-flyout` to the negation of the `displayFlyout` property in the component class. This ensures that the flyout's visibility is controlled by the `displayFlyout` property.
 
-The structure of this template facilitates the interaction between the Angular component and the `alpha-flyout` web component, providing a seamless user experience for showing and hiding additional content on demand.
+The structure of this template enables the Angular component and the `alpha-flyout` web component to interact. This is completely hidden from the user, who can simply click to view or hide the additional content on demand.
 
 Replace the contents of the **app/app.component.css** file with this:
 ```css
@@ -118,13 +120,15 @@ alpha-flyout::part(content) {
 }
 ```
 
+### Changing the look
+
 For a better look, you can change the body in the file **src/index.html** to:
 
 ```html
 <body style="padding:0;margin:0;">
 ```
 
-
+## Running the app
 
 Now let's run our app in dev mode with:
 ```shell
