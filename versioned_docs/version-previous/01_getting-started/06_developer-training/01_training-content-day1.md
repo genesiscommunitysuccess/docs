@@ -710,7 +710,7 @@ Alternatively, you can use Genesis Console, which gives you a simple way of test
 ### Genesis Console
 1. In your browser, go to http://genesislcap.com/console/console-local/?host=localhost:9064.
 2. Enter the IP address of your server, in this case localhost port 9064, as we are using GENESIS_ROUTER locally through the Genesis plugin. So, the value to be entered here is `localhost:9064`
-3. Log in with your user name and password as [defined previously](../../../getting-started/developer-training/training-content-day1/#user-name-and-password). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
+3. Log in with your user name and password as [defined previously](../../../getting-started/developer-training/training-content-day1/#credentials-to-login). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.
 5. Filter the **Resource type** to show only Event Handlers.
 
@@ -769,7 +769,7 @@ Remember to insert a few trades using Genesis Console to test it.
 20 mins
 :::
 
-Look at the [Event Handler documentation](../../../server/event-handler/basics/#returning-a-nack) and see if you are able to modify our Event Handler [defined previously](../../../getting-started/developer-training/training-content-day1/#event-handler):
+Look at the [Event Handler documentation](../../../server/event-handler/basics/#returning-a-value) and see if you are able to modify our Event Handler [defined previously](../../../getting-started/developer-training/training-content-day1/#event-handler):
 - return `nack("Quantity must be positive")` if the quantity is lower than 0.
 
 Test it with Genesis Console.

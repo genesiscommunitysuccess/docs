@@ -152,7 +152,7 @@ Create a new file in the same folder as **USER.csv** and name it as **CRON_RULE.
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
 "0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
-Then import the local csv using the Genesis plugin as we saw [here](../../../getting-started/developer-training/training-content-day1/#user-name-and-password).
+Then import the local csv using the Genesis plugin as we saw [here](../../../getting-started/developer-training/training-content-day1/#credentials-to-login).
 
 ### Exercise 5.1: using the Evaluator
 :::info ESTIMATED TIME
