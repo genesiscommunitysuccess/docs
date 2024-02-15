@@ -35,6 +35,10 @@ It has the ability to generate the following:
 - HTML content/file based on an HTML template
 - PDF file based on an HTML template
 
+When an HTML template is provided, Thymeleaf is used to output the processed text. (See [Thymeleaf documentation](https://www.thymeleaf.org/documentation.html) for more details.)
+
+When a TXT template is provided, the file must be in the form of a Genesis Mustache template and as a result the Genesis MustacheParser is used to output the result.
+
 Alongside the template, if any assets are required (e.g. images, css files etc.) these must also be uploaded to FILE_STORAGE as well as the TEMPLATE_ASSET table in order to map those assets to it's corresponding template.
 
 You can either:
