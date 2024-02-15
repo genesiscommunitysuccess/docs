@@ -31,7 +31,7 @@ Java Event Handlers can be implemented using [RxJava3](../../../server/api-refer
 :::
 
 
-## Configure in processes.xml file
+## Configure the processes.xml file
 
 You need to add the `global.genesis.eventhandler` package to the package tag of the process; this tag defines which package the process should refer to. For example:
 
@@ -76,10 +76,9 @@ Each custom Event Handler must define an input message type `I` and an output me
 
 Use [@Inject](../../../server/api-reference/dependency-injection/) to provide instances for any objects needed as part of the dependency injection stage
 
-Async[​](../../../server/api-reference/event-handler-api/#async)
-----------------------------------------------------------------------------------------------------------------------
+## Async
 
-### AsyncEventHandler[​](../../../server/api-reference/event-handler-api/#asynceventhandler)
+### AsyncEventHandler
 
 This is the most basic definition of an Async Event Handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface, which is defined as: `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
 
@@ -186,7 +185,7 @@ If the `validate` flag is received as `true`, only the `onValidate` code bl
 
 In some cases, you might want to carry information from the `onValidate` code block to the `onCommit` code block for efficiency purposes. (For example, if several database look-ups happen in `onValidate` and you want to reuse that information.) Using the `AsyncContextValidatingEventHandler` interface, you can provide this context information from the validation stage to the commit stage. See the interface below: `interface AsyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : AsyncEventHandler<I, O>`
 
-### Implementation[​]
+### Implementation
 
 As with the previous example, when using this interface, you do not need to override the `process` method. The different methods for implementing this are described below:
 
@@ -484,17 +483,17 @@ Here is an example:
 
 Sync works similarly to [Async](../../../server/api-reference/event-handler-api/#async) and [Rx3](../../../server/api-reference/event-handler-api/#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
 
-### SyncEventHandler[​](../../../server/api-reference/event-handler-api/#synceventhandler)
+### SyncEventHandler
 
 `interface SyncEventHandler<I : Any, O : Outbound> : SyncEventWorkflowProcessor<I, O>, EventHandler`
 
-### Implementation[​](../../../server/api-reference/event-handler-api/#implementation-5)
+### Implementation
 
 | Name | Signature |
 | --- | --- |
 | process | `fun process(message: Event<I>) : O` |
 
-### Helper methods[​](../../../server/api-reference/event-handler-api/#helper-methods-2)
+### Helper methods
 
 | Name | Signature |
 | --- | --- |
@@ -546,11 +545,11 @@ Here is an example:
 </TabItem>
 </Tabs>
 
-## SyncValidatingEventHandler[​](../../../server/api-reference/event-handler-api/#syncvalidatingeventhandler)
+## SyncValidatingEventHandler
 
 `interface SyncValidatingEventHandler<I : Any, O : Outbound> : SyncEventHandler<I, O>`
 
-### Implementation[​](../../../server/api-reference/event-handler-api/#implementation-6)
+### Implementation
 
 | Name | Signature |
 | --- | --- |
@@ -617,18 +616,18 @@ Here is an example:
 </TabItem>
 </Tabs>
 
-## SyncContextValidatingEventHandler[​](../../../server/api-reference/event-handler-api/#synccontextvalidatingeventhandler)
+## SyncContextValidatingEventHandler
 
 `interface SyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : SyncEventHandler<I, O>`
 
-### Implementation[​](../../../server/api-reference/event-handler-api/#implementation-7)
+### Implementation
 
 | Name | Signature |
 | --- | --- |
 | onValidate | `fun onValidate(message: Event<I>): ValidationResult<O, C>` |
 | onCommit | `fun onCommit(message: Event<I>, context: C?): O` |
 
-### Helper methods[​](../../../server/api-reference/event-handler-api/#helper-methods-3)
+### Helper methods
 
 | Name | Signature |
 | --- | --- |
