@@ -33,7 +33,7 @@ Genesis applications include both server-side and web code.
 
 ### Java/Kotlin
 
-Genesis recommends [openjdk-11](https://openjdk.org/projects/jdk/11/) as the runtime. *Note that the JRE is not sufficient*, as installation of Genesis applications includes steps to configure the applications.
+Genesis recommends [openjdk-17](https://openjdk.org/projects/jdk/17/) as the runtime. *Note that the JRE is not sufficient*, as installation of Genesis applications includes steps to configure the applications.
 
 ### Third-party software
 
