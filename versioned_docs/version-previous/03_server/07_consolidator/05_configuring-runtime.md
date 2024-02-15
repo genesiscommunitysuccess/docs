@@ -45,6 +45,32 @@ multiple times.
 
 :::
 
+### Arguments tag
+
+In addition to the tags in the example, you can also add an `<arguments></arguments` tag. This allows you to define process arguments that should be passed
+to the process on startup.
+
+Here you can pass the `--coldStart` argument which cold starts the process. This is useful to avoid the danger of losing your calculated data. More info can be found in [The startProcess command](./02_basics.md/#the-startprocess-command-cold-start).
+
+For example:
+
+```kotlin
+<process name="POSITION_CONSOLIDATOR">
+        <groupId>POSITION</groupId>
+        <description>Consolidates trades to calculate positions</description>
+        <start>true</start>
+        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false -XX:MaxHeapFreeRatio=70 -XX:MinHeapFreeRatio=30 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:OnOutOfMemoryError="handleOutOfMemoryError.sh %p"</options>
+        <module>genesis-pal-consolidator</module>
+        <package>global.genesis.pal.consolidator</package>
+        <primaryOnly>false</primaryOnly>
+        <script>position-consolidator.kts</script>
+        <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
+        <language>pal</language>
+        <arguments>--coldStart</arguments>
+    </process>
+</process>
+```
+
 ## Adding the Consolidator to the service-definitions.xml
 
 Your application's [service-definitions.xml](../../../server/configuring-runtime/service-definitions) file is where you specify the ports used by each process for communicating internally. You need to add an entry for your Consolidator, using an unused port number. For example:

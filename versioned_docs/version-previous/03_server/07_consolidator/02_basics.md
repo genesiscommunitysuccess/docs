@@ -454,6 +454,25 @@ A cold start avoids the danger of losing your calculated data. To make a cold st
 
 In this case, the Consolidator process is called `GENESIS_CONSOLIDATOR`. If in doubt, you can find the exact name of your consolidator in the [service-definitions](../../../server/configuring-runtime/service-definitions) file.
 
+Alternatively, you can enable `--coldStart` persistently by adding it to the `<arguments></arguments` option. More info can be found in [configuring runtime](./05_configuring-runtime/#arguments-tag)
+
+```kotlin
+<process name="POSITION_CONSOLIDATOR">
+        <groupId>POSITION</groupId>
+        <description>Consolidates trades to calculate positions</description>
+        <start>true</start>
+        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false -XX:MaxHeapFreeRatio=70 -XX:MinHeapFreeRatio=30 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:OnOutOfMemoryError="handleOutOfMemoryError.sh %p"</options>
+        <module>genesis-pal-consolidator</module>
+        <package>global.genesis.pal.consolidator</package>
+        <primaryOnly>false</primaryOnly>
+        <script>position-consolidator.kts</script>
+        <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
+        <language>pal</language>
+        <arguments>--coldStart</arguments>
+    </process>
+</process>
+```
+
 This command consolidates all records in the system before starting the real-time event-driven consolidations.
 At the beginning of a cold start, all fields in `consolidationFields` of the consolidation table are zeroed (or deleted, if transient) before initiating the re-consolidation of all the records in the database.
 
