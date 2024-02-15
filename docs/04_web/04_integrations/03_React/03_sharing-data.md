@@ -8,13 +8,15 @@ tags:
     - integrations
     - react
 ---
-This section of the documentation delves into how to pass data from a React application to web components. Understanding the details of sharing data is essential for ensuring seamless integration and interactivity. We will focus on two main categories: passing primitive values and passing non-primitive values.
+This section of the documentation looks at how to pass data from a React application to web components. Understanding the details of sharing data is essential for ensuring seamless integration and interactivity. We will focus on two main categories: passing primitive values and passing non-primitive values.
 
-## Passing Primitive Values
+## Passing primitive values
 
-Primitive values such as strings, numbers, and boolean values (`true`/`false`) can be passed directly as props from React to web components, similar to how data is passed to React components.
+Primitive values include strings, numbers, and boolean values (`true`/`false`).
 
-For instance, if you want to pass a string or a number to a web component, you can bind it in your JSX like so:
+These can be passed directly as props from React to web components, which is similar to the way that data is passed between React components.
+
+For instance, if you want to pass a string or a number to a web component, you can bind it in your JSX like this:
 
 ```jsx
 <your-web-component stringProp="Hello" numberProp={123} />
@@ -26,13 +28,13 @@ And for boolean values, you can pass them directly as props:
 <your-web-component booleanProp={true} />
 ```
 
-## Passing Non-Primitive Values (Objects and Arrays)
+## Passing non-primitive values (objects and arrays)
 
-Passing non-primitive values such as objects and arrays requires a bit more attention. Since these data types are not passed directly through attributes in JSX, you need to ensure they are handled correctly. Here's how you can do it:
+Passing non-primitive values such as objects and arrays requires a bit more attention. These data types are not passed directly through attributes in JSX, so you need to ensure they are handled correctly. You need to use 'useRef'.
 
-### Use `useRef` for references
+### Use useRef for references
 
-If you need a reference to the web component for more complex interactions (like calling methods on the web component), you can use the `useRef` hook.
+The `useRef` hook enables you need a reference to the web component for more complex interactions (such as calling methods on the web component).
 
 ```jsx
 import React, { useRef, useEffect } from 'react';
@@ -53,11 +55,11 @@ function YourReactComponent() {
 }
 ```
 
-This approach ensures that both simple and complex data types are passed accurately and efficiently, leveraging React's powerful JSX syntax and component architecture.
+This approach ensures that both simple and complex data types are passed accurately and efficiently, using React's JSX syntax and component architecture.
 
-### Using `reactify-wc` for wrapping
+### Using reactify-wc for wrapping
 
-For a smoother integration of web components into your React application, you can utilize the `reactify-wc` library. `reactify-wc` allows you to wrap your web components and use them as if they were native React components.
+The `reactify-wc` library enables you to wrap your web components and use them as if they were native React components. This integrates the web components smoothly into your React application. 
 
 #### Example Usage
 
