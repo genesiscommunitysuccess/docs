@@ -9,24 +9,27 @@ tags:
     - react
 ---
 
-In this section, we will delve into handling events emitted by web components in a React application. It's important to note that handling events from web components in React is similar to handling native React events.
+This section looks at how to handle events that are emitted by web components in a React application. It's important to note that handling events from web components in React is similar to handling native React events.
 
 ## Configuration
 
-The foundation of our application is a standard React project initialized with
+The foundation of our application is a standard React project. 
+
+1. Initialise the using the following command:
+
 ```shell
 npx create-react-app alpha-handle-events
 ```
 
-Next, install the Genesis Foundation packages. Run this command from your project folder:
+2. install the Genesis Foundation packages: run this command from your project folder:
 
 ```shell
 npm install --save @genesislcap/alpha-design-system
 ```
 
-The next step involves the integration of a web component named `flyout`.
+3. Integrate the `flyout` web component.
 
-The `flyout` component is designed to display an additional sliding layer on the page. It accepts a property named `closed`. When this property is set to `false`, the layer becomes visible. Notably, the component emits a `closed` event when the close button is clicked.
+This component is designed to display an additional sliding layer on the page. It accepts a property named `closed`. When this property is set to `false`, the layer becomes visible. Notably, the component emits a `closed` event when the close button is clicked.
 
 To register the `<alpha-flyout>` component, open your **src/index.js** file and add the following code:
 
