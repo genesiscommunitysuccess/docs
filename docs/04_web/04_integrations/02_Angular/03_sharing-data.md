@@ -14,9 +14,11 @@ Here, we look at how to pass both primitive and non-primitive values.
 
 ## Passing values (primitive and non-primitive)
 
-In Angular, both primitive values (such as strings, numbers, and boolean values) and non-primitive values (such as objects and arrays) can be passed directly as attributes from Angular to web components. This is similar to the way that data is passed between Angular components.
+You can directly pass primitive and non-primitive values as attributes from Angular to web components. This is similar to the way that data is [passed between Angular components](https://angular.io/guide/inputs-outputs).
 
 ### Primitive values
+Primitive values include strings, numbers, and boolean values. 
+
 You can bind primitive values in the HTML template in this way:
 
 ```html
@@ -30,7 +32,9 @@ For boolean values, use Angular's property binding to ensure the correct boolean
 ```
 
 ### Non-primitive values (objects and arrays)
-You can also pass non-primitive values directly, using Angular's property binding. Here's how you can do it:
+Non-primitive values include objects and arrays.
+
+You can pass these values directly, using Angular's property binding. Here's how:
 
 ```html
 <your-web-component [objectProp]="{ key: 'value' }" [arrayProp]="[1, 2, 3]"></your-web-component>
