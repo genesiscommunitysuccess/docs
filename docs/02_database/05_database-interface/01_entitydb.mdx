@@ -50,7 +50,7 @@ The version to use depends on:
 | Kotlin | `AsyncEntityDb` | `SyncEntityDb` |
 | Java   | `RxEntityDb`    | `SyncEntityDb` |
 
-For more information on the differences between the APIs, see [Types of API](../../../database/types-of-api/types-of-API/).
+For more information on the differences between the APIs, see [Types of API](../../../database/types-of-api/types-of-api/).
 
 |                                                                                                        | [EntityDb](../../../database/database-interface/entity-db/)                                                     |
 |--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
@@ -342,7 +342,7 @@ Properties with a default value will have the value set by default, unless set e
 
 Generated properties will be left in an indeterminate state if not set in the builder. When writing to the
 database, this indeterminate state will be set in the return value. Trying to read the property while it is
-in this state will result in an `IllegalArugmentException`. Each generated property will have two read-only
+in this state will result in an `IllegalArgumentException`. Each generated property will have two read-only
 associated properties to access these properties in a safe manner. These are an `is[FieldName]Generated`
 boolean property and a `[fieldName]OrNull` property.
 
