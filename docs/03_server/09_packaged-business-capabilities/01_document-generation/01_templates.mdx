@@ -8,8 +8,11 @@ tags:
   - pbc
 ---
 
-## Introduction
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import {gsfVersion} from '../../../../src/versioning/versions.js'
 
+## Introduction
 A common use case for document management applications is the ability for users to generate files based on a certain dataset.
 This can be done easily using the Document Generator with a seed template.
 
@@ -27,6 +30,11 @@ For example, the following component can be part of an HTML template file:
 ```
 A user can then provide their own map for what trades data they would like to be displayed and generate a file as a result of it.
 Another user may want to receive the generated HTML content with the data replaced and send out an email with this body.
+The data object could be as follows:
+
+```kotlin
+val data = mapOf("trades" to Trade(price = BigDecimal.ONE, quantity = 1, counterparty = "counterparty", side = Side.BUY, account = "account"))
+```
 
 The document generator allows you to generate documents based on a pre-uploaded template to FILE_STORAGE (see Document Management for more information on uploading/downloading files).
 
@@ -39,11 +47,114 @@ When an HTML template is provided, Thymeleaf is used to output the processed tex
 
 When a TXT template is provided, the file must be in the form of a Genesis Mustache template and as a result the Genesis MustacheParser is used to output the result.
 
+:::important
+It should be noted that Thymeleaf has the capability of processing complex data objects, as a result the HTML template can include for loops like the above example.
+On the other hand the MustacheParser requires each field to be added individually.
+:::
+
+For example a TXT template can include the following:
+
+```text
+Price: {{PRICE}}
+Quantity: {{QUANTITY}}
+Counterparty: {{COUNTERPARTY}}
+Side: {{SIDE}}
+Account: {{ACCOUNT}}
+```
+
+Thus, the corresponding data object would be as follows:
+```kotlin
+val data = mapOf("PRICE" to 1, "QUANTITY" to 5, "COUNTERPARTY" to "counterparty_id", "SIDE" to Side.BUY, "ACCOUNT" to "account_id")
+```
+
 Alongside the template, if any assets are required (e.g. images, css files etc.) these must also be uploaded to FILE_STORAGE as well as the TEMPLATE_ASSET table in order to map those assets to it's corresponding template.
 
 You can either:
 - generate a file based on the provided template, this will be uploaded to FILE_STORAGE and the corresponding FileStorageID will be returned
 - generate the raw content of the file (not supported for PDF files), this will be returned alongside any corresponding AssetIds
+
+## Dependencies
+
+In order to inject the DocumentGenerator you need to have the following dependency set up in your project.
+
+Version: {gsfVersion}
+
+<Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
+    <TabItem value="gradle">
+
+        ```kotlin
+        implementation("global.genesis:file-server-templates:$version")
+        ```
+
+    </TabItem>
+    <TabItem value="maven">
+
+        ```xml
+        <dependency>
+            <groupId>global.genesis</groupId>
+            <artifactId>file-server-templates</artifactId>
+            <version>$version</version>
+        </dependency>
+        ```
+    </TabItem>
+</Tabs>
+
+## Examples
+
+### Inject Document Generator in [Event Handler](../../../server/event-handler/basics) file (Generate and store file)
+
+```kotlin
+val documentGenerator = inject<DocumentGenerator>()
+
+eventHandler<PdfGeneratorData>(name = "GENERATE_PDF_EMAIL") {
+        onValidate {
+            ack()
+        }
+        onCommit { event ->
+            val details = event.details
+            val trade = entityDb.get(Trade.byId(details.tradeId))
+            val tradeMap : Map<String, Any> = mapOf(
+                "trades" to listOf(trade)
+            )
+
+            val documentStorageResult =
+                documentGenerator.generateAndStore(
+                    DocumentStorageConfiguration(
+                        fileStorageId = "FILE_0001",
+                        fileName = "trades-pdf-gen.pdf",
+                        userName = "JohnDoe",
+                        data = tradeMap,
+                        deleteOnExit = false,
+                        workingDirectory = "tmp/provided_dir")
+                )
+
+            // custom code block ...
+
+            ack()
+        }
+    }
+```
+
+### Inject Document Generator inside module constructor (Generate content only)
+
+```kotlin
+@Module
+class GeneratePdf @Inject constructor(
+    private val documentGenerator: DocumentGenerator
+) {
+
+    val documentContentResult =
+                documentGenerator.generateContent(
+                    DocumentContentConfiguration(
+                        fileStorageId = "FILE_0001",
+                        userName = "JohnDoe",
+                        data = tradeMap,
+                        deleteOnExit = false,
+                        workingDirectory = "tmp/provided_dir")
+                )
+    // custom code block ...
+}
+```
 
 ## Input/Output Objects
 
@@ -99,56 +210,4 @@ DocumentContentResult(
 DocumentStorageResult(
     fileStorageId = "FILE_0002"
 )
-```
-
-## Example
-
-Here is an example of a project which has injected the DocumentGenerator into it's event handler and created an event to send an email with the generated PDF attached:
-
-```kotlin
-val documentGenerator = inject<DocumentGenerator>()
-
-eventHandler<PdfGeneratorData>(name = "GENERATE_PDF_EMAIL") {
-        onValidate {
-            ack()
-        }
-
-        onCommit { event ->
-            val details = event.details
-            val trade = entityDb.get(Trade.byId(details.tradeId))
-            val tradeMap : Map<String, Any> = mapOf(
-                "trades" to listOf(trade)
-            )
-
-            val documentStorageResult =
-                documentGenerator.generateAndStore(
-                    DocumentStorageConfiguration(
-                        fileStorageId = "FILE_0001",
-                        fileName = "trades-pdf-gen.pdf",
-                        userName = "JohnDoe",
-                        data = tradeMap,
-                        deleteOnExit = false,
-                        workingDirectory = "tmp/provided_dir")
-                )
-
-            val notify = Notify {
-                this.topic = details.topic
-                this.header = details.emailHeader
-                this.sender = details.sender
-                this.body = details.emailBody
-                this.notifySeverity = details.notifySeverity
-                this.documentId = documentStorageResult.fileStorageId
-            }
-
-            val messageClient = serviceDiscovery.resolveClientByResource("EVENT_NOTIFY_INSERT")
-            messageClient!!.sendMessage(
-                Event<Notify> (
-                    details = notify,
-                    messageType = "EVENT_NOTIFY_INSERT",
-                    userName = event.userName
-                )
-            )
-            ack()
-        }
-    }
 ```
