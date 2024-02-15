@@ -21,7 +21,7 @@ The foundation of our application is a standard React project.
 npx create-react-app alpha-handle-events
 ```
 
-2. install the Genesis Foundation packages: run this command from your project folder:
+2. Install the Genesis Foundation packages: run this command from your project folder:
 
 ```shell
 npm install --save @genesislcap/alpha-design-system
@@ -29,7 +29,7 @@ npm install --save @genesislcap/alpha-design-system
 
 3. Integrate the `flyout` web component.
 
-This component is designed to display an additional sliding layer on the page. It accepts a property named `closed`. When this property is set to `false`, the layer becomes visible. Notably, the component emits a `closed` event when the close button is clicked.
+This component is designed to display an additional sliding layer on the page. It accepts a property named `closed`. When this property is set to `false`, the layer becomes visible; when the close button is clicked, the component emits a `closed` event.
 
 To register the `<alpha-flyout>` component, open your **src/index.js** file and add the following code:
 
@@ -38,9 +38,9 @@ import Example from '!!raw-loader!/examples/ui/alphaFlyoutImports';
 
 <CodeBlock className="language-ts">{Example}</CodeBlock>
 
-## Preparing the React Component
+## Preparing the React component
 
-We will prepare a React component that will interact with the `flyout` web component. Our React component will maintain a boolean state, responsible for controlling the display of the `flyout`. This boolean will be bound to the `closed` property of the `flyout` component.
+Now prepare a React component that will interact with the `flyout` web component. The React component must maintain a boolean state, responsible for controlling the display of the `flyout`. This boolean must be bound to the `closed` property of the `flyout` component.
 
 Your component file **/src/App.js** should look like this:
 
@@ -76,12 +76,11 @@ function App() {
 export default App;
 ```
 
-Component contains the following properties and methods:
+The component contains the following properties and methods:
 
+- `showFlyout()`is a method that sets the closed parameter to `false` on the web component by reference `flyoutRef`. When this method is invoked, the `flyout` becomes visible.
 
-- `showFlyout()`: A method that sets the closed parameter to `false` on the web component by reference `flyoutRef`. When this method is invoked, the `flyout` becomes visible.
-
-- `hideFlyout()`: A method that sets the `displayFlyout` state to `false`. When this method is called, it hides the `flyout`. This method is invoked when `alpha-flayout` emit event `closed`.
+- `hideFlyout()` is a method that sets the `displayFlyout` state to `false`. When this method is called, it hides the `flyout`. This method is invoked when `alpha-flayout` emits a `closed` event.
 
 These methods provide a simple interface for showing and hiding the `flyout`, effectively controlling the component's visibility based on user interactions.
 
@@ -122,6 +121,8 @@ alpha-flyout::part(content) {
   height: 100%;
 }
 ```
+
+## Running the app
 
 Now let's run our app in dev mode with:
 ```shell
