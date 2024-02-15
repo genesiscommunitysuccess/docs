@@ -73,7 +73,7 @@ Here's how you can use `reactify-wc` in your project:
 
 :::note
 
-`reactify-wc` is built with React 16, but it works correctly even with newer versions of React, such as React 18 used in create react app.
+`reactify-wc` is built with React 16, but it works correctly with newer versions of React, such as React 18 used in create react app.
 
 :::
 
@@ -98,12 +98,12 @@ function App() {
 
    With `reactify-wc`, you can now use `YourWebComponent` as a regular React component, passing props and handling events in a React-like manner.
 
-### Upcoming: Better Web Components Support in React 19
+### Coming soon in React 19
 
-Looking ahead, the upcoming React 19 is expected to introduce enhanced support for web components. This improvement will likely simplify the integration process and offer a more native experience when using web components in React applications. With these advancements, developers can look forward to a more streamlined and efficient way to incorporate web components into their React-based projects, enhancing interoperability and easing the development process.
+Looking ahead, the upcoming React 19 is expected to introduce enhanced support for web components. we can expect a simplified integration process and a more native experience when using web components in React applications. 
 
 ## Conclusion
 
-Mastering data sharing between React and web components is pivotal for creating dynamic and interactive web applications. Whether you're dealing with straightforward primitives or intricate objects, React's versatile prop system and the useRef hook offer solid solutions for integrating smoothly with web components, facilitating a flexible and powerful application structure.
+Whether you're dealing with straightforward primitives or intricate objects, React's prop system and the `useRef` hook enable you to integrate smoothly with web components.
 
-Make sure to thoroughly test and validate the data being passed, especially when working with complex structures, to maintain the stability and performance of your application.
+To maintain the stability and performance of your application, thoroughly test and validate the data being passed, especially when working with complex structures.
