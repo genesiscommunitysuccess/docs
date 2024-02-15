@@ -1,0 +1,150 @@
+---
+title: 'Document Generation - Templates'
+sidebar_label: 'Templates'
+id: templates
+keywords: [packaged business capabilities, pbc]
+tags:
+  - packaged business capabilities
+  - pbc
+---
+
+## Introduction
+
+A common use case for document management applications is the ability for users to generate files based on a certain dataset.
+This can be done easily using the Document Generator with a seed template.
+
+For example, the following component can be part of an HTML template file:
+```html
+<tbody>
+    <tr th:each="trade : ${trades}">
+        <td th:text="${trade.price}">1.00</td>
+        <td th:text="${trade.quantity}">1000</td>
+        <td th:text="${trade.counterparty}">Counterparty1</td>
+        <td th:text="${trade.side}">BUY</td>
+        <td th:text="${trade.account}">Account1</td>
+    </tr>
+</tbody>
+```
+A user can then provide their own map for what trades data they would like to be displayed and generate a file as a result of it.
+Another user may want to receive the generated HTML content with the data replaced and send out an email with this body.
+
+The document generator allows you to generate documents based on a pre-uploaded template to FILE_STORAGE (see Document Management for more information on uploading/downloading files).
+
+It has the ability to generate the following:
+- TXT content/file based on a TXT template
+- HTML content/file based on an HTML template
+- PDF file based on an HTML template
+
+Alongside the template, if any assets are required (e.g. images, css files etc.) these must also be uploaded to FILE_STORAGE as well as the TEMPLATE_ASSET table in order to map those assets to it's corresponding template.
+
+You can either:
+- generate a file based on the provided template, this will be uploaded to FILE_STORAGE and the corresponding FileStorageID will be returned
+- generate the raw content of the file (not supported for PDF files), this will be returned alongside any corresponding AssetIds
+
+## Input/Output Objects
+
+The input for both cases are very similar.
+
+**DocumentContentConfiguration**
+- `templateId` = FileStorageId for the template you want to generate the document from
+- `userName` = username of the user generating the document
+- `data` = map of data to be substituted in the template (the key in the map must match the placeholder in the template file!)
+- `deleteOnExit` = whether to delete the working directory once the result is produced (default: true)
+- `workingDirectory` = optional path to a working directory (default: temporary directory created in system)
+
+For example:
+```kotlin
+DocumentContentConfiguration(
+    fileStorageId = "FILE_0001",
+    userName = "JohnDoe",
+    data = mapOf("trades" to Trade(price = BigDecimal.ONE, quantity = 1, counterparty = "counterparty", side = Side.BUY, account = "account")))
+```
+
+**DocumentStorageConfiguration**
+- everything in **DocumentContentConfiguration**
+- `fileName` = the file name for the document you would like to generate
+
+For example:
+```kotlin
+DocumentStorageConfiguration(
+    fileStorageId = "FILE_0001",
+    fileName = "trades-pdf-gen.pdf",
+    userName = "JohnDoe",
+    data = mapOf("trades" to Trade(price = BigDecimal.ONE, quantity = 1, counterparty = "counterparty", side = Side.BUY, account = "account")),
+    deleteOnExit = false,
+    workingDirectory = "tmp/provided_dir")
+```
+
+The resulting output respectively is as follows.
+
+**DocumentContentResult**
+- `rawContent` = content of the resulting document generation
+- `assetIds` = list of corresponding asset ids to the provided template
+
+```kotlin
+DocumentContentResult(
+    rawContent = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\">...",
+    assetIds = listOf("ASSET_001", "ASSET_002")
+)
+```
+
+**DocumentStorageResult**
+- `fileStorageId` = FileStorageId for the generated file
+
+```kotlin
+DocumentStorageResult(
+    fileStorageId = "FILE_0002"
+)
+```
+
+## Example
+
+Here is an example of a project which has injected the DocumentGenerator into it's event handler and created an event to send an email with the generated PDF attached:
+
+```kotlin
+val documentGenerator = inject<DocumentGenerator>()
+
+eventHandler<PdfGeneratorData>(name = "GENERATE_PDF_EMAIL") {
+        onValidate {
+            ack()
+        }
+
+        onCommit { event ->
+            val details = event.details
+            val trade = entityDb.get(Trade.byId(details.tradeId))
+            val tradeMap : Map<String, Any> = mapOf(
+                "trades" to listOf(trade)
+            )
+
+            val documentStorageResult =
+                documentGenerator.generateAndStore(
+                    DocumentStorageConfiguration(
+                        fileStorageId = "FILE_0001",
+                        fileName = "trades-pdf-gen.pdf",
+                        userName = "JohnDoe",
+                        data = tradeMap,
+                        deleteOnExit = false,
+                        workingDirectory = "tmp/provided_dir")
+                )
+
+            val notify = Notify {
+                this.topic = details.topic
+                this.header = details.emailHeader
+                this.sender = details.sender
+                this.body = details.emailBody
+                this.notifySeverity = details.notifySeverity
+                this.documentId = documentStorageResult.fileStorageId
+            }
+
+            val messageClient = serviceDiscovery.resolveClientByResource("EVENT_NOTIFY_INSERT")
+            messageClient!!.sendMessage(
+                Event<Notify> (
+                    details = notify,
+                    messageType = "EVENT_NOTIFY_INSERT",
+                    userName = event.userName
+                )
+            )
+            ack()
+        }
+    }
+```
