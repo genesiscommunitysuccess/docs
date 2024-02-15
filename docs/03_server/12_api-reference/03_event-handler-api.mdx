@@ -76,10 +76,10 @@ Each custom Event Handler must define an input message type `I` and an output me
 
 Use [@Inject](../../../server/api-reference/dependency-injection/) to provide instances for any objects needed as part of the dependency injection stage
 
-Async[​](../../../server/api-reference/event-handler-api/#asyncdirect-link-to-heading)
+Async[​](../../../server/api-reference/event-handler-api/#async)
 ----------------------------------------------------------------------------------------------------------------------
 
-### AsyncEventHandler[​](../../../server/api-reference/event-handler-api/#asynceventhandlerdirect-link-to-heading)
+### AsyncEventHandler[​](../../../server/api-reference/event-handler-api/#asynceventhandler)
 
 This is the most basic definition of an Async Event Handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface, which is defined as: `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
 
@@ -484,17 +484,17 @@ Here is an example:
 
 Sync works similarly to [Async](../../../server/api-reference/event-handler-api/#async) and [Rx3](../../../server/api-reference/event-handler-api/#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
 
-### SyncEventHandler[​](../../../server/api-reference/event-handler-api/#synceventhandlerdirect-link-to-heading)
+### SyncEventHandler[​](../../../server/api-reference/event-handler-api/#synceventhandler)
 
 `interface SyncEventHandler<I : Any, O : Outbound> : SyncEventWorkflowProcessor<I, O>, EventHandler`
 
-### Implementation[​](../../../server/api-reference/event-handler-api/#implementationdirect-link-to-heading-5)
+### Implementation[​](../../../server/api-reference/event-handler-api/#implementation-5)
 
 | Name | Signature |
 | --- | --- |
 | process | `fun process(message: Event<I>) : O` |
 
-### Helper methods[​](../../../server/api-reference/event-handler-api/#helper-methodsdirect-link-to-heading-2)
+### Helper methods[​](../../../server/api-reference/event-handler-api/#helper-methods-2)
 
 | Name | Signature |
 | --- | --- |
@@ -546,11 +546,11 @@ Here is an example:
 </TabItem>
 </Tabs>
 
-## SyncValidatingEventHandler[​](../../../server/api-reference/event-handler-api/#syncvalidatingeventhandlerdirect-link-to-heading)
+## SyncValidatingEventHandler[​](../../../server/api-reference/event-handler-api/#syncvalidatingeventhandler)
 
 `interface SyncValidatingEventHandler<I : Any, O : Outbound> : SyncEventHandler<I, O>`
 
-### Implementation[​](../../../server/api-reference/event-handler-api/#implementationdirect-link-to-heading-6)
+### Implementation[​](../../../server/api-reference/event-handler-api/#implementation-6)
 
 | Name | Signature |
 | --- | --- |
@@ -617,18 +617,18 @@ Here is an example:
 </TabItem>
 </Tabs>
 
-## SyncContextValidatingEventHandler[​](../../../server/api-reference/event-handler-api/#synccontextvalidatingeventhandlerdirect-link-to-heading)
+## SyncContextValidatingEventHandler[​](../../../server/api-reference/event-handler-api/#synccontextvalidatingeventhandler)
 
 `interface SyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : SyncEventHandler<I, O>`
 
-### Implementation[​](../../../server/api-reference/event-handler-api/#implementationdirect-link-to-heading-7)
+### Implementation[​](../../../server/api-reference/event-handler-api/#implementation-7)
 
 | Name | Signature |
 | --- | --- |
 | onValidate | `fun onValidate(message: Event<I>): ValidationResult<O, C>` |
 | onCommit | `fun onCommit(message: Event<I>, context: C?): O` |
 
-### Helper methods[​](../../../server/api-reference/event-handler-api/#helper-methodsdirect-link-to-heading-3)
+### Helper methods[​](../../../server/api-reference/event-handler-api/#helper-methods-3)
 
 | Name | Signature |
 | --- | --- |
