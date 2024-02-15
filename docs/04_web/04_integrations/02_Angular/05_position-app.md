@@ -9,10 +9,6 @@ tags:
     - angular
 ---
 
-# Angular Position app
-
-## Introduction
-
 This simple tutorial guides you through creating a responsive Angular application with a layout that uses the `grid-layout` component. 
 
 1. Set up the project
