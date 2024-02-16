@@ -43,16 +43,12 @@ It has the ability to generate the following:
 - HTML content/file based on an HTML template
 - PDF file based on an HTML template
 
-When an HTML template is provided, Thymeleaf is used to output the processed text. (See [Thymeleaf documentation](https://www.thymeleaf.org/documentation.html) for more details.)
+When an HTML template is provided, Thymeleaf is used to output the processed text.
+Thymeleaf has the capability of processing complex data objects, as a result the HTML template can include for loops like the above example. (See [Thymeleaf documentation](https://www.thymeleaf.org/documentation.html) for more details.)
 
-When a TXT template is provided, the file must be in the form of a Genesis Mustache template and as a result the Genesis MustacheParser is used to output the result.
+On the other hand, when a TXT template is provided, the TXT template engine uses a simple substitution syntax and thus requires each field to be added individually.
 
-:::important
-It should be noted that Thymeleaf has the capability of processing complex data objects, as a result the HTML template can include for loops like the above example.
-On the other hand the MustacheParser requires each field to be added individually.
-:::
-
-For example a TXT template can include the following:
+For example, a TXT template can include the following:
 
 ```text
 Price: {{PRICE}}
