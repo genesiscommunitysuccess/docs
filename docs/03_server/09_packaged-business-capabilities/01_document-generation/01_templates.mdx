@@ -140,8 +140,14 @@ eventHandler<PdfGeneratorData>(name = "GENERATE_PDF_EMAIL") {
 ```kotlin
 @Module
 class GeneratePdf @Inject constructor(
+    val entityDb: AsyncEntityDb,
     private val documentGenerator: DocumentGenerator
 ) {
+
+    val trades = entityDb.getBulk(TRADE).toList()
+            val tradeMap : Map<String, Any> = mapOf(
+                "trades" to listOf(trades)
+            )
 
     val documentContentResult =
                 documentGenerator.generateContent(
