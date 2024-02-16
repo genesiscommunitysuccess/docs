@@ -29,7 +29,7 @@ npm install --save @genesislcap/alpha-design-system
 
 This component displays an additional sliding layer on the page. It accepts an attribute named `closed`. When this attribute is set to `false`, the layer becomes visible. Notably, the component emits a `closed` event when the close button is clicked.
 
-To register the `<alpha-flyout>` component, open your **src/main.ts** file and add the following code:
+4. To register the `<alpha-flyout>` component, open your **src/main.ts** file and add the following code:
 
 import CodeBlock from '@theme/CodeBlock';
 import Example from '!!raw-loader!/examples/ui/alphaFlyoutImports';
@@ -48,13 +48,13 @@ import ExampleFlyout from '!!raw-loader!/examples/ui/angular/flyout.ts';
 
 The component contains the following properties and methods:
 
-- `displayFlyout`: A boolean property that determines the visibility of the `flyout` component. It is initialised as `false`, so that the `flyout` is not visible initially.
+- `displayFlyout`is a boolean property that determines the visibility of the `flyout` component. It is initialised as `false`, so that the `flyout` is not visible initially.
 
-- `showFlyout()`: A method that sets the `displayFlyout` property to `true`. When this method is invoked, the `flyout` becomes visible. This can be triggered by user actions, such as clicking a button.
+- `showFlyout()` is a method that sets the `displayFlyout` property to `true`. When this method is invoked, the `flyout` becomes visible. This can be triggered by user actions, such as clicking a button.
 
-- `hideFlyout()`: A method that sets the `displayFlyout` property to `false`. When this method is called, it hides the `flayout`. This can be used in response to certain events, for example, when a user clicks the 'close' button on the `flyout`.
+- `hideFlyout()` is a method that sets the `displayFlyout` property to `false`. When this method is called, it hides the `flyout`. This can be used in response to certain events, for example, when a user clicks the 'close' button on the `flyout`.
 
-These methods provide a simple interface for showing and hiding the `flyout`, effectively controlling the component's visibility based on user interactions.
+These methods provide a simple interface that enables the user to click to view and hide the component.
 
 The component's html (**/src/app/app.components.html**) should look like this:
 
@@ -82,8 +82,8 @@ Here is a breakdown of the template's structure and functionality:
     ```
     - The `alpha-flyout` component is a custom web component responsible for displaying additional content in a flyout panel.
     - `position="right"`: this attribute sets the position of the flyout. In this case, the flyout is positioned to the right.
-    - `(closed)="hideFlyout()"`: an event binding that listens for the `closed` event emitted by the `alpha-flyout`. When this event occurs (typically when the user clicks a close button within the flyout), the `hideFlyout()` method is invoked, setting `displayFlyout` to `false` and hiding the flyout.
-    - `[closed]="!displayFlyout"`: a property binding that binds the `closed` property of the `alpha-flyout` to the negation of the `displayFlyout` property in the component class. This ensures that the flyout's visibility is controlled by the `displayFlyout` property.
+    - `(closed)="hideFlyout()"` is an event binding that listens for the `closed` event emitted by the `alpha-flyout`. When this event occurs (typically when the user clicks a close button within the flyout), the `hideFlyout()` method is invoked, setting `displayFlyout` to `false` and hiding the flyout.
+    - `[closed]="!displayFlyout"` is a property binding that binds the `closed` property of the `alpha-flyout` to the negation of the `displayFlyout` property in the component class. This ensures that the flyout's visibility is controlled by the `displayFlyout` property.
 
 The structure of this template enables the Angular component and the `alpha-flyout` web component to interact. This is completely hidden from the user, who can simply click to view or hide the additional content on demand.
 
