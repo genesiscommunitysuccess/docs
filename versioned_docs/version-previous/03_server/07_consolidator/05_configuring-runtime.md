@@ -48,9 +48,9 @@ multiple times.
 ### Arguments tag
 
 In addition to the tags in the example, you can also add an `<arguments></arguments>` tag. This allows you to define process arguments that should be passed
-to the process on startup.
+to the process on start-up.
 
-Here you can pass the `--coldStart` argument which cold starts the process. This is useful to avoid the danger of losing your calculated data. More info can be found in [The startProcess command](./02_basics.md/#the-startprocess-command-cold-start).
+Here you can pass the `--coldStart` argument which [cold starts](./02_basics.md/#the-startprocess-command-cold-start) the process. This avoids the danger of losing your calculated data.
 
 For example:
 
