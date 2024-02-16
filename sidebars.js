@@ -477,6 +477,14 @@ module.exports = {
           type: 'doc',
           id: 'web/dynamic-layout/foundation-layout',
         },
+        {
+          type: 'doc',
+          id: 'web/dynamic-layout/foundation-layout-items',
+        },
+        {
+          type: 'doc',
+          id: 'web/dynamic-layout/foundation-layout-examples',
+        },
       ],
     },
     {
