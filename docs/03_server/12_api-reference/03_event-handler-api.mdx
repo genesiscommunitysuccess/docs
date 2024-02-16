@@ -76,7 +76,7 @@ Each custom Event Handler must define an input message type `I` and an output me
 
 Use [@Inject](../../../server/api-reference/dependency-injection/) to provide instances for any objects needed as part of the dependency injection stage
 
-Async
+## Async
 
 ### AsyncEventHandler
 
@@ -481,7 +481,7 @@ Here is an example:
 ## Sync
 
 
-Sync works similarly to [Async](../../../server/api-reference/event-handler-api/#blocking) and [Rx3](../../../server/api-reference/event-handler-api/#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
+Sync works similarly to [Async](../../../server/api-reference/event-handler-api/#async) and [Rx3](../../../server/api-reference/event-handler-api/#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
 
 ### SyncEventHandler
 
