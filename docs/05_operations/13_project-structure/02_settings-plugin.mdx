@@ -17,11 +17,9 @@ import TabItem from '@theme/TabItem';
 
 The Genesis Gradle Settings plugin simplifies project structure and configuration. A lot of boilerplate project configuration is taken care of automatically by the plugin.
 
-There are two flavours of the Settings plugin, one which applies to the Legacy project structure and the other to the Simplified project structure, both of which we will explore
-in other sections. Projects existing prior to release 7.1.0 are in the format referred to here as the legacy structure.
+There are two flavours of the Settings plugin, one which applies to the Legacy project structure and the other to the Simplified project structure. Projects existing prior to release 7.1.0 are in the format referred to as the Legacy structure.
 
-In this section we will explain the common features of the Settings plugin for both Legacy and Simplified project structures. Features that are only applicable to certain
-structures will be explained in their respective sections.
+In this section we will explore the features of the Settings plugin for both structures.
 
 ## How to enable?
 
@@ -95,11 +93,10 @@ genesis {
 
 ### Dependencies
 
-Here, you should declare dependencies on other Genesis products, then the Settings plugin can take care of where they should be added automatically. 
+Here you should declare dependencies on other Genesis products, then the Settings plugin can take care of where they should be added automatically. 
 The Settings plugin will do the following with these dependency declarations:
 - Add a dependency on the product's config to your project's dictionary cache for code generation
-- Capture runtime details of the product's processes (e.g. for running processes with the IntelliJ plugin)
-- Add a dependency on the product's distribution for the Deploy plugin
+- Capture runtime details of the product's processes (e.g. for running processes with the IntelliJ plugin or the Deploy plugin)
 
 The syntax is similar to Gradle dependencies but not exactly the same. Specifically, you specify the group id, product name and version: `"{groupId}:{productName}:{version}"`
 
@@ -116,7 +113,7 @@ genesis {
 
 ### Plugins
 
-Other Gradle plugins that are necessary for your project are automatically added by the Settings plugin. Below you can see the plugins that are added for both legacy and simplified. These plugins can also be disabled if needed.
+Other Gradle plugins that are necessary for your project are automatically added by the Settings plugin. Below you can see the plugins that are added for both Legacy and Simplified structures. These plugins can also be disabled if needed.
 
 <Tabs defaultValue="Simplified Structure" values={[{ label: 'Simplified Structure', value: 'Simplified Structure', },{ label: 'Legacy Structure', value: 'Legacy Structure'}]}>
 <TabItem value="Simplified Structure">
