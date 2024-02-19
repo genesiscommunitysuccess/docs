@@ -8,9 +8,6 @@ tags:
     - DAOs
 ---
 
-[Introduction](../../../database/fields-tables-views/fields-tables-views/)  | [Fields](../../../database/fields-tables-views/fields/)  | [Tables](../../../database/fields-tables-views/tables/)  |
- [Views](../../../database/fields-tables-views/views/)  
-
 The fields, tables and views you define must be turned into [DAO](../../../getting-started/glossary/glossary/#dao)s (Database Access Objects).
 
 There are five hierarchical levels:
