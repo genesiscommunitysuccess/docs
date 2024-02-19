@@ -16,15 +16,15 @@ The fields, tables and views you define must be turned into [DAO](../../../getti
 There are five hierarchical levels:
 
 1. System Definition
-    - Firstly, system definition items, used for common system overrides. It is important that these are first, as we can then make the rest configurable, based on their set-up (e.g. turn fields/tables on and off with a boolean system definition item)
+    - Firstly, system definition items, used for common system overrides. It is important that these are first, as we can then make the rest configurable, based on their set-up (e.g. turn fields/tables on and off with a boolean system definition item).
 2. Fields
-    - Fields are the top level of the DAO; they can be shared amongst tables and so are built ahead of tables
+    - Fields are the top level of the DAO; they can be shared amongst tables and so are built ahead of tables.
 3. Tables
-    - Create the DAOs for all the system tables
+    - Create the DAOs for all the system tables.
 4. HFT
-    - The [HFT](../../../getting-started/glossary/glossary/#hft) layer is a cache sitting above the database for rapid access to the data; it is used for rapidly updated data, such as price
+    - The [HFT](../../../getting-started/glossary/glossary/#hft) layer is a cache sitting above the database for rapid access to the data; it is used for rapidly updated data, such as price.
 5. Views
-    - Views are the final layer and are used in many Genesis components. They enable us to take fields from more than one table to create a coherent view of information 
+    - Views are the final layer and are used in many Genesis components. They enable us to take fields from more than one table to create a coherent view of information. 
 
 Each layer uses the layers above in the hierarchy, so `fields` can use `system definitions` and `views` can use all the other four.
 
@@ -50,9 +50,9 @@ Each of the following has a sub-menu that takes you to the `assemble` build task
 
 ### Bundling generated code with product distribution
 
-The generated code can also be bundled with the product distribution. This will shorten the deployment time as this allows remap to skip the code generation step.
+The generated code can also be bundled with the product distribution. This shortens the deployment time, as the remap skips the code-generation step.
 
-To bundle the generated code with the product distribution, the following gradle property must be set to `true` when you build the distribution:
+To bundle the generated code with the product distribution, set the following gradle property to `true` when you build the distribution:
 
 ```properties
 bundleGeneratedClasses=true
@@ -60,12 +60,12 @@ bundleGeneratedClasses=true
 
 In addition to this, you must also set the "DEPLOYED_PRODUCT" System Definition property. You can read more about that [here](../../../server/configuring-runtime/system-definitions/#items-defined).
 
-### Troubleshooting
+## Troubleshooting
 
-#### Gradle build errors in project and no gradle commands listed in IntelliJ 
+### Gradle build errors in project and no gradle commands listed in IntelliJ 
 
-If you don't see any menu options per the guide above, and see gradle errors trying to build or on opening a project, a common cause is gradle jvm settings.
+If you don't see any menu options per the guide above, and see gradle errors when you try to build or open a project, a common cause is gradle jvm settings.
 
-In IntelliJ go to `File` -> `Settings` and search for the Build Gradle page. Make sure Gradle JVM is set to 11, as shown below:
+In IntelliJ. go to **File** -> **Settings** and search for the Build Gradle page. Make sure Gradle JVM is set to **11**, as shown below:
 
 ![](/img/gradle-jvm-version.png)
