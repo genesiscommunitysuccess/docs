@@ -62,14 +62,18 @@ In the example above, the path would be:
 You can add extra path segments using the `grouping` function in this way:
 
 ```kotlin {2}
-webHandlers("tables") {
+webHandlers("BASE-PATH") {
     grouping("trade") {
         endpoint(GET, "all-trades") {
-            db.getBulk(TRADE)
+            handleRequest {
+                db.getBulk(TRADE)
+            }
         }
         endpoint(GET, "big-trades") {
-            db.getBulk(TRADE)
-                .filter { it.quantity > 1_000 }
+            handleRequest {
+                db.getBulk(TRADE)
+                    .filter { it.quantity!! > 1_000 }
+            }
         }
     }
 }
