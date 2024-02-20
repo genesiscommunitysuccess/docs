@@ -62,7 +62,7 @@ Add this code to your **home.component.html** file to set up four different tile
 </zero-grid-layout>
 ```
 
-In your browser you can see following placeholders for our content:
+In your browser you can see the four tiles displayed, each with different background colour. These are placeholders for our content:
 
 ![](/img/angular-tutorial-layout.png)
 
