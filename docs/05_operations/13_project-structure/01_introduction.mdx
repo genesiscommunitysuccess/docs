@@ -10,5 +10,34 @@ tags:
     - introduction
 ---
 
-This section will explain the Genesis Gradle Settings plugin and the Simplified project structure. The non-simplified project structure is referred to as the Legacy structure.
+This section will explain the Genesis Gradle Settings plugin and the two supported project structures, Legacy and Simplified.
 
+## Project structures
+
+### Simplified structure
+
+The Genesis Gradle Settings plugin allows the project structure to be greatly simplified. With this new structure only one module is required as a minimum in the project’s `server` directory, which is referred to as the "main module". 
+All of the project’s server files can be put in this single module including configuration files, GPAL scripts and other Java/Kotlin code. 
+
+You are not limited to putting everything in this one module, you can add as many as you like but there is no longer a requirement to have more than one.
+
+By default, the main module will be detected by a module ending with `-app`. There is a property in the Settings plugin to specify a custom name which you can read about [here](../settings-plugin/#main-module-name).
+
+Moving forward, this is the recommended structure for projects and is a pre-requisite for PBC development.
+
+**Example**
+
+Here is an example project with this structure:
+
+![](/img/position-simple-structure.png)
+
+### Legacy structure
+
+Prior to the introduction of the Simplified structure, this was the only structure for Genesis projects. At a minimum it contains a few more modules than the Simplified structure.
+This structure is still fully supported by the framework. If you want to migrate a project from the Legacy structure to the Simplified structure, you can read about how to do that [here](../simplified-structure/#migrating-from-the-legacy-structure).
+
+**Example**
+
+Here is an example project with this structure:
+
+![](/img/position-legacy-structure.png)

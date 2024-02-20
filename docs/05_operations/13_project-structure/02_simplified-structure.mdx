@@ -1,7 +1,7 @@
 ---
 title: 'Simplified Project Structure'
 sidebar_label: 'Simplified Structure'
-sidebar_position: 3
+sidebar_position: 2
 id: simplified-structure
 keywords: [operations, project structure, simplified structure]
 tags:
@@ -10,20 +10,13 @@ tags:
     - simplified structure
 ---
 
-## What is it?
-
-The Genesis Gradle Settings plugin allows the project structure to be greatly simplified. With this new structure only one module is required as a minimum in the project’s `server` directory, which is referred to as the "main module". 
-All of the project’s server files can be put in this single module including configuration files, GPAL scripts and other Java/Kotlin code. 
-
-You are not limited to putting everything in this one module, you can add as many as you like but there is no longer a requirement to have more than one.
-
-By default, the main module will be detected by a module ending with `-app`. There is a property in the Settings plugin to specify a custom name which you can read about [here](../settings-plugin/#main-module-name).
-
-Moving forward, this is the recommended structure for projects and is a pre-requisite for PBC development.
-
 ## How to create a project
 
 To create a new project with the Simplified structure, you create your project as usual using genx with the blank-app-seed but also specify the following option `--ref simple-app-seed`.
+
+```bash
+npx -y @genesislcap/genx@latest init <app-name> --ref simple-app-seed
+```
 
 If you want to migrate a project from the Legacy structure then see [here](#migrating-from-the-legacy-structure) for details.
 
@@ -49,8 +42,8 @@ As you will see from above, all config and script files are contained in the fol
 
 ## Where did the other modules go?
 
-In the Simplified structure some modules have been removed completely, others are now hidden and managed by the Settings plugin.
-The hidden modules are located in the root project’s (server) build folder "build/internal-modules".
+In the Simplified structure some modules have been removed completely, others are now managed by the Settings plugin. We call these "internal modules".
+The internal modules are located in the root project’s (server) build folder "build/internal-modules". Developers should not amend the files inside those modules.
 Below provides more details on this:
 
 | Module name | Where has it gone? |
