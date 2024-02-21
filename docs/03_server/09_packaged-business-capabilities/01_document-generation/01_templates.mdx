@@ -16,18 +16,18 @@ import {gsfVersion} from '../../../../src/versioning/versions.js'
 A common use case for document management applications is the ability for users to generate files based on a certain dataset.
 This can be done easily using the Document Generator with a seed template.
 
-The Document Generator enables you to generate documents based on a pre-uploaded template to FILE_STORAGE (see Document Management for more information on uploading/downloading files).
-Alongside the template, if any assets are required (e.g. images, css files etc.) these must also be uploaded to FILE_STORAGE as well as the TEMPLATE_ASSET table in order to map those assets to the corresponding template.
+Documents are generated based on a template that you create. You can create .txt or .html templates.
 
-It can generate the following:
-- TXT content/file based on a TXT template
-- HTML content/file based on an HTML template
-- PDF file based on an HTML template
+- A .txt file generates a .txt file from the data retrieved from the database.
+- An .html file creates either a .html file from the data retrieved from the database, or, if specified, generates a .pdf file based on a .html file of the data retrieved.
 
-## Interacting with the Document Generator
+Templates must be pre-uploaded to FILE_STORAGE (see Document Management for more information on uploading/downloading files). If any other assets are required (images, css files etc.), these must also be uploaded to FILE_STORAGE, along with a TEMPLATE_ASSET table that maps the assets to the corresponding template.
 
-There are two ways of interacting:
-- `generateContent` generates the raw content of the file (not supported for PDF files). This is returned alongside any corresponding AssetIds.
+## Using the Document Generator
+
+There are two methods for generating documents:
+
+- `generateContent` generates the raw content of the file, which is returned alongside any corresponding AssetIds. This can be used for generating .txt and .html files, but not .pdf files.
 - `generateAndStore` generates a file based on the template provided. The file is uploaded to FILE_STORAGE and the corresponding FileStorageID is returned.
 
 ### DocumentContentConfiguration
@@ -51,7 +51,7 @@ DocumentContentConfiguration(
 
 The `generateContent` method returns an object with the following parameters:
 - `rawContent` is the content of the resulting document generation.
-- `assetIds` is a list of corresponding asset ids to the provided template.
+- `assetIds` is a list of corresponding asset ids that are mapped to the provided template.
 
 For example:
 ```kotlin
@@ -65,7 +65,7 @@ DocumentContentResult(
 
 The `generateAndStore` method takes in an object with the following parameters:
 - everything in **DocumentContentConfiguration**.
-- `fileName` is the file name for the document you would like to generate.
+- `fileName` is the file name for the document you would like to generate. This must include the file extension of the type of file that you want to generate.
 
 For example:
 ```kotlin
@@ -94,9 +94,11 @@ DocumentStorageResult(
 
 ### HTML templates
 
-When an HTML template is provided, [Thymeleaf](https://www.thymeleaf.org/documentation.html) is used to output the processed text.
+When you provide an HTML template, [Thymeleaf](https://www.thymeleaf.org/documentation.html) is used to output the processed text.
 
-Thymeleaf can process complex data objects, so the HTML template can include loops as shown in the example below. This component can be part of an HTML template file:
+Thymeleaf can process complex data objects, so the HTML template can include loops (as shown in the example below). This enables you to provide more than one row of data. 
+
+For example, this component can be part of an HTML template file:
 
 ```html
 <tbody>
@@ -109,9 +111,9 @@ Thymeleaf can process complex data objects, so the HTML template can include loo
     </tr>
 </tbody>
 ```
-Users can then provide their own maps for what trade data they would like to be displayed, and generate a file. 
+Users can then provide the trade data that they would like to be displayed, and generate a file. 
 
-If the user wants to receive the generated HTML content with the data replaced in order to send an email with this body, the data object could be:
+If the user wants to receive the generated HTML content to send as an email, the data object could be as below, where the key of each object in the map must correspond to a placeholder in the html template.
 
 ```kotlin
 val trade = Trade(price = BigDecimal.ONE, quantity = 1, counterparty = "counterparty", side = Side.BUY, account = "account")
