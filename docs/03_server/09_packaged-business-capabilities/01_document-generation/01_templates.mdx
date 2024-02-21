@@ -17,6 +17,7 @@ A common use case for document management applications is the ability for users 
 This can be done easily using the Document Generator with a seed template.
 
 The Document Generator enables you to generate documents based on a pre-uploaded template to FILE_STORAGE (see Document Management for more information on uploading/downloading files).
+Alongside the template, if any assets are required (e.g. images, css files etc.) these must also be uploaded to FILE_STORAGE as well as the TEMPLATE_ASSET table in order to map those assets to it's corresponding template.
 
 It can generate the following:
 - TXT content/file based on a TXT template
@@ -136,8 +137,6 @@ Thus, the corresponding data object would be as follows:
 ```kotlin
 val data = mapOf("PRICE" to 1, "QUANTITY" to 5, "COUNTERPARTY" to "counterparty_id", "SIDE" to Side.BUY, "ACCOUNT" to "account_id")
 ```
-
-Alongside the template, if any assets are required (e.g. images, css files etc.) these must also be uploaded to FILE_STORAGE as well as the TEMPLATE_ASSET table in order to map those assets to it's corresponding template.
 
 ## Dependencies
 
