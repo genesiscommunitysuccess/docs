@@ -16,27 +16,27 @@ import {gsfVersion} from '../../../../src/versioning/versions.js'
 A common use case for document management applications is the ability for users to generate files based on a certain dataset.
 This can be done easily using the Document Generator with a seed template.
 
-The document generator allows you to generate documents based on a pre-uploaded template to FILE_STORAGE (see Document Management for more information on uploading/downloading files).
+The Document Generator enables you to generate documents based on a pre-uploaded template to FILE_STORAGE (see Document Management for more information on uploading/downloading files).
 
-It has the ability to generate the following:
+It can generate the following:
 - TXT content/file based on a TXT template
 - HTML content/file based on an HTML template
 - PDF file based on an HTML template
 
 ## Interacting with the Document Generator
 
-You can either:
-- `generateContent`: generate the raw content of the file (not supported for PDF files), this will be returned alongside any corresponding AssetIds
-- `generateAndStore`: generate a file based on the provided template, this will be uploaded to FILE_STORAGE and the corresponding FileStorageID will be returned
+There are two ways of interacting:
+- `generateContent`generates the raw content of the file (not supported for PDF files). This is returned alongside any corresponding AssetIds.
+- `generateAndStore`generates a file based on the template provided. The file is uploaded to FILE_STORAGE and the corresponding FileStorageID is returned.
 
 ### DocumentContentConfiguration
 
 The `generateContent` method takes in an object with the following parameters:
-- `templateId` = FileStorageId for the template you want to generate the document from
-- `userName` = username of the user generating the document
-- `data` = map of data to be substituted in the template (the key in the map must match the placeholder in the template file!)
-- `deleteOnExit` = whether to delete the working directory once the result is produced (default: true)
-- `workingDirectory` = optional path to a working directory (default: temporary directory created in system)
+- `templateId` is the FileStorageId for the template you want to generate the document from.
+- `userName` is the username of the user generating the document.
+- `data` is the map of data to be substituted in the template (the key in the map must match the placeholder in the template file!).
+- `deleteOnExit` controls whether to delete the working directory once the result has been produced (default: true).
+- `workingDirectory` is the optional path to a working directory (default: temporary directory created in system).
 
 For example:
 ```kotlin
@@ -49,8 +49,8 @@ DocumentContentConfiguration(
 ### DocumentContentResult
 
 The `generateContent` method returns an object with the following parameters:
-- `rawContent` = content of the resulting document generation
-- `assetIds` = list of corresponding asset ids to the provided template
+- `rawContent` is the content of the resulting document generation.
+- `assetIds` is a list of corresponding asset ids to the provided template.
 
 For example:
 ```kotlin
@@ -63,8 +63,8 @@ DocumentContentResult(
 ### DocumentStorageConfiguration
 
 The `generateAndStore` method takes in an object with the following parameters:
-- everything in **DocumentContentConfiguration**
-- `fileName` = the file name for the document you would like to generate
+- everything in **DocumentContentConfiguration**.
+- `fileName` is the file name for the document you would like to generate.
 
 For example:
 ```kotlin
