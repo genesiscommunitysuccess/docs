@@ -17,7 +17,7 @@ A common use case for document management applications is the ability for users 
 This can be done easily using the Document Generator with a seed template.
 
 The Document Generator enables you to generate documents based on a pre-uploaded template to FILE_STORAGE (see Document Management for more information on uploading/downloading files).
-Alongside the template, if any assets are required (e.g. images, css files etc.) these must also be uploaded to FILE_STORAGE as well as the TEMPLATE_ASSET table in order to map those assets to it's corresponding template.
+Alongside the template, if any assets are required (e.g. images, css files etc.) these must also be uploaded to FILE_STORAGE as well as the TEMPLATE_ASSET table in order to map those assets to the corresponding template.
 
 It can generate the following:
 - TXT content/file based on a TXT template
@@ -27,8 +27,8 @@ It can generate the following:
 ## Interacting with the Document Generator
 
 There are two ways of interacting:
-- `generateContent`generates the raw content of the file (not supported for PDF files). This is returned alongside any corresponding AssetIds.
-- `generateAndStore`generates a file based on the template provided. The file is uploaded to FILE_STORAGE and the corresponding FileStorageID is returned.
+- `generateContent` generates the raw content of the file (not supported for PDF files). This is returned alongside any corresponding AssetIds.
+- `generateAndStore` generates a file based on the template provided. The file is uploaded to FILE_STORAGE and the corresponding FileStorageID is returned.
 
 ### DocumentContentConfiguration
 
@@ -37,7 +37,7 @@ The `generateContent` method takes in an object with the following parameters:
 - `userName` is the username of the user generating the document.
 - `data` is the map of data to be substituted in the template (the key in the map must match the placeholder in the template file!).
 - `deleteOnExit` controls whether to delete the working directory once the result has been produced (default: true).
-- `workingDirectory` is the optional path to a working directory (default: temporary directory created in system).
+- `workingDirectory` is the optional path to a working directory (default: a temporary directory is created in the system).
 
 For example:
 ```kotlin
@@ -81,7 +81,7 @@ DocumentStorageConfiguration(
 ### DocumentStorageResult
 
 The `generateAndStore` method returns an object with the following parameters:
-- `fileStorageId` = FileStorageId for the generated file
+- `fileStorageId` is the FileStorageId of the generated file.
 
 For example:
 ```kotlin
@@ -90,14 +90,14 @@ DocumentStorageResult(
 )
 ```
 
-## Template Types
+## Template types
 
-### HTML Templates
+### HTML templates
 
-When an HTML template is provided, Thymeleaf is used to output the processed text.
-Thymeleaf has the capability of processing complex data objects, as a result the HTML template can include for loops as shown below. (See [Thymeleaf documentation](https://www.thymeleaf.org/documentation.html) for more details.)
+When an HTML template is provided, [Thymeleaf](https://www.thymeleaf.org/documentation.html) is used to output the processed text.
 
-For example, the following component can be part of an HTML template file:
+Thymeleaf can process complex data objects, so the HTML template can include loops as shown in the example below. This component can be part of an HTML template file:
+
 ```html
 <tbody>
     <tr th:each="trade : ${trades}">
@@ -109,19 +109,19 @@ For example, the following component can be part of an HTML template file:
     </tr>
 </tbody>
 ```
-A user can then provide their own map for what trades data they would like to be displayed and generate a file as a result of it.
-Another user may want to receive the generated HTML content with the data replaced and send out an email with this body.
-The data object could be as follows:
+Users can then provide their own maps for what trade data they would like to be displayed, and generate a file. 
+
+If the user wants to receive the generated HTML content with the data replaced in order to send an email with this body, the data object could be:
 
 ```kotlin
 val trade = Trade(price = BigDecimal.ONE, quantity = 1, counterparty = "counterparty", side = Side.BUY, account = "account")
 val data = mapOf("trades" to listOf(trade))
 ```
 
-### TXT Templates
+### TXT templates
 
-On the other hand, when a TXT template is provided, the TXT template engine uses a simple substitution syntax and thus requires each field to be added individually.
-It's helpful that the TXT engine gets system definition keys as well as any environment variables as part of it's data context automatically.
+When a TXT template is provided, the TXT template engine uses a simple substitution syntax. Thus, each field must be added individually.
+The TXT engine automatically gets system definition keys as well as any environment variables as part of its data context.
 
 For example, a TXT template can include the following:
 
@@ -133,14 +133,14 @@ Side: {{SIDE}}
 Account: {{ACCOUNT}}
 ```
 
-Thus, the corresponding data object would be as follows:
+The corresponding data object would be:
 ```kotlin
 val data = mapOf("PRICE" to 1, "QUANTITY" to 5, "COUNTERPARTY" to "counterparty_id", "SIDE" to Side.BUY, "ACCOUNT" to "account_id")
 ```
 
 ## Dependencies
 
-In order to inject the DocumentGenerator you need to have the following dependency set up in your project.
+To inject the DocumentGenerator, set up the following dependency in your project.
 
 Version: {gsfVersion}
 
@@ -166,7 +166,9 @@ Version: {gsfVersion}
 
 ## Examples
 
-### Inject Document Generator in [Event Handler](../../../../server/event-handler/basics) file (Generate and store file)
+### Inject a Document Generator in an Event Handler
+
+This example injects a Document Generator in an [Event Handler](../../../../server/event-handler/basics) file. It generates and stores a pdf file for use with an email. 
 
 ```kotlin
 val documentGenerator = inject<DocumentGenerator>()
@@ -200,8 +202,9 @@ eventHandler<PdfGeneratorData>(name = "GENERATE_PDF_EMAIL") {
     }
 ```
 
-### Inject Document Generator inside module constructor (Generate content only)
+### Inject Document Generator inside a module constructor
 
+This example injects Document Generator inside a module constructor. It generates content only.
 ```kotlin
 @Module
 class GeneratePdf @Inject constructor(
