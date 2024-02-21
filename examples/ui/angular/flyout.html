@@ -1,0 +1,10 @@
+<section class="content">
+  <button (click)="showFlyout()">show Flyout</button>
+  <alpha-flyout
+    position="right"
+    (closed)="hideFlyout()"
+    [closed]="!displayFlyout"
+  >
+    Flyout content
+  </alpha-flyout>
+</section>
