@@ -19,7 +19,7 @@ This can be done easily using the Document Generator with a seed template.
 Documents are generated based on a template that you create. You can create .txt or .html templates.
 
 - A .txt file generates a .txt file from the data retrieved from the database.
-- An .html file creates either a .html file from the data retrieved from the database, or, if specified, generates a .pdf file based on a .html file of the data retrieved.
+- An .html file creates either a .html file from the data retrieved from the database, or, if specified, generates a .pdf file based on an .html file of the data retrieved.
 
 Templates must be pre-uploaded to FILE_STORAGE (see Document Management for more information on uploading/downloading files). If any other assets are required (images, css files etc.), these must also be uploaded to FILE_STORAGE, along with a TEMPLATE_ASSET table that maps the assets to the corresponding template.
 
@@ -27,7 +27,7 @@ Templates must be pre-uploaded to FILE_STORAGE (see Document Management for more
 
 There are two methods for generating documents:
 
-- `generateContent` generates the raw content of the file, which is returned alongside any corresponding AssetIds. This can be used for generating .txt and .html files, but not .pdf files.
+- `generateContent` generates the raw content of the file, which is returned alongside any corresponding AssetIds (images, styling or other relevant files that you uploaded with the template). This can be used for generating .txt and .html files, but not .pdf files.
 - `generateAndStore` generates a file based on the template provided. The file is uploaded to FILE_STORAGE and the corresponding FileStorageID is returned.
 
 ### DocumentContentConfiguration
@@ -42,7 +42,7 @@ The `generateContent` method takes in an object with the following parameters:
 For example:
 ```kotlin
 DocumentContentConfiguration(
-    fileStorageId = "FILE_0001",
+    templateId = "FILE_0001",
     userName = "JohnDoe",
     data = mapOf("trades" to Trade(price = BigDecimal.ONE, quantity = 1, counterparty = "counterparty", side = Side.BUY, account = "account")))
 ```
@@ -70,7 +70,7 @@ The `generateAndStore` method takes in an object with the following parameters:
 For example:
 ```kotlin
 DocumentStorageConfiguration(
-    fileStorageId = "FILE_0001",
+    templateId = "FILE_0001",
     fileName = "trades-pdf-gen.pdf",
     userName = "JohnDoe",
     data = mapOf("trades" to Trade(price = BigDecimal.ONE, quantity = 1, counterparty = "counterparty", side = Side.BUY, account = "account")),
@@ -98,7 +98,7 @@ When you provide an HTML template, [Thymeleaf](https://www.thymeleaf.org/documen
 
 Thymeleaf can process complex data objects, so the HTML template can include loops (as shown in the example below). This enables you to provide more than one row of data. 
 
-For example, this component can be part of an HTML template file:
+Here is an example of part of an HTML template file:
 
 ```html
 <tbody>
@@ -142,7 +142,7 @@ val data = mapOf("PRICE" to 1, "QUANTITY" to 5, "COUNTERPARTY" to "counterparty_
 
 ## Dependencies
 
-To inject the DocumentGenerator, set up the following dependency in your project.
+To inject the Document Generator, set up the following dependency in the module where you are going to use it.
 
 Version: {gsfVersion}
 
@@ -168,9 +168,9 @@ Version: {gsfVersion}
 
 ## Examples
 
-### Inject a Document Generator in an Event Handler
+### A Document Generator in an Event Handler
 
-This example injects a Document Generator in an [Event Handler](../../../../server/event-handler/basics) file. It generates and stores a pdf file for use with an email. 
+This example injects a Document Generator into an [Event Handler](../../../../server/event-handler/basics) file. It generates and stores a pdf file (so you must have uploaded a template in HTML format) for use with an email. 
 
 ```kotlin
 val documentGenerator = inject<DocumentGenerator>()
@@ -189,7 +189,7 @@ eventHandler<PdfGeneratorData>(name = "GENERATE_PDF_EMAIL") {
             val documentStorageResult =
                 documentGenerator.generateAndStore(
                     DocumentStorageConfiguration(
-                        fileStorageId = "FILE_0001",
+                        templateId = "FILE_0001",
                         fileName = "trades-pdf-gen.pdf",
                         userName = "JohnDoe",
                         data = tradeMap,
@@ -204,9 +204,10 @@ eventHandler<PdfGeneratorData>(name = "GENERATE_PDF_EMAIL") {
     }
 ```
 
-### Inject Document Generator inside a module constructor
+### A Document Generator in a module constructor
 
-This example injects Document Generator inside a module constructor. It generates content only.
+This example injects Document Generator into a module constructor. It generates content only.
+
 ```kotlin
 @Module
 class GeneratePdf @Inject constructor(
@@ -222,7 +223,7 @@ class GeneratePdf @Inject constructor(
     val documentContentResult =
                 documentGenerator.generateContent(
                     DocumentContentConfiguration(
-                        fileStorageId = "FILE_0001",
+                        templateId = "FILE_0001",
                         userName = "JohnDoe",
                         data = tradeMap,
                         deleteOnExit = false,
