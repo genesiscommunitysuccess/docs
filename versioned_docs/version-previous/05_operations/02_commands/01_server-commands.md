@@ -829,6 +829,7 @@ If you want to commit the changes to the database, you must use the **--commit**
 ```bash
 remap [-c | --commit]
 ```
+For full details, see our page on the [remap](../remap) command. 
 
 ## RenameFields 
 This command is used to rename a field name in a database without changing the dictionary or config files.

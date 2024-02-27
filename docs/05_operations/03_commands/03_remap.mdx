@@ -1,7 +1,7 @@
 ---
 title: 'Operations - Remap'
 sidebar_label: 'Remap'
-id: Remap
+id: remap
 keywords: [operations, server, commands, Remap, schema]
 tags:
     - database
