@@ -34,7 +34,7 @@ Most developers who use Genesis are able to access the full range of intelliJ pl
 There are steps to set up an internally hosted marketplace, which Genesis can provide guidance on. If you need this approach, speak to your Genesis Account Technical Contact.
 
 :::info
-👎 Note this approach introduces a maintenance overhead when new versions of the plugin are released, and is not recommended.
+This approach introduces a maintenance overhead when new versions of the plugin are released, and is not recommended.
 :::
 
 ## Postgres (for local development)
@@ -81,8 +81,8 @@ The Genesis client-level user credentials should be configured in this local rep
 
 Alternatively, your developers can point their local Gradle (or maven) set-up to include the Genesis artifactory.
 
-:::note
-👎 Note that artifacts will miss any scanning you may have set up in your artifactory if this approach is adopted.
+:::caution
+Artifacts will miss any scanning you may have set up in your artifactory if this approach is adopted.
 :::
 
 If you adopt this approach, you need to share the Genesis client-level user credentials with your developers. 
@@ -168,7 +168,7 @@ The standard ports opened between Genesis hosts in a given environment cluster a
 | 5001 | Zero MQ inbound traffic |
 
 :::info
-Note that application development teams can configure these to use different port numbers. Make them aware of these settings so that you avoid clashes with internal policies or set-ups.
+Application development teams can configure these to use different port numbers. Make them aware of these settings so that you avoid clashes with internal policies or set-ups.
 :::
 
 ## Optional supporting infrastructure
