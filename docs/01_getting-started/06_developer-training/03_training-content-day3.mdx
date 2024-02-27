@@ -599,7 +599,7 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 #### Define the position-keeping logic in the consolidator
 
-Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using using [SendIt](../../../operations/commands/server-commands/#sendit-script) script as described [here](../../../server/tooling/intellij-plugin/#loading-data-into-the-application). 
+Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using using [SendIt](../../../operations/commands/server-commands/#sendit) script as described [here](../../../server/tooling/intellij-plugin/#loading-data-into-the-application). 
 
 :::tip
 To insert new data properly, we need to create 2 additional files called [COUNTERPARTY.csv](https://raw.githubusercontent.com/genesiscommunitysuccess/devtraining-alpha/main/server/jvm/alpha-site-specific/src/main/resources/data/COUNTERPARTY.csv) and [INSTRUMENT.csv](https://raw.githubusercontent.com/genesiscommunitysuccess/devtraining-alpha/main/server/jvm/alpha-site-specific/src/main/resources/data/INSTRUMENT.csv) and send it to genesis. this will populate the other two tables you will need.

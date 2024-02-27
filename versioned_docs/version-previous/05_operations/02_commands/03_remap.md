@@ -143,7 +143,7 @@ Remap does not perform any complex data migration, only schema changes. Some cus
 
 ### Field changes
 
-Renaming fields is unsupported by `remap`, as there is no way to identify individual fields (indices and tables are identified by an "id"). For this purpose, we have the [rename fields script](./01_server-commands.md#renamefields-script).
+Renaming fields is unsupported by `remap`, as there is no way to identify individual fields (indices and tables are identified by an "id"). For this purpose, we have the [rename fields script](./01_server-commands.md#renamefields).
 
 ### Field-type migration
 
