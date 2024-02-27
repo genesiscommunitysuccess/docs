@@ -41,16 +41,10 @@ Aeron operates in a peer-to-peer model. It is brokerless, in contrast to other m
 
 There is an [aeron wiki](https://github.com/real-logic/aeron/wiki) on github.
 
-## Akka
-
-Akka is a set of open-source libraries for designing scalable, resilient systems that span processor cores and networks.
-[Akka](https://akka.io/docs/) provides low-level code to deliver reliable behaviour, fault tolerance, and high performance.
-
-In the Genesis low-code platform, Akka is used to help manage the communication between clusters; specifically, this is for identifying members of the cluster, and for monitoring joiners and leavers.
-
 ## Amazon Elastic Compute Cloud
 
-Known as EC2.
+Also known as [EC2](#ec2).
+
 This is Amazon's [Amazon Web Services cloud-computing platform](https://aws.amazon.com/ec2/?ec2-whats-new.sort-by=item.additionalFields.postDateTime&ec2-whats-new.sort-order=desc), where the Genesis servers are located.
 In effect, these are virtual computers that we use to run our services.
 It enables us to boot an Amazon Machine Image (AMI) to configure a virtual machine - an instance - where we can install any software we like.
@@ -69,19 +63,6 @@ A basic Ansible command or playbook:
 * copies one or more modules to the remote machines and starts execution there
 
 If you are excited, stimulated or inspired, you can start [here](https://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html#intro-getting-started).
-
-## Atomic broadcast
-
-In fault-tolerant distributed computing, an atomic broadcast or total order broadcast is a broadcast where all correct processes in a system of multiple processes receive the same set of messages in the same order; that is, the same sequence of messages.
-
-The broadcast is termed "atomic" because it either eventually completes correctly at all participants, or all participants abort without side effects.
-
-The following properties are usually required from an atomic broadcast protocol:
-
-* Validity. If a correct participant broadcasts a message, then all correct participants will eventually receive it.
-* Uniform Agreement. If one correct participant receives a message, then all correct participants will eventually receive that message.
-* Uniform Integrity. A message is received by each participant once only, and only if it was previously broadcast.
-* Uniform Total Order. The messages are totally ordered in the mathematical sense; if any correct participant receives message 1 first and message 2 second, then every other correct participant must receive message 1 before message 2.
 
 ## Camel (Apache Camel)
 
@@ -119,15 +100,20 @@ With Docker, you can package and run an application in a loosely isolated enviro
 
 ## EC2
 
-Amazon Elastic Compute Cloud This is where the Genesis Dev, Test and Production Instances are housed in the cloud.
+Also known as [Amazon Elastic Compute Cloud](#amazon-elastic-compute-cloud).
+
+This is where the Genesis Dev, Test and Production instances are housed in the cloud.
 
 ## Endpoint
 
-A url that gives you access to data from the database of an application.
+An endpoint provides a way to interact with an application. Ultimately, it is a url.
 
-In the world of Application Program Interfaces, an endpoint is the place an application goes to find a resource in the application server.
+In the HTTP world, endpoints have different methods: GET, POST, DELETE, etc. 
+- GET endpoints are meant to provide data to the endpoint caller without side effects (i.e. no changes in the application or database)
+- POST endpoints  cause changes in the system (e.g. creating a new USER record)
+- DELETE endpoints delete data in the system (e.g. delete a USER record).
 
-So, let's say that again. An endpoint is a URL.
+For example, in a user management system, you could have different endpoints to create new user records, view them, or delete them. But other endpoints might not interact with the database at all, and instead interact with other remote systems.
 
 ## FIX
 
@@ -161,9 +147,8 @@ That means no change in your holdings or risk, plus a profit for your trading de
 ## IOPS
 Input/output operations per second, a metric for input/output performance, typically used for storage devices, such as disk drives (HDD), solid-state drives (SSD), and storage area networks (SAN). 
 
-## Java Binary Object
-
-A binary object is a wrapper over the binary representation of an entry stored in a cache. Each binary object has the `field (name)` method, which returns the value of the given field, and the `type ()` method, which extracts the information about the type of the object. Binary objects are useful when you want to work only with some fields of the objects and do not need to deserialise the entire content set.
+## JMS (Java Message Service)
+JMS is an agnostic API, which MQ providers can comply with so that Java applications can be built generically. If an application is built using JMS, it can be connected to any [MQ](#mq) (message queue) provider that supports JMS.
 
 ## LDAP
 
@@ -181,7 +166,7 @@ An electronic trade capture and confirmation platform.
 A tool for building and managing Java-based projects.
 There is a very useful [Maven tutorial](https://www.tutorialspoint.com/maven/maven_overview.htm)
 
-Maven provides  default behaviour for projects. When a Maven project is created, Maven creates a default project structure. As a developer, all you have to do is put the files in the right places. There is no need to define any configuration in pom.xml.
+Maven provides default behaviour for projects. When a Maven project is created, Maven creates a default project structure. As a developer, all you have to do is put the files in the right places. There is no need to define any configuration in pom.xml.
 
 Maven plugins are generally used to:
 
@@ -201,18 +186,19 @@ When you run a Maven build, Maven automatically downloads all the dependency jar
 
 By default, a local repository is created by Maven in the %USER_HOME% directory. To override the default location, specify a different path in the Maven settings.xml file available at %M2_HOME%\\conf directory.
 
-## MQ (IBM MQ)
+Maven repositories can also be consumed by other tools, such as Gradle or Ivy.
 
-IBM protocol which has an API so it can interact with JMS.
-Message queues provide an asynchronous communications protocol, meaning that the sender and receiver of the message do not need to interact with the message queue at the same time. Messages placed onto the queue are stored until the recipient retrieves them. Message queues have implicit or explicit limits on the size of data that may be transmitted in a single message and the number of messages that may remain outstanding on the queue.
+## MQ
+
+There are many types of message queue (RabbitMQ, ActiveMQ, Amazon SQS, etc). Message queues are used for inter-process communication (IPC), or for inter-thread communication within the same process. They use a queue for messaging – the passing of control or of content. 
 
 ## Netty
+Netty is the underlying network framework used by the Genesis back-end for HTTP, Websocket, and Genesis Binary Protocol communications between Client and Server, as well as between microservices. 
 
-Netty is a socket communication component in Camel. It is an NIO client server framework for developing network applications, such as protocol servers and clients.
+When building a Genesis application, Netty is a transitive dependency that does not need to be added to your application. 
 
-The aim is to simplify and streamline network programming, such as TCP and UDP socket server.
-
-Netty supports both producer and consumer endpoints.
+## Netty Camel component
+This is a socket communication component in Camel. It is an NIO client server framework for developing network applications, such as protocol servers and clients. The aim is to simplify and streamline network programming, such as TCP and UDP socket server. The component supports both producer and consumer endpoints.
 
 It has several options and allows fine-grained control of a number of TCP/UDP communication parameters (buffer sizes, keepAlives, tcpNoDelay, etc) and facilitates both In-Only and In-Out communication on a Camel route.
 
@@ -221,16 +207,15 @@ Maven users need to add a dependency to their pom.xml to use Netty.
 Find this and a lot more at the [Camel website](https://camel.apache.org/components/latest/netty-component.html).
 
 ## nginx
-Genesis uses nginx as a reverse proxy to pass incoming requests to the server. nginx can handle many concurrent connections. This is designed to increase security and ensure high performance. 
+For the applications that we host, Genesis uses Nginx as a reverse proxy and static web server. We strongly recommend Nginx and we can provide sample files to configure it.
 
-The [ngnix documentation](https://nginx.org/en/docs/) will tell you more if you work hard.
+This is not mandatory, however. You can use your preferred web server, as long as it can work as a reverse proxy and can host static websites. 
 
 ## NIO
 Non-blocking I/O
 
 This usually refers to [java.nio](https://docs.oracle.com/javase/10/docs/api/java/nio/package-summary.html), which is a set of Java APIs for intensive I/O operations. 
 The APIs give access to low-level I/O operations in operating systems. So you have APIs that use the most efficient operations of the underlying platform.
-
 
 ## Node Package Manager
 
@@ -240,6 +225,9 @@ As a general rule, any project that uses Node.js will need a package.json file. 
 
 Whenever you run npm install, NPM will look at your package.json file and import the relevant libraries.
 
+## Pekko 
+Apache Pekko (Incubating) is an open-source framework for building applications that are concurrent, distributed, resilient and elastic. Pekko uses the Actor Model to provide more intuitive high-level abstractions for concurrency. Using these abstractions, Pekko also provides libraries for persistence, streams, HTTP, and more. More is available from the [Apache Pekko documentation](https://pekko.apache.org/).
+
 ## POJO
 
 Plain Old Java Object
@@ -247,25 +235,6 @@ Plain Old Java Object
 ## Polling
 
 In electronic communications, the continuous checking of some resource to check what state it is currently in. This is usually used to ensure sustained communication or when listening for updates.
-
-## POM
-
-Project Object Model
-
-The key project file for Maven, provided as an xml file.
-The xml file contains information about the project and its configuration details, such as project dependencies, plugins and build profiles.  
-Maven uses these details to build the project.
-Genesis provides a standard pom.xls that ensures that all applications are created with a consistent structure and set of file names.
-For more information on maven and pom, go to the [Maven website](https://maven.apache.org/guides/introduction/introduction-to-the-pom.html).
-
-
-## R
-
-A statistical programming language.
-
-It is widely used by statisticians and data miners for developing statistical software and data analysis.
-
-Genesis enables you to use R functions in our Consolidators.
 
 ## Resource
 
@@ -287,7 +256,7 @@ In the world of applications and servers, REST is short for **RE**presentational
 
 When you have finished wondering if anyone got paid for thinking that up, we'll explain what is going on below.
 
-REST is a standard that enables client and server systems to talk to each other over the internet. Clients send requests to retrieve or modify data on the server, and servers send responses to these requests.
+REST is a standard that enables client and server systems to talk to each other over the internet via an [endpoint](#endpoint). Clients send requests to retrieve or modify data on the server, and servers send responses to these requests.
 
 A request generally consists of:
 
@@ -303,16 +272,16 @@ There are 4 basic HTTP verbs used in REST:
 * PUT — update a specific resource (by ID)
 * DELETE — remove a specific resource (by ID)
 
-RPM 
+## RPM 
 RPM can refer to:
 -  RPM Package Manager, which is an open-source package management system. It was originally created for Red Hat Linux, but is now used in many Linux distributions, including CentOS. 
 -  the .rpm file format. Most .rpm files are binary RPMs containing the compiled version of the software, but you can also find source RPMs containing the source code used to build the binaries.
 
 ## Script
 
-A command that can be run from the command line of the server.
+Some Genesis commands are scripts that can be executed like a command. But note that many of our commands are backed by Java code and could be considered CLI tools instead.
 
-In the Genesis low-code platform, you are provided with a set of scripts to enable you to do simple things, such as start or stop a process, or more complex things, such as create a schema from an existing database or spreadsheet.
+In the Genesis platform, you are provided with a set of scripts to enable you to do simple things, such as start or stop a process, or more complex things, such as create a schema from an existing database or spreadsheet.
 
 ## Service
 
@@ -356,19 +325,12 @@ Terraform can also build a Resource Graph of all resources, and parallelizes the
 ## UDP
 
 User Datagram Protocol.
-While TCP provides apps a way to deliver (and receive) an ordered and error-checked stream of information packets over the network, the User Datagram Protocol (UDP) is used by apps to deliver a faster stream of information by doing away with error-checking.
+
+While TCP provides apps with a way to deliver (and receive) an ordered and error-checked stream of information packets over the network, the User Datagram Protocol (UDP) is used by apps to deliver a faster stream of information by doing away with error-checking. However, it is possible to build protocols on top of UDP that provide this reliability.
+
 A datagram and a packet are more or less the same thing. UDP, built on top of the IP protocol, works similarly to TCP, but is simpler and faster.
+
 The main difference is that UDP doesn’t require the recipient to acknowledge that each packet has been received. Any packets that get lost in transit are not resent.
-
-## VLAN
-
-A Virtual Local Area Network (VLAN) is a logical grouping of different hosts in a similar broadcast domain.
-
-Virtual LANs provide mechanisms for creating logical groups of end devices, even where they are on different networks. They increase the number of broadcast domains possible in a LAN by grouping various hosts with similar functions - without needing to plug or unplug any cables.
-
-Implementing VLANs reduces the security risks significantly, as the number of hosts connected on a broadcast domain decreases. This is done by configuring a separate VLAN for only the hosts with the relevant access permissions. So you control which devices have local access to each other.
-
-VLANs offer flexible networking models which groups different users based on their departments (jobs/function), rather than just physical locations of that network.
 
 ## Web components
 
