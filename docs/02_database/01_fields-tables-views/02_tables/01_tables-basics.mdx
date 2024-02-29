@@ -75,7 +75,7 @@ If you are using intelliJ IDE, it will auto-suggest the available fields; any re
 
 By default, a table is a set of columns (fields), where you can insert and maintain a number of rows (records). You need to provide ways to query the database so that a specific record or records can be found. So you need to define one or more indices.
 
-The most important index (plural: indices) is called the primary key. This is mandatory, and must be defined by one or more fields which have a unique value.
+The most important index (plural: indices) is called the primary key. This is mandatory, and must be defined by one or more fields which have a unique value or combination of values.
 
 So let's add a simple primary key to the example above. It is on the POSITION_ID field, so that we can find a specific record or range of records. It is common to use a single sequenced/autoIncrement field as a `primaryKey` in this way:
 
