@@ -27,5 +27,6 @@ module.exports = {
 	"@genesislcap/foundation-shell": "14.148.0",
 	"@genesislcap/foundation-state-machine": "14.148.0",
 	"@genesislcap/foundation-store": "14.148.0",
-	// "@genesislcap/foundation-user": "14.148.0",
+	"@genesislcap/foundation-user": "14.148.0",
+	"@genesislcap/foundation-utils": "14.148.0",
 };

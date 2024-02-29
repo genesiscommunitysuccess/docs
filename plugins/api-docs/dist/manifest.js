@@ -482,5 +482,27 @@ exports.default = {
                 ],
             },
         },
+        {
+            name: "@genesislcap/foundation-utils",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/04_web/24_utils",
+                api_docs: "docs/api",
+                readme: "01_foundation-utils.mdx",
+                keywords: ["genesis", "foundation", "ui", "utils"],
+                tags: ["genesis", "foundation", "ui", "utils"],
+                pages: [
+                    {
+                        title: "Foundation Utils",
+                        sidebar_label: "Foundation Utils",
+                        id: "foundation-utils",
+                    },
+                ],
+            },
+        },
     ],
 };
