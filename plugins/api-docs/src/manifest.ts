@@ -405,7 +405,7 @@ export default {
     //   output: {
     //     directory: "./docs/04_web/18_marketplace",
     //     api_docs: "docs/api",
-    //     readme: "01_foundation-logger.mdx",
+    //     readme: "01_foundation-marketplace.mdx",
     //     keywords: ["genesis", "foundation", "ui", "marketplace"],
     //     tags: ["genesis", "foundation", "ui", "marketplace"],
     //     pages: [
@@ -417,5 +417,27 @@ export default {
     //     ],
     //   },
     // },
+    {
+      name: "@genesislcap/foundation-notifications",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/19_notifications",
+        api_docs: "docs/api",
+        readme: "01_foundation-notifications.mdx",
+        keywords: ["genesis", "foundation", "ui", "notifications"],
+        tags: ["genesis", "foundation", "ui", "notifications"],
+        pages: [
+          {
+            title: "Foundation Notifications",
+            sidebar_label: "Foundation Notifications",
+            id: "foundation-notifications",
+          },
+        ],
+      },
+    },
   ],
 };

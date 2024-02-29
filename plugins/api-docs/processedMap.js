@@ -23,4 +23,5 @@ module.exports = {
 	"@genesislcap/foundation-i18n": "14.148.0",
 	"@genesislcap/foundation-logger": "14.148.0",
 	"@genesislcap/foundation-marketplace": "14.148.0",
+	"@genesislcap/foundation-notifications": "14.148.0",
 };

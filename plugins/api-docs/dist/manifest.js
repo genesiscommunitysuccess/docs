@@ -395,23 +395,23 @@ exports.default = {
             },
         },
         {
-            name: "@genesislcap/foundation-marketplace",
+            name: "@genesislcap/foundation-notifications",
             enabled: true,
             src: {
                 api_docs: "./docs/api",
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/04_web/18_marketplace",
+                directory: "./docs/04_web/19_notifications",
                 api_docs: "docs/api",
-                readme: "01_foundation-logger.mdx",
-                keywords: ["genesis", "foundation", "ui", "marketplace"],
-                tags: ["genesis", "foundation", "ui", "marketplace"],
+                readme: "01_foundation-notifications.mdx",
+                keywords: ["genesis", "foundation", "ui", "notifications"],
+                tags: ["genesis", "foundation", "ui", "notifications"],
                 pages: [
                     {
-                        title: "Foundation Marketplace",
-                        sidebar_label: "Foundation Marketplace",
-                        id: "foundation-marketplace",
+                        title: "Foundation Notifications",
+                        sidebar_label: "Foundation Notifications",
+                        id: "foundation-notifications",
                     },
                 ],
             },
