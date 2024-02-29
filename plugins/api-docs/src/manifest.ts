@@ -505,5 +505,27 @@ export default {
         ],
       },
     },
+    {
+      name: "@genesislcap/foundation-user",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/23_user",
+        api_docs: "docs/api",
+        readme: "01_foundation-user.mdx",
+        keywords: ["genesis", "foundation", "ui", "user"],
+        tags: ["genesis", "foundation", "ui", "user"],
+        pages: [
+          {
+            title: "Foundation User",
+            sidebar_label: "Foundation User",
+            id: "foundation-user",
+          },
+        ],
+      },
+    },
   ],
 };

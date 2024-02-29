@@ -45,6 +45,7 @@
     "@genesislcap/foundation-login": "14.148.0",
     "@genesislcap/foundation-reporting": "14.148.0",
     "@genesislcap/foundation-testing": "14.148.0",
+    "@genesislcap/foundation-user": "14.148.0",
     "@genesislcap/foundation-zero": "14.148.0",
     "@mui/icons-material": "^5.15.6",
     "@mui/material": "^5.15.6",
@@ -57,9 +58,9 @@
     "mdx-mermaid": "2.0.0",
     "mermaid": "^10.7.0",
     "raw-loader": "^4.0.2",
+    "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-player": "^2.14.1",
-    "react": "^18.2.0",
     "tslib": "^2.6.2",
     "webpack": "^5.90.0"
   },

@@ -47,11 +47,11 @@ function copyDirectoryFiles(packageRootDir: string, outputRootDir: string) {
 
 async function copyPackageFiles(
   manifest: PluginOptions["manifest"],
-  processedMap: PluginOptions["processedMap"],
+  processedMap: PluginOptions["processedMap"]
 ) {
   const { packages } = manifest;
   const packagesToProcess = packages.filter(
-    (pkg) => pkg.enabled && !(pkg.name in processedMap),
+    (pkg) => pkg.enabled && !(pkg.name in processedMap)
   );
   if (!packagesToProcess.length) {
     console.log("[api-docs-plugin] No packages awaiting processing.");
@@ -86,7 +86,7 @@ async function copyPackageFiles(
     const readmeDuplexStream = createOutputDuplexStream(
       pkg.output,
       outputRootDir,
-      readmeStreamTransformer,
+      readmeStreamTransformer
     );
     const packageReadmeFile = path.join(packageRootDir, pkg.src.readme);
     const readStream = fs.createReadStream(packageReadmeFile, {
@@ -102,10 +102,12 @@ async function copyPackageFiles(
      * Mark as processed
      * TODO: I think this doesn't actually work
      */
-    const packageJson = await fs.readJson(
-      path.join(packageRootDir, "package.json"),
-    );
-    processedMap[pkg.name] = packageJson.version;
+
+    const packageJsonPath = path.join(packageRootDir, "package.json");
+    if (fs.existsSync(packageJsonPath)) {
+      const packageJson = await fs.readJson(packageJsonPath);
+      processedMap[pkg.name] = packageJson.version;
+    }
   }
 }
 
@@ -116,7 +118,7 @@ export default async function (_ctx: any, options: PluginOptions) {
   }
   if (!processedMap) {
     throw new Error(
-      "[api-docs-plugin] Please provide a processedMap instance.",
+      "[api-docs-plugin] Please provide a processedMap instance."
     );
   }
   let status = true;
@@ -132,11 +134,11 @@ export default async function (_ctx: any, options: PluginOptions) {
     async loadContent() {
       if (!status) {
         throw new Error(
-          `[api-docs-plugin] Failed to process api documentation. ${error?.toString()}`,
+          `[api-docs-plugin] Failed to process api documentation. ${error?.toString()}`
         );
       } else {
         console.log(
-          "[api-docs-plugin] Finished processing api documentation.\n",
+          "[api-docs-plugin] Finished processing api documentation.\n"
         );
       }
     },
