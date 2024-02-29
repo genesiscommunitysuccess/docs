@@ -351,5 +351,27 @@ export default {
         ],
       },
     },
+    {
+      name: "@genesislcap/foundation-i18n",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/16_i18n",
+        api_docs: "docs/api",
+        readme: "01_foundation-i18n.mdx",
+        keywords: ["genesis", "foundation", "ui", "i18n", "internationalization"],
+        tags: ["genesis", "foundation", "ui", "i18n", "internationalization"],
+        pages: [
+          {
+            title: "Foundation Internationalization",
+            sidebar_label: "Foundation Internationalization",
+            id: "foundation-i18n",
+          },
+        ],
+      },
+    },
   ],
 };
