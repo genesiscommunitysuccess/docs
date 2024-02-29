@@ -373,5 +373,27 @@ export default {
         ],
       },
     },
+    {
+      name: "@genesislcap/foundation-logger",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/17_logger",
+        api_docs: "docs/api",
+        readme: "01_foundation-logger.mdx",
+        keywords: ["genesis", "foundation", "ui", "logger"],
+        tags: ["genesis", "foundation", "ui", "logger"],
+        pages: [
+          {
+            title: "Foundation Logger",
+            sidebar_label: "Foundation Logger",
+            id: "foundation-logger",
+          },
+        ],
+      },
+    },
   ],
 };

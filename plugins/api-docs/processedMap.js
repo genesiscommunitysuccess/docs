@@ -21,4 +21,5 @@ module.exports = {
 	"@genesislcap/foundation-errors": "14.148.0",
 	"@genesislcap/foundation-events": "14.148.0",
 	"@genesislcap/foundation-i18n": "14.148.0",
+	"@genesislcap/foundation-logger": "14.148.0",
 };
