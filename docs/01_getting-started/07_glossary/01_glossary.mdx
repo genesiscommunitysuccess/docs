@@ -110,7 +110,7 @@ An endpoint provides a way to interact with an application. Ultimately, it is a 
 
 In the HTTP world, endpoints have different methods: GET, POST, DELETE, etc. 
 - GET endpoints are meant to provide data to the endpoint caller without side effects (i.e. no changes in the application or database)
-- POST endpoints  cause changes in the system (e.g. creating a new USER record)
+- POST endpoints cause changes in the system (e.g. creating a new USER record)
 - DELETE endpoints delete data in the system (e.g. delete a USER record).
 
 For example, in a user management system, you could have different endpoints to create new user records, view them, or delete them. But other endpoints might not interact with the database at all, and instead interact with other remote systems.
@@ -190,7 +190,9 @@ Maven repositories can also be consumed by other tools, such as Gradle or Ivy.
 
 ## MQ
 
-There are many types of message queue (RabbitMQ, ActiveMQ, Amazon SQS, etc). Message queues are used for inter-process communication (IPC), or for inter-thread communication within the same process. They use a queue for messaging – the passing of control or of content. 
+A message queue is a form of asynchronous service-to-service communication. This functionality is normally provided by a message broker (RabbitMQ, ActiveMQ, IBM MQ, Amazon SQS, etc). Messages are stored on the queue until they are processed and deleted. Each message is processed only once, by a single consumer. Message queues can be used to decouple heavyweight processing, to buffer or batch work, and to smooth spiky workloads.
+
+Message queue brokers also generally support publish and subscribe (Pub/Sub) patterns. In a Pub/Sub system, messages are published to a topic, and multiple subscribers can receive those messages. Publishers and subscribers are decoupled, and subscribers express interest in specific topics. When a message is published to a topic, all interested subscribers receive a copy of the message.
 
 ## Netty
 Netty is the underlying network framework used by the Genesis back-end for HTTP, Websocket, and Genesis Binary Protocol communications between Client and Server, as well as between microservices. 
