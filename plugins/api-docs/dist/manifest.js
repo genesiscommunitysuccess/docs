@@ -416,5 +416,27 @@ exports.default = {
                 ],
             },
         },
+        {
+            name: "@genesislcap/foundation-shell",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/04_web/20_shell",
+                api_docs: "docs/api",
+                readme: "01_foundation-shell.mdx",
+                keywords: ["genesis", "foundation", "ui", "shell"],
+                tags: ["genesis", "foundation", "ui", "shell"],
+                pages: [
+                    {
+                        title: "Foundation shell",
+                        sidebar_label: "Foundation shell",
+                        id: "foundation-shell",
+                    },
+                ],
+            },
+        },
     ],
 };

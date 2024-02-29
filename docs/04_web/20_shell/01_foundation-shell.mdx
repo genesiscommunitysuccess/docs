@@ -1,0 +1,44 @@
+---
+title: 'Foundation shell'
+sidebar_label: 'Foundation shell'
+id: foundation-shell
+keywords: [genesis, foundation, ui, shell]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - shell
+---
+
+# Foundation Shell
+
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
+
+`foundation-shell` provides several exports for Genesis Application development. These include, but are
+not limited to:
+
+* [App](./docs/api/foundation-shell.defaultapp.md): Top-level App singleton used to manage various aspects of an integrated Genesis Application at runtime.
+* [importPBCAssets](./docs/api/foundation-shell.importpbcassets.md): A PBC import utility that dynamically adds PBCs to an integrated `App`.
+
+These are available as [subpath exports](https://nodejs.org/api/packages.html#subpath-exports) and should be imported
+from these to optimise bundling and overall efficiency.
+
+```ts
+import { App, getApp } from '@genesislcap/foundation-shell/app';
+import { importPBCAssets } from '@genesislcap/foundation-shell/pbc';
+```
+
+Seed projects like the [blank-app-seed](https://github.com/genesiscommunitysuccess/blank-app-seed) will be
+pre-integrated with `App`, meaning that any application created with `genx init` will be pre-integrated. It is also easy
+to retrofit `App` integration to pre-existing application codebases that wish to benefit from some of the capabilities
+it provides.
+
+Please see the [App API Docs](./docs/api/foundation-shell.defaultapp.md) for more information.
+
+## License
+
+Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform
