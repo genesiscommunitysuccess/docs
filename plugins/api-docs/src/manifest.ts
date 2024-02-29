@@ -307,5 +307,27 @@ export default {
         ],
       },
     },
+    {
+      name: "@genesislcap/foundation-errors",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/14_errors",
+        api_docs: "docs/api",
+        readme: "01_foundation-errors.mdx",
+        keywords: ["genesis", "foundation", "ui", "errors"],
+        tags: ["genesis", "foundation", "ui", "errors"],
+        pages: [
+          {
+            title: "Foundation Errors",
+            sidebar_label: "Foundation Errors",
+            id: "foundation-errors",
+          },
+        ],
+      },
+    },
   ],
 };
