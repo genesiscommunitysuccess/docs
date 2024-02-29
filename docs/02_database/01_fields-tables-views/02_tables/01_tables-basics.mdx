@@ -73,11 +73,11 @@ If you are using intelliJ IDE, it will auto-suggest the available fields; any re
 
 ## Primary key
 
-By default, a table is a set of columns (fields), where you can insert and maintain a number of rows (records). You need to provide ways to query the database so that a specific record or records can be found. So you need to provide one or more indices.
+By default, a table is a set of columns (fields), where you can insert and maintain a number of rows (records). You need to provide ways to query the database so that a specific record or records can be found. So you need to define one or more indices.
 
-The most important index (plural: indices) is called the primary key, and this is mandatory.
+The most important index (plural: indices) is called the primary key. This is mandatory, and must be defined by one or more fields which have a unique value.
 
-So let's add a simple primary key to the example above. It is on the on the POSITION_ID field, so that we can find a specific record or range of records. It is common to use a single sequenced/autoIncrement field as a `primaryKey` in this way:
+So let's add a simple primary key to the example above. It is on the POSITION_ID field, so that we can find a specific record or range of records. It is common to use a single sequenced/autoIncrement field as a `primaryKey` in this way:
 
 ```kotlin
 tables {
@@ -127,12 +127,9 @@ Here is our table definition for PROJECT_USERS:
       USER_ID
       primaryKey {
           PROJ_ID
+          USER_ID
       }
      indices {
-         unique {
-             PROJ_ID
-             USER_ID
-         }
          nonUnique {
              USER_ID
          }
@@ -154,7 +151,7 @@ If you create an index with multiple fields, it is possible to make a search bas
 Also note:
 
 - The order of the fields is important if you want partial searches to be useful and efficient.
-- When you define two identical indices. In other words, you cannot supply exactly the same fields in exactly the same order as the primary key or another index on the same table.
+- You cannot define two identical indices; you cannot supply exactly the same fields in exactly the same order as the primary key or another index on the same table.
 
 ### How is data retrieved from the database?
 
@@ -196,7 +193,7 @@ Let's see some examples. Below, the table name is `POSITION`. The names created 
         OTHER_FIELD
     }
     
-    //POSITION_BY_POSITION_ID_OTHER_FIELD_ANOTHER_FIELD
+    //POSITION_BY_OTHER_FIELD_ANOTHER_FIELD
     primaryKey { 
         OTHER_FIELD
         ANOTHER_FIELD
