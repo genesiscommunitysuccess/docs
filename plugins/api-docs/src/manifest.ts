@@ -461,5 +461,27 @@ export default {
         ],
       },
     },
+    // {
+    //   name: "@genesislcap/foundation-state-machine",
+    //   enabled: true,
+    //   src: {
+    //     api_docs: "./docs/api",
+    //     readme: "./README.md",
+    //   },
+    //   output: {
+    //     directory: "./docs/04_web/21_state-machine",
+    //     api_docs: "docs/api",
+    //     readme: "01_foundation-state-machine.mdx",
+    //     keywords: ["genesis", "foundation", "ui", "state-machine"],
+    //     tags: ["genesis", "foundation", "ui", "state-machine"],
+    //     pages: [
+    //       {
+    //         title: "Foundation state-machine",
+    //         sidebar_label: "Foundation state-machine",
+    //         id: "foundation-state-machine",
+    //       },
+    //     ],
+    //   },
+    // },
   ],
 };
