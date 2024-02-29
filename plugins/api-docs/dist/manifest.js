@@ -439,23 +439,23 @@ exports.default = {
             },
         },
         {
-            name: "@genesislcap/foundation-state-machine",
+            name: "@genesislcap/foundation-store",
             enabled: true,
             src: {
                 api_docs: "./docs/api",
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/04_web/21_state-machine",
+                directory: "./docs/04_web/22_store",
                 api_docs: "docs/api",
-                readme: "01_foundation-state-machine.mdx",
-                keywords: ["genesis", "foundation", "ui", "state-machine"],
-                tags: ["genesis", "foundation", "ui", "state-machine"],
+                readme: "01_foundation-store.mdx",
+                keywords: ["genesis", "foundation", "ui", "store"],
+                tags: ["genesis", "foundation", "ui", "store"],
                 pages: [
                     {
-                        title: "Foundation state-machine",
-                        sidebar_label: "Foundation state-machine",
-                        id: "foundation-state-machine",
+                        title: "Foundation Store",
+                        sidebar_label: "Foundation Store",
+                        id: "foundation-store",
                     },
                 ],
             },

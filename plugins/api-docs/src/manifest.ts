@@ -476,12 +476,34 @@ export default {
     //     tags: ["genesis", "foundation", "ui", "state-machine"],
     //     pages: [
     //       {
-    //         title: "Foundation state-machine",
-    //         sidebar_label: "Foundation state-machine",
+    //         title: "Foundation State-machine",
+    //         sidebar_label: "Foundation State-machine",
     //         id: "foundation-state-machine",
     //       },
     //     ],
     //   },
     // },
+    {
+      name: "@genesislcap/foundation-store",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/22_store",
+        api_docs: "docs/api",
+        readme: "01_foundation-store.mdx",
+        keywords: ["genesis", "foundation", "ui", "store"],
+        tags: ["genesis", "foundation", "ui", "store"],
+        pages: [
+          {
+            title: "Foundation Store",
+            sidebar_label: "Foundation Store",
+            id: "foundation-store",
+          },
+        ],
+      },
+    },
   ],
 };

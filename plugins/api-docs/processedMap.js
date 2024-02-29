@@ -26,4 +26,5 @@ module.exports = {
 	"@genesislcap/foundation-notifications": "14.148.0",
 	"@genesislcap/foundation-shell": "14.148.0",
 	"@genesislcap/foundation-state-machine": "14.148.0",
+	"@genesislcap/foundation-store": "14.148.0",
 };
