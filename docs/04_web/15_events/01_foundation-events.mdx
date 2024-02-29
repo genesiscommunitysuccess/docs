@@ -1,0 +1,108 @@
+---
+title: 'Foundation Events'
+sidebar_label: 'Foundation Events'
+id: foundation-events
+keywords: [genesis, foundation, ui, events]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - events
+---
+
+# Genesis Foundation Events
+
+`foundation-events` contains strongly typed event emitting utilities and interfaces.
+
+### [API Docs](./docs/api/index.md)
+
+- Contains event emitting utilities.
+- Contains common system level:
+  - Custom event types
+  - Custom event [detail interfaces](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail)
+  - Custom event type to detail maps
+
+```typescript
+export interface ZooEventDetail {
+  animals: Animal[];
+  location: string;
+}
+
+export type MyEventDetailMap = {
+  'domain-foo': void; // < no detail
+  'domain-bar': boolean; // < boolean detail
+  'domain-zoo': ZooEventDetail; // < ZooEventDetail detail (more than one prop on details)
+  'domain-zoo-animals': Animal[]; // array of Animals detail
+  'domain-coo': number; // < number
+}
+```
+
+## Event naming
+
+We need to come up with an event naming strategy that scales well, avoids clashing, and sets out well known system
+events for our micro frontends handle. Ideally these should be additive as we evolve to avoid breaking changes. For
+example a user will always login, logout, etc, and these should be the same across all apps and not need to change much.
+Payloads themselves may be more likely to change overtime, and we need to figure out how to deal with that.
+
+Some notes on possible topic / event naming conventions. Note these show . delimiter but we'd probably use -
+
+[https://devshawn.com/blog/apache-kafka-topic-naming-conventions/](https://devshawn.com/blog/apache-kafka-topic-naming-conventions/)
+
+```
+<data-center>.<domain>.<classification>.<description>.<version>
+```
+
+```
+aws.analytics.fct.pageviews.0
+azure.comms.fct.gps.0
+dc1.identity.cdc.users.1
+gcp.notifications.cmd.emails.3
+gcp.notifications.sys.email-cache.0
+```
+
+Note: using version in the naming seems controversial, further reading required.
+
+```
+public.com.xeotek.sales.ecommerce.shoppingcarts
+public.sales.ecommerce.shoppingcarts
+private.risk.portfolio.analysis.loans.csvimport
+```
+
+As a phase of processing:
+```
+  org.ntent.addelivery.pageview-incoming
+  org.ntent.addelivery.pageview-filtered
+  org.ntent.addelivery.pageview-duplicate
+  org.ntent.addelivery.pageview-clean
+```
+
+To separate "instances" of a particular kind of activity:
+```
+  org.ntent.addelivery.feedrequest-feed1
+  org.ntent.addelivery.feedrequest-feed2
+  org.ntent.addelivery.feedrequest-feed3
+```
+
+To denote the type of "statistic":
+```
+  org.ntent.addelivery.filterstats-knownoffender
+  org.ntent.addelivery.filterstats-bot
+  org.ntent.addelivery.filterstats-clickrate
+```
+
+
+### [Module Federation Details](https://webpack.js.org/concepts/module-federation):
+
+| Remote Name           | Port  |
+| --------------------- | ----- |
+| foundationEvents      | 3060  |
+
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
+
+## License
+
+Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform

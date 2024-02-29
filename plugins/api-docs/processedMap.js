@@ -19,4 +19,5 @@ module.exports = {
 	"@genesislcap/foundation-testing": "14.148.0",
 	"@genesislcap/foundation-criteria": "14.148.0",
 	"@genesislcap/foundation-errors": "14.148.0",
+	"@genesislcap/foundation-events": "14.148.0",
 };

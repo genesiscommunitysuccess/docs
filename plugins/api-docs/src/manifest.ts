@@ -329,5 +329,27 @@ export default {
         ],
       },
     },
+    {
+      name: "@genesislcap/foundation-events",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/15_events",
+        api_docs: "docs/api",
+        readme: "01_foundation-events.mdx",
+        keywords: ["genesis", "foundation", "ui", "events"],
+        tags: ["genesis", "foundation", "ui", "events"],
+        pages: [
+          {
+            title: "Foundation Events",
+            sidebar_label: "Foundation Events",
+            id: "foundation-events",
+          },
+        ],
+      },
+    },
   ],
 };
