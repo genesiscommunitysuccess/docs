@@ -382,7 +382,7 @@ connection: keep-alive
 
 PUT requests can also be used to request MORE_ROWS. This is when the client has specified a `MAX_ROWS` and received that many rows, but would like to get more.
 
-The use of MORE_ROWS in conjunction with MAX_VIEW, MOVING_VIEW and VIEW_NUMBER can allow for the implementation of infinite scrolling and pagination solutions. More details can be found in See more information in the dataserver [data logon messages](../../../server/data-server/advanced/##incoming-data_logon-messages).
+The use of MORE_ROWS in conjunction with MAX_VIEW, MOVING_VIEW and VIEW_NUMBER can allow for the implementation of infinite scrolling and pagination solutions. More details can be found in See more information in the dataserver [data logon messages](/../../server/data-server/advanced/#incoming-data_logon-messages).
 
 The reply will be a simple ACK/NACK. Assuming an ACK, the next QUERY_UPDATE request will include the additional rows.
 
