@@ -27,7 +27,7 @@ The following field types are available:
 * NANO_TIMESTAMP
 * RAW
 
-You can define each field, supplying a unique `name` and `type`. There are also optional parameters you can specify, such as default value and non-nullable. (Some options are only relevant for certain types.)
+To define a field, supply a unique `name` and `type`. There are also [optional parameters](#optional-parameters) you can specify, such as default value and non-nullable. (Some options are only relevant for certain types.)
 
 For example, here we define two fields. In the first, we simply supply the field type (STRING). In the second, we supply the type as ENUM, specify the two possible values for the field, and then a default value:
 
@@ -37,16 +37,16 @@ fields {
     field("PROJECT_OPERATIONAL_STATUS", type = ENUM("OPERATIONAL", "NEW_BUILD", default = "NEW_BUILD"))
 }
 ```
-## Field parameters
+## Optional parameters
 You can add one or more parameters to any field that you declare.
 
 | Parameter | Default value | Sample Usage | Value Type | Description |
 |---|---|---|---|---|
-| default | null | `field(name = "AGE", type = INT, default=20)` | The same type as the field | Set a default value for the field where not supplied on a database insert. Mandatory for `ENUM` |
-| maxSize | 64 (unlimited for non sql DB) | `field(name = "DESCRIPTION", type = STRING, maxSize=1000)` | integer | Set the maxSize of a field. Applicable for `STRING`, `ENUM`, `RAW`. Needed for [HFT](../../../../getting-started/glossary/glossary/#hft) and SQL data structures. See below for more details |
-| format | N/A | `field(name = "SETTLEMENT_AMOUNT", type = BIG_DECIMAL, format="#,##0.000")` | Dependent on type | Set the valid format of a field entry  |
-| sensitive | false | `field(name = "PASSWORD", type = STRING, sensitive=true)` | boolean | true if the field should be obfuscated in the system logs  |
-| nullable | true | `field(name = "DESCRIPTION", type = STRING, nullable=false)`; see below | boolean | false if the field is not nullable  |
+| default | null | `field(name = "AGE", type = INT, default = 20)` | The same type as the field | Set a default value for the field where not supplied on a database insert. This is mandatory for `ENUM` inside the field declaration. For example: `field(name = "COUNTRY", type = ENUM("BRAZIL", "KUWAIT", "BHUTAN", default = "BRAZIL")` |
+| maxSize | 64 (unlimited for non sql DB) | `field(name = "DESCRIPTION", type = STRING, maxSize = 1000)` | integer | Set the maxSize of a field. Applicable for `STRING`, `ENUM`, `RAW`. Needed for [HFT](../../../../getting-started/glossary/glossary/#hft) and SQL data structures. See below for more details |
+| format | N/A | `field(name = "SETTLEMENT_AMOUNT", type = BIG_DECIMAL, format = "#,##0.000")` | Dependent on type | Set the valid format of a field entry  |
+| sensitive | false | `field(name = "PASSWORD", type = STRING, sensitive = true)` | boolean | true if the field should be obfuscated (masked by asterisk (*) symbols) in the system logs  |
+| nullable | true | `field(name = "DESCRIPTION", type = STRING, nullable = false)`; see below | boolean | false if the field is not nullable  |
 
 ### Nullable fields
 By default, all fields except ENUM are nullable. 
@@ -56,7 +56,7 @@ You can make a field not nullable by adding the parameter `nullable=false` when 
 If you want more flexibility, leave the field nullable by default, but when you [add the field to a table](../../../../database/fields-tables-views/tables/tables-basics/), declare it as 'not null'. This means that the field can be nullable when used in other tables.
 
 ### ENUM fields
-When you declare an ENUM field, you have to provide:
+When you declare an `ENUM` field, you have to provide:
 
 - a fixed list of available values
 - a default value 
@@ -66,7 +66,7 @@ For example, here we specify three different states and then specify the default
 ```kotlin
 field(name = "TRADE_STATUS", type = ENUM("NEW", "ALLOCATED", "CANCELLED", default = "NEW"))
 ```
-Remember that ENUM fields are always not nullable. If you try and add `nullable = true' Intellij will warn you. If you go ahead and build, it will generate an error.
+Remember that `ENUM` fields are always not nullable. If you try and add `nullable = true`, Intellij will warn you. If you go ahead and build, it will generate an error.
 
 ## Naming fields
 
