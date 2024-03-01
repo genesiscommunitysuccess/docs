@@ -15,11 +15,11 @@ tags:
 
 ### Derived fields
 
-Derived fields are used to serve up data that is constructed from one or more fields that are then modified programatically before progressing.
+Derived fields are used to serve up data that is constructed from one or more fields; this is modified programatically before progressing.
 
-For example if a table had a Notional field, and a Price field, you might define a Payment_Amount derived field as Notional * Price.
+For example, if a table has a Notional field and a Price field, you could define a Payment_Amount derived field as Notional * Price.
 
-It is possible to define the derived field inputs as either the individually specified entity fields, or alternatively the entity itself, which 
+You can define the derived field inputs as either individually specified entity fields, or as the entity itself, which 
 will make all fields in the entity available for the derived field definition. 
 This has two main advantages:
 
@@ -28,7 +28,7 @@ This has two main advantages:
 
 And one possible disadvantage:
 
-- for larger tables there may be an unnecessary performance impact
+- for larger tables, there could be a performance impact
 
 Syntax:
 ```kotlin
