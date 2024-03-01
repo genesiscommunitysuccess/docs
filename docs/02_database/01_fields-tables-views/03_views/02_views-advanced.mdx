@@ -11,9 +11,7 @@ tags:
 
 
 
-## Fields
-
-### Derived fields
+## Derived fields
 
 Derived fields are used to serve up data that is constructed from one or more fields; this is modified programatically before progressing.
 
@@ -26,7 +24,7 @@ There are two ways of defining a derived field:
 
 We shall look at each of these below.
 
-## Using withInput
+### Using withInput
 This technique enables you to create a derived field from one or more existing fields within the tables in the view. (Use joins if you need bring other tables into the view.)
 
 To start, declare a `derivedField` and give it a name and field type. Then you can declare the `withInput` and specify the fields and the logic.
@@ -45,7 +43,7 @@ derivedField("SPREAD", DOUBLE) {
 }
 ```
 
-## Using withEntity
+### Using withEntity
 This technique enables you to add a table entity as an input and then declare the specific fields you require. This is useful if you want to use fields from a different table. The table does not have to be part of the view you are specifying.
 
 To start, declare a `derivedField` and give it a name and field type. Then you can declare the `withEntity` and specify the table, the fields and the logic.
