@@ -46,7 +46,7 @@ You can add one or more parameters to any field that you declare.
 | maxSize | 64 (unlimited for non sql DB) | `field(name = "DESCRIPTION", type = STRING, maxSize = 1000)` | integer | Set the maxSize of a field. Applicable for `STRING`, `ENUM`, `RAW`. Needed for [HFT](../../../../getting-started/glossary/glossary/#hft) and SQL data structures. See below for more details |
 | format | N/A | `field(name = "SETTLEMENT_AMOUNT", type = BIG_DECIMAL, format = "#,##0.000")` | Dependent on type | Set the valid format of a field entry  |
 | sensitive | false | `field(name = "PASSWORD", type = STRING, sensitive = true)` | boolean | true if the field should be obfuscated (masked by asterisk (*) symbols) in the system logs  |
-| nullable | true | `field(name = "DESCRIPTION", type = STRING, nullable = false)`; see below | boolean | false if the field is not nullable  |
+| nullable | true | `field(name = "DESCRIPTION", type = STRING, nullable = false)`; see below | boolean | false if the field is not nullable. This argument is not available if `type = ENUM` |
 
 ### Nullable fields
 By default, all fields except ENUM are nullable. 
