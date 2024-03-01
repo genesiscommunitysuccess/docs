@@ -31,12 +31,12 @@ To start, declare a `derivedField` and give it a name and field type. Then you c
 
 Here is an example where we define a derived field called SPREAD with field inputs. 
 
-- The parameter bid receives its value from the field INSTRUMENT_PRICE.BID_PRICE.
-- The parameter ask receives its value from the field INSTRUMENT_PRICE.ASK_PRICE.
+- The parameter bid receives its value from the field INSTRUMENT_PRICES.BID_PRICE.
+- The parameter ask receives its value from the field INSTRUMENT_PRICES.ASK_PRICE.
 
 ```kotlin
 derivedField("SPREAD", DOUBLE) {
-  withInput(INSTRUMENT_PRICE.BID_PRICE, INSTRUMENT_PRICE.ASK_PRICE) { bid, ask ->
+  withInput(INSTRUMENT_PRICES.BID_PRICE, INSTRUMENT_PRICES.ASK_PRICE) { bid, ask ->
     if (ask == null || bid == null) null
       else ask - bid
     }
@@ -44,7 +44,7 @@ derivedField("SPREAD", DOUBLE) {
 ```
 
 ### Using withEntity
-This technique enables you to add a table entity as an input and then declare the specific fields you require. This is useful if you want to use fields from a different table. The table does not have to be part of the view you are specifying.
+This technique enables you to add a table entity as an input and then declare the specific fields you require. 
 
 To start, declare a `derivedField` and give it a name and field type. Then you can declare the `withEntity` and specify the table, the fields and the logic.
 
@@ -58,17 +58,17 @@ derivedField("SPREAD", DOUBLE) {
 }
 ```
 
-Using`withEntity` gives two useful advantages:
+Using `withEntity` gives two useful advantages:
 
 - when a derived field has multiple inputs from a single table, only one input is required in the definition
 - non-null fields on the entity will be non-null
 
-By default, all fields are populated in the entity. So there could be a performance impact if you are using large tables; it is likely that your calculations won't need many of the fields are loaded in your calculation or in the final view. 
+By default, all fields in the entity are returned. So there could be a performance impact if you are using large tables; it is likely that your calculations won't need many of the fields are loaded in your calculation or in the final view. 
 
 There two ways of mitigating this.
 
-The first way is to load only non-null fields. Here is an example:
-Non-null fields will always be populated. 
+The first way is to return only non-null fields. Here is an example:
+
 
 ```kotlin
 derivedField("SPREAD", DOUBLE) {
@@ -78,11 +78,11 @@ derivedField("SPREAD", DOUBLE) {
 }
 ```
 
-The second way is to specify the fields to be populated. Here is an example:
+The second way is to specify the fields to be returned. Other fields in the table are not returned. Here is an example:
 
 ```kotlin
 derivedField("SPREAD", DOUBLE) {
-    withEntity(INSTRUMENT_PRICES, fields = listOf(INSTRUMENT_PRICE.ASK_PRICE, INSTRUMENT_PRICE.BID_PRICE)) { price ->
+    withEntity(INSTRUMENT_PRICES, fields = listOf(INSTRUMENT_PRICES.ASK_PRICE, INSTRUMENT_PRICES.BID_PRICE)) { price ->
         price.askPrice - price.bidPrice
     }
 }
