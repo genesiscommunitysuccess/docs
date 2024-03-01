@@ -46,7 +46,7 @@ There are two operations that request a whole table from the database:
 -   `getBulk`
 -   `getBulkFromEnd`
 
-When the whole table is returned, the records will be returned in sorted order (if the database supports it). By default, the records are ordered by the primary key, unless you provide another index.
+When the whole table is returned, the records will be returned in sorted order (if the database supports it). getBulk sorts the results in ascending order by the primary key or other specified index. getBulkFromEnd sorts the results in descending order by the primary key or other specified index. 
 
 ### Reading a table range
 
@@ -57,7 +57,7 @@ The database can return ranges that can be described as:
 
 For each of these, Genesis supports the following operations
 
--   `getRange(index)`
+-   `getRange`
 -   `getRangeFromEnd`
 
-As with `getBulk`, the records will be sorted, if the database supports it.
+As with `getBulk` and 'getBulkFromEnd', the records will be sorted in ascending or descending order respectively, if the database supports it.
