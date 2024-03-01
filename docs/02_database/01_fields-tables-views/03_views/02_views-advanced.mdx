@@ -15,12 +15,20 @@ tags:
 
 ### Derived fields
 
-Derived fields are used to serve up fields that are not part of the tables that make up a given view. Their values are typically derived from fields in the tables.
+Derived fields are used to serve up data that is constructed from one or more fields; this is modified programatically before progressing.
 
-It is possible to specify field inputs for derived fields as well as being able to specify a single entity as input. This has two main advantages:
+For example, if a table has a Notional field and a Price field, you could define a Payment_Amount derived field as Notional * Price.
 
-- when a derived field has multiple inputs from a single table, only one input is required
+You can define the derived field inputs as either individually specified entity fields, or as the entity itself, which 
+will make all fields in the entity available for the derived field definition. 
+This has two main advantages:
+
+- when a derived field has multiple inputs from a single table, only one input is required in the definition
 - non-null fields on the entity will be non-null
+
+And one possible disadvantage:
+
+- for larger tables, there could be a performance impact
 
 Syntax:
 ```kotlin
@@ -49,7 +57,7 @@ derivedField("SPREAD", DOUBLE) {
     }
 }
 ```
-By default, all fields are populated in the entity. For larger tables, this might have a performance impact if many fields are loaded that are not used in the calculation or the final view. To mitigate this, you can specify to load either only non-null fields, or specify the fields to be populated. Non-null fields will always be populated. Let's look at an example of each.
+By default, all fields are populated in the entity. For larger tables, this might have a performance impact if many fields are loaded that are not used in the calculation or the final view. To help to mitigate this, you can specify to load either only non-null fields, or specify the fields to be populated. Non-null fields will always be populated. Let's look at an example of each.
 
 Only load non-null fields:
 
