@@ -143,7 +143,7 @@ Remap does not perform any complex data migration, only schema changes. Some cus
 
 ### Field changes
 
-Renaming fields is unsupported by `remap`, as there is no way to identify individual fields (indices and tables are identified by an "id"). For this purpose, we have the [rename fields script](./01_server-commands.md#renamefields-script).
+Renaming fields is unsupported by `remap`, as there is no way to identify individual fields (indices and tables are identified by an "id"). For this purpose, we have the [rename fields script](../../../operations/commands/server-commands/#renamefields).
 
 ### Field-type migration
 
@@ -173,4 +173,4 @@ The following are valid without additional changes or caveats:
 
 ### String to Enum Conversion
 
-A common issue with type conversions is a String to Enum conversion where not all the data matches the allowed list of Enum values. Often, this mismatch is just a case of needing to capitalise the non-matching value, or add an underscore, or both. Where this is the case, you can run the `FixEnumValues` script, or add an installHook that calls it for you. See the section in [server commands](./01_server-commands.md#fixenumvalues)).
+A common issue with type conversions is a String to Enum conversion where not all the data matches the allowed list of Enum values. Often, this mismatch is just a case of needing to capitalise the non-matching value, or add an underscore, or both. Where this is the case, you can run the `FixEnumValues` script, or add an installHook that calls it for you. See the section in [server commands]../../../operations/commands/server-commands/#fixenumvalues).

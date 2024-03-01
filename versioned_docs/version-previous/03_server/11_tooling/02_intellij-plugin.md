@@ -157,7 +157,7 @@ The log file view defaults to show only warnings. You can change the level from 
 ### Log level
 
 Currently, the plugin does not pick up `<loggingLevel>` entries in `processes.xml` files.
-To set the log level for a process, use the [LogLevel script](/operations/commands/server-commands/#loglevel-script).
+To set the log level for a process, use the [LogLevel script](/operations/commands/server-commands/#loglevel).
 
 ### Chronicle files
 
