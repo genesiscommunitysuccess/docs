@@ -71,6 +71,26 @@ If you are using intelliJ IDE, it will auto-suggest the available fields; any re
 
 ```
 
+### Making a field not null
+All [field types](../../../../database/fields-tables-views/fields/fields-basics) except ENUM are nullable by default.  However, you can make a nullable field not nullable on a table when you add it. Just add `not null` for the relevant field or fields when you add them to the table. Effectively, this makes the field mandatory for the table. This does not affect usage of the field in other tables in your application.
+
+For example, here we have set two fields to be `not null`:
+
+```kotlin
+table(name = "TRADE", id = 2000) {
+      autoIncrement(TRADE_ID)
+      COUNTERPARTY_ID
+      INSTRUMENT_ID not null
+      QUANTITY
+      PRICE not null
+      NOTIONAL
+
+      primaryKey { 
+        TRADE_ID
+      }
+  }
+```
+
 ## Primary key
 
 A table must have a single primary key.
