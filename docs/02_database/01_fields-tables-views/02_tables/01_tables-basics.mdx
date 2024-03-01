@@ -72,7 +72,7 @@ If you are using intelliJ IDE, it will auto-suggest the available fields; any re
 ```
 
 ### Making a field not null
-All [field types](../../../../database/fields-tables-views/fields/fields-basics) except ENUM are nullable by default.  However, you can make a nullable field not nullable on a table when you add it. Just add `not null` for the relevant field or fields when you add them to the table. Effectively, this makes the field mandatory for the table. This does not affect usage of the field in other tables in your application.
+All [field types](../../../../database/fields-tables-views/fields/fields-basics) except ENUM are nullable by default.  However, you can set a nullable field so that it is not nullable on a specific table. When you add the field to the table, just add `not null`. Effectively, this makes the field mandatory for that table. It does not affect usage of the field in other tables in your application.
 
 For example, here we have set two fields to be `not null`:
 
