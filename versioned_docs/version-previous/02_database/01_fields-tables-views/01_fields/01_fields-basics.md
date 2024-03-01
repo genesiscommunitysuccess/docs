@@ -29,7 +29,7 @@ The following field types are available:
 
 To define a field, supply a unique `name` and `type`. There are also [optional parameters](#optional-parameters) you can specify, such as default value and non-nullable. (Some options are only relevant for certain types.)
 
-For example, here we define two fields. In the first, we simply supply the field type (STRING). In the second, we supply the type as ENUM, specify the two possible values for the field, and then a default value:
+For example, here we define two fields. In the first, we simply supply the field type (STRING). In the second, we supply the type as `ENUM`, specify the two possible values for the field, and then a default value:
 
 ```kotlin
 fields {
@@ -49,7 +49,7 @@ You can add one or more parameters to any field that you declare.
 | nullable | true | `field(name = "DESCRIPTION", type = STRING, nullable = false)`; see below | boolean | false if the field is not nullable. This argument is not available if `type = ENUM` |
 
 ### Nullable fields
-By default, all fields except ENUM are nullable. 
+By default, all fields except `ENUM` are nullable. 
 
 You can make a field not nullable by adding the parameter `nullable=false` when you declare the field. By doing this, the field is not nullable wherever it is used in the application.
 
