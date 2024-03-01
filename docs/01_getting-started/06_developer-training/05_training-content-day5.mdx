@@ -162,7 +162,7 @@ Then import the local csv using the Genesis plugin as we saw [here](../../../get
 Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) table, and insert a new rule changing the CRON_EXPRESSION value.
 
 :::tip
-To delete rows you can use [DbMon](../../../operations/commands/server-commands/#dbmon-script) and the command `delete`. After that you can use [SendIt](../../../operations/commands/server-commands/#sendit-script) to insert a new row again.
+To delete rows you can use [DbMon](../../../operations/commands/server-commands/#dbmon) and the command `delete`. After that you can use [SendIt](../../../operations/commands/server-commands/#sendit) to insert a new row again.
 
 By the way, the CRON expression for every 10 seconds is `0/10 * * * * ? *`. See a CRON generator [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
 :::
@@ -240,7 +240,7 @@ First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field pa
 Starting with the server, set up the USER and USER_ATTRIBUTES records for the system user JaneDee.
 
 :::tip
-If you are not sure how to read and write information from the Genesis database, see reference page covering the [`DbMon`](../../../operations/commands/server-commands/#dbmon-script) and [`SendIt`](../../../operations/commands/server-commands/#sendit-script) commands.
+If you are not sure how to read and write information from the Genesis database, see reference page covering the [`DbMon`](../../../operations/commands/server-commands/#dbmon) and [`SendIt`](../../../operations/commands/server-commands/#sendit) commands.
 :::
 
 Set two new key values in **alpha-config/src/main/resources/cfg/alpha-system-definition.kts** file in systemDefinition-global block This enables the COUNTERPARTY table and COUNTERPARTY_ID field to become part of the generic permissions system:
@@ -356,7 +356,7 @@ See [here](../../../server/access-control/authorisation/) <!-- TODO: Is this the
 
 Set up a permission code for Trade inserting. The permission code should be called *TRADE_INSERT* and be part of the **alpha-eventhandler.kts** file accordingly.
 
-Using the command [`SendIt`](../../../operations/commands/server-commands/#dbmon-script), make the following three configurations below.
+Using the command [`SendIt`](../../../operations/commands/server-commands/#dbmon), make the following three configurations below.
 
 1. Add the permission to the user JaneDee to use the table USER_ATTRIBUTES.
 
@@ -482,10 +482,10 @@ Understanding the file structure:
 ### Key server commands
 
 So far, we've used commands such as `mon`, `DbMon`, `SendIt` and `LogLevel`. There are quite a few more important commands to help you operate the Genesis Platform:
-- [genesisInstall](../../../operations/commands/server-commands/#genesisinstall-script)
-- [remap](../../../operations/commands/server-commands/#remap-script)
+- [genesisInstall](../../../operations/commands/server-commands/#genesisinstall)
+- [remap](../../../operations/commands/server-commands/#remap)
 - [starting and stopping the server](../../../operations/commands/server-commands/) <!-- TODO: What is the proper link for this?-->
-- [DumpIt](../../../operations/commands/server-commands/#dumpit-script)
+- [DumpIt](../../../operations/commands/server-commands/#dumpit)
 - [DropTable](../../../operations/commands/server-commands/#droptable)
 
 ### Practising the commands
