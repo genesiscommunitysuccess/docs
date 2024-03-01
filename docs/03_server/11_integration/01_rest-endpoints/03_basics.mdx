@@ -79,83 +79,109 @@ Data Servers are the most complex of the REST Endpoints provided by the Genesis 
 
 For all Data Server requests, a `SOURCE_REF` header is mandatory, as it is used to match requests to the correct client subscription. This in turn allows for multiple subscriptions to the same query for the same session (think multiple grids in the UI using the same query with different filters).
 
-There follows a list of Data Server messages mapped to HTTP endpoints.
+### Endpoint
+The naming approach for the dataserver endpoint follows the lowercase hyphen-separated web standards convention (i.e. ALL_TRADES becomes all-trades). There is no need to rename your dataserver resource, the endpoint will be exposed using the correct naming convention automatically.
 
-### DATA_LOGON
-
-To initiate a Data Server query, a DATA_LOGON message is required to create the subscription. This is requested via a POST request to
+A sample endpoint url would look like this:
 `[host]:[genesis_router_port]/[data_server_query_name]`.
 
-A body is optional; if provided, it can contain Data Server parameters, such as `MAX_ROWS` and `FIELDS`
+### POST
+
+A POST request creates a new dataserver subscription and is equivalent to a DATA_LOGON message sent over Websockets.
+
+The request body is optional; if provided, it can contain Data Server parameters, such as `MAX_ROWS` and `FIELDS. Alternatively, these parameters can be provided as HTTP query parameters. See more information in the dataserver [data logon messages](../../../server/data-server/advanced/##incoming-data_logon-messages)
 
 The response contains the initial set of data for the subscription. The `ROW_REF` is a unique handle to each row returned and will be present on all QUERY_UPDATE requests where the given row has changed (e.g. modify/delete).
 
-:::note
-To avoid memory leaks, the server will timeout subscriptions that have not been active for a period of time (no GET or PUT requests received). At this point, a new subscription can be made via a new DATA_LOGON request
+From this moment onwards on, real-time data updates for the subscription are cached in the backend until the next GET method call.
+
+:::important
+To avoid memory leaks, the server will timeout subscriptions that have not been active for a period of time (no GET or PUT requests received). At this point, a new subscription can be made via a new DATA_LOGON request. See the Genesis [Router](../../../server/configuring-runtime/genesis-router) configuration for more information about the `dataserverPollingTimeout` configuration option.
 :::
 
 Sample request:
 
-```json
-POST /my-trades HTTP/1.1
-Host: localhost:9064
+```http request
+POST http://localhost:9064/all-trades
 Content-Type: application/json
-SOURCE_REF: 123456-789031
-SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
+SOURCE_REF: 123456-789042
+SESSION_AUTH_TOKEN: G21sF8S9z5J9FTw8iFLk6ZveK9LbMe6h
+USER_NAME: JaneDee
 
 {
   "DETAILS": {
-    "MAX_ROWS" : "3",
-    "FIELDS": "TRADE_ID CURRENCY FULLY_FILLED PRICE"
+    "MAX_ROWS": 2,
+    "MAX_VIEW": 10,
+    "FIELDS": "PRICE QUANTITY TRADE_ID SYMBOL SIDE"
   }
 }
 ```
 
 Sample response:
 
-```json
+```http request
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 350
+connection: keep-alive
+
 {
-    "MESSAGE_TYPE": "QUERY_UPDATE",
-    "ROW": [
-        {
-            "CURRENCY": "FGF",
-            "FULLY_FILLED": true,
-            "PRICE": 4856734,
-            "TRADE_ID": "000000000000109TRLO1",
-            "DETAILS": {
-                "OPERATION": "INSERT",
-                "ROW_REF": 1516923055488004380
-            }
-        },
-        {
-            "CURRENCY": "GBX",
-            "FULLY_FILLED": false,
-            "PRICE": 56548,
-            "TRADE_ID": "000000000000108TRLO1",
-            "DETAILS": {
-                "OPERATION": "INSERT",
-                "ROW_REF": 1516923055487676624
-            }
-        },
-        {
-            "CURRENCY": "USD",
-            "FULLY_FILLED": false,
-            "PRICE": 2.33,
-            "TRADE_ID": "000000000000107TRLO1",
-            "DETAILS": {
-                "OPERATION": "INSERT",
-                "ROW_REF": 1516923055486415809
-            }
-        }
-    ],
-    "SOURCE_REF": "123456-789031"
+  "ROWS_COUNT": 100,
+  "MESSAGE_TYPE": "QUERY_UPDATE",
+  "ROW": [
+    {
+      "PRICE": 100.25,
+      "QUANTITY": 50,
+      "TRADE_ID": "TRADE_001",
+      "SYMBOL": "AAPL",
+      "SIDE": "Buy",
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821048261343"
+      }
+    },
+    {
+      "PRICE": 99.75,
+      "QUANTITY": 75,
+      "TRADE_ID": "TRADE_002",
+      "SYMBOL": "GOOG",
+      "SIDE": "Sell",
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821044067038"
+      }
+    }
+  ],
+  "MORE_ROWS": true,
+  "SOURCE_REF": "123456-789042",
+  "SEQUENCE_ID": 1
 }
 ```
 
-### QUERY_UPDATE
+If pagination is required, the VIEW_NUMBER parameter can be provided:
 
-To poll for updates to the given subscription to a Data Server query, you need to send a QUERY_UPDATE message. This is requested via a GET request to
-`[host]:[genesis_router_port]/[data_server_query_name]`.
+```http request
+POST http://localhost:9064/all-trades
+Content-Type: application/json
+SOURCE_REF: 123456-789042
+SESSION_AUTH_TOKEN: G21sF8S9z5J9FTw8iFLk6ZveK9LbMe6h
+USER_NAME: JaneDee
+
+{
+  "DETAILS": {
+    "MAX_ROWS": 2,
+    "VIEW_NUMBER": 1
+    "FIELDS": "PRICE QUANTITY TRADE_ID SYMBOL SIDE"
+  }
+}
+```
+
+
+### GET
+
+Use the GET method to retrieve real-time updates from the subscription. No payload is necessary in the GET request body, only the URL and the relevant HTTP headers.
+
+As explained in the previous section, the dataserver subscription will be destroyed if not queried within the configured polling timeout period.
 
 The `SOURCE_REF` should match that used in the original DATA_LOGON (subscription).
 
@@ -163,148 +189,388 @@ The response contains the update of data (new/modified/deleted rows since the la
 
 Sample request:
 
-```json
-GET /my-trades HTTP/1.1
-Host: localhost:9064
+```http request
+GET http://localhost:9064/all-trades
 Content-Type: application/json
-SOURCE_REF: 123456-789031
-SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
+SOURCE_REF: 123456-789042
+SESSION_AUTH_TOKEN: G21sF8S9z5J9FTw8iFLk6ZveK9LbMe6h
+USER_NAME: JaneDee
 ```
 
 Sample response:
 
-```json
+```http request
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 362
+connection: keep-alive
+
 {
-    "MESSAGE_TYPE": "QUERY_UPDATE",
-    "ROW": [
-        {
-            "DETAILS": {
-                "OPERATION": "DELETE",
-                "ROW_REF": 1516923055488004380
-            }
-        },
-        {
-            "PRICE": 56549
-            "DETAILS": {
-                "OPERATION": "MODIFY",
-                "ROW_REF": 1516923055487676624
-            }
-        },
-        {
-            "CURRENCY": "GBP",
-            "FULLY_FILLED": false,
-            "PRICE": 2.45,
-            "TRADE_ID": "000000000000201TRLO1",
-            "DETAILS": {
-                "OPERATION": "INSERT",
-                "ROW_REF": 1516923055486415912
-            }
-        }
-    ],
-    "SOURCE_REF": "123456-789031"
+  "MESSAGE_TYPE": "QUERY_UPDATE",
+  "ROW": [
+    {
+      "DETAILS": {
+        "OPERATION": "DELETE",
+        "ROW_REF": "12345678901234567890"
+      }
+    },
+    {
+      "PRICE": 55.75,
+      "QUANTITY": 100,
+      "TRADE_ID": "TRADE_003",
+      "SYMBOL": "AAPL",
+      "SIDE": "Buy",
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "09876543210987654321"
+      }
+    },
+    {
+      "QUANTITY": 150,
+      "DETAILS": {
+        "OPERATION": "MODIFY",
+        "ROW_REF": "13579246801357924680"
+      }
+    }
+  ],
+  "SOURCE_REF": "123456-789042"
 }
 ```
 
-### CHANGE_COLUMNS
+### PUT
 
+:::important
+PUT messages are slightly different from other Data Server messages; specifically, the `SOURCE_REF` should be unique. A `SUBSCRIPTION_REF` is also needed and must match that `SOURCE_REF` value used in the original DATA_LOGON (subscription). The reason for the change in this message is that the response is a simple ACK/NACK, and the client should use this to know if it was successful or not.
+:::
+
+#### MORE_COLUMNS
 It is possible to change the columns supplied on updates to the given subscription to a Data Server query.
 
-This is requested via a PUT request to
-`[host]:[genesis_router_port]/[data_server_query_name]`.
+If an ACK is received, a further GET for the original `SOURCE_REF` (this request's `SUBSCRIPTION_REF`) will provide the added columns for each row the client has received, but nothing regarding the deleted columns. So the ACK is a means of telling the client it is OK to remove the deleted columns from the UI.
 
-This particular message is slightly different from other Data Server messages; specifically, the `SOURCE_REF` should be unique. A `SUBSCRIPTION_REF` is also needed and must match that `SOURCE_REF` value used in the original DATA_LOGON (subscription). The reason for the change in this message is that the response is a simple ACK/NACK, and the client should use this to know if it was successful or not. If an ACK is received, a further GET for the original `SOURCE_REF` (this request's `SUBSCRIPTION_REF`) will provide the added columns for each row the client has received, but nothing regarding the deleted columns. So the ACK is a means of telling the client it is OK to remove the deleted columns from the UI.
+The body of this request should contain a `DETAILS` object with `ADD_COLUMNS` (further replies should include these columns) and/or `DROP_COLUMNS` (further QUERY_UPDATE messages should not include these columns)
 
-The body of this request should contain a `DETAILS` object with `ADD_COLUMNS` (further replies should include these columns) and/or `DROP_COLUMNS` (further replies should not include these columns)
+See below a full message flow sample from subscription creation to successful column addition:
 
-Sample request:
+Subscription creation.
 
-```json
-PUT /my-trades HTTP/1.1
-Host: localhost:9064
+```http request
+POST http://localhost:9064/all-trades
 Content-Type: application/json
-SOURCE_REF: 123456-789032
-SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
-SUBSCRIPTION_REF: 123456-789031
+SOURCE_REF: 123456-789042
+SESSION_AUTH_TOKEN: G21sF8S9z5J9FTw8iFLk6ZveK9LbMe6h
+USER_NAME: JaneDee
 
 {
   "DETAILS": {
-    "ADD_COLUMNS": "BROKER_ID INSTRUMENT_ID", 
-    "DROP_COLUMNS": "FULLY_FILLED"
+    "MAX_ROWS": "2",
+    "MAX_VIEW": "10",
+    "FIELDS": "PRICE TRADE_ID SYMBOL SIDE"
   }
 }
 ```
 
-Sample response:
+Subscription response:
 
-```json
+```http request
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 297
+connection: keep-alive
+
 {
-    "MESSAGE_TYPE": "MORE_COLUMNS_ACK",
-    "SOURCE_REF": "123456-789032"
+  "ROWS_COUNT": 100,
+  "MESSAGE_TYPE": "QUERY_UPDATE",
+  "ROW": [
+    {
+      "PRICE": 55.75,
+      "TRADE_ID": "TRADE_001",
+      "SYMBOL": "AAPL",
+      "SIDE": "Buy",
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821048261343"
+      }
+    },
+    {
+      "PRICE": 60.25,
+      "TRADE_ID": "TRADE_002",
+      "SYMBOL": "GOOG",
+      "SIDE": "Sell",
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821044067038"
+      }
+    }
+  ],
+  "MORE_ROWS": true,
+  "SOURCE_REF": "123456-789042",
+  "SEQUENCE_ID": 1
 }
 ```
 
-### MORE_ROWS
+MORE_COLUMNS request:
 
-PUT requests can also be used to request MORE_ROWS. This is when the client has specified a `MAX_ROWS` and received that many rows, but would like to get more. This is handy for pagination implementations.
+```http request
+PUT http://localhost:9064/all-trades
+Content-Type: application/json
+SOURCE_REF: 123456-789045
+SESSION_AUTH_TOKEN: G21sF8S9z5J9FTw8iFLk6ZveK9LbMe6h
+USER_NAME: JaneDee
+SUBSCRIPTION_REF: 123456-789042
 
-This is requested via a PUT request to
-`[host]:[genesis_router_port]/[data_server_query_name]`.
+{
+  "DETAILS": {
+    "ADD_COLUMNS": "QUANTITY"
+  }
+}
+```
 
-The body of this request should contain a `MESSAGE_TYPE` element with the value MORE_ROWS.
+MORE_COLUMNS response:
+```http request
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 64
+connection: keep-alive
+
+{
+  "MESSAGE_TYPE": "MORE_COLUMNS_ACK",
+  "SOURCE_REF": "123456-789045"
+}
+```
+
+GET Request to Retrieve Updated Data with QUANTITY Column:
+```http request
+GET http://localhost:9064/all-trades
+Content-Type: application/json
+SOURCE_REF: 123456-789042
+SESSION_AUTH_TOKEN: G21sF8S9z5J9FTw8iFLk6ZveK9LbMe6h
+USER_NAME: JaneDee
+```
+
+Response with Updated Data Including QUANTITY Column:
+
+```http request
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 436
+connection: keep-alive
+
+{
+  "MESSAGE_TYPE": "QUERY_UPDATE",
+  "ROW": [
+    {
+      "QUANTITY": 100,
+      "DETAILS": {
+        "OPERATION": "MODIFY",
+        "ROW_REF": "7169357821048261343"
+      }
+    },
+    {
+      "QUANTITY": 150,
+      "DETAILS": {
+        "OPERATION": "MODIFY",
+        "ROW_REF": "7169357821044067038"
+      }
+    }
+  ],
+  "SOURCE_REF": "123456-789042",
+}
+```
+
+#### MORE_ROWS
+
+PUT requests can also be used to request MORE_ROWS. This is when the client has specified a `MAX_ROWS` and received that many rows, but would like to get more.
+
+The use of MORE_ROWS in conjunction with MAX_VIEW, MOVING_VIEW and VIEW_NUMBER can allow for the implementation of infinite scrolling and pagination solutions. More details can be found in See more information in the dataserver [data logon messages](../../../server/data-server/advanced/##incoming-data_logon-messages).
 
 The reply will be a simple ACK/NACK. Assuming an ACK, the next QUERY_UPDATE request will include the additional rows.
 
 Sample request:
 
 ```json
-PUT /my-trades HTTP/1.1
-Host: localhost:9064
+PUT http://localhost:9064/all-trades
 Content-Type: application/json
-SOURCE_REF: 123456-789031
-SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
-
-{
-    "MESSAGE_TYPE": "MORE_ROWS"
-}
+SOURCE_REF: 123456-789045
+SESSION_AUTH_TOKEN: G21sF8S9z5J9FTw8iFLk6ZveK9LbMe6h
+USER_NAME: JaneDee
+SUBSCRIPTION_REF: 123456-789042
 ```
 
 Sample response:
 
-```json
+```http request
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 61
+connection: keep-alive
+
 {
-    "MESSAGE_TYPE": "MORE_ROWS_ACK",
-    "SOURCE_REF": "123456-789031"
+  "MESSAGE_TYPE": "MORE_ROWS_ACK",
+  "SOURCE_REF": "123456-789045"
 }
 ```
 
-### DATA_LOGOFF
+Response to the next GET request assuming the subscription had MAX_ROWS=2 and MAX_VIEW size has not been breached:
+```http request
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 372
+connection: keep-alive
 
-A DELETE request is made to log off and end the subscription for the given `SOURCE_REF`.
+{
+  "MESSAGE_TYPE": "QUERY_UPDATE",
+  "ROW": [
+    {
+      "PRICE": 52.50,
+      "TRADE_ID": "TRADE_003",
+      "SYMBOL": "MSFT",
+      "SIDE": "Buy",
+      "QUANTITY": 200,
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821048261344"
+      }
+    },
+    {
+      "PRICE": 65.75,
+      "TRADE_ID": "TRADE_004",
+      "SYMBOL": "AMZN",
+      "SIDE": "Sell",
+      "QUANTITY": 75,
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821044067039"
+      }
+    }
+  ],
+  "SOURCE_REF": "123456-789042",
+}
+```
 
-This is requested via a DELETE request to
-`[host]:[genesis_router_port]/[data_server_query_name]`.
+If pagination is used in conjunction with MORE_ROWS messages, you need to provide the VIEW_NUMBER payload as part of the body or alternatively as a query parameter.
+When using pagination, the next GET request after a successful MORE_ROWS_ACK response will provide DELETE operations for all the rows that have been removed from the previous page and new INSERT operations for the new rows in the page.
+So in the case of a subscription using MAX_ROWS=2, 2 rows will be DELETED and 2 ROWS will be added. S
+
+See sample message flow below:
+
+Request page 3
+```http request
+PUT http://localhost:9064/all-trades
+Content-Type: application/json
+SOURCE_REF: 123456-789045
+SESSION_AUTH_TOKEN: G21sF8S9z5J9FTw8iFLk6ZveK9LbMe6h
+USER_NAME: JaneDee
+SUBSCRIPTION_REF: 123456-789042
+
+{
+  "DETAILS": {
+    "VIEW_NUMBER": 3
+  }
+}
+```
+Response to page request.
+```http request
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 61
+connection: keep-alive
+
+{
+  "MESSAGE_TYPE": "MORE_ROWS_ACK",
+  "SOURCE_REF": "123456-789045"
+}
+```
+
+Get page 3 in the next GET call:
+
+```http request
+GET http://localhost:9064/all-trades
+Content-Type: application/json
+SOURCE_REF: 123456-789042
+SESSION_AUTH_TOKEN: G21sF8S9z5J9FTw8iFLk6ZveK9LbMe6h
+USER_NAME: JaneDee
+```
+
+```http request
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 372
+connection: keep-alive
+
+{
+  "MESSAGE_TYPE": "QUERY_UPDATE",
+  "ROW": [
+    {
+      "DETAILS": {
+        "OPERATION": "DELETE",
+        "ROW_REF": "7169357821048261344"
+      }
+    },
+    {
+      "DETAILS": {
+        "OPERATION": "DELETE",
+        "ROW_REF": "7169357821044067039"
+      }
+    },
+    {
+      "PRICE": 750.20,
+      "QUANTITY": 150,
+      "TRADE_ID": "TRADE_005",
+      "SYMBOL": "TSLA",
+      "SIDE": "Buy",
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821048261354"
+      }
+    },
+    {
+      "PRICE": 120.50,
+      "QUANTITY": 100,
+      "TRADE_ID": "TRADE_006",
+      "SYMBOL": "ORCL",
+      "SIDE": "Sell",
+      "DETAILS": {
+        "OPERATION": "INSERT",
+        "ROW_REF": "7169357821044067239"
+      }
+    }
+  ],
+  "SOURCE_REF": "123456-789042",
+}
+```
+
+### DELETE
+
+A DELETE request is made to signal the end of the subscription for the given `SOURCE_REF`.
 
 The `SOURCE_REF` should match that used in the original DATA_LOGON (subscription).
 
-No body is required for DATA_LOGOFF.
+No body is required.
 
 Sample request:
 
-```json
-DELETE /my-trades HTTP/1.1
-Host: localhost:9064
+```http request
+DELETE http://localhost:9064/all-trades
 Content-Type: application/json
-SOURCE_REF: 123456-789031
-SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
+SOURCE_REF: 123456-789042
+SESSION_AUTH_TOKEN: G21sF8S9z5J9FTw8iFLk6ZveK9LbMe6h
+USER_NAME: JaneDee
 ```
 
 Sample response:
 
-```json
+```http request
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 58
+connection: keep-alive
+
 {
-    "MESSAGE_TYPE": "DATA_LOGOFF",
-    "SOURCE_REF": "123456-789031"
+  "MESSAGE_TYPE": "LOGOFF_ACK",
+  "SOURCE_REF": "123456-789042"
 }
+
 ```
 
 
