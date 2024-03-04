@@ -27,17 +27,17 @@ There are three operations that request individual records from the database:
 
 ### get
 
-To request a single record from the database, a unique index must be specified. If a matching record is found, then it is returned. Otherwise, the operation will return no results.
+To request a single record from the database, a unique index must be specified. If a matching record is found, then it is returned. Otherwise, the operation returns no results.
 
 ### getAll
 
 `getAll` bundles multiple `get` operations into a single request. Each request must have a unique index identifier and a unique reference for the request.
 
-The result will be a map, where the unique reference is the key, and the value is the record, or `null` if not found.
+The result is a map, where the unique reference is the key, and the value is the record, or `null` if not found.
 
 ### getAllAsList
 
-The `getAllAsList` operation is similar to `getAll`. However, this only requires one unique index identifier. The results are returned as a list, in the same order they are requested. When a record is not found, a null value will be in its place in the list.
+The `getAllAsList` operation is similar to `getAll`. However, it only requires one unique index identifier. The results are returned as a list, in the same order they are requested. When a record is not found, a null value will be in its place in the list.
 
 ## Reading a whole table
 
@@ -46,18 +46,19 @@ There are two operations that request a whole table from the database:
 -   `getBulk`
 -   `getBulkFromEnd`
 
-When the whole table is returned, the records will be returned in sorted order (if the database supports it). getBulk sorts the results in ascending order by the primary key or other specified index. getBulkFromEnd sorts the results in descending order by the primary key or other specified index. 
+When the whole table is returned, the records are returned in sorted order (if the database supports it). 
+
+- `getBulk` sorts the results in ascending order by the primary key or other specified index. 
+- `getBulkFromEnd` sorts the results in descending order by the primary key or other specified index. 
 
 ### Reading a table range
 
-The database can return ranges that can be described as:
+The database can return ranges:
 
 -   a range described by a non-unique index identifier
 -   a range between two index identifiers
 
-For each of these, Genesis supports the following operations
+For each of these, Genesis supports the following operations:
 
--   `getRange`
--   `getRangeFromEnd`
-
-As with `getBulk` and 'getBulkFromEnd', the records will be sorted in ascending or descending order respectively, if the database supports it.
+-   `getRange` (sorts the records in ascending order)
+-   `getRangeFromEnd` (sorts the records in descending order)
