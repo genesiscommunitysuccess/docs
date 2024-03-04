@@ -19,8 +19,8 @@ For example, if a table has a Notional field and a Price field, you could define
 
 There are two ways of defining a derived field:
 
-- using `withInput` enables you to specify one more more fields as the basis for calculating the value of the new derived field
-- using `withEntity` enables you to specify a different table entity as the input
+- Using `withInput` enables you to specify one more more fields as the basis for calculating the value of the new derived field.
+- Using `withEntity` enables you to specify a table entity as the input.
 
 We shall look at each of these below.
 
@@ -60,8 +60,8 @@ derivedField("SPREAD", DOUBLE) {
 
 Using `withEntity` gives two useful advantages:
 
-- when a derived field has multiple inputs from a single table, only one input is required in the definition
-- non-null fields on the entity will be non-null
+- If you require multiple fields from the same table as input into a derived field, you can pass the table object as a parameter and use any field from it without having to make multiple `withInput` statements.
+- Non-null fields on the entity will be non-null.
 
 By default, all fields in the entity are returned. So there could be a performance impact if you are using large tables; it is likely that your calculations won't need many of the fields are loaded in your calculation or in the final view. 
 
