@@ -11,7 +11,7 @@ tags:
 ---
 
 ## Authentication
-As mentioned in the introduction, all requests to all Genesis components require you to have made an initial log in and to have retrieved the `SESSION_AUTH_TOKEN`.
+Before you can make any request to a Genesis component, you must have made an initial log in to the application and retrieved the `SESSION_AUTH_TOKEN`.
 
 ### EVENT_LOGIN_AUTH
 
@@ -71,35 +71,35 @@ Sample response:
 }
 ```
 
-Now that the `SESSION_AUTH_TOKEN` has been returned, you must add it to every future request, except `EVENT_LOGIN_REFRESH` and `EVENT_LOGOUT`: more on that later. 
+Once the `SESSION_AUTH_TOKEN` has been returned, you must add it to every future request, except `EVENT_LOGIN_REFRESH` and `EVENT_LOGOUT`: more on that later. 
 
 ## Data Server
 
-Data Servers are the most complex of the REST Endpoints provided by the Genesis low-code platform; HTTP requests can only have a single response, but the Data Server enables you to publish a continuous stream of data to a subscribing client.
+Every `query` specified inside your application's **dataserver.kts** file is exposed as an HTTP endpoint; these are the most complex of the REST Endpoints provided by the Genesis platform. HTTP requests can only have a single response, but the Data Server enables you to publish a continuous stream of data to a subscribing client.
 
-For all Data Server requests, a `SOURCE_REF` header is mandatory, as it is used to match requests to the correct client subscription. This in turn allows for multiple subscriptions to the same query for the same session (think multiple grids in the UI using the same query with different filters).
+For all Data Server requests, a `SOURCE_REF` header is mandatory, which is used to match requests to the correct client subscription. This allows for multiple subscriptions to the same query for the same session (think multiple grids in the UI using the same query with different filters).
 
 ### Endpoint
-The naming approach for the dataserver endpoint follows the lowercase hyphen-separated web standards convention (i.e. ALL_TRADES becomes all-trades). There is no need to rename your dataserver resource, the endpoint will be exposed using the correct naming convention automatically.
+The endpoints have names that follow the lower-case hyphen-separated web standards convention (for example, ALL_TRADES becomes all-trades). There is no need to rename your Data Server resource; the endpoint is automatically formatted to the correct naming convention when it is exposed.
 
-A sample endpoint url would look like this:
+The endpoint url is typically in the following format:
 `[host]:[genesis_router_port]/[data_server_query_name]`.
 
 ### POST
 
-A POST request creates a new dataserver subscription and is equivalent to a DATA_LOGON message sent over Websockets.
+A POST request creates a new subscription to a Data Server query; it is equivalent to a DATA_LOGON message sent over Websockets.
 
-The request body is optional; if provided, it can contain Data Server parameters, such as `MAX_ROWS` and `FIELDS. Alternatively, these parameters can be provided as HTTP query parameters. See more information in the dataserver [data logon messages](../../../../server/data-server/advanced/#incoming-data_logon-messages)
+The request body is optional; if provided, it can contain Data Server parameters, such as `MAX_ROWS` and `FIELDS. Alternatively, these parameters can be provided as HTTP query parameters. See more information in the Data Server [data logon messages](../../../../server/data-server/advanced/#incoming-data_logon-messages) section.
 
-The response contains the initial set of data for the subscription. The `ROW_REF` is a unique handle to each row returned and will be present on all QUERY_UPDATE requests where the given row has changed (e.g. modify/delete).
+The response contains the initial set of data for the subscription. The `ROW_REF` is a unique handle to each row returned and is present on all QUERY_UPDATE requests where the given row has changed (e.g. modify/delete).
 
-From this moment onwards on, real-time data updates for the subscription are cached in the backend until the next GET method call.
+From this moment onward, real-time data updates for the subscription are cached in the back end until the next GET method call.
 
 :::important
-To avoid memory leaks, the server will timeout subscriptions that have not been active for a period of time (no GET or PUT requests received). At this point, a new subscription can be made via a new DATA_LOGON request. See the Genesis [Router](../../../../server/configuring-runtime/genesis-router) configuration for more information about the `dataserverPollingTimeout` configuration option.
+To avoid memory leaks, the server will timeout subscriptions that have not been active for a specified period (no GET or PUT requests received). At this point, a new subscription can be made via a new DATA_LOGON request. See the Genesis [Router](../../../../server/configuring-runtime/genesis-router) configuration for more information about the `dataserverPollingTimeout` configuration option.
 :::
 
-Sample request:
+Here is an example request:
 
 ```http request
 POST http://localhost:9064/all-trades
@@ -117,7 +117,7 @@ USER_NAME: JaneDee
 }
 ```
 
-Sample response:
+And here is an example response:
 
 ```http request
 HTTP/1.1 200 OK
@@ -176,12 +176,11 @@ USER_NAME: JaneDee
 }
 ```
 
-
 ### GET
 
 Use the GET method to retrieve real-time updates from the subscription. No payload is necessary in the GET request body, only the URL and the relevant HTTP headers.
 
-As explained in the previous section, the dataserver subscription will be destroyed if not queried within the configured polling timeout period.
+As explained in the previous section, the Data Server subscription will be destroyed if it is not queried within the configured polling timeout period.
 
 The `SOURCE_REF` should match that used in the original DATA_LOGON (subscription).
 
@@ -240,7 +239,7 @@ connection: keep-alive
 ### PUT
 
 :::important
-PUT messages are slightly different from other Data Server messages; specifically, the `SOURCE_REF` should be unique. A `SUBSCRIPTION_REF` is also needed and must match that `SOURCE_REF` value used in the original DATA_LOGON (subscription). The reason for the change in this message is that the response is a simple ACK/NACK, and the client should use this to know if it was successful or not.
+PUT messages are slightly different from other Data Server messages; specifically, the `SOURCE_REF` should be unique. A `SUBSCRIPTION_REF` is also needed and must match the `SOURCE_REF` value used in the original DATA_LOGON (subscription). The reason for the change in this message is that the response is a simple ACK/NACK, and the client should use this to know if it was successful or not.
 :::
 
 #### MORE_COLUMNS
@@ -250,9 +249,9 @@ If an ACK is received, a further GET for the original `SOURCE_REF` (this request
 
 The body of this request should contain a `DETAILS` object with `ADD_COLUMNS` (further replies should include these columns) and/or `DROP_COLUMNS` (further QUERY_UPDATE messages should not include these columns)
 
-See below a full message flow sample from subscription creation to successful column addition:
+Below is an example of a full message flow, from subscription creation to successful column addition:
 
-Subscription creation.
+Subscription creation:
 
 ```http request
 POST http://localhost:9064/all-trades
@@ -339,7 +338,7 @@ connection: keep-alive
 }
 ```
 
-GET Request to Retrieve Updated Data with QUANTITY Column:
+GET Request to retrieve updated data with QUANTITY column:
 ```http request
 GET http://localhost:9064/all-trades
 Content-Type: application/json
@@ -348,7 +347,7 @@ SESSION_AUTH_TOKEN: G21sF8S9z5J9FTw8iFLk6ZveK9LbMe6h
 USER_NAME: JaneDee
 ```
 
-Response with Updated Data Including QUANTITY Column:
+Response with updated data, including QUANTITY column:
 
 ```http request
 HTTP/1.1 200 OK
@@ -380,13 +379,13 @@ connection: keep-alive
 
 #### MORE_ROWS
 
-PUT requests can also be used to request MORE_ROWS. This is when the client has specified a `MAX_ROWS` and received that many rows, but would like to get more.
+Where the client has specified a `MAX_ROWS` and has then received that number of rows, PUT requests can be used to request more rows.
 
-The use of MORE_ROWS in conjunction with MAX_VIEW, MOVING_VIEW and VIEW_NUMBER can allow for the implementation of infinite scrolling and pagination solutions. More details can be found in See more information in the dataserver [data logon messages](../../../../server/data-server/advanced/#incoming-data_logon-messages).
+You can also use MORE_ROWS in conjunction with MAX_VIEW, MOVING_VIEW and VIEW_NUMBER to implement infinite-scrolling and pagination solutions. More details can be found in the Data Server [data logon messages](../../../../server/data-server/advanced/#incoming-data_logon-messages) section.
 
 The reply will be a simple ACK/NACK. Assuming an ACK, the next QUERY_UPDATE request will include the additional rows.
 
-Sample request:
+Here is an example request:
 
 ```json
 PUT http://localhost:9064/all-trades
@@ -397,7 +396,7 @@ USER_NAME: JaneDee
 SUBSCRIPTION_REF: 123456-789042
 ```
 
-Sample response:
+And here is an example response:
 
 ```http request
 HTTP/1.1 200 OK
@@ -411,7 +410,7 @@ connection: keep-alive
 }
 ```
 
-Response to the next GET request assuming the subscription had MAX_ROWS=2 and MAX_VIEW size has not been breached:
+Response to the next GET request, assuming the subscription had MAX_ROWS=2 and MAX_VIEW size has not been breached:
 ```http request
 HTTP/1.1 200 OK
 content-type: application/json
@@ -448,11 +447,12 @@ connection: keep-alive
 }
 ```
 
-If pagination is used in conjunction with MORE_ROWS messages, you need to provide the VIEW_NUMBER payload as part of the body or alternatively as a query parameter.
+If pagination is used in conjunction with MORE_ROWS messages, you must provide the VIEW_NUMBER payload as part of the body (or as a query parameter).
 When using pagination, the next GET request after a successful MORE_ROWS_ACK response will provide DELETE operations for all the rows that have been removed from the previous page and new INSERT operations for the new rows in the page.
-So in the case of a subscription using MAX_ROWS=2, 2 rows will be DELETED and 2 ROWS will be added. S
 
-See sample message flow below:
+So, in the case of a subscription using MAX_ROWS=2, 2 rows will be DELETED and 2 ROWS will be added. 
+
+Here is an example message flow for this:
 
 Request page 3
 ```http request
@@ -544,11 +544,11 @@ connection: keep-alive
 
 A DELETE request is made to signal the end of the subscription for the given `SOURCE_REF`.
 
-The `SOURCE_REF` should match that used in the original DATA_LOGON (subscription).
+The `SOURCE_REF` must match the one used in the original DATA_LOGON (subscription).
 
 No body is required.
 
-Sample request:
+here is an example request:
 
 ```http request
 DELETE http://localhost:9064/all-trades
@@ -558,7 +558,7 @@ SESSION_AUTH_TOKEN: G21sF8S9z5J9FTw8iFLk6ZveK9LbMe6h
 USER_NAME: JaneDee
 ```
 
-Sample response:
+And here is an example response:
 
 ```http request
 HTTP/1.1 200 OK
@@ -576,20 +576,27 @@ connection: keep-alive
 
 ## Request Server
 
-Request Servers are accessed via GET requests to
+Request Servers are accessed via GET requests to:
+
 `[host]:[genesis_router_port]/[request_reply_name]`.
 
-Any request parameters should be prefixed with `request.`. E.g. `request.[request_parameter]=[value]`. For example `localhost:9064/req-counterparty-details?request.[request_parameter]=[value]&request.[request_parameter]=[value]`.
+Any request parameters must be prefixed with `request.`: 
+
+`request.[request_parameter]=[value]`. 
+
+For example:
+
+`localhost:9064/req-counterparty-details?request.[request_parameter]=[value]&request.[request_parameter]=[value]`.
 
 Parameter values can be wild-carded (`*`, `A*`, `_A`, `_A*`, etc.) or left blank (and assumed to be `*`).
 
 Request Server requests require:
 
-* `SOURCE_REF` header (a unique value should be supplied on every request with a unique value)
+* `SOURCE_REF` header (a unique value must be supplied on every request with a unique value)
 * `SESSION_AUTH_TOKEN` header
-* A request body as per your event handler in side the `DETAILS` object.
+* A request body as per your event handler inside the `DETAILS` object.
 
-Sample request:
+Here is an example request:
 
 ```json
 GET /req-counterparty-details?request.CPTY_TYPE=MARKET&request.CPTY_REGION=US HTTP/1.1
@@ -599,7 +606,7 @@ SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
 SOURCE_REF: 123456-789021
 ```
 
-Sample response:
+And here is an example response:
 
 ```json
 {
@@ -617,18 +624,23 @@ Sample response:
 ```
 
 ## Event Handler
-Events are submitted via POST requests to
+Events are submitted via POST requests to:
+
 `[host]:[genesis_router_port]/event-[<event-name>]`.
 
-All resource paths should be prefixed with `event-`. For example `localhost:9064/event-order-insert`. In this example `order-insert` is our custom event route and `event-` is the prefix.
+All resource paths should be prefixed with `event-`.
+
+For example, if  `order-insert` is our custom event route and `event-` is the prefix:
+
+`localhost:9064/event-order-insert`
 
 Event Handler requests require:
 
-* `SOURCE_REF` header (a unique value should be supplied on every request with a unique value)
+* `SOURCE_REF` header (a unique value must be supplied on every request with a unique value)
 * `SESSION_AUTH_TOKEN` header
-* A request body as per your event handler in side the `DETAILS` object.
+* A request body as per your event handler inside the `DETAILS` object.
 
-Sample request:
+Here is an example request:
 
 ```json
 POST /event-order-insert HTTP/1.1
@@ -646,7 +658,7 @@ SOURCE_REF: 123456-789011
 }
 ```
 
-Sample response:
+And here is an example response:
 
 ```json
 {
