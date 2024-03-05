@@ -58,8 +58,11 @@ async function copyPackageFiles(manifest, processedMap) {
                 console.error(`Pipeline failed. ${err}`);
             }
         });
-        const packageJson = await fs_extra_1.default.readJson(path_1.default.join(packageRootDir, "package.json"));
-        processedMap[pkg.name] = packageJson.version;
+        const packageJsonPath = path_1.default.join(packageRootDir, "package.json");
+        if (fs_extra_1.default.existsSync(packageJsonPath)) {
+            const packageJson = await fs_extra_1.default.readJson(packageJsonPath);
+            processedMap[pkg.name] = packageJson.version;
+        }
     }
 }
 async function default_1(_ctx, options) {

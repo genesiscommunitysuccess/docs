@@ -285,5 +285,269 @@ export default {
         ],
       },
     },
+    {
+      name: "@genesislcap/foundation-criteria",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/13_criteria",
+        api_docs: "docs/api",
+        readme: "01_foundation-criteria.mdx",
+        keywords: ["genesis", "foundation", "ui", "criteria"],
+        tags: ["genesis", "foundation", "ui", "criteria"],
+        pages: [
+          {
+            title: "Foundation Criteria",
+            sidebar_label: "Foundation Criteria",
+            id: "foundation-criteria",
+          },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-errors",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/14_errors",
+        api_docs: "docs/api",
+        readme: "01_foundation-errors.mdx",
+        keywords: ["genesis", "foundation", "ui", "errors"],
+        tags: ["genesis", "foundation", "ui", "errors"],
+        pages: [
+          {
+            title: "Foundation Errors",
+            sidebar_label: "Foundation Errors",
+            id: "foundation-errors",
+          },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-events",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/15_events",
+        api_docs: "docs/api",
+        readme: "01_foundation-events.mdx",
+        keywords: ["genesis", "foundation", "ui", "events"],
+        tags: ["genesis", "foundation", "ui", "events"],
+        pages: [
+          {
+            title: "Foundation Events",
+            sidebar_label: "Foundation Events",
+            id: "foundation-events",
+          },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-i18n",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/16_i18n",
+        api_docs: "docs/api",
+        readme: "01_foundation-i18n.mdx",
+        keywords: ["genesis", "foundation", "ui", "i18n", "internationalization"],
+        tags: ["genesis", "foundation", "ui", "i18n", "internationalization"],
+        pages: [
+          {
+            title: "Foundation Internationalization",
+            sidebar_label: "Foundation Internationalization",
+            id: "foundation-i18n",
+          },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-logger",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/17_logger",
+        api_docs: "docs/api",
+        readme: "01_foundation-logger.mdx",
+        keywords: ["genesis", "foundation", "ui", "logger"],
+        tags: ["genesis", "foundation", "ui", "logger"],
+        pages: [
+          {
+            title: "Foundation Logger",
+            sidebar_label: "Foundation Logger",
+            id: "foundation-logger",
+          },
+        ],
+      },
+    },
+    // {
+    //   name: "@genesislcap/foundation-marketplace",
+    //   enabled: true,
+    //   src: {
+    //     api_docs: "./docs/api",
+    //     readme: "./README.md",
+    //   },
+    //   output: {
+    //     directory: "./docs/04_web/18_marketplace",
+    //     api_docs: "docs/api",
+    //     readme: "01_foundation-marketplace.mdx",
+    //     keywords: ["genesis", "foundation", "ui", "marketplace"],
+    //     tags: ["genesis", "foundation", "ui", "marketplace"],
+    //     pages: [
+    //       {
+    //         title: "Foundation Marketplace",
+    //         sidebar_label: "Foundation Marketplace",
+    //         id: "foundation-marketplace",
+    //       },
+    //     ],
+    //   },
+    // },
+    {
+      name: "@genesislcap/foundation-notifications",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/19_notifications",
+        api_docs: "docs/api",
+        readme: "01_foundation-notifications.mdx",
+        keywords: ["genesis", "foundation", "ui", "notifications"],
+        tags: ["genesis", "foundation", "ui", "notifications"],
+        pages: [
+          {
+            title: "Foundation Notifications",
+            sidebar_label: "Foundation Notifications",
+            id: "foundation-notifications",
+          },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-shell",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/20_shell",
+        api_docs: "docs/api",
+        readme: "01_foundation-shell.mdx",
+        keywords: ["genesis", "foundation", "ui", "shell"],
+        tags: ["genesis", "foundation", "ui", "shell"],
+        pages: [
+          {
+            title: "Foundation shell",
+            sidebar_label: "Foundation shell",
+            id: "foundation-shell",
+          },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-state-machine",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/21_state-machine",
+        api_docs: "docs/api",
+        readme: "01_foundation-state-machine.mdx",
+        keywords: ["genesis", "foundation", "ui", "state-machine"],
+        tags: ["genesis", "foundation", "ui", "state-machine"],
+        pages: [
+          {
+            title: "Foundation State-machine",
+            sidebar_label: "Foundation State-machine",
+            id: "foundation-state-machine",
+          },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-store",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/22_store",
+        api_docs: "docs/api",
+        readme: "01_foundation-store.mdx",
+        keywords: ["genesis", "foundation", "ui", "store"],
+        tags: ["genesis", "foundation", "ui", "store"],
+        pages: [
+          {
+            title: "Foundation Store",
+            sidebar_label: "Foundation Store",
+            id: "foundation-store",
+          },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-user",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/23_user",
+        api_docs: "docs/api",
+        readme: "01_foundation-user.mdx",
+        keywords: ["genesis", "foundation", "ui", "user"],
+        tags: ["genesis", "foundation", "ui", "user"],
+        pages: [
+          {
+            title: "Foundation User",
+            sidebar_label: "Foundation User",
+            id: "foundation-user",
+          },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-utils",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/24_utils",
+        api_docs: "docs/api",
+        readme: "01_foundation-utils.mdx",
+        keywords: ["genesis", "foundation", "ui", "utils"],
+        tags: ["genesis", "foundation", "ui", "utils"],
+        pages: [
+          {
+            title: "Foundation Utils",
+            sidebar_label: "Foundation Utils",
+            id: "foundation-utils",
+          },
+        ],
+      },
+    },
   ],
 };
