@@ -393,12 +393,12 @@ GetNextSequenceNumbers >> /tmp/NextSeqNumbers.txt
 ```
 
 ### Correcting errors in tables
-The `GetNextSequenceNumbers` command is often used with the `SetSequence` script [see below](../../../operations/commands/server-commands/#setsequence), for example, if you suspect that you have an error in one of your tables:
+The `GetNextSequenceNumbers` command is often used with the `SetSequence` script [see below](#setsequence), for example, if you suspect that you have an error in one of your tables:
 
 1. Stop all the processes and run `GetNextSequenceNumbers` to find the next sequence numbers of the tables.
 2. Check the table contents. You might find that a row is missing or needs to be added. Make this change on the database manually. This affects the sequence numbers in those tables.
 3. Run `SetSequence` to reset the sequence numbers where relevant. 
-4. Now you can [restart your processes](../../../operations/commands/server-commands/#startserver-script).
+4. Now you can [restart your processes](#startserver).
 
 ## killProcess
 
@@ -829,8 +829,7 @@ If you want to commit the changes to the database, you must use the **--commit**
 ```bash
 remap [-c | --commit]
 ```
-
-For full details, see our page on [Remap](../../05_operations/02_commands/03_remap.md).
+For full details, see our page on the [remap](../remap) command. 
 
 ## RenameFields 
 This command is used to rename a field name in a database without changing the dictionary or config files.
@@ -950,7 +949,7 @@ SendIt -t FUND -d
 Verbose mode additionally outputs line-by-line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes `SendIt` useful for scheduled or automated jobs (e.g. daily data loads).
 
 :::warning
-Do not use `SendIt` to update User details in any way. This can easily cause database errors. To update User profiles or User attributes, only use Genesis [user entity management](../../../web/micro-front-ends/foundation-entity-management/).
+Do not use `SendIt` to update User details in any way. This can easily cause database errors. To update User profiles or User attributes, only use Genesis [user entity management](../../../web/micro-front-ends/foundation-entity-management/#user-management).
 :::
 
 ## SetAutoIncrement
@@ -1018,7 +1017,7 @@ This command enables you to set the next sequence number for one or more sequenc
 "RIGHT","RI","0"
 ```
 
-`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
+`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](#startserver).
 
 ### Syntax
 The `SetSequence` command can take the following arguments:

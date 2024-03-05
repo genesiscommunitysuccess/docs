@@ -1,12 +1,12 @@
 ---
-title: 'Environment set-up'
-sidebar_label: 'Environment set-up'
+title: 'Web Developer Training - getting started'
+sidebar_label: 'Getting started'
 id: web-training-environment-setup
 sidebar_position: 2
 ---
 
 
-# Environment set-up
+## Environment set-up
 
 Before you start here, you must have completed the environment set-up from the previous Developer Training. If you haven't done that, please [do that](../../../getting-started/developer-training/environment-setup/) before continuing this guide.
 

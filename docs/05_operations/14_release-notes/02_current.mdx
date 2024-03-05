@@ -34,6 +34,1001 @@ Foundation UI has a programme of regular continual releases. These are documente
 
 GSF release notes are added to this area immediately following each software release. The most release is at the top.
 
+## Genesis 7.1.1(genesis-file-server)
+
+### Features
+
+- Added pr title check + template.
+
+## Genesis 7.1.2(genesis-server)
+
+### Fixes
+
+- Including audit generated builders in the dao cache
+
+## Genesis 7.0.11(genesis-server)
+
+### Fixes
+
+- Distinct/search commands not working in DBMon for enums 
+- Including audit generated builders in the dao cache 
+- View enriched fields returns null after DATA_LOGOFF message
+
+## Genesis 7.1.1(genesis-server)
+
+### Breaking changes
+
+- API enhancements for dynamic rule creation forms, split new SYSTEM_ENTITY request into two 
+
+### Features
+
+- Project type properties so import not required
+
+### Fixes
+
+- Add template processing feature in ProductDetailsCreatorPlugin 
+- Create new task to depend on _genesisInstall and generated code
+- Implement annotation script handling in Gradle plugin 
+- Prevent malformed payloads from evaluator result expressions 
+- Resources are not copied to site-specific internal module in simple app
+- Distinct/search commands not working in DBMon for enums 
+- Fix copy task dependencies for simplified project structure
+- Handle multiple modules in processes.xml in project overview builder
+- Update implementation of createManifestTask to work with changes to simple structure
+- View enriched fields returns null after DATA_LOGOFF message
+
+## Genesis 7.1.1(fix-server)
+
+### Fixes
+
+- Update build.gradle.kts to disable CME_FIX and TT_FIX
+
+
+## Genesis 7.1.2(auth-server)
+
+### Fixes
+
+- Fix custom visibility rule evaluation triggers multiple calls to getBulk entities
+
+## Genesis 7.0.3(auth-server)
+
+### Fixes
+
+- Fix custom visibility rule evaluation triggers multiple calls to getBulk entities
+
+## Genesis 6.7.28(genesis-server)
+
+### Fixes
+
+- Fixed view enriched fields returns null after DATA_LOGOFF message# Genesis 7.0.2(auth-server)
+
+## Genesis 7.0.2(auth-server)
+
+### Fixes
+
+- OIDC Logout URLs containing params now work 
+- Reverted change to logout acknowledgement message type for backwards compatibilty 
+- Fx sso user creation
+
+## Genesis 7.1.1(auth-server)
+
+### Fixes
+
+- Reverted change to logout acknowledgement message type for backwards compatibilty
+
+## Genesis 6.7.5(auth-server)
+
+### Fixes
+
+- Custom visibility rule evaluation triggers multiple calls to getBulk entities
+
+## Genesis 7.1.0(elektron-server)
+
+### Dependency changes
+
+- Bump actions/setup-java from 3 to 4
+- Bump com.jfrog.artifactory from 5.1.13 to 5.1.14 
+- Bump com.nhaarman.mockitokotlin2:mockito-kotlin from 2.1.0 to 2.2.0
+- Bump com.refinitiv.ema:ema from 3.6.3.1 to 3.7.2.0
+- Bump com.refinitiv.ema:ema from 3.7.2.0 to 3.7.3.0
+- Bump foundationdb-rs/foundationdb-actions-install from 2.0.0 to 2.1.0
+- Bump org.apache.maven.plugins:maven-assembly-plugin from 3.3.0 to 3.6.0
+- Bump org.apache.maven.plugins:maven-compiler-plugin from 3.11.0 to 3.12.1
+- Bump org.apache.maven.plugins:maven-surefire-plugin from 3.0.0-M4 to 3.2.2
+- Bump org.apache.maven.plugins:maven-surefire-plugin from 3.2.2 to 3.2.3 
+- Bump org.codehaus.mojo:versions-maven-plugin from 2.13.0 to 2.16.2 
+- Bump org.jfrog.buildinfo:artifactory-maven-plugin from 3.2.3 to 3.6.2
+
+## Genesis 7.1.0(genesis-symphony)
+
+### Dependency changes
+
+- Bump com.jfrog.artifactory from 5.1.10 to 5.1.11
+- Bump com.jfrog.artifactory from 5.1.11 to 5.1.12
+- Bump com.jfrog.artifactory from 5.1.12 to 5.1.13 
+- Bump org.finos.symphony.bdk:symphony-bdk-bom from 2.11.1 to 2.14.3
+- Bump org.gradle.test-retry from 1.2.1 to 1.5.6
+- Bump org.gradle.test-retry from 1.5.6 to 1.5.7 
+- Bump org.gradle.test-retry from 1.5.7 to 1.5.8
+- Bump org.jetbrains.kotlinx.kover from 0.6.1 to 0.7.4
+- Bump org.jetbrains.kotlinx.kover from 0.7.4 to 0.7.5
+- Bump org.jlleitschuh.gradle.ktlint from 11.5.1 to 11.6.1
+- Bump org.simplejavamail:simple-java-mail from 8.3.1 to 8.5.1
+- Bump org.sonarqube from 3.3 to 4.4.1.3373
+
+## Genesis 7.1.0(auth-server)
+
+### Breaking changes
+
+- Added REFRESH_AUTH_TOKEN to loginAuthNack in case of 2nd factor auth failure 
+- Converted Login and Logout endpoints to GPAL 
+- Ensured AUTH DSL functions can only be called from the correct locations 
+
+### Features
+
+- Added eventhandler to expose endpoints for a key-value record store 
+- Added tracing support in LoginController 
+- Changed loadProfileRights hook to use upsert. 
+- Removed deprecated onNewUser config from auth OIDC script 
+- Updated auth in line with GenesisScriptHost changes 
+- User management pbc 
+
+### Fixes
+
+- OIDC Logout URLs containing params now work 
+- Added genesis- prefix to processes.xml 
+- Clustered GENESIS_AUTH_MANAGER printing error logs
+- Correct usages of HOSTNAME field in type safe login / logout GPAL API to match router 
+- Fixed an issue where sending notifications via message API would fail 
+- Migrating metrics to use micrometer 
+- Only insert/delete RIGHT_SUMMARY records when necessary to prevent race conditions 
+- Removing references from aerospike
+- SSO List endpoint not properly loading optional dependencies
+- Change max heap for processes from 128mb to 256mb
+- Fixed sso user creation 
+- Handle out of sync updates on auth-perms 
+- Increased heap space for auth processes
+- Porting changes from 'GSF-6287-backport' to fix field conflicts 
+
+### Dependency changes
+
+- Ensure test tags are respected when passing via gradle arguments.
+- Upgrade to Kotlin 1.9.10
+- Bump com.auth0:jwks-rsa from 0.22.0 to 0.22.1 
+- Bump com.github.node-gradle.node from 7.0.1 to 7.0.2 
+- Bump com.github.tomakehurst:wiremock-jre8 from 2.35.0 to 3.0.1
+- Bump com.jfrog.artifactory from 4.32.0 to 5.1.10
+- Bump com.jfrog.artifactory from 5.1.10 to 5.1.11
+- Bump com.jfrog.artifactory from 5.1.11 to 5.1.12 
+- Bump com.jfrog.artifactory from 5.1.12 to 5.1.13 
+- Bump com.unboundid:unboundid-ldapsdk from 6.0.10 to 6.0.11
+- Bump com.unboundid:unboundid-ldapsdk from 6.0.9 to 6.0.10 
+- Bump jjwtVersion from 0.11.5 to 0.12.2 
+- Bump jjwtVersion from 0.12.2 to 0.12.3 
+- Bump jjwtVersion from 0.12.3 to 0.12.5
+- Bump jvm from 1.9.10 to 1.9.22
+- Bump org.apache.commons:commons-lang3 from 3.13.0 to 3.14.0
+- Bump org.gradle.test-retry from 1.5.3 to 1.5.6 
+- Bump org.gradle.test-retry from 1.5.6 to 1.5.7 
+- Bump org.gradle.test-retry from 1.5.7 to 1.5.8 
+- Bump org.jetbrains.kotlinx.kover from 0.6.1 to 0.7.3 
+- Bump org.jetbrains.kotlinx.kover from 0.7.3 to 0.7.4
+- Bump org.jetbrains.kotlinx.kover from 0.7.4 to 0.7.5
+- Bump org.jlleitschuh.gradle.ktlint from 11.5.1 to 11.6.0
+- Bump org.jlleitschuh.gradle.ktlint from 11.6.0 to 11.6.1
+- Bump org.mockito.kotlin:mockito-kotlin from 5.0.0 to 5.1.0 
+- Bump org.mockito.kotlin:mockito-kotlin from 5.1.0 to 5.2.1 
+- Bump org.passay:passay from 1.6.3 to 1.6.4 
+- Bump org.sonarqube from 4.2.1.3168 to 4.3.1.3277 
+- Bump org.sonarqube from 4.3.1.3277 to 4.4.1.3373# Genesis 7.1.0(genesis-notify)
+
+## Genesis 7.1.0(genesis-notify)
+
+### Breaking changes
+
+- Added support for custom alerts through dynamic rule templates 
+
+### Features
+
+- Move notification dashboard do notify pbc. 
+- Added table operation to DynamicRuleInsertRequest.
+- Added events to enable/disable notification rules.
+- Added install hook to populate new right codes. 
+- Create ReqRep to GET all topics. 
+- Attachments using file-server.
+
+### Fixes
+
+- Increase size of TOPIC_MATCH and GATEWAY_ID 
+- Increased Teams Route URL size to max, made route joins backwards, deprecated Teams gateway URL 
+- Use systemDefaultUsername as sender, only send from user email if configured to 
+- Fixed dynamic_notify_rules dataserver to read from correct source. 
+- Fixed permissioning on notification_rule reqrep. 
+- Fixed reqserver dependency. 
+
+### Dependency changes
+
+- Bump com.github.node-gradle.node from 7.0.1 to 7.0.2 
+- Bump com.jfrog.artifactory from 4.31.9 to 5.1.13
+- Bump com.jfrog.artifactory from 5.1.13 to 5.1.14
+- Bump jvm from 1.9.10 to 1.9.22 
+- Bump jvm from 1.9.10 to 1.9.22 
+- Bump kotlin test from 1.7.10 to 1.9.10
+- Bump org.gradle.test-retry from 1.5.4 to 1.5.6 
+- Bump org.gradle.test-retry from 1.5.6 to 1.5.8
+- Bump org.jetbrains.kotlinx.kover from 0.6.1 to 0.7.4
+- Bump org.jetbrains.kotlinx.kover from 0.7.4 to 0.7.5
+- Bump org.jlleitschuh.gradle.ktlint from 11.3.2 to 11.6.1
+- Bump org.simplejavamail:simple-java-mail from 8.1.3 to 8.3.2
+- Bump org.simplejavamail:simple-java-mail from 8.3.2 to 8.5.1 
+- Bump org.simplejavamail:simple-java-mail from 8.5.1 to 8.6.2 
+- Bump org.sonarqube from 3.3 to 4.4.1.3373 
+- Update kotlin test junit5 dependency to 1.9.10
+
+## Genesis 7.1.0(ref_data_app-server)
+
+No functional changes.
+
+## Genesis 7.1.0(market-data-server)
+
+### Dependency changes
+
+- Bump actions/checkout from 2 to 4
+- Bump actions/setup-java from 3 to 4
+- Bump kotlin.version from 1.9.10 to 1.9.22 
+- Bump org.apache.maven.plugins:maven-compiler-plugin from 3.11.0 to 3.12.1 
+- Bump org.apache.maven.plugins:maven-javadoc-plugin from 3.1.0 to 3.6.2 
+- Bump org.apache.maven.plugins:maven-javadoc-plugin from 3.6.2 to 3.6.3 
+- Bump org.apache.maven.plugins:maven-release-plugin from 3.0.0-M5 to 3.0.1 
+- Bump org.apache.maven.plugins:maven-surefire-plugin from 3.0.0-M4 to 3.2.2 
+- Bump org.apache.maven.plugins:maven-surefire-plugin from 3.2.2 to 3.2.3
+- Bump org.codehaus.mojo:versions-maven-plugin from 2.16.1 to 2.16.2
+- Bump org.jfrog.buildinfo:artifactory-maven-plugin from 3.2.3 to 3.6.2
+
+## Genesis 7.1.0(genesis-file-server)
+
+### Breaking changes
+
+- Combined file server processes into one and set appropriate memory (
+
+### Features
+
+- Make FileStorageManager an injectable bean for use elsewhere in the server.
+- Add the ability to generate PDFs using a template wrapper library. 
+
+### Fixes
+
+- (file-server): fix NPE when using builder/provider 
+
+### Dependency changes
+
+- Bump actions/setup-java from 3 to 4 
+- Bump com.amazonaws:aws-java-sdk-s3 from 1.12.543 to 1.12.573 
+- Bump com.amazonaws:aws-java-sdk-s3 from 1.12.573 to 1.12.583
+- Bump com.amazonaws:aws-java-sdk-s3 from 1.12.583 to 1.12.592
+- Bump com.amazonaws:aws-java-sdk-s3 from 1.12.592 to 1.12.593
+- Bump com.amazonaws:aws-java-sdk-s3 from 1.12.593 to 1.12.598 
+- Bump com.amazonaws:aws-java-sdk-s3 from 1.12.598 to 1.12.599 
+- Bump com.amazonaws:aws-java-sdk-s3 from 1.12.599 to 1.12.602 
+- Bump com.amazonaws:aws-java-sdk-s3 from 1.12.602 to 1.12.619
+- Bump com.amazonaws:aws-java-sdk-s3 from 1.12.619 to 1.12.630 
+- Bump com.amazonaws:aws-java-sdk-s3 from 1.12.630 to 1.12.655 
+- Bump com.jfrog.artifactory from 5.1.10 to 5.1.11 
+- Bump com.jfrog.artifactory from 5.1.11 to 5.1.13 
+- Bump com.jfrog.artifactory from 5.1.13 to 5.1.14 
+- Bump org.gradle.test-retry from 1.5.4 to 1.5.6
+- Bump org.gradle.test-retry from 1.5.6 to 1.5.7
+- Bump org.gradle.test-retry from 1.5.7 to 1.5.8
+- Bump org.jetbrains.kotlinx.kover from 0.7.3 to 0.7.4
+- Bump org.jetbrains.kotlinx.kover from 0.7.4 to 0.7.5
+- Bump org.jlleitschuh.gradle.ktlint from 11.5.1 to 11.6.1
+
+
+## Genesis 7.1.0(fix-server)
+
+### Breaking changes
+
+- Migrated purger from xml to gpal. Any applications overriding fix-purger.xml in site-specific must move to fix-purger.kts format 
+- Migrated project to gradle, created FIX code generation plugin for gradle
+- Update GPAL gateway config defaults to match XML impl 
+
+### Features
+
+- Added distribution publishing to fix-server
+- Implemented new DATABASE_BATCH message store to handle higher message volumes 
+- Removed field PROCESS_NAME duplicated in core framework 
+- Removed unused MESSAGE field from FIX dictionary 
+
+### Fixes
+
+- Corrected default session config resolution and improve error logging 
+- Fixed issue where sessions would not reset creation timestamp in DB_BATCH message store correctly, causing a logoff 
+- Prevented thread starvation and process deadlock with high number of outbound messages 
+- Support for oracle database 
+- Added genesis- prefix to processes 
+
+### Dependency changes
+
+- Bump actions/setup-java from 3 to 4 
+- Bump gradle/gradle-build-action from 2 to 3 
+- Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.9.0 to 3.10.2 
+- Bump org.apache.maven.plugins:maven-dependency-plugin from 3.6.0 to 3.6.1 
+- Bump org.apache.maven.plugins:maven-plugin-plugin from 3.9.0 to 3.10.2 
+- Bump org.apache.maven.plugins:maven-surefire-plugin from 3.1.2 to 3.2.2 
+- Bump org.codehaus.mojo:versions-maven-plugin from 2.16.1 to 2.16.2 
+- Bump org.jfrog.buildinfo:artifactory-maven-plugin from 3.6.1 to 3.6.2
+- Bump org.junit.jupiter:junit-jupiter-engine from 5.9.1 to 5.10.1 
+
+## Genesis 7.1.0(reporting-server)
+
+### Dependency changes
+
+- Bump EnricoMi/publish-unit-test-result-action from 1 to 2 
+- Bump actions/checkout from 2 to 3
+- Bump actions/setup-java from 2 to 3
+- Bump com.jfrog.artifactory from 5.1.10 to 5.1.13
+- Bump foundationdb-rs/foundationdb-actions-install from 2.0.0 to 2.1.0 
+- Bump org.apache.maven.plugins:maven-assembly-plugin from 3.2.0 to 3.6.0
+- Bump org.apache.maven.plugins:maven-compiler-plugin from 3.8.0 to 3.11.0 
+- Bump org.apache.maven.plugins:maven-deploy-plugin from 2.8.2 to 3.1.1
+- Bump org.apache.maven.plugins:maven-release-plugin from 3.0.0-M5 to 3.0.1
+- Bump org.apache.maven.plugins:maven-surefire-plugin from 3.0.0-M4 to 3.1.2 
+- Bump org.codehaus.mojo:versions-maven-plugin from 2.13.0 to 2.16.0 
+- Bump org.gradle.test-retry from 1.5.7 to 1.5.8
+- Bump org.jfrog.buildinfo:artifactory-maven-plugin from 3.2.3 to 3.6.1
+- build(deps): migrate from v4 to v5 of artifactory plugin 
+
+## Genesis 7.1.0(genesis-server)
+
+### Breaking changes
+
+- Removing Python 2 scripts 
+- Added PRIME as a table operation on dynamic rules, added rule deletion audit
+- Added new reqrep in GENESIS_CLUSTER to query entity info 
+- Add support for process dependency checks when using Consul as cluster mode 
+- Replace "contains" behavior for "startsWith" in "buildClasspathForModule" function inside genesis.py 
+- Fix cache handling of tables which are cached but have indices that are not cached 
+
+### Features
+
+- (Settings plugin): ensure internal modules exist before compilation 
+- (build-plugin): copy project config and scripts to internal config module if main module exists 
+- (exec-plugin): add task to initialise DB 
+- (groovy): provide injector binding in Groovy event handlers 
+- (pal-streamerclient): Implement ClearStrCliSourceRef script to clear dangling source ref values from both the chronicle map and the running process
+- (startProcess): expose GENESIS_DISABLE_MANIFEST_CHECK environment variable to allow processes to start even if not all manifest jars are found 
+- Add ONCE_PER_RECORD rule execution strategy to dynamic rules engine 
+- Add PROCESS_ENABLED field to GENESIS_PROCESS
+- Add coroutines-debug jar file to genesis-distribution package
+- Add support for "alwaysAllowedMessageType" in MessageDelegator 
+- Add trace logging to rightSummaryCache 
+- Add utility class to create dynamic rule from dynamic rule template 
+- Added different rule execution strategies to evaluator dynamic rules 
+- Added isTemplate field to DYNAMIC_RULE table 
+- Added optional sysdef context to MustacheParser, and make it injectable 
+- Adding AWS wrapper as a runtime dependency to genesis-db 
+- Allow GlobalClasspathAdditions to find jar files just by name, as well as supporting wildcards 
+- Create Genesis Settings plugin 
+- Enable support for sequence capabilities in SQL layers 
+- Exec plugin output for intellij run configurations
+- Extended evaluator expression parser / generator to cover result expressions 
+- Improving Remap and Genesis.py log/output 
+- Make projectOverviewBuilder task is compatible with configuration cache
+- New `FindFieldsAboveMaxSize` script added to find String fields violating maxSize 
+- Remove warning for unknown properties in GenesisJsonJacksonFactory and MaskingGenesisJsonJacksonFactory 
+- Update ManifestCreationTask
+  Update SQL database connection pool size parameter handling 
+- Update build plugin for gradle configuration cache support
+- Update distribution plugin to support configuration cache
+- Update exec plugin to support configuration cache
+- Widened some text columns in GSF core dictionary 
+- Adapt exec plugin to work with simple project structure 
+- Add deploy plugin to settings plugin 
+- Add dynamic rules parameter table to store placeholder details 
+- Add generated config module to simplified project 
+- Add genesis manifest creation to gradle
+- Add gsf dependencies to project using genesis() in settings plugin
+- Add mechanism to add jars to classpath for all processes 
+- Add more trace logs to dataserver 
+- Add process file overrides to project overview build task 
+- Add project type property to settings plugin 
+- Add settings plugin option to publish generated code
+- Add upsert to SendIt.
+- Added JSON interchange format and parser/generator for simple criteria expressions 
+- Added database retry count of 7 
+- Allow for encrypted environment overrides 
+- Allow processes to opt out of compact processes 
+- Apply deploy plugin configuration in legacy settings plugin 
+- Automatically add dependencies on modules with script dependencies 
+- Check db in sync with classpath dictionary on RxDbImpl while not preventing Remap to run.
+- Copy site-specific resources for simple project structure 
+- Create exec tasks for install and remap
+- Create exec tasks for project services
+- Easy syntax to depend on generated code through settings plugin 
+- Enable dist plugin on settings plugin. 
+- Fixes for --compactProcesses xml generation 
+- Inform user that the record is only modified locally when using set in DbMon 
+- Make codegen plugin gradle configuration cache compatible 
+- Make failure to apply plugin throw an exception rather than warn 
+- Make package scan plugin gradle configuration cache compatible
+- Move generateHft task to dao module 
+- Move publication logic to DistributionPlugin. 
+- Re-use output kts script parsing in codegen
+- Site-specific template use parent project's version if present 
+- Specify remap inputs so that we can detect if we need to run
+- Update gradle codegen tasks to have specific file inputs 
+- Update remap project overview generation 
+- Update syntax to add genesis dependency in settings plugin 
+
+### Fixes
+
+- (build-plugin): fix configuration of copy tasks for main module 
+- (cluster)!: migrate Akka to Apache Pekko due to license changes 
+- (database): modify operations used inside "writeTransaction" now fail with RECORD_NOT_FOUND when database record is missing 
+- (dataserver): try to recover from data server errors 
+- (dataserver2): ensure we handle stack overflow errors gracefully
+- (pal-dataserver): ensure dataserver auth cache is initialised correctly 
+- (pal-dataserver): ensure real time row updates are registered correctly in dataserver auth cache 
+- (pal-requestserver): ensure ENUM metadata fields provide correct legacy and json schema metadata information about valid values 
+- (pal-streamer): added terminateOnError flag to streamer config to allow control of failure behaviour, enhanced exception handling 
+- (pal-streamerclient): ensure recovery timestamps get set as COMPLETE and not ACKED 
+- (pal-streamerclient): prevent duplicate DS_LOGON messages when streamer goes down 
+- (purger): purger enhancements 
+- (router): add APPROVAL_MESSAGE HTTP header value to event messages 
+- Add `NEW_PASSWORD` and `OLD_PASSWORD` to `SensitiveFields` and test case 
+- Adding RAW FieldType to ViewMeta 
+- Decouple settings plugin from artifactory 
+- End the dictionary sync failure process with exitProcess. 
+- Ensure constraints get dropped when converting from ENUM to String 
+- Ensure postgres does not load entire resultSet into memory for large queries 
+- Ensure remap logs full output correctly 
+- Extending length of address line fields 
+- Feature flag is respected for MSSQL case 
+- Fix SentIt tasks generation
+- Fix deploy scripts
+- Fix handling in GetNextSequenceNumbers script 
+- Fix metricService creating inconsistent hierarchical paths. 
+- Fixed XML purger business day calculation 
+- Force version 2.2.11 of jnr-jffi for ALL modules and exclude jnr-jffi dependency from pal-dataserver 
+- GPAL: Req Reps with wildcards not working 
+- Guarantee appropriate handling of dataserver socket disconnection events at router level 
+- Implemented get and set sequence operations for SQL+ use last_value to prevent exception on new connection 
+- Improved Comparator code in DbUtil to prevent Long and Int casting errors 
+- Inserting empty string on a non-nullable field fails in Oracle 
+- Logout can also be performed without the user being logged in 
+- Make micrometer slf4j registry compatible with genesis metrics log config, allow configurable logging levels 
+- NPE in DBUtil.indexComparator when one of the fields is not supplied in the dbrecord 
+- Fix OpenApi generator failing due empty object definition 
+- Propagate closing of subscription to underlying subscription 
+- RefreshTokenCleanUp script to use USER_SESSION table 
+- Register global RxJava error handler for SQL engine 
+- Replace coroutine based Channel approach in ChannelUpdateQueueListener for ConcurrentLinkedQueue to avoid potential deadlocks 
+- SESSION_ID is propagated in the Logout message 
+- ScriptAnnotationHandler is unable to load script dependencies when using @file:ScriptModules annotation 
+- SetLogLevelScript.groovy to create an instance of ServiceDetailProvider 
+- Unable to find module on simple structure when localDaogenVersion is mentioned
+- Update distribution plugin to support configuration cache
+- Updating maxSize of fields to be in line with application usage
+- Adapt dist plugin to both simple and legacy structures. 
+- Add check to stop pbc being used with bundleGeneratedClasses in settings plugin 
+- Add dictionary cache codeGen tasks to dist plugin.
+- Add genesis script dependencies to bom 
+- Add root folder with product name to the dist zip. 
+- Added fields to dynamic rule from template creation. 
+- Clear down counters in FDB when auto-increment or sequence is removed from a field 
+- CompileKotlin depend on codegen sources
+- Correct for out of sequence updates in update batching operation 
+- Correct for out of sync updates by reading view updates in a transaction 
+- Declare explicit dependency for dokkaJavadoc 
+- Delete dictionaryCacheLocation property from settings plugin 
+- Disable copyDependencies task in new gradle plugins 
+- Ensure Map can be used as return type in Req-Rep 
+- Ensure all process records stored in db are taken into account for process recreation and remove wrong assignment to "shouldStart" property 
+- Ensure startServer doesn't fail if other gz files are present in the log folder 
+- Excluding jnr from dataserver 2 
+- Fields with defaults should use the default value when provided value is null (port to master) 
+- ClearStrCliSourceRef to work as expected, even when the process is on ERROR state 
+- Fix message ordering in data server client, to ensure multiple updates are handled correctly 
+- Fix handle error when deploy plugin applied on PBC project 
+- Fix handling of field resizing operation in MSSQL layer of indexed fields 
+- Fix ignore derived fields when building view indices 
+- Fix including builders to be also serialized in the DAO dictionary 
+- Make description optional in process class 
+- Making auditText field dbMaxSize 
+- Publication plugin: check task group after tasks are in a group. 
+- Re-enable copyDependencies for script-config modules 
+- Fix remap handling of auto-increment changes 
+- Remove suspend from main method and add runBlocking call 
+- Resource daemon to await chronicle queue creation 
+- Resource daemon to do not wait for chronicle when running from intellij plugin 
+- Fix setupEnvironment task fails on deploy plugin
+- Trim consul metadata values to have a max length of 512 and LOG a warning statement when this happens 
+- Update task dependencies in distribution gradle template 
+
+### Dependency changes
+
+- Reverting kotlin gradle version to 1.9.0 
+- Reverting open telemetry to 1.31 as it is pulling kotlin 1.9.20 
+- Migrate from v4 to v5 of artifactory plugin
+- Bump actions/setup-dotnet from 3 to 4 
+- Bump actions/setup-java from 3 to 4 
+- Bump aeronVersion from 1.42.1 to 1.43.0 in /genesis-conventions/genesis-dependencies 
+- Bump apachePoi from 5.2.4 to 5.2.5 in /genesis-conventions/genesis-dependencies 
+- Bump byteBuddyVersion from 1.14.10 to 1.14.11 in /genesis-conventions/genesis-dependencies 
+- Bump byteBuddyVersion from 1.14.9 to 1.14.10 in /genesis-conventions/genesis-dependencies 
+- Bump camelVersion from 4.1.0 to 4.2.0 in /genesis-conventions/genesis-dependencies 
+- Bump camelVersion from 4.2.0 to 4.3.0 in /genesis-conventions/genesis-dependencies 
+- Bump com.avast.gradle:gradle-docker-compose-plugin from 0.16.10 to 0.17.6 in /genesis-subcore/deploy-gradle-plugin 
+- Bump com.esotericsoftware:kryo from 5.5.0 to 5.6.0 in /genesis-conventions/genesis-dependencies 
+- Bump com.github.oshi:oshi-core from 6.4.10 to 6.4.11 in /genesis-conventions/genesis-dependencies 
+- Bump com.github.oshi:oshi-core from 6.4.6 to 6.4.7 in /genesis-conventions/genesis-dependencies 
+- Bump com.github.oshi:oshi-core from 6.4.7 to 6.4.8 in /genesis-conventions/genesis-dependencies 
+- Bump com.github.oshi:oshi-core from 6.4.8 to 6.4.9 in /genesis-conventions/genesis-dependencies 
+- Bump com.github.oshi:oshi-core from 6.4.9 to 6.4.10 in /genesis-conventions/genesis-dependencies 
+- Bump com.github.vertical-blank:sql-formatter from 2.0.3 to 2.0.4 in /genesis-parent/genesis-environment 
+- Bump com.google.errorprone:error_prone_annotations from 2.22.0 to 2.23.0 in /genesis-conventions/genesis-dependencies 
+- Bump com.google.errorprone:error_prone_annotations from 2.23.0 to 2.24.0 in /genesis-conventions/genesis-dependencies 
+- Bump com.google.errorprone:error_prone_annotations from 2.24.0 to 2.24.1 in /genesis-conventions/genesis-dependencies 
+- Bump com.google.protobuf:protobuf-java from 3.24.4 to 3.25.0 in /genesis-conventions/genesis-dependencies 
+- Bump com.google.protobuf:protobuf-java from 3.25.0 to 3.25.1 in /genesis-conventions/genesis-dependencies 
+- Bump com.google.protobuf:protobuf-java from 3.25.1 to 3.25.2 in /genesis-conventions 
+- Bump com.jakewharton.fliptables:fliptables from 1.0.2 to 1.1.0 in /genesis-parent/genesis-environment 	
+- Bump com.jfrog.artifactory from 5.1.10 to 5.1.13 in /genesis-publish-config 	
+- Bump com.jfrog.artifactory from 5.1.13 to 5.1.14 in /genesis-publish-config 	
+- Bump com.microsoft.sqlserver:mssql-jdbc from 12.4.1.jre11 to 12.4.2.jre11 in /genesis-conventions/genesis-dependencies 	
+- Bump com.opencsv:opencsv from 5.8 to 5.9 in /genesis-conventions/genesis-dependencies by 	
+- Bump com.squareup.okhttp3:okhttp from 4.11.0 to 4.12.0 in /genesis-conventions/genesis-dependencies 	
+- Bump com.squareup:kotlinpoet from 1.14.2 to 1.15.1 in /genesis-conventions/genesis-dependencies 	
+- Bump com.squareup:kotlinpoet from 1.14.2 to 1.15.2 in /genesis-conventions/genesis-dependencies 	
+- Bump com.zaxxer:HikariCP from 5.0.1 to 5.1.0 in /genesis-conventions/genesis-dependencies 	
+- Bump commons-cli:commons-cli from 1.5.0 to 1.6.0 in /genesis-conventions/genesis-dependencies 
+- Bump commons-codec:commons-codec from 1.10 to 1.16.0 in /genesis-parent/genesis-cluster 
+- Bump commons-io:commons-io from 2.14.0 to 2.15.0 in /genesis-conventions/genesis-dependencies 
+- Bump commons-io:commons-io from 2.15.0 to 2.15.1 in /genesis-conventions/genesis-dependencies 
+- Bump de.cronn:reflection-util from 2.2.0 to 2.15.0 in /genesis-subcore/genesis-db 
+- Bump debeziumVersion from 2.3.4.Final to 2.4.1.Final in /genesis-conventions/genesis-dependencies 
+- Bump debeziumVersion from 2.4.1.Final to 2.4.2.Final in /genesis-conventions/genesis-dependencies 
+- Bump debeziumVersion from 2.4.2.Final to 2.5.0.Final in /genesis-conventions/genesis-dependencies 
+- Bump groovyVersion from 3.0.19 to 3.0.20 in /genesis-conventions/genesis-dependencies by 
+- Bump io.github.classgraph:classgraph from 4.8.162 to 4.8.163 in /genesis-conventions/genesis-dependencies 
+- Bump io.github.classgraph:classgraph from 4.8.163 to 4.8.164 in /genesis-conventions/genesis-dependencies 
+- Bump io.github.classgraph:classgraph from 4.8.164 to 4.8.165 in /genesis-conventions/genesis-dependencies 
+- Bump io.netty:netty-all from 4.1.100.Final to 4.1.101.Final in /genesis-conventions/genesis-dependencies 
+- Bump io.netty:netty-all from 4.1.101.Final to 4.1.104.Final in /genesis-conventions/genesis-dependencies 
+- Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha from 1.31.0-alpha to 1.32.0-alpha in /genesis-conventions/genesis-dependencies 
+- Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 1.30.0 to 1.31.0 in /genesis-conventions/genesis-dependencies 
+- Bump io.opentelemetry:opentelemetry-bom from 1.31.0 to 1.32.0 in /genesis-conventions/genesis-dependencies 
+- Bump io.opentelemetry:opentelemetry-bom from 1.31.0 to 1.32.0 in /genesis-conventions/genesis-dependencies 
+- Bump io.opentelemetry:opentelemetry-bom from 1.31.0 to 1.34.0 in /genesis-conventions/genesis-dependencies 
+- Bump jacksonVersion from 2.15.2 to 2.15.3 in /genesis-conventions/genesis-dependencies 
+- Bump jacksonVersion from 2.15.3 to 2.16.0 in /genesis-conventions/genesis-dependencies 
+- Bump jacksonVersion from 2.16.0 to 2.16.1 in /genesis-conventions/genesis-dependencies 
+- Bump jnaVersion from 5.13.0 to 5.14.0 in /genesis-conventions/genesis-dependencies 
+- Bump joda-time:joda-time from 2.12.5 to 2.12.6 in /genesis-conventions/genesis-dependencies 
+- Bump junitVersion from 5.10.0 to 5.10.1 in /genesis-conventions/genesis-dependencies 
+- Bump ktorVersion from 2.3.5 to 2.3.6 in /genesis-conventions/genesis-dependencies 
+- Bump ktorVersion from 2.3.6 to 2.3.7 in /genesis-conventions/genesis-dependencies 
+- Bump log4jVersion from 2.20.0 to 2.21.0 in /genesis-conventions/genesis-dependencies
+- Bump log4jVersion from 2.21.0 to 2.21.1 in /genesis-conventions/genesis-dependencies
+- Bump log4jVersion from 2.21.1 to 2.22.0 in /genesis-conventions/genesis-dependencies 
+- Bump log4jVersion from 2.22.0 to 2.22.1 in /genesis-conventions/genesis-dependencies 
+- Bump maven-plugin-api.version from 3.9.5 to 3.9.6 in /genesis-parent/genesis-maven-submodules
+- Bump me.champeau.jmh from 0.6.6 to 0.7.2 in /genesis-subcore/genesis-commons
+- Bump micrometerVersion from 1.11.4 to 1.11.5 in /genesis-conventions/genesis-dependencies
+- Bump micrometerVersion from 1.11.5 to 1.12.0 in /genesis-conventions/genesis-dependencies
+- Bump micrometerVersion from 1.12.0 to 1.12.1 in /genesis-conventions/genesis-dependencies
+- Bump mockitoVersion from 5.6.0 to 5.7.0 in /genesis-conventions/genesis-dependencies 
+- Bump mockitoVersion from 5.7.0 to 5.8.0 in /genesis-conventions/genesis-dependencies 
+- Bump msgpackVersion from 0.9.6 to 0.9.7 in /genesis-conventions/genesis-dependencies
+- Bump net.openhft:affinity from 3.23.2 to 3.23.3 in /genesis-conventions 
+- Bump openTelemetryAlphaVersion from 1.30.0-alpha to 1.31.0-alpha in /genesis-conventions/genesis-dependencies 
+- Bump org.agrona:agrona from 1.19.2 to 1.20.0 in /genesis-conventions/genesis-dependencies
+- Bump org.apache.commons:commons-compress from 1.24.0 to 1.25.0 in /genesis-conventions/genesis-dependencies 
+- Bump org.apache.commons:commons-lang3 from 3.13.0 to 3.14.0 in /genesis-conventions/genesis-dependencies 
+- Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.10.1 to 3.10.2 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.10.2 to 3.11.0 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.9.0 to 3.10.1 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-clean-plugin from 3.3.1 to 3.3.2 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-compiler-plugin from 3.11.0 to 3.12.1 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-dependency-plugin from 3.6.0 to 3.6.1 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-plugin-plugin from 3.10.1 to 3.10.2 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-plugin-plugin from 3.10.2 to 3.11.0 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-plugin-plugin from 3.9.0 to 3.10.1 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven:maven-model from 3.9.5 to 3.9.6 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.shiro:shiro-core from 1.12.0 to 1.13.0 in /genesis-conventions/genesis-dependencies 
+- Bump org.assertj:assertj-core from 3.24.2 to 3.25.1 in /genesis-conventions/genesis-dependencies 
+- Bump org.checkerframework:checker-qual from 3.39.0 to 3.40.0 in /genesis-conventions/genesis-dependencies
+- Bump org.checkerframework:checker-qual from 3.40.0 to 3.41.0 in /genesis-conventions/genesis-dependencies 
+- Bump org.checkerframework:checker-qual from 3.41.0 to 3.42.0 in /genesis-conventions/genesis-dependencies 
+- Bump org.furyio:fury-core from 0.2.0 to 0.2.1 in /genesis-conventions/genesis-dependencies
+- Bump org.furyio:fury-core from 0.2.1 to 0.3.0 in /genesis-conventions/genesis-dependencies
+- Bump org.furyio:fury-core from 0.3.0 to 0.3.1 in /genesis-conventions/genesis-dependencies 
+- Bump org.furyio:fury-core from 0.3.1 to 0.4.0 in /genesis-conventions/genesis-dependencies
+- Bump org.furyio:fury-core from 0.4.0 to 0.4.1 in /genesis-conventions/genesis-dependencies
+- Bump org.gradle.test-retry from 1.5.3 to 1.5.8 in /genesis-conventions
+- Bump org.gradle:test-retry-gradle-plugin from 1.5.3 to 1.5.8 in /genesis-conventions by 
+- Bump org.gridkit.jvmtool:hprof-heap from 0.15 to 0.16 in /genesis-subcore/genesis-config 
+- Bump org.hamcrest:hamcrest-library from 1.3 to 2.2 in /genesis-conventions by 
+- Bump org.hamcrest:hamcrest-library from 1.3 to 2.2 in /genesis-parent/genesis-cluster 
+- Bump org.java-websocket:Java-WebSocket from 1.5.4 to 1.5.5 in /genesis-conventions/genesis-dependencies 
+- Bump org.javassist:javassist from 3.29.2-GA to 3.30.2-GA in /genesis-conventions/genesis-dependencies 
+- Bump org.jetbrains.kotlin:kotlin-gradle-plugin from 1.9.0 to 1.9.22 in /genesis-subcore/codegen-gradle-plugin 
+- Bump org.jetbrains.kotlin:kotlin-scripting-common from 1.9.0 to 1.9.22 in /genesis-subcore/codegen-gradle-plugin 
+- Bump org.jetbrains.kotlinx:ki-shell from 0.4.0 to 0.5.2 in /genesis-parent/genesis-shell 
+- Bump org.jetbrains.kotlinx:kotlinx-coroutines-test from 1.4.2 to 1.7.3 in /genesis-subcore/genesis-commons 
+- Bump org.jfrog.buildinfo:artifactory-maven-plugin from 3.6.1 to 3.6.2 in /genesis-parent/genesis-maven-submodules 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 4.24.21 to 5.1.14 in /genesis-conventions/genesis-dependencies 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.1.10 to 5.1.13 in /genesis-publish-config 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.1.13 to 5.1.14 in /genesis-publish-config
+- Bump org.jline:jline from 3.23.0 to 3.24.0 in /genesis-conventions/genesis-dependencies 
+- Bump org.jline:jline from 3.24.0 to 3.24.1 in /genesis-conventions/genesis-dependencies 
+- Bump org.postgresql:postgresql from 42.6.0 to 42.7.0 in /genesis-conventions/genesis-dependencies 
+- Bump org.postgresql:postgresql from 42.7.0 to 42.7.1 in /genesis-conventions/genesis-dependencies 
+- Bump pekkoVersion from 1.0.1 to 1.0.2 in /genesis-conventions/genesis-dependencies 
+- Bump slf4jVersion from 2.0.10 to 2.0.11 in /genesis-conventions/genesis-dependencies 
+- Bump slf4jVersion from 2.0.9 to 2.0.10 in /genesis-conventions/genesis-dependencies 
+- Bump testcontainersVersion from 1.19.1 to 1.19.2 in /genesis-conventions/genesis-dependencies
+- Bump testcontainersVersion from 1.19.2 to 1.19.3 in /genesis-conventions/genesis-dependencies 
+- Revert openTelemetry version from 1.32.0 to 1.31.0 as it pulls in kotlin 1.9.20 
+- Revert openTelemetryVersion to 1.31.0 to avoid Gradle compatibility issues 
+- Revert kotlinpoet bump back to 1.14.2 
+- Upgrade sshd from 2.8.0 to 2.11.0 
+## Genesis 7.0.10(genesis-server)
+
+### Fixes
+
+- Guarantee appropriate handling of dataserver socket disconnection events at router level
+
+## Genesis 6.7.27(genesis-server)
+
+### Fixes
+
+- Guarantee appropriate handling of dataserver socket disconnection events at router level
+
+## Genesis 6.7.4(auth-server)
+
+### Fixes
+
+- OIDC Logout URLs containing params now work
+
+## Genesis 7.0.9(genesis-server)
+
+### Fixes
+
+- Force version 2.2.11 of jnr-jffi for ALL modules and exclude jnr-jffi dependency from pal-dataserver 
+- Improved Comparator code in DbUtil to prevent Long and Int casting errors 
+- fix: Propagate closing of subscription to underlying subscription 
+- fix: excluding jnr from dataserver 2
+
+## Genesis 6.7.26(genesis-server)
+
+### Fixes
+
+- fix: Improved Comparator code in DbUtil to prevent Long and Int casting errors 
+- fix: Propagate closing of subscription to underlying subscription
+
+## Genesis 7.0.2(fix-server)
+
+### Fixes
+
+- fix: Fix issue where sessions would not reset creation timestamp in DB_BATCH message store correctly, causing a logoff
+
+## Genesis 6.7.3(fix-server)
+
+### Fixes
+
+- Fix issue where sessions would not reset creation timestamp in DB_BATCH message store correctly, causing a logoff
+
+## Genesis 6.7.25(genesis-server)
+
+### Fixes
+
+- Add `NEW_PASSWORD` and `OLD_PASSWORD` to `SensitiveFields` and test case 
+- Correct for out of sync updates by reading view updates in a transaction 
+- Resource daemon to do not wait for chronicle when running from intellij plugin
+
+## Genesis 7.0.8(genesis-server)
+
+### Features
+
+- Provide injector binding in Groovy event handlers 
+- Add PROCESS_ENABLED field to GENESIS_PROCESS 
+- Allow GlobalClasspathAdditions to find jar files just by name, as well as supporting wildcards
+
+### Fixes
+
+- Try to recover from data server errors 
+- Add APPROVAL_MESSAGE HTTP header value to event messages 
+- dd `NEW_PASSWORD` and `OLD_PASSWORD` to `SensitiveFields` and test case 
+- Correct for out of sync updates by reading view updates in a transaction 
+- Resource daemon to do not wait for chronicle when running from intellij plugin
+
+## Genesis 6.7.3(auth-server)
+
+### Fixes
+
+- Field sizes to support Oracle and missing field definition on table 
+- Fix sso user creation
+
+## Genesis 6.7.24(genesis-server)
+
+### Fixes
+
+- Add APPROVAL_MESSAGE HTTP header value to event messages
+- Ensure system definition values are taken into account as part of buildClasspathForModules when using python2
+
+## Genesis 6.7.23(genesis-server)
+
+### Features
+
+- Provide injector binding in Groovy event handlers 
+- Add PROCESS_ENABLED field to GENESIS_PROCESS
+- Allow GlobalClasspathAdditions to find jar files just by name, as well as supporting wildcards
+
+## Genesis 7.0.7(genesis-server)
+
+### Breaking changes
+
+- Add support for process dependency checks when using Consul as cluster mode 
+
+### Features
+
+- Remove warning for unknown properties in GenesisJsonJacksonFactory and MaskingGenesisJsonJacksonFactory
+
+### Fixes
+
+- Adding RAW FieldType to ViewMeta 
+
+## Genesis 6.7.22(genesis-server)
+
+### Breaking changes
+
+- Add support for process dependency checks when using Consul as cluster mode
+
+## Genesis 6.7.21(genesis-server)
+
+### Features
+
+- Add mechanism to add jars to classpath for all processes
+
+### Fixes
+
+- Modify operations used inside "writeTransaction" now fail with RECORD_NOT_FOUND when database record is missing 
+- Remap handling of auto-increment changes 
+
+## Genesis 7.0.6(genesis-server)
+
+### Features
+
+- Add mechanism to add jars to classpath for all processes
+
+### Fixes
+
+- Modify operations used inside "writeTransaction" now fail with RECORD_NOT_FOUND when database record is missing 
+- Remap handling of auto-increment changes 
+- Resource daemon to await chronicle queue creation 
+
+## Genesis 6.7.20(genesis-server)
+
+### Fixes
+
+- Adding aws wrapper as a distribution only dependency 
+- Resource daemon to await chronicle queue creation 
+- Trim consul metadata values to have a max length of 512 and LOG a warning statement when this happens
+
+## Genesis 7.0.5(genesis-server)
+
+### Fixes
+
+- Correct for out of sequence updates in update batching operation
+
+### Features
+
+- feat: allow processes to opt out of compact processes
+
+## Genesis 6.7.19(genesis-server)
+
+### Fixes
+
+- Correct for out of sequence updates in update batching operation
+
+## Genesis 6.7.2(fix-server)
+
+### Fixes
+
+- Prevent thread starvation and process deadlock with high number of outbound messages
+
+## Genesis 7.0.1(fix-server)
+
+### Features
+
+- Implement new DATABASE_BATCH message store to handle higher message volumes
+
+### Fixes
+
+- Prevent thread starvation and process deadlock with high number of outbound messages
+
+## Genesis 7.0.1(genesis-symphony)
+
+### Fixes
+
+- Remove explicit definition of agrona dependency to stop version restriction
+
+## Genesis 7.0.4(genesis-server)
+
+### Features
+
+- Fixes for --compactProcesses xml generation
+
+### Fixes
+
+- Ensure we handle stack overflow errors gracefully 
+- Ensure ENUM metadata fields provide correct legacy and json schema metadata information about valid values
+- MetricService creating inconsistent hierarchical paths. 
+- Implemented get and set sequence operations for SQL+ use last_value to prevent exception on new connection 
+- Ensure startServer doesn't fail if other gz files are present in the log folder 
+- Fix fields with defaults should use the default value when provided value is null (port to master-7.0.x) 
+- Fix message ordering in data server client, to ensure multiple updates are handled correctly
+- Handling of field resizing operation in MSSQL layer of indexed fields 
+
+## Genesis 6.7.18(genesis-server)
+
+### Fixes
+
+- Force version 2.2.11 of jnr-jffi for ALL modules and exclude jnr-jffi dependency from pal-dataserver 
+- Implemented get and set sequence operations for SQL+ use last_value to prevent exception on new connection 
+- Ensure startServer doesn't fail if other gz files are present in the log folder 
+- Fix DbSqlMaxPoolSize sys def property bug 
+- Fix message ordering in data server client, to ensure multiple updates are handled correctly 
+- Handling of field resizing operation in MSSQL layer of indexed fields
+
+
+## Genesis 7.0.1(genesis-file-server)
+
+### Fixes
+
+- Fix NPE when using builder/provider
+
+## Genesis 6.7.17(genesis-server)
+
+### Fixes
+
+- Force version 1.3.9 of jffi for ALL modules
+
+## Genesis 6.7.16(genesis-server)
+
+### Features
+
+- Remove warning for unknown properties in GenesisJsonJacksonFactory and MaskingGenesisJsonJacksonFactory
+
+### Fixes
+
+- Ensure we handle stack overflow errors gracefully 
+- Fixed cluster startup issue by forcing jffi version 1.3.9 
+- Ensure ENUM metadata fields provide correct legacy and json schema metadata information about valid values 
+- Filter out empty strings from process status message creation 
+- Fields with defaults should use the default value when provided value is null 
+
+## Genesis 7.0.1(genesis-notify)
+
+### Features
+
+- Added table operation to DynamicRuleInsertRequest
+
+### Fixes
+
+- Increased Teams Route URL size to max, made route joins backwards, deprecated Teams gateway URL 
+
+## Genesis 6.7.15(genesis-server)
+
+### Features
+
+- Add support for "alwaysAllowedMessageType" in MessageDelegator
+
+### Fixes
+
+- Ensure Map can be used as return type in Req-Rep 
+- Fix ClearStrCliSourceRef to work as expected, even when the process is on ERROR state 
+
+## Genesis 7.0.3(genesis-server)
+
+### Features
+
+- Implement ClearStrCliSourceRef script to clear dangling source ref values from both the chronicle map and the running process 
+- Add coroutines-debug jar file to genesis-distribution package 
+- Add support for "alwaysAllowedMessageType" in MessageDelegator
+
+### Fixes
+
+- GPAL: Req Reps with wildcards not working 
+- Make micrometer slf4j registry compatible with genesis metrics log config, allow configurable logging levels 
+- Register global RxJava error handler for SQL engine 
+- Replace coroutine based Channel approach in ChannelUpdateQueueListener for ConcurrentLinkedQueue to avoid potential deadlocks 
+- Ensure Map can be used as return type in Req-Rep 
+- Fix ClearStrCliSourceRef to work as expected, even when the process is on ERROR state 
+- Making auditText field dbMaxSize 
+
+## Genesis 7.0.1(auth-server)
+
+### Fixes
+
+- SSO List endpoint not properly loading optional dependencies
+
+## Genesis 6.7.14(genesis-server)
+
+### Fixes
+
+- GPAL: Req Reps with wildcards not working 
+- fix: Register global RxJava error handler for SQL engine
+
+## Genesis 6.7.13(genesis-server)
+
+### Fixes
+
+- Ensure postgres does not load entire resultSet into memory for large queries
+
+## Genesis 6.7.12(genesis-server)
+
+### Features
+
+- Implement ClearStrCliSourceRef script to clear dangling source ref values from both the chronicle map and the running process 
+- Add coroutines-debug jar file to genesis-distribution package 
+- Enable support for sequence capabilities in SQL layers
+
+### Fixes
+
+- Replace coroutine based Channel approach in ChannelUpdateQueueListener for ConcurrentLinkedQueue to avoid potential deadlocks 
+- Fix clash on MONITOR_MESSAGE field size
+
+## Genesis 6.7.1(fix-server)
+
+### Features
+
+- Implement new DATABASE_BATCH message store to handle higher message volumes
+
+### Fixes
+
+- Ensure database sessions use correct message store
+- Ensure the dictionary cache is used during tests and that FIX_DATA size is respected 
+- Remove deadlock in fix outbound flow when using Database messagestore and make updates sequential 
+
+## Genesis 7.0.2(genesis-server)
+
+### Features
+
+- Expose GENESIS_DISABLE_MANIFEST_CHECK environment variable to allow processes to start even if not all manifest jars are found 
+- Enable support for sequence capabilities in SQL layers 
+- New `FindFieldsAboveMaxSize` script added to find String fields violating maxSize
+
+### Fixes
+
+- Ensure real time row updates are registered correctly in dataserver auth cache 
+- Updating maxSize of fields to be in line with application usage
+
+## Genesis 6.7.11(genesis-server)
+
+### Features
+
+- Expose GENESIS_DISABLE_MANIFEST_CHECK environment variable to allow processes to start even if not all manifest jars are found 
+- New `FindFieldsAboveMaxSize` script added to find String fields violating maxSize
+
+### Fixes
+
+- Ensure real time row updates are registered correctly in dataserver auth cache 
+- Updating maxSize of fields to be in line with application usage
+
+## Genesis 6.7.2(fix-server)
+
+### Fixes
+
+- Prevent thread starvation and process deadlock with high number of outbound messages
+
+## Genesis 6.6.26(genesis-server)
+
+### Fixes
+
+- Ensure real time row updates are registered correctly in dataserver auth cache
+
 ## Genesis 7.0.1(genesis-server)
 
 ### Fixes
@@ -190,8 +1185,8 @@ GSF release notes are added to this area immediately following each software rel
 - Bump ktorVersion from 2.3.3 to 2.3.4 in /genesis-conventions/genesis-dependencies
 - Bump ktorVersion from 2.3.4 to 2.3.5 in /genesis-conventions/genesis-dependencies
 - Bump maven-plugin-api.version from 3.9.4 to 3.9.5 in /genesis-parent/genesis-maven-submodules
-- Bump mockitoVersion from 5.4.0 to 5.6.0 in /genesis-conventions/genesis-dependencies by @dependabot in https://github.com/genesislcap/genesis-server/pull/1684
-- Bump msgpackVersion from 0.9.3 to 0.9.4 in /genesis-conventions/genesis-dependencies by @dependabot in https://github.com/genesislcap/genesis-server/pull/1365
+- Bump mockitoVersion from 5.4.0 to 5.6.0 in /genesis-conventions/genesis-dependencies 
+- Bump msgpackVersion from 0.9.3 to 0.9.4 in /genesis-conventions/genesis-dependencies
 - Bump msgpackVersion from 0.9.4 to 0.9.6 in /genesis-conventions/genesis-dependencies
 - Bump oracleJdbcVersion from 23.2.0.0 to 23.3.0.23.09 in /genesis-conventions/genesis-dependencies
 - Bump org.agrona:agrona from 1.19.1 to 1.19.2 in /genesis-conventions/genesis-dependencies
@@ -382,12 +1377,4 @@ GSF release notes are added to this area immediately following each software rel
 
 ### Fixes
 - Reduce data server memory usage 
-
-
-
-
-
-
-
-
-
+- 

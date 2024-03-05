@@ -13,7 +13,7 @@ tags:
 
 ## Modularity
 
-Genesis is modular, so if you have a dependency on another module (e.g. Auth), your project will naturally inherit all the fields from that module and and they are available in your project. 
+Genesis is modular, so if you have a dependency on another module (e.g. Auth), your project naturally inherits all the fields from that module and and they are available in your project. 
 
 It makes sense to re-use fields in dependent modules wherever possible; this cuts down your need to define field names that are unique across all modules and the project itself.
 
@@ -28,4 +28,29 @@ For example, where you need to create a large number of table fields, say `ALGO_
   for(i in 1..51) {
     field(name = algoParamPrefix + i, type = STRING)
   }
+```
+
+## Default empty values and non-nullable STRING fields
+
+You can define an `empty` and `non-nullable` **STRING** field as:
+
+```kotlin
+field(name = "REFERENCE", type = STRING, default = "", nullable = false)
+```
+
+:::danger
+Although this is a valid set-up by ANSI SQL standards, Oracle currently doesn't support this configuration, leading to failed database writes.
+:::
+
+If you want to implement this set-up in Oracle, you have a choice of how to do it:
+
+- Change all default values to have **at least one character**.
+
+OR
+- Provide a `SysDef` level override property: `OracleEmptyStringFieldDefaultValue`, with **at least one character**.
+
+For maximum simplicity and compatibility, consider simply declaring the field as `nullable`:
+
+```
+field(name = "REFERENCE", type = STRING)
 ```

@@ -1,6 +1,6 @@
 ---
-title: 'Server Developer Training - Getting Started'
-sidebar_label: 'Getting Started'
+title: 'Server Developer Training - getting started'
+sidebar_label: 'Getting started'
 id: ssdt-getting_started
 keywords: [getting started, developer training, server training, getting started]
 tags:

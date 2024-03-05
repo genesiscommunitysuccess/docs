@@ -135,11 +135,11 @@ Those are the most common features from Foundation Comms you will use. We're goi
 
 ### Creating a custom form
 
-Using `foundation-form` is good for simple forms or prototyping, but we might realise that it is not enough for our use case, and we require much more customisation.
+Using `foundation-form` is good for simple forms or prototyping, but it is probably not enough for our use case - we need much more customisation.
 
-To enable that you will create each form element manually and take care of storing user inputted data.
+To achieve this, you must create each form element manually, and take care of storing user data that the user inputs.
 
-You start by adding elements to the template:
+Start by adding elements to the template:
 
 ```jsx title='order.template.ts' 
 export const OrderTemplate = html<Order>`
@@ -158,7 +158,7 @@ export const OrderTemplate = html<Order>`
 `;
 ```
 
-Add to your `order.styles.ts` the following, so you get a nice look on your forms
+Add to your `order.styles.ts` the following, so you get a nice look on your forms:
 
 ```css title="order.styles.css"
 import {css} from "@microsoft/fast-element";
@@ -194,7 +194,7 @@ export const OrderStyles = css`
 ```
 
 :::info form style
-We're just showing the relevant code for the functionality we're building, with an example of customisation. Feel free to surround the elements with `div` or use any other resource to make your form look better. For that, you will only need some css styling knowledge.
+We're just showing the relevant code for the functionality we're building, with an example of customisation. Feel free to surround the elements with `div`, or to use any other resource to make your form look better. For that, you will only need some css styling knowledge.
 :::
 
 Then, define the variables that will hold the values that are entered.
@@ -215,7 +215,7 @@ import {customElement, FASTElement, observable} from '@microsoft/fast-element';
 ...
 ```
 
-Now we need to add event handlers that would respond to user changes and store the inputted data.
+Now we need to add event handlers that respond to user changes and store the data that the user has input.
 
 We can do it in the traditional way by adding `@change` [event handler](https://www.fast.design/docs/fast-element/declaring-templates#events) or we can use the `sync` directive from Genesis Foundation Utls that would do that for us.
 

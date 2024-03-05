@@ -80,7 +80,7 @@ Run [build and deploy](../../../getting-started/developer-training/training-cont
 
 Data dumps need to be switched on for EVALUATOR so we can see some additional data in the logs.
 
-Run the [LogLevel](../../../operations/commands/server-commands/#loglevel-script) command to do this:
+Run the [LogLevel](../../../operations/commands/server-commands/#loglevel) command to do this:
 
 ```shell
 LogLevel -p ALPHA_EVALUATOR -DATADUMP_ON -l DEBUG
