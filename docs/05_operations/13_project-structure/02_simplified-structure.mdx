@@ -12,23 +12,23 @@ tags:
 
 ## How to create a project
 
-To create a new project with the Simplified structure, you create your project as usual using genx with the blank-app-seed but also specify the following option `--ref simple-app-seed`.
+To create a new project with the Simplified structure,  use genx with the blank-app-seed but also specify the following option `--ref simple-app-seed`.
 
 ```bash
 npx -y @genesislcap/genx@latest init <app-name> --ref simple-app-seed
 ```
 
-If you want to migrate a project from the Legacy structure then see [here](#migrating-from-the-legacy-structure) for details.
+There is a different procedure if you want to [migrate a project from the Legacy structure] (#migrating-from-the-legacy-structure).
 
 ## Comparison to legacy structure
 
-Below is a side-by-side comparison of an example project between the Legacy and Simplified structures. For now we will focus on the `server` part of the project.
+Below is a side-by-side comparison of an example project between the Legacy and Simplified structures. For now, we shall focus on the `server` part of the project.
 
 Simplified Structure           |  Legacy Structure
 :-------------------------:|:-------------------------:
 ![](/img/position-simple-structure.png)  |  ![](/img/position-legacy-structure.png)
 
-Now let's break down where exactly you put your files in the Simplified structure compared to the Legacy structure. For this example, let’s have our product named "position".
+Now let's break down and see exactly where you put your files in the Simplified structure compared to the Legacy structure. For this example, let’s take our product named "position".
 
 | | Legacy | Simplified |
 | --- | --- | --- |
@@ -38,33 +38,33 @@ Now let's break down where exactly you put your files in the Simplified structur
 | Site-specific script files | position-site-specific/src/main/resources/scripts/ | position-app/src/main/genesis/scripts/ |
 | Other site-specific files | position-site-specific/src/main/resources/ | position-app/src/main/genesis/ |
 
-As you will see from above, all config and script files are contained in the folder "position-app/src/main/genesis".
+As you will see from above, all config and script files are contained in the folder **position-app/src/main/genesis**.
 
 ## Where did the other modules go?
 
-In the Simplified structure some modules have been removed completely, others are now managed by the Settings plugin. We call these "internal modules".
-The internal modules are located in the root project’s (server) build folder "build/internal-modules". Developers should not amend the files inside those modules.
+In the Simplified structure, some modules have been removed completely. Others are now managed by the Settings plugin. We call these "internal modules".
+The internal modules are located in the root project’s (server) build folder **build/internal-modules**. Do not amend the files inside those modules.
 Below provides more details on this:
 
 | Module name | Where has it gone? |
 | --- | --- |
-| -config | Hidden internal module. Your project’s config and script files will be copied to this module automatically. Your project build will create a -config.jar like the legacy structure does. |
+| -config | Hidden internal module. Your project’s config and script files are copied to this module automatically. Your project build will create a -config.jar in the same way as the legacy structure. |
 | -dictionary-cache | Hidden internal module. Contains generated code. |
-| -site-specific | Hidden internal module, but only for [application](../settings-plugin/#project-type) projects. Non-project config and script files will be copied from your project to this module automatically. All folders and files in the main module's src/main/genesis folder, except cfg and scripts, will be copied to site-specific/src/main/resources. A site-specific distribution will be created, same as the Legacy structure does. |
-| -distribution | Removed. The project’s distribution file will be located in the root project’s (server) build folder, "server/build/distributions". |
+| -site-specific | Hidden internal module, but only for [application](../settings-plugin/#project-type) projects. Non-project config and script files will be copied from your project to this module automatically. All folders and files in the main module's **src/main/genesis** folder, except cfg and scripts, will be copied to **site-specific/src/main/resources**. A site-specific distribution will be created, in the same way as the Legacy structure does. |
+| -distribution | Removed. The project’s distribution file will be located in the root project’s (server) build folder, **server/build/distributions**. |
 | -eventhandler | Removed. |
 | -messages | Removed. |
 | -script-config | Removed. |
-| -deploy | Removed. The deploy plugin can optionally be enabled on the main module. See [here](../settings-plugin/#plugins) for details. |
+| -deploy | Removed. The deploy plugin can optionally be [enabled on the main module](../settings-plugin/#plugins). |
 
 ## Migrating from the Legacy structure
 
 Below are the steps required to migrate from the Legacy structure to the Simplified structure.
 
 1. Add [Settings plugin](../settings-plugin/#how-to-enable).
-2. Remove any of the [plugins](../settings-plugin/#plugins) that will be added automatically by the Settings plugin from your root project's build.gradle.kts and settings.gradle.kts files.
-3. Remove the dependency on genesis-bom in your root project's build.gradle.kts file.
-4. Create your [main module](../settings-plugin/#main-module-name) and include it in your root project's settings.gradle.kts file.
+2. Remove any of the [plugins](../settings-plugin/#plugins) that will be added automatically by the Settings plugin from your root project's **build.gradle.kts** and **settings.gradle.kts** files.
+3. Remove the dependency on genesis-bom in your root project's **build.gradle.kts** file.
+4. Create your [main module](../settings-plugin/#main-module-name) and include it in your root project's **settings.gradle.kts** file.
 5. Move the following files:
 
 | From | To |
@@ -75,7 +75,7 @@ Below are the steps required to migrate from the Legacy structure to the Simplif
 | \{productName\}-site-specific/src/main/resources/scripts/ | \{mainModule\}/src/main/genesis/scripts/ |
 | All other \{productName\}-site-specific files | \{mainModule\}/src/main/genesis (see [here](#where-did-the-other-modules-go) for more details) |
 
-6. Delete the following modules and delete from root project's settings.gradle.kts:
+6. Delete the following modules and delete them from the root project's **settings.gradle.kts**:
 - \{productName\}-dictionary-cache
 - \{productName\}-deploy
 - \{productName\}-distribution
