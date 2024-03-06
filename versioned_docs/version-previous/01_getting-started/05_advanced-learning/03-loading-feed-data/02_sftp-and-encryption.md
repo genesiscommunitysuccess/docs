@@ -49,15 +49,15 @@ These variables values are defined in the _application_**-system-definition.kts*
 
 This way you can dynamically define hosts, usernames, passwords, and even file names to find. These are passed into the route to configure the Apache Camel SFTP connection.  Camel will poll the sFTP server to look for unprocessed files, and download them into the staging directory (**…/bbg** in this instance). Only unprocessed files are downloaded, because we have configured `idempotentConsumer`, which has a DB that is used to store the downloaded file names.
 
+
 ## Encryption
 
-In higher environments, you need to encrypt sensitive values in the _application_**-system-definition.kts** file.
+In higher environments, you need to encrypt sensitive values in the _application_**-system-definition.kts** file. The Genesis platform has a script that helps you encrypt data.
+To use it, follow this instructions:
 
-The steps to follow are:
-
-1. Generate a GENESIS_KEY key for each of the environments (specially for PROD and UAT).
-2. Pass the GENESIS_KEY to each instance as an environment variable.
-3. Using the GENESIS_KEY, encrypt the `username` and `password` with the `encryptUserPassWithKey` command in the Genesis instance.
+1. Run the script `encryptUserPass`
+2. Provide the username and password
+3. The script then returns the encrypted password and username for you.
 4. Add the encrypted `username` and `password` to the relevant section (**DEV**, **UAT**, etc...) of the _application_**-system-definition.kts** file.
 5. Finally, because your password is encrypted in the script/configuration you are changing, the `systemDefinition` object will automatically decrypt it. Here is an example:
 
@@ -70,7 +70,6 @@ camel {
     }
 }
 ```
-
 
 ## Troubleshooting
 
