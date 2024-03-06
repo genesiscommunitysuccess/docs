@@ -63,8 +63,8 @@ bundleGeneratedClasses=true
 
 ### Gradle build errors in project and no gradle commands listed in IntelliJ 
 
-If you don't see any menu options per the guide above, and see gradle errors when you try to build or open a project, a common cause is gradle jvm settings.
+If you don't see any menu options per the guide above, and see gradle errors when you try to build or open a project, a common cause is gradle JVM settings.
 
-In IntelliJ. go to **File** -> **Settings** and search for the Build Gradle page. Make sure Gradle JVM is set to **11**, as shown below:
+In IntelliJ. go to **File** -> **Settings** and search for the Build Gradle page. Make sure Gradle JVM is set to the correct JDK version used by Genesis. If you are using Genesis Server version 7+, it will be **17**, otherwise **11**. See example for setting version **11** below:
 
 ![](/img/gradle-jvm-version.png)
