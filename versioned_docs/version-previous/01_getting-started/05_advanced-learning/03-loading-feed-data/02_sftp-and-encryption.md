@@ -43,20 +43,19 @@ camel {
 
 By using the `systemDefinition` to get items, we can use site-specific variables for each instance (for example,  username, password, and hosts can change between **DEV**, **QA**, **UAT**, and **PROD** instances).
 
-These variables values are defined in the _application_**-system-definition.kts** for each of the application instances. In the example below, we specify the username and password for the **QA** instance:
+The values of these variables are defined in the _application_**-system-definition.kts** for each of the application instances. In the example below, we specify the username and password for the **QA** instance:
 
 ![](/img/variables-qa.png)
 
-This way you can dynamically define hosts, usernames, passwords, and even file names to find. These are passed into the route to configure the Apache Camel SFTP connection.  Camel will poll the sFTP server to look for unprocessed files, and download them into the staging directory (**…/bbg** in this instance). Only unprocessed files are downloaded, because we have configured `idempotentConsumer`, which has a DB that is used to store the downloaded file names.
-
+This way, you can dynamically define hosts, usernames, passwords, and even file names. These are passed into the route to configure the Apache Camel SFTP connection. Camel will poll the sFTP server to look for unprocessed files, and download them into the staging directory (**…/bbg** in this instance). Only unprocessed files are downloaded, because we have configured `idempotentConsumer`, which has a DB that is used to store the downloaded file names.
 
 ## Encryption
 
-In higher environments, you need to encrypt sensitive values in the _application_**-system-definition.kts** file. The Genesis platform has a script that helps you encrypt data.
-To use it, follow this instructions:
+In higher environments, you need to encrypt sensitive values in the _application_**-system-definition.kts** file. The Genesis platform has a script that helps you do this.
+To use it, follow the steps below:
 
-1. Run the script `encryptUserPass`
-2. Provide the username and password
+1. Run the script `encryptUserPass`.
+2. Provide the username and password.
 3. The script then returns the encrypted password and username for you.
 4. Add the encrypted `username` and `password` to the relevant section (**DEV**, **UAT**, etc...) of the _application_**-system-definition.kts** file.
 5. Finally, because your password is encrypted in the script/configuration you are changing, the `systemDefinition` object will automatically decrypt it. Here is an example:
