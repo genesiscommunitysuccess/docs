@@ -43,11 +43,11 @@ camel {
 
 By using the `systemDefinition` to get items, we can use site-specific variables for each instance (for example,  username, password, and hosts can change between **DEV**, **QA**, **UAT**, and **PROD** instances).
 
-These values variables of these are defined in the _application_**-system-definition.kts** for each of the application instances. In the example below, we specify the username and password for the **QA** instance:
+The values of these variables are defined in the _application_**-system-definition.kts** for each of the application instances. In the example below, we specify the username and password for the **QA** instance:
 
 ![](/img/variables-qa.png)
 
-This way you can dynamically define hosts, usernames, passwords, and even file names to find. These are passed into the route to configure the Apache Camel SFTP connection.  Camel will poll the sFTP server to look for unprocessed files, and download them into the staging directory (**…/bbg** in this instance). Only unprocessed files are downloaded, because we have configured `idempotentConsumer`, which has a DB that is used to store the downloaded file names.
+This way, you can dynamically define hosts, usernames, passwords, and even file names. These are passed into the route to configure the Apache Camel SFTP connection.  Camel will poll the sFTP server to look for unprocessed files, and download them into the staging directory (**…/bbg** in this instance). Only unprocessed files are downloaded, because we have configured `idempotentConsumer`, which has a DB that is used to store the downloaded file names.
 
 ## Encryption
 
