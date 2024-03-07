@@ -596,7 +596,7 @@ For example, if you join onto counterparty, and you only return records for whic
 * if there is a delete with no valid counterparty, the listener to view will not receive the delete
 
 And if there is a modify:
-* if both the previous record and the new record link to an existing counterparty then nothing changes
+* if both the previous record and the new record link to an existing counterparty, then nothing changes
 * if the previous record was linked to an invalid counterparty and the new record links to a valid counterparty, it will transform the modify to an insert – because the record has moved into the view
 * if the previous record linked to a valid counterparty, but no longer does after the update, it becomes a delete
 
