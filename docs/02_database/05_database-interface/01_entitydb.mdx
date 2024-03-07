@@ -530,7 +530,7 @@ val orderTrade = db.readTransaction {
 <TabItem value="java">
 
 ```java
-Single<OrderTrade> oderTrade = db.readTransaction(transaction -> {
+Single<OrderTrade> orderTrade = db.readTransaction(transaction -> {
     final var trade = transaction.get(Trade.byId("TR_123")).blockingGet();
     final var order = transaction.get(Order.byId(trade.orderId)).blockingGet();
     return buildOrderTrade(order, trade);
@@ -578,10 +578,10 @@ final var writeResults = pair.getSecond();
 Subscribe starts a database listener that receives updates to tables or views. When subscribing to view updates,
 only updates to the root table will be published. 
 
-If the view has any inner joins, these are handled in a range of different ways.
+If the view has any inner joins, these are handled in a number of different ways.
 
 For tables, this works in the standard way. You subscribe to updates, and:
-* when a record is inserted, you get an insert update
+* when a record is inserted you get an insert update
 * when a record is modified you get a modify update 
 * when a record is deleted you get a delete update 
 
@@ -596,7 +596,7 @@ For example, if you join onto counterparty, and you only return records for whic
 * if there is a delete with no valid counterparty, the listener to view will not receive the delete
 
 And if there is a modify:
-* if both the previous record and the new record link to an existing counterparty, nothing changes
+* if both the previous record and the new record link to an existing counterparty then nothing changes
 * if the previous record was linked to an invalid counterparty and the new record links to a valid counterparty, it will transform the modify to an insert – because the record has moved into the view
 * if the previous record linked to a valid counterparty, but no longer does after the update, it becomes a delete
 
