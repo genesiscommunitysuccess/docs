@@ -120,3 +120,9 @@ Load the cron rule **CRON_RULE.csv** file into the `CRON_RULE`  [table](#definin
 Run `SendIt`
 
 You can see an example of a static rule being configured in our [tutorial](../../../getting-started/developer-training/training-content-day5/#cron-rules-static-events).
+
+## Custom Log messages
+
+import Log from '/snippet/_LOG.md'
+
+<Log />
