@@ -499,3 +499,9 @@ consolidators {
 }
 }
 ```
+
+## Custom Log messages
+
+import Log from '/snippet/_LOG.md'
+
+<Log />
