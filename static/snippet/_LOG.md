@@ -8,6 +8,8 @@ Here is an example where you can insert an info message into the log file:
 LOG.info("This is an info message")
 ```
 
+The `LOG` instance is a Logger from SLF4J. [Find out more about it here](https://www.slf4j.org/).
+
 :::note
 Remember that in order to see these messages, you need to set the logging level accordingly. To learn how to set the logging level, [follow this link](../../../operations/commands/server-commands/#loglevel).
 :::
