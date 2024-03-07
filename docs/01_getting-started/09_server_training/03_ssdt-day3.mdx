@@ -139,7 +139,7 @@ The `numKeyFields` property specifies the number of fields to use from an index.
 
 When a client initiates a subscription to a Data Server by sending a **DATA_LOGON** message, there are several options that can be specified such as: MAX_ROWS, MOVING_VIEW, CRITERIA_MATCH, FIELDS, ORDER_BY, REVERSE. 
 
-None of these options is mandatory; you don't have to specify any to initiate a subscription. The features of the options are explained in details [here](../../../server/data-server/advanced/#client-side-runtime-options).
+None of these options is mandatory; you don't have to specify any to initiate a subscription. The features of the options are explained in details [here](../../../server/data-server/advanced/#incoming-data_logon-messages).
 
 ### Criteria matching
 
