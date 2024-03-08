@@ -178,7 +178,7 @@ Finally, you can build and deploy the server.
 
 ![](/img/assemble-server.png)
 
-If you prefer to run the config from the command line: 
+If you prefer to run the config from the command line:
 
 ```shell title='Running assemble from the command line'
 ./gradlew :genesisproduct-alpha:assemble
@@ -197,7 +197,7 @@ After the Gradle tasks, when first using the plugin with a project, you must cre
 
 ![Genesis Install](/img/intellij-install.png)
 
-This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes. 
+This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes.
 
 :::note
 On the first run, this could take up to 20 minutes, because it performs a full build of your application.
@@ -207,7 +207,7 @@ On the first run, this could take up to 20 minutes, because it performs a full b
 
 ![Deploy](/img/intellij-deploy1.png)
 
-2. Redeploying the application requires the Genesis processes to be stopped. If you are prompted for this, click **ok** to continue. 
+2. Redeploying the application requires the Genesis processes to be stopped. If you are prompted for this, click **ok** to continue.
 
 ![Deploy Prompt](/img/intellij-deploy2.png)
 
@@ -220,6 +220,7 @@ This starts the relevant processes and the logs will be shown below.
 
 ```shell title="Intellij terminal"
 ./gradlew assemble
+./gradlew :genesisproduct-alpha:alpha-deploy:createDockerfile
 docker-compose build
 docker-compose up -d
 ```
@@ -247,7 +248,7 @@ wsl-distro=TrainingCentOS
 wsl-user=genesis
 ```
 
-| Entry  |  Description | 
+| Entry  |  Description |
 |---|---|
 |`genesis-home`|  This is a mandatory property that is a path on the WSL distribution. |
 |`wsl-distro`|  This is a mandatory property that is the name of the WSL distribution. |
@@ -290,7 +291,7 @@ As our application will override the standard definitions using the site-specifi
 
 In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip**.
 
-![](/img/install-site-specific.png) 
+![](/img/install-site-specific.png)
 
 ```shell title='Running install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip from the command line'
 ./gradlew :genesisproduct-alpha:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip
@@ -307,7 +308,7 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**a
 ![](/img/deploy-alpha-product.png)
 
 ```shell title='Running deploy-genesisproduct-alpha.zip from the command line'
-./gradlew :genesisproduct-alpha:alpha-deploy:deploy-genesisproduct-alpha.zip 
+./gradlew :genesisproduct-alpha:alpha-deploy:deploy-genesisproduct-alpha.zip
 ```
 </TabItem>
 </Tabs>

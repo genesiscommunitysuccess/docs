@@ -1,13 +1,13 @@
 ---
-title: 'Quick start - build and deploy'
-sidebar_label: 'Build and deploy'
+title: "Quick start - build and deploy"
+sidebar_label: "Build and deploy"
 id: prepare-the-server-and-build
 keywords: [getting started, quick start, server, build]
 tags:
-    - getting started
-    - quick start
-    - server
-    - build
+  - getting started
+  - quick start
+  - server
+  - build
 ---
 
 The application has three files that contain vital configuration information:
@@ -21,7 +21,6 @@ The application has three files that contain vital configuration information:
 At present, these files are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
 
 Add the following content to the **server/jvm/alpha-config/src/main/resources/cfg/alpha-processes.xml** file:
-
 
 ```xml title='alpha-processes.xml'
 <processes>
@@ -109,7 +108,6 @@ values={[
 ]}>
 <TabItem value="Intellij Plugin">
 
-
 ```kotlin {8} title="client/web/package.json"
 {
   "name": "@genesislcap/alpha-web-client",
@@ -128,7 +126,6 @@ values={[
 </TabItem>
 <TabItem value="Docker">
 
-
 ```kotlin {8} title="client/web/package.json"
 {
   "name": "@genesislcap/alpha-web-client",
@@ -146,7 +143,6 @@ values={[
 
 </TabItem>
 <TabItem value="WSL">
-
 
 ```kotlin {8} title="client/web/package.json"
 {
@@ -178,7 +174,7 @@ Finally, you can build and deploy the server.
 
 ![](/img/assemble-server.png)
 
-If you prefer to run the config from the command line: 
+If you prefer to run the config from the command line:
 
 ```shell title='Running assemble from the command line'
 ./gradlew :genesisproduct-alpha:assemble
@@ -197,7 +193,7 @@ After the Gradle tasks, when first using the plugin with a project, you must cre
 
 ![Genesis Install](/img/intellij-install.png)
 
-This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes. 
+This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes.
 
 :::note
 On the first run, this could take up to 20 minutes, because it performs a full build of your application.
@@ -207,7 +203,7 @@ On the first run, this could take up to 20 minutes, because it performs a full b
 
 ![Deploy](/img/intellij-deploy1.png)
 
-2. Redeploying the application requires the Genesis processes to be stopped. If you are prompted for this, click **ok** to continue. 
+2. Redeploying the application requires the Genesis processes to be stopped. If you are prompted for this, click **ok** to continue.
 
 ![Deploy Prompt](/img/intellij-deploy2.png)
 
@@ -220,6 +216,7 @@ This starts the relevant processes and the logs will be shown below.
 
 ```shell title="Intellij terminal"
 ./gradlew assemble
+./gradlew :genesisproduct-alpha:alpha-deploy:createDockerfile
 docker-compose build
 docker-compose up -d
 ```
@@ -232,7 +229,7 @@ The Genesis platform provides several tasks that help to set up the Genesis envi
 <h4>Pre-requisites</h4>
 
 :::caution Adding the WSL configuration in the gradle.properties file
-Please add the last three highlighted lines in your  **gradle.properties** file from the **server/jvm** folder. The final file should be like this:
+Please add the last three highlighted lines in your **gradle.properties** file from the **server/jvm** folder. The final file should be like this:
 
 ```properties {8-10} title="gradle.properties"
 kotlin.code.style=official
@@ -247,11 +244,11 @@ wsl-distro=TrainingCentOS
 wsl-user=genesis
 ```
 
-| Entry  |  Description | 
-|---|---|
-|`genesis-home`|  This is a mandatory property that is a path on the WSL distribution. |
-|`wsl-distro`|  This is a mandatory property that is the name of the WSL distribution. |
-|`wsl-user`|  This is an optional property. If omitted, the default WSL user will be used. |
+| Entry          | Description                                                                  |
+| -------------- | ---------------------------------------------------------------------------- |
+| `genesis-home` | This is a mandatory property that is a path on the WSL distribution.         |
+| `wsl-distro`   | This is a mandatory property that is the name of the WSL distribution.       |
+| `wsl-user`     | This is an optional property. If omitted, the default WSL user will be used. |
 
 :::
 
@@ -290,7 +287,7 @@ As our application will override the standard definitions using the site-specifi
 
 In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip**.
 
-![](/img/install-site-specific.png) 
+![](/img/install-site-specific.png)
 
 ```shell title='Running install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip from the command line'
 ./gradlew :genesisproduct-alpha:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip
@@ -307,8 +304,9 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**a
 ![](/img/deploy-alpha-product.png)
 
 ```shell title='Running deploy-genesisproduct-alpha.zip from the command line'
-./gradlew :genesisproduct-alpha:alpha-deploy:deploy-genesisproduct-alpha.zip 
+./gradlew :genesisproduct-alpha:alpha-deploy:deploy-genesisproduct-alpha.zip
 ```
+
 </TabItem>
 </Tabs>
 
