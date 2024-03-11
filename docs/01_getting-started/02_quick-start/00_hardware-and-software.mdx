@@ -92,7 +92,7 @@ More information [here](https://docs.gradle.org/current/userguide/build_environm
 
 ### Your own database
 
-You need an individual database to create and test the back-end changes we are proposing. Please make sure you have a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
+You need an individual database to create and test the back-end changes we are proposing. By default H2 embedded database is used for local development. For production environment please make sure you have a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
 
 :::tip
 You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
@@ -104,3 +104,28 @@ docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POST
 ```
 
 :::
+
+#### H2 embedded database
+
+**genesis-system-definition.kts** file is set with following options
+
+```kotlin
+systemDefinition {
+    global {
+        item(name = "DbLayer", value = "SQL")
+        item(name = "DictionarySource", value = "FILE")
+        item(
+            name = "DbHost",
+            value = "jdbc:h2:file:./server/test;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,KEY;AUTO_SERVER=TRUE"
+        )
+        item(name = "DbQuotedIdentifiers", value = true)
+    }
+}
+```
+
+:::warning only for learning purposes
+This set-up is not recommended for production environments or serious development.
+:::
+
+The above setting creates H2 file-based database under `./server` folder in the name of `test` as mentioned in the in `DbHost` property.
+The database is initiated by JDBC and does not require additional set-up.
