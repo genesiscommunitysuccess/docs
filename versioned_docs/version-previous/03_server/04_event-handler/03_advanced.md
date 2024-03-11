@@ -13,8 +13,11 @@ tags:
 ---
 
 
+
 ## Custom reply message type
-If you use a custom reply message type, you won’t be able to use the default `ack()` or `validationAck()` functions.  The custom message type needs to be returned from the method.
+
+When using eventhandlers, you can specify custom reply message types to be used. This will provide more flexibility to your eventhandlers. In order to use that,
+you won’t be able to use the default `ack()` or `validationAck()` functions. The custom message type needs to be returned instead.
 
 For a custom message type called `TradeEvent` defined as:
 
@@ -30,7 +33,9 @@ data class TradeEvent(
 }
 ```
 
-...and a custom message reply type called `CustomTradeEventReply` defined as:
+The `init` codeblock is a special block that is used to initialize an object. So when this class is called, it will validate if `price` and `quantity` are grater than zero. If not, it will throw an `IllegalArgumentException` which can be handled in the [onException code block](#onException).
+
+For a custom message reply type called `CustomTradeEventReply` defined as:
 
 ```kotlin
 sealed class CustomTradeEventReply : Outbound() {
@@ -40,9 +45,9 @@ sealed class CustomTradeEventReply : Outbound() {
 }
 ```
 
-Add `CustomTradeEventReply` under **&#123;app-name}-messages** and assemble. Once you have built, add `api(project(":&#123;app-name}-messages"))` to your build.gradle.kts file under **&#123;app-name}-script-config/build.gradle.kts**.
+Add `CustomTradeEventReply` under **{app-name}-messages** and assemble. Once you have built, add `api(project("{app-name}-messages"))` to your build.gradle.kts file under **{app-name}-script-config/build.gradle.kts**.
 
-...you can now use the following example Event Handler:
+you can now use the following example Event Handler:
 
 ```kotlin
     eventHandler<TradeEvent, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
@@ -52,7 +57,7 @@ Add `CustomTradeEventReply` under **&#123;app-name}-messages** and assemble. Onc
         onValidate {
             val tradeEvent = it.details
             val notional = tradeEvent.price?.times(tradeEvent.quantity!!.toDouble())
-            
+
             require(notional!! < 1_000_000) { "Trade notional is too high" }
             CustomTradeEventReply.TradeEventValidateAck()
         }
@@ -64,7 +69,44 @@ Add `CustomTradeEventReply` under **&#123;app-name}-messages** and assemble. Onc
     }
 ```
 
-The following code assumes you have built your fields and tables after you created your `TradeEvent` under **jvm/&#123;app-name}-config** with a primary key of `tradeId`. If intelliJ can't find your `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](../../../getting-started/learn-the-basics/data-model/).
+The following code assumes you have built your fields and tables after you created your `TradeEvent` under **{app-name}-config** with a primary key of `tradeId`. If intelliJ can't find your `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](../../../getting-started/learn-the-basics/data-model/).
+
+:::info
+When using custom reply messages, the onValidate codeblock becomes required.
+:::
+
+The response from the server also change when using custom reply message also change, so the client-side of your application needs to be aware of that. When using the default eventhandler you would get a response from the server like this in case of an `ack()`:
+
+```json
+{
+    "GENERATED": [],
+    "MESSAGE_TYPE": "EVENT_ACK",
+    "SOURCE_REF": "****",
+    "METADATA": {
+        "IS_EMPTY": true,
+        "ALL": {}
+    }
+}
+```
+
+But when using a custom reply message, each field you create will be converted into a field in the json response. For example, with the previous example, your response would be: 
+
+```json
+{
+    "GENERATED": [],
+    "TRADE_ID": "1",
+    "MESSAGE_TYPE": "TRADE_EVENT_ACK",
+    "SOURCE_REF": "****",
+    "METADATA": {
+        "IS_EMPTY": true,
+        "ALL": {}
+    }
+}
+```
+
+Because of the of arguments of the class you created was `tradeId`, and the type of the reply message was: `TradeEventAck`.
+
+d your `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](../../../getting-started/learn-the-basics/data-model/).
 
 ### onException
 
