@@ -83,20 +83,21 @@ To copy data from a Genesis database, use the `DumpIt` command.
 
 ### Syntax
 The `DumpIt` command can take the following arguments:
+
 <!-- The DumpIt command has a list of possible arguments: -a, -f, -fields, -h, -s, -t, -cem, -fm, -qi, -where -->
 
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
 | -a <!-- DumpIt -a -->      | --all <!-- DumpIt --all -->             | no        | exports all tables to csv                              | none              | none    |
-| -f <!-- DumpIt -f -->      | --file `<arg>` <!-- DumpIt --file <args> -->    | no        | name of the csv file where table is exported           | none              | none    |
-|          | -fields `<arg>` <!-- DumpIt --fields <args> -->   | no        | space separated field list e.g. "FIRST_NAME LAST_NAME" | none              | none    |
+| -f <!-- DumpIt -f -->      | --file `<arg>`     | no        | name of the csv file where table is exported           | none              | none    |
+|          | -fields `<arg>` <!--    | no        | space separated field list e.g. "FIRST_NAME LAST_NAME" | none              | none    |
 | -h <!-- DumpIt -h -->      | --help  <!-- DumpIt --help -->           | no        | show help on how to use the command                    | none              | none    |
-| -s  <!-- DumpIt -s -->     | --sql `<arg>` <!-- DumpIt --sql <args> -->     | no        | name of the sql file to export the table to            | none              | none    |
-| -t  <!-- DumpIt -t -->     | --table `<arg>` <!-- DumpIt --table <args> -->   | no        | specify the name of the table you want to export to CSV. If there are multiple tables to include, provide a list separated by spaces.                 | none              | none    |
-| -cem <!-- DumpIt -cem -->    | --criteriaEvaluatorMode `<arg>` <!-- DumpIt --criteriaEvaluatorMode <args> --> | no        | the type of criteria evaluator to be used | TYPE_AWARE or LEGACY | LEGACY |
-| -fm <!-- DumpIt -fm -->     | --formatMode `<arg>` <!-- DumpIt --formatMode <args> -->    | no        | indicates whether field formats should be taken into account  | FORMATTED (takes field formats into account) or LEGACY (does not take field formats into account) | none    |
+| -s  <!-- DumpIt -s -->     | --sql `<arg>`     | no        | name of the sql file to export the table to            | none              | none    |
+| -t  <!-- DumpIt -t -->     | --table `<arg>` <   | no        | specify the name of the table you want to export to CSV. If there are multiple tables to include, provide a list separated by spaces.                 | none              | none    |
+| -cem <!-- DumpIt -cem -->    | --criteriaEvaluatorMode `<arg>` <!-- DumpIt --criteriaEvaluatorMode  --> | no        | the type of criteria evaluator to be used | TYPE_AWARE or LEGACY | LEGACY |
+| -fm <!-- DumpIt -fm -->     | --formatMode `<arg>` <!-- DumpIt --formatMode  -->    | no        | indicates whether field formats should be taken into account  | FORMATTED (takes field formats into account) or LEGACY (does not take field formats into account) | none    |
 | -qi <!-- DumpIt -qi -->     | --quoteIdentifiers <!-- DumpIt --quoteIdentifiers --> | no        | if present, all sql identifiers (e.g. column names) will be quoted     | none  | none   |
-|          | -where `<arg>` <!-- DumpIt -where <args> -->    | no        | match criteria e.g. "USER_NAME=='John'"                | none              | none    |
+|          | -where `<arg>` <!-- DumpIt -where  -->    | no        | match criteria e.g. "USER_NAME=='John'"                | none              | none    |
 
 Here are some examples:
 
@@ -319,7 +320,7 @@ The `GetAutoIncrementCount` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
-| -f  <!-- GetAutoIncrementCount -f -->     | --file `<arg>` <!-- GetAutoIncrementCount --file <args> -->    | no        | name of file to receive the values      | none              | AutoIncrementValues |
+| -f  <!-- GetAutoIncrementCount -f -->     | --file `<arg>` <!-- GetAutoIncrementCount --file  -->    | no        | name of file to receive the values      | none              | AutoIncrementValues |
 | -h <!-- GetAutoIncrementCount -h -->      | --help   <!-- GetAutoIncrementCount --help -->          | no        | displays help on the command            | none              | none    |
 | -p  <!-- GetAutoIncrementCount -p -->     | --print  <!-- GetAutoIncrementCount --print -->          | no        | if sending to a file, then use this if you also want to print to screen | none             | true (unless -f is supplied) |
 
@@ -349,7 +350,7 @@ The `GetSequenceCount` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
-| -f  <!-- GetSequenceCount -f -->     | --file `<arg>` <!-- GetSequenceCount --file <args> -->     | no        | name of the file to contain the sequence numbers | none     | SEQUENCE.csv |
+| -f  <!-- GetSequenceCount -f -->     | --file `<arg>` <!-- GetSequenceCount --file  -->     | no        | name of the file to contain the sequence numbers | none     | SEQUENCE.csv |
 | -h <!-- GetSequenceCount -h -->       | --help <!-- GetSequenceCount --help -->             | no        | show help on how to use thus command             | none     | none |
 | -p <!-- GetSequenceCount -p -->       | --print  <!-- GetSequenceCount --print -->           | no        |                                                  | none     | true (unless -f is supplied) |
 
@@ -377,7 +378,7 @@ The `GetSequenceNumbers` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
-| -f  <!-- GetSequenceNumbers -f -->     | --file `<arg>` <!-- GetSequenceNumbers --file <args> -->    | no        | name of the file to contain the sequence numbers | none     | SequenceValues.csv |
+| -f  <!-- GetSequenceNumbers -f -->     | --file `<arg>` <!-- GetSequenceNumbers --file  -->    | no        | name of the file to contain the sequence numbers | none     | SequenceValues.csv |
 | -h  <!-- GetSequenceNumbers -h -->     | --help   <!-- GetSequenceNumbers --help -->          | no        | show help on how to use this command             | none     | none |
 | -p  <!-- GetSequenceNumbers -p -->     | --print  <!-- GetSequenceNumbers --print -->          | no        |                                         | none              | true (unless -f is supplied) |
 
@@ -677,10 +678,10 @@ The `PopulateHolidays` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|
-| -c  <!-- PopulateHolidays -c -->     | --country `<arg>` <!-- PopulateHolidays --country <args> -->  | No        | the country name to search for holidays | No                |
+| -c  <!-- PopulateHolidays -c -->     | --country `<arg>` <!-- PopulateHolidays --country  -->  | No        | the country name to search for holidays | No                |
 | -h  <!-- PopulateHolidays -h -->     | --help <!-- PopulateHolidays --help -->            | No        | show help on this command               | No                |
-| -r  <!-- PopulateHolidays -r -->     | --region `<arg>` <!-- PopulateHolidays --region <args> -->  | No        | the region name to search for holidays  | No                |
-| -y <!-- PopulateHolidays -y -->      | --year `<arg>` <!-- PopulateHolidays --year <args> -->    | No        | the year of holidays                    | No                |
+| -r  <!-- PopulateHolidays -r -->     | --region `<arg>` <!-- PopulateHolidays --region  -->  | No        | the region name to search for holidays  | No                |
+| -y <!-- PopulateHolidays -y -->      | --year `<arg>` <!-- PopulateHolidays --year  -->    | No        | the year of holidays                    | No                |
 
 For example: 
 
@@ -896,14 +897,14 @@ The `SendIt` command can take the following arguments:
 | -a <!-- SendIt -a -->      | --all  <!-- SendIt --all -->                | no        | import all the tables from all the csv files to the database | no                    | none    |
 | -d <!-- SendIt -d -->      | --delete <!-- SendIt --delete  -->              | no        | perform delete operations on all records                     | no                    | none    |
 | -cf <!-- SendIt -cf -->     | --columnFormat <!-- SendIt --columnFormat -->        | no        | set specific date format for column                          | no                    | none    |
-| -f  <!-- SendIt -f -->     | --file `<arg>` <!-- SendIt --file <args> -->        | no        | name of the csv file that contains the data                  | no                    | Genesis looks for a new .csv file whose name matches the name of the source table    |
-| -fm <!-- SendIt -fm -->     | --formatMode `<arg>` <!-- SendIt --formatMode <args> -->  | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY  | LEGACY  |
+| -f  <!-- SendIt -f -->     | --file `<arg>` <!-- SendIt --file  -->        | no        | name of the csv file that contains the data                  | no                    | Genesis looks for a new .csv file whose name matches the name of the source table    |
+| -fm <!-- SendIt -fm -->     | --formatMode `<arg>` <!-- SendIt --formatMode  -->  | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY  | LEGACY  |
 | -h  <!-- SendIt -h -->     | --help <!-- SendIt --help -->                | no        | show help on how to use this command                         | no                    | none    |
-| -m  <!-- SendIt -m -->     | --modify `<arg>` <!-- SendIt --modify <args> -->      | no        | key name used to find original record                        | no                    | none    |
-| -mf <!-- SendIt -mf -->     | --modifyFields `<arg>` <!-- SendIt --modifyFields <args> --> | no        | specifies fields to modify (only used with `-m`)             | no                    | none    |
+| -m  <!-- SendIt -m -->     | --modify `<arg>` <!-- SendIt --modify  -->      | no        | key name used to find original record                        | no                    | none    |
+| -mf <!-- SendIt -mf -->     | --modifyFields `<arg>` <!-- SendIt --modifyFields  --> | no        | specifies fields to modify (only used with `-m`)             | no                    | none    |
 | -quiet <!-- SendIt -quiet -->   | --quietMode  <!-- SendIt --quietMode -->          | no        | make database changes without triggering real-time updates in update queue layer | no                    | none    |
 | -r <!-- SendIt -r -->      | --recover <!-- SendIt --recover -->             | no        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | no                    | none    |
-| -t <!-- SendIt -t -->      | --table `<arg>` <!-- SendIt --table <args> -->        | yes       | the name of the database table to be updated or amended      | must be a valid table | none    |
+| -t <!-- SendIt -t -->      | --table `<arg>` <!-- SendIt --table  -->        | yes       | the name of the database table to be updated or amended      | must be a valid table | none    |
 | -v <!-- SendIt -v -->      | --verbose <!-- SendIt --verbose -->             | no        | log every error line to output                               | no                    | none    |
 
 For example:
@@ -978,11 +979,11 @@ The `SetAutoIncrement` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory | Description                                                                                           | Restricted values | Default |
 |----------|--------------------|-----------|-------------------------------------------------------------------------------------------------------|-------------------|-------|      
-| -f <!-- SetAutoIncrement -f -->      | --file `<arg>` <!-- SetAutoIncrement --file <arg> -->    | no | name of the csv file containing the new sequence numbers (this overrides any --value option supplied) | none | AutoIncrementValues.csv |
+| -f <!-- SetAutoIncrement -f -->      | --file `<arg>` <!-- SetAutoIncrement --file-->    | no | name of the csv file containing the new sequence numbers (this overrides any --value option supplied) | none | AutoIncrementValues.csv |
 | -h <!-- SetAutoIncrement -h -->      | --help <!-- SetAutoIncrement --help -->            | no | displays help on using this command                                                                   | none | none | 
-| -s <!-- SetAutoIncrement -s -->      | --field `<arg>` <!-- SetAutoIncrement --field <arg> -->   | no | name of the auto-increment field (when setting the next sequence number for a single field)           | none | none |
-| -t <!-- SetAutoIncrement -t -->      | --table `<arg>` <!-- SetAutoIncrement --table <arg> -->   | no | name of the table that has the auto-increment (when setting the next sequence number for a single field) | none | none |
-| -v <!-- SetAutoIncrement -v -->      | --value `<arg>`  <!-- SetAutoIncrement --value <arg> -->  | no | new sequence number (integer) for the autoincrement (when setting the autoincrement for a single field) | none | none |
+| -s <!-- SetAutoIncrement -s -->      | --field `<arg>` <!-- SetAutoIncrement --field -->   | no | name of the auto-increment field (when setting the next sequence number for a single field)           | none | none |
+| -t <!-- SetAutoIncrement -t -->      | --table `<arg>` <!-- SetAutoIncrement --table  -->   | no | name of the table that has the auto-increment (when setting the next sequence number for a single field) | none | none |
+| -v <!-- SetAutoIncrement -v -->      | --value `<arg>`  <!-- SetAutoIncrement --value  -->  | no | new sequence number (integer) for the autoincrement (when setting the autoincrement for a single field) | none | none |
 
 Note that all fields are optional in principle. But when setting a single field value, you must provide `-t` `-s` and `-v`.
 
@@ -1025,11 +1026,11 @@ The `SetSequence` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory | Description                                                                                                        | Restricted values | Default|
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------------------|---------------|-------|       
-| -f <!-- SetSequence -f -->      | --file `<arg>` <!-- SetSequence --file <arg> -->    | no        | name of csv file containing table-sequence-value sets (these override any --sequence and --value options supplied) | none | none |
+| -f <!-- SetSequence -f -->      | --file `<arg>` <!-- SetSequence --file -->    | no        | name of csv file containing table-sequence-value sets (these override any --sequence and --value options supplied) | none | none |
 | -h <!-- SetSequence -h -->      | --help <!-- SetSequence --help -->            | no        | displays help on how to use the command                                                                            | none | none |
-| -s  <!-- SetSequence -s -->     | --sequence `<arg>` <!-- SetSequence --sequence <arg> --> | no        | two-character ID for the sequence (if setting an individual value)                                                 | none | none |
-| -t <!-- SetSequence -t -->      | --table `<arg>` <!-- SetSequence --table <arg> -->   | no        | name of the table that contains the sequence (if setting an individual value)                        | none | none |
-| -v  <!-- SetSequence -v -->     | --value `<arg>` <!-- SetSequence --value <arg> -->   | no        | new integer value to be set (if setting an individual value)                                                       | none | none |
+| -s  <!-- SetSequence -s -->     | --sequence `<arg>` <!-- SetSequence --sequence --> | no        | two-character ID for the sequence (if setting an individual value)                                                 | none | none |
+| -t <!-- SetSequence -t -->      | --table `<arg>` <!-- SetSequence --table -->   | no        | name of the table that contains the sequence (if setting an individual value)                        | none | none |
+| -v  <!-- SetSequence -v -->     | --value `<arg>` <!-- SetSequence --value -->   | no        | new integer value to be set (if setting an individual value)                                                       | none | none |
 
 All fields are optional in principle. But if you are setting the value for a single sequence, you must provide a `-t` `-s` and `-v`.
 
