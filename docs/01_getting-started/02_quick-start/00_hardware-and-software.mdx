@@ -107,7 +107,8 @@ docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POST
 
 #### H2 embedded database
 
-**genesis-system-definition.kts** file is set with following options
+By default **genesis-system-definition.kts** file is set with following options, this creates H2 file-based database under `{project_folder}/server/h2/` folder in the name of `test` as mentioned in `DbHost` property.
+The database is initiated by JDBC and does not require additional set-up.
 
 ```kotlin
 systemDefinition {
@@ -116,7 +117,7 @@ systemDefinition {
         item(name = "DictionarySource", value = "FILE")
         item(
             name = "DbHost",
-            value = "jdbc:h2:file:./server/test;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,KEY;AUTO_SERVER=TRUE"
+            value = "jdbc:h2:file:./server/h2/test;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,KEY;AUTO_SERVER=TRUE"
         )
         item(name = "DbQuotedIdentifiers", value = true)
     }
@@ -126,6 +127,3 @@ systemDefinition {
 :::warning only for learning purposes
 This set-up is not recommended for production environments or serious development.
 :::
-
-The above setting creates H2 file-based database under `./server` folder in the name of `test` as mentioned in the in `DbHost` property.
-The database is initiated by JDBC and does not require additional set-up.
