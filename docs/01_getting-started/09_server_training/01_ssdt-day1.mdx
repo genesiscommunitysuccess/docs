@@ -306,6 +306,43 @@ Add an exception handler in *EVENT_COUNTERPARTY_INSERT*, enriching the error mes
 Don't forget the returns, in this case `ack()` for success, and `nack(e)` for exceptions.
 :::
 
+### Context eventhandler
+
+The context eventHandler is a special use of the eventHandler where you want to create a context for your onCommit code block; the onValidate results are the context for the onCommit.
+
+This feature is valuable when you want to reduce the database request, to inject more information to be commited, and much more. 
+
+```kotlin
+    contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {
+        onValidate {
+            val company = it.details
+            if(company.companyName == "MY_COMPANY") {
+                validationAck(validationContext = "Best company in the world")
+            } else {
+                validationAck()
+            }
+        }
+        onCommit { event, context ->
+            val parsedContext = context ?: "Missing context"
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to parsedContext)))
+        }
+    }
+```
+
+As the  example shows, there is an additional type defined for the context Event Handler. This is a `String`. It gives you the option of returning a `String` value from the `onValidate` block (see _validationAck_ logic), which can then be captured it in the `onCommit` block (see _context_ lambda parameter).
+
+Because the example creates a validation context, the function `validationAck()` is used at the end of the `onValidate` block, and not just `ack()`.
+
+### Exercise 1.4 Context Event Handler
+
+Implement a cascade delete for the counterparty table. Remember that it needs to validate if there is trades using this counterparty, and delete them as well. You should also implement the onException code block. In case that there are more than 10 trades to be deleted, throw an exception.
+
+:::tip
+Create the `onValidate` block for this new eventhandler, and return a `List<trades>` that is using that counterparty.
+:::
+
 ### Custom reply message type
 
 If you use a custom reply message type, you won’t be able to use the default `ack()` or `validationAck()` functions.  The custom message type needs to be returned from the method.
