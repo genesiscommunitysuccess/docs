@@ -46,3 +46,28 @@ The full name for the cache is: _appname_**-dictionary-cache**. Also, note the `
 ```kotlin
 implementation(project(path = ":product-dictionary-cache", configuration = "codeGen"))
 ```
+
+
+## Updating <module> in processes.xml defintions
+Review all `*-processes.xml` files in the application (main app config module + site-specific/cfg) and update `<module>` tag values to ensure they match the underlying module jar name (without .jar)
+
+In effect, and by way of example, previous modules such as `pal-dataserver` now need to become `genesis-pal-dataserver` (as the underlying dataserver jar filename is `genesis-pal-dataserver.jar`)
+
+This breaking change is due to the previous style leading to clashes in applications which have modules of the same name (e.g with a `<module>` value of `eventhandler`, it could pick either `<app_name>-eventhandler.jar` not `genesis-eventhandler.jar`) and this future proofs to avoid any such clashes going forward
+
+Failing to make this change will lead to errors during `startProcess` or `startServer` similar to below:
+
+```
+Starting process GENESIS_AUTH_REQUEST_SERVER
+2024-03-13 15:51:07:root:INFO:No modules found for name pal-requestserver
+Traceback (most recent call last):
+  File "/home/octo/run//genesis/scripts/unix/python3/startProcess", line 308, in <module>
+    startProcess(processName, sys.argv[2:], verbose)
+  File "/home/octo/run//genesis/scripts/unix/python3/startProcess", line 178, in startProcess
+    classpath += genesis.buildClasspathForModules(module.split(','))
+  File "/home/octo/run/genesis/scripts/unix/python3/pymodules/genesis.py", line 45, in buildClasspathForModules
+    classpath += genesis.buildClasspathForModule(module, silent, useGenerated)
+TypeError: 'NoneType' object is not iterable
+```
+
+Where the fix is to change <module> definition from `pal-requestserver` to `genesis-pal-requestserver`
