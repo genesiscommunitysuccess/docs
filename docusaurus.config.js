@@ -1,8 +1,8 @@
 require("dotenv").config();
 
-const baseUrl = process.env.BASE_URL || '/';
-const routeBasePath = '/';
-const GTM_ID = process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, prod one should be set on CI (master)
+const baseUrl = process.env.BASE_URL || "/";
+const routeBasePath = "/";
+const GTM_ID = process.env.GTM_ID || "GTM-5GTR43J"; // default to uat GTM_ID, prod one should be set on CI (master)
 
 const DEV_ANALYTICS =
   "https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS_dev_faea79accbcd255c7f124004.js";
@@ -69,39 +69,23 @@ module.exports = async function createConfigAsync() {
         },
       ],
       [
-        require.resolve("@cmfcmf/docusaurus-search-local"),
-        {
-          indexBlog: true,
-          indexPages: true,
-          indexDocSidebarParentCategories: 3,
-          lunr: {
-            // This controls how quickly the boost given by a common word reaches saturation. Increasing it
-            // will slow down the rate of saturation and lower values result in quicker saturation. The
-            // default value is 1.2. If the collection of documents being indexed have high occurrences
-            // of words that are not covered by a stop word filter, these words can quickly dominate any
-            // similarity calculation. In these cases, this value can be reduced to get more balanced results.
-            k1: 1.2,
-            // By default, we rank pages where the search term appears in the title higher than pages where
-            // the search term appears in just the text. This is done by "boosting" title matches with a
-            // higher value than content matches. The concrete boosting behavior can be controlled by changing
-            // the following settings.
-            titleBoost: 10,
-            contentBoost: 1,
-            tagsBoost: 5,
-            parentCategoriesBoost: 2, // Only used when indexDocSidebarParentCategories > 0
-          },
-        },
-      ],
-      [
         require.resolve("docusaurus-gtm-plugin"),
         {
           id: GTM_ID,
         },
       ],
-      (process.env["COPY_DOCS"] === 'true' ? [require.resolve('api-docs-sync'), {
-        manifest: require(require.resolve('api-docs-sync/manifest')).default,
-        processedMap: require(require.resolve('api-docs-sync/processedMap')),
-      }] : null),
+      process.env["COPY_DOCS"] === "true"
+        ? [
+            require.resolve("api-docs-sync"),
+            {
+              manifest: require(require.resolve("api-docs-sync/manifest"))
+                .default,
+              processedMap: require(require.resolve(
+                "api-docs-sync/processedMap"
+              )),
+            },
+          ]
+        : null,
       "docusaurus-plugin-matomo",
       "./plugins/webpack-options",
     ],
@@ -145,7 +129,24 @@ module.exports = async function createConfigAsync() {
         },
       ],
     ],
-    themes: ["@docusaurus/theme-live-codeblock"],
+    themes: [
+      "@docusaurus/theme-live-codeblock",
+      [
+        require.resolve("@easyops-cn/docusaurus-search-local"),
+        /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+        ({
+          hashed: true,
+          language: ["en"],
+          highlightSearchTermsOnTargetPage: true,
+          explicitSearchResultPath: true,
+          indexDocs: true,
+          indexBlog: true,
+          indexPages: true,
+          docsRouteBasePath: routeBasePath,
+          useAllContextsWithNoSearchContext: true,
+        }),
+      ],
+    ],
     themeConfig: {
       webpackOptions: {
         options: {
