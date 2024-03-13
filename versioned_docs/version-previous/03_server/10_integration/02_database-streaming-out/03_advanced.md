@@ -24,9 +24,9 @@ generateSQLToRDB [options]
 
 | Argument | Argument long name      | Mandatory |               Description                    | Restricted values         |
 |----------|-------------------------|-----------|----------------------------------------------|---------------------------|       
-| -cfg <!-- generateSQLToRDB -cfg -->    |  --configFile `<arg>` <!-- generateSQLToRDB --configFile <args> -->  | No        | genesistodb config xml file to be modified   | No                        |                   
-| -dbName <!-- generateSQLToRDB -dbName --> |  --databaseName `<arg>` <!-- generateSQLToRDB --databaseName <args> --> | No        | the database name for Oracle dbs             | No                        |         
-| -dbType <!-- generateSQLToRDB -dbType --> |  --databaseType `<arg>` <!-- generateSQLToRDB --databaseType <args> --> | No        | the database type                            | MSSQL, ORACLE or POSTGRES |                    
-| -f <!-- generateSQLToRDB -f -->      |  --file `<arg>` <!-- generateSQLToRDB --file <args> -->        | No        | name of the sql file to export table         | No                        |             
+| -cfg <!-- generateSQLToRDB -cfg -->    |  --configFile `<arg>` <!-- generateSQLToRDB --configFile (args) -->  | No        | genesistodb config xml file to be modified   | No                        |                   
+| -dbName <!-- generateSQLToRDB -dbName --> |  --databaseName `<arg>` <!-- generateSQLToRDB --databaseName (args) --> | No        | the database name for Oracle dbs             | No                        |         
+| -dbType <!-- generateSQLToRDB -dbType --> |  --databaseType `<arg>` <!-- generateSQLToRDB --databaseType (args) --> | No        | the database type                            | MSSQL, ORACLE or POSTGRES |                    
+| -f <!-- generateSQLToRDB -f -->      |  --file `<arg>` <!-- generateSQLToRDB --file (args) -->        | No        | name of the sql file to export table         | No                        |             
 | -h  <!-- generateSQLToRDB -h -->     |  --help <!-- generateSQLToRDB --help -->                | No        | show usage information                       | No                        |
-| -t <!-- generateSQLToRDB -t -->      |  --table `<arg>` <!-- generateSQLToRDB --table <args> -->       | No        | the name of the table to export to csv       | No                        |               
+| -t <!-- generateSQLToRDB -t -->      |  --table `<arg>` <!-- generateSQLToRDB --table (args) -->       | No        | the name of the table to export to csv       | No                        |               
