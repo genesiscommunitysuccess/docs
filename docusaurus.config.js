@@ -12,12 +12,6 @@ const baseUrl = process.env.BASE_URL || "/";
 const routeBasePath = "/";
 const GTM_ID = process.env.GTM_ID || "GTM-5GTR43J"; // default to uat GTM_ID, prod one should be set on CI (master)
 
-const DEV_ANALYTICS =
-  "https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS_dev_faea79accbcd255c7f124004.js";
-const PROD_ANALYTICS =
-  "https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS.js";
-const MATOMO_URL = GTM_ID === "GTM-5GTR43J" ? DEV_ANALYTICS : PROD_ANALYTICS;
-
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Low-code Platform For Financial Markets",
@@ -84,7 +78,6 @@ const config = {
           },
         ]
       : null,
-    "docusaurus-plugin-matomo",
   ],
   presets: [
     [
@@ -197,9 +190,6 @@ const config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
       additionalLanguages: ["java", "kotlin", "powershell", "groovy"],
-    },
-    matomo: {
-      matomoUrl: MATOMO_URL,
     },
   },
   i18n: {
