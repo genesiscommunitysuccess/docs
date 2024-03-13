@@ -125,7 +125,7 @@ Similar to a Data Server, you can provide dynamic permissioning on a Request Ser
     }
 ```
 
-When you use [Custom Request Servers](../../../server/request-server/advanced/#custom-request-servers), permissioning is different; it is similar to permissioning for Event Handlers.
+When you use [Custom Request Servers](#custom-request-servers), permissioning is different; it is similar to permissioning for Event Handlers.
 You can use any class/DAO as input and output classes; however, you cannot use field syntax in an auth block: for example, Use instrumentId instead of INSTRUMENT_DETAILS.INSTRUMENT_ID
 
 ```kotlin
@@ -174,7 +174,7 @@ By defining your own Request Servers, you have maximum flexibility.
 We recommend that you locate your classes within the messages module of your application. This is where we place all the custom message types for our application. You need to ensure that the _app-name_**-script-config** module has a dependency on the messages module.
 
 ```bash
-    api(project(":&#123;app-name}-messages"))
+    api(project("{app-name}-messages"))
 ```
 
 The `requestReply` code blocks can be as simple or complex as your requirements. They are useful, for example, if you want to request data from a number of different tables and views that are not related. By nesting and joining all the relevant data in your `requestReply` statement, you create your own metadata for the Request Server, so it can then be used anywhere in the module.
@@ -226,6 +226,13 @@ requestReply<[input class], [output class]> ("{optional name}") {
   }
 }
 ```
+
+#### Types of replies 
+
+Using custom request servers grants you the ability to use three types of replies:
+- *reply*: Expects a type of `Flow` to be returned. So it can be used with [`getBulk`](../../../database/database-interface/entitydb#getbulk) and [`getRange`](../../../database/database-interface/entitydb#getrange)
+- *replySingle*: Expects a return in type of `<output class>` you defined your request server. 
+- *replyList*: Expects a return in type of `List<E>`
 
 ### Examples
 In this example, we define two data classes; Hello and World. We use these to create a Hello World request:
