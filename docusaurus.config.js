@@ -97,7 +97,8 @@ const config = {
   ],
   presets: [
     [
-      "@docusaurus/preset-classic",
+      "classic",
+      /** @type {import('@docusaurus/preset-classic').Options} */
       {
         // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs
         docs: {
@@ -115,7 +116,7 @@ const config = {
           editCurrentVersion: false,
           breadcrumbs: false,
           routeBasePath,
-          sidebarPath: require.resolve("./sidebars.js"),
+          sidebarPath: "./sidebars.js",
           lastVersion: "current",
           versions: {
             current: {
@@ -129,7 +130,7 @@ const config = {
           },
         },
         theme: {
-          customCss: require.resolve("./src/css/custom.css"),
+          customCss: "./src/css/custom.css",
         },
       },
     ],
