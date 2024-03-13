@@ -176,7 +176,7 @@ The `requestReply` code blocks can be as simple or complex as your requirements.
 ```kotlin
 // the name is optional, if none is provided, then request will be based on the 
 // output class, e.g. REQ_OUTPUT_CLASS
-requestReply<[input class], [output class]> ("{optional name}") {
+requestReply<[InputClass], [OutputClass]> ("{optional name}") {
   // permissioning is optional
   permissioning {
     // multiple auth blocks can be combined with the and operator and the or operator
@@ -218,6 +218,16 @@ requestReply<[input class], [output class]> ("{optional name}") {
   }
 }
 ```
+
+
+#### Types of replies 
+
+Using custom request servers grants you the ability to use three types of replies:
+- **reply**: Expects a type of `Flow<OutputClass>` to be returned.
+- **replySingle**: Expects a return in type of `<OutputClass>` you defined your request server. 
+- **replyList**: Expects a return in type of `List<OutputClass>`. 
+
+For all of these type of replies, you are granted access to the parameter `request`. In case of our previous example, the `request` is type of `InputClass`.
 
 ### Examples
 In this example, we define two data classes; Hello and World. We use these to create a Hello World request:
