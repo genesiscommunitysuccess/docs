@@ -6,6 +6,8 @@
 
 require("dotenv").config();
 
+import { themes as prismThemes } from "prism-react-renderer";
+
 const baseUrl = process.env.BASE_URL || "/";
 const routeBasePath = "/";
 const GTM_ID = process.env.GTM_ID || "GTM-5GTR43J"; // default to uat GTM_ID, prod one should be set on CI (master)
@@ -93,7 +95,6 @@ const config = {
         ]
       : null,
     "docusaurus-plugin-matomo",
-    "./plugins/webpack-options",
   ],
   presets: [
     [
@@ -155,17 +156,7 @@ const config = {
     ],
   ],
   themeConfig: {
-    webpackOptions: {
-      options: {
-        // will be merged into the final config using webpack-merge
-        optimization: {
-          // TODO: remove the temporary hack where we throw the iife bundle into node_modules manually.
-          // Will likely need these to avoid minification breaking things.
-          // mangleExports: false,
-          // minimize: false,
-        },
-      },
-    },
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     colorMode: {
       disableSwitch: true,
     },
@@ -213,6 +204,8 @@ const config = {
       copyright: `© genesis global ${new Date().getFullYear()}. All rights reserved.`,
     },
     prism: {
+      theme: prismThemes.github,
+      darkTheme: prismThemes.dracula,
       additionalLanguages: ["java", "kotlin", "powershell", "groovy"],
     },
     matomo: {
