@@ -53,5 +53,4 @@ camel {
     }
 }
 ```
-
-For further details and configuration options see, the Apache Camel [SFTP component]([https://camel.apache.org/components/3.16.x/sftp-component.html](https://camel.apache.org/components/sftp-component.html)https://camel.apache.org/components/sftp-component.html) documentation.
+For further details and configuration options see, the Apache Camel [SFTP component](https://camel.apache.org/components/sftp-component.html) documentation.
