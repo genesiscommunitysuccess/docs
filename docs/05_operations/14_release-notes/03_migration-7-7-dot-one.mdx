@@ -48,14 +48,14 @@ implementation(project(path = ":product-dictionary-cache", configuration = "code
 ```
 
 
-## Updating <module> in processes.xml definitions
-Review all `*-processes.xml` files in the application (main app config module + site-specific/cfg) and update `<module>` tag values to ensure they match the underlying module jar name (without .jar)
+## Update module names in processes.xml
+Review all _appname_**-processes.xml** files in your application (main app config module + site-specific/cfg). In these files, update the `<module>` tag values to ensure that they match the underlying module jar name (without .jar).
 
-In effect, and by way of example, previous modules such as `pal-dataserver` now need to become `genesis-pal-dataserver` (as the underlying dataserver jar filename is `genesis-pal-dataserver.jar`)
+Previous modules, such as `pal-dataserver`, now need to become `genesis-pal-dataserver` (because the underlying jar filename for the Data Server is `genesis-pal-dataserver.jar`)
 
-This breaking change is due to the previous style leading to clashes in applications that have modules of the same name (e.g with a `<module>` value of `eventhandler`, it could pick either `<app_name>-eventhandler.jar` not `genesis-eventhandler.jar`). This avoids any such clashes going forward.
+This breaking change has been made because the previous style caused clashes in applications that have modules of the same name. For example, a `<module>` value of `eventhandler` could pick up `<app_name>-eventhandler.jar` instead of `genesis-eventhandler.jar`). 
 
-Failing to make this change will lead to errors during `startProcess` or `startServer`. in the example below, we have failed to change the <module> definition from `pal-requestserver` to `genesis-pal-requestserver`:
+Failing to make this change will lead to errors during `startProcess` or `startServer`. in the example below, we have failed to change the `<module>` definition from `pal-requestserver` to `genesis-pal-requestserver`:
 
 ```
 Starting process GENESIS_AUTH_REQUEST_SERVER
@@ -70,4 +70,4 @@ Traceback (most recent call last):
 TypeError: 'NoneType' object is not iterable
 ```
 
-So, the fix is to change the <module> definition from `pal-requestserver` to `genesis-pal-requestserver`.
+So, the fix is to change the `<module>` definition from `pal-requestserver` to `genesis-pal-requestserver`.
