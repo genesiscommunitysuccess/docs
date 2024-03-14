@@ -48,14 +48,14 @@ implementation(project(path = ":product-dictionary-cache", configuration = "code
 ```
 
 
-## Updating <module> in processes.xml defintions
+## Updating <module> in processes.xml definitions
 Review all `*-processes.xml` files in the application (main app config module + site-specific/cfg) and update `<module>` tag values to ensure they match the underlying module jar name (without .jar)
 
 In effect, and by way of example, previous modules such as `pal-dataserver` now need to become `genesis-pal-dataserver` (as the underlying dataserver jar filename is `genesis-pal-dataserver.jar`)
 
-This breaking change is due to the previous style leading to clashes in applications which have modules of the same name (e.g with a `<module>` value of `eventhandler`, it could pick either `<app_name>-eventhandler.jar` not `genesis-eventhandler.jar`) and this future proofs to avoid any such clashes going forward
+This breaking change is due to the previous style leading to clashes in applications that have modules of the same name (e.g with a `<module>` value of `eventhandler`, it could pick either `<app_name>-eventhandler.jar` not `genesis-eventhandler.jar`). This avoids any such clashes going forward.
 
-Failing to make this change will lead to errors during `startProcess` or `startServer` similar to below:
+Failing to make this change will lead to errors during `startProcess` or `startServer`. in the example below, we have failed to change the <module> definition from `pal-requestserver` to `genesis-pal-requestserver`:
 
 ```
 Starting process GENESIS_AUTH_REQUEST_SERVER
@@ -70,4 +70,4 @@ Traceback (most recent call last):
 TypeError: 'NoneType' object is not iterable
 ```
 
-Where the fix is to change <module> definition from `pal-requestserver` to `genesis-pal-requestserver`
+So, the fix is to change the <module> definition from `pal-requestserver` to `genesis-pal-requestserver`.
