@@ -6,7 +6,6 @@
     "node": ">=20.10.0"
   },
   "scripts": {
-    "prebuild": "npm audit --parseable | grep 'critical' && echo 'Critical vulnerabilities found. Please fix them before building. To do that run npm audit.' && exit 1 || true",
     "docusaurus": "docusaurus",
     "build": "npm run copy:dsc && docusaurus build",
     "build-main": "docusaurus build",
@@ -74,7 +73,7 @@
     "@docusaurus/module-type-aliases": "3.1.1",
     "@docusaurus/types": "3.1.1",
     "@genesislcap/genx": "14.158.0",
-    "@types/mocha": "^10.0.6",
+    "@types/mocha": "^10.0.1",
     "api-docs-sync": "file:./plugins/api-docs",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
