@@ -128,9 +128,9 @@ Before you can make any calls on these resources, you will have to permission yo
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 
-In the example below, we are using Insomnia as the client API.
+In the example below, we are using postman as the client API.
 
-![](/img/test-rs-instrument-success.png)
+![](/img/test-rs-postman.png)
 
 There is no need for any information in the body, as this is a **GET** request.
 
@@ -144,8 +144,16 @@ In front of the url, this has been set to a **GET** call.
 The url consists of:
 
 - the address or hostname of the server
-- if necessary, some extra routing; in this case **sm** uses a proxy to access the server
+- if necessary, some extra routing;
 - the name of the request server, preceded by **REQ_**
 
+Since this is a request server, it will require additional parameters as part of the request. To do that, you need to provide the query parameters in that way: `REQUEST.{NAME_OF_THE_FIELD}`. So your URL would be like this:
+
+```postman
+.../REQ_{NAME_OF_THE_REQUEST}?REQUEST.{NAME_OF_THE_FIELD1}=1&REQUEST.{NAME_OF_THE_FIELD2}=2
+```
+
 When you have this in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
+
+import { getTableHeadUtilityClass } from "@mui/material"
 
