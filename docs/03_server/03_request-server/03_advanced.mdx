@@ -227,15 +227,15 @@ requestReply<[InputClass], [OutputClass]> ("{optional name}") {
 }
 ```
 
+#### Types of reply
 
-#### Types of replies 
+There are three types of reply that you can use with custom request servers:
 
-Using custom request servers grants you the ability to use three types of replies:
-- **reply**: Expects a type of `Flow<OutputClass>` to be returned.
-- **replySingle**: Expects a return in type of `<OutputClass>` you defined your request server. 
-- **replyList**: Expects a return in type of `List<OutputClass>`. 
+- **reply** expects a type of `Flow<OutputClass>` to be returned.
+- **replySingle** expects a return of the `<OutputClass>` type that you defined in your Request Server. 
+- **replyList** expects a return of the type `List<OutputClass>`. 
 
-For all of these type of replies, you are granted access to the parameter `request`. In case of our previous example, the `request` is type of `InputClass`.
+For all of these, you can use the parameter `request`. In our previous example, the `request` is of the type `InputClass`.
 
 ### Examples
 In this example, we define two data classes; Hello and World. We use these to create a Hello World request:
