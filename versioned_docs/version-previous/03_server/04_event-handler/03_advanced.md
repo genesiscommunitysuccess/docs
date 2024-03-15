@@ -16,41 +16,29 @@ tags:
 
 ## Custom reply message type
 
-When using eventhandlers, you can specify custom reply message types to be used. This will provide more flexibility to your eventhandlers. In order to use that,
-you won’t be able to use the default `ack()` or `validationAck()` functions. The custom message type needs to be returned instead.
+In an `eventhandler`, you can specify custom reply message types to be returned instead of the default `ack()` or `validationAck()` functions. These custom replies give you more flexibility. 
 
-For a custom message type called `TradeEvent` defined as:
-
-```kotlin
-data class TradeEvent(
-    val price: Double,
-    val quantity: Int,
-){
-    init{
-        require(price > 0) { "Price cannot be negative "}
-        require(quantity > 0) { "Quantity cannot be negative "}
-    }
-}
-```
-
-The `init` codeblock is a special block that is used to initialize an object. So when this class is called, it will validate if `price` and `quantity` are grater than zero. If not, it will throw an `IllegalArgumentException` which can be handled in the [onException code block](#onException).
-
-For a custom message reply type called `CustomTradeEventReply` defined as:
+Let us look at an example. This is based on a table called `TRADE` with a primary key of `TRADE_ID` and at least two fields: `PRICE` and `QUANTITY`. Here is an example of a custom message reply type called `CustomTradeEventReply`:
 
 ```kotlin
 sealed class CustomTradeEventReply : Outbound() {
     class TradeEventValidateAck : CustomTradeEventReply()
-    data class TradeEventAck(val tradeId: String) : CustomTradeEventReply()
+    data class TradeEventAck(val tradeId: String, val message: String) : CustomTradeEventReply()
     data class TradeEventNack(val error: String) : CustomTradeEventReply()
 }
 ```
 
-Add `CustomTradeEventReply` under **{app-name}-messages** and assemble. Once you have built, add `api(project("{app-name}-messages"))` to your build.gradle.kts file under **{app-name}-script-config/build.gradle.kts**.
+So how would we use that in an `eventHandler` codeblock?
 
-you can now use the following example Event Handler:
+1. Add the example to the file _app-name_**-messages** and assemble. 
+2. Once you have built, add `api(project("{app-name}-messages"))` to your **build.gradle.kts** file under **{app-name}-script-config/build.gradle.kts**.
+
+You can now use the following example `eventHandler`:
+
+If you have built your fields and tables correctly, IntelliJ will be able to find `Trade`. If not, go back and [build your fields and tables](../../../getting-started/learn-the-basics/data-model/).
 
 ```kotlin
-    eventHandler<TradeEvent, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
+    eventHandler<Trade, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
         onException { event, throwable ->
             CustomTradeEventReply.TradeEventNack(throwable.message!!)
         }
@@ -64,18 +52,38 @@ you can now use the following example Event Handler:
         onCommit { event ->
             val trade = event.details
             val result = entityDb.insert(trade)
-            CustomTradeEventReply.TradeEventAck(result.record.tradeId)
+            CustomTradeEventReply.TradeEventAck(result.record.tradeId, "Trade inserted")
         }
     }
 ```
 
-The following code assumes you have built your fields and tables after you created your `TradeEvent` under **{app-name}-config** with a primary key of `tradeId`. If intelliJ can't find your `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](../../../getting-started/learn-the-basics/data-model/).
+Let's look at some detail on those codeblocks.
 
-:::info
-When using custom reply messages, the onValidate codeblock becomes required.
-:::
+### onValidate
 
-The response from the server also change when using custom reply message also change, so the client-side of your application needs to be aware of that. When using the default eventhandler you would get a response from the server like this in case of an `ack()`:
+For custom reply messages, the 'onValidate' codeblock is mandatory.
+
+Remember - custom replies do not use the default `ack()` or `validationAck()` functions.
+
+### Server response
+
+The response from the server is different for custom reply messages, so the client side of your application needs to be aware of that. Each field you define in your custom request reply is included in the json response. In our example, we specified two fields to be returned in a `TradeEventAck()`: tradeId and message. 
+
+```json{3,4}
+{
+    "GENERATED": [],
+    "TRADE_ID": "1",
+    "MESSAGE": "Trade inserted",
+    "MESSAGE_TYPE": "TRADE_EVENT_ACK",
+    "SOURCE_REF": "****",
+    "METADATA": {
+        "IS_EMPTY": true,
+        "ALL": {}
+    }
+}
+```
+
+By comparison, an `ack()` in a standard (non-custom) `eventhandler` generates a response from the server that looks like this:
 
 ```json
 {
@@ -88,25 +96,6 @@ The response from the server also change when using custom reply message also ch
     }
 }
 ```
-
-But when using a custom reply message, each field you create will be converted into a field in the json response. For example, with the previous example, your response would be: 
-
-```json
-{
-    "GENERATED": [],
-    "TRADE_ID": "1",
-    "MESSAGE_TYPE": "TRADE_EVENT_ACK",
-    "SOURCE_REF": "****",
-    "METADATA": {
-        "IS_EMPTY": true,
-        "ALL": {}
-    }
-}
-```
-
-Because of the of arguments of the class you created was `tradeId`, and the type of the reply message was: `TradeEventAck`.
-
-d your `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](../../../getting-started/learn-the-basics/data-model/).
 
 ### onException
 
