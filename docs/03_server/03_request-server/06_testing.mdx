@@ -147,7 +147,7 @@ The url consists of:
 - if necessary, some extra routing;
 - the name of the request server, preceded by **REQ_**
 
-Since this is a request server, it will require additional parameters as part of the request. To do that, you need to provide the query parameters in that way: `REQUEST.{NAME_OF_THE_FIELD}`. So your URL would be like this:
+A Request Server requires additional parameters as part of the request. Here we provide the query parameters: `REQUEST.{NAME_OF_THE_FIELD}`. So your URL would be like this:
 
 ```postman
 .../REQ_{NAME_OF_THE_REQUEST}?REQUEST.{NAME_OF_THE_FIELD1}=1&REQUEST.{NAME_OF_THE_FIELD2}=2
