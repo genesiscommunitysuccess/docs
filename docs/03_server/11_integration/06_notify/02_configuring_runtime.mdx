@@ -9,9 +9,9 @@ tags:
   - configuring runtime
 ---
 
-You need to add some dependencies in two different files in order to your notify to work successfully:
+You need to add some dependencies to two different files in order to make Notify work successfully:
 
-1. Add the notifyVersion in the file **server/jvm/gradle.properties**:
+1. Add the `notifyVersion` to the file **server/jvm/gradle.properties**:
 
 ```xml
 notifyVersion=x.y.z
@@ -25,7 +25,7 @@ dependencies {
     implementation("global.genesis:genesis-notify-config:${properties["notifyVersion"]}")
 }
 ```
-This will create the necessary fields and tables so notify can run.
+This creates the fields and tables that enable Notify to run.
 
 3. Add a reference to your **server/jvm/alpha-deploy/build.gradle.kts** file:
 
@@ -44,8 +44,8 @@ dependencies {
 ```
 
 4. Reload the gradle project so the dependencies can be downloaded.
-5. Run the `genesisInstall` script so the notify folder will be created in your run time folder, containing all necessary configuration and scripts.
+5. Run the `genesisInstall` script to create the notify folder in your runtime folder, as well as all the necessary configuration and scripts.
 6. Run the `remap` script so the tables and fields are created in your database.
 7. Start the server.
 
-After following these seven steps, a new process will appear in your mon tab called: `GENESIS_NOTIFY`. This is the process that manages the notify module.
+After following these seven steps, a new process will appear in your **mon** tab: **GENESIS_NOTIFY**. This is the process that manages the Notify module.
