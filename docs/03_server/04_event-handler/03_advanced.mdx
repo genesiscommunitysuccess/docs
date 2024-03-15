@@ -15,30 +15,14 @@ tags:
 
 ## Custom reply message type
 
-In an `eventhandler`, you can specify custom reply message types to be returned instead of the default `ack()` or `validationAck()` functions. This gives you more flexibility. 
-
-In the example below, we define a custom message type called `TradeEvent`:
-
-```kotlin
-data class TradeEvent(
-    val price: Double,
-    val quantity: Int,
-){
-    init{
-        require(price > 0) { "Price cannot be negative "}
-        require(quantity > 0) { "Quantity cannot be negative "}
-    }
-}
-```
-
-The `init` codeblock is used to initialise an object. When this class is called, it validates if `price` and `quantity` are greater than zero. If not, it throws an `IllegalArgumentException`, which can be handled in the [onException code block](#onException).
+In an `eventhandler`, you can specify custom reply message types to be returned instead of the default `ack()` or `validationAck()` functions. This gives you more flexibility. In the following example, we are going to use a table called `Trade` with a primary key of `tradeId` and at least two fields: `price` and `quantity`.
 
 Here is an example of a custom message reply type called `CustomTradeEventReply`:
 
 ```kotlin
 sealed class CustomTradeEventReply : Outbound() {
     class TradeEventValidateAck : CustomTradeEventReply()
-    data class TradeEventAck(val tradeId: String) : CustomTradeEventReply()
+    data class TradeEventAck(val tradeId: String, val message: String) : CustomTradeEventReply()
     data class TradeEventNack(val error: String) : CustomTradeEventReply()
 }
 ```
@@ -48,7 +32,7 @@ For the example above, add `CustomTradeEventReply` under _app-name_**-messages**
 You can now use the following example Event Handler:
 
 ```kotlin
-    eventHandler<TradeEvent, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
+    eventHandler<Trade, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
         onException { event, throwable ->
             CustomTradeEventReply.TradeEventNack(throwable.message!!)
         }
@@ -62,18 +46,18 @@ You can now use the following example Event Handler:
         onCommit { event ->
             val trade = event.details
             val result = entityDb.insert(trade)
-            CustomTradeEventReply.TradeEventAck(result.record.tradeId)
+            CustomTradeEventReply.TradeEventAck(result.record.tradeId, "Trade inserted")
         }
     }
 ```
 
-The following code assumes you have built your fields and tables after you created your `TradeEvent` under _app-name_**-config** with a primary key of `tradeId`. If intelliJ can't find your `TradeEvent`, go back and [build your fields and tables](../../../getting-started/learn-the-basics/data-model/).
+The code above assumes you have built your fields and tables correctly. If intelliJ can't find your `Trade`, go back and [build your fields and tables](../../../getting-started/learn-the-basics/data-model/).
 
 :::info
 When using custom reply messages, the 'onValidate' codeblock is required.
 :::
 
-The response from the server also change when using custom reply message also change, so the client-side of your application needs to be aware of that. When using the default eventhandler you would get a response from the server like this in case of an `ack()`:
+The response from the server also changes when using custom reply message, so the client-side of your application needs to be aware of that. When using the default eventhandler you would get a response from the server like this in case of an `ack()`:
 
 ```json
 {
@@ -93,6 +77,7 @@ But when using a custom reply message, each field you create will be converted i
 {
     "GENERATED": [],
     "TRADE_ID": "1",
+    "MESSAGE": "Trade inserted",
     "MESSAGE_TYPE": "TRADE_EVENT_ACK",
     "SOURCE_REF": "****",
     "METADATA": {
@@ -101,9 +86,6 @@ But when using a custom reply message, each field you create will be converted i
     }
 }
 ```
-
-Because one of the arguments of the class you created was `tradeId`, and the type of the reply message was: `TradeEventAck`.
-
 
 ### onException
 
