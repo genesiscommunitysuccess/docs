@@ -116,11 +116,11 @@ If you use Genesis Console, this gives you a simple way of testing components.
 
 ![](/img/test-console-rs-success.png)
 
-For more detailed information about using Genesis Console for manual testing, head over to the [testing documetation](../../../server/request-server/testing).
+For more detailed information about using Genesis Console for manual testing, go to our [testing documetation](../../../server/request-server/testing).
 
 ### Testing with an API client
 
-An API client is useful way of testing components. As a client, it is effectively a front end seeking information from the server.
+An API client is a useful way of testing components. As a client, it is effectively a front end seeking information from the server.
 
 The API client enables you to create calls to the resources in your server - Data Servers, Request Servers and Event Handlers. Then you can just click to run a call and see what response you get.
 
@@ -128,7 +128,7 @@ Before you can make any calls on these resources, you will have to permission yo
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 
-In the example below, we are using postman as the client API.
+In the example below, we are using Postman as the client API.
 
 ![](/img/test-rs-postman.png)
 
@@ -147,7 +147,7 @@ The url consists of:
 - if necessary, some extra routing;
 - the name of the request server, preceded by **REQ_**
 
-Since this is a request server, it will require additional parameters as part of the request. To do that, you need to provide the query parameters in that way: `REQUEST.{NAME_OF_THE_FIELD}`. So your URL would be like this:
+A request server requires additional parameters as part of the request. Here, we provide the query parameters: `REQUEST.{NAME_OF_THE_FIELD}`. So your URL would be like this:
 
 ```postman
 .../REQ_{NAME_OF_THE_REQUEST}?REQUEST.{NAME_OF_THE_FIELD1}=1&REQUEST.{NAME_OF_THE_FIELD2}=2
