@@ -31,11 +31,11 @@ import MinimumRequirement from '/snippet/_minimun_requirement.mdx'
 
 <MinimumRequirement />
 
-### Accessing the Genesis repository and configuring the Genesis packages
+### Check your versions
 
 First, we need you to make two checks:
 
-1. Run 'npm -v' to make sure that you have the correct versions of npm. If you have an older version of npm, make sure you uninstall it before downloading and installing the recommended version.
+1. Run 'npm -v' to make sure that you have the correct version of npm. 
 2. Run `npm info @genesislcap/foundation-ui` to check that you have the correct version of our Foundation UI package. If everything is ok, you should see a response like this:
 
 ```terminal
@@ -44,12 +44,14 @@ Genx CLI
 https://github.com/genesislcap/foundation-ui#readme
 ```
 
+### Do you need to set up a proxy?
 If you are behind a corporate network, you might need to set up a proxy:
 
 ```shell
 npm config set proxy http://proxy_host:port
 npm config set https-proxy https://proxy_host:port
 ```
+### Install the Genx CLI
 Install GenX CLI; this is a Genesis tool that enables you to seed projects.
 
 ```terminal
