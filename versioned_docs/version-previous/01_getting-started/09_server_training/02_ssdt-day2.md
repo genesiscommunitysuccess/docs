@@ -19,7 +19,7 @@ This day covers:
 
 ## Notify
 
-The Genesis platform includes a notification module called *GENESIS_NOTIFY* by default. It does not run automatically and, starting from GSF version 6.6.x, there is a package available for it: `genesis-notify`.
+The Genesis platform includes a notification module called *GENESIS_NOTIFY* by default. The package for this is `genesis-notify`. It does not run automatically.
 
 As you have already cloned the Server Developer Training starting repository from [here](https://github.com/genesiscommunitysuccess/servertraining-seed), you have everything you need to run it.
 
@@ -33,16 +33,16 @@ The manual steps to use the `genesis-notify` package are not difficult:
 
 Now you need to reload the gradle project, and run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) tasks to verify that the new process works as expected.
 
-If everything went correctly, you were supposed to see a new process called `GENESIS_NOTIFY` in the mon tab.
+If everything works, you will see a new process called **GENESIS_NOTIFY** in the **mon** tab.
 
 :::tip
-if you are building using the `genesisInstall` command with the `--compactProcesses` option, the *GENESIS_NOTIFY* process will be running under *GENESIS_COMPACT_PROCESS*.
+if you build using the `genesisInstall` command with the `--compactProcesses` option, the *GENESIS_NOTIFY* process will be running under **GENESIS_COMPACT_PROCESS**.
 :::
 
 ### Set up GENESIS_NOTIFY
 
-First we need to create the gateway. To do that, create a new file called **genesis-notify.kts** under your **server/jvm/alpha-site-specific/src/main/resources/scripts/**
-and add the following information.
+First, we need to create the gateway. To do that, create a new file called **genesis-notify.kts** under your **server/jvm/alpha-site-specific/src/main/resources/scripts/**
+and add the following information, including the details of the the SMTP server you are using.
 
 ```kotlin
 notify {
@@ -60,8 +60,6 @@ notify {
 }
 ```
 
-Note that you need to provide some information based on the SMTP server you are using. 
-
 ### Insert NOTIFY_ROUTE
 
 Create a file NOTIFY_ROUTE.csv as shown below, then insert it in the table NOTIFY_ROUTE using the command `SendIt`.
@@ -72,7 +70,8 @@ TRAINING_NOTIFY_01,NOTIFY_EMAIL,email
 ```
 
 :::tip Add connection details to the system definition
-You can create new **items** under the system definition. To do that open the **alpha-system-definition.kts** file and add the details of the connection for the SMTP server:
+You need to add the details using new `item` statements in the system definition. Open the **alpha-system-definition.kts** file and use the code below, adding the details of your SMTP server connection:
+
 ```kotlin {5-11}
 ...
 systemDefinition {
@@ -90,22 +89,19 @@ systemDefinition {
 }
 ```
 
-After that, you can use `systemDefinition["{NAME_OF_THE_ITEM}"].get()` to get access to its value.
+Once this is in place, you can use `systemDefinition["{NAME_OF_THE_ITEM}"].get()` to get access to its value.
 :::
 
 ### Insert EMAIL_DIST_NOTIFY_ROUTE_EXT
 
-And finally, create the `EMAIL_DIST_NOTIFY_ROUTE_EXT.csv` as shown below, then insert it in the table EMAIL_DIST_NOTIFY_ROUTE_EXT using the command `SendIt`.
+Finally, create the `EMAIL_DIST_NOTIFY_ROUTE_EXT.csv` as shown below. This creates the distribution email that will be used when the topic `NOTIFY_EMAIL` is used. Run the command `SendIt`to insert the details in the table EMAIL_DIST_NOTIFY_ROUTE_EXT.
 
 ```csv
 NOTIFY_ROUTE_ID,EMAIL_TO,EMAIL_CC,EMAIL_BCC
 TRAINING_NOTIFY_01,email@host.com,email@host.com,,
 ```
-
-By doing that, you will create the distribuition email that will be used when the topic `NOTIFY_EMAIL` is used. 
-
 :::caution
-All fields are mandatory, so if you are not CCing or BCCing anyone, you need to leave it in blank, so the platform will understand as null. The same way we did with the `EMAIL_BCC` field in the previous example.
+All fields are mandatory, so if you are not CCing or BCCing anyone, you need to leave these fields blank, so the platform understands that they are null. This is what we did with the `EMAIL_BCC` field in the previous example.
 :::
 
 ### Switch on data dumps
@@ -124,7 +120,7 @@ cd $L
 tail -f ALPHA_EVALUATOR.log
 ```
 :::tip
-$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis platform. Feel free to use your favourite command to view logs such as tail, less etc.
+$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis platform. Feel free to use your favourite command to view logs, such as tail, less etc.
 :::
 
 ## Dynamic rules
@@ -147,20 +143,20 @@ Now you are going to use the Evaluator again to set up dynamic rules. In this ca
 
 First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron rule](../../developer-training/training-content-day5/#cron-rules-static-events).
 
-You need to create three csv files for this. The first is the file with your rule in the correct format, similar to the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
+You need to create three csv files for this. The first is the file with your rule in the correct format, similar to the static cron rule in the previous exercise. Call the file **DYNAMIC_RULE.csv**.
 
 ```csv
 ID,NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
 99,MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),JaneDee,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
 ```
-The second is the relating the dynamic with with a specific topic and route in the notify. Create a file called DYNAMIC_NOTIFY_RULE.csv with the following content:
+The second csv file relates the dynamic with with a specific topic and route in the notify. Create a file called **DYNAMIC_NOTIFY_RULE.csv** with the following content:
 
 ```csv
 DYNAMIC_NOTIFY_RULE_ID,DYNAMIC_RULE_ID,MESSAGE,TOPIC
 1,99,Testing,NOTIFY_EMAIL
 ```
 
-The third  is a csv file that enables you to test the rule. Create a file called POSITION.csv with the following data:
+The third csv file enables you to test the rule. Create a file called **POSITION.csv** with the following data:
 
 ```csv
 POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
