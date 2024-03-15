@@ -136,7 +136,7 @@ After you have saved this file, run [genesis-generated-fields](../../../database
 
 ### generateFields
 
-import GenerateFields from '/snippet/_generate_fields.md';
+import GenerateFields from '/snippet/_generate_fields.mdx';
 
 <GenerateFields />
 
@@ -176,7 +176,7 @@ After you have saved this file, run [genesis-generated-dao](../../../database/fi
 
 ### generateDao
 
-import GenerateDao from '/snippet/_generate_DAO.md'
+import GenerateDao from '/snippet/_generate_DAO.mdx'
 
 <GenerateDao />
 

@@ -159,3 +159,9 @@ The row parameter represents the rows returned from the table or view defined at
 import Example1 from '/examples/requestserver/_reqrep1.md'
 
 <Example1 />
+
+## Custom Log messages
+
+import Log from '/snippet/_LOG.md'
+
+<Log />

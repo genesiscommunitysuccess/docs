@@ -21,9 +21,9 @@ Please follow these instructions very carefully to ensure your environment is re
 
 ## Recommended hardware and software packages
 
-import MinimunRequirement from '/snippet/_minimun_requirement.md'
+import MinimumRequirement from '/snippet/_minimum_requirement.mdx'
 
-<MinimunRequirement />
+<MinimumRequirement />
 
 ### Accessing the Genesis repository and configuring the Genesis packages
 
@@ -120,14 +120,14 @@ As soon as everything is done and you are ok about the Intellij plugin, double-c
 </TabItem>
 <TabItem value="docker">
 
-import Docker from '/snippet/_environment_setup_docker.md'
+import Docker from '/snippet/_environment_setup_docker.mdx'
 
 <Docker />
 
 </TabItem>
 <TabItem value="wsl">
 
-import Wls from '/snippet/_environment_setup_wls.md'
+import Wls from '/snippet/_environment_setup_wls.mdx'
 
 <Wls />
 

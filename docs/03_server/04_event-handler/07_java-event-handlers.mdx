@@ -10,13 +10,13 @@ tags:
 ---
 
 
-Event Handlers can be written in Java using Event Handler [APIs](../../../server/api-reference/event-handler-api). On this page, we look at Event Handlers written using the [Rx3 Event handlers](../../../server/api-reference/event-handler-api/#rx3eventhandler)
+Event Handlers can be written in Java using Event Handler [APIs](../../../server/api-reference/event-handler-api). On this page, we look at Event Handlers written using the [Rx3 Event handlers](../../../server/api-reference/event-handler-api/#rx3)
 
 :::note
 
 We recommend using **Kotlin** to implement Event Handlers.
 
-- **Java** Event Handlers can only be implemented using [**RxJava3**](#rx3) [**Sync**](#sync) Event Handlers.
+- **Java** Event Handlers can only be implemented using [**RxJava3**](../../../server/api-reference/event-handler-api/#rx3eventhandler) or [**Sync**](../../../server/api-reference/event-handler-api/#synceventhandler) Event Handlers.
 - Async Event Handlers are widely used in Kotlin events and cannot be used for Java events, as there is no implementation for Kotlin coroutines in Java.
 
 :::
