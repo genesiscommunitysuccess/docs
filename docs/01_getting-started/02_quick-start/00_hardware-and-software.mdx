@@ -87,22 +87,17 @@ If you are unsure about what settings to use, please contact your IT support.
 
 You can find more information on setting up proxies in the [gradle documentation](https://docs.gradle.org/current/userguide/build_environment.html#sec:accessing_the_web_via_a_proxy).
 
-
 ### Your own database
 
-You need an individual database to create and test the back-end changes we are proposing. By default, an H2 embedded database is used for local development. For your production environment, make sure you have a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
+By default, an H2 database is embedded in the platform for local development. But for this quick start, you need a [Database Technology supported by Genesis](../../../database/database-technology/overview/) to implement and test the changes you will make to the back end.  
 
-:::tip
-You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
+For example, you could use, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
 
 ```terminal
 docker ps --format '{{ .ID }}\t{{.Image}}\t{{ .Names }}'
 docker pull postgres
 docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=100'
 ```
-
-:::
-
 #### H2 embedded database
 
 By default, the platform automatically creates an H2 file-based database under `{project_folder}/server/h2/` folder in the name of `test`. The database is initiated by JDBC and does not require additional set-up.
