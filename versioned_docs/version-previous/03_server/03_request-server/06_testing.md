@@ -116,11 +116,11 @@ If you use Genesis Console, this gives you a simple way of testing components.
 
 ![](/img/test-console-rs-success.png)
 
-For more detailed information about using Genesis Console for manual testing, head over to the [testing documetation](../../../server/request-server/testing).
+For more detailed information about using Genesis Console for manual testing, go to our [testing documetation](../../../server/request-server/testing).
 
 ### Testing with an API client
 
-An API client is useful way of testing components. As a client, it is effectively a front end seeking information from the server.
+An API client is a useful way of testing components. As a client, it is effectively a front end seeking information from the server.
 
 The API client enables you to create calls to the resources in your server - Data Servers, Request Servers and Event Handlers. Then you can just click to run a call and see what response you get.
 
@@ -128,9 +128,9 @@ Before you can make any calls on these resources, you will have to permission yo
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 
-In the example below, we are using Insomnia as the client API.
+In the example below, we are using Postman as the client API.
 
-![](/img/test-rs-instrument-success.png)
+![](/img/test-rs-postman.png)
 
 There is no need for any information in the body, as this is a **GET** request.
 
@@ -144,8 +144,16 @@ In front of the url, this has been set to a **GET** call.
 The url consists of:
 
 - the address or hostname of the server
-- if necessary, some extra routing; in this case **sm** uses a proxy to access the server
+- if necessary, some extra routing;
 - the name of the request server, preceded by **REQ_**
 
+A request server requires additional parameters as part of the request. Here, we provide the query parameters: `REQUEST.{NAME_OF_THE_FIELD}`. So your URL would be like this:
+
+```postman
+.../REQ_{NAME_OF_THE_REQUEST}?REQUEST.{NAME_OF_THE_FIELD1}=1&REQUEST.{NAME_OF_THE_FIELD2}=2
+```
+
 When you have this in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
+
+import { getTableHeadUtilityClass } from "@mui/material"
 

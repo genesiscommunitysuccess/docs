@@ -6,7 +6,7 @@ Documentation is written using [Markdown format](markdown-syntax.md).
 
 Now our community team is accepting contributions from all community members of Genesis. All accepted contributions will be published on our [official website](https://learn.genesis.global/).
 
-Please check our [Contributions guidr](https://www.notion.so/genesisglobal/Contributing-new-documentation-75953fb245f246ff872789035451a0c4) on Notion. 
+Please check our [Contribution guide](https://www.notion.so/genesisglobal/Contributing-new-documentation-75953fb245f246ff872789035451a0c4) on Notion. 
 
 If you are willing to contribute, please follow the links below:
 - [Internal contributor](./how-to-contribute-Internal.md) if you are an internal contributor currently working at Genesis.
@@ -32,6 +32,8 @@ This command starts a local development server and opens a browser window. Most 
 
 ### Build
 
+To generate the static files for deployment, you can run the build as below.
+
 For a complete build, execute `npm run build`:
 ```
 npm run build
@@ -43,6 +45,14 @@ npm run build-main
 ```
 
 Both commands generate static content into the **build** directory.
+
+### Preview
+
+ To run a local development server for previewing and testing your Docusaurus site during development, you can run the command below
+
+ ```
+ npm run serve
+ ```
 
 ### Clear
 

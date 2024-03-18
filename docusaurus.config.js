@@ -21,9 +21,6 @@ module.exports = async function createConfigAsync() {
     organizationName: "genesislcap",
     projectName: "docs",
     trailingSlash: true,
-    markdown: {
-      format: "detect",
-    },
     onBrokenLinks: "throw", // please do NOT change this to 'warn', fix or remove your broken links instead
     onBrokenMarkdownLinks: "throw", // please do NOT change this to 'warn', fix or remove your broken links instead
     onDuplicateRoutes: "throw",

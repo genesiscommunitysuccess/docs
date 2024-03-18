@@ -9,7 +9,9 @@ tags:
 ---
 
 import Tabs from '@theme/Tabs';
+
 import TabItem from '@theme/TabItem';
+
 import {gsfVersion} from '../../../../src/versioning/versions.js'
 
 ## Introduction
@@ -155,23 +157,24 @@ To inject the Document Generator, set up the following dependency in the module 
 Version: {gsfVersion}
 
 <Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
-    <TabItem value="gradle">
+<TabItem value="gradle">
 
-        ```kotlin
-        implementation("global.genesis:file-server-templates:$version")
-        ```
+```kotlin
+implementation("global.genesis:file-server-templates:$version")
+```
 
-    </TabItem>
-    <TabItem value="maven">
+</TabItem>
+<TabItem value="maven">
 
-        ```xml
-        <dependency>
-            <groupId>global.genesis</groupId>
-            <artifactId>file-server-templates</artifactId>
-            <version>$version</version>
-        </dependency>
-        ```
-    </TabItem>
+```xml
+<dependency>
+    <groupId>global.genesis</groupId>
+    <artifactId>file-server-templates</artifactId>
+    <version>$version</version>
+</dependency>
+```
+
+</TabItem>
 </Tabs>
 
 ## Examples
