@@ -97,3 +97,36 @@ From the example above, you can see some of the GPAL characteristics:
 * We can override system-definition values (defined in the GPAL System definition file) at the process level. Thanks to the code-like nature of the GPAL definitions, the same syntax and underlying implementation can be reused to provide override capabilities.
 * GPAL table configurations are available by default (e.g. TRADE, INSTRUMENT, ALT_INSTRUMENT_ID, MARKET, EXCHANGE, CURRENCY). But note, if one of these tables is removed from the GPAL table definition, our example process configuration file becomes incorrect, as it references a non-existent table, and it will automatically identify this issue as a compilation error.
 * Simple syntax that can be easily understood in an English-like language.
+
+## Troubleshooting
+
+If you are using IntelliJ version as of `2023.3`, we are aware that intellisense does not always function as it should, which is frustrating.
+We have a range of measures to work round this issue and restore your normal intellisense predicitions and prompts.
+The measure or measures that work best depend on your exact set-up. We suggest that you try them all.
+If you are still not able to use intellisense after that, please call contact your Genesis support person.
+
+:::warning
+Steps might be executed in different order depending on your current project setup, so try these combinations in a different ways.
+:::
+
+- Consider a downgrade to IntelliJ to a version of IntelliJ prior to `2023.3.x`, eg: `2023.2.x`
+
+- In your project settings, ensure Kotlin version is set to `1.9.10`:
+
+![](/img/intellij-kotlinc.png)
+
+- Always script the new Script context when prompted, having Auto reload for Genesis scripts helps on that matter, so consider enabling all Genesis:
+
+![](/img/intellij-kotlin-scripting.png)
+
+- If using Gradle, try reloading the projects:
+
+![](/img/intellij-refresh-gradle.png)
+
+- Not opening the project from recent projects avoids intermettitent freezing:
+
+![](/img/intellij-recent-projects.png)
+
+- Try invalidate cache / restart:
+
+![](/img/intellij-invalidate-cache.png)
