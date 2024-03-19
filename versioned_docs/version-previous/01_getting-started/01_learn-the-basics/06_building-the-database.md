@@ -11,7 +11,7 @@ tags:
 
 Once you are happy with your data model, you can build your database.
 
-Save your file and run `genesis-generated-dao`.
+Make sure your dictionary files have been saved, then run `genesis-generated-dao`.
 
 From the Gradle menu, you can find this is in the dictionary cache folder for your product:
 
