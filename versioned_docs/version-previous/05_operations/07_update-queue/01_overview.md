@@ -25,4 +25,3 @@ There are two different update queue technologies to choose from, depending on y
 
 - [ZeroMQ](02_zeromq.md) (Default) - a decentralised peer-to-peer set-up, which relies on a fixed cluster size
 - [MQTT](03_mqtt.md) - use an independent MQTT broker if you want to allow dynamic scaling
-- [JMS](04_jms.md) - use an independent JMS broker (ArtemisMQ) to improve robustness of message delivery
