@@ -1,0 +1,49 @@
+The Genesis low-code platform offers the flexibility to use a JMS (Java Messaging Service) compliant message broker as its real-time update queue backend. 
+This option is particularly well-suited for the following scenarios:
+
+ - Dynamic Scaling: JMS with a centralized broker is a robust choice for deployments where the number of application processes fluctuates.
+ - Clustered Deployments: More robust transport of messages and improved message recovery when messaging is done via the network.
+ - Broker Preference: Genesis supports the JMS standard, allowing developers some flexibility in their choice of JMS broker (Currently, the preferred broker is ArtemisMQ).
+
+JMS Configuration
+
+Configuring Genesis to use JMS involves the following components:
+
+ - A running JMS Broker: At this time, setting up a JMS broker is done separately from the genesis project initialization (this will change in the future).
+ - System Definition Settings: Ensure the MqLayer property within your system definition file is set to "JMS" and the appropriate service credentials are provided. This triggers the use of JMS-specific configuration.
+
+:::tip Local development Broker
+
+During development, you can use an ArtemisMQ docker container using:
+
+`docker run --detach --name artemis-mq -p 61616:61616 -p 8161:8161 --rm apache/activemq-artemis:latest-alpine`
+
+You can then login into the broker on `http://localhost:8161/` with `username: artemis` and `password: artemis` 
+
+:::
+
+### JMS configuration options
+
+ZeroMQ is the default MQ system in Genesis. In order to switch to JMS, we must explicitely provide the broker settings:
+
+```kotlin {title="genesis-system-definition.kts"}
+systemDefinition {
+    global {
+        ...
+        item(name = "MqLayer", value = "JMS")
+        item(name = "JmsHost", value = "http://localhost:61616")
+        item(name = "JmsUsername", value = "artemis")
+        item(name = "JmsPassword", value = "artemis")
+        ...
+    }
+}
+```
+
+All Available Config Variables:
+
+| Config Item                | Description                          | Default                  |
+|----------------------------|--------------------------------------|--------------------------|
+| `JmsHost` (required)       | The host of the broker to connect to | `http://localhost:61616` |
+| `JmsUsername` (required)   | Username for client and console      | `artemis`                |
+| `JmsPassword` (required)   | Password for client and console      | `artemis`                |
+| `JmsTopicSubscriptionMode` | Enum value (TRANSIENT, PERSISTENT)   | `TRANSIENT`              |
