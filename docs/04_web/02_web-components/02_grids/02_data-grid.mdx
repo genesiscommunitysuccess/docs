@@ -26,18 +26,19 @@ provideDesignSystem().register(alphaDataGrid(), alphaDataGridCell(), alphaDataGr
 ## Usage
 
 ```html
-<alpha-data-grid id="samplegrid"></alpha-data-grid>
+<alpha-data-grid ${ref('samplegrid')}></alpha-data-grid>
 ```
 
-Note that data must be provided to the grid by setting a property.
+You can then set `rowsData` in this way:
 
 ```ts
-document.getElementById('samplegrid').rowsData = [
+this.samplegrid.rowsData= [
   { item1: 'value 1-1', item2: 'value 2-1' },
   { item1: 'value 1-2', item2: 'value 2-2' },
   { item1: 'value 1-3', item2: 'value 2-3' },
 ];
 ```
+
 ## Connected data
 
 To retrieve information from Data Servers and Request Servers, you need to use the `<data-grid>` with the `<data-grid-datasource>` component. Here is an example:
