@@ -46,12 +46,10 @@ The Angular CLI should build your project and make it available on localhost. Ri
 
 Let's change that. Open your **src/main.ts** file and add the following code:
 
-```
 import CodeBlock from '@theme/CodeBlock';
 import Example from '!!raw-loader!/examples/ui/alphaImports';
 
 <CodeBlock className="language-ts">{Example}</CodeBlock>
-```
 
 This code uses the Genesis Foundation Design System to register the `<alpha-card>`, `<alpha-button>` and `<alpha-text-field>` components.
 
