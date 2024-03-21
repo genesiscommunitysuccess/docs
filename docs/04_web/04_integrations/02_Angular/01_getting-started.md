@@ -29,6 +29,12 @@ ng new alpha-angular
 
 Follow the prompts, answering each question in turn. At the end, you should have a basic runnable Angular application.
 
+Navigate into your new project directory:
+
+```shell
+cd alpha-angular
+```
+
 ## Use Genesis Foundation packages
 
 To install the Genesis Foundation packages. Run this command from your project folder:
