@@ -10,11 +10,11 @@ tags:
   - advanced
 ---
 
-## Multiple `groupBy` Statements
+## Multiple `groupBy` statements
 
 Consolidators support multiple `groupBy` statements in a single consolidation. This is useful when you want to consolidate the same table at multiple levels, and it ensures that the consolidation is consistent across multiple levels.
 
-For example, this consolidator has two `groupBy` statements to ensure that it consolidates on *order year* and on *order year and month*:
+For example, the consolidator below has two `groupBy` statements to ensure that it consolidates on *order year* and on *order year and month*:
 
 ```kotlin 
 consolidator("CON_ORDER_SUMMARY_FROM_ORDER", ORDER, ORDER_SUMMARY) {
