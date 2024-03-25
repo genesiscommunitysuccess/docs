@@ -2,49 +2,37 @@
 title: 'Update queue - JMS'
 sidebar_label: 'JMS'
 id: jms
-keywords: [operations, update queue, jms]
+keywords: [operations, update queue, jms, jakarta messaging]
 tags:
 - operations
 - update queue
 - jms
+- jakarta messaging
 ---
 
-The Genesis low-code platform offers the flexibility to use a JMS (Java Messaging Service) compliant message broker as its real-time update queue backend.
-This option is particularly well-suited for the following scenarios:
+The Genesis low-code platform offers the flexibility to use a [Jakarta Messaging](https://en.wikipedia.org/wiki/Jakarta_Messaging) (former JMS) compliant message broker as its real-time update queue backend via [ArtemisMQ](https://activemq.apache.org/components/artemis/).
 
- - **Dynamic Scaling**: JMS with a centralized broker is a robust choice for deployments where the number of application processes fluctuates.
- - **Clustered Deployments**: More robust transport of messages and improved message recovery when messaging is done via the network.
- - **Broker Preference**: Genesis supports the JMS standard, allowing developers some flexibility in their choice of JMS broker (Currently, the preferred broker is ArtemisMQ).
+Using a centralised external broker is highly recommended for complex, large or dynamically scaled clusters, as it reduces the complexity and overhead of peer-to-peer connectivity at the cost of maintaining or (re-using) a message broker.
 
-### JMS Configuration
+## Prerequisites
 
-Configuring Genesis to use JMS involves the following components:
+Configuring Genesis to use Jakarta Messaging requires having **ArtemisMQ installed in the host** (or hosts in case of HA - see details [below](#high-avaiability)) as per [ArtemisMQ documentation](https://activemq.apache.org/components/artemis/documentation/).
 
- - **A running JMS Broker**: At this time, setting up a JMS broker is done separately from the genesis project initialization (this will change in the future).
- - **System Definition Settings**: Ensure the MqLayer property within your system definition file is set to "JMS" and the appropriate service credentials are provided. This triggers the use of JMS-specific configuration.
-
-:::tip Local development Broker
-
-During development, you can use an ArtemisMQ docker container using:
-
-`docker run --detach --name artemis-mq -p 61616:61616 -p 8161:8161 --rm apache/activemq-artemis:latest-alpine`
-
-You can then login into the broker on `http://localhost:8161/` with `username: artemis` and `password: artemis` 
-
+:::info
+Genesis doesn't ship Artemis MQ server, just its client library.
 :::
 
-### JMS configuration options
+## JMS configuration options
 
-ZeroMQ is the default MQ system in Genesis. In order to switch to JMS, we must explicitely provide the broker settings:
+### Basic configuration
+
+To use Jakarta Messaging in your Genesis application, you need to set the `MqLayer` in the system definition.
 
 ```kotlin {title="genesis-system-definition.kts"}
 systemDefinition {
     global {
         ...
         item(name = "MqLayer", value = "JMS")
-        item(name = "JmsHost", value = "http://localhost:61616")
-        item(name = "JmsUsername", value = "artemis")
-        item(name = "JmsPassword", value = "artemis")
         ...
     }
 }
@@ -52,9 +40,94 @@ systemDefinition {
 
 All Available Config Variables:
 
-| Config Item                | Description                          | Default                  |
-|----------------------------|--------------------------------------|--------------------------|
-| `JmsHost` (required)       | The host of the broker to connect to | `http://localhost:61616` |
-| `JmsUsername` (required)   | Username for client and console      | `artemis`                |
-| `JmsPassword` (required)   | Password for client and console      | `artemis`                |
-| `JmsTopicSubscriptionMode` | Enum value (TRANSIENT, PERSISTENT)   | `TRANSIENT`              |
+| Config Item                      | Description                          | Default                  |
+|----------------------------------|--------------------------------------|--------------------------|
+| `JmsHost` (required)             | The host name, can hold multiple values separated by comma, allowing HA failover | `http://localhost:61616` |
+| `JmsUsername`                    | Username to connect | |
+| `JmsPassword`                    | Password to connect (can be encrypted using `GenesisKey`) | |
+| `JmsTopicSubscriptionMode`       | Enum value (TRANSIENT, PERSISTENT) | `TRANSIENT`|
+| `JmsMaxConnectionRetryOnStartup` | The number of connections the process will attempt to make to the broker, before declaring the process `DOWN` | 20 |
+| `JmsReconnectDelayMs`            | The amount of time in milliseconds (exponentially) for a connection reattempt to be made, in case connectivity or fault happens | 1000 |
+| `JmsRetryToSendDelayMs`          | The amount of time in milliseconds for retrying sending a message in case of failure. | 1000 |
+
+### Durable consumers
+
+It is possible to configure certain process to receive messages that were sent when the process was offline. This might give another way for processes to recover from missing messages without the need of replaying an entire data stream.
+
+For example, assume you have an application named `alpha` and you are going to setup `ALPHA_CONSOLIDATOR` to be a durable consumer of the update queue.
+
+1. Create a configuration file for the `ALPHA_CONSOLIDATOR` process with the contents:
+
+```kotlin {title="alpha-consolidator-process-config.kts"}
+process {
+    systemDefinition {
+        item(name = "JmsTopicSubscriptionMode", value = "PERSISTENT")
+    }
+}
+```
+
+2. Associate the newly created configuration:
+
+```xml {title="process.xml"} {8}
+<process name="ALPHA_CONSOLIDATOR">
+    <groupId>ALPHA</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5106</options>
+    <module>genesis-pal-consolidator</module>
+    <package>global.genesis.pal.consolidator</package>
+    <script>alpha-consolidator.kts</script>
+    <config>alpha-consolidator-process-config.kts</config>
+    <language>pal</language>
+    <primaryOnly>true</primaryOnly>
+</process>
+```
+
+3. Perform `genesisInstall` to apply the configuration and start processes normally.
+
+:::danger
+Do not define `JmsTopicSubscriptionMode` at Global level as this will cause all messages to be stored and delivered once process are back online.
+:::
+
+
+## High avaiability
+
+### Pre requirements
+
+High availability is supported by setting up ArtemisMQ to use a [shared store](https://activemq.apache.org/components/artemis/documentation/latest/ha.html#replication) and using discovery via [static connectors](https://activemq.apache.org/components/artemis/documentation/latest/clusters.html#discovery-using-static-connectors).
+
+### How it works
+
+The diagram below represents using a two node cluster how the Genesis processes will behave in this scenario.
+
+1. All process will connect to the primary broker:
+
+![](/img/jms-fail-over-primary.png)
+
+2. In case of failure of the primary broker, the backup will turn primary and all clients will automatically re-estabilish a connection to it:
+
+![](/img/jms-fail-over-backup.png)
+
+:::caution
+It is expected that the processes will be reported as `DOWN` during the fail over period.
+:::
+
+
+## Troubleshooting
+
+### Process reports DOWN
+
+**Scenario:** You observe `mon` reporting for one or more Genesis processes the message `UpdateQueue: Update queue is not connected`.
+
+This is because the process couldn't connect in first place, or lost connection to the message broker.
+
+:::caution
+Processes will automatically terminated after retrying attempts are exhausted upon their initialization, however if the connection is lost after the initialization occurs they won't automatically shut-down, requiring manual intervention from application support.
+:::
+
+**Resolution**: Ensure the message broker is online and accepting connections and the configuration in the `System Definition` have the correct values.
+
+### Process no longer exists but there are obsolete queues in the message broker
+
+**Scenario**: You have setup a durable consumer, but this process no longer exists in your application and you observe in the Artemis Console queues with messages that are never goint to be consumed.
+
+**Resolution**: Remove the queue from the Artemis MQ [management console](https://activemq.apache.org/components/artemis/documentation/latest/management-console.html) or CLI.
