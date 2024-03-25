@@ -15,7 +15,7 @@ Combining this with the use of an MQTT broker gives you a dynamically scalable G
 
 ## Prerequisites
 ### Services
-This set-up focuses on the Genesis low-code platform within an HA setup using Hashicorp's Consul for Clustering, which assumes that certain services are already available to Genesis:
+To operate the Genesis low-code platform within an HA setup using Hashicorp's Consul for Clustering, the following services must be available:
 
  - **A Database** - A database needs to be hosted independently from the platform
  - **A Consul Cluster** - A Consul cluster with an agent on each of the hosts running a Genesis app
@@ -26,6 +26,9 @@ The Genesis low-code platform can run with Consul without MQTT using ZeroMQ.
 
 However, this is not recommended as **MQTT is required for dynamic scaling**.
 :::
+
+### Automatic failover
+When Consul is used, processes that are set to `primaryOnly` failover automatically to the secondary node when the primary node becomes unresponsive. (Failover must be performed manually if you are using the standard Genesis Clustering service.)
 
 ### Networking
 When using Consul mode, all Genesis services within an app need to be able to access all the other Genesis services in the cluster on their defined ports.
@@ -71,7 +74,7 @@ systemDefinition {
 | `ConsulTtlSeconds` | Timeout for the TTL Consul checks | `15` |
 | `ttlPingSeconds` | How often to run the TTL checks and update Consul with the state | `ConsulTtlSeconds` / `2` |
 | `deregisterCriticalServiceAfterMins` | Time to wait after a TTL check goes critical before it deregisters the service in minutes | `30` |
-| `clusterServiceAffinityGroup` | Group apps for prefered routing. Useful for multi region setups | "" |
+| `clusterServiceAffinityGroup` | Group apps for preferred routing. Useful for multi-region set-ups | "" |
 | `ConsulServiceNamePattern` | Allows you to template your Consul service names with `{{PROCESS_NAME}}` eg. `my_app_{{PROCESS_NAME}}` | `null` |
 | `ConsulNamespaceFormat` | Sets Consul namespace (only used in Consul Enterprise) | `null` |
 

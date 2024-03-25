@@ -137,16 +137,23 @@ Genesis application servers can easily be clustered to achieve HA. [The clusteri
 
 ### Genesis Cluster
 
-Clustering 2 or more nodes, typically across availability zones, for resiliency is simple. Hosts just need to be able to contact each other via the following ports, and to be known to each other by listing them in the system definition.
+Clustering two or more nodes, typically across availability zones, for resiliency is simple. Hosts just need to be able to contact each other via the relevant ports, and to be known to each other by listing them in the system definition.
 See our page on [clustering](https://learn.genesis.global/docs/operations/clustering/genesis/) for full set-up details.
 
 ### Consul
 
-Consul can also be set up and used in a Genesis application environment for HA. Our documentation provides details of how to [set up Consul](https://learn.genesis.global/docs/operations/clustering/consul/).
+Consul can also be set up and used in a Genesis application environment for high availability (HA). This provides automatic failover of processes that are set to `primaryOnly` when the primary node becomes unresponsive. This is triggered by monitoring the [health status](../../../operations/commands/server-commands/#status-of-processes) of the process.
+
+Where processes are set to `primaryOnly` on multiple nodes:
+
+- On start-up, Consul selects one of the processes and starts that process so that it becomes HEALTHY. The same processes on the other nodes are set to STANDBY.
+- If the process stops being HEALTHY, Consul selects one of the processes and starts that process so that it becomes HEALTHY. The unhealthy process is terminated. If there are any other processes of the same name on other nodes, one of these is selected and becomes STANDBY. 
+
+Our documentation provides details of how to [set up Consul](https://learn.genesis.global/docs/operations/clustering/consul/).
 
 ## nginx
 
-Genesis installations usually use nginx as a lightweight webserver for:
+Genesis installations usually use nginx as a lightweight web server for:
 
 - serving up SSP (static single page) web client content
 - proxying web client (and web API) requests to the Genesis server

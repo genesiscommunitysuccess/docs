@@ -11,7 +11,7 @@ tags:
 
 
 ## Database on a separate node
-This set-up focuses on the Genesis low-code platform within an HA set-up using the built-in Genesis Clustering. To achieve full HA, the application's database must be installed on a separate node. There is, of course, an effect on performance in such a set-up.
+In this section, we shall focus on the Genesis low-code platform within an HA set-up using the built-in Genesis Clustering. To achieve full HA, the application's database must be installed on a separate node. There is, of course, an effect on performance in such a set-up.
 
 In the set-up below, there is a stand-by secondary application and a cluster of four FoundationDB databases.
 
@@ -62,7 +62,7 @@ Running the **MonCluster** command shows all nodes - there are two in this insta
 
 Some Genesis processes (and, potentially, application processes) can only run on a single node. So it is important to set one of your nodes as the primary node. Go to that node and run the **SetPrimary** command to set it to Primary state.
 
-This should be the output of **MonCluster** if **SetPrimary** was executed on NodeA:
+If **SetPrimary** was executed on NodeA, you should then see something like this when you run **MonCluster**:
 
 ![](/img/cluster-nodea-now-primary.png)
 
