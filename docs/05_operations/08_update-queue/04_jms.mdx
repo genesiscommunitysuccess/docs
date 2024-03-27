@@ -10,7 +10,7 @@ tags:
 - jakarta messaging
 ---
 
-The Genesis low-code platform offers the flexibility to use a [Jakarta Messaging](https://en.wikipedia.org/wiki/Jakarta_Messaging) (former JMS) compliant message broker as its real-time update queue backend via [ArtemisMQ](https://activemq.apache.org/components/artemis/).
+The Genesis low-code platform enables you to use a [Jakarta Messaging](https://en.wikipedia.org/wiki/Jakarta_Messaging) (former JMS) compliant message broker as its real-time update-queue back-end via [ArtemisMQ](https://activemq.apache.org/components/artemis/).
 
 Using a centralised external broker is highly recommended for complex, large or dynamically scaled clusters, as it reduces the complexity and overhead of peer-to-peer connectivity at the cost of maintaining or (re-using) a message broker.
 
@@ -38,23 +38,23 @@ systemDefinition {
 }
 ```
 
-All Available Config Variables:
+The Config variables are listed in full below.
 
 | Config Item                      | Description                          | Default                  |
 |----------------------------------|--------------------------------------|--------------------------|
-| `JmsHost` (required)             | The host name, can hold multiple values separated by comma, allowing HA failover | `http://localhost:61616` |
+| `JmsHost` (required)             | The host name, can hold multiple values separated by comma; this enables you to use HA failover | `http://localhost:61616` |
 | `JmsUsername`                    | Username to connect | |
 | `JmsPassword`                    | Password to connect (can be encrypted using `GenesisKey`) | |
 | `JmsTopicSubscriptionMode`       | Enum value (TRANSIENT, PERSISTENT) | `TRANSIENT`|
-| `JmsMaxConnectionRetryOnStartup` | The number of connections the process will attempt to make to the broker, before declaring the process `DOWN` | 20 |
-| `JmsReconnectDelayMs`            | The amount of time in milliseconds (exponentially) for a connection reattempt to be made, in case connectivity or fault happens | 1000 |
+| `JmsMaxConnectionRetryOnStartup` | The number of connections the process will attempt to make to the broker before declaring the process `DOWN` | 20 |
+| `JmsReconnectDelayMs`            | The amount of time in milliseconds (exponentially) for a connection reattempt to be made, in case of connectivity problems or other faults | 1000 |
 | `JmsRetryToSendDelayMs`          | The amount of time in milliseconds for retrying sending a message in case of failure. | 1000 |
 
 ### Durable consumers
 
-It is possible to configure certain process to receive messages that were sent when the process was offline. This might give another way for processes to recover from missing messages without the need of replaying an entire data stream.
+You can configure certain processes to receive messages that were sent when the process was offline. This offers a useful method for processes to recover from missing messages without the need to replay an entire data stream.
 
-For example, assume you have an application named `alpha` and you are going to setup `ALPHA_CONSOLIDATOR` to be a durable consumer of the update queue.
+For example, assume you have an application named `alpha` and you are going to set up `ALPHA_CONSOLIDATOR` to be a durable consumer of the update queue.
 
 1. Create a configuration file for the `ALPHA_CONSOLIDATOR` process with the contents:
 
@@ -66,9 +66,9 @@ process {
 }
 ```
 
-2. Associate the newly created configuration:
+2. Add the details of the newly created configuration to your application's **processes.xml** file:
 
-```xml {title="process.xml"} {8}
+```xml {title="procesess.xml"} {8}
 <process name="ALPHA_CONSOLIDATOR">
     <groupId>ALPHA</groupId>
     <start>true</start>
@@ -82,52 +82,54 @@ process {
 </process>
 ```
 
-3. Perform `genesisInstall` to apply the configuration and start processes normally.
+3. Perform `genesisInstall` to apply the configuration and start the processes normally.
 
 :::danger
-Do not define `JmsTopicSubscriptionMode` at Global level as this will cause all messages to be stored and delivered once process are back online.
+Do not define `JmsTopicSubscriptionMode` at Global level, as this will cause all messages to be stored and delivered once process are back online.
 :::
 
 
-## High avaiability
+## High availability
 
-### Pre requirements
+### Prerequisites
 
 High availability is supported by setting up ArtemisMQ to use a [shared store](https://activemq.apache.org/components/artemis/documentation/latest/ha.html#replication) and using discovery via [static connectors](https://activemq.apache.org/components/artemis/documentation/latest/clusters.html#discovery-using-static-connectors).
 
 ### How it works
 
-The diagram below represents using a two node cluster how the Genesis processes will behave in this scenario.
+The diagram below represents using a two-node cluster to show how the Genesis processes behave in this scenario.
 
-1. All process will connect to the primary broker:
+1. All processes connect to the primary broker:
 
 ![](/img/jms-fail-over-primary.png)
 
-2. In case of failure of the primary broker, the backup will turn primary and all clients will automatically re-estabilish a connection to it:
+2. In the there is a failure on the primary broker, the back-up turn primary and all clients automatically re-establish a connection to it:
 
 ![](/img/jms-fail-over-backup.png)
 
-:::caution
-It is expected that the processes will be reported as `DOWN` during the fail over period.
+:::info
+During the failover period, the processes will be reported as `DOWN.
 :::
-
 
 ## Troubleshooting
 
 ### Process reports DOWN
 
-**Scenario:** You observe `mon` reporting for one or more Genesis processes the message `UpdateQueue: Update queue is not connected`.
+**Scenario:** The `mon` command displays the following message for one or more Genesis processes: **UpdateQueue: Update queue is not connected**.
 
-This is because the process couldn't connect in first place, or lost connection to the message broker.
+There are two possible causes for this:
+
+- The process could not connect in the first place.
+- The connection to the message broker has been lost.
 
 :::caution
-Processes will automatically terminated after retrying attempts are exhausted upon their initialization, however if the connection is lost after the initialization occurs they won't automatically shut-down, requiring manual intervention from application support.
+At initialisation, processes are terminated automatically after retry attempts are exhausted. However, if the connection is lost after the initialisation occurs, the processes are not shut down automatically; manual intervention is required from application support.
 :::
 
-**Resolution**: Ensure the message broker is online and accepting connections and the configuration in the `System Definition` have the correct values.
+**Resolution**: Ensure that the message broker is online and accepting connections. Make sure that the configuration in the **genesis-system-definition.kts** has the correct values.
 
 ### Process no longer exists but there are obsolete queues in the message broker
 
-**Scenario**: You have setup a durable consumer, but this process no longer exists in your application and you observe in the Artemis Console queues with messages that are never goint to be consumed.
+**Scenario**: You have set up a durable consumer, but this process no longer exists in your application; you can see Artemis Console queues with messages that are never going to be consumed.
 
 **Resolution**: Remove the queue from the Artemis MQ [management console](https://activemq.apache.org/components/artemis/documentation/latest/management-console.html) or CLI.
