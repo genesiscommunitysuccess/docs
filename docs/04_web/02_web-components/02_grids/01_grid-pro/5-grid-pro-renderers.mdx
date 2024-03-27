@@ -74,7 +74,7 @@ If you want to be able to click on the checkbox, you need to set the `editable` 
 
 ### actionsMenu
 
-It adds a nested action menu to a cell in your grid. To implement this feature, you need to follow these steps:
+This adds a nested action menu to a cell in your grid. To implement this feature, you need to follow these steps:
 
 1. Import `getActionsMenuDef` from `@genesislcap/grid-pro`:
 
@@ -105,10 +105,10 @@ public myActionsMenuColDef = getActionsMenuDef(
 ```
 Let's understand each part of the `getActionsMenuDef()`:
 - The first argument is the configuration of the nested menu. Each menu item must have:
-    - name: The name that will be displayed in the menu.
-    - callback: The callback function to trigger an action. Using this callback function you get access to the parameter `rowData`. This is the data of the current row.
+    - `name`: the name that will be displayed in the menu.
+    - `callback`: the callback function to trigger an action. This callback function gives you access to the parameter `rowData`. This is the data of the current row.
 - The second argument is the other definitions of the `ColDef`, such as `headerName`, `width`, `pinned` ...
-- The third argument is the string that will be displayed on the button. In the previous example, it will be displyed "+".
+- The third argument is the string that will be displayed on the button. In the previous example, this is "+".
 
 Behind the scenes, the `getActionsMenuDef` helper builds the "actions menu" `ColDef` for you.
 
@@ -127,7 +127,7 @@ After these three steps, you will see the "actions menu" in one of your cells.
 <details><summary>Want to build it by yourself?</summary>
 <p>
 
-You can always build the `ColDef` yourself, but the built-in helper can be useful in common cases. Below you find an example of how to create your own `ColDef` without the build-in renderer provided by genesis.
+The built-in helper can be useful for common usage, but you can always build the `ColDef` yourself. Below is an example of how to create your own `ColDef` without the built-in renderer provided by Genesis.
 
 ```tsx title="You can use 'overrideDef' to override all the default values used in this helper"
 const getActionsMenuDef = (
