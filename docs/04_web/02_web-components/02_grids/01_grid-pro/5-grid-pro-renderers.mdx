@@ -10,21 +10,21 @@ tags:
     - renderers
 ---
 
-When dealing with data, you usually have to render the data in a way that is meaningful to the user. This is the purpose of the `grid-pro-renderers`. The rendering can vary from one column to another, from boolean typed columns that need to be rendered as a `checkbox` to a column that needs to be rendered as a percentage.
+The `grid-pro-renderers` enable you to render data in a way that is meaningful to the user. The rendering can vary from one column to another, from boolean-type columns that need to be rendered as a `checkbox` to columns that need to be rendered as a percentage.
 
 We currently support the following scenarios:
 
-- **`no renderer`**: when no renderer is specified in a Column Definition, the column will be rendered as a string (raw value). <br /><br />
+- `no renderer`. When this is specified in a Column Definition, the column is rendered as a string (raw value). <br /><br />
 *This may be affected if the `auto-cell-renderer-by-type` prop in the target Grid Pro is set to `true`*
 
-- **`built-in renderer`**: we currently have two cell renderers that are ready to use (**Actions Menu** and **Boolean**). You can use them by specifying the `cellRenderer` property and referencing them directly, or, in the `boolean` (more to be added) case, it can be configured automatically if the target Grid Pro is correctly configured. <br /><br /> 
+- `built-in renderer`. There are two cell renderers that are ready to use (**Actions Menu** and **Boolean**). You can use them by specifying the `cellRenderer` property and referencing them directly, You can also configure `boolean` automatically if the target Grid Pro is correctly configured. <br /><br /> 
 *This may be affected if the `auto-cell-renderer-by-type` prop in the target Grid Pro is set to `false`*
 
-- **`custom renderer`**: can be either a function or a full custom component. See the [Genesis Grid Pro Cell](../../../../../web/web-components/grids/grid-pro/grid-pro-genesis-cell/) section or [Genesis Columns Definition](../grid-pro-genesis-column) for more info and examples.
+- `custom renderer`. This can be either a function or a full custom component. See the [Genesis Grid Pro Cell](../../../../../web/web-components/grids/grid-pro/grid-pro-genesis-cell/) section or [Genesis Columns Definition](../grid-pro-genesis-column) for more informaion and examples.
 
 ## Built-in examples
 
-We currently support the following built-in cell renderers:
+There are two built-in cell renderers:
 
 - [`boolean`](#boolean)
 - [`actionsMenu`](#actionsmenu)
@@ -33,14 +33,14 @@ We currently support the following built-in cell renderers:
 
 ### boolean
 
-It adds a checkbox to the cell. To use that build-in renderer, follow these steps:
+This adds a checkbox to the cell. To use this build-in renderer, follow these steps:
 
-1. You first need to import it from `@genesislcap/grid-pro`:
+1. Import it from `@genesislcap/grid-pro`:
 ```tsx
 import {GridProRendererTypes} from '@genesislcap/grid-pro'
 ```
 
-2. Add this build-in redenrer to your `cellRenderer` field:
+2. Add the renderer to your `cellRenderer` field:
 
 ```ts title=" Cell Renderer can be specified in a ColDef"
 public myBooleanColDef: ColDef = {
@@ -50,7 +50,7 @@ public myBooleanColDef: ColDef = {
 };
 ```
 
-3. Now you can use it in your grid:
+3. Use the renderer in your grid:
 
 ```html title="Using the ColDef with a boolean cell renderer"
 <foundation-grid-pro>
@@ -67,14 +67,14 @@ public myBooleanColDef: ColDef = {
   ...
 </foundation-grid-pro>
 ```
-After these four steps, you can see the new column with the boolean build-in renderer in your grid
+After these steps, you can see the new column with the boolean build-in renderer in your grid.
 :::tip
 If you want to be able to click on the checkbox, you need to add the field `editable` to `true`
 :::
 
 ### actionsMenu
 
-It adds a nasted action menu to a cell in your grid. To implement this feature, you need to follow these steps:
+It adds a nested action menu to a cell in your grid. To implement this feature, you need to follow these steps:
 
 1. Import `getActionsMenuDef` from `@genesislcap/grid-pro`:
 
