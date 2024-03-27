@@ -77,7 +77,7 @@ Remember that depending on where you implement your `ColDef`, it may change how 
 ### Defining the columns
 
 #### Single column
-To create a new column with the definitions provided by the `ColDef` explained before, we need to insert a new component called `<grid-pro-column>`. Each `<grid-pro-column>` must be assigned to one `ColDef`. The basic implementation is:
+To create a new column that uses the definitions provided by the `ColDef`, you need to insert a new component called `<grid-pro-column>`. Each `<grid-pro-column>` must be assigned to one `ColDef`. The basic implementation is:
 
 ```html title="Defining a single custom column"
 <foundation-grid-pro>
@@ -112,12 +112,12 @@ export const YourTemplate = html<YourTemplate>`
     </foundation-grid-pro>
 `;
 ```
-Note that inside the repeat directive, the context is `myMultipleCustomColumnConfigArray` instead of `YourTemplate`. That is the reason why we can use `${x => x}` to access the myMultipleCustomColumnConfigArray elements.
+Note that inside the repeat directive, the context is `myMultipleCustomColumnConfigArray` instead of `YourTemplate`. This enables you to use `${x => x}` to access the myMultipleCustomColumnConfigArray elements.
 
 You can find more information about the `repeat` directive in the [FAST documentation](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive).
 
 :::tip A different approach to create multiple columns
-When using `ColDef` objects, it's up to you to decide the approach. You can use the directive **repeat** to create an array of definitions, or you can create it one column at a time.
+When using `ColDef` objects, it's up to you to decide the approach. You can use the directive **repeat** to create an array of definitions, or you can create one column at a time.
 
 ```html title="Using the ColDef array of objects with an extra single object"
 <foundation-grid-pro>
@@ -132,9 +132,9 @@ When using `ColDef` objects, it's up to you to decide the approach. You can use 
 
 When you connect the grid with the back end using `<grid-pro-genesis-datasource />`, your grid automatically creates all the columns based on the metadata that comes from the server.
 
-Now if you create a new custom column defining the `field`, and this `field` has the same name as the field that comes from the back end, then the grid automatically sets the data to be displayed in this field. Let's see an example:
+You can now create a new custom column defining the `field`, using the same name as the field that comes from the back end. The grid then automatically sets the data to be displayed in this field. Let's see an example.
 
-If you connect your grid with the back end through a dataserver called `ALL_TRADES` that has these fields: `TRADE_ID`, `PRICE` and `QUANTITY`, the implementation would be like this:
+If you connect your grid with the back end through a Data Server query called `ALL_TRADES` that has these fields: `TRADE_ID`, `PRICE` and `QUANTITY`, the implementation would be like this:
 
 ```html
 <foundation-grid-pro>
@@ -142,11 +142,11 @@ If you connect your grid with the back end through a dataserver called `ALL_TRAD
 </foundation-grid-pro>
 ```
 
-If you don't define any additional columns, you would have this grid displayed:
+If you don't define any additional columns, this is the grid you will see:
 
 ![](/img/grid-trade-quantity-price.png)
 
-Now, in the context/component's own class, let's define a new column like this:
+Now, in the context/component's own class, you can define a new column. The code below defines a `field` that has the same as a field in the back end: **PRICE**. It pins this to the right.
 
 ```ts
 public myCustomColumn: ColDef =
@@ -157,7 +157,7 @@ public myCustomColumn: ColDef =
   }
 ```
 
-We are defining the `field` with the same as a field that comes from the back end: **PRICE** and we are pinning it to the right. Now let's create a new custom column in our HTML template:
+ Now let's create a new custom column in our HTML template:
 
 ```html
 <alpha-grid-pro>
@@ -173,11 +173,11 @@ This is the expected result:
 
 ## Custom renderers
 
-In case you want to add a web component inside the `grid-pro`. You can use two fields in the definition of the columns:
-- **cellRenderer**: The cell renderer is responsible for creating the structure of the cell. Here you need to return a string containing the HTML that will be rendered in that cell.
-- **cellRendererParams**: It is responsible for the parameters of the cell renderer. It depends on how you implement the `cellRenderer`, it may require some additional parameters.
+If you want to add a web component inside the `grid-pro`. You can use two fields when you define the columns:
+- `cellRenderer` is responsible for creating the structure of the cell. Here you need to return a string containing the HTML that will be rendered in that cell.
+- `cellRendererParams` enables you to supply any parameters that are required.
 
-This is how you need to define your `ColDef` to enable cell renderer:
+Here is an example `ColDef` to enable the cell renderer:
 
 ```ts
 const customCompleteDef: any = {
@@ -188,7 +188,7 @@ const customCompleteDef: any = {
 };
 ```
 
-You can also create dynamic parameters that grants more flexibility to the cell renderer. In the following example we pass the color as a parameter to the `cellRenderer` field:
+Dynamic parameters add more detail to the cell renderer. The following example passes the colour as a parameter to the `cellRenderer` field:
 
 ```ts
 const customCellRenderer = (params) => {
@@ -206,4 +206,4 @@ const customCompleteDef: any = {
 };
 ```
 
-In this previous example, you can change the return of the `customCellRenderer` variable to other web components, such as buttons, comboboxes and others. Give it a try!
+In this previous example, you can change the return of the `customCellRenderer` variable to other web components, such as buttons or comboboxes.
