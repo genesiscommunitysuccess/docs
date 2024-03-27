@@ -21,7 +21,7 @@ When the event_handler receives a trade insert event, it writes this to the db_s
 As the data_server is automatically subscribed to those updates from the update queue, it gets the updates without having to re-query the database.
 
 ### Update queue options
-There are two different update queue technologies to choose from, depending on your requirements:
+There are three different update queue technologies to choose from, depending on your requirements:
 
 - [ZeroMQ](02_zeromq.mdx) (Default) - a decentralised peer-to-peer set-up, which relies on a fixed cluster size
 - [MQTT](03_mqtt.mdx) - use an independent MQTT broker if you want to allow dynamic scaling
