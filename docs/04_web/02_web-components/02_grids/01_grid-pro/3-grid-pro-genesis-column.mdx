@@ -10,7 +10,7 @@ tags:
     - column
 ---
 
-This is a `slotted` component that allows a more "visual approach" when defining columns. Each `<grid-pro-column>` takes a `ColDef` typed object. To check all the available fields for the variable type `coldef`, take a [look here](https://www.ag-grid.com/javascript-data-grid/column-properties/).
+This is a `slotted` component that allows a more "visual approach" when defining columns. Each `<grid-pro-column>` takes a `ColDef` typed object. To check all the available fields for the variable type `coldef`, [look here](https://www.ag-grid.com/javascript-data-grid/column-properties/).
 
 :::tip 
 Customising column definitions using this approach is useful in **connected data** cases, where the data is dynamic; but there's still a need for extra definitions (e.g. events, transformers, etc).
@@ -18,29 +18,29 @@ Customising column definitions using this approach is useful in **connected data
 
 ## Usage
 
-To create or configure columns in the grid there are two main approaches that needs to be implemented
+To create or configure columns in the grid, there are two main approaches that need to be implemented
 
 ### ColDef
 
-A new `ColDef` variable needs to be created. This variable will store all the configuration for the columns in your grid. There are an extensive list of fields and parameters that can be used. Here is the most common fields:
+Create a new `ColDef` variable. This will store all the configuration for the columns in your grid. There is an extensive list of fields and parameters that can be used. Here are the most common fields:
 
 
 |Name  | Type | Description|
 |------|------|-------|
-|`field` | String | Name of the field to be connected with|
+|`field` | String | Name of the field to be connected with |
 |`checkboxSelection` | boolean | Sets `true` to enable selection checkbox to your grid |
 |`editable` | boolean | Sets the the column to be editable |
-|`filter`| String | Sets the type of the filter. For more information, [follow this link](https://www.ag-grid.com/javascript-data-grid/filtering/#column-filter-types) |
-| `headerName` | String | Name of the header|
+|`filter`| String | Sets the [type of the filter](https://www.ag-grid.com/javascript-data-grid/filtering/#column-filter-types) |
+| `headerName` | String | Name of the header |
 |`pinned` | any | Sets the column to be pinned. It can be: `boolean`, `left`, `right`, `null`|
-|`autoHeight` | boolean | If true, the grid will select the appropriate height for the row|
+|`autoHeight` | boolean | If true, the grid will select the appropriate height for the row |
 |`cellRenderer` | any | Renders a component into each cell of this column |
-|`cellRendererParams` | any | Parameters to be passed to the `cellRenderer`|
+|`cellRendererParams` | any | Parameters to be passed to the `cellRenderer` |
 |`sortable`| boolean | If true, the column will be sortable |
-|`sort` | `asc` or `desc` | Set the column to be sorted ascending or descending|
+|`sort` | `asc` or `desc` | Set the column to be sorted ascending or descending |
 |`width`| Number | The width of the column |
 
-To know more fields and configurations that can be used, please follow the [ag-grid documentation](https://www.ag-grid.com/javascript-data-grid/column-properties/).
+You can find out more about fields and configurations in the [ag-grid documentation](https://www.ag-grid.com/javascript-data-grid/column-properties/).
 
 You can define `ColDef` objects in different ways, in this example, it's being set in the context/component's own class:
 
@@ -112,9 +112,9 @@ export const YourTemplate = html<YourTemplate>`
     </foundation-grid-pro>
 `;
 ```
-Note that inside the repeat directive, the context is `myMultipleCustomColumnConfigArray` instead of `YourTemplate`. That is the reason why we can use `${x => x}` to get access to the myMultipleCustomColumnConfigArray elements.
+Note that inside the repeat directive, the context is `myMultipleCustomColumnConfigArray` instead of `YourTemplate`. That is the reason why we can use `${x => x}` to access the myMultipleCustomColumnConfigArray elements.
 
-For more information about the `repeat` directive, [follow this link](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive).
+You can find more information about the `repeat` directive in the [FAST documentation](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive).
 
 :::tip A different approach to create multiple columns
 When using `ColDef` objects, it's up to you to decide the approach. You can use the directive **repeat** to create an array of definitions, or you can create it one column at a time.
@@ -128,13 +128,13 @@ When using `ColDef` objects, it's up to you to decide the approach. You can use 
 </foundation-grid-pro>
 ```
 :::
-### Connected data and Custom columns
+### Connected data and custom columns
 
-When you connect the grid with the back-end using `<grid-pro-genesis-datasource />`, your grid automatically creates all the columns based on the metadata that comes from the server.
+When you connect the grid with the back end using `<grid-pro-genesis-datasource />`, your grid automatically creates all the columns based on the metadata that comes from the server.
 
-Now if you create a new custom column defining the `field`, and this `field` has the same name of the field that comes from the back-end. Then the grid automatically set the data to be displayed in this field. Let's see an example:
+Now if you create a new custom column defining the `field`, and this `field` has the same name as the field that comes from the back end, then the grid automatically sets the data to be displayed in this field. Let's see an example:
 
-If you connect your grid with the back-end through a dataserver called `ALL_TRADES` that has these fields: `TRADE_ID`, `PRICE` and `QUANTITY`. The implementation would be like this:
+If you connect your grid with the back end through a dataserver called `ALL_TRADES` that has these fields: `TRADE_ID`, `PRICE` and `QUANTITY`, the implementation would be like this:
 
 ```html
 <foundation-grid-pro>
@@ -142,7 +142,7 @@ If you connect your grid with the back-end through a dataserver called `ALL_TRAD
 </foundation-grid-pro>
 ```
 
-If you don't define any additional column, you would have this grid displayed:
+If you don't define any additional columns, you would have this grid displayed:
 
 ![](/img/grid-trade-quantity-price.png)
 
@@ -157,7 +157,7 @@ public myCustomColumn: ColDef =
   }
 ```
 
-We are defining the `field` with the same of a field that comes from the back-end: **PRICE** and we are pinning it to the right. Now let's create a new custom column in our HTML template:
+We are defining the `field` with the same as a field that comes from the back end: **PRICE** and we are pinning it to the right. Now let's create a new custom column in our HTML template:
 
 ```html
 <alpha-grid-pro>
@@ -174,7 +174,7 @@ This is the expected result:
 ## Custom renderers
 
 In case you want to add a web component inside the `grid-pro`. You can use two fields in the definition of the columns:
-- **cellRenderer**: The cell renderer is responsible for creating the structure of the cell. Here you need to return an string containing the HTML that will be rendered in that cell.
+- **cellRenderer**: The cell renderer is responsible for creating the structure of the cell. Here you need to return a string containing the HTML that will be rendered in that cell.
 - **cellRendererParams**: It is responsible for the parameters of the cell renderer. It depends on how you implement the `cellRenderer`, it may require some additional parameters.
 
 This is how you need to define your `ColDef` to enable cell renderer:
