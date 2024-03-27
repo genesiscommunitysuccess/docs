@@ -18,11 +18,11 @@ sidebar_position: 7
 This day covers:
 
 - [Schedulers](#schedulers)
-- [Permissions​](#permissions)
+- [Permissions](#permissions)
 - [Operating the platform](#operating-the-genesis-low-code-platform)
-- [How to get help​](#how-to-get-help​)
+- [How to get help](#how-to-get-help)
 
-## Schedulers​
+## Schedulers
 You can use the Evaluator to schedule the production of EOD reports (for example), or to send warnings when a defined limit is breached.
 
 In system terms, Evaluators enable you to connect Event Handlers to two different kinds of event: dynamic and static (cron rules):
@@ -32,7 +32,7 @@ In system terms, Evaluators enable you to connect Event Handlers to two differen
 
 In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [Defining a dynamic rule](../../../server/evaluator/basics/#defining-a-dynamic-rule).
 
-### Cron rules (static events)​
+### Cron rules (static events)
 
 Let's create a cron rule that triggers a batch job to run once every minute.
 
@@ -77,7 +77,7 @@ To start, create a process called *ALPHA_EVALUATOR* and add it to the file **alp
 </processes>
 ```
 
-Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** with the code below.
+Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/alpha-app/src/main/genesis/cfg/** with the code below.
 
 ```xml {3}
 <configuration>
@@ -95,41 +95,42 @@ This is because the Evaluator process is set to run only on the primary node. Ou
 Run [SetPrimary](../../../operations/clustering/genesis/#set-the-primary-node) script as explained [here](../../../server/tooling/intellij-plugin/#running-a-genesis-script) and you should be able to see all processes running.
 
 #### 2. Create a new class
-When the evaluator is running, create a PositionReport class to trigger the new event. This class should be created inside your project folder **server/jvm/alpha-messages/src/main/kotlin/global/genesis/alpha/message/event** as the code below.
+When the evaluator is running, create a PositionReport kotlin class to trigger the new event. This class should be created inside your project folder **server/alpha-app/src/main/kotlin/genesis/global/message/event/** as the code below.
 
-```kotlin
-package global.genesis.alpha.message.event
+```kotlin title="PositionReport"
+package genesis.global.message.event
 
-class PositionReport
+class PositionReport {}
 ```
 
 #### 3. Create an event handler
 
 Create an event handler that will write the csv files to the runtime/position-minute-report folder. Call it EVENT_POSITION_REPORT.
 
-Open the file **alpha-eventhandler.kts** and add a variable called *tradeViewRepo* injecting the class *TradeViewAsyncRepository*. Then, add an event handler to generate the csv file:
+Open the file **alpha-eventhandler.kts** and add an event handler to generate the csv file:
 
-```kotlin {6,9,13-31}
+```kotlin {5-9,14-32}
+import genesis.global.message.event.TradeAllocated
+import genesis.global.message.event.TradeCancelled
+import global.genesis.TradeStateMachine
+import global.genesis.gen.dao.Trade
+import genesis.global.message.event.PositionReport
+import global.genesis.jackson.core.GenesisJacksonMapper
 import java.io.File
 import java.time.LocalDate
-import global.genesis.TradeStateMachine
 import global.genesis.commons.standards.GenesisPaths
-import global.genesis.gen.view.repository.TradeViewAsyncRepository
-import global.genesis.alpha.message.event.PositionReport
-import global.genesis.jackson.core.GenesisJacksonMapper
-
-val tradeViewRepo = inject<TradeViewAsyncRepository>()
 
 eventHandler {
  //... other event handlers removed for clarity
-     eventHandler<PositionReport> {
+
+    eventHandler<PositionReport> (name="POSITION_REPORT"){
         onCommit {
             val mapper = GenesisJacksonMapper.csvWriter<TradeView>()
             val today = LocalDate.now().toString()
             val positionReportFolder = File(GenesisPaths.runtime()).resolve("position-minute-report")
             if (!positionReportFolder.exists()) positionReportFolder.mkdirs()
 
-            tradeViewRepo.getBulk()
+            entityDb.getBulk(TRADE_VIEW)
                 .toList()
                 .groupBy { it.counterpartyName }
                 .forEach { (counterParty, trades) ->
@@ -150,13 +151,13 @@ Load the cron rule csv below into the database, [CRON_RULE](../../../server/eval
 Create a new file in the same folder as **USER.csv** and name it as **CRON_RULE.csv**. Copy the content below into the file that you just created.
 ```csv
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
-"0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
+"*/30 * * ? * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 Then import the local csv using the Genesis plugin as we saw [here](../../../getting-started/developer-training/training-content-day1/#credentials-to-login).
 
 ### Exercise 5.1: using the Evaluator
 :::info ESTIMATED TIME
-30 mins
+10 mins
 :::
 
 Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) table, and insert a new rule changing the CRON_EXPRESSION value.
@@ -164,7 +165,7 @@ Now we want to run PositionReport every 10 seconds. To do that, remove the row y
 :::tip
 To delete rows you can use [DbMon](../../../operations/commands/server-commands/#dbmon) and the command `delete`. After that you can use [SendIt](../../../operations/commands/server-commands/#sendit) to insert a new row again.
 
-By the way, the CRON expression for every 10 seconds is `0/10 * * * * ? *`. See a CRON generator [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
+By the way, the CRON expression for every 10 seconds is `*/10 * * ? * *`. See a CRON generator [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
 :::
 
 ## Permissions
@@ -243,7 +244,7 @@ Starting with the server, set up the USER and USER_ATTRIBUTES records for the sy
 If you are not sure how to read and write information from the Genesis database, see reference page covering the [`DbMon`](../../../operations/commands/server-commands/#dbmon) and [`SendIt`](../../../operations/commands/server-commands/#sendit) commands.
 :::
 
-Set two new key values in **alpha-config/src/main/resources/cfg/alpha-system-definition.kts** file in systemDefinition-global block This enables the COUNTERPARTY table and COUNTERPARTY_ID field to become part of the generic permissions system:
+Set two new key values in **server/alpha-app/src/main/genesis/cfg/alpha-system-definition.kts** file in systemDefinition-global block This enables the COUNTERPARTY table and COUNTERPARTY_ID field to become part of the generic permissions system:
 
 ```kotlin {5,6}  title="alpha-system-definition.kts"
 ...
@@ -347,7 +348,7 @@ If your message type is not a database-generated entity,  you can still define f
     }
 ```
 
-See [here](../../../server/access-control/authorisation/) <!-- TODO: Is this the right link?--> for more details on authorisation.
+See [here](../../../server/access-control/authorisation/) for more details on authorisation.
 
 ### Exercise 5.2: using permissions
 :::info ESTIMATED TIME
@@ -439,40 +440,40 @@ Now that our application code is complete, let's take a look at the operations s
 
 ### Basic file structure
 ```shell
-~/run/ -> /data/2022-05-23/
+~/server/alpha-app/build/genesis-home/
 ├── auth
-│   ├── bin
-│   ├── cfg
-│   ├── lib
-│   └── scripts
+│        ├── bin
+│        ├── cfg
+│        ├── data
+│        ├── lib
+│        └── scripts
 ├── alpha
-│   ├── bin
-│   ├── cfg
-│   ├── lib
-│   └── scripts
+│        ├── cfg
+│        └── scripts
 ├── genesis
-│   ├── bin
-│   ├── cfg
-│   ├── lib
-│   ├── scripts
-│   └── util
+│        ├── bin
+│        ├── cfg
+│        ├── lib
+│        ├── scripts
+│        └── util
 ├── generated
-│   ├── cfg
-│   ├── classes
-│   ├── genesis-generated-[...]
-│   └── sources
+│        ├── cfg
+│        ├── classes
+│        ├── genesis-generated-[...]
+│        └── sources
 ├── runtime
-│   ├── [...]
-│   ├── logs
+│        ├── [...]
+│        ├── logs
 └── site-specific
     ├── bin
     ├── cfg
     ├── lib
+    ├── data
     └── scripts
 ```
 
 Understanding the file structure:
-- `run` is what we usually call the installation directory, which is preferentially a symlink to another folder named as the date of creation. It makes upgrading easier, so we can just point the `run` folder to a new folder like `2023-01-01` running a new version of the platform.
+- `genesis-home` this is the runtime folder of you local application. It stores all generated files required to your local application run.
 - `auth`, `alpha`, `genesis` are application modules, and they contain the same structure, with sub-folders like `bin`, `cfg`, `lib` and `scripts`. If you add a new module, `market_data` for example, it would be another folder under `run` with the same structure as the other modules. You can deploy a new module by unzipping the module's distribution zip file into the `run` folder and running `genesisInstall`.
 - `generated` contains files processed and installed by the platform. Do **not** change its content manually (use the `genesisInstall` command instead).
 - `runtime` contains important files used by the platform at run time. Do **not** change its content manually, but use commands like `ClearCodegenCache` (if you run into problems updating the data model) to manage some of its content. The `logs` folder contains all the logs, including logs from your modules (such as `alpha`) and from the platform itself.
