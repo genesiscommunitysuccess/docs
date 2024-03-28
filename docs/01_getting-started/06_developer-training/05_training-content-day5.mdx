@@ -223,7 +223,7 @@ Related to these tables, we have the RIGHT_SUMMARY table, which contains the sup
 The RIGHT_SUMMARY table entries are automatically maintained by the system in real time. In this way, the rights are easily accessible at speed. The GENESIS_AUTH_MANAGER process manages this table's entries automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY table is updated immediately and all the users in that profile receive the new right automatically.
 
 :::warning
-This table is only maintained automatically when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. **DbMon** or **SendIt**) then the RIGHT_SUMMARY table will not be maintained automatically.
+This table is only maintained automatically when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. `DbMon` or `SendIt`) then the RIGHT_SUMMARY table will not be maintained automatically.
 In such situations (e.g. setting up a brand new environment and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in PROFILE_USER and PROFILE_RIGHT and populates RIGHT_SUMMARY with the correct data.
 :::
 
@@ -428,7 +428,7 @@ For example, if there is an MSSQL database running on AWS, a sample command woul
 DictionaryBuilder -t MSSQL -U admin -P beONneON*74 -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d positionapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument
 ```
 
-Once the command has finished, it will generate the `fields-dictionary.kts` and `tables-dictionary.kts` files for the data model. Keep these files handy, as you will have to copy them over in the next steps.
+Once the command has finished, it will generate the **fields-dictionary.kts** and **tables-dictionary.kts** files for the data model. Keep these files handy, as you will have to copy them over in the next steps.
  -->
 
  ### The application is complete!
@@ -473,11 +473,11 @@ Now that our application code is complete, let's take a look at the operations s
 ```
 
 Understanding the file structure:
-- `genesis-home` this is the runtime folder of you local application. It stores all generated files required to your local application run.
-- `auth`, `alpha`, `genesis` are application modules, and they contain the same structure, with sub-folders like `bin`, `cfg`, `lib` and `scripts`. If you add a new module, `market_data` for example, it would be another folder under `run` with the same structure as the other modules. You can deploy a new module by unzipping the module's distribution zip file into the `run` folder and running `genesisInstall`.
-- `generated` contains files processed and installed by the platform. Do **not** change its content manually (use the `genesisInstall` command instead).
-- `runtime` contains important files used by the platform at run time. Do **not** change its content manually, but use commands like `ClearCodegenCache` (if you run into problems updating the data model) to manage some of its content. The `logs` folder contains all the logs, including logs from your modules (such as `alpha`) and from the platform itself.
-- `site-specific` is very useful when you want to override files from standard modules, such as `genesis` and `auth`.
+- **genesis-home** is the runtime folder of your local application. This stores all generated files required for your local application to run.
+- **auth`, **alpha**, **genesis** are application modules, and they contain the same structure, with sub-folders like **bin**, **cfg**, **lib** and **scripts**. If you add a new module, **market_data** for example, this would be another folder under **run** with the same structure as the other modules. You can deploy a new module by unzipping the module's distribution zip file into the **run** folder and running `genesisInstall`.
+- **generated** contains files processed and installed by the platform. Do **not** change its content manually (use the `genesisInstall` command instead).
+- **runtime** contains important files used by the platform at run time. Do **not** change its content manually, but use commands like `ClearCodegenCache` (if you run into problems updating the data model) to manage some of its content. The `logs` folder contains all the logs, including logs from your modules (such as `alpha`) and from the platform itself.
+- **site-specific** is very useful when you want to override files from standard modules, such as `genesis` and `auth`.
 
 
 ### Key server commands
@@ -492,11 +492,11 @@ So far, we've used commands such as `mon`, `DbMon`, `SendIt` and `LogLevel`. The
 ### Practising the commands
 Let's do a manual deployment of the tables dictionary as an example of how to run the server commands.
 
-From the terminal, go to the folder `/home/genesis/run/alpha/cfg/`, edit file `alpha-tables-dictionary.kts` and add any existing field to table INSTRUMENT_PRICE.
+From the terminal, go to the folder **/home/genesis/run/alpha/cfg/**, edit the file **alpha-tables-dictionary.kts** and add any existing fields to table INSTRUMENT_PRICE.
 
-Now, go to the `generated` folder with `cd $GC` (an alias to the `generated` folder). Compare the content between the file you edited previously with the one you see in the `generated` folder. The one in $GC does not contain your change.
+Now, go to the **generated** folder; run 'cd $GC` (an alias to the **generated** folder). Compare the content between the file you edited previously and the one you see in the **generated** folder. The one in $GC does not contain your change.
 
-Next, run `genesisInstall` and then compare again the files - you'll notice now they are identical because `genesisInstall` processed and installed it into the `generated` folder. Without running `genesisInstall`, it would use an older version of the file.
+Next, run `genesisInstall` and then compare again the files - you'll notice now they are identical, because `genesisInstall` processed and installed the changes into the **generated** folder. Without running `genesisInstall`, it would use an older version of the file.
 
 Since this is a table change, we need to install the changes in the database. So, let's stop the server, back up the table data and run `remap`:
 ```shell
@@ -537,9 +537,9 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 
 Next, [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) the application as you usually do.
 
-Then copy the `genesisproduct-alpha-1.0.0-SNAPSHOT-bin.zip` from .\server\jvm\alpha-distribution\build\distributions\ to the /home/genesis/run/ folder in the server (i.e., your WSL instance, where you can access its file system from Windows Explorer navigating to `\\wsl$`).
+Then copy the **genesisproduct-alpha-1.0.0-SNAPSHOT-bin.zip** from **.\server\jvm\alpha-distribution\build\distributions\** to the **/home/genesis/run/** folder in the server (i.e., your WSL instance, where you can access its file system from Windows Explorer navigating to `\\wsl$`).
 
-Once the zip file is in the ~/run/ folder, unzip it (use unzip command) and run `killServer --all`, `genesisInstall`, `remap --commit`, `startServer`.
+Once the zip file is in the **~/run/** folder, unzip it (use unzip command) and run `killServer --all`, `genesisInstall`, `remap --commit`, `startServer`.
 
 Change the log level of the ALPHA_EVENT_HANDLER process to INFO with `LogLevel` and insert a new trade from the UI.
 
