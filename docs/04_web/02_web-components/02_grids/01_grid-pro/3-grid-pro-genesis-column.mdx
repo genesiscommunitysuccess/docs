@@ -10,7 +10,7 @@ tags:
     - column
 ---
 
-This is a `slotted` component that allows a more "visual approach" when defining columns. Each `<grid-pro-column>` takes a `ColDef` typed object. To check all the available fields for the variable type `coldef`, [look here](https://www.ag-grid.com/javascript-data-grid/column-properties/).
+This is a `slotted` component that allows a more visual approach to defining columns. Each `<grid-pro-column>` takes a `ColDef` typed object. To check all the available fields for the variable type `coldef`, [look here](https://www.ag-grid.com/javascript-data-grid/column-properties/).
 
 :::tip 
 Customising column definitions using this approach is useful in **connected data** cases, where the data is dynamic; but there's still a need for extra definitions (e.g. events, transformers, etc).
@@ -28,21 +28,21 @@ Create a new `ColDef` variable. This will store all the configuration for the co
 |Name  | Type | Description|
 |------|------|-------|
 |`field` | String | Name of the field to be connected with |
-|`checkboxSelection` | boolean | Sets `true` to enable selection checkbox to your grid |
+|`checkboxSelection` | boolean | Set this to `true` to enable the selection checkbox to your grid |
 |`editable` | boolean | Sets the the column to be editable |
 |`filter`| String | Sets the [type of the filter](https://www.ag-grid.com/javascript-data-grid/filtering/#column-filter-types) |
 | `headerName` | String | Name of the header |
 |`pinned` | any | Sets the column to be pinned. It can be: `boolean`, `left`, `right`, `null`|
-|`autoHeight` | boolean | If true, the grid will select the appropriate height for the row |
+|`autoHeight` | boolean | If `true`, the grid will select the appropriate height for the row |
 |`cellRenderer` | any | Renders a component into each cell of this column |
 |`cellRendererParams` | any | Parameters to be passed to the `cellRenderer` |
-|`sortable`| boolean | If true, the column will be sortable |
+|`sortable`| boolean | Set to `true` to make the column sortable |
 |`sort` | `asc` or `desc` | Set the column to be sorted ascending or descending |
 |`width`| Number | The width of the column |
 
 You can find out more about fields and configurations in the [ag-grid documentation](https://www.ag-grid.com/javascript-data-grid/column-properties/).
 
-You can define `ColDef` objects in different ways, in this example, it's being set in the context/component's own class:
+You can define `ColDef` objects in different ways. in the example below, it's being set in the context/component's own class:
 
 ```jsx title="ColDef array setting custom headerName and others"
 public myMultipleCustomColumnConfigArray: ColDef[] = [
@@ -116,8 +116,8 @@ Note that inside the repeat directive, the context is `myMultipleCustomColumnCon
 
 You can find more information about the `repeat` directive in the [FAST documentation](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive).
 
-:::tip A different approach to create multiple columns
-When using `ColDef` objects, it's up to you to decide the approach. You can use the directive **repeat** to create an array of definitions, or you can create one column at a time.
+:::tip A different approach to creating multiple columns
+When using `ColDef` objects, it's up to you to decide the approach. You can use the directive **repeat** to create an array of definitions, or you can create each column separately.
 
 ```html title="Using the ColDef array of objects with an extra single object"
 <foundation-grid-pro>
@@ -130,11 +130,11 @@ When using `ColDef` objects, it's up to you to decide the approach. You can use 
 :::
 ### Connected data and custom columns
 
-When you connect the grid with the back end using `<grid-pro-genesis-datasource />`, your grid automatically creates all the columns based on the metadata that comes from the server.
+When you connect the grid with the back end using `<grid-pro-genesis-datasource />`, your grid automatically creates all the columns, based on the metadata that comes from the server.
 
-You can now create a new custom column defining the `field`, using the same name as the field that comes from the back end. The grid then automatically sets the data to be displayed in this field. Let's see an example.
+You can now create a new custom column defining the `field`, using the same name as the field in the back end. The grid then automatically sets the data to be displayed in this field. 
 
-If you connect your grid with the back end through a Data Server query called `ALL_TRADES` that has these fields: `TRADE_ID`, `PRICE` and `QUANTITY`, the implementation would be like this:
+In the example below, the grid is connected to the back end through a Data Server query called `ALL_TRADES`. This has the fields: `TRADE_ID`, `PRICE` and `QUANTITY`:
 
 ```html
 <foundation-grid-pro>
@@ -146,7 +146,7 @@ If you don't define any additional columns, this is the grid you will see:
 
 ![](/img/grid-trade-quantity-price.png)
 
-Now, in the context/component's own class, you can define a new column. The code below defines a `field` that has the same as a field in the back end: **PRICE**. It pins this to the right.
+Now, in the context/component's own class, you can define a new column. The code below defines a `field` called **PRICE**. There must be a field with this name in the back end. Note that we pin this field to the right.
 
 ```ts
 public myCustomColumn: ColDef =
@@ -169,7 +169,6 @@ public myCustomColumn: ColDef =
 This is the expected result:
 
 ![](/img/grid-custom-field.png)
-
 
 ## Custom renderers
 
