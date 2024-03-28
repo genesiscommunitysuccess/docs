@@ -10,7 +10,7 @@ tags:
     - renderers
 ---
 
-The `grid-pro-renderers` enable you to render data in a way that is meaningful to the user. The rendering can vary from one column to another, from boolean-type columns that need to be rendered as a `checkbox` to columns that need to be rendered as a percentage.
+The `grid-pro-renderers` enable you to render data in a way that is meaningful to the user. You can render each column differently and individually.
 
 We currently support the following scenarios:
 
@@ -109,7 +109,7 @@ Let's understand each part of the `getActionsMenuDef()`:
     - `name`: the name that will be displayed in the menu.
     - `callback`: the callback function to trigger an action. This callback function gives you access to the parameter `rowData`. This is the data of the current row.
 - The second argument is the other definitions of the `ColDef`, such as `headerName`, `width`, `pinned` ...
-- The third argument is the string that will be displayed on the button. In the previous example, this is "+".
+- The third argument is the string that will be displayed on the button. In the example above, this is "+".
 
 Behind the scenes, the `getActionsMenuDef` helper builds the "actions menu" `ColDef` for you.
 
