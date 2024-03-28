@@ -474,7 +474,7 @@ Now that our application code is complete, let's take a look at the operations s
 
 Understanding the file structure:
 - **genesis-home** is the runtime folder of your local application. This stores all generated files required for your local application to run.
-- **auth`, **alpha**, **genesis** are application modules, and they contain the same structure, with sub-folders like **bin**, **cfg**, **lib** and **scripts**. If you add a new module, **market_data** for example, this would be another folder under **run** with the same structure as the other modules. You can deploy a new module by unzipping the module's distribution zip file into the **run** folder and running `genesisInstall`.
+- **auth**, **alpha**, **genesis** are application modules, and they contain the same structure, with sub-folders like **bin**, **cfg**, **lib** and **scripts**. If you add a new module, **market_data** for example, this would be another folder under **run** with the same structure as the other modules. You can deploy a new module by unzipping the module's distribution zip file into the **run** folder and running `genesisInstall`.
 - **generated** contains files processed and installed by the platform. Do **not** change its content manually (use the `genesisInstall` command instead).
 - **runtime** contains important files used by the platform at run time. Do **not** change its content manually, but use commands like `ClearCodegenCache` (if you run into problems updating the data model) to manage some of its content. The `logs` folder contains all the logs, including logs from your modules (such as `alpha`) and from the platform itself.
 - **site-specific** is very useful when you want to override files from standard modules, such as `genesis` and `auth`.
