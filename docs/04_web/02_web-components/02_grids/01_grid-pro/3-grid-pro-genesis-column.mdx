@@ -18,7 +18,9 @@ Customising column definitions using this approach is useful in **connected data
 
 ## Usage
 
-To create or configure columns in the grid, there are two main approaches that need to be implemented
+To create or configure columns in the grid, there are two things that you need to consider:
+- Create a `ColDef` variable. 
+- Implement your columns. 
 
 ### ColDef
 
@@ -60,7 +62,7 @@ public myMultipleCustomColumnConfigArray: ColDef[] = [
 ];
 ```
 
-```jsx title="Single column defintion"
+```jsx title="Single column definition"
 public mySingleCustomColumnConfigObj: ColDef =
   {
     headerName: 'Type',
@@ -71,10 +73,10 @@ public mySingleCustomColumnConfigObj: ColDef =
 ;
 ```
 :::tip
-Remember that depending on where you implement your `ColDef`, it may change how it can be accessed.
+Where you implement your `ColDef` determines how you access it. In the example above, it has been placed in the context/component's own class, so we have used `public`. If `ColDef` is placed somewhere else, you need to access it in a different way.
 :::
 
-### Defining the columns
+### Implement the columns
 
 #### Single column
 To create a new column that uses the definitions provided by the `ColDef`, you need to insert a new component called `<grid-pro-column>`. Each `<grid-pro-column>` must be assigned to one `ColDef`. The basic implementation is:
