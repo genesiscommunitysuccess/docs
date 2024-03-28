@@ -188,7 +188,7 @@ const customCompleteDef: any = {
 };
 ```
 
-Dynamic parameters can add detail to the cell renderer. In the following example, color is passed as a parameter to the `cellRenderer` field:
+Dynamic parameters can add detail to the cell renderer. In the following example, colour is passed as a parameter to the `cellRenderer` field:
 
 ```ts
 const customCellRenderer = (params) => {
