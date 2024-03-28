@@ -250,7 +250,9 @@ So far we have been testing our work manually, using Genesis Console or some HTT
 
 #### Configuration
 
-To test our classes we need to mock the database, as there are integrations and configurations managed by Genesis behind the scenes. To avoid any additional installation locally we will use [H2 in-memory database](https://www.h2database.com/), changing the **server/alpha-app/build.gradle.kts** configuration for the tests tasks like the code below. You already have the configuration needed if you cloned the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed-simple/).
+To test our classes we need to mock the database, as there are integrations and configurations managed by Genesis behind the scenes. To avoid any additional installation locally, we shall use the [H2 in-memory database](https://www.h2database.com/).
+
+You already have the configuration needed if you cloned the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed-simple/). Otherwise, change the **server/alpha-app/build.gradle.kts** configuration for the tests tasks to match the code below. 
 
 ```kotlin {4-5} title='server/jvm/build.gradle.kts'
 dependencies {
@@ -265,7 +267,9 @@ dependencies {
 
 #### Adding Testing: AlphaTradeViewTest
 
-Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. We are extending the class [AbstractDatabaseTest](/operations/testing/integration-testing/#abstractdatabasetest) to allow a proper integration testing, as well as using the [TradeView](/getting-started/developer-training/training-content-day3/#usage) we created to assert results. In summary, the new test will:
+Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. We are extending the class [AbstractDatabaseTest](/operations/testing/integration-testing/#abstractdatabasetest) to allow a proper integration testing, as well as using the [TradeView](/getting-started/developer-training/training-content-day3/#usage) we created to assert results. 
+
+In summary, the new test will:
 * load the necessary data inputs from a CSV file 
 * retrieve data using [Genesis Database API](/database/)
 
@@ -273,8 +277,8 @@ So, first, let's do the following:
 1. Create a new folder called **test/kotlin** under the **server/alpha-app/src/**
 2. Add a new package called **global.genesis** to the **test/kotlin/** directory.
 3. Add a new test class called `AlphaTradeViewTest.kt`.
-4. Add a new package called **resources.data**
-5. Add TEST_DATA_VIEW.csv to that package (**/server/alpha-app/src/test/kotlin/resources/data**)
+4. Add a new package called **resources.data**.
+5. Add **TEST_DATA_VIEW.csv** to that package (**/server/alpha-app/src/test/kotlin/resources/data**).
 
 ```csv title="TEST_DATA_VIEW.csv"
 #INSTRUMENT
@@ -286,11 +290,11 @@ COUNTERPARTY_ID,COUNTERPARTY_LEI,COUNTERPARTY_NAME,
 1,335800A8HK6JBITVPA30,Test Ltd,
 2,655FG0324Q4LUVJJMS11,Testing AG,
 ```
-The directory tree should like this:
+The directory tree should look like this:
 
 ![](/img/first-test-structure.png)
 
-The test class should look like below:
+The test class should look like this:
 
 ```kotlin title='AlphaTradeViewTest.kt'
 package global.genesis
@@ -378,18 +382,19 @@ class AlphaTradeViewTest : AbstractDatabaseTest() {
 }
 ```
 
-You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaTradeViewTest` or from the command line.
+You can run the test from IntelliJ by right-clicking on the test class and selecting **Run AlphaTradeViewTest** or from the command line.
 
 #### Adding Testing: AlphaEventHandlerTest
 
-Now we will add a new automated test for checking the Trade insert method we [created](../../../getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](../../../operations/testing/integration-testing/#abstractgenesistestsupport) to allow a proper integration testing. In summary, the new test will:
+Now we will add a new automated test for checking the Trade insert method that we [created](../../../getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](../../../operations/testing/integration-testing/#abstractgenesistestsupport) to allow proper integration testing. In summary, the new test will:
+
 * load the necessary data inputs from a CSV file 
 * use the network API [Genesis MessageClient](../../../server/api-reference/network-api/#genesismessageclient​) to call the Event Handler methods.
 * retrieve data using [Genesis Database API](/database/)
 
 So, first, let's do the following:
 1. Add a new test class to the package **server/alpha-app/src/test/kotlin/global/genesis/** called `AlphaEventHandlerTest.kt`.
-2. Add TEST_DATA_EVENTHANDLER.csv to a data folder (**server/alpha-app/src/test/resources/data/**)
+2. Add **TEST_DATA_EVENTHANDLER.csv** to a data folder (**server/alpha-app/src/test/resources/data/**)
 
 ```csv title="TEST_DATA_EVENTHANDLER.csv"
 #INSTRUMENT
@@ -412,7 +417,7 @@ The directory tree should like this:
 
 ![](/img/testing-eventhandler.png)
 
-The test class should look like below:
+The test class should look like this:
 
 ```kotlin title='AlphaEventHandlerTest.kt'
 package global.genesis
@@ -489,7 +494,7 @@ class AlphaEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
-You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaEventHandlerTest` or from the command line.
+You can run the test from IntelliJ by right-clicking on the test class and selecting **Run AlphaEventHandlerTest** or from the command line.
 
 #### Find out more about testing
 
@@ -903,7 +908,7 @@ requestReplies {
 #### Specifying fields on request and reply
 
 
-With all those basic `requestReply` codeblocks we have seen so far, all the fields in the table are returned.
+With all the basic `requestReply` codeblocks we have seen so far, all the fields in the table are returned.
 
 We can add some precision using `request` and `reply` blocks within a `requestReply` statement.
 
