@@ -24,7 +24,7 @@ To create or configure columns in the grid, there are two things that you need t
 
 ### ColDef
 
-Create a new `ColDef` variable. This will store all the configuration for the columns in your grid. There is an extensive list of fields and parameters that can be used. Here are the most common fields:
+Create a new `ColDef` variable. This must store all the configuration for the columns in your grid. There is an extensive list of fields and parameters that can be used. Here are the most common fields:
 
 
 |Name  | Type | Description|
@@ -92,14 +92,16 @@ By doing this, you are defining a single custom column.
 <details><summary>Not seeing anything?</summary>
 <p>
 
-If you try to implement this code, you might not be able to see the grid created because this grid has no data. Once you [connect your grid with the back-end](../grid-pro-connected) or [insert simple data manually](../grid-pro-simple), you will be able to see the grid with your custom column.
+If you try to implement this code, you might not be able to see the grid created, because this grid has no data. Once you [connect your grid with the back-end](../grid-pro-connected) or [insert simple data manually](../grid-pro-simple), you will be able to see the grid with your custom column.
 
 </p>
 </details>
 
 #### Multiple columns
 
-If you want to create multiple columns at once, you can use the `repeat` directive. This is how you can implement multiple custom columns defined in the variable `myMultipleCustomColumnConfigArray`:
+If you want to create multiple columns at once, you can use the `repeat` directive. 
+
+This is how you can implement multiple custom columns defined in the variable `myMultipleCustomColumnConfigArray`:
 
 ```html {1,7-9} title="Using repeat to create multiple columns"
 import {html, ref, repeat} from '@microsoft/fast-element';
@@ -114,11 +116,11 @@ export const YourTemplate = html<YourTemplate>`
     </foundation-grid-pro>
 `;
 ```
-Note that inside the repeat directive, the context is `myMultipleCustomColumnConfigArray` instead of `YourTemplate`. This enables you to use `${x => x}` to access the myMultipleCustomColumnConfigArray elements.
+Note that inside the repeat directive, the context is `myMultipleCustomColumnConfigArray` instead of `YourTemplate`. This enables you to use `${x => x}` to access the `myMultipleCustomColumnConfigArray` elements.
 
 You can find more information about the `repeat` directive in the [FAST documentation](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive).
 
-:::tip A different approach to creating multiple columns
+:::tip A different way to creating multiple columns
 When using `ColDef` objects, it's up to you to decide the approach. You can use the directive **repeat** to create an array of definitions, or you can create each column separately.
 
 ```html title="Using the ColDef array of objects with an extra single object"
@@ -148,7 +150,7 @@ If you don't define any additional columns, this is the grid you will see:
 
 ![](/img/grid-trade-quantity-price.png)
 
-Now, in the context/component's own class, you can define a new column. The code below defines a `field` called **PRICE**. There must be a field with this name in the back end. Note that we pin this field to the right.
+In the context/component's own class, you can now define a new column. The code below defines a `field` called **PRICE**. There must be a field with this name in the back end. Note that we pin this field to the right.
 
 ```ts
 public myCustomColumn: ColDef =
@@ -174,9 +176,9 @@ This is the expected result:
 
 ## Custom renderers
 
-If you want to add a web component inside the `grid-pro`. You can use two fields when you define the columns:
+If you want to add a web component inside the `grid-pro`, you can use two fields when you define the columns:
 - `cellRenderer` is responsible for creating the structure of the cell. Here you need to return a string containing the HTML that will be rendered in that cell.
-- `cellRendererParams` enables you to supply any parameters that are required.
+- `cellRendererParams` enables you to supply any additional parameters that you want to add.
 
 Here is an example `ColDef` to enable the cell renderer:
 
