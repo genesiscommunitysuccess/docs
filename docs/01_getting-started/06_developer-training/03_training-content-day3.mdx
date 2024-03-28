@@ -27,7 +27,7 @@ This day covers:
 
 When you set up a data model, it implies relationships between tables. For example, a TRADE has a COUNTERPARTY_ID and an INSTRUMENT_ID. That means it has a relationship with the COUNTERPARTY and INSTRUMENTS tables.
 
-Views enable you join related tables to create a single holistic view.
+Views enable you to join related tables to create a single holistic view.
 
 In short, Views are the genesis equivalent of SQL select queries. Unlike [tables](../../../database/data-structures/tables/), views do not have any data of their own, they are read-only, but present a view based on one or more tables. 
 
@@ -384,7 +384,7 @@ class AlphaTradeViewTest : AbstractDatabaseTest() {
 
 You can run the test from IntelliJ by right-clicking on the test class and selecting **Run AlphaTradeViewTest** or from the command line.
 
-#### Adding Testing: AlphaEventHandlerTest
+<!-- #### Adding Testing: AlphaEventHandlerTest
 
 Now we will add a new automated test for checking the Trade insert method that we [created](../../../getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](../../../operations/testing/integration-testing/#abstractgenesistestsupport) to allow proper integration testing. In summary, the new test will:
 
@@ -495,6 +495,8 @@ class AlphaEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 ```
 
 You can run the test from IntelliJ by right-clicking on the test class and selecting **Run AlphaEventHandlerTest** or from the command line.
+
+-->
 
 #### Find out more about testing
 
