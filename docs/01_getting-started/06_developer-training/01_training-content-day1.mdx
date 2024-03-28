@@ -281,19 +281,19 @@ In the Gradle menu on the right of IntelliJ, select:
 ```
 ### Deploy
 
-As soon as the Build is done, you need to deploy the application. To do that, click on the Genesis plugin in your intellij. It will appear on the right panel.
+As soon as the Build is done, you need to deploy the application. To do that, click on the Genesis plugin in your intellij (in the panel on the right).
 
 ![](/img/click-on-genesis.png)
 
-When you click on it for the first time, it will map all the available processes and will display it in the mon panel:
+When you click on it for the first time, it will map all the available processes and display these in the mon panel:
 
 ![](/img/genesis-process-first-run.png)
 
-To deploy your application, click on `deploy Genesis`:
+To deploy your application, click on **deploy Genesis**:
 
 ![](/img/deploy-project.png)
 
-By doing that, the plugin will create your runtime folder containing all generated files required for your local application to run. This runtime folder will be available under the **server/alpha-app/build/** folder and it is called **genesis-home**:
+The plugin then creates your runtime folder containing all the generated files required for your local application to run. This runtime folder is available under the **server/alpha-app/build/** folder and it is called **genesis-home**:
 
 ![](/img/genesis-home.png)
 
@@ -303,25 +303,24 @@ Congratulations! You have built and deployed an application.
 
 ### Credentials to login
 
-By default the following will be your login details:
+By default, the following will be your login details:
 
 - Username: JaneDee
-- Password: beONneON*74 (This is encrypted in the user.csv file.)
+- Password: beONneON*74 (This is encrypted in the **user.csv** file.)
 
-However, after the first Build and Deploy, you need to send the login information so you can access the application you have just created.
+However, after the first Build and Deploy, you need to send the login information so that you can access the application you have just created.
 
 <h3>Create a new schema</h3>
 
-Before you can run your application, you need to create a new schema for the database; this is where all tables will be created. To do that,
+Before you can run your application, you need to create a new schema for the database; this is where all the tables will be created. To do that,
 
-Run the `remap`.
+Run `remap`.
 
 ![Genesis Install](/img/remap-simple.png)
 
+<h3>Send data to Genesis</h3>
 
-<h3>Send data to genesis</h3>
-
-Go to **server/alpha-app/src/main/genesis/data/USER.csv**, right click on this csv file and select **Import CSV(s) to Genesis**.
+Go to **server/alpha-app/src/main/genesis/data/USER.csv**, right-click on this csv file and select **Import CSV(s) to Genesis**.
 
 ![](/img/import-login.png)
 
@@ -333,7 +332,7 @@ After that, you have all the data to start the application.
 
   ![](/img/DbMon-script.png)
 
-  type `table USER` and then `search 1` you will be displayed the following:
+  Type `table USER` and then `search 1`; this will  display the following:
 
 ```kotlin
 ==================================
@@ -369,7 +368,7 @@ Total Results:  1
 
 ### Starting the server
 
-Now we need to start the server. To do that, click on the start server button. This will start all the processes:
+Now we need to start the server. To do that, click on the start server button. This starts all the processes:
 
 ![](/img/start-server-simple.png)
 
@@ -385,7 +384,7 @@ Alternatively, you can use Genesis Console, which gives you a simple way of test
 1. Go to http://genesislcap.com/console/console-local/?host=localhost:9064.
 
 :::warning
-Some browsers automatically change **http** to **https** - which will cause a fail. Make sure the url starts with **http** before submitting. In case you still facing any difficulty, open a new incognito/private browser (this avoids any cache issues).
+Some browsers automatically change **http** to **https** - which will cause a fail. Make sure the url starts with **http** before submitting. If you still have problems, open a new incognito/private browser (this avoids any cache issues).
 :::
 
 2. Enter the IP address of your server, in this case localhost port 9064, as we are using GENESIS_ROUTER locally through the Genesis plugin. So, the value to be entered here is `localhost:9064`
@@ -418,7 +417,7 @@ If the Event Handler is working correctly, you will receive an **ACK**.
 ![](/img/test-console-eh-insert-instrument-ack.png)
 
 ### Checking the insertion
-You can go on to check the TRADE table to see if your insert is there.
+You can go to check the TRADE table to see if your insert is there.
 
 1. Filter the list of services to show only Data Servers (these are the components that distribute the data).
 
