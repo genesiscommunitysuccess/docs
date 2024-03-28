@@ -15,7 +15,7 @@ The `grid-pro-renderers` enable you to render data in a way that is meaningful t
 We currently support the following scenarios:
 
 - `no renderer`. When this is specified in a Column Definition, the column is rendered as a string (raw value). <br /><br />
-*This may be affected if the `auto-cell-renderer-by-type` prop in the target Grid Pro is set to `true`*
+*This may be affected if the `auto-cell-renderer-by-type` property in the target Grid Pro is set to `true`*
 
 - `built-in renderer`. There are two cell renderers that are ready to use (**Actions Menu** and **Boolean**). You can use them by specifying the `cellRenderer` property and referencing them directly, You can also configure `boolean` automatically if the target Grid Pro is correctly configured. <br /><br /> 
 *This may be affected if the `auto-cell-renderer-by-type` prop in the target Grid Pro is set to `false`*
@@ -33,7 +33,7 @@ There are two built-in cell renderers:
 
 ### boolean
 
-This adds a checkbox to the cell. To use this build-in renderer, follow these steps:
+This adds a checkbox to the cell. To use this built-in renderer, follow these steps:
 
 1. Import it from `@genesislcap/grid-pro`:
 ```tsx
@@ -60,14 +60,15 @@ public myBooleanColDef: ColDef = {
 </foundation-grid-pro>
 ```
 
-4. Add `auto-cell-renderer-by-type` attribute to your grid to enable this feature:
+4. Add the `auto-cell-renderer-by-type` attribute to your grid to enable this feature:
 
 ```html
 <foundation-grid-pro auto-cell-renderer-by-type>
   ...
 </foundation-grid-pro>
 ```
-After these steps, you can see the new column with the boolean built-in renderer in your grid.
+This will show the new column with the boolean built-in renderer in your grid.
+
 :::tip
 If you want to be able to click on the checkbox, you need to set the `editable` property of the field to `true`.
 :::
@@ -122,7 +123,7 @@ Behind the scenes, the `getActionsMenuDef` helper builds the "actions menu" `Col
 </foundation-grid-pro>
 ```
 
-After these three steps, you will see the "actions menu" in one of your cells.
+After these three steps, you will see the "actions menu" in the relevant cell.
 
 <details><summary>Want to build it by yourself?</summary>
 <p>
