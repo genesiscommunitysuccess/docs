@@ -389,49 +389,7 @@ Remember to change the **alpha-eventhandler.kts** file, as well as inserting the
 After the configurations, you should run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) again to deploy the new version.
 :::
 
-<!-- ## Generating data model from existing sources
-
-### Excel to Genesis
-
-All across the financial sector, you can find operational functions sitting in Excel workbooks. And this sometimes includes functions that are mission-critical.
-
-The Genesis low-code platform gives you a way of turning these into applications that can be audited and maintained in a standard and controlled manner. Along the way, you can build in better workflow and usability without heavy IT development effort.
-
-
-Take a look at this quick exercise. We start with an Excel workbook. We finish with a simple but effective server that you can add a front end to.
-
-1. Do some up-front checks and edits to head off any obvious issues.
-2. Run the convertor. This creates your data model in Genesis format and creates data files in csv format.
-3. Check the fields, tables and views in the data model. Then make any necessary adjustments.
-4. Load the csv data files to the database.
-5. Run a quick sequence of Genesis scripts to produce the files that contain the business logic and expose the endpoints.
-
-That’s it. If you follow those steps, you'll have a working server, ready to be connected to a front end.
-
-[Would you like to see that in detail](../../../tutorials/excel-to-genesis/excel-tut-2/)?
-
-If you already have a Genesis low-code platform, you can download the workbook and try this for yourself.
-
-
-### From an existing relational database
-
-:::note
-The command from this step has to be executed from where the Genesis Platform is set up (be it either a local installation or on remote host).
-:::
-
-The product that we create will be called **ref_data_app**. Using the instance in which the platform is installed, run:
-```bash
-DictionaryBuilder -t <database-type> -U <username> -P <password> -p <database-port> -H <database-host> -d positionapp --product <product-name> -o <output-directory> -i 200 --tables <comma-separated-table-names>
-```
-For example, if there is an MSSQL database running on AWS, a sample command would look like:
-```bash
-DictionaryBuilder -t MSSQL -U admin -P beONneON*74 -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d positionapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument
-```
-
-Once the command has finished, it will generate the **fields-dictionary.kts** and **tables-dictionary.kts** files for the data model. Keep these files handy, as you will have to copy them over in the next steps.
- -->
-
- ### The application is complete!
+### The application is complete!
  Congratulations! You have finished the Positions & Trades app! Check out the final application example [here](https://github.com/genesiscommunitysuccess/devtraining-alpha).
 
 
@@ -516,35 +474,6 @@ When deploying files manually like this, remember to push the change to version 
 :::
 
 An exhaustive list of commands can be found [here](../../../operations/commands/server-commands/). <!-- TODO: What is the proper link for this?-->
-
-<!--
-### Exercise 5.3: manual deployment of the application distribution
-:::info ESTIMATED TIME
-30 mins
-:::
-
-Add some logging to TRADE_INSERT event handler onCommit method with INFO level:
-```kotlin
-eventHandler<Trade>(name = "TRADE_INSERT") {
-        ...
-        onCommit { event ->
-            LOG.info("Awesome log")
-            ...
-        }
-    }
-...
-```
-
-Next, [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) the application as you usually do.
-
-Then copy the **genesisproduct-alpha-1.0.0-SNAPSHOT-bin.zip** from **.\server\jvm\alpha-distribution\build\distributions\** to the **/home/genesis/run/** folder in the server (i.e., your WSL instance, where you can access its file system from Windows Explorer navigating to `\\wsl$`).
-
-Once the zip file is in the ~/run/ folder, unzip it (use unzip command) and run `killServer --all`, `genesisInstall`, `remap --commit`, `startServer`.
-
-Change the log level of the ALPHA_EVENT_HANDLER process to INFO with `LogLevel` and insert a new trade from the UI.
-
-To test it, check if you can see the new log you added in the alpha event handler log file.
--->
 
 ## How to get help
 
