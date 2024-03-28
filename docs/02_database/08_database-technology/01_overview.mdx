@@ -15,12 +15,11 @@ By default, the platform creates an [H2](https://h2database.com/html/main.html) 
 
 For serious development work and for production environments, Genesis supports the following database technologies:
 
-| Database | [FoundationDB](../../../database/database-technology/foundationdb/) | [Postgresql](../../../database/database-technology/sql/#postgresql) | [MSSQL](../../../database/database-technology/sql/#sql-server) | [Oracle](../../../database/database-technology/sql/#oracle) |
-| --- | --- | --- | ---------------------------------------------------|-----------------------------------------------------|
-| Technology | NOSQL | SQL | SQL                                               | SQL                                         |
-| Supports transactions | ✔️ | ✔️ | ✔️                                        | ✔️                                         |
-| Returns sorted data | ✔️ | ✔️ | ✔️                                          | ✔️                                         |
-| Unlimited operation size | ❌ | ✔️ | ✔️                                     | ✔️                                         |
+| Database | [FoundationDB](../../../database/database-technology/foundationdb/) | [Postgresql](../../../database/database-technology/sql/#postgresql) | [MSSQL](../../../database/database-technology/sql/#sql-server) | [Oracle](../../../database/database-technology/sql/#oracle) | H2 |
+| --- | --- | --- | ---------------------------------------------------|-----------------------------------------------------|-----|
+| Technology | NOSQL | SQL | SQL                                               | SQL                                         | SQL |
+| Unlimited operation size | ❌ | ✔️ | ✔️                                     | ✔️                                         |✔️ |
+| Supported in production | ✔️ | ✔️ | ✔️  | ✔️  |  ❌ |
 
 :::note
 From version 7.0 onwards, Aerospike technology is not supported.
