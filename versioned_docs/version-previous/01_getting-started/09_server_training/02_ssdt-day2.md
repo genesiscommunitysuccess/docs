@@ -16,9 +16,10 @@ This day covers:
 - [Dynamic rules​](#dynamic-rules)
 - [Advanced views​​](#advanced-views)
 
+
 ## Notify
 
-The Genesis platform includes a notification module called *GENESIS_NOTIFY* by default. It does not run automatically and, starting from GSF version 6.6.x, there is a package available for it: `genesis-notify`.
+The Genesis platform includes a notification module called *GENESIS_NOTIFY* by default. The package for this is `genesis-notify`. It does not run automatically.
 
 As you have already cloned the Server Developer Training starting repository from [here](https://github.com/genesiscommunitysuccess/servertraining-seed), you have everything you need to run it.
 
@@ -30,19 +31,33 @@ The manual steps to use the `genesis-notify` package are not difficult:
 
 3. Finally, include a variable indicating the `genesis-notify` version, as demonstrated [here](https://github.com/genesiscommunitysuccess/servertraining-alpha/blob/main/server/jvm/gradle.properties#L7).
 
-Now you can run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) tasks to verify that the new process works as expected.
+Now you need to reload the gradle project, and run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) tasks to verify that the new process works as expected.
 
-You can then run `mon`.
+If everything works, you will see a new process called **GENESIS_NOTIFY** in the **mon** tab.
 
-As we are building using the `genesisInstall` command with the `--compactProcesses` option, the *GENESIS_NOTIFY* process will be running under *GENESIS_COMPACT_PROCESS*.
+:::tip
+if you build using the `genesisInstall` command with the `--compactProcesses` option, the *GENESIS_NOTIFY* process will be running under **GENESIS_COMPACT_PROCESS**.
+:::
 
-### Set up GENESIS_NOTIFY in the database
+### Set up GENESIS_NOTIFY
 
-Create a file GATEWAY.csv as shown below and insert it in the table GATEWAY using the command `SendIt`.
+First, we need to create the gateway. To do that, create a new file called **genesis-notify.kts** under your **server/jvm/alpha-site-specific/src/main/resources/scripts/**
+and add the following information, including the details of the the SMTP server you are using.
 
-```csv
-GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
-"EmailDistribution1","EmailDistribution","{ \"emailDistribution\" : { \"to\" : [ ], \"cc\" : [ ], \"bcc\" : [ ] } }",
+```kotlin
+notify {
+    gateways {
+        email(id = "email") {
+            smtpHost = 
+            smtpPort = 
+            smtpUser =
+            smtpPw = 
+            smtpProtocol =
+            systemDefaultUserName = 
+            systemDefaultEmail = 
+        }
+    }
+}
 ```
 
 ### Insert NOTIFY_ROUTE
@@ -50,22 +65,22 @@ GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
 Create a file NOTIFY_ROUTE.csv as shown below, then insert it in the table NOTIFY_ROUTE using the command `SendIt`.
 
 ```csv
-ENTITY_ID,ENTITY_ID_TYPE,TOPIC_MATCH,GATEWAY_ID
-,"GATEWAY","PositionAlert","EmailDistribution1" 
+NOTIFY_ROUTE_ID,TOPIC_MATCH,GATEWAY_ID
+TRAINING_NOTIFY_01,NOTIFY_EMAIL,email
 ```
 
-### Add connection details to the system definition
+:::tip Add connection details to the system definition
+You need to add the details using new `item` statements in the system definition. Open the **alpha-system-definition.kts** file and use the code below, adding the details of your SMTP server connection:
 
-Open the **alpha-system-definition.kts** file and add the details of the connection for the SMTP server:
 ```kotlin {5-11}
 ...
 systemDefinition {
     global {
         ...
         item(name = "SYSTEM_DEFAULT_USER_NAME", value = "" )
-        item(name = "SYSTEM_DEFAULT_EMAIL", value = "notifications@freesmtpservers.com" )
-        item(name = "EMAIL_SMTP_HOST", value = "smtp.freesmtpservers.com" )
-        item(name = "EMAIL_SMTP_PORT", value = "25" )
+        item(name = "SYSTEM_DEFAULT_EMAIL", value = "" )
+        item(name = "EMAIL_SMTP_HOST", value = "" )
+        item(name = "EMAIL_SMTP_PORT", value = "" )
         item(name = "EMAIL_SMTP_USER", value = "" )
         item(name = "EMAIL_SMTP_PW", value = "" )
         item(name = "EMAIL_SMTP_PROTOCOL", value = "SMTP")
@@ -74,7 +89,20 @@ systemDefinition {
 }
 ```
 
-Run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) tasks again.
+Once this is in place, you can use `systemDefinition["{NAME_OF_THE_ITEM}"].get()` to get access to its value.
+:::
+
+### Insert EMAIL_DIST_NOTIFY_ROUTE_EXT
+
+Finally, create the `EMAIL_DIST_NOTIFY_ROUTE_EXT.csv` as shown below. This creates the distribution email that will be used when the topic `NOTIFY_EMAIL` is used. Run the command `SendIt`to insert the details in the table EMAIL_DIST_NOTIFY_ROUTE_EXT.
+
+```csv
+NOTIFY_ROUTE_ID,EMAIL_TO,EMAIL_CC,EMAIL_BCC
+TRAINING_NOTIFY_01,email@host.com,email@host.com,,
+```
+:::caution
+All fields are mandatory, so if you are not CCing or BCCing anyone, you need to leave these fields blank, so the platform understands that they are null. This is what we did with the `EMAIL_BCC` field in the previous example.
+:::
 
 ### Switch on data dumps
 
@@ -92,7 +120,7 @@ cd $L
 tail -f ALPHA_EVALUATOR.log
 ```
 :::tip
-$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis platform. Feel free to use your favourite command to view logs such as tail, less etc.
+$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis platform. Feel free to use your favourite command to view logs, such as tail, less etc.
 :::
 
 ## Dynamic rules
@@ -115,14 +143,20 @@ Now you are going to use the Evaluator again to set up dynamic rules. In this ca
 
 First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron rule](../../developer-training/training-content-day5/#cron-rules-static-events).
 
-You need to create two csv files for this. The first is the file with your rule in the correct format, similar to the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
+You need to create three csv files for this. The first is the file with your rule in the correct format, similar to the static cron rule in the previous exercise. Call the file **DYNAMIC_RULE.csv**.
 
 ```csv
-NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
-MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),JaneDee,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
+ID,NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
+99,MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),JaneDee,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
+```
+The second csv file relates the dynamic with with a specific topic and route in the notify. Create a file called **DYNAMIC_NOTIFY_RULE.csv** with the following content:
+
+```csv
+DYNAMIC_NOTIFY_RULE_ID,DYNAMIC_RULE_ID,MESSAGE,TOPIC
+1,99,Testing,NOTIFY_EMAIL
 ```
 
-The second is a csv file that enables you to test the rule. Create a file called POSITION.csv with the following data:
+The third csv file enables you to test the rule. Create a file called **POSITION.csv** with the following data:
 
 ```csv
 POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
@@ -130,7 +164,6 @@ POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
 ```
 
 Now you are ready to begin setting up your dynamic rule.
-
 ### Exercise 2.1 Trigger the event to test the rule
 
 :::info ESTIMATED TIME

@@ -29,6 +29,12 @@ ng new alpha-angular
 
 Follow the prompts, answering each question in turn. At the end, you should have a basic runnable Angular application.
 
+Navigate into your new project directory:
+
+```shell
+cd alpha-angular
+```
+
 ## Use Genesis Foundation packages
 
 To install the Genesis Foundation packages. Run this command from your project folder:
@@ -46,12 +52,10 @@ The Angular CLI should build your project and make it available on localhost. Ri
 
 Let's change that. Open your **src/main.ts** file and add the following code:
 
-```
 import CodeBlock from '@theme/CodeBlock';
 import Example from '!!raw-loader!/examples/ui/alphaImports';
 
 <CodeBlock className="language-ts">{Example}</CodeBlock>
-```
 
 This code uses the Genesis Foundation Design System to register the `<alpha-card>`, `<alpha-button>` and `<alpha-text-field>` components.
 

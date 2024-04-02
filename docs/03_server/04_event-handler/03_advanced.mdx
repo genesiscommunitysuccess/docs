@@ -14,38 +14,30 @@ tags:
 
 
 ## Custom reply message type
-If you use a custom reply message type, you won’t be able to use the default `ack()` or `validationAck()` functions.  The custom message type needs to be returned from the method.
 
-For a custom message type called `TradeEvent` defined as:
+In an `eventhandler`, you can specify custom reply message types to be returned instead of the default `ack()` or `validationAck()` functions. These custom replies give you more flexibility. 
 
-```kotlin
-data class TradeEvent(
-    val price: Double,
-    val quantity: Int,
-){
-    init{
-        require(price > 0) { "Price cannot be negative "}
-        require(quantity > 0) { "Quantity cannot be negative "}
-    }
-}
-```
-
-...and a custom message reply type called `CustomTradeEventReply` defined as:
+Let us look at an example. This is based on a table called `TRADE` with a primary key of `TRADE_ID` and at least two fields: `PRICE` and `QUANTITY`. Here is an example of a custom message reply type called `CustomTradeEventReply`:
 
 ```kotlin
 sealed class CustomTradeEventReply : Outbound() {
     class TradeEventValidateAck : CustomTradeEventReply()
-    data class TradeEventAck(val tradeId: String) : CustomTradeEventReply()
+    data class TradeEventAck(val tradeId: String, val message: String) : CustomTradeEventReply()
     data class TradeEventNack(val error: String) : CustomTradeEventReply()
 }
 ```
 
-Add `CustomTradeEventReply` under **&#123;app-name}-messages** and assemble. Once you have built, add `api(project(":&#123;app-name}-messages"))` to your build.gradle.kts file under **&#123;app-name}-script-config/build.gradle.kts**.
+So how would we use that in an `eventHandler` codeblock?
 
-...you can now use the following example Event Handler:
+1. Add the example to the file _app-name_**-messages** and assemble. 
+2. Once you have built, add `api(project("{app-name}-messages"))` to your **build.gradle.kts** file under **{app-name}-script-config/build.gradle.kts**.
+
+You can now use the following example `eventHandler`:
+
+If you have built your fields and tables correctly, IntelliJ will be able to find `Trade`. If not, go back and [build your fields and tables](../../../getting-started/learn-the-basics/data-model/).
 
 ```kotlin
-    eventHandler<TradeEvent, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
+    eventHandler<Trade, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
         onException { event, throwable ->
             CustomTradeEventReply.TradeEventNack(throwable.message!!)
         }
@@ -59,12 +51,50 @@ Add `CustomTradeEventReply` under **&#123;app-name}-messages** and assemble. Onc
         onCommit { event ->
             val trade = event.details
             val result = entityDb.insert(trade)
-            CustomTradeEventReply.TradeEventAck(result.record.tradeId)
+            CustomTradeEventReply.TradeEventAck(result.record.tradeId, "Trade inserted")
         }
     }
 ```
 
-The following code assumes you have built your fields and tables after you created your `TradeEvent` under **jvm/&#123;app-name}-config** with a primary key of `tradeId`. If intelliJ can't find your `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](../../../getting-started/learn-the-basics/data-model/).
+Let's look at some detail on those codeblocks.
+
+### onValidate
+
+For custom reply messages, the 'onValidate' codeblock is mandatory.
+
+Remember - custom replies do not use the default `ack()` or `validationAck()` functions.
+
+### Server response
+
+The response from the server is different for custom reply messages, so the client side of your application needs to be aware of that. Each field you define in your custom request reply is included in the json response. In our example, we specified two fields to be returned in a `TradeEventAck()`: tradeId and message. 
+
+```json{3,4}
+{
+    "GENERATED": [],
+    "TRADE_ID": "1",
+    "MESSAGE": "Trade inserted",
+    "MESSAGE_TYPE": "TRADE_EVENT_ACK",
+    "SOURCE_REF": "****",
+    "METADATA": {
+        "IS_EMPTY": true,
+        "ALL": {}
+    }
+}
+```
+
+By comparison, an `ack()` in a standard (non-custom) `eventhandler` generates a response from the server that looks like this:
+
+```json
+{
+    "GENERATED": [],
+    "MESSAGE_TYPE": "EVENT_ACK",
+    "SOURCE_REF": "****",
+    "METADATA": {
+        "IS_EMPTY": true,
+        "ALL": {}
+    }
+}
+```
 
 ### onException
 

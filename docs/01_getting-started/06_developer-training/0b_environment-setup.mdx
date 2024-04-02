@@ -27,14 +27,14 @@ import MinimumRequirement from '/snippet/_minimum_requirement.mdx'
 
 ### Accessing the Genesis repository and configuring the Genesis packages
 
-Since version 11.3.0 of the foundation-UI, we have set our libraries public. To verify the infos about this package, type `npm info @genesislcap/foundation-ui`. If everything is ok, you should see a response like this:
+To verify this package, type `npm info @genesislcap/foundation-ui`. If everything is ok, you should see a response like this:
 
 ```shell
 @genesislcap/foundation-ui@0.0.26 | UNLICENSED | deps: 23 | versions: 111
 Genesis Foundation UI
 ```
 
-:::caution trouble running npm?
+:::Caution trouble running npm?
 Please make sure:
 
 - You have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](../../../getting-started/developer-training/environment-setup/#required-software-packages). If you have an older version of npm (run 'npm -v'), make sure you uninstall it first.
@@ -44,8 +44,8 @@ Please make sure:
 npm config set proxy http://proxy_host:port
 npm config set https-proxy https://proxy_host:port
 ```
-
 :::
+
 
 Install GenX CLI; this is a Genesis tool that enables you to seed projects.
 
@@ -87,8 +87,11 @@ More information [here](https://docs.gradle.org/current/userguide/build_environm
 
 ### Your own database
 
-To do this training, you need an individual database to create and test the back-end changes we are proposing. Please make sure you have a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
+To run genesis applications, you need an individual database to create and test the back-end changes we are proposing. Check the [Database Technology supported by Genesis](../../../database/database-technology/overview/).
 
+To do this training, we have set an H2 database so you don't need to worry about setting up a new database. This database will be created automatically during this training.
+
+<!--
 :::tip
 You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
 
@@ -99,41 +102,17 @@ docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POST
 ```
 
 :::
+-->
 
 ## Training requirements set-up
 
 ### Start the project baseline
 
-Clone the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed), and open it using IntelliJ.
+Clone the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed-simple), and open it using IntelliJ.
 
 ### Running the back and front end
 
-We are going to change the back-end and front-end code, so ideally we should have the server running to make our application work. Below you see all supported technologies in the training.
-
-<Tabs defaultValue="plugin" values={[{ label: 'Intellij Plugin', value: 'plugin', }, { label: 'Docker', value: 'docker', }, { label: 'WSL', value: 'wsl', }]}>
-
-<TabItem value="plugin">
-
-You can use the [IntelliJ plugin](../../../server/tooling/intellij-plugin/) provided by Genesis. So, first step is installing the plugin following the [instructions here](../../../server/tooling/intellij-plugin/#installation). Then, have a look at the [Tools window installed](../../../server/tooling/intellij-plugin/#the-tools-window) to understand it and do the configurations asked.
+We are going to change the back-end and front-end code, so ideally we should have the server running to make our application work. In this training, we are going to  use the [IntelliJ plugin](../../../server/tooling/intellij-plugin/) provided by Genesis. So, the first step is installing the plugin following the [instructions here](../../../server/tooling/intellij-plugin/#installation). Then, have a look at the [Tools window installed](../../../server/tooling/intellij-plugin/#the-tools-window) to understand it and do the configurations asked.
 
 As soon as everything is done and you are ok about the Intellij plugin, double-check if you can see the processes running properly as [explained](../../../server/tooling/intellij-plugin/#starting-processes). You must see all processes up and running or in standby mode.
 
-</TabItem>
-<TabItem value="docker">
-
-import Docker from '/snippet/_environment_setup_docker.mdx'
-
-<Docker />
-
-</TabItem>
-<TabItem value="wsl">
-
-import Wls from '/snippet/_environment_setup_wls.mdx'
-
-<Wls />
-
-</TabItem>
-
-</Tabs>
-
-You are good to go!

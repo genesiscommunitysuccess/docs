@@ -11,15 +11,16 @@ tags:
 
 Your Genesis application data model can be configured without any concern about the database technology used to store the model and the data.
 
-Genesis supports the following database technologies for the data storage:
+By default, the platform creates an [H2](https://h2database.com/html/main.html) database, which enables you to learn and create simple trial applications without any configuration.
 
-| Database | [FoundationDB](../../../database/database-technology/foundationdb/) | [Postgresql](../../../database/database-technology/sql/#postgresql) | [MSSQL](../../../database/database-technology/sql/#sql-server) | [Oracle](../../../database/database-technology/sql/#oracle) |
-| --- | --- | --- | ---------------------------------------------------|-----------------------------------------------------|
-| Technology | NOSQL | SQL | SQL                                               | SQL                                                 |
-| Supports transactions | ✔️ | ✔️ | ✔️                                                | ✔️                                                  |
-| Returns sorted data | ✔️ | ✔️ | ✔️                                                | ✔️                                                  |
-| Unlimited operation size | ❌ | ✔️ | ✔️                                                | ✔️                                                  |
+For serious development work and for production environments, Genesis supports the following database technologies:
 
-:::
+| Database | [FoundationDB](../../../database/database-technology/foundationdb/) | [Postgresql](../../../database/database-technology/sql/#postgresql) | [MSSQL](../../../database/database-technology/sql/#sql-server) | [Oracle](../../../database/database-technology/sql/#oracle) | H2 |
+| --- | --- | --- | ---------------------------------------------------|-----------------------------------------------------|-----|
+| Technology | NOSQL | SQL | SQL                                               | SQL                                         | SQL |
+| Unlimited operation size | ❌ | ✔️ | ✔️                                     | ✔️                                         |✔️ |
+| Supported in production | ✔️ | ✔️ | ✔️  | ✔️  |  ❌ |
+
+:::note
 From version 7.0 onwards, Aerospike technology is not supported.
 :::

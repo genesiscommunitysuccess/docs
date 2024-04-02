@@ -27,7 +27,7 @@ package genesis.cfg
 systemDefinition {
     global {
         item(name = "MqLayer", value = "ZeroMQ")
-        item(name = "DbLayer", value = "FDB")
+        item(name = "DbLayer", value = "H2")
         item(name = "DictionarySource", value = "DB")
         item(name = "AliasSource", value = "DB")
         item(name = "MetricsEnabled", value = "false")
@@ -79,7 +79,7 @@ Local values can be specified in this block. **These values override the global 
 ## Items defined
 **MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues.
 
-**DbLayer**: Default value is set to FDB. If you want to use PostgreSQL, Oracle or MSSQL, then you need to change this value and then [change the value of the DbHost item](../../../server/configuring-runtime/setting-the-database-technology/).
+**DbLayer**: Default value is set to H2. If you want to use PostgreSQL, Oracle or MSSQL, then you need to change this value and then [change the value of the DbHost item](../../../server/configuring-runtime/setting-the-database-technology/).
 
 **DbHost**: Contains information about the hostname/JDBC connection string pointing to local database. For example:
 
