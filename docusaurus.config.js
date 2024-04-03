@@ -161,31 +161,16 @@ module.exports = async function createConfigAsync() {
       navbar: {
         items: [
           { type: "docsVersionDropdown", className: "version-menu " },
-          {
-            type: "doc",
-            docId: "getting-started/introduction",
-            label: "Learning",
-          },
-          {
-            type: "doc",
-            docId: "database/database-landing",
-            label: "Database",
-          },
+          { type: "doc", docId: "getting-started/introduction", label: "Learning" },
+          { type: "doc", docId: "database/database-landing", label: "Database" },
           { type: "doc", docId: "server/server-modules", label: "Server" },
           { type: "doc", docId: "web/front-end", label: "Web" },
+          { type: "doc", docId: "components/components", label: "Components", when: { routeMatch: "docs" } },
           { type: "doc", docId: "operations/operations", label: "Operations" },
-          {
-            type: "html",
-            position: "right",
-            value:
+          { type: "html", position: "right", value:
               "<a href='' onclick=\"window.open('https://github.com/genesiscommunitysuccess/docs/issues/new?title=New+Feedback+from+learn.genesis.global&body=Thank+you+for+giving+us+your+feedback.%20Please+provide%20it%20below.%0a%0a%23%23%20My%20Issue/Idea/Suggestion%0a%0a%23%23%20Current%20Page%0a%0a'+window.location.href+window.location.hash,'_blank')\" class=\"feedback\" style=\"text-decoration:none\">Give us Feedback</a>",
           },
-          {
-            href: "https://stackoverflow.com/c/genesis-global/questions",
-            className: "so-icon",
-            "aria-label": "StackOverflow",
-            position: "right",
-          },
+          { href: "https://stackoverflow.com/c/genesis-global/questions", className: "so-icon", "aria-label": "StackOverflow", position: "right" },
         ],
         logo: {
           alt: "Genesis Documentation",
