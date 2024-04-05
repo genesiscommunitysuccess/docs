@@ -406,10 +406,6 @@ module.exports = {
         },
         {
           type: 'doc',
-					id: 'web/micro-front-ends/front-end-reporting/foundation-reporting'
-        },
-        {
-          type: 'doc',
 					id: 'web/micro-front-ends/foundation-header/foundation-header'
         },
         {
