@@ -1,8 +1,8 @@
 ---
-title: 'Installation'
-sidebar_label: 'Installation'
+title: 'Introduction'
+sidebar_label: 'Introduction'
 sidebar_position: 1
-id: fix-installation
+id: fix-introduction
 keywords: [fix, FIX, installation, genx, add]
 tags:
     - fix
@@ -12,17 +12,26 @@ tags:
     - add
 ---
 
+The Genesis FIX component provides a gateway process to communicate with external parties via the [FIX](https://www.fixtrading.org/) protocol.
 
-This is Page 1.1
+### Outbound and inbound FIX
 
-Links are to topic id. The one that you provide in the metadata.
+For **outbound** FIX messages, you have to create Streamers that listen to specific tables and views in the application's database.
 
-It is a good idea if your topic id is identical to the filename of the page (without suffix). We haven't done that here because we have only example file names for the pages.
+The outbound Streamer streams data updates to the outbound Streamer Client.
 
-Note that we also do not include the numbering in the folders when ew specify a link. This means you won't have to change the links if you insert a new folder at or near the beginning of the sidebar menu.
+The outbound Streamer Client transforms the data into a FIX message, and passes it to the FIX gateway. From there, the message is sent to the external system you are integrating with.
 
-This is a link [to the index page for components](../../../components/).
+![](/img/fixout.png)
 
-This is a link [to another page in the same directory](../../../components/topic1/topic1-page2/).
+**Inbound** FIX messages arrive through the FIX gateway and are written to a table in the data server called FIX_IN.
 
-This is a link [to a page for a different component](../../../components/topic3/topic3-page1/).
+You need to create a Streamer to monitor this table and stream the data to the relevant inbound Streamer client (or clients). The Streamer client transforms the data to conform to the Genesis data set and passes it to the application’s Event Handler.
+
+![](/img/fixin.png)
+
+Note that the Genesis FIX module has all the QuickFIX libraries and gives you a default outbound Streamer that is set up to listen to the FIX_IN table in the database.
+
+### FIX Xlator
+The FIX Xlator is a plugin for the Streamer and Streamer client, to bring in type-safe handling of FIX messages.
+Follow this link to know more about [FIX Xlator](../fix-xlator).
