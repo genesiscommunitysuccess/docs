@@ -26,12 +26,11 @@ The outbound Streamer Client transforms the data into a FIX message, and passes 
 
 **Inbound** FIX messages arrive through the FIX gateway and are written to a table in the data server called FIX_IN.
 
-You need to create a Streamer to monitor this table and stream the data to the relevant inbound Streamer client (or clients). The Streamer client transforms the data to conform to the Genesis data set and passes it to the application’s Event Handler.
+You need to create a Streamer to monitor this table and stream the data to the relevant inbound Streamer Client (or Clients). The Streamer Client transforms the data to conform to the Genesis data set and passes it to the application’s Event Handler.
 
 ![](/img/fixin.png)
 
 Note that the Genesis FIX module has all the QuickFIX libraries and gives you a default outbound Streamer that is set up to listen to the FIX_IN table in the database.
 
 ### FIX Xlator
-The FIX Xlator is a plugin for the Streamer and Streamer client, to bring in type-safe handling of FIX messages.
-Follow this link to know more about [FIX Xlator](../fix-xlator).
+The [FIX Xlator](../fix-xlator) is a plugin for the Streamer and Streamer client, to bring in type-safe handling of FIX messages.
