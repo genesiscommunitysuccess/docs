@@ -6,6 +6,7 @@
 
 require("dotenv").config();
 
+import { dark } from "@mui/material/styles/createPalette";
 import { themes as prismThemes } from "prism-react-renderer";
 
 const baseUrl = process.env.BASE_URL || "/";
@@ -142,6 +143,8 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     colorMode: {
       disableSwitch: true,
+      defaultMode: 'light',
+      respectPrefersColorScheme: false,
     },
     navbar: {
       items: [
@@ -187,8 +190,6 @@ const config = {
       copyright: `© genesis global ${new Date().getFullYear()}. All rights reserved.`,
     },
     prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
       additionalLanguages: ["java", "kotlin", "powershell", "groovy"],
     },
   },
