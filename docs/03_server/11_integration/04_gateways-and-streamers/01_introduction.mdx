@@ -12,7 +12,7 @@ tags:
 ---
 If your application needs to integrate with external systems through a gateway, you need to be able to interpret incoming messages in the format of the external system. Equally, you need to be able to reformat information from your Genesis application when you send messages out to that system.
 
-For this, Genesis uses Streamers, Streamer Clients and Gateways.
+For this, Genesis uses Streamers, Streamer Clients and gateways.
 
 * A **Streamer** listens to a table or view, and streams data out to Streamer Clients. In almost all cases, you listen to a reliable, auditable table with unique time-stamped updates - an audit table. This ensures that, in the event of failure, the Streamer is able to go back and stream from a specific timestamp.
   Follow this link to learn more about [Streamers](/03_server/11_integration/04_gateways-and-streamers/03_streamer.mdx).
