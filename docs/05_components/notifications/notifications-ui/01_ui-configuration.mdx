@@ -8,27 +8,39 @@ tags:
   - configuring ui
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## On a New Application
 
-Using concepts like `AppElement` and `foundation-store`, you can generate an app with code and components that are dynamic. To quickly test this kind of app, run the following command:
+Using packages like `AppElement` and `foundation-store`, you can generate an app with code and components that are dynamic. To quickly test this kind of app, run the following command:
 
-### Mac or Linux
-```shell
-npx -y @genesislcap/genx@latest init myapp -x --no-shell && npx -y @genesislcap/genx@latest add myapp -x -s genesislcap/pbc-notify-seed 
-```
+<Tabs
+  defaultValue="windows"
+  values={[
+    { label: 'Windows', value: 'windows', },
+    { label: 'Mac and linux', value: 'ML', }
+  ]
+}>
 
-### Windows (PowerShell)
-```shell
-npx -y @genesislcap/genx@latest init myapp -x --no-shell; npx -y @genesislcap/genx@latest add myapp -x -s genesislcap/pbc-notify-seed
-```
+    <TabItem value="windows">
+        ### Windows
+        ```shell title="Powershell"
+        npx -y @genesislcap/genx@latest init myapp -x --no-shell; npx -y @genesislcap/genx@latest add myapp -x -s genesislcap/pbc-notify-seed
+        ```
+    </TabItem>
+
+    <TabItem value= 'ML'>
+        ### Mac or Linux
+        ```shell
+        npx -y @genesislcap/genx@latest init myapp -x --no-shell && npx -y @genesislcap/genx@latest add myapp -x -s genesislcap/pbc-notify-seed
+        ```
+    </TabItem>
+</Tabs>
 
 ## On an Existing Application
 
-If you already have an existing application and wants to implement the existing notify UI components on it, then you can do the following:
-
-### Add pbc-notify-ui to Your package.json
-
-On your project _package.json_ file, you need to declare the dependency explicitly:
+If you already have an existing application and want to implement the existing notify UI components on it, you can add pbc-notify-ui to your package.json under the **client** folder:
 
 ```json
 "@genesislcap/pbc-notify-ui": "1.0.18"
