@@ -700,7 +700,7 @@ requestReplies {
 
 ## Defining a permission rule using GPAL
 
-Permission rules can be held in GPAL files as well. GPAL permission files must have the suffix **auth-permissions.kts**.  In this file, you define rules against a specific entity. Each entity is defined against a database table or view.
+Permission rules can be held in GPAL files as well. GPAL permission files must have the suffix **-permissions.kts**, for example: **myapp-permissions.kts**.  In this file, you define rules against a specific entity. Each entity is defined against a database table or view.
 
 You must define an entity block for every entity you want to authorise.  Each block can have the following attributes:
 
@@ -734,8 +734,8 @@ dynamicPermissions {
         averageUsers = 10000
         maxEntries = 10000
         batchingPeriod = 15
-        idField = listOf("INSTRUMENT_ID") //Specifying custom field to be used as cache key instead of using the fields from the primary key
-        backwardsJoins = true
+        idField = idField = listOf(POSITION_VIEW.INSTRUMENT_ID) //Specifying custom field to be used as cache key instead of using the fields from the primary key
+        backwardsJoin = true
         expression {
             entity.companyId == user.companyId
         }
