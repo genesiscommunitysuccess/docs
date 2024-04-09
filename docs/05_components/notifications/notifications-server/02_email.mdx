@@ -62,7 +62,6 @@ Include the following in your application's **genesis-system-definition.kts** fi
 ```kotlin
 systemDefinition {
     global {
-    
             //Email Notify Details
             item(name = "EMAIL_SYSTEM_DEFAULT_USER_NAME", value = "System Genesis" )
             item(name = "EMAIL_SYSTEM_DEFAULT", value = "system@genesis.com" )
@@ -86,6 +85,43 @@ email(id = "email1") {
 	smtpProtocol = TransportStrategy.SMTP_TLS
 	systemDefaultUserName = EMAIL_SYSTEM_DEFAULT_USER_NAME
 	systemDefaultEmail = EMAIL_SYSTEM_DEFAULT
+}
+```
+
+## SendGrid Gateway configuration
+You need a SendGrid account to be able to send emails using this method. Your credentials will then need to be passed into the following:
+```kotlin
+notify {
+    gateways {
+        sendGrid("SendGrid") {
+            apiKey = "generated_key"
+            defaultSender = "address1@genesis.global"
+        }
+    }
+}
+```
+
+### Using system definition in the notify.kts script
+
+Include the following in your application's **genesis-system-definition.kts** file:
+
+```kotlin
+systemDefinition {
+    global {
+            //SendGrid Details
+            item(name = "API_KEY", value = "generated_key" )
+            item(name = "DEFAULT_SENDER", value = "address1@genesis.com" )
+        }
+}
+```
+
+In the application's **notify.kts** file, you can refer to the item name directly, without import or qualifier:
+
+
+```Kotlin
+sendGrid("SendGrid") {
+    apiKey = API_KEY
+    defaultSender = DEFAULT_SENDER
 }
 ```
 
