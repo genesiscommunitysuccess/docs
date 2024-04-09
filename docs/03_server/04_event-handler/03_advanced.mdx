@@ -29,8 +29,8 @@ sealed class CustomTradeEventReply : Outbound() {
 
 So how would we use that in an `eventHandler` codeblock?
 
-1. Add the example to the file _app-name_**-messages** and assemble. 
-2. Once you have built, add `api(project("{app-name}-messages"))` to your **build.gradle.kts** file under **{app-name}-script-config/build.gradle.kts**.
+1. Add the example to the file **`{app-name}-messages`** and assemble. 
+2. Once you have built, add `api(project("{app-name}-messages"))` to your **`build.gradle.kts`** file under **`{app-name}-script-config/build.gradle.kts`**.
 
 You can now use the following example `eventHandler`:
 
