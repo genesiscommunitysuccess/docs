@@ -49,8 +49,8 @@ Below provides more details on this:
 | Module name | Where has it gone? |
 | --- | --- |
 | -dictionary-cache | Hidden internal module. Contains generated code. |
-| -site-specific | Hidden internal module, but only for [application](../settings-plugin/#project-type) projects. Non-project config and script files will be copied from your project to this module automatically. All folders and files in the main module's **src/main/genesis** folder, except cfg and scripts, will be copied to **site-specific/src/main/resources**. A site-specific distribution will be created, in the same way as the Legacy structure does. |
 | -distribution | Removed. The project’s distribution file will be located in the root project’s (server) build folder, **server/build/distributions**. |
+| -site-specific | Removed. [Application](../settings-plugin/#project-type) projects will have a site-specific distribution file created which will be located in the root project's (server) build folder, **server/build/distributions**. Non-project config and script files will be included in the distribution. All folders and files in the main module's **src/main/genesis** folder, except cfg and scripts, will be also be included. |
 | -eventhandler | Removed. |
 | -messages | Removed. |
 | -config | Removed. A -config.jar will be built from the main module and will contain your project's config and script files. It will be in the main module `build/libs` folder. |
