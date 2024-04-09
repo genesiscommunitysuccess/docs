@@ -42,7 +42,7 @@ The conversion script turns Excel functions in the named workbook into Kotlin co
 
 ### Column headings and field names
 
-The conversion process turns Excel column names into Genesis field names. It analyses the content of the column to determine the field type of each fieldd.
+The conversion process turns Excel column names into Genesis field names. It analyses the content of the column to determine the field type of each field.
 
 The fields are automatically sampled by the command to allocate a type. If there is ambiguity, it sets the field as STRONG.
 
@@ -51,11 +51,11 @@ It is recommended that you shorten long column headings before you make the conv
 :::
 
 ### Files created
-The conversion creates a folder called `/home/core/run/_name_.cfg` where _name_ is the application name specified in the script. This contains:
+The conversion creates a folder called **/home/core/run/_name_.cfg** where _name_ is the application name specified in the script. This contains:
 
-* The field definitions are in the file `_name_-fields-dictionary.kts`
-* The table definitions are in the file `_name_-tables-dictionary.kts`
-* The views definitions are in the file `_name_-view-dictionary.kts`
+* The field definitions are in the file **_name_-fields-dictionary.kts**
+* The table definitions are in the file **_name_-tables-dictionary.kts**
+* The views definitions are in the file **_name_-view-dictionary.kts**
 * The data from each worksheet is extracted to a separate csv file.
 
 

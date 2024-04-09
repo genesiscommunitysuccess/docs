@@ -1,27 +1,15 @@
 ---
-title: 'Notify - introduction'
-sidebar_label: 'Introduction'
-id: configuring
-keywords: [server, integration, notify, configuration]
+title: 'Concepts and Terminology'
+sidebar_label: 'Concepts and Terminology'
+sidebar_position: 2
+id: notifications-concepts
+keywords: [notifications, alerts, concepts, terminology]
 tags:
-  - server
-  - integration
-  - notify
-  - configuration
+    - notifications
+    - alerts
+    - concepts
+    - terminology
 ---
-
-The Genesis Notify module enables you to configure an application to send and receive messages to and from various messaging services.
-You can send messages to:
-
-* The screen of any Genesis application
-* Email (via SMTP)
-* Symphony
-* Microsoft Teams
-
-The Notify module provides a single Microservice: GENESIS_NOTIFY. The Notify service listens to updates on the NOTIFY table in the database and takes care of sending the notifications where they need to go. It is possible to send to multiple destinations, such as Email and Symphony.
-
-Here, we shall give you a high-level view of the configuration items and why they are needed. 
-There are separate configuration details for each service that you connect to (Email, Teams and Symphony), along with useful examples.
 
 ## Notify concepts
 
