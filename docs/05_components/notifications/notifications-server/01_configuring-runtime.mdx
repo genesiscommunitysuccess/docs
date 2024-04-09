@@ -1,6 +1,6 @@
 ---
-title: 'Notify - configuring runtime'
-sidebar_label: 'Configuring runtime'
+title: 'Notify - Configuring Runtime'
+sidebar_label: 'Configuring Runtime'
 id: notify-configuring-runtime
 keywords: [server, notify, configuring runtime]
 tags:
@@ -21,8 +21,8 @@ notifyVersion=x.y.z
 
 ```kotlin
 dependencies {
-    ....
-    implementation("global.genesis:genesis-notify-config:${properties["notifyVersion"]}")
+  ...
+  implementation("global.genesis:genesis-notify-config:${properties["notifyVersion"]}")
 }
 ```
 This creates the fields and tables that enable Notify to run.
@@ -31,15 +31,15 @@ This creates the fields and tables that enable Notify to run.
 
 ```xml
 dependencies {
-     ...
-     genesisServer(
-        group = "global.genesis",
-        name = "genesis-notify-distribution",
-        version = properties["notifyVersion"].toString(),
-        classifier = "bin",
-        ext = "zip"
-    )   
-    ...
+  ...
+  genesisServer(
+    group = "global.genesis",
+    name = "genesis-notify-distribution",
+    version = properties["notifyVersion"].toString(),
+    classifier = "bin",
+    ext = "zip"
+  )   
+  ...
 }
 ```
 

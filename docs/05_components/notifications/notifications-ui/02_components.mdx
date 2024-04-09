@@ -1,16 +1,16 @@
 ---
-title: 'Notify - UI Components'
-sidebar_label: 'UI Components'
+title: 'Notify - Components'
+sidebar_label: 'Components'
 id: notify-ui-components
-keywords: [notify, configuring ui]
+keywords: [notify, ui-components]
 tags:
   - notify
-  - configuring ui
+  - ui-components
 ---
 
 ## Notification Dashboard
 
-A whole page route that contains a lot of details to build and customize your notification messages. The Notification Dashboard are composed by subsections. Each subsection is ruled by a specific permission, which means that the user must have this permission to see the section.
+A page route that contains details about on how to build and customize your notification messages. The Notification Dashboard are composed by subsections. Each subsection is ruled by a specific permission, which means that the user must have this permission to see the section.
 
 ### Rules
 
@@ -20,14 +20,7 @@ A whole page route that contains a lot of details to build and customize your no
 
 A rule is composed by one or more conditions. The condition chain is a set of verification of values against an insertion in the table specified. E.g., if a user creates a rule for the table `TRADE` that has only the condition `PRICE > 100`, and the system inserts a record in that table (no matter the source: manual, event handler, file, etc.) with the `PRICE` column with value `250`, then the condition is matched, and, if the rule is enabled, a notification will be sent at the destination specified.
 
-The destinations available will be the ones registered in [Routes](#13-routes).
-
-Permissions:
-- `NotificationRuleView` (required to see the section)
-- `NotificationRuleCreate`
-- `NotificationRuleUpdate`
-- `NotificationRuleDelete`
-- `NotificationRouteTopicsView`
+The available destinations will be the ones registered in [Routes](#13-routes).
 
 ### Templates
 
@@ -39,14 +32,7 @@ A template is like a blueprint of a rule. The template must have at least one co
 - **TEXT**: the user that is creating/modifying the rule specifies a immutable value for the notification condition, e.g. `PRICE > 100` (*PRICE bigger than 100*). So, this template will be available for all users on the Inbox [Subscribe](#23-subscribe) section.
 - **USER_ENTRY**: if the user selects this option on the condition section, then he needs to create a correspondent parameter, filling its label, name, type, and source. Then, when the common user select a template that has a condition of the USER_ENTRY type, he'll be able to specify a value of his preference, e.g. `PRICE > {price}` when the user sees this template at the Inbox [Subscribe](#23-subscribe) section — `{price}` (around brackets) is the label. E.g., user John can subscribe for this template setting the condition `PRICE > 450`; user Thomas can subscribe for this template setting the condition `PRICE > 10`; etc. It's up to the final user to decide.
 
-The destinations available will be the ones registered in [Routes](#13-routes).
-
-Permissions:
-- `NotificationRuleTemplateView` (required to see the section)
-- `NotificationRuleTemplateCreate`
-- `NotificationRuleTemplateUpdate`
-- `NotificationRuleTemplateDelete`
-- `NotificationRouteTopicsView`
+The available destinations will be the ones registered in [Routes](#13-routes).
 
 ### Routes
 
@@ -62,20 +48,13 @@ A route is basically the destination of the notification alert (where do you wan
 
 There are specific fields to be filled for each route. Be sure that all data provided is correct, without typos, for the notification to be sent correctly.
 
-Permission: `NotificationRouteView`
-
-Routes can be created, updated and/or deleted. There is a permission for each one of these operations for any route:
-- `NotificationRouteCreate`
-- `NotificationRouteUpdate`
-- `NotificationRouteDelete`
+Routes can be created, updated and/or deleted. There is a permission for each one of these operations for any route. Check it on [permissions](/docs/05_components/notifications/notifications-ui/03_permissions.mdx).
 
 ### Notify Audit
 
 ![Notify Audit](/img/pbc-notify-ui/04_notify_audit.png)
 
 It shows a grid that contains all the notifications and alerts of all system users. You can filter by any column with any value.
-
-Permission: `NotificationAuditView`
 
 ## Inbox
 
@@ -87,24 +66,14 @@ It's a sidebar component that shows a alert log as well the templates and rules 
 
 An alert log list ordered by the most recent first.
 
-Permission: `NotificationRuleView`
-
 ### My Alerts
 
 ![Alert Log](/img/pbc-notify-ui/08_inbox-my-alerts.png)
 
 It shows all the rules created on [Rules](#11-rules) section. The user can pause, resume and/or delete a rule.
 
-Permissions:
-- `NotificationRuleTemplateView`
-- `NotificationRuleDisable` (pause)
-- `NotificationRuleEnable` (resume)
-- `NotificationRuleUnsubscribe` (delete)
-
 ### Subscribe
 
 ![Subscribe](/img/pbc-notify-ui/09_inbox-subscribe.png)
 
 It shows all the templates that were created previously on [Templates](#12-templates) section. You can subscribe to a template and the template either could have additional parameters to be filled or not; if it has, then the user must specify a value for each parameter to be able to subscribe to the selected template.
-
-Permission: `NotificationRuleSubscribe`

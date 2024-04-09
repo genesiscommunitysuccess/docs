@@ -1,0 +1,134 @@
+---
+title: 'Notify - Initial Configuration'
+sidebar_label: 'Initial Configuration'
+id: notify-initial-configuration
+keywords: [notify, ui-configuration]
+tags:
+  - notify
+  - ui-configuration
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Pre-requisites
+
+Make sure that the [back-end](/docs/05_components/notifications/notifications-server/01_configuring-runtime.mdx) has been configured correctly to proceed to the front-end installation of components. Also, pratically each section of each component has a permission to perform the specific action related to that section; check the [permissions](/docs/05_components/notifications/notifications-ui/03_permissions.mdx) available and make sure your user has the permission needed for the section you want to implement or test.
+
+## On a New Application
+
+Using packages like `AppElement` and `foundation-store`, you can generate an app with dynamic code and components. To quickly test this kind of app, run the following command:
+
+<Tabs
+  defaultValue="windows"
+  values={[
+    { label: 'Windows', value: 'windows', },
+    { label: 'Mac and Linux', value: 'mac-and-linux', }
+  ]
+}>
+  <TabItem value="windows">
+    ```shell title="Powershell"
+    npx -y @genesislcap/genx@latest init myapp -x --no-shell; npx -y @genesislcap/genx@latest add myapp -x -s genesislcap/pbc-notify-seed
+    ```
+  </TabItem>
+
+  <TabItem value= 'mac-and-linux'>
+    ```shell title="Bash"
+    npx -y @genesislcap/genx@latest init myapp -x --no-shell && npx -y @genesislcap/genx@latest add myapp -x -s genesislcap/pbc-notify-seed
+    ```
+  </TabItem>
+</Tabs>
+
+## On an Existing Application
+
+### Quick command to add all components at once
+
+Run this simple command (changing _app-name_ by the name of your app):
+```shell
+npx -y @genesislcap/genx@latest add app-name -x -s genesislcap/pbc-notify-seed
+```
+
+### Manual implementation of components
+
+If you prefer, you have the option to add the components manually. On `client/package.json` file add this in `"dependencies"` section:
+
+```json
+"@genesislcap/pbc-notify-ui": "~1"
+```
+
+:::important
+Always check the latest version available at [genesisnpm](https://www.npmjs.com/~genesisnpm).
+:::
+
+#### Foundation Notification Dashboard
+
+At `src/routes/config.ts` file, add the route for it:
+
+```typescript
+{
+  path: 'notification-dashboard',
+  element: async () => (await import('@genesislcap/pbc-notify-ui')).FoundationNotificationDashboard,
+  title: 'Notification Dashboard',
+  name: 'notification-dashboard',
+  settings: { autoAuth: true },
+  navItems: [
+    {
+      title: 'Notification Dashboard',
+      icon: {
+        name: 'bell',
+        variant: 'solid',
+      },
+    },
+  ],
+},
+```
+
+It will create a single-page route [Notification Dashboard](/components/notifications/notifications-ui/notify-ui-components/#notification-dashboard) component.
+
+Again, check the user permissions, because each tab of the dashboard is ruled by a permission (check the available [list of permissions](/docs/05_components/notifications/notifications-ui/03_permissions.mdx)). The user will only see the sections to which they have permission for it.
+
+#### Foundation Inbox
+
+##### Foundation Inbox Flyout
+
+A ready-to-use component for [Inbox](/components/notifications/notifications-ui/notify-ui-components/#inbox) functionality. You can declare it in the `src/layouts/default.ts`. Here's an example:
+
+```html
+<div class="container">
+  <foundation-header
+    show-notification-button
+    @notification-icon-clicked="${x => x.inbox.open()}"
+  >
+  </foundation-header>
+
+  <foundation-inbox-flyout ${ref('inbox')}></foundation-inbox-flyout>
+
+  <zero-notification-listener resource-name="ALL_NOTIFY_ALERT_RECORDS">
+    <div class="content">
+      <slot></slot>
+    </div>
+  </zero-notification-listener>
+</div>
+```
+
+:::important
+It's important to import ```zero-notification-listener``` too, a foundation-ui component that is responsible for showing screen alerts to the user.
+:::
+
+##### Foundation Inbox
+
+A Inbox component. You can put it wherever you want: on a page div, modal, dialog, etc. When you generate a blank project, it puts the Inbox inside a flyout using the foundation-store to control its open-closed state:
+
+```html
+<zero-flyout
+  position="right"
+  @closed="${(x, c) => c.parent.$emit('change-inbox-display', false)}"
+  ?closed="${() => !store.inboxDisplayState}""
+  data-pbc-asset-id="inbox-flyout"
+>
+  <div slot="title">Alerts</div>
+  <foundation-inbox></foundation-inbox>
+</zero-flyout>
+```
+
+Check the [generated project with the pbc-notify-seed](#on-a-new-application) for more details.s.
