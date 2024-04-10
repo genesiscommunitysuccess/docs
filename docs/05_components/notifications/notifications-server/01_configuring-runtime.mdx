@@ -43,9 +43,10 @@ dependencies {
 }
 ```
 
-4. Reload the gradle project so the dependencies can be downloaded.
+4. Reload the Gradle project so the dependencies can be downloaded.
 5. Run the `genesisInstall` script to create the notify folder in your runtime folder, as well as all the necessary configuration and scripts.
 6. Run the `remap` script so the tables and fields are created in your database.
 7. Start the server.
+8. Run the `SetPrimary` command in order to set a primary cluster for EVALUATOR and NOTIFY processes.
 
 After following these seven steps, two new processes will appear in your **mon** tab: **GENESIS_NOTIFY_DISPATCHER** and **GENESIS_NOTIFY_MANAGER**. These are the processes that manage the Notifications module.
