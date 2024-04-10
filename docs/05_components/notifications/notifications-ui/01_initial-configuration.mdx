@@ -11,9 +11,9 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## Pre-requisites
+## Prerequisites
 
-Make sure that the [back-end](/docs/05_components/notifications/notifications-server/01_configuring-runtime.mdx) has been configured correctly to proceed to the front-end installation of components. Also, pratically each section of each component has a permission to perform the specific action related to that section; check the [permissions](/docs/05_components/notifications/notifications-ui/03_permissions.mdx) available and make sure your user has the permission needed for the section you want to implement or test. More about permissions and rights at the [authorisation](/docs/03_server/05_access-control/09_authorisation.mdx) section.
+Make sure the [back-end](/docs/05_components/notifications/notifications-server/01_configuring-runtime.mdx) has been configured correctly to proceed to the front-end installation of components. Also, pratically each section of each component has a permission to perform the specific action related to that section; check the [permissions](/docs/05_components/notifications/notifications-ui/03_permissions.mdx) available and make sure your user has the permission needed for the section you want to implement or test. More about permissions and rights at the [authorisation](/docs/03_server/05_access-control/09_authorisation.mdx) section.
 
 ## On a New Application
 
@@ -41,16 +41,16 @@ Using packages like `AppElement` and `foundation-store`, you can generate an app
 
 ## On an Existing Application
 
-### Quick command to add all components at once
+### Quick Command to Add All Components at Once
 
 Run this simple command (changing _app-name_ by the name of your app):
 ```shell
 npx -y @genesislcap/genx@latest add app-name -x -s genesislcap/pbc-notify-seed
 ```
 
-### Manual implementation of components
+### Manual Implementation of Components
 
-If you prefer, you have the option to add the components manually. On `client/package.json` file add this in `"dependencies"` section:
+If you prefer, you have the option to add the components manually. On the `client/package.json` file add this in `"dependencies"` section:
 
 ```json
 "@genesislcap/pbc-notify-ui": "~1"
@@ -62,7 +62,14 @@ Always check the latest version available at [genesisnpm](https://www.npmjs.com/
 
 #### Foundation Notification Dashboard
 
-At `src/routes/config.ts` file, add the route for it:
+Add the component in the `src/components/component.ts` file:
+```typescript
+...
+FoundationNotificationDashboard;
+...
+```
+
+In the `src/routes/config.ts` file, add the route for it:
 
 ```typescript
 {
@@ -83,21 +90,31 @@ At `src/routes/config.ts` file, add the route for it:
 },
 ```
 
-It will create a single-page route [Notification Dashboard](/components/notifications/notifications-ui/notify-ui-components/#notification-dashboard) component.
+It creates a single-page route [Notification Dashboard](/../../notifications-ui/notify-ui-components#notification-dashboard) component.
 
-Again, check the user permissions, because each tab of the dashboard is ruled by a permission (check the available [list of permissions](/docs/05_components/notifications/notifications-ui/03_permissions.mdx)). The user will only see the sections to which they have permission for it.
+Again, check the user permissions, because each tab of the dashboard is ruled by a permission (check the available [list of permissions](/docs/05_components/notifications/notifications-ui/03_permissions.mdx)). The user only sees the sections to which they have permission for it.
 
 #### Foundation Inbox
 
 ##### Foundation Inbox Flyout
 
-A ready-to-use component for [Inbox](/components/notifications/notifications-ui/notify-ui-components/#inbox) functionality. You can declare it in the `src/layouts/default.ts`. Here's an example:
+Inbox Flyout is a ready-to-use component for [Inbox](/../../notifications-ui/notify-ui-components#inbox) functionality.
+
+Add the component in the `src/components/component.ts` file:
+```typescript
+...
+FoundationInboxFlyout;
+...
+```
+
+Declare it in the `src/layouts/default.ts`. Here's an example:
 
 ```html
 <div class="container">
   <foundation-header
     show-notification-button
     @notification-icon-clicked="${x => x.inbox.open()}"
+    :routeNavItems="${(x) => x.config.getNavItems()}"
   >
   </foundation-header>
 
@@ -112,18 +129,35 @@ A ready-to-use component for [Inbox](/components/notifications/notifications-ui/
 ```
 
 :::important
-It's important to import ```zero-notification-listener``` too, a foundation-ui component that is responsible for showing screen alerts to the user.
+It's crucial to import ```zero-notification-listener``` too, a foundation-ui component responsible for showing screen alerts to the user.
 :::
+
+If your main `container` div is typed as `ClientAppRouter`, then consider to add the following to avoid errors:
+```typescript
+type ClientAppRouter = FoundationRouter & {
+  store: Store,
+  inbox: FoundationInboxFlyout
+};
+```
 
 ##### Foundation Inbox
 
-An Inbox component that you can put it wherever you want: on a page div, modal, dialog, etc. When you generate a blank project, it puts the Inbox inside a flyout using the foundation-store to control its open-closed state:
+It's an Inbox component that you can put it wherever you want: on a page div, modal, dialog, etc. 
+
+Add the component in the `src/components/component.ts` file:
+```typescript
+...
+FoundationInbox;
+...
+```
+
+When you generate a blank project, it puts the Inbox inside a flyout using the foundation-store to control its open-closed state:
 
 ```html
 <zero-flyout
   position="right"
   @closed="${(x, c) => c.parent.$emit('change-inbox-display', false)}"
-  ?closed="${() => !store.inboxDisplayState}""
+  ?closed="${() => !store.inboxDisplayState}"
   data-pbc-asset-id="inbox-flyout"
 >
   <div slot="title">Alerts</div>
@@ -131,4 +165,4 @@ An Inbox component that you can put it wherever you want: on a page div, modal, 
 </zero-flyout>
 ```
 
-Check the [generated project with the pbc-notify-seed](#on-a-new-application) for more details.s.
+Check the [generated project with the pbc-notify-seed](#on-a-new-application) for more details.
