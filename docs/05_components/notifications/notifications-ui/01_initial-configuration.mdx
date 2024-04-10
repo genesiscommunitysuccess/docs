@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 ## Prerequisites
 
-Make sure the [back-end](/docs/05_components/notifications/notifications-server/01_configuring-runtime.mdx) has been configured correctly to proceed to the front-end installation of components. Also, pratically each section of each component has a permission to perform the specific action related to that section; check the [permissions](/docs/05_components/notifications/notifications-ui/03_permissions.mdx) available and make sure your user has the permission needed for the section you want to implement or test. More about permissions and rights at the [authorisation](/docs/03_server/05_access-control/09_authorisation.mdx) section.
+Make sure the [back-end](../../notifications-server/notify-configuring-runtime) has been configured correctly to proceed to the front-end installation of components. Also, pratically each section of each component has a permission to perform the specific action related to that section; check the [permissions](../notify-permissions) available and make sure your user has the permission needed for the section you want to implement or test. More about permissions and rights at the [authorisation](../../../../server/access-control/authorisation#users-profiles-and-right-codes) section.
 
 ## On a New Application
 
@@ -22,8 +22,8 @@ Using packages like `AppElement` and `foundation-store`, you can generate an app
 <Tabs
   defaultValue="windows"
   values={[
-    { label: 'Windows', value: 'windows', },
-    { label: 'Mac and Linux', value: 'mac-and-linux', }
+    { label: 'Windows', value: 'windows' },
+    { label: 'Mac and Linux', value: 'mac-and-linux' }
   ]
 }>
   <TabItem value="windows">
@@ -41,26 +41,34 @@ Using packages like `AppElement` and `foundation-store`, you can generate an app
 
 ## On an Existing Application
 
-### Quick Command to Add All Components at Once
+There are two ways of installing the components in an existing application.
 
-Run this simple command (changing _app-name_ by the name of your app):
+### 1. Quick Command to Add All Components at Once
+
+Run this command (changing _app-folder-name_ by the name of your app folder):
 ```shell
-npx -y @genesislcap/genx@latest add app-name -x -s genesislcap/pbc-notify-seed
+npx -y @genesislcap/genx@latest add app-folder-name -x -s genesislcap/pbc-notify-seed
 ```
 
-### Manual Implementation of Components
+After this, do a `npm run bootstrap` to install it.
 
-If you prefer, you have the option to add the components manually. On the `client/package.json` file add this in `"dependencies"` section:
+### 2. Manual Implementation of Components
+
+You also have the option to add each component individually.
+
+On the `client/package.json` file add this in `"dependencies"` section:
 
 ```json
 "@genesislcap/pbc-notify-ui": "~1"
 ```
 
+Do a `npm run bootstrap` to install it.
+
 :::important
 Always check the latest version available at [genesisnpm](https://www.npmjs.com/~genesisnpm).
 :::
 
-#### Foundation Notification Dashboard
+#### 2.1 Foundation Notification Dashboard
 
 Add the component in the `src/components/component.ts` file:
 ```typescript
@@ -92,11 +100,11 @@ In the `src/routes/config.ts` file, add the route for it:
 
 It creates a single-page route [Notification Dashboard](/../../notifications-ui/notify-ui-components#notification-dashboard) component.
 
-Again, check the user permissions, because each tab of the dashboard is ruled by a permission (check the available [list of permissions](/docs/05_components/notifications/notifications-ui/03_permissions.mdx)). The user only sees the sections to which they have permission for it.
+Again, check the user permissions, because each tab of the dashboard is ruled by a permission (check the available [list of permissions](../notify-permissions)). The user only sees the sections to which they have permission for it.
 
-#### Foundation Inbox
+#### 2.2 Foundation Inbox
 
-##### Foundation Inbox Flyout
+##### 2.2.1 Foundation Inbox Flyout
 
 Inbox Flyout is a ready-to-use component for [Inbox](/../../notifications-ui/notify-ui-components#inbox) functionality.
 
@@ -140,7 +148,7 @@ type ClientAppRouter = FoundationRouter & {
 };
 ```
 
-##### Foundation Inbox
+##### 2.2.2 Foundation Inbox
 
 It's an Inbox component that you can put it wherever you want: on a page div, modal, dialog, etc. 
 
