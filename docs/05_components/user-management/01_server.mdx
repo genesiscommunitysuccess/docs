@@ -1,0 +1,69 @@
+---
+title: 'Server Configuration'
+sidebar_label: 'Server Configuration'
+sidebar_position: 2
+id: user-management-server
+keywords: [user, management, server, auth]
+tags:
+  - user
+  - management
+  - server
+  - auth
+---
+
+The User Management component server-side depends almost entirely on the Genesis auth module. So, it's a built-in module that is installed by default (because all Genesis apps **needs** the auth module as a required pre-requisite).
+
+After the project generation, if you go to the file `/server/gradle.properties`, you can see there's an `authVersion`:
+```properties
+...
+authVersion=7.1.4
+...
+```
+:::info
+Always use the latest auth version on your application due to security reasons.
+:::
+
+This is the basic structure of the auth module if I run the `ls -R auth` at Genesis home directory:
+```bash
+$ ls -R auth
+.:
+bin  cfg  data  lib  scripts
+
+./bin: # Dir with .jar files
+
+./cfg:
+auth-consolidator.xml        auth-processes.xml            auth-system-definition.kts  onelogin.saml.properties
+auth-fields-dictionary.kts   auth-product-details.xml      auth-tables-dictionary.kts
+auth-permissions.templt.xml  auth-service-definitions.xml  auth-view-dictionary.kts
+
+./data:
+PROFILE.csv  PROFILE_RIGHT.csv  RIGHT.csv
+
+./lib: # Dir with .jar files
+
+./scripts:
+ConsolidateRights.groovy  ConsolidateRights.sh  MigrateRights.groovy  auth-preferences.kts  installHooks
+
+./scripts/installHooks:
+1_migrateRights.sh  2_loadDefaultRights.sh  3_loadProfileRights.sh  4_dropUserSession.sh
+```
+
+At this point, you only need to insert the .csv files in the `data` folder using the `SendIt` command:
+```shell
+cd data
+SendIt -a
+```
+
+And run the `ConsolidateRights.sh` script to _consolidate the rights_ of the profiles and rights inserted:
+```shell
+./ConsolidateRights.sh
+```
+
+These are the processes that appear when you run the `mon` command:
+```bash
+GENESIS_AUTH_CONSOLIDATOR
+GENESIS_AUTH_DATASERVER
+GENESIS_AUTH_MANAGER
+GENESIS_AUTH_PERMS
+GENESIS_AUTH_REQUEST_SERVER
+```

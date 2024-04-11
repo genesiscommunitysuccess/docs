@@ -1,0 +1,31 @@
+---
+title: 'Permissions'
+sidebar_label: 'Permissions'
+sidebar_position: 3
+id: user-management-permissions
+keywords: [user, management, right, profile, password]
+tags:
+  - user
+  - management
+  - right
+  - profile
+  - password
+---
+
+There are permissions to execute each one specific operation related to the user:
+
+| Code           | Description                    |
+|----------------|--------------------------------|
+| INSERT_USER    | Add a new user                 |
+| AMEND_USER     | Amend an existing user         |
+| CHANGE_PWD     | Change another user's password |
+| DELETE_USER    | Delete a user                  |
+| DISABLE_USER   | Disable a user                 |
+| ENABLE_USER    | Enable a user                  |
+| EXPIRE_PWD     | Expire another user's password |
+
+A default profile record named `USER_ADMIN` is also provided. This contains all the previous rights.
+
+:::info
+Users can change their own password as well as expire their own password (assuming they are logged in). However, it is only possible to change/expire another user's password if you have administrator rights.
+:::
