@@ -14,24 +14,30 @@ The `grid-pro-renderers` enable you to render data in a way that is meaningful t
 
 We currently support the following scenarios:
 
-- `no renderer`. When this is specified in a Column Definition, the column is rendered as a string (raw value). <br /><br />
-*This may be affected if the `auto-cell-renderer-by-type` property in the target Grid Pro is set to `true`*
+- `no renderer`
+- `built-in renderer`
+- `custom renderer`
 
-- `built-in renderer`. There are two cell renderers that are ready to use (**Actions Menu** and **Boolean**). You can use them by specifying the `cellRenderer` property and referencing them directly, You can also configure `boolean` automatically if the target Grid Pro is correctly configured. <br /><br /> 
-*This may be affected if the `auto-cell-renderer-by-type` prop in the target Grid Pro is set to `false`*
+These are explained below.
 
-- `custom renderer`. This can be either a function or a full custom component. See the [Genesis Grid Pro Cell](../../../../../web/web-components/grids/grid-pro/grid-pro-genesis-cell/) section or [Genesis Columns Definition](../grid-pro-genesis-column) for more informaion and examples.
+## no renderer
+When you specify `no renderer` in a Column Definition, the column is rendered as a string (raw value). 
 
-## Built-in examples
+In some cases, this might not work as expected if [the `auto-cell-renderer-by-type` property](../../../../../web/web-components/grids/grid-pro/grid-pro-intro/#attributes-and-props) in the target Grid Pro is set to `true`.
 
-There are two built-in cell renderers:
+## built-in renderer
+There are two cell renderers that are ready to use:
 
-- [`boolean`](#boolean)
-- [`actionsMenu`](#actionsmenu)
+- **Boolean**
+- **Actions Menu**
 
-------------------------------------------------
+To use these, specify the `cellRenderer` property and reference the renderer directly. 
 
-### boolean
+You can also configure `boolean` automatically if the target Grid Pro is correctly configured. 
+ 
+In some cases, this might not work as expected if [the `auto-cell-renderer-by-type` property](../../../../../web/web-components/grids/grid-pro/grid-pro-intro/#attributes-and-props) in the target Grid Pro is set to `false` - which is the default.
+
+### boolean example
 
 This adds a checkbox to the cell. To use this built-in renderer, follow these steps:
 
@@ -73,7 +79,7 @@ This will show the new column with the boolean built-in renderer in your grid.
 If you want to be able to click on the checkbox, you need to set the `editable` property of the field to `true`.
 :::
 
-### actionsMenu
+### actionsMenu example
 
 This adds a nested action menu to a cell in your grid. To implement this feature, you need to follow these steps:
 
@@ -90,11 +96,11 @@ public myActionsMenuColDef = getActionsMenuDef(
   [
     {
       name: 'View',
-      callback: rowData => logger.debug('VIEWW!!!', rowData),
+      callback: rowData => console.log('VIEW!!!', rowData),
     },
     {
       name: 'Delete',
-      callback: rowData => logger.debug('DELETE!!!', rowData),
+      callback: rowData => console.log('DELETE!!!', rowData),
     },
   ],
   {
@@ -150,3 +156,8 @@ const getActionsMenuDef = (
 
 </p>
 </details>
+
+## custom renderer
+A custom renderer can be either a function or a full custom component. See the [Genesis Grid Pro Cell](../../../../../web/web-components/grids/grid-pro/grid-pro-genesis-cell/) section or [Genesis Columns Definition](../grid-pro-genesis-column) for more information and examples.
+
+
