@@ -111,14 +111,14 @@ This creates not only the states and the flow of your state machine, but also th
 
 Now let's look at the different elements that make up the state machine:
 
-- **stateMachine()**: You need to provide the field that will represent the states of your machine. Normally it is used a enum field.
-- **insertEvent \{ ... \}**: It creates the insert event of your state machine. This event is called: EVENT_TRADE_INSERT.
-    - **initialStates()**: It defines the allowed states that can use the insert event. If a state is not defined here, then it won't be able to use this event.
-    - **onEvent \{ event , trade -> () \}**: This is where your event is committed. the trade variable will be inserted to the database as it is, so if you want to apply any logic or modify any field, you need to do that in this code block.
-- **modifyEvent \{ ... \}**: It creates the modify events of your state machine. Differently from the insertEvent, each event will be created based on the transition event.
-    - **mutableStates()**: It specifies the states when the trade can be modified.
-    - **transitionEvent() \{ ... \}**: It creates the events themselves. each transitionEvent will create a new event.  The name of each event follows the same rule: EVENT_\{TABLE\}_\{STATE\}. So in our example we have: EVENT_TRADE_ALLOCATED and EVENT_TRADE_CANCELLED.
-    - **fromStates( )**: it defined the flow of the state machine. Here you define which states can move to the state defined in the transitionEvent.
+- **stateMachine()**: you need to provide the field that will represent the states of your machine. Normally this is an enum field.
+- **insertEvent \{ ... \}**: this creates the insert event of your state machine. This event is called: EVENT_TRADE_INSERT.
+    - **initialStates()**: this defines the allowed states that can use the insert event. If a state is not defined here, then it won't be able to use this event.
+    - **onEvent \{ event , trade -> () \}**: This is where your event is committed. The trade variable will be inserted into the database as it is, so if you want to apply any logic or modify any field, you need to do that in this code block.
+- **modifyEvent \{ ... \}**: this creates the modify events of your state machine. Unlike the insertEvent, each event will be created based on the transition event.
+    - **mutableStates()**: this specifies the states from which the trade can be modified.
+    - **transitionEvent() \{ ... \}**: this creates the events themselves. Each transitionEvent will create a new event. The name of each event follows the same rule: EVENT_\{TABLE\}_\{STATE\}. So in our example we have: EVENT_TRADE_ALLOCATED and EVENT_TRADE_CANCELLED.
+    - **fromStates( )**: this defines the flow of the state machine. Here you define which states can move to the state defined in the transitionEvent.
 
 <!--
 ### 3. Add an integrated State Machine to the Event Handler
@@ -319,7 +319,7 @@ We are going to change the code in the Event Handler so that:
 
 Go to the **alpha-eventhandler.kts** file for the counterparty insert event.
 
-Add the verification by inserting a `verify` inside the `onValidate` block, before the `onCommit` block in COUNTERPARTY_INSERT. We can see this below, with separate lines checking that the Counterparty ID exist in the database. The new block ends by sending an **ack()**.
+Add the verification by inserting a `verify` inside the `onValidate` block, before the `onCommit` block in COUNTERPARTY_INSERT. We can see this below, with separate lines checking that the Counterparty ID exists in the database. The new block ends by sending an **ack()**.
 
 ```kotlin {2-9}
 eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
