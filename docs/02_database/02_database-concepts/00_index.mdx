@@ -8,12 +8,15 @@ tags:
     - concepts
 ---
 
-This section provides you with details on various database concepts. 
+There are two interfaces for handling database changes: EntityDb and RxDb (for Java). The key read (get, getRange, etc), write (insert, upsert, etc) and subscribe (subscribe, bulkSubscribe) operations are described in detail in the relevant sections:
 
-Database operations:
-- [Read](../../../database/database-concepts/read/)
-- [Write](../../../database/database-concepts/write/)
-- [Subscribe](../../../database/database-concepts/subscribe/)
+- [EntityDb read operations](../../../database/database-interface/entity-db/#read-operations)
+- [EntityDb write operations](../../../database/database-interface/entity-db/#write-operations)
+- [RxDb read operations](../../../database/database-interface/rxdb/#read-operations)
+- [RxDb write operations](../../../database/database-interface/rxdb/#write-operations)
+- [Subscribe](../../../database/database-interface/rxdb/#subscribe-operations)
 
-Other concepts:
+This section looks at one other database concept:
+
 - [Optimistic Concurrency](../../../database/database-concepts/optimistic-concurrency/)
+
