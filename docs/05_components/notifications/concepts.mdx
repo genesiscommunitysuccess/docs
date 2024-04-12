@@ -22,7 +22,7 @@ A notification is a message that you want to send somewhere. The notification ha
 
 Notifications are represented by the `NOTIFY` table in the database. They are generic, and are capable of being sent to multiple destinations.
 
-To create a notification in a Genesis System, all you need to do is create a NOTIFY record in the database. GENESIS_NOTIFY will take care of the rest, based on the routes that are configured.
+To create a notification in a Genesis System, all you need to do is create a NOTIFY record in the database, which is best done via the EVENT_NOTIFY_INSERT. GENESIS_NOTIFY will take care of the rest, based on the routes that are configured.
 
 ### Routes
 A route determines where the notification will be sent. Different gateways support different route types, but there are fields that are common to all types: 
