@@ -18,8 +18,23 @@ With this quick command you can add the auth UI on your app (changing `myapp` to
 npx -y @genesislcap/genx@latest add myapp -x -s genesislcap/pbc-auth-seed
 ```
 
-It will create a route entitled *User Management*.
+It creates a route entitled *User Management* with user and profile management operations:
 
-![User Management](/img/pbc-user-management-ui/01_user-management.png)
+![User Management](#)
+
+![Profile Management](#)
 
 You can check more details about users, profiles, rights/permissions, etc., in the [authorisation](../../../../server/access-control/authorisation#users-profiles-and-right-codes) section.
+
+For a brief overview check the User Management [permissions](../user-management/03_permissions.mdx) section.
+
+## Alternative
+
+If you want, you can use the components separately.
+
+Just import the dependency on `client/package.json` file:
+```json
+"@genesislcap/pbc-auth-ui": "~1"
+```
+
+And declare `user-management` or `profile-management` wherever you want.
