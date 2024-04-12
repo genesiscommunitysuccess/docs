@@ -11,7 +11,9 @@ tags:
   - auth
 ---
 
-The User Management component server-side depends almost entirely on the Genesis auth module. So, it's a built-in module that is installed by default (because all Genesis apps **needs** the auth module as a required pre-requisite).
+## Auth Introduction
+
+The server-side of User Management component depends almost entirely on the Genesis [auth](../../../../server/access-control/authorisation) module. So, it's a built-in module that is installed by default (because all Genesis apps **needs** the auth module as pre-requisite).
 
 After the project generation, if you go to the file `/server/gradle.properties`, you can see there's an `authVersion`:
 ```properties
@@ -23,7 +25,7 @@ authVersion=7.1.4
 Always use the latest auth version on your application due to security reasons.
 :::
 
-This is the basic structure of the auth module if I run the `ls -R auth` at Genesis home directory:
+This is the basic structure of the auth module (running the `ls -R auth` at Genesis home directory):
 ```bash
 $ ls -R auth
 .:
@@ -48,7 +50,9 @@ ConsolidateRights.groovy  ConsolidateRights.sh  MigrateRights.groovy  auth-prefe
 1_migrateRights.sh  2_loadDefaultRights.sh  3_loadProfileRights.sh  4_dropUserSession.sh
 ```
 
-At this point, you only need to insert the .csv files in the `data` folder using the `SendIt` command:
+## Auth Data
+
+Moving inside the auth folder, you need to insert the .csv files in the `data` folder using the `SendIt` command:
 ```shell
 cd data
 SendIt -a
@@ -56,8 +60,11 @@ SendIt -a
 
 And run the `ConsolidateRights.sh` script to _consolidate the rights_ of the profiles and rights inserted:
 ```shell
+cd scripts
 ./ConsolidateRights.sh
 ```
+
+## Auth Processes
 
 These are the processes that appear when you run the `mon` command:
 ```bash
