@@ -14,18 +14,18 @@ tags:
 ## Notify concepts
 
 ### Gateways
-A gateway is a connection to any delivery system for notifications. Gateways are configured once on application startup, and the configuration is specified in a GPAL script file.
-A single SMTP server, teams server or a single symphony instance would be examples of gateways. To connect to more than one server, configure multiple gateways.
+A gateway is a connection to any delivery system for notifications. Gateways are specified in a GPAL script file.
+A single SMTP server, teams server or a single symphony instance would be examples of gateways. You can configure multiple gateways.
 
 ### Notifications
 A notification is a message that you want to send somewhere. The notification has a header, a body detailing the message and a topic. The topic determines how GENESIS_NOTIFY will route the notification.
 
-Notifications are represented by the NOTIFY table in the database. They are generic, and are capable of being sent to multiple destinations.
+Notifications are represented by the `NOTIFY` table in the database. They are generic, and are capable of being sent to multiple destinations.
 
 To create a notification in a Genesis System, all you need to do is create a NOTIFY record in the database. GENESIS_NOTIFY will take care of the rest, based on the routes that are configured.
 
 ### Routes
-A route determines how the notification will get sent. Different gateways support different route types, but there are fields that are common to all types: 
+A route determines where the notification will be sent. Different gateways support different route types, but there are fields that are common to all types: 
 
 - identifier
 - topic match: where the topic on a notification is a match for the topic on the route, the notificiation will be sent on that route
