@@ -12,7 +12,7 @@ tags:
 
 ## How to create a project
 
-To create a new project with the Simplified structure, use genx with the blank-app-seed.
+To create a new project with the Simplified structure, use `genx` with the blank-app-seed.
 
 ```bash
 npx -y @genesislcap/genx@latest init <app-name>
@@ -50,7 +50,7 @@ Below provides more details on this:
 | --- | --- |
 | -dictionary-cache | Hidden internal module. Contains generated code. |
 | -distribution | Removed. The project’s distribution file will be located in the root project’s (server) build folder, **server/build/distributions**. |
-| -site-specific | Removed. [Application](../settings-plugin/#project-type) projects will have a site-specific distribution file created which will be located in the root project's (server) build folder, **server/build/distributions**. Non-project config and script files will be included in the distribution. All folders and files in the main module's **src/main/genesis** folder, except cfg and scripts, will be also be included. |
+| -site-specific | Removed. [Application](../settings-plugin/#project-type) projects will have a site-specific distribution file created, which will be located in the root project's (server) build folder, **server/build/distributions**. Non-project config and script files will be included in the distribution. All folders and files in the main module's **src/main/genesis** folder, (except cfg and scripts) will also be included. |
 | -eventhandler | Removed. |
 | -messages | Removed. |
 | -config | Removed. A -config.jar will be built from the main module and will contain your project's config and script files. It will be in the main module `build/libs` folder. |
