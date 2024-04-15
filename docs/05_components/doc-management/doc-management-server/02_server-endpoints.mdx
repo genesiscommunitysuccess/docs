@@ -1,0 +1,30 @@
+---
+title: 'Document Management - Endpoints'
+sidebar_label: 'Endpoints'
+id: doc-management-endpoints
+keywords: [doc-management, endpoints]
+tags:
+  - doc-management
+  - endpoints
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Document Management exposes upload, download and list file endpoints. Endpoints are registered automatically upon start up.
+
+## Endpoints
+
+### File Upload
+
+To upload a file, send a multiform POST request to the following resource path `/file-server/upload`.
+
+
+### File Download
+
+To download a file, send a GET request to the following resource path with the following query param `/file-server/download?fileStorageId=<fileStorageId>`.
+
+
+### List All Files
+
+To list all files, send a GET request to `/file-server/all-files`.
