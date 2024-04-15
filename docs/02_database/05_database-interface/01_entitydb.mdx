@@ -21,15 +21,15 @@ entity. It supports read operations for views and tables and write operations fo
 
 The entity db differs from the generated repositories in that it can handle any table and most view entities. It differs from `RxDb` in that all operations are type-safe.
 
-The entity db is available in the Kotlin Event Handler. 
+The entity db is available in the Kotlin Event Handler.
 
 
 It can be injected in Kotlin using `AsyncEntityDb` and in Java using `RxEntityDb`.
 
 There are three versions of the entity db:
 
-* `AsyncEntityDb` - this API supports Kotlin coroutines 
-* `SyncEntityDb` - this API is blocking 
+* `AsyncEntityDb` - this API supports Kotlin coroutines
+* `SyncEntityDb` - this API is blocking
 * `RxEntityDb` - this API supports RxJava
 
 :::important
@@ -116,7 +116,7 @@ The following overloads exist for get; `fields` is a `Set<String>`.
 // we can look up trades by passing in a unique index class:
 val trade = db.get(Trade.byId("TRADE_1"))
 
-// a trade object with the primary key set 
+// a trade object with the primary key set
 val trade = db.get(trade)
 
 // a trade object and a reference to unique index
@@ -134,7 +134,7 @@ val trade = db.get(trade.byTypeId())
 final var trade = db.get(Trade.byId("TRADE_1"))
         .blockingGet();
 
-// a trade object with the primary key set 
+// a trade object with the primary key set
 final var trade = db.get(trade)
         .blockingGet();
 
@@ -153,7 +153,7 @@ final var trade = db.get(trade.byTypeId())
 // we can look up trades by passing in a unique index class:
 final var trade = db.get(Trade.byId("TRADE_1"))
 
-// a trade object with the primary key set 
+// a trade object with the primary key set
 final var trade = db.get(trade)
 
 // a trade object and a reference to unique index
@@ -204,9 +204,9 @@ val recordB = list[1]
 ### getBulk
 
 This operation creates a `Flowable` of the whole table. If the database layer supports it, the records will be
-sorted in ascending order by the index provided, or by the primary key if none is provided. 
+sorted in ascending order by the index provided, or by the primary key if none is provided.
 
-Currently, only FoundationDb and Postgres support an ordered `getBulk`. There is also the `getBulkFromEnd` function, which returns records in descending order. 
+Currently, only FoundationDb and Postgres support an ordered `getBulk`. There is also the `getBulkFromEnd` function, which returns records in descending order.
 
 There are also a number of continuation operations, which return the whole table after the provided record. These methods are deprecated and should not be used going forwards.
 
@@ -229,7 +229,8 @@ There are also a number of continuation operations, which return the whole table
 
 ```kotlin
 // we can pass in Trade as a type parameter
-val flow = db.getBulk<Trade>()
+    // todo undo...
+val flow = db.getBulk  --- Trade>()
 // we can pass in the TRADE object
 val flow = db.getBulk(TRADE)
 // or we can pass in an index reference
@@ -252,75 +253,182 @@ final var flowable = db.getBulk(Trade.ById.Companion);
 
 ### getRange
 
-The `getRange` operation selects a range within an index. For example, to select all trades by a single currency, there are a number of ways a range can be specified:
+`getRange` is an operation that could return multiple records from the database.
 
-* A non-unique index entry.
-* A range between two index entries.
-* When an index has more than one column, part of the index starting from the first column.
+There are two types of `getRange` operations:
+* Single-value ranges, e.g. trades with CURRENCY set to USD
+* Interval ranges, e.g. all trades with TRADE_DATE between 01-Jul-2024 and 01-Aug-2024.
 
-When selecting part of an index, the number of columns can be specified using the `numKeyFields` parameter. The fields are always selected in the order they are specified in the index.
+Unlike the `get` operation, the `getRange` operation can always return multiple records.
+We pass index entities into `getRange`.
+When using an interval range, both index entities should be of the same type, `Trade.byDate` in this example.
 
-There are 15 different `getRange` functions. These return records in ascending order, unless you use the `fromEnd` functions, in which case the records are returned in descending order. 
-
-The `numKeyFields` property
-specifies the number of fields to use from an index. For example, in the `TRADE` example, there is the `TRADE_BY_TYPE_ID`
-index. If we pass 1 for `numKeyFields`, the range will return records by `TRADE_TYPE`, which is the first column in that index.
-
-#### Overloads
-
-* `getRange(E, EntityIndexReference<E>, numKeyFields): Flow<E>`
-* `getRange(E, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
-* `getRange(E, E?, EntityIndexReference<E>, numKeyFields): Flow<E>`
-* `getRange(E, E?, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
-* `getRange(EntityIndex<E>, numKeyFields): Flow<E>`
-* `getRange(EntityIndex<E>, numKeyFields, fields): Flow<E>`
-* `getRange(NonUniqueEntityIndex<E>, NonUniqueEntityIndex<E>): Flow<E>`
-* `getRange(NonUniqueEntityIndex<E>): Flow<E>`
-* `getRange(NonUniqueEntityIndex<E>, fields): Flow<E>`
-* `getRange(EntityIndex<E>, EntityIndex<E>, numKeyFields): Flow<E>`
-* `getRange(EntityIndex<E>, EntityIndex<E>, numKeyFields, fields): Flow<E>`
-* `getRangeFromEnd(E, E, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
-* `getRangeFromEnd(E, E, EntityIndexReference<E>, numKeyFields): Flow<E>`
-* `getRangeFromEnd(EntityIndex<E>, EntityIndex<E>, numKeyFields, fields): Flow<E>`
-* `getRangeFromEnd(EntityIndex<E>, EntityIndex<E>, numKeyFields): Flow<E>`
-
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<Tabs defaultValue="kotlin" values={[{label: 'Kotlin', value: 'kotlin',}, {label: 'Java', value: 'java',}]}>
 <TabItem value="kotlin">
 
 ```kotlin
-// there are multiple ways to get a range of records, either for some fields
-// of a unique index or some or all fields of a non unique index:
-db.getRange(Trade.byTypeId("typeA"))
-db.getRange(trade.byTypeId(), 1)
-db.getRange(trade, Trade.ByTypeId, 1)
+// single value
+val range = db.getRange(Trade.byCurrency("USD"))
 
-// or by setting a start and an end range:
-db.getRange(Trade.byTypeId("tradeType1"), Trade.byTypeId("tradeType2"))
-db.getRange(trade1.byTypeId(), trade2.byTypeId(), 1).toList()
-db.getRange(trade1, trade2, Trade.ByTypeId, 1).toList()
+// interval
+val range = db.getRange(
+    Trade.byDate(myStartDate),
+    Trade.ByDate(myEndDate)
+)
 ```
 
 </TabItem>
 <TabItem value="java">
 
 ```java
-// there are multiple ways to get a range of records, either for some fields
-// of a unique index or some or all fields of a non unique index:
-db.getRange(Trade.byTypeId("typeA"));
-db.getRange(trade.byTypeId(),1);
-db.getRange(trade,Trade.ByTypeId.Companion,1);
+// single value
+var range = db.getRange(Trade.byCurrencyId("USD"));
 
-// or by setting a start and an end range:
-db.getRange(Trade.byTypeId("tradeType1"),Trade.byTypeId("tradeType2"));
-db.getRange(trade1.byTypeId(),trade2.byTypeId(),1).toList();
-db.getRange(trade1,trade2,Trade.ByTypeId.Companion,1).toList();
+// interval
+var range = db.getRange(
+    Trade.byDate(startDate),
+    Trade.byDate(endDate)
+);
 ```
+
 </TabItem>
 </Tabs>
 
+Table entities provide methods for building index entities:
+
+<Tabs defaultValue="kotlin" values={[{label: 'Kotlin', value: 'kotlin',}, {label: 'Java', value: 'java',}]}>
+<TabItem value="kotlin">
+
+```kotlin
+// single value
+val range = getRange(myUsdTrade.byCurrency())
+
+// interval
+val range = db.getRange(myStartTrade.byDate(), myEndTrade.byDate())
+```
+
+</TabItem>
+<TabItem value="java">
+
+```kotlin
+// single value
+var range = getRange(myUsdTrade.byCurrency());
+
+// interval
+var range = db.getRange(myStartTrade.byDate(), myEndTrade.byDate());
+```
+
+</TabItem>
+</Tabs>
+
+#### `numKeyFields` property
+
+When using the `getRange` operation, you can tell the database how many fields in the index to use.
+By default, all fields are used, however, this can be overwritten.
+This allows users to query on part of the index.
+
+:::note
+Order matters here; you can look get a range on just field 1, field 1 and field 2, but not on field 2 and field 1.
+:::
+
+For example, if on the ORDER table, we had an index on COUNTERPARTY and INSTRUMENT_ID,
+we could do a single-value `getRange` operation on either `COUNTERPARTY` or on both `COUNTERPARTY` and `INSTRUMENT`.
+In the first example `numKeyFields` would be `1`, in the latter it would be `2`.
+
+For example:
+
+<Tabs defaultValue="kotlin" values={[{label: 'Kotlin', value: 'kotlin',}, {label: 'Java', value: 'java',}]}>
+<TabItem value="kotlin">
+
+```kotlin
+// we could look up all rows for both COUNTERPARTY and INSTRUMENT:
+val range = db.getRange(myOrder.byCounterpartyAndInstrument())
+// which would be equivalent to
+val range = db.getRange(myOrder.byCounterpartyAndInstrument(), 2)
+// and also
+val range = db.getRange(Order.byCounterpartyAndInstrument("CPTY_A", "VOD"))
+
+// or we could look pu by just COUNTERPARTY
+val range = db.getRange(myOrder.byCounterpartyAndInstrument(), 1)
+// which would be equivalent to
+val range = db.getRange(Order.byCounterpartyAndInstrument("CPTY_A"))
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+// we could look up all rows for both COUNTERPARTY and INSTRUMENT:
+var range = db.getRange(myOrder.byCounterpartyAndInstrument());
+// which would be equivalent to
+var range = db.getRange(myOrder.byCounterpartyAndInstrument(), 2);
+// and also
+var range = db.getRange(Order.byCounterpartyAndInstrument("CPTY_A", "VOD"));
+
+// or we could look pu by just COUNTERPARTY
+var range = db.getRange(myOrder.byCounterpartyAndInstrument(), 1));
+// which would be equivalent to
+var range = db.getRange(Order.byCounterpartyAndInstrument("CPTY_A"));
+```
+
+</TabItem>
+</Tabs>
+
+:::info
+`numKeyFields` is required in the following instances:
+
+* when passing in a table entity and an index reference
+* when passing in an index entity that refers to a unique index
+:::
+
+#### Fields
+
+When using a `getRange` operation, you can provide a `Set<String>` with the field names you want to select.
+This will only be used as a hint, non-nullable fields will always be returned from the database.
+
+<Tabs defaultValue="kotlin" values={[{label: 'Kotlin', value: 'kotlin',}, {label: 'Java', value: 'java',}]}>
+<TabItem value="kotlin">
+
+```kotlin
+val range = getRange(
+    myUsdTrade.byCurrency(),
+    fields = setOf("PRICE", "QUANTITY")
+)
+
+```
+
+</TabItem>
+<TabItem value="java">
+
+```kotlin
+var range = db.getRange(
+    Trade.byCurrencyId("USD"),
+    1,
+    Set.of("PRICE", "QUANTITY")
+);
+```
+
+</TabItem>
+</Tabs>
+
+#### Reversed range lookups
+
+In addition to `getRange` there is also the `getRangeFromEnd` method.
+This will work in the same way as `getRange`, however rows are returned in the reverse order.
+
+#### Parameters when using index entities
+
+| Name         | Type             | Required                    | Meaning                                       | Default value           |
+|--------------|------------------|-----------------------------|-----------------------------------------------|-------------------------|
+| Index        | `EntityIndex<E>` | ✔️, For single value ranges | The index entry to read                       |                         |
+| Start index  | `EntityIndex<E>` | ✔️, For interval ranges     | The index entry to read from                  |                         |
+| End index    | `EntityIndex<E>` | ✔️, For interval ranges     | The index entry to read to                    |                         |
+| numKeyFields | `Int`            | ❌                           | The number of key fields to take into account | All fields in the index |
+| fields       | `Set<String>`    | ❌                           | The names of the fields to return             | return all fields       |
+
 ## Write operations
 
-All write operations have versions that take a single entity and versions that take multiple entries. 
+All write operations have versions that take a single entity and versions that take multiple entries.
 
 The return values for these operations are type-safe (see details below), provided all entries are of the same type. For example, when inserting multiple `Trade` entries, the return type will be `List<InsertResult<Trade>>`. Different entity types can be inserted in the same operation; however, the return type will be `List<InsertResult<Entity>>`. Also, modify operations
 only accept table entities.
@@ -515,13 +623,13 @@ This API must be used with caution. Integrity checks are skipped, so it can leav
 
 If the underlying database supports transactions, then the entity db provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions.
 
-Currently, transactions are supported on **FoundationDb**, **MS SQL**, **Oracle** and **Postgresql**.
+Transactions are supported on database layers: **FoundationDb**, **MS SQL**, **Oracle** and **Postgresql**.
 
 When code is expected to run on multiple database types, transactions should be used when available. You can use `safeReadTransaction` and `safeWriteTransaction`. These will run operations in the block in a single transaction, if supported.
 
 There is a distinction between using Kotlin and Java here.
 
-* When using Kotlin, the transaction is the receiver in the `readTransaction` call. This means that within the block, `this` refers to the transaction. 
+* When using Kotlin, the transaction is the receiver in the `readTransaction` call. This means that within the block, `this` refers to the transaction.
 * When using Java, the transaction is the first parameter of the lambda.
 
 ### Read transactions
@@ -590,29 +698,7 @@ final var writeResults = pair.getSecond();
 
 ### Subscribe
 
-The `subscribe` operation starts a database listener that receives updates to tables or views. When subscribing to view updates, only updates to the root table will be published. 
-
-If the view has any inner joins, these are handled in a number of different ways.
-
-For tables, this works in the standard way. You subscribe to updates, and:
-
-* when a record is inserted you get an insert update
-* when a record is modified you get a modify update 
-* when a record is deleted you get a delete update 
-
-For views, when a record is inserted to the root table, you get an insert update. Modify and delete work the same way.
-
-However, if there is an inner join, there is a range of possible outcomes.
-
-For example, if you join onto the counterparty field, and you only return records for which you have a valid counterparty:
-
-* If there is an insert with no valid counterparty, the listener to the view does not receive the insert.
-* If there is a delete with no valid counterparty, the listener to the view does not receive the delete.
-
-And if there is a modify:
-* If both the previous record and the new record link to an existing counterparty, then nothing changes.
-* If the previous record was linked to an invalid counterparty and the new record links to a valid counterparty, it transforms the modify to an insert – because the record has moved into the view.
-* If the previous record linked to a valid counterparty, but no longer does after the update, it becomes a delete.
+The `subscribe` operation starts a database listener that receives updates to tables or views.
 
 ### Subscribe parameters
 Subscribe supports the following parameters:
@@ -660,64 +746,412 @@ final var subscription = db.subscribe(Trade.class)
 </TabItem>
 </Tabs>
 
-### Bulk subscribe
+### Bulk Subscribe
 
-The `bulkSubscribe` combines a `getBulk` and a `subscribe` call into a single function. This operation is useful when
-a class needs to read a full table and then receive updates of changes to the underlying table or view. 
+The `bulkSubscribe` operation combines a [`getBulk`](#getbulk) and a [`subscribe`](#subscribe) call into a single operation.
+This operation is useful when a class needs to read a full table and then receive updates of changes to the underlying table or view.
 
 This operation supports backwards joins for views. This means that it can receive updates on both the
 root table and the joined tables. The view needs to support this in the definition, and it must be enabled
 on the `bulkSubscribe` call.
 
+#### Example
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+val bulk = db.bulkSubscribe<Trade>()
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+var bulk = db.bulkSubscribe(Trade.class);
+```
+
+</TabItem>
+</Tabs>
+
+#### Parameters
+
 `bulkSubscribe` supports the following parameters:
 
 | Name | Type | Required | Meaning | Default value |
 | --- | --- | --- | --- | --- |
-| Table name |`String`| ✔️ | The table to subscribe to | n/a |
-| Index name | `index` | ❌ | The index to sort the read by (used for the `getBulk` part of the call)| primary key |
+| Table |`Class<E>`| ✔️ | The table to subscribe to |   |
+| Index |`UniqueEntityIndexReference<E>`| ❌ | The to sort the getBulk operation by |   |
 | fields | `Set<String>` | ❌ | Only listen to changes on selected fields (filters `ModifyResult` on fields)| listen to all fields |
-| delay | `Int` | ❌ | Group and publish updates every x ms | no grouping |
+| delay | `Int` | ❌ | Batch updates x ms | no batching |
 | subscribeLocally | `Boolean` | ❌ | When in a cluster, only listen to local updates | false |
 | backwardJoins  | `Boolean` | ❌ | subscribe to changes on sub tables (backwards joins) | false |
 
-#### Overloads
+#### Java Support
 
-Parameters marked with an asterisk(*) are optional.
+There are many optional parameters for bulk subscribe operations.
+In Kotlin this works well in a single method due to named parameters and default values.
+In Java however, we provide a fluent API to set optional parameters.
+The function `bulkSubscribeBuilder` return a builder.
+Optional parameters can be set with a "with-function", e.g. `withDelay(...)`.
+Once all values have been set, the `toFlowable()` function transforms the builder into a `Flowable`.
 
-1. `bulkSubscribe([Class<E> / KClass<E>], fields*, delay*, index*, subscribeLocally*, backwardJoins*) : Flow<Bulk<E>>`
+#### More complex example
 
-These functions are available in Kotlin only:
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
 
-2. `bulkSubscribe<E>(fields*, delay*, index*, subscribeLocally*, backwardJoins*) : Flow<Bulk<E>>`
+```kotlin
+val bulk = db.bulkSubscribe<Trade>(
+    fields = setOf("TRADE_DATE"),
+    delay = 500,
+    subscribeLocally = false,
+    index = Trade.ByTypeId,
+    backwardJoins = true,
+)
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+var bulk = db.bulkSubscribeBuilder(Trade.class)
+    .withFields(Set.of("TRADE_DATE"))
+    .withDelay(500)
+    .withSubscribeLocally(false)
+    .withIndex(Trade.ByTypeId.Companion)
+    .withBackwardJoins(true)
+    .toFlowable();
+```
+
+</TabItem>
+</Tabs>
 
 ### Range subscribe
 
-The `rangeSubscribe` operation is similar to bulk subscribe, but it combines a `getRange` with `subscribe`. This is useful when a class needs to read part of a table or view and then keep updated of any changes. The range will be applied to the `subscribe` as well. So, the update type will reflect whether a row comes into the range or moves out of the range, rather than what happened in the database. This means that a `ModifyResult<E>` might be converted to an `InsertResult<E>` or a `DeleteResult<E>`.
+`rangeSubscribe` is similar to `bulkSubscribe`.
+The `rangeSubscribe` operation combines a [`getRange`](#getrange) and a [`subscribe`](#subscribe) call into a single operation.
+This operation is useful when a class needs to read a full table and then receive updates of changes to the underlying table or view.
 
-AlNote that `rangeSubscribe` can take a static range (for example, all USD trades) or a dynamic range (for example, all trades booked within the last 2 hours). The dynamic range will be updated on a schedule, either at an interval or at a specified time.
+This operation supports backwards joins for views. This means that it can receive updates on both the
+root table and the joined tables. The view needs to support this in the definition, and it must be enabled
+on the `bulkSubscribe` call.
 
-#### Overloads
+#### Different Range options
 
-`rangeSubscribe` supports the following parameters:
+Like `getRange`, `rangeSubscribe` supports single value and interval ranges.
+In addition, range subscribe supports both static and dynamic ranges, more details below.
 
-| Name | Type | Required | Meaning | Default value |
-| --- | --- | --- | --- | --- |
-| Table name |`String`| ✔️ | The table to subscribe to | n/a |
-| Start index | `index` |✔️ | The index entry to read from | primary key |
-| End index | `index` | ❌ | The index entry to read to | primary key |
-| fields | `Set<String>` | ❌ | Only listen to changes on selected fields (filters `ModifyResult` on fields)| listen to all fields |
-| delay | `Int` | ❌ | Group and publish updates every x ms | no grouping |
-| subscribeLocally |`Boolean` | ❌ | When in a cluster, only listen to local updates | false |
-| backwardJoins  | `Boolean` | ❌ | subscribe to changes on sub tables (backwards joins) | false |
-| numKeyFields | `Int` | ❌ | The number of key fields to take into account for the range | ? |
-| index |`UniqueEntityIndex<E>` | ❌ | the index to use for the `getBulk` part of the call | ? |
-| updateFrequency  | `PalDuration` | ❌ | a schedule for updating dynamic ranges | ? |
-| rangeProvider  | `() -> EntityIndex<E>` | ❌ | a lambda providing a `EntityIndex<E>`, for use in dynamic ranges | ? |
+#### Note on Java
 
+Like `bulkSubscribe` there are many optional parameters for range subscribe operations.
+In Kotlin this works well in a single method due to named parameters and default values.
+In Java however, we provide a fluent API to set optional parameters.
+These functions `staticRangeSubscribeBuilder` and `dynamicRangeSubscribeBuilder` return a builder.
+Optional parameters can be set with a "with-function", e.g. `withDelay(...)`.
+Once all values have been set, the `toFlowable()` function transforms the builder into a `Flowable`.
 
+#### Static Ranges
 
-#### Static range
-* `rangeSubscribe(from: EntityIndex<E>, to: EntityIndex<E>, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
-* `rangeSubscribe(EntityIndex<E>, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
-* `rangeSubscribe(rangeProvider, rangeProvider, updateFrequency, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
-* `rangeSubscribe(rangeProvider, updateFrequency, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
+By default, ranges are static, they are set at the start of the subscription and not updated afterwards.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+// single-value range
+val range = db.rangeSubscribe(Trade.byCurrencyId("USD))
+
+// interval range
+val range = db.rangeSubscribe(
+    Trade.byDate(startDate),
+    Trade.byDate(endDate)
+)
+
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+// single-value range
+var range = db.staticRangeSubscribeBuilder(Trade.byCurrencyId("USD"))
+    .toFlowable();
+// interval range
+var range = db.staticRangeSubscribeBuilder(
+        Trade.byDate(startDate),
+        Trade.byDate(endDate)
+    )
+    .toFlowable();
+```
+
+</TabItem>
+</Tabs>
+
+#### Dynamic Ranges
+
+Additionally, `rangeSubscribe` also supports dynamic ranges.
+These are ranges that are refreshed either at a specified time, or interval.
+This can be useful for long running subscriptions on dates.
+For example, you might want to keep an eye on trades booked in the last hour.
+Unless that range is refreshed, it will fall behind.
+
+Here we have two dynamic ranges, the first one is filtering for a specific date, and updated at midnight.
+The second one, has a 2 hour window, and is updated every 5 minutes.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+// single-value range
+db.rangeSubscribe(
+    fromProvider = { Trade.byDate(DateTime.now().withTimeAtStartOfDay()) },
+    updateFrequency = PalDuration.At(LocalTime.MIDNIGHT)
+)
+// interval range
+db.rangeSubscribe(
+    fromProvider = { Trade.byDate(DateTime.now().minusHours(1)) },
+    toProvider = { Trade.byDate(DateTime.now().plusHours(1)) },
+    updateFrequency = PalDuration.Every(Duration.ofMinutes(5))
+)
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+// single-value range
+var range = db.dynamicRangeSubscribeBuilder(
+        () -> Trade.byDate(DateTime.now().withTimeAtStartOfDay())
+    ).withUpdateFrequency(new PalDuration.At(LocalTime.MIDNIGHT))
+        .toFlowable();
+// interval range
+var range = db.dynamicRangeSubscribeBuilder(
+        () -> Trade.byDate(DateTime.now().minusHours(1)),
+        () -> Trade.byDate(DateTime.now().plusHours(1))
+    ).withUpdateFrequency(new PalDuration.Every(Duration.ofMinutes(5)))
+        .toFlowable();
+```
+
+</TabItem>
+</Tabs>
+
+#### Parameters
+
+For static ranges `rangeSubscribe` supports the parameters below.
+In the Java API, the function returns a builder, where optional parameters can be set.
+
+| Name             | Type             | Required            | Meaning                                                                      | Default value        |
+|------------------|------------------|---------------------|------------------------------------------------------------------------------|----------------------|
+| Start index      | `EntityIndex<E>` | ✔️                  | The index entry to read from                                                 |                      |
+| End index        | `EntityIndex<E>` | For interval ranges | The index entry to read to                                                   |                      |
+| numKeyFields     | `Int`            | ❌️                  | The number of key fields to take into account for the range                  |                      |
+| updateFrequency  | `PalDuration`    | For dynamic ranges  | a schedule to update dynamic range boundaries                                | ?                    |
+| delay            | `Int`            | ❌                   | Group and publish updates every x ms                                         | 200ms                |
+| fields           | `Set<String>`    | ❌                   | Only listen to changes on selected fields (filters `ModifyResult` on fields) | listen to all fields |
+| subscribeLocally | `Boolean`        | ❌                   | When in a cluster, only listen to local updates                              | false                |
+| backwardJoins    | `Boolean`        | ❌                   | subscribe to changes on sub tables (backwards joins)                         | false                |
+
+#### Example
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+val range = asyncEntityDb.rangeSubscribe(
+    from = Trade.byDate(startDate),
+    to = Trade.byDate(endDate),
+    numKeyFields = 1,
+    delay = 500,
+    fields = emptySet(),
+    subscribeLocally = true,
+    backwardJoins = true
+)
+
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+val range = db.staticRangeSubscribeBuilder(
+        Trade.byDate(startDate),
+        Trade.byDate(endDate)
+    )
+    .withNumKeyFields(1)
+    .withDelay(500)
+    .withFields(Collections.emptySet())
+    .withSubscribeLocally(true)
+    .withBackwardJoins(true)
+    .toFlowable();
+```
+
+</TabItem>
+</Tabs>
+
+### Subscribing on views
+
+There are some subtleties when it comes subscriptions on views.
+
+1. Generally, only updates on the root table will be published
+2. Updates relate to the view, not the table.
+
+For this, we will use the following example view.
+
+```kotlin
+views {
+    view("TRADE_VIEW", TRADE) {
+        joins {
+            joining(INSTRUMENT, backwardsJoin = true, joinType = JoinType.INNER) {
+                on(TRADE.INSTRUMENT_ID to INSTRUMENT.ID)
+            }
+        }
+
+        fields {
+            TRADE.allFields()
+            INSTRUMENT.NAME withPrefix INSTRUMENT
+        }
+    }
+}
+```
+
+#### Root table updates and Backwards joins
+
+By default, when subscribing to updates on a view, only updates on the root table, unless we enable `backwardsJoin` on the join.
+If we don't enable backwards joins, then we would receive an update, if and only if TRADE is updated.
+With `backwardsJoin` enabled however, we will also receive updates if a related INSTRUMENT record is updated.
+
+For example, if TRADE 001 is updated; we will received an update on TRADE_VIEW for that trade.
+If INSTRUMENT X is updated, we will receive an update on TRADE_VIEW for all trades related to that record.
+
+#### View updates - inner joins
+
+In the example above, we have an inner join from TRADE to INSTRUMENT.
+This means that, from the view's perspective, a TRADE_VIEW record only exists, if a TRADE joins onto a INSTRUMENT
+Following on from there, if the INSTRUMENT_ID on TRADE is updated from XX to YY, and INSTRUMENT XX exists
+but INSTRUMENT YY does not, the MODIFY update on the TRADE will result in a DELETE update on TRADE_VIEW.
+If we were to revert that change, that MODIFY would result in an INSERT update.
+
+## Update Batching
+
+Above there have been several references to delays in the subscribe methods.
+This delay is used to determine the batching interval on updates.
+By default, rather than publishing every update received, updates will be compressed.
+We do this to reduce the load on high volume systems.
+
+For example, if a trade is inserted, and then modified rapidly in quick succession, oftentimes we are not interested
+in all the intermediate states.
+It will be easier for the system to just press a single update, so the insert and modify can get merged into a single
+insert update.
+
+### Batching Phases
+
+Batching happens in two phases:
+1. we gather updates
+2. at an interval we receive a tick and we aggregate and flush updates
+
+So what does this mean in practice?
+The batching period is always set globally, i.e. for a update queue subscription or on a data server query.
+Never on the individual row level.
+
+The goal of this batching is to minimise work, and to publish updates that are accurate, rather than to publish every change.
+
+In this regard it is better to think in terms of a batching interval, rather than a batching period, which looks something like this:
+
+```
+...
+*
+|---- gathering phase ----| (batching period)
+*
+*
+*
+*
+*
+|---- flushing phase -----| (tick happens here)
+* aggregate updates
+* publish updates
+|---- gathering phase ----| (next batching period)
+*
+*
+...
+```
+
+### Batching is non-deterministic
+
+During our gathering phase we listen for updates, and during the flushing phase we aggregate and publish.
+
+Let's look at how this would work with an example:
+
+Imagine we insert a trade with quantity 100
+Within milliseconds we update this trade and set the quantity to 200
+
+Depending on when the tick happens, you could either get two updates:
+
+```
+|---- gathering phase ----|
+*
+*
+*
+*
+* insert (qty 100)
+|---- flushing phase -----|
+* aggregate updates
+* publish updates insert (qty 100)
+|---- gathering phase ----|
+* modify (qty 200)
+*
+*
+*
+*
+|---- flushing phase -----|
+* aggregate updates
+* publish updates modify (qty 200)
+|---- gathering phase ----| (batching period)
+*
+*
+```
+
+1. Insert trade, qty = 100
+2. Modify trade, qty = 200
+
+Or we could receive a single update:
+
+```
+|---- gathering phase ----|
+*
+*
+*
+* insert (qty 100)
+* modify (qty 200)
+|---- flushing phase -----|
+* aggregate updates
+* publish updates insert (qty 200)
+```
+
+1. Insert trade, qty = 200
+
+Depending on timing, either case is possible, and the smaller the gap between the insert and modify, the more likely the second scenario becomes.
+However, even if these operations happen immediately after eachother, we could still receive two updates.
+
+When we get two updates of the same record within the batching interval we will always aggregate the updates.
+This could even mean that updates will be disregarded all together, for example if we receive an insert and a delete within the batching interval.
+
+This will always be non-deterministic, as we don't provide any guarantees.
+
+#### Batching at different levels
+
+The other thing to note is that batching happens on both the data server and the update queue level.
+We batch on the queue level to minimise the amount of work the data server has to do.
+Because we pre-allocate LMDB when the data sever starts, having too many needless updates would eat into that allocation.
+We batch on the data server to minimise the load on the client and the connection.
+
+### Out of sequence updates on the queue
+
+Updates are published on update queue once a record has been written to the database, or when a transaction completes if we're in a transaction.
+Within a multi-node setup, updates are published locally and forwarded to other nodes in genesis-cluster. Because of this forwarding, we can receive updates out of sequence.
+For example we insert our trade on node 1, and then modify it on node 2. On node 2 we might receive the modify before the insert update.
+As the insert updates has to be forwarded from node 1.
+
+This means that when listening to updates on tables, in these setups, with high message volume, we should check the timestamp against the latest received update to make sure we are not receiving updates out of sequence.
+
+For views this is not a problem, as we will refresh the record from the database within a transaction to make sure the update we publish is valid.
+
