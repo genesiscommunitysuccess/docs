@@ -13,7 +13,7 @@ tags:
 
 ## Auth Introduction
 
-The server-side of User Management component depends almost entirely on the Genesis [auth](/server/access-control/authorisation) module. So, it's a built-in module that is installed by default (because all Genesis apps **needs** the auth module as pre-requisite).
+The server-side of User Management component depends almost entirely on the Genesis [auth](/server/access-control/authorisation) module. So, it's a built-in module that is installed by default (because all Genesis apps **needs** the auth module as a pre-requisite).
 
 After the project generation, if you go to the file `/server/gradle.properties`, you can see there's an `authVersion`:
 ```properties
@@ -58,7 +58,7 @@ cd data
 SendIt -a
 ```
 
-And run the `ConsolidateRights.sh` script to _consolidate the rights_ of the profiles and rights inserted:
+And on the `scripts` folder run the `ConsolidateRights.sh` script to _consolidate the rights_ of the profiles and rights inserted:
 ```shell
 cd scripts
 ./ConsolidateRights.sh
