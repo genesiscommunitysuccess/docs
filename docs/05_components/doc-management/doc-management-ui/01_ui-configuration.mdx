@@ -1,86 +1,19 @@
 ---
-title: 'Document Management - initial configuration'
-sidebar_label: 'Initial configuration'
-id: doc-management-initial-configuration
-keywords: [doc-management, ui-configuration]
+title: 'Document Management - UI Configuration'
+sidebar_label: 'UI Configuration'
+id: doc-management-ui-config
+keywords: [doc-management, doc-management-ui-config]
 tags:
   - doc-management
-  - ui-configuration
+  - doc-management-ui-config
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 ## Prerequisites
-
-Make sure that the [back end](/docs/05_components/doc-management/server.mdx) has been configured correctly before you install the front-end components.
+Make sure that the [back end](/docs/05_components/doc-management/doc-management-server/01_configuring-file-manager.mdx) has been configured correctly before you install the front-end components.
 
 Note that each component is linked to a permission, which allows the user to view it or perform a specific action; check the [permissions](/docs/05_components/doc-management/doc-management-ui/03_permissions.mdx) available and ensure that your user is permissioned accordingly.
 
-## Initialising and adding to a new application
-
-The Document Management component can be added to a new application using GenX - see [GenX CLI](/docs/06_operations/03_commands/04_Genx_CLI.mdx) for more details.
-
-The following command initialises a new application called `myapp` and adds the Document Management component to it.
-
-<Tabs
-    defaultValue="windows"
-    values={[
-        { label: 'Windows', value: 'windows', },
-        { label: 'Mac and Linux', value: 'mac-and-linux', }
-    ]
-    }>
-    <TabItem value="windows">
-        ```shell title="Powershell"
-        npx -y @genesislcap/genx@latest init myapp -x --no-shell; npx -y @genesislcap/genx@latest add myapp -x -s @genesislcap/pbc-documents-seed
-        ```
-    </TabItem>
-
-    <TabItem value= 'mac-and-linux'>
-        ```shell title="Bash"
-        npx -y @genesislcap/genx@latest init myapp -x --no-shell && npx -y @genesislcap/genx@latest add myapp -x -s @genesislcap/pbc-documents-seed
-        ```
-    </TabItem>
-</Tabs>
-
-## Adding to an existing application
-
-### Using GenX
-
-If you've already initialised the application `myapp` using GenX, you can use the following command to add the component:
-
-<Tabs
-    defaultValue="windows"
-    values={[
-        { label: 'Windows', value: 'windows', },
-        { label: 'Mac and Linux', value: 'mac-and-linux', }
-    ]
-    }>
-    <TabItem value="windows">
-        ```shell title="Powershell"
-        npx -y @genesislcap/genx@latest add myapp -x -s @genesislcap/pbc-documents-seed
-        ```
-    </TabItem>
-
-    <TabItem value= 'mac-and-linux'>
-        ```shell title="Bash"
-        npx -y @genesislcap/genx@latest add myapp -x -s @genesislcap/pbc-documents-seed
-        ```
-    </TabItem>
-</Tabs>
-
-### Manual installation
-
-You must add the following to the `dependencies` section of **client/package.json** in your project:
-
-```json
-"@genesislcap/pbc-documents-ui": "~1"
-```
-
-:::important
-You can check the latest available version at [genesisnpm](https://www.npmjs.com/~genesisnpm).
-:::
-
+## Adding Document Management component to the UI
 Set up a route for the component in  the file **client/src/routes/config.ts**. This makes the component visible to your application:
 
 ```typescript
