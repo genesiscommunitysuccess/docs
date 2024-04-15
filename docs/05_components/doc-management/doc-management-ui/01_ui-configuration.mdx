@@ -1,6 +1,6 @@
 ---
-title: 'Document Management - Initial Configuration'
-sidebar_label: 'Initial Configuration'
+title: 'Document Management - initial configuration'
+sidebar_label: 'Initial configuration'
 id: doc-management-initial-configuration
 keywords: [doc-management, ui-configuration]
 tags:
@@ -11,16 +11,17 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## Pre-requisites
+## Prerequisites
 
-Make sure that the [back-end](/docs/05_components/doc-management/server.mdx) has been configured correctly in order to proceed to the front-end installation of components.
-It should be noted that each component is linked to a permission which allows the user to view it or perform a specific action; check the [permissions](/docs/05_components/doc-management/doc-management-ui/03_permissions.mdx) available and ensure your user is permissioned accordingly.
+Make sure that the [back end](/docs/05_components/doc-management/server.mdx) has been configured correctly before you install the front-end components.
 
-## Initialising & Adding to a New Application
+Note that each component is linked to a permission, which allows the user to view it or perform a specific action; check the [permissions](/docs/05_components/doc-management/doc-management-ui/03_permissions.mdx) available and ensure that your user is permissioned accordingly.
+
+## Initialising and adding to a new application
 
 The Document Management component can be added to a new application using GenX - see [GenX CLI](/docs/06_operations/03_commands/04_Genx_CLI.mdx) for more details.
 
-The following command will initialise a new application called `myapp` and add the Document Management component to it.
+The following command initialises a new application called `myapp` and adds the Document Management component to it.
 
 <Tabs
     defaultValue="windows"
@@ -42,11 +43,11 @@ The following command will initialise a new application called `myapp` and add t
     </TabItem>
 </Tabs>
 
-## Adding to an Existing Application
+## Adding to an existing application
 
 ### Using GenX
 
-If you've already initialised the application `myapp` using GenX and would like to simply add the component, you can use the following command:
+If you've already initialised the application `myapp` using GenX, you can use the following command to add the component:
 
 <Tabs
     defaultValue="windows"
@@ -68,9 +69,9 @@ If you've already initialised the application `myapp` using GenX and would like 
     </TabItem>
 </Tabs>
 
-### Manual Installation
+### Manual installation
 
-The following needs to be added into the `dependencies` section of `client/package.json` in your project:
+You must add the following to the `dependencies` section of **client/package.json** in your project:
 
 ```json
 "@genesislcap/pbc-documents-ui": "~1"
@@ -80,7 +81,7 @@ The following needs to be added into the `dependencies` section of `client/packa
 You can check the latest available version at [genesisnpm](https://www.npmjs.com/~genesisnpm).
 :::
 
-In order for the component to appear in your app, the route needs to be set up in `client/src/routes/config.ts`:
+Set up a route for the component in  the file **client/src/routes/config.ts**. This makes the component visible to your application:
 
 ```typescript
 {
