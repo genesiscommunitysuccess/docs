@@ -27,6 +27,11 @@ Once you have set you `STORAGE_STRATEGY`, you must set your storage solution spe
 ## Local File Storage
 When using Local File Storage, your files are stored under your specified folder inside your `genesis-home/runtime/fileupload/`.
 There is no need to create your folder, it's created automatically.
+
+
+When using Local File Storage, your files are stored under `genesis-home/runtime/fileupload/`. You can optionally specify your own sub-directory under this.
+If you do, the framework will automatically create it for you. If no additional directory path is required, it will default to `genesis-home/runtime/fileupload/LOCAL_STORAGE`.
+
 ```kotlin
 item(name = "LOCAL_STORAGE_FOLDER", value = "<folderName>")
 ```
