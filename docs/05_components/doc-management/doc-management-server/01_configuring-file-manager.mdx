@@ -1,5 +1,5 @@
 ---
-title: 'Document Management - Configuring File Storage Manager'
+title: 'Document Management - configuring File Storage Manager'
 sidebar_label: 'Configuring File Storage Manager'
 id: doc-management-configuring
 keywords: [doc-management, file-storage-manager]
@@ -11,7 +11,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-In order to start using Document Management, you must specify your `STORAGE_STRATEGY` in your `system-definition.kts`.
+In order to start using Document Management, you must specify your `STORAGE_STRATEGY` in your **system-definition.kts**.
 
 `STORAGE_STRATEGY` supports the following values:
 - LOCAL
@@ -22,28 +22,29 @@ In order to start using Document Management, you must specify your `STORAGE_STRA
 ```kotlin
 item(name = "STORAGE_STRATEGY", value = "<strategy>")
 ```
-Once you have set you `STORAGE_STRATEGY`, you must set your storage solution specify configuration.
+Once you have set your `STORAGE_STRATEGY`, you must set your storage solution specify configuration.
 
-## Local File Storage
-When using Local File Storage, your files are stored under your specified folder inside your `genesis-home/runtime/fileupload/`.
-There is no need to create your folder, it's created automatically.
+## Local file storage
+When using local file storage, your files are stored under your specified folder inside your **genesis-home/runtime/fileupload/** folder is created automatically.
 
 
-When using Local File Storage, your files are stored under `genesis-home/runtime/fileupload/`. You can optionally specify your own sub-directory under this.
-If you do, the framework will automatically create it for you. If no additional directory path is required, it will default to `genesis-home/runtime/fileupload/LOCAL_STORAGE`.
+When using Local File Storage, your files are stored under **genesis-home/runtime/fileupload/**. You can optionally specify your own sub-directory under this.
+
+If you do, the framework will automatically create it for you. If no additional directory path is required, it will default to **genesis-home/runtime/fileupload/LOCAL_STORAGE**.
 
 ```kotlin
 item(name = "LOCAL_STORAGE_FOLDER", value = "<folderName>")
 ```
 
 ## AWS S3
-When using AWS S3 as your storage solution, you must first have an S3 bucket created either locally or remotely.
-Next, you will need to set your `S3_STORAGE_MODE`.
+When using AWS S3 as your storage solution, you must have an S3 bucket created either locally or remotely.
+
+Next, you must set your `S3_STORAGE_MODE`.
 
 `S3_STORAGE_MODE` supports the following values:
-- LOCAL (app running locally with localy S3 bucket)
+- LOCAL (app running locally with local S3 bucket)
 - DEV (app running locally with remote S3 bucket)
-- AWS (app running remotely on a AWS resourse with remote S3 bucket)
+- AWS (app running remotely on a AWS resource with remote S3 bucket)
 
 ```kotlin
 item(name = "S3_STORAGE_MODE", value = "<storageMode>")
