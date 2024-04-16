@@ -80,22 +80,31 @@ FoundationNotificationDashboard;
 In the `src/routes/config.ts` file, add the route for it:
 
 ```typescript
-{
-  path: 'notification-dashboard',
-  element: async () => (await import('@genesislcap/pbc-notify-ui')).FoundationNotificationDashboard,
-  title: 'Notification Dashboard',
-  name: 'notification-dashboard',
-  settings: { autoAuth: true },
-  navItems: [
+import { FoundationNotificationDashboard } from '@genesislcap/pbc-notify-ui';
+
+public async configure() {
+  ...
+  this.routes.map(
+    ...
     {
+      path: 'notification-dashboard',
+      element: async () => (await import('@genesislcap/pbc-notify-ui')).FoundationNotificationDashboard,
       title: 'Notification Dashboard',
-      icon: {
-        name: 'bell',
-        variant: 'solid',
-      },
+      name: 'notification-dashboard',
+      settings: { autoAuth: true },
+      navItems: [
+        {
+          title: 'Notification Dashboard',
+          icon: {
+            name: 'bell',
+            variant: 'solid',
+          },
+        },
+      ],
     },
-  ],
-},
+    ...
+  );
+}
 ```
 
 It creates a single-page route [Notification Dashboard](../../notifications-ui/notify-ui-components#notification-dashboard) component.
