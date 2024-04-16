@@ -1,5 +1,5 @@
 ---
-title: 'Document Management - Initial Configuration'
+title: 'Document Management - initial configuration'
 sidebar_label: 'Initial configuration'
 id: doc-management-initial-configuration
 keywords: [doc-management, ui-configuration, server-configuration]
@@ -14,9 +14,9 @@ import TabItem from '@theme/TabItem';
 
 ## Initialising and adding to a new application
 
-The Document Management component can be added to a new application using GenX - see [GenX CLI](/docs/06_operations/03_commands/04_Genx_CLI.mdx) for more details.
+The best way to add the Document Management component to a new application is to use GenX - see [GenX CLI](/docs/06_operations/03_commands/04_Genx_CLI.mdx) for more details.
 
-The following command initialises a new application called `myapp` and adds the Document Management component to it.
+For example, the following command initialises a new application called `myapp` and adds the Document Management component to it.
 
 <Tabs
     defaultValue="windows"
@@ -68,7 +68,8 @@ If you've already initialised the application `myapp` using GenX, you can use th
 To manually add the Document Management component to your project, you must add the following dependencies to your server and client packages.
 
 #### server
-The following dependency needs to be added into your `server/settings.gradle.kts` file in your project:
+Add the following dependency to the **server/settings.gradle.kts** file in your project:
+
 ```kotlin
 genesis {
     projectType = ProjectType.APPLICATION
@@ -82,7 +83,7 @@ genesis {
 ```
 
 #### UI
-You must add the following to the `dependencies` section of **client/package.json** in your project:
+Add the following to the `dependencies` section of **client/package.json** in your project:
 
 ```json
 "@genesislcap/pbc-documents-ui": "<version>"
