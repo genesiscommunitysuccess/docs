@@ -253,15 +253,16 @@ final var flowable = db.getBulk(Trade.ById.Companion);
 
 ### getRange
 
-`getRange` is an operation that could return multiple records from the database.
+`getRange` is an operation that can return multiple records from the database.
 
-There are two types of `getRange` operations:
-* Single-value ranges, e.g. trades with CURRENCY set to USD
-* Interval ranges, e.g. all trades with TRADE_DATE between 01-Jul-2024 and 01-Aug-2024.
+There are two types of `getRange` operation:
+
+* Single-value range, e.g. trades with CURRENCY set to USD
+* Interval range, e.g. all trades with TRADE_DATE between 01-Jul-2024 and 01-Aug-2024.
 
 Unlike the `get` operation, the `getRange` operation can always return multiple records.
-We pass index entities into `getRange`.
-When using an interval range, both index entities should be of the same type, `Trade.byDate` in this example.
+
+We pass index entities into `getRange`. When using an interval range, both index entities should be of the same type. in the example below, this is `Trade.byDate`.
 
 <Tabs defaultValue="kotlin" values={[{label: 'Kotlin', value: 'kotlin',}, {label: 'Java', value: 'java',}]}>
 <TabItem value="kotlin">
@@ -323,17 +324,19 @@ var range = db.getRange(myStartTrade.byDate(), myEndTrade.byDate());
 
 #### `numKeyFields` property
 
-When using the `getRange` operation, you can tell the database how many fields in the index to use.
-By default, all fields are used, however, this can be overwritten.
-This allows users to query on part of the index.
+This allows users to query on part of the index. When using the `getRange` operation, you can tell the database how many fields in the index to use.
+
+By default, all fields are used, but you can override this. 
+
 
 :::note
-Order matters here; you can look get a range on just field 1, field 1 and field 2, but not on field 2 and field 1.
+Order matters here; you can get a range on just field 1, field 1 and field 2, but not on field 2 and field 1.
 :::
 
-For example, if on the ORDER table, we had an index on COUNTERPARTY and INSTRUMENT_ID,
-we could do a single-value `getRange` operation on either `COUNTERPARTY` or on both `COUNTERPARTY` and `INSTRUMENT`.
-In the first example `numKeyFields` would be `1`, in the latter it would be `2`.
+For example, if on the ORDER table, we had an index on COUNTERPARTY and INSTRUMENT_ID, we could:
+
+- perform a single-value `getRange` operation on `COUNTERPARTY`. For this, set `numKeyFields` to `1`.
+- perform a single-value `getRange` operation on both `COUNTERPARTY` and `INSTRUMENT`. For this, set `numKeyFields` to `2`.
 
 For example:
 
