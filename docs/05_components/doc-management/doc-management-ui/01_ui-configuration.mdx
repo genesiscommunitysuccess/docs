@@ -1,0 +1,46 @@
+---
+title: 'Document Management - UI configuration'
+sidebar_label: 'UI configuration'
+id: doc-management-ui-config
+keywords: [doc-management, doc-management-ui-config]
+tags:
+  - doc-management
+  - doc-management-ui-config
+---
+
+## Prerequisites
+
+Note that each component is linked to a permission, which allows the user to view it or perform a specific action; check the [permissions](../../../../components/doc-management/doc-management-ui/doc-management-permissions) available and ensure that your user is permissioned accordingly.
+
+## Adding the Document Management component to the UI
+Set up a route for the component in  the file **client/src/routes/config.ts**. This makes the component visible to your application:
+
+```typescript
+{/
+  title: 'Document Management',
+  path: 'document-management',
+  name: 'document-management',
+  element: async () => (await import('@genesislcap/pbc-documents-ui')).FoundationDocumentManager,
+  settings: { autoAuth: true, maxRows: 500 },
+  navItems: [
+    {
+      navId: 'header',
+      title: 'Document Management',
+      icon: {
+        name: 'file-csv',
+        variant: 'solid',
+      },
+      placementIndex: 35,
+    },
+    {
+      navId: 'side',
+      title: 'Special Document Manager',
+      routePath: 'document-management/foo', // < example if there were child routes
+      icon: {
+        name: 'file-csv',
+        variant: 'solid',
+      },
+    },
+  ]
+}
+```
