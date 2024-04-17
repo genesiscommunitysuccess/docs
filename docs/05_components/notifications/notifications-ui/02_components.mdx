@@ -16,7 +16,7 @@ A page route that contains details about on how to build and customize your noti
 
 ![Rules](/img/pbc-notify-ui/01_rules.png)
 
-![Rule Creation](/img/pbc-notify-ui/05_rule-dialog.png)
+![Rule Creation](/img/pbc-notify-ui/05_rule_dialog.png)
 
 A rule is composed by one or more conditions. The condition chain is a set of verification of values against an insertion in the table specified. E.g., if a user creates a rule for the table `TRADE` that has only the condition `PRICE > 100`, and the system inserts a record in that table (no matter the source: manual, event handler, file, etc.) with the `PRICE` column with value `250`, then the condition is matched, and, if the rule is enabled, a notification will be sent at the destination specified.
 
@@ -26,7 +26,7 @@ The available destinations will be the ones registered in [Routes](#13-routes).
 
 ![Templates](/img/pbc-notify-ui/02_templates.png)
 
-![Template Creation](/img/pbc-notify-ui/06_template-dialog.png)
+![Template Creation](/img/pbc-notify-ui/06_template_dialog.png)
 
 A template is like a blueprint of a rule. The template must have at least one condition and zero or more parameters. The condition can be of two types: **TEXT** or **USER_ENTRY**.
 - **TEXT**: the user that is creating/modifying the rule specifies a immutable value for the notification condition, e.g. `PRICE > 100` (*PRICE bigger than 100*). So, this template will be available for all users on the Inbox [Subscribe](#23-subscribe) section.
@@ -62,18 +62,18 @@ It's a sidebar component that shows a alert log as well the templates and rules 
 
 ### Alert Log
 
-![Alert Log](/img/pbc-notify-ui/07_inbox-alert-log.png)
+![Alert Log](/img/pbc-notify-ui/07_inbox_alert_log.png)
 
 An alert log list ordered by the most recent first.
 
 ### My Alerts
 
-![Alert Log](/img/pbc-notify-ui/08_inbox-my-alerts.png)
+![Alert Log](/img/pbc-notify-ui/08_inbox_my_alerts.png)
 
 It shows all the rules created on [Rules](#11-rules) section. The user can pause, resume and/or delete a rule.
 
 ### Subscribe
 
-![Subscribe](/img/pbc-notify-ui/09_inbox-subscribe.png)
+![Subscribe](/img/pbc-notify-ui/09_inbox_subscribe.png)
 
 It shows all the templates that were created previously on [Templates](#12-templates) section. You can subscribe to a template and the template either could have additional parameters to be filled or not; if it has, then the user must specify a value for each parameter to be able to subscribe to the selected template.
