@@ -44,81 +44,8 @@ At _Genesis Home_ directory, you can see basic structure of the auth module:
 * **lib:** .jar files.
 * **scripts:** specific scripts with procedures for auth module issues.
 
-## Auth Initial Data
-
-After the project creation, you need to `assemble` or `build` your project in the IntelliJ running **Gradle > alpha > genesisproduct-alpha > Tasks > Build > assemble**:
-
-![Assemble](/img/pbc-user-management/server/01_assemble.png)
-
-Then, you're ready to deploy our fresh new genesis app:
-
-![Deploy](/img/pbc-user-management/server/02_deploy.png)
-
-### 1. SendIt Data
-<Tabs
-  defaultValue="intellij-plugin"
-  values={[
-    {
-      label: 'IntelliJ Plugin',
-      value: 'intellij-plugin'
-    },
-    {
-      label: 'Terminal',
-      value: 'terminal'
-    }
-  ]
-}>
-  <TabItem value="intellij-plugin">
-    At **server/alpha-app/build/genesis-home/auth/data** you can import the files:
-    * PROFILE.csv
-    * PROFILE_RIGHT.csv
-    * RIGHT.csv
-    
-    Just select all of them, right-click and choose the Import CSV(s) option:
-
-    ![Import CSV(s)](/img/pbc-user-management/server/03_import_csv.png)
-  </TabItem>
-
-  <TabItem value= 'terminal'>
-    Insert the .csv files in the `auth/data` folder using the `SendIt -a` command:
-    ```shell
-    SendIt -a
-    ```
-  </TabItem>
-</Tabs>
-
-### 2. Run ConsolidateRights
-
-<Tabs
-  defaultValue="intellij-plugin"
-  values={[
-    {
-      label: 'IntelliJ Plugin',
-      value: 'intellij-plugin'
-    },
-    {
-      label: 'Terminal',
-      value: 'terminal'
-    }
-  ]
-}>
-  <TabItem value="intellij-plugin">
-    Go to **Genesis Plugin > Tasks > genesis > Scripts > ConsolidateRights**
-
-    ![Consolidate Rights](/img/pbc-user-management/server/04_consolidate_rights.png)
-  </TabItem>
-
-  <TabItem value= 'terminal'>
-    At the `auth/scripts` folder, run the `ConsolidateRights.sh` script to _consolidate the rights_ of the profiles inserted previously:
-    ```shell
-    ./ConsolidateRights.sh
-    ```
-  </TabItem>
-</Tabs>
-
 ## Auth Processes
 
-These are the auth processes that show at the Mon tab of the IntelliJ plugin or when you run the `mon` command at the terminal:
 ```bash
 GENESIS_AUTH_CONSOLIDATOR
 GENESIS_AUTH_MANAGER
