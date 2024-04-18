@@ -21,6 +21,26 @@ The Genesis Intellij Plugin enables you to run the full stack of a Genesis appli
 
 2. After installing the plugin, make sure you add it so that it is visible on the [Tool window bars and buttons](https://www.jetbrains.com/help/idea/tool-windows.html#bars_and_buttons).
 
+3. For Macos specifically, you will need to install LMDB locally to start a Genesis data server.
+
+### Installing LMDB for Macos
+
+:::info
+This is not required for developers that use Windows locally
+:::
+
+First you will need to install lmdb using `brew`:
+
+```shell
+brew install lmdb
+```
+
+Next, you will need to create a symlink to make LMDB accessible through Java:
+
+```shell
+ln -s /opt/homebrew/opt/lmdb/lib/liblmdb.dylib /Users/<your.username>/Library/Java/Extensions/liblmdb.dylib
+```
+
 :::info
 That's the end of the installation process.
 If you have come here from the Quick Start guide, [you can **go back now**](../../../getting-started/quick-start/hardware-and-software/).
