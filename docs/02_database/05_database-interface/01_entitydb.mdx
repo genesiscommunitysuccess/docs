@@ -430,7 +430,7 @@ This works in the same way as `getRange`. However, rows are returned in the reve
 
 ## Write operations
 
-All write operations have versions that take a single entity and versions that take multiple entries.
+All write operations have versions that take a single entity and versions that take multiple entities.
 
 The return values for these operations are type-safe (see details below), provided all entries are of the same type. For example, when inserting multiple `Trade` entries, the return type will be `List<InsertResult<Trade>>`. Different entity types can be inserted in the same operation; however, the return type will be `List<InsertResult<Entity>>`. Also, modify operations
 only accept table entities.
@@ -779,7 +779,7 @@ var bulk = db.bulkSubscribe(Trade.class);
 | Name | Type | Required | Meaning | Default value |
 | --- | --- | --- | --- | --- |
 | Table |`Class<E>`| ✔️ | The table to subscribe to |   |
-| Index |`UniqueEntityIndexReference<E>`| ❌ | The to sort the getBulk operation by |   |
+| Index |`UniqueEntityIndexReference<E>`| ❌ | The index to sort the getBulk operation by |   |
 | fields | `Set<String>` | ❌ | Only listen to changes on selected fields (filters `ModifyResult` on fields)| listen to all fields |
 | delay | `Int` | ❌ | Batch updates x ms | no batching |
 | subscribeLocally | `Boolean` | ❌ | When in a cluster, only listen to local updates | false |
