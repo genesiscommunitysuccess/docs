@@ -990,7 +990,7 @@ val range = db.staticRangeSubscribeBuilder(
 </TabItem>
 </Tabs>
 
-### Subscribing on views
+### Subscribing to views
 
 There are some subtleties when it comes to subscriptions on views.
 
@@ -1035,25 +1035,20 @@ If we were to revert that change, that MODIFY would result in an INSERT update.
 
 ## Update batching
 
-Above there have been several references to delays in the subscribe methods.
-This delay is used to determine the batching interval on updates.
-By default, rather than publishing every update received, updates will be compressed.
-We do this to reduce the load on high volume systems.
+For subscribe operations, by default, Genesis does not publish every update received. Updates are batched and compressed before publishing. This is designed to reduce the load on high-volume systems.
 
-For example, if a trade is inserted, and then modified rapidly in quick succession, oftentimes we are not interested
-in all the intermediate states.
-It will be easier for the system to just press a single update, so the insert and modify can get merged into a single
-insert update.
+Batching is controlled by the `delay` parameter in the subscribe method. This is used to specify the batching interval for updates.
+
+For example, if a trade is inserted, and then modified rapidly in quick succession within the same batching period, there is no requirement for publishing any intermediate states. It is easier and more efficient for the system to publish a single update, so the insert and modify are compressed into a single insert update.
 
 ### Batching phases
 
 Batching happens in two phases:
-1. we gather updates
-2. at an interval we receive a tick and we aggregate and flush updates
+1. The updates are gathered together.
+2. At the end of the batching period, they are compressed and the resulting updates are published. 
 
 So what does this mean in practice?
-The batching period is always set globally, i.e. for an update queue subscription or on a data server query.
-Never on the individual row level.
+The batching period covers the whole subscription. It is always set globally, i.e. for an update queue subscription or on a data server query. It is never set at the individual row level.
 
 The goal of this batching is to minimise work, and to publish updates that are accurate, rather than to publish every change.
 
@@ -1068,8 +1063,8 @@ In this regard it is better to think in terms of a batching interval, rather tha
 *
 *
 *
-|---- flushing phase -----| (tick happens here)
-* aggregate updates
+|---- flushing phase -----| (commence compress and publish)
+* compress updates
 * publish updates
 |---- gathering phase ----| (next batching period)
 *
@@ -1079,64 +1074,12 @@ In this regard it is better to think in terms of a batching interval, rather tha
 
 ### Batching is non-deterministic
 
-During our gathering phase, we listen for updates; and during the flushing phase, we aggregate and publish.
+Batching occurs within discrete batching and only within each period.
 
-Let's look at an example:
+- If a trade is inserted and then modified within a single batching period, the two will be compressed into a single update.
+- If the trade is inserted one millisecond before the end of a batching period it is modified right at the start of the next period, the insert is sent at the end of the first period and the update is sent at the end of the next period - there are two updates.
 
-Imagine we insert a trade with quantity 100. Within milliseconds, we update this trade and set the quantity to 200.
-
-Depending on when the tick happens, you could either get two updates:
-
-```
-|---- gathering phase ----|
-*
-*
-*
-*
-* insert (qty 100)
-|---- flushing phase -----|
-* aggregate updates
-* publish updates insert (qty 100)
-|---- gathering phase ----|
-* modify (qty 200)
-*
-*
-*
-*
-|---- flushing phase -----|
-* aggregate updates
-* publish updates modify (qty 200)
-|---- gathering phase ----| (batching period)
-*
-*
-```
-
-1. Insert trade, qty = 100
-2. Modify trade, qty = 200
-
-Or you could receive a single update:
-
-```
-|---- gathering phase ----|
-*
-*
-*
-* insert (qty 100)
-* modify (qty 200)
-|---- flushing phase -----|
-* aggregate updates
-* publish updates insert (qty 200)
-```
-
-1. Insert trade, qty = 200
-
-Depending on timing, either case is possible, and the smaller the gap between the insert and modify, the more likely the second scenario becomes.
-However, even if these operations happen immediately after each other, we could still receive two updates.
-
-When we get two updates of the same record within the batching interval we will always aggregate the updates.
-This could even mean that updates will be disregarded all together, for example if we receive an insert and a delete within the batching interval.
-
-This will always be non-deterministic, as we don't provide any guarantees.
+The point here is that there is no way of determining whether a series of updates and modifies will be compressed or not. It is entirely determined by the timing of the individual inserts and modifies. All we can determine is that the smaller the gap between the insert and modify, the more likely they are to be compressed.
 
 #### Batching at different levels
 
