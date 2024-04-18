@@ -1,6 +1,6 @@
 ---
-title: 'Notify - Components'
-sidebar_label: 'Components'
+title: 'Notify - components'
+sidebar_label: 'components'
 id: notify-ui-components
 keywords: [notify, ui-components]
 tags:
@@ -10,7 +10,7 @@ tags:
 
 ## Notification Dashboard
 
-A page route that contains details about on how to build and customize your notification messages. The Notification Dashboard are composed by subsections. Each subsection is ruled by a specific permission, which means that the user must have this permission to see the section. For this, check the [permission](../notify-permissions) section.
+A page route that contains details about on how to build and customise your notification messages. The Notification Dashboard is composed by subsections. Each subsection is ruled by a specific permission, which means that the user must have this permission to see the section. For this, check the [permission](../notify-permissions) section.
 
 ### Rules
 
@@ -29,8 +29,9 @@ The available destinations will be the ones registered in [Routes](#13-routes).
 ![Template Creation](/img/pbc-notify-ui/06_template-dialog.png)
 
 A template is like a blueprint of a rule. The template must have at least one condition and zero or more parameters. The condition can be of two types: **TEXT** or **USER_ENTRY**.
-- **TEXT**: the user that is creating/modifying the rule specifies a immutable value for the notification condition, e.g. `PRICE > 100` (*PRICE bigger than 100*). So, this template will be available for all users on the Inbox [Subscribe](#23-subscribe) section.
-- **USER_ENTRY**: if the user selects this option on the condition section, then he needs to create a correspondent parameter, filling its label, name, type, and source. Then, when the common user select a template that has a condition of the USER_ENTRY type, he'll be able to specify a value of his preference, e.g. `PRICE > {price}` when the user sees this template at the Inbox [Subscribe](#23-subscribe) section — `{price}` (around brackets) is the label. E.g., user John can subscribe for this template setting the condition `PRICE > 450`; user Thomas can subscribe for this template setting the condition `PRICE > 10`; etc. It's up to the final user to decide.
+
+- **TEXT**: the user that is creating/modifying the rule specifies an immutable value for the notification condition, e.g. `PRICE > 100` (*PRICE bigger than 100*). So, this template will be available for all users on the Inbox [Subscribe](#23-subscribe) section.
+- **USER_ENTRY**: if the user selects this option in the condition section, then he needs to create a correspondent parameter, filling its label, name, type, and source. Then, when the common user select a template that has a condition of the USER_ENTRY type, he'll be able to specify a value of his preference, e.g. `PRICE > {price}` when the user sees this template at the Inbox [Subscribe](#23-subscribe) section — `{price}` (around brackets) is the label. E.g., user John can subscribe for this template setting the condition `PRICE > 450`; user Thomas can subscribe for this template setting the condition `PRICE > 10`; etc. It's up to the final user to decide.
 
 The available destinations will be the ones registered in [Routes](#13-routes).
 
@@ -38,7 +39,7 @@ The available destinations will be the ones registered in [Routes](#13-routes).
 
 ![Routes](/img/pbc-notify-ui/03_routes.png)
 
-A route is basically the destination of the notification alert (where do you want your alert/notification/message to go?). For this, there are 5 types of routes:
+A route is basically the destination of the notification alert (where do you want your alert/notification/message to go?). There are five types of route:
 
 1. Screen
 2. Email Distribution
@@ -46,7 +47,7 @@ A route is basically the destination of the notification alert (where do you wan
 4. Log
 5. MS Teams
 
-There are specific fields to be filled for each route. Be sure that all data provided is correct, without typos, for the notification to be sent correctly.
+There are specific fields to be filled for each route. Be sure that all data provided is correct, without typos, to ensure that the notification is sent correctly.
 
 Routes can be created, updated and/or deleted. There is a permission for each one of these operations for any route. Check it on [permissions](../notify-permissions#routes).
 
@@ -54,26 +55,26 @@ Routes can be created, updated and/or deleted. There is a permission for each on
 
 ![Notify Audit](/img/pbc-notify-ui/04_notify_audit.png)
 
-It shows a grid that contains all the notifications and alerts of all system users. You can filter by any column with any value.
+This shows a grid that contains all the notifications and alerts of all system users. You can filter by any column with any value.
 
 ## Inbox
 
-It's a sidebar component that shows a alert log as well the templates and rules that the user is subscribed to. Check the [permissions](../notify-permissions#inbox) for Inbox too.
+This is a sidebar component that shows an alert log as well the templates and rules that the user has subscribed to. Check the [permissions](../notify-permissions#inbox) for Inbox too.
 
 ### Alert Log
 
 ![Alert Log](/img/pbc-notify-ui/07_inbox-alert-log.png)
 
-An alert log list ordered by the most recent first.
+The alert log is a list of alerts ordered by the most recent first.
 
 ### My Alerts
 
 ![Alert Log](/img/pbc-notify-ui/08_inbox-my-alerts.png)
 
-It shows all the rules created on [Rules](#11-rules) section. The user can pause, resume and/or delete a rule.
+This shows all the rules created on [Rules](#11-rules) section. The user can pause, resume and/or delete a rule.
 
 ### Subscribe
 
 ![Subscribe](/img/pbc-notify-ui/09_inbox-subscribe.png)
 
-It shows all the templates that were created previously on [Templates](#12-templates) section. You can subscribe to a template and the template either could have additional parameters to be filled or not; if it has, then the user must specify a value for each parameter to be able to subscribe to the selected template.
+This shows all the templates that were created previously in the [Templates](#12-templates) section. You can subscribe to a template and the template either could have additional parameters to be filled or not; if it has, then the user must specify a value for each parameter to be able to subscribe to the selected template.
