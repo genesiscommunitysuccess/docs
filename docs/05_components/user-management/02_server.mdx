@@ -24,7 +24,7 @@ After the project generation, if you go to the `/server/gradle.properties` file,
 authVersion=7.1.4
 ...
 ```
-:::info
+:::caution
 Always use the latest auth version on your application due to security reasons.
 :::
 
@@ -44,7 +44,13 @@ At _Genesis Home_ directory, you can see basic structure of the auth module:
 * **lib:** .jar files.
 * **scripts:** specific scripts with procedures for auth module issues.
 
+:::caution
+It's important to load the initial data (.csv files) inside `data` folder. Do it via [SendIt](/operations/commands/server-commands#sendit) command or using [Import CSV(s) to Genesis](/server/tooling/intellij-plugin#loading-data-into-the-application) option using the IntelliJ Plugin.
+:::
+
 ## Auth Processes
+
+These are the auth processes running via `mon` command:
 
 ```bash
 GENESIS_AUTH_CONSOLIDATOR
