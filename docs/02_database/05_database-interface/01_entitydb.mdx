@@ -1083,24 +1083,20 @@ The point here is that there is no way of determining whether a series of update
 
 #### Batching at different levels
 
-The other thing to note is that batching happens on both the data server and the update queue level.
-We batch on the queue level to minimise the amount of work the data server has to do.
-Because we pre-allocate LMDB when the data sever starts, having too many needless updates would eat into that allocation.
-We batch on the data server to minimise the load on the client and the connection.
+Note that batching happens at both the data server and the update-queue level. 
+
+- Genesis batches on the queue level to minimise the amount of work the data server has to do. Because we pre-allocate LMDB when the data sever starts, having too many needless updates would eat into that allocation.
+- Batching is performed on the data server to minimise the load on the client and the connection.
 
 ### Out-of-sequence updates on the queue
 
-Updates are published on the update queue once a record has been written to the database, or when a transaction completes you are using a transaction database.
+Updates are published on the update queue once a record has been written to the database, or when a transaction completes.
 
 Within a multi-node set-up, updates are published locally and forwarded to other nodes in genesis-cluster. As a result, sometimes a node can receive updates out of sequence.
 
-For example: 
-
-1. A trade is inserted on node 1.
-2. The trade is modified on node 2. 
-3. Node 2 receives the insert update from node 1.
-
 This means that, for any clustered set-up with high message-volumes, it is essential that you check the timestamp against the latest received update when listening to updates on tables. This enables you to handle any messages out-of-sequence.
-
 For views this is not a problem, as Genesis refreshes the record from the database within a transaction to make sure that the published update is valid.
 
+If you use an external mqtt broker or JMS broker, there is a single centralised place to publish and consume data, so the chances of out-of-sequence updates are lower. This is dependent on where the message broker is located - as a broker in the same availability zone as a Genesis node has different latency properties from one in a different availability zone.
+
+When using message brokers genesis-cluster is not involved in terms of message forwarding.
