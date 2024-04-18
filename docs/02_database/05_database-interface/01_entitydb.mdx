@@ -785,13 +785,16 @@ var bulk = db.bulkSubscribe(Trade.class);
 | subscribeLocally | `Boolean` | ❌ | When in a cluster, only listen to local updates | false |
 | backwardJoins  | `Boolean` | ❌ | subscribe to changes on sub tables (backwards joins) | false |
 
-#### Java Support
+#### Java support
 
-There are many optional parameters for bulk subscribe operations.
-In Kotlin this works well in a single method due to named parameters and default values.
+There are many optional parameters for bulk subscribe operations. In Kotlin, this works well in a single method due to named parameters and default values.
+
 In Java, however, we provide a fluent API to set optional parameters.
+
 The function `bulkSubscribeBuilder` returns a builder.
+
 Optional parameters can be set with a "with-function", e.g. `withDelay(...)`.
+
 Once all values have been set, the `toFlowable()` function transforms the builder into a `Flowable`.
 
 #### More complex example
@@ -827,31 +830,31 @@ var bulk = db.bulkSubscribeBuilder(Trade.class)
 
 ### Range subscribe
 
-`rangeSubscribe` is similar to `bulkSubscribe`.
-The `rangeSubscribe` operation combines a [`getRange`](#getrange) and a [`subscribe`](#subscribe) call into a single operation.
-This operation is useful when a class needs to read a full table and then receive updates of changes to the underlying table or view.
+`rangeSubscribe` is similar to `bulkSubscribe`. The `rangeSubscribe` operation combines a [`getRange`](#getrange) and a [`subscribe`](#subscribe) call into a single operation.
+This is useful when a class needs to read a full table and then receive updates of changes to the underlying table or view.
 
-This operation supports backwards joins for views. This means that it can receive updates on both the
-root table and the joined tables. The view needs to support this in the definition, and it must be enabled
-on the `bulkSubscribe` call.
+This operation supports [backwards joins for views]](../../../database/fields-tables-views/views/views-examples/). This means that it can receive updates on both the root table and the joined tables. The view needs to support this in the definition, and it must be enabled on the `bulkSubscribe` call.
 
-#### Different Range options
+#### Different range options
 
-Like `getRange`, `rangeSubscribe` supports single value and interval ranges.
-In addition, range subscribe supports both static and dynamic ranges, more details below.
+Like `getRange`, `rangeSubscribe` supports single-value and interval ranges.
+In addition, range subscribe supports both static and dynamic ranges. See below for details. 
 
 #### Note on Java
 
-Like `bulkSubscribe` there are many optional parameters for range subscribe operations.
-In Kotlin this works well in a single method due to named parameters and default values.
+Like `bulkSubscribe` there are many optional parameters for range subscribe operations. In Kotlin, this works well in a single method due to named parameters and default values.
+
 In Java however, we provide a fluent API to set optional parameters.
-These functions `staticRangeSubscribeBuilder` and `dynamicRangeSubscribeBuilder` return a builder.
+
+The functions `staticRangeSubscribeBuilder` and `dynamicRangeSubscribeBuilder` return a builder.
+
 Optional parameters can be set with a "with-function", e.g. `withDelay(...)`.
+
 Once all values have been set, the `toFlowable()` function transforms the builder into a `Flowable`.
 
-#### Static Ranges
+#### Static ranges
 
-By default, ranges are static, they are set at the start of the subscription and not updated afterwards.
+By default, ranges are static; they are set at the start of the subscription and not updated afterwards.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -886,16 +889,16 @@ var range = db.staticRangeSubscribeBuilder(
 </TabItem>
 </Tabs>
 
-#### Dynamic Ranges
+#### Dynamic ranges
 
-Additionally, `rangeSubscribe` also supports dynamic ranges.
-These are ranges that are refreshed either at a specified time, or interval.
-This can be useful for long running subscriptions on dates.
-For example, you might want to keep an eye on trades booked in the last hour.
-Unless that range is refreshed, it will fall behind.
+Additionally, `rangeSubscribe` also supports dynamic ranges. These are ranges that are refreshed either at a specified time, or interval.
 
-Here we have two dynamic ranges, the first one is filtering for a specific date, and updated at midnight.
-The second one, has a 2 hour window, and is updated every 5 minutes.
+This can be useful for long-running subscriptions on dates. For example, you might want to keep an eye on trades booked in the last hour. Unless that range is refreshed, it will fall behind.
+
+In the example below, we have two dynamic ranges. 
+
+- The first one filters on a specific date, and is updated at midnight.
+- The second one has a 2-hour window, and is updated every 5 minutes.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -937,6 +940,7 @@ var range = db.dynamicRangeSubscribeBuilder(
 #### Parameters
 
 For static ranges `rangeSubscribe` supports the parameters below.
+
 In the Java API, the function returns a builder, where optional parameters can be set.
 
 | Name             | Type             | Required            | Meaning                                                                      | Default value        |
@@ -944,11 +948,11 @@ In the Java API, the function returns a builder, where optional parameters can b
 | Start index      | `EntityIndex<E>` | ✔️                  | The index entry to read from                                                 |                      |
 | End index        | `EntityIndex<E>` | For interval ranges | The index entry to read to                                                   |                      |
 | numKeyFields     | `Int`            | ❌️                  | The number of key fields to take into account for the range                  |                      |
-| updateFrequency  | `PalDuration`    | For dynamic ranges  | a schedule to update dynamic range boundaries                                | ?                    |
-| delay            | `Int`            | ❌                   | Group and publish updates every x ms                                         | 200ms                |
-| fields           | `Set<String>`    | ❌                   | Only listen to changes on selected fields (filters `ModifyResult` on fields) | listen to all fields |
-| subscribeLocally | `Boolean`        | ❌                   | When in a cluster, only listen to local updates                              | false                |
-| backwardJoins    | `Boolean`        | ❌                   | subscribe to changes on sub tables (backwards joins)                         | false                |
+| updateFrequency  | `PalDuration`    | For dynamic ranges  | A schedule to update dynamic range boundaries                                | ?                    |
+| delay            | `Int`            | ❌                  | Group and publish updates every x ms                                         | 200ms                |
+| fields           | `Set<String>`    | ❌                  | Only listen to changes on selected fields (filters `ModifyResult` on fields) | listen to all fields |
+| subscribeLocally | `Boolean`        | ❌                  | When in a cluster, only listen to local updates                              | false                |
+| backwardJoins    | `Boolean`        | ❌                  | subscribe to changes on sub-tables (backwards joins)                         | false                |
 
 #### Example
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -988,10 +992,10 @@ val range = db.staticRangeSubscribeBuilder(
 
 ### Subscribing on views
 
-There are some subtleties when it comes subscriptions on views.
+There are some subtleties when it comes to subscriptions on views.
 
-1. Generally, only updates on the root table will be published
-2. Updates relate to the view, not the table.
+- Generally, only updates on the root table will be published
+- Updates relate to the view, not the table.
 
 For this, we will use the following example view.
 
@@ -1012,9 +1016,9 @@ views {
 }
 ```
 
-#### Root table updates and Backwards joins
+#### Root table updates and backwards joins
 
-By default, when subscribing to updates on a view, only updates on the root table, unless we enable `backwardsJoin` on the join.
+By default, when subscribing to updates on a view, only updates on the root table are sent. If you want updates on the joined table or tables, you must enable `backwardsJoin` on the join.
 If we don't enable backwards joins, then we would receive an update, if and only if TRADE is updated.
 With `backwardsJoin` enabled however, we will also receive updates if a related INSTRUMENT record is updated.
 
@@ -1024,12 +1028,12 @@ If INSTRUMENT X is updated, we will receive an update on TRADE_VIEW for all trad
 #### View updates - inner joins
 
 In the example above, we have an inner join from TRADE to INSTRUMENT.
-This means that, from the view's perspective, a TRADE_VIEW record only exists, if a TRADE joins onto a INSTRUMENT
+This means that, from the view's perspective, a TRADE_VIEW record only exists, if a TRADE joins onto an INSTRUMENT
 Following on from there, if the INSTRUMENT_ID on TRADE is updated from XX to YY, and INSTRUMENT XX exists
 but INSTRUMENT YY does not, the MODIFY update on the TRADE will result in a DELETE update on TRADE_VIEW.
 If we were to revert that change, that MODIFY would result in an INSERT update.
 
-## Update Batching
+## Update batching
 
 Above there have been several references to delays in the subscribe methods.
 This delay is used to determine the batching interval on updates.
@@ -1041,7 +1045,7 @@ in all the intermediate states.
 It will be easier for the system to just press a single update, so the insert and modify can get merged into a single
 insert update.
 
-### Batching Phases
+### Batching phases
 
 Batching happens in two phases:
 1. we gather updates
@@ -1075,12 +1079,11 @@ In this regard it is better to think in terms of a batching interval, rather tha
 
 ### Batching is non-deterministic
 
-During our gathering phase we listen for updates, and during the flushing phase we aggregate and publish.
+During our gathering phase, we listen for updates; and during the flushing phase, we aggregate and publish.
 
-Let's look at how this would work with an example:
+Let's look at an example:
 
-Imagine we insert a trade with quantity 100
-Within milliseconds we update this trade and set the quantity to 200
+Imagine we insert a trade with quantity 100. Within milliseconds, we update this trade and set the quantity to 200.
 
 Depending on when the tick happens, you could either get two updates:
 
@@ -1111,7 +1114,7 @@ Depending on when the tick happens, you could either get two updates:
 1. Insert trade, qty = 100
 2. Modify trade, qty = 200
 
-Or we could receive a single update:
+Or you could receive a single update:
 
 ```
 |---- gathering phase ----|
@@ -1128,7 +1131,7 @@ Or we could receive a single update:
 1. Insert trade, qty = 200
 
 Depending on timing, either case is possible, and the smaller the gap between the insert and modify, the more likely the second scenario becomes.
-However, even if these operations happen immediately after eachother, we could still receive two updates.
+However, even if these operations happen immediately after each other, we could still receive two updates.
 
 When we get two updates of the same record within the batching interval we will always aggregate the updates.
 This could even mean that updates will be disregarded all together, for example if we receive an insert and a delete within the batching interval.
