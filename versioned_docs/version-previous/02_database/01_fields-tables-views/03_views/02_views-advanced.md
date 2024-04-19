@@ -44,7 +44,7 @@ derivedField("SPREAD", DOUBLE) {
 ```
 
 :::info
-The maximum number of fields that can be used as input of a derived field is 10
+The maximum number of fields that can be used as input of a derived field is 10.
 :::
 
 ### Using withEntity
