@@ -11,10 +11,11 @@ tags:
 ---
 
 [Symphony](http://symphony.com) is a secure instant messaging service focused on financial companies. 
+
 To make Symphony services available to Genesis, you need to provision [symphony service](https://symphony.com/participate) and configure a [symphony bot](https://docs.developers.symphony.com/developer-tools/developer-tools/bdk-2.0).
 
 ## Importing Symphony
-Symphony is a separate module of the Genesis low-code platform. This gives you a better way to manage third-party dependencies, as the Symphony BDK has a number of transitive dependencies.
+Symphony is a separate module of the Genesis platform. This gives you a better way to manage third-party dependencies, as the Symphony BDK has a number of transitive dependencies.
 
 ### Adding the Symphony module data schema
 In order to add the Symphony route tables to your application, add the following line to the **build.gradle.kts** file in your application's **dictionary-cache** folder: 
@@ -64,7 +65,7 @@ Then you need to make the following changes:
 <classpath>genesis-symphony-manager*</classpath>
 ```
 
-Next, you need to import the extensions for the Notify GPAL configuration. This enables intellisense to work for your Notify scripts. 
+3. Import the extensions for the Notify GPAL configuration. This enables intellisense to work for your Notify scripts. 
 
 To do this, add the following dependency to the **build.gradle.kts** file in your application's **server/jvm/**_appname_**-script-config/** folder:
 
@@ -76,6 +77,8 @@ dependencies {
     ...
 }
 ```
+
+4. Deploy and install.
 
 After you have made these changes, perform a **deploy**. If you are using the Intellij plugin, this also performs a `genesisInstall` automatically. If you are working manually, then you need to run `genesisInstall` separately.
 
