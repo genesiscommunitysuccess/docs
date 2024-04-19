@@ -22,7 +22,11 @@ By default it creates two routes to perform insert/update/delete operations: Use
 
 ### User Management Component
 
+The User Management component contains the personal data of all system's users, such as first, last name and email.
+
 ![User Management](/img/pbc-user-management/ui/01_user_management.png)
+
+When you add or edit an user you need to provide data for these fields:
 
 ![Add User](/img/pbc-user-management/ui/02_add_user.png)
 
@@ -35,7 +39,11 @@ By default it creates two routes to perform insert/update/delete operations: Use
 
 ### Profiles Component
 
+The profiles are simple entities with a name and a description. The users can be linked with one or more profiles:
+
 ![Profile Management](/img/pbc-user-management/ui/03_profile_management.png)
+
+When you add or edit a profile you need to provide data for these fields:
 
 ![Add Profile](/img/pbc-user-management/ui/04_add_profile.png)
 
@@ -51,9 +59,9 @@ For a brief overview, check the User Management [permissions](../user-management
 
 ## Alternative
 
-If you want, you can add and use the components separately.
+You have the option to add and use the components separately.
 
-Just import the dependency on `client/package.json` file:
+Just import the dependency in `client/package.json` file:
 ```json
 "@genesislcap/pbc-auth-ui": "~1"
 ```
