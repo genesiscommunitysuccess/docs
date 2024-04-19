@@ -1,6 +1,6 @@
 ---
-title: 'Notify - Configuring Runtime'
-sidebar_label: 'Configuring Runtime'
+title: 'Notify - configuring runtime'
+sidebar_label: 'configuring runtime'
 id: notify-configuring-runtime
 keywords: [server, notify, configuring runtime]
 tags:
@@ -9,7 +9,7 @@ tags:
   - configuring runtime
 ---
 
-You need to add some dependencies to two different files in order to make Notify work successfully:
+To make Notify work successfully, follow the steps below:
 
 1. Add the `notifyVersion` to the file **server/jvm/gradle.properties**:
 
@@ -49,4 +49,9 @@ dependencies {
 7. Start the server.
 8. Run the `SetPrimary` command in order to set a primary cluster for EVALUATOR and NOTIFY processes.
 
-After following these steps, two new processes will appear in your **mon** tab: **GENESIS_NOTIFY_DISPATCHER** and **GENESIS_NOTIFY_MANAGER**. These are the processes that manage the Notifications module.
+After following these steps, two new processes will appear in your **mon** tab: 
+
+- **GENESIS_NOTIFY_DISPATCHER**
+- **GENESIS_NOTIFY_MANAGER**
+
+These are the processes that manage the Notifications module.

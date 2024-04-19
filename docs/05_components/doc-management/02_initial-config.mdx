@@ -1,0 +1,97 @@
+---
+title: 'Document Management - initial configuration'
+sidebar_label: 'Initial configuration'
+id: doc-management-initial-configuration
+keywords: [doc-management, ui-configuration, server-configuration]
+tags:
+  - doc-management
+  - ui-configuration
+  - server-configuration
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Initialising and adding to a new application
+
+The best way to add the Document Management component to a new application is to use GenX - see [GenX CLI](/docs/06_operations/03_commands/04_Genx_CLI.mdx) for more details.
+
+For example, the following command initialises a new application called `myapp` and adds the Document Management component to it.
+
+<Tabs
+    defaultValue="windows"
+    values={[
+        { label: 'Windows', value: 'windows', },
+        { label: 'Mac and Linux', value: 'mac-and-linux', }
+    ]
+    }>
+    <TabItem value="windows">
+        ```shell title="Powershell"
+        npx -y @genesislcap/genx@latest init myapp -x --no-shell; npx -y @genesislcap/genx@latest add myapp -x -s @genesislcap/pbc-documents-seed
+        ```
+    </TabItem>
+
+    <TabItem value= 'mac-and-linux'>
+        ```shell title="Bash"
+        npx -y @genesislcap/genx@latest init myapp -x --no-shell && npx -y @genesislcap/genx@latest add myapp -x -s @genesislcap/pbc-documents-seed
+        ```
+    </TabItem>
+</Tabs>
+
+## Adding to an existing application
+
+If you already have an application and you want to add the Documentation Management component, you have two possibilities:
+
+- If your original application was initialised using Genx, then you can use Genx to add the component.
+- If you are not sure how the original application was initialised, add the component manually.
+
+### Using GenX
+
+If you've already initialised the application `myapp` using GenX, you can use the following command to add the component:
+
+<Tabs
+    defaultValue="windows"
+    values={[
+        { label: 'Windows', value: 'windows', },
+        { label: 'Mac and Linux', value: 'mac-and-linux', }
+    ]
+    }>
+    <TabItem value="windows">
+        ```shell title="Powershell"
+        npx -y @genesislcap/genx@latest add myapp -x -s @genesislcap/pbc-documents-seed
+        ```
+    </TabItem>
+
+    <TabItem value= 'mac-and-linux'>
+        ```shell title="Bash"
+        npx -y @genesislcap/genx@latest add myapp -x -s @genesislcap/pbc-documents-seed
+        ```
+    </TabItem>
+</Tabs>
+
+### Manual installation
+To manually add the Document Management component to your project, you must add some dependencies to your server and client packages.
+
+For the server, add the following dependency to the **server/settings.gradle.kts** file in your project:
+
+```kotlin
+genesis {
+    projectType = ProjectType.APPLICATION
+    dependencies {
+        dependency(“global.genesis:file-server:<version>“)
+    }
+    plugins {
+        genesisDeploy.enabled = true
+    }
+}
+```
+
+For the UI, add the following to the `dependencies` section of **client/package.json** in your project:
+
+```json
+"@genesislcap/pbc-documents-ui": "<version>"
+```
+
+:::important
+You can check the latest available version at [genesisnpm](https://www.npmjs.com/~genesisnpm).
+:::

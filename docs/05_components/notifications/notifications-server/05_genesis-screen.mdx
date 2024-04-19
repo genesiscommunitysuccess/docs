@@ -10,7 +10,7 @@ tags:
 - genesis screen
 ---
 
-The Genesis low-code platform provides a mechanism for creating pop-up toast notifications on screen in app. Any notifications sent to the Genesis Screen Gateway will be sent as a toast pop-up notification.
+The Genesis platform provides a mechanism for creating pop-up toast notifications on screen in the app. Any notifications sent to the Genesis Screen Gateway will be sent as a toast pop-up notification.
 
 ## GPAL configuration
 Screen alerts must be configured in your **notify.kts** file. Here is an example configuration to create a screen gateway. 
@@ -68,7 +68,7 @@ TOPIC_MATCH                              TOPIC2                                 
 
 ### NOTIFY
 
-Writing a record to this table, which correctly points to a TOPIC with matching routes will result in a pop-up toast being sent to the list of users detailed on the route.
+Writing a record to this table, which correctly points to a TOPIC with matching routes, will result in a pop-up toast being sent to the list of users detailed on the route.
 
 Equally, EVENT_NOTIFY_INSERT can be used, as opposed to a direct table write (this is the encouraged form of interaction). This event allows for the same set of fields as the DbRecord. The input fields detailed below cater for either approach.
 
