@@ -831,7 +831,7 @@ var bulk = db.bulkSubscribeBuilder(Trade.class)
 ### Range subscribe
 
 `rangeSubscribe` is similar to `bulkSubscribe`. The `rangeSubscribe` operation combines a [`getRange`](#getrange) and a [`subscribe`](#subscribe) call into a single operation.
-This is useful when a class needs to read a full table and then receive updates of changes to the underlying table or view.
+This is useful when a class needs to read a range of values from table and then receive updates of changes to the relevant records in the underlying table or view.
 
 This operation supports [backwards joins for views]](../../../database/fields-tables-views/views/views-examples/). This means that it can receive updates on both the root table and the joined tables. The view needs to support this in the definition, and it must be enabled on the `bulkSubscribe` call.
 
@@ -994,44 +994,11 @@ val range = db.staticRangeSubscribeBuilder(
 
 There are some subtleties when it comes to subscriptions on views.
 
-- Generally, only updates on the root table will be published
-- Updates relate to the view, not the table.
+By default, when subscribing to updates on a view, only updates on the root table are sent. If you want updates on the joined table or tables, you must [enable a `backwardsJoin` on each [join](../../../server/data-server/examples/).
 
-For this, we will use the following example view.
+Inner joins can produce different results. For example, a modification to a table could become a delete or insert on the view. There are details of inner joins in our page on [views](../../../database/fields-tables-views/views/views-advanced/#inner-vs-outer-joins).
 
-```kotlin
-views {
-    view("TRADE_VIEW", TRADE) {
-        joins {
-            joining(INSTRUMENT, backwardsJoin = true, joinType = JoinType.INNER) {
-                on(TRADE.INSTRUMENT_ID to INSTRUMENT.ID)
-            }
-        }
-
-        fields {
-            TRADE.allFields()
-            INSTRUMENT.NAME withPrefix INSTRUMENT
-        }
-    }
-}
-```
-
-#### Root table updates and backwards joins
-
-By default, when subscribing to updates on a view, only updates on the root table are sent. If you want updates on the joined table or tables, you must enable `backwardsJoin` on the join.
-If we don't enable backwards joins, then we would receive an update, if and only if TRADE is updated.
-With `backwardsJoin` enabled however, we will also receive updates if a related INSTRUMENT record is updated.
-
-For example, if TRADE 001 is updated; we will received an update on TRADE_VIEW for that trade.
-If INSTRUMENT X is updated, we will receive an update on TRADE_VIEW for all trades related to that record.
-
-#### View updates - inner joins
-
-In the example above, we have an inner join from TRADE to INSTRUMENT.
-This means that, from the view's perspective, a TRADE_VIEW record only exists, if a TRADE joins onto an INSTRUMENT
-Following on from there, if the INSTRUMENT_ID on TRADE is updated from XX to YY, and INSTRUMENT XX exists
-but INSTRUMENT YY does not, the MODIFY update on the TRADE will result in a DELETE update on TRADE_VIEW.
-If we were to revert that change, that MODIFY would result in an INSERT update.
+Overall, the better you understand [Data Servers](../../../server/data-server/introduction/), the better your chances of implementing Entity Db without errors. It is well worth looking through the entire section in our documentation.
 
 ## Update batching
 
