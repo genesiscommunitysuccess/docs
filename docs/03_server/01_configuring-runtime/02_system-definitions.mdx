@@ -142,6 +142,8 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **GlobalClasspathAdditions**: A list of delimited (':'), fully-qualified paths to any JVM files to be included on the classpath for all processes.
 
+**WriteClasspathToManifest**: When set to `true`, the classpath for each process will be written to the Manifest of the corresponding Jar file in **generated/classpath** (e.g. **GENESIS_CLUSTER.jar**). By default, the classpaths are written to an environment variable `CLASSPATH`, which has a character limit that can be hit. Defaults to false.
+
 **DEPLOYED_PRODUCT**: This specifies that the product's generated code is bundled in the product's distribution. This means that remap can skip the code-generation step. This property's value should be the name of the product. To bundle the generated code into the distribution, see [here](../../../database/fields-tables-views/genesisDao/#bundling-generated-code-with-product-distribution).
 
 If you want to enable SSL for your process communication, this is done in the [service definition](../../../server/configuring-runtime/service-definitions/#enable-ssl-for-processes).

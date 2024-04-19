@@ -36,14 +36,13 @@ The **connected data** use case is when you have a [Data Server](../../../../../
 This is the most common use case for the Grid Pro component. When connecting to a [Data Server](../../../../../server/data-server/introduction/) or [Request Server](../../../../../server/request-server/introduction/).
 :::
 
-
 ## Attributes and props
 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
-|autoCellRendererByType | `boolean` | `false` | Controls whether to use a custom cell renderer for a given type automatically. When set to `true`, this detects the metadata of the resource and uses the appropriate cell renderer. We're currently supporting BOOLEAN, DATE and DATETIME types (with more to come soon). This can only be used with connected data |
+|autoCellRendererByType | `boolean` | `false` | Controls whether to use a custom cell renderer for a given type automatically. When set to `true`, this detects the metadata of the resource and uses the appropriate cell renderer (for example, if the field type is a boolean, it will be rendered as a checkbox). We currently support BOOLEAN, DATE and DATETIME types (with more to come soon). This setting can only be used with connected data. |
 |grid-autosizing | `boolean` | `false` | Controls whether the grid autosizes the columns on interaction. This disables the column widths from being set manually, and if you are using the `persist-column-state-key` attribute, it doesn't save the widths in local storage. |
-|columnComponentName | `string` | - | The name of the custom [Column](../../../../../web/web-components/grids/grid-pro/grid-pro-genesis-column/) config component to be used for custom/extra column definitions. Defaults to **'grid-pro-column'**, but can be replaced with something else. Keep in mind that we're expecting a **definition** prop; without it, the slotted config won't work). |
+|columnComponentName | `string` | - | The name of the custom [Column](../../../../../web/web-components/grids/grid-pro/grid-pro-genesis-column/) config component to be used for custom/extra column definitions. Defaults to **'grid-pro-column'**, but can be replaced with something else. Keep in mind that we're expecting a **definition** prop; without it, the slotted config won't work. |
 |enable-row-flashing | `boolean` | `false` | If true, enables row flashing for all rows. |
 |eventsAndCallbacks | `any` | - | The events and callbacks |
 |headerHeight | `number` | 32 | The height of the header in pixels. |
@@ -54,7 +53,6 @@ This is the most common use case for the Grid Pro component. When connecting to 
 |persist-column-state-key | `string` | - | Controls the persistence of the column's states (order, size, etc.) across sessions. Column state will not be persisted without this key. The persisted data is stored in the user's local storage in an object, keyed with this key if it is set - so each table must have a unique key in your application. |
 
 All these attributes can be used with the ag-grid. Since we have different use cases, you can follow the [simple data](../grid-pro-simple/) or [connected data](../grid-pro-connected/) for further examples.
-
 
 ## Grid options
 

@@ -43,6 +43,10 @@ derivedField("SPREAD", DOUBLE) {
 }
 ```
 
+:::info
+The maximum number of fields that can be used as input of a derived field is 10.
+:::
+
 ### Using withEntity
 This technique enables you to add a table entity as an input, which gives you access to all fields in that table. 
 

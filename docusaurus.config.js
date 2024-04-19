@@ -26,6 +26,7 @@ const config = {
   trailingSlash: true,
   markdown: {
     format: "detect",
+    mermaid: true,
   },
   onBrokenLinks: "throw", // please do NOT change this to 'warn', fix or remove your broken links instead
   onBrokenMarkdownLinks: "throw", // please do NOT change this to 'warn', fix or remove your broken links instead
@@ -143,7 +144,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     colorMode: {
       disableSwitch: true,
-      defaultMode: 'light',
+      defaultMode: "light",
       respectPrefersColorScheme: false,
     },
     navbar: {
