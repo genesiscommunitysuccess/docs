@@ -13,7 +13,7 @@ tags:
 
 ## Modularity
 
-Genesis is modular, so if you have a dependency on another module (e.g. Auth), your project will naturally inherit all the fields from that module and and they are available in your project. 
+Genesis is modular, so if you have a dependency on another module (e.g. Auth), your project naturally inherits all the fields from that module and and they are available in your project. 
 
 It makes sense to re-use fields in dependent modules wherever possible; this cuts down your need to define field names that are unique across all modules and the project itself.
 
@@ -54,3 +54,57 @@ For maximum simplicity and compatibility, consider simply declaring the field as
 ```
 field(name = "REFERENCE", type = STRING)
 ```
+## Precision and scale 
+
+The Genesis platform has predetermined column sizes, so the platform automatically translates the field types into the most suitable precision and scale.
+
+The tables below provide details of the translation for each field type, depending on the database technology used.
+
+### Postgres
+
+| Genesis data type | POSTGRES data type | 
+|---|---|
+INT	           | int4           | 
+STRING	       | varchar(64)    |  
+DATE	         | int8           |
+DATETIME	     | int8           |
+ENUM	         | varchar(64)    |	
+LONG	         | int8	          | 
+SHORT	         | int2	          | 
+DOUBLE	       | float8	        | 
+BIGDECIMAL	   | numeric(20, 5) | 
+NANO_TIMESTAMP | int8	          |
+RAW	                 | bytea	  | 
+
+### ORACLE
+
+| Genesis data type | ORACLE data type  | 
+|---|---|
+INT	                | NUMBER(38,0) | 
+STRING	            | VARCHAR2(64) | 	
+DATE	                | NUMBER           | 
+DATETIME	 | NUMBER           | 
+ENUM	           | VARCHAR2(64) | 	
+LONG	             | NUMBER           | 
+SHORT	             | NUMBER(38,0) | 
+DOUBLE	            | FLOAT              | 
+BIGDECIMAL	| NUMBER(20,5) |
+NANO_TIMESTAMP      | NUMBER          | 
+RAW	                | BLOB     
+
+### SQL SERVER
+
+| Genesis data type | SQL SERVER data type | SQL SERVER data  length | SQL SERVER data scale | SQL SERVER data precision |
+|---|---|---|---|---|
+INT	             | int            | 4  |  | 10 |
+STRING	         | nvarchar | 64 |  |  |	
+DATE	           | bigint      | 8  |	| 19 |
+DATETIME	       | bigint      | 8  |	| 19 |
+ENUM	           |  nvarchar | 64 |  |  |		
+LONG	           | bigint       | 8  |  | 19 |
+SHORT	           | smallint    | 2  |  | 5 |
+DOUBLE	         | float         | 8  |  | 53 |
+BIGDECIMAL	     | numeric   | 13 | 5 | 20 |
+NANO_TIMESTAMP   | bigint	       | 8  |  | 19 |
+RAW	             | varbinary | -1  |  |  | 
+

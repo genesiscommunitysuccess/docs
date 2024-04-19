@@ -167,7 +167,7 @@ final var trade = db.get(trade.byTypeId())
 
 ### getAll
 
-Get all will take multiple _unique_ index class instances and return the type entity type for the record. It takes
+This takes multiple _unique_ index class instances and returns the type entity type for the record. It takes
 a `List<Pair<String, UniqueEntityIndex<E>>>`, where the `String` is a unique reference to each request.
 
 #### Overloads
@@ -184,7 +184,7 @@ val recordB = map["B"]
 
 ### getAllAsList
 
-This operation is similar to the one above, but takes a `List<UniqueEntityIndex<E>>`, and will return a `List<E?>`.
+This operation is similar to the one above, but takes a `List<UniqueEntityIndex<E>>`, and returns a `List<E?>`.
 The results are returned in the order they were requested and will be `null` if no record was found. The result
 list is guaranteed to be the same count as the input.
 
@@ -203,12 +203,12 @@ val recordB = list[1]
 
 ### getBulk
 
-This will create a `Flowable` of the whole table. If the database layer supports it, these will be
+This operation creates a `Flowable` of the whole table. If the database layer supports it, the records will be
 sorted in ascending order by the index provided, or by the primary key if none is provided. 
 
-Currently, only FoundationDb and Postgres support an ordered `getBulk`. There is also the `getBulkFromEnd` function, which will return records in descending order. 
+Currently, only FoundationDb and Postgres support an ordered `getBulk`. There is also the `getBulkFromEnd` function, which returns records in descending order. 
 
-There are also a number of continuation operations, which will return the whole table after the provided record. These methods are deprecated and should not be used going forwards.
+There are also a number of continuation operations, which return the whole table after the provided record. These methods are deprecated and should not be used going forwards.
 
 #### Overloads
 
@@ -252,15 +252,15 @@ final var flowable = db.getBulk(Trade.ById.Companion);
 
 ### getRange
 
-Whereas a `get` operation selects a single entry from a unique index, and a `getBulk` operation selects the whole table, `getRange` selects a range within an index. For example, to select all trades by a single currency, there are a number of ways a range can be specified:
+The `getRange` operation selects a range within an index. For example, to select all trades by a single currency, there are a number of ways a range can be specified:
 
 * A non-unique index entry.
 * A range between two index entries.
 * When an index has more than one column, part of the index starting from the first column.
 
-When selecting on part of an index, the number of columns can be specified using the `numKeyFields` parameter. The fields are always selected in the order they are specified in the index.
+When selecting part of an index, the number of columns can be specified using the `numKeyFields` parameter. The fields are always selected in the order they are specified in the index.
 
-There are 15 different get range functions. The records will be returned in ascending order, apart from when using the `fromEnd` functions, in which case the records will be returned in descending order. 
+There are 15 different `getRange` functions. These return records in ascending order, unless you use the `fromEnd` functions, in which case the records are returned in descending order. 
 
 The `numKeyFields` property
 specifies the number of fields to use from an index. For example, in the `TRADE` example, there is the `TRADE_BY_TYPE_ID`
@@ -496,6 +496,21 @@ db.updateAll(Trade.class, trade -> {
 </TabItem>
 </Tabs>
 
+### Recover
+
+The `recover` operation enables you to insert a document into the database using the record's preset timestamp and ID.
+
+The following recover operations are supported:
+
+- `recover`
+- `recoverAll`
+
+:::danger
+
+This API must be used with caution. Integrity checks are skipped, so it can leave your Genesis application in a poor state if used incorrectly. Record IDs and timestamps are assumed to be unique.
+
+:::
+
 ## Transactions
 
 If the underlying database supports transactions, then the entity db provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions.
@@ -530,7 +545,7 @@ val orderTrade = db.readTransaction {
 <TabItem value="java">
 
 ```java
-Single<OrderTrade> oderTrade = db.readTransaction(transaction -> {
+Single<OrderTrade> orderTrade = db.readTransaction(transaction -> {
     final var trade = transaction.get(Trade.byId("TR_123")).blockingGet();
     final var order = transaction.get(Order.byId(trade.orderId)).blockingGet();
     return buildOrderTrade(order, trade);
@@ -575,38 +590,40 @@ final var writeResults = pair.getSecond();
 
 ### Subscribe
 
-Subscribe starts a database listener that receives updates to tables or views. When subscribing to view updates,
-only updates to the root table will be published. 
+The `subscribe` operation starts a database listener that receives updates to tables or views. When subscribing to view updates, only updates to the root table will be published. 
 
-If the view has any inner joins, these are handled in a range of different ways.
+If the view has any inner joins, these are handled in a number of different ways.
 
 For tables, this works in the standard way. You subscribe to updates, and:
-* when a record is inserted, you get an insert update
+
+* when a record is inserted you get an insert update
 * when a record is modified you get a modify update 
 * when a record is deleted you get a delete update 
 
+For views, when a record is inserted to the root table, you get an insert update. Modify and delete work the same way.
 
-For views, when a record is inserted to the root table, you get an insert update. Modify and delete work the same way. 
+However, if there is an inner join, there is a range of possible outcomes.
 
-However, if there is an inner join, there is a range of outcomes.
+For example, if you join onto the counterparty field, and you only return records for which you have a valid counterparty:
 
-For example, if you join onto counterparty, and you only return records for which you have a valid counterparty:
-
-* if there is an insert with no valid counterparty, the listener to view will not receive the insert
-* if there is a delete with no valid counterparty, the listener to view will not receive the delete
+* If there is an insert with no valid counterparty, the listener to the view does not receive the insert.
+* If there is a delete with no valid counterparty, the listener to the view does not receive the delete.
 
 And if there is a modify:
-* if both the previous record and the new record link to an existing counterparty, nothing changes
-* if the previous record was linked to an invalid counterparty and the new record links to a valid counterparty, it will transform the modify to an insert – because the record has moved into the view
-* if the previous record linked to a valid counterparty, but no longer does after the update, it becomes a delete
-
+* If both the previous record and the new record link to an existing counterparty, then nothing changes.
+* If the previous record was linked to an invalid counterparty and the new record links to a valid counterparty, it transforms the modify to an insert – because the record has moved into the view.
+* If the previous record linked to a valid counterparty, but no longer does after the update, it becomes a delete.
 
 ### Subscribe parameters
 Subscribe supports the following parameters:
 
-* `delay`: `Int` the listener will batch updates every x milliseconds
-* `fields`: `Set<String>` filters `ModifyResult` on fields
-* `subscribeLocally`: `Boolean` only publish updates that are local to the node
+| Name | Type | Required | Meaning | Default value |
+| --- | --- | --- | --- | --- |
+| Table name | `String`| ✔️ | The table to subscribe to | n/a |
+| fields | `Set<String>` | ❌ | Only listen to changes on selected fields | listen to all fields |
+| delay | `Int` | ❌ | Group and publish updates every x ms | no grouping |
+| subscribeLocally | `Boolean` | ❌ | When in a cluster, only listen to local updates | false |
+
 
 #### Overloads
 
@@ -648,17 +665,20 @@ final var subscription = db.subscribe(Trade.class)
 The `bulkSubscribe` combines a `getBulk` and a `subscribe` call into a single function. This operation is useful when
 a class needs to read a full table and then receive updates of changes to the underlying table or view. 
 
-This operation supports backward joins for views. This means that it can receive updates to the
+This operation supports backwards joins for views. This means that it can receive updates on both the
 root table and the joined tables. The view needs to support this in the definition, and it must be enabled
 on the `bulkSubscribe` call.
 
 `bulkSubscribe` supports the following parameters:
 
-* `delay`: `Int` the listener will batch updates every x milliseconds
-* `fields`: `Set<String>` filters `ModifyResult` on fields
-* `index`: `UniqueEntityIndex<E>` the index to use for the `getBulk` part of the call
-* `subscribeLocally`: `Boolean` only publish updates local to the node
-* `backwardJoins`: `Boolean` enable backward joins in views
+| Name | Type | Required | Meaning | Default value |
+| --- | --- | --- | --- | --- |
+| Table name |`String`| ✔️ | The table to subscribe to | n/a |
+| Index name | `index` | ❌ | The index to sort the read by (used for the `getBulk` part of the call)| primary key |
+| fields | `Set<String>` | ❌ | Only listen to changes on selected fields (filters `ModifyResult` on fields)| listen to all fields |
+| delay | `Int` | ❌ | Group and publish updates every x ms | no grouping |
+| subscribeLocally | `Boolean` | ❌ | When in a cluster, only listen to local updates | false |
+| backwardJoins  | `Boolean` | ❌ | subscribe to changes on sub tables (backwards joins) | false |
 
 #### Overloads
 
@@ -672,25 +692,29 @@ These functions are available in Kotlin only:
 
 ### Range subscribe
 
-Range subscribe is like bulk subscribe, but it combines a `getRange` with `subscribe`. This operation is useful when
-a class needs to read part of a table or view and then keep updated of any changes. The range will be applied to the `subscribe` as well. As such, the update type will reflect whether a row comes into the range or moves out of the range, rather
-than what happened in the database. This means that a `ModifyResult<E>` might be converted to an `InsertResult<E>` or a
-`DeleteResult<E>`.
+The `rangeSubscribe` operation is similar to bulk subscribe, but it combines a `getRange` with `subscribe`. This is useful when a class needs to read part of a table or view and then keep updated of any changes. The range will be applied to the `subscribe` as well. So, the update type will reflect whether a row comes into the range or moves out of the range, rather than what happened in the database. This means that a `ModifyResult<E>` might be converted to an `InsertResult<E>` or a `DeleteResult<E>`.
 
-Furthermore, `rangeSubscribe` can take a static range (for example, all USD trades) or a dynamic range (for example, all trades booked within the last 2 hours). The dynamic range will be updated on a schedule, either at an interval or at a time.
+AlNote that `rangeSubscribe` can take a static range (for example, all USD trades) or a dynamic range (for example, all trades booked within the last 2 hours). The dynamic range will be updated on a schedule, either at an interval or at a specified time.
 
 #### Overloads
 
 `rangeSubscribe` supports the following parameters:
 
-* `delay`: `Int` the listener will batch updates every x milliseconds
-* `numKeyFields`: `Int` the number of key fields to take into account for the range
-* `fields`: `Set<String>` filters `ModifyResult` on fields
-* `index`: `UniqueEntityIndex<E>` the index to use for the `getBulk` part of the call
-* `subscribeLocally`: `Boolean` only publish updates local to the node
-* `backwardJoins`: `Boolean` enable backward joins in views
-* `updateFrequency`: `PalDuration` a schedule for updating dynamic ranges
-* `rangeProvider`: `() -> EntityIndex<E>` a lambda providing a `EntityIndex<E>`, for use in dynamic ranges
+| Name | Type | Required | Meaning | Default value |
+| --- | --- | --- | --- | --- |
+| Table name |`String`| ✔️ | The table to subscribe to | n/a |
+| Start index | `index` |✔️ | The index entry to read from | primary key |
+| End index | `index` | ❌ | The index entry to read to | primary key |
+| fields | `Set<String>` | ❌ | Only listen to changes on selected fields (filters `ModifyResult` on fields)| listen to all fields |
+| delay | `Int` | ❌ | Group and publish updates every x ms | no grouping |
+| subscribeLocally |`Boolean` | ❌ | When in a cluster, only listen to local updates | false |
+| backwardJoins  | `Boolean` | ❌ | subscribe to changes on sub tables (backwards joins) | false |
+| numKeyFields | `Int` | ❌ | The number of key fields to take into account for the range | ? |
+| index |`UniqueEntityIndex<E>` | ❌ | the index to use for the `getBulk` part of the call | ? |
+| updateFrequency  | `PalDuration` | ❌ | a schedule for updating dynamic ranges | ? |
+| rangeProvider  | `() -> EntityIndex<E>` | ❌ | a lambda providing a `EntityIndex<E>`, for use in dynamic ranges | ? |
+
+
 
 #### Static range
 * `rangeSubscribe(from: EntityIndex<E>, to: EntityIndex<E>, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`

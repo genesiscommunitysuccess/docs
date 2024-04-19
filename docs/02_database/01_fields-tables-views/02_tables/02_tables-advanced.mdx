@@ -64,7 +64,7 @@ To switch off UUID generation and use the default Genesis format for `sequence`:
 
 4. If there are existing fields using sequences, run the server command [CreateMissingSqlSequences](../../../../operations/commands/server-commands/#createmissingsqlsequences).
 
-5. If you need to adjust the initial value of the sequences (for example if you are migrating data), use the server command [SetAutoIncrement](../../../../operations/commands/server-commands/#setautoincrement).
+5. If you need to adjust the initial value of the sequences (for example if you are migrating data), use the server command [SetSequence](../../../../operations/commands/server-commands/#setsequence).
 
 ## Subtables
 
@@ -173,7 +173,7 @@ The following details can be added when you use the `audit = details()`parameter
 The audit table that is created has the same name as the source table, plus the suffix **_AUDIT**. Here is an example table definition, which creates a table called `EUR_TRADES` and an audit table called `EUR_TRADES_AUDIT`:
 
 ```kotlin {1}
-table (name = "EUR_TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
+table (name = "EUR_TRADE", id = 2000, audit = details(id = 2100, sequence = "EA")) {
     sequence(TRADE_ID, "TR")
     COUNTERPARTY_ID
     INSTRUMENT_ID not null

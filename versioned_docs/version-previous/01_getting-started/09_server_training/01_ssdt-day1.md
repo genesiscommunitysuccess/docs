@@ -19,12 +19,14 @@ This day covers:
 - [Advanced Event Handlers](#advanced-event-handlers)
   - [Database API](#database-api)
     - [Syntax](#syntax)
-  - [Exercise 1.2 entityDb ReadOperation getBulk](#exercise-12-entitydb-readoperation-getbulk)
+    - [Exercise 1.2 entityDb ReadOperation getBulk](#exercise-12-entitydb-readoperation-getbulk)
   - [Exception handling](#exception-handling)
-  - [Exercise 1.3 Exception handling](#exercise-13-exception-handling)
+    - [Exercise 1.3 Exception handling](#exercise-13-exception-handling)
+  - [Context Event Handler](#context-eventhandler)
+    - [Exercise 1.4 Context Event Handler](#exercise-14-context-event-handler)
   - [Custom reply message type](#custom-reply-message-type)
     - [onException](#onexception)
-  - [Exercise 1.4 Event Handler custom message](#exercise-14-event-handler-custom-message)
+  - [Exercise 1.4 Event Handler custom message](#exercise-15-event-handler-custom-message)
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -306,9 +308,47 @@ Add an exception handler in *EVENT_COUNTERPARTY_INSERT*, enriching the error mes
 Don't forget the returns, in this case `ack()` for success, and `nack(e)` for exceptions.
 :::
 
+
+### Context Event Handler
+
+The context eventHandler is a special use of the `eventHandler` where you want to create a context for your onCommit code block; the `onValidate` results are the context for the onCommit.
+
+This feature is valuable when you want to reduce the database request, for example, or when you want to inject more information to be committed, and much more. 
+
+```kotlin
+    contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {
+        onValidate {
+            val company = it.details
+            if(company.companyName == "MY_COMPANY") {
+                validationAck(validationContext = "Best company in the world")
+            } else {
+                validationAck()
+            }
+        }
+        onCommit { event, context ->
+            val parsedContext = context ?: "Missing context"
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to parsedContext)))
+        }
+    }
+```
+
+As the  example shows, there is an additional type defined for the `contextEventHandler`. This is a `String`. It gives you the option of returning a `String` value from the `onValidate` block (see _validationAck_ logic), which can then be captured in the `onCommit` block (see _context_ lambda parameter).
+
+Because the example creates a validation context, the function `validationAck()` is used at the end of the `onValidate` block; do not use `ack()`.
+
+### Exercise 1.4 Context Event Handler
+
+Implement a cascade delete for the counterparty table. This must check if there are any trades using this counterparty, and delete them as well. You should also implement the `onException` code block; if there are more than 10 trades to be deleted, throw an exception.
+
+:::tip
+Create the `onValidate` block for this new `eventhandler`, and return a `List<trades>` to list the trades that are using that counterparty.
+:::
+
 ### Custom reply message type
 
-If you use a custom reply message type, you won’t be able to use the default `ack()` or `validationAck()` functions.  The custom message type needs to be returned from the method.
+If you use a custom reply message type, you cannot use the default `ack()` or `validationAck()` functions.  The custom message type needs to be returned from the method.
 
 For a class called `TradeEvent` built with your fields and tables defined as:
 
@@ -334,7 +374,7 @@ sealed class CustomTradeEventReply : Outbound() {
 }
 ```
 
-... you could use the example Event Handler below:
+... you could use the example `eventHandler` below:
 
 ```kotlin
     eventHandler<TradeEvent, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
@@ -353,12 +393,11 @@ sealed class CustomTradeEventReply : Outbound() {
         }
     }
 ```
-
 #### onException
 
 The `onException` block can capture any exceptions thrown by the `onValidate` and `onCommit` blocks and returns the expected reply message type (as shown in the last example). This function is particularly useful if you are using a custom message type; by default, Event Handlers will attempt to translate exceptions automatically to an **EventNack** message, which might cause compatibility problems if you are using custom replies.
 
-### Exercise 1.4 Event Handler custom message
+### Exercise 1.5 Event Handler custom message
 :::info ESTIMATED TIME
 30 mins
 :::

@@ -359,7 +359,7 @@ const userReq = await this.connect.snapshot('ALL_USERS', {
 });
 ```
 
-To see a list of all attributes look at [Data server client-side options](../../../server/data-server/advanced/#client-side-runtime-options).
+To see a list of all attributes look at [Data server client-side options](../../../server/data-server/advanced/#incoming-data_logon-messages).
 
 :::info user session
 As a side note, the code above also tells us how to retrieve the current logged-in user from the session, which is actually stored in the local storage of the browser. 

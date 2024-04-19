@@ -25,11 +25,11 @@ The following gives an overview of where they are hosted and how corporate infra
 
 Genesis maintains a [plugin](https://plugins.jetbrains.com/plugin/21131-genesis-platform-support) that allows developers to run the full stack of their application locally for early development phases. 
 
-### Installing via intelliJ plugin marketplace
+### Installing via IntelliJ plugin marketplace
 
-Most developers who use Genesis are able to access the full range of intelliJ plugins via the market place. Guidelines for developers here [https://learn.genesis.global/docs/server/tooling/intellij-plugin/#installation](https://learn.genesis.global/docs/server/tooling/intellij-plugin/#installation)
+Most developers who use Genesis are able to access the full range of IntelliJ plugins via the market place. Guidelines for developers here [https://learn.genesis.global/docs/server/tooling/intellij-plugin/#installation](https://learn.genesis.global/docs/server/tooling/intellij-plugin/#installation)
 
-### Installing where access to intelliJ plugin marketplace is blocked
+### Installing where access to IntelliJ plugin marketplace is blocked
 
 There are steps to set up an internally hosted marketplace, which Genesis can provide guidance on. If you need this approach, speak to your Genesis Account Technical Contact.
 
@@ -39,17 +39,17 @@ This approach introduces a maintenance overhead when new versions of the plugin 
 
 ## Postgres (for local development)
 
-Genesis full-stack applications require a DB to run. 
+By default, the Genesis platform provides an [H2](https://h2database.com/html/main.html) database. This enables you to learn and create simple practice applications without any extra configuration.
 
-Genesis currently recommends that developers use Postgres for local development. It is free, performant and typically easy to set up.
+However, for serious development and for a production environment, you need a database with a successful record in mission-critical systems. Genesis currently recommends that developers use Postgres for local development. It is free, performant and typically easy to set up.
 
 ### Installing locally
 
 Postgres can be installed locally in the developer environment and used for development instantly where available.
 
-### Running via docker
+### Running via Docker
 
-If docker is available within your organisation, developers can [guideline](https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/)  to set it up. 
+If Docker is available within your organisation, developers can [guideline](https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/)  to set it up. 
 
 ## Node Packages (NPM)
 
@@ -73,13 +73,13 @@ The options for configuring access to this are discussed below.
 
 In most cases, you have your own artifactory/nexus/similar store for storing libraries. Your developers point to this location to pull in libraries and develop applications.
 
-The ideal approach is to point your own instance to the Genesis Jfrog Artifactory’s `local-release-client repo to find Genesis artifacts, syncing them to your own artifactory as and when developers pull them them.
+The ideal approach is to point your own instance to the Genesis Jfrog Artifactory’s local-release-client repo to find Genesis artifacts, syncing them to your own artifactory as and when developers pull them them.
 
 The Genesis client-level user credentials should be configured in this local repo, and should not shared with developers
 
 ### Developer instructions to configure access to the Genesis JFROG Artifactory
 
-Alternatively, your developers can point their local Gradle (or maven) set-up to include the Genesis artifactory.
+Alternatively, your developers can point their local Gradle (or Maven) set-up to include the Genesis artifactory.
 
 :::caution
 Artifacts will miss any scanning you may have set up in your artifactory if this approach is adopted.
@@ -137,16 +137,23 @@ Genesis application servers can easily be clustered to achieve HA. [The clusteri
 
 ### Genesis Cluster
 
-Clustering 2 or more nodes, typically across availability zones, for resiliency is simple. Hosts just need to be able to contact each other via the following ports, and to be known to each other by listing them in the system definition.
+Clustering two or more nodes, typically across availability zones, for resiliency is simple. Hosts just need to be able to contact each other via the relevant ports, and to be known to each other by listing them in the system definition.
 See our page on [clustering](https://learn.genesis.global/docs/operations/clustering/genesis/) for full set-up details.
 
 ### Consul
 
-Consul can also be set up and used in a Genesis application environment for HA. Our documentation provides details of how to [set up Consul](https://learn.genesis.global/docs/operations/clustering/consul/).
+Consul can also be set up and used in a Genesis application environment for high availability (HA). This provides automatic failover of processes that are set to `primaryOnly` when the primary node becomes unresponsive. This is triggered by monitoring the [health status](../../../operations/commands/server-commands/#status-of-processes) of the process.
+
+Where processes are set to `primaryOnly` on multiple nodes:
+
+- On start-up, Consul selects one of the processes and starts that process so that it becomes HEALTHY. The same processes on the other nodes are set to STANDBY.
+- If the process stops being HEALTHY, Consul selects one of the processes and starts that process so that it becomes HEALTHY. The unhealthy process is terminated. If there are any other processes of the same name on other nodes, one of these is selected and becomes STANDBY. 
+
+Our documentation provides details of how to [set up Consul](https://learn.genesis.global/docs/operations/clustering/consul/).
 
 ## nginx
 
-Genesis installations usually use nginx as a lightweight webserver for:
+Genesis installations usually use nginx as a lightweight web server for:
 
 - serving up SSP (static single page) web client content
 - proxying web client (and web API) requests to the Genesis server

@@ -11,68 +11,78 @@ tags:
 
 
 
-## Fields
-
-### Derived fields
+## Derived fields
 
 Derived fields are used to serve up data that is constructed from one or more fields; this is modified programatically before progressing.
 
 For example, if a table has a Notional field and a Price field, you could define a Payment_Amount derived field as Notional * Price.
 
-You can define the derived field inputs as either individually specified entity fields, or as the entity itself, which 
-will make all fields in the entity available for the derived field definition. 
-This has two main advantages:
+There are two ways of defining a derived field:
 
-- when a derived field has multiple inputs from a single table, only one input is required in the definition
-- non-null fields on the entity will be non-null
+- Using `withInput` enables you to specify one more more fields as the basis for calculating the value of the new derived field.
+- Using `withEntity` enables you to specify a table entity as the input.
 
-And one possible disadvantage:
+We shall look at each of these below.
 
-- for larger tables, there could be a performance impact
+### Using withInput
+This technique enables you to create a derived field from one or more existing fields within the tables in the view. (Use joins if you need bring other tables into the view.)
 
-Syntax:
-```kotlin
-derivedField("{field name}", FIELD_TYPE) {
-    withEntity(TABLE_NAME) { {optional parameter name} ->
-        {code}
-    }
-}
-```
+To start, declare a `derivedField` and give it a name and field type. Then you can declare the `withInput` and specify the fields and the logic.
 
-With field input:
+Here is an example where we define a derived field called SPREAD with field inputs. 
+
+- The parameter bid receives its value from the field INSTRUMENT_PRICES.BID_PRICE.
+- The parameter ask receives its value from the field INSTRUMENT_PRICES.ASK_PRICE.
+
 ```kotlin
 derivedField("SPREAD", DOUBLE) {
-  withInput(INSTRUMENT_PRICE.BID_PRICE, INSTRUMENT_PRICE.ASK_PRICE) { bid, ask ->
+  withInput(INSTRUMENT_PRICES.BID_PRICE, INSTRUMENT_PRICES.ASK_PRICE) { bid, ask ->
     if (ask == null || bid == null) null
       else ask - bid
     }
 }
 ```
 
-With entity input:
+### Using withEntity
+This technique enables you to add a table entity as an input, which gives you access to all fields in that table. 
+
+To start, declare a `derivedField` and give it a name and field type. Then you can declare the `withEntity` and specify the table, the fields and the logic.
+
+Here is an example where we define a derived field called SPREAD with the entity as the input. The table (entity) is INSTRUMENT_PRICES and the logic uses two fields from this table: askPrice and bidPrice.
+
 ```kotlin
 derivedField("SPREAD", DOUBLE) {
-    withEntity(INSTRUMENT_PRICE) { price ->
+    withEntity(INSTRUMENT_PRICES) { price ->
         price.askPrice - price.bidPrice
     }
 }
 ```
-By default, all fields are populated in the entity. For larger tables, this might have a performance impact if many fields are loaded that are not used in the calculation or the final view. To help to mitigate this, you can specify to load either only non-null fields, or specify the fields to be populated. Non-null fields will always be populated. Let's look at an example of each.
 
-Only load non-null fields:
+Using `withEntity` gives two useful advantages:
+
+- If you require multiple fields from the same table as input into a derived field, you can pass the table object as a parameter and use any field from it without having to make multiple `withInput` statements.
+- Non-null fields on the entity will be non-null.
+
+By default, all fields in the entity are returned. So there could be a performance impact if you are using large tables; it is likely that your calculations won't need many of the fields are loaded in your calculation or in the final view. 
+
+There two ways of mitigating this.
+
+The first way is to return only non-null fields. Here is an example:
+
 
 ```kotlin
 derivedField("SPREAD", DOUBLE) {
-    withEntity(INSTRUMENT_PRICE, onlyNonNullFields = true) { price ->
+    withEntity(INSTRUMENT_PRICES, onlyNonNullFields = true) { price ->
         price.askPrice - price.bidPrice
     }
 }
 ```
-Specify list of fields:
+
+The second way is to specify the fields to be returned. Other fields in the table are not returned. Here is an example:
 
 ```kotlin
 derivedField("SPREAD", DOUBLE) {
-    withEntity(INSTRUMENT_PRICE, fields = listOf(INSTRUMENT_PRICE.ASK_PRICE, INSTRUMENT_PRICE.BID_PRICE)) { price ->
+    withEntity(INSTRUMENT_PRICES, fields = listOf(INSTRUMENT_PRICES.ASK_PRICE, INSTRUMENT_PRICES.BID_PRICE)) { price ->
         price.askPrice - price.bidPrice
     }
 }

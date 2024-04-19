@@ -167,7 +167,46 @@ Run the following command as admin so your firewall will not block inbound traff
 New-NetFirewallRule -DisplayName "WSL" -Direction Inbound  -InterfaceAlias "vEthernet (WSL)"  -Action Allow
 ```
 
-## Setting up a Database
+## Setting up a database
+
+For learning purposes, you can use the default [H2](#using-h2) database. For any serious development, you need to set one of the other [database technologies](../../../database/database-technology/overview/) supported by the platform.
+
+### Running Postgres from Docker
+
+Running Postgres from Docker is very similar to running Aerospike:
+
+```none title="CentOS"
+docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c shared_buffers=80MB -c max_connections=250
+```
+
+This downloads and runs a Postgres image for version 12.6. Other versions are available; for more details [see here](https://hub.docker.com/_/postgres/). For version 10, change `12.6-alpine` to `10.16-alpine`.
+
+
+To connect, use this JDBC URL:
+
+```none title="CentOS"
+jdbc:postgresql://localhost:5432/?user=postgres&password=docker
+```
+
+In your **genesis-system-definition.kts** file, set `DbLayer=SQL` and set `DbHost` with above JDBC URL
+
+### Running MSSQL from Docker
+Run the following Docker command:
+
+```none title="CentOS"
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Docker@111" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+```
+
+This downloads and runs an MSSQL image for version 2019-latest. Other versions are available; for more
+details [see here](https://hub.docker.com/_/microsoft-mssql-server).
+
+To connect, use this JDBC URL:
+
+```none title="CentOS"
+jdbc:sqlserver://localhost:1433;trustServerCertificate=true;database=master;user=sa;password=Docker@111
+```
+
+In your **genesis-system-definition.kts** file, set `DbLayer=SQL` and set `DbHost` with above JDBC URL
 
 ### Installing FDB (recommended for development environments)
 
@@ -195,22 +234,6 @@ systemctl enable foundationdb
 Then, to check if it's running: 
 
 `systemctl status foundationdb`
-
-### Using H2 as an embedded database
-
-:::warning only for learning purposes
-This set-up is not recommended for production environments or serious development.
-:::
-
-You can use an embedded H2 database for basic development. This solution creates an H2 file-based database in the same 
-environment where your app is running. The database is initiated by JDBC and does not require additional set-up.
-
-To use H2, use this JDBC URL, substituting your own path name:
-```none title="CentOS"
-jdbc:h2:file:~/run/path/to/h2;AUTO_SERVER=TRUE
-```
-
-In your **genesis-system-definition.kts** file, set `DbLayer=SQL`, `DictionarySource=FILE` and `DbQuotedIdentifiers=true`.
 
 ### Running Aerospike from Docker
 
@@ -283,39 +306,19 @@ file **genesis-system-definition.kts**:
     ...
 ```
 
-### Running Postgres from Docker
+### Using H2
 
-Running Postgres from Docker is very similar to running Aerospike:
+:::warning only for learning purposes
+This set-up is not recommended for production environments or serious development.
+:::
 
+You can use the default H2 database for basic development. This solution creates an H2 file-based database in the same 
+environment where your app is running. The database is initiated by JDBC and does not require additional set-up.
+
+To use H2, use this JDBC URL, substituting your own path name:
 ```none title="CentOS"
-docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c shared_buffers=80MB -c max_connections=250
+jdbc:h2:file:~/run/path/to/h2;AUTO_SERVER=TRUE
 ```
 
-This downloads and runs a Postgres image for version 12.6. Other versions are available; for more details [see here](https://hub.docker.com/_/postgres/). For version 10, change `12.6-alpine` to `10.16-alpine`.
+In your **genesis-system-definition.kts** file, set `DbLayer=SQL`, `DictionarySource=FILE` and `DbQuotedIdentifiers=true`.
 
-
-To connect, use this JDBC URL:
-
-```none title="CentOS"
-jdbc:postgresql://localhost:5432/?user=postgres&password=docker
-```
-
-In your **genesis-system-definition.kts** file, set `DbLayer=SQL` and set `DbHost` with above JDBC URL
-
-### Running MSSQL from Docker
-Run the following Docker command:
-
-```none title="CentOS"
-docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Docker@111" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
-```
-
-This downloads and runs an MSSQL image for version 2019-latest. Other versions are available; for more
-details [see here](https://hub.docker.com/_/microsoft-mssql-server).
-
-To connect, use this JDBC URL:
-
-```none title="CentOS"
-jdbc:sqlserver://localhost:1433;trustServerCertificate=true;database=master;user=sa;password=Docker@111
-```
-
-In your **genesis-system-definition.kts** file, set `DbLayer=SQL` and set `DbHost` with above JDBC URL

@@ -276,7 +276,7 @@ dataServer {
 
 ## Indices
 
-A query can optionally include an `indices` block to define additional indexing at the query level. When an index is specified in the query, all rows returned by the query are ordered by the fields specified, in ascending order. The definition and the behaviour of an index in a query are exactly the same as when you [define an index in a table](../../../database/fields-tables-views/tables/tables-basics/#indices).
+A query can optionally include an `indices` block to define additional indexing at the query level. When an index is specified in the query, all rows returned by the query are ordered by the fields specified, in ascending order. The definition and the behaviour of an index in a query are exactly the same as when you [define an index in a table](../../../database/fields-tables-views/tables/tables-basics/#providing-other-indices).
 
 Here is an example of a simple index:
 
@@ -296,7 +296,7 @@ dataServer {
 There are two scenarios where an index is useful:
 
 * **Optimising query criteria search**. in the example above, if the front-end request specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, then the Data Server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means that the platform doesn't need to scan all the query rows stored in the Data Server memory-mapped file cache; instead, it performs a very efficient indexed search.
-* **Where the front-end request specifies an index**. You can specify one or more indices in your Data Server query. And the [front end can specify which index to use](../../../server/data-server/advanced/#client-side-runtime-options) by supplying `ORDER_BY` as part of the `DATA_LOGON` process. The Data Server will use that index to query the data. The data will be returned to the client in ascending order, based on the index field definition.  
+* **Where the front-end request specifies an index**. You can specify one or more indices in your Data Server query. And the [front end can specify which index to use](../../../server/data-server/advanced/#incoming-data_logon-messages) by supplying `ORDER_BY` as part of the `DATA_LOGON` process. The Data Server will use that index to query the data. The data will be returned to the client in ascending order, based on the index field definition.  
 
 *Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add `SIMPLE_ID` to the index definition to ensure we maintain uniqueness.
 
@@ -311,3 +311,9 @@ Below you see an example of accessing a custom end-point called **ALL_TRADES** r
 ```
 
 You can see how to manipulate and work with auto-generated endpoints in our pages on [REST endpoints](../../../server/integration/rest-endpoints/introduction/).
+
+## Custom Log messages
+
+import Log from '/snippet/_LOG.md'
+
+<Log />

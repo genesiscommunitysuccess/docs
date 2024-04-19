@@ -136,7 +136,7 @@ After you have saved this file, run [genesis-generated-fields](../../../database
 
 ### generateFields
 
-import GenerateFields from '/snippet/_generate_fields.md';
+import GenerateFields from '/snippet/_generate_fields.mdx';
 
 <GenerateFields />
 
@@ -176,7 +176,7 @@ After you have saved this file, run [genesis-generated-dao](../../../database/fi
 
 ### generateDao
 
-import GenerateDao from '/snippet/_generate_DAO.md'
+import GenerateDao from '/snippet/_generate_DAO.mdx'
 
 <GenerateDao />
 
@@ -708,7 +708,10 @@ There are multiple ways you can test the back end of your application. It's impo
 Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
 
 ### Genesis Console
-1. In your browser, go to http://genesislcap.com/console/console-local/?host=localhost:9064.
+1. Open a new incognito/private browser (this avoids any cache issues) and go to http://genesislcap.com/console/console-local/?host=localhost:9064.
+:::warning
+Some browsers automatically change **http** to **https** - which will cause a fail. Make sure the url starts with **http** before submitting.
+:::
 2. Enter the IP address of your server, in this case localhost port 9064, as we are using GENESIS_ROUTER locally through the Genesis plugin. So, the value to be entered here is `localhost:9064`
 3. Log in with your user name and password as [defined previously](../../../getting-started/developer-training/training-content-day1/#credentials-to-login). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.

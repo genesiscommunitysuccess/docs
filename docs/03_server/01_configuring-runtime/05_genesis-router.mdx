@@ -77,7 +77,7 @@ Let's have a look at the different options for configuring this file. You have s
 
 `socketPort` This port is used for http/websockets. You must declare a port, and it cannot be below 1024.
 
-`dataserverPollingTimeout` This setting contains the timeout for polling the data-server resources in the system in seconds. Default value is 60 seconds.
+`dataserverPollingTimeout` This setting contains the timeout (in seconds) to expire inactive dataserver subscriptions. Subscription inactivity is determined by the lack of HTTP requests from the client targeting a specific Data Server subscription. Default value is 60 seconds.
 
 `authDisabled` This is a dangerous setting! If set to true, it disables all authentication on the router. Typically, it is used for development mode. If you need to use this for another reason, see our section on [non-authenticated Genesis Routers](../../../server/configuring-runtime/genesis-router/#non-authenticated-routers/). Default value is false.
 

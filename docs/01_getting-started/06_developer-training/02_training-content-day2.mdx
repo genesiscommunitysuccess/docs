@@ -74,7 +74,7 @@ Please look at the complete [UI reference](../../../web/) for more details about
 
 Now let's create a single page with a grid and a form for entering data.
 
-Before you start, check if you have set a valid API_HOST in **client/web/package.json**.
+Before you start, check if you have set a valid API_HOST in **client/package.json**.
 
 The syntax for the API_HOST is:
 - protocol (followed by a colon delimiter)
@@ -83,15 +83,13 @@ The syntax for the API_HOST is:
 
 for example: ws://localhost:9064
 
-
-
-For your user interface, the `genx` process has generated the following files:
+For your user interface, the our training repo has the following files:
 
 - **home.template.ts**
 - **home.ts**
 - **home.styles.ts**
 
-We are going to update the files **home.template.ts** and **home.ts**, so the application will be able to display a single page and enable you to insert a new trade.
+We are going to update the files **home.template.ts** and **home.ts**, under the folder **client/src/routes/home/**, so the application will be able to display a single page and enable you to insert a new trade.
 As we are using *micro front-ends*, there is no need to change the file **home.styles.ts**; the styles will be inherited from the base components.
 
 
@@ -199,7 +197,7 @@ Now you are ready to run the application you have created for the front end.
 
 Using the Genesis IntelliJ plugin, click the [Start UI button](../../../server/tooling/intellij-plugin/#starting-the-ui) on the toolbar as shown below. This builds your front-end codebase and starts the webpack webserver in development mode.
 
-![Debug Window](/img/intellij-ui.png)
+![Debug Window](/img/start-ui-simple.png)
 
 Alternatively, you can start the UI manually from the workspace **alpha/client** folder by running the commands below.
 

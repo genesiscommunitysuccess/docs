@@ -115,8 +115,14 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 "* 15 7 ? * MON-FRI *","Week days at 7.15","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 
-Load the cron rule **CRON_RULE.csv** file into the `CRON_RULE`  [table](../../../server/evaluator/configuring-runtime/#cron_rule-table).
+Load the cron rule **CRON_RULE.csv** file into the `CRON_RULE`  [table](#defining-a-dynamic-rule).
 
 Run `SendIt`
 
 You can see an example of a static rule being configured in our [tutorial](../../../getting-started/developer-training/training-content-day5/#cron-rules-static-events).
+
+## Custom Log messages
+
+import Log from '/snippet/_LOG.md'
+
+<Log />

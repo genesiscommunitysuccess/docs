@@ -27,7 +27,7 @@ package genesis.cfg
 systemDefinition {
     global {
         item(name = "MqLayer", value = "ZeroMQ")
-        item(name = "DbLayer", value = "FDB")
+        item(name = "DbLayer", value = "H2")
         item(name = "DictionarySource", value = "DB")
         item(name = "AliasSource", value = "DB")
         item(name = "MetricsEnabled", value = "false")
@@ -36,7 +36,7 @@ systemDefinition {
         item(name = "ZeroMQProxyOutboundPort", value = "5000")
 
         item(name = "DbHost", value = "localhost")
-        item(name = "DbMode", value = "VANILLA")
+        item(name = "DbMode", value = "POSTGRESQL")
         item(name = "GenesisNetProtocol", value = "V2")
         item(name = "ResourcePollerTimeout", value = "5")
         item(name = "ReqRepTimeout", value = "60")
@@ -79,7 +79,7 @@ Local values can be specified in this block. **These values override the global 
 ## Items defined
 **MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues.
 
-**DbLayer**: Default value is set to FDB. If you want to use PostgreSQL, MSSQL or Aerospike, then you need to change this value and then [change the value of the DbHost item](../../../server/configuring-runtime/setting-the-database-technology/).
+**DbLayer**: Default value is set to H2. If you want to use PostgreSQL, MSSQL or Aerospike, then you need to change this value and then [change the value of the DbHost item](../../../server/configuring-runtime/setting-the-database-technology/).
 
 **DbHost**: Contains information about the hostname/JDBC connection string pointing to local database. For example:
 
@@ -103,7 +103,11 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **DictionarySource**: This setting defines where you want to store the dictionary schema. You can choose between DB dictionary source and FILE dictionary source using this setting. Accepted values `DB` and `FILE`. DB dictionary source is preferred, because if you are running a cluster, all nodes will refer to the same dictionary. FILE dictionary source has the problem of being only available on each node.
 
-**AliasSource**: This setting defines where you want to store dictionary alias schema. The alias schema maps aliases to fields and to tables, and it is updated every time we change the data schema. You can choose between DB alias source and FILE alias source using this setting. Accepted values `DB` and `FILE`. DB alias source is preferred, because if you are running a cluster all nodes will refer to the same alias dictionary. FILE alias source has the problem of being only available on each node.
+**DbSqlMaxPoolSize**: This setting limits the maximum number of connections to the database.
+
+**AliasSource**: This setting defines where you want to store dictionary alias schema. The alias schema maps aliases to fields and to tables, and it is updated every time we change the data schema. You can choose between DB alias source and FILE alias source using this setting. Accepted values `DB` and `FILE`. DB alias source is recommended, because if you are running a cluster, all nodes will refer to the same alias dictionary. FILE alias source has the problem of being only available on each node.
+
+**GenesisNetProtocol**: This is the Genesis network protocol. It is used by the platform only. **Do not change this value**.
 
 **MetricsEnabled**: Default value is false. For more information, go to the page on [Metrics](../../../operations/metrics/metrics/).
 

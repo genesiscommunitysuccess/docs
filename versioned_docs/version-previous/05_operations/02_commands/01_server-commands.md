@@ -10,7 +10,7 @@ tags:
 ---
 
 Genesis has numerous built-in commands that have their own individual functions.
-This page goes through them and details the function, parameters and use cases of those commands. 
+This page goes through them and details the function, parameters and use cases of those commands.
 
 Once an application has been built and zipped, you can install it in any another system that contains the Genesis low-code platform.
 
@@ -43,7 +43,7 @@ The example below gives a record count for two specific tables:
 CountRecords CHF_ORDERS CHF_TRADES
 ```
 
-## DbMon 
+## DbMon
 
 DbMon is the Genesis database client, which provides its own command line. From here, you can navigate through the database tables in your application.
 
@@ -55,10 +55,10 @@ For full details, see our page on [DbMon](../../../operations/commands/dbmon).
 
 ## DropTable
 
-The `DropTable` command removes all rows from the specified tables. 
+The `DropTable` command removes all rows from the specified tables.
 
 :::warning
-If you do not specify any tables, then **all** rows will be removed from **all** tables in the database. 
+If you do not specify any tables, then **all** rows will be removed from **all** tables in the database.
 
 Use with care!
 :::
@@ -88,15 +88,15 @@ The `DumpIt` command can take the following arguments:
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values | Default |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|-------|
 | -a <!-- DumpIt -a -->      | --all <!-- DumpIt --all -->             | no        | exports all tables to csv                              | none              | none    |
-| -f <!-- DumpIt -f -->      | --file `<arg>` <!-- DumpIt --file <args> -->    | no        | name of the csv file where table is exported           | none              | none    |
-|          | -fields `<arg>` <!-- DumpIt --fields <args> -->   | no        | space separated field list e.g. "FIRST_NAME LAST_NAME" | none              | none    |
+| -f <!-- DumpIt -f -->      | --file (arg) <!-- DumpIt --file (args) -->    | no        | name of the csv file where table is exported           | none              | none    |
+|          | -fields (arg) <!-- DumpIt --fields (args) -->   | no        | space separated field list e.g. "FIRST_NAME LAST_NAME" | none              | none    |
 | -h <!-- DumpIt -h -->      | --help  <!-- DumpIt --help -->           | no        | show help on how to use the command                    | none              | none    |
-| -s  <!-- DumpIt -s -->     | --sql `<arg>` <!-- DumpIt --sql <args> -->     | no        | name of the sql file to export the table to            | none              | none    |
-| -t  <!-- DumpIt -t -->     | --table `<arg>` <!-- DumpIt --table <args> -->   | no        | specify the name of the table you want to export to CSV. If there are multiple tables to include, provide a list separated by spaces.                 | none              | none    |
-| -cem <!-- DumpIt -cem -->    | --criteriaEvaluatorMode `<arg>` <!-- DumpIt --criteriaEvaluatorMode <args> --> | no        | the type of criteria evaluator to be used | TYPE_AWARE or LEGACY | LEGACY |
-| -fm <!-- DumpIt -fm -->     | --formatMode `<arg>` <!-- DumpIt --formatMode <args> -->    | no        | indicates whether field formats should be taken into account  | FORMATTED (takes field formats into account) or LEGACY (does not take field formats into account) | none    |
+| -s  <!-- DumpIt -s -->     | --sql (arg) <!-- DumpIt --sql (args) -->     | no        | name of the sql file to export the table to            | none              | none    |
+| -t  <!-- DumpIt -t -->     | --table (arg) <!-- DumpIt --table (args) -->   | no        | specify the name of the table you want to export to CSV. If there are multiple tables to include, provide a list separated by spaces.                 | none              | none    |
+| -cem <!-- DumpIt -cem -->    | --criteriaEvaluatorMode (arg) <!-- DumpIt --criteriaEvaluatorMode (args) --> | no        | the type of criteria evaluator to be used | TYPE_AWARE or LEGACY | LEGACY |
+| -fm <!-- DumpIt -fm -->     | --formatMode (arg) <!-- DumpIt --formatMode (args) -->    | no        | indicates whether field formats should be taken into account  | FORMATTED (takes field formats into account) or LEGACY (does not take field formats into account) | none    |
 | -qi <!-- DumpIt -qi -->     | --quoteIdentifiers <!-- DumpIt --quoteIdentifiers --> | no        | if present, all sql identifiers (e.g. column names) will be quoted     | none  | none   |
-|          | -where `<arg>` <!-- DumpIt -where <args> -->    | no        | match criteria e.g. "USER_NAME=='John'"                | none              | none    |
+|          | -where (arg) <!-- DumpIt -where (args) -->    | no        | match criteria e.g. "USER_NAME=='John'"                | none              | none    |
 
 Here are some examples:
 
@@ -128,7 +128,6 @@ This copies all the tables in the system, creating one .csv file for each table 
 
 ### Interactive mode
 You can run `DumpIt` without any arguments to enter interactive mode.
-
 
 ## FixEnumValues
 
@@ -184,7 +183,7 @@ The installHook will run before `remap` on your next deploy.
 
 This command validates all system and product configuration, checking for things such as field duplication.
 
-`genesisInstall` looks at all the folders (apart from runtime and generated), all the modules, and all files in the **cfg** directory. It copies the config files from the **cfg** directory into the **generated** folder. 
+`genesisInstall` looks at all the folders (apart from runtime and generated), all the modules, and all files in the **cfg** directory. It copies the config files from the **cfg** directory into the **generated** folder.
 
 In the files collected, the command examines the installation environment and looks for system definition tokens (file names with suffix **.tmplt.xml**). The generated **cfg** file names have their token placeholders replaced with the environment's system definition value for the token, and the suffix will be changed to **.auto.xml**.
 
@@ -230,9 +229,9 @@ genesisInstall --compactProcesses
 
 ### Install hooks
 
-Install hooks run as part of `genesisInstall`. You can specify the relevant scripts as part of `genesisInstall` then add those scripts to the file  *applicationName*_**config/resources/scripts/installHooks**, where *applicationName* is the name of application you are developing. 
+Install hooks run as part of `genesisInstall`. You can specify the relevant scripts as part of `genesisInstall` then add those scripts to the file  *applicationName*_**config/resources/scripts/installHooks**, where *applicationName* is the name of application you are developing.
 
-The scripts (hooks) you add will only run once, unless their execution fails. If you run `genesisInstall`again, previously successful executions of installHook scripts will not be run as part of the install. 
+The scripts (hooks) you add will only run once, unless their execution fails. If you run `genesisInstall`again, previously successful executions of installHook scripts will not be run as part of the install.
 
 The scripts must be implemented to work in an idempotent way, and the end result of executing a script means the system is (or already was) in the expected target state, whether you run it on a pre-existing environment (e.g. upgrading a server) or you run it in a completely new environment.
 
@@ -244,11 +243,11 @@ Install hook file-name conventions:
 - It must contain a priority number at the beginning of the file name. This number should be unique. For example: **1_migrateLogFiles.sh**, **2_migrateDictionary.sh**.
 - If you need to create a new install hook that has to execute before priority number 1 or number 2, you must increase the numbers for all the other scripts (e.g. rename **1_migrateLogFiles.sh** to **9_migrateLogFiles.sh**).
 
-### Practical examples 
+### Practical examples
 
 You can create a new script and add it to the folder mentioned above to perform any particular functionality as part of `genesisInstall`.
 
-Any script exiting with value "0" is considered successful by the installHooks system, and any script exiting with a non-zero value is considered to have failed execution. 
+Any script exiting with value "0" is considered successful by the installHooks system, and any script exiting with a non-zero value is considered to have failed execution.
 
 In a Java or Kotlin world, a simple implementation could look like this:
 
@@ -278,7 +277,7 @@ fun main(args: Array<String>) {
 }
 ```
 
-Consider another example; we have a migration script called migrateDictionary.sh as an install hook; this internally executes [MigrateDictionary](./01_server-commands.md#migratedictionary) as shown below:
+Consider another example; we have a migration script called migrateDictionary.sh as an install hook; this internally executes [MigrateDictionary](#migratedictionary) as shown below:
 
 ```shell
 #!/bin/bash
@@ -310,7 +309,7 @@ There is a separate wrapper, `JvmRun` for Java main class scripts.
 This gets the current auto increment INT values defined in dictionaries for all the sequences in the system. By default, the values are printed on screen (to the terminal), but they can be written to a file so they can be reused by the `SetAutoIncrement` script (see below).
 
 :::warning
-Stop all your application's processes before using this command. 
+Stop all your application's processes before using this command.
 :::
 
 ### Syntax
@@ -319,13 +318,13 @@ The `GetAutoIncrementCount` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
-| -f  <!-- GetAutoIncrementCount -f -->     | --file `<arg>` <!-- GetAutoIncrementCount --file <args> -->    | no        | name of file to receive the values      | none              | AutoIncrementValues |
+| -f  <!-- GetAutoIncrementCount -f -->     | --file (arg) <!-- GetAutoIncrementCount --file (args) -->    | no        | name of file to receive the values      | none              | AutoIncrementValues |
 | -h <!-- GetAutoIncrementCount -h -->      | --help   <!-- GetAutoIncrementCount --help -->          | no        | displays help on the command            | none              | none    |
 | -p  <!-- GetAutoIncrementCount -p -->     | --print  <!-- GetAutoIncrementCount --print -->          | no        | if sending to a file, then use this if you also want to print to screen | none             | true (unless -f is supplied) |
 
-The behaviour of this command depends on which database implementation your application uses. 
+The behaviour of this command depends on which database implementation your application uses.
 
-- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
+- **If you are using a NOSQL database**, such as Foundation DB, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
 
 - **Similarly, if you are using Oracle**, auto-incremented values are cached in memory in configurable block sizes. This command only retrieves the current value of the counter stored on disk.
 
@@ -336,7 +335,7 @@ For example, this command puts all the auto increment values in a file called **
 ```bash
 GetAutoIncrementCount -f=AutoIncVals
 ```
-And remember: only use this command when all the application's processes have been stopped. 
+And remember: only use this command when all the application's processes have been stopped.
 
 ## GetSequenceCount
 
@@ -349,11 +348,11 @@ The `GetSequenceCount` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
-| -f  <!-- GetSequenceCount -f -->     | --file `<arg>` <!-- GetSequenceCount --file <args> -->     | no        | name of the file to contain the sequence numbers | none     | SEQUENCE.csv |
+| -f  <!-- GetSequenceCount -f -->     | --file (arg) <!-- GetSequenceCount --file (args) -->     | no        | name of the file to contain the sequence numbers | none     | SEQUENCE.csv |
 | -h <!-- GetSequenceCount -h -->       | --help <!-- GetSequenceCount --help -->             | no        | show help on how to use thus command             | none     | none |
 | -p <!-- GetSequenceCount -p -->       | --print  <!-- GetSequenceCount --print -->           | no        |                                                  | none     | true (unless -f is supplied) |
 
-The example below puts the numbers for all sequences in the database in the file **/home/user/run/sequenceCount**. 
+The example below puts the numbers for all sequences in the database in the file **/home/user/run/sequenceCount**.
 ```
 GetSequenceCount --file=/home/user/run/sequenceCount
 ```
@@ -377,7 +376,7 @@ The `GetSequenceNumbers` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values | Default |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|---------|
-| -f  <!-- GetSequenceNumbers -f -->     | --file `<arg>` <!-- GetSequenceNumbers --file <args> -->    | no        | name of the file to contain the sequence numbers | none     | SequenceValues.csv |
+| -f  <!-- GetSequenceNumbers -f -->     | --file (arg) <!-- GetSequenceNumbers --file (args) -->    | no        | name of the file to contain the sequence numbers | none     | SequenceValues.csv |
 | -h  <!-- GetSequenceNumbers -h -->     | --help   <!-- GetSequenceNumbers --help -->          | no        | show help on how to use this command             | none     | none |
 | -p  <!-- GetSequenceNumbers -p -->     | --print  <!-- GetSequenceNumbers --print -->          | no        |                                         | none              | true (unless -f is supplied) |
 
@@ -389,7 +388,7 @@ GetNextSequenceNumbers
 By default, the details are sent to the screen, but you can redirect the output to a file. For this, use either the `-f` argument followed by the filename. Alternatively, you can use the `>>` annotation followed by a filename, as in the example below:
 
 ```bash
-GetNextSequenceNumbers >> /tmp/NextSeqNumbers.txt 
+GetNextSequenceNumbers >> /tmp/NextSeqNumbers.txt
 ```
 
 ### Correcting errors in tables
@@ -397,22 +396,24 @@ The `GetNextSequenceNumbers` command is often used with the `SetSequence` script
 
 1. Stop all the processes and run `GetNextSequenceNumbers` to find the next sequence numbers of the tables.
 2. Check the table contents. You might find that a row is missing or needs to be added. Make this change on the database manually. This affects the sequence numbers in those tables.
-3. Run `SetSequence` to reset the sequence numbers where relevant. 
+3. Run `SetSequence` to reset the sequence numbers where relevant.
 4. Now you can [restart your processes](#startserver).
 
 ## killProcess
 
 This command is used to terminate a specified process.
 
+### Syntax
 The `killProcess` command can take the following arguments:
 <!-- The killProcess command has a list of possible arguments: -s, -f, -w, -c -->
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                      | Restricted values | Default |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|-------|
-| -s   HOSTNAME [HOSTNAME ...]  <!-- killProcess -s [HOSTNAME ...] --> | --hostname HOSTNAME [HOSTNAME ...] <!-- killProcess --hostname --> [HOSTNAME ...] | no        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | none              | none |
+| -s   HOSTNAME [HOSTNAME ...]  <!-- killProcess -s [HOSTNAME ...] --> | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] <!-- killProcess --hostname --> [HOSTNAME ...] | no        | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node). Specify the Host Name. | none              | none |
 | -f   <!-- killProcess -f --> | --force   <!-- killProcess --force -->  |           | forcefully kills a process (using kill -9)       | none              | none |
 | -w WAIT   <!-- killProcess -w --> | --wait WAIT     <!-- killProcess --wait -->        | no        | specifies how many seconds to wait before forcing the kill       | none         |  10 |
 | -c     <!-- killProcess -c -->    | --cluster         <!-- killProcess --cluster -->  | no        | kills the process on every node in the cluster             | none              | none |
+
 The example below kills the GENESIS_AUTH_PERMS process.
 
  ```bash
@@ -486,12 +487,12 @@ The example below sets the logging level for the GENESIS_AUTH_DATASERVER process
 LogLevel -p GENESIS_AUTH_DATASERVER -l TRACE
 ```
 
-The example below resets the LogLevel for the GENESIS_CLUSTER process. 
+The example below resets the LogLevel for the GENESIS_CLUSTER process.
 
 ```bash
 LogLevel -r GENESIS_CLUSTER
 ```
-The example below changes the log level to TRACE and captures only `_NACK` messages from Genesis messages for all processes. 
+The example below changes the log level to TRACE and captures only `_NACK` messages from Genesis messages for all processes.
 
 ```bash
 LogLevel -DATADUMP_NACK_ON
@@ -499,7 +500,7 @@ LogLevel -DATADUMP_NACK_ON
 
 ## MigrateAliases
 
-This migrates the Genesis alias store from database storage to file storage and vice versa. This is useful for debugging when you have FDB or Aerospike database technology.
+This migrates the Genesis alias store from database storage to file storage and vice versa. This is useful for debugging when you have FDB database technology.
 
 ### Syntax
 The `MigrateAliases` command can take the following arguments:
@@ -518,7 +519,7 @@ MigrateAliases -dst=DB
 ```
 
 ### Database technology
-Aerospike and FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
+FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
 
 - If you are running Genesis on a single node, use a file store.
 - If you are running Genesis on more than one node, use database mode.
@@ -530,7 +531,7 @@ The `remap` operation updates the alias store, so if you are running a Genesis c
 This migrates the Genesis dictionary from the Database Dictionary Store to the File Dictionary Store storage and vice versa.
 
 The `MigrateAliases` command can take the following arguments:
-<!-- The MigrateAliases command has a list of possible arguments: -a -f -fields -h -s -t -cem -fm -qi -where -->
+<!-- The MigrateAliases command has a list of possible arguments: -h -o -dst -->
 
 | Argument | Argument long name                   | Mandatory | Description                                                     | Restricted values | Default |
 |----------|--------------------------------------|-----------|-----------------------------------------------------------------|-------------------|---------|
@@ -557,12 +558,12 @@ Here is a recommendation:
 The `remap` operation updates the dictionary, so if you are running a Genesis cluster, it is better to use a Database Dictionary Store; this is more robust and you won't have to copy the dictionary file manually to the remaining nodes.
 
 :::warning
-It is potentially dangerous to switch the `DictionarySource` property. 
+It is potentially dangerous to switch the `DictionarySource` property.
 
 If you run `remap` (which modifies the  dictionary) after `MigrateDictionary` and before switching the `DictionarySource` property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
 :::
 
-## mon 
+## mon
 
 This command shows the status of the overall system, so you can see if the server is up or not. By default, it  displays a snapshot. If you want to the screen to be refreshed, simply add a flag with the number of seconds between refreshes, such as `mon -10`.
 
@@ -603,6 +604,9 @@ By default, the command shows the following columns of information:
 | Memory       | The percentage of RAM being used by the process                                                                                             |
 | Message      | Displays any relevant message generated by the process                                                                                      |
 
+### Status of processes
+The key column in the display is **Status**, which can have the following values:
+
 The key column in the display is **Status**, which can have the following values:
 
 - **RUNNING** the process has just started and is still initialising.
@@ -639,7 +643,7 @@ The `mon` command can take the following arguments:
 
 :::info
 
-Unhealthy processes includes all processes that are not `HEALTHY` or `STANDBY`. 
+Unhealthy processes includes all processes that are not `HEALTHY` or `STANDBY`.
 `--unhealthy` can **not** be used with other status-filtering arguments.
 
 :::
@@ -677,12 +681,12 @@ The `PopulateHolidays` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory |               Description               | Restricted values |
 |----------|--------------------|-----------|-----------------------------------------|-------------------|
-| -c  <!-- PopulateHolidays -c -->     | --country `<arg>` <!-- PopulateHolidays --country <args> -->  | No        | the country name to search for holidays | No                |
+| -c  <!-- PopulateHolidays -c -->     | --country (arg) <!-- PopulateHolidays --country (args) -->  | No        | the country name to search for holidays | No                |
 | -h  <!-- PopulateHolidays -h -->     | --help <!-- PopulateHolidays --help -->            | No        | show help on this command               | No                |
-| -r  <!-- PopulateHolidays -r -->     | --region `<arg>` <!-- PopulateHolidays --region <args> -->  | No        | the region name to search for holidays  | No                |
-| -y <!-- PopulateHolidays -y -->      | --year `<arg>` <!-- PopulateHolidays --year <args> -->    | No        | the year of holidays                    | No                |
+| -r  <!-- PopulateHolidays -r -->     | --region (arg) <!-- PopulateHolidays --region (args) -->  | No        | the region name to search for holidays  | No                |
+| -y <!-- PopulateHolidays -y -->      | --year (arg) <!-- PopulateHolidays --year (args) -->    | No        | the year of holidays                    | No                |
 
-For example: 
+For example:
 
 ```bash
 PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
@@ -715,7 +719,7 @@ purgers{
 
 The purger supports purging based on days. You can specify the max age of a record in terms of either calendar days or business days.
 
-- Business days disregard weekends and public holidays. 
+- Business days disregard weekends and public holidays.
 - Calendar days disregard weekends by default, but can be set to include them, as shown in the example below.
 
 To use this script, you need to supply
@@ -798,7 +802,7 @@ It filters the records based on the index parameter value/values
 
 `filter`: filter based on predicate provided
 
-`filterBusinessDays`: this method allows you to purge data based on business date. 
+`filterBusinessDays`: this method allows you to purge data based on business date.
 You need to provide:
 - max age of record
 - country name
@@ -820,7 +824,7 @@ The `remap` command performs the following tasks:
 
 - It reads all dictionary files (fields.kts, tables.kts and view.kts) from **$GC** and compares these to the previously generated schema. It uses these changes to remap the memory-resident database.
 - It generates dao objects based on the dictionary tables, so you can perform database operations in a type-safe way.
-- If you are running Aerospike or FDB, it updates the Genesis alias store; for Aerospike, it also generates UDFs (user defined functions).
+- If you are running FDB, it updates the Genesis alias store.
 
 If you run `remap` with no arguments, it simply gives a report of changes that exist in the configuration.
 
@@ -831,7 +835,7 @@ remap [-c | --commit]
 ```
 For full details, see our page on the [remap](../remap) command. 
 
-## RenameFields 
+## RenameFields
 This command is used to rename a field name in a database without changing the dictionary or config files.
 
 ### Syntax
@@ -865,12 +869,12 @@ For example:
 RenameFields -i SYMBOL -o TRADE_ID
 ```
 
-This changes the name of the SYMBOL field to TRADE_ID.     
+This changes the name of the SYMBOL field to TRADE_ID.
 
 Another example:
 
 ```bash
-RenameFields --input FIRST_NAME --output FNAME 
+RenameFields --input FIRST_NAME --output FNAME
 ```
 
 This changes the name of the field FIRST_NAME to FNAME.
@@ -883,9 +887,9 @@ RenameFields -i PRICE -o FIRST_NAME
 
 This would result in an error, as PRICE is of type DOUBLE while FIRST_NAME is of type STRING.
 
-## SendIt 
+## SendIt
 
-To send data into the database (inserts and modifies), use the `SendIt` command. The data you want to send should be in a .csv file, and the name of the file (or files) should match the name of the table where the new or amended data is to be sent. If you use a different filename, you must specify this using the `-f` argument.
+To send data into the database (inserts, modifies and upserts), use the `SendIt` command. The data you want to send should be in a .csv file, and the name of the file (or files) should match the name of the table where the new or amended data is to be sent. If you use a different filename, you must specify this using the `-f` argument.
 
 ### Syntax
 The `SendIt` command can take the following arguments:
@@ -896,14 +900,15 @@ The `SendIt` command can take the following arguments:
 | -a <!-- SendIt -a -->      | --all  <!-- SendIt --all -->                | no        | import all the tables from all the csv files to the database | no                    | none    |
 | -d <!-- SendIt -d -->      | --delete <!-- SendIt --delete  -->              | no        | perform delete operations on all records                     | no                    | none    |
 | -cf <!-- SendIt -cf -->     | --columnFormat <!-- SendIt --columnFormat -->        | no        | set specific date format for column                          | no                    | none    |
-| -f  <!-- SendIt -f -->     | --file `<arg>` <!-- SendIt --file <args> -->        | no        | name of the csv file that contains the data                  | no                    | Genesis looks for a new .csv file whose name matches the name of the source table    |
-| -fm <!-- SendIt -fm -->     | --formatMode `<arg>` <!-- SendIt --formatMode <args> -->  | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY  | LEGACY  |
+| -f  <!-- SendIt -f -->     | --file (arg) <!-- SendIt --file (args) -->        | no        | name of the csv file that contains the data                  | no                    | Genesis looks for a new .csv file whose name matches the name of the source table    |
+| -fm <!-- SendIt -fm -->     | --formatMode (arg) <!-- SendIt --formatMode (args) -->  | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY  | LEGACY  |
 | -h  <!-- SendIt -h -->     | --help <!-- SendIt --help -->                | no        | show help on how to use this command                         | no                    | none    |
-| -m  <!-- SendIt -m -->     | --modify `<arg>` <!-- SendIt --modify <args> -->      | no        | key name used to find original record                        | no                    | none    |
-| -mf <!-- SendIt -mf -->     | --modifyFields `<arg>` <!-- SendIt --modifyFields <args> --> | no        | specifies fields to modify (only used with `-m`)             | no                    | none    |
+| -m  <!-- SendIt -m -->     | --modify (arg) <!-- SendIt --modify (args) -->      | no        | key name used to find original record                        | no                    | none    |
+| -mf <!-- SendIt -mf -->     | --modifyFields (arg) <!-- SendIt --modifyFields (args) --> | no        | specifies fields to modify (only used with `-m`)             | no                    | none    |
 | -quiet <!-- SendIt -quiet -->   | --quietMode  <!-- SendIt --quietMode -->          | no        | make database changes without triggering real-time updates in update queue layer | no                    | none    |
 | -r <!-- SendIt -r -->      | --recover <!-- SendIt --recover -->             | no        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | no                    | none    |
-| -t <!-- SendIt -t -->      | --table `<arg>` <!-- SendIt --table <args> -->        | yes       | the name of the database table to be updated or amended      | must be a valid table | none    |
+| -t <!-- SendIt -t -->      | --table (arg) <!-- SendIt --table (args) -->        | yes       | the name of the database table to be updated or amended      | must be a valid table | none    |
+| -u  <!-- SendIt -u -->     | --upsert (arg) <!-- SendIt --upsert (args) -->      | no        | table key name used to upsert records                        | no                    | none    |
 | -v <!-- SendIt -v -->      | --verbose <!-- SendIt --verbose -->             | no        | log every error line to output                               | no                    | none    |
 
 For example:
@@ -914,13 +919,13 @@ SendIt -t FUND -f FUND.csv
 
 This reads the **FUND.csv** file in the local directory and inserts the data from the file into the FUND table.
 
-### Modifying 
+### Modifying and upserting
 
 :::info
 You can use SendIt to make changes to the database while the application is running; Data Servers and Consolidators will process any changes in the normal way (for example). But if you are in any doubt that your changes might clash with other changes happening in the application, you should switch off all processes before using SendIt.
 :::
 
-To **modify** records, create a .csv file of the records that need to be modified, including the key value and the modified values for each record. Then use SendIt with the `-m` flag to specify the key that identifies the record or records to be modified. **You cannot modify the key that you supply here - although you can modify other key fields (with care).** For example, you can't change an ID in the file and then modify on_BY_ID key. 
+To **modify** records, create a .csv file of the records that need to be modified, including the key value and the modified values for each record. Then use SendIt with the `-m` flag to specify the key that identifies the record or records to be modified. **You cannot modify the key that you supply here - although you can modify other key fields (with care).** For example, you can't change an ID in the file and then modify on_BY_ID key.
 
 The following example:
 
@@ -938,6 +943,17 @@ Modify fields (`-mf`) is an extra parameter that can be added to `-m` operations
 SendIt -t ALL_TRADES -m TRADE_BY_TRADE_ID -mf TRADE_PRICE, TRADE_QUANTITY
 ```
 
+To **upsert** records, create a .csv file of the records that need to be modified or inserted, including the key value and the relevant values for each record. Then use SendIt with the `-u` flag to specify the key that identifies the original record from each row in the csv file.
+
+The following example:
+
+- looks for a file called **FUND.csv** by default
+- for each record in the FUND table that has a matching ID in the csv, it applies the csv changes to the table
+- for any record in the csv file that has no matching ID in the FUND table, the record is inserted into the table
+
+```bash
+SendIt -t FUND -u FUND_BY_ID
+```
 ### Deleting
 To **delete** records, specify `-d` (or `--delete`)
 
@@ -949,7 +965,7 @@ SendIt -t FUND -d
 Verbose mode additionally outputs line-by-line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes `SendIt` useful for scheduled or automated jobs (e.g. daily data loads).
 
 :::warning
-Do not use `SendIt` to update User details in any way. This can easily cause database errors. To update User profiles or User attributes, only use Genesis [user entity management](../../../web/micro-front-ends/foundation-entity-management/#user-management).
+Do not use `SendIt` to update User details in any way. This can easily cause database errors. To update User profiles or User attributes, only use Genesis [user entity management](../../../web/micro-front-ends/foundation-entity-management/).
 :::
 
 ## SetAutoIncrement
@@ -958,7 +974,7 @@ Do not use `SendIt` to update User details in any way. This can easily cause dat
 Stop all your application's processes before using this command.
 :::
 
-This command enables you to set the next number to be generated for one or more autoincrementing fields. 
+This command enables you to set the next number to be generated for one or more autoincrementing fields.
 
 You can set the value for a single field using the `-v` argument.
 
@@ -978,11 +994,11 @@ The `SetAutoIncrement` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory | Description                                                                                           | Restricted values | Default |
 |----------|--------------------|-----------|-------------------------------------------------------------------------------------------------------|-------------------|-------|      
-| -f <!-- SetAutoIncrement -f -->      | --file `<arg>` <!-- SetAutoIncrement --file <arg> -->    | no | name of the csv file containing the new sequence numbers (this overrides any --value option supplied) | none | AutoIncrementValues.csv |
+| -f <!-- SetAutoIncrement -f -->      | --file (arg) <!-- SetAutoIncrement --file (args) -->    | no | name of the csv file containing the new sequence numbers (this overrides any --value option supplied) | none | AutoIncrementValues.csv |
 | -h <!-- SetAutoIncrement -h -->      | --help <!-- SetAutoIncrement --help -->            | no | displays help on using this command                                                                   | none | none | 
-| -s <!-- SetAutoIncrement -s -->      | --field `<arg>` <!-- SetAutoIncrement --field <arg> -->   | no | name of the auto-increment field (when setting the next sequence number for a single field)           | none | none |
-| -t <!-- SetAutoIncrement -t -->      | --table `<arg>` <!-- SetAutoIncrement --table <arg> -->   | no | name of the table that has the auto-increment (when setting the next sequence number for a single field) | none | none |
-| -v <!-- SetAutoIncrement -v -->      | --value `<arg>`  <!-- SetAutoIncrement --value <arg> -->  | no | new sequence number (integer) for the autoincrement (when setting the autoincrement for a single field) | none | none |
+| -s <!-- SetAutoIncrement -s -->      | --field (arg) <!-- SetAutoIncrement --field (args) -->   | no | name of the auto-increment field (when setting the next sequence number for a single field)           | none | none |
+| -t <!-- SetAutoIncrement -t -->      | --table (arg) <!-- SetAutoIncrement --table (args) -->   | no | name of the table that has the auto-increment (when setting the next sequence number for a single field) | none | none |
+| -v <!-- SetAutoIncrement -v -->      | --value (arg)  <!-- SetAutoIncrement --value (args) -->  | no | new sequence number (integer) for the autoincrement (when setting the autoincrement for a single field) | none | none |
 
 Note that all fields are optional in principle. But when setting a single field value, you must provide `-t` `-s` and `-v`.
 
@@ -1004,7 +1020,7 @@ SetAutoIncrement -f autoIncVals.csv
 Stop all your application's processes before using this command.
 :::
 
-This command enables you to set the next sequence number for one or more sequence fields. 
+This command enables you to set the next sequence number for one or more sequence fields.
 
 - To set the value for a single sequence, use the `-v` argument.
 
@@ -1017,7 +1033,7 @@ This command enables you to set the next sequence number for one or more sequenc
 "RIGHT","RI","0"
 ```
 
-`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](#startserver).
+`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence`, you need to [restart the server](../../../operations/commands/server-commands/#startserver).
 
 ### Syntax
 The `SetSequence` command can take the following arguments:
@@ -1025,11 +1041,11 @@ The `SetSequence` command can take the following arguments:
 
 | Argument | Argument long name | Mandatory | Description                                                                                                        | Restricted values | Default|
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------------------|---------------|-------|       
-| -f <!-- SetSequence -f -->      | --file `<arg>` <!-- SetSequence --file <arg> -->    | no        | name of csv file containing table-sequence-value sets (these override any --sequence and --value options supplied) | none | none |
+| -f <!-- SetSequence -f -->      | --file (arg) <!-- SetSequence --file (args) -->    | no        | name of csv file containing table-sequence-value sets (these override any --sequence and --value options supplied) | none | none |
 | -h <!-- SetSequence -h -->      | --help <!-- SetSequence --help -->            | no        | displays help on how to use the command                                                                            | none | none |
-| -s  <!-- SetSequence -s -->     | --sequence `<arg>` <!-- SetSequence --sequence <arg> --> | no        | two-character ID for the sequence (if setting an individual value)                                                 | none | none |
-| -t <!-- SetSequence -t -->      | --table `<arg>` <!-- SetSequence --table <arg> -->   | no        | name of the table that contains the sequence (if setting an individual value)                        | none | none |
-| -v  <!-- SetSequence -v -->     | --value `<arg>` <!-- SetSequence --value <arg> -->   | no        | new integer value to be set (if setting an individual value)                                                       | none | none |
+| -s  <!-- SetSequence -s -->     | --sequence (arg) <!-- SetSequence --sequence (args) --> | no        | two-character ID for the sequence (if setting an individual value)                                                 | none | none |
+| -t <!-- SetSequence -t -->      | --table (arg) <!-- SetSequence --table (args) -->   | no        | name of the table that contains the sequence (if setting an individual value)                        | none | none |
+| -v  <!-- SetSequence -v -->     | --value (arg) <!-- SetSequence --value (args) -->   | no        | new integer value to be set (if setting an individual value)                                                       | none | none |
 
 All fields are optional in principle. But if you are setting the value for a single sequence, you must provide a `-t` `-s` and `-v`.
 
@@ -1044,9 +1060,9 @@ The example below uses the file **SeqVals** to set the next sequence number for 
 SetSequence -f SeqVals.csv
 ```
 
-## startProcess 
+## startProcess
 
-This command starts a Genesis process. 
+This command starts a Genesis process.
 
 ### Syntax
 
@@ -1060,11 +1076,12 @@ The following arguments are also available:
 | -s HOSTNAME [HOSTNAME ...] <!-- startProcess -s [HOSTNAME ...] -->  | --hostname HOSTNAME [HOSTNAME ...] <!-- startProcess --hostname [HOSTNAME ...]  --> | no        | where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | none                |	none   |  
 | -v    <!-- startProcess -v  -->                                     | --verbose   <!-- startProcess --verbose  -->                                | no        | starts in verbose mode; logs to the terminal so you can view on screen   | none                | none   |  
 |                                                                     | --dump   <!-- startProcess --dump  -->                 | no        | displays progress of the process, which is useful for debugging                                                                                                                          | none                |		none   |  
- 
+   
+
 The following example starts the process called APP_EVALUATOR:
 
 ```bash
-startProcess APP_EVALUATOR 
+startProcess APP_EVALUATOR
 ```
 
 The following example starts the GENESIS_CLUSTER process and displays any useful debugging information in the console:
@@ -1076,7 +1093,7 @@ startProcess GENESIS_CLUSTER --dump
 The following example starts the APP_NOTIFY process on node1 only:
 
 ```bash
-startProcess APP_NOTIFY -s node1 
+startProcess APP_NOTIFY -s node1
 ```
 
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
@@ -1084,7 +1101,6 @@ The script looks in the **processes.xml** file (see startServer below) to find o
 ```bash
 java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
 ```
-
 
 ## startServer 
 
@@ -1163,7 +1179,7 @@ This command creates sequences in the database for ID fields that rely on auto-g
 
 The command checks to see which sequences exist already, and only creates new sequences where they do not exist. Consequently, if you run the command more than once, you will get the same result each time.
 
-This command is applicable only for SQL databases and should only be executed when you are [enabling Sequences for SQL databases](../../02_database/01_fields-tables-views/02_tables/02_tables-advanced.md#sql-databases).
+This command is applicable only for SQL databases and should only be executed when you are [enabling Sequences for SQL databases](../../../database/fields-tables-views/tables/tables-advanced).
 
 ### Syntax
 
@@ -1172,7 +1188,7 @@ The `CreateMissingSqlSequences` command has no parameters.
 ### Working with different databases
 The behaviour of this command depends on which database implementation your application uses.
 
-- **If you are using a NOSQL database**, such as Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
+- **If you are using a NOSQL database**, such as Foundation DB, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
 
 - **If you are using Oracle**, you can **not** set a sequence value directly. This command increments the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values that are already assigned in the cache, as the increment is also applied to these values.
 
@@ -1280,7 +1296,7 @@ because the tables being compared are in separate databases. Therefore, these fi
 
 | Argument | Argument long name | Mandatory | Description | Restricted Values |
 | -- | -- | -- | -- | -- |
-| -d <!-- ReconcileDatabaseSync -d --> | --dblayer <!-- ReconcileDatabaseSync --dblayer --> | true | Database Layer type | Yes: FDB, FDB2, AEROSPIKE, SQL, SIMPLE |
+| -d <!-- ReconcileDatabaseSync -d --> | --dblayer <!-- ReconcileDatabaseSync --dblayer --> | true | Database Layer type | Yes: FDB, FDB2, SQL, SIMPLE |
 | -f <!-- ReconcileDatabaseSync -f --> | --fdb <!-- ReconcileDatabaseSync --fdb --> | false | FDB cluster file name |No |
 | -H <!-- ReconcileDatabaseSync -H --> | --host <!-- ReconcileDatabaseSync --host --> | false | Remote DB hostname |No |
 | -P <!-- ReconcileDatabaseSync -P --> | --port <!-- ReconcileDatabaseSync --port --> | false | Remote DB port |Yes: Number > 0 |

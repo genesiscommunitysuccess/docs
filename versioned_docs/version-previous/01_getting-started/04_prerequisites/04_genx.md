@@ -153,4 +153,4 @@ This is a monorepo containing multiple packages. Each package can be released in
 
 ## Genx commands
 
-For more information about the Genx commands, please checkout our [Genx CLI commands page](../../../operations/commands/genx-CLI/).
+For more information about the Genx commands, please check out our [Genx CLI commands page](../../../operations/commands/genx-CLI/).

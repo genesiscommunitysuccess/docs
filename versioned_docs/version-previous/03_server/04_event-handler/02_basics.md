@@ -257,3 +257,9 @@ Below you see an example of accessing a custom end-point called **EVENT_TRADE_IN
 ```
 
 You can see how to manipulate and work with auto-generated endpoints in our pages on [REST endpoints](../../../server/integration/rest-endpoints/introduction/).
+
+## Custom Log messages
+
+import Log from '/snippet/_LOG.md'
+
+<Log />

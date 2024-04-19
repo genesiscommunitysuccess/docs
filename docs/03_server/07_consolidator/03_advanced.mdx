@@ -10,6 +10,27 @@ tags:
   - advanced
 ---
 
+## Multiple `groupBy` statements
+
+Consolidators support multiple `groupBy` statements in a single consolidation. This is useful when you want to consolidate the same table at multiple levels, and it ensures that the consolidation is consistent across multiple levels.
+
+For example, the consolidator below has two `groupBy` statements to ensure that it consolidates on *order year* and on *order year and month*:
+
+```kotlin 
+consolidator("CON_ORDER_SUMMARY_FROM_ORDER", ORDER, ORDER_SUMMARY) {
+    select {
+        ORDER_SUMMARY {
+            sum { totalNotional } into TOTAL_NOTIONAL
+            sum { totalQuantity } into TOTAL_QUANTITY
+            sum { tradeCount } into TRADE_COUNT
+        }
+    }
+
+    groupBy { OrderSummary.byGroupId("${orderDate.year}") }
+    groupBy { OrderSummary.byGroupId("${orderDate.year}-${orderDate.monthOfYear}") }
+}
+```
+
 ## Consolidator groups
 Consolidator groups are essential if you are using a non-transaction database.
 

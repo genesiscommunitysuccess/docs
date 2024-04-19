@@ -21,17 +21,28 @@ import TabItem from '@theme/TabItem';
 
 ## Workstation set-up
 
-Please follow these instructions very carefully to ensure your environment is ready. It's not necessary to have admin rights on your workstation to develop with the Genesis low-code platform, but you might have to check with your System Administrator how to install the required third-party software listed here.
+Please follow these instructions very carefully to ensure your environment is ready. You must have the recommended versions of the software packages below to ensure that you can set up and run the Genesis platform successfully.
+
+It's not necessary to have admin rights on your workstation to develop with the Genesis platform, but you might have to check with your System Administrator how to install the required third-party software listed here.
 
 ## Recommended hardware and software packages
 
-import MinimunRequirement from '/snippet/_minimun_requirement.mdx'
+import MinimumRequirement from '/snippet/_minimum_requirement.mdx'
 
-<MinimunRequirement />
+<MinimumRequirement />
 
-### Accessing the Genesis repository and configuring the Genesis packages
+### Check your versions
 
-Since version 11.3.0 of the foundation-UI, we have set our libraries public. To verify the infos about this package, type `npm info @genesislcap/foundation-ui`. If everything is ok, you should see a response like this:
+First, we need you to check:
+
+:::note for IntelliJ users
+If you are using IntelliJ, use its embbeded terminal to check for versions after opening your project for the first time; there could be multiple versions of these tools in your system.
+:::
+
+
+1. Run 'node --version' to make sure you have the correct version of node.
+2. Run 'npm -v' to make sure that you have the correct version of npm. 
+3. Run `npm info @genesislcap/foundation-ui` to check that you have the correct version of our Foundation UI package. If everything is ok, you should see a response like this:
 
 ```terminal
 @genesislcap/genx@xx.xx.x| SEE LICENSE IN license.txt | deps: XX | versions: XXX
@@ -39,19 +50,16 @@ Genx CLI
 https://github.com/genesislcap/foundation-ui#readme
 ```
 
-:::caution trouble running npm?
-Please make sure:
+4. Run 'java --version' to make sure you have the correct version of java.
 
-- You have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](../../../getting-started/developer-training/environment-setup/#required-software-packages). If you have an older version of npm (run 'npm -v'), make sure you uninstall it first.
-- If you're behind a corporate network, you may need to setup a proxy:
+### Do you need to set up a proxy?
+If you are behind a corporate network, you might need to set up a proxy:
 
 ```shell
 npm config set proxy http://proxy_host:port
 npm config set https-proxy https://proxy_host:port
 ```
-
-:::
-
+### Install the Genx CLI
 Install GenX CLI; this is a Genesis tool that enables you to seed projects.
 
 ```terminal
@@ -63,18 +71,16 @@ import InsecureFlag from '../../_includes/_cli-insecure-flag.mdx'
 
 <InsecureFlag />
 
-
 ### Gradle set-up
 
-Make sure you have a **gradle.properties** file inside a **.gradle** folder in your user directory; this file must contain your clear text password:
+1. Make sure you have a **gradle.properties** file inside a **.gradle** folder in your user directory; this file must contain your unencrypted password:
 
 ```shell
 genesisArtifactoryUser=<your-artifactory-user>
 genesisArtifactoryPassword=<your-artifactory-password>
 ```
 
-:::caution proxy settings
-If you are behind a corporate proxy, make sure you add your proxy settings to the **gradle.properties** file as well. For example:
+2. If you are behind a corporate proxy, make sure you add your proxy settings to the **gradle.properties** file as well. For example:
 
 ```shell
 systemProp.https.proxyHost=proxy_hostname_here
@@ -85,22 +91,16 @@ systemProp.https.proxyPassword=your_proxy_password_here
 #systemProp.https.auth.ntlm.domain=your_network_domain_here
 ```
 
-If you are unsure on what settings to use, please contact your IT support.
+If you are unsure about what settings to use, please contact your IT support.
 
-More information [here](https://docs.gradle.org/current/userguide/build_environment.html#sec:accessing_the_web_via_a_proxy).
-:::
+You can find more information on setting up proxies in the [gradle documentation](https://docs.gradle.org/current/userguide/build_environment.html#sec:accessing_the_web_via_a_proxy).
 
-### Your own database
+### The database
 
-You need an individual database to create and test the back-end changes we are proposing. Please make sure you have a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
+By default, the Genesis platform provides an H2 database for local development. This is ideal for your quick start, because no other configuration is required.
 
-:::tip
-You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
+But note that the platform supports other [Database Technologies](../../../database/database-technology/overview/) and once you start any serious development you will need to configure one of these (it's not a difficult process).
 
-```terminal
-docker ps --format '{{ .ID }}\t{{.Image}}\t{{ .Names }}'
-docker pull postgres
-docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=100'
-```
-
+:::note only for learning purposes
+Do not use H2 for serious development or production environments.
 :::
