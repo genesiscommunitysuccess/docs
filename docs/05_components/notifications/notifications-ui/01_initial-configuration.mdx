@@ -1,6 +1,6 @@
 ---
 title: 'Notify - initial configuration'
-sidebar_label: 'initial configuration'
+sidebar_label: 'Initial configuration'
 id: notify-initial-configuration
 keywords: [notify, ui-configuration]
 tags:
@@ -13,15 +13,19 @@ import TabItem from '@theme/TabItem';
 
 ## Prerequisites
 
-Make sure the [back-end](../../notifications-server/notify-configuring-runtime) has been configured correctly to proceed to the front-end installation of components. Also, pratically each section of each component has a permission to perform the specific action related to that section; check the [permissions](../notify-permissions) available and make sure your user has the permission needed for the section you want to implement or test. More about permissions and rights at the [authorisation](../../../../server/access-control/authorisation#users-profiles-and-right-codes) section.
+Make sure the [back end](../../notifications-server/notify-configuring-runtime) has been configured correctly before you install the front-end components. 
 
-## On a New Application
+The front-end components are:
 
-## Setting up in a new application
+- Foundation Notification Dashboard
+- Foundation Inbox Flyout
+- Foundation Inbox
 
-Using packages like `AppElement` and `foundation-store`, you can generate an app with dynamic code and components.
+Note that almost every section of each component requires a permission to perform the specific action related to that section; check the [permissions](../notify-permissions) available and make sure your user has the permission needed for the section you want to implement or test. You can read more about permissions/rights in the [authorisation](/server/access-control/authorisation#users-profiles-and-right-codes) section.
 
-To quickly test this kind of app, run the following command:
+## Installing in a new application
+
+Using packages like `AppElement` and `foundation-store`, you can generate an app with dynamic code and components. To quickly test this kind of app, run the following command:
 
 <Tabs
   defaultValue="windows"
@@ -32,94 +36,109 @@ To quickly test this kind of app, run the following command:
 }>
   <TabItem value="windows">
     ```shell title="Powershell"
-    npx -y @genesislcap/genx@latest init myapp -x --no-shell; npx -y @genesislcap/genx@latest add myapp -x -s genesislcap/pbc-notify-seed
+    npx -y @genesislcap/genx@latest init alpha -x --no-shell; npx -y @genesislcap/genx@latest add alpha -x -s genesislcap/pbc-notify-seed
     ```
   </TabItem>
 
   <TabItem value= 'mac-and-linux'>
     ```shell title="Bash"
-    npx -y @genesislcap/genx@latest init myapp -x --no-shell && npx -y @genesislcap/genx@latest add myapp -x -s genesislcap/pbc-notify-seed
+    npx -y @genesislcap/genx@latest init alpha -x --no-shell && npx -y @genesislcap/genx@latest add alpha -x -s genesislcap/pbc-notify-seed
     ```
   </TabItem>
 </Tabs>
 
-## On an Existing Application
+## Installing in an existing application
 
-There are two ways of installing the components in an existing application.
+If you want to add Notifications to an existing application, you have a choice:
 
-### 1. Quick Command to Add All Components at Once
+- Install all the components in one step. 
+- Manually install individual components.
 
-Run this command (changing _app-folder-name_ by the name of your app folder):
+
+### Install all components in one step
+
+Run this command on the previous folder where your app is located (use the name of your app folder in place of `my-app`):
+
 ```shell
-npx -y @genesislcap/genx@latest add app-folder-name -x -s genesislcap/pbc-notify-seed
+npx -y @genesislcap/genx@latest add my-app -x -s genesislcap/pbc-notify-seed
 ```
 
-After this, do a `npm run bootstrap` to install it.
+After this, run `npm run bootstrap` to install it.
 
-### 2. Manual Implementation of Components
+### Manually installing specific components
+To load one or more components manually:
 
-You also have the option to add each component individually.
+Before you start:
 
-On the `client/package.json` file add this in `"dependencies"` section:
+1. In the **client/package.json** file, add this in the `dependencies` section:
 
 ```json
 "@genesislcap/pbc-notify-ui": "~1"
 ```
 
-Do a `npm run bootstrap` to install it.
+2. Run `npm run bootstrap` to install this.
 
 :::important
 Always check the latest version available at [genesisnpm](https://www.npmjs.com/~genesisnpm).
 :::
 
-#### 2.1 Foundation Notification Dashboard
+After this, you can install each component as described in the relevant section below.
 
-Add the component in the `src/components/component.ts` file:
+### Foundation Notification Dashboard
+
+Add the component in the **src/components/component.ts** file:
 ```typescript
 ...
 FoundationNotificationDashboard;
 ...
 ```
 
-In the `src/routes/config.ts` file, add the route for it:
+In the **src/routes/config.ts** file, add the route for it:
 
 ```typescript
-{
-  path: 'notification-dashboard',
-  element: async () => (await import('@genesislcap/pbc-notify-ui')).FoundationNotificationDashboard,
-  title: 'Notification Dashboard',
-  name: 'notification-dashboard',
-  settings: { autoAuth: true },
-  navItems: [
+import { FoundationNotificationDashboard } from '@genesislcap/pbc-notify-ui';
+
+public async configure() {
+  ...
+  this.routes.map(
+    ...
     {
+      path: 'notification-dashboard',
+      element: async () => (await import('@genesislcap/pbc-notify-ui')).FoundationNotificationDashboard,
       title: 'Notification Dashboard',
-      icon: {
-        name: 'bell',
-        variant: 'solid',
-      },
+      name: 'notification-dashboard',
+      settings: { autoAuth: true },
+      navItems: [
+        {
+          title: 'Notification Dashboard',
+          icon: {
+            name: 'bell',
+            variant: 'solid',
+          },
+        },
+      ],
     },
-  ],
-},
+    ...
+  );
+}
 ```
 
-It creates a single-page route [Notification Dashboard](../notify-ui-components#notification-dashboard) component.
+This creates a single-page route [Notification Dashboard](../../notifications-ui/notify-ui-components#notification-dashboard) component.
 
-Again, check the user permissions, because each tab of the dashboard is ruled by a permission (check the available [list of permissions](../notify-permissions)). The user only sees the sections to which they have permission for it.
+Again, check the user permissions, because each tab on the dashboard is ruled by a permission (check the available [list of permissions](../notify-permissions)). The user only sees the sections for which they have permission.
 
-#### 2.2 Foundation Inbox
+### Foundation Inbox Flyout
 
-##### 2.2.1 Foundation Inbox Flyout
+Inbox Flyout is a ready-to-use component for [Inbox](../../notifications-ui/notify-ui-components#inbox) functionality.
 
-Inbox Flyout is a ready-to-use component for [Inbox](../notify-ui-components#inbox) functionality.
-
-Add the component in the `src/components/component.ts` file:
+Add the component in the **src/components/component.ts** file:
 ```typescript
 ...
 FoundationInboxFlyout;
 ...
 ```
 
-Declare it in the `src/layouts/default.ts`. Here's an example:
+Declare it in the **src/layouts/default.ts**. Here's an example:
 
 ```html
 <div class="container">
@@ -144,8 +163,7 @@ Declare it in the `src/layouts/default.ts`. Here's an example:
 It's crucial to import ```zero-notification-listener``` too, a foundation-ui component responsible for showing screen alerts to the user.
 :::
 
-If your main `container` div is typed as `ClientAppRouter`, then consider adding the following to avoid errors:
-
+If your main `container` div is typed as `ClientAppRouter`, then consider to add the following to avoid errors:
 ```typescript
 type ClientAppRouter = FoundationRouter & {
   store: Store,
@@ -153,11 +171,11 @@ type ClientAppRouter = FoundationRouter & {
 };
 ```
 
-##### 2.2.2 Foundation Inbox
+### Foundation Inbox
 
-It's an Inbox component that you can put it wherever you want: on a page div, modal, dialog, etc. 
+This is an Inbox component that you can put anywhere you want: on a page div, modal, dialog, etc. 
 
-Add the component in the `src/components/component.ts` file:
+Add the component in the **src/components/component.ts** file:
 ```typescript
 ...
 FoundationInbox;

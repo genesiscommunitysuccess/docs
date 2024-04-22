@@ -11,7 +11,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-In order to start using Document Management, you must specify your `STORAGE_STRATEGY` in your **system-definition.kts**.
+To start using Document Management, specify your `STORAGE_STRATEGY` in your **system-definition.kts**.
 
 `STORAGE_STRATEGY` supports the following values:
 - LOCAL
@@ -22,10 +22,10 @@ In order to start using Document Management, you must specify your `STORAGE_STRA
 ```kotlin
 item(name = "STORAGE_STRATEGY", value = "<strategy>")
 ```
-Once you have set your `STORAGE_STRATEGY`, you must set your storage solution specify configuration.
+Once you have set your `STORAGE_STRATEGY`, set your storage solution specify configuration.
 
 ## Local file storage
-When using local file storage, your files are stored under your specified folder inside your **genesis-home/runtime/fileupload/** folder is created automatically.
+When using local file storage, your files are stored under your specified folder inside your **genesis-home/runtime/fileupload/** folder, which is created automatically.
 
 
 When using Local File Storage, your files are stored under **genesis-home/runtime/fileupload/**. You can optionally specify your own sub-directory under this.
@@ -58,27 +58,27 @@ item(name = "S3_FOLDER_PREFIX", value = "<folderPrefix>")
 
 Once you have set your storage mode and bucket config, your must set individual config for your chosen storage mode.
 
-#### S3_STORAGE_MODE = LOCAL
+### S3_STORAGE_MODE = LOCAL
 ```kotlin
 item(name = "AWS_HOST", value = "<host>")
 item(name = "AWS_REGION", value = "<region>")
 ```
 
-#### S3_STORAGE_MODE = DEV
+### S3_STORAGE_MODE = DEV
 ```kotlin
 item(name = "AWS_REGION", value = "<region>")
 item(name = "AWS_ACCESS_KEY", value = "<accessKey>")
 item(name = "AWS_SECRET_ACCESS_KEY", value = "<secretAccessKey>")
 ```
 
-#### S3_STORAGE_MODE = AWS
+### S3_STORAGE_MODE = AWS
 No extra config is required. The AWS resource your app is running on will extract required config from the environment it's running on.
 
 ## Sharepoint
 When using Sharepoint as your storage solution, you must have sharepoint instance created either on-premises or remotely.
 Next you will need to set the following specific config.
 
-#### On-premises Sharepoint
+### On-premises Sharepoint
 ```kotlin
 item(name = "SHAREPOINT_ROOT_URL", value = "<rootUrl>")
 item(name = "SHAREPOINT_SITE_URL", value = "<siteUrl>")
@@ -88,7 +88,7 @@ item(name = "SHAREPOINT_CLIENT_SECRET", value = "<clientSecret>")
 item(name = "SHAREPOINT_TENANT_ID", value = "<tenantId>")
 ```
 
-#### Remote Sharepoint
+### Remote Sharepoint
 ```kotlin
 item(name = "SHAREPOINT_TENANT_ID", value = "<tenantId>")
 item(name = "SHAREPOINT_SITE_ID", value = "<siteId>")

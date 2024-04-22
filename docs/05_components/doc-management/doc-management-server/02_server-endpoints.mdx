@@ -1,5 +1,5 @@
 ---
-title: 'Document Management - Endpoints'
+title: 'Document Management - endpoints'
 sidebar_label: 'Endpoints'
 id: doc-management-endpoints
 keywords: [doc-management, endpoints]
@@ -13,27 +13,24 @@ import TabItem from '@theme/TabItem';
 
 Document Management exposes upload, download and list file endpoints. Endpoints are registered automatically upon start up.
 
-## Endpoints
-
-### File Upload
+## File upload
 
 To upload a file, send a multiform POST request to the following resource path `/file-server/upload`.
 
 
-### File Download
+## File download
 
 To download a file, send a GET request to the following resource path with the following query param `/file-server/download?fileStorageId=<fileStorageId>`.
 
 
-### List All Files
+## List all files
 
 To list all files, send a GET request to `/file-server/all-files`.
 
 
-### Linking Assets
+## Linking assets
 
-To link assets (css, image files etc...), you will need to create your own event handler. The event handler will need to insert one or more objects into
-the `TemplateAsset` table. Use the following as an example.
+To link assets (css, image files etc...), you need to define `eventHandler` codeblock. This must insert one or more objects into the `TemplateAsset` table. Use the following as an example.
 
 ```kotlin
     data class LinkTemplateAssets(
@@ -58,7 +55,7 @@ the `TemplateAsset` table. Use the following as an example.
     }
 ```
 
-Once you event handler is registered, and you have uploaded both the template and asset file(s), you can send a POST request to `EVENT_LINK_TEMPLATE_ASSETS` with the following request body
+Once your event handler is registered, and you have uploaded both the template and asset file(s), you can send a POST request to `EVENT_LINK_TEMPLATE_ASSETS` with the following request body
 
 ```json
 {
