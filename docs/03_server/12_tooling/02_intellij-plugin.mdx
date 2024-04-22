@@ -246,6 +246,8 @@ As long as the source is available, you should be able to debug.
 ### Starting the UI
 
 To start your Genesis UI, click the **Start UI** button mentioned [above](#starting-the-front-and-backend).
+This will run dev:intellij NPM task, which by default does not have an explicit API_HOST value set allowing the plugin the pass the correct host value. When there’s no dev:intellij task defined, dev task is used as a fallback.
+
 This builds your front-end codebase and starts the webpack webserver in development mode.
 Once started, this launches a browser tab showing your application's login screen.
 
