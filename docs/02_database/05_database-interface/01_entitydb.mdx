@@ -1059,11 +1059,10 @@ Note that batching happens at both the data server and the update-queue level.
 
 Updates are published on the update queue once a record has been written to the database, or when a transaction completes.
 
-Within a multi-node set-up, updates are published locally and forwarded to other nodes in genesis-cluster. As a result, sometimes a node can receive updates out of sequence.
+Within a high throughput setup, where updates on the same table, are published from multiple sources, updates can be received out of sequence.
+This means that when listening to updates, in a high throughput application, it is essential to check record timestamps to detect and handler out-of-sequence updates.
+For views this is less of a problem, as Genesis refreshes the record from the database within a transaction to make sure that the published update is valid.
 
-This means that, for any clustered set-up with high message-volumes, it is essential that you check the timestamp against the latest received update when listening to updates on tables. This enables you to handle any messages out-of-sequence.
-For views this is not a problem, as Genesis refreshes the record from the database within a transaction to make sure that the published update is valid.
-
-If you use an external mqtt broker or JMS broker, there is a single centralised place to publish and consume data, so the chances of out-of-sequence updates are lower. This is dependent on where the message broker is located - as a broker in the same availability zone as a Genesis node has different latency properties from one in a different availability zone.
-
-When using message brokers genesis-cluster is not involved in terms of message forwarding.
+These multiple sources could be:
+* Different event handlers on the same node modifying the same table
+* The same event handler running on multiple nodes
