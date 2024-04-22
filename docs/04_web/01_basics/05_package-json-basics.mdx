@@ -124,7 +124,7 @@ You can run both commands in one, using `$ npm run clean:all && npm run bootstra
 
 ## Which `package.json`?
 
-When first starting to work with the `lerna`-managed monorepo, there can be some confusion about which `package.json` to make changes to (usually, there are multiple ones spread across the project). There will be a `package.json` for each of your modules and also one at the root of the `lerna` project (the client root, in the `/client` directory in the apps created from the seed projects).
+When first starting to work with the `lerna`-managed monorepo, there can be some confusion about which `package.json` to make changes to (usually, there are multiple ones spread across the project). There will be a `package.json` for each of your modules and also one at the root of the `lerna` project (the client root, in the `/client` directory in the apps created from the seed projects). Some examples of changes you might make include:
 
 -  **Adding a dependency**. As stated in the [adding dependencies](#adding-dependencies) section, you should navigate to the `package.json` that is in the directory of the module that you want to add the dependency to. For example, if you want to add the dependency `@genesislcap/foundation-login` to your web app, you probably want to add the dependency to the `client/web/package.json` file. Alternatively, if you want to add the `@genesislcap/foundation-comms` dependency to a separate module that you are building in the same repository, add it to the `package.json` of that module.
 
@@ -133,9 +133,7 @@ When first starting to work with the `lerna`-managed monorepo, there can be some
 -  **Adding a CI/workflow command**. If you want to add a command to be run as part of CI or a workflow, such as during a git command, edit the file in your client root. For example, if you want to set up linting checks, add the linting command to the `client/package.json` file.
 
 :::tip
-A good rule of thumb for knowing which `package.json` to update is to think of the `package.json` files and modules as a hierarchical tree. You need to make the change to the file that is or isn't an ancestor of the places where the change is needed.
-
-**In general, you only need to add changes to the top level `package.json` if the change is required across all modules. Otherwise, the change should be specific to the module(s) required.**
+As a general rule you'll be making two categories of changes, and understanding each one will help you understand which package.json you'll be changing. A module level change such as adding a dependency to an app or package in your app will require you to update the package.json of that app or package. If you want to add a script or dependency to help manage your repository, this will go into your top level package.json. This is a special package.json which only contains scripts and dependencies which you use during CI or developing locally, and won't contain any tools or dependencies that end users will interact with.
 :::
 
 ### Example project
