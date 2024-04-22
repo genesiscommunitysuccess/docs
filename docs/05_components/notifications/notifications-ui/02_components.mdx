@@ -1,6 +1,6 @@
 ---
 title: 'Notify - components'
-sidebar_label: 'components'
+sidebar_label: 'Components'
 id: notify-ui-components
 keywords: [notify, ui-components]
 tags:
@@ -10,7 +10,7 @@ tags:
 
 ## Notification Dashboard
 
-A page route that contains details about on how to build and customise your notification messages. The Notification Dashboard is composed by subsections. Each subsection is ruled by a specific permission, which means that the user must have this permission to see the section. For this, check the [permission](../notify-permissions) section.
+This is a page route that contains details about how to build and customise your notification messages. The Notification Dashboard is divided into sections. Each section is protected by a specific permission, so the user must have this permission to see that section. For this, check the [permission](../notify-permissions) section.
 
 ### Rules
 
@@ -18,9 +18,11 @@ A page route that contains details about on how to build and customise your noti
 
 ![Rule Creation](/img/pbc-notify-ui/05_rule_dialog.png)
 
-A rule is composed by one or more conditions. The condition chain is a set of verification of values against an insertion in the table specified. E.g., if a user creates a rule for the table `TRADE` that has only the condition `PRICE > 100`, and the system inserts a record in that table (no matter the source: manual, event handler, file, etc.) with the `PRICE` column with value `250`, then the condition is matched, and, if the rule is enabled, a notification will be sent at the destination specified.
+A rule consists of one or more conditions. The condition chain is a set of verification of values against an insertion in the table specified. 
 
-The available destinations will be the ones registered in [Routes](#13-routes).
+For example, a user creates a rule for the table `TRADE` that has only the condition `PRICE > 100`. When a record is inserted in that table (from any source: manual, Event Handler, file, etc.) with a `PRICE` value of `250`, then the condition is matched. If the rule is enabled, a notification is sent to the specified destination.
+
+The available destinations are the ones registered in [Routes](#13-routes).
 
 ### Templates
 
@@ -28,10 +30,11 @@ The available destinations will be the ones registered in [Routes](#13-routes).
 
 ![Template Creation](/img/pbc-notify-ui/06_template_dialog.png)
 
-A template is like a blueprint of a rule. The template must have at least one condition and zero or more parameters. The condition can be of two types: **TEXT** or **USER_ENTRY**.
+A template is the blueprint for a rule. The template must have at least one condition and zero or more parameters. The condition can be either **TEXT** or **USER_ENTRY**.
 
-- **TEXT**: the user that is creating/modifying the rule specifies an immutable value for the notification condition, e.g. `PRICE > 100` (*PRICE bigger than 100*). So, this template will be available for all users on the Inbox [Subscribe](#23-subscribe) section.
-- **USER_ENTRY**: if the user selects this option in the condition section, then he needs to create a correspondent parameter, filling its label, name, type, and source. Then, when the common user select a template that has a condition of the USER_ENTRY type, he'll be able to specify a value of his preference, e.g. `PRICE > {price}` when the user sees this template at the Inbox [Subscribe](#23-subscribe) section — `{price}` (around brackets) is the label. E.g., user John can subscribe for this template setting the condition `PRICE > 450`; user Thomas can subscribe for this template setting the condition `PRICE > 10`; etc. It's up to the final user to decide.
+- **TEXT**: the user who creates or modifies a rule can specify a fixed value for the notification condition, e.g. `PRICE > 100` (*PRICE bigger than 100*). This template will be available for all users on the Inbox [Subscribe](#23-subscribe) section.
+- **USER_ENTRY**: the user who selects this option in the condition section must then create a corresponding parameter, providing a label, name, type, and source. An end user can then select this template and specify an appropriate value for the parameter, e.g. `PRICE > {price}`. In the Inbox [Subscribe](#23-subscribe) section, USER_ENTRY templates are labelled with curly brackets, for example, `{price}`. 
+Different users can use this to create their own values. For example, user John can subscribe to this template and set the condition `PRICE > 450`; user Thomas can subscribe to the template and set the condition `PRICE > 10`; etc. 
 
 The available destinations will be the ones registered in [Routes](#13-routes).
 
@@ -39,15 +42,15 @@ The available destinations will be the ones registered in [Routes](#13-routes).
 
 ![Routes](/img/pbc-notify-ui/03_routes.png)
 
-A route is basically the destination of the notification alert (where do you want your alert/notification/message to go?). There are five types of route:
+A route is the destination of the notification alert (where do you want your alert/notification/message to go?). There are five types of route:
 
-1. Screen
-2. Email Distribution
-3. Email User
-4. Log
-5. MS Teams
+- Screen
+- Email Distribution
+- Email User
+- Log
+- MS Teams
 
-There are specific fields to be filled for each route. Be sure that all data provided is correct, without typos, to ensure that the notification is sent correctly.
+There are specific fields to be filled for each route. All data provided must be correct, without typos, for the notification to be sent correctly.
 
 Routes can be created, updated and/or deleted. There is a permission for each one of these operations for any route. Check it on [permissions](../notify-permissions#routes).
 
@@ -55,26 +58,26 @@ Routes can be created, updated and/or deleted. There is a permission for each on
 
 ![Notify Audit](/img/pbc-notify-ui/04_notify_audit.png)
 
-This shows a grid that contains all the notifications and alerts of all system users. You can filter by any column with any value.
+This shows a grid that contains all the notifications and alerts for all system users. You can filter by any column with any value.
 
 ## Inbox
 
-This is a sidebar component that shows an alert log as well the templates and rules that the user has subscribed to. Check the [permissions](../notify-permissions#inbox) for Inbox too.
+This is a sidebar component that shows a alert log as well the templates and rules that the user is subscribed to. Check the [permissions](../notify-permissions#inbox) for Inbox too.
 
 ### Alert Log
 
 ![Alert Log](/img/pbc-notify-ui/07_inbox_alert_log.png)
 
-The alert log is a list of alerts ordered by the most recent first.
+This is a list of alerts, ordered by the most recent first.
 
 ### My Alerts
 
 ![Alert Log](/img/pbc-notify-ui/08_inbox_my_alerts.png)
 
-This shows all the rules created on [Rules](#11-rules) section. The user can pause, resume and/or delete a rule.
+This shows all the rules created in the [Rules](#11-rules) section. The user can pause, resume and/or delete a rule.
 
 ### Subscribe
 
 ![Subscribe](/img/pbc-notify-ui/09_inbox_subscribe.png)
 
-This shows all the templates that were created previously in the [Templates](#12-templates) section. You can subscribe to a template and the template either could have additional parameters to be filled or not; if it has, then the user must specify a value for each parameter to be able to subscribe to the selected template.
+This shows all the templates that were created previously in the [Templates](#12-templates) section. A user can subscribe to any template. If the template has additional parameters, then the user must specify a value for each parameter to be able to subscribe to the template.

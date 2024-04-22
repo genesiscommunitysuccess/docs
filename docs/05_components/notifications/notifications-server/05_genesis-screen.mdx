@@ -37,8 +37,8 @@ You need at least one NOTIFY_ROUTE entry set up to point to the GATEWAY record, 
 
 | Field Name | Usage |
 | --- |--- |
-| GATEWAY_ID | Should match the ID given to the gateway in the notify.kts file. |
-| NOTIFY_ROUTE_ID | This will be auto-generated if left blank. If populated, be sure to include a unique value relative to other records. |
+| GATEWAY_ID | This should match the ID given to the gateway in the notify.kts file. |
+| NOTIFY_ROUTE_ID | This will be auto-generated if left blank. If specified, it must be a unique value relative to other records. |
 | TOPIC_MATCH | This can be anything. NOTIFY records will target this via the TOPIC field, and messages will be routed to all gateways with a matching TOPIC_MATCH value. |
 
 Here is an example NOTIFY_ROUTE entry:
