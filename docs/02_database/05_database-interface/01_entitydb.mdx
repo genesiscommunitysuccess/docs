@@ -202,10 +202,10 @@ val recordB = list[1]
 
 ### getBulk
 
-This operation creates a `Flowable` of the whole table. If the database layer supports it, the records will be
-sorted in ascending order by the index provided, or by the primary key if none is provided.
+This operation creates a `Flowable` of the whole table.
+The records will be sorted in ascending order by the index provided, or by the primary key if none is provided.
 
-Currently, only FoundationDb and Postgres support an ordered `getBulk`. There is also the `getBulkFromEnd` function, which returns records in descending order.
+There is also the `getBulkFromEnd` function, which returns records in descending order.
 
 There are also a number of continuation operations, which return the whole table after the provided record. These methods are deprecated and should not be used going forwards.
 
