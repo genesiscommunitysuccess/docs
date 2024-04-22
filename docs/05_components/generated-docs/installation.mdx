@@ -14,9 +14,13 @@ tags:
 
 The document generator is an optional library that is part of the Document Management component. There is a page that provides [installation instructions for Document Management](../../../components/doc-management/doc-management-initial-configuration).
 
-Once you have installed Document Management, add the following gradle dependency to the required module:
+Once you have installed Document Management, add the following gradle dependency...:
 
 ```kotlin
 implementation("global.genesis:file-server-templates:$fileServerVersion")
 ```
-Once you have done this, you can use the document generation API.
+
+...to the build.gradle.kts of the module where you wish to use the library. If you have just generated a brand new app, it is likely that you only have one module, ending in '-app'.
+If that is the case, add the dependency to the build.gradle.kts file of that module. However, if you add new modules to your app later on as it grows in size, you must add this dependency to each new module you want to use the Document Generation API.
+
+Once you have done this, you can use the API to generate documents from templates.
