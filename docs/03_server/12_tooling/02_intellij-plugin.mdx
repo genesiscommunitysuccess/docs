@@ -246,7 +246,8 @@ As long as the source is available, you should be able to debug.
 ### Starting the UI
 
 To start your Genesis UI, click the **Start UI** button mentioned [above](#starting-the-front-and-backend).
-This will run dev:intellij NPM task, which by default does not have an explicit API_HOST value set allowing the plugin the pass the correct host value. When there’s no dev:intellij task defined, dev task is used as a fallback.
+This will run `dev:intellij` NPM task, which by default does not have an explicit API_HOST value set allowing the plugin the pass the correct host value. 
+When there’s no `dev:intellij` task defined, the `dev` task is used as a fallback.
 
 This builds your front-end codebase and starts the webpack webserver in development mode.
 Once started, this launches a browser tab showing your application's login screen.
@@ -266,14 +267,53 @@ From here you will be able to:
 * start, restart and stop processes
 * see the health status of each process
 * see the CPU and memory usages of each process
+* filter which processes are started on `Start Server`
 
 ![Mon Example](/img/intellij-plugin/toolwindow-mon-example.png)
+
+### Showing and Hiding columns
+
+You can configure which columns are displayed in the window with the following settings:
+
+![Show / Hide Columns](/img/intellij-plugin/show-hide-columns.png)
+
+If you have less space available for the window you could disable the CPU and Memory columns to give the others more space:
+
+![Hidden Columns](/img/intellij-plugin/hidden-columns.png)
+
+:::info
+You must have at least one column displayed.
+If you hide all columns the process name column will appear as a default.
+:::
+
+Disabled columns will persist to the project settings so they stay disabled between restarts.
+
+### Filtering Processes
+
+Rather than having to directly edit the various `*-processes.xml` files, you can now choose which processes start by enabling the process filter.
+To enable the processes filter, you must first untick `Enable All Processes` in the settings:
+
+![Enable All Processes](/img/intellij-plugin/enable-all-processes.png)
+
+Once the filter checkboxes are showing you can choose which processes to enable or disable:
+
+![Filter Processes](/img/intellij-plugin/filtered-processes.png)
+
+When a process is unchecked it will no longer be started via any start server command, whether that's from the terminal or the start server button.
+As with setting `<start>false</start>` in the `processes.xml` this can be overriden by starting the process directly.
+
+If you would like to re-enable the process simply check the box and hit start server again.
+
+:::info
+Start server will no longer attempt to start any processes that are already running, so you can safely re-enable processes and hit start server again.
+:::
+
 
 ### OpenAPI
 
 The plugin can contact the router to provide [an openapi spec](/server/integration/open-api).
 To do this; the plugin will ask for a username and password to log in to your application.
-It will then request the openapi spec, and show a dialog to save it into your project.
+It will then request the openapi spec and show a dialog to save it into your project.
 
 To start this process, click on the Genesis menu and then on "Generate OpenApi Spec":
 
@@ -336,23 +376,12 @@ The home folder is the installation location, and includes all dependencies, and
 There are two ways this is managed from within the plugin:
 
 * Initially, when the plugin was released, this was managed by the developer, we call this the Deployed mode
-* Since, we have released a gradle plugin that adds a "genesisSync" task for this purpose, we call this the Gradle mode
+* Since then, we have released a gradle plugin that adds a "genesisSync" task for this purpose, we call this the Gradle mode
 
 To check which mode the plugin is running in, you can click on the "Get Help" section of the plugin,
 and then "Check Plugin Mode":
 
 ![Check Plugin Mode](/img/intellij-plugin/get-help-check-mode.png)
-
-While the Deployed mode of the plugin is still supported, we advise people to migrate their project to Gradle Mode.
-This will greatly simplify the user experience in the plugin,
-for more details on how to migrate, [see here](/operations/project-structure/settings-plugin/)
-
-The benefits of the Gradle mode, over the Deploy mode are:
-
-* automatic synchronisation of the genesis home folder
-* dependencies are loaded from the gradle cache, rather than installed in the home folder - speeding things up
-* integration into gradle task avoidance system means that this task will do no more than necessary.
-* easier management of genesis dependencies for your project
 
 ### Gradle Mode
 
@@ -363,12 +392,20 @@ Before running any other task, the "genesisSync" gradle task is triggered:
 
 This task will build local modules, copy any configuration of any dependencies and run genesisInstall.
 
+The benefits of the Gradle mode over the Deploy mode are:
+
+* automatic synchronisation of the genesis home folder
+* dependencies are loaded from the gradle cache, rather than installed in the home folder - speeding things up
+* integration into gradle task avoidance system means that this task will do no more than necessary.
+* easier management of genesis dependencies for your project
+
 ### Deploy Mode
 
 :::important
 While the Deployed mode of the plugin is still supported, we advise people to migrate their project to Gradle Mode.
-This will greatly simplify the user experience in the plugin,
-for more details on how to migrate, [see here](/operations/project-structure/settings-plugin/)
+This will greatly simplify the user experience in the plugin.
+
+For more details on how to migrate [see here](/operations/project-structure/settings-plugin/).
 :::
 
 When using the Deploy Mode, the developer is responsible for ensuring the Genesis Home folder is kept up-to-date.
@@ -399,8 +436,8 @@ Additionally, when adding or changing a PBC dependency using the Deploy mode, we
 
 #### Changing a non-PBC dependency when using the Gradle mode
 
-When using the Gradle mode, and adding a normal JVM dependency, syncing gradle will be sufficient.
+When using the Gradle mode and adding a normal JVM dependency, syncing gradle will be sufficient.
 
 #### Changing a Genesis or PBC dependency when using the Gradle mode
 
-In addition to the Gradle sync, we should also run remap at this point.
+In addition to the Gradle sync we should also run remap at this point.
