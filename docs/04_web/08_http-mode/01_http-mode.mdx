@@ -43,7 +43,7 @@ The configuration file itself will look something like this:
 
 - `POLLING_FREQUENCY` is the default polling frequency for everything not explicitly set.
 - `POLLING_INTERVAL_MAP` allows us to set custom polling frequencies for different server resources, the keys of the map need to be valid resource names on the server and the values need to be positive integers (number of milliseconds).
-- `POLLING_MAP` is slightly more complex, it's used to accelerate the polling frequency temporarily for a set of queries each time specific events occur. The keys need to be valid `events` on the server and the values are maps themselves containing 3 key-value pairs:
+- `POLLING_MAP` is slightly more complex; it is used to accelerate the polling frequency temporarily for a set of queries each time specific events occur. The keys need to be valid `events` on the server and the values are maps themselves containing 3 key-value pairs:
     - `TEMP_FREQUENCY`: temporary accelerated frequency
     - `AMOUNT_OF_POLLS`: number of polls using the `TEMP_FREQUENCY`
     - `QUERIES`: the set of queries which will be affected
