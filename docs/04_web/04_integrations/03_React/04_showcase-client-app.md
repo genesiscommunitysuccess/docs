@@ -21,5 +21,5 @@ We invite you to take a thorough look at the code and detailed examples in the [
 
 ## Getting started
 
-To begin exploring the advanced examples in the application, open the [README](https://github.com/genesiscommunitysuccess/integration-examples/blob/main/react/showcase/README.md) file in the **/react/showcase** directory of the repository. This comprehensive instructions on setting up, running, and navigating the application, ensuring a seamless start to your exploration journey.
+To begin exploring the advanced examples in the application, open the [README](https://github.com/genesiscommunitysuccess/integration-examples/blob/main/react/showcase/README.md) file in the **/react/showcase** directory of the repository. This provides comprehensive instructions for setting up, running, and navigating the application, ensuring a seamless start to your exploration.
 
