@@ -2,23 +2,23 @@
 title: 'Foundation Login'
 sidebar_label: 'Foundation Login'
 id: foundation-login
-keywords: [web, login, foundation login, frontend, ui, micro-front-ends]
+keywords: [web, login, foundation login, frontend, ui, micro frontends]
 tags:
   - web
   - login
   - foundation login
   - frontend
   - ui
-  - micro-front-ends
+  - micro frontends
 ---
 
 # Foundation Login
 
-You can find detailed information on this micro front-end in the [API documentation](./docs/api/index.md).
+You can find detailed information on this micro frontend in the [API documentation](./docs/api/index.md).
 
 ## Introduction
 
-This micro front-end includes a set of identity management functions, such as authentication (including via SSO) and password reset. Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
+This micro frontend includes a set of identity management functions, such as authentication (including via SSO) and password reset. Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
 
 Login uses the [Credential Management API](https://developer.mozilla.org/en-US/docs/Web/API/Credential_Management_API), falling back to cookies when unavailable.
 
@@ -40,10 +40,10 @@ An example of the change password screen: <br/>
 ## Login set-up
 
 :::info
-If you build a project upon one of the Genesis seed apps, then the `Login` micro front-end will already be set up for you.
+If you build a project upon one of the Genesis seed apps, then the `Login` micro frontend will already be set up for you.
 :::
 
-To enable this micro front-end in your application, follow the steps below.
+To enable this micro frontend in your application, follow the steps below.
 
 1. Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` or `$ npm run bootstrap:ignore-scripts` command again. You can see more information on the [package.json basics](../../../web/basics/package-json-basics/) page.
 
@@ -61,7 +61,7 @@ To enable this micro front-end in your application, follow the steps below.
 This page assumes you're using the routing systems that are part of `foundation-ui`, and will cover set-up as part of that routing system.
 :::
 
-Once installed, you can either use `Login` as is or re-configure it. As with all our micro front-ends, you also have the option of lazy loading it.
+Once installed, you can either use `Login` as is or re-configure it. As with all our micro frontends, you also have the option of lazy loading it.
 
 ### Basic usage
 
@@ -101,7 +101,7 @@ By default, a route that isn't marked public is not. However, a non-public route
 
 ## Authentication
 
-For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](docs/03_server/05_access-control/01_introduction.mdx).
+For authentication, most configuration is set in the back-end. You should familiarise yourself with the [authentication section of the back-end](docs/03_server/05_access-control/01_introduction.mdx).
 
 ### Username & password
 
@@ -122,12 +122,12 @@ Setting up SSO is primarily [a back-end task](docs/03_server/05_access-control/0
 :::info
 In the standard SSO process, the SSO authentication provider flow is opened via a redirect in the current page. However, many authentication providers block their system when running in an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). 
 
-To avoid this, if the Login micro front-end detects that it is running in an iframe, it opens up the authentication provider in a popup.
+To avoid this, if the Login micro frontend detects that it is running in an iframe, it opens up the authentication provider in a popup.
 :::
 
 ## Customising login
 
-The `Login` micro front-end can be customised using an exported `configure` function. See [configure](docs/api/foundation-login.configure.md) in the API docs for more information.
+The `Login` micro frontend can be customised using an exported `configure` function. See [configure](docs/api/foundation-login.configure.md) in the API docs for more information.
 
 ## License
 
