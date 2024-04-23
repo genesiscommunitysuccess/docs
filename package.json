@@ -48,6 +48,7 @@
     "@genesislcap/foundation-reporting": "14.158.0",
     "@genesislcap/foundation-testing": "14.158.0",
     "@genesislcap/foundation-zero": "14.158.0",
+    "@genesislcap/pbc-reporting-ui": "1.0.6",
     "@mdx-js/react": "^3.0.1",
     "@mui/icons-material": "^5.15.14",
     "@mui/material": "^5.15.14",

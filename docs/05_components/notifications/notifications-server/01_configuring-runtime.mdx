@@ -1,0 +1,57 @@
+---
+title: 'Notify - configuring runtime'
+sidebar_label: 'Configuring runtime'
+id: notify-configuring-runtime
+keywords: [server, notify, configuring runtime]
+tags:
+  - server
+  - notify
+  - configuring runtime
+---
+
+To make Notify work successfully, follow the steps below:
+
+1. Add the `notifyVersion` to the file **server/jvm/gradle.properties**:
+
+```xml
+notifyVersion=x.y.z
+```
+
+2. Add a reference to your **server/jvm/alpha-dictionary-cache/build.gradle.kts** file, such as this:
+
+```kotlin
+dependencies {
+  ...
+  implementation("global.genesis:genesis-notify-config:${properties["notifyVersion"]}")
+}
+```
+This creates the fields and tables that enable Notify to run.
+
+3. Add a reference to your **server/jvm/alpha-deploy/build.gradle.kts** file:
+
+```xml
+dependencies {
+  ...
+  genesisServer(
+    group = "global.genesis",
+    name = "genesis-notify-distribution",
+    version = properties["notifyVersion"].toString(),
+    classifier = "bin",
+    ext = "zip"
+  )   
+  ...
+}
+```
+
+4. Reload the Gradle project so the dependencies can be downloaded.
+5. Run the `genesisInstall` script to create the notify folder in your runtime folder, as well as all the necessary configuration and scripts.
+6. Run the `remap` script so the tables and fields are created in your database.
+7. Start the server.
+8. Run the `SetPrimary` command in order to set a primary cluster for EVALUATOR and NOTIFY processes.
+
+After following these steps, two new processes will appear in your **mon** tab: 
+
+- **GENESIS_NOTIFY_DISPATCHER**
+- **GENESIS_NOTIFY_MANAGER**
+
+These are the processes that manage the Notifications module.
