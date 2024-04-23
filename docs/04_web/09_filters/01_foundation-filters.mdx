@@ -28,7 +28,7 @@ These can be run in isolation or as part of a chain using the [runner](./docs/ap
 
 ### [API Docs](./docs/api/index.md)
 
-Client-side filters generally take primitive input parameters, and return `true` or `false` based on these values. They may also access runtime data or state to provide an outcome. They can be used for simple tasks like array or input filtering, or for more advanced use cases - such as driving feature flags, behaviors, directives, etc.
+Client-side filters generally take primitive input parameters, and return `true` or `false` based on these values. They may also access runtime data or state to provide an outcome. They can be used for simple tasks like array or input filtering, or for more advanced use cases such as driving feature flags, behaviors, directives, etc.
 
 Filters can be chained using the utilities provided in this package to handle more complex scenarios. When a filter is used without all the input parameters needed, Genesis logs a warning and returns `true` by convention so that the chain can continue. This is currently controlled at an individual filter level, and may change in time.
 
