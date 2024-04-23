@@ -58,7 +58,8 @@ For example, `$ npm run clean:dist` will run `node ../.build/clean.js dist`.
 ```
 
 :::info
-Your settings from the `config` block will be passed to different scripts as environment variables, using [cross-env](https://www.npmjs.com/package/cross-env). For example, if you wanted to add a new config for a `DEFAULT_VIEW`:
+Your settings from the `config` block are passed to different scripts as environment variables, using [cross-env](https://www.npmjs.com/package/cross-env). So, for example, if you want to add a new config for a `DEFAULT_VIEW`:
+
 - add the config to the config block as `"DEFAULT_VIEW": "reporting"`
 - in the npm script that requires the variable, add `DEFAULT_VIEW=$npm_package_config_DEFAULT_VIEW`.
 :::
@@ -97,10 +98,10 @@ You can use the `lerna add` command (instead of `npm install`) if you need to ad
 Do **not** use `npm install` to install packages as advised in [the lerna documentation](https://lerna.js.org/docs/faq#how-do-i-add-a-package-to-my-lerna-repository).
 It might work initially, but over time it can cause errors in the dependency tree and stop your application from building.
 
-If you do run into issues after running `npm install`, you should be able to recover by running `$ npm run clean:all && npm run bootstrap`. This will clear all dependency packages and download/link them again.
+If you run into issues after running `npm install`, you should be able to recover by running `$ npm run clean:all && npm run bootstrap`. This will clear all dependency packages and download/link them again.
 :::
 
-The `devDependencies` section is for dependencies that are only to used in development - think of tools such as linters. These additional dependencies will not be added to the final production bundle and therefore will not increase the download size of the application to the user's browser.
+The `devDependencies` section is for dependencies that are only used in development - think of tools such as linters. These additional dependencies will not be added to the final production bundle and therefore will not increase the download size of the application to the user's browser.
 
 ```javascript
   "devDependencies": {
@@ -124,16 +125,20 @@ You can run both commands in one, using `$ npm run clean:all && npm run bootstra
 
 ## Which `package.json`?
 
-When first starting to work with the `lerna`-managed monorepo, there can be some confusion about which `package.json` to make changes to (usually, there are multiple ones spread across the project). There will be a `package.json` for each of your modules and also one at the root of the `lerna` project (the client root, in the `/client` directory in the apps created from the seed projects). Some examples of changes you might make include:
+When first starting to work with the **lerna**-managed monorepo, there can be some confusion about which **package.json** you need to change. Usually, there are multiple **package.json** files spread across the project:
+- Each of your modules has its own **package.json**. 
+- There is also a **package.json** at the root of the **lerna** project (the client root, in the **/client** directory in the apps created from the seed projects). 
 
--  **Adding a dependency**. As stated in the [adding dependencies](#adding-dependencies) section, you should navigate to the `package.json` that is in the directory of the module that you want to add the dependency to. For example, if you want to add the dependency `@genesislcap/foundation-login` to your web app, you probably want to add the dependency to the `client/web/package.json` file. Alternatively, if you want to add the `@genesislcap/foundation-comms` dependency to a separate module that you are building in the same repository, add it to the `package.json` of that module.
+Some examples of changes you might make are:
 
--  **Adding a module command**. If you want to add a command that is specific to a module, such as a command to extract the API from a tsdoc comment, then edit the `package.json` specific to that package.
+-  **Adding a dependency**. As stated in the [adding dependencies](#adding-dependencies) section, you should navigate to the **package.json** in the directory of the module that you want to add the dependency to. For example, if you want to add the dependency `@genesislcap/foundation-login` to your web app, you probably want to add the dependency to the **client/web/package.json** file. Alternatively, if you want to add the `@genesislcap/foundation-comms` dependency to a separate module that you are building in the same repository, add it to the **package.json** of that module.
 
--  **Adding a CI/workflow command**. If you want to add a command to be run as part of CI or a workflow, such as during a git command, edit the file in your client root. For example, if you want to set up linting checks, add the linting command to the `client/package.json` file.
+-  **Adding a module command**. If you want to add a command that is specific to a module, such as a command to extract the API from a tsdoc comment, then edit the **package.json** specific to that package.
+
+-  **Adding a CI/workflow command**. If you want to add a command to be run as part of CI or a workflow, such as during a git command, edit the file in your client root. For example, if you want to set up linting checks, add the linting command to the **client/package.json** file.
 
 :::tip
-As a general rule you'll be making two categories of changes, and understanding each one will help you understand which package.json you'll be changing. A module level change such as adding a dependency to an app or package in your app will require you to update the package.json of that app or package. If you want to add a script or dependency to help manage your repository, this will go into your top level package.json. This is a special package.json which only contains scripts and dependencies which you use during CI or developing locally, and won't contain any tools or dependencies that end users will interact with.
+As a general rule, there are two categories of change. Understanding each one will help you understand which **package.json** you need to change. A module-level change, such as adding a dependency to an app or package in your app, requires you to update the **package.json** of that app or package. If you want to add a script or dependency to help manage your repository, this must go into your top-level **package.json**. This is a special **package.json** that only contains scripts and dependencies that you use during CI or developing locally; it won't contain any tools or dependencies that end users will interact with.
 :::
 
 ### Example project
@@ -180,10 +185,10 @@ classDiagram
 ```
 
 Some examples of changes for the project:
-* Set up linting in `client/package.json`, because you want to run linting checks across all parts of the code.
-* The "Blazer" theme requires `@genesislcap/foundation-ui` as a dependency so that it can import the web components and export them with customised css/themeing. For this, add a `dependency` to `client/packages/blazer/package.json`.
-* The "Blazer" theme needs to be used in both apps to keep a consistent look and feel, and the calculations package is required in both apps too. Add these dependencies in the `package.json` of each of the modules, and then `lerna` will ensure they're linked together. This means you can see the local changes without having to publish the theme or calculation package to `npm`.
+* Set up linting in **client/package.json**, because you want to run linting checks across all parts of the code.
+* The "Blazer" theme requires `@genesislcap/foundation-ui` as a dependency so that it can import the web components and export them with customised css/theming. For this, add a `dependency` to **client/packages/blazer/package.json**.
+* The "Blazer" theme needs to be used in both apps to keep a consistent look and feel, and the calculations package is required in both apps too. Add these dependencies in the **package.json** of each module, and then `lerna` will ensure they're linked together. This means you can see the local changes without having to publish the theme or calculation package to `npm`.
 
 :::info
-If you need an external dependency to both apps such as [@microsoft/api-documenter](https://www.npmjs.com/package/@microsoft/api-documenter), then lerna will only download it once in the common `node_modules` and then symlink it to where it is required.
+If you need an external dependency to both apps, such as [@microsoft/api-documenter](https://www.npmjs.com/package/@microsoft/api-documenter), then lerna will only download it once in the common `node_modules`; it then symlinks it to where it is required.
 :::
