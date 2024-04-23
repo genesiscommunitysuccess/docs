@@ -162,6 +162,7 @@ const config = {
         },
         { type: "doc", docId: "server/server-modules", label: "Server" },
         { type: "doc", docId: "web/front-end", label: "Web" },
+        { type: "doc", docId: "components/components", label: "Components", when: { routeMatch: "docs" } },
         { type: "doc", docId: "operations/operations", label: "Operations" },
         {
           type: "html",

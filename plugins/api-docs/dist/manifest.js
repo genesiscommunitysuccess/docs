@@ -57,16 +57,16 @@ exports.default = {
             },
         },
         {
-            name: "@genesislcap/foundation-reporting",
+            name: "@genesislcap/pbc-reporting-ui",
             enabled: true,
             src: {
                 img_dir: "docs/img",
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/04_web/05_micro-front-ends/02_front-end-reporting",
+                directory: "./docs/05_components/reporting",
                 img_dir: "docs/img",
-                readme: "02_foundation-reporting.mdx",
+                readme: "foundation-reporting.mdx",
                 keywords: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
                 tags: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
                 pages: [
@@ -87,7 +87,7 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/04_web/05_micro-front-ends/03_foundation-header",
+                directory: "./docs/04_web/05_micro-front-ends/02_foundation-header",
                 api_docs: "docs/api",
                 img_dir: "docs/img",
                 readme: "03_foundation-header.mdx",
@@ -127,7 +127,7 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/04_web/05_micro-front-ends/04_foundation-entity-management",
+                directory: "./docs/04_web/05_micro-front-ends/03_foundation-entity-management",
                 api_docs: "docs/api",
                 img_dir: "docs/img",
                 readme: "04_foundation-entity-management.mdx",
@@ -167,7 +167,7 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/04_web/05_micro-front-ends/05_foundation-login",
+                directory: "./docs/04_web/05_micro-front-ends/04_foundation-login",
                 api_docs: "docs/api",
                 img_dir: "docs/img",
                 readme: "05_foundation-login.mdx",

@@ -5,7 +5,7 @@ sidebar_position: 46
 title: 'The tables dictionary'
 ---
 
-This file contains all the tables that have been created by the conversion proceess.
+This file contains all the tables that have been created by the conversion process.
 
 ```kotlin
 tables {
