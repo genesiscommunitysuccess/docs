@@ -1,8 +1,8 @@
 ---
-title: 'Introduction'
-sidebar_label: 'Introduction'
-sidebar_position: 1
-id: fix-introduction
+title: 'Installation'
+sidebar_label: 'Installation'
+sidebar_position: 2
+id: fix-installation
 keywords: [fix, FIX, installation, genx, add]
 tags:
     - fix
@@ -12,25 +12,66 @@ tags:
     - add
 ---
 
-The Genesis FIX component provides a gateway process to communicate with external parties via the [FIX](https://www.fixtrading.org/) protocol.
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-### Outbound and inbound FIX
+## Initialising and adding to a new application
 
-For **outbound** FIX messages, you have to create Streamers that listen to specific tables and views in the application's database.
+The best way to add the FIX component to a new application is to use GenX - see [GenX CLI](/docs/06_operations/03_commands/04_Genx_CLI.mdx) for more details.
 
-The outbound Streamer streams data updates to the outbound Streamer Client.
+For example, the following command initialises a new application called `myapp` and adds the FIX component to it.
 
-The outbound Streamer Client transforms the data into a FIX message, and passes it to the FIX gateway. From there, the message is sent to the external system you are integrating with.
+<Tabs
+    defaultValue="windows"
+    values={[
+        { label: 'Windows', value: 'windows', },
+        { label: 'Mac and Linux', value: 'mac-and-linux', }
+    ]
+    }>
+    <TabItem value="windows">
+        ```shell title="Powershell"
+        npx -y @genesislcap/genx@latest init myapp -x --no-shell; npx -y @genesislcap/genx@latest add myapp -x -s @genesislcap/pbc-fix-seed
+        ```
+    </TabItem>
 
-![](/img/fixout.png)
+    <TabItem value= 'mac-and-linux'>
+        ```shell title="Bash"
+        npx -y @genesislcap/genx@latest init myapp -x --no-shell && npx -y @genesislcap/genx@latest add myapp -x -s @genesislcap/pbc-fix-seed
+        ```
+    </TabItem>
+</Tabs>
 
-**Inbound** FIX messages arrive through the FIX gateway and are written to a table in the data server called FIX_IN.
+## Adding to an existing application
 
-You need to create a Streamer to monitor this table and stream the data to the relevant inbound Streamer Client (or Clients). The Streamer Client transforms the data to conform to the Genesis data set and passes it to the application’s Event Handler.
+If you already have an application and you want to add the FIX component, you have two possibilities:
 
-![](/img/fixin.png)
+- If your original application was initialised using Genx, then you can use Genx to add the component.
+- If you are not sure how the original application was initialised, add the component manually.
 
-Note that the Genesis FIX module has all the QuickFIX libraries and gives you a default outbound Streamer that is set up to listen to the FIX_IN table in the database.
+### Using GenX
 
-### FIX Xlator
-The [FIX Xlator](../fix-xlator) is a plugin for the Streamer and Streamer client, to bring in type-safe handling of FIX messages.
+Run this command (change _app-folder-name_ to the name of your app folder):
+
+<Tabs
+    defaultValue="windows"
+    values={[
+        { label: 'Windows', value: 'windows', },
+        { label: 'Mac and Linux', value: 'mac-and-linux', }
+    ]
+    }>
+    <TabItem value="windows">
+        ```shell title="Powershell"
+        npx -y @genesislcap/genx@latest add app-folder-name -x -s @genesislcap/pbc-fix-seed
+        ```
+    </TabItem>
+
+    <TabItem value= 'mac-and-linux'>
+        ```shell title="Bash"
+        npx -y @genesislcap/genx@latest add app-folder-name -x -s @genesislcap/pbc-fix-seed
+        ```
+    </TabItem>
+</Tabs>
+
+:::important
+You can check the latest available version at [genesisnpm](https://www.npmjs.com/~genesisnpm).
+:::

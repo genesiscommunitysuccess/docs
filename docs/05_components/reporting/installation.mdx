@@ -1,5 +1,5 @@
 ---
-title: 'Reporting - installation'
+title: 'Reporting - Installation'
 sidebar_label: 'Installation'
 sidebar_position: 1
 id: reporting-installation
@@ -11,6 +11,63 @@ tags:
     - add
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-Details on installing the Reporting component will be provided shortly.
+## Initialising and adding to a new application
+
+The best way to add the Reporting component to a new application is to use GenX - see [GenX CLI](/docs/06_operations/03_commands/04_Genx_CLI.mdx) for more details.
+
+For example, the following command initialises a new application called `myapp` and adds the Reporting component to it.
+
+<Tabs
+    defaultValue="windows"
+    values={[
+        { label: 'Windows', value: 'windows', },
+        { label: 'Mac and Linux', value: 'mac-and-linux', }
+    ]
+    }>
+    <TabItem value="windows">
+        ```shell title="Powershell"
+        npx -y @genesislcap/genx@latest init myapp -x --no-shell; npx -y @genesislcap/genx@latest add myapp -x -s genesislcap/pbc-reporting-seed
+        ```
+    </TabItem>
+
+    <TabItem value= 'mac-and-linux'>
+        ```shell title="Bash"
+        npx -y @genesislcap/genx@latest init myapp -x --no-shell && npx -y @genesislcap/genx@latest add myapp -x -s genesislcap/pbc-reporting-seed
+        ```
+    </TabItem>
+</Tabs>
+
+## Adding to an existing application
+
+If you already have an application and you want to add the Reporting component, you have two possibilities:
+
+- If your original application was initialised using Genx, then you can use Genx to add the component.
+- If you are not sure how the original application was initialised, add the component manually.
+
+### Using GenX
+
+Run this command (change _app-folder-name_ to the name of your app folder):
+
+<Tabs
+    defaultValue="windows"
+    values={[
+        { label: 'Windows', value: 'windows', },
+        { label: 'Mac and Linux', value: 'mac-and-linux', }
+    ]
+    }>
+    <TabItem value="windows">
+        ```shell title="Powershell"
+        npx -y @genesislcap/genx@latest add app-folder-name -x -s genesislcap/pbc-reporting-seed
+        ```
+    </TabItem>
+
+    <TabItem value= 'mac-and-linux'>
+        ```shell title="Bash"
+        npx -y @genesislcap/genx@latest add app-folder-name -x -s genesislcap/pbc-reporting-seed
+        ```
+    </TabItem>
+</Tabs>
 
