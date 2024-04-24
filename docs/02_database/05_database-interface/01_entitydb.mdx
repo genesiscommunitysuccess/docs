@@ -228,8 +228,7 @@ There are also a number of continuation operations, which return the whole table
 
 ```kotlin
 // we can pass in Trade as a type parameter
-    // todo undo...
-val flow = db.getBulk  --- Trade>()
+val flow = db.getBulk<Trade>()
 // we can pass in the TRADE object
 val flow = db.getBulk(TRADE)
 // or we can pass in an index reference
