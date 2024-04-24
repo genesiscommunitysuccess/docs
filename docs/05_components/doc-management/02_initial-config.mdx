@@ -69,29 +69,6 @@ Run this command (change _app-folder-name_ to the name of your app folder):
     </TabItem>
 </Tabs>
 
-### Manual installation
-To manually add the Document Management component to your project, you must add some dependencies to your server and client packages.
-
-For the server, add the following dependency to the **server/settings.gradle.kts** file in your project:
-
-```kotlin
-genesis {
-    projectType = ProjectType.APPLICATION
-    dependencies {
-        dependency(“global.genesis:file-server:<version>“)
-    }
-    plugins {
-        genesisDeploy.enabled = true
-    }
-}
-```
-
-For the UI, add the following to the `dependencies` section of **client/package.json** in your project:
-
-```json
-"@genesislcap/pbc-documents-ui": "<version>"
-```
-
 :::important
 You can check the latest available version at [genesisnpm](https://www.npmjs.com/~genesisnpm).
 :::

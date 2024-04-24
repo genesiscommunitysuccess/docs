@@ -1,0 +1,36 @@
+---
+title: 'Document Management - Manual Installation'
+sidebar_label: 'Manual Installation'
+sidebar_position: 1
+id: doc-management-install
+keywords: [doc-management, file-storage-manager]
+tags:
+  - doc-management
+  - file-storage-manager
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+### Manual installation
+To manually add the Document Management component to your project, you must add some dependencies to your server and client packages.
+
+1. Add `fileServerVersion` to the file **server/gradle.properties**:
+
+```xml
+notifyVersion=x.y.z
+```
+
+2. Then add the following dependency to the **server/settings.gradle.kts** file in your project:
+
+```kotlin
+genesis {
+    projectType = ProjectType.APPLICATION
+    ...
+    dependencies {
+        ...
+        dependency(“global.genesis:file-server:<version>“)
+        ...
+    }
+}
+```
