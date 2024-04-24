@@ -1059,9 +1059,9 @@ Note that batching happens at both the data server and the update-queue level.
 
 Updates are published on the update queue once a record has been written to the database, or when a transaction completes.
 
-Within a high throughput setup, where updates on the same table, are published from multiple sources, updates can be received out of sequence.
-This means that when listening to updates, in a high throughput application, it is essential to check record timestamps to detect and handler out-of-sequence updates.
-For views this is less of a problem, as Genesis refreshes the record from the database within a transaction to make sure that the published update is valid.
+Within a high-throughput set-up, where updates on the same table are published from multiple sources, updates can be received out of sequence.
+This means that when listening to updates, in a high-throughput application, it is essential to check record timestamps to detect and handle out-of-sequence updates.
+For views, this is less of a problem, as Genesis refreshes the record from the database within a transaction to make sure that the published update is valid.
 
 These multiple sources could be:
 * Different event handlers on the same node modifying the same table
