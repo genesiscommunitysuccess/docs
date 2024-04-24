@@ -104,7 +104,7 @@ Top level web component, which is used to initialise a custom layout
 - **reload-buffer** : numerical attribute that controls the buffer between how long the layout is reloaded. The default
 is 500ms. In this case, the layout is only reloaded if the child elements of the layout region are manipulated
 once every 500ms. This is to stop the layout being reloaded over and over for every single item during initialisation.
-The higher the value is, the more performant the component is - but the first load will appear to take longer.
+The higher the value is, the more performant the component is, but the first load will appear to take longer.
 - **auto-save-key** : optional string which if set, will enable autosaving the layout under this key in local
 storage. See [here](#autosaving-layout) for more.
 
@@ -212,7 +212,7 @@ You can store state for an instance of an item, and that will be saved inline. S
 
 #### [Load Layout](./docs/api/foundation-layout.foundationlayout.loadlayout.md)
 
-Loads a serialised layout. All items that are described in the config to load must already be registered with the layout system - using either the declarative or JavaScript API. If there are items missing (could be due either to missing items or to a mismatch of registered names) then a `LayoutUsageError` will be thrown containing the names of the missing items. Alternatively, you can request placeholder items to be added.
+Loads a serialised layout. All items that are described in the config to load must already be registered with the layout system, using either the declarative or JavaScript API. If there are items missing (could be due either to missing items or to a mismatch of registered names) then a `LayoutUsageError` will be thrown containing the names of the missing items. Alternatively, you can request placeholder items to be added.
 
 ## Events
 
