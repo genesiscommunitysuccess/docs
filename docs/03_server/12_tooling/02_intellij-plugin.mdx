@@ -199,16 +199,36 @@ To clean up the UI, use the **Services** window for better organisation (only av
 
 ![Services Window](/img/plugin-services.png)
 
-### Processes in the plugin
+### Starting the back end
 
-The plugin creates its own run configurations in IntelliJ.
-These are indicated by a Genesis "G" Icon:
+To start all services, click on "Start All Services".
+You can start specific services from the mon Window, and from the Intellij Run Config list:
 
 ![Genesis Runconfig](/img/intellij-plugin/genesis-runconfig.png)
 
 Once the process is started, the log file will be attached to the process:
 
 ![A running process](/img/intellij-plugin/process-log.png)
+
+#### Filtering Processes
+
+To only start selected processes when clicking on "Start All Genesis Services',
+you can enable the processes filter, by unticking `Enable All Processes` in the settings:
+
+![Enable All Processes](/img/intellij-plugin/enable-all-processes.png)
+
+Once this setting is unticked, you will be able to filter which process to start:
+
+![Filter Processes](/img/intellij-plugin/filtered-processes.png)
+
+When a process is unticked it will no longer be started via any start server command,
+whether that's from the terminal or the start server button.
+However, processes that are not ticked, can still be started manually.
+
+If you would like to re-enable the process simply check the box and hit start server again.
+
+Please note, "Start All Process" will not attempt to start any processes that are already running,
+so you can safely re-enable processes and hit start server again.
 
 #### Process Log File Filtering
 
@@ -335,27 +355,6 @@ If you hide all columns the process name column will appear as a default.
 
 Disabled columns will persist to the project settings so they stay disabled between restarts.
 
-### Filtering Processes
-
-Rather than having to directly edit the various `*-processes.xml` files, you can now choose which processes start by enabling the process filter.
-To enable the processes filter, you must first untick `Enable All Processes` in the settings:
-
-![Enable All Processes](/img/intellij-plugin/enable-all-processes.png)
-
-Once the filter checkboxes are showing you can choose which processes to enable or disable:
-
-![Filter Processes](/img/intellij-plugin/filtered-processes.png)
-
-When a process is unchecked it will no longer be started via any start server command, whether that's from the terminal or the start server button.
-As with setting `<start>false</start>` in the `processes.xml` this can be overriden by starting the process directly.
-
-If you would like to re-enable the process simply check the box and hit start server again.
-
-:::info
-Start server will no longer attempt to start any processes that are already running, so you can safely re-enable processes and hit start server again.
-:::
-
-
 ### OpenAPI
 
 The plugin can contact the router to provide [an openapi spec](/server/integration/open-api).
@@ -413,6 +412,8 @@ If process information is not showing in the mon window, you can always start th
 
 ![Start Daemon](/img/intellij-plugin/menu-g-start-daemon.png)
 
+However, regardless of this setting, the resource daemon will be started, when starting any back service.
+
 ## Keeping your local Genesis Home in-sync
 
 Every Genesis application, whether deployed to a server, or running locally, needs a home folder.
@@ -423,7 +424,7 @@ The home folder is the installation location, and includes all dependencies, and
 There are two ways this is managed from within the plugin:
 
 * Initially, when the plugin was released, this was managed by the developer, we call this the Deployed mode
-* Since then, we have released a gradle plugin that adds a "genesisSync" task for this purpose, we call this the Gradle mode
+* Since the initial release, we have released a gradle plugin that adds a "genesisSync" task for this purpose, we call this the Gradle mode
 
 To check which mode the plugin is running in, you can click on the "Get Help" section of the plugin,
 and then "Check Plugin Mode":
