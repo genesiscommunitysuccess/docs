@@ -1,5 +1,5 @@
 ---
-title: 'Document Management - `Endpoints'
+title: 'Document Management - `endpoints'
 sidebar_label: 'Endpoints'
 sidebar_position: 3
 id: doc-management-endpoints
@@ -12,13 +12,13 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Document Management exposes upload, download and list file endpoints. Endpoints are registered automatically upon start up.
+Document Management exposes upload, download and list file endpoints. Endpoints are registered automatically on start-up.
 
 ## File upload
 
-To upload a file, send a multiform POST request to the following resource path /file-server/upload. 
+To upload a file, send a multiform POST request to the following resource path:  **/file-server/upload**. 
 
-To construct a multiform POST request, you must provide a key for the form data, and the value is the file content. The headers must also be set correctly:
+To construct a multiform POST request, you must provide a key for the form data, and a value (the file content). The headers must also be set correctly:
 ```
 Content-Type : multipart/form-data
 Content-Disposition : filename=<filename>
