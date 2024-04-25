@@ -8,7 +8,7 @@ tags:
     - reporting
 ---
 
-## Manual Installation
+## Manual installation
 > :warning: **This section assumes you have not used GenX to add the Reporting component.** You should only add components manually if your project is on an older framework version that does not support [GenX Add](../reporting-installation).
 
 To add Reporting to your app manually, follow these steps:
@@ -32,9 +32,9 @@ genesis {
 }
 ```
 
-## Enabling Dataserver Queries for Reporting
+## Enabling Data Server queries for Reporting
 
-The Reporting Server uses Dataserver queries defined in the system as sources of data for report generation. However, not all sources are available by default - in case they contain sensitive information. In order to make a query available as a source of data for a report, an entry must be made in the `REPORT_DATASOURCES` table.
+The Reporting Server uses Data Server queries defined in the system as sources of data for report generation. However, not all sources are available by default - in case they contain sensitive information. In order to make a query available as a source of data for a report, you must make an entry in the `REPORT_DATASOURCES` table.
 
 In most cases, you will have already set up queries in your [Data Server](../../../server/data-server/basics/) to provide the data, but you can add new sources by creating new queries in your _application_**-dataserver.kts**.
 
