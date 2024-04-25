@@ -23,9 +23,9 @@ The Genesis Intellij Plugin enables you to run the full stack of a Genesis appli
 
 ![Genesis Tool Window](/img/intellij-plugin/genesis-tool-window.png)
 
-3. For Macos specifically, you will need to install LMDB locally to start a Genesis data server.
+3. For MacOs specifically, you will need to install LMDB locally to start a Genesis data server.
 
-### Installing LMDB for Macos
+### Installing LMDB for MacOs
 
 :::info
 This is not required for developers that use Windows locally
@@ -246,7 +246,9 @@ As long as the source is available, you should be able to debug.
 ### Starting the UI
 
 To start your Genesis UI, click the **Start UI** button mentioned [above](#starting-the-front-and-backend).
-This will run `dev:intellij` NPM task, which by default does not have an explicit API_HOST value set allowing the plugin the pass the correct host value. 
+This will first run `bootstrap` NPM task.
+This will run the `dev:intellij` NPM task,
+which by default does not have an explicit API_HOST value set allowing the plugin the pass the correct host value.
 When there’s no `dev:intellij` task defined, the `dev` task is used as a fallback.
 
 This builds your front-end codebase and starts the webpack webserver in development mode.
@@ -258,6 +260,51 @@ its default port is 9064. Therefore, your router port in the settings should be 
 
 ![Router Settings](/img/plugin-router.png)
 :::
+
+Depending on your edition and version of IntelliJ, these NPM tasks will run either:
+
+* On the Ultimate Edition - the plugin will use the builtin NPM run configuration
+* On the Community Edition - the plugin will use the builtin shell run configuration to run NPM when available:
+    - MacOs - any version
+    - Windows - IntelliJ version 2023.3 and after
+    - Windows - Any IntelliJ version, if the "SHELL" env variable to be set to 'powershell.exe'
+* Else it will show run the front end from the Build screen
+
+#### NPM Run Configurations
+
+When available, the plugin will use the builtin NPM run configurations.
+This will use the IntelliJ configured Node interpreter.
+In this mode the plugin will generate a "UI" and a "bootstrap" run configuration.
+These can be triggered both from the Genesis Tool Window and directly form IntelliJ.
+
+![NPM Run Config](/img/intellij-plugin/npm-runconfig.png)
+
+#### Shell Run Configuration
+
+On community editions of IntelliJ, this is the preferred option.
+With this run configuration, the plugin will use whichever node interpreter is available on the terminal.
+It will create a "UI-script" and "npm bootstrap" run configurations.
+These can also be triggered both from the Genesis Tool Window and directly form IntelliJ.
+
+![Shell Run Config](/img/intellij-plugin/shell-runconfig.png)
+
+In most cases, picking up npm from the path will be sufficient.
+However, when using the community edition, we have an NPM location setting in Genesis Settings, that you can use.
+
+![NPM Location in settings](/img/intellij-plugin/settings-npm-location.png)
+
+If this does not resolve the issue, you can use the build screen starter,
+by selecting "Use legacy UI starter" from settings.
+
+![legacy ui starter in settings](/img/intellij-plugin/settings-legacy-ui-starter.png)
+
+#### Starting from the build screen
+
+If the script run config is not available,
+of if the legacy ui starter is selected, the UI starter will be shown in the build screen.
+Please note that this can only be started from the Genesis Tool Window.
+
+![UI Launcher in build screen](/img/intellij-plugin/build-screen-ui.png)
 
 ### The mon window
 
