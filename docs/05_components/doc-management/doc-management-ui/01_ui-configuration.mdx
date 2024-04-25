@@ -1,6 +1,6 @@
 ---
-title: 'Document Management - UI configuration'
-sidebar_label: 'UI configuration'
+title: 'Document Management - manual installation'
+sidebar_label: 'Manual installation'
 id: doc-management-ui-config
 keywords: [doc-management, doc-management-ui-config]
 tags:
@@ -8,7 +8,13 @@ tags:
   - doc-management-ui-config
 ---
 
-## Prerequisites
+> :warning: **This guide assumes you have not used GenX to add the Document Management component.** You should only add components manually if your project is on an older framework version that does not support [GenX Add](../../doc-management-installation).
+
+For the UI, add the following to the `dependencies` section of **client/package.json** in your project:
+
+```json
+"@genesislcap/pbc-documents-ui": "<version>"
+```
 
 Note that each component requires a permission so that the user can view it or perform a specific action; check the [permissions](../../../../components/doc-management/doc-management-ui/doc-management-permissions) available and ensure that your user is permissioned accordingly.
 

@@ -1,6 +1,7 @@
 ---
 title: 'Document Management - configuring File Storage Manager'
 sidebar_label: 'Configuring File Storage Manager'
+sidebar_position: 2
 id: doc-management-configuring
 keywords: [doc-management, file-storage-manager]
 tags:
@@ -22,7 +23,7 @@ To start using Document Management, specify your `STORAGE_STRATEGY` in your **sy
 ```kotlin
 item(name = "STORAGE_STRATEGY", value = "<strategy>")
 ```
-Once you have set your `STORAGE_STRATEGY`, set your storage solution specific configuration.
+Once you have set your `STORAGE_STRATEGY`, you must configure the storage solution that you are going to use. The requirements for each solution are described below.
 
 ## Local file storage
 When using local file storage, your files are stored under your specified folder inside your **genesis-home/runtime/fileupload/** folder, which is created automatically.

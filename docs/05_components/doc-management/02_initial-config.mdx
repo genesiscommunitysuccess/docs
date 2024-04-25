@@ -1,7 +1,7 @@
 ---
-title: 'Document Management - initial configuration'
-sidebar_label: 'Initial configuration'
-id: doc-management-initial-configuration
+title: 'Document Management - installation'
+sidebar_label: 'Installation'
+id: doc-management-installation
 keywords: [doc-management, ui-configuration, server-configuration]
 tags:
   - doc-management
@@ -40,14 +40,7 @@ For example, the following command initialises a new application called `myapp` 
 
 ## Adding to an existing application
 
-If you already have an application and you want to add the Documentation Management component, you have two possibilities:
-
-- If your original application was initialised using Genx, then you can use Genx to add the component.
-- If you are not sure how the original application was initialised, add the component manually.
-
-### Using GenX
-
-Run this command (change _app-folder-name_ to the name of your app folder):
+To add the Document Management component to an existing application, run this command, which uses genx to install the components (change _app-folder-name_ to the name of your app folder):
 
 <Tabs
     defaultValue="windows"
@@ -68,29 +61,6 @@ Run this command (change _app-folder-name_ to the name of your app folder):
         ```
     </TabItem>
 </Tabs>
-
-### Manual installation
-To manually add the Document Management component to your project, you must add some dependencies to your server and client packages.
-
-For the server, add the following dependency to the **server/settings.gradle.kts** file in your project:
-
-```kotlin
-genesis {
-    projectType = ProjectType.APPLICATION
-    dependencies {
-        dependency(“global.genesis:file-server:<version>“)
-    }
-    plugins {
-        genesisDeploy.enabled = true
-    }
-}
-```
-
-For the UI, add the following to the `dependencies` section of **client/package.json** in your project:
-
-```json
-"@genesislcap/pbc-documents-ui": "<version>"
-```
 
 :::important
 You can check the latest available version at [genesisnpm](https://www.npmjs.com/~genesisnpm).
