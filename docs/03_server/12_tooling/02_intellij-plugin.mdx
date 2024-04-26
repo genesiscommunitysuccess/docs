@@ -1,5 +1,5 @@
 ---
-title: 'Server tooling - Genesis IntelliJ Plugin'
+title: 'Server tooling - Genesis IntelliJ plugin'
 sidebar_label: 'Genesis IntelliJ Plugin'
 id: intellij-plugin
 keywords: [server, tooling, code snippets, intellij, plugin, jetbrains, local]
@@ -28,16 +28,16 @@ The Genesis Intellij Plugin enables you to run the full stack of a Genesis appli
 ### Installing LMDB for MacOs
 
 :::info
-This is not required for developers that use Windows locally
+This is not required for developers that use Windows locally.
 :::
 
-First you will need to install lmdb using `brew`:
+1. Install lmdb using `brew`:
 
 ```shell
 brew install lmdb
 ```
 
-Next, you will need to create a symlink to make LMDB accessible through Java:
+2. Create a symlink to make LMDB accessible through Java:
 
 ```shell
 ln -s /opt/homebrew/opt/lmdb/lib/liblmdb.dylib /Users/<your.username>/Library/Java/Extensions/liblmdb.dylib
@@ -56,46 +56,41 @@ The Genesis Documentation is available straight from the tool window.
 
 ![Get Help](/img/intellij-plugin/get-help.png)
 
-## First Time Setup
+## First-time set-up
 
-Once the Genesis tool window shows up; you are ready for the first time setup.
+Once the Genesis tool window is visible you are ready for the first-time set-up.
+
 Before you can start any services, there are a few things you need to do:
 
-1. Configure your Database
-2. Run Remap
-3. Load any stock data
+1. Configure your database.
+2. Run `remap`.
+3. Load some stock data.
 
 :::info
-If you see the the below message when starting the plugin:
+If you see the  message below when you start the plugin:
 ![Genesis Install](/img/intellij-plugin/install-genesis.png)
 
-It means that you are using a deployed setup.
-You will need to run the install process before running Remap
-See [Here](#deploy-mode) for more details.
+...this means that you are using a deployed [set-up](#deploy-mode). You need to run the install process before running `remap`.
 :::
 
-### Database Configuration
+### Database configuration
 
-Unless your project is configured to use H2 out of the box,
-you will need to configure the plugin to use a [supported database](../../../database/database-technology/overview/).
+Unless your project is configured to use H2 out of the box, you need to configure the plugin to use a [supported database](../../../database/database-technology/overview/).
 
-Below, you will find example configurations for the following database:
+Below, you will find example configurations for the following databases:
 
 * Postgres
 * MS Sql Server
 * H2
 
-#### Configuring your Database
-
-To configure the database in the plugin, you should go to the Genesis Tool Window and click on "Open Genesis Settings".
+To configure the database in the plugin, go to the Genesis Tool Window and click on **Open Genesis Settings**.
 
 ![Open Settings](/img/intellij-plugin/setting-in-toolbar.png)
 
-A local PostgreSQL installation using the docker run command [below](/#postgres), your settings should look like this:
+#### Postgres
+For a local PostgreSQL installation using the docker `run` command [below](/#postgres), your settings should look like this:
 
 ![Genesis Settings with Postgres](/img/intellij-plugin/settings-postgres.png)
-
-##### Postgres
 
 To run postgres using docker or rancher desktop, use the following command:
 
@@ -103,7 +98,7 @@ To run postgres using docker or rancher desktop, use the following command:
 docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c shared_buffers=80MB -c max_connections=250
 ```
 
-With this container setup, use the following database configuration in the plugin:
+Once the container is set up, use the following database configuration in the plugin:
 
 | Option     | Setting                             |
 |------------|-------------------------------------|
@@ -114,13 +109,13 @@ With this container setup, use the following database configuration in the plugi
 
 #### MS SQL Server
 
-To MS SQL Server using docker or rancher desktop, use the following command:
+For a local PostgreSQL installation MS SQL Server using a docker or rancher desktop, use the following command:
 
 ```shell
 docker run -d --name sql1 --hostname sql1 -p 1433:1433 -e ACCEPT_EULA=1 -e MSSQL_SA_PASSWORD=G3n3s1sGl0bal -e MSSQL_PID=Developer  mcr.microsoft.com/azure-sql-edge
 ```
 
-With this container setup, use the following database configuration in the plugin:
+Once the container is set up, use the following database configuration in the plugin:
 
 | Option     | Setting                                                  |
 |------------|----------------------------------------------------------|
@@ -132,65 +127,61 @@ With this container setup, use the following database configuration in the plugi
 #### H2
 
 H2 is the easiest database to run locally.
-There is no need to install anything, as H2 will use a local file to store the database.
-While it is not supported for production, it does help developers start quickly locally.
+There is no need to install anything, as H2 uses a local file to store the database. While H2 is not supported for production, it does help developers start quickly locally.
 
 | Option  | Setting                                                                                                         |
 |---------|-----------------------------------------------------------------------------------------------------------------|
 | DbLayer | `SQL`                                                                                                           |
 | DbHost  | `jdbc:h2:file:~/genesis-local-db/{{appName}}/h2/test;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,KEY;AUTO_SERVER=TRUE` |
 
-### Run Remap
+### Run remap
 
-With the Genesis Framework, [Remap](/operations/commands/remap) manages the database schema.
-Whenever tables are added, modified or removed, you will need to run remap to sync these changes.
+With the Genesis Framework, [remap](/operations/commands/remap) manages the database schema. Whenever tables are added, modified or removed, you need to run `remap` to sync these changes.
 This includes when you run your project for the first time.
 
 ![Remap in the tool window](/img/intellij-plugin/tool-window-remap.png)
 
-The Remap icon looks like a database with a green refresh arrows in the bottom right corner.
-Once you start Remap, at first it will run a sync, and then Remap will appear in the run Window:
+The remap icon looks like a database with green refresh arrows in the bottom right corner. Once you start remap, at first it will run a sync, and then remap appears as a tab in the run Window:
 
 ![Running Remap](/img/intellij-plugin/remap-running.png)
 
-At this point, you will need enter `y` in the screen and hit `enter`.
-After which Remap will apply those changes and exit:
+At this point, you need enter **y** in the screen and press **Enter**. Remap then applies the changes and exits:
 
 ![Running Remap](/img/intellij-plugin/remap-complete.png)
 
 :::important
-Remap cannot be run while other processes are running.
+Remap cannot be run while other processes are running. 
+
 We cannot use and update the database at the same time.
-However, if processes were running,
-the plugin will warn you and give you the option to stop all processes before proceeding.
+
+If processes are running when you start remap, the plugin will warns you and gives you the option to stop all processes before proceeding.
 :::
 
-### Loading Data
+### Loading data
 
-If your project contains any required or sample data in CSV files, you load the data directly from IntelliJ.
-When you right-click on a CSV file, a number of selected CSV files,
-or on a folder containing CSV files, the "Import CSV(s) to Genesis" option will apppear:
+Most projects require some data or sample data in CSV files; you can load the data directly from IntelliJ.
+
+Right-click on a CSV file, a number of selected CSV files, or on a folder containing CSV files, then select **Import CSV(s) to Genesis**. 
 
 ![Import CSVs](/img/intellij-plugin/import-csvs.png)
 
-Clicking on this option will import the data using [SendIt](/operations/commands/server-commands/?_highlight=sendit#sendit).
-Alternatively, you can also use SendIt directly from the [terminal](#using-the-terminal).
+This imports the data using [SendIt](/operations/commands/server-commands/?_highlight=sendit#sendit).
+Alternatively, you can use SendIt directly from the [terminal](#using-the-terminal).
 
-## Using the Genesis IntelliJ Plugin
+## Using the Genesis IntelliJ plugin
 
-Once you have completed the steps above, you are ready to start your application.
-The Genesis Tool Window will be the main entry point:
+Once you have completed the steps above, you are ready to start your application. The Genesis Tool Window is the main entry point:
 
 ![Genesis Tool Window](/img/intellij-plugin/genesis-tool-window.png)
 
-### Starting the front and backend
+### Starting the front and back ends
 
-To run your Genesis applicaiton locally, you can use these two buttons:
+To run your Genesis application locally, you can use these two buttons:
 
 ![start buttons](/img/intellij-plugin/toolwindow-start-buttons.png)
 
-To start all services, click on the double green triangles.
-To start the UI, click on the globe with the green triangle.
+- To start all services, click on the double green triangles (**Start All Services**).
+- To start the UI, click on the globe with the green triangle.
 
 :::tip
 Starting all processes at once in large projects can take some time. By default, it opens a run window for each process.
@@ -201,52 +192,45 @@ To clean up the UI, use the **Services** window for better organisation (only av
 
 ### Starting the back end
 
-To start all services, click on "Start All Services".
+To start all services, click on **Start All Services**.
 You can start specific services from the mon Window, and from the Intellij Run Config list:
 
 ![Genesis Runconfig](/img/intellij-plugin/genesis-runconfig.png)
 
-Once the process is started, the log file will be attached to the process:
+Once the process has started, the log file will be attached to the process:
 
 ![A running process](/img/intellij-plugin/process-log.png)
 
-#### Filtering Processes
+#### Filtering processes
 
-To only start selected processes when clicking on "Start All Genesis Services',
-you can enable the processes filter, by unticking `Enable All Processes` in the settings:
+To start only selected processes when clicking on **Start All Genesis Services**, you can enable the processes filter, by unticking **Enable All Processes** in the settings:
 
 ![Enable All Processes](/img/intellij-plugin/enable-all-processes.png)
 
-Once this setting is unticked, you will be able to filter which process to start:
+Once this setting is unticked, you can filter which processes to start:
 
 ![Filter Processes](/img/intellij-plugin/filtered-processes.png)
 
-When a process is unticked it will no longer be started via any start server command,
-whether that's from the terminal or the start server button.
-However, processes that are not ticked, can still be started manually.
+When a process is unticked, it will no longer be started via any **start server** command, either from the terminal or the **start server** button. However, processes that are not ticked, can still be started manually.
 
-If you would like to re-enable the process simply check the box and hit start server again.
+To re-enable the process, simply check the box and click on **start server** again.
 
-Please note, "Start All Process" will not attempt to start any processes that are already running,
-so you can safely re-enable processes and hit start server again.
+Note that **Start All Process** does not attempt to start any processes that are already running, so you can safely re-enable processes and click on **start server** again.
 
-#### Process Log File Filtering
+#### Filtering the Process Log files 
 
-By default, IntelliJ will filter the log file and only show log entries of level WARN or ERROR.
-To change that hover your mouse in the top right of the log file, and the following menu will appear:
+By default, IntelliJ filters the log file and shows only log entries of level WARN or ERROR. To change that, hover your mouse in the top right of the log file to display the following menu:
 
 ![Log Filter](/img/intellij-plugin/process-log-show-log-filter.png)
 
-If you click on the funnel, the options below will show.
-From there, select "all" and the log should appear unfiltered.
+Click on the funnel, to see the options available (below). From there, select **all** to display the unfiltered log.
 
 ![Log Filter](/img/intellij-plugin/process-log-filter.png)
 
-#### Starting Processes
+#### Starting processes
 
-Processes can be started using the "Start All Genesis Services"
-button mentioned [above](#starting-the-front-and-backend).
-Additionally, processes can also be started from the mon window
+Processes can be started using the **Start All Genesis Services** button mentioned [above](#starting-the-front-and-backend).
+You can also be started from the **mon** window.
 
 ![Log Filter](/img/intellij-plugin/mon-router-row.png)
 
@@ -254,52 +238,47 @@ Additionally, you can control processes from the terminal using these commands:
 
 * `startProcess {process name}` - start a process
 * `killProcess {process name}` - kills a process
-* `startServer` - run "Start All Genesis Services"
+* `startServer` - run **Start All Genesis Services**
 * `killServer` - stops all running services
 
-#### Debugging Processes
+#### Debugging processes
 
-It is possible to debug Genesis processes and step through code.
-This includes any GPAL files.
-As long as the source is available, you should be able to debug.
+It is possible to debug Genesis processes and step through code. This includes any GPAL files. As long as the source is available, you should be able to debug.
 
 ### Starting the UI
 
-To start your Genesis UI, click the **Start UI** button mentioned [above](#starting-the-front-and-backend).
-This will first run `bootstrap` NPM task.
-This will run the `dev:intellij` NPM task,
-which by default does not have an explicit API_HOST value set allowing the plugin the pass the correct host value.
+To start your Genesis UI, click the **Start UI** button mentioned [above](#starting-the-front-and-backend). This first runs the `bootstrap` NPM task.
+It then runs the `dev:intellij` NPM task, which by default does not have an explicit API_HOST value set; this allows the plugin to pass the correct host value.
 When there’s no `dev:intellij` task defined, the `dev` task is used as a fallback.
 
-This builds your front-end codebase and starts the webpack webserver in development mode.
-Once started, this launches a browser tab showing your application's login screen.
+This builds your front-end codebase and starts the webpack webserver in development mode. After this, it launches a browser tab showing your application's login screen.
 
 :::info
-Note that we are using [GENESIS_ROUTER](../../../server/configuring-runtime/genesis-router/) as our API_HOST;
-its default port is 9064. Therefore, your router port in the settings should be as below.
+Note that we are using [GENESIS_ROUTER](../../../server/configuring-runtime/genesis-router/) as our API_HOST; its default port is 9064. Therefore, your router port in the settings should be:
 
 ![Router Settings](/img/plugin-router.png)
 :::
 
-Depending on your edition and version of IntelliJ, these NPM tasks will run either:
+Depending on your edition and version of IntelliJ, the following NPM tasks will run:
 
-* On the Ultimate Edition - the plugin will use the builtin NPM run configuration
-* On the Community Edition - the plugin will use the builtin shell run configuration to run NPM when available:
+* On the Ultimate Edition - the plugin uses the built-in NPM run configuration
+* On the Community Edition - the plugin uses the built-in shell run configuration to run NPM when available:
     - MacOs - any version
     - Windows - IntelliJ version 2023.3 and after
-    - Windows - Any IntelliJ version, if the "SHELL" env variable to be set to 'powershell.exe'
+    - Windows - any IntelliJ version, if the "SHELL" env variable to be set to 'powershell.exe'
 * Else it will show run the front end from the Build screen
 
-#### NPM Run Configurations
+#### NPM run configurations
 
-When available, the plugin will use the builtin NPM run configurations.
-This will use the IntelliJ configured Node interpreter.
-In this mode the plugin will generate a "UI" and a "bootstrap" run configuration.
-These can be triggered both from the Genesis Tool Window and directly form IntelliJ.
+When available, the plugin uses the built-in NPM run configurations. This uses the IntelliJ-configured Node interpreter.
+
+In this mode, the plugin generates a "UI" and a "bootstrap" run configuration.
+
+You can trigger these configurations either from the Genesis Tool Window or directly from IntelliJ.
 
 ![NPM Run Config](/img/intellij-plugin/npm-runconfig.png)
 
-#### Shell Run Configuration
+#### Shell run configuration
 
 On community editions of IntelliJ, this is the preferred option.
 With this run configuration, the plugin will use whichever node interpreter is available on the terminal.
@@ -386,7 +365,7 @@ Or:
 
 ![Using SendIt](/img/intellij-plugin/terminal-sendit.png)
 
-#### Useful Commands
+#### Useful commands
 
 These are some of the commonly used commands in the plugin:
 
@@ -397,7 +376,7 @@ These are some of the commonly used commands in the plugin:
 
 For a full list of Genesis commands, please see [here](/operations/commands/server-commands/).
 
-### Resource Daemon
+### Resource daemon
 
 The resource daemon provides information about locally running processes.
 It is what drives the information shown both in the mon window in the plugin, and the mon command on the server.
@@ -419,7 +398,7 @@ However, regardless of this setting, the resource daemon will be started, when s
 Every Genesis application, whether deployed to a server, or running locally, needs a home folder.
 The home folder is the installation location, and includes all dependencies, and configuration to run the application.
 
-### Different Modes
+### Different modes
 
 There are two ways this is managed from within the plugin:
 
@@ -431,7 +410,7 @@ and then "Check Plugin Mode":
 
 ![Check Plugin Mode](/img/intellij-plugin/get-help-check-mode.png)
 
-### Gradle Mode
+### Gradle mode
 
 When using the Gradle mode, the plugin will ensure the Genesis Home folder is synchronised.
 Before running any other task, the "genesisSync" gradle task is triggered:
@@ -447,7 +426,7 @@ The benefits of the Gradle mode over the Deploy mode are:
 * integration into gradle task avoidance system means that this task will do no more than necessary.
 * easier management of genesis dependencies for your project
 
-### Deploy Mode
+### Deploy mode
 
 :::important
 While the Deployed mode of the plugin is still supported, we advise people to migrate their project to Gradle Mode.
@@ -456,7 +435,7 @@ This will greatly simplify the user experience in the plugin.
 For more details on how to migrate [see here](/operations/project-structure/settings-plugin/).
 :::
 
-When using the Deploy Mode, the developer is responsible for ensuring the Genesis Home folder is kept up-to-date.
+When using the Deploy mode, the developer is responsible for ensuring the Genesis Home folder is kept up-to-date.
 The first you open a project with the plugin enabled, you must create your genesis home folder.
 Click on the **Install Genesis** button on the Tool window.
 
@@ -469,17 +448,17 @@ Whenever the home folder needs to be updated, the "Prepare Local Genesis Applica
 This task will then run a full Gradle build and genesisInstall.
 When in Gradle Mode, clicking this button will trigger the "genesisSync" task.
 
-### Changing Dependencies
+### Changing dependencies
 
-After dependencies are added, depending on the scenario,
-we might need to do different things to keep our project up to date.
-The steps to take depend on [which mode](#different-modes) the plugin is running in.
+After dependencies are added, depending on the scenario, you might need to do different things to keep your project up to date. The steps to take depend on [which mode](#different-modes) the plugin is running in.
+
 It also depends on whether we are adding or changing a Genesis or PBC dependency or not.
-Please note that the procedure is the same, whether, adding or removing dependency, or even when changing a version.Screenshot 2024-04-22 at 09.24.20.png
+
+The procedure is the same, whether, adding or removing a dependency, or even when changing a version. Screenshot 2024-04-22 at 09.24.20.png
 
 #### Changing a dependency, when using the Deploy mode
 
-When using the Deploy mode, we should always click on the "Prepare Local Genesis Application" Button.
+When using the Deploy mode, we should always click on the **Prepare Local Genesis Application** Button.
 Additionally, when adding or changing a PBC dependency using the Deploy mode, we should also run Remap.
 
 #### Changing a non-PBC dependency when using the Gradle mode
