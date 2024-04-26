@@ -272,7 +272,7 @@ Depending on your edition and version of IntelliJ, the following NPM tasks will 
 
 When available, the plugin uses the built-in NPM run configurations. This uses the IntelliJ-configured Node interpreter.
 
-In this mode, the plugin generates a "UI" and a "bootstrap" run configuration.
+In this mode, the plugin generates a **UI** and a **bootstrap** run configuration.
 
 You can trigger these configurations either from the Genesis Tool Window or directly from IntelliJ.
 
@@ -280,82 +280,77 @@ You can trigger these configurations either from the Genesis Tool Window or dire
 
 #### Shell run configuration
 
-On community editions of IntelliJ, this is the preferred option.
-With this run configuration, the plugin will use whichever node interpreter is available on the terminal.
-It will create a "UI-script" and "npm bootstrap" run configurations.
-These can also be triggered both from the Genesis Tool Window and directly form IntelliJ.
+On community editions of IntelliJ, this is the preferred option. With this run configuration, the plugin useS whichever node interpreter is available on the terminal.
+It creates a **UI-script** and an **npm bootstrap** run configuration.
+
+You can trigger both of these from either the Genesis Tool Window or  directly from IntelliJ.
 
 ![Shell Run Config](/img/intellij-plugin/shell-runconfig.png)
 
-In most cases, picking up npm from the path will be sufficient.
-However, when using the community edition, we have an NPM location setting in Genesis Settings, that you can use.
+In most cases, picking up npm from the path will be sufficient. However, when using the community edition, there is an NPM location setting in Genesis Settings that you can use.
 
 ![NPM Location in settings](/img/intellij-plugin/settings-npm-location.png)
 
-If this does not resolve the issue, you can use the build screen starter,
-by selecting "Use legacy UI starter" from settings.
+If this does not resolve the issue, use the build screen starter by selecting **Use legacy UI starter** from **settings**.
 
 ![legacy ui starter in settings](/img/intellij-plugin/settings-legacy-ui-starter.png)
 
 #### Starting from the build screen
 
-If the script run config is not available,
-of if the legacy ui starter is selected, the UI starter will be shown in the build screen.
-Please note that this can only be started from the Genesis Tool Window.
+If the script run config is not available, or if the legacy ui starter is selected, the UI starter is shown in the build screen. This can only be started from the Genesis Tool Window.
 
 ![UI Launcher in build screen](/img/intellij-plugin/build-screen-ui.png)
 
 ### The mon window
 
-The Mon tab mirrors the [mon](/operations/commands/server-commands/?_highlight=mon#mon) command on the server.
-From here you will be able to:
+The **Mon** tab mirrors the [mon](/operations/commands/server-commands/?_highlight=mon#mon) command on the server.
+
+From here you are able to:
+
 * see the available processes
 * start, restart and stop processes
 * see the health status of each process
-* see the CPU and memory usages of each process
-* filter which processes are started on `Start Server`
+* monitor the CPU and memory usage of each process
+* filter which processes are started on **Start Server**
 
 ![Mon Example](/img/intellij-plugin/toolwindow-mon-example.png)
 
-### Showing and Hiding columns
+### Showing and hiding columns
 
 You can configure which columns are displayed in the window with the following settings:
 
 ![Show / Hide Columns](/img/intellij-plugin/show-hide-columns.png)
 
-If you have less space available for the window you could disable the CPU and Memory columns to give the others more space:
+If you have less space available for the window, you could disable the CPU and Memory columns to give the others more space:
 
 ![Hidden Columns](/img/intellij-plugin/hidden-columns.png)
 
 :::info
 You must have at least one column displayed.
-If you hide all columns the process name column will appear as a default.
+If you hide all columns, the process name column will still appear; this is the default.
 :::
 
-Disabled columns will persist to the project settings so they stay disabled between restarts.
+Disabled columns persist to the project settings, so they stay disabled between restarts.
 
 ### OpenAPI
 
-The plugin can contact the router to provide [an openapi spec](/server/integration/open-api).
-To do this; the plugin will ask for a username and password to log in to your application.
-It will then request the openapi spec and show a dialog to save it into your project.
+The plugin can contact the router to provide [an openapi spec](/server/integration/open-api). To do this; the plugin asks for a username and password to log in to your application. It then requests the openapi spec and shows a dialog to save it into your project.
 
-To start this process, click on the Genesis menu and then on "Generate OpenApi Spec":
+To start this process, click on the **Genesis** menu and then on **Generate OpenApi Spec**:
 
 ![Open Api in menu](/img/intellij-plugin/menu-openapi.png)
 
-This will then trigger a username and password dialog.
+This triggers a username and password dialog.
 
 ![Open Api Dialog](/img/intellij-plugin/openapi-dialog.png)
 
-Afterwards, you will be asked to save the spec, and it should open automatically.
+After supplying the details, you are asked to save the spec, and the app should open automatically.
 
-### Using the Terminal
+### Using the terminal
 
-The Genesis Plugin integrates directly into IntelliJ's terminal.
-Most commands supported on the server can be run straight from there.
-Supported commands are highlighted in green,
-and can be run using CTRL+Enter on Windows, or Command+Enter on MAC.
+The Genesis Plugin integrates directly into IntelliJ's terminal. Most commands supported on the server can be run straight from there. Supported commands are highlighted in green.
+
+You can run these using **CTRL**+ **Enter** on Windows, or **Command** + **Enter** on MAC.
 
 For example:
 
@@ -370,54 +365,48 @@ Or:
 These are some of the commonly used commands in the plugin:
 
 * [DbMon](/operations/commands/dbmon/) - the Genesis Database client
-* [DumpIt](/operations/commands/server-commands/#dumpit) - export CSV data into the database
-* [SendIt](/operations/commands/server-commands/#sendit) - import CSV data from the database
+* [DumpIt](/operations/commands/server-commands/#dumpit) - export CSV data from the database
+* [SendIt](/operations/commands/server-commands/#sendit) - send CSV data to the database
 * [LogLevel](/operations/commands/server-commands/#loglevel) - dynamically adjust log levels of running processes
 
-For a full list of Genesis commands, please see [here](/operations/commands/server-commands/).
+There is  a [full list of Genesis commands](/operations/commands/server-commands/) in our documentation.
 
 ### Resource daemon
 
-The resource daemon provides information about locally running processes.
-It is what drives the information shown both in the mon window in the plugin, and the mon command on the server.
+The resource daemon provides information about locally running processes. This provides the information shown in the **mon** window in the plugin and the `mon` command on the server.
+
 The plugin can automatically start the daemon when needed.
 
-If you find the daemon starting too often,
-you can disable it by unticking "Enable Resource Daemon Auto Start" in the menu
+If you find the daemon starting too often, you can disable it by unticking **Enable Resource Daemon Auto Start** in the menu.
 
 ![Enable Daemon Auto Start](/img/intellij-plugin/menu-settings-daemon.png)
 
-If process information is not showing in the mon window, you can always start the daemon from the menu:
+If process information is not showing in the **mon** window, you can start the daemon from the menu:
 
 ![Start Daemon](/img/intellij-plugin/menu-g-start-daemon.png)
 
 However, regardless of this setting, the resource daemon will be started, when starting any back service.
 
-## Keeping your local Genesis Home in-sync
+## Keeping your local Genesis Home in sync
 
-Every Genesis application, whether deployed to a server, or running locally, needs a home folder.
-The home folder is the installation location, and includes all dependencies, and configuration to run the application.
+Every Genesis application, whether deployed to a server, or running locally, needs a **home** folder. This folder is the installation location; it includes all dependencies and configuration needed to run the application.
 
-### Different modes
+There are two ways that this is managed from within the plugin:
 
-There are two ways this is managed from within the plugin:
+* For the initial release of the plugin, you have to manage this; this is Deployed mode.
+* For later releases, we have included a gradle plugin that adds a **genesisSync** task for this purpose; this is Gradle mode.
 
-* Initially, when the plugin was released, this was managed by the developer, we call this the Deployed mode
-* Since the initial release, we have released a gradle plugin that adds a "genesisSync" task for this purpose, we call this the Gradle mode
-
-To check which mode the plugin is running in, you can click on the "Get Help" section of the plugin,
-and then "Check Plugin Mode":
+To check which mode the plugin is running in, click on the **Get Help** section of the plugin, then select **Check Plugin Mode**:
 
 ![Check Plugin Mode](/img/intellij-plugin/get-help-check-mode.png)
 
 ### Gradle mode
 
-When using the Gradle mode, the plugin will ensure the Genesis Home folder is synchronised.
-Before running any other task, the "genesisSync" gradle task is triggered:
+In Gradle mode, the plugin ensures that the Genesis Home folder is synchronised. Before running any other task, the **genesisSync** gradle task is triggered:
 
 ![genesisSync gradle task](/img/intellij-plugin/genesis-sync.png)
 
-This task will build local modules, copy any configuration of any dependencies and run genesisInstall.
+This task builds local modules, copies the configuration of any dependencies, and runs `genesisInstall`.
 
 The benefits of the Gradle mode over the Deploy mode are:
 
@@ -429,42 +418,40 @@ The benefits of the Gradle mode over the Deploy mode are:
 ### Deploy mode
 
 :::important
-While the Deployed mode of the plugin is still supported, we advise people to migrate their project to Gradle Mode.
-This will greatly simplify the user experience in the plugin.
+Deployed mode is still supported, but we recommens that you [migrate](/operations/project-structure/settings-plugin/) your project to Gradle mode. This will greatly simplify the user experience in the plugin.
 
-For more details on how to migrate [see here](/operations/project-structure/settings-plugin/).
 :::
 
-When using the Deploy mode, the developer is responsible for ensuring the Genesis Home folder is kept up-to-date.
-The first you open a project with the plugin enabled, you must create your genesis home folder.
+When using the Deploy mode, you are responsible for ensuring the Genesis Home folder is kept up-to-date. The first time you open a project with the plugin enabled, you must create your **genesis home** folder.
+
 Click on the **Install Genesis** button on the Tool window.
 
 ![Genesis Install](/img/intellij-install.png)
 
-Whenever the home folder needs to be updated, the "Prepare Local Genesis Application" task should be clicked:
+Whenever the home folder needs to be updated, select the **Prepare Local Genesis Application** task:
 
 ![Running Deploy](/img/intellij-plugin/genesis-deploy.png)
 
-This task will then run a full Gradle build and genesisInstall.
-When in Gradle Mode, clicking this button will trigger the "genesisSync" task.
+This runs a full Gradle build and a `genesisInstall`. (If you run this task in Gradle mode, it triggers the **genesisSync** task.)
 
 ### Changing dependencies
 
-After dependencies are added, depending on the scenario, you might need to do different things to keep your project up to date. The steps to take depend on [which mode](#different-modes) the plugin is running in.
+After dependencies have been added, you might need to do different things to keep your project up to date. The steps to take depend on [which mode](#different-modes) the plugin is running in.
 
-It also depends on whether we are adding or changing a Genesis or PBC dependency or not.
+It also depends on whether you are adding or changing a Genesis or Business Component dependency.
 
 The procedure is the same, whether, adding or removing a dependency, or even when changing a version. Screenshot 2024-04-22 at 09.24.20.png
 
-#### Changing a dependency, when using the Deploy mode
+#### Changing a dependency in Deploy mode
 
-When using the Deploy mode, we should always click on the **Prepare Local Genesis Application** Button.
-Additionally, when adding or changing a PBC dependency using the Deploy mode, we should also run Remap.
+In Deploy mode, click on the **Prepare Local Genesis Application** button.
 
-#### Changing a non-PBC dependency when using the Gradle mode
+- If you are adding a normal JVM dependency, syncing gradle in this way will be sufficient.
+- If you are adding or changing a Business Component dependency, also run **Remap**.
 
-When using the Gradle mode and adding a normal JVM dependency, syncing gradle will be sufficient.
+#### Changing in Gradle mode
 
-#### Changing a Genesis or PBC dependency when using the Gradle mode
+If you are changing a Genesis or Business Component dependency: 
 
-In addition to the Gradle sync we should also run remap at this point.
+1. Click on the **Prepare Local Genesis Application** button.
+2. Run **remap**.
