@@ -1,7 +1,7 @@
 ---
 title: 'FIX-Xlator'
 sidebar_label: 'FIX-Xlator'
-sidebar_position: 3
+sidebar_position: 4
 id: fix-xlator
 keywords: [server, integration, gateways, streamers, fix-xlator, FIX]
 tags:
@@ -47,7 +47,7 @@ The `plugins` tag enables the plugin, and the `fixConfiguration` tag specifies t
 
 ### Streamer
 
-Enabling the plugin in a treamer definition enables the `fixStream` definition.
+Enabling the plugin in a Streamer definition enables the `fixStream` definition.
 
 **FIX Streams**:
 FIX Streams are enhanced stream definitions that come with a few useful defaults, enhanced fixed handling and automatic conversion to GenesisSet.
@@ -165,7 +165,7 @@ genesisSet.setWithDefault("REPORTED_YIELD", executionReport.yield, executionRepo
 
 ### FIX code generation plugin
 
-Fix code generation plugin is used to generate Java sources from a QuickFIX XML dictionary.
+The Fix code generation plugin is used to generate Java sources from a QuickFIX XML dictionary.
 
 Create a new maven module called &#123;applicationName}-fix-messages. Add the following plugin dependency to the module pom file.
 
@@ -223,7 +223,7 @@ test-fix-xyz-messages
 </plugins>
 ```
 
-In addition, make sure to add a depdendency on the fix-xlator plugin in this new module:
+In addition, make sure to add a dependency on the fix-xlator plugin in this new module:
 ```xml
 <dependencies>
 	<dependency>

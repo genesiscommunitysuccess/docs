@@ -18,47 +18,38 @@ To make Symphony services available to Genesis, you need to provision [symphony 
 Symphony is a separate module of the Genesis platform. This gives you a better way to manage third-party dependencies, as the Symphony BDK has a number of transitive dependencies.
 
 ### Adding the Symphony module data schema
-In order to add the Symphony route tables to your application, add the following line to the **build.gradle.kts** file in your application's **dictionary-cache** folder: 
+In order to add the Symphony route tables to your application, add `symphonyVersion` to the **gradle.properties** file in your application's **server** folder:
+```xml
+symphonyVersion=x.y.z
+```
+
+Then add the following line to the **settings.gradle.kts** file in your application's **server** folder: 
 
 ```kotlin {3}
-dependencies {
-  ...
-  api("global.genesis:genesis-symphony-config")
-  ...
+genesis {
+    projectType = ProjectType.APPLICATION
+    dependencies {
+    ...
+        dependency("global.genesis:genesis-symphony:${extra.properties["symphonyVersion"]}")
+    ...
+    }
 }
 ```
 
-### Adding the Symphony module to deployment
-To add the Symphony route tables to your application deployment, add the following line to the **build.gradle.kts** file in your application's **deploy** folder:
+## Configuring the Notify Processes
+To add the Symphony functionality, you need to override the **genesis-notify-processes.xml** file. If you are using the IntelliJ plugin, you can find this in the folder **.genesis-home/genesis-notify/cfg/**.
 
-```kotlin
-dependencies {
-  ...
-  genesisServer(
-    group = "global.genesis",
-    name = "genesis-symphony-distribution",
-    version = properties["symphonyVersion"].toString(),
-    classifier = "bin",
-    ext = "zip"
-  )
-  ...
-}
-```
+Paste this file into the **cfg** folder at **server/**_appname_**-app/src/genesis/resources/cfg/**.
 
-## Running locally
-To run locally, you need to copy your **genesis-notify-processes.xml** file. If you are using the IntelliJ plugin, you can find this in the folder **.genesis-home/genesis-notify/cfg/**.
+Then you need to make the following changes to the processes file:
 
-Paste this file into the **site-specific** folder at **server/jvm/**_appname_**-site-specific/src/main/resources/cfg/**.
-
-Then you need to make the following changes:
-
-1. Add or edit the `<script>` tag:
+1. Add or edit the `<script>` tag of the NOTIFY_MANAGER process: 
 
 ```xml
 <script>genesis-symphony-dataserver.kts, genesis-symphony-eventhandler.kts, genesis-symphony-reqrep.kts</script>
 ```
 
-2. Add or edit the the `<classpath>` tag as follows:
+2. Add or edit the the `<classpath>` tag of the NOTIFY_DISPATCHER and NOTIFY_MANAGER processes as follows :
 
 
 ```xml
@@ -67,7 +58,7 @@ Then you need to make the following changes:
 
 3. Import the extensions for the Notify GPAL configuration. This enables intellisense to work for your Notify scripts. 
 
-To do this, add the following dependency to the **build.gradle.kts** file in your application's **server/jvm/**_appname_**-script-config/** folder:
+To do this, add the following dependency to the **build.gradle.kts** file in your application's **server/**_appname_**-app/** folder:
 
 ```kotlin
 ...

@@ -1,6 +1,7 @@
 ---
-title: 'Notify - initial configuration'
-sidebar_label: 'Initial configuration'
+title: 'Notify UI - Manual Installation'
+sidebar_label: 'Manual Installation'
+sidebar_position: 1
 id: notify-initial-configuration
 keywords: [notify, ui-configuration]
 tags:
@@ -10,6 +11,8 @@ tags:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
+> :warning: **This guide assumes you have not used GenX to add the Notifications component.** You should only add components manually if your project is on an older framework version that does not support [GenX Add](../../../../components/notifications/notifications-installation).
 
 ## Prerequisites
 
@@ -23,47 +26,9 @@ The front-end components are:
 
 Note that almost every section of each component requires a permission to perform the specific action related to that section; check the [permissions](../notify-permissions) available and make sure your user has the permission needed for the section you want to implement or test. You can read more about permissions/rights in the [authorisation](/server/access-control/authorisation#users-profiles-and-right-codes) section.
 
-## Installing in a new application
+## Installing manually
 
-Using packages like `AppElement` and `foundation-store`, you can generate an app with dynamic code and components. To quickly test this kind of app, run the following command:
-
-<Tabs
-  defaultValue="windows"
-  values={[
-    { label: 'Windows', value: 'windows' },
-    { label: 'Mac and Linux', value: 'mac-and-linux' }
-  ]
-}>
-  <TabItem value="windows">
-    ```shell title="Powershell"
-    npx -y @genesislcap/genx@latest init alpha -x --no-shell; npx -y @genesislcap/genx@latest add alpha -x -s genesislcap/pbc-notify-seed
-    ```
-  </TabItem>
-
-  <TabItem value= 'mac-and-linux'>
-    ```shell title="Bash"
-    npx -y @genesislcap/genx@latest init alpha -x --no-shell && npx -y @genesislcap/genx@latest add alpha -x -s genesislcap/pbc-notify-seed
-    ```
-  </TabItem>
-</Tabs>
-
-## Installing in an existing application
-
-If you want to add Notifications to an existing application, you have a choice:
-
-- Install all the components in one step. 
-- Manually install individual components.
-
-
-### Install all components in one step
-
-Run this command on the previous folder where your app is located (use the name of your app folder in place of `my-app`):
-
-```shell
-npx -y @genesislcap/genx@latest add my-app -x -s genesislcap/pbc-notify-seed
-```
-
-After this, run `npm run bootstrap` to install it.
+If you want to add Notifications to an existing application, without using the Genx Add command, then follow the instructions in this section.
 
 ### Manually installing specific components
 To load one or more components manually:

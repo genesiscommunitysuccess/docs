@@ -1,6 +1,7 @@
 ---
-title: 'Document Management - endpoints'
+title: 'Document Management - `endpoints'
 sidebar_label: 'Endpoints'
+sidebar_position: 3
 id: doc-management-endpoints
 keywords: [doc-management, endpoints]
 tags:
@@ -11,11 +12,19 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Document Management exposes upload, download and list file endpoints. Endpoints are registered automatically upon start up.
+Document Management exposes upload, download and list file endpoints. Endpoints are registered automatically on start-up.
 
 ## File upload
 
-To upload a file, send a multiform POST request to the following resource path `/file-server/upload`.
+To upload a file, send a multiform POST request to the following resource path:  **/file-server/upload**. 
+
+To construct a multiform POST request, you must provide a key for the form data, and a value (the file content). The headers must also be set correctly:
+```
+Content-Type : multipart/form-data
+Content-Disposition : filename=<filename>
+```
+
+ If you are using an HTTP testing tool like Postman, it should set these header values for you.
 
 
 ## File download
@@ -30,7 +39,7 @@ To list all files, send a GET request to `/file-server/all-files`.
 
 ## Linking assets
 
-To link assets (css, image files etc...), you need to define `eventHandler` codeblock. This must insert one or more objects into the `TemplateAsset` table. Use the following as an example.
+To link assets (css, image files etc...), you need to define an `eventHandler` codeblock. This must insert one or more objects into the `TemplateAsset` table. Use the following as an example.
 
 ```kotlin
     data class LinkTemplateAssets(

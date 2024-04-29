@@ -1,6 +1,6 @@
 ---
 title: 'Angular - sharing data'
-sidebar_label: 'sharing data'
+sidebar_label: 'Sharing data'
 id: angular-sharing-data
 keywords: [web, integrations, angular, sharing-data]
 tags:

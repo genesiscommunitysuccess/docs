@@ -1,6 +1,7 @@
 ---
 title: 'Document Management - configuring File Storage Manager'
 sidebar_label: 'Configuring File Storage Manager'
+sidebar_position: 2
 id: doc-management-configuring
 keywords: [doc-management, file-storage-manager]
 tags:
@@ -22,7 +23,7 @@ To start using Document Management, specify your `STORAGE_STRATEGY` in your **sy
 ```kotlin
 item(name = "STORAGE_STRATEGY", value = "<strategy>")
 ```
-Once you have set your `STORAGE_STRATEGY`, set your storage solution specify configuration.
+Once you have set your `STORAGE_STRATEGY`, you must configure the storage solution that you are going to use. The requirements for each solution are described below.
 
 ## Local file storage
 When using local file storage, your files are stored under your specified folder inside your **genesis-home/runtime/fileupload/** folder, which is created automatically.
@@ -56,7 +57,7 @@ item(name = "S3_BUCKET_NAME", value = "<bucketName>")
 item(name = "S3_FOLDER_PREFIX", value = "<folderPrefix>")
 ```
 
-Once you have set your storage mode and bucket config, your must set individual config for your chosen storage mode.
+Once you have set your storage mode and bucket config, your must set the individual config for your chosen storage mode.
 
 ### S3_STORAGE_MODE = LOCAL
 ```kotlin
@@ -72,10 +73,10 @@ item(name = "AWS_SECRET_ACCESS_KEY", value = "<secretAccessKey>")
 ```
 
 ### S3_STORAGE_MODE = AWS
-No extra config is required. The AWS resource your app is running on will extract required config from the environment it's running on.
+No extra config is required. The AWS resource your app is running on will extract the required config from the environment it's running on.
 
 ## Sharepoint
-When using Sharepoint as your storage solution, you must have sharepoint instance created either on-premises or remotely.
+When using Sharepoint as your storage solution, you must have a Sharepoint instance created either on-premises or remotely.
 Next you will need to set the following specific config.
 
 ### On-premises Sharepoint
