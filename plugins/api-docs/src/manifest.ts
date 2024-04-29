@@ -12,7 +12,6 @@ export default {
       output: {
         directory: "./docs/04_web/06_testing",
         api_docs: "docs/api",
-        readme: "01_foundation-testing.mdx",
         keywords: ["genesis", "foundation", "ui", "testing"],
         tags: [
           "test",
@@ -30,6 +29,7 @@ export default {
             title: "Foundation Testing",
             id: "foundation-testing",
             sidebar_label: "Foundation Testing",
+            filename: "01_foundation-testing.mdx",
           },
         ],
       },
@@ -44,7 +44,6 @@ export default {
       output: {
         directory: "./docs/04_web/09_filters",
         api_docs: "docs/api",
-        readme: "01_foundation-filters.mdx",
         keywords: ["genesis", "foundation", "ui", "filters"],
         tags: ["filter", "feature", "flags", "conditions"],
         pages: [
@@ -52,6 +51,7 @@ export default {
             title: "Foundation Filters",
             sidebar_label: "Foundation Filters",
             id: "foundation-filters",
+            filename: "01_foundation-filters.mdx",
           },
         ],
       },
@@ -66,14 +66,14 @@ export default {
       output: {
         directory: "./docs/05_components/reporting",
         img_dir: "docs/img",
-        readme: "foundation-reporting.mdx",
         keywords: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
         tags: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
         pages: [
           {
-              title: "Foundation Reporting",
-              sidebar_label: "Foundation Reporting",
-              id: "foundation-reporting",
+            title: "Foundation Reporting",
+            sidebar_label: "Foundation Reporting",
+            id: "foundation-reporting",
+            filename: "foundation-reporting.mdx",
           },
         ],
       },
@@ -90,7 +90,6 @@ export default {
         directory: "./docs/04_web/05_micro-front-ends/02_foundation-header",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "03_foundation-header.mdx",
         keywords: [
           "header",
           "sidebar",
@@ -114,6 +113,7 @@ export default {
             title: "Foundation Header",
             sidebar_label: "Foundation Header",
             id: "foundation-header",
+            filename: "03_foundation-header.mdx",
           },
         ],
       },
@@ -131,7 +131,6 @@ export default {
           "./docs/04_web/05_micro-front-ends/03_foundation-entity-management",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "04_foundation-entity-management.mdx",
         keywords: [
           "entity management",
           "frontend",
@@ -155,6 +154,7 @@ export default {
             title: "Foundation Entity Management",
             sidebar_label: "Foundation Entity Management",
             id: "foundation-entity-management",
+            filename: "04_foundation-entity-management.mdx",
           },
         ],
       },
@@ -171,7 +171,6 @@ export default {
         directory: "./docs/04_web/05_micro-front-ends/04_foundation-login",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "05_foundation-login.mdx",
         keywords: [
           "web",
           "login",
@@ -193,6 +192,7 @@ export default {
             title: "Foundation Login",
             sidebar_label: "Foundation Login",
             id: "foundation-login",
+            filename: "05_foundation-login.mdx",
           },
         ],
       },
@@ -209,7 +209,6 @@ export default {
         directory: "./docs/04_web/10_dynamic-layout",
         api_docs: "docs/api",
         img_dir: "docs/img",
-        readme: "10_foundation-layout.mdx",
         keywords: [
           "web",
           "layout",
@@ -231,6 +230,7 @@ export default {
             title: "Foundation Layout",
             sidebar_label: "Foundation Layout",
             id: "foundation-layout",
+            filename: "10_foundation-layout.mdx",
           },
         ],
       },
@@ -245,7 +245,6 @@ export default {
       output: {
         directory: "./docs/04_web/11_comms",
         api_docs: "docs/api",
-        readme: "01_foundation-comms.mdx",
         keywords: ["genesis", "foundation", "ui", "comms"],
         tags: [
           "data server",
@@ -259,6 +258,7 @@ export default {
             title: "Foundation Comms",
             sidebar_label: "Foundation Comms",
             id: "foundation-comms",
+            filename: "01_foundation-comms.mdx",
           },
         ],
       },
@@ -273,7 +273,6 @@ export default {
       output: {
         directory: "./docs/04_web/12_forms",
         api_docs: "docs/api",
-        readme: "01_foundation-forms.mdx",
         keywords: ["genesis", "foundation", "ui", "forms", "smart forms"],
         tags: ["genesis", "foundation", "ui", "forms", "smart forms"],
         pages: [
@@ -281,6 +280,7 @@ export default {
             title: "Foundation Forms",
             sidebar_label: "Foundation Forms",
             id: "foundation-forms",
+            filename: "01_foundation-forms.mdx",
           },
         ],
       },
@@ -295,7 +295,6 @@ export default {
       output: {
         directory: "./docs/04_web/13_criteria",
         api_docs: "docs/api",
-        readme: "01_foundation-criteria.mdx",
         keywords: ["genesis", "foundation", "ui", "criteria"],
         tags: ["genesis", "foundation", "ui", "criteria"],
         pages: [
@@ -303,6 +302,7 @@ export default {
             title: "Foundation Criteria",
             sidebar_label: "Foundation Criteria",
             id: "foundation-criteria",
+            filename: "01_foundation-criteria.mdx",
           },
         ],
       },
@@ -317,7 +317,6 @@ export default {
       output: {
         directory: "./docs/04_web/14_errors",
         api_docs: "docs/api",
-        readme: "01_foundation-errors.mdx",
         keywords: ["genesis", "foundation", "ui", "errors"],
         tags: ["genesis", "foundation", "ui", "errors"],
         pages: [
@@ -325,6 +324,7 @@ export default {
             title: "Foundation Errors",
             sidebar_label: "Foundation Errors",
             id: "foundation-errors",
+            filename: "01_foundation-errors.mdx",
           },
         ],
       },
@@ -339,7 +339,6 @@ export default {
       output: {
         directory: "./docs/04_web/15_events",
         api_docs: "docs/api",
-        readme: "01_foundation-events.mdx",
         keywords: ["genesis", "foundation", "ui", "events"],
         tags: ["genesis", "foundation", "ui", "events"],
         pages: [
@@ -347,6 +346,7 @@ export default {
             title: "Foundation Events",
             sidebar_label: "Foundation Events",
             id: "foundation-events",
+            filename: "01_foundation-events.mdx",
           },
         ],
       },
@@ -361,14 +361,20 @@ export default {
       output: {
         directory: "./docs/04_web/16_i18n",
         api_docs: "docs/api",
-        readme: "01_foundation-i18n.mdx",
-        keywords: ["genesis", "foundation", "ui", "i18n", "internationalization"],
+        keywords: [
+          "genesis",
+          "foundation",
+          "ui",
+          "i18n",
+          "internationalization",
+        ],
         tags: ["genesis", "foundation", "ui", "i18n", "internationalization"],
         pages: [
           {
             title: "Foundation Internationalization",
             sidebar_label: "Foundation Internationalization",
             id: "foundation-i18n",
+            filename: "01_foundation-i18n.mdx",
           },
         ],
       },
@@ -383,7 +389,6 @@ export default {
       output: {
         directory: "./docs/04_web/17_logger",
         api_docs: "docs/api",
-        readme: "01_foundation-logger.mdx",
         keywords: ["genesis", "foundation", "ui", "logger"],
         tags: ["genesis", "foundation", "ui", "logger"],
         pages: [
@@ -391,32 +396,11 @@ export default {
             title: "Foundation Logger",
             sidebar_label: "Foundation Logger",
             id: "foundation-logger",
+            filename: "01_foundation-logger.mdx",
           },
         ],
       },
     },
-    // {
-    //   name: "@genesislcap/foundation-marketplace",
-    //   enabled: true,
-    //   src: {
-    //     api_docs: "./docs/api",
-    //     readme: "./README.md",
-    //   },
-    //   output: {
-    //     directory: "./docs/04_web/18_marketplace",
-    //     api_docs: "docs/api",
-    //     readme: "01_foundation-marketplace.mdx",
-    //     keywords: ["genesis", "foundation", "ui", "marketplace"],
-    //     tags: ["genesis", "foundation", "ui", "marketplace"],
-    //     pages: [
-    //       {
-    //         title: "Foundation Marketplace",
-    //         sidebar_label: "Foundation Marketplace",
-    //         id: "foundation-marketplace",
-    //       },
-    //     ],
-    //   },
-    // },
     {
       name: "@genesislcap/foundation-notifications",
       enabled: true,
@@ -427,7 +411,6 @@ export default {
       output: {
         directory: "./docs/04_web/19_notifications",
         api_docs: "docs/api",
-        readme: "01_foundation-notifications.mdx",
         keywords: ["genesis", "foundation", "ui", "notifications"],
         tags: ["genesis", "foundation", "ui", "notifications"],
         pages: [
@@ -435,6 +418,7 @@ export default {
             title: "Foundation Notifications",
             sidebar_label: "Foundation Notifications",
             id: "foundation-notifications",
+            filename: "01_foundation-notifications.mdx",
           },
         ],
       },
@@ -449,7 +433,6 @@ export default {
       output: {
         directory: "./docs/04_web/20_shell",
         api_docs: "docs/api",
-        readme: "01_foundation-shell.mdx",
         keywords: ["genesis", "foundation", "ui", "shell"],
         tags: ["genesis", "foundation", "ui", "shell"],
         pages: [
@@ -457,6 +440,7 @@ export default {
             title: "Foundation shell",
             sidebar_label: "Foundation shell",
             id: "foundation-shell",
+            filename: "01_foundation-shell.mdx",
           },
         ],
       },
@@ -471,7 +455,6 @@ export default {
       output: {
         directory: "./docs/04_web/21_state-machine",
         api_docs: "docs/api",
-        readme: "01_foundation-state-machine.mdx",
         keywords: ["genesis", "foundation", "ui", "state-machine"],
         tags: ["genesis", "foundation", "ui", "state-machine"],
         pages: [
@@ -479,6 +462,7 @@ export default {
             title: "Foundation State-machine",
             sidebar_label: "Foundation State-machine",
             id: "foundation-state-machine",
+            filename: "01_foundation-state-machine.mdx",
           },
         ],
       },
@@ -493,7 +477,6 @@ export default {
       output: {
         directory: "./docs/04_web/22_store",
         api_docs: "docs/api",
-        readme: "01_foundation-store.mdx",
         keywords: ["genesis", "foundation", "ui", "store"],
         tags: ["genesis", "foundation", "ui", "store"],
         pages: [
@@ -501,6 +484,7 @@ export default {
             title: "Foundation Store",
             sidebar_label: "Foundation Store",
             id: "foundation-store",
+            filename: "01_foundation-store.mdx",
           },
         ],
       },
@@ -515,7 +499,6 @@ export default {
       output: {
         directory: "./docs/04_web/23_user",
         api_docs: "docs/api",
-        readme: "01_foundation-user.mdx",
         keywords: ["genesis", "foundation", "ui", "user"],
         tags: ["genesis", "foundation", "ui", "user"],
         pages: [
@@ -523,6 +506,7 @@ export default {
             title: "Foundation User",
             sidebar_label: "Foundation User",
             id: "foundation-user",
+            filename: "01_foundation-user.mdx",
           },
         ],
       },
@@ -537,7 +521,6 @@ export default {
       output: {
         directory: "./docs/04_web/24_utils",
         api_docs: "docs/api",
-        readme: "01_foundation-utils.mdx",
         keywords: ["genesis", "foundation", "ui", "utils"],
         tags: ["genesis", "foundation", "ui", "utils"],
         pages: [
@@ -545,6 +528,7 @@ export default {
             title: "Foundation Utils",
             sidebar_label: "Foundation Utils",
             id: "foundation-utils",
+            filename: "01_foundation-utils.mdx",
           },
         ],
       },

@@ -68,6 +68,9 @@ id: ${page.id}
         this.push(`tags:\n${tagsText}\n`);
       }
       this.push(`---\n\n`);
+      this.push(
+        `<!-- this is an auto-generated file, to make changes please edit the associated readme in foundation ui repo -->\n`,
+      );
       this.push(chunk);
 
       callback();
@@ -85,7 +88,6 @@ const PAGE_DELIMETER = "<!-- page-split -->";
 export const createOutputDuplexStream = (
   manifestSettings: PackageConfig["output"],
   outputDir: string,
-  readmeStreamTransformer: Transform,
 ) =>
   new Duplex({
     write(chunk, _, callback) {
@@ -93,21 +95,19 @@ export const createOutputDuplexStream = (
       const pages = buffer.split(PAGE_DELIMETER);
 
       if (pages.length !== manifestSettings.pages.length) {
-        callback(
-          new Error(
-            `Page splits and page config counts do not match for package ${manifestSettings.directory}`,
-          ),
+        throw new Error(
+          `Page splits (${pages.length}) and page config counts (${manifestSettings.pages.length}) do not match for package "${manifestSettings.directory}"`,
         );
       }
 
       for (let i = 0; i < pages.length; i++) {
         const writeStream = fs.createWriteStream(
-          path.join(outputDir, manifestSettings.readme),
+          path.join(outputDir, manifestSettings.pages[i].filename),
           { encoding: "utf8" },
         );
         createStream(pages[i])
           .pipe(createFrontMatterTransformerStream(manifestSettings, i))
-          .pipe(readmeStreamTransformer)
+          .pipe(createUrlTransformerSteam(manifestSettings))
           .pipe(writeStream);
       }
       callback();

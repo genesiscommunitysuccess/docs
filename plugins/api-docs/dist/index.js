@@ -47,8 +47,7 @@ async function copyPackageFiles(manifest, processedMap) {
                 copyFn: copyFunctions_1.copyImgFile,
             });
         }
-        const readmeStreamTransformer = (0, fileStreams_1.createUrlTransformerSteam)(pkg.output);
-        const readmeDuplexStream = (0, fileStreams_1.createOutputDuplexStream)(pkg.output, outputRootDir, readmeStreamTransformer);
+        const readmeDuplexStream = (0, fileStreams_1.createOutputDuplexStream)(pkg.output, outputRootDir);
         const packageReadmeFile = path_1.default.join(packageRootDir, pkg.src.readme);
         const readStream = fs_extra_1.default.createReadStream(packageReadmeFile, {
             encoding: "utf8",
@@ -58,11 +57,8 @@ async function copyPackageFiles(manifest, processedMap) {
                 console.error(`Pipeline failed. ${err}`);
             }
         });
-        const packageJsonPath = path_1.default.join(packageRootDir, "package.json");
-        if (fs_extra_1.default.existsSync(packageJsonPath)) {
-            const packageJson = await fs_extra_1.default.readJson(packageJsonPath);
-            processedMap[pkg.name] = packageJson.version;
-        }
+        const packageJson = await fs_extra_1.default.readJson(path_1.default.join(packageRootDir, "package.json"));
+        processedMap[pkg.name] = packageJson.version;
     }
 }
 async function default_1(_ctx, options) {
