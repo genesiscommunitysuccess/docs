@@ -71,7 +71,7 @@ After the run, you should check these files and adjust them to suit your applica
 The command should like this.
 
 ```shell
-DictionaryBuilder -t MSSQL -U admin -P beONneON*74 -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d tradingapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument
+DictionaryBuilder -t MSSQL -U admin -P genesis -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d tradingapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument
 ```
 
 Note that we specified the names of the four source tables in the --tables argument of the command. So you could include just a subset of your source database if you wish.

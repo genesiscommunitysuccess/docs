@@ -144,8 +144,8 @@ When running the app on your local machine, you can adjust a few settings under 
 ```js title="client/web/package.json"
   "config": {
     "API_HOST": "ws://localhost:9064",
-    "DEFAULT_USER": "JaneDee",
-    "DEFAULT_PASSWORD": "beONneON*74",
+    "DEFAULT_USER": "admin",
+    "DEFAULT_PASSWORD": "genesis",
     "PORT": 6060
   },
 ```

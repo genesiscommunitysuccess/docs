@@ -43,7 +43,7 @@ The following is an example of a csv file, which can be loaded into the database
 
 ```csv
 NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
-MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),JaneDee,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
+MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),admin,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
 ```
 
 To set up a `MESSAGE_TYPE` for the Event Handlers, simply create an appropriate data class: for example, _application-name_**-server\\**_application-name_**-messages\src\main\java\global\genesis\\**_application-name_**\message\event\PositionCancel.kt**.
@@ -112,7 +112,7 @@ MESSAGE_TYPE fields define the Java/Kotlin class that is instantiated and set by
 To load a static (Cron) rule into the database, create a csv file with the rule in the above format. Call the file **CRON_RULE.csv**.
 ```csv
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
-"* 15 7 ? * MON-FRI *","Week days at 7.15","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
+"* 15 7 ? * MON-FRI *","Week days at 7.15","Europe/London","ENABLED","A rule","admin","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 
 Load the cron rule **CRON_RULE.csv** file into the `CRON_RULE`  [table](#defining-a-dynamic-rule).

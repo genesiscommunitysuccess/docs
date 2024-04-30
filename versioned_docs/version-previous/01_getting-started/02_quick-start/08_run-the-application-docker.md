@@ -79,7 +79,7 @@ PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207..
 PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
 REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
 STATUS                                   ENABLED                                  STRING              
-USER_NAME                                JaneDee                                  STRING              
+USER_NAME                                admin                                  STRING              
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1
@@ -139,7 +139,7 @@ PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207..
 PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
 REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
 STATUS                                   ENABLED                                  STRING              
-USER_NAME                                JaneDee                                  STRING              
+USER_NAME                                admin                                  STRING              
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1
@@ -199,7 +199,7 @@ PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207..
 PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
 REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
 STATUS                                   ENABLED                                  STRING              
-USER_NAME                                JaneDee                                  STRING              
+USER_NAME                                admin                                  STRING              
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1
@@ -340,8 +340,8 @@ The application will open at `http://localhost:6060/login`.
 That’s it. You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.
 The login details are: 
 
-- login name: JaneDee
-- password: beONneON*74
+- login name: admin
+- password: genesis
 
 When you have logged in, the screen is empty, but note the **ADD** button at the top right. You can click on this to add some dummy trade details.
 

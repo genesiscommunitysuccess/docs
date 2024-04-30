@@ -371,7 +371,7 @@ The platform provides two Data Server queries that contain Pending approval info
 ```
 -------------------------------------------------------------------------------------------
 TIMESTAMP                                2023-02-27 15:33:42.364(n:0,s:1019)      NANO_TIMESTAMP      
-ACTIONED_BY                              JaneDee                                  STRING              
+ACTIONED_BY                              admin                                  STRING              
 APPROVAL_ID                              fdef7802-6bd1-4c51-a232-6a4bc2325598A... STRING              
 APPROVAL_KEY                             fac1be9f-1653-4ecf-9050-d13cc2d2cdb4A... STRING              
 APPROVAL_MESSAGE                         Cancelled                                STRING              
@@ -382,7 +382,7 @@ DESTINATION                              COUNTERPARTY_EVENT_HANDLER             
 EVENT_DETAILS                            ISSUER_ID = 3                            STRING              
 EVENT_MESSAGE                            {"DETAILS":{"COUNTERPARTY_ID":3},"MES... STRING              
 MESSAGE_TYPE                             EVENT_COUNTERPARTY_DELETE                STRING              
-USER_NAME                                JaneDee                                  STRING              
+USER_NAME                                admin                                  STRING              
 -------------------------------------------------------------------------------------------
 ```
 

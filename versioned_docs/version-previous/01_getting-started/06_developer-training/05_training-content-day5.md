@@ -44,7 +44,7 @@ Our cron rule takes the following form:
 
 | CRON_EXPRESSION | DESCRIPTION | TIME_ZONE | RULE_STATUS | NAME | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0 45 7 ? * MON,TUE,WED,THU,FRI * | It’s a rule | Europe/London | ENABLED | A rule | JaneDee | ALPHA_EVENTHANDLER | EVENT_POSITION_REPORT |  |
+| 0 45 7 ? * MON,TUE,WED,THU,FRI * | It’s a rule | Europe/London | ENABLED | A rule | admin | ALPHA_EVENTHANDLER | EVENT_POSITION_REPORT |  |
 
 Let's look at the most important fields:
 
@@ -150,7 +150,7 @@ Load the cron rule csv below into the database, [CRON_RULE](../../../server/eval
 Create a new file in the same folder as **USER.csv** and name it as **CRON_RULE.csv**. Copy the content below into the file that you just created.
 ```csv
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
-"0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
+"0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","admin","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 Then import the local csv using the Genesis plugin as we saw [here](../../../getting-started/developer-training/training-content-day1/#credentials-to-login).
 
@@ -237,7 +237,7 @@ The objective is to use dynamic permissions and permission codes so that specifi
 
 First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the [generic permissions](../../../server/access-control/authorisation-overview/#generic-permissions) system.
 
-Starting with the server, set up the USER and USER_ATTRIBUTES records for the system user JaneDee.
+Starting with the server, set up the USER and USER_ATTRIBUTES records for the system user admin.
 
 :::tip
 If you are not sure how to read and write information from the Genesis database, see reference page covering the [`DbMon`](../../../operations/commands/server-commands/#dbmon) and [`SendIt`](../../../operations/commands/server-commands/#sendit) commands.
@@ -359,25 +359,25 @@ Set up a permission code for Trade inserting. The permission code should be call
 
 Using the command [`SendIt`](../../../operations/commands/server-commands/#dbmon), make the following three configurations below.
 
-1. Add the permission to the user JaneDee to use the table USER_ATTRIBUTES.
+1. Add the permission to the user admin to use the table USER_ATTRIBUTES.
 
 ```
 USER_NAME,USER_TYPE,ACCESS_TYPE,COUNTERPARTY_ID
-JaneDee,USER,ENTITY,1
+admin,USER,ENTITY,1
 ```
 
 2. Add the association between User and Counterparty to the table USER_COUNTERPARTY_MAP.
 
 ```
 USER_NAME,COUNTERPARTY_ID
-JaneDee,2
+admin,2
 ```
 
 3. Add the authorization code to the table RIGHT_SUMMARY.
 
 ```
 USER_NAME,RIGHT_CODE
-JaneDee,INSERT_TRADE
+admin,INSERT_TRADE
 ```
 
 That is it! You can now insert some trades and see the permissions happening in the application.
@@ -425,7 +425,7 @@ DictionaryBuilder -t <database-type> -U <username> -P <password> -p <database-po
 ```
 For example, if there is an MSSQL database running on AWS, a sample command would look like:
 ```bash
-DictionaryBuilder -t MSSQL -U admin -P beONneON*74 -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d positionapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument
+DictionaryBuilder -t MSSQL -U admin -P genesis -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d positionapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument
 ```
 
 Once the command has finished, it will generate the `fields-dictionary.kts` and `tables-dictionary.kts` files for the data model. Keep these files handy, as you will have to copy them over in the next steps.

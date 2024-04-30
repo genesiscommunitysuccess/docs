@@ -413,8 +413,8 @@ Congratulations! You have built an application and you are running a database.
 
 By default the following will be your login details:
 
-- Username: JaneDee
-- Password: beONneON*74 (This is encrypted in the user.csv file.)
+- Username: admin
+- Password: genesis (This is encrypted in the user.csv file.)
 
 However, after the first Build and Deploy, you need to send the login information so you can access the application you have just created.
 
@@ -477,7 +477,7 @@ PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207..
 PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
 REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
 STATUS                                   ENABLED                                  STRING              
-USER_NAME                                JaneDee                                  STRING              
+USER_NAME                                admin                                  STRING              
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1
@@ -537,7 +537,7 @@ PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207..
 PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
 REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
 STATUS                                   ENABLED                                  STRING              
-USER_NAME                                JaneDee                                  STRING              
+USER_NAME                                admin                                  STRING              
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1
@@ -597,7 +597,7 @@ PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207..
 PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
 REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
 STATUS                                   ENABLED                                  STRING              
-USER_NAME                                JaneDee                                  STRING              
+USER_NAME                                admin                                  STRING              
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1

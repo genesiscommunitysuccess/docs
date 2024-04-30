@@ -147,7 +147,7 @@ You need to create three csv files for this. The first is the file with your rul
 
 ```csv
 ID,NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
-99,MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),JaneDee,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
+99,MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),admin,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
 ```
 The second csv file relates the dynamic with with a specific topic and route in the notify. Create a file called **DYNAMIC_NOTIFY_RULE.csv** with the following content:
 

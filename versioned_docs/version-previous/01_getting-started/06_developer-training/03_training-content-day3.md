@@ -411,11 +411,11 @@ COUNTERPARTY_ID,COUNTERPARTY_LEI,COUNTERPARTY_NAME
 2,655FG0324Q4LUVJJMS11,Testing AG
 #TRADE
 TRADE_ID,COUNTERPARTY_ID,INSTRUMENT_ID,QUANTITY,PRICE,SYMBOL,DIRECTION,TRADE_DATE,ENTERED_BY,TRADE_STATUS
-00000000001TRSP0,1,1,10,641.927,BRL,BUY,1636987969135,JaneDee,NEW
-00000000002TRSP0,1,1,3,642.927,BRL,SELL,1636987969135,JaneDee,NEW
-00000000003TRSP0,2,2,10,643.927,BRL,BUY,1636987969135,JaneDee,NEW
-00000000004TRSP0,2,2,7,644.927,BRL,SELL,1636987969135,JaneDee,NEW
-00000000005TRSP0,2,2,70,0.0,BRL,SELL,1636987969135,JaneDee,NEW
+00000000001TRSP0,1,1,10,641.927,BRL,BUY,1636987969135,admin,NEW
+00000000002TRSP0,1,1,3,642.927,BRL,SELL,1636987969135,admin,NEW
+00000000003TRSP0,2,2,10,643.927,BRL,BUY,1636987969135,admin,NEW
+00000000004TRSP0,2,2,7,644.927,BRL,SELL,1636987969135,admin,NEW
+00000000005TRSP0,2,2,70,0.0,BRL,SELL,1636987969135,admin,NEW
 ```
 The directory tree should like this:
 
@@ -457,10 +457,10 @@ class AlphaEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 
     @Before
     fun setUp() {
-        authorise("ENTITY_VISIBILITY", "1", "JaneDee")
+        authorise("ENTITY_VISIBILITY", "1", "admin")
 
         val trader = DbRecord.dbRecord("RIGHT_SUMMARY") {
-            "USER_NAME" with "JaneDee"
+            "USER_NAME" with "admin"
             "RIGHT_CODE" with "INSERT_TRADE"
         }
         rxDb.insert(trader).blockingGet()
@@ -479,7 +479,7 @@ class AlphaEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
                 tradeDate = DateTime.now()
             },
             messageType = "EVENT_TRADE_INSERT",
-            userName = "JaneDee"
+            userName = "admin"
         )
 
         val result: EventReply? = messageClient.suspendRequest(message)
