@@ -152,9 +152,9 @@ At this point, you need enter **y** in the screen and press **Enter**. Remap the
 :::important
 Remap cannot be run while other processes are running. 
 
-We cannot use and update the database at the same time.
+We cannot use the database and update it at the same time.
 
-If processes are running when you start remap, the plugin will warns you and gives you the option to stop all processes before proceeding.
+If processes are running when you start remap, the plugin warns you and gives you the option to stop all processes before proceeding.
 :::
 
 ### Loading data
@@ -184,7 +184,7 @@ To run your Genesis application locally, you can use these two buttons:
 - To start the UI, click on the globe with the green triangle.
 
 :::tip
-Starting all processes at once in large projects can take some time. By default, it opens a run window for each process.
+Starting all processes at once in large projects can take some time. By default, a separate run window is opened for each process.
 To clean up the UI, use the **Services** window for better organisation (only available in IntelliJ Ultimate Edition).
 :::
 
@@ -247,9 +247,13 @@ It is possible to debug Genesis processes and step through code. This includes a
 
 ### Starting the UI
 
-To start your Genesis UI, click the **Start UI** button mentioned [above](#starting-the-front-and-backend). This first runs the `bootstrap` NPM task.
+To start your application's UI, click the **Start UI** button mentioned [above](#starting-the-front-and-back-ends). 
+
+This first runs the `bootstrap` NPM task.
+
 It then runs the `dev:intellij` NPM task, which by default does not have an explicit API_HOST value set; this allows the plugin to pass the correct host value.
-When there’s no `dev:intellij` task defined, the `dev` task is used as a fallback.
+
+If there is no `dev:intellij` task defined, the `dev` task is used as a fallback.
 
 This builds your front-end codebase and starts the webpack webserver in development mode. After this, it launches a browser tab showing your application's login screen.
 
@@ -266,7 +270,7 @@ Depending on your edition and version of IntelliJ, the following NPM tasks will 
     - MacOs - any version
     - Windows - IntelliJ version 2023.3 and after
     - Windows - any IntelliJ version, if the "SHELL" env variable is set to 'powershell.exe'
-* Else it will show run the front end from the Build screen
+* Else it will run the front end from the Build screen
 
 #### NPM run configurations
 
