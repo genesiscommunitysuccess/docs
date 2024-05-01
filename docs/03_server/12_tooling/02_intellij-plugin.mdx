@@ -18,11 +18,29 @@ The Genesis Intellij Plugin enables you to run the full stack of a Genesis appli
 1. To install, click on the button below:
 <iframe width="245px" height="48px" src="https://plugins.jetbrains.com/embeddable/install/21131"></iframe>
 
-![Installing the plugin](/img/plugin-marketplace.png)
-
-2. After installing the plugin, make sure you add it so that it is visible on the [Tool window bars and buttons](https://www.jetbrains.com/help/idea/tool-windows.html#bars_and_buttons).
+2. After installing the plugin, The [Tool window bars and buttons](https://www.jetbrains.com/help/idea/tool-windows.html#bars_and_buttons) will be visible once you open a Genesis Project.
 
 ![Genesis Tool Window](/img/intellij-plugin/genesis-tool-window.png)
+
+:::tip
+If the tool window does not show in a Genesis project, please make sure that you have opened the correct folder.
+The plugin will expect your project to have a folder called "server", and will check the "settings.gradle.kts" file in
+that folder for Genesis dependencies:
+```
+my project/
+├─ client/
+├─ server/
+│  ├─ setting.gradle.kts
+```
+Sometimes, especially when opening a project extracted from a zip file, there might be a nested project folder:
+```
+my project/     <-- don't open this folder
+├─ my project/  <-- open this folder
+│  ├─ client/
+│  ├─ server/
+│  │  ├─ setting.gradle.kts
+```
+:::
 
 3. For MacOs specifically, you need to install LMDB locally to start a Genesis data server.
 
