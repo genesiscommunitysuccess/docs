@@ -55,7 +55,7 @@ field("ID")
 
 
 ### Field Types
-By default, fields are of type STRING, to specify a field of a different type you will have to provide the type:
+By default, fields are of type STRING. To specify a field of a different type, simply provide the type: for example, to specify an integer:
 
 ```kotlin
 field("QUANTITY", INT)
@@ -81,18 +81,14 @@ These are the supported field types:
 | RAW                                | `field("MY_RAW", RAW)`                                 |
 | RAW(maxSize)                       | `field("MY_RAW", RAW(256))`                            |
 
-Most fields take no input; some fields have optional size inputs, and ENUM needs to have it's values
-specified.
+Most fields take no input; some fields have optional size inputs, and ENUM needs to have its values specified.
 
-* `STRING` will default to a max size of 64 unless specified
-* `BIGDECIMAL` will default to a database-specific precision and scale
+* `STRING` defaults to a max size of 64 unless specified
+* `BIGDECIMAL` defaults to a database-specific precision and scale
 
 ### ENUMs with json aliases
 
-While in the JVM world, we like to see enum names follow the UPPER_SNAKE_CASE convention, often times an ENUM
-field ends up driving a user selection on the front end.
-In which case you want to present something more human readable.
-You can do that with this syntax:
+While in the JVM world, we like to see enum names follow the UPPER_SNAKE_CASE convention. Often, an ENUM field ends up driving a user selection on the front end. So, if you want to present something more human-readable, you could use this syntax:
 
 ```kotlin {3}
 field(
@@ -101,8 +97,7 @@ field(
 )
 ```
 
-With this syntax, your enum values will be `ACCEPTED` and `REJECTED` in the backend and in the database.
-However, in the front end, and JSON schema the values will rendered as `Trade Accepted` and `Trade Rejected`.
+With this syntax, your enum values will be `ACCEPTED` and `REJECTED` in the back end and in the database. However, in the front end, and JSON schema, the values will be rendered as `Trade Accepted` and `Trade Rejected`.
 
 ### Providing a default value
 
@@ -114,15 +109,14 @@ Fields with default values are optional, but not nullable.
 field("MY_FIELD").default("DEFAULT")
 ```
 
-`ENUM` fields always a default value.
-This will be set to the first value in the `ENUM(...)` call.
+`ENUM` fields must always have a default value. This will be set to the first value in the `ENUM(...)` call.
 For example, below the `MY_ENUM` has a default of `YES`
 
 ```kotlin
 field("MY_ENUM", ENUM("YES", "NO"))
 ```
 
-However this can be overwritten to `NO`:
+However, this can be overwritten to `NO`:
 
 ```kotlin
 field("MY_ENUM", ENUM("YES", "NO")).default("NO")
@@ -134,8 +128,8 @@ Fields are non-nullable if:
 * have a default value
 * have the `.notNull()` modifier
 
-Fields with a default are optional, all other non-nullable fields are required.
-In the example we set `PRICE` to be non-nullable
+Fields with a default are optional; all other non-nullable fields are required.
+In the example below, we set `PRICE` to be non-nullable
 
 ```kotlin
 field("PRICE", DOUBLE).notNull()
@@ -150,13 +144,13 @@ For example, if the entity is passed to a logger.
 field("MY_SECRET").sensitive()
 ```
 
-## Primary Key and other Indices
+## Primary key and other indices
 
 By default, a table is a set of columns (fields), where you can insert and maintain a number of rows (records). You need to provide ways to query the database so that a specific record or records can be found. So you need to define one or more indices.
 
 The most important index (plural: indices) is called the primary key. This is mandatory, and must be defined by one or more fields which have a unique value or combination of values.
 
-In addition to Primary Keys, there are two types of index that you can specify:
+In addition to primary keys, there are two types of index that you can specify:
 
 - A **unique index** ensures that no two records in the table can have the same value for the specified field or fields. For example, this could be a TRADE_ID in a TRADES table, where the unique value is generated via autoIncrement or sequence. Or it could be a CURRENCY_SYMBOL in a table of CURRENCIES.
 - A **non-unique index** is useful when uniqueness is not important or not possible. For example, you could add a non-unique index on the ORDER_ID field in your TRADE table. This enables you to find all the trades that match a specified order.  (ORDER_ID would be unique in the ORDERS table, but the order can be filled by multiple trades.)
@@ -175,12 +169,14 @@ table(name = "POSITION", id = 11002) {
 ```
 
 Primary keys and indices on single fields can be added as modifiers on fields.
-Adding a field to an index will make that field non-nullable.
+Adding a field to an index makes that field non-nullable.
 
 ### Inline indices
 
-There are two ways to add indices to your table, you can add them inline in the field definition.
-Or you can define an index explicitly.
+There are two ways to add indices to your table:
+
+- You can add them inline in the field definition.
+- Or you can define an index explicitly.
 
 To add an index to a field, use one of these modifiers:
 
@@ -204,26 +200,32 @@ table(name = "TRADE", id = 11002) {
 }
 ```
 
-In this example we have the Primary Key on `ID`, this means that we can read the table by `ID`.
+In this example, we have the primary key on `ID`; this means that we can read the table by `ID`.
 The same is true for `EXTERNAL_ID`, which is the external trade identifier.
-When we look up a record by `ID` or `EXTERNAL_ID` the database will be able to return that record if it exists.
-At the same time the database will ensure that no two records have the same `ID` or `EXTERNAL_ID`,
-this will prevent duplication, ensuring data integrity.
 
-We also have an non-unique index on `INSTRUMENT_ID`,
-this means that we can return all trades related to a specific instrument.
-Use a non-unique index if you need to lookup data, but uniq
+When we look up a record by `ID` or `EXTERNAL_ID` the database will be able to return that record if it exists.
+At the same time, the database actively ensures that no two records have the same `ID` or `EXTERNAL_ID`; this prevents duplication, ensuring data integrity.
+
+We also have a non-unique index on `INSTRUMENT_ID`. This means that we can return all trades related to a specific instrument. A non-unique index simply provides a way of searching the table quickly; it provides usability. 
+
 Non-unique indices make no data integrity guarantees, other than to ensure that a value is provided.
 
-### Explicit Indices
+### Explicit indices
 
-You can also specify indices explicitly:
+You can also specify indices explicitly. This is useful in two ways:
+
+- You can specify an index with more than one field.
+- You can specify a name for the index (which overrides the auto-generated name).
+
+The table below has exactly the same specification as the previous table, except that the indices have been specified explicitly -- after the field definitions.
+
+The inline definition has the benefit of being more succinct. However, if you want to use multiple fields on an index or if you want to name the index, you must declare it explicitly.
 
 ```kotlin {9,12,13}
 table(name = "TRADE", id = 11002) {
-    field("ID", INT).autoIncrement().primaryKey()
-    field("EXTERNAL_ID").uniqueIndex()
-    field("INSTRUMENT_ID").nonUniqueIndex()
+    field("ID", INT).autoIncrement()
+    field("EXTERNAL_ID")
+    field("INSTRUMENT_ID")
     field("QUANTITY", INT)
     field("PRICE", DOUBLE).notNull()
     field("NOTIONAL", DOUBLE)
@@ -238,16 +240,9 @@ table(name = "TRADE", id = 11002) {
 }
 ```
 
-The two table definitions above are equivalent.
-The inline definition has the benefit of being more succinct.
-Explicit indices can have multiple fields a custom the index name.
-
 ### Indices with multiple fields
 
-In many cases, you will want to add indices on multiple fields.
-This is useful in case you need to ensure uniqueness across those fields -
-or if you want to lookup data across multiple files.
-Any index you create - the primary key or other unique or non-unique indices - can have multiple fields.
+Any index you create - the primary key or other unique or non-unique indices - can have multiple fields. This is useful where you need to ensure uniqueness across those fields, or if you want to look up data across multiple files.
 
 Multiple fields are only supported by explicit indices.
 
@@ -268,13 +263,13 @@ table(name = "ORDERS", id = 21003) {
     }
 }
 ```
-In the above definition, CUSTOMER_ORDER_REF is a field
-that could hold a unique order reference number or ID provided by the customer when they place the order.
-The unique index on CUSTOMER_ID and CUSTOMER_ORDER_REF ensures
-that the same customer cannot place two different orders with the same reference number.
-Also, the index on CUSTOMER_ID and PRODUCT_ID will enable us to find which customers a particular product.
+In the above definition, CUSTOMER_ORDER_REF is a field that could hold a unique order reference number or ID provided by the customer when they place the order.
 
-While we have a Primary Key with a single field in the example above, the same syntax holds for Primary Keys:
+The unique index on CUSTOMER_ID and CUSTOMER_ORDER_REF ensures that the same customer cannot place two different orders with the same reference number.
+
+Also, the index on CUSTOMER_ID and PRODUCT_ID enables us to find which customers have ordered a specific product.
+
+The example above has a primary key with a single field. But the syntax is the same for primary keys that have multiple keys:
 
 ```kotlin {9}
 table(name = "ORDERS", id = 21003) {
@@ -289,22 +284,20 @@ table(name = "ORDERS", id = 21003) {
 }
 ```
 
-### Default Index Name
-The framework, by default, auto-generates names for all indices, which, in most cases, are adequate.ufficient.
+### Default index name
+By default, names are auto-generated for all indices. In most cases, the names work well.
 
-The name matters because it is how you will refer to the index in your code,
-for more information see [operations and indices](../../../../database/data-structures/indices/)
+The name matters because it is how you refer to the index in your code; for more information see [operations and indices](../../../../database/data-structures/indices/)
 
-The auto-generated name adheres to the following pattern: `[TABLE_NAME]_BY_[FIELD_1](_[FIELD_N])`.
+Names are auto-generated in the following format: `[TABLE_NAME]_BY_[FIELD_1](_[FIELD_N])`.
 
-Here, `FIELD_1 - FIELD_N` represent all the fields that constitute the key or index, specified in order.
+Here, `FIELD_1 - FIELD_N` represents all the fields that constitute the key or index, specified in order.
 
 Note: If the field names start with the table name (e.g., `POSITION` and `POSITION_ID`), the table name gets stripped.
 Consequently, the index will be called `POSITION_BY_ID`.
 
 Let's see some examples.
-Below, the table name is `POSITION`.
-The generated names are shown in the comment above each primary key.
+Below, the table name is `POSITION`. The generated names are shown in the comment above each primary key.
 
 ```kotlin
 
@@ -324,9 +317,9 @@ primaryKey("OTHER_FIELD", "ANOTHER_FIELD")
 
 ### Setting an index name
 
-The default index naming behaviour can be overwritten for specific use cases such as:
+The default index naming behaviour can be overridden for specific use cases such as:
 
-* When an index contains numerous fields, ensuing in an overly verbose name.
+* When an index contains numerous fields, resulting in an overly verbose name.
 * When the generated index name lacks sufficient descriptiveness.
 
 Please keep in mind that setting an index name is only supported on explicit indices.
@@ -383,4 +376,4 @@ In the above example:
 
 - We can query on the primary key just on PROJ_ID to find the users associated with that project.
 - We can also query the primary key on both PROJ_ID and USER_ID to find if a specific user is associated with a specific project.
-- However, we **cannot skip** a field and query the primary key on only USER_ID. So, we have provided the non-unique index on USER_ID, which enable us to find all projects associated with a specific user.
+- However, we **cannot skip** a field and query the primary key on only USER_ID. So, we have provided the non-unique index on USER_ID, which enables us to find all projects associated with a specific user.
