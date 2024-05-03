@@ -6,7 +6,7 @@
 
 require("dotenv").config();
 
-import { themes as prismThemes } from "prism-react-renderer";
+import { dark } from "@mui/material/styles/createPalette";
 import { themes as prismThemes } from "prism-react-renderer";
 
 const baseUrl = process.env.BASE_URL || "/";
