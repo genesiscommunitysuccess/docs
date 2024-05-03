@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - master
+      - hardcode-versions
 
 jobs:
   build:
@@ -13,32 +14,23 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [20.12.2]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+    - uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-
-    - name: Install CDK dependencies
-      working-directory: ./infra
-      run: npm install
-
-    - name: Run CDK tests
-      working-directory: ./infra
-      run: npm test
+    - uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: 1.1.6
 
     - name: Install Docusaurus dependencies
-      run: npm install
+      run: bun install --no-save # do not generate a lockfile
 
     - name: Build Docusaurus and check for broken links
-      run: |
-        export NODE_OPTIONS="--max-old-space-size=8192"
-        npm run build
+      run: bun run build
       env:
           BRANCH: ${{ github.base_ref }}
           BASE_URL: /docs/
