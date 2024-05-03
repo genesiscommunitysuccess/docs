@@ -413,8 +413,8 @@ Congratulations! You have built an application and you are running a database.
 
 By default the following will be your login details:
 
-- Username: admin
-- Password: genesis (This is encrypted in the user.csv file.)
+- Username: JaneDee
+- Password: beONneON*74 (This is encrypted in the user.csv file.)
 
 However, after the first Build and Deploy, you need to send the login information so you can access the application you have just created.
 
@@ -468,16 +468,16 @@ TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)    
 COMPANY_ID                                                                        STRING              
 COMPANY_NAME                             GENESIS                                  STRING              
 DOMAIN                                                                            STRING              
-EMAIL_ADDRESS                            admin.global@genesis.global                  STRING              
-FIRST_NAME                               admin                                     STRING              
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING              
+FIRST_NAME                               Jane                                     STRING              
 LAST_LOGIN                               2016-04-28                               DATE                
-LAST_NAME                                global                                      STRING              
+LAST_NAME                                Dee                                      STRING              
 ONLINE                                   false                                    BOOLEAN             
-PASSWORD                                 775d545a8f34a8bf6c3f9d9c6381fbc8d3d76... STRING              
+PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING              
 PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
 REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
 STATUS                                   ENABLED                                  STRING              
-USER_NAME                                admin                                  STRING              
+USER_NAME                                JaneDee                                  STRING              
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1
@@ -528,16 +528,16 @@ TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)    
 COMPANY_ID                                                                        STRING              
 COMPANY_NAME                             GENESIS                                  STRING              
 DOMAIN                                                                            STRING              
-EMAIL_ADDRESS                            admin.global@genesis.global                  STRING              
-FIRST_NAME                               admin                                     STRING              
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING              
+FIRST_NAME                               Jane                                     STRING              
 LAST_LOGIN                               2016-04-28                               DATE                
-LAST_NAME                                global                                      STRING              
+LAST_NAME                                Dee                                      STRING              
 ONLINE                                   false                                    BOOLEAN             
-PASSWORD                                 775d545a8f34a8bf6c3f9d9c6381fbc8d3d76... STRING              
+PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING              
 PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
 REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
 STATUS                                   ENABLED                                  STRING              
-USER_NAME                                admin                                  STRING              
+USER_NAME                                JaneDee                                  STRING              
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1
@@ -588,16 +588,16 @@ TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)    
 COMPANY_ID                                                                        STRING              
 COMPANY_NAME                             GENESIS                                  STRING              
 DOMAIN                                                                            STRING              
-EMAIL_ADDRESS                            admin.global@genesis.global                  STRING              
-FIRST_NAME                               admin                                     STRING              
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING              
+FIRST_NAME                               Jane                                     STRING              
 LAST_LOGIN                               2016-04-28                               DATE                
-LAST_NAME                                global                                      STRING              
+LAST_NAME                                Dee                                      STRING              
 ONLINE                                   false                                    BOOLEAN             
-PASSWORD                                 775d545a8f34a8bf6c3f9d9c6381fbc8d3d76... STRING              
+PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING              
 PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
 REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
 STATUS                                   ENABLED                                  STRING              
-USER_NAME                                admin                                  STRING              
+USER_NAME                                JaneDee                                  STRING              
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1
@@ -610,7 +610,7 @@ DbMon:USER>
 
 ### Starting the server
 
-Now we need to start the servers. To do that, follow the structions below according to your environment configuration.
+Now we need to start the servers. To do that, follow the instructions below according to your environment configuration.
 
 <Tabs defaultValue="Intellij Plugin" values={[{ label: 'Intellij Plugin', value: 'Intellij Plugin', },{ label: 'Docker', value: 'Docker'} ,{ label: 'WSL', value: 'WSL'}]}>
 <TabItem value="Intellij Plugin">
