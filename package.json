@@ -28,11 +28,12 @@
     "package:iife": "node -e \"require('fs').writeFileSync('node_modules/iife/package.json', '{\\\"name\\\":\\\"iife\\\",\\\"version\\\":\\\"1.0.0\\\",\\\"main\\\":\\\"index.js\\\"}')\""
   },
   "dependencies": {
-    "@docusaurus/core": "3.3.0",
-    "@docusaurus/plugin-client-redirects": "3.3.0",
-    "@docusaurus/preset-classic": "3.3.0",
-    "@docusaurus/theme-live-codeblock": "3.3.0",
-    "@docusaurus/theme-mermaid": "3.3.0",
+    "@docusaurus/core": "3.2.1",
+    "@docusaurus/plugin-client-redirects": "3.2.1",
+    "@docusaurus/preset-classic": "3.2.1",
+    "@docusaurus/theme-common": "3.2.1",
+    "@docusaurus/theme-live-codeblock": "3.2.1",
+    "@docusaurus/theme-mermaid": "3.2.1",
     "@easyops-cn/docusaurus-search-local": "0.40.1",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.5",
@@ -72,8 +73,8 @@
     ]
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.3.0",
-    "@docusaurus/types": "3.3.0",
+    "@docusaurus/module-type-aliases": "3.2.1",
+    "@docusaurus/types": "3.2.1",
     "@genesislcap/genx": "14.173.3",
     "@types/mocha": "10.0.6",
     "api-docs-sync": "file:./plugins/api-docs",
