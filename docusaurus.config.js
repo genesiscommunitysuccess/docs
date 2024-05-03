@@ -6,6 +6,9 @@
 
 require("dotenv").config();
 
+import { themes as prismThemes } from "prism-react-renderer";
+import { themes as prismThemes } from "prism-react-renderer";
+
 const baseUrl = process.env.BASE_URL || "/";
 const routeBasePath = "/";
 const GTM_ID = process.env.GTM_ID || "GTM-5GTR43J"; // default to uat GTM_ID, prod one should be set on CI (master)
