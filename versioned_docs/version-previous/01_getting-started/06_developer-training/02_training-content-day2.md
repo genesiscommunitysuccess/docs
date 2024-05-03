@@ -441,8 +441,8 @@ For example, to log in using Postman:
     "MESSAGE_TYPE": "EVENT_LOGIN_AUTH",
     "SERVICE_NAME": "AUTH_MANAGER",
     "DETAILS": {
-        "USER_NAME": "admin",
-        "PASSWORD": "genesis"
+        "USER_NAME": "JaneDee",
+        "PASSWORD": "beONneON*74"
     }
 }
 ```
