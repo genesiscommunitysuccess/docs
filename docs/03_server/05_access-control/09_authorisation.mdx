@@ -512,7 +512,7 @@ We also define several items on the entity element:
 As mentioned above, we will also refresh when either the `ENTITY`, `USER` or `USER_ATTRIBUTES` tables are updated. You will need to define `updateOnUserFields` (see further down) to ensure user data updates are triggered.
 
 :::note
-The `user` handle readily available will contain all fields and their values from the `USER` and `USER_ATTRIBUTES` tables, meaning if you add a custom string field `FOO` to `USER_ATTRIBUTES`, `user.getString("FOO")` can be used to access it.)
+The `user` handle readily available will contain all fields and their values from the `USER` and `USER_ATTRIBUTES` tables, meaning if you add a custom string field `FOO` to `USER_ATTRIBUTES`, `user.getString("FOO")` can be used to access it.
 :::
 
 #### Full example file
@@ -636,7 +636,7 @@ dynamicPermissions {
 
 ## Defining a permission rule using Groovy and XML
 
-All permission rules are held in the **auth-permissions.xml** file.  In this file, you define rules against a specific entity, and each entity is defined against a database table.
+All permission rules are held in the **auth-permissions.xml** file. In this file, you define rules against a specific entity, and each entity is defined against a database table.
 
 We have a `preExpression` block inside our file, which is applied to all entities. This makes the definition `isUserEnabled` available to all entities.
 
