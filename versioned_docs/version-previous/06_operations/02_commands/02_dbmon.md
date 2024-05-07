@@ -455,7 +455,7 @@ Field Name                               Value                                  
 TIMESTAMP                                2023-08-15 12:09:47.802(n:0,s:112)       NANO_TIMESTAMP      
 COUNTERPARTY_ID                          3                                        STRING              
 DIRECTION                                BUY                                      ENUM[BUY SELL]      
-ENTERED_BY                               JaneDee                                  STRING              
+ENTERED_BY                               admin                                    STRING              
 INSTRUMENT_ID                            1                                        STRING              
 PRICE                                    76.0                                     DOUBLE              
 QUANTITY                                 99                                       INT                 
@@ -481,7 +481,7 @@ Field Name                               Value                                  
 TIMESTAMP                                2023-08-15 12:09:10.992(n:0,s:103)       NANO_TIMESTAMP      
 COUNTERPARTY_ID                          3                                        STRING              
 DIRECTION                                BUY                                      ENUM[BUY SELL]      
-ENTERED_BY                               JaneDee                                  STRING              
+ENTERED_BY                               admin                                    STRING              
 INSTRUMENT_ID                            1                                        STRING              
 PRICE                                    76.0                                     DOUBLE              
 QUANTITY                                 99                                       INT                 
@@ -553,7 +553,7 @@ Field Name                               Value                                  
 TIMESTAMP                                                                         NANO_TIMESTAMP      
 COUNTERPARTY_ID                          1                                        STRING              
 DIRECTION                                BUY                                      ENUM[BUY SELL]      
-ENTERED_BY                               JaneDee                                  STRING              
+ENTERED_BY                               admin                                    STRING              
 INSTRUMENT_ID                            1                                        STRING              
 PRICE                                    80.0                                     DOUBLE              
 QUANTITY                                 70                                       INT                 
@@ -608,8 +608,8 @@ DbMon:TRADE>writeMode
 DbMon:TRADE>deleteWhere QUANTITY > 100
 Are you sure you wish to execute the command? Y/N
 y
-Deleted record: DbRecord [tableName=TRADE] [PRICE = 9.0, SYMBOL = EUR, QUANTITY = 888, DIRECTION = BUY, TIMESTAMP = 2023-08-15 12:09:55.422(n:0,s:119) (7097187651224076407), TRADE_DATE = null, RECORD_ID = 7097187651224076407, COUNTERPARTY_ID = 3, TRADE_ID = 3aa96a32-0fdb-47e1-b96b-243dfa265e5cTRLO1, TRADE_STATUS = NEW, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
-Deleted record: DbRecord [tableName=TRADE] [PRICE = 76.0, SYMBOL = EUR, QUANTITY = 888, DIRECTION = BUY, TIMESTAMP = 2023-08-15 12:09:52.163(n:0,s:116) (7097187637554839668), TRADE_DATE = null, RECORD_ID = 7097187637554839668, COUNTERPARTY_ID = 3, TRADE_ID = 0750ffa9-f080-4256-b0e4-efa0369d089cTRLO1, TRADE_STATUS = NEW, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
+Deleted record: DbRecord [tableName=TRADE] [PRICE = 9.0, SYMBOL = EUR, QUANTITY = 888, DIRECTION = BUY, TIMESTAMP = 2023-08-15 12:09:55.422(n:0,s:119) (7097187651224076407), TRADE_DATE = null, RECORD_ID = 7097187651224076407, COUNTERPARTY_ID = 3, TRADE_ID = 3aa96a32-0fdb-47e1-b96b-243dfa265e5cTRLO1, TRADE_STATUS = NEW, INSTRUMENT_ID = 1, ENTERED_BY = admin, ]
+Deleted record: DbRecord [tableName=TRADE] [PRICE = 76.0, SYMBOL = EUR, QUANTITY = 888, DIRECTION = BUY, TIMESTAMP = 2023-08-15 12:09:52.163(n:0,s:116) (7097187637554839668), TRADE_DATE = null, RECORD_ID = 7097187637554839668, COUNTERPARTY_ID = 3, TRADE_ID = 0750ffa9-f080-4256-b0e4-efa0369d089cTRLO1, TRADE_STATUS = NEW, INSTRUMENT_ID = 1, ENTERED_BY = admin, ]
 2 records deleted
 ```
 
@@ -648,7 +648,7 @@ DbMon:TRADE>writeMode
 DbMon:TRADE>updateWhere TRADE_ID=="genesis1" QUANTITY=10
 Are you sure you wish to execute the command? Y/N
 y
-Updated record: DbRecord [tableName=TRADE] [PRICE = 90.0, SYMBOL = EUR, QUANTITY = 10, DIRECTION = BUY, TIMESTAMP = 2023-08-15 19:14:01.488(n:0,s:104) (7097294379760484456), TRADE_DATE = null, RECORD_ID = 7097293333759787097, COUNTERPARTY_ID = 1, TRADE_STATUS = NEW, TRADE_ID = genesis1, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
+Updated record: DbRecord [tableName=TRADE] [PRICE = 90.0, SYMBOL = EUR, QUANTITY = 10, DIRECTION = BUY, TIMESTAMP = 2023-08-15 19:14:01.488(n:0,s:104) (7097294379760484456), TRADE_DATE = null, RECORD_ID = 7097293333759787097, COUNTERPARTY_ID = 1, TRADE_STATUS = NEW, TRADE_ID = genesis1, INSTRUMENT_ID = 1, ENTERED_BY = admin, ]
 1 records updated
 ```
 
