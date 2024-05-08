@@ -1,0 +1,67 @@
+---
+title: 'Notify - Templated Notification Bodies'
+sidebar_label: 'Templated Notification Bodies'
+sidebar_position: 6
+id: templated-notification-bodies
+keywords: [components, email, notifications, generation, templates]
+tags:
+  - components
+  - email
+  - notifications
+  - generation
+  - templates
+---
+
+## Introduction
+This feature enables you to generate notification bodies using predefined HTML templates. This can also include information from your application's database as well as embedded images.
+
+Behind the scenes, the email builder is using the [Document Generator](../../generated-docs/generated-docs-server) to create the email bodies. After creating and uploading the template and the assets to FILE_STORAGE (see Document Management for more information on uploading/downloading files), you will be able to use these to generate your email bodies.
+
+This feature is currently supported by these Gateway types:
+- Email
+- SendGrid
+
+## Configuration
+In order to send out emails, you will need to ensure that the following configuration for [Email](../../notifications/notifications-server/email/#email-gateway-configuration)/[SendGrid](../../notifications/notifications-server/email/#sendgrid-gateway-configuration) gateway and the [database](../../notifications/notifications-server/email/#database-configuration) is set up in your application.
+
+The same email template will work with both gateways.
+
+## HTML templates
+
+### Sourced data to be displayed in the email
+For examples on how to structure the data in your HTML templates, please refer to the [Document Generator docs](../../generated-docs/generated-docs-server/#html-templates).
+Please note that the data referenced in the email bodies is queried by the tableName and tableEntityId (fields explained below). At the moment you can only query a single record per email.
+
+### Embedding images
+
+These can be referenced in the HTML template with the name of the file. These files need to be uploaded to file storage and linked to the template as [assets](../../).
+```html
+<img
+    src="./genesis-logo.png"
+    alt="Logo"
+    width="140"
+    style="max-width: 140px; width: 100%; display: block; border: 0px; height: auto !important;"
+/>
+```
+
+### CSS
+The styling should be defined inline in the HTML template. If the CSS file is linked to the template as an asset, as it might be for standard PDF generation, it will be sent with the resulting email as an attachment. In this case, most email clients will fail to render the content correctly.
+
+## Sending emails with templated body content
+
+### Creating the Notification
+
+In order to use this feature, additional parameters are exposed on the EVENT_NOTIFY_INSERT event.
+
+- `templateRef`
+- `tableName`
+- `tableEntityId`
+
+The template to use for content generation is passed in the `templateRef` field. This can either be a unique ID in the FILE_STORAGE table or the file name if the unique ID is not known.
+
+The `tableName` and `tableEntityId` fields are used to resolve a record in the database that the notification is linked to. These fields are optional, but will be provided automatically if the notification is created through the evaluator dynamic rules engine. 
+
+If provided, the record will be resolved and automatically added to the document generation data context under a key which is the table name converted to lower camel case. For example, if the Notification is triggered by an update on the TRADE table, then the trade record will be added to the data context under the key 'trade'. You can then reference fields from the linked entity in your template, with this syntax:
+```html
+<td th:text="${trade.tradeId}">Trade ID</td>
+```
