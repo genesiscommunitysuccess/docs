@@ -145,7 +145,7 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 
 **DEPLOYED_PRODUCT**: This specifies that the product's generated code is bundled in the product's distribution. This means that remap skips the code-generation step. This property's value should be the name of the product. To bundle the generated code into the distribution, see [here](../../../database/fields-tables-views/genesisDao/#bundling-generated-code-with-product-distribution).
 
-If you want to enable SSL for your process communication, this is done in the [service definition](../../../server/configuring-runtime/service-definitions/#enable-ssl-for-processes).
+If you want to enable SSL for your process communication, this is done in the [service definition](../../../server/configuring-runtime/service-definitions/#enabling-ssl-for-processes).
 
 ## Setting system-definition values from environment variables
 
