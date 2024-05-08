@@ -403,7 +403,7 @@ private fun buildLoginSet(overrides: GenesisSet.() -> Unit = {}): GenesisSet {
     val set = GenesisSet()
     set.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
     set.setDirect("DETAILS.USER_NAME", USER_NAME)
-    set.setDirect("DETAILS.PASSWORD", "beONneON*74")
+    set.setDirect("DETAILS.PASSWORD", "genesis")
     set.overrides()
     return set
 }

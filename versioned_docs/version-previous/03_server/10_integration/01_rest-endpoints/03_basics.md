@@ -33,8 +33,8 @@ SOURCE_REF: 123456-789041
 
 {
     "DETAILS": {
-        "USER_NAME": "JaneDee",
-        "PASSWORD": "beONneON*74"
+        "USER_NAME": "admin",
+        "PASSWORD": "genesis"
     }
 }
 ```
