@@ -24,7 +24,8 @@ You can access system definition properties in two ways:
 -   using existing APIs
 -   using @Named Genesis annotation
 
-## Using existing APIs
+## Using existing APIs[​](../../../server/api-reference/system-definition-api/#using-existing-apisdirect-link-to-heading)
+-----------------------------------------------------------------------------------------------------------------------------------------------
 
 | name | signature |
 | --- | --- |
@@ -62,7 +63,8 @@ You can access system definition properties in two ways:
 | parseProperty | `static <T, R> Optional<R> parseProperty(Supplier<Optional<T>> property, Predicate<? super T> canBeTransformed, Function<? super T, ? extends R> transformer)` |
 | parseStringProperty | `static <R> Optional<R> parseStringProperty(Supplier<Optional<String>> property, Function<? super String, ? extends R> transformer)` |
 
-## Using @Named genesis annotation
+## Using @Named genesis annotation[​](../../../server/api-reference/system-definition-api/#using-named-genesis-annotationdirect-link-to-heading)
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### Injectable properties from system definition
 Here is an example of a **genesis-system-definition.kts** file:

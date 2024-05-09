@@ -23,7 +23,23 @@ The Genesis Intellij Plugin enables you to run the full stack of a Genesis appli
 ![Genesis Tool Window](/img/intellij-plugin/genesis-tool-window.png)
 
 :::tip
-If the tool window does not appear in a Genesis project, take a look at the [troubleshooting](#troubleshooting) section.
+If the tool window does not appear in a Genesis project, please make sure that you have opened the correct folder.
+The plugin will expect your project to have a folder called **server**; it checks the **settings.gradle.kts** file in
+that folder for Genesis dependencies:
+```
+my project/
+├─ client/
+├─ server/
+│  ├─ setting.gradle.kts
+```
+Sometimes, especially when opening a project extracted from a zip file, there might be a nested project folder:
+```
+my project/     <-- don't open this folder
+├─ my project/  <-- open this folder
+│  ├─ client/
+│  ├─ server/
+│  │  ├─ setting.gradle.kts
+```
 :::
 
 3. For MacOs specifically, you need to install LMDB locally to start a Genesis data server.
@@ -194,10 +210,6 @@ To clean up the UI, use the **Services** window for better organisation (only av
 ![Services Window](/img/plugin-services.png)
 
 ### Starting the back end
-
-:::tip
-If you have issues starting services, take a look at the [troubleshooting](#troubleshooting) section.
-:::
 
 To start all services, click on **Start All Services**.
 You can start specific services from the mon Window, and from the Intellij Run Config list:
@@ -470,87 +482,3 @@ If you are changing a Genesis or Business Component dependency:
 
 1. Click on the **Prepare Local Genesis Application** button.
 2. Run **remap**.
-
-## Troubleshooting
-
-### Make sure you have the correct folder
-
-The plugin is only displayed when you have a Genesis project open in IntelliJ.
-
-If the tool window does not appear in a Genesis project, make sure that you have opened the correct folder.
-The plugin expects your project to have a folder called **server**; it checks the **settings.gradle.kts** file in
-that folder for Genesis dependencies:
-```
-my project/
-├─ client/
-├─ server/
-│  ├─ setting.gradle.kts
-```
-Sometimes, especially when opening a project extracted from a zip file, there might be a nested project folder:
-```
-my project/     <-- don't open this folder
-├─ my project/  <-- open this folder
-│  ├─ client/
-│  ├─ server/
-│  │  ├─ setting.gradle.kts
-```
-
-### Make sure you have a compatible JVM
-
-In the IntelliJ menu, go to the Project Structure; click on **File** and then **project structure**.
-From there, you can set your projects SDK.
-
-- Do **NOT** use Correto 20.
-- GraalVm or OpenJDK are good options.
-
-![Gradle Settings](/img/intellij-plugin/intellij-sdk-settings.png)
-
-### Make sure gradle is set to use the Project SDK
-
-1. Open your IntelliJ Settings.
-2. Search for **gradle** in the search box.
-3. Go to the **Gradle JVM** setting; make sure this is set to **Project SDK**:
-
-![Gradle Settings](/img/intellij-plugin/intellij-settings-gradle.png)
-
-### Process fails to start
-
-If the process fails to start, shows DOWN, and the log exception says **address already in use**:
-
-```log
-zeroMQ failed to bind socket to address 'tcp://*:18001', exiting due to critical error.
-```
-
-This indicates that 18001 port on your local machine is in use. Most of the time when this happens, it is due to an error in the process; sometimes it does not “giving up” the port when it stops.
-
-The remedy for this if you are using MacOs is:
-
-1. `netstat -vanp tcp | grep *affected port*`
-
-This will output anything associated with the port. Take note of the LISTEN line
-
-```shell
-genesis.user@MACBOOK34 simple-create-demo-new % netstat -vanp tcp | grep 18001
-tcp4       0      0  192.168.0.50.18001     192.168.0.50.61373     ESTABLISHED  408193  146988  70265      0 00102 00000004 0000000000ebf6f5 20000080 01000800      2      0 000005
-tcp4       0      0  192.168.0.50.61373     192.168.0.50.18001     ESTABLISHED  408209  146988  71785      0 00102 00000000 0000000000ebf6f3 20000080 04000800      2      0 000005
-tcp4       0      0  192.168.0.50.18001     192.168.0.50.60421     ESTABLISHED  408135  146988  70265      0 00102 00000004 0000000000ebee98 20000080 01000800      2      0 000005
-tcp4       0      0  192.168.0.50.60421     192.168.0.50.18001     ESTABLISHED  408209  146988  71778      0 00102 00000000 0000000000ebee97 20000080 04000800      2      0 000005
-tcp4       0      0  192.168.0.50.18001     192.168.0.50.60099     ESTABLISHED  407981  146988  70265      0 00102 00000004 0000000000ebebcd 20000080 01000800      2      0 000005
-tcp4       0      0  192.168.0.50.60099     192.168.0.50.18001     ESTABLISHED  408209  146988  71774      0 00102 00000000 0000000000ebebcb 20000080 04000800      2      0 000005
-tcp4       0      0  192.168.0.50.18001     192.168.0.50.58063     ESTABLISHED  408175  146988  70265      0 00102 00000004 0000000000ebdac8 20000080 01000800      2      0 000005
-tcp4       0      0  192.168.0.50.58063     192.168.0.50.18001     ESTABLISHED  408209  146988  71763      0 00102 00000000 0000000000ebdac7 20000080 04000800      2      0 000005
-tcp4       0      0  192.168.0.50.18001     192.168.0.50.57375     ESTABLISHED  408171  146988  70265      0 00102 00000004 0000000000ebd4be 20000080 01000800      2      0 000005
-tcp4       0      0  192.168.0.50.57375     192.168.0.50.18001     ESTABLISHED  408209  146988  71773      0 00102 00000000 0000000000ebd4bc 20000080 04000800      2      0 000005
-tcp4       0      0  192.168.0.50.18001     192.168.0.50.55365     ESTABLISHED  408178  146988  70265      0 00102 00000004 0000000000ebc42e 20000080 01000800      2      0 000005
-tcp4       0      0  192.168.0.50.55365     192.168.0.50.18001     ESTABLISHED  408209  146988  71762      0 00102 00000000 0000000000ebc42d 20000080 04000800      2      0 000005
-tcp4       0      0  192.168.0.50.18001     192.168.0.50.53163     ESTABLISHED  407986  146988  70265      0 00102 00000004 0000000000ebb096 20000080 01000800      2      0 000005
-tcp4       0      0  192.168.0.50.53163     192.168.0.50.18001     ESTABLISHED  408209  146988  71758      0 00102 00000000 0000000000ebb095 20000080 04000800      2      0 000005
-tcp4       0      0  192.168.0.50.18001     192.168.0.50.52489     ESTABLISHED  408184  146988  70265      0 00102 00000004 0000000000ebab9f 20000080 01000800      2      0 000005
-tcp4       0      0  192.168.0.50.52489     192.168.0.50.18001     ESTABLISHED  408209  146988  71759      0 00102 00000000 0000000000ebab9e 20000080 04000800      2      0 000005
-tcp4       0      0  192.168.0.50.18001     192.168.0.50.63839     ESTABLISHED  408145  146988  70265      0 00102 00000004 0000000000e8c707 20000080 01000800      2      0 000005
-tcp4       0      0  192.168.0.50.63839     192.168.0.50.18001     ESTABLISHED  408209  146988  70265      0 00102 00000000 0000000000e8c705 20000080 04000800      2      0 000005
-tcp46      0      0  *.18001                *.*                    LISTEN       131072  131072  70265      0 00100 00000006 0000000000e8b4a6 00000000 00000800      1      0 000001
-genesis.user@MACBOOK34 simple-create-demo-new % kill -9 70265
-```
-
-2. From the LISTEN line, take the PID of the process (in example below, this is  70265) and run `kill -9 *pid of LISTEN process*`.
