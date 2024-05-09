@@ -246,6 +246,8 @@ Click on the funnel, to see the options available (below). From there, select **
 
 ![Log Filter](/img/intellij-plugin/process-log-filter.png)
 
+The default log level for a process is defined by the `loggingLevel` tag in your application's [**processes.xml** file](../../../server/configuring-runtime/processes/#tags). You can dynamically change this [using the terminal to run the LogLevel script] (#using-the-terminal).
+
 #### Starting processes
 
 Processes can be started using the **Start All Genesis Services** button mentioned [above](#starting-the-front-and-back-ends).
@@ -416,7 +418,7 @@ However, regardless of this setting, the resource daemon will be started wheneve
 
 ## Keeping your local Genesis Home in sync
 
-Every Genesis application, whether deployed to a server, or running locally, needs a **home** folder. This folder is the installation location; it includes all dependencies and configuration needed to run the application.
+Every Genesis application, whether deployed to a server or running locally, needs a **home** folder. This folder is the installation location; it includes all dependencies and configuration needed to run the application.
 
 There are two ways that this is managed from within the plugin:
 
@@ -445,7 +447,7 @@ The benefits of the Gradle mode over the Deploy mode are:
 ### Deploy mode
 
 :::important
-Deployed mode is still supported, but we recommens that you [migrate](/operations/project-structure/settings-plugin/) your project to Gradle mode. This will greatly simplify the user experience in the plugin.
+Deployed mode is still supported, but we recommend that you [migrate](/operations/project-structure/settings-plugin/) your project to Gradle mode. This will greatly simplify the user experience in the plugin.
 
 :::
 
