@@ -36,11 +36,11 @@ class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnecti
 }
 ```
 
-### Constructor[​](../../../server/api-reference/network-api/#constructordirect-link-to-heading)
+### Constructor
 
 GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration: NetworkConfiguration)
 
-### Functions[​](../../../server/api-reference/network-api/#functionsdirect-link-to-heading)
+### Functions
 
 | Name | Signature |
 | --- | --- |
@@ -93,22 +93,22 @@ class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnecti
 }
 ```
 
-## GenesisMessageHandler[​](../../../server/api-reference/network-api/#genesismessagehandlerdirect-link-to-heading)
+## GenesisMessageHandler
 
 GenesisMessageHandler enables you to attach listeners to servers and clients.
 
-### Functions[​](../../../server/api-reference/network-api/#functionsdirect-link-to-heading-1)
+### Functions
 
 | Name | Signature |
 | --- | --- |
 | addListener | `fun addListener(listener: GenesisMessageListener<V>)` |
 | removeListener | `fun removeListener(listener: GenesisMessageListener<V>)` |
 
-## GenesisMessageListener[​](../../../server/api-reference/network-api/#genesismessagelistenerdirect-link-to-heading)
+## GenesisMessageListener
 
 `GenesisMessageListener` is a functional interface with method `onNewMessage`, which listens for any new messages. `@FunctionalInterface public interface GenesisMessageListener<V extends GenesisMessage>`
 
-### onNewMessage[​](../../../server/api-reference/network-api/#onnewmessagedirect-link-to-heading)
+### onNewMessage
 
 This method is called when a new message is received.
 
