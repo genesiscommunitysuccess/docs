@@ -12,18 +12,28 @@ tags:
     - sequence
 ---
 
+:::warning
+This page is only for users of  GSF version 7.1 or earlier.
+
+Click [here](../../fields-tables-views/) for details of how to define these details in the current version.
+:::
+
 ## Simple table with autoincrement
 This very simple table contains one field (POSITION_ID) that uses `autoIncrement` to generate the next sequence number. This field is also the primary key for the table.
 
 ```kotlin
 tables {
-    table(name = "POSITION", id = 11002) {
-        field("ID", INT).autoIncrement().primaryKey()
-        field("INSTRUMENT_ID")
-        field("QUANTITY", INT)
-        field("NOTIONAL", DOUBLE)
 
+  table(name = "POSITION", id = 11002) {
+    autoIncrement(POSITION_ID)
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
+
+    primaryKey { 
+      POSITION_ID
     }
+  }
 
 }
 ```
@@ -33,13 +43,17 @@ This very simple table contains one field (POSITION_ID) that uses `sequence` to 
 
 ```kotlin
 tables {
-    table(name = "POSITION", id = 11002) {
-        field("ID", INT).sequence("PS").primaryKey()
-        field("INSTRUMENT_ID")
-        field("QUANTITY", INT)
-        field("NOTIONAL", DOUBLE)
 
+  table(name = "POSITION", id = 11002) {
+    sequence(POSITION_ID, "PS")
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
+
+    primaryKey { 
+      POSITION_ID
     }
+  }
 
 }
 ```
@@ -57,26 +71,39 @@ Audit tables use `sequence` to generate the sequence number for each entry in th
 
 ```kotlin
 tables {
-    table(name = "TRADE", id = 11000, audit = details(id = 11001, sequence = "TR", tsKey = true)) {
-        field("TRADE_ID", LONG).autoIncrement().primaryKey()
-        field("INSTRUMENT_ID").notNull()
-        field("COUNTERPARTY_ID").notNull()
-        field("QUANTITY", INT).notNull()
-        field("SIDE", ENUM("BUY", "SELL")).notNull()
-        field("PRICE").notNull()
-        field("TRADE_DATETIME", DATETIME).nonUniqueIndex()
-        field("ENTERED_BY")
-        field("TRADE_STATUS", ENUM("OPEN", "CLOSED"))
+  table(name = "TRADE", id = 11000, audit = details(id = 11001, sequence = "TR", tsKey = true)) {
+    // Source: Trade
+    autoIncrement(TRADE_ID)
+    INSTRUMENT_ID not null
+    COUNTERPARTY_ID not null
+    QUANTITY not null
+    SIDE not null
+    PRICE not null
+    TRADE_DATETIME
+    ENTERED_BY
+    TRADE_STATUS
 
+    primaryKey {
+      TRADE_ID
     }
 
-    table(name = "POSITION", id = 11002) {
-        field("ID", INT).autoIncrement().primaryKey()
-        field("INSTRUMENT_ID")
-        field("QUANTITY", INT)
-        field("NOTIONAL", DOUBLE)
-
+    indices {
+      nonUnique {
+        TRADE_DATETIME
+      }
     }
+  }
+
+  table(name = "POSITION", id = 11002) {
+    autoIncrement(POSITION_ID)
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
+
+    primaryKey {
+      POSITION_ID
+    }
+  }
 
 }
 ```
