@@ -11,9 +11,23 @@ tags:
 
  
 
-In your application's **tables-dictionary.kts** file, you need to define every table that your application needs. Let us look at a very simple example definition. This contains a single table with three fields in it.
+Tables are essential to the data model. In your application's **tables-dictionary.kts** file, you need to define every table that your application needs. 
 
-Then you can look closer at all the elements that can go into a table definition.
+Each table requires:
+
+- a unique name and unique id; the id must be a number; this ensures that you can rename a table without losing the data in it
+
+- one or more fields, and each field must have a specific type.
+
+- one or more primary keys, which are the main methods of searching for data in the table.
+
+Here is a very simple example table definition. It contains a single table with three fields in it.
+
+- The first field, POSITION_ID, uses autoincrement to set the field automatically to the next number in the sequence when a new record is written to the database. So every record will have a unique number. We shall discuss this further in the [Advanced](../../../../database/fields-tables-views/tables/tables-advanced/) page.
+
+- The other two fields - INSTRUMENT_ID and QUANTITY - have no type specified - so their type defaults to STRING.
+
+- POSITION_ID is also the primary key for this table. So you will be able to search for records using a single POSITION_ID value or a range of values. It is common to use a single sequenced/autoIncrement field as a `primaryKey` in this way.
 
 ```kotlin
 tables {
@@ -30,45 +44,6 @@ tables {
   }
 
 }
-```
-
-The `autoIncrement` keyword is used to set this field automatically to the next number in the sequence when a new record is written to the database. We shall discuss this further in the [Advanced](../../../../database/fields-tables-views/tables/tables-advanced/) page.
-
-## Table name
-
-When you define a table, you must start by giving it a name that is unique to the application: 
-
-
-```kotlin
-  table(name = "POSITION")
-```
-
-## Table ID
-
-Tables must also be given a Table ID that is unique to the application. This ensures that you can rename a table without losing the data in it.
- 
-```kotlin
-  table(name = "POSITION", id = 11002)
-```
-
-## Fields
-After specifying a name and a Table ID, specify the fields in the table. 
-
-You do not need to specify field types and other attributes - just the field name.
-
-If you are using intelliJ IDE, it will auto-suggest the available fields; any references that are not known will be shown in red.
-
-
-```kotlin
-
-  table(name = "POSITION", id = 11002) {
-      autoIncrement(POSITION_ID)
-      INSTRUMENT_ID
-      QUANTITY
-      NOTIONAL
-
-  }
-
 ```
 
 ### Making a field not null
@@ -96,26 +71,7 @@ table(name = "TRADE", id = 2000) {
 
 By default, a table is a set of columns (fields), where you can insert and maintain a number of rows (records). You need to provide ways to query the database so that a specific record or records can be found. So you need to define one or more indices.
 
-The most important index (plural: indices) is called the primary key. This is mandatory, and must be defined by one or more fields which have a unique value or combination of values.
-
-So let's add a simple primary key to the example above. It is on the POSITION_ID field, so that we can find a specific record or range of records. It is common to use a single sequenced/autoIncrement field as a `primaryKey` in this way:
-
-```kotlin
-tables {
-
-  table(name = "POSITION", id = 11002) {
-      autoIncrement(POSITION_ID)
-      INSTRUMENT_ID
-      QUANTITY
-      NOTIONAL
-      
-      primaryKey {
-          POSITION_ID 
-      }
-  }
-
-}
-```
+The primary key is the most important index (plural: indices). It is mandatory have at least one primary key, which must be defined by one or more fields that have a unique value or combination of values.
 
 ## Providing other indices
 
