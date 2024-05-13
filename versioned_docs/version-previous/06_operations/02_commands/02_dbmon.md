@@ -207,6 +207,7 @@ REGION                    UK                                        STRING
 VIEW_CODE                 WALSH                                     STRING
 ```
 
+### Clearing the context
 If you then want to find a record with a different `VIEW_CODE`, use the [`clear`](#dbmon-commands) command to clear the record. You can then use [`set`](#dbmon-commands) and [`find`](#dbmon-commands) commands to locate the new record.
 
 _The `clear` command does not change the database._
@@ -455,7 +456,7 @@ Field Name                               Value                                  
 TIMESTAMP                                2023-08-15 12:09:47.802(n:0,s:112)       NANO_TIMESTAMP      
 COUNTERPARTY_ID                          3                                        STRING              
 DIRECTION                                BUY                                      ENUM[BUY SELL]      
-ENTERED_BY                               JaneDee                                  STRING              
+ENTERED_BY                               admin                                    STRING              
 INSTRUMENT_ID                            1                                        STRING              
 PRICE                                    76.0                                     DOUBLE              
 QUANTITY                                 99                                       INT                 
@@ -481,7 +482,7 @@ Field Name                               Value                                  
 TIMESTAMP                                2023-08-15 12:09:10.992(n:0,s:103)       NANO_TIMESTAMP      
 COUNTERPARTY_ID                          3                                        STRING              
 DIRECTION                                BUY                                      ENUM[BUY SELL]      
-ENTERED_BY                               JaneDee                                  STRING              
+ENTERED_BY                               admin                                    STRING              
 INSTRUMENT_ID                            1                                        STRING              
 PRICE                                    76.0                                     DOUBLE              
 QUANTITY                                 99                                       INT                 
@@ -553,7 +554,7 @@ Field Name                               Value                                  
 TIMESTAMP                                                                         NANO_TIMESTAMP      
 COUNTERPARTY_ID                          1                                        STRING              
 DIRECTION                                BUY                                      ENUM[BUY SELL]      
-ENTERED_BY                               JaneDee                                  STRING              
+ENTERED_BY                               admin                                    STRING              
 INSTRUMENT_ID                            1                                        STRING              
 PRICE                                    80.0                                     DOUBLE              
 QUANTITY                                 70                                       INT                 
@@ -608,8 +609,8 @@ DbMon:TRADE>writeMode
 DbMon:TRADE>deleteWhere QUANTITY > 100
 Are you sure you wish to execute the command? Y/N
 y
-Deleted record: DbRecord [tableName=TRADE] [PRICE = 9.0, SYMBOL = EUR, QUANTITY = 888, DIRECTION = BUY, TIMESTAMP = 2023-08-15 12:09:55.422(n:0,s:119) (7097187651224076407), TRADE_DATE = null, RECORD_ID = 7097187651224076407, COUNTERPARTY_ID = 3, TRADE_ID = 3aa96a32-0fdb-47e1-b96b-243dfa265e5cTRLO1, TRADE_STATUS = NEW, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
-Deleted record: DbRecord [tableName=TRADE] [PRICE = 76.0, SYMBOL = EUR, QUANTITY = 888, DIRECTION = BUY, TIMESTAMP = 2023-08-15 12:09:52.163(n:0,s:116) (7097187637554839668), TRADE_DATE = null, RECORD_ID = 7097187637554839668, COUNTERPARTY_ID = 3, TRADE_ID = 0750ffa9-f080-4256-b0e4-efa0369d089cTRLO1, TRADE_STATUS = NEW, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
+Deleted record: DbRecord [tableName=TRADE] [PRICE = 9.0, SYMBOL = EUR, QUANTITY = 888, DIRECTION = BUY, TIMESTAMP = 2023-08-15 12:09:55.422(n:0,s:119) (7097187651224076407), TRADE_DATE = null, RECORD_ID = 7097187651224076407, COUNTERPARTY_ID = 3, TRADE_ID = 3aa96a32-0fdb-47e1-b96b-243dfa265e5cTRLO1, TRADE_STATUS = NEW, INSTRUMENT_ID = 1, ENTERED_BY = admin, ]
+Deleted record: DbRecord [tableName=TRADE] [PRICE = 76.0, SYMBOL = EUR, QUANTITY = 888, DIRECTION = BUY, TIMESTAMP = 2023-08-15 12:09:52.163(n:0,s:116) (7097187637554839668), TRADE_DATE = null, RECORD_ID = 7097187637554839668, COUNTERPARTY_ID = 3, TRADE_ID = 0750ffa9-f080-4256-b0e4-efa0369d089cTRLO1, TRADE_STATUS = NEW, INSTRUMENT_ID = 1, ENTERED_BY = admin, ]
 2 records deleted
 ```
 
@@ -648,7 +649,7 @@ DbMon:TRADE>writeMode
 DbMon:TRADE>updateWhere TRADE_ID=="genesis1" QUANTITY=10
 Are you sure you wish to execute the command? Y/N
 y
-Updated record: DbRecord [tableName=TRADE] [PRICE = 90.0, SYMBOL = EUR, QUANTITY = 10, DIRECTION = BUY, TIMESTAMP = 2023-08-15 19:14:01.488(n:0,s:104) (7097294379760484456), TRADE_DATE = null, RECORD_ID = 7097293333759787097, COUNTERPARTY_ID = 1, TRADE_STATUS = NEW, TRADE_ID = genesis1, INSTRUMENT_ID = 1, ENTERED_BY = JaneDee, ]
+Updated record: DbRecord [tableName=TRADE] [PRICE = 90.0, SYMBOL = EUR, QUANTITY = 10, DIRECTION = BUY, TIMESTAMP = 2023-08-15 19:14:01.488(n:0,s:104) (7097294379760484456), TRADE_DATE = null, RECORD_ID = 7097293333759787097, COUNTERPARTY_ID = 1, TRADE_STATUS = NEW, TRADE_ID = genesis1, INSTRUMENT_ID = 1, ENTERED_BY = admin, ]
 1 records updated
 ```
 
@@ -733,34 +734,34 @@ Here is a full list of DbMon commands and their arguments.
 | Command                              | Argument                                    | Description                                                            |
 |--------------------------------------|---------------------------------------------|------------------------------------------------------------------------|
 | autoIncrementNumber                  | `<field_name>`                              | displays the last generated autoIncrement number for the table or view |
-| [clear](#displaying-a-record---set)  |                                             | clear the current context                                              |
-| [count](#count-rows)                 |                                             | count the rows in the table/view                                       |
-| [delete](#delete)                    |                                             | delete the current row                                                 |
+| [clear](#clearing-the-context)  |                                             | clear the current context                                              |
+| [count](#counting-rows-records)                 |                                             | count the rows in the table/view                                       |
+| [delete](#deleting-rows)                    |                                             | delete the current row                                                 |
 | [deleteWhere](#deletewhere)          | `<condition>`                               | delete all matching rows in the selected table                         |
-| [distinct](#distinct)                | `<condition> [-where <limiting_condition>]` | show only distinct records                                             |
-| [displayFields](#display-fields)     | `<field_names>`                             | display only selected columns                                          |
-| [find](#find)                        | `<key_name>`                                | find a specific record in a index                                      |
+| [distinct](#finding-distinct-records)                | `<condition> [-where <limiting_condition>]` | show only distinct records                                             |
+| [displayFields](#viewing-selected-columns)     | `<field_names>`                             | display only selected columns                                          |
+| [find](#finding-and-viewing-a-specific-record)                        | `<key_name>`                                | find a specific record in a index                                      |
 | forceAutoIncrementNumber             | `<field_name> <sequence_number>`            |                                                                        |
 | forceSequenceNumber                  | `<sequence_name> <sequence_number>`         |                                                                        |
-| [first](#first-and-last)             | `<key_name>`                                | get the first record by key                                            |
+| [first](#finding-the-first-and-last-record)             | `<key_name>`                                | get the first record by key                                            |
 | help                                 |                                             | list all commands                                                      |
-| [insert](#insert)                    |                                             | insert the current                                                     |
-| [last](#first-and-last)              | `<key_name>`                                | get the last record by key                                             |
+| [insert](#inserting-a-new-record)                    |                                             | insert a new record with the currently selected fields                                                    |
+| [last](#finding-the-first-and-last-record)              | `<key_name>`                                | get the last record by key                                             |
 | listAll                              | `<key_name> <num_key_fields> <max_records>` |                                                                        |
-| [next](#next)                        | `<key_name>`                                | get the next record by key                                             |
+| [next](#displaying-the-next-record)                        | `<key_name>`                                | get the next record by key                                             |
 | qsearch                              | `<condition> [-l <limit>]`                  |                                                                        |
 | qshow                                |                                             |                                                                        |
-| [search](#search)                    | `<condition> [-l <limit>]`                  | return the records that match the criteria                             |
-| [set](#set-and-unset)                | `<field_name> <field_value>`                | set a field                                                            |
+| [search](#searching-for-one-or-more-records)                    | `<condition> [-l <limit>]`                  | return the records that match the criteria                             |
+| [set](#changing-the-value-of-a-field)                | `<field_name> <field_value>`                | set a field                                                            |
 | sequenceNumber                       | `<sequence_name>`                           | displays the last generated sequence number for the table or view      |
-| [show](#show)                        |                                             | display the current record                                             |
-| [showKeys](#show-keys-indexes)       |                                             | display all indexes                                                    |
-| [showTables](#show-tables-and-views) |                                             | display all tables in the schema                                       |
-| [showViews](#show-tables-and-views)  |                                             | display all views in the schema                                        |
-| [table](#table)                      | `<table_name>`                              | select an specified table                                              |
-| [unset](#set-and-unset)              | `<field>`                                   | set a field to `null`                                                  |
-| [update](#update)                    | `<key_name>` `<fields>`                     | update the current row by key                                          |
+| [show](#viewing-the-columns-in-a-table-or-view)                        |                                             | display the current record                                             |
+| [showKeys](#finding-and-viewing-a-specific-record)       |                                             | display all indexes                                                    |
+| [showTables](#finding-and-viewing-information) |                                             | display all tables in the schema                                       |
+| [showViews](#finding-and-viewing-information)  |                                             | display all views in the schema                                        |
+| [table](#selecting-a-table)                      | `<table_name>`                              | select a specified table                                              |
+| [unset](#changing-the-value-of-a-field)              | `<field>`                                   | set a field to `null`                                                  |
+| [update](#updating-rows)                    | `<key_name>` `<fields>`                     | update the current row by key                                          |
 | [updateWhere](#updatewhere)          | `<condition> <assignments>`                 | update all records that matches a given condition                      |
-| [view](#view)                        | `<view_name>`                               | select an specified view                                               |
+| [view](#selecting-a-view)                        | `<view_name>`                               | select a specified view                                               |
 | writeMode                            |                                             | enable write mode                                                      |
 

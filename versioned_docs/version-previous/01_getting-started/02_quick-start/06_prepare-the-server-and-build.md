@@ -119,8 +119,8 @@ values={[
   "license": "Apache-2.0",
   "config": {
     "API_HOST": "ws://localhost:9064",
-    "DEFAULT_USER": "JaneDee",
-    "DEFAULT_PASSWORD": "beONneON*74",
+    "DEFAULT_USER": "admin",
+    "DEFAULT_PASSWORD": "genesis",
     "PORT": 6060
   },
 ```
@@ -138,8 +138,8 @@ values={[
   "license": "Apache-2.0",
   "config": {
     "API_HOST": "ws://localhost/gwf/",
-    "DEFAULT_USER": "JaneDee",
-    "DEFAULT_PASSWORD": "beONneON*74",
+    "DEFAULT_USER": "admin,
+    "DEFAULT_PASSWORD": "genesis",
     "PORT": 6060
   },
 ```
@@ -157,8 +157,8 @@ values={[
   "license": "Apache-2.0",
   "config": {
     "API_HOST": "ws://localhost/gwf/",
-    "DEFAULT_USER": "JaneDee",
-    "DEFAULT_PASSWORD": "beONneON*74",
+    "DEFAULT_USER": "admin",
+    "DEFAULT_PASSWORD": "genesis",
     "PORT": 6060
   },
 ```

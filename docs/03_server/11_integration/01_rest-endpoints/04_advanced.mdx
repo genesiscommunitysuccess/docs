@@ -32,7 +32,7 @@ SOURCE_REF: 123456-789042
 
 {
     "DETAILS": {
-        "USER_NAME": "JaneDee",
+        "USER_NAME": "admin",
         "REFRESH_AUTH_TOKEN": "FmqF9CGzo2MiujEZoiRUjGXh8ybDC62L"
     }
 }
@@ -91,7 +91,7 @@ Host: localhost:9064
 Content-Type: application/json
 SOURCE_REF: 123456-789043
 SESSION_ID: 7043f539-160a-418a-be92-d5813a13a5fd
-USER_NAME: JaneDee
+USER_NAME: admin
 ```
 
 Sample response:
