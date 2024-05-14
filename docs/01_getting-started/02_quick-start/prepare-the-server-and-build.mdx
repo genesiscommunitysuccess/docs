@@ -1,0 +1,78 @@
+---
+title: 'Quick start - build, remap and run the application'
+sidebar_label: 'Build and run'
+sidebar_position: 6
+id: prepare-the-server-and-build
+keywords: [getting started, quick start, server, build]
+tags:
+    - getting started
+    - quick start
+    - server
+    - build
+---
+
+The application has three files that contain vital configuration information:
+
+- **alpha-processes.xml**
+- **alpha-service-definitions.xml**
+- **genesis-system-definitions.kts**
+
+## Process and service definition
+
+At present, these files are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
+
+Add the following content to the **server/alpha-app/src/main/genesis/cfg/alpha-processes.xml** file:
+
+
+```xml title='alpha-processes.xml'
+<processes>
+      <process name="ALPHA_MANAGER">
+        <groupId>ALPHA</groupId>
+        <start>true</start>
+        <options>-Xmx512m -DRedirectStreamsToLog=true</options>
+        <module>genesis-pal-eventhandler,genesis-pal-requestserver,genesis-pal-dataserver</module>
+        <package>global.genesis.dataserver.pal,global.genesis.eventhandler.pal,global.genesis.requestreply.pal</package>
+        <script>alpha-eventhandler.kts,alpha-reqrep.kts,alpha-dataserver.kts</script>
+        <description>Management of eventhandler, request server and data server processes</description>
+        <classpath>alpha-app*</classpath>
+        <language>pal</language>
+      </process>
+</processes>
+```
+
+Further information can be found in our page on the [**-processes.xml** file](../../../server/configuring-runtime/processes/).
+
+You can then add the following content to the **server/alpha-app/src/main/genesis/cfg/alpha-service-definitions.xml** file:
+
+```xml title="alpha-service-definitions.xml"
+<configuration>
+    <service host="localhost" name="ALPHA_MANAGER" port="9700"/>
+</configuration>
+```
+
+Further information can be found in the page on the [**-service-definitions.xml** file](../../../server/configuring-runtime/service-definitions/).
+
+## Build
+
+Finally, you can build and deploy the server. In the Genesis plugin menu on the right of IntelliJ, select:
+
+**Prepare Local Genesis Application**
+
+![](/img/intellij-plugin/Prepare_local_genesis_application.png)
+
+Congratulations! You have built an application and you are running a database. The next step is to [run the application](../run-the-application-docker/).
+
+## Remap
+
+Before you can run your application, you need to create the tables of you application. To do that, run the `remap` script.
+
+![Genesis Install](/img/intellij-remap.png)
+
+After that, you will be asked to confirm the tables that you want to insert in your database, you should return `y`.
+
+```powershell
+WARNING: are you sure you want to commit changes to the database? (y/n)
+```
+
+
+

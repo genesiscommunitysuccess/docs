@@ -1,0 +1,155 @@
+---
+title: 'Quick start - Create new application'
+sidebar_label: 'New project with Genesis Create'
+sidebar_position: 4
+id: create-new-application
+keywords: [getting started, quick start, genesis create, new project]
+tags:
+    - getting started
+    - quick start
+    - genesis create
+    - new project
+---
+
+To get started, you need to access the [Genesis Create](https://create.genesis.global). This is a low-code tooling provided by genesis, so you can have a running full stack application with a few clicks.
+
+
+When you access the Genesis Create, you will be asked a username and a password.
+- **Username:** ***********
+- **Password:** **********
+
+## Project Attributes
+
+Once you log in, you will be prompt the following screen:
+
+![](/img/genesis-create/project_attributes.png)
+
+Give the project a name and a description, and after that click on **Add Genesis Components**. When you do that, a list will appear so you can select all the components you want to add to your project. For this quick start, we are adding two components:
+
+    - Real Time Queries ([Data Server](/server/data-server/introduction/)): This component adds the Data Server component which is capable of serving live, real time views of entities as they are ingested into the system.  This component also supports row and column based authorization as well as derived values calculated in real time.
+    - [Reporting](/components/reporting/foundation-reporting/): This component allows you to create reusable report templates and generate reports from any application endpoint.
+
+## Entity Models
+
+In this section, you have to create the data model of your application.
+
+![](/img/genesis-create/entity_models.png)
+
+Click on _New Entity_ to start creating the tables and fields of your application:
+
+![](/img/genesis-create/new_entity.png)
+
+After that, give your table a name, in our case, we are calling is `TRADES`, and start creating the fields for that table.
+
+for each field, you have two types that can be selected:
+
+    - Primitive: for this type, you create a new field based on primitives types such as `STRING`,`INT`, `BOOLEAN`, ...
+    - Entity Reference: for this type, you are creating a new field that already exists in other table. By doing this, you can save some time reusing your fields.
+
+For this quick start, we are creating the table `TRADES` with the following fields:
+
+|Name|Type| Primary Key | Auto generated | Sequence | Possible values |
+|----|----|---|---|---|--|
+|TRADE_ID| `STRING` | Yes | Yes | TR | |
+|QUANTITY| `INT` | No | No | | |
+|PRICE| `DOUBLE` | No | No | | |
+|SYMBOL| `STRING` | No | No | | |
+|DIRECTION| `ENUM` | No | No | | `BUY`, `SELL`, default: `BUY`|
+
+Your screen should be like this:
+
+![](/img/genesis-create/new_entity_complete.png)
+
+After you finish, the Genesis Create will create events for **insertion**, **deletion** and **modification** automatically. These events will be created in the file **alpha-eventhandler.kts**. To learn more about it, please check the [eventhandler documentation](/server/event-handler/introduction/).
+
+## Views
+
+After you created your data model, we are going to create a [view](/database/fields-tables-views/views/) on top of that table.
+
+![](/img/genesis-create/views.png)
+
+Click on _New View_ to create a new view.
+
+![](/img/genesis-create/new_view.png)
+
+On that page, you can select the root table and give your view a name. After you save it, two new sections will be unblocked:
+
+    - The _Join Condition_: where you can [create joins](/database/fields-tables-views/views/views-basics/#joins). But remember that in order to be able to create joins, you need to have at least two entities.
+    - The _View Configuration_: where you can select which fields will be included in that view.
+
+For this quick start, we are not creating joins. In case you are interested in creating joins, please [follow this link](/database/fields-tables-views/views/views-basics/#joins).
+
+## Queries
+
+After you create your views, we are going to configure our [queries](/server/data-server/introduction/).
+
+![](/img/genesis-create/queries.png)
+
+Click on _New Query_. After that, it will open this page:
+
+![](/img/genesis-create/new_query.png)
+
+In this section, you need to give this query a name, and select the source of that query. After you save it, the attribute section will be unblocked so you can choose the fields that will be streamed.
+
+In this quick start, we are choosing all fields to be streamed.
+
+## Business Components
+
+In this section will be listed all business components that you have selected.
+
+![](/img/genesis-create/business_components.png)
+
+If you select any component that needs additional configuration, it will appear an icon so you can configure it.
+
+## User Interface
+
+In this section, you can create pages and add web components to your application.
+
+![](/img/genesis-create/user_interface.png)
+
+Here you can:
+    - Add new routes/pages: The default route that is created is called **HOME**. You can whether use it or create new ones.
+    - Add new components: You can add and configure web components that will be inserted into your application. Today we can insert:
+        - [Entity Management](/web/micro-front-ends/foundation-entity-management/): a component made of a a real time grid and a form to perform modifications to database values.
+        - [Real time grids](/web/web-components/grids/grid-pro/grid-pro-intro/): This component provides the end-user with a real time data grid connected to the Genesis query configured in a read-only mode appropriate for display only.
+        - [Dynamic forms](/web/forms/foundation-forms/): This component provides the end-user with a static form dynamically created against an underlying entity that can be fine tuned on the configuration screen.
+        - [Charts](/web/web-components/presentation/chart/): Create a chart to display your data.
+
+### Adding a new web component
+
+For this tutorial, we are going to create a new entity management component to our home page. Click on **Add Tile** and select **Real-Time Data Grid + Data Modifications**
+
+![](/img/genesis-create/add_new_web_component.png)
+
+Once you submit, a new row with a warning on the config column will appear. It indicates that you still need to configure your component. To do that, click on the edit button in the actions column.
+
+After you click on it, you should see a this page:
+
+![](/img/genesis-create/add_new_entity_management.png)
+
+At this point you need to configure:
+- **The data source of the entity management**: This is where your grid will get the data from. Select the source **ALL_TRADES**. Remember that this source is a query that you have created.
+- **The position of the modal**: the entity management component is composed of a grid and a form. In that part, you need to choose where you want the form to appear. We are choosing **right**.
+- **Allowed actions**: You can allow the user to insert, delete and modify the data that is being displayed. In that part, you need to choose which actions you want the user to be allowed. We are choosing all actions: delete, insert and modify.
+
+After you choose the data source, the **Configure Grid and Forms** section will be unblocked:
+
+![](/img/genesis-create/configure_grid_and_forms.png)
+
+At this part, you can configure the order of the fields in the grid and in the forms, change how the name of the field will be displayed, and also change the visibility of each field.
+
+For this tutorial, we are not changing any configuration at this point.
+
+## Summary
+
+When you are done with the UI configuration, you can proceed to the last step with is the summary:
+
+![](/img/genesis-create/summary.png)
+
+Here there is a video explaining what are the next steps and there is also a button so you can generate your project.
+
+Whe you click on it, it will start downloading your project in a .zip file. Now all you have to do it unzip ir locally and open it in intelliJ.
+
+:::tip
+After you first open your project in IntelliJ, a pop-up will appear requesting you to load the gradle project. Make sure you click on "Load Grade Project".
+:::
