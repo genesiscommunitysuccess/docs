@@ -15,4 +15,4 @@ The primary lookup location for GPAL scripts is in the **/scripts** directory in
 It is possible to override GPAL scripts that are installed as part of either the core platform or additional platform components. To do this, create a script file with the same name (or copy the file from the installed module) to the **site-specific/scripts** directory. Script files in the **site-specific/scripts** directory take precedence over files with the same name in the directory of an installed module.
 
 ### Runtime classpath
-GPAL script files can also be bundled inside jar archives. A script file can be resolved by name provided the file is in the root directory of a jar archive that has been added to the process classpath. This is useful if you do not want to allow overrides of specific script files for security reasons.
+GPAL script files can also be bundled inside jar archives. A script file can be resolved by name, provided the file is in the root directory of a jar archive that has been added to the process classpath. This is useful if you do not want to allow overrides of specific script files for security reasons.
