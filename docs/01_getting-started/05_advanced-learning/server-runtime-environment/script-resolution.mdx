@@ -6,13 +6,10 @@ sidebar_position: 2
 ---
 
 
-## Introduction
-This article is a brief explanation of how a genesis process locates GPAL script files when you add them to the `<script>` block of a process definition.
-
-GPAL scripts can be resolved from one of three locations:
+Your application's **processes.xml** file enables you to specify the script file for each process. Genesis looks for these files in three locations:
 
 ### Installed Modules
-The primary lookup location for GPAL scripts is in the `/scripts` directory in each installed module on the target server. That is, for every directory under `$GENESIS_HOME`, the process bootstrap will attempt to resolve a script file in `$GENESIS_HOME/<module>/scripts`.
+The primary lookup location for GPAL scripts is in the **/scripts** directory in each installed module on the target server. That is, for every directory under **$GENESIS_HOME**, the process bootstrap will attempt to resolve a script file in `$GENESIS_HOME/<module>/scripts`.
 
 ### Site Specific Scripts
 It is possible to override GPAL scripts that are installed as part of either the core platform or additional platform components by creating a file with the same name, or copying the file from the installed module, to the `site-specific/scripts` directory. Any script files in the `site-specific/scripts` directory will take precedence over files with the same name in the directory of an installed module.
