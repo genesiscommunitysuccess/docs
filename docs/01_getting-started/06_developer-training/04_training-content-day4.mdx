@@ -120,110 +120,6 @@ Now let's look at the different elements that make up the state machine:
     - **transitionEvent() \{ ... \}**: this creates the events themselves. Each transitionEvent will create a new event. The name of each event follows the same rule: EVENT_\{TABLE\}_\{STATE\}. So in our example we have: EVENT_TRADE_ALLOCATED and EVENT_TRADE_CANCELLED.
     - **fromStates( )**: this defines the flow of the state machine. Here you define which states can move to the state defined in the transitionEvent.
 
-<!--
-### 3. Add an integrated State Machine to the Event Handler
-
-Let's edit the Event Handler to add an integrated State Machine. First, in the **alpha-eventhandler.kts** file, add the imports below and declare a variable to be visible to all events by injecting the class `TradeStateMachine`, which we have just created.
-
-```kotlin {1-6,9}
-import genesis.global.message.event.PositionReport
-import genesis.global.message.event.TradeAllocated
-import genesis.global.message.event.TradeCancelled
-import global.genesis.TradeStateMachine
-import global.genesis.gen.dao.Trade
-...
-eventHandler {
-    val stateMachine = inject<TradeStateMachine>()
-
-    eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
-        ...
-    }
-    ...
-}
-```
-
-Then, integrate the State Machine in the TRADE_INSERT event `onCommit`.
-
-```kotlin {2,5}
-eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
-    onCommit { event ->
-        val trade = event.details
-        trade.enteredBy = event.userName
-        stateMachine.insert(trade)
-        ack()
-    }
-}
-```
-
-Create two data classes that will be used in the cancel and allocated eventHandler codeblocks. These classes should be in **server/alpha-app/src/main/kotlin/genesis/global/message/event**.
-
-* TradeAllocated
-* TradeCancelled
-
-Both classes have a single field: **tradeId**.
-
-TradeAllocated:
-
-```kotlin title="TradeAllocated"
-package genesis.global.message.event
-
-data class TradeAllocated(val tradeId: String)
-```
-
-TradeCancelled:
-
-```kotlin title="TradeCancelled"
-package genesis.global.message.event
-
-data class TradeCancelled(val tradeId: String)
-```
-
-Create a new eventHandler codeblock called TRADE_CANCELLED to handle cancellations. Then integrate the State Machine in it.
-
-```kotlin
-eventHandler<TradeCancelled>(name = "TRADE_CANCELLED", transactional = true) {
-    onCommit { event ->
-        val message = event.details
-        stateMachine.modify(message.tradeId) { trade ->
-            trade.tradeStatus = TradeStatus.CANCELLED
-        }
-        ack()
-    }
-}
-```
-
-Create a new eventHandler codeblock called TRADE_ALLOCATED to handle completion. Integrate the State Machine in it.
-
-```kotlin
-eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
-    onCommit { event ->
-        val message = event.details
-        stateMachine.modify(message.tradeId) { trade ->
-            trade.tradeStatus = TradeStatus.ALLOCATED
-        }
-        ack()
-    }
-}
-```
-
-Modify or add the TRADE_MODIFY eventHandler codeblock to use the State Machine.
-
-```kotlin {4}
-eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
-    onCommit { event ->
-        val trade = event.details
-        stateMachine.modify(trade)
-        ack()
-    }
-}
-```
-
-Remove the TRADE_DELETE eventHandler codeblock if you included it before. You only want to manage the state of the trade. If a trade is incorrect and needs to be deleted, similar functionality can be achieved by cancelling the trade.
-
-To test it, you can try to modify a TRADE and see the states changing accordingly.
-
--->
-
 ### Exercise 4.1: State Machines
 :::info ESTIMATED TIME
 40 mins
@@ -343,7 +239,6 @@ eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
 The `verify` block you see above is part of the validation helper provided by the platform to make it easier to verify conditions against the database. Outside the `verify` block, you can write any Kotlin code to validate whatever you want to.
 :::
 
-<!--
 :::info
 There is a limitation with the
 [cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) and how it
@@ -352,7 +247,6 @@ interacts with FAST bindings and event listeners. So you have to refactor out th
 If your components were interacting with each other via the parent component, then we recommend that you change them to interact via the `foundation-store` utility.
 :::
 
--->
 
 ### Exercise 4.2: adding onValidate to Event Handlers
 :::info ESTIMATED TIME
@@ -409,109 +303,25 @@ This can be useful for historical purposes, if you need to be able to produce an
 For basic auditing, the first step is to change the relevant table dictionary. In this instance, we will make changes to the **alpha-tables-dictionary.kts**, in order to add the parameter `audit = details()` to the table definition. It should resemble the following:
 
 ```kotlin {1}
-table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
-    sequence(TRADE_ID, "TR")
-    COUNTERPARTY_ID 
-    INSTRUMENT_ID not null
-    QUANTITY
-    PRICE not null
-    SYMBOL
-    DIRECTION
-    TRADE_DATE
-    ENTERED_BY
-    TRADE_STATUS
-
-    primaryKey {
-        TRADE_ID
+    table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
+        field("TRADE_ID",STRING).sequence("TR").primaryKey()
+        field("TRADE_DATE",DATE)
+        field("ENTERED_BY",STRING).username().notNull()
+        field("TRADE_STATUS", ENUM("NEW","ALLOCATED","CANCELLED")).default("NEW")
+        field("COUNTERPARTY_ID",STRING).notNull()
+        field("INSTRUMENT_ID",STRING).notNull()
+        field("QUANTITY",INT)
+        field("PRICE",DOUBLE).notNull()
+        field("SYMBOL",STRING)
+        field("DIRECTION", ENUM("BUY","SELL")).default("BUY")
     }
-}
 ```
 
 The id parameter indicates the id of the newly created audit table, and must be different from any other table id.
 
 As we are using GPAL Event Handlers, this is sufficient to enable auditing on this table. A new table is created with the name of the original table, and the **_AUDIT** suffix added. In this instance, that would be the **TRADE_AUDIT** table.
 
-<!--
-#### Updating the State Machine to use auditing
-
-Next you need to extend the insert, and modify methods in the **TradeStateMachine.kt** file. Specifically, each method must have a second option so that the method signature uses the `AsyncMultiEntityReadWriteGenericSupport` parameter and the `internalState.withTransaction(transaction) { }` code block.  For example:
-
-```kotlin {2,5,10,12,20,23}
-    suspend fun insert(
-        transaction: AsyncMultiEntityReadWriteGenericSupport,
-        trade: Trade,
-    ): Transition<Trade, TradeStatus, TradeEffect> =
-        internalState.withTransaction(transaction) {
-            create(trade)
-        }
-
-    suspend fun modify(
-        transaction: AsyncMultiEntityReadWriteGenericSupport,
-        tradeId: String, modify: suspend (Trade) -> Unit
-    ): Transition<Trade, TradeStatus, TradeEffect>? =
-        internalState.withTransaction(transaction) {
-            update(Trade.ById(tradeId)) {
-                    trade, _ -> modify(trade)
-            }
-        }
-
-    suspend fun modify(
-        transaction: AsyncMultiEntityReadWriteGenericSupport,
-        trade: Trade
-    ): Transition<Trade, TradeStatus, TradeEffect>? =
-        internalState.withTransaction(transaction) {
-            update(trade)
-        }
-```
-
-#### Update the Event Handlers to use auditing
-
-Now you must update the **alpha-eventhandler.kts** in order to pass the `entityDb` object into the updated methods of the State Machine, as the `syncMultiEntityReadWriteGenericSupport` parameter. This should resemble the example below:
-
-```kotlin {12,19,26,35}
-    eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
-        onValidate { event ->
-            val message = event.details
-            verify {
-                entityDb hasEntry Counterparty.ById(message.counterpartyId)
-                entityDb hasEntry Instrument.ById(message.instrumentId)
-            }
-            ack()
-        }
-        onCommit { event ->
-            val trade = event.details
-            stateMachine.insert(entityDb, trade)
-            ack()
-        }
-    }
-    eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
-        onCommit { event ->
-            val trade = event.details
-            stateMachine.modify(entityDb, trade)
-            ack()
-        }
-    }
-    eventHandler<TradeCancelled>(name = "TRADE_CANCELLED", transactional = true) {
-        onCommit { event ->
-            val message = event.details
-            stateMachine.modify(entityDb, message.tradeId) { trade ->
-                trade.tradeStatus = TradeStatus.CANCELLED
-            }
-            ack()
-        }
-    }
-    eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
-        onCommit { event ->
-            val message = event.details
-            stateMachine.modify(entityDb, message.tradeId) { trade ->
-                trade.tradeStatus = TradeStatus.ALLOCATED
-            }
-            ack()
-        }
-    }
-```
-
-Run the [generatedao](../../../getting-started/developer-training/training-content-day1/#generatedao), [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
+Don't forget to run build and remap. 
 
 ### Exercise 4.3: testing an audited table
 :::info ESTIMATED TIME
@@ -523,4 +333,3 @@ Try to insert or modify a TRADE and see the auditing happening accordingly. You 
 :::info END OF DAY 4
 This is the end of day 4 of our training. To help your training journey, check out how your application should look at the end of day 4 [here](https://github.com/genesiscommunitysuccess/devtraining-seed/tree/Exercise_4.3).
 :::
--->
