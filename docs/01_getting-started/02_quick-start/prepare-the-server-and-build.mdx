@@ -25,7 +25,7 @@ Before you can run your application, you need to create the tables of your datab
 
 ![Genesis Install](/img/intellij-remap.png)
 
-After that, you will be asked to confirm the tables that you want to insert in your database, you should return `y`.
+After that, you will be asked to confirm the tables that you want to insert in your database; to do this, type **y**.
 
 ```powershell
 WARNING: are you sure you want to commit changes to the database? (y/n)
@@ -35,13 +35,15 @@ After remapping is complete, you will be prompted the following:
 
 ```text
 =========Starting Data Load=======
-This will load reference data needed to user all of the Genesis components utilised by the application,
+This will load reference data needed to use all of the Genesis components utilised by the application,
 and anything you've added to your project's /data folder, overwriting any data that has changed.
 WARNING: If you have test data in your application's data folder and this is not a development environment it will still be loaded in
 Are you sure you want to proceed?  (y/n)
 ```
 
-This means that it will be loaded all data stored in the **data** folder. Since this is a basic development, there is only the credentials data. Once you confirm, it will be loaded into the database, and you will be able to log in. 
+This means that all data stored in the **data** folder will be loaded. Since this is a basic development, this is only the credentials data. 
+
+Once you confirm, that data is loaded into the database, and you will be able to log in. 
 
 <details>
   <summary>Want to check if your data has been sent?</summary>
