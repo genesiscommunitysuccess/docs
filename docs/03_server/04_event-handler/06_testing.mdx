@@ -9,9 +9,347 @@ tags:
   - testing
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
+:::info
+
+**GenesisJunit** is only available from version 8 of the Genesis.
+When testing against previous versions of the framework, please see [here](./#integration-testing-previous)
+
+:::
 
 ## Integration testing
+
+In this document we will cover the basics of testing event handlers. 
+We will use a very simple example, and work through the communitation between our test and our event handler. 
+Including how to test dynamic authorisation. 
+We will rely heavily on **GenesisJunit**, for more information please have a look at the [documentation](/operations/testing/integration-testing/).
+
+### The set up
+
+This is the event handler we will use in this example: 
+
+```kotlin
+data class Hello(
+    val name: String,
+)
+
+eventHandler {
+    eventHandler<Hello>("HELLO_WORLD") {
+        onCommit {
+            ack()
+        }
+    }
+}
+```
+
+Let's work through an example, we start by creating the test class:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit.class)
+@ScriptFile("hello-world-eventhandler.kts")
+class EventHandlerTest {
+
+    // our tests go here ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@ScriptFile("hello-world-eventhandler.kts")
+public class EventHandlerTest {
+
+    // our tests go here ...
+}
+```
+</TabItem>
+</Tabs>
+
+Here we: 
+* Enable **GenesisJunit**
+* Set the event handler script that we want to test, using the **ScriptFile** annotation
+
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](../../../operations/testing/integration-testing/#abstractgenesistestsupport).
+
+Before we are ready to begin writing tests for our event handler,
+we need to inject a event handler client:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@ScriptFile("hello-world-eventhandler.kts")
+class EventHandlerTest {
+
+    @Inject
+    lateinit var client: EventClientSync
+
+    // our test will go here ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@ScriptFile("hello-world-eventhandler.kts")
+public class EventHandlerTest {
+
+    @Inject
+    private EventClientSync client = null;
+
+    // our test will go here ...
+}
+```
+</TabItem>
+</Tabs>
+
+### Our First Test
+
+Let's first write a test to make sure that event handler returns an ack.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Test
+fun testHelloWorld() {
+    val reply = client.sendEvent(
+        details = Hello("PETER"),
+        messageType = "EVENT_HELLO_WORLD"
+    )
+    
+    assert(reply is EventReply.EventAck) 
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Test
+void testHelloWorld() {
+    var reply = client.builder()
+            .withDetails(new Hello("PETER"))
+            .withMessageType("EVENT_HELLO_WORLD")
+            .send();
+
+    assertInstanceOf(EventReply.EventAck.class, reply);
+}
+```
+</TabItem>
+</Tabs>
+
+As you can see here, to send an event to our event handler, we need to provide the details class. 
+The message type is optional, but we have to set it here, as we set a custom message name on our event handler.
+We can also provide the user name:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Test
+fun testHelloWorldWithUser() {
+    val reply = client.sendEvent(
+        details = Hello("PETER"),
+        messageType = "EVENT_HELLO_WORLD",
+        userName = "PETER"
+    )
+
+    assert(reply is EventReply.EventAck)
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Test
+void testHelloWorldWithUser() {
+    var reply = client.builder()
+            .withDetails(new Hello("PETER"))
+            .withMessageType("EVENT_HELLO_WORLD")
+            .withUserName("PETER")
+            .send();
+
+    assertInstanceOf(EventReply.EventAck.class, reply);
+}
+```
+</TabItem>
+</Tabs>
+
+### Different clients
+
+There are three versions of the event handler client available during testing:
+
+* EventClientSync - this is the synchronous client, all calls are blockign
+* EventClientAsync - this is the coroutine client, where calls suspend
+* EventClientRx - this is the RxJava client, which wraps responses in a `Single`
+
+In most instances, **EventClientSync** will suffice. 
+Use the other clients, if your tests uses other asynchronous operations.
+
+### Dynamic Authorisation
+
+To test dynamic authorisation, add the `@EnableInMemoryTestAuthCache` to your class or method. 
+This will make `InMemoryTestAuthCache` available for injection in your test class. 
+
+Let's amend our event handler and enable authorisation:
+
+```kotlin 
+data class Hello(
+    val name: String,
+)
+
+eventHandler {
+    eventHandler<Hello>("HELLO_WORLD_AUTH") {
+
+        permissioning {
+            auth("NAMES") {
+                field { name }
+            }
+        }
+
+        onCommit {
+            ack()
+        }
+    }
+}
+```
+
+The first thing we need to do, is to enable the in memory test auth cache using the `@EnableInMemoryTestAuthCache` annotation.
+We also need to inject `InMemoryTestAuthCache` into our test class. 
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@ScriptFile("hello-world-eventhandler.kts")
+class EventHandlerTest {
+
+    @Inject
+    lateinit var client: EventClientSync
+    
+    @Inject
+    lateinit var authCache: InMemoryTestAuthCache
+
+    @Test
+    fun testIsAuthorised() {
+        authCache.authorise(
+            authMap = "NAMES",
+            entityCode = "PETER",
+            userName = "PETER"
+        )
+
+        val reply = client.sendEvent(
+            details = Hello(name = "PETER"),
+            userName = "PETER",
+            messageType = "EVENT_HELLO_WORLD_AUTH"
+        )
+
+        assert(reply is EventReply.EventAck) { reply }
+    }
+
+    @Test
+    fun testIsNotAuthorised() {
+        authCache.revoke(
+            authMap = "NAMES",
+            entityCode = "PETER",
+            userName = "PETER"
+        )
+
+        val reply = client.sendEvent(
+            details = Hello(name = "PETER"),
+            userName = "PETER",
+            messageType = "EVENT_HELLO_WORLD_AUTH"
+        )
+
+        assert(reply is EventReply.EventNack)
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@ScriptFile("hello-world-eventhandler.kts")
+public class EventHandlerJavaTest {
+
+    @Inject
+    private EventClientSync client = null;
+
+    @Inject
+    private InMemoryTestAuthCache authCache = null;
+
+    @Test
+    void testIsAuthorised() {
+        authCache.builder()
+                .withAuthMap("NAMES")
+                .withEntityCode("PETER")
+                .withUserName("PETER")
+                .authorise();
+        
+        var reply = client.builder()
+                .withDetails(new Hello("PETER"))
+                .withMessageType("EVENT_HELLO_WORLD_AUTH")
+                .withUserName("PETER")
+                .send();
+
+        assertInstanceOf(EventReply.EventAck.class, reply);
+    }
+
+    @Test
+    void testIsNotAuthorised() {
+        authCache.builder()
+            .withAuthMap("NAMES")
+            .withEntityCode("PETER")
+            .withUserName("PETER")
+            .revoke();
+
+        var reply = client.builder()
+                .withDetails(new Hello("PETER"))
+                .withMessageType("EVENT_HELLO_WORLD_AUTH")
+                .withUserName("PETER")
+                .send();
+
+        assertInstanceOf(EventReply.EventNack.class, reply);
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+The revoke calls are not needed in this case, and just added to demonstrate syntax. 
+These calls can be used to revoke previous authorisations in our tests.
+
+### Conclusion
+
+At this point we have tested our very simple event handler. 
+We haven't even had to use the database!
+However, we have covered the basics of communitation between tests and event handlers.
+
+We have covered: 
+* send details to our event
+* overwrite the default message type
+* set the user on our event
+* handle dynamic authorisation
+
+For more details about testing with Genesis, please have a look at our [integration test documentation](/operations/testing/integration-testing)
+
+
+## Integration testing (Previous)
 
 
 The Genesis Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Event Handler configuration is used to create our Event Handler. We also need to add the required packages, genesis home and separately set the "IS_SCRIPT" System Definition property to true (This is required as part of the Event Handler initialisation).
