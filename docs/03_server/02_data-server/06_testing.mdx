@@ -35,7 +35,7 @@ Let's work through an example, we start by creating the test class:
 <TabItem value="kotlin">
 
 ```kotlin
-@ExtendWith(GenesisJunit.class)
+@ExtendWith(GenesisJunit::class)
 @ScriptFile("positions-app-tutorial-dataserver.kts")
 @CsvData("seed-data.csv")
 class DataServerTest {
