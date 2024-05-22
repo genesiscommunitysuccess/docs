@@ -17,7 +17,7 @@ import TabItem from '@theme/TabItem';
 
 **GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
 
-When testing against previous versions of the framework, please see [here](./#integration-testing-legacy)
+If you are testing against a previous version of the framework, go to the [legacy](./#integration-testing-legacy) section.
 
 :::
 
@@ -25,13 +25,12 @@ When testing against previous versions of the framework, please see [here](./#in
 
 This document looks at the basics of testing Data Servers. 
 
-We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit](/operations/testing/integration-testing/), which is designed to make testing easy.
+We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/operations/testing/integration-testing/), which is designed to make testing easy.
 
-In this case we want to, we want to ensure that we have a database seeded with information.
+### Preparation
+There are some simple steps to follow in order to set up yor test.
 
-Let's work through an example.
-
-### 1 Create the test class
+### 1. Create the test class
 
 Create the test class using the code provided below.
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -70,9 +69,9 @@ This test class does three things:
 
 There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/operations/testing/integration-testing/#abstractgenesistestsupport).
 
-### 2 Load test data
+### 2. Load test data
 
-Create a CSV file called **seed-data.csv** in the root of the resources folder for your tests. Add the data below tot his file.
+Create a CSV file called **seed-data.csv** in the root of the resources folder for your tests. Add the data below, which contains three records, to this file.
 
 ```text
 #POSITION
@@ -82,7 +81,7 @@ POSITION_ID,INSTRUMENT_ID,QUANTITY,NOTIONAL,VALUE,PNL
 000000000000001PSLO3,INSTRUMENT_TEST3,1,3333.33,3333.33,3333.33
 ```
 
-### 3 Inject references
+### 3. Inject references
 Before we can begin writing tests for our Data Server, we need to inject references to the database and the Data Server client:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -125,7 +124,7 @@ public class DataServerTest {
 </TabItem>
 </Tabs>
 
-### Our first test
+### A first test
 
 The test below is designed to make sure that a Data Server returns the right number of records.
 
@@ -159,12 +158,13 @@ void testViewHas3Records() {
 </TabItem>
 </Tabs>
 
-As you can see here, to connect to our Data Server, we need to provide the datasource name, as well as the type or class that the query returns.
-The type or class is optional, and if no type is provided the view will be of type `GenesisSet`.
+As you can see here, to connect to our Data Server, you need to provide the datasource name. We have also provided the type or class that the query returns. This is optional; if no type is provided, the view will be of type `GenesisSet`.
+
 For Java developers, we provide a fluent interface. In Kotlin, you can use named parameters.
 The test is the same regardless.
 
 Once you connect, the client will provide a `QueryView`, which connects to the resource in the Data Server and recieves updates.
+
 At this point, we are just making sure we have received 3 records.
 
 ### Create collections from QueryView
@@ -209,7 +209,7 @@ public void buildCollections() {
 
 ### Dynamic authorisation
 
-Let's amend our Data Server and enable authorisation:
+For this test, we have amended our Data Server to enable authorisation:
 
 ```kotlin 
 dataServer {
@@ -225,7 +225,7 @@ dataServer {
 }
 ```
 
-Once you add the `auth` block in our code, we need to amend the test.
+Once you add the `auth` block to the code, you need to amend the test.
 
 To test dynamic authorisation, add `@EnableInMemoryTestAuthCache` to your class or method. This makes `InMemoryTestAuthCache` available for injection in your test class. 
 
