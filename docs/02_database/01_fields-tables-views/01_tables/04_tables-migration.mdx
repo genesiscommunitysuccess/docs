@@ -10,8 +10,9 @@ tags:
 - migration
 ---
 
-Before version 7.2, Genesis required you to define fields in their own dictionary file, separately from tables.
-SiFrom version 7.2, Genesis supports a new syntax where fields are defined inline in the table.
+Before version 7.2, Genesis you had to define fields in their own dictionary file, separately from tables.
+
+From version 7.2, Genesis supports a new syntax where fields are defined inline in the table.
 
 We went from this...
 ```kotlin
@@ -34,7 +35,7 @@ table(name = "RIGHT", id = 1004) {
 
 To help you migrate to the new syntax, Genesis provides a gradle plugin.
 
-To start, add the following line to the top of the **build.gradle.kts** file in your `-config` module:
+To start, add the following line to the top of the **build.gradle.kts** file in your **-config** module:
 
 ```kotlin
 plugins {
