@@ -16,7 +16,8 @@ import TabItem from '@theme/TabItem';
 :::info
 
 **GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
-When testing against previous versions of the framework, please see [here](./#integration-testing-previous)
+
+When testing against previous versions of the framework, please see [here](./#integration-testing-legacy)
 
 :::
 
@@ -24,13 +25,15 @@ When testing against previous versions of the framework, please see [here](./#in
 
 This document looks at the basics of testing Data Servers. 
 
-We shall  use a very simple example and work through the communitation between our tests and the Data Server we are testing. This example relies on [**GenesisJunit](/operations/testing/integration-testing/).
+We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit](/operations/testing/integration-testing/), which is designed to make testing easy.
 
-Using the `GenesisJunit` extension, you can easily test data server scripts.
 In this case we want to, we want to ensure that we have a database seeded with information.
 
-Let's work through an example, we start by creating the test class:
+Let's work through an example.
 
+### 1 Create the test class
+
+Create the test class using the code provided below.
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
@@ -59,14 +62,17 @@ public class DataServerTest {
 </TabItem>
 </Tabs>
 
-Here we: 
-* Enable **GenesisJunit**
-* Set the data server script that we want to test, using the **ScriptFile** annotation
-* Set the source data for our test, using the **CsvData** annotation
+This test class does three things: 
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](../../../operations/testing/integration-testing/#abstractgenesistestsupport).
+* It enables **GenesisJunit**.
+* It identifies the Data Server script that we want to test, using the `ScriptFile` annotation.
+* It identifies the source data for our test, using the `CsvData` annotation.
 
-Let's load some test data into the `seed-data.csv` in the root of the resources folder for your tests.
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/operations/testing/integration-testing/#abstractgenesistestsupport).
+
+### 2 Load test data
+
+Create a CSV file called **seed-data.csv** in the root of the resources folder for your tests. Add the data below tot his file.
 
 ```text
 #POSITION
@@ -76,8 +82,8 @@ POSITION_ID,INSTRUMENT_ID,QUANTITY,NOTIONAL,VALUE,PNL
 000000000000001PSLO3,INSTRUMENT_TEST3,1,3333.33,3333.33,3333.33
 ```
 
-Before we are ready to begin writing tests for our Data Server,
-we need to inject a reference to the database, and a data server client:
+### 3 Inject references
+Before we can begin writing tests for our Data Server, we need to inject references to the database and the Data Server client:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -119,9 +125,9 @@ public class DataServerTest {
 </TabItem>
 </Tabs>
 
-### Our First Test
+### Our first test
 
-Let's first write a test to make sure that data server returns the right number of records.
+The test below is designed to make sure that a Data Server returns the right number of records.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -153,19 +159,18 @@ void testViewHas3Records() {
 </TabItem>
 </Tabs>
 
-As you can see here, to connect to our data server, we need to provide the datasource name,
-as well as the type or class that the query returns.
+As you can see here, to connect to our Data Server, we need to provide the datasource name, as well as the type or class that the query returns.
 The type or class is optional, and if no type is provided the view will be of type `GenesisSet`.
-For java developers, we provide a fluent interface, in kotlin you can use named parameters.
+For Java developers, we provide a fluent interface. In Kotlin, you can use named parameters.
 The test is the same regardless.
-Once we connect, the client will provide a `QueryView`, which connect to the dataserver and
-recieve updates.
-At this point we are just making sure we have received 3 records.
+
+Once you connect, the client will provide a `QueryView`, which connects to the resource in the Data Server and recieves updates.
+At this point, we are just making sure we have received 3 records.
 
 ### Create collections from QueryView
 
 In addition to the `size`/`getSize()` property, there are also utility methods to represent the view as a collection.
-These methods will take a snapshot, and will not be updated.
+These methods take a snapshot, and are not updated.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -202,9 +207,9 @@ public void buildCollections() {
 </TabItem>
 </Tabs>
 
-### Dynamic Authorisation
+### Dynamic authorisation
 
-Let's amend our event handler and enable authorisation:
+Let's amend our Data Server and enable authorisation:
 
 ```kotlin 
 dataServer {
@@ -220,9 +225,9 @@ dataServer {
 }
 ```
 
-Once we add the `auth` block in our code, we need to amend our test.
-To test dynamic authorisation, add the `@EnableInMemoryTestAuthCache` to your class or method. 
-This will make `InMemoryTestAuthCache` available for injection in your test class. 
+Once you add the `auth` block in our code, we need to amend the test.
+
+To test dynamic authorisation, add `@EnableInMemoryTestAuthCache` to your class or method. This makes `InMemoryTestAuthCache` available for injection in your test class. 
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -383,9 +388,13 @@ void testUsdPositions() {
 </TabItem>
 </Tabs>
 
-## Integration testing (previous)
+## Integration testing (legacy)
 
-The Genesis low-code platform provides the `AbstractGenesisTestSupport` abstract class, which enables end-to-end testing of specific areas of your application.
+:::info
+This section covers testing your Data Server if you are using any version of the Genesis Server Framework before GSF v8.
+:::
+
+The Genesis platform provides the `AbstractGenesisTestSupport` abstract class, which enables end-to-end testing of specific areas of your application.
 
 In this case, we want to ensure that we have a database seeded with information. And we want to check that our Data Server configuration is used to create our Data Server. We also need to add the required packages and genesis home.
 
@@ -436,7 +445,6 @@ POSITION_ID,INSTRUMENT_ID,QUANTITY,NOTIONAL,VALUE,PNL
 000000000000001PSLO2,INSTRUMENT_TEST2,1,2222.22,2222.22,2222.22
 000000000000001PSLO3,INSTRUMENT_TEST3,1,3333.33,3333.33,3333.33
 ```
-
 
 We are now ready to begin writing tests for our Data Server.
 
