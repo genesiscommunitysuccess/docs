@@ -14,8 +14,9 @@ import TabItem from '@theme/TabItem';
 
 :::info
 
-**GenesisJunit** is only available from version 8 of the Genesis.
-When testing against previous versions of the framework, please see [here](./#integration-testing-previous)
+**GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
+
+If you are testing against a previous version of the framework, go to the [legacy](./#integration-testing-legacy) section.
 
 :::
 
@@ -25,7 +26,7 @@ Using the `GenesisJunit` extension, you can easily test data server scripts.
 
 ### The setup
 
-This is the request server we will use in this example
+In this example, we shall test the following Request Server:
 
 ```kotlin 
 data class Hello(
@@ -73,15 +74,13 @@ public class RequestServerTest {
 </TabItem>
 </Tabs>
 
-Here we: 
-* Enable **GenesisJunit**
-* Set the event handler script that we want to test, using the **ScriptFile** annotation
+The code above:
+* enables `GenesisJunit`
+* uses the `ScriptFile` annotation to identify the Request Server script that we want to test
 
 There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](../../../operations/testing/integration-testing/#abstractgenesistestsupport).
 
-Before we are ready to begin writing tests for our event handler,
-we need to inject a request server client, and define our workflow
-
+Before you begin writing tests for this request Server, you need to inject a request server client, and define our workflow:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -358,17 +357,15 @@ In most cases, the **RequestClientSync** client will suffice.
 
 ### Conclusion
 
-At this point we have tested our very simple request server. 
-We haven't even had to sue the database!
-However, we have covered the baasics of communitation between tests and request servers.
+At this point we have tested our very simple Request Server. We haven't even had to use the database! However, we have covered the baasics of communication between tests and Request Servers.
 
 We have covered:
 * defining a request flows
-* send our request and receive our response
-* set the username on the request
-* handle dynamic authorisation
+* sending our request and receiving the response
+* setting the username on the request
+* handling dynamic authorisation
 
-## Integration testing (previous)
+## Integration testing (legacy)
 
 It is good practice to test your Request Servers. This is the best way to prevent any unexpected side effects of changes to your application over time.
 
