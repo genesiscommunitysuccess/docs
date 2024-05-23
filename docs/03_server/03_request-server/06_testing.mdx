@@ -46,7 +46,10 @@ requestReplies {
 }
 ```
 
-### Create the test class:
+
+
+### Create the test class
+First, create the test class. Use the code below:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -78,7 +81,7 @@ The code above:
 * enables `GenesisJunit`
 * uses the `ScriptFile` annotation to identify the Request Server script that we want to test
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/operations/testing/integration-testing/#abstractgenesistestsupport).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/operations/testing/integration-testing/).
 
 ### Injecting references
 Here, you need to set up two things:
@@ -141,7 +144,7 @@ private RequestReplyWorkflow<Hello, World> helloWorldFlow = new AbstractRequestR
 ```
 
 ### A first test
-
+Here is a very simple first test. 
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -243,8 +246,13 @@ requestReplies {
 }
 ```
 
-You then need to create your new test cases. Note that the authorisation for Request Servers is on the outgoing message.
-The Request Server filters out any values to which the requesting user has no access. 
+You then need to create your new test cases. Note that the authorisation for Request Servers is on the outgoing message. The Request Server filters out values to which the requesting user has no access. 
+
+In the code below, there are two tests, which both check the result of the authorisation process:
+
+- In the first test, if the result is 1 (authorised), then the Hello message is sent (as in the earlier example).
+- In the second test, if the result is 0 (unauthorised), then an empty message is returned.
+
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -335,16 +343,12 @@ public class HelloWorldRequestServerJavaTest {
 
         var hello = new Hello("John");
         var result = client.sendRequest(helloWorldFlow, hello, "JohnDoe");
-        assertEquals(1, result.size());
-        var world = result.get(0);
-        assertEquals("Hello, John!", world.getMessage());
+        assertEquals(0, result.size());
     }
 }
 ```
 </TabItem>
 </Tabs>
-
-As you can see, in our not authorised test, we verify that no results were returned. 
 
 ### Different clients
 
@@ -358,7 +362,7 @@ In most cases, the **RequestClientSync** client will suffice.
 
 ### Conclusion
 
-At this point we have tested our very simple Request Server. We haven't even had to use the database! However, we have covered the baasics of communication between tests and Request Servers.
+At this point we have tested our very simple Request Server. We haven't even had to use the database! However, we have covered the basics of communication between tests and Request Servers.
 
 We have covered:
 * defining a request flows
@@ -367,6 +371,10 @@ We have covered:
 * handling dynamic authorisation
 
 ## Integration testing (legacy)
+
+:::info
+This section covers testing your Request Server if you are using any version of the Genesis Server Framework before GSF v8.
+:::
 
 It is good practice to test your Request Servers. This is the best way to prevent any unexpected side effects of changes to your application over time.
 
@@ -385,7 +393,7 @@ class ReqRepTests : AbstractGenesisTestSupport<Reply<*>>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [testing documentation](../../../operations/testing/integration-testing).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing-previous/#abstractgenesistestsupport).
 
 Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](../../../server/request-server/advanced/#custom-request-servers).
 
