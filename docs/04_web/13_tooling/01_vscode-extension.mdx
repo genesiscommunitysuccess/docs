@@ -1,0 +1,49 @@
+---
+title: "Web tooling - Genesis UI Generator"
+sidebar_label: "Genesis UI Generator"
+id: genesis-ui-generator
+keywords: [web, tooling, code snippets, vscode, extension, ai, local]
+tags:
+  - web
+  - tooling
+  - code snippets
+  - vscode
+  - extension
+  - ai
+---
+
+The Genesis UI Generator a Visual Studio Code extension that helps developers work with the Genesis platform. It offers several features to enhance the speed and efficiency of developers.
+
+## Installation
+
+1. To install, go to https://marketplace.visualstudio.com/items?itemName=GenesisGlobal.genesis-ui-generator and click in "Install" or search for Genesis UI Generator
+   on extensions panel inside vscode.
+
+2. After installing the plugin, The [Tool window bars and buttons](https://www.jetbrains.com/help/idea/tool-windows.html#bars_and_buttons) will be visible once you open a Genesis Project.
+
+## Requirements
+
+- Visual Studio Code version 1.88.0 or greater.
+- Install `webreflection.literally-html` extension to syntax highlighting and IntelliSense for html inside of JavaScript and TypeScript tagged template strings. Link: https://marketplace.visualstudio.com/items?itemName=webreflection.literally-html
+
+## Configuration
+
+- Open your genesis project (root folder) in vscode, before starting using the extension features;
+- Check if the source folder path (`src`) is correctly configured in vscode extension's settings.
+- Configure OpenAI key on vscode extension's settings to use **Genesis View**;
+
+## Features
+
+- **Genesis View**: This feature uses Generative AI to generate code from a screenshot/mockup UI. It saves developers time and effort by automating the process of creating code from a visual representation. Additionally, it can generate all necessary files to deploy the new UI created into an existing application, taking into consideration the design system colors, fonts, and other visual elements identified from the screenshot.
+
+- **File Management**: This feature simplifies the creation of new `routes`, `components`, `grid components`, and other **Genesis** features. With this tool, developers can create files quickly and easily, following the **Genesis** platform's guidelines.
+
+- **Design System management**: This feature helps developers define colors, fonts, sizes, margins, paddings, and other visual definitions of a UI implementation, utilizing the **Genesis** design system. It streamlines the process of creating consistent and cohesive visual styles throughout the application.
+
+- **Code Snippets**: This feature provides an extensive catalog of typeScript and HTML code snippets for commonly **Genesis** web components and boilerplate code.
+
+- **HTML Catalog**: This feature provides an extensive catalog of **Genesis** web components, making it easier for developers to find and use components. Additionally, it allows developers to click on the components in the catalog to insert them directly into the VS Code editor, speeding up the development process.
+
+PS: You need to install `literally-html` to ensure proper functionality of snippets and html catalog.
+
+**Enjoy!**
