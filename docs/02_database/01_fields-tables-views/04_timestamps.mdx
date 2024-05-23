@@ -9,11 +9,12 @@ tags:
   - genesisflake
 ---
 
-When you generate a database on the Genesis low-code platform,
-every table in the database is given a TIMESTAMP and a RECORD_ID field.
-The `TIMESTAMP` field value is generated automatically by GenesisFlake every time a change is made to the database.
-The `RECORD_ID` field is the `TIMESTAMP` value when the record is first created, it will never change.
-The database will generate a new `TIMESTAMP` for every modify operation, even if no other fields are changed.
+When you generate a database on the Genesis platform, every table in the database is given a TIMESTAMP and a RECORD_ID field.
+
+- The `TIMESTAMP` field value is generated automatically by GenesisFlake every time a change is made to the database.
+- The `RECORD_ID` field is the `TIMESTAMP` value when the record is first created, it will never change.
+
+The database generates a new `TIMESTAMP` for every modify operation, even if no other fields are changed.
 
 To create these values, GenesisFlake generates IDs in a similar manner to Twitter’s [snowflake](https://developer.twitter.com/en/docs/basics/twitter-ids). It is able to generate these IDs without having to perform database-level synchronisation - which ensures high performance. 
 
