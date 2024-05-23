@@ -22,9 +22,9 @@ If you are testing against a previous version of the framework, go to the [legac
 
 ## Integration testing
 
-Using the `GenesisJunit` extension, you can easily test data server scripts.
+This document looks at the basics of testing Data Servers.
 
-### The setup
+We shall use a very simple example and work through the communication between our tests and the Request Server we are testing. This example relies on GenesisJunit, which is designed to make testing easy.
 
 In this example, we shall test the following Request Server:
 
@@ -46,7 +46,7 @@ requestReplies {
 }
 ```
 
-Let's work through an example, we start by creating the test class:
+### Create the test class:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -78,9 +78,15 @@ The code above:
 * enables `GenesisJunit`
 * uses the `ScriptFile` annotation to identify the Request Server script that we want to test
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](../../../operations/testing/integration-testing/#abstractgenesistestsupport).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/operations/testing/integration-testing/#abstractgenesistestsupport).
 
-Before you begin writing tests for this request Server, you need to inject a request server client, and define our workflow:
+### Injecting references
+Here, you need to set up two things:
+
+- inject a Request Server client so that it can communicate with the Request Server you are testing
+- define your workflow, so that the client knows both the request and the reply type
+
+Use the code below:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -118,27 +124,23 @@ public class RequestServerTest {
 </TabItem>
 </Tabs>
 
-We need the client to communicate with our request server. 
-We need to define our workflow, so that the client knows both the request and the reply type.
+### Define the workflow
 
-### Define a request reply workflow
+The syntax for defining the request-reply workflow depends on whether you use Kotlin or Java. However, in both instances you need to provide the input type, the output type and the request name.
 
-The syntax for defining the flow is slightly different between Kotlin and Java. 
-However, in both instances you will need to provide the input type, the output type and the request name.
-
-In kotlin we can build the flow in a method call
+In Kotlin, you can build the flow in a method call:
 
 ```kotlin 
 private val helloWorldFlow = requestReplyWorkflowBuilder<Hello, World>("HELLO_WORLD")
 ```
 
-However in Java we will need to construct an abstract class;
+In Java, you need to construct an abstract class:
 
 ```java
 private RequestReplyWorkflow<Hello, World> helloWorldFlow = new AbstractRequestReplyWorkflow<>("HELLO_WORLD") { };
 ```
 
-### Our first test
+### A first test
 
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -206,9 +208,9 @@ fun testHelloWorldRequestServerWithUser() {
 </TabItem>
 </Tabs>
 
-### Dynamic Authorisation
+### Dynamic authorisation
 
-To test dynamic authorisation, we need to amend our request server definition:
+To test dynamic authorisation, you need to amend your Request Server definition:
 
 ```kotlin
 data class Hello(
@@ -241,9 +243,8 @@ requestReplies {
 }
 ```
 
-After we updated that, we can create our new test cases.
-Please note that the authorisation for request servers is on the outgoing message.
-The request server will filter out any values to which the requesting user has no access to. 
+You then need to create your new test cases. Note that the authorisation for Request Servers is on the outgoing message.
+The Request Server filters out any values to which the requesting user has no access. 
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
