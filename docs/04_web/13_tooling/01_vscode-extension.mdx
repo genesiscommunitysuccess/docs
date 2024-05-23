@@ -19,7 +19,8 @@ The Genesis UI Generator a Visual Studio Code extension that helps developers wo
 1. To install, go to https://marketplace.visualstudio.com/items?itemName=GenesisGlobal.genesis-ui-generator and click in "Install" or search for Genesis UI Generator
    on extensions panel inside vscode.
 
-2. After installing the plugin, The [Tool window bars and buttons](https://www.jetbrains.com/help/idea/tool-windows.html#bars_and_buttons) will be visible once you open a Genesis Project.
+2. After installing the extension, The genesis icon will be visible in your vscode side panel.
+   ![Genesis UI Generator Icon](/img/vscode-extension/icon-extension.png)
 
 ## Requirements
 
@@ -30,7 +31,10 @@ The Genesis UI Generator a Visual Studio Code extension that helps developers wo
 
 - Open your genesis project (root folder) in vscode, before starting using the extension features;
 - Check if the source folder path (`src`) is correctly configured in vscode extension's settings.
-- Configure OpenAI key on vscode extension's settings to use **Genesis View**;
+- If folder path was not found, 'Setup Genesis View' button will appear:
+  ![Settings Button](/img/vscode-extension/settings-button.png)
+- Clicking on it, it will open the extension settings screen. Configure OpenAI key and folder path on vscode extension's settings to use **Genesis View**;
+  ![Settings](/img/vscode-extension/settings.png)
 
 ## Features
 
@@ -38,12 +42,87 @@ The Genesis UI Generator a Visual Studio Code extension that helps developers wo
 
 - **File Management**: This feature simplifies the creation of new `routes`, `components`, `grid components`, and other **Genesis** features. With this tool, developers can create files quickly and easily, following the **Genesis** platform's guidelines.
 
-- **Design System management**: This feature helps developers define colors, fonts, sizes, margins, paddings, and other visual definitions of a UI implementation, utilizing the **Genesis** design system. It streamlines the process of creating consistent and cohesive visual styles throughout the application.
+- **Genesis Design System Configurator**: This feature helps developers define colors, fonts, sizes, margins, paddings, and other visual definitions of a UI implementation, utilizing the **Genesis** design system. It streamlines the process of creating consistent and cohesive visual styles throughout the application.
 
 - **Code Snippets**: This feature provides an extensive catalog of typeScript and HTML code snippets for commonly **Genesis** web components and boilerplate code.
 
 - **HTML Catalog**: This feature provides an extensive catalog of **Genesis** web components, making it easier for developers to find and use components. Additionally, it allows developers to click on the components in the catalog to insert them directly into the VS Code editor, speeding up the development process.
 
 PS: You need to install `literally-html` to ensure proper functionality of snippets and html catalog.
+
+## Using Genesis UI Generator
+
+Once you have completed the configuration above, you are ready to start using Genesis UI Generator features.
+
+### Genesis View
+
+You can start Genesis View, by selecting a final UI Design screenshot image (.png, .jpg), to be used on the generation:
+![Genesis View](/img/vscode-extension/genesis-view-1.png)
+
+After selecting a file, you will see your image loaded on a new UI that focus on Genesis View only:
+![Genesis View 2](/img/vscode-extension/genesis-view-2.png)
+
+You can open advanced options to configure your generation:
+![Genesis View Filled](/img/vscode-extension/genesis-view-filled.png)
+
+- Route: It will create a new route component, with all files (ts, template, styles) of the new custom UI.
+- Navigation bar/header: It will generate headers or navigation bar html components on the generation.
+- Custom Grid Styles: It will generate a custom colors and style file to be applied on grids in your genesis application.
+- Design Tokens: It will generate/replace the design-tokens.json file, that manages the colors and theme of your entire genesis application.
+
+After configuring, click on Start, to start generating your custom ui.
+![Genesis View Started](/img/vscode-extension/genesis-view-started.png)
+
+Wait until the Generation Complete screen is shown. You can click to import the files generated into your project, or just close and do not import anything.
+![Genesis View Completed](/img/vscode-extension/genesis-view-completed.png)
+
+That's it. You just created a new UI page in a few minutes!
+
+### Genesis Routes/Files creation helper
+
+You can create new routes (new folder with new route component created), new components and new grid components.
+
+Start defining your component name, then click on which component you want to create. The component and all files necessary will automatically be created inside the correct folder
+![Vscode Routes](/img/vscode-extension/vscode-routes.png)
+
+- New Route: routes/component-name/
+- New Component: components/component-name/
+- New Grid Component: components/grid-component-name/
+
+### Genesis Design System Configurator
+
+To start Genesis Design System Configurator, just click on the button 'Genesis Design System Config'.
+![Genesis DSC](/img/vscode-extension/design-system-1.png)
+
+It will start a terminal process that runs Genesis Design System Configurator.
+After, a new vscode file will be opened, with Design System Configurator inside it.
+In case it doesn't show on the first time, click on 'Reload DSConfig'.
+
+### HTML Catalog
+
+Inside Genesis UI Generator, you have a section of buttons that shows the list of genesis HTML components catalog.
+![Genesis HTML Catalog](/img/vscode-extension/ui-components.png)
+
+To add them by clicking, you need to put the cursor of your editor inside the html code (html``) and then click on the desired genesis component.
+It will use the snippets code and add it automatically into your html code, without the need to search by typing the snippet.
+
+### Snippets
+
+Genesis UI Generator comes with genesis html and typescript snippets.
+
+You just need to type 'gg' inside the code and the snippets list will show up:
+
+- Snippets for html
+  ![Genesis Snippets 1](/img/vscode-extension/snippets-1.png)
+
+- Snippets for typescript
+  ![Genesis Snippets 2](/img/vscode-extension/snippets-2.png)
+
+PRO tip: If you type 'gg' and the first letters of the component you are looking for, it will filter for you.
+For example, you want to add a genesis layout, you just need to type 'ggla' and 'ggen_layout' will be selected.
+
+### Documentation
+
+Also, inside the extension, you have the links to Genesis Documentation and also Genesis Playground.
 
 **Enjoy!**
