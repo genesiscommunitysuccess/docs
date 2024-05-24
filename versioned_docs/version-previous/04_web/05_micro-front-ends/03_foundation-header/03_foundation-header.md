@@ -92,7 +92,7 @@ export class MainApplication extends FASTElement {
 If you haven't used the `inject` annotation in your application yet, you'll need to get it from the `@microsoft/fast-foundation` package.
 :::
 
-3. Set a reference to the `navigation` object on the FAST router when you instantiate it; this enables you to set up navigation functionality from the navigation bar in the [navigation items step](#navigation-items).
+3. Set a reference to the `navigation` object on the Genesis router when you instantiate it; this enables you to set up navigation functionality from the navigation bar in the [navigation items step](#navigation-items).
 ```javascript
 // fast-router will likely have other attributes such as :config too
 const MainTemplate: ViewTemplate<MainApplication> = html`
