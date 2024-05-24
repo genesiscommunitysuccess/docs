@@ -27,5 +27,5 @@ void
 
 ## Remarks
 
-Requires setup of the Router and usage of the FAST Router
+Requires setup of the Router and usage of the Genesis Router
 

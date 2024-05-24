@@ -343,9 +343,6 @@ To enable you to add multiple items from the same `registration`, the layout sys
 This is the case both when items are added with `.addItem()`, and when they are added using the declarative API. Under the hood, this uses the Node [cloneNode](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) api.
 There are certain limitations to this function, especially when using custom elements with the shadow DOM. [See troubleshooting example](#binding-events-inline-in-the-declarative-api).
 
-:::tip
-As a general rule, if you need to have elements with FAST bindings inside the layout, wrap them in custom elements.
-:::
 
 If you are writing your own custom element that needs to work inside the layout, follow these steps.
 
@@ -517,7 +514,7 @@ Component 1 has a **Close** button. Component 1 takes up 25% of the initial widt
 
 ### `repeat` directive
 
-You can use [FAST template directives](https://www.fast.design/docs/fast-element/using-directives) such as `repeat`
+You can use template directives such as `repeat`:
 
 ```javascript
 interface Position {
@@ -661,9 +658,9 @@ Say you want the user to be able to choose between three different types of item
 ```typescript
 // Can either create an element and initialise it completely using JavaScript
 const profileManagement = document.createElement('profile-management');
-// Or could grab a reference to one you create via FAST markup
+// Or could grab a reference to one you create via markup
 const pieChart = document.getElementById('pie-chart');
-// In idiomatic FAST we can have a reference using `ref` directive
+// We can have a reference using `ref` directive
 // const colChart = this.columnChart;
 ```
 
@@ -1051,7 +1048,7 @@ But as the user clicks the toggle button, the `Index Chart` will not be taken aw
 Instead, it will be added as a duplicate every time the observable is set true. Additionally, the contents
 of the panel will be wiped as duplicates are added.
 
-To work around this, you would use FAST directives inside custom web components inside the layout.
+To work around this, you would use directives inside custom web components inside the layout.
 
 ### Binding events inline in the declarative API
 The following example is invalid:
@@ -1068,7 +1065,7 @@ Because of a limitation in the [cloneNode() API](https://developer.mozilla.org/e
 This process is part of the process of adding an item to the layout, using both the declarative HTML and JavaScript APIs. So while you will see
 a checkbox on the screen as part of the layout, the event listener will *not* fire when you `change` the checkbox. This applies to all items and events.
 
-The idiomatic FAST way of implementing this event binding is to create a custom element and attach the event internally.
+The idiomatic way of implementing this event binding is to create a custom element and attach the event internally.
 
 ```typescript
 // template
