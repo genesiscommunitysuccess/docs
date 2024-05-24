@@ -77,7 +77,7 @@ It is possible for you to set up routing manually, but that won't be covered in 
 import { Navigation } from '@genesislcap/foundation-header';
 
 @customElement({ name, template, styles })
-export class MainApplication extends FASTElement {
+export class MainApplication extends GenesisElement {
   @inject(MainRouterConfig) config!: MainRouterConfig;
   @inject(Navigation) navigation!: Navigation;
 
@@ -87,21 +87,21 @@ export class MainApplication extends FASTElement {
 ```
 
 :::tip
-If you haven't used the `inject` annotation in your application yet, you'll need to get it from the `@microsoft/fast-foundation` package.
+If you haven't used the `inject` annotation in your application yet, you'll need to get it from the `@genesislcap/web-core` package.
 :::
 
 3. Set a reference to the `navigation` object on the FAST router when you instantiate it; this enables you to set up navigation functionality from the navigation bar in the [navigation items step](#navigation-items).
 ```javascript
-// fast-router will likely have other attributes such as :config too
+// genesis-router will likely have other attributes such as :config too
 const MainTemplate: ViewTemplate<MainApplication> = html`
-  <fast-router :navigation=${(x) => x.navigation}></fast-router>
+  <genesis-router :navigation=${(x) => x.navigation}></genesis-router>
 `;
 ```
 
 4. Add the `foundation-header` tag as part of the html that you set as the markup for the `defaultLayout` in your router configuration.
 
 ```javascript {3}
-export const defaultLayout = new FASTElementLayout(html`
+export const defaultLayout = new GenesisElementLayout(html`
 <div class="container">
 	<!-- show-luminance-toggle-button boolean attribute added to show that button on the navigation bar -->
 	<foundation-header show-luminance-toggle-button></foundation-header>
@@ -205,7 +205,7 @@ Implementing the functionality of the buttons is up to the client. For example:
 - Define the functionality of the event callback in the class of a class which is a parent to the router.
 
 ```javascript
-export class MainApplication extends FASTElement {
+export class MainApplication extends GenesisElement {
 
 	onMiscButtonPressed() {
 		// ... do something
@@ -216,13 +216,13 @@ export class MainApplication extends FASTElement {
 
 - Set the event listener in the parent html to call the defined functionality.
 ```javascript
-// fast-router will likely have other attributes such as :config too
+// genesis-router will likely have other attributes such as :config too
 const MainTemplate: ViewTemplate<MainApplication> = html`
-  <fast-router
+  <genesis-router
 		:navigation=${(x) => x.navigation}
 		@misc-icon-clicked=${(x) => x.onMiscButtonPressed()}
 	>
-	</fast-router>
+	</genesis-router>
 `;
 ```
 

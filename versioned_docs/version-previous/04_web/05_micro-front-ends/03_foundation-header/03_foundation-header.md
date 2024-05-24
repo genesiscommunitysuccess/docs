@@ -96,7 +96,7 @@ If you haven't used the `inject` annotation in your application yet, you'll need
 ```javascript
 // fast-router will likely have other attributes such as :config too
 const MainTemplate: ViewTemplate<MainApplication> = html`
-  <fast-router :navigation=${(x) => x.navigation}></fast-router>
+  <genesis-router :navigation=${(x) => x.navigation}></genesis-router>
 `;
 ```
 
@@ -220,11 +220,11 @@ export class MainApplication extends FASTElement {
 ```javascript
 // fast-router will likely have other attributes such as :config too
 const MainTemplate: ViewTemplate<MainApplication> = html`
-  <fast-router
+  <genesis-router
 		:navigation=${(x) => x.navigation}
 		@misc-icon-clicked=${(x) => x.onMiscButtonPressed()}
 	>
-	</fast-router>
+	</genesis-router>
 `;
 ```
 

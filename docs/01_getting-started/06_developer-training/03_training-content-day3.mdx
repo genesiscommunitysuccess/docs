@@ -780,7 +780,7 @@ Open the file **home.ts** and import *Grid Pro* and *Connect*. Then, add them as
 import {ZeroGridPro} from '@genesislcap/foundation-zero-grid-pro';
 import {Connect} from '@genesislcap/foundation-comms';
 ...
-export class Home extends FASTElement {
+export class Home extends GenesisElement {
     @observable columns: any = COLUMNS;
 
     public positionsGrid!: ZeroGridPro;
@@ -796,7 +796,7 @@ export class Home extends FASTElement {
 Finally, go to the file **home.template.ts** and import the required components. Then, add a constant holding the Position columns, and some `<div>`s to format the final HTML.
 
 ```html {1,5-12,15,16,28-42}
-import {html, repeat, when, ref} from '@microsoft/fast-element';
+import {html, repeat, when, ref} from '@genesislcap/web-core';
 import type {Home} from './home';
 import { tradeFormCreateSchema, tradeFormUpdateSchema } from './schemas';
 

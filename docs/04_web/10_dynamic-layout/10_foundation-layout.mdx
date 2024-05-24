@@ -524,7 +524,7 @@ interface Position {
 	symbol: string;
 }
 
-class Commodities extends FASTElement {
+class Commodities extends GenesisElement {
 	positions: Position[] // Not @observable - see following section
 
 	...
@@ -566,7 +566,7 @@ Using the `when` directive:
 	name: 'my-element',
 	template,
 })
-class Analytics extends FASTElement {
+class Analytics extends GenesisElement {
 	showIndexFunds = true; // not @observable
 }
 
@@ -717,7 +717,7 @@ export const template = html<ContainedExample>`
   name: 'contained-example',
   template,
 })
-export class ContainedExample extends FASTElement {
+export class ContainedExample extends GenesisElement {
   containedExampleLayout: FoundationLayout;
   private _addedPaneCount = 0;
 
@@ -1009,7 +1009,7 @@ The following is invalid:
 	name: 'my-element',
 	template,
 })
-class Analytics extends FASTElement {
+class Analytics extends GenesisElement {
 	@observable showIndexFunds = true;
 
 	toggleShowIndexFunds() {
@@ -1083,7 +1083,7 @@ export const exampleComponentTemplate = html<ExampleComponent>`
   name: 'example-component',
   template: exampleComponentTemplate,
 })
-export class ExampleComponent extends FASTElement {
+export class ExampleComponent extends GenesisElement {
   checkbox: Checkbox;
 	doSomething() { } // do something important
 }
@@ -1143,7 +1143,7 @@ Say you have a component which has to initialise a resource-heavy or long-awaite
 @customElement({
   name: 'mock-connected',
 })
-export class MockConnected extends FASTElement {
+export class MockConnected extends GenesisElement {
   @observable resource = '';
 
   async connectedCallback(): Promise<void> {
@@ -1166,7 +1166,7 @@ Use `LifecycleMixin` to access properties on the class, which can be used to run
 @customElement({
   name: 'mock-connected',
 })
-export class MockConnected extends LifecycleMixin(FASTElement) {
+export class MockConnected extends LifecycleMixin(GenesisElement) {
   @observable resource = '';
 
   async connectedCallback(): Promise<void> {
@@ -1208,7 +1208,7 @@ Consider the following example, where multiple bits of functionality are being g
 @customElement({
   name: 'mock-connected',
 })
-export class MockConnected extends LifecycleMixin(FASTElement) {
+export class MockConnected extends LifecycleMixin(GenesisElement) {
   @observable resource = '';
 
   async connectedCallback(): Promise<void> {

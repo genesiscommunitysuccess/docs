@@ -17,9 +17,9 @@ Defines the login class which handles account authentication from the front-end
 **Signature:**
 
 ```typescript
-export declare class Login extends FASTElement 
+export declare class Login extends GenesisElement 
 ```
-**Extends:** FASTElement
+**Extends:** GenesisElement
 
 ## Remarks
 

@@ -69,7 +69,7 @@ import { Service } from './service';
   name: 'test-element',
   template: html`<slot></slot>`,
 })
-class TestElement extends FASTElement {}
+class TestElement extends GenesisElement {}
 const mocks = [...];
 const Suite = createComponentSuite<TestElement>('Service', 'test-element', null, mocks);
 // test cases...
@@ -86,7 +86,7 @@ Suite('Service.x does something expected', async ({ container }) => {
 You can optionally add the service to the test element for lookup convenience, but this is not required.
 
 ```ts
-class TestElement extends FASTElement {
+class TestElement extends GenesisElement {
   @Service service: Service;
 }
 Suite('Element has service injected', async ({ element }) => {

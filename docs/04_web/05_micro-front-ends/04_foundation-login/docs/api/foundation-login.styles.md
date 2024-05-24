@@ -10,7 +10,7 @@ format: md
 **Signature:**
 
 ```typescript
-styles: (options: TemplateOptions) => import("@microsoft/fast-element").ElementStyles
+styles: (options: TemplateOptions) => import("@genesislcap/web-core").ElementStyles
 ```
 
 ## Example

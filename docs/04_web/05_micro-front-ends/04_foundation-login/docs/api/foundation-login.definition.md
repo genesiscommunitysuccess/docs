@@ -13,7 +13,7 @@ format: md
 **Signature:**
 
 ```typescript
-definition: PartialFASTElementDefinition
+definition: PartialGenesisElementDefinition
 ```
 
 ## Remarks

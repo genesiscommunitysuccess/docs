@@ -44,7 +44,7 @@ Here you can easily swap logging the row data with some custom logic (such as ca
 
 ```typescript {4-17} title="order.ts"
 ...
-export class Order extends FASTElement {
+export class Order extends GenesisElement {
   ...
   public singleOrderActionColDef = {
     headerName: 'Action',
@@ -154,7 +154,7 @@ In the example below, the component is called `positions-grid-pro`. Go to the fo
 
 ```javascript {10} title="component/order-grid/positions-grid-pro.ts"
 import {ZeroGridPro, zeroGridProTemplate} from '@genesislcap/foundation-zero-grid-pro';
-import {customElement} from '@microsoft/fast-element';
+import {customElement} from '@genesislcap/web-core';
 import {positionsGridStyles} from './grid-pro.styles';
 
 @customElement({
@@ -166,13 +166,13 @@ export class PositionsAgGrid extends ZeroGridPro {
 }
 ```
 
-Note we are extending `ZeroGridPro`, not `FASTElement`.
+Note we are extending `ZeroGridPro`, not `GenesisElement`.
 
 Now you need to provide custom styles for the custom component:
 
 ```javascript title="component/order-grid/order-grid.styles.ts"
 import {zeroAgGridStyles} from '@genesislcap/foundation-zero';
-import {css, ElementStyles} from '@microsoft/fast-element';
+import {css, ElementStyles} from '@genesislcap/web-core';
 import {BUY_SIDE, SELL_SIDE, NEW_TRADE_STATUS, CANCELLED_TRADE_STATUS} from './colors';
 
 export const positionsAgGridStyles: ElementStyles = css`
@@ -308,7 +308,7 @@ Having a static filter like that is not always very useful though. Let's make it
 ```
 
 ```ts {1} title='order.ts'
-import {customElement, FASTElement, observable, attr } from '@microsoft/fast-element';
+import {customElement, GenesisElement, observable, attr } from '@genesislcap/web-core';
 ...
 @attr public sideFilter = 'BUY';
 
@@ -322,7 +322,7 @@ Make sure to try it now and click on the 'Toggle SIDE filter' button to see the 
 Ultimately, we can use something like the [ref directive](https://www.fast.design/docs/fast-element/using-directives/#the-ref-directive) to make our code completely override the criteria. So, let's add another button to reset the criteria to something else and use the `ref` in grid-pro-genesis-datasource.
 
 ```ts {1,5,9} title='order.template.ts'
-import {html, repeat, when, ref} from '@microsoft/fast-element';
+import {html, repeat, when, ref} from '@genesislcap/web-core';
 
 ...
 
