@@ -111,7 +111,7 @@ Now you are ready to define the fields and tables that make up your [data model]
 
 Open IntelliJ and open the alpha project (the devtraining-seed you cloned). After importing and indexing, you should see the files and project structure ready.
 
-You define your [fields](../../../database/fields-tables-views/fields/) and [tables](../../../database/fields-tables-views/tables/) in the file **alpha-tables-dictionary.kts** under the cfg folder.
+You define your [fields](../../../database/fields-tables-views/fields/) and [tables](../../../database/fields-tables-views/tables/) in the file **alpha-tables-dictionary.kts** under the **cfg** folder.
 
 :::tip
 
@@ -250,7 +250,7 @@ This runs a full Gradle build and a [`genesisInstall`](/operations/commands/serv
 ### Credentials to login
 
 :::tip
-Before you proceed, make sure you have selected java 17 as your SDK. to do that, check on File > Project Structure. 
+Before you proceed, make sure you have selected java 17 as your SDK. Check **File** > **Project Structure**. 
 :::
 
 By default, the following will be your login details:
@@ -262,7 +262,7 @@ However, after the first Build and Deploy, you need to send the login informatio
 
 ## Remap
 
-Before you can run your application, you need to create the tables of your database. To do that, run the `remap` script.
+Before you can run your application, you need to create the tables of your database. Run the `remap` script.
 
 ![Genesis Install](/img/remap-new.png)
 
@@ -272,7 +272,7 @@ After that, you will be asked to confirm the tables that you want to insert in y
 WARNING: are you sure you want to commit changes to the database? (y/n)
 ```
 
-After remapping is complete, you will be prompted the following:
+After remapping is complete, you will see the following prompt:
 
 ```text
 =========Starting Data Load=======
@@ -282,7 +282,7 @@ WARNING: If you have test data in your application's data folder and this is not
 Are you sure you want to proceed?  (y/n)
 ```
 
-This means that it will be loaded all data stored in the **data** folder. Since this is a basic development, there is only the credentials data. Once you confirm, it will be loaded into the database, and you will be able to log in. 
+This means that all data stored in the **data** folder will be loaded. For this exercise, there is only credentials data. Once you confirm, it will be loaded into the database, and you will be able to log in. 
 
 <details>
   <summary>Want to check if your data has been sent?</summary>
@@ -328,7 +328,7 @@ Now you are ready to start your application.
 
 ### Starting the server
 
-Now we need to start the server. To do that, click on the start server button. This starts all the processes:
+Now we need to start the server. To do that, click on the Start Server button. This starts all the processes:
 
 ![](/img/start-server-new.png)
 
@@ -336,7 +336,7 @@ And that's all you have to do to get your server up and running.
 
 ## Testing the back end
 
-There are multiple ways you can test the back end of your application. It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as HTTP endpoints automatically by the Genesis low-code platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman.
+There are multiple ways you can test the back end of your application. Most resources, such as Event Handlers and Data Servers, are exposed as HTTP endpoints automatically by the Genesis low-code platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman.
 
 Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
 
@@ -394,13 +394,13 @@ You can go to check the TRADE table to see if your insert is there.
 30 mins
 :::
 
-Look at the [Data Server documentation](../../../server/data-server/introduction/) and see if you are able to modify our Data Server [defined previously](../../../getting-started/developer-training/training-content-day1/#data-server):
+Look at the [Data Server documentation](../../../server/data-server/introduction/) and see if you are able to modify the Data Server that we [defined previously](../../../getting-started/developer-training/training-content-day1/#data-server):
 
 - add a new query called "ALL_PRICES" on the TRADE table
 - make ALL_PRICES display only SYMBOL and PRICE fields
 - add a `where` clause so it displays only trades whose PRICE are higher than 0.0
 
-Remember to insert a few trades using Genesis Console to test it.
+Remember to insert a few trades using Genesis Console so you can test the Data Server.
 
 ### Exercise 1.2: Event Handlers
 :::info ESTIMATED TIME
