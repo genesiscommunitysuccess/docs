@@ -88,7 +88,7 @@ With a lack of imagination we hope you will find trustworthy, we are going to ca
 
 ## 1. Create a new project
 
-To create a new project, you can use the `genx` CLI tool, which enables you to seed projects. Further details can be found [here](../../../getting-started/quick-start/create-a-new-project/).
+To create a new project, you can use the `genx` CLI tool, which enables you to seed projects. Further details can be found [here](../../../getting-started/quick-start/new-project-using-genx/create-a-new-project/).
 
 In our case, we just want to extend a blank full-stack application project, so we are using the [training seed](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you have followed the Environment set-up and done the step [Start the project baseline](../../../getting-started/developer-training/environment-setup/#start-the-project-baseline), where you cloned the repository locally.
 
@@ -98,16 +98,20 @@ Here's a quick overview of the repository that you cloned:
 
 Above, we have expanded the **client** folder. This contains all the UI-related projects.
 
-The **server** folder follows the same structure. This contains all the server-side projects.
+The **server** folder has the following structure:
+
+![](/img/server-structure-training.png)
+
+- cfg: stores all configuration files such as tables definition, views, processes...
+- data: stores all data that has to be loaded to the database. It includes the credential data. 
+- scripts: stores all scripts such as queries, events...
 
 ## 2. Define the data model
 Now you are ready to define the fields and tables that make up your [data model](../../../database/fields-tables-views/fields-tables-views/). This model structures information in a simple way that can be viewed by users and processed by the application.
 
 Open IntelliJ and open the alpha project (the devtraining-seed you cloned). After importing and indexing, you should see the files and project structure ready.
 
-### Add fields
-You define your [fields](../../../database/fields-tables-views/fields/) in the file **alpha-fields-dictionary.kts**.
-
+You define your [fields](../../../database/fields-tables-views/fields/) and [tables](../../../database/fields-tables-views/tables/) in the file **alpha-tables-dictionary.kts** under the **cfg** folder.
 
 :::tip
 
@@ -119,57 +123,16 @@ Once the project is open, there are two easy ways to find this file quickly in I
 :::
 
 
-For our simple example, we will add five fields:
+For our simple example, we will add five fields inside one table called trades:
 
 ```kotlin
-fields {
-
-    field("TRADE_ID", type = STRING)
-    field("QUANTITY", type = INT)
-    field("PRICE", type = DOUBLE)
-    field("SYMBOL", type = STRING)
-    field("DIRECTION", type = ENUM("BUY", "SELL", default = "BUY"))
-
-}
-```
-After you have saved this file, run [genesis-generated-fields](../../../database/fields-tables-views/genesisDao/) as will be explained next.
-
-### generateFields
-
-import GenerateFields from '/snippet/_generate_fields.mdx';
-
-<GenerateFields />
-
-:::note Why do I have to run this Gradle task?
-
-You are editing a kts file that needs to be compiled and built to be used from other places. In this case, we want the fields to be available to the tables (and with intellisense support from the IDE).
-
-As we go, you'll see we have different Gradle tasks, depending on the artifact we want to build.
-:::
-
-### Add a table
-Now we have our fields, let's define a [table](../../../database/fields-tables-views/tables/) in the file **alpha-tables-dictionary.kts**.
-
-We are defining one single table, containing all our fields.
-
-TRADE_ID is the primaryKey, which will be auto-generated.
-
-```kotlin
-tables {
-
     table (name = "TRADE", id = 2000) {
-        sequence(TRADE_ID, "TR")
-        QUANTITY
-        PRICE not null
-        SYMBOL
-        DIRECTION
-
-        primaryKey {
-            TRADE_ID
-        }
+        field("TRADE_ID",STRING).sequence("TR").primaryKey()
+        field("QUANTITY",INT)
+        field("PRICE",DOUBLE).notNull()
+        field("SYMBOL",STRING)
+        field("DIRECTION", ENUM("BUY","SELL")).default("BUY")
     }
-
-}
 ```
 
 After you have saved this file, run [genesis-generated-dao](../../../database/fields-tables-views/genesisDao/) as will be explained next.
@@ -181,6 +144,13 @@ import GenerateDao from '/snippet/_generate_DAO.mdx'
 <GenerateDao />
 
 After running this, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
+
+:::note Why do I have to run this Gradle task?
+
+You are editing a kts file that needs to be compiled and built to be used from other places. In this case, we want the fields to be available to the tables (and with intellisense support from the IDE).
+
+As we go, you'll see we have different Gradle tasks, depending on the artifact we want to build.
+:::
 
 ## 3. Add business logic
 We have a table; now we want to be able to see its contents and create new entries.
@@ -263,76 +233,64 @@ Add the following content to the **alpha-service-definitions.xml** file.
 
 Please see [here](../../../server/configuring-runtime/processes/) for a detailed description of the processes configuration.
 
-## 5. The build and deploy process
-
-
+## 5. The build process
+ 
 Finally, you can build and deploy the server.
 
 ### Build
 
-In the Gradle menu on the right of IntelliJ, select:
+In the Genesis plugin menu on the right of IntelliJ, select:
 
-**genesisproduct-alpha**
+**Prepare Local Genesis Application**
 
-![](/img/assemble-server.png)
+![](/img/prepare_server.png)
 
-```shell title='Running assemble from the command line'
-./gradlew :genesisproduct-alpha:assemble
-```
-### Deploy
-
-As soon as the Build is done, you need to deploy the application. To do that, click on the Genesis plugin in your intellij (in the panel on the right).
-
-![](/img/click-on-genesis.png)
-
-When you click on it for the first time, it will map all the available processes and display these in the mon panel:
-
-![](/img/genesis-process-first-run.png)
-
-To deploy your application, click on **deploy Genesis**:
-
-![](/img/deploy-project.png)
-
-The plugin then creates your runtime folder containing all the generated files required for your local application to run. This runtime folder is available under the **server/alpha-app/build/** folder and it is called **genesis-home**:
-
-![](/img/genesis-home.png)
-
-Congratulations! You have built and deployed an application.
-
-----------------------------------------------------------------
+This runs a full Gradle build and a [`genesisInstall`](/operations/commands/server-commands/#genesisinstall)
 
 ### Credentials to login
 
+:::tip
+Before you proceed, make sure you have selected java 17 as your SDK. Check **File** > **Project Structure**. 
+:::
+
 By default, the following will be your login details:
 
-- Username: JaneDee
-- Password: beONneON*74 (This is encrypted in the **user.csv** file.)
+- Username: admin
+- Password: genesis (This is encrypted in the **user.csv** file.)
 
 However, after the first Build and Deploy, you need to send the login information so that you can access the application you have just created.
 
-<h3>Create a new schema</h3>
+## Remap
 
-Before you can run your application, you need to create a new schema for the database; this is where all the tables will be created. To do that,
+Before you can run your application, you need to create the tables of your database. Run the `remap` script.
 
-Run `remap`.
+![Genesis Install](/img/remap-new.png)
 
-![Genesis Install](/img/remap-simple.png)
+After that, you will be asked to confirm the tables that you want to insert in your database, you should return `y`.
 
-<h3>Send data to Genesis</h3>
+```powershell
+WARNING: are you sure you want to commit changes to the database? (y/n)
+```
 
-Go to **server/alpha-app/src/main/genesis/data/USER.csv**, right-click on this csv file and select **Import CSV(s) to Genesis**.
+After remapping is complete, you will see the following prompt:
 
-![](/img/import-login.png)
+```text
+=========Starting Data Load=======
+This will load reference data needed to user all of the Genesis components utilised by the application,
+and anything you've added to your project's /data folder, overwriting any data that has changed.
+WARNING: If you have test data in your application's data folder and this is not a development environment it will still be loaded in
+Are you sure you want to proceed?  (y/n)
+```
 
-After that, you have all the data to start the application.
+This means that all data stored in the **data** folder will be loaded. For this exercise, there is only credentials data. Once you confirm, it will be loaded into the database, and you will be able to log in. 
 
 <details>
   <summary>Want to check if your data has been sent?</summary>
-  To check your database, Genesis Intellij plugin has the following script
+  To check your database, Genesis Intellij plugin has the following script 
 
   ![](/img/DbMon-script.png)
 
-  Type `table USER` and then `search 1`; this will  display the following:
+  type `table USER` and then `search 1` you will be displayed the following:
 
 ```kotlin
 ==================================
@@ -344,39 +302,41 @@ DbMon:USER>search 1
 ==================================
 USER
 ==================================
-Field Name                               Value                                    Type
+Field Name                               Value                                    Type                
 ===========================================================================================
-TIMESTAMP                                2024-03-27 11:11:43.634(n:0,s:1)         NANO_TIMESTAMP
-COMPANY_ID                                                                        STRING
-COMPANY_NAME                             GENESIS                                  STRING
-DOMAIN                                                                            STRING
-EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING
-FIRST_NAME                               Jane                                     STRING
-LAST_LOGIN                               2016-04-28T00:00:00.000Z                 DATE
-LAST_NAME                                Dee                                      STRING
-ONLINE                                   false                                    BOOLEAN
-PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING
-PASSWORD_EXPIRY_DATETIME                                                          DATETIME
-STATUS                                   ENABLED                                  STRING
-USER_NAME                                JaneDee                                  STRING
+TIMESTAMP                                2024-05-16 10:55:00.729(n:0,s:84)        NANO_TIMESTAMP      
+COMPANY_ID                                                                        STRING              
+COMPANY_NAME                             GENESIS                                  STRING              
+DOMAIN                                                                            STRING              
+EMAIL_ADDRESS                            admin.global@genesis.global              STRING              
+FIRST_NAME                               admin                                    STRING              
+LAST_LOGIN                               2016-04-28T00:00:00.000Z                 DATE                
+LAST_NAME                                global                                   STRING              
+ONLINE                                   false                                    BOOLEAN             
+PASSWORD                                 775d545a8f34a8bf6c3f9d9c6381fbc8d3d76... STRING              
+PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
+STATUS                                   ENABLED                                  STRING              
+USER_NAME                                admin                                    STRING              
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1
+DbMon:USER>
 ```
 </details>
 
+Now you are ready to start your application.
 
 ### Starting the server
 
-Now we need to start the server. To do that, click on the start server button. This starts all the processes:
+Now we need to start the server. To do that, click on the Start Server button. This starts all the processes:
 
-![](/img/start-server-simple.png)
+![](/img/start-server-new.png)
 
 And that's all you have to do to get your server up and running.
 
 ## Testing the back end
 
-There are multiple ways you can test the back end of your application. It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as HTTP endpoints automatically by the Genesis low-code platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman.
+There are multiple ways you can test the back end of your application. Most resources, such as Event Handlers and Data Servers, are exposed as HTTP endpoints automatically by the Genesis low-code platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman.
 
 Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
 
@@ -434,13 +394,13 @@ You can go to check the TRADE table to see if your insert is there.
 30 mins
 :::
 
-Look at the [Data Server documentation](../../../server/data-server/introduction/) and see if you are able to modify our Data Server [defined previously](../../../getting-started/developer-training/training-content-day1/#data-server):
+Look at the [Data Server documentation](../../../server/data-server/introduction/) and see if you are able to modify the Data Server that we [defined previously](../../../getting-started/developer-training/training-content-day1/#data-server):
 
 - add a new query called "ALL_PRICES" on the TRADE table
 - make ALL_PRICES display only SYMBOL and PRICE fields
 - add a `where` clause so it displays only trades whose PRICE are higher than 0.0
 
-Remember to insert a few trades using Genesis Console to test it.
+Remember to insert a few trades using Genesis Console so you can test the Data Server.
 
 ### Exercise 1.2: Event Handlers
 :::info ESTIMATED TIME
