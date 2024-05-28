@@ -90,7 +90,7 @@ export class MainApplication extends GenesisElement {
 If you haven't used the `inject` annotation in your application yet, you'll need to get it from the `@genesislcap/web-core` package.
 :::
 
-3. Set a reference to the `navigation` object on the FAST router when you instantiate it; this enables you to set up navigation functionality from the navigation bar in the [navigation items step](#navigation-items).
+3. Set a reference to the `navigation` object on the Genesis router when you instantiate it; this enables you to set up navigation functionality from the navigation bar in the [navigation items step](#navigation-items).
 ```javascript
 // genesis-router will likely have other attributes such as :config too
 const MainTemplate: ViewTemplate<MainApplication> = html`
@@ -147,7 +147,7 @@ html`
 ```
 The `navigation` object referenced via the `parent` object is why the `navigation` object is added as an attribute to the `fast-router` in the [setup step](#header-set-up). From it, the `navigateTo` method can be called, which allows the user to navigate around the finished application from the navigation buttons.
 
-Moving on from this basic example, a dynamic set of routes can be configured, using the `repeat` directive from FAST.
+Moving on from this basic example, a dynamic set of routes can be configured, using the `repeat` directive.
 
 1. Add the routes configuration into an array in the router configuration class.
 
