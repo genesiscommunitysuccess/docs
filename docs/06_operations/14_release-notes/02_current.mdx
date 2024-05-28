@@ -34,6 +34,92 @@ Foundation UI has a programme of regular continual releases. These are documente
 
 GSF release notes are added to this area immediately following each software release. The most release is at the top.
 
+## Genesis 7.1.2(platform-symphony)
+
+### Features
+
+- Added membersCanInvite flag to create channel event 
+
+### Dependency changes
+
+- Fixing dependency after jar renaming in notify 
+- Bump com.github.node-gradle.node from 7.0.1 to 7.0.2 
+- Bump com.jfrog.artifactory from 5.1.13 to 5.2.0 
+- Bump org.jetbrains.kotlinx.kover from 0.7.5 to 0.7.6
+
+## Genesis 7.2.1(platform-symphony)
+
+### Features
+- Added membersCanInvite flag to create channel event
+
+## Genesis 7.2.6(genesis-server)
+
+### Fixes
+- Add empty REQUEST when message body and parameters is empty on request replies
+- Correct issue in updateTablesDictionary gradle task (updateTablesDictionary)
+
+## Genesis 7.0.2(platform-symphony)
+
+### Features
+- Added membersCanInvite flag to create channel event
+
+## Genesis 7.2.5(genesis-server)
+
+### Fixes
+- USER_ATTRIBUTES table should use new table field syntax for dynamic fields for compatibility purposes
+
+## Genesis 7.2.4(genesis-server)
+
+### Fixes
+- Fixed issues in schema validation with BigDecimal handling and embedded type info 
+- Ensure heartbeat pong provides accurate information about authentication status at all times
+
+## Genesis 7.2.1(platform-auth)
+
+### Fixes
+
+- Generic permissioning table definition should use new field syntax for compatibility
+
+## Genesis 7.2.3(genesis-server)
+
+### Features
+
+- Added support for null values in criteria JSON API
+
+## Genesis 7.2.2(genesis-server)
+
+### Features
+
+- Add new genesisSyncCompact task to support compact processes and update ProjectOverviewBuilderTask
+- feat: Support compact processes in project overview
+
+### Fixes
+
+- UserSessionCache now handles multiple expiry listeners for the same auth token (GSF-6804) by @rafaelnferreira in https://github.com/genesislcap/genesis-server/pull/2709
+
+## Genesis 6.7.33(genesis-server)
+
+### Fixes
+
+- Ensure heartbeat pong provides accurate information about authentication status at all times
+
+## Genesis 7.2.1(genesis-notify)
+
+### Features
+
+- Add SendGrid to genx.
+
+## Genesis 7.2.1(genesis-file-server)
+
+### Fixes
+
+- Fixed an issue with service resolution in FileStorageClient
+
+## Genesis 6.7.32(genesis-server)
+
+### Fixes
+- UserSessionCache now handles multiple expiry listeners for the same auth token
+
 ## Genesis 7.2.1(genesis-server)
 
 ### Breaking changes
