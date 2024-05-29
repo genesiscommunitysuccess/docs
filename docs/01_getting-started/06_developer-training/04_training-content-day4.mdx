@@ -44,12 +44,7 @@ Make sure you have added the TRADE_STATUS field to the TRADE table in the **alph
 tables {
   table (name = "TRADE", id = 2000) {
     ...
-    TRADE_STATUS
-
-    primaryKey {
-      TRADE_ID
-    }
-
+    field("TRADE_STATUS", ENUM("NEW", "ALLOCATED", "CANCELLED")).default("NEW")
   }
   ...
 }
@@ -62,6 +57,10 @@ If the TRADE_STATUS is missing, run [generatefields](../../../getting-started/de
 Inside the **alpha-eventhandler.kts** file, implement the following state machine:
 
 ```kotlin
+import global.genesis.gen.dao.enums.alpha.trade.TradeStatus
+
+...
+
 eventHandler {
 
   stateMachine(TRADE.TRADE_STATUS){

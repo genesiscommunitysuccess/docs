@@ -91,15 +91,10 @@ We want to be able to insert a Trade grid with data into our project. For this, 
 
 First, open the file **home.ts** to import the micro front-ends needed, as well as declaring EntityManagement after the imports.
 
-```ts {1,3,5}
-import {customElement, GenesisElement, observable} from '@genesislcap/web-core';
-...
+```ts {1,3}
 import {EntityManagement} from '@genesislcap/foundation-entity-management';
 
 EntityManagement; //imported from '@genesislcap/foundation-entity-management' to display Trade grid
-
-const name = 'home-route';
-...
 ```
 
 Now, still in the **home.ts** file, let's add two constants to define:
@@ -109,9 +104,7 @@ Now, still in the **home.ts** file, let's add two constants to define:
 
 We need to declare the columns and permissions in the Home class as well.
 
-```ts {5-10,13-39,47}
-...
-const name = 'home-route';
+```ts {3-8,11-37,46}
 
 //describes the default config for the grid columns
 const defaultColumnConfig = {
@@ -151,10 +144,11 @@ const COLUMNS = [
 ];
 
 @customElement({
-  name,
+  name: 'home-route',
   template,
   styles,
 })
+
 export class Home extends GenesisElement {
   @observable columns: any = COLUMNS;
 
@@ -167,7 +161,7 @@ export class Home extends GenesisElement {
 We can now insert the grid into our page. Open the file **home.template.ts** and insert the *entity-management* tag using the class attributes we just created.
 
 ```jsx {5-11}
-import {html, } from '@genesislcap/web-core';
+import {html} from '@genesislcap/web-core';
 import type {Home} from './home';
 
 export const HomeTemplate = html<Home>`
@@ -189,7 +183,7 @@ Now you are ready to run the application you have created for the front end.
 
 Using the Genesis IntelliJ plugin, click the [Start UI button](../../../server/tooling/intellij-plugin/#starting-the-ui) on the toolbar as shown below. This builds your front-end codebase and starts the webpack webserver in development mode.
 
-![Debug Window](/img/start-ui-simple.png)
+![Debug Window](/img/start-ui-new.png)
 
 Alternatively, you can start the UI manually from the workspace **alpha/client** folder by running the commands below.
 
@@ -258,8 +252,8 @@ Use all the previous knowledge you've got.
 As a reminder, these are the steps needed to complete this task:
 
 1. Remove all TRADE records using the [DropTable](../../../operations/commands/server-commands/#droptable) server command. To do that, use the [Tasks view](../../../server/tooling/intellij-plugin/#tasks-view) on the Genesis plugin and run the DropTable script as explained [here](../../../server/tooling/intellij-plugin/#running-a-genesis-script).
-2. Edit **alpha-fields-dictionary.kts** first, and don't forget to run the [generateFields](../../../getting-started/developer-training/training-content-day1/#generatefields) gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.
-3.  Then edit **alpha-tables-dictionary.kts** to add the new tables and the fields that you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [generateDao](../../../getting-started/developer-training/training-content-day1/#generatedao).
+2. Edit **alpha-tables-dictionary.kts** to add the new tables and the fields that you created. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [generateDao](../../../getting-started/developer-training/training-content-day1/#generatedao), so intellij can reconize it. 
+3. Since you changed the tables definition, you need to run a remap
 4. Add queries to the Data Server. These must point to the new tables in the **alpha-dataserver.kts** file.
 5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 
