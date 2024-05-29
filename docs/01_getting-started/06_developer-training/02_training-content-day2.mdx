@@ -252,8 +252,8 @@ Use all the previous knowledge you've got.
 As a reminder, these are the steps needed to complete this task:
 
 1. Remove all TRADE records using the [DropTable](../../../operations/commands/server-commands/#droptable) server command. To do that, use the [Tasks view](../../../server/tooling/intellij-plugin/#tasks-view) on the Genesis plugin and run the DropTable script as explained [here](../../../server/tooling/intellij-plugin/#running-a-genesis-script).
-2. Edit **alpha-tables-dictionary.kts** to add the new tables and the fields that you created. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [generateDao](../../../getting-started/developer-training/training-content-day1/#generatedao), so intellij can reconize it. 
-3. Since you changed the tables definition, you need to run a remap
+2. Edit **alpha-tables-dictionary.kts** to add the new tables and the fields that you created. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [generateDao](../../../getting-started/developer-training/training-content-day1/#generatedao), so Intellij can recognize it. 
+3. Since you changed the tables definition, you need to run a remap.
 4. Add queries to the Data Server. These must point to the new tables in the **alpha-dataserver.kts** file.
 5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 
