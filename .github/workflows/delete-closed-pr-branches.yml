@@ -1,0 +1,17 @@
+name: Delete Branches on PR Close
+on:
+  pull_request:
+    types:
+      - closed
+jobs:
+  delete-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Delete branch
+        run: |
+          # Get the branch name from the pull request
+          BRANCH_NAME=$(echo "${{ github.event.pull_request.head.ref }}")
+          # Delete the branch
+          git push origin --delete "$BRANCH_NAME"
