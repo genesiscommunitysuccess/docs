@@ -236,6 +236,13 @@ To re-enable the process, simply check the box and click on **start server** aga
 
 Note that **Start All Process** does not attempt to start any processes that are already running, so you can safely re-enable processes and click on **start server** again.
 
+#### Compact processes
+
+You can also combine compatible services like (like DataServer, RequestServer, Notify, EventHandler, Streamer) into a single process, called GENESIS_COMPACT_PROCESS, reducing the number of services running
+by selecting the option `Enable compact processes` from the plugin, as shown below
+
+![Compact Processes](/img/intellij-plugin/compact-processes.png)
+
 #### Filtering the Process Log files 
 
 By default, IntelliJ filters the log file and shows only log entries of level WARN or ERROR. To change that, hover your mouse in the top right of the log file to display the following menu:
