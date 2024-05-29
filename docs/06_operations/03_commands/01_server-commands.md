@@ -889,6 +889,11 @@ This would result in an error, as PRICE is of type DOUBLE while FIRST_NAME is of
 
 To send data into the database (inserts, modifies and upserts), use the `SendIt` command. The data you want to send should be in a .csv file, and the name of the file (or files) should match the name of the table where the new or amended data is to be sent. If you use a different filename, you must specify this using the `-f` argument.
 
+:::info
+Make sure your data is in the correct format before sending to your target table. For example, dates should be ISO standard format of either `YYYYMMDD` or `YYYY-MM-DD`
+If you're having trouble sending in data, don't forget to use the verbose option with `-v` to get a row by row report!
+:::
+
 ### Syntax
 The `SendIt` command can take the following arguments:
 <!-- The SendIt command has a list of possible arguments: -a, -d, -cf, -f, -fm, -h, -m, -mf, -quiet, -r, -t, -u, -v -->
