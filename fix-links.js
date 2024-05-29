@@ -9,6 +9,7 @@ const fs = require("fs")
  *   [links like this](http://foo/bar)
  *   [links like this](/img/foo/bar.png)
  *   [links like this](/foo/bar.md)
+ *  ..
  */
 const regex = /\[([^\]]+)\]\(\/(?!img)([^)]+(?<!md#?(.*)))\)/
 const replaceWith = "../"
