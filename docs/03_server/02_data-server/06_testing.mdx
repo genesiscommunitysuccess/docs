@@ -10,11 +10,391 @@ tags:
   - testing
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
+:::info
+
+**GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
+
+If you are testing against a previous version of the framework, go to the [legacy](./#integration-testing-legacy) section.
+
+:::
 
 ## Integration testing
 
-The Genesis low-code platform provides the `AbstractGenesisTestSupport` abstract class, which enables end-to-end testing of specific areas of your application. 
+This document looks at the basics of testing Data Servers. 
+
+We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/operations/testing/integration-testing/), which is designed to make testing easy.
+
+### Preparation
+There are some simple steps to follow in order to set up yor test.
+
+### 1. Create the test class
+
+Create the test class using the code provided below.
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@ScriptFile("positions-app-tutorial-dataserver.kts")
+@CsvData("seed-data.csv")
+class DataServerTest {
+
+    // our tests go here ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@ScriptFile("positions-app-tutorial-dataserver.kts")
+@CsvData("seed-data.csv")
+public class DataServerTest {
+
+    // our tests go here ...
+}
+```
+</TabItem>
+</Tabs>
+
+This test class does three things: 
+
+* It enables **GenesisJunit**.
+* It identifies the Data Server script that we want to test, using the `ScriptFile` annotation.
+* It identifies the source data for our test, using the `CsvData` annotation.
+
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/operations/testing/integration-testing/).
+
+### 2. Load test data
+
+Create a CSV file called **seed-data.csv** in the root of the resources folder for your tests. Add the data below, which contains three records, to this file.
+
+```text
+#POSITION
+POSITION_ID,INSTRUMENT_ID,QUANTITY,NOTIONAL,VALUE,PNL
+000000000000001PSLO1,INSTRUMENT_TEST1,1,1111.11,1111.11,1111.11
+000000000000001PSLO2,INSTRUMENT_TEST2,1,2222.22,2222.22,2222.22
+000000000000001PSLO3,INSTRUMENT_TEST3,1,3333.33,3333.33,3333.33
+```
+
+### 3. Inject references
+Before we can begin writing tests for our Data Server, we need to inject references to the database and the Data Server client:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@ScriptFile("positions-app-tutorial-dataserver.kts")
+@CsvData("seed-data.csv")
+class DataServerTest {
+
+    @Inject
+    private lateinit var db: SyncEntityDb
+
+    @Inject
+    private lateinit var dataServerClient: DataServerQueryViewClient
+
+    // our test will go here ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@ScriptFile("positions-app-tutorial-dataserver.kts")
+@CsvData("seed-data.csv")
+public class DataServerTest {
+
+    @Inject
+    private SyncEntityDb db = null;
+
+    @Inject
+    private DataServerQueryViewClient dataServerClient = null;
+
+    // our test will go here ...
+}
+```
+</TabItem>
+</Tabs>
+
+### A first test
+
+The test below is designed to make sure that a Data Server returns the right number of records.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Test
+fun testViewHas3Records() {
+    val view = dataServerClient.queryView<Position>(
+        datasourceName = "ALL_POSITIONS"
+    )
+
+    await untilCallTo { view } has { size == 3 }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Test
+void testViewHas3Records() {
+    var view = dataServerClient.queryViewBuilder()
+        .withDatasourceName("ALL_POSITIONS")
+        .withClass(Position.class).connect();
+
+    await().until(() -> view, (it) -> it.getSize() == 3);
+}
+```
+</TabItem>
+</Tabs>
+
+As you can see here, to connect to our Data Server, you need to provide the datasource name. We have also provided the type or class that the query returns. This is optional; if no type is provided, the view will be of type `GenesisSet`.
+
+For Java developers, we provide a fluent interface. In Kotlin, you can use named parameters.
+The test is the same regardless.
+
+Once you connect, the client will provide a `QueryView`, which connects to the resource in the Data Server and recieves updates.
+
+At this point, we are just making sure we have received 3 records.
+
+### Create collections from QueryView
+
+In addition to the `size`/`getSize()` property, there are also utility methods to represent the view as a collection.
+These methods take a snapshot, and are not updated.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Test
+fun buildCollections() {
+    val view = dataServerClient.queryView<Position>(
+        datasourceName = "ALL_POSITIONS"
+    )
+
+    val list = view.toList();
+    val byId = view.associateBy { it.positionId };
+    val byCurrency = view.groupBy { it.currency };
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Test
+public void buildCollections() {
+    var view = dataServerClient.queryViewBuilder()
+        .withClass(Position.class)
+        .withDatasourceName("ALL_POSITIONS").connect();
+
+    var list = view.toList();
+    var byId = view.associateBy(Position::getPositionId);
+    var byCurrency = view.groupBy(Position::getCurrency);
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Dynamic authorisation
+
+For this test, we have amended our Data Server to enable authorisation:
+
+```kotlin 
+dataServer {
+    query("ALL_TRADES_AUTH", TRADE) {
+        permissioning {
+            auth("TRADE_VISIBILITY") {
+                fields {
+                    TRADE_ID
+                }
+            }
+        }
+    }
+}
+```
+
+Once you add the `auth` block to the code, you need to amend the test.
+
+To test dynamic authorisation, add `@EnableInMemoryTestAuthCache` to your class or method. This makes `InMemoryTestAuthCache` available for injection in your test class. 
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@EnableInMemoryTestAuthCache
+@ScriptFile("hello-world-dataserver.kts")
+@CsvData("SystemTest/simple-data-load.csv")
+class DataServerTest {
+
+    @Inject
+    lateinit var client: DataServerQueryViewClient
+
+    @Inject
+    lateinit var authCache: InMemoryTestAuthCache
+
+    @Test
+    fun testGetTradesDynamicAuth() {
+        val view = client.queryView<Trade>(
+            datasourceName = "ALL_TRADES_AUTH",
+            userName = "JohnDoe"
+        )
+
+
+        authCache.authorise(
+            authMap = "TRADE_VISIBILITY",
+            entityCode = "00000000001TRSP0",
+            userName = "JohnDoe"
+        )
+
+        await untilCallTo { view } has { size == 1 }
+
+        authCache.authorise(
+            authMap = "TRADE_VISIBILITY",
+            entityCode = "00000000002TRSP0",
+            userName = "JohnDoe"
+        )
+
+        await untilCallTo { view } has { size == 2 }
+
+        authCache.authorise(
+            authMap = "TRADE_VISIBILITY",
+            entityCode = "00000000001TRSP0",
+            userName = "JohnDoe"
+        )
+
+        authCache.revoke(
+            authMap = "TRADE_VISIBILITY",
+            entityCode = "00000000002TRSP0",
+            userName = "JohnDoe"
+        )
+
+        await untilCallTo { view } has { size == 0 }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@EnableInMemoryTestAuthCache
+@ScriptFile("hello-world-dataserver.kts")
+@CsvData("SystemTest/simple-data-load.csv")
+public class DataServerTest {
+
+    @Inject
+    private DataServerQueryViewClient client = null;
+
+    @Inject
+    private InMemoryTestAuthCache authCache = null;
+
+    @Test
+    void testGetTradesDynamicAuth() {
+        var view = client.queryViewBuilder()
+                .withDatasourceName("ALL_TRADES_AUTH")
+                .withClass(Trade.class)
+                .withUserName("JohnDoe")
+                .connect();
+
+        authCache.builder()
+                .withAuthMap("TRADE_VISIBILITY")
+                .withEntityCode("00000000001TRSP0")
+                .withUserName("JohnDoe")
+                .authorise();
+
+        await().until(() -> view, (v) -> v.getSize() == 1);
+
+        authCache.builder()
+                .withAuthMap("TRADE_VISIBILITY")
+                .withEntityCode("00000000002TRSP0")
+                .withUserName("JohnDoe")
+                .authorise();
+
+        await().until(() -> view, (v) -> v.getSize() == 2);
+
+        authCache.builder()
+                .withAuthMap("TRADE_VISIBILITY")
+                .withEntityCode("00000000001TRSP0")
+                .withUserName("JohnDoe")
+                .revoke();
+
+        authCache.builder()
+                .withAuthMap("TRADE_VISIBILITY")
+                .withEntityCode("00000000002TRSP0")
+                .withUserName("JohnDoe")
+                .revoke();
+
+        await().until(() -> view, (v) -> v.getSize() == 0);
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+### Await methods
+
+Finally, **QueryView** has some methods to help with making assertions on the data.
+With the view itself being updated in the background, these methods will have a timeout.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Test
+fun testUsdPositions()  {
+    val view = dataServerClient.queryView<Position>(
+        datasourceName = "USD_POSITIONS"
+    )
+
+    val list = db.getRange(Position.byCurrencyId("USD"))
+
+    view.awaitUntilEqual(list)
+    view.awaitUntilContains(list.first())
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Test
+void testUsdPositions() {
+    var view = dataServerClient.queryViewBuilder()
+        .withClass(Position.class)
+        .withDatasourceName("ALL_POSITIONS").connect();
+
+    var list = db.getRange(Position.byCurrencyId("USD"));
+
+    view.awaitUntilEqual(list);
+    view.awaitUntilContains(list.get(0));
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Integration testing (legacy)
+
+:::info
+This section covers testing your Data Server if you are using any version of the Genesis Server Framework before GSF v8.
+:::
+
+The Genesis platform provides the `AbstractGenesisTestSupport` abstract class, which enables end-to-end testing of specific areas of your application.
 
 In this case, we want to ensure that we have a database seeded with information. And we want to check that our Data Server configuration is used to create our Data Server. We also need to add the required packages and genesis home.
 
@@ -54,7 +434,7 @@ class DataServerTests : AbstractGenesisTestSupport<Reply<*>>(
     }
 ```
 
-There is more information about `AbstractGenesisTestSupport` in the section on [Integration testing](../../../operations/testing/integration-testing/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing-previous/#abstractgenesistestsupport).
 
 Let's load some test data into the `seed-data.csv` in the root of the resources folder for your tests.
 
@@ -65,7 +445,6 @@ POSITION_ID,INSTRUMENT_ID,QUANTITY,NOTIONAL,VALUE,PNL
 000000000000001PSLO2,INSTRUMENT_TEST2,1,2222.22,2222.22,2222.22
 000000000000001PSLO3,INSTRUMENT_TEST3,1,3333.33,3333.33,3333.33
 ```
-
 
 We are now ready to begin writing tests for our Data Server.
 
@@ -142,7 +521,7 @@ For example:
 
 As well as the Data Servers that you have defined yourself, you will also see other Data Servers that have been generated automatically by the platform, anything that is a **GENESIS_AUTH** service, for example.
 
-- In the list, click on the Data Server you want to test. This displays the fields for that Data Server. 
+- In the list, click on the Data Server you want to test. This displays the fields for that Data Server.
 
 - Click on the arrow beside the Data Server that you want to test. This displays the current contents of the table or view that provides the data for that Data Server. If you can see that content, you have connected successfully to the resource.
 
@@ -171,7 +550,7 @@ The url consists of:
 - the name of the Data Server
 
 
-Set the body to **JSON**. In the body, simply insert opening and closing curly brackets **{}** - nothing else. 
+Set the body to **JSON**. In the body, simply insert opening and closing curly brackets **{}** - nothing else.
 
 ![](/img/test-ds-url-body.png)
 
