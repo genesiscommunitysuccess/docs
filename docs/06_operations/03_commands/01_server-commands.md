@@ -903,7 +903,7 @@ The `SendIt` command can take the following arguments:
 |----------|------------------------|-----------|----------------------------------------------------------------|-----------------------|--------|
 | -a <!-- SendIt -a -->      | --all  <!-- SendIt --all -->                | no        | import all the tables from all the csv files to the database | no                    | none    |
 | -d <!-- SendIt -d -->      | --delete <!-- SendIt --delete  -->              | no        | perform delete operations on all records                     | no                    | none    |
-| -cf <!-- SendIt -cf -->     | --columnFormat <!-- SendIt --columnFormat -->        | no        | set specific date format for column                          | no                    | none    |
+| -cf <!-- SendIt -cf -->     | --columnFormat <!-- SendIt --columnFormat -->        | no        | set specific date format for column, for example `-cf DATE=yyyyMMdd` | no                    | none    |
 | -f  <!-- SendIt -f -->     | --file (arg) <!-- SendIt --file (args) -->        | no        | name of the csv file that contains the data                  | no                    | Genesis looks for a new .csv file whose name matches the name of the source table    |
 | -fm <!-- SendIt -fm -->     | --formatMode (arg) <!-- SendIt --formatMode (args) -->  | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY  | LEGACY  |
 | -h  <!-- SendIt -h -->     | --help <!-- SendIt --help -->                | no        | show help on how to use this command                         | no                    | none    |
