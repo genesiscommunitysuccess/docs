@@ -889,6 +889,12 @@ This would result in an error, as PRICE is of type DOUBLE while FIRST_NAME is of
 
 To send data into the database (inserts, modifies and upserts), use the `SendIt` command. The data you want to send should be in a .csv file, and the name of the file (or files) should match the name of the table where the new or amended data is to be sent. If you use a different filename, you must specify this using the `-f` argument.
 
+:::info
+Make sure your data is in the correct format before sending to your target table. For example, dates should be ISO standard in the format of `YYYY-MM-DD` (for example 2026-05-25).
+
+If you're having trouble sending in data, use the verbose option with `-v` to get a row-by-row report!
+:::
+
 ### Syntax
 The `SendIt` command can take the following arguments:
 <!-- The SendIt command has a list of possible arguments: -a, -d, -cf, -f, -fm, -h, -m, -mf, -quiet, -r, -t, -u, -v -->
@@ -897,7 +903,7 @@ The `SendIt` command can take the following arguments:
 |----------|------------------------|-----------|----------------------------------------------------------------|-----------------------|--------|
 | -a <!-- SendIt -a -->      | --all  <!-- SendIt --all -->                | no        | import all the tables from all the csv files to the database | no                    | none    |
 | -d <!-- SendIt -d -->      | --delete <!-- SendIt --delete  -->              | no        | perform delete operations on all records                     | no                    | none    |
-| -cf <!-- SendIt -cf -->     | --columnFormat <!-- SendIt --columnFormat -->        | no        | set specific date format for column                          | no                    | none    |
+| -cf <!-- SendIt -cf -->     | --columnFormat <!-- SendIt --columnFormat -->        | no        | set specific date format for column, for example `-cf DATE=yyyyMMdd` | no                    | none    |
 | -f  <!-- SendIt -f -->     | --file (arg) <!-- SendIt --file (args) -->        | no        | name of the csv file that contains the data                  | no                    | Genesis looks for a new .csv file whose name matches the name of the source table    |
 | -fm <!-- SendIt -fm -->     | --formatMode (arg) <!-- SendIt --formatMode (args) -->  | no        | FORMATTED takes field formats into account; LEGACY does not  | FORMATTED and LEGACY  | LEGACY  |
 | -h  <!-- SendIt -h -->     | --help <!-- SendIt --help -->                | no        | show help on how to use this command                         | no                    | none    |
