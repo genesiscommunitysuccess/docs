@@ -360,7 +360,7 @@ Genesis supports a wide range of third-party integrations. Some of these are lis
 ### Data model configuration
 
 - built for the financial markets
-- based on Web Components (Microsoft FAST) for performance and accessibility
+- based on Genesis web components for performance and accessibility
 - composed into micro front-ends
 
 Web Components allow us to provide reusable building blocks and app functionality that works seamlessly with today’s popular web frameworks - and any that might become popular in the future.

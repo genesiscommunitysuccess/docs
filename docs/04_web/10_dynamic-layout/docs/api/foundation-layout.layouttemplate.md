@@ -12,7 +12,7 @@ format: md
 **Signature:**
 
 ```typescript
-layoutTemplate: import("@microsoft/fast-element").ViewTemplate<FoundationLayout, any>
+layoutTemplate: import("@genesislcap/web-core").ViewTemplate<FoundationLayout, any>
 ```
 
 ## Remarks

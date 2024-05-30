@@ -105,7 +105,7 @@ If you want to create multiple columns at once, you can use the `repeat` directi
 This is how you can implement multiple custom columns defined in the variable `myMultipleCustomColumnConfigArray`:
 
 ```html {1,7-9} title="Using repeat to create multiple columns"
-import {html, ref, repeat} from '@microsoft/fast-element';
+import {html, ref, repeat} from '@genesislcap/web-core';
 
 ...
 
@@ -118,8 +118,6 @@ export const YourTemplate = html<YourTemplate>`
 `;
 ```
 Note that inside the repeat directive, the context is `myMultipleCustomColumnConfigArray` instead of `YourTemplate`. This enables you to use `${x => x}` to access the `myMultipleCustomColumnConfigArray` elements.
-
-You can find more information about the `repeat` directive in the [FAST documentation](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive).
 
 :::tip A different way to creating multiple columns
 When using `ColDef` objects, it's up to you to decide the approach. You can use the directive **repeat** to create an array of definitions, or you can create each column separately.

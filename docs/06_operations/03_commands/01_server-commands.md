@@ -1177,7 +1177,7 @@ This command creates sequences in the database for ID fields that rely on auto-g
 
 The command checks to see which sequences exist already, and only creates new sequences where they do not exist. Consequently, if you run the command more than once, you will get the same result each time.
 
-This command is applicable only for SQL databases and should only be executed when you are [enabling Sequences for SQL databases](/database/fields-tables-views/tables/tables-advanced/#using-sequence-with-an-sql-database-uuid).
+This command is applicable only for SQL databases and should only be executed when you are [enabling Sequences for SQL databases](../../../database/fields-tables-views/tables/tables-advanced/#using-sequence-with-an-sql-database-uuid).
 
 ### Syntax
 

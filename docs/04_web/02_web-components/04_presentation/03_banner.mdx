@@ -88,7 +88,7 @@ If you are using `foundation-zero`, then you need to import using `@genesislcap/
 After that, you need to define the local variable to be referred to, in this case `localBanner`:
 
 ```js {3}
-export class TEMPLATE extends FASTElement {
+export class TEMPLATE extends GenesisElement {
     ...
     localBanner: alphaBanner;
     ...
@@ -98,7 +98,7 @@ export class TEMPLATE extends FASTElement {
 2. Create a function `dismissBanner()` in the class of the component:
 
 ```js {1,5}
-export class TEMPLATE extends FASTElement {
+export class TEMPLATE extends GenesisElement {
     ...
     dismissBanner(){
         this.localBanner.dismiss();

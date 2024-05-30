@@ -95,9 +95,9 @@ Once the user has input a value to this component, you need to make it accessibl
 1. Create an `@observable` variable where you want to use this value:
 
 ```html {1,5}
-import {... , observable} from '@microsoft/fast-element';
+import {... , observable} from '@genesislcap/web-core';
 ...
-export class TEMPLATE extends FASTElement {
+export class TEMPLATE extends GenesisElement {
 ...
 @observable select_value: string
 ...
@@ -130,9 +130,9 @@ To do this, follow the steps below:
 1. Create an `@observable Array<{value: string, label: string}>` with the options to be available in your select:
 
 ```html {1,5}
-import {... , observable} from '@microsoft/fast-element';
+import {... , observable} from '@genesislcap/web-core';
 ...
-export class TEMPLATE extends FASTElement {
+export class TEMPLATE extends GenesisElement {
     ...
     @observable options: Array<{value: string, label: string}> = []
     ...
@@ -152,7 +152,7 @@ With this variable created, you can generate any array you wish using a loop. He
 2. Use the `repeat` directive to create an `<alpha-option>` for each element you have in `options`
 
 ```html {1,5}
-import {... , repeat} from '@microsoft/fast-element';
+import {... , repeat} from '@genesislcap/web-core';
 ...
     ...
         <alpha-select>

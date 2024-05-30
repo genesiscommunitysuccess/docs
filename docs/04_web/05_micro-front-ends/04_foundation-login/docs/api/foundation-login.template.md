@@ -11,5 +11,5 @@ format: md
 **Signature:**
 
 ```typescript
-template: (options: TemplateOptions) => import("@microsoft/fast-element").ViewTemplate<Login, any>
+template: (options: TemplateOptions) => import("@genesislcap/web-core").ViewTemplate<Login, any>
 ```
