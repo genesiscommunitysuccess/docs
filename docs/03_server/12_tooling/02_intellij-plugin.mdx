@@ -222,21 +222,31 @@ Once the process has started, the log file will be attached to the process:
 
 #### Filtering processes
 
-To start only selected processes when clicking on **Start All Genesis Services**, you can enable the processes filter, by unticking **Enable All Processes** in the settings:
+By default, **Start All Genesis Services** starts all the Genesis processes when you click on it. But you can change that so that only selected processes are started.
+
+To do this:
+1. Open the Settings window.
+2. Untick **Enable All Processes**:
 
 ![Enable All Processes](/img/intellij-plugin/enable-all-processes.png)
 
-Once this setting is unticked, you can filter which processes to start:
+3. You can now click on the ticks to select which processes you want to be started and which ones you don't. Ticked processes will be started when you click on **Start All Genesis Services**; unticked processes will not:
 
 ![Filter Processes](/img/intellij-plugin/filtered-processes.png)
 
-When a process is unticked, it will no longer be started via any **start server** command, either from the terminal or the **start server** button. However, processes that are not ticked, can still be started manually.
+Unticked processes will not be started by any **start server** command, either from the terminal or the **start server** button. You can still start these processes manually.
 
-To re-enable the process, simply check the box and click on **start server** again.
+Note that **Start All Procesess** does not attempt to start any processes that are already running, so you can safely re-enable processes and click on **start server** again.
 
-Note that **Start All Process** does not attempt to start any processes that are already running, so you can safely re-enable processes and click on **start server** again.
+#### Compact processes
 
-#### Filtering the Process Log files 
+You can combine compatible services (such as DataServer, RequestServer, Notify, EventHandler, Streamer) into a single process, called GENESIS_COMPACT_PROCESS. This reduces the number of services running. 
+
+To do this, select the option **Enable compact processes** from the plugin:
+
+![Compact Processes](/img/intellij-plugin/compact-processes.png)
+
+#### Filtering the Process log files 
 
 By default, IntelliJ filters the log file and shows only log entries of level WARN or ERROR. To change that, hover your mouse in the top right of the log file to display the following menu:
 
@@ -251,7 +261,8 @@ The default log level for a process is defined by the `loggingLevel` tag in your
 #### Starting processes
 
 Processes can be started using the **Start All Genesis Services** button mentioned [above](#starting-the-front-and-back-ends).
-You can also be started from the **mon** window.
+
+You can also start them from the **mon** window.
 
 ![Log Filter](/img/intellij-plugin/mon-router-row.png)
 
