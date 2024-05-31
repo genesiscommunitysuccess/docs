@@ -887,7 +887,12 @@ This would result in an error, as PRICE is of type DOUBLE while FIRST_NAME is of
 
 ## SendIt
 
-To send data into the database (inserts, modifies and upserts), use the `SendIt` command. The data you want to send should be in a .csv file, and the name of the file (or files) should match the name of the table where the new or amended data is to be sent. If you use a different filename, you must specify this using the `-f` argument.
+To send data into the database (inserts, modifies and upserts), use the `SendIt` command. 
+
+The data you want to send must be in a .csv file or files:
+
+- The file must be in the directory that you are running the command from. 
+- The name of the file (or files) should match the name of the table where the new or amended data is to be sent. **If you want to use a different filename, you must specify this using the `-f` argument.**
 
 :::info
 Make sure your data is in the correct format before sending to your target table. For example, dates should be ISO standard in the format of `YYYY-MM-DD` (for example 2026-05-25).
@@ -912,8 +917,9 @@ The `SendIt` command can take the following arguments:
 | -quiet <!-- SendIt -quiet -->   | --quietMode  <!-- SendIt --quietMode -->          | no        | make database changes without triggering real-time updates in update queue layer | no                    | none    |
 | -r <!-- SendIt -r -->      | --recover <!-- SendIt --recover -->             | no        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | no                    | none    |
 | -t <!-- SendIt -t -->      | --table (arg) <!-- SendIt --table (args) -->        | yes       | the name of the database table to be updated or amended      | must be a valid table | none    |
-| -u  <!-- SendIt -u -->     | --upsert (arg) <!-- SendIt --upsert (args) -->      | no        | table key name used to upsert records                        | no                    | none    |
-| -v <!-- SendIt -v -->      | --verbose <!-- SendIt --verbose -->             | no        | log every error line to output                               | no                    | none    |
+| -u  <!-- SendIt -u -->     | --upsert (arg) <!-- SendIt --upsert (args) -->      | no        | upserts records from a single csv file       | no                    | none    |
+| -ua  <!-- SendIt -ua -->   | --upsertAll (arg) <!-- SendIt --upsertAll (args) --> | no        | upserts records from multiple csv files      | no                    | none    |
+| -v  <!-- SendIt -v -->     | --verbose <!-- SendIt --verbose -->             | no        | log every error line to output                               | no                    | none    |
 
 For example:
 
