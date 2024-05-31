@@ -10,9 +10,9 @@ tags:
     - introduction
 ---
 
-## What is the Genesis low-code platform?
+## What is the Genesis platform?
 
-The Genesis low-code platform enables you to design, build and run applications for the financial markets. 
+The Genesis platform enables you to design, build and run applications for the financial markets. 
 
 The simplest way of thinking about a Genesis application is:
 
@@ -68,3 +68,26 @@ So far, this is what we have learnt about Genesis applications:
 - The Auth module controls access to the system (authentication) and to specific data and functions (authorisation). Note that the authorisation is defined in the key modules.
 - You can add other modules to cover (for example) aggregated (calculated) data and integrations with internal and external systems.
 - You can also create your own modules to cover specific requirements.
+
+## Getting you started quickly
+The Genesis platform provides some useful tools that enable you to get moving quickly and start using all those components productively:
+
+### Genx
+The Genx CLI tool enables you to scaffold new Genesis applications from scratch from a choice of seeds. It creates the correct project structure, provides empty files for the key server modules, and also gives you blank home page files where you can quickly add Genesis components and micro front-ends to create a rich UI.
+
+### Genesis Create 
+Genesis Create enables you to create a new project and to generate specific code for your key modules and your front end without entering any code. 
+
+It provides a series of steps that enable you build the code for a basic application, and then build and run it locally. At each point, you create your requirements by selecting from the available options on screen:
+
+- the tables and views that make up your data model
+- the queries that serve data from the database to the front end
+- the business components that add additional logica and functionality (such as consolidator and reporting)
+- the components that provide data and interaction to the front end, such as grids, charts, forms and buttons
+
+Once you have put those in place, you can click in Genesis Create to generate the code that meets all those requirements. And then you can run the built code and see the result as well.
+
+It means that you (or a Business Analyst, for example) can generate much of the code you need for your application before you flex your developer muscles and start doing the clever-clever stuff.
+
+### The Genesis plugin for Intellij
+The Genesis plugin for Intellij enables you to build and test your application locally as you develop, so that you can trigger builds, start server processes and monitor their health.at any point. 
