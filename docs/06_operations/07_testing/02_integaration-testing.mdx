@@ -34,7 +34,7 @@ For more information, have a look at the links below.
 ## A simple example
 
 Let's have a look at a simple test. 
-We have a `TradeProcessor` class that takes a trade Id, process the trade and update the status. 
+We have a `TradeProcessor` class that takes a trade Id, processes the trade and updates the status. 
 We want to make sure our trade is marked as processed, once complete.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -95,7 +95,7 @@ Let's break down what is happening here.
 2. `@CsvData("my-trades.csv")` - our test relies on trade data existing in the database. Here we specify that data. 
 3. `@Inject` and `SyncEntityDb` - all classes available for injection during runtime, are available in our test. Here we're getting a reference to the database.
 4. `@Inject` and `TradeProcessor` - we can also inject our own classes. `TradeProcessor` has a constructor annotated with `@Inject`, so the dependency injection mechanism knows how to instantiate it. 
-5. By the time the test starts, our inejcted instances are available and we can start testing.
+5. By the time the test starts, our injected instances are available and we can start testing.
 6. We can access the database as we would normally to get the updated state of the trade.
 7. We verify that the trade status has been updated as expected. 
 
@@ -112,22 +112,22 @@ Let's break down what is happening here.
 * clean up resources
 
 
-## Annotation Referece
+## Annotation Reference
 
 **GenesisJunit** supports the following annotations.
 Please note that none of these will work without adding `@ExtendWith(GenesisJunit::class)`
-or @ExtendWith(GenesisJunit.class) to your class or function.
+or `@ExtendWith(GenesisJunit.class)` to your class or function.
 
-These @ExtendWith(GenesisJunit.class) and any of the annotations below work on both the class and method level.
+These `@ExtendWith(GenesisJunit.class)` and any of the annotations below work on both the class and method level.
 Some of the annotations are Repeatable, this means that you can provide multiple values at the same class or method.
 If you provide those Repeatable annotations on both the class and method level, both would be applied.
 If you provide non-Repeatable annotations on both the class and method level, the method level annotion would take precedence.
-The enable annoatations (i.e. EnableDataDump and EnableInMemoryTestAuthCache) do not support disabling at the method level once enabled on the class level.
+The enable annotations (i.e. EnableDataDump and EnableInMemoryTestAuthCache) do not support disabling at the method level once enabled on the class level.
 
 ### ScriptFile
 
-Use this annotation to load script file as part of the test.
-This annoatation is Repeatable.
+Use this annotation to load a script file as part of the test.
+This annotation is Repeatable.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -302,7 +302,7 @@ public class CsvDataExamplesJavaTest {
 ### EnableInMemoryTestAuthCache
 
 This annotation enables the in-memory auth cache.
-Set or remove entity authorization, you will need to inject a [InMemoryTestAuthCache] into your class.
+To set or remove entity authorization, you will need to inject an `InMemoryTestAuthCache` into your class.
 You can apply this annotation on both classes and methods.
 However, once enabled on the class level, there is no way to disable on the method level.
 
@@ -390,6 +390,7 @@ However, once enabled on the class level, there is no way to disable on the meth
 @EnableDataDump
 class DataDumpTest {
 
+    @Test
     @EnableDataDump
     fun myTest() {
         // ...
@@ -405,6 +406,7 @@ class DataDumpTest {
 @EnableDataDump
 public class DataDumpTest {
 
+    @Test
     @EnableDataDump
     public void myTest() {
         // ...
@@ -429,10 +431,12 @@ Providing this annotation at the method level will take precedence over the clas
 @RootLogLevel(Level.INFO)
 class LogLevelTest {
 
+    @Test
     fun myTest() {
         // root log level set to INFO
     }
 
+    @Test
     @RootLogLevel(Level.TRACE)
     fun myOtherTest() {
         // root log level set to TRACE
@@ -448,10 +452,12 @@ class LogLevelTest {
 @EnableDataDump
 public class LogLevelTest {
 
+    @Test
     public void myTest() {
         // root log level set to INFO
     }
 
+    @Test
     @RootLogLevel(Level.TRACE)
     public void myOtherTest() {
         // root log level set to TRACE
@@ -477,10 +483,12 @@ Providing this annotation at the method level will take precedence over the clas
 @GenesisHome("/genesisHomeA")
 class GenesisHomeTest {
 
+    @Test
     fun myTest() {
         // this test uses genesisHomeA
     }
 
+    @Test
     @GenesisHome("/genesisHomeB")
     fun myOtherTest() {
         // this test uses genesisHomeB
@@ -496,10 +504,12 @@ class GenesisHomeTest {
 @GenesisHome("/genesisHomeA")
 public class GenesisHomeTest {
 
+    @Test
     public void myTest() {
         // this test uses genesisHomeA
     }
 
+    @Test
     @GenesisHome("/genesisHomeB")
     public void myOtherTest() {
         // this test uses genesisHomeB
@@ -580,7 +590,7 @@ public class OverwriteSysDefTest {
 Annotation used to mark classes or functions for package scanning.
 This annotation should be used to mark classes or functions that require package scanning.
 It is used to specify the marker interface or class to be used for scanning packages.
-This annoatation is Repeatable.
+This annotation is Repeatable.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
