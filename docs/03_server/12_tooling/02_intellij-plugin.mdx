@@ -230,19 +230,17 @@ To do this:
 
 ![Enable All Processes](/img/intellij-plugin/enable-all-processes.png)
 
-3. You can now untick any processes that you don't want to start when you click on **Start All Genesis Services**:
+3. You can now click on the ticks to select which processes you want to be started and which ones you don't. Ticked processes will be started when you click on **Start All Genesis Services**; unticked processes will not:
 
 ![Filter Processes](/img/intellij-plugin/filtered-processes.png)
 
 Unticked processes will not be started by any **start server** command, either from the terminal or the **start server** button. You can still start these processes manually.
 
-If you want to include a process that is unticked, simply click to display the tick.
-
 Note that **Start All Procesess** does not attempt to start any processes that are already running, so you can safely re-enable processes and click on **start server** again.
 
 #### Compact processes
 
-You can combine compatible services like (such as DataServer, RequestServer, Notify, EventHandler, Streamer) into a single process, called GENESIS_COMPACT_PROCESS. This reduces the number of services running. 
+You can combine compatible services (such as DataServer, RequestServer, Notify, EventHandler, Streamer) into a single process, called GENESIS_COMPACT_PROCESS. This reduces the number of services running. 
 
 To do this, select the option **Enable compact processes** from the plugin:
 
@@ -264,7 +262,7 @@ The default log level for a process is defined by the `loggingLevel` tag in your
 
 Processes can be started using the **Start All Genesis Services** button mentioned [above](#starting-the-front-and-back-ends).
 
-You can also be start them from the **mon** window.
+You can also start them from the **mon** window.
 
 ![Log Filter](/img/intellij-plugin/mon-router-row.png)
 
