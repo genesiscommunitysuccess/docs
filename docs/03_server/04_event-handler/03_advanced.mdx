@@ -34,7 +34,7 @@ So how would we use that in an `eventHandler` codeblock?
 
 You can now use the following example `eventHandler`:
 
-If you have built your fields and tables correctly, IntelliJ will be able to find `Trade`. If not, go back and [build your fields and tables](../../../getting-started/learn-the-basics/data-model/).
+If you have built your tables correctly, IntelliJ will be able to find `Trade`. If not, go back and [check the fields in your tables](../../../database/fields-tables-views/tables/tables-basics/).
 
 ```kotlin
     eventHandler<Trade, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
@@ -324,7 +324,7 @@ There are other useful properties you can set as part of the `approvableAck` def
 * `additionalDetails` can provide context information that is only available from a server-side perspective. This information complements the `APPROVAL_MESSAGE` content provided by the front end.
 * `approvalType` is used to state the action that happens when this event is approved: NEW for insertions, UPDATE for amends, REMOVE for removals. If undefined, this defaults to UNKNOWN). Most events will be simple, but of course some could affect multiple entities in different ways, which is why the `entityDetails` parameter can contain many entities, each with their own `approvalType`.
 
-One further proprty, `approvableAck`, can be used in both custom EventHandler definitions and GPAL Event Handlers. Here is an example of `approvableAck` in action for a GPAL Event Handler `onValidate` block below.
+One further property, `approvableAck`, can be used in both custom EventHandler definitions and GPAL Event Handlers. Here is an example of `approvableAck` in action for a GPAL Event Handler `onValidate` block below.
 
 ```kotlin
 eventHandler {

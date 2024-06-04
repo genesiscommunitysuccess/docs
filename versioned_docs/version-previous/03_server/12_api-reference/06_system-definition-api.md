@@ -13,7 +13,7 @@ tags:
 
 
 
-The [system-definition](../../../getting-started/learn-the-basics/key-system-files/genesis-system-definitions/) file is the basis of all configurations. In this page, we describe the different functions available to get properties specified in the **system-definition.kts** file. Default methods have implementations to provide default values for each property.
+The [system-definition](../../../server/configuring-runtime/system-definitions/) file is the basis of all configurations. In this page, we describe the different functions available to get properties specified in the **system-definition.kts** file. Default methods have implementations to provide default values for each property.
 
 Most of the functions are to get or set a particular property.
 
