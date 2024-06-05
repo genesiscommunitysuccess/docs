@@ -9,7 +9,7 @@ tags:
     - indices
 ---
 
-[Indices](../../../database/fields-tables-views/tables/tables-basics/#providing-other-indices) are key components of any database. In the Genesis platform, every table must have at least one index: the [primary key](../../../database/fields-tables-views/tables/tables-basics/#primary-key). This is vital for controlling how data is read by an application.
+[Indices](../../../database/fields-tables-views/tables/tables-basics/#primary-key-and-other-indices) are key components of any database. In the Genesis platform, every table must have at least one index: the [primary key](../../../database/fields-tables-views/tables/tables-basics/#primary-key-and-other-indices). This is vital for controlling how data is read by an application.
 
 - Unique indices are required for `get` operations.
 - An index is required for `getRange` operations. This can be either unique or non-unique.
@@ -39,7 +39,7 @@ by a specific ORDER_ID.
 
 ### Partial searches
 
-On [indices with multiple fields](../../../database/fields-tables-views/tables/tables-basics/#indices-with-multiple-fields), look-ups can also be done on a subset of fields - but the look-up must start at the first field and cannot skip a field. For example, if a table has an index defined with 3 fields, you can search on:
+On [indices with multiple fields](/database/fields-tables-views/tables/tables-basics/#indices-with-multiple-fields), look-ups can also be done on a subset of fields - but the look-up must start at the first field and cannot skip a field. For example, if a table has an index defined with 3 fields, you can search on:
 
 -  the first field
 -  the first and second fields

@@ -34,7 +34,7 @@ New components will typically extend [FastElement](https://www.fast.design/docs/
 Here is the file **src/routes/test-page/test-page.styles.ts** with some example styling content:
 
 ```javascript
-import {css} from '@microsoft/fast-element';
+import {css} from '@genesislcap/web-core';
 import {mixinScreen} from '../../styles';
 
 export const TestPageStyles = css`
@@ -50,7 +50,7 @@ export const TestPageStyles = css`
 Here is an example of the file **src/routes/test-page/test-page.template.ts** with some standard content:
 
 ```javascript
-import {html} from '@microsoft/fast-element';
+import {html} from '@genesislcap/web-core';
 import type {TestPage} from './test-page';
 
 export const TestPageTemplate = html<TestPage>`
@@ -62,7 +62,7 @@ Here is an example of the file **src/routes/test-page/test-page.ts** with some s
 
 
 ```javascript
-import {customElement, FASTElement} from '@microsoft/fast-element';
+import {customElement, GenesisElement} from '@genesislcap/web-core';
 import {TestPageTemplate as template} from './test-page.template';
 import {TestPageStyles as styles} from './test-page.styles';
 import {logger} from '../../utils';
@@ -74,7 +74,7 @@ const name = 'test-page';
   template,
   styles,
 })
-export class TestPage extends FASTElement {
+export class TestPage extends GenesisElement {
   public connectedCallback() {
     super.connectedCallback();
     logger.debug(`${name} is now connected to the DOM`);

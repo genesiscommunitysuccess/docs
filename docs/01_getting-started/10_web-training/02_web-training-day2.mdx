@@ -51,7 +51,7 @@ Insert, edit and cancel.
 Let's start with the simplest way to create a form, using the `foundation-form` component:
 
 ```ts {5-12} title='order.template.ts'
-import {html} from '@microsoft/fast-element';
+import {html} from '@genesislcap/web-core';
 import type {Order} from './order';
 
 export const OrderTemplate = html<Order>`
@@ -86,7 +86,7 @@ We define `insertOrder` function in order.ts
   import {logger} from '../../utils';
   
   ...
-  export class Order extends FASTElement {
+  export class Order extends GenesisElement {
     @Connect connect: Connect;
 
     constructor() {
@@ -160,7 +160,7 @@ export const OrderTemplate = html<Order>`
 Add to your `order.styles.ts` the following, so you get a nice look on your forms
 
 ```ts title="order.styles.ts"
-import {css} from "@microsoft/fast-element";
+import {css} from "@genesislcap/web-core";
 import { mixinScreen } from '../../styles';
 
 export const OrderStyles = css`
@@ -201,7 +201,7 @@ Then, define the variables that will hold the values that are entered.
 In the file **order.ts**, add the following properties to the class: `Order`:
 
 ```ts {1,4-9} title='order.ts'
-import {customElement, FASTElement, observable} from '@microsoft/fast-element';
+import {customElement, GenesisElement, observable} from '@genesislcap/web-core';
 ...
 
 @observable public instrument: string;
@@ -221,7 +221,7 @@ We can do it in the traditional way by adding `@change` [event handler](https://
 Let's add it to each form element:
 
 ```jsx {3,6-17} title='order.template.ts'
-import {html} from '@microsoft/fast-element';
+import {html} from '@genesislcap/web-core';
 import type {Order} from './order';
 import { sync } from '@genesislcap/foundation-utils';
 
@@ -250,7 +250,7 @@ Order is a Web Component and, as such, it supports a series of [lifecycle events
 
 ```typescript {5,11-18} title='order.ts'
 ...
-export class Order extends FASTElement {
+export class Order extends GenesisElement {
   @Connect connect: Connect;
   ...
   @observable public allInstruments: Array<{value: string, label: string}>; //add this property
@@ -260,7 +260,7 @@ export class Order extends FASTElement {
   }
 
 public async connectedCallback() { //add this method to Order class
-    super.connectedCallback(); //FASTElement implementation
+    super.connectedCallback(); //GenesisElement implementation
 
     const msg = await this.connect.snapshot('ALL_INSTRUMENTS'); //get a snapshot of data from ALL_INSTRUMENTS data server
     console.log(msg); //add this to look into the data returned and understand its structure
@@ -283,7 +283,7 @@ Once we have the list of instruments from the server we can make use of it in th
 To dynamically include list of options we use [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items.
 
 ```jsx {1,5-9} title='order.template.ts'
-import {html, repeat} from '@microsoft/fast-element';
+import {html, repeat} from '@genesislcap/web-core';
 ...
 export const OrderTemplate = html<Order>`
 <span>Instrument</span>
@@ -322,7 +322,7 @@ However, any changes on the backend would require a change in the options. Would
   @observable public directionOptions: Array<{value: string, label: string}>; //add this property
 ...
 public async connectedCallback() {
-    super.connectedCallback(); //FASTElement implementation
+    super.connectedCallback(); //GenesisElement implementation
 
     const msg = await this.connect.snapshot('ALL_INSTRUMENTS');
     console.log(msg);
@@ -375,7 +375,7 @@ Add this method to the Order class:
 
 ```ts {4-12} title='order.ts'
 ...
-export class Order extends FASTElement {
+export class Order extends GenesisElement {
   ...
   public async getMarketData() {
       const msg = await this.connect.request('INSTRUMENT_MARKET_DATA', {
@@ -440,7 +440,7 @@ export const OrderTemplate = html<Order>`
 Then let's amend our insertOrder function to work with the custom form now:
 ```typescript {4-15} title='order.ts'
 ...
-export class Order extends FASTElement {
+export class Order extends GenesisElement {
   ...
 public async insertOrder() {
       const insertOrderEvent = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
@@ -464,7 +464,7 @@ Let's improve our screen a little bit and add a simple success or error message 
 
 ```ts {16-21} title='order.ts'
 ...
-export class Order extends FASTElement {
+export class Order extends GenesisElement {
   ...
   public async insertOrder() {
         const insertOrderEvent = await this.connect.commitEvent('EVENT_ORDER_INSERT', {

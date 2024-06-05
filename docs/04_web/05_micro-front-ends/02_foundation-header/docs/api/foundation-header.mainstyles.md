@@ -12,5 +12,5 @@ Base styles for the foundation-header
 **Signature:**
 
 ```typescript
-MainStyles: import("@microsoft/fast-element").ElementStyles
+MainStyles: import("@genesislcap/web-core").ElementStyles
 ```

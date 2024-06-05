@@ -24,9 +24,7 @@ This day covers:
 
 ## Reviewing basic concepts
 
-As introduced in the Developer Training, Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](https://www.fast.design/), which is a lightweight abstraction that enables you to easily build performant, memory-efficient, standards-compliant Web Components. You can find more about Microsoft FAST and fast-foundation at its main [documentation website](https://www.fast.design/docs/introduction/), which includes an [API reference](https://www.fast.design/docs/api/fast-foundation/).
-
-Genesis also offers a highly configurable design system called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. This enables you to control visual design in myriad ways using the tokens, CSS, element templates and shadow DOM options.
+Genesis offers a highly configurable design system called Genesis Foundation UI. This is made up of a set of Web Components and accompanying design tokens, which enable you to control visual design in myriad ways using the tokens, CSS, element templates and shadow DOM options.
 
 This picture gives an overview of how it all ties together:
 
@@ -35,70 +33,6 @@ This picture gives an overview of how it all ties together:
 :::tip confused with any term used here? Revisit the Developer Training!
 Feel free to revisit the UI chapter of the [Developer Training](../../../getting-started/developer-training/training-content-day2/) before we get into other aspects of the underlying technology used by Genesis in the next sections.
 :::
-
-## Why Web Components?
-
-Remember that Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable components. These components do not clash or interfere with the rest of application. Genesis offers a comprehensive set of Web Components, from simple components like a Button and Text Field, to more complex ones like Micro Front-end apps.
-
-### Performance
-
-Web Components have proven to be consistently faster than many popular JavaScript frameworks when it comes to both
-startup time and paint performance. They also use less memory and often result in significantly smaller bundle sizes
-when compared to their JavaScript counterparts. Standard benchmarks show our component implementation outperforming
-React, Angular 12, Vue 3.2 as well as many others.
-
-### Interoperability
-
-Every Web Component inherits from HTMLElement. So, Web Components seamlessly interoperate with any library or framework
-designed to work with DOM. This includes modern frameworks like React, Angular, Vue, etc. but also libraries like jQuery
-and others. Adopting Web Components enables use of a consistent component library across a diverse set of applications.
-So, teams can standardise on the components and design system without having to force a specific architecture or
-framework on the application developer.
-
-### Incremental adoption
-
-You do not have to re-write an existing app or site to take advantage of Web Components. Since Web Components just
-extend the palette of available HTML elements, you can choose to simply start leveraging whatever custom elements you
-want within your existing app the same way as you use built-in elements.
-
-### Future-proof
-
-Web Components are _literally_, the standard component model of the web, written into the HTML specification. The base
-features have shipped in every modern browser and many new features are planned for the DOM and CSS standards. Some of
-these new HTML capabilities will only be available to Web Components, so continuing down the path of non-standard
-component models will prevent you from taking advantage of platform improvements. Aligning yourself with Web Components
-and other standards will enable you to get the greatest benefit from the evolving web platform.
-
-### Extensible ecosystems and plugin models
-
-By choosing Web Components, you enable your customers to choose their preferred application framework or library, rather
-than forcing them to use any particular JavaScript framework. Building your ecosystem or plugin model around one
-framework often means the exclusion of an entire set of customers who build on another.
-
-### You no longer need JavaScript framework experts
-
-Most of the popular JavaScript frameworks require strong JavaScript skills and knowledge and often at least an
-intermediate proficiency for use. Web Components can be used without any knowledge of JavaScript whatsoever. Building
-around Web Components opens up opportunities for a broader range of customers with more diverse backgrounds.
-
-### Who is using Web Components?
-
-Across the industry we see a pretty big adoption since January 2020. This includes not only heavy investment from
-**Microsoft**, but also from **Google**, **Adobe**, **Salesforce**, **SAP**, **MIT**, **SpaceX**, and many more.
-Curious who else is using Web Components? Check out the ever-growing [list of companies](https://arewebcomponentsathingyet.com/).
-
-### And why Microsoft FAST?
-
-Genesis basic Web Components, such as Button and Text Fields, were not created from scratch. They extend Microsoft FAST components for a number of reasons:
-
-- FAST is a collection of technologies built on Web Components and modern Web Standards.
-- Proven at scale in production. FAST powers Edge, Bing, Maps, Ads, News and other web products at Microsoft. As such, it will power all their next gen web components and design-system technologies.
-- Provides a comprehensive and growing component set out of the box, built directly on the W3C Web Component standards with accessibility built in.
-- Extensible and highly efficient base element to build Genesis domain specific components.
-- Uses [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) to efficiently re-use CSS across components.
-- Advanced design-system architecture to support custom theming between clients and applications.
-- Offers a DI system, a Router and other opt-in utilities.
-- Highly active and responsive community.
 
 ## A deeper dive into the alpha web application structure
 
@@ -199,11 +133,7 @@ This includes **@genesislcap** dependencies. This is where you can change versio
     "@genesislcap/foundation-zero-grid-pro": "14.15.2",
     "@genesislcap/foundation-reporting": "14.15.2",
     "@genesislcap/g2plot-chart": "14.15.2",
-    "@microsoft/fast-components": "^2.21.6",
-    "@microsoft/fast-element": "^1.7.0",
-    "@microsoft/fast-foundation": "^2.33.4",
-    "@microsoft/fast-router": "^0.4.2",
-    "@microsoft/fast-web-utilities": "^5.1.0",
+    "@genesislcap/web-core": "14.178.0",
     "rxjs": "^7.5.4",
     "tslib": "^2.3.1"
   }
@@ -266,13 +196,13 @@ The second approach involves design systems and we will cover this topic later i
 Create folder **./client/web/src/routes/playground/** and create a new empty file called **playground.ts** in there. Then, add this code to **playground.ts**:
 
 ```typescript title="../playground/playground.ts"
-import { FASTElement, customElement } from "@microsoft/fast-element";
+import { GenesisElement, customElement } from "@genesislcap/web-core";
 
 @customElement({ name: "marketdata-component" }) // custom element being created
-export class MarketdataComponent extends FASTElement {}
+export class MarketdataComponent extends GenesisElement {}
 ```
 
-We've just created a new Web Component extending FASTElement (so, again, we don't have to start from scratch and implement a myriad of attributes and methods).
+We've just created a new Web Component extending GenesisElement (so, again, we don't have to start from scratch and implement a myriad of attributes and methods).
 
 This component could be anything, like a custom button or even a business component. But, for now, it's just empty and doesn't do much. However, we could already use it anywhere in HTML with the following markup if we wanted:
 
@@ -314,7 +244,7 @@ You should see the **Playground** menu item now.
 To create an HTML template for our element, we have to import and use the html-tagged template helper and pass the template to the @customElement decorator.
 
 ```ts {1,3-7,9} title='playground.ts'
-import { FASTElement, customElement, html } from "@microsoft/fast-element";
+import { GenesisElement, customElement, html } from "@genesislcap/web-core";
 
 const myTemplate = html<MarketdataComponent>`
   <div class="header">
@@ -323,7 +253,7 @@ const myTemplate = html<MarketdataComponent>`
 `;
 
 @customElement({ name: "marketdata-component", template: myTemplate }) // custom element being created
-export class MarketdataComponent extends FASTElement {}
+export class MarketdataComponent extends GenesisElement {}
 ```
 
 As you see, we're defining a const called `myTemplate`, which contains the HTML code. This constant is then passed to the definition of our `customElement` through the `template` parameter. This way, when we use this component, it will display the HTML associated with it.
@@ -352,14 +282,14 @@ Let's add an attribute to our MarketdataComponent. Use @attr for primitive prope
 
 ```typescript {1,5} title='playground.ts'
 import {
-  FASTElement,
+  GenesisElement,
   customElement,
   html,
   attr,
-} from "@microsoft/fast-element";
+} from "@genesislcap/web-core";
 
 @customElement({ name: "marketdata-component", template: myTemplate })
-export class MarketdataComponent extends FASTElement {
+export class MarketdataComponent extends GenesisElement {
   @attr lastPrice: number = 0;
 }
 ```
@@ -368,11 +298,11 @@ Having the lastPrice always as zero doesn't make our MarketdataComponent very us
 
 ```typescript {8-13,19-25} title='playground.ts'
 import {
-  FASTElement,
+  GenesisElement,
   customElement,
   html,
   attr,
-} from "@microsoft/fast-element";
+} from "@genesislcap/web-core";
 
 const myTemplate = html<MarketdataComponent>`
   <div class="header">
@@ -382,7 +312,7 @@ const myTemplate = html<MarketdataComponent>`
 `;
 
 @customElement({ name: "marketdata-component", template: myTemplate }) // custom element being created
-export class MarketdataComponent extends FASTElement {
+export class MarketdataComponent extends GenesisElement {
   @attr lastPrice: number = 0;
 
   public getLastPriceRealTime() {
@@ -411,7 +341,7 @@ FAST also provides directives, such as `when` and `repeat` that are very useful 
 Examples:
 
 ```typescript {5}
-import { FASTElement, customElement, observable, html, when } from "@microsoft/fast-element";
+import { GenesisElement, customElement, observable, html, when } from "@genesislcap/web-core";
 
 const template = html<MyApp>`
  ...
@@ -424,14 +354,14 @@ const template = html<MyApp>`
   name: "my-app",
   template
 })
-export class MyApp extends FASTElement {
+export class MyApp extends GenesisElement {
   @observable ready: boolean = false;
   ...
 }
 ```
 
 ```typescript {5}
-import { FASTElement, customElement, observable, html, repeat } from "@microsoft/fast-element";
+import { GenesisElement, customElement, observable, html, repeat } from "@genesislcap/web-core";
 
 const template = html<FriendList>`
   ...
@@ -444,7 +374,7 @@ const template = html<FriendList>`
   name: "friend-list",
   template
 })
-export class FriendList extends FASTElement {
+export class FriendList extends GenesisElement {
   @observable friends: Person[] = [];
   ...
 }
@@ -456,18 +386,18 @@ Please review the [directives](https://www.fast.design/docs/fast-element/using-d
 
 ### Styling our component
 
-FASTElement provides a **css** tagged template helper that allows for the creation of ElementStyles.
+GenesisElement provides a **css** tagged template helper that allows for the creation of ElementStyles.
 
 Add this code:
 
 ```typescript {6,9-13} title='playground.ts'
 import {
-  FASTElement,
+  GenesisElement,
   customElement,
   html,
   attr,
   css,
-} from "@microsoft/fast-element";
+} from "@genesislcap/web-core";
 ...
 const marketdataComponentCSS = css`
   h4 {
@@ -488,12 +418,12 @@ This is the final code:
 
 ```typescript title='playground.ts'
 import {
-  FASTElement,
+  GenesisElement,
   customElement,
   html,
   attr,
   css,
-} from "@microsoft/fast-element";
+} from "@genesislcap/web-core";
 
 const marketdataComponentCSS = css`
   h4 {
@@ -513,7 +443,7 @@ const myTemplate = html<MarketdataComponent>`
   template: myTemplate,
   styles: marketdataComponentCSS,
 }) // custom element being created
-export class MarketdataComponent extends FASTElement {
+export class MarketdataComponent extends GenesisElement {
   @attr lastPrice: number = 0;
 
   public getLastPriceRealTime() {
@@ -545,7 +475,7 @@ Instrument AAPL 227.12
 
 Steps:
 
-- import _observable_ and _repeat_ from from `@microsoft/fast-element`
+- import _observable_ and _repeat_ from from `@genesislcap/web-core`
 - add a list called **_instruments_** to the MarketdataComponent. Feel free to initialize it with a few instruments, such as `@observable instruments: String[] = ["MSFT", "AAPL"];`
 - change the `lastPrice` attribute to a list of prices. Feel free to initialize it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
 - change `getLastPriceRealTime` to receive the instrument name and return the corresponding price;
@@ -638,7 +568,7 @@ npm run bootstrap
 import { Navigation } from '@genesislcap/foundation-header';
 
 @customElement({ name, template, styles })
-export class MainApplication extends FASTElement {
+export class MainApplication extends GenesisElement {
   @inject(MainRouterConfig) config!: MainRouterConfig;
   @inject(Navigation) navigation!: Navigation;
 
@@ -652,17 +582,17 @@ export class MainApplication extends FASTElement {
 ```js {5} title='main.template.ts'
 ...
 export const MainTemplate: ViewTemplate<MainApplication> = html`
-  <fast-router
+  <genesis-router
     :config=${(x) => x.config}
     :navigation=${(x) => x.navigation}
-  ></fast-router>
+  ></genesis-router>
 `;
 ```
 
 4. Make sure the `foundation-header` tag is part of the html that you set as the markup for the `defaultLayout` in your router configuration.
 
 ```js {3} title='client/web/src/layouts/default.ts'
-export const defaultLayout = new FASTElementLayout(html`
+export const defaultLayout = new GenesisElementLayout(html`
 <div class="container">
   <foundation-header
   ...
@@ -781,7 +711,7 @@ There are three control buttons that can be shown or hidden on the right-hand si
 For instance, adding the Misc logo would look like this:
 
 ```html {5} title='default.ts'
-... export const defaultLayout = new FASTElementLayout( html`
+... export const defaultLayout = new GenesisElementLayout( html`
 <div class="container">
   <foundation-header
     logo-src="https://icotar.com/avatar/webtraining"
@@ -798,7 +728,7 @@ To implement the functionality of the button in the client, follow the steps bel
 1. Define the functionality of the event `callback` in the class of a class which is a parent to the router.
 
 ```javascript title='main.ts'
-export class MainApplication extends FASTElement {
+export class MainApplication extends GenesisElement {
 
 	onMiscButtonPressed() {
 		// ... do something
@@ -810,13 +740,13 @@ export class MainApplication extends FASTElement {
 2. Set the event listener in the parent html to call the defined functionality.
 
 ```javascript title='main.template.ts'
-// fast-router will likely have other attributes such as :config too
+// genesis-router will likely have other attributes such as :config too
 const MainTemplate: ViewTemplate<MainApplication> = html`
-  <fast-router
+  <genesis-router
     :navigation=${(x) => x.navigation}
     @misc-icon-clicked=${(x) => x.onMiscButtonPressed()}
   >
-  </fast-router>
+  </genesis-router>
 `;
 ```
 

@@ -31,7 +31,7 @@ type ComponentState = {
   foo: string;
 }
 \@customElement({ name: 'my-component' })
-export class MyComponent extends FASTElement implements LayoutComponentWithState<ComponentState> {
+export class MyComponent extends GenesisElement implements LayoutComponentWithState<ComponentState> {
   \@observable foo: string;
   private fooCache: ComponentState | null;
 
@@ -61,7 +61,7 @@ If you are using the autosave functionality you should inform the layout system 
 
 ```
 // Same component as above
-export class MyComponent extends FASTElement implements LayoutComponentWithState<ComponentState> {
+export class MyComponent extends GenesisElement implements LayoutComponentWithState<ComponentState> {
  // can use xChanged pattern as `foo` was declared observable
  fooChanged() {
    this.$emit(LayoutReceiveEvents.autosave);

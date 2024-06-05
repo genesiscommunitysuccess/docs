@@ -10,9 +10,9 @@ format: md
 **Signature:**
 
 ```typescript
-selectTemplate(): import("@microsoft/fast-element").ViewTemplate<Navigation, any>;
+selectTemplate(): import("@genesislcap/web-core").ViewTemplate<Navigation, any>;
 ```
 **Returns:**
 
-import("@microsoft/fast-element").ViewTemplate&lt;[Navigation](./foundation-header.navigation.md), any&gt;
+import("@genesislcap/web-core").ViewTemplate&lt;[Navigation](./foundation-header.navigation.md), any&gt;
 

@@ -62,7 +62,7 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [formUiSchema](./foundation-entity-management.entitymanagement.formuischema.md) |  | any |  |
 |  [gridOptions](./foundation-entity-management.entitymanagement.gridoptions.md) |  | GridOptions | GridOptions to be passed down from application |
 |  [headerCaseType](./foundation-entity-management.entitymanagement.headercasetype.md) |  | GridProCaseType | The case type to use for the header names. If not set, the default CONSTANT\_CASE will be used. |
-|  [headerTempalate](./foundation-entity-management.entitymanagement.headertempalate.md) | <code>readonly</code> | import("@microsoft/fast-element").ViewTemplate&lt;[EntityManagement](./foundation-entity-management.entitymanagement.md), any&gt; |  |
+|  [headerTempalate](./foundation-entity-management.entitymanagement.headertempalate.md) | <code>readonly</code> | import("@genesislcap/web-core").ViewTemplate&lt;[EntityManagement](./foundation-entity-management.entitymanagement.md), any&gt; |  |
 |  [hideDelete](./foundation-entity-management.entitymanagement.hidedelete.md) |  | boolean |  |
 |  [hideEdit](./foundation-entity-management.entitymanagement.hideedit.md) |  | boolean |  |
 |  [modalPosition](./foundation-entity-management.entitymanagement.modalposition.md) |  | 'centre' \| 'left' \| 'right' | Determines where the modal dialog will appear on screen |

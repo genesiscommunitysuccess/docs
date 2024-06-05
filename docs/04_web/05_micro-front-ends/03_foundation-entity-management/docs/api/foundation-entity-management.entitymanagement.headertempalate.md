@@ -10,5 +10,5 @@ format: md
 **Signature:**
 
 ```typescript
-get headerTempalate(): import("@microsoft/fast-element").ViewTemplate<EntityManagement, any>;
+get headerTempalate(): import("@genesislcap/web-core").ViewTemplate<EntityManagement, any>;
 ```

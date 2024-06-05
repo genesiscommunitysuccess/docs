@@ -78,7 +78,7 @@ If you are using `foundation-zero`, then you need to import using `@genesislcap/
 After that, you need to define the local variable to be referred to, in this case `localModal`:
 
 ```js {3}
-export class TEMPLATE extends FASTElement {
+export class TEMPLATE extends GenesisElement {
     ...
     localModal: alphaModal;
     ...
@@ -88,7 +88,7 @@ export class TEMPLATE extends FASTElement {
 Now that you have your local variable, you can use the directive `ref` to link your component to this variable:
 
 ```html {1,5-7}
-import {... , ref} from '@microsoft/fast-element';
+import {... , ref} from '@genesislcap/web-core';
 ...
 export const yourTemplate = html<Template>`
     ...
@@ -137,7 +137,7 @@ Below we have three examples of how to use both methods:
 - Create a button to open a modal:
 
 ```html {6}
-import {... , ref} from '@microsoft/fast-element';
+import {... , ref} from '@genesislcap/web-core';
 import {sync} from '@genesislcap/foundation-utils';
 ...
 export const yourTemplate = html<Template>`
@@ -152,7 +152,7 @@ export const yourTemplate = html<Template>`
 - Create a button inside the modal to close it:
 
 ```html {9}
-import {... , ref} from '@microsoft/fast-element';
+import {... , ref} from '@genesislcap/web-core';
 import {sync} from '@genesislcap/foundation-utils';
 ...
 export const yourTemplate = html<Template>`

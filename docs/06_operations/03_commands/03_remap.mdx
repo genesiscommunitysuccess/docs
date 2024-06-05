@@ -18,7 +18,7 @@ Remap is a schema-migration tool that applies the current schema (defined in the
 Remap should be run in the following scenarios:
 
 - Whenever the Genesis Server Framework or any Genesis server component has been upgraded, which could include schema changes.
-- Whenever a new version of an application is deployed and any dictionary file has changed (this means changes to fields, tables, or views GPAL).
+- Whenever a new version of an application is deployed and any dictionary file has changed (this means changes to tables, or views GPAL).
 
 ## Syntax
 
@@ -39,6 +39,7 @@ remap [-c | --commit]
 |          | --skip-unchanged  <!-- remap --skip-unchanged -->     | no        | Forces remap to fail if the `--commit` option is used and the schema has been changed                                                                                                                          | No                |
 |          | --skipTableDump  <!-- remap --skipTableDump -->      | no        | Skips the back-up of old data and runs much quicker; **use with caution** - you will not be able to [roll back](#rollback) unless you have specifically made a full back-up | No                 |
 | -dm  <!-- remap -dm -->    | --dumpMode <!-- remap --dumpMode -->            | no        | Determines where the DDL statements are outputted when using `--dumpSQL`. The user will have the option of specifying the CONSOLE or an .sql file.                                                             | Yes: CONSOLE, FILE |
+|          | --dataLoad  <!-- remap --dataLoad -->      | no        | Scans the genesis home folder for **/data** folders, and runs a `sendIt --upsertAll` operation on all the files in those folders | No                 |
 |          | --db-username  <!-- remap --db-username -->        | no        | Allows the user to enter the username to override credentials via the cli. This command works with fdb and Oracle.                                                                                             | No                 |
 |          | --db-password  <!-- remap --db-password -->        | no        | Allows the user to enter the password to override credentials via the cli. This command works with fdb and Oracle.                                                                                             | No                 |
 
