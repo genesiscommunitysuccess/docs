@@ -29,7 +29,7 @@ jobs:
       run: bun install --no-save # do not generate a lockfile
 
     - name: Build Docusaurus and check for broken links
-      run: bun run build
+      run: npm run build
       env:
           BRANCH: ${{ github.base_ref }}
           BASE_URL: /docs/
