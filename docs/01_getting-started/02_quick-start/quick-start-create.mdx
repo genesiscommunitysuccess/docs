@@ -14,7 +14,7 @@ tags:
 
 To get started, you need to access the [Genesis Create](https://create.genesis.global). This is a low-code tool provided by Genesis, which enables you to run a full-stack application with a few clicks.
 
-Contact your account manager to get access to your account;  you need a username and a password. 
+Contact your account manager to get access to your account; you need a username and a password. 
 
 ## Project attributes
 
@@ -27,17 +27,27 @@ Enter a name for the project and a description. Then click on **Add Genesis Comp
     - Real Time Queries ([Data Server](/server/data-server/introduction/)). This component adds the Data Server component which serves live, real-time views of entities as they are ingested into the system.  This component also supports row- and column-based authorization as well as derived values calculated in real time.
     - [Reporting](/components/reporting/foundation-reporting/). This component enables users to create reusable report templates and generate reports from any application endpoint.
 
+:::tip
+Use the Search bar to find the Reporting component.
+:::
+
+When you have selected all the components that you need, click on **Next** in the bottom right corner.
+
 ## Entity models
 
 In this section, you have to create the data model for your application.
 
 ![](/img/genesis-create/entity_models.png)
 
-Click on **New Entity** to start creating the tables and fields for your application:
+An entity is a business object, such as a trade or an instrument. Each entity has a number of attributes, so a trade might have attributes such as a trade ID, an instrument, a price and a quantity.
 
-![](/img/genesis-create/new_entity.png)
+Genesis turns each entity into a table with the attributes as column headings (fields).
 
-After that, give your table a name, in our case: `TRADES`. Then start creating the fields for that table.
+To add an entity, click on **New Entity** at the top right.
+
+ ![](/img/genesis-create/new_entity.png)
+
+Give your table a name, in our case: `TRADES`. Then start creating the attributes (fields) for that table.
 
 For each field, there are two types that you can select:
 
@@ -58,11 +68,17 @@ Your screen should be like this:
 
 ![](/img/genesis-create/new_entity_complete.png)
 
-After you finish, Genesis Create automatically creates events for **insertion**, **deletion** and **modification**. These events are wriiten to the file **alpha-eventhandler.kts**. To learn more about it, see the [Event Handler documentation](/server/event-handler/introduction/).
+After you finish, Genesis Create automatically creates events for **inserting**, **deleting** and **modifying**. These events are written to the file **alpha-eventhandler.kts**. To learn more about this file, see the [Event Handler documentation](/server/event-handler/introduction/).
+
+When you have added all the attributes that you need, click on **Back to All Entities** to return to the list of entities. The ones you have added so far are listed in the main area. Icons to the right of each entity in the list enable you to edit or delete that entity.
+
+Then click on **Next** in the bottom right corner.
 
 ## Views
 
-After creating your data model, we shall create a [view](/database/fields-tables-views/views/) on top of that table.
+A view joins two tables (entities) together on a specified field (attribute) to create a more rounded set of data. For example, the Counterparty ID attribute in the Trade entity could be joined to the Counterparty ID attribute in the Counterparty entity.
+
+We are not going to create any views in this exercise (we only have one entity, so we have nothing to join to), but let's look at what we can do here.
 
 ![](/img/genesis-create/views.png)
 
@@ -70,12 +86,14 @@ Click on **New View** to create a new view.
 
 ![](/img/genesis-create/new_view.png)
 
-On this page, you can select the root table and give your view a name. After you save it, two new sections are unblocked:
+You can select the root table and give your view a name. When you save it, two new sections are unblocked:
 
     - **Join Condition** enables you to [create joins](/database/fields-tables-views/views/views-basics/#joins). Of course, before you can create a join, you need to have at least two entities. You have to have something to join to!
     - **View Configuration** enables you to select which fields will be included in that view.
 
-For this quick start, we are not creating joins. But if you want to find out more, check our [reference pages on views](/database/fields-tables-views/views/views-basics/#joins).
+we don't want to go any further, so click on **Back to Views**. where you will see the empty view that you have just created. 
+
+Then click on **Next** in the bottom right corner. 
 
 ## Queries
 
@@ -91,13 +109,21 @@ In this section, give the query a name, and select the source of the query. Afte
 
 In this quick start, we are choosing all fields to be streamed.
 
+When you have completed the query, click on **Back to Queries** to return to the list of queries.
+
+Then click on **Next** in the bottom right corner.
+
 ## Business Components
 
 This section lists all the Business Components that you have selected.
 
 ![](/img/genesis-create/business_components.png)
 
-If you select any component that needs additional configuration, an alert icon is displayed, so you can configure it.
+If any component needs additional configuration, an alert icon is displayed, so you can configure it.
+
+To configure a component, click on the **Edit** icon beside this.
+
+When you have completed configuring all the components, click on **Next** in the bottom right corner.
 
 ## User Interface
 
@@ -121,7 +147,7 @@ For this tutorial, we are going to create a new entity management component for 
 
 Once you submit, a new row is displayed with an alert on the config column . This indicates that you need to configure your component. Click on the **edit** button in the **actions** column.
 
-This displays the folllowing page:
+This displays the following page:
 
 ![](/img/genesis-create/add_new_entity_management.png)
 
