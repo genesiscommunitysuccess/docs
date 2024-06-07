@@ -13,8 +13,23 @@ tags:
 
 On this page, you can find useful examples of code for an Event Handler. We start with a very basic example, and then we provide further examples to cover key functions, such as exception handling and permissioning.
 
-Also, there is a nice simple example of an `eventHandler` codeblock in our [tutorial](../../../getting-started/developer-training/training-content-day1/#event-handler). 
+### Very basic
+The example below is a very simple `eventHandler` codeblock with no validation. It simply inserts details to the database.
 
+
+```kotlin
+eventHandler {
+
+    eventHandler<Trade>(name = "TRADE_INSERT") {
+        schemaValidation = false
+        onCommit { event ->
+            entityDb.insert(event.details)
+            ack()
+        }
+    }
+
+}
+```
 
 ## Basic
 The example below is a simple Event Handler to validate input and insert a record in the database. There is an [`onValidate`](../../../server/event-handler/basics/#adding-validation) block that defines the validation and an [`onCommit`](../../../server/event-handler/basics/#a-simple-example-of-an-event-handler) block that specifies the action that is to be taken.
