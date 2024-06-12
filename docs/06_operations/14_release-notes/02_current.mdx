@@ -34,6 +34,47 @@ Foundation UI has a programme of regular continual releases. These are documente
 
 GSF release notes are added to this area immediately following each software release. The most release is at the top.
 
+## Genesis 8.0.1(genesis-server)
+
+### Features
+- Add BigDecimal support to average function
+- Project should not need to override gradle project name to start with 'genesisproduct-'
+
+### Fixes
+- Revert "feat: project should not need to override gradle project name to start with 'genesisproduct-'" 
+- Add type conversion from Integer to Short 
+- Improve handling in builder for fields with IS_ prefix 
+- Process json aliased enums correctly 
+- Set default values in json schema 
+
+## Genesis 7.0.12(genesis-server)
+
+### Features
+- (router): add flag to provide enhanced HEARTBEAT_PONG messages and expose "onHeartbeatPing" hook in script definition to handle custom business logic
+
+### Fixes
+- DisableAuthUpdates flag works as expected again 
+- Add TIMESTAMP support to DbMon distinct command 
+- Add support for dataserver pagination mode when using HTTP requests 
+- Fix Moving view logic so the timestamp sorted references are always in sync with the rows in view
+- Fixed issues in schema validation with BigDecimal handling and embedded type info 
+- MORE_COLUMNS messages now successfully change the payload of future QUERY_UPDATE messages 
+- Prevent duplicate cache entries in views generated dao jar 
+- UserSessionCache now handles multiple expiry listeners for the same auth token 
+- Add MetaInf directory to all codegen tasks to ensure they respect gradle rules for caching and task avoidance 
+- Dictionary cache main module now assembles all the submodules on assemble.
+- Ensure heartbeat pong provides accurate information about authentication status at all times
+- GenerateCache option is now respected as expected 
+- pal-dataserver: updates batched at MessageSet level now preserve old row data 
+- Replaced endsWith() to !=. 
+
+## Genesis 7.1.22(genesis-server)
+
+### Fixes
+- Fixed issues in schema validation with BigDecimal handling and embedded type info 
+- UserSessionCache now handles multiple expiry listeners for the same auth token 
+- Ensure heartbeat pong provides accurate information about authentication status at all times 
+
 ## Genesis 8.0.0(platform-symphony)
 
 ### Features
