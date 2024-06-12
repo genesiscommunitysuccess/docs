@@ -67,7 +67,7 @@ export const HomeTemplate = html<Home>`
 Here is how the grid now looks. Note:
 
 - the title is now Instruments
--  the **Add** button is displayed at the top right of the grid
+- the **Add** button is displayed at the top right of the grid
 
 **image with Add button**
 
@@ -77,7 +77,7 @@ If the user clicks on the **Add** button, the form is displayed with all the rel
 
 Finally we could add Modify and Delete events:
 
-```typescript {4,5}
+```typescript {6,7}
 export const HomeTemplate = html<Home>`
   <entity-management
       resourceName="ALL_INSTRUMENTS"
@@ -92,24 +92,24 @@ Our grid now looks like this:
 
 **image of form with modify and delete buttons**
 
-Now each record in the grid has a **Modify** and a **Delete** button displayed on the right of the grid.
+Now each record in the grid has an **Edit** and a **Delete** button displayed on the right of the grid.
 
 ### Common attributes
 
-The most common attributes you can configure for `entity-management` are:
+The most common attributes you can configure for `entity-management` are listed below. Note that it is not mandatory to specify an event, but if you don't specify a `createEvent` or an  `updateEvent`, then you won't have a form created - which defeats the point of using this micro front-end.
 
-| Attribute                  | Description                                          |
-| -------------------------- | -----------------------------------------------------|
-| `title`                    | customises the title of the entity list so that the user can see what resource they are managing. |
-| `resourceName`             | specifies the name of a resource on the server: a `query` in the Data Server, a `ReqRep` in the Request Server or an `eventHandler` in the Event Handler.  |
-| `createEvent`              | specifies an event on the back end for adding a record to the table; once specified, this displays an **Add** button above the grid. |
-|`updateEvent`               | specifies an event on the back end for modifying a record in the table; once specified, this displays an **Edit** button to the right of every record in the grid. |
-|`deleteEvent`               | specifies an event on the back end for deleting a record in the table; once specified, this displays a **Delete** button to the right of every record in the grid. |
-| `datasourceConfig`         | configures the [interaction with the back-end resource](./docs/api/foundation-entity-management.datasourceconfiguration/#example). |
-| `persist-column-state-key` | the user can change columns (the width, for example); if you want the column states to be persisted when the user navigates away from the page, specify a unique string value. By default, changes are **not** persisted, and the grid returns to its default state every time the user navigates away from it. |
+| Attribute                  | Description                                          |   Mandatory |
+| -------------------------- | -----------------------------------------------------| ------------|
+| `title`                    | customises the title of the entity list so that the user can see what resource they are managing. | Yes |
+| `resourceName`             | specifies the name of a resource on the server: a `query` in the Data Server, a `ReqRep` in the Request Server or an `eventHandler` in the Event Handler.  | Yes |
+| `createEvent`              | specifies an event on the back end for adding a record to the table; once specified, this displays an **Add** button above the grid. | No |
+| `updateEvent`              | specifies an event on the back end for modifying a record in the table; once specified, this displays an **Edit** button to the right of every record in the grid. | No  |
+| `deleteEvent`              | specifies an event on the back end for deleting a record in the table; once specified, this displays a **Delete** button to the right of every record in the grid. |  No  |
+| `datasourceConfig`         | configures the [interaction with the back-end resource](./docs/api/foundation-entity-management.datasourceconfiguration/#example). | No  |
+| `persist-column-state-key` | the user can change columns (the width, for example); if you want the column states to be persisted when the user navigates away from the page, specify a unique string value. By default, changes are **not** persisted, and the grid returns to its default state every time the user navigates away from it. |  No  |
 
 :::warning
-The `datasourceConfig` string defines the key in which the serialised state of the columns is stored in an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). Therefore, if you are setting multiple Entity Managers in your application, you must use unique keys to persist the state - otherwise, you will get undefined behaviour.
+The `datasourceConfig` string defines the key where the serialised state of the columns is stored, as an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). If you set multiple `entity-management` in your application, **you must use unique keys** to persist the state - otherwise, you will get undefined behaviour.
 :::
 
 For a full list of properties, see the [API documents](./docs/api/foundation-entity-management.entitymanagement.md#properties).
@@ -120,9 +120,6 @@ For a full list of properties, see the [API documents](./docs/api/foundation-ent
 To follow
 
 #### Grid - removing a column
-To follow
-
-#### Grid - changing the order of columns
 To follow
 
 #### Form - changing which fields are displayed
