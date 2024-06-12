@@ -38,10 +38,9 @@ GSF release notes are added to this area immediately following each software rel
 
 ### Features
 - Add BigDecimal support to average function
-- Project should not need to override gradle project name to start with 'genesisproduct-'
 
 ### Fixes
-- Revert "feat: project should not need to override gradle project name to start with 'genesisproduct-'" 
+- pal-consolidator: Process should crash on startup with a relevant error message if a consolidator definition is using a function that requires "indexScan" and "indexScan" has not been defined 
 - Add type conversion from Integer to Short 
 - Improve handling in builder for fields with IS_ prefix 
 - Process json aliased enums correctly 
