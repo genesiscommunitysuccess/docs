@@ -78,4 +78,11 @@ systemDefinition {
 | `ConsulServiceNamePattern` | Allows you to template your Consul service names with `{{PROCESS_NAME}}` eg. `my_app_{{PROCESS_NAME}}` | `null` |
 | `ConsulNamespaceFormat` | Sets Consul namespace (only used in Consul Enterprise) | `null` |
 
+## Troubleshooting
+
+### Request fails with 5xx due trying to reach a process that no longer exists.
+
+Scenario: This might happen in case a resource might be moved from one process to another, for example a `REQ_REP` originally served from `Service A` is now moved to `Service B` and consul still holds a reference that is being served by the former.
+
+Solution: Check in the consul console (or cli) if there's still a resourceMap (under KeyValues) for the process that no longer exists and [delete it](https://developer.hashicorp.com/consul/docs/dynamic-app-config/kv/store#delete-data). Restart Genesis services. 
 
