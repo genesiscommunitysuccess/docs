@@ -82,7 +82,7 @@ systemDefinition {
 
 ### Request fails with 5xx when trying to reach a process that no longer exists
 
-Scenario: This might happen when a resource is moved from one process to another. For example, a `requestReply` originally served from `Service A` is now moved to `Service B`, but consul still holds a reference that is being served by the former.
+Scenario: This might happen when a resource is moved from one process to another. For example, a `requestReply` originally served from `REQ_REP_SERVICE_A` is now moved to `REQ_REP_SERVICE_B`, but consul still holds a reference that is being served by the former.
 
 Solution: Check the consul console (or cli) to see if there is still a resourceMap (under KeyValues) for the process that no longer exists. If there is, [delete it](https://developer.hashicorp.com/consul/docs/dynamic-app-config/kv/store#delete-data). Then restart the Genesis services. 
 
