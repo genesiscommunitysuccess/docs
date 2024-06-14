@@ -6,8 +6,8 @@
     "node": ">=20.10.0"
   },
   "scripts": {
-    "prebuild": "npm audit --parseable | grep 'critical' && echo 'Critical vulnerabilities found. Please fix them before building. To do that run npm audit.' && exit 1 || true",
     "docusaurus": "docusaurus",
+    "prebuild": "npm audit --parseable | grep 'critical' && echo 'Critical vulnerabilities found. Please fix them before building. To do that run npm audit.' && exit 1 || true",
     "build": "npm run copy:dsc && docusaurus build",
     "build-main": "docusaurus build",
     "build:base_url": "npm run copy:dsc && cross-env BASE_URL=/docs/ docusaurus build",
