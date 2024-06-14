@@ -1,0 +1,83 @@
+---
+title: 'Release notes - documentation version JUN 24'
+sidebar_label: 'Current (JUN 24)'
+sidebar_position: 2
+id: current
+keywords: [operations, release notes, JUN 24, JUNE 24]
+tags:
+- operations
+- release notes
+- JUN 24
+- JUNE 24
+---
+
+## Release notes
+This is version JUN 24 of the documentation for the Genesis low-code platform.
+
+This release of the documentation covers the following versions of the platform software:
+
+| part of stack | version        | 
+|---------------|----------------|
+| server        | 8.0.1 **+**    |  
+| web           | 14.185.0 **+** |   
+
+As soon as changes are made to the platform, this version of the documentation will be updated to show the changes.
+
+Release date: 12 June, 2024
+
+:::info
+To see which front-end and back-end releases are covered by the Previous version of the documentation, select **Previous** from the banner at the top of this page.
+
+Remember to click on **Current** when you want to return to the most recent version of the documentation. 
+:::
+
+## Foundation UI
+
+Foundation UI has a programme of regular continual releases. These are documented along with their source code on [github](https://github.com/genesislcap/foundation-ui/releases).
+
+## Genesis Server Framework (GSF)
+
+GSF release notes are added to this area immediately following each software release. The most recent release is at the top.
+
+**The current GSF release is **version 8.0.1**. As you new releases are added, they shall be displayed here.**
+
+## Genesis 8.0.1(genesis-server)
+
+### Features
+- Add BigDecimal support to average function
+
+### Fixes
+- pal-consolidator: Process should crash on startup with a relevant error message if a consolidator definition is using a function that requires "indexScan" and "indexScan" has not been defined 
+- Add type conversion from Integer to Short 
+- Improve handling in builder for fields with IS_ prefix 
+- Process json aliased enums correctly 
+- Set default values in json schema 
+
+## Genesis 7.0.12(genesis-server)
+
+### Features
+- (router): add flag to provide enhanced HEARTBEAT_PONG messages and expose "onHeartbeatPing" hook in script definition to handle custom business logic
+
+### Fixes
+- DisableAuthUpdates flag works as expected again 
+- Add TIMESTAMP support to DbMon distinct command 
+- Add support for dataserver pagination mode when using HTTP requests 
+- Fix Moving view logic so the timestamp sorted references are always in sync with the rows in view
+- Fixed issues in schema validation with BigDecimal handling and embedded type info 
+- MORE_COLUMNS messages now successfully change the payload of future QUERY_UPDATE messages 
+- Prevent duplicate cache entries in views generated dao jar 
+- UserSessionCache now handles multiple expiry listeners for the same auth token 
+- Add MetaInf directory to all codegen tasks to ensure they respect gradle rules for caching and task avoidance 
+- Dictionary cache main module now assembles all the submodules on assemble.
+- Ensure heartbeat pong provides accurate information about authentication status at all times
+- GenerateCache option is now respected as expected 
+- pal-dataserver: updates batched at MessageSet level now preserve old row data 
+- Replaced endsWith() to !=. 
+
+## Genesis 7.1.22(genesis-server)
+
+### Fixes
+- Fixed issues in schema validation with BigDecimal handling and embedded type info 
+- UserSessionCache now handles multiple expiry listeners for the same auth token 
+- Ensure heartbeat pong provides accurate information about authentication status at all times 
+

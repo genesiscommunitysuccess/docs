@@ -1,0 +1,164 @@
+---
+title: 'Notify UI - Manual Installation'
+sidebar_label: 'Manual Installation'
+sidebar_position: 1
+id: notify-initial-configuration
+keywords: [notify, ui-configuration]
+tags:
+  - notify
+  - ui-configuration
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> :warning: **This guide assumes you have not used GenX to add the Notifications component.** You should only add components manually if your project is on an older framework version that does not support [GenX Add](../../../../components/notifications/notifications-installation).
+
+## Prerequisites
+
+Make sure the [back end](../../notifications-server/notify-configuring-runtime) has been configured correctly before you install the front-end components. 
+
+The front-end components are:
+
+- Foundation Notification Dashboard
+- Foundation Inbox Flyout
+- Foundation Inbox
+
+Note that almost every section of each component requires a permission to perform the specific action related to that section; check the [permissions](../notify-permissions) available and make sure your user has the permission needed for the section you want to implement or test. You can read more about permissions/rights in the [authorisation](/server/access-control/authorisation#users-profiles-and-right-codes) section.
+
+## Installing manually
+
+If you want to add Notifications to an existing application, without using the Genx Add command, then follow the instructions in this section.
+
+### Manually installing specific components
+To load one or more components manually:
+
+Before you start:
+
+1. In the **client/package.json** file, add this in the `dependencies` section:
+
+```json
+"@genesislcap/pbc-notify-ui": "~1"
+```
+
+2. Run `npm run bootstrap` to install this.
+
+:::important
+Always check the latest version available at [genesisnpm](https://www.npmjs.com/~genesisnpm).
+:::
+
+After this, you can install each component as described in the relevant section below.
+
+### Foundation Notification Dashboard
+
+Add the component in the **src/components/component.ts** file:
+```typescript
+...
+FoundationNotificationDashboard;
+...
+```
+
+In the **src/routes/config.ts** file, add the route for it:
+
+```typescript
+import { FoundationNotificationDashboard } from '@genesislcap/pbc-notify-ui';
+
+public async configure() {
+  ...
+  this.routes.map(
+    ...
+    {
+      path: 'notification-dashboard',
+      element: async () => (await import('@genesislcap/pbc-notify-ui')).FoundationNotificationDashboard,
+      title: 'Notification Dashboard',
+      name: 'notification-dashboard',
+      settings: { autoAuth: true },
+      navItems: [
+        {
+          title: 'Notification Dashboard',
+          icon: {
+            name: 'bell',
+            variant: 'solid',
+          },
+        },
+      ],
+    },
+    ...
+  );
+}
+```
+
+This creates a single-page route [Notification Dashboard](../../notifications-ui/notify-ui-components#notification-dashboard) component.
+
+Again, check the user permissions, because each tab on the dashboard is ruled by a permission (check the available [list of permissions](../notify-permissions)). The user only sees the sections for which they have permission.
+
+### Foundation Inbox Flyout
+
+Inbox Flyout is a ready-to-use component for [Inbox](../../notifications-ui/notify-ui-components#inbox) functionality.
+
+Add the component in the **src/components/component.ts** file:
+```typescript
+...
+FoundationInboxFlyout;
+...
+```
+
+Declare it in the **src/layouts/default.ts**. Here's an example:
+
+```html
+<div class="container">
+  <foundation-header
+    show-notification-button
+    @notification-icon-clicked="${x => x.inbox.open()}"
+    :routeNavItems="${(x) => x.config.getNavItems()}"
+  >
+  </foundation-header>
+
+  <foundation-inbox-flyout ${ref('inbox')}></foundation-inbox-flyout>
+
+  <zero-notification-listener resource-name="ALL_NOTIFY_ALERT_RECORDS">
+    <div class="content">
+      <slot></slot>
+    </div>
+  </zero-notification-listener>
+</div>
+```
+
+:::important
+It's crucial to import ```zero-notification-listener``` too, a foundation-ui component responsible for showing screen alerts to the user.
+:::
+
+If your main `container` div is typed as `ClientAppRouter`, then consider to add the following to avoid errors:
+```typescript
+type ClientAppRouter = FoundationRouter & {
+  store: Store,
+  inbox: FoundationInboxFlyout
+};
+```
+
+### Foundation Inbox
+
+This is an Inbox component that you can put anywhere you want: on a page div, modal, dialog, etc. 
+
+Add the component in the **src/components/component.ts** file:
+```typescript
+...
+FoundationInbox;
+...
+```
+
+When you generate a blank project, it puts the Inbox inside a flyout using the foundation-store to control its open-closed state:
+
+```html
+<zero-flyout
+  position="right"
+  @closed="${(x, c) => c.parent.$emit('change-inbox-display', false)}"
+  ?closed="${() => !store.inboxDisplayState}"
+  data-pbc-asset-id="inbox-flyout"
+>
+  <div slot="title">Alerts</div>
+  <foundation-inbox></foundation-inbox>
+</zero-flyout>
+```
+
+Check the [generated project with the pbc-notify-seed](#on-a-new-application) for more details.

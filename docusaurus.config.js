@@ -107,9 +107,9 @@ const config = {
               banner: "none",
             },
             previous: {
-              banner: "none",
               label: "Previous",
-            },
+              banner: "none",
+            }
           },
         },
         theme: {

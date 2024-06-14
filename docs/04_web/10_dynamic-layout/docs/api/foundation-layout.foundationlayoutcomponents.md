@@ -13,28 +13,28 @@ Registration object to register the layout with your design system.
 
 ```typescript
 foundationLayoutComponents: {
-    foundationLayout: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    foundationLayout: (overrideDefinition?: import("@genesislcap/web-core").OverrideFoundationElementDefinition<{
         baseName: string;
-        styles: import("@microsoft/fast-element").ElementStyles;
-        template: import("@microsoft/fast-element").ViewTemplate<import("./layout-main").FoundationLayout, any>;
-    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        styles: import("@genesislcap/web-core").ElementStyles;
+        template: import("@genesislcap/web-core").ViewTemplate<import("./layout-main").FoundationLayout, any>;
+    }>) => import("@genesislcap/web-core").FoundationElementRegistry<{
         baseName: string;
-        styles: import("@microsoft/fast-element").ElementStyles;
-        template: import("@microsoft/fast-element").ViewTemplate<import("./layout-main").FoundationLayout, any>;
+        styles: import("@genesislcap/web-core").ElementStyles;
+        template: import("@genesislcap/web-core").ViewTemplate<import("./layout-main").FoundationLayout, any>;
     }, typeof import("./layout-main").FoundationLayout>;
-    foundationLayoutRegion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    foundationLayoutRegion: (overrideDefinition?: import("@genesislcap/web-core").OverrideFoundationElementDefinition<{
         baseName: string;
-        template: import("@microsoft/fast-element").ViewTemplate<any, any>;
-    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        template: import("@genesislcap/web-core").ViewTemplate<any, any>;
+    }>) => import("@genesislcap/web-core").FoundationElementRegistry<{
         baseName: string;
-        template: import("@microsoft/fast-element").ViewTemplate<any, any>;
+        template: import("@genesislcap/web-core").ViewTemplate<any, any>;
     }, typeof import("./layout-region").FoundationLayoutRegion>;
-    foundationLayoutItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    foundationLayoutItem: (overrideDefinition?: import("@genesislcap/web-core").OverrideFoundationElementDefinition<{
         baseName: string;
-        template: import("@microsoft/fast-element").ViewTemplate<any, any>;
-    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        template: import("@genesislcap/web-core").ViewTemplate<any, any>;
+    }>) => import("@genesislcap/web-core").FoundationElementRegistry<{
         baseName: string;
-        template: import("@microsoft/fast-element").ViewTemplate<any, any>;
+        template: import("@genesislcap/web-core").ViewTemplate<any, any>;
     }, typeof import("./layout-item").FoundationLayoutItem>;
     register(container?: Container, ...rest: any[]): void;
 }
