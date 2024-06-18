@@ -12,11 +12,9 @@ tags:
 
 A view definition is made up of **joins** and **fields**.
 
-**Joins** enable you to bring other related tables into a view and **fields** allow you to define which fields you would like to include in your view.
-
 ## Joins
 
-Joins enable you to bring other related tables into a view so we can serve up their fields in a single query row. In order to use joins, one of the fields to be used in the join must be an [index](/database/fields-tables-views/tables/tables-basics/#primary-key-and-other-indices). 
+Starting with one table (the root table), a join enables you to fetch one or more fields from another table so that it can be served and viewed as a single query row. For any join, one of the fields must be an [index](/database/fields-tables-views/tables/tables-basics/#primary-key-and-other-indices). 
 
 For example, you might want to join a `TRADE` to an `INSTRUMENT` in order to pull in `INSTRUMENT` fields such as the `NAME` or `CURRENCY` to serve up to a grid.
 
@@ -118,7 +116,7 @@ You can also access derived fields that were defined in the tables dictionary. T
 You can override the name of a field using various operators:
 
 - `withAlias` - gives the field an alternative name on the view
-- `withPrefix` - adds a prefix to the standard field name (handy if you have a clash (e.g. if COUNTERPARTY and INSTRUMENT both have a NAME field)
+- `withPrefix` - adds a prefix to the standard field name; this is useful if you have a clash (e.g. if COUNTERPARTY and INSTRUMENT both have a NAME field)
 
 ```kotlin
       COUNTERPARTY.NAME withPrefix COUNTERPARTY
