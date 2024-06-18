@@ -16,83 +16,39 @@ You can find detailed information on this micro front-end in the [API documentat
 
 The `entity-management` micro front-end gives you a grid and a form that you can add to your pages and configure.
 
-The grid takes its data from a specified resource in the back end - a Data Server `query` or a Request Server `requestReply`. You can then add Create and Edit events to the definition, which automatically generate a form from the metadata of the back end resource. Also, buttons are added to the grid automatically so that the user can click to access the forms.
-
-Finally, you can add a Delete event to the definition, which automatically displays a **Delete** button, which the user can click on to delete the relevant record.
+- The grid takes its data from a specified resource in the back end - a Data Server `query` or a Request Server `requestReply`. 
+- You can then add Create and Edit events to the definition; each event automatically generates a form from the metadata of the back-end resource; it also adds buttons to the grid automatically so that the user can click to access the forms. You can also add a Delete event to the definition, which automatically displays a **Delete** button, which the user can click on to delete the relevant record.
 
 :::tip
 The event buttons are accessed conditionally. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to set the events so that they are conditional on user authorisations.
 :::
 
-## Simple set-up
+1 - Add @genesislcap/foundation-entity-management as a dependency in your package.json file. Whenever you change the dependencies of your project, run the $ npm run bootstrap command again. For more information, see the package.json basics page.
+2- Import and declare the class in the page of the class where you wish to use the Entity Manager.
+3 Implement `entity-management` in the template html where required.
 
-### 1. Insert the grid
-To insert the grid into a page, open the file **home.template.ts** and insert the `entity-management` tag. 
+Here is a simple example of `entity-management`, which can be inserted into a page.
 
-The most important attribute of `entity-management` is `resourceName`. This is where you specify the source of the data; in our example, we are using a Data Server resource called ALL_INSTRUMENTS.
-
-```typescript
-import {html, } from '@genesislcsap/webcore';
-import type {Home} from './home';
-
-export const HomeTemplate = html<Home>`
+```html
   <entity-management
       resourceName="ALL_INSTRUMENTS"
+      title = "Instruments"
+      createEvent = "EVENT_TRADE_INSERT"
   ></entity-management>
 `;
 ```
 
-If you have your application running locally, you can now see the grid in the Home page.
+In this example, we have used three attributes when declaring the `entity-management` micro front-end:
+
+- `resourceName="ALL_INSTRUMENTS"` defines the source of the data for the grid - a Data Server query called ALL INSTRUMENTS.
+- `title = "Instruments"` displays this text as the title of the grid.
+- `createEvent = "EVENT_TRADE_INSERT"` generates a form with all the fields from the metadata of the event and adds a button at the top of the grid so that the user can access this form.
+
+As long as your back end has the correct resources, you can now see the grid in the Home page.
 
 **show grid**
 
-### 2. Insert an event (and create a form)
-Inserting an event in your `entity-management` does two things:
-
-- It adds a button to the grid to enable the user to insert, modify or delete a record (depending on the event you have defined).
-- For an insert or modify event, it automatically generates a form with all the relevant fields, where the user can submit the new or modified record. Each field in the generated form automatically includes validation and type detection.
-
-In this example, we have added an insert event to insert a new record in this table. This event connects to the Event Handler resource EVENT_TRADE_INSERT in the back end. We have also added a title, using the `title` attribute.
-
-```typescript {4,5}
-export const HomeTemplate = html<Home>`
-  <entity-management
-      resourceName="ALL_INSTRUMENTS"
-      title = "Instruments"
-      createEvent = "EVENT_TRADE_INSERT"
-  ></entity-management>
-`;
-```
-
-Here is how the grid now looks. Note:
-
-- the title is now Instruments
-- the **Add** button is displayed at the top right of the grid
-
-**image with Add button**
-
-If the user clicks on the **Add** button, the form is displayed with all the relevant fields. 
-
-**image of form with fields and submit button**
-
-Finally we could add Modify and Delete events:
-
-```typescript {6,7}
-export const HomeTemplate = html<Home>`
-  <entity-management
-      resourceName="ALL_INSTRUMENTS"
-      title = "Instruments"
-      createEvent = "EVENT_TRADE_INSERT"
-      updateEvent = "EVENT_INSTRUMENT_MODIFY"
-      deleteEvent = "EVENT_INSTRUMENT_DELETE"
-  ></entity-management>
-`;
-```
-Our grid now looks like this:
-
-**image of form with modify and delete buttons**
-
-Now each record in the grid has an **Edit** and a **Delete** button displayed on the right of the grid.
+And you can click on the Add button to view the form.
 
 ### Common attributes
 
