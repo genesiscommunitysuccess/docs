@@ -23,10 +23,24 @@ The `entity-management` micro front-end gives you a grid and a form that you can
 The event buttons are accessed conditionally. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to set the events so that they are conditional on user authorisations.
 :::
 
-1 - Add @genesislcap/foundation-entity-management as a dependency in your package.json file. Whenever you change the dependencies of your project, run the $ npm run bootstrap command again. For more information, see the package.json basics page.
-2- Import and declare the class in the page of the class where you wish to use the Entity Manager.
-3 Implement `entity-management` in the template html where required.
+## Set-up
+1. Add `@genesislcap/foundation-entity-management` as a dependency in your [**package.json** file](../../../web/basics/package-json-basics/). Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again.
 
+```javascript
+{
+  ...
+  "dependencies": {
+    "@genesislcap/foundation-entity-management": "latest"
+  },
+  ...
+}
+```
+
+2. Import and declare the class in the page of the class where you wish to use the Entity Manager.
+
+Now you are ready to implement `entity-management` in the relevant template html.
+
+## Implementing
 Here is a simple example of `entity-management`, which can be inserted into a page.
 
 ```html
@@ -50,6 +64,8 @@ As long as your back end has the correct resources, you can now see the grid in 
 
 And you can click on the Add button to view the form.
 
+**show form**
+
 ### Common attributes
 
 The most common attributes you can configure for `entity-management` are listed below. Note that it is not mandatory to specify an event, but if you don't specify a `createEvent` or an  `updateEvent`, then you won't have a form created - which defeats the point of using this micro front-end.
@@ -68,7 +84,7 @@ The most common attributes you can configure for `entity-management` are listed 
 The `datasourceConfig` string defines the key where the serialised state of the columns is stored, as an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). If you set multiple `entity-management` in your application, **you must use unique keys** to persist the state - otherwise, you will get undefined behaviour.
 :::
 
-For a full list of properties, see the [API documents](./docs/api/foundation-entity-management.entitymanagement.md#properties).
+For a full list of attributes, see the [API documents](./docs/api/foundation-entity-management.entitymanagement.md#properties).
 
 ### Customising
 
