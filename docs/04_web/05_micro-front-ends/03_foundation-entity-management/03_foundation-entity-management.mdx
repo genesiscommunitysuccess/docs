@@ -38,6 +38,14 @@ The event buttons are accessed conditionally. For example, if the current user i
 
 2. Import and declare the class in the page of the class where you wish to use the Entity Manager.
 
+```
+// Import
+import { EntityManagement, } from '@genesislcap/foundation-entity-management';
+
+// Declare class
+EntityManagement;
+```
+
 Now you are ready to implement `entity-management` in the relevant template html.
 
 ## Implementing
@@ -58,11 +66,11 @@ In this example, we have used three attributes when declaring the `entity-manage
 - `title = "Instruments"` displays this text as the title of the grid.
 - `createEvent = "EVENT_TRADE_INSERT"` generates a form with all the fields from the metadata of the event and adds a button at the top of the grid so that the user can access this form.
 
-As long as your back end has the correct resources, you can now see the grid in the Home page.
+As long as your back end has the correct resources, you can now see the grid in the Home page if you run the application locally.
 
 **show grid**
 
-And you can click on the Add button to view the form.
+And you can click on the **Add** button to view the form.
 
 **show form**
 
