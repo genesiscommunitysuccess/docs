@@ -12,7 +12,6 @@ tags:
   - user management
   - web
 ---
-You can find detailed information on this micro front-end in the [API documentation](./docs/api/index.md).
 
 The `entity-management` micro front-end gives you a grid and a form that you can add to your pages and configure.
 
@@ -52,11 +51,11 @@ Now you are ready to implement `entity-management` in the relevant template html
 Here is a simple example of `entity-management`, which can be inserted into a page.
 
 ```html
-  <entity-management
-      resourceName="ALL_INSTRUMENTS"
-      title = "Instruments"
-      createEvent = "EVENT_TRADE_INSERT"
-  ></entity-management>
+    <entity-management
+          resourceName="ALL_INSTRUMENTS"
+          title = "Instruments"
+          createEvent = "EVENT_INSTRUMENT_INSERT"
+      ></entity-management>
 `;
 ```
 
@@ -68,11 +67,11 @@ In this example, we have used three attributes when declaring the `entity-manage
 
 As long as your back end has the correct resources, you can now see the grid in the Home page if you run the application locally.
 
-**show grid**
+![](/img/entity-man-grid.png)
 
 And you can click on the **Add** button to view the form.
 
-**show form**
+![](/img/entity-man-form.png)
 
 ### Common attributes
 
