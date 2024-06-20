@@ -171,11 +171,18 @@ By defining your own Request Servers, you have maximum flexibility.
 * For the request, optional fields should have a default value in the primary constructor.
 * You cannot use native Kotlin classes. You should wrap these in custom input and output classes.
 
-We recommend that you locate your classes within the messages module of your application. This is where we place all the custom message types for our application. You need to ensure that the _app-name_**-script-config** module has a dependency on the messages module.
+Within a simplified project, we recommend that you locate your classes within the main/kotlin messages folder of your project structure. You need to ensure that the _app-name_**-reqrep.kts** file has a dependency on the _app-name_**-app** ScriptModule
+
+```bash
+    @file:ScriptModules("{app-name}-app")
+```
+
+Within a legacy project, we recommend that you locate your classes within the messages module of your application. This is where we place all the custom message types for our application. You need to ensure that the _app-name_**-script-config** module has a dependency on the messages module.
 
 ```bash
     api(project("{app-name}-messages"))
 ```
+
 
 The `requestReply` code blocks can be as simple or complex as your requirements. They are useful, for example, if you want to request data from a number of different tables and views that are not related. By nesting and joining all the relevant data in your `requestReply` statement, you create your own metadata for the Request Server, so it can then be used anywhere in the module.
 
