@@ -10,17 +10,19 @@ Tables are a tidy and efficient way of organising your data - all your counterpa
 
 But your application needs to present that data in useful ways.
 
-Your Trade table, for example, needs unique fields that are essential to a trade, such as a PRICE and a QUANTITY. But other vital details of a trade - such as the instrument and the counterparty - are held in different tables. You don't want to duplicate those fields in your database; instead, you want fetch the information from the other tables where you are storing them so neatly.
-
-So, you would make a join in your table of trades to fetch the INSTRUMENT_ID field (and possibly others) from the Instrument table and the COUNTERPARTY_NAME field from the Counterparty table. 
-
-We call these joined-up tables Views, because they are the most useful ways of looking at the data in the tables.
+Your Trade table, for example, needs unique fields that are essential to a trade, such as a PRICE and a QUANTITY. But other vital details of a trade - such as the INSTRUMENT and the COUNTERPARTY - are held in different tables. You don't want to duplicate those fields in your database; instead, you want fetch the information from the other tables where you are storing them so neatly.
 
 Here is how a view called ALL_TRADES could be constructed:
 
 ![](/img/views-basics.png)
 
+To do this you would make a join in your table of trades to fetch the INSTRUMENT_NAME field (and possibly others) from the Instrument table and the COUNTERPARTY_NAME field from the Counterparty table. By default, once you have made a join, all the fields in the joined table are included, but you can specify only a subset if you prefer.
+
+We call these joined-up tables Views, because they are the most useful ways of looking at the data in the tables.
+
 The table you are making the join from is called the root table, and you can join it to one or more other tables in order to bring one or more fields from those tables into the view.
+
+Note also that you can create derived fields in a view to create additional information. For example, you can create a notional value for the trade by multiplying the unit price by the quantity. 
 
 Views are defined in the file _application-name_**-view-dictionary.kts**.
 
