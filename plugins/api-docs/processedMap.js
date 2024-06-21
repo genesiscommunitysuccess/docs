@@ -8,13 +8,13 @@ module.exports = {
 	 * from reprocessing during re-builds and retain my changes as final. You can also toggle "enabled": true/false in
 	 * the manifest.json files itself. Removing this static package ref will always re-process enabled packages.
 	 */
-	"@genesislcap/foundation-comms": "14.173.0",
-	"@genesislcap/foundation-entity-management": "14.173.0",
-	"@genesislcap/foundation-filters": "14.173.0",
-	"@genesislcap/foundation-forms": "14.173.0",
-	"@genesislcap/foundation-header": "14.173.0",
-	"@genesislcap/foundation-layout": "14.173.0",
-	"@genesislcap/foundation-login": "14.173.0",
-	"@genesislcap/foundation-reporting": "14.173.0",
-	"@genesislcap/foundation-testing": "14.173.0",
+	"@genesislcap/foundation-comms": "14.189.0",
+	"@genesislcap/foundation-entity-management": "14.189.0",
+	"@genesislcap/foundation-filters": "14.189.0",
+	"@genesislcap/foundation-forms": "14.189.0",
+	"@genesislcap/foundation-header": "14.189.0",
+	"@genesislcap/foundation-layout": "14.189.0",
+	"@genesislcap/foundation-login": "14.189.0",
+	"@genesislcap/foundation-reporting": "14.189.0",
+	"@genesislcap/foundation-testing": "14.189.0",
 };
