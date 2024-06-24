@@ -171,7 +171,7 @@ By defining your own Request Servers, you have maximum flexibility.
 * For the request, optional fields should have a default value in the primary constructor.
 * You cannot use native Kotlin classes. You should wrap these in custom input and output classes.
 
-Within a simplified project, we recommend that you locate your classes within the main/kotlin messages folder of your project structure. You need to ensure that the _app-name_**-reqrep.kts** file has a dependency on the _app-name_**-app** ScriptModule
+Within a simplified project, we recommend that you locate your classes within the main/kotlin messages folder of your project structure. Ensure that the _app-name_**-reqrep.kts** file has a dependency on the _app-name_**-app** ScriptModule.
 
 ```bash
     @file:ScriptModules("{app-name}-app")
