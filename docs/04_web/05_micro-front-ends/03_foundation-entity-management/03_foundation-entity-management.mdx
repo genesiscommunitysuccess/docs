@@ -86,34 +86,36 @@ The most common attributes you can configure for `entity-management` are listed 
 | `deleteEvent`              | specifies an event on the back end for deleting a record in the table; once specified, this displays a **Delete** button to the right of every record in the grid. |  No  |
 | `datasourceConfig`         | configures the [interaction with the back-end resource](./docs/api/foundation-entity-management.datasourceconfiguration/#example). | No  |
 | `persist-column-state-key` | the user can change columns (the width, for example); if you want the column states to be persisted when the user navigates away from the page, specify a unique string value. By default, changes are **not** persisted, and the grid returns to its default state every time the user navigates away from it. |  No  |
+| `columns`         | enables you to supply an array of `ColDef[]` properties to configure the grid. | No  |
+| `createFormUiSchema`         | enables you to supply a schema to configure an insert form. | No  |
+| `updateFormUiSchema`         | enables you to supply a schema to configure an update form. | No  |
 
 :::warning
-The `datasourceConfig` string defines the key where the serialised state of the columns is stored, as an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). If you set multiple `entity-management` in your application, **you must use unique keys** to persist the state - otherwise, you will get undefined behaviour.
+The `persist-column-state-key` string defines the key where the serialised state of the columns is stored, as an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). If you set multiple `entity-management` in your application, **you must use unique keys** to persist the state - otherwise, the user experience will be unpredictable.
 :::
 
-For a full list of attributes, see the [API documents](./docs/api/foundation-entity-management.entitymanagement.md#properties).
+For a full list of attributes and properties, see the [API documents](./docs/api/foundation-entity-management.entitymanagement.md#properties).
 
 ### Customising
 
-#### Grid - changing the order of columns
-To follow
+By default, you get a grid and a form based directly on the back-end resource that you are connecting to; you get all the fields (columns) from that resource. Equally, you get a form based on the metadata of the event you have specified.
 
-#### Grid - removing a column
-To follow
+#### Customising the grid
+If you want to control the appearance of the grid, use the `columns` attribute. This enables you to supply an array of `ColDef[]` properties to configure the columns that are displayed, their width and many other properties; these are the same properties that are used by the [Grid Pro](/web/web-components/grids/grid-pro/grid-pro-genesis-column/) component.
 
-#### Form - changing which fields are displayed
-This is done using UI schema 
-To follow
+#### Customising the form
+If you want to control the content of a form - for example, you might want to use different forms for inserting a new record and for modifying an existing record - use either the `createFormUiSchema` attribute or the `updateFormUiSchema` attribute. These enable you to provide a schema that configures the form. There is more information about using these attributes in the [API documentation](/web/micro-front-ends/foundation-entity-management/docs/api/foundation-entity-management.entitymanagement/)
 
-#### Changing the look - colours
-To follow
+#### Customising colours, fonts and more
+Your **designtokens.js** contains the details of the default fonts, colours, borders and padding, all of which control the appearance of your user interface.
 
-#### Changing the look - positioning
-To follow
+The easiest way to change this file is to run the [Design System Configurator](/web/design-systems/preview/), where you can change settings and instantly see how they look on screen. Once you have made changes that suit you, you can click on the **Save** button to save the settings directly to the **designtokens.js** file in your repo. 
 
-#### Changing the look - using variables
-inserting variables into the CSS. 
-To follow
+To run the Design System Configurator, make sure your project is running; from the **client** directory of your app, run:
+
+```bash
+npm run dsconfig
+```
 
 ## User Management
 
@@ -123,74 +125,7 @@ It is designed to enable you to configure user access to the system with the min
 
 ## Profile Management
 
-The Profile Management micro front-end is used to manage the profiles on the front end. Two core components are used to manage the profiles - the grid and the form.
+The [Profile Management](/web/micro-front-ends/profile-management/profile-management/) micro front-end provides a way of managing manage the profiles on the front end. This has been built using the Entity Management micro front-end. 
 
-:::info
-Profile Management is a concrete use case of the [Entity Management](#entity-management) micro front-end, which is provided as part of `foundation-ui`.
-:::
+It is designed to enable you to configure the user profiles with the minimum of effort. These user profiles control access to specific functions and information in your application.
 
-Example grid view when managing profiles.
-
-![Example profile management grid](./docs/img/foundation-profile-management.png)
-
-### Set-up
-
-To enable this micro front-end in your application, follow the steps below.
-
-1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
-
-```javascript
-{
-  ...
-  "dependencies": {
-    "@genesislcap/foundation-entity-management": "latest"
-  },
-  ...
-}
-```
-
-2. Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template HTML where required:
-```javascript
-// Import
-import { Profiles } from '@genesislcap/foundation-entity-management';
-
-// Declare class
-Profiles;
-
-// Example HTML with the profile management
-export const AdminTemplate: ViewTemplate = html`
-  <zero-tabs>
-    <zero-tab-panel slot="tabpanel">
-      <zero-notification-listener>
-        <profile-management></profile-management>
-      </zero-notification-listener>
-    </zero-tab-panel>
-  </zero-tabs>
-`;
-```
-
-### Config
-
-The functionality of the profile manager is customised through the properties you set in the HTML. This section covers the main properties that you will want to customise. For a full list of properties, [see here](./docs/api/foundation-entity-management.profiles.md).
-
-#### Permissions
-
-In contrast to Entity Management, we have a different way of displaying buttons and performing actions here. In this case, they are displayed if the user has the appropriate permissions from the server.
-
-- `INSERT_PROFILE` - the user can add new profiles
-- `DELETE_PROFILE` - the user can delete profiles
-- `AMEND_PROFILE` - the user can update existing profiles
-
-#### Persist column state
-`persist-column-state-key` is a string value that is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and the grid will revert back to its default state every time the user navigates away from it.
-
-:::info
-For more information on `persist-column-state-key` see [the section in the Entity Management](#persist-column-state) page.
-:::
-
-## License
-
-Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
-
-### Licensed components
-Genesis low-code platform
