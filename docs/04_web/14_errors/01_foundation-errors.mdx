@@ -1,0 +1,77 @@
+---
+title: 'Foundation Errors'
+sidebar_label: 'Foundation Errors'
+id: foundation-errors
+keywords: [genesis, foundation, ui, errors]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - errors
+---
+
+# Genesis Foundation UI Error Utils
+
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
+
+### [API Docs](./docs/api/index.md)
+
+### Usage
+
+* The App need to create Error boundary component at top of the component tree.
+
+* Any child under Error boundary component can dispatch custom Error event
+
+* The custom event is handled by Error boundary component and based on event payload
+  it displays error on different Error component
+
+### Current Implementation support following Error Components
+
+* Alert
+* Toast
+* Banner
+* Snack bar
+* Dialog
+
+## Set-up
+
+### Basic install
+
+To enable this module in your application, follow the steps below.
+
+1. Add `@genesislcap/foundation-errors` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
+
+```javascript
+{
+  ...
+  "dependencies": {
+    "@genesislcap/foundation-errors": "latest"
+  },
+  ...
+}
+```
+### Creating and dispatching Error Events
+
+Creating and dispatching Error event with payload to show in Toast/Notification component
+
+```javascript
+$emit(
+  ErrorBoundaryEvent.ERROR_BOUNDARY_EVENT,
+  getErrorBuilder()
+    .withTitle(err.CODE)
+    .withErrorDetails(getErrorFormat(err))
+    .withNotification(
+      getNotificationBuilder()
+        .withType('warning')
+        .withAutoClose(true)
+        .withCloseTimeout(notificationCloseTimeout)
+        .build())
+    .build())
+```
+## License
+
+Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform

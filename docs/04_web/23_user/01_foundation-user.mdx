@@ -1,0 +1,55 @@
+---
+title: 'Foundation User'
+sidebar_label: 'Foundation User'
+id: foundation-user
+keywords: [genesis, foundation, ui, user]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - user
+---
+
+# Genesis User
+
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
+
+`foundation-user` provides the [User](./docs/api/foundation-user.user.md) singleton, which always exists in either an
+anonymous or authenticated mode.
+
+### Get User reference
+User is a singleton. You can access it via the DI container.
+```ts
+import { User } from '@genesislcap/foundation-user';
+...
+@User private user: User
+```
+
+...or via a utility if your app is not using decorators or the DI container.
+```ts
+import { getUser } from '@genesislcap/foundation-user';
+...
+private user = getUser();
+```
+
+User properties are decorated with `@observable`, meaning in FAST terms it's reactive, and you can bind to properties
+directly. For example, `this.user.isAuthenticated`. However, you can also monitor the user's authentication status using
+an event listener.
+
+```ts
+import type { UserAuthenticationChangeEvent } from '@genesislcap/foundation-user';
+...
+const unsubscribeUser = this.user.addAuthenticationChangeListener((event: UserAuthenticationChangeEvent) => {
+  console.log('User authenticated?', event.detail); // < boolean === this.user.isAuthenticated
+});
+```
+
+See the [User API Docs](./docs/api/foundation-user.user.md) for more information.
+
+## License
+
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform

@@ -20,7 +20,7 @@ type PluginOptions = {
  * The copy function is used to differentiate between file types
  */
 function copyDirectoryFiles(packageRootDir: string, outputRootDir: string) {
-  return async function ({
+  return async function({
     inputDir,
     outputDir,
     copyFn,
@@ -82,11 +82,9 @@ async function copyPackageFiles(
     /**
      * Write readme file, use git to merge in acceptable changes to existing file after write occurs
      */
-    const readmeStreamTransformer = createUrlTransformerSteam(pkg.output);
     const readmeDuplexStream = createOutputDuplexStream(
       pkg.output,
       outputRootDir,
-      readmeStreamTransformer,
     );
     const packageReadmeFile = path.join(packageRootDir, pkg.src.readme);
     const readStream = fs.createReadStream(packageReadmeFile, {
@@ -109,7 +107,7 @@ async function copyPackageFiles(
   }
 }
 
-export default async function (_ctx: any, options: PluginOptions) {
+export default async function(_ctx: any, options: PluginOptions) {
   let { manifest, processedMap } = options;
   if (!manifest) {
     throw new Error("[api-docs-plugin] Please provide a manifest file.");

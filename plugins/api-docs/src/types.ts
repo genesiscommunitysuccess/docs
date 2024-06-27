@@ -10,10 +10,10 @@ export type PackageConfig = {
     directory: string;
     api_docs?: string;
     img_dir?: string;
-    readme: string;
     keywords?: string[];
     tags?: string[];
     pages: {
+      filename: string;
       title: string;
       sidebar_label: string;
       id: string;
