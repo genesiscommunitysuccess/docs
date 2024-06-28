@@ -39,7 +39,38 @@ Foundation UI has a programme of regular continual releases. These are documente
 
 GSF release notes are added to this area immediately following each software release. The most recent release is at the top.
 
-**The current GSF release is **version 8.0.1**. As you new releases are added, they shall be displayed here.**
+**The current GSF release is **version 8.0.1**. As new releases are added, they shall be displayed here.**
+
+## Genesis 8.0.3(genesis-server)
+
+### Fixes
+- (router): Populate missing DETAILS.SESSION_AUTH_TOKEN field for inbound EVENT_LOGIN_DETAILS messages at the router level
+
+## Genesis 8.0.1(platform-notify)
+
+### Fixes
+- Ensure that ScreenAlertExpiryManager only expires non-expired records on startup 
+
+## Dependency changes
+- Bump org.gradle.test-retry from 1.5.8 to 1.5.9 by @dependabot in https://github.com/genesislcap/platform-notify/pull/238
+- Bump org.sonarqube from 4.4.1.3373 to 5.0.0.4638
+
+## Genesis 8.0.2(genesis-server)
+
+### Fixes
+- Update all references for python to python3
+
+## Genesis 7.2.7(genesis-server)
+
+## Features
+- Add validation for enum field values 
+- Added field macros for common field patterns
+
+### Fixes
+- Update all references of python to python3
+- Add type conversion from Integer to Short 
+- Improve handling in builder for fields with IS_ prefix 
+- Process json aliased enums correctly 
 
 ## Genesis 8.0.1(genesis-server)
 
