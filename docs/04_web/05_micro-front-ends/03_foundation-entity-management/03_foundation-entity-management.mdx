@@ -1,6 +1,6 @@
 ---
-title: 'Foundation Entity Management'
-sidebar_label: 'Foundation Entity Management'
+title: 'Entity Management'
+sidebar_label: 'Entity Management'
 id: foundation-entity-management
 keywords: [entity management, frontend, micro-front-ends, profile management, ui, user management, web]
 tags:
@@ -12,33 +12,18 @@ tags:
   - user management
   - web
 ---
-You can find detailed information on this micro front-end in the [API documentation](./docs/api/index.md).
 
-## Entity Management
+The `entity-management` micro front-end gives you a grid and a form that you can add to your pages and configure.
 
-### Introduction
-
-The Entity Management micro front-end is used to connect to a resource on the back end and manage it from the front end. Handlers can be set up for create, update, and delete events; after adding an event, a button is displayed, so that the user can perform the action. There is a list of pre-defined events and resources to manage, but you can also manage custom resources that have been created on the back end.
+- The grid takes its data from a specified resource in the back end - a Data Server `query` or a Request Server `requestReply`. 
+- You can then add Create and Edit events to the definition; each event automatically generates a form from the metadata of the back-end resource; it also adds buttons to the grid automatically so that the user can click to access the forms. You can also add a Delete event to the definition, which automatically displays a **Delete** button, which the user can click on to delete the relevant record.
 
 :::tip
-The buttons are accessed conditionally, based on the specified events. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to set the events so that they are conditional on user authorisations.
+The event buttons are accessed conditionally. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to set the events so that they are conditional on user authorisations.
 :::
 
-Two core components are used to manage the entities - the grid and the form.
-
-The grid contains an entity on each row and data in each column. Here is an example showing a grid used to manage counterparties:
-
-![Example entity management grid](./docs/img/foundation-entity-management-grid.png)
-
-The other component is the form. This is used to update an existing entity or to create a new one. Here is an example:
-
-![Example entity management form](./docs/img/foundation-entity-management-form.png)
-
-### Set-up
-
-To enable this micro-front-end in your application, follow the steps below.
-
-1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again. For more information, see the [package.json basics](../../../web/basics/package-json-basics/) page.
+## Set-up
+1. Add `@genesislcap/foundation-entity-management` as a dependency in your [**package.json** file](/web/basics/package-json-basics/). Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again.
 
 ```javascript
 {
@@ -50,243 +35,99 @@ To enable this micro-front-end in your application, follow the steps below.
 }
 ```
 
-2. Import and declare the class in the page of the class where you wish to use the Entity Manager. Then add the entity management into the template html where required:
+2. Import and declare the class in the page of the class where you wish to use the Entity Manager.
 
-```javascript
+```
 // Import
 import { EntityManagement, } from '@genesislcap/foundation-entity-management';
 
 // Declare class
 EntityManagement;
+```
 
-// Example html with the entity management used in two different tabs to manage two
-// different resources - one managing the counterpartys, and one managing the users.
-export const AdminTemplate: ViewTemplate = html`
-  <zero-tabs>
-    <zero-tab-panel slot="tabpanel">
-      <zero-notification-listener>
-        <entity-management
-          resourceName="ALL_COUNTERPARTYS"
-          title="Counterparty Management"
-          updateEvent="EVENT_COUNTERPARTY_MODIFY"
-          deleteEvent="EVENT_COUNTERPARTY_DELETE"
-          createEvent="EVENT_COUNTERPARTY_INSERT"
-        ></entity-management>
-      </zero-notification-listener>
-    </zero-tab-panel>
-    <zero-tab-panel slot="tabpanel">
-      <zero-notification-listener>
-        <entity-management
-          resourceName="ALL_USERS"
-          title="User Management"
-          updateEvent="EVENT_AMEND_USER"
-          deleteEvent="EVENT_DELETE_USER"
-          createEvent="EVENT_INSERT_USER"
-        ></entity-management>
-      </zero-notification-listener>
-    </zero-tab-panel>
-  </zero-tabs>
+Now you are ready to implement `entity-management` in the relevant template html.
+
+## Implementing
+Here is a simple example of `entity-management`, which can be inserted into a page.
+
+```html
+    <entity-management
+          resourceName="ALL_INSTRUMENTS"
+          title = "Instruments"
+          createEvent = "EVENT_INSTRUMENT_INSERT"
+      ></entity-management>
 `;
 ```
 
-### Config
+In this example, we have used three attributes when declaring the `entity-management` micro front-end:
 
-The functionality of the Entity Manager is customised through the properties you set on it in the HTML. This section covers the main properties that you need to customise. For a full list of properties, [see here](./docs/api/foundation-entity-management.entitymanagement.md#properties).
+- `resourceName="ALL_INSTRUMENTS"` defines the source of the data for the grid: a Data Server query called ALL INSTRUMENTS.
+- `title = "Instruments"` displays this text as the title of the grid.
+- `createEvent = "EVENT_TRADE_INSERT"` generates a form with all the fields from the metadata of the event and adds a button at the top of the grid so that the user can access this form.
 
-#### Title
+As long as your back end has the correct resources, you can now see the grid in the Home page if you run the application locally.
 
-`title` customises the title of the entity list so that the user can see what resource they are managing.
+![](/img/entity-man-grid.png)
 
-#### Resource
+And you can click on the **Add** button to view the form.
 
-`resourceName` refers to the name of a resource on the server. This could be:
+![](/img/entity-man-form.png)
 
-- a `query` in a Data Server
-- a `ReqRep` definition in a Request Server
-- an `eventHandler`in the Event Handler.
+### Common attributes
 
- In the [above example](#set-up), we use `ALL_COUNTERPARTYS`, which is a `query` in a Data Server; by convention, these queries all start with `ALL_`.
+The most common attributes you can configure for `entity-management` are listed below. Note that it is not mandatory to specify an event, but if you don't specify a `createEvent` or an  `updateEvent`, then you won't have a form created - which defeats the point of using this micro front-end. It would be simpler to use a [grid-pro](/web/web-components/grids/grid-pro/grid-pro-intro/) or [data grid](/web/web-components/grids/data-grid/).
 
-#### Events
-
-`createEvent`, `updateEvent`, `deleteEvent` are set to be the events on the back end that handle the specific actions, such as deleting counterparty data. For the create and update functionality, these also define the resource in which the form is populated when the user is creating or updating an entity. After adding an event, a button is displayed so that the user can perform the selected action.
-
-#### Datasource configuration
-
-Set this object to configure how the Entity Manager interacts with the resource. [See here](./docs/api/foundation-entity-management.datasourceconfiguration/#example).
-
-#### Persist column state
-`persist-column-state-key` is a string value. It is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and  the grid will revert back to its default state every time the user navigates away from it.
+| Attribute                  | Description                                          |   Mandatory |
+| -------------------------- | -----------------------------------------------------| ------------|
+| `title`                    | customises the title of the entity list so that the user can see what resource they are managing. | Yes |
+| `resourceName`             | specifies the name of a resource on the server: a `query` in the Data Server, a `ReqRep` in the Request Server or an `eventHandler` in the Event Handler.  | Yes |
+| `createEvent`              | specifies an event on the back end for adding a record to the table; once specified, this displays an **Add** button above the grid. | No |
+| `updateEvent`              | specifies an event on the back end for modifying a record in the table; once specified, this displays an **Edit** button to the right of every record in the grid. | No  |
+| `deleteEvent`              | specifies an event on the back end for deleting a record in the table; once specified, this displays a **Delete** button to the right of every record in the grid. |  No  |
+| `datasourceConfig`         | configures the [interaction with the back-end resource](./docs/api/foundation-entity-management.datasourceconfiguration/#example). | No  |
+| `persist-column-state-key` | the user can change columns (the width, for example); if you want the column states to be persisted when the user navigates away from the page, specify a unique string value. By default, changes are **not** persisted, and the grid returns to its default state every time the user navigates away from it. |  No  |
+| `columns`         | enables you to supply an array of `ColDef[]` properties to configure the grid. | No  |
+| `createFormUiSchema`         | enables you to supply a schema to configure an insert form. | No  |
+| `updateFormUiSchema`         | enables you to supply a schema to configure an update form. | No  |
 
 :::warning
-The string defines the key in which the serialised state of the columns is stored in an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). Therefore, if you are setting multiple Entity Managers in your application, you must use unique keys to persist the state - otherwise, you will get undefined behaviour.
+The `persist-column-state-key` string defines the key where the serialised state of the columns is stored, as an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). 
+
+If you set multiple `entity-management` components in your application, **you must use unique keys** to persist the state - otherwise, the user experience will be unpredictable.
 :::
+
+For a full list of attributes and properties, see the [API documents](./docs/api/foundation-entity-management.entitymanagement.md#properties).
+
+### Customising
+
+By default, you get a grid and a form based directly on the back-end resource that you are connecting to; you get all the fields (columns) from that resource. Equally, you get a form based on the metadata of the event you have specified.
+
+#### Customising the grid
+If you want to control the appearance of the grid, use the `columns` attribute. This enables you to supply an array of `ColDef[]` properties to configure the columns that are displayed, their width and many other properties; these are the same properties that are used by the [Grid Pro](/web/web-components/grids/grid-pro/grid-pro-genesis-column/) component.
+
+#### Customising the form
+If you want to control the content of a form - for example, you might want to use different forms for inserting a new record and for modifying an existing record - use either the `createFormUiSchema` attribute or the `updateFormUiSchema` attribute. These enable you to provide a schema that configures the form. There is more information about using these attributes in the [API documentation](/web/micro-front-ends/foundation-entity-management/docs/api/foundation-entity-management.entitymanagement/)
+
+#### Customising colours, fonts and more
+Your **designtokens.js** contains the details of the default fonts, colours, borders and padding, all of which control the appearance of your user interface.
+
+The easiest way to change this file is to run the [Design System Configurator](/web/design-systems/preview/), where you can change settings and instantly see how they look on screen. Once you have made changes that suit you, you can click on the **Save** button to save the settings directly to the **designtokens.js** file in your repo. 
+
+To run the Design System Configurator, make sure your project is running; from the **client** directory of your app, run:
+
+```bash
+npm run dsconfig
+```
 
 ## User Management
 
-The User Management micro front-end is used to manage the users on the front end. Two core components are used to manage the entities:
-- the grid
-- the form
+The [User Management](/components/user-management/user-management-introduction/) business component has been built using the Entity Management micro front-end. 
 
-The grid contains an entity on each row and data in each column.
-
-:::info
-User Management is a concrete use case of the [Entity Management](#entity-management) micro front-end, which is provided as part of `foundation-ui`.
-:::
-
-Here is an example grid view for managing users:
-
-![Example user management grid](./docs/img/foundation-user-management.png)
-
-### Set-up
-
-To enable this micro-front-end in your application, follow the steps below:
-
-1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
-
-```javascript
-{
-  ...
-  "dependencies": {
-    "@genesislcap/foundation-entity-management": "latest"
-  },
-  ...
-}
-```
-
-2. Import and declare the class in the page of the class where you wish to use the user manager. Then add User Management to the template html where required:
-
-```javascript
-// Import
-import { Users, } from '@genesislcap/foundation-entity-management';
-
-// Declare class
-Users;
-
-// Example html with the user management
-// You can customise this with additional fields, see futher in this documentation
-export const AdminTemplate: ViewTemplate = html`
-  <zero-tabs>
-    <zero-tab-panel slot="tabpanel">
-      <zero-notification-listener>
-        <user-management></user-management>
-      </zero-notification-listener>
-    </zero-tab-panel>
-  </zero-tabs>
-`;
-```
-
-### Config
-
-You can customise the functionality of User Management through the properties you set in the html. This section covers the main properties that you can customise. For a full list of properties, [see here](./docs/api/foundation-entity-management.users.md).
-
-#### Columns
-
-The primary way to configure the User Management functionality is via the columns that are displayed on the grid.
-```javascript
-// Default usage, will contain the "default" columns:
-//    username, first name, last name, email, last login
-// as well as the additional entity and status columns
-<user-management></user-management>
-```
-The default columns are contained in the [UserColumnConfig](./docs/api/foundation-entity-management.userscolumnconfig.md) variable. The `Entity` and `Status` columns are always added to the grid.
-
-To configure the columns yourself, set the `columns` attribute when you define the User Management in the HTML. You can mix in your custom column config with the default user columns config, using the javascript `spread` operator.
-```javascript
-// Custom usage, will contain the "default" columns:
-//    username, first name, last name, email, last login
-// the custom "userColumns"
-// as well as the additional entity and status columns
-<user-management :columns=${() => [...UsersColumnConfig, ...userColumns]}>
-</user-management>
-```
-To see a more verbose version of this example, [see the second example here](./docs/api/foundation-entity-management.users.md).
-
-#### Permissions
-
-In contrast to Entity Management, we have a different way of displaying buttons and performing actions here. In this case, they are displayed if the user has the appropriate permissions from the server.
-
-- `INSERT_USER` - the user can add new users
-- `DELETE_USER` - the user can delete users
-- `AMEND_USER` - the user can update existing users
-
-#### Persist column state
-`persist-column-state-key` is a string value, which is used to control how the column states are persisted through actions such as page changes or refreshes. When using this micro front-end, it is set to `entity_profiles_management`.
-
-:::info
-For more info on `persist-column-state-key` see [the section in the entity management.](#persist-column-state)
-:::
+It is designed to enable you to configure user access to the system with the minimum of effort.
 
 ## Profile Management
 
-The Profile Management micro front-end is used to manage the profiles on the front end. Two core components are used to manage the profiles - the grid and the form.
+The [Profile Management](/web/micro-front-ends/profile-management/profile-management/) micro front-end provides a way of managing manage the profiles on the front end. This has been built using the Entity Management micro front-end. 
 
-:::info
-Profile Management is a concrete use case of the [Entity Management](#entity-management) micro front-end, which is provided as part of `foundation-ui`.
-:::
+It is designed to enable you to configure the user profiles with the minimum of effort. These user profiles control access to specific functions and information in your application.
 
-Example grid view when managing profiles.
-
-![Example profile management grid](./docs/img/foundation-profile-management.png)
-
-### Set-up
-
-To enable this micro front-end in your application, follow the steps below.
-
-1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
-
-```javascript
-{
-  ...
-  "dependencies": {
-    "@genesislcap/foundation-entity-management": "latest"
-  },
-  ...
-}
-```
-
-2. Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template HTML where required:
-```javascript
-// Import
-import { Profiles } from '@genesislcap/foundation-entity-management';
-
-// Declare class
-Profiles;
-
-// Example HTML with the profile management
-export const AdminTemplate: ViewTemplate = html`
-  <zero-tabs>
-    <zero-tab-panel slot="tabpanel">
-      <zero-notification-listener>
-        <profile-management></profile-management>
-      </zero-notification-listener>
-    </zero-tab-panel>
-  </zero-tabs>
-`;
-```
-
-### Config
-
-The functionality of the profile manager is customised through the properties you set in the HTML. This section covers the main properties that you will want to customise. For a full list of properties, [see here](./docs/api/foundation-entity-management.profiles.md).
-
-#### Permissions
-
-In contrast to Entity Management, we have a different way of displaying buttons and performing actions here. In this case, they are displayed if the user has the appropriate permissions from the server.
-
-- `INSERT_PROFILE` - the user can add new profiles
-- `DELETE_PROFILE` - the user can delete profiles
-- `AMEND_PROFILE` - the user can update existing profiles
-
-#### Persist column state
-`persist-column-state-key` is a string value that is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and the grid will revert back to its default state every time the user navigates away from it.
-
-:::info
-For more information on `persist-column-state-key` see [the section in the Entity Management](#persist-column-state) page.
-:::
-
-## License
-
-Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
-
-### Licensed components
-Genesis low-code platform

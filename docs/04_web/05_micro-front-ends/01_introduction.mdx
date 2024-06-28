@@ -11,10 +11,13 @@ tags:
   - introduction
 ---
 
-Micro-front-end architecture is a design approach in which a front-end app is decomposed into individual,
-semi-independent __micro applications__ working loosely together. The micro-front-end concept is vaguely inspired by, and named
-after, microservices. Independent development teams can collaborate on a front-end app more easily using this approach,
-and can each have their own release cadence. At Genesis, we use a number of technologies to enable this functionality,
-including [Webpack 5 Module Federation](https://webpack.js.org/concepts/module-federation/).
+A micro front-end is a collection of components that meet common requirements. 
 
-We've built out a number of re-usable micro-front-ends that can be used by Genesis-powered applications.
+- [entity management](/web/micro-front-ends/foundation-entity-management/) gives you a display grid and a form that can be used to insert and edit. 
+- [header](/web/micro-front-ends/foundation-header/) gives you a navigation bar and flyout menu, with routing and account-logout capabilities.
+- [login](/web/micro-front-ends/foundation-login/) gives you a set of identity-management functions, such as authentication (including via SSO) and password reset. 
+
+A micro front-end works just like a simple web component - there's nothing extra to learn. You just declare it in your template and include the attributes you want, just as you would for a button, for example.
+
+A number of open-source technologies are used to enable this functionality, including Webpack 5 Module Federation.
+
