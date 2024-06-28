@@ -23,7 +23,7 @@ The event buttons are accessed conditionally. For example, if the current user i
 :::
 
 ## Set-up
-1. Add `@genesislcap/foundation-entity-management` as a dependency in your [**package.json** file](../../../web/basics/package-json-basics/). Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again.
+1. Add `@genesislcap/foundation-entity-management` as a dependency in your [**package.json** file](/web/basics/package-json-basics/). Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again.
 
 ```javascript
 {
@@ -61,7 +61,7 @@ Here is a simple example of `entity-management`, which can be inserted into a pa
 
 In this example, we have used three attributes when declaring the `entity-management` micro front-end:
 
-- `resourceName="ALL_INSTRUMENTS"` defines the source of the data for the grid - a Data Server query called ALL INSTRUMENTS.
+- `resourceName="ALL_INSTRUMENTS"` defines the source of the data for the grid: a Data Server query called ALL INSTRUMENTS.
 - `title = "Instruments"` displays this text as the title of the grid.
 - `createEvent = "EVENT_TRADE_INSERT"` generates a form with all the fields from the metadata of the event and adds a button at the top of the grid so that the user can access this form.
 
@@ -91,7 +91,9 @@ The most common attributes you can configure for `entity-management` are listed 
 | `updateFormUiSchema`         | enables you to supply a schema to configure an update form. | No  |
 
 :::warning
-The `persist-column-state-key` string defines the key where the serialised state of the columns is stored, as an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). If you set multiple `entity-management` in your application, **you must use unique keys** to persist the state - otherwise, the user experience will be unpredictable.
+The `persist-column-state-key` string defines the key where the serialised state of the columns is stored, as an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). 
+
+If you set multiple `entity-management` components in your application, **you must use unique keys** to persist the state - otherwise, the user experience will be unpredictable.
 :::
 
 For a full list of attributes and properties, see the [API documents](./docs/api/foundation-entity-management.entitymanagement.md#properties).
