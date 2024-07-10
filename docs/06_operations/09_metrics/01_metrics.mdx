@@ -309,7 +309,7 @@ class UserAuthentication {
 
     void login(User user) {
         
-        LatencyContext userLoginTime = metricService.timer(
+        Timer userLoginTime = metricService.timer(
                 "user.processing_latency",
                 "username", user.getUserName());
         Timer.Sample timer = Timer.start();
