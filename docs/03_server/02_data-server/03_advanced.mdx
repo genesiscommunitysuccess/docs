@@ -369,12 +369,12 @@ For example, here we use Postman to test a query called ALL_TRADES in the server
 3. In the **Body** section, select **RAW** and **JSON** and insert a **DATA_LOGON** message (like the one above, for example) in the **DETAILS** field.
 4. Click to **Send** the request.
 
-Note that, whenever you use an API client to send a request to the server, you first need to send a login message. See more information in our page on [testing](../../../operations/testing/component-testing/#using-an-api-client).
+Note that, whenever you use an API client to send a request to the server, you first need to send a login message. See more information in our page on [testing](/operations/testing/component-testing/#using-an-api-client).
 
 
 ## How MORE_ROWS and MAX_VIEWS behave
 ### MAX_ROWS
-MAX_ROWS determines how many rows will be sent when the front end requests data. It also determines how many rows are sent when the front end makes a [MORE_ROWS request](../../../server/integration/rest-endpoints/basics/#more_rows). 
+MAX_ROWS determines how many rows will be sent when the front end requests data. It also determines how many rows are sent when the front end makes a [MORE_ROWS request](/server/integration/rest-endpoints/basics/#more_rows). 
 
 The rows are queried based on the REVERSE setting (which only applies to non-real-time updates). So it is important to note the following behaviour. 
 
@@ -402,14 +402,14 @@ On successful DATA_LOGON and on any subsequent MORE_ROWS messages, the server se
 
 :::info
 Let's summarise all that.
-- Normal DATA_LOGONs without MAX_ROWS = MAX_VIEW and MOVING_VIEW false always send new updates to the front end automatically once they occur in the server, regardless of the value of REVERSE. 
 - Where the front end only wants to receive a subset of rows, or is using pagination, **DATA_LOGON** will have MAX_ROWS = MAX_VIEW and MOVING_VIEW = false.
+- If you always want to send new updates to the front end automatically once they occur in the server, regardless of the value of REVERSE, use normal DATA_LOGONs with MOVING_VIEW set to false and with no MAX_ROWS = MAX_VIEW.  
 :::
 
 ## Criteria matching
 
 The incoming data **DATA_LOGON** message can also include filtering to control the rows returned. The incoming filtering is specified in the CRITERIA_MATCH option.
 
-The filters can be specified using common expressions, Groovy expressions, or even a mix of the two. See more detail in our page in the [Web section of our documentation](../../../web/basics/data-server-resources/).
+The filters can be specified using common expressions, Groovy expressions, or even a mix of the two. See more detail in our page in the [Web section of our documentation](/web/basics/data-server-resources/).
 
 
