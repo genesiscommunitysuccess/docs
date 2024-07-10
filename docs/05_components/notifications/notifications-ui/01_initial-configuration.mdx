@@ -51,20 +51,11 @@ After this, you can install each component as described in the relevant section 
 
 ### Foundation Notification Dashboard
 
-Add the component in the **src/components/component.ts** file:
-```typescript
-...
-FoundationNotificationDashboard;
-...
-```
+Note Foundation Router is required to use `navItems` in your routes. See [Foundation Router](#foundation-router) for migration steps.
 
 In the **src/routes/config.ts** file, add the route for it:
 
 ```typescript
-import { FoundationNotificationDashboard } from '@genesislcap/pbc-notify-ui';
-
-public async configure() {
-  ...
   this.routes.map(
     ...
     {
@@ -159,6 +150,68 @@ When you generate a blank project, it puts the Inbox inside a flyout using the f
   <div slot="title">Alerts</div>
   <foundation-inbox></foundation-inbox>
 </zero-flyout>
+```
+
+### Foundation Router
+
+```json
+"@genesislcap/foundation-ui": "^14.0.0",
+"@genesislcap/web-core": "^14.0.0",
+```
+
+```ts
+// components.ts
+import { FoundationRouter } from '@genesislcap/foundation-ui';
+FoundationRouter;
+```
+
+```ts
+// main.template.ts
+export const MainTemplate: ViewTemplate<MainApplication> = html`
+  <foundation-router
+    ...
+  ></foundation-router>
+`;
+```
+
+```ts
+// main.ts
+import { DefaultRouteRecognizer, Route } from '@genesislcap/web-core';
+```
+
+```ts
+// routes/config.ts
+import { FoundationRouterConfiguration } from '@genesislcap/foundation-ui';
+...
+export class MainRouterConfig extends FoundationRouterConfiguration<RouterSettings>
+...
+{
+    path: 'analytics',
+    ...
+    navItems: [
+        {
+            title: 'Analytics',
+            icon: {
+                name: 'chart-pie',
+                variant: 'solid',
+            },
+        },
+    ],
+},
+```
+
+```ts
+// layouts/default.ts
+import { FoundationRouter } from '@genesislcap/foundation-ui';
+...
+export const defaultLayout = new GenesisElementLayout(
+    html<FoundationRouter>`
+      <foundation-header
+        show-luminance-toggle-button
+        show-misc-toggle-button
+        show-language-selector
+        :routeNavItems=${(x) => x.config.getNavItems()}
+      >
 ```
 
 Check the [generated project with the pbc-notify-seed](#on-a-new-application) for more details.
