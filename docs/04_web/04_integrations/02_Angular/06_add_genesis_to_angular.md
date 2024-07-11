@@ -1181,4 +1181,6 @@ export class AppRoutingModule { }
 
 To build and serve your angular application, run `ng serve` in your root directory.
 
-If everything is working correctly, you will see the authentication micro front-end. Specify your back-end end point.
+If everything is working correctly, you will see the authentication micro front-end. Specify your back-end end point in the **Host** input field.
+
+![](/img/angular-integration/angular-authentication.png)
