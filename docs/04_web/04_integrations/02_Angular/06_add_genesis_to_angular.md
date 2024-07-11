@@ -354,7 +354,7 @@ In your `tsconfig.json` update the `compilerOptions` section and set the followi
 ```
 
 ### Update tsconfig.app.json
-Ensure your the `include` section references the `globals.d.ts` file.
+Ensure the `include` section references the `globals.d.ts` file.
 ```
 /* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
