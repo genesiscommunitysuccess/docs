@@ -28,7 +28,7 @@ Note that almost every section of each component requires a permission to perfor
 
 ## Installing manually
 
-If you want to add Notifications to an existing application, without using the Genx Add command, then follow the instructions in this section.
+If you want to add Notifications to an existing application without using the Genx Add command, then follow the instructions in this section.
 
 ### Manually installing specific components
 To load one or more components manually:
@@ -51,7 +51,7 @@ After this, you can install each component as described in the relevant section 
 
 ### Foundation Notification Dashboard
 
-Foundation Router is required for you to use `navItems` in your routes. See [Foundation Router](#foundation-router) for migration steps.
+You must configure the Foundation Router so that you can use `navItems` in your routes. See [Foundation Router](#foundation-router) for the relevant migration steps.
 
 
 In the **src/routes/config.ts** file, add the route for it:
@@ -82,7 +82,7 @@ In the **src/routes/config.ts** file, add the route for it:
 
 This creates a single-page route [Notification Dashboard](../../notifications-ui/notify-ui-components#notification-dashboard) component.
 
-Again, check the user permissions, because each tab on the dashboard is ruled by a permission (check the available [list of permissions](../notify-permissions)). The user only sees the sections for which they have permission.
+Again, check the user permissions, because each tab on the dashboard is ruled by a permission (check the available [list of permissions](../notify-permissions)). The user sees only the sections for which they have permission.
 
 ### Foundation Inbox Flyout
 
@@ -155,14 +155,23 @@ When you generate a blank project, it puts the Inbox inside a flyout using the f
 
 ### Foundation Router
 
+Go to the _my-app_**/client** folder and run the following command to install the required npm packages:
+
+```
+npm install --save @genesislcap/foundation-ui @genesislcap/web-core
+```
+This inserts the following packages in your **package.json** file:
+
 ```json
 "@genesislcap/foundation-ui": "^14.0.0",
 "@genesislcap/web-core": "^14.0.0",
 ```
 
+Add the Foundation Router to your **components.ts** file to register the Foundation Router web component.
+
 ```ts
-// components.ts
 import { FoundationRouter } from '@genesislcap/foundation-ui';
+...
 FoundationRouter;
 ```
 
