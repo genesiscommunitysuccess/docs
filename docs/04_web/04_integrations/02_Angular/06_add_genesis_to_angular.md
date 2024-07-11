@@ -1175,3 +1175,9 @@ const routes: Routes = [
 export class AppRoutingModule { }
 
 ```
+
+# Run your application
+
+Type `ng serve` in your root directory to build and serve your angular application.
+
+If everything is working correctly you will see the authenticatio micro-frontend. Specify your backend end point.
