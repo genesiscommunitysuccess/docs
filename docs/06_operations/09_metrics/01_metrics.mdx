@@ -72,15 +72,15 @@ The object `MetricService` is available via the dependency injection mechanism. 
 
 Once the `MetricService` object is in scope, you can invoke methods on it to retrieve the appropriate metric objects.
 
-The `MetricService` distinguishes between two different kind of metrics; process and resource.
-Process metrics are values that will exist once and only once per process, current memory utilisation, GC stats etc.
+The `MetricService` distinguishes between two different kinds of metric; process and resource.
 
-Resource metrics represent data about a named resource that may be one or more resources hosted within a process. 
+- Process metrics are values that will exist once and only once per process, current memory utilisation, GC stats etc.
+- Resource metrics represent data about one or more specified resources hosted within a process. 
 Dataservers, event handlers, reqreps and consolidators are all examples of named resources.
 
 For a consistent approach and to make things easier for operations and support staff, the Genesis framework enforces a standard convention for the naming of hierarchical metrics.
 
-For process level metrics:
+For process-level metrics:
 ```
 genesis.$groupName.$processName.$hostname.process.$metricClassifier.$metricName
 ```
@@ -96,7 +96,7 @@ Where:
 `$resourceClassifier` is the type of resource being monitored in the plural form, e.g. dataservers
 `$resourceName` is the name given to the resource in its XML or GPAL definition
 `$metricClassifier` is a qualifying name for the metric value, used to organise the resulting dir structure
-`$metricName` is the thing actually being measured, such as 'latency', 'rate', 'count'
+`$metricName` is what is actually being measured, such as 'latency', 'rate', 'count'
 
 The path separator is a period '.'
 
