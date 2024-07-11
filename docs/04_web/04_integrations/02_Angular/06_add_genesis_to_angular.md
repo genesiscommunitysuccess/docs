@@ -1,5 +1,5 @@
 ---
-title: 'Angular - Add Genesis to Angular'
+title: 'Angular - adding Genesis to Angular'
 sidebar_label: 'Add Genesis to Angular'
 id: add-genesis-to-angular
 keywords: [web, integrations, angular]
@@ -9,14 +9,11 @@ tags:
 - angular
 ---
 
+This guide shows you how to add the Genesis framework to an existing angular project. It assumes you want to use authenticate and connect to genesis backend.
 
-# Add Genesis to Angular
+If you are starting a new project, we recommend using the [Genesis Create](https://create.genesis.global/) tool.
 
-This is a guide on how to add the Genesis framework to an existing angular project. It assumes you want to use authenticate and connect to genesis backend.
-
-If you are starting a new project we recommend creating one with the [Genesis Create](https://create.genesis.global/) tool.
-
-Eventually we will have a directory structure that looks like this. You may already have other directories containing components, pipes, services, modules, directives etc
+The directory structure that we want to create looks like this. You may already have other directories containing components, pipes, services, modules, directives, etc.
 
 ```
 ├── README.md
@@ -93,25 +90,27 @@ Eventually we will have a directory structure that looks like this. You may alre
 
 ## Install genesis npm modules
 
-First step is to install the required genesis npm modules. In your angular project root directory run the following command.
+The first step is to install the required Genesis npm modules. In the root directory of your angular project, run the following command.
 
 ```
  npm install --save @genesislcap/foundation-comms @genesislcap/foundation-entity-management @genesislcap/foundation-header @genesislcap/foundation-layout @genesislcap/foundation-login @genesislcap/foundation-zero @genesislcap/foundation-zero-grid-pro @genesislcap/g2plot-chart @genesislcap/rapid-grid-pro
 ```
 
-And install development dependencies with the following command
+Then run the following command to install the development dependencies: 
 
 ```
 npm install --save-dev svg-url-loader file-loader @angular-builders/custom-webpack
 ```
 
-## Update build config
+## Update the build configuration
 
-In this section we will guide you on how to update your build configuration.
+To update your build configuration, you need to:
 
-You will need to update your `angular.json`, `tsconfig.json`, add some custom webpack config files.
+- update your **angular.json** file
+- update your **tsconfig.json** file
+- add some custom webpack config files
 
-Update your `angular.json` file with the following config. Remember to replace `project-name` and `prefix` to match your application settings.
+First, go to your **angular.json** file and add the following config. In the code below, replace `project-name` and `prefix` to match your application settings.
 
 ```
   ...
@@ -251,7 +250,7 @@ Update your `angular.json` file with the following config. Remember to replace `
   ...
 ```
 
-Add the `webpack.shared.config.js`, `webpack.dev.config.js` and `webpack.prod.config.js` files to your project root directory, i.e. the same folder as `angular.json`.
+Add the **webpack.shared.config.js**, **webpack.dev.config.js** and **webpack.prod.config.js** files to your project root directory; this is the folder that contains you **angular.json** file.
 
 ### webpack.shared.config.js
 
@@ -339,7 +338,7 @@ module.exports = {
 
 ### Update tsconfig.json
 
-In your `tsconfig.json` update the `compilerOptions` section and set the following properties to be `true`.
+In your `tsconfig.json` update the `compilerOptions` section and set the following properties to `true`.
 
 ```
 {
@@ -376,7 +375,7 @@ Ensure your the `include` section references the `globals.d.ts` file.
 ```
 
 ## Add app.config.ts
-In your `src/app` folder add the `app.config.ts` file. This will contain some util methods and config values used in other parts of the app.
+In your **src/app** folder add the **app.config.ts** file. This will contain some util methods and config values used in other parts of the app.
 
 ```
 import type { MainMenu } from './types/menu'
@@ -405,7 +404,7 @@ export const mainMenu: MainMenu = [
 ```
 
 ## Update (or add) app.module.ts
-In `src/app` update your app module to declare the layout components, lazy load directive and add the custom elements schema (this enables your angular application to recognise web components).
+In **src/app**, update your app module to declare the layout components, the lazy load directive, and to add the custom elements schema. This enables your angular application to recognise web components.
 
 ```
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
@@ -440,7 +439,8 @@ export class AppModule { }
 ```
 
 ## Update main.ts
-In the `src` folder, update the main.ts file.
+In the **src** folder, update the **main.ts** file.
+
 ```
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
@@ -453,10 +453,10 @@ platformBrowserDynamic().bootstrapModule(AppModule)
 ```
 
 ## Add layouts
-Add the layouts in `src/app/layouts` that the application will use to switch between the authentication micro-frontend and the rest of the application.
+In **src/app/layouts**, add the layouts that the application uses to switch between the authentication micro front-end and the rest of the application.
 
 ### Default layout
-Add `base.layout.ts` to `src/app/layouts`
+Add **base.layout.ts** to **src/app/layouts**.
 
 ```
 import { Router } from '@angular/router';
@@ -476,7 +476,7 @@ export default class BaseLayout {
 ```
 
 ### Blank layout
-Add the files to `src/app/layouts/blank`.
+Add the files to **src/app/layouts/blank**.
 
 `blank.layout.ts`
 ```
@@ -524,7 +524,7 @@ rapid-design-system-provider {
 ```
 
 ### Default layout
-Add the files to `src/app/layouts/default`.
+Add the files to **src/app/layouts/default**.
 
 `default.layout.ts`
 ```
@@ -652,7 +652,7 @@ foundation-header::part(background) {
 
 
 ## Add Services
-In the services folder, normally `app/src/services` create a new service called `auth.service.ts`
+In the services folder (usually called **app/src/services**),  create a new service called **auth.service.ts**:
 
 ```
 import { Injectable } from '@angular/core';
@@ -671,8 +671,8 @@ export class AuthService {
 }
 ```
 
-## Add Directives
-In your directives folder, normally `app/src/directives`, create a new directive called `app-lazy-load.directive.ts`
+## Add directives
+In your directives folder (usually called **app/src/directives**), create a new directive called **app-lazy-load.directive.ts**:
 
 ```
 import {
@@ -722,9 +722,9 @@ export class LayoutLazyLoadDirective implements OnInit, OnChanges {
 }
 ```
 
-## Add Guards
+## Add guards
 
-In your guards folder, normally `app/src/guards`, add a route guard `auth.guard.ts`. This will use the Genesis auth service in the `canActivate` method to verify the user is authenticated.
+In your **guards** folder, (usaully called **app/src/guards**), add a route guard **auth.guard.ts**. This sets up the Genesis auth service in the `canActivate` method, so that the app can verify that the user is authenticated.
 
 ```
 import { Injectable } from '@angular/core';
@@ -755,9 +755,9 @@ export class AuthGuard implements CanActivate {
 
 ## Add a home component (optional)
 
-Add a home component to `src/app/home`. If you already have other components that the router redirects to after login you might not need to do this step.
+Add a home component to **src/app/home**. If you already have other components that the router redirects to after login, you might not need to do this step.
 
-This example contains an implementation of the `GridPro` component in `FoundationLayout` containers. You will need the Genesis backend configured with a data-server endpoints for `ALL_POSITIONS` and `ALL_TRADES` to see data in the grids.
+This example contains an implementation of the `GridPro` component in `FoundationLayout` containers. The Genesis back end must be configured with data-server endpoints [queries](/server/data-server/basics/) for `ALL_POSITIONS` and `ALL_TRADES` to see data in the grids.
 
 ```
 import { Component } from '@angular/core';
@@ -786,7 +786,8 @@ export class HomeComponent {
 ```
 
 ## Adding the auth login component
-In your pages folder, normally `app/src/pages`, add a folder for the `auth-login` component and add the following files.
+In your **page**s folder, (usually called **app/src/pages**), add a folder for the `auth-login` component and add the following files.
+
 ### auth.login.component.css
 
 ```
@@ -811,19 +812,19 @@ export class AuthLoginComponent {
 ```
 
 ### auth.login.component.html
-Add the auth login template. Note, the `client-app-login` is a web component so you won't find it in your angular components.
+Add the auth login template. Note that the `client-app-login` is a web component, so you won't find it in your angular components.
 ```
 <client-app-login></client-app-login>
 ```
-## Add Share folder 
+## Add share folder 
 
-Add a folder `src/app/share`. This is where we will import the code that bootstraps the Genesis framework. In this example we have included the base set of web components from our framework as well as the [Entity Management](https://learn.genesis.global/docs/web/micro-front-ends/foundation-entity-management/), [Grid Pro](https://learn.genesis.global/docs/web/web-components/grids/grid-pro/grid-pro-intro/), Foundation Layout and [Charts](https://learn.genesis.global/docs/web/web-components/presentation/chart/?_highlight=charts).
+Add a folder **src/app/share**. This is where we import the code that bootstraps the Genesis framework. In this example, we have included the base set of web components from our framework as well as the [Entity Management](https://learn.genesis.global/docs/web/micro-front-ends/foundation-entity-management/), [Grid Pro](https://learn.genesis.global/docs/web/web-components/grids/grid-pro/grid-pro-intro/), Foundation Layout and [Charts](https://learn.genesis.global/docs/web/web-components/presentation/chart/?_highlight=charts) components.
 
 Add the following files to the new folder.
 
 ## foundation-login.ts
 
-This file contains functions to bootstrap our authentication micro-frontend. They will be used in your `app.component.ts`.
+This file contains functions to bootstrap our authentication micro front-end. They will be used in your **app.component.ts**.
 
 ```
 import {configure, define} from '@genesislcap/foundation-login';
@@ -868,7 +869,7 @@ export const configureFoundationLogin = ({
 
 ### genesis-components.ts
 
-In this file the web components from Genesis are imported and bootstrapped.
+In this file, the web components from Genesis are imported and bootstrapped.
 ```
 import { configure as configureHeader } from '@genesislcap/foundation-header/config';
 import { foundationLayoutComponents } from '@genesislcap/foundation-layout';
@@ -903,7 +904,7 @@ rapidDesignSystem
 
 ## Types
 
-In the `src/app/types` folder add the types which are used by the Genesis header and layouts.
+In the **src/app/types** folder, add the types that are used by the Genesis header and layouts.
 
 ### layout.ts
 
@@ -928,11 +929,11 @@ export type MainMenu = MainMenuLink[];
 ```
 
 ## Utils
-In the `src/app/utils` folder add the following file.
+In the **src/app/utils** folder, add the following file.
 
 ### getLayoutNameByRoute.ts
 
-This is a simple function that will return the layout name based on the current route. It switches between the blank layout - which shows the authentication micro-frontend - and the default layout for the rest of your application.
+This is a simple function that returns the layout name based on the current route. It switches between the blank layout - which shows the authentication micro front-end - and the default layout for the rest of your application.
 
 ```
 import { layoutComponentName, layoutNameByRouteMap } from '../app.config';
@@ -951,9 +952,9 @@ const getLayoutNameByRoute = (route: string): LayoutComponentName => {
 export default getLayoutNameByRoute;
 ```
 
-# Environment files
+## Environment files
 
-Update (or add if you don't have them) the environment files in `src/environment` to contain the following properties - `API_HOST`, `PORT`, `GENX_ENABLE_SSO`
+Update (or add if you don't have them) the environment files in **src/environment** to contain the following properties: `API_HOST`, `PORT`, `GENX_ENABLE_SSO`.
 
 ### environment.ts
 ```
@@ -974,9 +975,9 @@ export const environment = {
 };
 ```
 
-# Base styles
+## Base styles
 
-You need to add the following base styles to `src/styles`.
+You need to add the following base styles to **src/styles**.
 
 ### styles.css
 
@@ -1014,9 +1015,9 @@ foundation-router {
 
 ### design-tokens.json
 
-Add the `design-tokens.json` to `src/styles`.
+Add the **design-tokens.json** to **src/styles**.
 
-The Genesis Framework allows you to customise the design sytem for rapid - colors, margins, widths, font-sizes etc. Here is an example but you can create your own one [here](https://animated-adventure-el1oyzm.pages.github.io/branch-builds/master/dsc/).
+The Genesis Framework allows you to customise the design sytem for rapid - colours, margins, widths, font-sizes etc. Here is an example, but you can create your own one [here](https://animated-adventure-el1oyzm.pages.github.io/branch-builds/master/dsc/).
 
 ```
 {
@@ -1080,9 +1081,9 @@ The Genesis Framework allows you to customise the design sytem for rapid - color
 
 ## Globals file
 
-In the root folder of your application, update (or add if there isn't one already) the `globals.d.ts` file with `API_HOST` and `GENX_ENABLE_SSO` to let your typescript compiler know they are global variables. 
+In the root folder of your application, update (or add if there isn't one already) the **globals.d.ts** file with `API_HOST` and `GENX_ENABLE_SSO` so that your typescript compiler knows they are global variables. 
 
-The value for `API_HOST` is used to for connecting to the Genesis backend. The value for `GENX_ENABLE_SSO` conditionally enables logging in via an SSO provider.
+The value for `API_HOST` is used for connecting to the Genesis back end. The value for `GENX_ENABLE_SSO` conditionally enables logging in via an SSO provider.
 
 ```
 declare global {
@@ -1093,11 +1094,11 @@ declare global {
 export {};
 ```
 
-## Update your `app.component.html` and `app.component.ts` files.
+## Update your app.component.html and app.component.ts` files
 
-In the constructor of the `app.component.ts` call the `configureFoundationLogin` function as shown below and subscribe to router changes to set the correct value for the `layoutName`.
+In the constructor of the **app.component.ts**, call the `configureFoundationLogin` function as shown below and subscribe to router changes to set the correct value for the `layoutName`.
 
-This will configure the foundation login micro-frontend.
+This configures the foundation login micro front-end.
 
 ```
 import { Component } from '@angular/core';
@@ -1132,15 +1133,15 @@ export class AppComponent {
 
 ```
 
-Update your `app.component.html` template file to use the `LayoutLazyLoadDirective` directive. This takes the `layoutName` property and passes it to the directive which switches between `BlankLayoutComponent` and `DefaultLayoutComponent` layouts.
+Update your **app.component.html** template file to use the `LayoutLazyLoadDirective` directive. This takes the `layoutName` property and passes it to the directive that switches between `BlankLayoutComponent` and `DefaultLayoutComponent` layouts.
 
 ```
 <ng-container *appLayoutLazyLoad="layoutName"></ng-container>
 ```
 
-## App Routing module
+## App routing module
 
-Finally, update your routing module, in most cases called `app-routing.module`, to add routes for the authentication micro frontend
+Finally, update your routing module. In most cases, this is called **app-routing.module**. You need to add routes for the authentication micro front-end.
 
 ```
 import { NgModule } from '@angular/core';
@@ -1176,8 +1177,8 @@ export class AppRoutingModule { }
 
 ```
 
-# Run your application
+## Run your application
 
-Type `ng serve` in your root directory to build and serve your angular application.
+To build and serve your angular application, run `ng serve` in your root directory.
 
-If everything is working correctly you will see the authenticatio micro-frontend. Specify your backend end point.
+If everything is working correctly, you will see the authentication micro front-end. Specify your back-end end point.
