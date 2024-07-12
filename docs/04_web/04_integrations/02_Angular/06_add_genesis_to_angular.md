@@ -107,8 +107,8 @@ npm install --save-dev svg-url-loader file-loader @angular-builders/custom-webpa
 To update your build configuration, you need to:
 
 - update your **angular.json** file
-- update your **tsconfig.json** file
 - add some custom webpack config files
+- update your **tsconfig.json** file
 
 First, go to your **angular.json** file and add the following config. In the code below, replace `project-name` and `prefix` to match your application settings.
 
