@@ -33,12 +33,10 @@ Add the following to your "server" project's **settings.gradle.kts** file.
 
 ```kotlin
 pluginManagement {
-    pluginManagement {
-        val genesisVersion: String by settings
+    val genesisVersion: String by settings
 
-        plugins {
-            id("global.genesis.settings") version genesisVersion
-        }
+    plugins {
+        id("global.genesis.settings") version genesisVersion
     }
 }
 
@@ -52,12 +50,10 @@ plugins {
 
 ```kotlin
 pluginManagement {
-    pluginManagement {
-        val genesisVersion: String by settings
+    val genesisVersion: String by settings
 
-        plugins {
-            id("global.genesis.settings.legacy") version genesisVersion
-        }
+    plugins {
+        id("global.genesis.settings.legacy") version genesisVersion
     }
 }
 
