@@ -101,3 +101,29 @@ This example creates a grid with a polling frequency of 10 seconds. Remember tha
 ...
 ```
 
+This example creates a grid with a server side row model allowing requesting data on demand as user scrolls.
+
+```html title="Example 5"
+<alpha-grid-pro>
+        <grid-pro-server-side-datasource
+          resource-name="ALL_COUNTERPARTYS"
+        ></grid-pro-server-side-datasource>
+    ...
+</alpha-grid-pro>
+...
+```
+
+This example creates a grid with a server side row model allowing pagination with a page size of 10
+
+```html title="Example 6"
+<alpha-grid-pro>
+        <grid-pro-server-side-datasource
+          resource-name="ALL_COUNTERPARTYS"
+          pagination
+          max-rows="10"
+        ></grid-pro-server-side-datasource>
+    ...
+</alpha-grid-pro>
+...
+```
+
