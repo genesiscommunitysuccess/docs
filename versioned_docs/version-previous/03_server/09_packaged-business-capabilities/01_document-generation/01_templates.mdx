@@ -155,12 +155,12 @@ val data = mapOf("PRICE" to 1, "QUANTITY" to 5, "COUNTERPARTY" to "counterparty_
 To inject the Document Generator, set up the following dependency in the module where you are going to use it.
 
 Version: {gsfVersion}
-
+implementation("global.genesis:file-server-app:$version")
 <Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
 <TabItem value="gradle">
 
 ```kotlin
-implementation("global.genesis:file-server-templates:$version")
+
 ```
 
 </TabItem>
