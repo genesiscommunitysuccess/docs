@@ -500,6 +500,26 @@ module.exports = {
         },
         {
           "type": "doc",
+          "id": "web/forms/foundation-forms-layouts"
+        },
+        {
+          "type": "doc",
+          "id": "web/forms/foundation-forms-controls"
+        },
+        {
+          "type": "doc",
+          "id": "web/forms/foundation-forms-rules"
+        },
+        {
+          "type": "doc",
+          "id": "web/forms/foundation-forms-validation"
+        },
+        {
+          "type": "doc",
+          "id": "web/forms/foundation-forms-custom-controls"
+        },
+        {
+          "type": "doc",
           "id": "web/forms/forms-filters"
         },
         {
