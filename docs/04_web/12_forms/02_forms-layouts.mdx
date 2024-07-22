@@ -12,3 +12,84 @@ tags:
 ---
 
 # Foundation Forms Layouts
+
+Foundation forms allows you to customise the layout of your forms.
+
+The layouts must be one of [UiSchemaElementType](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.uischemaelementtype/) which are:
+
+- `VerticalLayout` - form elements are stacked vertically.
+- `HorizontalLayout` - form elements are arranged horizontally
+- `LayoutVertical2Columns` - configure your form with two vertical columns
+- `Categorization` - creates a tabbed form with only one section visible at a time.
+- `Group` - creates a group of fields
+- `Stepper` - creates a tabbed, sequential form with a sidebar showing form progress.
+
+The layout for a form is configured in the `type` property of the [UISchema](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.uischema/?_highlight=uisc#uischema-type)
+
+
+## Vertical Layout
+
+```ts
+    const uISchema = {
+      type: 'VerticalLayout',
+      // or HorizontalLayout, LayoutVertical2Columns, Categorization, Group, Stepper
+      elements: [
+        ...
+      ]
+    }
+```
+
+## Horizontal Layout
+```ts
+    const uISchema = {
+      type: 'HorizontalLayout',
+      // or HorizontalLayout, LayoutVertical2Columns, Categorization, Group, Stepper
+      elements: [
+        ...
+      ]
+    }
+```
+
+## Vertical Two Column Layout
+
+```ts
+    const uISchema = {
+      type: 'LayoutVertical2Columns',
+      elements: [
+        ...
+      ]
+    }
+```
+
+## Group
+
+```ts
+    const uISchema = {
+      type: 'Group',
+      elements: [
+        ...
+      ]
+    }
+```
+
+## Categorization
+
+```ts
+    const uISchema = {
+      type: 'Categorization',
+      elements: [
+        ...
+      ]
+    }
+```
+
+## Stepper
+
+```ts
+    const uISchema = {
+      type: 'Stepper',
+      elements: [
+        ...
+      ]
+    }
+```
