@@ -491,12 +491,20 @@ module.exports = {
     },
     {
       "type": "category",
-      "label": "SMART FORMS",
+      "label": "FOUNDATION FORMS",
       "collapsed": true,
       "items": [
         {
           "type": "doc",
           "id": "web/forms/foundation-forms"
+        },
+        {
+          "type": "doc",
+          "id": "web/forms/foundation-forms-json-schema"
+        },
+        {
+          "type": "doc",
+          "id": "web/forms/foundation-forms-ui-schema"
         },
         {
           "type": "doc",
