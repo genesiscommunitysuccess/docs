@@ -12,3 +12,93 @@ tags:
 ---
 
 # Foundation Forms JSON Schema
+
+Foundation forms use [JSON Schema](https://json-schema.org/understanding-json-schema/about) to define the underling model of the form. This defines the objects and properties as well as their types.
+
+Foundation Forms allow you to use the JSONSchema provided by the Data Server/Event Handler, or you can define your own one on the client.
+
+:::info
+This section covers aspects of the [Dataserver](https://learn.genesis.global/docs/server/data-server/basics/) and [DataBase](https://learn.genesis.global/docs/database/) sections.
+The examples provided are simple, but it is worth exploring these sections in more depth.
+:::
+
+## Server Side JSON Schema
+
+If you have a [Dataserver](https://learn.genesis.global/docs/server/data-server/basics/) serving a table like
+
+`smart-forms-examples-tables-dictionary.kts`
+```kts
+ tables {
+    table(name = "SIMPLE_TRADE", id = 10_000) {
+        field("SIMPLE_TRADE_ID", STRING).sequence("ST")
+        field("QUANTITY", DOUBLE)
+        field("SIDE", STRING)
+        primaryKey("SIMPLE_TRADE_ID")
+    }
+    ...
+}
+```
+
+`smart-forms-examples-tables-dictionary.kts`
+```kts
+dataServer {
+    query("ALL_SIMPLE_TRADES", SIMPLE_TRADE)
+    ...
+}
+```
+
+`smart-forms-examples-event-handler.kts`
+```kts
+eventHandler {
+    eventHandler<SimpleTrade>("SIMPLE_TRADE_INSERT", transactional = true) {
+        onCommit { event ->
+            val details = event.details
+            entityDb.insert(details)
+            ack()
+        }
+    }
+    ...
+}
+...
+```
+
+`forms-json-schema.template.ts`
+```ts
+<foundation-form resourceName="EVENT_TRADE_INSERT">
+</foundation-form>
+```
+
+You will see a form that looks like this.
+
+![](/img/smart-forms/simple-trade-json-schema.png)
+
+
+## Client Side JSON Schema
+The following is an example of a JSONSchema defined on the client. It describes an object with two properties - QUANTITY and SIDE, similar to the one we described above.
+
+You set the JSON Schema on the `foundation-form` element using the `jsonSchema` attribute.
+
+```ts
+const sampleJsonSchema = {
+  type: 'object',
+  properties: {
+    QUANTITY: {
+      type: 'number',
+      description: 'kotlin.Double',
+    },
+    SIDE: {
+      type: 'number',
+      description: 'kotlin.String',
+    },
+  },
+};
+```
+
+```ts
+<foundation-form :jsonSchema="${() => sampleJsonSchema}">
+</foundation-form>
+```
+
+You will see a form that looks similar but without the id field
+
+![](/img/smart-forms/simple-trade-client-side-json-schema.png)

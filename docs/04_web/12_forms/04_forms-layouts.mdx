@@ -17,15 +17,16 @@ Foundation forms allows you to customise the layout of your forms.
 
 The layouts must be one of [UiSchemaElementType](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.uischemaelementtype/) which are:
 
-- `VerticalLayout` - form elements are stacked vertically.
-- `HorizontalLayout` - form elements are arranged horizontally
-- `LayoutVertical2Columns` - configure your form with two vertical columns
-- `Categorization` - creates a tabbed form with only one section visible at a time.
-- `Group` - creates a group of fields
-- `Stepper` - creates a tabbed, sequential form with a sidebar showing form progress.
+- `VerticalLayout` - form elements are arranged vertically.
+- `HorizontalLayout` - form elements are arranged horizontally.
+- `LayoutVertical2Columns` - form elements are arranged in two columns vertically.
+- `Categorization` - creates a form divided into tabs form with only one tab section visible at a time.
+- `Group` - creates a form divided into separate groups, each with their own labels.
+- `Stepper` - creates a tabbed form with a sidebar showing form progress. Each group is completed seprately.
 
 The layout for a form is configured in the `type` property of the [UISchema](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.uischema/?_highlight=uisc#uischema-type)
 
+By default the form uses `VerticalLayout` if no uiSchema is specified.
 
 ## Vertical Layout
 
