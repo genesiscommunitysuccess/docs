@@ -17,6 +17,8 @@ Foundation forms has a range of advanced components for entering text, numbers, 
 
 ## Text Control
 
+![](/img/smart-forms/text-input.png)
+
 This is the standard renderer. This creates a `text-field` in your form. This input takes any characters.
 
 ```ts
@@ -33,6 +35,8 @@ const textInputUiSchema: UiSchemaElement =     {
 ```
 
 ## Number Control
+
+![](/img/smart-forms/number-input.png)
 
 The number renderer creates a `number-field` in your form. This input only accepts numeric data and sets a numeric value on the underlying form model.
 
@@ -52,6 +56,8 @@ const numberInputUiSchema: UiSchemaElement = {
 
 ## Boolean Control
 
+![](/img/smart-forms/boolean-input.png)
+
 The boolean renderer creates a checkbox control. Setting the `type` value in the JSONSchema to `boolean` will invoke this renderer. It sets a `true` or `false` on the underlying form model.
 
 ```ts
@@ -69,6 +75,8 @@ const booleanInputUiSchema: UiSchemaElement = {
 
 ## Date Control
 
+![](/img/smart-forms/date-input.png)
+
 The date control schema creates a date renderer with an input field and a date picker. The control is invoked by setting the `description` property in the JSONSchema to be `org.joda.time.DateTime`. The form only allows numbers to be input and stores the date value in miliseconds in the underling form model.
 
 ```ts
@@ -85,6 +93,8 @@ const dateInputUiSchema: UiSchemaElement = {
 ```
 
 ## Select Control
+
+![](/img/smart-forms/select-input.png)
 
 The select control schema creates a dropdown select box. Users can select only one value from the given list. You can
 
@@ -113,6 +123,8 @@ const selectInputUiSchema: UiSchemaElement = {
 
 ## Connected Select
 
+![](/img/smart-forms/select-connected-input.png)
+
 The connected select renderer creates a select input field that populates the list of dropdown options from an endpoint in your dataserver.
 
 In the UISchemaElement options property specify the `allOptionsResourceName`. In this example, we use the `ALL_COUNTERPARTIES` endpoint from `sales-forms-examples.dataserver.kts` to use the list of counterparties. The display value is the counterparty name and the underling value is the counterparty id.
@@ -140,6 +152,8 @@ const connectedSelectUISchema: UiSchemaElement = {
 
 ## Connected Multi Select
 
+![](/img/smart-forms/multi-select-connected-input.png)
+
 The connected multi select renderer connects to your backend in the same way the Connected Select renderer does. In the JSONSchema, specify the `type` property to be `array` to invoke the connected multi select renderer.
 
 ```ts
@@ -163,6 +177,8 @@ const connectedMultiSelectUISchema: UiSchemaElement = {
 ```
 
 ## Full UI and JSON schema
+
+![](/img/smart-forms/form-controls.png)
 
 Using all the examples above, here is a `foundation-form` that uses the all the input controls we have listed. Try it out yourself!
 
