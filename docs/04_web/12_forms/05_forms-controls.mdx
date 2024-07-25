@@ -17,23 +17,187 @@ Foundation forms has a range of advanced components for entering text, numbers, 
 
 ## Text Control
 
-```ts
+This is the standard renderer. This creates a `text-field` in your form. This input takes any characters.
 
+```ts
+// text Input
+const textInputJsonSchema: JSONSchema7 = {
+  type: 'string',
+  description: 'kotlin.String',
+}
+
+const textInputUiSchema: UiSchemaElement =     {
+  type: 'Control',
+  scope: '#/properties/textInput',
+};
 ```
 
 ## Number Control
 
-```ts
+The number renderer creates a `number-field` in your form. This input only accepts numeric data and sets a numeric value on the underlying form model.
 
+```ts
+// number Input
+const numberJsonSchema: JSONSchema7 = {
+  type: 'number',
+  description: 'kotlin.Double'
+};
+
+const numberInputUiSchema: UiSchemaElement = {
+  type: 'Control',
+  scope: '#/properties/numberInput'
+};
+
+```
+
+## Boolean Control
+
+The boolean renderer creates a checkbox control. Setting the `type` value in the JSONSchema to `boolean` will invoke this renderer. It sets a `true` or `false` on the underlying form model.
+
+```ts
+// Boolean Input
+const booleanInputJsonSchema: JSONSchema7 = {
+  type: 'boolean',
+  description: 'kotlin.Boolean'
+};
+
+const booleanInputUiSchema: UiSchemaElement = {
+  type: 'Control',
+  scope: '#/properties/booleanInput'
+};
 ```
 
 ## Date Control
+
+The date control schema creates a date renderer with an input field and a date picker. The control is invoked by setting the `description` property in the JSONSchema to be `org.joda.time.DateTime`. The form only allows numbers to be input and stores the date value in miliseconds in the underling form model.
+
 ```ts
+// Date time Input
+const dateInputJsonSchema: JSONSchema7 = {
+  type: 'number',
+  description: 'org.joda.time.DateTime',
+};
+
+const dateInputUiSchema: UiSchemaElement = {
+  type: 'Control',
+  scope: '#/properties/dateInput'
+};
+```
+
+## Select Control
+
+The select control schema creates a dropdown select box. Users can select only one value from the given list. You can
+
+The renderer is invoked by including an `options` section in the UISchemaElement with an array of data. You can specify which properties of your array objects are used for the underlying option value, `valueField`, and for display value, `labelField`.
+
+```ts
+// Select Input
+const selectData = ['Miami', 'New York', 'London', 'Dublin', 'São Paulo', 'Bengaluru']
+
+const selectInputJsonSchema: JSONSchema7 = {
+  type: 'string',
+  description: 'kotlin.String',
+  enum: selectData
+}
+
+const selectInputUiSchema: UiSchemaElement = {
+  type: 'Control',
+  scope: '#/properties/selectInput',
+  options: <ConnectedRenderersOptions> {
+    data: selectData.map(label => ({ label })),
+    labelField: 'label',
+    valueField: 'label'
+  }
+}
+```
+
+## Connected Select
+
+The connected select renderer creates a select input field that populates the list of dropdown options from an endpoint in your dataserver.
+
+In the UISchemaElement options property specify the `allOptionsResourceName`. In this example, we use the `ALL_COUNTERPARTIES` endpoint from `sales-forms-examples.dataserver.kts` to use the list of counterparties. The display value is the counterparty name and the underling value is the counterparty id.
+
+
+```ts
+// Connected multi select
+const connectedSelectJsonSchema: JSONSchema7 = {
+  type: 'string',
+  description: 'Kotlin.String',
+}
+
+const connectedSelectUISchema: UiSchemaElement = {
+  type: 'Control',
+  label: 'Connected select',
+  scope: '#/properties/connectedSelectInput',
+  options: {
+    allOptionsResourceName: 'ALL_COUNTERPARTIES',
+    valueField: 'COUNTERPARTY_ID',
+    labelField: 'NAME',
+  }
+}
+```
+
+
+## Connected Multi Select
+
+The connected multi select renderer connects to your backend in the same way the Connected Select renderer does. In the JSONSchema, specify the `type` property to be `array` to invoke the connected multi select renderer.
+
+```ts
+// Connected multi select
+const connectedMultiSelectJsonSchema: JSONSchema7 = {
+  type: 'array',
+  description: 'Kotlin.String',
+}
+
+const connectedMultiSelectUISchema: UiSchemaElement = {
+  type: 'Control',
+  label: 'Connected select',
+  scope: '#/properties/connectedMultiSelectInput',
+  options: {
+    allOptionsResourceName: 'ALL_COUNTERPARTIES',
+    valueField: 'COUNTERPARTY_ID',
+    labelField: 'NAME',
+  }
+}
 
 ```
 
-## Checkbox Control
+## Full UI and JSON schema
+
+Using all the examples above, here is a `foundation-form` that uses the all the input controls we have listed. Try it out yourself!
 
 ```ts
+// Form Schema
+export const formControlsJSONSchema: JSONSchema7 = {
+  type: 'object',
+  properties: {
+    textInput: textInputJsonSchema,
+    numberInput: numberJsonSchema,
+    booleanInput: booleanInputJsonSchema,
+    dateInput: dateInputJsonSchema,
+    selectInput: selectInputJsonSchema,
+    connectedSelectInput: connectedSelectJsonSchema,
+    connectedMultiSelectInput: connectedMultiSelectJsonSchema,
+  }
+};
 
+export const formControlsUISchema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    textInputUiSchema,
+    numberInputUiSchema,
+    booleanInputUiSchema,
+    dateInputUiSchema,
+    selectInputUiSchema,
+    connectedSelectUISchema,
+    connectedMultiSelectUISchema,
+  ]
+}
+```
+
+```ts
+<foundation-form
+  :jsonSchema="${() => formControlsJSONSchema}"
+  :uischema="${() => formControlsUISchema}">
+</foundation-form>
 ```
