@@ -13,6 +13,124 @@ tags:
 
 # Foundation Forms - Rules
 
-Rules enable you to add dynamic aspects to a form such as showing, hiding, enabling or disabling a UI Schema element.
+Rules enable you to add dynamic aspects to a form such as showing, hiding, enabling or disabling a UI Schema element based on another value in the form.
 
+## Rule Type
+
+Foundation forms can use a value `RuleEffect` enum from the `jsonforms` library. There are four possible options
+
+- `RuleEffect.SHOW` - shows a UI Schema element
+- `RuleEffect.HIDE` - hides a UI Schema element
+- `RuleEffect.SHOW` - enables a UI Schema element
+- `RuleEffect.SHOW` - disables a UI Schema element
+
+## Rule Condition
+
+To create a rule in a UISchemaElement you set the `rule` property equal to an object with `effect`, which can be one of the `RuleEffect` enum values, and a `condition`.
+
+In the `condition` property, you create and object with `scope`, a string value corresponding to the value you want to test and a `schema` property which evaluates the value from the scope value against a test.
+
+
+
+### Boolean Rule example
+
+In the below example, there is a checkbox `withLimit` which when set to true shows the `limitPrice` field.
+
+
+```ts
+const formsWithRulesJsonSchema: JSONSchema7 = {
+  ...
+  properties: {
+    ...
+    withLimit: {
+      type: 'boolean'
+    },
+    limitPrice: {
+      type: 'number'
+    }
+    ...
+  }
+};
+
+const formsWithRulesUiSchema: UiSchema = {
+
+  type: 'VerticalLayout',
+  elements: [
+    ...
+    {
+      type: 'Control',
+      scope: '#/properties/withLimit',
+      label: 'Add limit price?',
+    },
+    {
+      type: 'Control',
+      scope: '#/properties/limitPrice',
+      rule: {
+        effect: RuleEffect.SHOW,
+        condition: {
+          scope: '#/properties/withLimit',
+          schema: { const: true }
+        }
+      }
+    }
+    ...
+  ]
+}
+```
+
+When not checked, the limit price field does not show.
+
+![](/img/smart-forms/limit-not-checked.png)
+
+When checked, the limit price field is shown.
+
+![](/img/smart-forms/limit-checked.png)
+
+### Enum Rule Example
+
+In the below example we will show you how to use the enum condition. In this case, we show the `zipCode` control if the user selects United States and `postCode` if the user selects either United Kingdom or Canada.
+
+```ts
+export const formsWithRulesUiSchema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    ...
+    {
+      type: 'Control',
+      scope: '#/properties/country',
+      label: 'Country',
+    },
+    {
+      type: 'Control',
+      scope: '#/properties/zipCode',
+      rule: {
+        effect: RuleEffect.HIDE,
+        condition: {
+          scope: '#/properties/country',
+          schema: { enum: ['United Kingdom', 'Canada'] }
+        }
+      }
+    },
+    {
+      type: 'Control',
+      scope: '#/properties/postalCode',
+      rule: {
+        effect: RuleEffect.SHOW,
+        condition: {
+          scope: '#/properties/country',
+          schema: { enum: ['United Kingdom', 'Canada'] }
+        }
+      }
+    },
+  ]
+}
+```
+
+When the value of country is United States, the zip code field is shown.
+
+![](/img/smart-forms/limit-not-checked.png)
+
+When the value of country either United Kingdom or Canada, the postal code field is shown.
+
+![](/img/smart-forms/limit-checked.png)
 
