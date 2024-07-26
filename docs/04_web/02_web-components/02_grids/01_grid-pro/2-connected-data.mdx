@@ -9,7 +9,7 @@ tags:
     - grid pro
 ---
 
-The **connected data** use case is when you have a [Data Server](../../../../../server/data-server/introduction/) or [Request Server](../../../../../server/request-server/introduction/) available and ready to use, and don't want to worry about handling data transformations, updates, deletes and cell renderers in the grid. For cell renders, it's flexible; you can the components provided by default, or you can use any component you want.
+The **connected data** use case is when you have a [Data Server](../../../../../server/data-server/introduction/) or [Request Server](../../../../../server/request-server/introduction/) available and ready to use, and don't want to worry about handling data transformations, updates, deletes and cell renderers in the grid. For cell renders, it's flexible; you can use the components provided by default, or you can use any component you want.
 
 In order to use the connected version of the grid-pro, you need to use the `<grid-pro-genesis-datasource>` component.
 
@@ -96,6 +96,47 @@ This example creates a grid with a polling frequency of 10 seconds. Remember tha
     <grid-pro-genesis-datasource
         resource-name="REQUEST_SERVER_ALL_TRADE"
         polling-interval="10000" />
+    ...
+</alpha-grid-pro>
+...
+```
+
+## Variations
+There are two variations on this component, which enable you to work with either a client-side datasource or a server-side datasource:
+
+- `<grid-pro-client-side-datasource>`
+- `<grid-pro-server-side-datasource>`
+
+### Grid Pro client-side datasource
+
+The component`<grid-pro-client-side-datasource>` is suitable for datasets that are small to medium in size and which can be entirely loaded into the client. 
+
+Operations like sorting and filtering are performed on the client-side. This can be used with both Data Server and Request Server resources.
+
+### Grid Pro server-side datasource
+The component `<grid-pro-server-side-datasource>` is ideal for large datasets, where operations are pushed to the back end to ensure performance and consistency. Data is fetched as needed based on user interactions.
+
+The example below creates a grid with a server-side row model, so that the user can request data on demand by scrolling.
+
+```html title="Example 5"
+<alpha-grid-pro>
+        <grid-pro-server-side-datasource
+          resource-name="ALL_COUNTERPARTYS"
+        ></grid-pro-server-side-datasource>
+    ...
+</alpha-grid-pro>
+...
+```
+
+This example creates a grid with a server-side row model. The user can request data on a page-by-page basis, and each page has 10 rows of data. 
+
+```html title="Example 6"
+<alpha-grid-pro>
+        <grid-pro-server-side-datasource
+          resource-name="ALL_COUNTERPARTYS"
+          pagination
+          max-rows="10"
+        ></grid-pro-server-side-datasource>
     ...
 </alpha-grid-pro>
 ...

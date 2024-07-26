@@ -395,8 +395,12 @@ module.exports = {
           id: "web/micro-front-ends/foundation-entity-management/foundation-entity-management",
         },
         {
-          type: "doc",
-          id: "web/micro-front-ends/foundation-login/foundation-login",
+          type: 'doc',
+					id: 'web/micro-front-ends/profile-management/profile-management'
+        },
+        {
+          type: 'doc',
+					id: 'web/micro-front-ends/foundation-login/foundation-login'
         },
       ],
     },

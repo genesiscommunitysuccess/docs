@@ -15,7 +15,7 @@ The Genesis Metrics module enables you to capture metrics for specific component
 
 Any metrics system will have an effect on the performance of the application it is monitoring. The extra code (log statements, metrics, etc) will have an impact in some way. 
 
-Genesis uses the well-known [metrics](https://micrometer.io/) library, which is commonly used in Java apps. In all known Genesis applications, the impact is negligible; the benefits far outweigh the very tiny impact on performance. 
+Genesis uses the [metrics](https://micrometer.io/) library, which is commonly used in Java apps. In all known Genesis applications, the impact is negligible; the benefits far outweigh the very tiny impact on performance. 
 
 To make use of the metric calls:
 
@@ -72,31 +72,33 @@ The object `MetricService` is available via the dependency injection mechanism. 
 
 Once the `MetricService` object is in scope, you can invoke methods on it to retrieve the appropriate metric objects.
 
-The `MetricService` distinguishes between two different kind of metrics; process and resource.
-Process metrics are values that will exist once and only once per process, current memory utilisation, GC stats etc.
+The `MetricService` distinguishes between two different kinds of metric; process and resource.
 
-Resource metrics represent data about a named resource that may be one or more resources hosted within a process. 
+- Process metrics are values that will exist once and only once per process, current memory usage, GC stats etc.
+- Resource metrics represent data about one or more specified resources hosted within a process. 
 Dataservers, event handlers, reqreps and consolidators are all examples of named resources.
 
-For a consistent approach and to make things easier for operations and support staff, the Genesis framework enforces a standard convention for the naming of hierarchical metrics.
+### Naming hierarchical metrics
+For a consistency and to make things easier for operations and support staff, the Genesis platform enforces a standard convention for the naming of hierarchical metrics.
 
-For process level metrics:
+For process-level metrics:
 ```
 genesis.$groupName.$processName.$hostname.process.$metricClassifier.$metricName
 ```
-For resource level metrics:
+For resource-level metrics:
 ```
 genesis.$groupName.$processName.$hostname.$resourceClassifier.$resourceName.$metricClassifier.$metricName
 ```
 
-Where:
-`$groupName` is the value in the groupId field of the process definition (or unknown if missing)
-`$processName` is the name defined in the processes definition
-`$hostname` is the machine hostname
-`$resourceClassifier` is the type of resource being monitored in the plural form, e.g. dataservers
-`$resourceName` is the name given to the resource in its XML or GPAL definition
-`$metricClassifier` is a qualifying name for the metric value, used to organise the resulting dir structure
-`$metricName` is the thing actually being measured, such as 'latency', 'rate', 'count'
+For both these metrics:
+
+- `$groupName` is the value in the groupId field of the process definition (or unknown if missing)
+- `$processName` is the name defined in the processes definition
+- `$hostname` is the machine hostname
+- `$resourceClassifier` is the type of resource being monitored in the plural form, e.g. dataservers
+- `$resourceName` is the name given to the resource in its XML or GPAL definition
+- `$metricClassifier` is a qualifying name for the metric value, used to organise the resulting dir structure
+- `$metricName` is what is actually being measured, such as 'latency', 'rate', 'count'
 
 The path separator is a period '.'
 
@@ -105,19 +107,28 @@ Any of the above parameters can contain any number of periods to further sub-div
 If you are using Datadog or the system definition property `item(name = "MetricsStructureType", value = "dimensional")` 
 with Graphite, then the metrics will be sent in a dimensional format: `$metricName{tag1=value1,tag2=value2,...}`.
 
-Path sanitisation is performed in order to ensure path consistency. Any character in the following set:
+Path sanitisation is performed in order to ensure path consistency. Any character in the following set will be replaced with an underscore:
 ```
 *@/\’”;:|[]{}()&^%$,
 ```
-will be replaced with an underscore.
 
 To create metrics, use the [counter], [timer], [summary], [gauge] and [gaugeCounter] functions.
 
-The metric functions [counter], [timer], [summary], [gauge] and [gaugeCounter] are also lookup functions into the metric registry.
-As such, path sanitisation only occurs if the non-sanitised path does not already have a mapping. This is to avoid string
-scans and regex evaluation on every lookup to retrieve a metric object. In order to maximise performance (for example
-when counting messages in a high volume stream) do not use any upper-case or forbidden characters in your classifiers
-or names, or store the metric object in a local variable and do not perform a lookup each time it needs to be used.
+All these metric functions are also lookup functions into the metric registry. As such, path sanitisation only occurs if the non-sanitised path does not already have a mapping. This is to avoid string scans and regex evaluation on every lookup to retrieve a metric object. 
+
+In order to maximise performance (for example, when counting messages in a high-volume stream):
+
+- do not use upper-case or forbidden characters in your classifiers or names
+- do not store the metric object in a local variable
+- do not perform a lookup each time it needs to be used
+
+### Parameters
+The parameters for defining a metric are the same for all cases:
+- name (of the metric)
+- tags (key value pairs)
+
+Tags are key value pairs that add dimension to your metrics. They enable you to filter the data and analyse it in more detail. You can set up tags so that you can analyse the metric by user name or by environment, for example.
+The easiest way of doing this is to set up a map and specify this. The map can contain any number of key value pairs, and the platform automatically transforms these into tags.
 
 ### Counters
 
@@ -251,9 +262,9 @@ public class UserAuthentication {
 
 Timers measure how long a piece of code takes to execute. There are several ways we can record the time taken.
 
-Note: Timers and Distribution Summaries support data collection for observing percentile distributions and
-always publish a count of events in addition to other measurements
-
+:::info
+Timers and Distribution Summaries support data collection for observing percentile distributions; they always publish a count of events, in addition to other measurements.
+:::
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -309,7 +320,7 @@ class UserAuthentication {
 
     void login(User user) {
         
-        LatencyContext userLoginTime = metricService.timer(
+        Timer userLoginTime = metricService.timer(
                 "user.processing_latency",
                 "username", user.getUserName());
         Timer.Sample timer = Timer.start();
@@ -325,8 +336,7 @@ class UserAuthentication {
 
 ### Summaries
 
-Histograms are built into Distribution Summaries. These track the distribution of events in a similar way to timers, but they don't represent units of time.
-For instance, Distribution Summaries can measure payload sizes of incoming requests.
+Histograms are built into Distribution Summaries. These track the distribution of events in a similar way to timers, but they don't represent units of time. For instance, Distribution Summaries can measure payload sizes of incoming requests.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">

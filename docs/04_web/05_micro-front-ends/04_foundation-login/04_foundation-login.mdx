@@ -1,6 +1,6 @@
 ---
-title: 'Foundation Login'
-sidebar_label: 'Foundation Login'
+title: 'Login'
+sidebar_label: 'Login'
 id: foundation-login
 keywords: [web, login, foundation login, frontend, ui, micro-front-ends]
 tags:
@@ -18,7 +18,7 @@ You can find detailed information on this micro front-end in the [API documentat
 
 ## Introduction
 
-This micro front-end includes a set of identity management functions, such as authentication (including via SSO) and password reset. Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
+This micro front-end provides a set of identity management functions, such as authentication (including via SSO) and password reset. Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
 
 Login uses the [Credential Management API](https://developer.mozilla.org/en-US/docs/Web/API/Credential_Management_API), falling back to cookies when unavailable.
 
@@ -45,7 +45,7 @@ If you build a project upon one of the Genesis seed apps, then the `Login` micro
 
 To enable this micro front-end in your application, follow the steps below.
 
-1. Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` or `$ npm run bootstrap:ignore-scripts` command again. You can see more information on the [package.json basics](../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` or `$ npm run bootstrap:ignore-scripts` command again. You can see more information on the [package.json basics](/web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -61,7 +61,7 @@ To enable this micro front-end in your application, follow the steps below.
 This page assumes you're using the routing systems that are part of `foundation-ui`, and will cover set-up as part of that routing system.
 :::
 
-Once installed, you can either use `Login` as is or re-configure it. As with all our micro front-ends, you also have the option of lazy loading it.
+Once installed, you can either use `Login` as is or re-configure it. As with all our micro front-ends, you also have the option of lazy-loading it.
 
 ### Basic usage
 

@@ -52,7 +52,22 @@ Other config values that are available are listed below:
 | `ZeroMQProxyOutboundPort` (required) | The port used for ZeroMQ outbound connections | - |
 | `ZeroMQProxyModeEnabled` | Enable [proxy mode](#proxy-mode) (recommended for large apps) | `false` |
 | `ZeroMQProxyUnicastRelayEnabled` | Creates a point-to-point connection between GENESIS_CLUSTER processes for all the nodes in the cluster. This connection is used to send local update queue events to the remote nodes in the cluster in order to ensure every node has access to all the updates | `false` |
+| `ZeroMQConnectToLocalhostViaLoopback` | Depending on the OS, routing may be subject to network flapping (quick changes in network routing) - this setting binds ZeroMQ communication to the local interface (localhost). Do not use in Production. | `false` |
 
 :::important
-If you are using a cloud environment that does not allow multicast traffic (e.g. AWS), then  `ZeroMQProxyModeEnabled` and `ZeroMQProxyUnicastRelayEnabled` need to be set to `true`
+If you are using a cloud environment that does not allow multicast traffic (e.g. AWS), then  `ZeroMQProxyModeEnabled` and `ZeroMQProxyUnicastRelayEnabled` must be set to `true`
+
 :::
+
+### Using loopback (development environments)
+
+If you are developing on a laptop, you might be affected by automatic switching between networks; for example, the operating system could suddenly switch to a hotspot. When this happens, the message queue could stop receiving updates. As a result, your processes could go down inexplicably.
+
+To avoid this, set `ZeroMQConnectToLocalhostViaLoopback = true`. This setting uses the local network stack to ensure that no messages are lost.
+
+:::warning
+Never use this setting in a production environment.
+:::
+
+
+

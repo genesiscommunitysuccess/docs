@@ -39,7 +39,243 @@ Foundation UI has a programme of regular continual releases. These are documente
 
 GSF release notes are added to this area immediately following each software release. The most recent release is at the top.
 
-**The current GSF release is **version 8.0.1**. As you new releases are added, they shall be displayed here.**
+**The current GSF release is **version 8.0.1**. As new releases are added, they shall be displayed here.**
+
+## Genesis 8.1.0(platform-symphony)
+
+No functional changes.
+
+## Genesis 8.1.0(platform-notify)
+
+### Breaking changes
+- Removed wrapped types from direct API, added TTL
+
+### Features
+- improve API for notify PBC 
+- feat: add email retry and exponential backoff
+
+## Genesis 8.1.0(platform-fix)
+
+### Breaking changes
+- Aligned process ports with platform standards 
+
+### Fixes
+- Delete unnecessary gradle task call 
+- Ensure we don't blank out FIX_STATUS table columns when writing activity updates 
+
+### Features
+- Add minimal distribution publication 
+- Added debug logging for outbound FIX messages
+
+## Genesis 8.1.0(platform-auth)
+
+### Dependency changes
+- build(deps): bump com.jfrog.artifactory from 5.2.0 to 5.2.1 
+- build(deps): bump commons-codec:commons-codec from 1.16.1 to 1.17.0 
+- build(deps): bump org.gradle.test-retry from 1.5.8 to 1.5.9
+
+## Genesis 8.1.0(platform-elektron)
+
+No functional changes.
+
+## Genesis 8.1.0(platform-reconciliation)
+
+### Features
+- Ensure generated recon ID is returned on event response 
+- Update to platform version 8 
+- Add reconciliation result tables + api to view data. 
+- Add run reconciliation endpoint. 
+- Add toggle for matching null values 
+- Added 'RECONCILIATION_CONFIG.RECONCILIATION_CONFIG_ID' to 'RECONCILIATION_VIEW' 
+- Added CUD endpoints for data dictionary 
+- Added DATA_DICTIONARY tables 
+- Added ability to cancel a reconciliation. 
+- Added api endpoints to CUD reconciliation configurations. 
+- Added api points to read recon config data. 
+- Added data server for 'RECONCILIATION_RESULT' 
+- Added endpoints for reading data dictionary and fields 
+- Added reconciliation rule + config tables. 
+- Added the ability to add tolerances to recon rules 
+- Check file value types based on data dictionary. 
+- Enabled tolerance checks for a reconciliation run 
+
+### Fixes
+- Add publishing block to build gradle file. 
+- Added missing import
+- Build typescript output 
+- Fix dd and cfg field reload 
+- Fix gradle deploy config. 
+- Fixed empty lines + empty values issue. 
+- Fixed package.json access level. 
+- Made tolerance value in the tests. 
+- Updated event data structure for reconciliation run. 
+
+### Dependency changes
+- Bump org.jetbrains.kotlinx:kotlinx-coroutines-test from 1.8.0 to 1.8.1 
+- Bump com.jfrog.artifactory from 5.1.13 to 5.2.0 
+- Bump com.jfrog.artifactory from 5.2.0 to 5.2.1 
+- Bump com.jfrog.artifactory from 5.2.1 to 5.2.2 
+- Updating genesis dependencies 
+- Updating genesis dependencies
+
+## Genesis 8.1.0(platform-documents)
+
+No functional changes.
+
+## Genesis 8.1.0(platform-reporting)
+
+### Fixes
+
+- Fix radio buttons selection
+
+## Genesis 8.1.0(platform-market-data)
+
+No functional changes.
+
+## Genesis 8.1.0(ref_data_app-server)
+
+No functional changes.
+
+## Genesis 8.1.0(genesis-server)
+
+### Breaking changes
+- Removing chronicle queues and maps for genesis cluster. This creates the `ZeroMQConnectToLocalhostViaLoopback` setting for [configuring ZeroMQ](/operations/update-queue/zeromq/#zeromq-configuration-options) in development environments. This setting ensures that the message queue is not affected by network switching. **Do not use it in Production environments.**
+- Ensure generated openapi spec is parseable by openapi generator
+
+### Features
+- Data pipelines V2 Implementation 
+- Add BigDecimal support to average function 
+- Output field needs to be nullable for aggregate functions which require index scan, add error message
+- Add ability to generate apis from openapi spec 
+- Add default values to entity event generator 
+- Add preCompileScripts gradle task in exec plugin 
+- Added field macros for common field patterns 
+- Exposing compactProcessStrategy in docker container build 
+- Handle DataServer LOGON_NACK message in testing flow 
+- Introducing compact process development strategy
+- Project should not need to override gradle project name to start with "genesisproduct-"
+- Use lower lmdb default database size when running through intellij 
+
+### Fixes
+- Project should not need to override gradle project name to start with "genesisproduct-" 
+- Populate missing DETAILS.SESSION_AUTH_TOKEN field for inbound EVENT_LOGIN_DETAILS messages at the router level 
+- AbstractExternalUpdateQueue can publish to any topic and not just table based ones 
+- Add empty REQUEST when message body and parameters is empty on request replies
+- Ensure gradle-api vulnerable dependencies are not added to the build due to the new openapi gradle plugin 
+- Gradle preCompileScripts does not consider compacted processes 
+- RouterMessageDelegator initialisation logic is now applied even if there was a GenesisMessageClient already computed 
+- Update all references of python to python3 
+- Add type conversion from Integer to Short 
+- Excluding unsupported pbcs from DEV compactProcessStrategy
+- Fix handling in json schema 
+- Fix openapi generator issue 
+- Fix improve handling in builder for fields with IS_ prefix 
+- Fix increasing the tolerance for declaring the node stale 
+- Fix process json aliased enums correctly 
+- Fix set default values in json schema 
+- Fix sort and compare json contents on artifacts and processes.
+- Fix typo in compactProcesses in gradle properties 
+- Fix typo in compactProcesses in project overview builder
+- Fix uses io dispatcher and timeout while cleaning process metadata entries
+- Fix uses io dispatcher while cleaning process metadata entries 
+- Using provider to create JMSUpdateQueue 
+
+### Dependency changes
+- Bump byteBuddyVersion from 1.14.15 to 1.14.16 in /genesis-conventions 
+- Bump byteBuddyVersion from 1.14.16 to 1.14.17 in /genesis-conventions 
+- Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.6 to 0.17.7 in /genesis-subcore/deploy-gradle-plugin 
+- Bump com.github.oshi:oshi-core from 6.6.0 to 6.6.1 in /genesis-conventions 
+- Bump com.google.errorprone:error_prone_annotations from 2.27.1 to 2.28.0 in /genesis-conventions
+- Bump com.google.guava:guava from 33.1.0-jre to 33.2.0-jre in /genesis-conventions 
+- Bump com.google.guava:guava from 33.2.0-jre to 33.2.1-jre in /genesis-conventions 
+- Bump com.google.protobuf:protobuf-java from 4.26.1 to 4.27.0 in /genesis-conventions 
+- Bump com.google.protobuf:protobuf-java from 4.27.0 to 4.27.1 in /genesis-conventions 
+- Bump com.google.protobuf:protobuf-java from 4.27.1 to 4.27.2 in /genesis-conventions 
+- Bump com.jfrog.artifactory from 5.2.0 to 5.2.1 in /genesis-conventions 
+- Bump com.jfrog.artifactory from 5.2.0 to 5.2.1 in /genesis-publish-config 
+- Bump com.jfrog.artifactory from 5.2.1 to 5.2.2 in /genesis-conventions 
+- Bump com.jfrog.artifactory from 5.2.1 to 5.2.2 in /genesis-publish-config 
+- Bump com.networknt:json-schema-validator from 1.4.0 to 1.4.2 in /genesis-conventions 
+- Bump com.networknt:json-schema-validator from 1.4.2 to 1.4.3 in /genesis-conventions 
+- Bump commons-cli:commons-cli from 1.7.0 to 1.8.0 in /genesis-conventions 
+- Bump commons-net:commons-net from 3.10.0 to 3.11.0 in /genesis-conventions 
+- Bump commons-net:commons-net from 3.11.0 to 3.11.1 in /genesis-conventions 
+- Bump debeziumVersion from 2.6.1.Final to 2.6.2.Final in /genesis-conventions 
+- Bump io.github.classgraph:classgraph from 4.8.172 to 4.8.173 in /genesis-conventions 
+- Bump io.github.classgraph:classgraph from 4.8.173 to 4.8.174 in /genesis-conventions 
+- Bump korthout/backport-action from 2 to 3 
+- Bump ktorVersion from 2.3.11 to 2.3.12 in /genesis-conventions 
+- Bump maven-plugin-api.version from 3.9.6 to 3.9.7 in /genesis-parent/genesis-maven-submodules 
+- Bump maven-plugin-api.version from 3.9.7 to 3.9.8 in /genesis-parent/genesis-maven-submodules 
+- Bump micrometerVersion from 1.12.5 to 1.13.0 in /genesis-conventions 
+- Bump micrometerVersion from 1.13.0 to 1.13.1 in /genesis-conventions 
+- Bump mockitoVersion from 5.11.0 to 5.12.0 in /genesis-conventions 
+- Bump nettyVersion from 4.1.109.Final to 4.1.110.Final in /genesis-conventions 
+- Bump nettyVersion from 4.1.110.Final to 4.1.111.Final in /genesis-conventions 
+- Bump org.agrona:agrona from 1.21.1 to 1.21.2 in /genesis-conventions 
+- Bump org.apache.activemq:artemis-jakarta-client from 2.33.0 to 2.34.0 in /genesis-conventions 
+- Bump org.apache.activemq:artemis-jakarta-client from 2.34.0 to 2.35.0 in /genesis-conventions 
+- Bump org.apache.commons:commons-compress from 1.26.1 to 1.26.2 in /genesis-conventions 
+- Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.11.0 to 3.13.1 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-clean-plugin from 3.3.2 to 3.4.0 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-compiler-plugin from 3.12.1 to 3.13.0 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-dependency-plugin from 3.6.1 to 3.7.0 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-dependency-plugin from 3.7.0 to 3.7.1 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-deploy-plugin from 3.1.1 to 3.1.2 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-enforcer-plugin from 3.4.1 to 3.5.0 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-install-plugin from 3.1.1 to 3.1.2 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-plugin-plugin from 3.11.0 to 3.13.1 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-release-plugin from 3.0.1 to 3.1.0 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven:maven-model from 3.9.6 to 3.9.7 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven:maven-model from 3.9.7 to 3.9.8 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.shiro:shiro-core from 1.13.0 to 2.0.1 in /genesis-conventions 
+- Bump org.apache.sshd:sshd-core from 2.12.1 to 2.13.0 in /genesis-conventions 
+- Bump org.assertj:assertj-core from 3.25.3 to 3.26.0 in /genesis-conventions 
+- Bump org.checkerframework:checker-qual from 3.43.0 to 3.44.0 in /genesis-conventions 
+- Bump org.codehaus.plexus:plexus-utils from 3.5.0 to 4.0.1 in /genesis-parent/genesis-maven-submodules 
+- Bump org.freemarker:freemarker from 2.3.32 to 2.3.33 in /genesis-conventions 
+- Bump org.hsqldb:hsqldb from 2.7.2 to 2.7.3 in /genesis-conventions 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.0 to 5.2.1 in /genesis-conventions 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.0 to 5.2.1 in /genesis-publish-config 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.1 to 5.2.2 in /genesis-conventions 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.1 to 5.2.2 in /genesis-publish-config 
+- Bump org.jline:jline from 3.26.1 to 3.26.2 in /genesis-conventions 
+- Bump pekkoVersion from 1.0.2 to 1.0.3 in /genesis-conventions 
+- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.6 to 2.3.7 in /genesis-conventions
+- Bump sshdVersion from 2.12.1 to 2.13.0 in /genesis-conventions 
+- Bump sshdVersion from 2.13.0 to 2.13.1 in /genesis-conventions 
+- Change org.furyio for org.apache.fury and bump to 0.5.1 in /genesis-conventions
+
+## Genesis 8.0.3(genesis-server)
+
+### Fixes
+- (router): Populate missing DETAILS.SESSION_AUTH_TOKEN field for inbound EVENT_LOGIN_DETAILS messages at the router level
+
+## Genesis 8.0.1(platform-notify)
+
+### Fixes
+- Ensure that ScreenAlertExpiryManager only expires non-expired records on startup 
+
+### Dependency changes
+- Bump org.gradle.test-retry from 1.5.8 to 1.5.9 
+- Bump org.sonarqube from 4.4.1.3373 to 5.0.0.4638
+
+## Genesis 8.0.2(genesis-server)
+
+### Fixes
+- Update all references for python to python3
+
+## Genesis 7.2.7(genesis-server)
+
+### Features
+- Add validation for enum field values 
+- Added field macros for common field patterns
+
+### Fixes
+- Update all references of python to python3
+- Add type conversion from Integer to Short 
+- Improve handling in builder for fields with IS_ prefix 
+- Process json aliased enums correctly 
 
 ## Genesis 8.0.1(genesis-server)
 
