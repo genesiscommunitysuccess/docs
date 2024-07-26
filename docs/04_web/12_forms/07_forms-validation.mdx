@@ -14,3 +14,59 @@ tags:
 # Foundation Forms - Validation
 
 You can apply simple and more complex validation logic to foundation forms in a number of ways.
+
+## Required fields - Frontend
+
+To make a field required you include the field name in the json schema `required` property.
+
+In this example we extend our past example schema with the required fields.
+
+```ts
+const requiredFieldsJsonSchema: JSONSchema7 = {
+  ...singleColumnJsonSchema,
+  required: [ 'side', 'stockSymbol', 'quantity', 'price']
+}
+
+```
+
+If you focus and blur, or try submitting the form with the fields not filled you will see the error messages. Also, the form label will be appended with a `*` to indicate it is required.
+
+![Validation required](/img/smart-forms/validation-required.png)
+
+
+## Required fields - auto generated schema from backend
+
+If you are using `reseourceName` property on your form the form will use the generated json schema from the corresponding type.
+
+Using the `EVENT_COUNTERPARTY_INSERT` event endpoint your template looks like this e.g. just passing the event name.
+
+```ts
+<foundation-form resourceName="EVENT_COUNTERPARTY_INSERT">
+</foundation-form>
+```
+
+This is based on the model defined in your tables and event handler files file. The `notNull()` fields will be required in the form.
+
+```kts
+eventHandler<Counterparty>("COUNTERPARTY_INSERT", transactional = true) {
+    onCommit { event ->
+        val details = event.details
+        entityDb.insert(details)
+        ack()
+    }
+}
+```
+
+```kts
+...
+table(name = "COUNTERPARTY", id = 11_001) {
+    field("COUNTERPARTY_ID", INT).notNull()
+    field("ENABLED", BOOLEAN).default(false).notNull()
+    field("MAIN_CONTACT", STRING).notNull()
+    field("NAME", STRING).notNull()
+    primaryKey("COUNTERPARTY_ID")
+}
+...
+```
+
+![Validation required](/img/smart-forms/validation-required-backend.png)
