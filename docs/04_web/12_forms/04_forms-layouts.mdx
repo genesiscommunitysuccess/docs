@@ -20,8 +20,9 @@ The layouts must be one of [UiSchemaElementType](https://learn.genesis.global/do
 - `VerticalLayout` - form elements are arranged vertically.
 - `HorizontalLayout` - form elements are arranged horizontally.
 - `LayoutVertical2Columns` - form elements are arranged in two columns vertically.
-- `Categorization` - creates a form divided into tabs form with only one tab section visible at a time.
 - `Group` - creates a form divided into separate groups, each with their own labels.
+- `Categorization` - creates a form divided into tabs form with only one tab section visible at a time.
+- `Array` - creates a dynamic form where for entering multiple instances of a data type.
 - `Stepper` - creates a tabbed form with a sidebar showing form progress. Each step is completed separately.
 
 The layout for a form is configured in the `type` property of the [UISchema](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.uischema/?_highlight=uisc#uischema-type)
@@ -156,6 +157,51 @@ const uISchema = {
 
 ![Form with category personal](/img/smart-forms/layout-category-personal.png)
 
+## Array
+
+An array layout enables you to create a dynamic form with the ability to add multiple instances of your `jsonSchem` model. For this, you need both a `uiSchema` and a `jsonSchema`.
+
+In this example we are creating a form where the user can input multiple Swap Schedule items. Another case would be adding multiple users at once.
+
+```ts
+export const formsWithArraysJsonSchema: JSONSchema7 = {
+  properties: {
+    swapDates: {
+      type: 'array',
+      title: 'Swap Schedule',
+      items: {
+        type: 'object',
+        properties: {
+          date: {
+            type: 'number',
+            description: 'org.joda.time.DateTime',
+          },
+          amount: {
+            type: 'number'
+          },
+          notes: {
+            type: 'string'
+          }
+        },
+        required: [ 'date', 'number' ]
+      }
+    }
+  }
+}
+
+export const formsWithArraysUiSchema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    {
+      type: 'Control',
+      scope: '#/properties/swapDates'
+    }
+  ]
+}
+```
+
+![Form with array](/img/smart-forms/layout-array.png)
+
 
 ## Stepper
 
@@ -176,8 +222,6 @@ Remember to add a `hide-submit-button` attribute to `foundation-forms`, because 
 </foundation-form>
 ```
 :::
-
-
 
 
 ```ts
