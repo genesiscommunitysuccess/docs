@@ -22,7 +22,7 @@ The layouts must be one of [UiSchemaElementType](https://learn.genesis.global/do
 - `LayoutVertical2Columns` - form elements are arranged in two columns vertically.
 - `Categorization` - creates a form divided into tabs form with only one tab section visible at a time.
 - `Group` - creates a form divided into separate groups, each with their own labels.
-- `Stepper` - creates a tabbed form with a sidebar showing form progress. Each group is completed seprately.
+- `Stepper` - creates a tabbed form with a sidebar showing form progress. Each step is completed separately.
 
 The layout for a form is configured in the `type` property of the [UISchema](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.uischema/?_highlight=uisc#uischema-type)
 
@@ -30,67 +30,221 @@ By default the form uses `VerticalLayout` if no uiSchema is specified.
 
 ## Vertical Layout
 
+Each item in the `elements` property is arranged vertically.
+
 ```ts
-    const uISchema = {
-      type: 'VerticalLayout',
-      // or HorizontalLayout, LayoutVertical2Columns, Categorization, Group, Stepper
-      elements: [
-        ...
-      ]
-    }
+const uISchema: UISchema = {
+  type: 'VerticalLayout',
+  elements: [
+    ...
+  ]
+}
 ```
 
+![](/img/smart-forms/layout-vertical.png)
+
 ## Horizontal Layout
+
+Each item in the `elements` property is arranged vertically.
+
 ```ts
-    const uISchema = {
-      type: 'HorizontalLayout',
-      // or HorizontalLayout, LayoutVertical2Columns, Categorization, Group, Stepper
-      elements: [
-        ...
-      ]
-    }
+const uISchema: UISchema = {
+  type: 'HorizontalLayout',
+  elements: [
+    ...
+  ]
+}
 ```
+
+![Horizontal Layout](/img/smart-forms/layout-horizontal.png)
+
 
 ## Vertical Two Column Layout
 
+Each item in the `elements` property is arranged into vertically with two items per line.
+
 ```ts
-    const uISchema = {
-      type: 'LayoutVertical2Columns',
-      elements: [
-        ...
-      ]
-    }
+const uISchema: UiSchema = {
+  type: 'LayoutVertical2Columns',
+  elements: [
+    ...
+  ]
+}
 ```
+
+![Layout Vertical Two Columns](/img/smart-forms/layout-vertical-two-column.png)
+
 
 ## Group
 
+This is used for grouping form elements together into separate blocks, each section with it's own label.
+
+In the below example we have personal information split into basic and address sections. You can add as many groups as you want.
+
 ```ts
-    const uISchema = {
+const uISchema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    {
       type: 'Group',
-      elements: [
-        ...
-      ]
+      scope: '#/properties/basic',
+      label: 'Personal information',
+      options: {
+        childElements: [
+          ...
+        ]
+      }
+    },
+    {
+      type: 'Group',
+      label: 'Address',
+      scope: '#/properties/address',
+      options: {
+        childElements: [
+          ...
+        ]
+      }
     }
+}
 ```
+
+![Form with groups](/img/smart-forms/layout-groups.png)
+
 
 ## Categorization
 
+This works similar to groups except each section is shown on it's own tab with only one tab visible at a time.
+
 ```ts
-    const uISchema = {
-      type: 'Categorization',
-      elements: [
-        ...
-      ]
+const uISchema = {
+  type: 'Categorization',
+  elements: [
+    {
+      type: "Control",
+      scope: "#/properties/basic",
+      label: "Personal information",
+      options: {
+        childElements: [
+          {
+            type: "HorizontalLayout",
+            elements: [
+              ...
+            ]
+          }
+        ]
+      }
+    },
+    {
+      type: "Control",
+      label: "Address",
+      scope: "#/properties/address",
+      options: {
+        childElements: [
+          {
+            type: "HorizontalLayout",
+            elements: [
+              ...
+            ],
+          },
+        ],
+      },
+    },
     }
 ```
+
+![Form with category address](/img/smart-forms/layout-category-address.png)
+
+![Form with category personal](/img/smart-forms/layout-category-personal.png)
+
 
 ## Stepper
 
+Stepper layout enables you to create more complex forms that can be divided into appropriate groups, which will be in separate steps.
+
+It is more complicated when it comes to customisation, because it needs proper `jsonSchema` and `uiSchema` so that validation and data saving work properly.
+
+In this example we have a form with three steps - personal, address and account details. Each step must be valid according to the underlying json schema before continuing on to the next section.
+
+:::info
+Remember to add a `hide-submit-button` attribute to `foundation-forms`, because in this case, submit is built directly into stepper-layout.
+
 ```ts
-    const uISchema = {
-      type: 'Stepper',
-      elements: [
-        ...
-      ]
-    }
+<foundation-form
+    hide-submit-button="true"
+    ...
+>
+</foundation-form>
 ```
+:::
+
+
+
+
+```ts
+const uiSchemaStepper = {
+  type: 'Stepper',
+  elements: [
+    {
+      type: 'Control',
+      scope: '#/properties/person',
+      label: 'Personal',
+      options: {
+        childElements: [
+          {
+            type: 'HorizontalLayout',
+            elements: [
+              ...
+            ],
+          },
+          {
+            type: 'HorizontalLayout',
+            elements: [
+              ...
+            ],
+          },
+        ],
+      },
+    },
+    {
+      type: 'Control',
+      label: 'Address',
+      scope: '#/properties/address',
+      options: {
+        childElements: [
+          {
+            type: 'HorizontalLayout',
+            elements: [
+              ...
+            ],
+          },
+          {
+            type: 'HorizontalLayout',
+            elements: [
+              ...
+            ],
+          },
+        ],
+      },
+    },
+    {
+      type: 'Control',
+      label: 'Account details',
+      scope: '#/properties/accountDetails',
+      options: {
+        childElements: [
+          {
+            type: 'VerticalLayout',
+            elements: [
+              ...
+            ],
+          },
+        ],
+      },
+    },
+  ],
+};
+```
+
+You will have a three step form with each step validated individually.
+
+![Form with stepper](/img/smart-forms/layout-stepper.png)
