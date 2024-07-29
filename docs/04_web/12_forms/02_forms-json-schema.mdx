@@ -13,18 +13,18 @@ tags:
 
 # Foundation Forms JSON Schema
 
-Foundation forms use [JSON Schema](https://json-schema.org/understanding-json-schema/about) to define the underling model of the form. This defines the objects and properties as well as their types.
+Foundation forms use [JSON Schema](https://json-schema.org/understanding-json-schema/about) to define the underlying model of the form. This defines the objects and properties as well as their types.
 
-Foundation Forms allow you to use the JSONSchema provided by the Data Server/Event Handler, or you can define your own one on the client.
+You can use the JSONSchema provided by the Data Server or Event Handler that is the source of the data, or you can define your own schema on the client.
 
 :::info
-This section covers aspects of the [Dataserver](https://learn.genesis.global/docs/server/data-server/basics/) and [DataBase](https://learn.genesis.global/docs/database/) sections.
+This section covers aspects of the [Data Server](/server/data-server/basics/) and [DataBase](/database/) sections.
 The examples provided are simple, but it is worth exploring these sections in more depth.
 :::
 
-## Server Side JSON Schema
+## Server-side JSON schema
 
-If you have a [Dataserver](https://learn.genesis.global/docs/server/data-server/basics/) serving a table like
+If you have a [Data Server](/server/data-server/basics/) serving a table like this:
 
 `smart-forms-examples-tables-dictionary.kts`
 ```kts
@@ -68,13 +68,13 @@ eventHandler {
 </foundation-form>
 ```
 
-You will see a form that looks like this.
+You will see a form that looks like this:
 
 ![](/img/smart-forms/simple-trade-json-schema.png)
 
 
-## Client Side JSON Schema
-The following is an example of a JSONSchema defined on the client. It describes an object with two properties - QUANTITY and SIDE, similar to the one we described above.
+## Client-side JSON schema
+Here is an example of a JSONSchema defined on the client. It describes an object with two properties - QUANTITY and SIDE, similar to the one we described above.
 
 You set the JSON Schema on the `foundation-form` element using the `jsonSchema` attribute.
 
