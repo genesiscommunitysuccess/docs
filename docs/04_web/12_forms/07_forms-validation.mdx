@@ -75,7 +75,7 @@ table(name = "COUNTERPARTY", id = 11_001) {
 
 ## Min Length, Max Length
 
-A common pattern in a form field is to have a minimum or maximum number of characters, or a min or max value. This is easily achieved using the json schema.
+A common requirement in a form field is to have a minimum or maximum number of characters, or a min or max value. This is easily achieved using the json schema.
 
 You specify the `minLength` or `maxLength` property for an individual schema element
 
@@ -101,7 +101,7 @@ Then your form will validate the number of characters.
 
 ## Min Value, Max Value
 
-Another common pattern in a form field is to have a minimum or maximum value. Again, this is easily achieved using the json schema.
+Another common requirement in a form field is to have a minimum or maximum value. Again, this is easily achieved using the json schema.
 
 You specify the `minimum` or `maximum` property for an individual schema element
 
@@ -125,3 +125,52 @@ export const validationMinMaxValueJsonSchema: JSONSchema7 = {
 The form will show any errors if you try to submit or blur an element.
 
 ![Validation required](/img/smart-forms/validation-min-max-value.png)
+
+## Pattern validation
+
+You can validate the input of your field using regex to ensure the user enters a certain pattern of characters.
+
+A common use case for this is validating phone number and email input data.
+
+```ts
+export const validationPatternJsonSchema: JSONSchema7 = {
+  type: 'object',
+  properties: {
+    phoneNumber: {
+      type: 'string',
+      pattern: '^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$',
+      description: 'kotlin.String',
+    },
+    email: {
+      type: 'string',
+      pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$',
+      description: 'kotlin.String',
+    }
+  },
+  required: ['phoneNumber']
+}
+
+export const validationPatternUiSchema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    {
+      type: 'Control',
+      scope: '#/properties/phoneNumber'
+    },
+    {
+      type: 'Control',
+      scope: '#/properties/email'
+    }
+  ],
+}
+
+```
+
+With invalid input data
+
+![Validation pattern invalid](/img/smart-forms/validation-pattern-invalid.png)
+
+With valid input data
+
+![Validation pattern valid](/img/smart-forms/validation-pattern-valid.png)
+

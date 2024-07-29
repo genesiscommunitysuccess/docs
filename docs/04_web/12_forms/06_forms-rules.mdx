@@ -21,8 +21,8 @@ Foundation forms can use a value `RuleEffect` enum from the `jsonforms` library.
 
 - `RuleEffect.SHOW` - shows a UI Schema element
 - `RuleEffect.HIDE` - hides a UI Schema element
-- `RuleEffect.SHOW` - enables a UI Schema element
-- `RuleEffect.SHOW` - disables a UI Schema element
+- `RuleEffect.ENABLE` - enables a UI Schema element
+- `RuleEffect.DISABLE` - disables a UI Schema element
 
 ## Rule Condition
 
@@ -33,7 +33,7 @@ In the `condition` property, you create and object with `scope`, a string value 
 
 ### Boolean Rule example
 
-In the below example, there is a checkbox `withLimit` which when set to true shows the `limitPrice` field.
+In the below example, there is a checkbox `withLimit` which when set to true enables the `limitPrice` field.
 
 ```ts
 const formsWithRulesJsonSchema: JSONSchema7 = {
@@ -64,7 +64,7 @@ const formsWithRulesUiSchema: UiSchema = {
       type: 'Control',
       scope: '#/properties/limitPrice',
       rule: {
-        effect: RuleEffect.SHOW,
+        effect: RuleEffect.ENABLE,
         condition: {
           scope: '#/properties/withLimit',
           schema: { const: true }
@@ -76,13 +76,13 @@ const formsWithRulesUiSchema: UiSchema = {
 }
 ```
 
-When not checked, the limit price field does not show.
+When not checked, the limit price field is disabled.
 
-![](/img/smart-forms/limit-not-checked.png)
+![](/img/smart-forms/rules-disabled.png)
 
-When checked, the limit price field is shown.
+When checked, the limit price field is enabled.
 
-![](/img/smart-forms/limit-checked.png)
+![](/img/smart-forms/rules-enabled.png)
 
 ### Enum Rule Example
 

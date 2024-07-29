@@ -13,13 +13,15 @@ tags:
 
 # Foundation Forms UI Schema
 
+Most renderers are defined directly in the `jsonSchema` that comes from the server, but there are also those that you can add via `uiSchema`.
+
 You can control the appearance of your form using the [UI Schema](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.uischema/?_highlight=uisc#uischema-type) to describe the layout of your form. It describes the different UI Schema elements that appear in your form.
 
 Here is an example of a UI Schema we could use with the JSON Schema we described on the previous step.
 
 In this UISchema, the SIMPLE_TRADE_ID field is hidden, the label is overridden for QUANTITY and SIDE and an options configuration has been provided for SIDE which will render a comboxbox.
 
-For the comboxbox, it accepts an array of options and you can specify the underlying value for each options and the display value.
+For the combobox, it accepts an array of objects. You can specify the object property for option value for each option with `valueField` and the option display value with `labelField`.
 
 
 ```ts
