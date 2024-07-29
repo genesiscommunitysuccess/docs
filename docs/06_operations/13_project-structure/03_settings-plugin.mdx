@@ -94,6 +94,17 @@ genesis {
 }
 ```
 
+### Product name
+
+Property to specify a custom project name. By default, the product name is taken from the server Gradle project's rootProject name in the **settings.gradle.kts** file.
+
+Example usage:
+```kotlin
+genesis {
+    productName = "position"
+}
+```
+
 ### Dependencies
 
 Here you should declare dependencies on other Genesis products, then the Settings plugin can take care of where they should be added automatically. 
@@ -173,6 +184,8 @@ genesis {
     mainModuleName = "positionApp"
 }
 ```
+
+When using this property, the [productName](#product-name) property must also be specified.
 
 ## Other features
 
