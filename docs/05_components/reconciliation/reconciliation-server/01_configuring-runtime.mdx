@@ -1,0 +1,47 @@
+---
+title: 'Reconciliation - Manual Installation'
+sidebar_label: 'Manual Installation'
+id: reconciliation-configuring-runtime
+keywords: [server, reconciliation, recon, configuring runtime]
+tags:
+  - server
+  - reconciliation
+  - recon
+  - configuring runtime
+---
+
+> :warning: **This guide assumes you have not used GenX to add the Reconciliation component.** You should only add components manually if your project is on an older framework version that does not support [GenX Add](../../../../components/reconciliation/reconciliation-installation).
+
+
+To install Reconciliation manually, follow the steps below:
+
+1. Add the `reconciliationVersion` to the file **server/gradle.properties**:
+
+```xml
+reconciliationVersion=x.y.z
+```
+
+2. Add a reference to your **server/settings.gradle.kts** file, such as this:
+
+```kotlin
+genesis {
+    projectType = ProjectType.APPLICATION
+    dependencies {
+    ...
+        dependency("global.genesis:reconciliation:${extra.properties["reconciliationVersion"]}")
+    ...
+    }
+}
+```
+This creates the fields and tables that enable Reconciliation to function:
+
+1. Reload the Gradle project so the dependencies can be downloaded.
+2. Run the `genesisInstall` script to create the reconciliation folder in your runtime folder, as well as all the necessary configuration and scripts.
+3. Run the `remap` script so the tables and fields are created in your database.
+4. Start the server.
+
+After following these steps, one new process will appear in your **mon** tab:
+
+- **GENESIS_RECONCILIATION_MANAGER**
+
+This is the processes that manages the Reconciliation module.

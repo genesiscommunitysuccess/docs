@@ -1,0 +1,22 @@
+---
+title: 'Introduction'
+sidebar_label: 'Introduction'
+sidebar_position: 1
+id: reconciliation-introduction
+keywords: [reconciliation, recon]
+tags:
+    - reconciliation
+    - recon
+---
+
+The Genesis Reconciliation module enables you to compare multiple sets of data to identify and rectify discrepancies.
+You can compare data set using the following reconciliation strategies:
+
+* ONE_TO_ONE (compare 2 data sets: 1:1)
+* ONE_TO_MANY (compare N data sets against a primary data source: 1:N)
+* MANY_TO_MANY (compare N data sets against N data sets: N:N)
+
+The Reconciliation module provides one Microservice: RECONCILIATION_MANAGER.
+
+This service is responsible for all CRUD operations including data dictionaries, configuration and data sources;
+aggregating of reconciliation results; streaming reconciliation results and analytics; and invoking reconciliation runs manually or programmatically.
