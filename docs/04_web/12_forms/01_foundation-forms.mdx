@@ -33,9 +33,16 @@ Foundation forms is defined by using two schemata:
 
 ### Basic install
 
+:::info
+If you create a Genesis Application using [Genesis Create](https://learn.genesis.global/docs/getting-started/quick-start/create-new-application/) or using command line [genx](https://learn.genesis.global/docs/getting-started/quick-start/new-project-using-genx/create-a-new-project/) Foundation Forms will already be imported into your project.
+
 To enable this module in your application, follow the steps below.
 
-1. Add `@genesislcap/foundation-forms` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-forms` as a dependency in your project. Either run the `npm install` command or add the package to your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
+
+```
+npm install --save @genesislcap/foundation-forms
+```
 
 ```javascript
 {

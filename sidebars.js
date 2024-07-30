@@ -529,10 +529,6 @@ module.exports = {
         {
           "type": "doc",
           "id": "web/forms/forms-filters"
-        },
-        {
-          "type": "doc",
-          "id": "web/forms/forms-customisation"
         }
       ]
     }
