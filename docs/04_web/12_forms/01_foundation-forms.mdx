@@ -1,6 +1,6 @@
 ---
-title: 'Foundation Forms - Introduction'
-sidebar_label: 'Introduction'
+title: 'Foundation Forms - introduction'
+sidebar_label: 'introduction'
 id: foundation-forms
 keywords: [genesis, foundation, ui, forms, smart forms]
 tags:
@@ -26,8 +26,8 @@ Examples in this documentation can be found on our [Genesis Community Success](h
 
 Foundation forms is defined by using two schemata:
 
-- [resourceName](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.filters.resourcename/?_highlight=resourcename) or [jsonSchema](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.filters.jsonschema/?_highlight=jsonschema) defines the underlying data to be shown in the UI (objects, properties, and their types).
-- [uiSchema](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.uischema/?_highlight=uischema#uischema-type) defines how this data is rendered as a form, e.g. the order of controls, their visibility, and the layout.
+- [resourceName](/web/forms/docs/api/foundation-forms.filters.resourcename/?_highlight=resourcename) or [jsonSchema](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.filters.jsonschema/?_highlight=jsonschema) defines the underlying data to be shown in the UI (objects, properties, and their types).
+- [uiSchema](/web/forms/docs/api/foundation-forms.uischema/?_highlight=uischema#uischema-type) defines how this data is rendered as a form, e.g. the order of controls, their visibility, and the layout.
 
 ## Forms
 
@@ -49,7 +49,7 @@ To enable this module in your application, follow the steps below.
 
 ### 1. Register components
 
-To register the form component import the `Form` component in the `client/src/components/components.ts` file.
+To register the form component, import the `Form` component in the `client/src/components/components.ts` file.
 
 ```ts
 import { Form } from '@genesislcap/foundation-forms';
@@ -185,7 +185,7 @@ Use this when you want to avoid fetching metadata from the server, but be aware 
 
 ### 5. Pre-fill forms with data (optional)
 
-Use the `data` attribute, which allows you to pre-fill the form with ready-made information. A common use case for this is when editing an existing record.
+The `data` attribute allows you to pre-fill the form with information. A common use case for this is when editing an existing record.
 
 ```ts
 const existingData = {
@@ -206,11 +206,11 @@ const existingData = {
 
 ### 6. Handling the submit event
 
-When the submit button is the form emits a `submit` event. You can listen to this in your template by adding `@submit="..."` to the foundation-form element.
+When the **Submit** button in the form is clicked, the form emits a `submit` event. You can listen to this in your template by adding `@submit="..."` to the foundation-form element.
 
 Assuming your class has a method called `handleFormSubmit`, the second parameter of the callback function `ctx.event` contains the event emitted by the form element. The `event.detail` property will contain a payload of the form state that looks like `{ errors: [...], payload: {...}`. Any form errors will be listed in the `errors` array and the `payload` property will be an object that matches your jsonSchema.
 
-If you have configured your form with a `resource-name` property the form will post to the backend event handler specified. You can still listen to the submit event - you might want to clear the form, or show/hide a message etc.
+If you have configured your form with a `resource-name` property, the form will post the data to the back end event handler specified. You can still listen to the submit event - you might want to clear the form, or show/hide a message etc.
 
 ```ts
 import { customElement, ... } from '@genesislcap/web-core';
