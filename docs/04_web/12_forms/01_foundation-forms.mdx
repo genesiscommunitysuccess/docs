@@ -16,22 +16,24 @@ tags:
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 
-## [API Docs](./docs/api/index.md)
-
 :::info
-Examples in this documentation can be found on our [Genesis Community Success](https://github.com/genesiscommunitysuccess/form-examples) repo.
+This section contains lots of examples, which you can also explore in our [Genesis Community Success](https://github.com/genesiscommunitysuccess/form-examples) repo.
+
+After you have looked at the basics here, you can find more details in our [API Docs](./docs/api/index.md)
 :::
 
 `foundation-forms` is a library for efficiently building complex forms and filters at scale.
 
-Foundation forms is defined by using two schemata:
+At its simplest, a form is a collection of fields for entering data. However, forms can also be very complex, allowing you to add different web components, such as checkboxes, tabbed information or even steps to guide the user through a process. There are also many layout options for the information in the form.
+
+There are two types of schema that enable you to define the layout and content of a form:
 
 - [resourceName](/web/forms/docs/api/foundation-forms.filters.resourcename/?_highlight=resourcename) or [jsonSchema](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.filters.jsonschema/?_highlight=jsonschema) defines the underlying data to be shown in the UI (objects, properties, and their types).
 - [uiSchema](/web/forms/docs/api/foundation-forms.uischema/?_highlight=uischema#uischema-type) defines how this data is rendered as a form, e.g. the order of controls, their visibility, and the layout.
 
-## Forms
+This section gives you examples of how to use them to create forms with different layouts.
 
-### Basic install
+## Forms - basic installation
 
 :::info
 If you create a Genesis Application using [Genesis Create](https://learn.genesis.global/docs/getting-started/quick-start/create-new-application/) or using command line [genx](https://learn.genesis.global/docs/getting-started/quick-start/new-project-using-genx/create-a-new-project/) Foundation Forms will already be imported into your project.
