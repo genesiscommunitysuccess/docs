@@ -119,79 +119,26 @@ Instead of providing `resourceName`, you can hard-code the `JSON schema` on the 
 Here is an example of a JSON schema:
 
 ```ts
-const sampleJsonSchema = {
+export const sampleJsonSchema = {
   type: 'object',
   properties: {
-    ISSUER_NAME: {
+    SIDE: {
       type: 'string',
-      minLength: 3,
       description: 'kotlin.String',
     },
-    PRICE: {
+    QUANTITY: {
       type: 'number',
       description: 'kotlin.Double',
     },
-    MAIN_CONTACT: {
-      type: 'string',
-      pattern: '^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$',
-      description: 'kotlin.String',
-    },
-    PASSWORD: {
+    SIMPLE_TRADE_ID: {
       type: 'string',
       description: 'kotlin.String',
-    },
-  },
-  additionalProperties: false,
-  required: ['ISSUER_NAME', 'MAIN_CONTACT'],
+    }
+  }
 };
 ```
 
-This is based on the following UI schema:
-
-```ts
-const sampleUiSchema = {
-  type: 'VerticalLayout',
-  elements: [
-    {
-      type: 'Control',
-      label: 'Issuer Name',
-      scope: '#/properties/ISSUER_NAME',
-    },
-    {
-      type: 'Control',
-      label: 'Phone',
-      scope: '#/properties/MAIN_CONTACT',
-    },
-    {
-      type: 'Control',
-      label: 'Price',
-      scope: '#/properties/PRICE',
-    },
-    {
-      type: 'Control',
-      scope: '#/properties/COUNTERPARTY',
-      options: {
-        allOptionsResourceName: 'COUNTERPARTY',
-        valueField: 'COUNTERPARTY_ID',
-        labelField: 'COUNTERPARTY_ID',
-        datasourceConfig: {
-          request: {
-            COUNTERPARTY_ID: 'ACME',
-          },
-        },
-      },
-    },
-    {
-      type: 'Control',
-      label: 'Password',
-      scope: '#/properties/PASSWORD',
-      options: {
-        isPassword: true,
-      },
-    },
-  ],
-};
-```
+And we use the same `UiSchema` as earlier. This creates a form with the same structure as the
 
 ```html
 <foundation-form

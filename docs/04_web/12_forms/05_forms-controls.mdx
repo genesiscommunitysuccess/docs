@@ -17,7 +17,7 @@ Foundation forms has a range of advanced components for entering text, numbers, 
 
 ## Text Control
 
-![](/img/smart-forms/text-input.png)
+![Text Input](/img/smart-forms/text-input.png)
 
 This is the standard renderer. This creates a `text-field` in your form. This input takes any characters.
 
@@ -36,7 +36,7 @@ const textInputUiSchema: UiSchemaElement =     {
 
 ## Number Control
 
-![](/img/smart-forms/number-input.png)
+![Number Input](/img/smart-forms/number-input.png)
 
 The number renderer creates a `number-field` in your form. This input only accepts numeric data and sets a numeric value on the underlying form model.
 
@@ -56,7 +56,7 @@ const numberInputUiSchema: UiSchemaElement = {
 
 ## Boolean Control
 
-![](/img/smart-forms/boolean-input.png)
+![Boolean Input](/img/smart-forms/boolean-input.png)
 
 The boolean renderer creates a checkbox control. Setting the `type` value in the JSONSchema to `boolean` will invoke this renderer. It sets a `true` or `false` on the underlying form model.
 
@@ -75,7 +75,7 @@ const booleanInputUiSchema: UiSchemaElement = {
 
 ## Date Control
 
-![](/img/smart-forms/date-input.png)
+![Date Input](/img/smart-forms/date-input.png)
 
 The date control schema creates a date renderer with an input field and a date picker. The control is invoked by setting the `description` property in the JSONSchema to be `org.joda.time.DateTime`. The form only allows numbers to be input and stores the date value in miliseconds in the underling form model.
 
@@ -92,9 +92,54 @@ const dateInputUiSchema: UiSchemaElement = {
 };
 ```
 
+## Password Control
+
+![Password Input](/img/smart-forms/password-input.png)
+
+The password control schema creates a password field. This is a text field with the input characters obscured. You invoke this renderer by setting the `isPassword` property in `options` to be `true`.
+
+```ts
+// Password Input
+const passwordInputJsonSchema: JSONSchema7 = {
+  type: 'string',
+  description: 'kotlin.String'
+};
+
+const passwordInputUiSchema: UiSchemaElement = {
+  type: 'Control',
+  scope: '#/properties/password',
+  options: <StringRendererOptions>{
+    isPassword: true,
+  }
+};
+```
+
+## Textarea Control
+
+![Textarea Input](/img/smart-forms/textarea-input.png)
+
+
+The textarea control schema creates a textarea field. This a multi line entry field. You invoke this renderer by setting the `textarea` property in `options` to be `true`.
+
+```ts
+// Textarea Input
+const textAreaInputJsonSchema: JSONSchema7 = {
+  type: 'string',
+  description: 'kotlin.String'
+}
+
+const textAreaInputUiSchema: UiSchemaElement = {
+  type: 'Control',
+  scope: '#/properties/textarea',
+  options: <StringRendererOptions>{
+    textarea: true,
+  }
+}
+```
+
 ## Select Control
 
-![](/img/smart-forms/select-input.png)
+![Select Input](/img/smart-forms/select-input.png)
 
 The select control schema creates a dropdown select box. Users can select only one value from the given list. You can
 
@@ -123,7 +168,7 @@ const selectInputUiSchema: UiSchemaElement = {
 
 ## Connected Select
 
-![](/img/smart-forms/select-connected-input.png)
+![Connected Select Input](/img/smart-forms/select-connected-input.png)
 
 The connected select renderer creates a select input field that populates the list of dropdown options from an endpoint in your dataserver.
 
@@ -152,7 +197,7 @@ const connectedSelectUISchema: UiSchemaElement = {
 
 ## Connected Multi Select
 
-![](/img/smart-forms/multi-select-connected-input.png)
+![Connected Multi Select](/img/smart-forms/multi-select-connected-input.png)
 
 The connected multi select renderer connects to your backend in the same way the Connected Select renderer does. In the JSONSchema, specify the `type` property to be `array` to invoke the connected multi select renderer.
 
@@ -178,7 +223,7 @@ const connectedMultiSelectUISchema: UiSchemaElement = {
 
 ## Full UI and JSON schema
 
-![](/img/smart-forms/form-controls.png)
+![Full Schema](/img/smart-forms/form-controls.png)
 
 Using all the examples above, here is a `foundation-form` that uses the all the input controls we have listed. Try it out yourself!
 
