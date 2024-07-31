@@ -1,5 +1,5 @@
 ---
-title: 'Foundation Forms - Layouts'
+title: 'Foundation Forms - layouts'
 sidebar_label: 'Layouts'
 id: foundation-forms-layouts
 keywords: [genesis, foundation, ui, forms, smart forms]
@@ -18,18 +18,18 @@ Foundation forms allows you to customise the layout of your forms.
 The layouts must be one of [UiSchemaElementType](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.uischemaelementtype/) which are:
 
 - `VerticalLayout` - form elements are arranged vertically.
-- `HorizontalLayout` - form elements are arranged horizontally.
-- `LayoutVertical2Columns` - form elements are arranged in two columns vertically.
-- `Group` - creates a form divided into separate groups, each with their own labels.
-- `Categorization` - creates a form divided into tabs form with only one tab section visible at a time.
-- `Array` - creates a dynamic form where for entering multiple instances of a data type.
+- `HorizontalLayout` - arranges the form elements horizontally.
+- `LayoutVertical2Columns` - arranges the form elements in two columns vertically.
+- `Group` - creates a form divided into separate groups, each with its own label.
+- `Categorization` - creates a form divided into tabs, with only one tab section visible at a time.
+- `Array` - creates a dynamic form for entering multiple instances of a data type.
 - `Stepper` - creates a tabbed form with a sidebar showing form progress. Each step is completed separately.
 
-The layout for a form is configured in the `type` property of the [UISchema](https://learn.genesis.global/docs/web/forms/docs/api/foundation-forms.uischema/?_highlight=uisc#uischema-type)
+The layout for a form is configured in the `type` property of the [UISchema](/web/forms/docs/api/foundation-forms.uischema/?_highlight=uisc#uischema-type)
 
-By default the form uses `VerticalLayout` if no uiSchema is specified.
+By default, the form uses `VerticalLayout` if no `uiSchema` is specified.
 
-## Vertical Layout
+## Vertical layout
 
 Each item in the `elements` property is arranged vertically.
 
@@ -44,9 +44,9 @@ const uISchema: UISchema = {
 
 ![](/img/smart-forms/layout-vertical.png)
 
-## Horizontal Layout
+## Horizontal layout
 
-Each item in the `elements` property is arranged vertically.
+Each item in the `elements` property is arranged horizontally.
 
 ```ts
 const uISchema: UISchema = {
@@ -60,9 +60,9 @@ const uISchema: UISchema = {
 ![Horizontal Layout](/img/smart-forms/layout-horizontal.png)
 
 
-## Vertical Two Column Layout
+## Vertical two-column layout
 
-Each item in the `elements` property is arranged into vertically with two items per line.
+Each item in the `elements` property is arranged vertically, with two items per line.
 
 ```ts
 const uISchema: UiSchema = {
@@ -78,9 +78,9 @@ const uISchema: UiSchema = {
 
 ## Group
 
-This is used for grouping form elements together into separate blocks, each section with it's own label.
+This is used for grouping form elements into separate blocks. Each section  (block)has its own label.
 
-In the below example we have personal information split into basic and address sections. You can add as many groups as you want.
+In the example below, we have personal information split into basic and address sections. You can add as many groups as you want.
 
 ```ts
 const uISchema: UiSchema = {
@@ -114,7 +114,7 @@ const uISchema: UiSchema = {
 
 ## Categorization
 
-This works similar to groups except each section is shown on it's own tab with only one tab visible at a time.
+This is similar in principle to groups. Here, each group (section) is shown in its own tab, and only one tab is visible at a time.
 
 ```ts
 const uISchema = {
@@ -159,9 +159,9 @@ const uISchema = {
 
 ## Array
 
-An array layout enables you to create a dynamic form with the ability to add multiple instances of your `jsonSchem` model. For this, you need both a `uiSchema` and a `jsonSchema`.
+An array layout enables you to create a dynamic form with the ability to add multiple instances of your `jsonSchema` model. For this, you need both a `uiSchema` and a `jsonSchema`.
 
-In this example we are creating a form where the user can input multiple Swap Schedule items. Another case would be adding multiple users at once.
+In this example, we are creating a form where the user can input multiple Swap Schedule items. Another case would be adding multiple users at once.
 
 ```ts
 export const formsWithArraysJsonSchema: JSONSchema7 = {
@@ -201,7 +201,6 @@ export const formsWithArraysUiSchema: UiSchema = {
 ```
 
 ![Form with array](/img/smart-forms/layout-array.png)
-
 
 ## Stepper
 
