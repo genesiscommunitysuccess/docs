@@ -1,5 +1,5 @@
 ---
-title: 'Foundation Forms - Rules'
+title: 'Foundation Forms - rules'
 sidebar_label: 'Rules'
 id: foundation-forms-rules
 keywords: [genesis, foundation, ui, forms, smart forms]
@@ -11,29 +11,29 @@ tags:
   - smart forms
 ---
 
-# Foundation Forms - Rules
+# Foundation Forms - rules
 
-Rules enable you to add dynamic aspects to a form such as showing, hiding, enabling or disabling a UI Schema element based on another value in the form.
+Rules enable you to add dynamic aspects to a form. For example, you can show, hide, enable or disable a UI Schema element based on another value in the form.
 
-## Rule Type
+## Rule type
 
-Foundation forms can use a value `RuleEffect` enum from the `jsonforms` library. There are four possible options
+Foundation forms can use a value `RuleEffect` enum from the `jsonforms` library. There are four possible options:
 
 - `RuleEffect.SHOW` - shows a UI Schema element
 - `RuleEffect.HIDE` - hides a UI Schema element
 - `RuleEffect.ENABLE` - enables a UI Schema element
 - `RuleEffect.DISABLE` - disables a UI Schema element
 
-## Rule Condition
+## Rule condition
 
-To create a rule in a UISchemaElement you set the `rule` property equal to an object with `effect`, which can be one of the `RuleEffect` enum values, and a `condition`.
+To create a rule in a `UISchemaElement`, set the `rule` property equal to an object with `effect`, which can be one of the `RuleEffect` enum values, and a `condition`.
 
-In the `condition` property, you create and object with `scope`, a string value corresponding to the value you want to test and a `schema` property which evaluates the value from the scope value against a test.
+In the `condition` property, you create an object with `scope`, a string value corresponding to the value you want to test and a `schema` property which evaluates the value from the scope value against a test.
 
 
-### Boolean Rule example
+### Boolean rule example
 
-In the below example, there is a checkbox `withLimit` which when set to true enables the `limitPrice` field.
+In the below example, there is a checkbox `withLimit`. When this is set to true, it enables the `limitPrice` field.
 
 ```ts
 const formsWithRulesJsonSchema: JSONSchema7 = {
@@ -76,7 +76,7 @@ const formsWithRulesUiSchema: UiSchema = {
 }
 ```
 
-When not checked, the limit price field is disabled.
+The result of this is that when the `withLimit` box is not checked, the limit price field is disabled.
 
 ![](/img/smart-forms/rules-disabled.png)
 
@@ -84,9 +84,9 @@ When checked, the limit price field is enabled.
 
 ![](/img/smart-forms/rules-enabled.png)
 
-### Enum Rule Example
+### Enum rule example
 
-In the below example we will show you how to use the enum condition. In this case, we show the `zipCode` control if the user selects United States and `postCode` if the user selects either United Kingdom or Canada.
+The example below shows you how to use the enum condition. In this case, we show the `zipCode` control if the user selects United States and `postCode` if the user selects either United Kingdom or Canada.
 
 ```ts
 export const formsWithRulesUiSchema: UiSchema = {
@@ -124,11 +124,11 @@ export const formsWithRulesUiSchema: UiSchema = {
 }
 ```
 
-When the value of country is United States, the zip code field is shown.
+When the value of `country` is United States, the zip code field is shown.
 
 ![](/img/smart-forms/limit-not-checked.png)
 
-When the value of country either United Kingdom or Canada, the postal code field is shown.
+When the value of `country` is either United Kingdom or Canada, the postal code field is shown.
 
 ![](/img/smart-forms/limit-checked.png)
 
