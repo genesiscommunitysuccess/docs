@@ -66,7 +66,7 @@ eventHandler {
 ...
 ```
 
-To insert the automatically-generated JSON schema for this resource in your **templeate.ts** file, use the code below:
+To insert the automatically-generated JSON schema for this resource in your **template.ts** file, use the code below:
 
 **forms-json-schema.template.ts**
 ```ts
@@ -79,7 +79,7 @@ Once you have done this, you will see a form that looks like this:
 ![](/img/smart-forms/simple-trade-json-schema.png)
 
 ## Client-side JSON schema
-You can create your own JSON schema on the client side if you want to specify your own form.
+You can create your own JSON schema on the client side if you want to specify the exact content layout of the form.
 
 Here is an example of a JSON schema defined on the client. It describes an object with two properties - QUANTITY and SIDE, similar to the one we described above.
 
@@ -106,11 +106,11 @@ const sampleJsonSchema = {
 </foundation-form>
 ```
 
-You will see a form that looks similar but without the id field
+The resulting form looks similar but it has no id field:
 
 ![](/img/smart-forms/simple-trade-client-side-json-schema.png)
 
-Full source code at [JSON/UI Schema example](https://github.com/genesiscommunitysuccess/form-examples/tree/main/client/src/routes/forms-json-schema)
+Full source code at [JSON/UI Schema example](https://github.com/genesiscommunitysuccess/form-examples/tree/main/client/src/routes/forms-json-schema).
 
 ## License
 
