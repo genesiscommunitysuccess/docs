@@ -11,13 +11,13 @@ tags:
   - smart forms
 ---
 
-# Foundation Forms UI Schema
+# Foundation Forms UI schema
 
 Most renderers are defined directly in the `jsonSchema` that comes from the server, but there are also those that you can add via `uiSchema`.
 
 You can control the appearance of your form using the [UI Schema](/web/forms/docs/api/foundation-forms.uischema/) to describe the layout of your form. This describes the different UI Schema elements that appear in your form.
 
-Here is an example of a UI Schema we could use with the JSON Schema we described in the previous step.
+Here is an example of a UI schema we could use with the JSON schema we described in the previous page.
 
 In this UISchema:
 
@@ -62,7 +62,6 @@ export const simpleTradeUiSchema: UiSchema = {
 
 It is important to note the `scope` property in each [UiSchemaElement](/web/forms/docs/api/foundation-forms.uischemaelement/).
 
-
 ## Foreign-key relationship with UISchema
 
 You can easily use foundation forms to enforce a foreign-key relationship between two entities.
@@ -106,7 +105,6 @@ dataServer {
     ...
 }
 ```
-
 
 In the UI schema, for the COUNTERPARTY_ID control, specify the `allOptionsResourceName` to be the value from your Data Server query - in this case, `ALL_COUNTERPARTIES`, and set the `valueField` to be `COUNTERPARTY_ID` and `labelField` to be `NAME`:
 
