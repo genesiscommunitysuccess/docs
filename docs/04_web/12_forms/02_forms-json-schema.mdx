@@ -15,7 +15,7 @@ tags:
 
 Foundation forms use a [JSON Schema](https://json-schema.org/understanding-json-schema/about) to define the underlying model of the form. This defines the objects and properties, as well as their types.
 
-You can use the JSONSchema provided by the Data Server or Event Handler that is the source of the data, or you can define your own schema on the client.
+If the source of the data is a resource in a [Data Server](/server/data-server/basics/) or [Event Handler](/server/event-handler/basics/) of your application, then you can use the JSON schema that is generated automatically by the Genesis Platform. Alternatively, you can define your own schema on the client.
 
 :::info
 This section covers aspects of the [Data Server](/server/data-server/basics/) and [DataBase](/database/) sections.
@@ -24,9 +24,9 @@ The examples provided are simple, but it is worth exploring these sections in mo
 
 ## Server-side JSON schema
 
-If you have a [Data Server](/server/data-server/basics/) serving a table like this:
+Here is an example of a simple table defined in an application's **-tables-dictionary.kts** file. It is a simple table with three fields:
 
-`smart-forms-examples-tables-dictionary.kts`
+**smart-forms-examples-tables-dictionary.kts**
 ```kts
  tables {
     table(name = "SIMPLE_TRADE", id = 10_000) {
@@ -39,7 +39,9 @@ If you have a [Data Server](/server/data-server/basics/) serving a table like th
 }
 ```
 
-`smart-forms-examples-tables-dictionary.kts`
+The data for this table is provided by a query in the application's **-dataserver.kts** file. This is the data source:
+
+**smart-forms-examples-dataserver.kts**
 ```kts
 dataServer {
     query("ALL_SIMPLE_TRADES", SIMPLE_TRADE)
@@ -47,7 +49,9 @@ dataServer {
 }
 ```
 
-`smart-forms-examples-event-handler.kts`
+The event that enables you to insert the data from the form into the database table is provided in the application's **-eventhandler.kts** file. This is the data source:
+
+**smart-forms-examples-eventhandler.kts**
 ```kts
 eventHandler {
     eventHandler<SimpleTrade>("SIMPLE_TRADE_INSERT", transactional = true) {
@@ -62,18 +66,21 @@ eventHandler {
 ...
 ```
 
-`forms-json-schema.template.ts`
+To insert the automatically-generated JSON schema for this resource in your **templeate.ts** file, use the code below:
+
+**forms-json-schema.template.ts**
 ```ts
 <foundation-form resourceName="EVENT_TRADE_INSERT">
 </foundation-form>
 ```
 
-You will see a form that looks like this:
+Once you have done this, you will see a form that looks like this:
 
 ![](/img/smart-forms/simple-trade-json-schema.png)
 
-
 ## Client-side JSON schema
+You can create your own JSON schema on the client side if you want to specify your own form.
+
 Here is an example of a JSON schema defined on the client. It describes an object with two properties - QUANTITY and SIDE, similar to the one we described above.
 
 You set the JSON schema on the `foundation-form` element using the `jsonSchema` attribute.
