@@ -1,5 +1,5 @@
 ---
-title: 'Foundation Forms - Validation'
+title: 'Foundation Forms - validation'
 sidebar_label: 'Validation'
 id: foundation-forms-validation
 keywords: [genesis, foundation, ui, forms, smart forms]
@@ -11,15 +11,15 @@ tags:
   - smart forms
 ---
 
-# Foundation Forms - Validation
+# Foundation Forms - validation
 
-You can apply simple and more complex validation logic to foundation forms in a number of ways.
+You can apply simple or more complex validation logic to foundation forms in a number of ways.
 
-## Required fields - Frontend
+## Required fields - front end
 
-To make a field required you include the field name in the json schema `required` property.
+To make a field required, include the field name in the json schema `required` property.
 
-In this example we extend our past example schema with the required fields.
+This example extends our previous example schema with the required fields.
 
 ```ts
 const requiredFieldsJsonSchema: JSONSchema7 = {
@@ -29,23 +29,24 @@ const requiredFieldsJsonSchema: JSONSchema7 = {
 
 ```
 
-If you focus and blur, or try submitting the form with the fields not filled you will see the error messages. Also, the form label will be appended with a `*` to indicate it is required.
+If you focus and blur, or try submitting the form with the fields not filled, you will see the relevant error messages. 
+
+For all required fields, the form label will be appended with a `*` to indicate to the user that it is required.
 
 ![Validation required](/img/smart-forms/validation-required.png)
 
+## Required fields - auto-generated schema from the back end
 
-## Required fields - auto generated schema from backend
+If you are using the `reseourceName` property on your form, this uses the generated json schema from the corresponding type.
 
-If you are using `reseourceName` property on your form the form will use the generated json schema from the corresponding type.
-
-Using the `EVENT_COUNTERPARTY_INSERT` event endpoint your template looks like this e.g. just passing the event name.
+Using the `EVENT_COUNTERPARTY_INSERT` event endpoint, your template looks like this (e.g. just passing the event name).
 
 ```ts
 <foundation-form resourceName="EVENT_COUNTERPARTY_INSERT">
 </foundation-form>
 ```
 
-This is based on the model defined in your tables and event handler files file. The `notNull()` fields will be required in the form.
+This is based on the model defined in your tables and event handler files. The `notNull()` fields will be required in the form.
 
 ```kts
 eventHandler<Counterparty>("COUNTERPARTY_INSERT", transactional = true) {
@@ -77,7 +78,7 @@ table(name = "COUNTERPARTY", id = 11_001) {
 
 A common requirement in a form field is to have a minimum or maximum number of characters, or a min or max value. This is easily achieved using the json schema.
 
-You specify the `minLength` or `maxLength` property for an individual schema element
+Specify the `minLength` or `maxLength` property for the individual schema element; here is an example:
 
 ```ts
 export const validationMinMaxLengthJsonSchema: JSONSchema7 = {
@@ -95,7 +96,7 @@ export const validationMinMaxLengthJsonSchema: JSONSchema7 = {
 }
 ```
 
-Then your form will validate the number of characters.
+The result is that your form will validate the number of characters.
 
 ![Validation required](/img/smart-forms/validation-min-max-length.png)
 
@@ -103,7 +104,7 @@ Then your form will validate the number of characters.
 
 Another common requirement in a form field is to have a minimum or maximum value. Again, this is easily achieved using the json schema.
 
-You specify the `minimum` or `maximum` property for an individual schema element
+Specify the `minimum` or `maximum` property for the individual schema element; here is an example:
 
 
 ```ts
@@ -130,7 +131,7 @@ The form will show any errors if you try to submit or blur an element.
 
 You can validate the input of your field using regex to ensure the user enters a certain pattern of characters.
 
-A common use case for this is validating phone number and email input data.
+A common use case for this is validating phone number or email input data.
 
 ```ts
 export const validationPatternJsonSchema: JSONSchema7 = {
@@ -166,11 +167,11 @@ export const validationPatternUiSchema: UiSchema = {
 
 ```
 
-With invalid input data
+Here is the result with invalid input data:
 
 ![Validation pattern invalid](/img/smart-forms/validation-pattern-invalid.png)
 
-With valid input data
+And here is the result With valid input data:
 
 ![Validation pattern valid](/img/smart-forms/validation-pattern-valid.png)
 
