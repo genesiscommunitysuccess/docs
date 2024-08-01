@@ -9,3 +9,108 @@ tags:
   - basics
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Set Up
+
+You will be able to configure your data pipelines in a file called `<app-name>-pipelines.kts`. This must be located in your application’s scripts directory. See [Configuring Runtime](/server/data-pipelines/configuring-runtime/) to see how to add this script to your application’s processes configuration.
+
+:::note
+If you are using the [Genesis Gradle Settings Plugin](/operations/project-structure/settings-plugin/) in your application then there is no need for this next step.
+:::
+
+You will need to add the following dependency to your app module:
+
+<Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
+    <TabItem value="gradle">
+
+        ```kotlin
+        implementation(genesis("pal-datapipeline"))
+        ```
+
+    </TabItem>
+    <TabItem value="maven">
+
+        ```xml
+        <dependency>
+            <groupId>global.genesis</groupId>
+            <artifactId>genesis-pal-datapipeline</artifactId>
+            <version>$genesisVersion</version>
+        </dependency>
+        ```
+
+    </TabItem>
+</Tabs>
+
+## Pipelines
+
+There are 2 kind of pipelines:
+
+- Batch Pipeline
+- Realtime Pipeline
+
+Each pipeline must have a single source and single sink, in between these stages you are able to have any number of operator steps as long as the types & ordering comply to that of the pipeline you are using.
+See below for more details on what types are available among the 2 pipelines.
+
+### Batch Pipeline
+
+A batch pipeline will only run once and will need to be triggered manually via the use of its execute method inside the Pipeline Manager.
+The execute method takes in a map of input parameters which provide the context that can be used throughout the pipeline.
+
+Example:
+```kotlin
+// GPAL Script to define pipeline
+val fileStorageSource = fileStorageSource()
+
+pipelines {
+    pipeline("TEST_FILE_STORAGE") {
+        source(fileStorageSource)
+            .transform(StreamOperator<PipelineFile, String> { input -> flow {
+                input.collect { pipelineFile ->
+                    pipelineFile.content.bufferedReader().use { it.readText() } }
+            }
+            })
+            .sink(fileSink)
+    }
+}
+```
+
+Example of how you would trigger the execution of this pipeline in an event handler:
+```kotlin
+val pipelineManager = inject<PipelineManager>()
+
+eventHandler<FileStorageData>(name = "FILE_PIPELINE_START") {
+        onCommit { event ->
+            val details = event.details
+
+            val pipeline = pipelineManager.getBatchPipeline("TEST_FILE_STORAGE")
+            pipeline?.execute(mapOf("FILE_STORAGE_ID" to details.fileStorageId, "FILE_NAME" to details.fileName))
+            ack()
+        }
+    }
+```
+
+### Realtime Pipeline
+
+A realtime pipeline will be started as soon as the process running the script is up and will only be stopped once the process has shut down. If you need to manually stop/start the pipeline you can also do so using the Pipeline Manager but this is not recommended. There are 2 possible scenarios you can have for a realtime Pipeline:
+
+**Streaming**
+
+:::note
+You must start off with a split operator, after which you can use any combination of operators.
+:::
+
+GPAL Example:
+
+
+**Element**
+
+:::note
+You must start off with a suspend element operator, after which you can use any combination of operators.
+:::
+
+GPAL Example:
+
+
+

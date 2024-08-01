@@ -1,0 +1,76 @@
+---
+title: 'Document Management - `Data Pipelines'
+sidebar_label: 'Data Pipelines'
+sidebar_position: 4
+id: doc-management-pipelines
+keywords: [doc-management, pipelines]
+tags:
+  - doc-management
+  - file-storage-pipelines
+---
+
+Here are some implementations provided with the Document Manager that can be used within any data pipeline you have set up. See [Data Pipelines](/server/data-pipelines/introduction/) for more information.
+
+### File Storage Source (Batch)
+
+Batch source which retrieves a single file that has already been uploaded to the file storage and returns the respective details as a `PipelineFile` object.
+When running execute to trigger this source, at least one of the following should be provided as part of the inputs map with the following keys:
+
+- FILE_STORAGE_ID
+- FILE_NAME
+
+If at least one of these values is not provided then the source will throw an exception.
+
+GPAL Example:
+```kotlin
+// GPAL Script to define pipeline
+val fileStorageSource = fileStorageSource()
+
+pipelines {
+    pipeline("TEST_FILE_STORAGE") {
+        source(fileStorageSource)
+            .sink(fileSink)
+    }
+}
+```
+
+Example of how you would trigger the execution of this pipeline in an event handler:
+```kotlin
+val pipelineManager = inject<PipelineManager>()
+
+eventHandler<FileStorageData>(name = "FILE_PIPELINE_START") {
+        onCommit { event ->
+            val details = event.details
+
+            val pipeline = pipelineManager.getBatchPipeline("TEST_FILE_STORAGE")
+            pipeline?.execute(mapOf("FILE_STORAGE_ID" to details.fileStorageId, "FILE_NAME" to details.fileName))
+            // note: both id and file name are not necessary but can be provided
+            ack()
+        }
+    }
+```
+
+### File Storage Sink
+
+A sink into a file which takes a stream of strings as input.
+It requires a `FileStorageClient` and some config of type `FileStorageSinkConfig`.
+The config is used to set the `userName` and the `fileName`.
+There is also a `buildFileName` {} lambda function which allows the user to do add some logic to make the `fileName` dynamic.
+
+GPAL Example:
+```kotlin
+pipeline("TEST_FILE_SINK") {
+    source(dbBulkSubscribe<Trade>())
+        .map {
+            val record = when (it) {
+                Bulk.Prime.Completed -> null
+                is Bulk.Prime.Record -> it.record.toString()
+                is Bulk.Update.Delete -> null
+                is Bulk.Update.Insert -> it.record.toString()
+                is Bulk.Update.Modify -> it.record.toString()
+            }
+        }
+        .sink(record)
+}
+```
+
