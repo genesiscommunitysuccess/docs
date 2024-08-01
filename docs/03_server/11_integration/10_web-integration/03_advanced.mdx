@@ -1,0 +1,194 @@
+---
+title: 'Usage Approaches of Genesis HTTP Client and Codegen'
+sidebar_label: 'Usage Approaches'
+id: genesis-http-client-usage-approaches
+keywords: [server, web, http, integration, client, usage, approaches]
+tags:
+  - server
+  - web
+  - http
+  - integration
+  - client
+  - usage
+  - approaches
+---
+
+# Usage Approaches of Genesis HTTP Client
+
+The Genesis HTTP Client offers multiple approaches to making HTTP requests, catering to different use cases and developer preferences. This section covers the three main usage approaches:
+
+1. Direct Client Usage
+2. Annotation-Driven Approach
+3. OpenAPI Code Generation Approach
+
+## Direct Client Usage
+
+This approach provides the most flexibility and control over your HTTP requests by directly using the GenesisHttpClient within Genesis structures. You could map the response of the call to a known structure like in the following example TradeResponse
+
+```kotlin
+
+data class TradeResponse(
+    val tradeId: Int,
+    val amount: Double,
+    val currency: String,
+    val status: String,
+)
+
+requestReply<Unit, TradeResponse>("TRADE_API_CALL") {
+    val client = GenesisHttpClient()
+
+    replySingle {
+        client.get<TradeResponse> {
+            url = "https://api.example.com/trades"
+            header("Authorization", "Bearer token123")
+            query("tradeId", "123")
+        }.data
+    }
+}
+```
+
+## Annotation-Driven Approach
+
+This approach uses annotated data classes to define request parameters, offering a more structured way to make requests.
+
+```kotlin
+
+data class SampleRequest(
+    @QueryParameter
+    val brokerId: String,
+    @PathParameter
+    val tradeId: Int,
+    @HeaderParameter
+    val authorization: String
+)
+
+requestReply<SampleRequest,Trade>("SAMPLEREQ") {
+    val client = GenesisHttpClient()
+
+    replySingle {
+        client
+            .get<Trade>(
+                path = "http://localhost:8080/trades/{tradeId}",
+                request = it
+            ).data
+    }
+}
+```
+
+In this particular example, the `SampleRequest` data class is annotated with `@QueryParameter`, `@PathParameter`, and `@HeaderParameter` to map its properties to the corresponding request parameters.
+
+The request, when made from inside a request server, will automatically populate the request parameters based on the annotated properties. For instance, the request
+
+```
+localhost:9064/req_SAMPLEREQ?REQUEST.BROKER_ID=1&REQUEST.TRADE_ID=2&REQUEST.AUTHORIZATION=Basic YWRtaW46YWRtaW4=
+```
+
+will be made with the brokerId, tradeId, and authorization values from the `SampleRequest` object. What the external API gets is
+
+```
+GET /trades/2?brokerId=1,
+headers=[host:"localhost:8080",
+authorization:"Basic YWRtaW46YWRtaW4=",
+accept:"application/json",
+accept-charset:"UTF-8",
+user-agent:"Ktor client"]]`
+```
+
+## OpenAPI Code Generation Approach
+
+This approach uses code generated from an OpenAPI/Swagger specification, providing the simplest and most type-safe way to make API calls.
+
+In order to use this approach, you need to generate the code from the OpenAPI specification file using the `genesis-openapi-codegen` tool. The generated code will include API interfaces and data classes that map to the API endpoints and request/response bodies.
+
+To do that you need to also include the following setup to your module's `build.gradle.kts` file:
+
+```kotlin
+
+plugins {
+    id("global.genesis.openapi") version "8.2.0" // Genesis Version
+}
+
+tasks {
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+    genesisOpenApi {
+        packageName = "global.genesis.api.trades"
+        specification = project.layout.projectDirectory.file("src/main/resources/trades.json")
+    }
+}
+```
+
+In this example we are generating the code from the `trades.json` , which is an open-api specification file and the generated code will be placed in the `global.genesis.api.trades` package.
+
+After generating the code either running the `genesis-openapi-codegen` task or building the project, you can use the generated code to make API calls.
+
+```kotlin
+val tradeApi = TradeServiceApi("http://localhost:8080")
+tradeApi.registerApiToken("Authorization", "Basic YWRtaW46YWRtaW4=")
+```
+
+```kotlin
+val accountsApi = AccountsControllerApi("http://localhost:8080")
+accountsApi.registerRetryCallback(HttpStatusCode.Unauthorized) {
+    registerApiToken("Authorization", "Basic YWRtaW46YWRtaW4=")
+}
+```
+
+we could use it inside a Genesis Request Server or Event Handler:
+
+```kotlin
+eventHandler<Account>("API_ACCOUNT_EH_INSERT") {
+    onCommit {
+        val createdAccount = accountsApi.createAccount(it.details)
+        ack(listOf(mapOf("ACCOUNT_NUMBER" to createdAccount.accountNumber)))
+    }
+}
+```
+
+## Paginated Requests and integration with requestReply
+
+Pagination support requires a bit of extra work, but it is possible to integrate with the `requestReply` function. The following example demonstrates how to make a paginated request using the Genesis HTTP Client:
+
+To be able to generate the proper paginated requests and be able to use paginated requests you need to define a file `pagination-config.yaml` in your project with the following content:
+
+```yaml
+paginated_requests:
+  - operation_id: findAllUsingGET // Your operation id, unique and found in the open-api specification
+    index_param: pageIndex // The name of the index parameter in the request (page, index, offset, etc)
+    limit_param: limit // The name of the limit parameter in the request (size, limit, etc)
+```
+
+and adding a pagination config to the config block
+
+```kotlin
+genesisOpenApi {
+    packageName = "global.genesis.api.trades"
+    specification = project.layout.projectDirectory.file("src/main/resources/trades.json")
+    paginationConfig = project.layout.projectDirectory.file("src/main/resources/pagination-config.yaml") // path to the pagination config
+}
+```
+
+Once that you do that the Genesis Openapi Codegen plugin will generate the proper classes and functions to be able to use paginated requests.
+
+```kotlin
+requestReply<FindAllPaginatedRequest, Account>("ACCOUNTS_API") {
+    maxRetries = 5
+    replyList { request ->
+        try {
+            accountsApi.findAllPaginated(request).accounts
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+}
+```
+
+In this example FindAllPaginatedRequest is a class generated from the open-api specification that contains the index and limit parameters and the `accountsApi.findAllPaginated(request).accounts` will make the request to the external API and return the list of accounts.
+
+The ReqRep will automatically handle the pagination.
+
+In the following section we will see more examples.
