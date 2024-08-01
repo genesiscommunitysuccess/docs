@@ -1,0 +1,54 @@
+---
+title: 'How to'
+sidebar_label: 'Overview'
+id: 'how-to-landing'
+---
+
+import QuickCard from '@site/src/components/Card';
+import { Grid } from '@mui/material'
+
+Welcome to our *How to...* documentation. Here, we are going to give you practical information on building Genesis applications, from the simplest introduction through use cases to working code examples.
+
+We hope you find this useful.
+
+
+## Everyday basics
+These are the things that every application has to have.
+
+<Grid container>
+    <Grid item xs={12} md={4} sx={{padding: '1%'}}>
+        <QuickCard heading="Authorisation" link="../database/fields-tables-views/fields-tables-views/" text="Understand the principles of authorising your users at every level.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={4} sx={{padding: '1%'}}>
+        <QuickCard heading="Authentication" link="../database/database-concepts/database-concepts/" text="Right now, this takes you to database concepts. Just saying.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={4} sx={{padding: '1%'}}>
+        <QuickCard heading="Data Types" link="../database/data-types/data-types/" text="Finally, have a look at the different entities used in the Genesis low-code platform.">
+        </QuickCard>
+    </Grid>
+</Grid>
+
+## Another set of cards
+
+More amazing things that you might or might not be able to do. The general idea is that, after reading something here, you'll be able to do it.
+
+<Grid container>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Database Interface" link="../database/database-interface/database-interface/" text="Look at the database interface for the standard methods of interacting with the database.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Helper Classes" link="../database/helper-classes/helper-classes/" text="View the helper classes for details of classes such as Subscription, Write Result and Modify Details.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Async and RxJava APIs" link="../database/types-of-api/types-of-api/" text="The Async API is the preferred API for accessing the database in Kotlin. The RxJava API is also available. ">
+        </QuickCard>
+    </Grid>
+</Grid>
+
+
+
+

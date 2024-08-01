@@ -1,0 +1,165 @@
+---
+title: 'Authorisation'
+sidebar_label: 'Authorisation'
+id: ht-auth
+keywords: [auth, authorisation, permissions]
+tags:
+    - auth
+    - authorisation
+    - permissions
+---
+
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+# Authorisation
+
+Authorisation (or permissions) is the mechanism that ensures that only permitted users can **view** and **update (create, edit, delete)** data in your application.
+
+The Genesis Application Platform makes it easy to set up precise authorisation models based on your business requirements.
+
+By default, everything is accessible by all users who have access to the application. But you can control **access to data** and **the ability to change it** at three levels:
+
+- tables (data entities)
+- records within a table (rows)
+- fields within a table (attributes/columns)
+
+All levels can be configured at the server level to ensure complete security; but you can also add authorisation at the front end to remove views and commands that would otherwise not work or be empty for a given user (i.e. where authorisation has not been granted).
+
+So, you have full control of data within your application at the most granular level.
+
+## Level 1:  tables (data entities)
+
+### Applying permissions at the back end
+At this level, you can authorise users to have access to records within a table. Let us consider the example of a **trade** table.
+
+You can set up the following permissions, for example:
+
+- User A ** is permitted** to **view** trades, but not to **create**, **edit** or **delete** records in the table.
+- User B ** is permitted** to **view**, **create** and **edit** trades, but **is not permitted** to **delete** records in the table.
+- User C ** is permitted** to **view**, **create**, **edit**, and **delete** records in the table.
+- User D **is not permitted** to **view**, **create**, **edit** or **delete** records in the table.
+
+You can also directly apply permissioning to other actions that users can perform on a table, such as “assign a trade to a book”. Authorisation for any finer-grained events can also easily be controlled with minimal code.
+
+### Applying permissions at the front end
+
+In a similar way, you can control visibility of the User Interface components. For example, you can permission any component that displays data from the **trade** table so that different users have a different experience.
+
+- User A sees the grid of trades in the **trade** table, but does not see any buttons  to  **create**, **edit** or **delete** trades.
+- User B ** sees the grid of trades in the **trade** table, and sees buttons to  **create** and **edit** trades. This user does not see a button to **delete** records in the table.
+- User C sees the grid of trades in the **trade** table, and sees buttons to  **create**, **edit** and **delete** trades. 
+- User D does not see the grid of trades and does not see any buttons.
+
+## Level 2A : records (rows)
+
+At the next level down, you can apply conditions for users who are authorised to **view**, **create**, **edit** and **delete**. A user's permission can depend on the content of the specific record (or row).
+
+For example, continue looking at our **trade** table:
+
+- User Aa ** is permitted** to **view** trades (rows) where the country is DE, but **is not permitted** to **create**, **edit** or **delete** trades of this type.
+- User Aa ** is permitted** to **view** trades (rows) where the country is FR, and **is permitted** to **create**, **edit** or **delete** trades of this type.
+- User Aa ** is not permitted** to **view** trades (rows) where the country is ES, and **is not permitted** to **create**, **edit** or **delete** trades of this type.
+- User Aa ** is permitted** to **view**, **create**, **edit** or **delete** trades (rows) where none of the conditions applies. 
+
+## Level 2B : fields (attributes/columns)
+
+At same level, you can configure access to each field in the table. You can do this in conjunction with any authorisation you set up at the record level (2A). Again, consider our example of the **trade** table:
+
+- User A (who is in the support team) **is not permitted** to **view** the counterparty for any trade (row).
+- User B **is permitted**  to view the counterparty but **is not permitted** to **edit** the counterparty to a counterparty based in country GB
+
+All configuration can be applied with simple statements in the relevant part of the code. So, however precise your business requirements is, you can achieve it quickly without undue difficulty.
+
+# How does it work?
+Authorisation for data is based upon “Right Codes” that you define for your application.  
+
+All users have one or more user profiles. Each user profile has one or more Right Codes. Let's look at how this works at different levels.
+
+## Restricting access at Level 1
+
+This is where you control access to specific tables.
+
+The example below restricts who can view a Data Server query called ALL_TRADES. Only users who have a user profile containing the “Right Code” called “TradeView” can view the data in this table. Users without this “Right Code” are prevented from calling this query - thus the data is fully protected:
+
+```jsx
+dataServer {
+  query("ALL_TRADES", TRADE) {
+    permissioning {
+      permissionCodes = listOf("TradeView")
+    }
+  fields {
+	  ...
+	  }
+  }
+}
+```
+Events are the mechanism for changing the database. You can control access to these in exactly the same way.
+
+In the example below, only users with the Right Code “TradeInsert” in their profile are able to insert trades.  All other users will be rejected.
+
+```jsx
+eventHandler<Trade>("TRADE_INSERT", transactional = true) {
+	permissioning {
+		permissionCodes = listOf("TradeInsert")
+	}
+	onCommit { event ->
+		val details = event.details
+		val insertedRow = entityDb.insert(details)
+	}
+}
+```
+
+## Restricting access at Level 2
+
+This is where you use Right Codes to control access to rows and columns.
+
+Once you have set up the Right Codes for your application, you can add the relevant controls on the front end:
+
+1. A “Profile” is created.  This could be “Trader”, “Senior Trader” or “Operations” etc (or any set required.
+2. Each Profile is assigned one or more “Right Codes” representing the authorisation of the profile.
+3. A user can be assigned more than one profile.
+
+For example, you could set up the following user profiles:
+
+- Trader - with the Right Codes “InsertTrade” and “AmendTrade”
+- Senior Trader - with only one Right Code: “CancelTrade”
+
+You could then give the all traders on the team the User profile Trader. This includes the head trader in the team, but you then also give that user the User Profile “Senior Trader”. This gives your head trader a superset of rights.
+
+You can then set up row-level authorisation through a further table where (continuing the example above) Countries are mapped to Profiles.  This could be any reference field as per the authorisation requirements.
+
+<aside>
+🚧 
+
+Explain profiles, permission codes (rights) and linkage~~
+
+Describe user interface to assign permission codes (and users) to profiles.
+
+Show a video of adding users?   Also add some screen shots?
+
+
+</aside>
+
+# Code examples
+
+Check our [example application](https://github.com/genesislcap/howto-permissions) that shows the permissioning features that are available.  
+
+This application has a single data table called Trade.  After a remap, this will be populated with 10 entries - 5 in each of 2 Entities.  Two further tables are added: 
+- Countries (single column)
+- Mapping (which maps between User and Country to enabe row authorisation based upon permitted Countries)
+
+The front end grid demonstrates different authorisations in each quadrant - these map directly to four different Data Server queries, which you can see in the file **Permissions-dataserver.kts**.
+
+Only Users assigned to the Profile ”Full_Access” can insert or modify trades.  Currently this is the user “AmyAccess”, but more Profiles and Users can be added to the application once it is installed and running.
+
+For example, you can edit the User Country table on the “Static” tab to remove Canada from AmyAccess. Once you have done that, AmyAccess will only be able to enter trades against the UK.  You can see the code in the file **Permissions-eventhandler.kts**.
+
+Note that only the user admin is the only user who can modify profiles and add users.  The password for all users who are set up in advance is “genesis”.
+
+# Full technical details
+
+See our reference data on [Authorisation](/server/access-control/authorisation-overview/) for a full explanation of the possibilities for setting up authorisation.
