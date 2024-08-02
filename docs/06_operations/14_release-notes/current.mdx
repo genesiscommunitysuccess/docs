@@ -1,20 +1,25 @@
 ---
-title: 'Release notes - documentation version JUN 24'
-sidebar_label: 'Current (JUN 24)'
+title: 'Release notes - current'
+sidebar_label: 'Current version'
 sidebar_position: 2
 id: current
-keywords: [operations, release notes, JUN 24, JUNE 24]
+keywords: [operations, release notes, JUN 24, JUNE 24, current]
 tags:
 - operations
 - release notes
 - JUN 24
 - JUNE 24
+- current
 ---
 
-## Release notes
-This is version JUN 24 of the documentation for the Genesis low-code platform.
+:::info
+This version of the documentation has been current since June 2024.
 
-This release of the documentation covers the following versions of the platform software:
+**It currently describes version 8.1 of the Genesis Platform**.
+:::
+
+## Release notes
+The **Current** version of the documentation for the Genesis Platform covers the following versions of the platform software:
 
 | part of stack | version        | 
 |---------------|----------------|
@@ -22,8 +27,6 @@ This release of the documentation covers the following versions of the platform 
 | web           | 14.185.0 **+** |   
 
 As soon as changes are made to the platform, this version of the documentation will be updated to show the changes.
-
-Release date: 12 June, 2024
 
 :::info
 To see which front-end and back-end releases are covered by the Previous version of the documentation, select **Previous** from the banner at the top of this page.
@@ -39,7 +42,93 @@ Foundation UI has a programme of regular continual releases. These are documente
 
 GSF release notes are added to this area immediately following each software release. The most recent release is at the top.
 
-**The current GSF release is **version 8.0.1**. As new releases are added, they shall be displayed here.**
+**As new GSF releases are added, they shall be displayed here.**
+
+## Genesis 6.7.35(genesis-server)
+
+### Features
+- Add configurable timeout when waiting for dependent processes
+
+## Genesis 8.1.5(genesis-server)
+
+### Features
+- Add metric for tracking the number of users per dataserver query
+
+### Fixes
+- DOUBLE fields generated using the new table DSL to accept negative values by default
+- Update SetLogLevel to use data classes and workflow, re-add countdown latch to script 
+
+## Genesis 7.2.10(genesis-server)
+
+### Fixes
+- DOUBLE fields generated using the new table DSL to accept negative values by default 
+- Update SetLogLevel to use data classes and workflow, re-add countdown latch to script 
+
+## Genesis 8.0.4(genesis-server)
+
+### Features
+- Add non-blocking threading model for database subscriptions 
+- Add support for Consolidators and data pipelines in GenesisJunit 
+
+### Fixes
+- getRangeFromEnd default method without fields parameter now calls correct getRangeFromEnd method 
+- DOUBLE fields generated using the new table DSL to accept negative values by default
+- FDB alias cache will now respect fields with same name and different type defined in different tables 
+- Update SetLogLevel to use data classes and workflow, re-add countdown latch to script 
+
+## Genesis 6.7.34(genesis-server)
+
+### Fixes
+- Prevent remap using oracle to potentially rename constraints and indices in the recycle bin
+
+## Genesis 8.1.2(platform-documents)
+
+### Features
+- Added ability to save files to file storage client. 
+- Added event for template asset linking
+
+## Genesis 7.2.9(genesis-server)
+
+### Features
+- Add metric for tracking the number of users per dataserver query
+
+## Genesis 7.2.8(genesis-server)
+
+### Features
+- Add non-blocking threading model for database subscriptions
+
+### Fixes
+- getRangeFromEnd default method without fields parameter now calls correct getRangeFromEnd method 
+- FDB alias cache will now respect fields with same name and different type defined in different tables 
+
+## Genesis 8.1.1(platform-auth)
+
+### Fixes
+- One time password doesn't count for historical checks
+
+## Genesis 8.1.4(genesis-server)
+
+### Features
+
+- Add non-blocking threading model for database subscriptions 
+- Add support for Consolidators and data pipelines in GenesisJunit
+
+### Fixes
+- getRangeFromEnd default method without fields parameter now calls correct getRangeFromEnd method 
+- FDB alias cache will now respect fields with same name and different type defined in different tables 
+
+## Genesis 8.1.1(platform-documents)
+
+### Fixes
+- genx will now add file-server-app in app build.gradle.kts
+
+## Genesis 8.1.1(platform-notify)
+
+### Features
+- Hide inbox counter when there are no active alerts
+
+### Fixes
+- Allow DirectRouter to populate gateway with default value and fix Screen All notification routing type 
 
 ## Genesis 7.1.12(platform-auth)
 
