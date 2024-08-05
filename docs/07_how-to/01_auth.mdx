@@ -1,5 +1,5 @@
 ---
-title: 'Authorisation'
+title: 'How to set up authorisation'
 sidebar_label: 'Authorisation'
 id: ht-auth
 keywords: [auth, authorisation, permissions]
@@ -15,19 +15,19 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Authorisation
+For any application that has more than minimal complexity, you will want to give some users access to specific information and functions, and you will want to deny that access to others. For example, you might want to give an admin user the ability to delete an order, but you don't want anyone else to be able to do that.
+
+The Genesis Platform enables you to do this in extremely precise ways to match your business requirements.
 
 Authorisation (or permissions) is the mechanism that ensures that only permitted users can **view** and **update (create, edit, delete)** data in your application.
 
-The Genesis Application Platform makes it easy to set up precise authorisation models based on your business requirements.
-
-By default, everything is accessible by all users who have access to the application. But you can control **access to data** and **the ability to change it** at three levels:
+Until you start to specify any permissions, everything is accessible by any authenticated user. But you can control **access to data** and **the ability to change it** at three levels:
 
 - tables (data entities)
 - records within a table (rows)
 - fields within a table (attributes/columns)
 
-All levels can be configured at the server level to ensure complete security; but you can also add authorisation at the front end to remove views and commands that would otherwise not work or be empty for a given user (i.e. where authorisation has not been granted).
+You can configure all these levels on the server level to ensure complete security; but you can also add authorisation at the front end to remove views and commands that would otherwise not work or be empty for a given user (i.e. where authorisation has not been granted).
 
 So, you have full control of data within your application at the most granular level.
 
@@ -74,12 +74,12 @@ At same level, you can configure access to each field in the table. You can do t
 
 All configuration can be applied with simple statements in the relevant part of the code. So, however precise your business requirements is, you can achieve it quickly without undue difficulty.
 
-# How does it work?
+## How does it work?
 Authorisation for data is based upon “Right Codes” that you define for your application.  
 
 All users have one or more user profiles. Each user profile has one or more Right Codes. Let's look at how this works at different levels.
 
-## Restricting access at Level 1
+### Restricting access at Level 1
 
 This is where you control access to specific tables.
 
@@ -113,7 +113,7 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 }
 ```
 
-## Restricting access at Level 2
+### Restricting access at Level 2
 
 This is where you use Right Codes to control access to rows and columns.
 
@@ -144,15 +144,16 @@ Show a video of adding users?   Also add some screen shots?
 
 </aside>
 
-# Code examples
+## Code examples
 
 Check our [example application](https://github.com/genesislcap/howto-permissions) that shows the permissioning features that are available.  
 
 This application has a single data table called Trade.  After a remap, this will be populated with 10 entries - 5 in each of 2 Entities.  Two further tables are added: 
+
 - Countries (single column)
 - Mapping (which maps between User and Country to enabe row authorisation based upon permitted Countries)
 
-The front end grid demonstrates different authorisations in each quadrant - these map directly to four different Data Server queries, which you can see in the file **Permissions-dataserver.kts**.
+The front-end grid demonstrates different authorisations in each quadrant - these map directly to four different Data Server queries, which you can see in the file **Permissions-dataserver.kts**.
 
 Only Users assigned to the Profile ”Full_Access” can insert or modify trades.  Currently this is the user “AmyAccess”, but more Profiles and Users can be added to the application once it is installed and running.
 
@@ -160,6 +161,6 @@ For example, you can edit the User Country table on the “Static” tab to remo
 
 Note that only the user admin is the only user who can modify profiles and add users.  The password for all users who are set up in advance is “genesis”.
 
-# Full technical details
+## Full technical details
 
 See our reference data on [Authorisation](/server/access-control/authorisation-overview/) for a full explanation of the possibilities for setting up authorisation.
