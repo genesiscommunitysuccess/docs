@@ -780,5 +780,19 @@ module.exports = {
             }
         ]
     }
+  ],
+  howtoSidebar: [
+    'how-to/how-to-landing',
+    {
+      type: 'category',
+      label: 'Authorisation',
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+					id: 'how-to/ht-auth'
+        },
+      ],
+    },
   ]
 }
