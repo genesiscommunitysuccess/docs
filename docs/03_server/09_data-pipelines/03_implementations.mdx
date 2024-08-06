@@ -142,14 +142,13 @@ pipeline("TEST_DB_SINK") {
 pipeline("TEST_DB_SINK") {
   source(dbBulkSubscribe<Trade>())
       .map {
-          val record = when (it) {
-              Bulk.Prime.Completed -> null
-              is Bulk.Prime.Record -> it.record
-              is Bulk.Update.Delete -> null
-              is Bulk.Update.Insert -> it.record
-              is Bulk.Update.Modify -> it.record
-          }
-          DbOperation.Insert(record!!)
+          when (it) {
+                    Bulk.Prime.Completed -> null
+                    is Bulk.Prime.Record -> null
+                    is Bulk.Update.Delete -> DbOperation.Delete(it.record)
+                    is Bulk.Update.Insert -> DbOperation.Insert(it.record)
+                    is Bulk.Update.Modify -> DbOperation.Modify(it.record)
+                }
       }
       .sink(dbSink())
 }
