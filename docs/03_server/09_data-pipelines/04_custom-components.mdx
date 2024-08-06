@@ -22,7 +22,7 @@ The latest index returned will always be the greatest value for the given source
 
 As such, there has been a new table created called DATA_PIPELINE_PERSISTENCE which contains the following fields:
 
-- source: String = the source name for which we are storing the persistence information (needs to be unique per pipeline
+- source: String = the source name for which we are storing the persistence information (needs to be unique per pipeline)
 - index: Long = the index number which will allow us to retrieve the last persisted record
 
 If no other implementation of `PersistenceManager` has been provided, this implementation will be the default instance of PersistenceManager.
