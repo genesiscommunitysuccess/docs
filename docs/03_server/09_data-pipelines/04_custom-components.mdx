@@ -16,7 +16,7 @@ The interface can be injected directly into your class where the default impleme
 
 ### Database Persistence Manager
 
-The DbPersistenceManager is an implementation of PersistenceManager that stores persistence records in the Async database as a record of the table mentioned below.
+The DbPersistenceManager is an implementation of PersistenceManager that stores persistence records in the database as a record of the table mentioned below.
 This class supports transactions and will use a transaction handle if provided, otherwise will use the injected instance of the entity database.
 The latest index returned will always be the greatest value for the given source. The option is also given to the user whether or not to ‘append’ the record i.e; if true, create a new persistence record. If false, overwrite the current persistence record with the new index value.
 
