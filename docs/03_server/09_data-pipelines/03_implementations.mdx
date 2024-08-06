@@ -70,7 +70,7 @@ Split Operator to decode from an InputStream (from a PipelineFile object) to a C
 1. the line number for each CSV row
 2. an object of a user defined type representing the data of each CSV line, by default this is of type `Map<String, String>`
 
-GPAL functions available are `csvRawDecoder()` to deserialise to `Map<String, String>` and `csvDecoder<Trade>()` to deserialise to specified class.
+GPAL functions available are `csvRawDecoder()` to deserialise to `Map<String, String>` and `csvDecoder<T>()` to deserialise to the specified class, represented by T here.
 
 GPAL Examples:
 ```kotlin
