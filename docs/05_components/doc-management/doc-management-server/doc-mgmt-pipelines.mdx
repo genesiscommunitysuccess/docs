@@ -9,7 +9,36 @@ tags:
   - file-storage-pipelines
 ---
 
-Here are some implementations provided with the Document Manager that can be used within any data pipeline you have set up. See [Data Pipelines](/server/data-pipelines/introduction/) for more information.
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+There are some pipeline implementations provided with the Document Manager that can be used within any data pipeline you have set up. See [Data Pipelines](/server/data-pipelines/introduction/) for more information.
+
+### Set Up
+
+In order to have access to the following out of box GPAL extension functions you will need to add the following dependency to the app module of your project:
+
+
+<Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
+    <TabItem value="gradle">
+
+        ```kotlin
+        implementation("global.genesis:file-server-pipelines:$fileServerVersion")
+        ```
+
+    </TabItem>
+    <TabItem value="maven">
+
+        ```xml
+        <dependency>
+            <groupId>global.genesis</groupId>
+            <artifactId>file-server-pipelines</artifactId>
+            <version>$fileServerVersion</version>
+        </dependency>
+        ```
+
+    </TabItem>
+</Tabs>
 
 ### File Storage Source (Batch)
 
