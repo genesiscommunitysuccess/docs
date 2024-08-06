@@ -15,7 +15,7 @@ sidebar_position: 4
     <li>We created a project from scratch using <a href="/getting-started/developer-training/training-content-day1/#1-create-a-new-project">GenX CLI</a>.</li>
     <li>We defined our data model adding <a href="/getting-started/developer-training/training-content-day1/#add-fields">fields</a>, and a <a href="/getting-started/developer-training/training-content-day1/#add-a-table">table</a> called TRADE.</li>
     <li>We added business logic creating a Data Server <a href="/getting-started/developer-training/training-content-day1/#data-server">query</a> and an Event Handler method to <a href="/getting-started/developer-training/training-content-day1/#event-handler">insert data</a>.</li>
-    <li> We prepared the server to <a href="/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process">build and deploy</a>.</li>
+    <li> We prepared the server to <a href="/getting-started/developer-training/training-content-day1/">build and deploy</a>.</li>
   </div>
 </details>
 
@@ -251,11 +251,11 @@ Use all the previous knowledge you've got.
 
 As a reminder, these are the steps needed to complete this task:
 
-1. Remove all TRADE records using the [DropTable](../../../operations/commands/server-commands/#droptable) server command. To do that, use the [Tasks view](../../../server/tooling/intellij-plugin/#tasks-view) on the Genesis plugin and run the DropTable script as explained [here](../../../server/tooling/intellij-plugin/#running-a-genesis-script).
+1. Remove all TRADE records using the [DropTable](/operations/commands/server-commands/#droptable) server command.
 2. Edit **alpha-tables-dictionary.kts** to add the new tables and the fields that you created. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [generateDao](../../../getting-started/developer-training/training-content-day1/#generatedao), so Intellij can recognize it. 
 3. Since you changed the tables definition, you need to run a remap.
 4. Add queries to the Data Server. These must point to the new tables in the **alpha-dataserver.kts** file.
-5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
+5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to [build and deploy](../../../getting-started/developer-training/training-content-day1/).
 
 :::tip adding a new `eventHandler` block
 Example on how to add additional blocks in the `eventHandler`:
@@ -285,7 +285,7 @@ eventHandler {
 ```
 :::
 
-- [Build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process). You can test by using Postman or Console (see more details in the next section) to insert:
+- [Build and deploy](../../../getting-started/developer-training/training-content-day1/). You can test by using Postman or Console (see more details in the next section) to insert:
   - a new counterparty
   - a new instrument
   - a new trade
