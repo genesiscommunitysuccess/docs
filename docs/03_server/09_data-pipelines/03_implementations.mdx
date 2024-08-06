@@ -93,7 +93,7 @@ pipeline("TEST_PIPELINE_RAW_DECODER") {
 // Decoding to another class
 pipeline("TEST_PIPELINE_DECODER") {
     source(camelSource {
-        location = ""
+        location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
     }).split(csvDecoder<System>()) // Deserialise to System class
         .map { input: CsvRow<System> ->
             DbOperation.Insert(input.data)
