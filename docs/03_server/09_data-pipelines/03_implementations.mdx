@@ -77,7 +77,7 @@ GPAL Examples:
 // Decoding to Map<String, String>
 pipeline("TEST_PIPELINE_RAW_DECODER") {
     source(camelSource {
-        location = ""
+        location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
     }).split(csvRawDecoder()) // Default to deserialising to Map<String, String>
         .map { input: CsvRow<Map<String, String>> ->
             DbOperation.Insert(
