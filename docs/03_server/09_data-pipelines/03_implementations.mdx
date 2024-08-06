@@ -101,13 +101,6 @@ pipeline("TEST_PIPELINE_DECODER") {
         .sink(txDbSink())
 }
 
-// User Defines SimpleTrade Class for type of each CSV Row
-pipeline("TEST_CSV_DECODER") {
-        source(CsvDecoderTestSource(File(getResourcePath("/Trades.csv"))))
-            .split(CsvDecoder(SimpleTrade::class.java))
-            .sink(CsvDecoderTestSink())
-    }
-
 ```
 
 ## Sinks
