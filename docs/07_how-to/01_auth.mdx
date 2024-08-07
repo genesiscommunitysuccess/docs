@@ -114,7 +114,7 @@ dataServer {
 ```
 Events are the mechanism for changing the database. You can control access to these in exactly the same way.
 
-In the example below, only users with the Right Code “TradeInsert” in their profile are able to insert trades.  All other users will be rejected.
+In the example below, only users with the Right Code **TradeInsert** in their profile are able to insert trades.  All other users will be rejected.
 
 ```jsx
 eventHandler<Trade>("TRADE_INSERT", transactional = true) {
@@ -129,7 +129,9 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 
 This is where you use Right Codes to control access to rows and columns.
 
-Column level is done via auth and hideFields:
+The example below ensures the column is not returned by the query:
+
+For column-level permissions, use `auth` and `hideFields`:
 ```jsx
   query("ALL_TRADES", TRADE) {
     permissioning {
@@ -142,9 +144,9 @@ Column level is done via auth and hideFields:
     }
   }
 ```
-This code ensures the column is not returned by the dataserver
 
-To perform similar column-level authorisation for the event handler, you need to decide how you handle edits by a user who is not authorised to see (or therefore change) a column. For example, on **modify** you could force the unseen column to remain constant. The code below looks up the value on the prior version and sets it on the proposed modification before saving, based on the RIGHT CODE TradeViewFull.
+To perform similar column-level authorisation for an event handler, you need to decide how you handle edits by a user who is not authorised to see (or therefore change) a column. For example, on **modify** you could force the unseen column to remain constant. The code below looks up the value on the prior version and sets it on the proposed modification before saving, based on the Right Code **TradeViewFull**.
+
 ```jsx
   eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
     ...
@@ -157,7 +159,7 @@ To perform similar column-level authorisation for the event handler, you need to
   }
 ```
 
-You can set up row-level authorisation through a further table where (continuing the example above) Countries are mapped to Profiles.  This could be any reference field as per the authorisation requirements.
+You can set up row-level authorisation through a further table where (continuing the example above) Countries are mapped to Profiles. This could be any reference field as per the authorisation requirements.
 Row level is then done via a look up on an in memory map (created and managed by the auth process):
 ```jsx
   query("ALL_TRADES", TRADE) {
@@ -182,10 +184,13 @@ Event handler authorisation at row level is done in a similar way:
 
 You can combine table-, row- and column-level authorisation in a single data server.
 
-In addition to the authorisation shown it is also possible to apply authorisation levels at an entire dataserver or eventhandler level.  When this is done all queries or events within the respective component receive these permissions.  It is also possible to override these at teh specific query or event level.
-This can be useful where a project have collections of functions: by creating separate dataservers and eventhandlers authorisation can be done at a group level.
+In addition to the authorisation shown it is also possible to apply authorisation levels at an entire dataserver or eventhandler level.  
 
-An example is as per below - each query takes the authorisation of the dataserver:
+When you do this, all queries or events within the respective component receive these permissions. But you can override these at the specific query or event level.
+This can be useful where a project has collections of functions; you can create separate dataservers and eventhandlers so that authorisation can be done at a group level.
+
+Here is an example, where each query takes the authorisation of the dataserver:
+
 ```jsx
 dataServer {
     permissioning {
@@ -222,7 +227,7 @@ Only Users assigned to the Profile ”Full_Access” can insert or modify trades
 
 For example, you can edit the User Country table on the “Static” tab to remove Canada from AmyAccess. Once you have done that, AmyAccess will only be able to enter trades against the UK.  You can see the code in the file **Permissions-eventhandler.kts**.
 
-Note that only the user admin is the only user who can modify profiles and add users.  The password for all users who are set up in advance is “genesis”.
+Note that only the user admin is the only user who can modify profiles and add users.  The password for all users who are set up in advance is **genesis**.
 
 The application also demonstrates authorisation at a dataserver and eventhandler level.
 
