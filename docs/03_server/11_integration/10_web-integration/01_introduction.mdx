@@ -1,0 +1,57 @@
+---
+title: 'Introduction to Genesis HTTP Client and External API Integration'
+sidebar_label: 'Introduction'
+id: genesis-http-client-intro
+keywords: [server, web, http, integration, client, httpclient, introduction]
+tags:
+  - server
+  - web
+  - http
+  - integration
+  - client
+  - httpclient
+  - introduction
+---
+
+# Introduction to Genesis HTTP Client
+
+## Overview
+
+The Genesis HTTP Client is a powerful and flexible tool designed to simplify integration with external REST services in the Genesis platform. It provides an intuitive DSL for making HTTP requests, allowing developers to easily integrate Request Servers and Event Handlers with external applications.
+
+## Key Features and Benefits
+
+- **Seamless Integration**: Designed to work seamlessly with Genesis Request Servers and Event Handlers.
+- **Flexible Usage**: Supports multiple approaches including direct client usage, annotation-driven approach, and OpenAPI code generation.
+- **Comprehensive HTTP Support**: Full support for GET, POST, PUT, DELETE.
+- **Customizable**: Easily configure headers, query parameters, path parameters, and request bodies.
+- **Error Handling**: Built-in support for retries and error callbacks.
+- **Paginated Support**: Pagination support for Request Servers
+
+## Version Information and Compatibility
+
+The Genesis HTTP Client was introduced in version 8.1 of the Genesis platform. It is compatible with all Genesis applications running on version 8.1 or higher.
+
+:::important
+Ensure your Genesis platform is updated to at least version 8.1 to use the Genesis HTTP Client.
+:::
+
+## Basic Usage
+
+Here's a quick example of using the Genesis HTTP Client within a Request Server:
+
+```kotlin
+requestReply<Unit, HelloWorld>("HELLO_WORLD") {
+    val client = GenesisHttpClient()
+
+    replySingle {
+        client.get<HelloWorld> {
+            url = "http://api.example.com/hello"
+            query("name", "John")
+        }.data
+    }
+}
+```
+
+This example demonstrates how to make a GET request within a Genesis Request Server, showcasing the client's seamless integration with Genesis components.
+In the following sections, we'll explore the core concepts, different usage approaches, and advanced features of the Genesis HTTP Client.

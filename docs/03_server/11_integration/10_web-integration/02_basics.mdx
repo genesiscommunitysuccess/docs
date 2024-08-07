@@ -1,0 +1,98 @@
+---
+title: 'Core Concepts and Setup of Genesis HTTP Client And Codegen'
+sidebar_label: 'Core Concepts and Setup'
+id: genesis-http-client-core-concepts
+keywords: [server, web, http, integration, client, core concepts, setup, installation]
+tags:
+  - server
+  - web
+  - http
+  - integration
+  - client
+  - core concepts
+  - setup
+  - installation
+---
+
+# Core Concepts and Setup of Genesis HTTP Client
+
+Before diving into the core concepts, let's start with how to set up the Genesis HTTP Client in your project.
+
+## Installation
+
+The Genesis HTTP Client is included in the Genesis platform from version 8.1 onwards. However, to use it properly, you need to add the following dependency to your module's `build.gradle.kts` file:
+
+```kotlin
+dependencies {
+    implementation("global.genesis:genesis-http-client")
+}
+```
+
+## Core Concepts
+
+## GenesisHttpClient
+
+The `GenesisHttpClient` is the main class you'll interact with. It provides methods for making HTTP requests.
+
+```kotlin
+val client = GenesisHttpClient()
+```
+
+The Genesis HTTP Client allows you to configure the client as a constructor parameter, passing a Ktor HttpClient object if needed.
+
+## Request Methods
+The client supports all standard HTTP methods:
+
+- GET: `client.get<T>()`
+- POST: `client.post<T>()`
+- PUT: `client.put<T>()`
+- DELETE: `client.delete<T>()`
+
+Each method returns a `TypedHttpResponse<T>` object, where T is the expected response body type.
+
+## Request Configuration
+Requests are configured using a DSL within a lambda function. Common configuration options include:
+
+- `url`: The endpoint URL
+- `header`: HTTP headers
+- `query`: Query parameters
+- `body`: Request body (for POST, PUT)
+
+Example:
+```kotlin
+    eventHandler<Account>("API_TRADE_INSERT") {
+        onCommit {
+            httpClient
+                .post<Account> {
+                    url = "http://localhost:8080/account"
+                    header("Authorization", "Basic ABCDEFG")
+                }
+        }
+    }
+```
+
+## Response Handling
+
+The `HttpResponse<T>` object contains:
+
+- statusCode: The HTTP status code
+- headers: Response headers
+- data: The response body, deserialized to type T
+
+Example:
+
+```kotlin
+    eventHandler("API_TRADE_INSERT") {
+        onCommit { event ->
+            client.get<String>(
+                path = "http://localhost:8080/trades",
+                request = event.details) {
+                header("Authorization", "Basic ABCDEFG")
+                query("tradeId", event.details)
+            }.data
+            ack()
+    }
+}
+```
+
+In the next sections, we'll explore more advanced features and usage patterns of the Genesis HTTP Client to help you make the most of it.
