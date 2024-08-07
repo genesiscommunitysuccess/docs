@@ -75,31 +75,30 @@ At the same level, you can configure access to each field in the table. You can 
 All configuration can be applied with simple statements in the relevant part of the code. So, however precise your business requirements is, you can achieve it quickly without undue difficulty.
 
 ## How does it work?
-Authorisation for data is based upon “Right Codes” that you define for your application.  
+Authorisation for data is based on Right Codes that you define for your application.  
 
 All users have one or more user profiles. Each user profile has one or more Right Codes.
 
 Once you have set up the Right Codes for your application, you can add the relevant Profiles through the front end:
 
-1. A “Profile” is created.  This could be “Trader”, “Senior Trader” or “Operations” etc (or any set required).
-2. Each Profile is assigned one or more “Right Codes” representing the authorisation of the profile.
-3. A user can be assigned more than one profile.
+1. Create your Profiles: for example, **Trader**, **Senior Trader** or **Operations**.
+2. Assign one or more Right Codes to each Profile. When a user is given a Profile, she or he has all the rights belonging to that Profile.
+3. A user can be assigned more than one Profile.
 
 For example, you could set up the following user profiles:
 
-- Trader - with the Right Codes “InsertTrade” and “AmendTrade”
-- Senior Trader - with only one Right Code: “CancelTrade”
+- Trader - with the Right Codes **InsertTrade** and **AmendTrade**
+- Senior Trader - with only one Right Code: **CancelTrade**
 
-You could then give the all traders on the team the User profile Trader. This includes the head trader in the team, but you then also give that user the User Profile “Senior Trader”. This gives your head trader a superset of rights.
+You could then give all the traders on the team the User profile Trader. This includes the head trader in the team, but you then also give that user the User Profile “Senior Trader”. This gives your head trader a superset of rights.
 
-Let's look at how these RIGHT CODES work at different levels.
-
+Let's look at how these Right Codes work at different levels.
 
 ### Restricting access at Level 1 - Tables / Entities
 
 This is where you control access to specific tables.
 
-The example below restricts who can view a Data Server query called ALL_TRADES. Only users who have a user profile containing the “Right Code” called “TradeView” can view the data in this table. Users without this “Right Code” are prevented from calling this query - thus the data is fully protected:
+The example below restricts who can view a Data Server query called ALL_TRADES. Only users who have a user profile containing the Right Code **TradeView** can view the data in this table. Users without this Right Code are prevented from calling this query - so the data is fully protected:
 
 ```jsx
 dataServer {
@@ -145,8 +144,7 @@ Column level is done via auth and hideFields:
 ```
 This code ensures the column is not returned by the dataserver
 
-To perform similar column level authorisation for the event handler we need to decide what behaviour we want when an edit is made where a user is not authorised to see (or therefore change) a column.  For example on modify we could force the unseen column to remain constant:
-The below looks up the value on the prior version and sets it on the proposed modification before saving, based on the RIGHT CODE TradeViewFull
+To perform similar column-level authorisation for the event handler, you need to decide how you handle edits by a user who is not authorised to see (or therefore change) a column. For example, on **modify** you could force the unseen column to remain constant. The code below looks up the value on the prior version and sets it on the proposed modification before saving, based on the RIGHT CODE TradeViewFull.
 ```jsx
   eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
     ...
@@ -171,7 +169,7 @@ Row level is then done via a look up on an in memory map (created and managed by
   }
 ```
 
-Event handler authorisation at row level is done ina similar way:
+Event handler authorisation at row level is done in a similar way:
 ```jsx
   eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
     permissioning {
@@ -182,8 +180,7 @@ Event handler authorisation at row level is done ina similar way:
   }
 ```
 
-It is possible to combine table, row and column level authorisation in a single data server.
-
+You can combine table-, row- and column-level authorisation in a single data server.
 
 In addition to the authorisation shown it is also possible to apply authorisation levels at an entire dataserver or eventhandler level.  When this is done all queries or events within the respective component receive these permissions.  It is also possible to override these at teh specific query or event level.
 This can be useful where a project have collections of functions: by creating separate dataservers and eventhandlers authorisation can be done at a group level.
