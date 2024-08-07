@@ -134,7 +134,7 @@ Column level is done via auth and hideFields:
 ```jsx
   query("ALL_TRADES", TRADE) {
     permissioning {
-      auth{
+      auth {
         hideFields { userName, rowData ->
           if (!userHasRight(userName, "TradeViewFull")) listOf(CUSTOMER_NAME)
           else emptyList()
@@ -145,6 +145,19 @@ Column level is done via auth and hideFields:
 ```
 This code ensures the column is not returned by the dataserver
 
+To perform similar column level authorisation for the event handler we need to decide what behaviour we want when an edit is made where a user is not authorised to see (or therefore change) a column.  For example on modify we could force the unseen column to remain constant:
+The below looks up the value on the prior version and sets it on the proposed modification before saving, based on the RIGHT CODE TradeViewFull
+```jsx
+  eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
+    ...
+      if (!userHasRight(event.userName, "TradeViewFull")) {
+        val trade = entityDb.get(Trade.ById(event.details.tradeId))!!
+        details.customerName = trade.customerName
+      }
+      entityDb.modify(details)
+    ...
+  }
+```
 
 You can set up row-level authorisation through a further table where (continuing the example above) Countries are mapped to Profiles.  This could be any reference field as per the authorisation requirements.
 Row level is then done via a look up on an in memory map (created and managed by the auth process):
@@ -153,6 +166,17 @@ Row level is then done via a look up on an in memory map (created and managed by
     permissioning {
       auth(mapName = "COUNTRY_VISIBILITY") {
         TRADE.COUNTRY_NAME
+      }
+    }
+  }
+```
+
+Event handler authorisation at row level is done ina similar way:
+```jsx
+  eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
+    permissioning {
+      auth(mapName = "COUNTRY_VISIBILITY") {
+        field { countryName }
       }
     }
   }
@@ -179,8 +203,6 @@ The same pattern is used in eventhandlers.
 
 <aside>
 🚧 
-
-Need to add event handler for row and column authorisation
 
 Describe user interface to assign permission codes (and users) to profiles.
 
