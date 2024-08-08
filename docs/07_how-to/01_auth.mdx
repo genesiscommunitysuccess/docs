@@ -233,6 +233,45 @@ The application also demonstrates authorisation at a dataserver and eventhandler
 
 Please see the ReadMe in the project folder for further information on the project.
 
+## Further capability
+
+It is possible to use the authorisation model to manage more complex situations.
+
+For example consider a state model - perhaps we want to ensure that only super users can modify trades that have settled.  By adding the following to the modify event we prevent users changing the transaction if it has a status of "Settled":
+```jsx
+  eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
+    permissioning {
+      permissionCodes = listOf("TradeUpdate")
+    }
+    onValidate { event ->
+        val trade = entityDb.get(Trade.ById(event.details.tradeId))!!
+        require(trade != null) { "Trade Id does not exist" }
+        require(trade.status != status.Settled) { "Trade is already settled" }
+        ack()
+    }
+    onCommit { event ->
+    ...
+    }
+  }
+```
+
+We can then easily create a further "super user" event for modifying trades in any state:
+```jsx
+  eventHandler<Trade>("TRADE_MODIFY_SUPERUSER", transactional = true) {
+    permissioning {
+      permissionCodes = listOf("SuperUser")
+    }
+    onCommit { event ->
+      val details = event.details
+      entityDb.modify(details)
+      ack()
+    }
+  }
+```
+The above would enable a user with the RIGHT CODE "SuperUser" to perform any edit, where the prior onValidate rejects certain states in the standard event.  This gives us a simple authorisation at an entity state level.
+
+
 ## Full technical details
 
 See our reference data on [Authorisation](/server/access-control/authorisation-overview/) for a full explanation of the possibilities for setting up authorisation.
+Sell also https://learn.genesis.global/docs/server/event-handler/basics/#adding-validation for onValidate use and examples
