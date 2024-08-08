@@ -94,7 +94,7 @@ You could then give all the traders on the team the User profile Trader. This in
 
 Let's look at how these Right Codes work at different levels.
 
-### Restricting access at Level 1 - Tables / Entities
+### Restricting access at Level 1 - tables (entities)
 
 This is where you control access to specific tables.
 
@@ -125,7 +125,7 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 }
 ```
 
-### Restricting access at Level 2 - Rows and Columns within a Table
+### Restricting access at Level 2 - Rows and columns within a table
 
 This is where you use Right Codes to control access to rows and columns.
 
@@ -227,21 +227,22 @@ This application has a single data table called Trade.  After a remap, this will
 
 The front-end grid demonstrates different authorisations in each quadrant - these map directly to four different Data Server queries, which you can see in the file **Permissions-dataserver.kts**.
 
-Only Users assigned to the Profile ”Full_Access” can insert or modify trades.  Currently this is the user “AmyAccess”, but more Profiles and Users can be added to the application once it is installed and running.
+Only Users assigned to the Profile **Full_Access** can insert or modify trades. Currently, this is the user **AmyAccess**, but more Profiles and Users can be added to the application once it is installed and running.
 
-For example, you can edit the User Country table on the “Static” tab to remove Canada from AmyAccess. Once you have done that, AmyAccess will only be able to enter trades against the UK.  You can see the code in the file **Permissions-eventhandler.kts**.
+For example, you can edit the User Country table on the **Static** tab to remove Canada from AmyAccess. Once you have done that, AmyAccess will only be able to enter trades against the UK. You can see the code in the file **Permissions-eventhandler.kts**.
 
-Note that only the user admin is the only user who can modify profiles and add users.  The password for all users who are set up in advance is **genesis**.
+Note that only the user **admin** can modify Profiles and add users.  The password for all users who are set up in advance is **genesis**.
 
 The application also demonstrates authorisation at a dataserver and eventhandler level.
 
-Please see the ReadMe in the project folder for further information on the project.
+The **ReadMe** file in the project folder provides further information on the project.
 
-## Further capability
+## A more complex scenario
 
-It is possible to use the authorisation model to manage more complex situations.
+Consider how authorisation can manage more complex situations.
 
-For example consider a state model - perhaps we want to ensure that only super users can modify trades that have settled.  By adding the following to the modify event we prevent users changing the transaction if it has a status of "Settled":
+For example, consider a state model. - perhaps we want to ensure that only super users can modify trades that have settled.  By adding the following to the modify event we prevent users changing the transaction if it has a status of "Settled":
+
 ```jsx
   eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
     permissioning {
@@ -259,7 +260,8 @@ For example consider a state model - perhaps we want to ensure that only super u
   }
 ```
 
-We can then easily create a further "super user" event for modifying trades in any state:
+You can then easily create a further "super user" event for modifying trades in any state. The example below enables a user with the Right code **SuperUser** to perform any edit, where the prior `onValidate` rejects certain states in the standard event. This gives us a simple authorisation at an entity state level.
+
 ```jsx
   eventHandler<Trade>("TRADE_MODIFY_SUPERUSER", transactional = true) {
     permissioning {
@@ -272,8 +274,6 @@ We can then easily create a further "super user" event for modifying trades in a
     }
   }
 ```
-The above would enable a user with the RIGHT CODE "SuperUser" to perform any edit, where the prior onValidate rejects certain states in the standard event.  This gives us a simple authorisation at an entity state level.
-
 
 ## Full technical details
 
