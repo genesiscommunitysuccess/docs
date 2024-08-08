@@ -129,9 +129,11 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 
 This is where you use Right Codes to control access to rows and columns.
 
-The example below ensures the column is not returned by the query:
+For example, you can hide a column if a user does not have a specific Right Code in their profile.
 
-For column-level permissions, use `auth` and `hideFields`:
+In the example below, the code uses `auth` and `hideFields` to check if the user's Profile has the Right Code **TradeViewFull**. If this code is not in the Profile, then the column is not returned by the query:
+
+use :
 ```jsx
   query("ALL_TRADES", TRADE) {
     permissioning {
@@ -145,7 +147,9 @@ For column-level permissions, use `auth` and `hideFields`:
   }
 ```
 
-To perform similar column-level authorisation for an event handler, you need to decide how you handle edits by a user who is not authorised to see (or therefore change) a column. For example, on **modify** you could force the unseen column to remain constant. The code below looks up the value on the prior version and sets it on the proposed modification before saving, based on the Right Code **TradeViewFull**.
+To perform similar column-level authorisation for an event handler, you need to decide how you handle edits by a user who is not authorised to see (or therefore change) a column. For example, on **modify** you could force the unseen column to remain constant. 
+
+The code below looks up the value on the prior version and sets it on the proposed modification before saving, based on the Right Code **TradeViewFull**.
 
 ```jsx
   eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
