@@ -1,0 +1,42 @@
+---
+title: 'API reference - Data Pipelines API'
+sidebar_label: 'Data Pipelines API'
+id: data-pipelines-api
+keywords: [server, api, reference, pipelines, configuration]
+tags:
+- server
+- api
+- reference
+- pipelines
+- configuration
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+In the case where you require a custom implementation of a source, operator, or sink you can use the following interfaces.
+
+## Set Up
+
+### Dependencies
+
+<Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
+    <TabItem value="gradle">
+
+        ```kotlin
+        implementation(genesis("pipeline-api"))
+        ```
+
+    </TabItem>
+    <TabItem value="maven">
+
+        ```xml
+        <dependency>
+            <groupId>global.genesis</groupId>
+            <artifactId>genesis-pipeline-api</artifactId>
+            <version>$genesisVersion</version>
+        </dependency>
+        ```
+
+    </TabItem>
+</Tabs>
