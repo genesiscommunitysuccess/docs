@@ -269,7 +269,7 @@ class DataServerTest {
 
         await untilCallTo { view } has { size == 2 }
 
-        authCache.authorise(
+        authCache.revoke(
             authMap = "TRADE_VISIBILITY",
             entityCode = "00000000001TRSP0",
             userName = "JohnDoe"
