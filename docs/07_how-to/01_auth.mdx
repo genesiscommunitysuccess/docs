@@ -218,7 +218,7 @@ Show a video of adding users?   Also add some screen shots?
 
 ## Code examples
 
-Check our [example application](https://github.com/genesislcap/howto-permissions) that shows the permission features that are available.
+Check our [example application](https://github.com/genesislcap/howto-permissions), which shows the permission features that are available.
 
 This application has a single data table called Trade.  After a remap, this will be populated with 10 entries - 5 in each of 2 Countries.  Two further tables are added:
 
@@ -231,7 +231,7 @@ Only Users assigned to the Profile **Full_Access** can insert or modify trades. 
 
 For example, you can edit the User Country table on the **Static** tab to remove Canada from AmyAccess. Once you have done that, AmyAccess will only be able to enter trades against the UK. You can see the code in the file **Permissions-eventhandler.kts**.
 
-Note that only the user **admin** can modify Profiles and add users.  The password for all users who are set up in advance is **genesis**.
+Note that only the user **admin** can modify Profiles and add users. The password for all users who are set up in advance is **genesis**.
 
 The application also demonstrates authorisation at a dataserver and eventhandler level.
 
@@ -241,7 +241,11 @@ The **ReadMe** file in the project folder provides further information on the pr
 
 Consider how authorisation can manage more complex situations.
 
-For example, consider a state model. - perhaps we want to ensure that only super users can modify trades that have settled.  By adding the following to the modify event we prevent users changing the transaction if it has a status of "Settled":
+For example, consider the lifecycle of a trade. Perhaps you want to ensure that only super users can modify trades that have settled. 
+
+To achieve this, we are going to modify an existing TRADE_MODIFY event and then create a new modify event for super users only.
+
+The following code modifies the earlier TRADE_MODIFY event to prevent users from changing the transaction if it has a status of `Settled`. This is defined in an [`onValidate`](server/event-handler/basics/#adding-validation) codeblock.:
 
 ```jsx
   eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
@@ -260,7 +264,9 @@ For example, consider a state model. - perhaps we want to ensure that only super
   }
 ```
 
-You can then easily create a further "super user" event for modifying trades in any state. The example below enables a user with the Right code **SuperUser** to perform any edit, where the prior `onValidate` rejects certain states in the standard event. This gives us a simple authorisation at an entity state level.
+You can then easily create a separate event so that super users can modify any trade. In this event, you don't need to check the status - you simply make sure that it is only available to super users.
+
+The example code below enables any user with the Right Code **SuperUser** to perform any edit on a trade. Users without this Profile cannot gain access to this event. They can only use the TRADE_MODIFY event above, which, as you saw, prevents them from editing settled trades.
 
 ```jsx
   eventHandler<Trade>("TRADE_MODIFY_SUPERUSER", transactional = true) {
@@ -268,9 +274,7 @@ You can then easily create a further "super user" event for modifying trades in 
       permissionCodes = listOf("SuperUser")
     }
     onCommit { event ->
-      val details = event.details
-      entityDb.modify(details)
-      ack()
+      ...
     }
   }
 ```
@@ -278,4 +282,4 @@ You can then easily create a further "super user" event for modifying trades in 
 ## Full technical details
 
 See our reference data on [Authorisation](/server/access-control/authorisation-overview/) for a full explanation of the possibilities for setting up authorisation.
-Sell also https://learn.genesis.global/docs/server/event-handler/basics/#adding-validation for onValidate use and examples
+See more about [using `onValidate`](server/event-handler/basics/#adding-validation) codeblocks.
