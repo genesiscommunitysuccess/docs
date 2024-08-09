@@ -216,6 +216,7 @@ Describe user interface to assign permission codes (and users) to profiles.
 
 Show a video of adding users?   Also add some screen shots?
 
+
 </aside>
 
 ## Code examples
@@ -247,7 +248,7 @@ For example, consider the lifecycle of a trade. Perhaps you want to ensure that 
 
 To achieve this, we are going to modify an existing TRADE_MODIFY event and then create a new modify event for super users only.
 
-The following code modifies the earlier TRADE_MODIFY event to prevent users from changing the transaction if it has a status of `Settled`. This is defined in an [`onValidate`](server/event-handler/basics/#adding-validation) codeblock.:
+The following code modifies the earlier TRADE_MODIFY event to prevent users from changing the transaction if it has a status of `Settled`. This is defined in an [`onValidate`](/server/event-handler/basics/#adding-validation) codeblock:
 
 ```jsx
   eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
@@ -284,4 +285,4 @@ The example code below enables any user with the Right Code **SuperUser** to per
 ## Full technical details
 
 See our reference data on [Authorisation](/server/access-control/authorisation-overview/) for a full explanation of the possibilities for setting up authorisation.
-See more about [using `onValidate`](server/event-handler/basics/#adding-validation) codeblocks.
+See more about [using `onValidate`](/server/event-handler/basics/#adding-validation) codeblocks.
