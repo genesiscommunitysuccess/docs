@@ -67,6 +67,11 @@ router {
         domain = null
         sameSite = SameSite.Lax
     }
+
+    clientHandler {
+        channelCapacity = 20
+        onChannelFull = SUSPEND
+    }
 }
 ```
 
@@ -148,6 +153,18 @@ The configuration options are:
 
 For more information about all the different cookie configuration options and the impact they have in terms of security, refer to the [OWASP cookie testing guide](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes).
 
+**Client handling configuration**
+
+For each client connection the Router maintains it's own message buffer (channel) for sending messages to a client.
+The size of this channel buffer can be configured and also what should be done if the buffer becomes full.
+
+`channelSize`: Set the size of the channel buffer. Defaults to 32.
+
+`onChannelFull`: The options to choose from when the buffer is full are:
+* `SUSPEND` - This is the default behaviour. This utilises Kotlin coroutines and they will wait (suspend) for the buffer to have space before adding any further messages to the buffer.
+* `CLOSE` - This will cause the client connection to be closed if the channel buffer becomes full. This could happen with slow consumers, and can help protect the ROUTER process rather than causing a large backlog of messages which consumes memory. In the worst case, this could cause an Out Of Memory error for the ROUTER process.
+
+The client handling configuration can be done by opening a `clientHandler` block, as shown in the example at the top of the page.
 
 ## Configuring runtime
 
