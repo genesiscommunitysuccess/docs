@@ -17,8 +17,8 @@ import TabItem from '@theme/TabItem';
 
 
 
-Genesis Router is responsible for all communication between front end and back end. 
-On the Genesis low-code platform, the front end connects to the back end through HTTPS or secure Websockets via a reverse proxy.
+Genesis Router is responsible for all communication between the front end and back end. 
+On the Genesis Platform, the front end connects to the back end through HTTPS or secure Websockets via a reverse proxy.
 This must run on the same instance as the back end. 
 
 ![](/img/router_diagram.png)
@@ -137,10 +137,10 @@ The default resources that are always exposed are:
 **Cookie authentication**
 From GSF version 6.7 onwards, you can configure the HTTP authentication flow to use a cookie-based approach. When the cookie authentication mechanism is enabled:
 
-- The Genesis low-code platform expects all login and logout events to be called via HTTP.
-- Information related to the session itself (e.g. session id, session token, refresh token) will be handled transparently using cookies.
+- The Genesis Platform expects all login and logout events to be called via HTTP.
+- Information related to the session itself (e.g. session id, session token, refresh token) is handled transparently using cookies.
 
-Given these expectations, login and logout operations via Websocket will not be allowed. A Websocket connection to GENESIS_ROUTER will only be possible after a successful HTTP login.
+Given these expectations, login and logout operations via Websocket are not allowed. A Websocket connection to GENESIS_ROUTER is only possible after a successful HTTP login.
 
 The configuration options are:
   * `enabled` defines whether the cookie authentication mechanism will be enabled or disabled at the Router level. Default: false
@@ -155,16 +155,19 @@ For more information about all the different cookie configuration options and th
 
 **Client handling configuration**
 
-For each client connection the Router maintains it's own message buffer (channel) for sending messages to a client.
-The size of this channel buffer can be configured and also what should be done if the buffer becomes full.
+For each client connection, the Router maintains its own message buffer (channel) for sending messages to a client. You can configure:
+
+- the size of the channel buffer
+- the behaviour if the buffer becomes full.
 
 `channelSize`: Set the size of the channel buffer. Defaults to 32.
 
 `onChannelFull`: The options to choose from when the buffer is full are:
-* `SUSPEND` - This is the default behaviour. This utilises Kotlin coroutines and they will wait (suspend) for the buffer to have space before adding any further messages to the buffer.
-* `CLOSE` - This will cause the client connection to be closed if the channel buffer becomes full. This could happen with slow consumers, and can help protect the ROUTER process rather than causing a large backlog of messages which consumes memory. In the worst case, this could cause an Out Of Memory error for the ROUTER process.
 
-The client handling configuration can be done by opening a `clientHandler` block, as shown in the example at the top of the page.
+* `SUSPEND` - This is the default behaviour. This utilises Kotlin coroutines and they will wait (suspend) for the buffer to have space before adding any further messages to the buffer.
+* `CLOSE` - This causes the client connection to be closed if the channel buffer becomes full. This could happen with slow consumers, and can help protect the ROUTER process rather than causing a large backlog of messages, which consumes memory. In the worst case, this could cause an Out Of Memory error for the ROUTER process.
+
+To configure client handling, open a `clientHandler` block. There is an example of this in the main example at the top of the page.
 
 ## Configuring runtime
 
