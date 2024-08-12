@@ -34,7 +34,7 @@
     "@docusaurus/theme-common": "3.4.0",
     "@docusaurus/theme-live-codeblock": "3.4.0",
     "@docusaurus/theme-mermaid": "3.4.0",
-    "@easyops-cn/docusaurus-search-local": "0.44.0",
+    "@easyops-cn/docusaurus-search-local": "0.44.5",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.5",
     "@genesislcap/design-system-configurator": "14.189.0",
