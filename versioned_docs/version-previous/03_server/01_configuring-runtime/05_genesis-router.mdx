@@ -17,8 +17,8 @@ import TabItem from '@theme/TabItem';
 
 
 
-Genesis Router is responsible for all communication between front end and back end. 
-On the Genesis low-code platform, the front end connects to the back end through HTTPS or secure Websockets via a reverse proxy.
+Genesis Router is responsible for all communication between the front end and back end. 
+On the Genesis Platform, the front end connects to the back end through HTTPS or secure Websockets via a reverse proxy.
 This must run on the same instance as the back end. 
 
 ![](/img/router_diagram.png)
@@ -66,6 +66,11 @@ router {
         path = "/"
         domain = null
         sameSite = SameSite.Lax
+    }
+
+    clientHandler {
+        channelCapacity = 20
+        onChannelFull = CLOSE
     }
 }
 ```
@@ -130,12 +135,13 @@ The default resources that are always exposed are:
 `entry` Is the additional accepted `messageType`.
 
 **Cookie authentication**
+
 From GSF version 6.7 onwards, you can configure the HTTP authentication flow to use a cookie-based approach. When the cookie authentication mechanism is enabled:
 
-- The Genesis low-code platform expects all login and logout events to be called via HTTP.
-- Information related to the session itself (e.g. session id, session token, refresh token) will be handled transparently using cookies.
+- The Genesis Platform expects all login and logout events to be called via HTTP.
+- Information related to the session itself (e.g. session id, session token, refresh token) is handled transparently using cookies.
 
-Given these expectations, login and logout operations via Websocket will not be allowed. A Websocket connection to GENESIS_ROUTER will only be possible after a successful HTTP login.
+Given these expectations, login and logout operations via Websocket is not allowed. A Websocket connection to GENESIS_ROUTER is only possible after a successful HTTP login.
 
 The configuration options are:
   * `enabled` defines whether the cookie authentication mechanism will be enabled or disabled at the Router level. Default: false
@@ -148,6 +154,21 @@ The configuration options are:
 
 For more information about all the different cookie configuration options and the impact they have in terms of security, refer to the [OWASP cookie testing guide](https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes).
 
+**Configuring client handling**
+
+For each client connection, the Router maintains its own message buffer (channel) for sending messages to a client. You can configure:
+
+- the size of the channel buffer
+- the behaviour if the buffer becomes full.
+
+To configure client handling, open a `clientHandler` block. There is an example of this in the main example at the top of the page. The configuration options are:
+
+- `channelSize` sets the size of the channel buffer. Defaults to 32.
+
+- `onChannelFull`sets the behavior when the buffer is full:
+
+  * `SUSPEND` is the default behaviour. This utilises Kotlin coroutines and they will wait (suspend) for the buffer to have space before adding any further messages to the buffer.
+  * `CLOSE` causes the client connection to be closed if the channel buffer becomes full. This could happen with slow consumers, and can help protect the ROUTER process rather than causing a large backlog of messages, which consumes memory. In the worst case, this could cause an Out Of Memory error for the ROUTER process.
 
 ## Configuring runtime
 
