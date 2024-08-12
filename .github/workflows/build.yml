@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.14.0]
+        node-version: [20.11.0]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -21,12 +21,9 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-    - uses: oven-sh/setup-bun@v1
-      with:
-        bun-version: 1.1.14
 
-    - name: Install Docusaurus dependencies
-      run: bun install --no-save # do not generate a lockfile
+    - name: Install dependencies
+      run: npm ci --loglevel=error --no-update-notifier
 
     - name: Build Docusaurus and check for broken links
       run: npm run build
