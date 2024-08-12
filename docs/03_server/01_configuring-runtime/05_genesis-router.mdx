@@ -159,16 +159,15 @@ For more information about all the different cookie configuration options and th
 For each client connection, the Router maintains its own message buffer (channel) for sending messages to a client. You can configure:
 
 - the size of the channel buffer
-- the behaviour if the buffer becomes full.
+- the behaviour if the buffer becomes full
 
 To configure client handling, open a `clientHandler` block. There is an example of this in the main example at the top of the page. The configuration options are:
 
 - `channelSize` sets the size of the channel buffer. Defaults to 32.
-
 - `onChannelFull`sets the behavior when the buffer is full:
 
   * `SUSPEND` is the default behaviour. This utilises Kotlin coroutines and they will wait (suspend) for the buffer to have space before adding any further messages to the buffer.
-  * `CLOSE` causes the client connection to be closed if the channel buffer becomes full. This could happen with slow consumers, and can help protect the ROUTER process rather than causing a large backlog of messages, which consumes memory. In the worst case, this could cause an Out Of Memory error for the ROUTER process.
+  * `CLOSE` causes the client connection to be closed if the channel buffer becomes full. This could happen with slow consumers, and can help protect the ROUTER process rather than causing a large backlog of messages, which consumes memory. In the worst case, this could cause an Out Of Memory error on the ROUTER process.
 
 ## Configuring runtime
 
