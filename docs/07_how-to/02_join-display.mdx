@@ -1,0 +1,46 @@
+---
+title: 'How to join tables and display the result'
+sidebar_label: 'Join and display tables'
+id: ht-join-display
+keywords: [views, tables, data server, request server]
+tags:
+    - views
+    - tables
+    - data server
+    - request server
+---
+
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+## Joining tables
+Typically, you design the data for your application so that there are neat places to store all the different types of data. You could have separate tables for INSTRUMENTS, CURRENCIES and COUNTERPARTIES, for example. And then you might have more tables for ORDERS and TRADES.
+
+But, when you want to display data and provide it for reports, you want a view that takes data from more than one table.
+
+A record on your trade table might include a client ID, but you would probably want to include the full client name in a display - so you create a view that joins one table to another.
+
+## Viewing the data
+Now you have something called a view, which joins one table to another (or others) to take information from them.
+
+Now you need to make this view available so that the front end can retrieve and display the information. 
+
+You need to create a *requestReply* (if the information is static) or a *query* (if you want to stream data as it changes). This is a simple statement that makes the view you have created available as a source of data for the front end.
+
+## In summary
+Databases store information in neat tables. But in many cases, you need to view information that is stored in two or more tables. For this, you create [views](/database/fields-tables-views/views/), which join together information in different tables.
+
+To make a view available as a data source for the front end, you must create a [request reply](/server/request-server/basics/) or a [query](/server/data-server/basics/) that identifies the view.
+
+It is worth noting that a view does not itself contain any information - that is only contained in the tables in your database.
+
+You create all your views in your application's _app-name_**-view-dictionary.kts** file.
+
+You create all your _requestReplies_ in your application's _app-name_**-reqrep.kts** file.
+
+You create all your _queries_ in your application's _app-name_**-dataserver.kts** file.
+
+You can also add [permissions](/how-to/ht-auth/) to each individual view, _requestReply_ and _query_ so that only auhorised users have access to the information.

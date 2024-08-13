@@ -794,5 +794,16 @@ module.exports = {
         },
       ],
     },
+    {
+      type: 'category',
+      label: 'SIMPLE BASICS',
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+					id: 'how-to/ht-join-display'
+        },
+      ],
+    },
   ]
 }
