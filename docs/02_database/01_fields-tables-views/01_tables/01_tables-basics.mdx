@@ -143,6 +143,27 @@ For example, if the entity is passed to a logger.
 field("MY_SECRET").sensitive()
 ```
 
+### Sharing field definitions
+
+Field definitions can be shared across tables, this might be particular usefull when re-using ENUM definitions.
+For example:
+
+```kotlin {2}
+tables {
+    val transactionStatusEnum = sharedField("TRAN_STATUS", ENUM("CAPTURED", "PRICED", "VERIFIED"))
+    
+    table("TRAN", 1) {
+        field(transactionStatusEnum)
+        field("MY_FIELD", STRING).primaryKey()
+    }
+    
+    table("CONS", 2) {
+        field("ID").primaryKey()
+        field("MY_ENUM_ALIAS", transactionStatusEnum)
+    }
+}
+```
+
 ## Primary key and other indices
 
 By default, a table is a set of columns (fields) where you can insert and maintain a number of rows (records). You need to provide ways to query the database so that a specific record or records can be found. So you need to define one or more indices. Creating good indices is essential to the quality and usability of an application, and we look at [a simple example of this](#index-example) at the end of this page.
