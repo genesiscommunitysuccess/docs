@@ -801,7 +801,7 @@ module.exports = {
       items: [
         {
           type: 'doc',
-					id: 'how-to/ht-join-display'
+					id: 'how-to/ht-join-expose'
         },
       ],
     },
