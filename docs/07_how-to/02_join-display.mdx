@@ -1,7 +1,7 @@
 ---
 title: 'How to join tables and expose the result'
 sidebar_label: 'Join and expose tables'
-id: ht-join-display
+id: ht-join-expose
 keywords: [views, tables, data server, request server]
 tags:
     - views
@@ -17,11 +17,11 @@ import TabItem from '@theme/TabItem';
 
 
 ## Joining tables
-Typically, you design the data for your application so that there are neat places to store all the different types of data. You could have separate tables for INSTRUMENTS, CURRENCIES and COUNTERPARTIES, for example. And then you might have more tables for ORDERS and TRADES.
+Typically, you design the data for your application so that there are neat places to store all the different types of data. You could have separate tables for INSTRUMENTS, CURRENCIES and COUNTERPARTIES, for example. And then you might have more tables for ORDERS, TRADES and CLIENT_DETAILS.
 
 However, when you want to display data and provide it for reports, you want a view that takes data from more than one table.
 
-A record on your trade table might include a client ID, but you would probably want to include the full client name in a display - so you create a **view** that joins one table to another.
+A record on your trade table might include a client ID, but you would probably want to include the full client name in a display - so you create a *view* that joins one table to another.
 
 ## Viewing the data
 Now you have something called a view, which joins one table to another (or others) to take information from them.
@@ -44,10 +44,10 @@ You create all your _requestReplies_ in your application's _app-name_**-reqrep.k
 You create all your _queries_ in your application's _app-name_**-dataserver.kts** file.
 
 ## Creating a simple view
-Here is an example of a simple  _app-name_**-view-dictionary.kts** file that defines one view.
+Here is an example of a simple  _app-name_**-view-dictionary.kts** file that defines one view. This view enables the app to present details of client trades, which include the details of the trade itself (from the TRADE table) and the client's details (from the CLIENT_DETAILS table).
 
-- The view has been given the name TRADE_CLIENT. This is the the name that the server functions can call to retrieve the data.
-- You need a root table as the basis if the view - in this case, TRADE.
+- The view has been given the name TRADE_CLIENT. 
+- You need a root table as the basis of the view - in this case, TRADE.
 - There is a join that connects this table to the CLIENT_DETAILS table
 - By default, all fields from the joined table become part of the view. In this case, we have specified that only the field CLIENT_NAME is added from the joined table.
 
@@ -69,9 +69,9 @@ views {
 
 ## Creating a simple Data Server query
 
-Here is an example of an application's application's _app-name_**-dataserver.kts** file. It contains one query that makes the view ALL_TRADE_CLIENTS available as a data source to the front end.
+Here is an example of an application's application's _app-name_**-dataserver.kts** file. It contains one query that makes the view TRADE_CLIENT available as a data source to the front end. So, the front end can now display details of all the client trades.
 
-- The view has been given the name TRADE_CLIENT. This is the the name that the front end can call to retrieve the data from the two underlying tables.
+- The query has been given the name ALL_TRADE_CLIENTS. This is the name that the front end can call to retrieve the data from the two underlying tables.
 
 ```kotlin
 dataServer {
