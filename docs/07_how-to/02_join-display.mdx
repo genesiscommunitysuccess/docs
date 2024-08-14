@@ -1,6 +1,6 @@
 ---
-title: 'How to join tables and display the result'
-sidebar_label: 'Join and display tables'
+title: 'How to join tables and expose the result'
+sidebar_label: 'Join and expose tables'
 id: ht-join-display
 keywords: [views, tables, data server, request server]
 tags:
@@ -21,7 +21,7 @@ Typically, you design the data for your application so that there are neat place
 
 However, when you want to display data and provide it for reports, you want a view that takes data from more than one table.
 
-A record on your trade table might include a client ID, but you would probably want to include the full client name in a display - so you create a view that joins one table to another.
+A record on your trade table might include a client ID, but you would probably want to include the full client name in a display - so you create a **view** that joins one table to another.
 
 ## Viewing the data
 Now you have something called a view, which joins one table to another (or others) to take information from them.
@@ -46,21 +46,21 @@ You create all your _queries_ in your application's _app-name_**-dataserver.kts*
 ## Creating a simple view
 Here is an example of a simple  _app-name_**-view-dictionary.kts** file that defines one view.
 
-- The view has been given the name CD_TRADE_CP. This is the the name that the front end can call to rerieve the data.
-- You need a root table as the basis if the view - in this case, CLIENT_DETAILS.
-- There is a join that connects this table to the table 
+- The view has been given the name TRADE_CLIENT. This is the the name that the server functions can call to retrieve the data.
+- You need a root table as the basis if the view - in this case, TRADE.
+- There is a join that connects this table to the CLIENT_DETAILS table
 - By default, all fields from the joined table become part of the view. In this case, we have specified that only the field CLIENT_NAME is added from the joined table.
 
 ```kotlin
 views {
-    view("CD_TRADE_CP", CD_TRADE) {
+    view("TRADE_CLIENT", TRADE) {
         joins {
             joining(CLIENT_DETAILS) {
-                on(CD_TRADE.CLIENT_ID to CLIENT_DETAILS {CLIENT_ID})
+                on(TRADE.CLIENT_ID to CLIENT_DETAILS {CLIENT_ID})
             }
         }
         fields {
-            CD_TRADE.allFields()
+            TRADE.allFields()
             CLIENT_DETAILS.CLIENT_NAME
         }
     }
@@ -69,20 +69,22 @@ views {
 
 ## Creating a simple Data Server query
 
-Here is an example of an application's application's _app-name_**-dataserver.kts** file. It contains one query that makes the view ALL_CD_TRADES_CP available as a data source to the front end.
+Here is an example of an application's application's _app-name_**-dataserver.kts** file. It contains one query that makes the view ALL_TRADE_CLIENTS available as a data source to the front end.
 
-- The view has been given the name CD_TRADE_CP. This is the the name that the front end can call to retrieve the data from the two underlying tables.
+- The view has been given the name TRADE_CLIENT. This is the the name that the front end can call to retrieve the data from the two underlying tables.
 
 ```kotlin
 dataServer {
-    query("ALL_CD_TRADES_CP", CD_TRADE_CP) {}
+    query("ALL_TRADE_CLIENTS", TRADE_CLIENT) {}
 }
 ```
+
+This enables the created view to be visible to the front end (or through a Rest API call).
 
 ## Adding permissions to the Data Server query
 
 As the view is not accessible to the outside world, all authorisation must be done at the dataserver level (not shown here).
 
-You can also add [permissions](/how-to/ht-auth/) to each individual view, _requestReply_ and _query_ so that only auhorised users have access to the information.
+You can also add [permissions](/how-to/ht-auth/) to each individual view, _requestReply_ and _query_ so that only authorised users have access to the information.
 
 Code to follow.
