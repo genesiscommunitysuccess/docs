@@ -19,7 +19,7 @@ import TabItem from '@theme/TabItem';
 ## Joining tables
 Typically, you design the data for your application so that there are neat places to store all the different types of data. You could have separate tables for INSTRUMENTS, CURRENCIES and COUNTERPARTIES, for example. And then you might have more tables for ORDERS and TRADES.
 
-But, when you want to display data and provide it for reports, you want a view that takes data from more than one table.
+However, when you want to display data and provide it for reports, you want a view that takes data from more than one table.
 
 A record on your trade table might include a client ID, but you would probably want to include the full client name in a display - so you create a view that joins one table to another.
 
@@ -43,4 +43,46 @@ You create all your _requestReplies_ in your application's _app-name_**-reqrep.k
 
 You create all your _queries_ in your application's _app-name_**-dataserver.kts** file.
 
+## Creating a simple view
+Here is an example of a simple  _app-name_**-view-dictionary.kts** file that defines one view.
+
+- The view has been given the name CD_TRADE_CP. This is the the name that the front end can call to rerieve the data.
+- You need a root table as the basis if the view - in this case, CLIENT_DETAILS.
+- There is a join that connects this table to the table 
+- By default, all fields from the joined table become part of the view. In this case, we have specified that only the field CLIENT_NAME is added from the joined table.
+
+```kotlin
+views {
+    view("CD_TRADE_CP", CD_TRADE) {
+        joins {
+            joining(CLIENT_DETAILS) {
+                on(CD_TRADE.CLIENT_ID to CLIENT_DETAILS {CLIENT_ID})
+            }
+        }
+        fields {
+            CD_TRADE.allFields()
+            CLIENT_DETAILS.CLIENT_NAME
+        }
+    }
+}
+```
+
+## Creating a simple Data Server query
+
+Here is an example of an application's application's _app-name_**-dataserver.kts** file. It contains one query that makes the view ALL_CD_TRADES_CP available as a data source to the front end.
+
+- The view has been given the name CD_TRADE_CP. This is the the name that the front end can call to retrieve the data from the two underlying tables.
+
+```kotlin
+dataServer {
+    query("ALL_CD_TRADES_CP", CD_TRADE_CP) {}
+}
+```
+
+## Adding permissions to the Data Server query
+
+As the view is not accessible to the outside world, all authorisation must be done at the dataserver level (not shown here).
+
 You can also add [permissions](/how-to/ht-auth/) to each individual view, _requestReply_ and _query_ so that only auhorised users have access to the information.
+
+Code to follow.
