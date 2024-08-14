@@ -22,7 +22,7 @@ When you need to take in data from an external source, the first option you shou
 
 This enables you to define the data source, transform it to match fields in your tables, then insert or update the data in the specified table. This can be set upto handle streaming data or static files.
 
-You can also use the Data Pipeline component to send out data to external systems. This works the same way in reverse, taking data from tables in your Genseis application and transforming it it onto the format required by the target system.
+You can also use the Data Pipeline component to send out data to external systems. This works the same way in reverse, taking data from tables in your Genesis application and transforming it it onto the format required by the target system.
 
 Here we are going focus on incoming data in static files.
 
@@ -33,6 +33,13 @@ A good practical example is to be able to take Copp Clark holiday data that arri
 
 
 ## How Data Pipeline works
+
+You can create a -pipeline-name_**data-pipeline.kts** file to define a pipeline that maps data from an external source (database, file) to tables in your application. 
+
+
+Each Data Pipeline defines a source for the data and maps that data to each field in the table.
+
+If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a transform function that returns Any.sources and sinks
 
 
 We shall look at three different scenarios of increasing complexity.

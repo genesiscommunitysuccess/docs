@@ -19,15 +19,20 @@ For any application that has more than minimal complexity, you will want to give
 
 The Genesis Platform enables you to do this in extremely precise ways to match your business requirements.
 
-Authorisation (or permissions) is the mechanism that ensures that only permitted users can **view** and **update (create, edit, delete)** data in your application.
+## Access to data and the ability to change it
+GENESIS_AUTH is the component that ensures that only permitted users can **view** and **update (create, edit, delete)** data in your application.
 
-Until you start to specify any permissions, everything is accessible by any authenticated user. But you can control **access to data** and **the ability to change it** at three levels:
+Until you start to specify any permissions, everything is accessible by any authenticated user. But you can insert permmissioning statements in the relevant places control **access to data** and **the ability to change it**.
+
+### Permissioning the back end
+Broadly speaking, you can insert these permissioning statements on the back end at three levels:
 
 - tables (data entities)
 - records within a table (rows)
 - fields within a table (attributes/columns)
 
-You can configure all these levels on the server level to ensure complete security; but you can also add authorisation at the front end to remove views and commands that would otherwise not work or be empty for a given user (i.e. where authorisation has not been granted).
+### Permissioning the front end
+You can also add authorisation at the front end. For example, if a user does not have permission to insert or update records on a grid of data, you can set the front end so that the user does not see the relevant buttons or commands on that display.
 
 So, you have full control of data within your application at the most granular level.
 
