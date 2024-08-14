@@ -805,5 +805,16 @@ module.exports = {
         },
       ],
     },
+    {
+      type: 'category',
+      label: 'INTEGRATION',
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+					id: 'how-to/ht-ingest-csv'
+        },
+      ],
+    },
   ]
 }
