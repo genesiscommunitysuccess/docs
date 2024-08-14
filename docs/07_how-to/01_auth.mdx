@@ -45,6 +45,15 @@ At this level, you can authorise users to have access to records within a table.
 
 You can set up the following permissions, for example:
 
+| User          | **is permitted to**         |**is _not_ permitted to**   |
+| ------------- | --------------------------- | -------------------------- |
+| User A | **view** the grid of trades                                                                       | **create**, **edit** or **delete** trades                        |
+| User B | **view** the grid of trades, and **create** and **edit** trades              | **delete** trades  trades                                                   |
+| User C | **view** the grid of trades, and **create**, **edit** and *delete** trades  |                                                                                            |
+| User D |                                                                                                   | **view** the grid of trades, or any buttons  to  **create**, **edit** or **delete** trades**view**, **create**, **edit** or **delete** trades |
+
+So:
+
 - User A ** is permitted** to **view** trades, but not to **create**, **edit** or **delete** trades in the table.
 - User B ** is permitted** to **view**, **create** and **edit** trades, but **is not permitted** to **delete** trades in the table.
 - User C ** is permitted** to **view**, **create**, **edit**, and **delete** trades in the table.
@@ -55,6 +64,15 @@ You can also directly apply permissions to other actions that users can perform 
 ### Applying permissions at the front end
 
 In a similar way, you can control the visibility of each User Interface component. For example, you can permission any component that displays data from the **Trade** table so that different users have a different experience.
+
+We add permissions to the component that retrieves and displays records in the **trade** table as follows:
+
+| User          | **is permitted to**         |**is _not_ permitted to**   |
+| ------------- | --------------------------- | -------------------------- |
+| User A | **view** the grid of trades                                                                       | **view** any buttons  to  **create**, **edit** or **delete** trades                        |
+| User B | **view** the grid of trades, and **view** buttons to  **create** and **edit** trades              | **view** the button to **delete** trades                                                   |
+| User C | **view** the grid of trades, and **view** buttons to  **create**, **edit** and **delete** trades  |                                                                                            |
+| User D |                                                                                                   | **view** the grid of trades, or any buttons  to  **create**, **edit** or **delete** trades |
 
 - User A sees the grid of trades in the **trade** table, but does not see any buttons  to  **create**, **edit** or **delete** trades.
 - User B ** sees the grid of trades in the **trade** table, and sees buttons to  **create** and **edit** trades. This user does not see a button to **delete** records in the table.
