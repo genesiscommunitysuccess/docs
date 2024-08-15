@@ -807,6 +807,10 @@ module.exports = {
           type: 'doc',
           id: 'how-to/ht-join-expose'
         },
+        {
+          type: 'doc',
+          id: 'how-to/ht-join-expose-test'
+        },
       ],
     },
     {
@@ -817,6 +821,10 @@ module.exports = {
         {
           type: 'doc',
           id: 'how-to/ht-ingest-csv'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-ingest-csv-test'
         },
       ],
     },
