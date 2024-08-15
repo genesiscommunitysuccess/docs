@@ -790,7 +790,7 @@ module.exports = {
       items: [
         {
           type: 'doc',
-					id: 'how-to/ht-auth'
+          id: 'how-to/ht-auth'
         },
       ],
     },
@@ -801,7 +801,7 @@ module.exports = {
       items: [
         {
           type: 'doc',
-					id: 'how-to/ht-join-expose'
+          id: 'how-to/ht-join-expose'
         },
       ],
     },
@@ -812,7 +812,7 @@ module.exports = {
       items: [
         {
           type: 'doc',
-					id: 'how-to/ht-ingest-csv'
+          id: 'how-to/ht-ingest-csv'
         },
       ],
     },
