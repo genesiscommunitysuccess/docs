@@ -88,18 +88,32 @@ There is also a `buildFileName` {} lambda function which allows the user to do a
 
 GPAL Example:
 ```kotlin
-pipeline("TEST_FILE_SINK") {
-    source(dbBulkSubscribe<Trade>())
-        .map {
-            val record = when (it) {
-                Bulk.Prime.Completed -> null
-                is Bulk.Prime.Record -> it.record.toString()
-                is Bulk.Update.Delete -> null
-                is Bulk.Update.Insert -> it.record.toString()
-                is Bulk.Update.Modify -> it.record.toString()
-            }
+// Create a counter which we use in the buildFileName lambda.
+val counter = AtomicInteger(0)
+
+// db source which emits a stream of table entities
+val dbSource = dbBulkQuery<TableEntity>()
+
+// file sink, we use the fileStorageSink {} lambda to initialise it.
+val fileSink = fileStorageSink {
+    userName = "JohnDoe"
+    buildFileName {
+        "processedFile" + counter.getAndIncrement() + ".csv"
+    }
+}
+
+pipelines {
+    pipeline("TEST_FILE_STORAGE") {
+
+    // since the source outputs a different type to what the sink takes we convert it to the respective type, i.e. a string.
+        source(dbSource)
+          .map{
+            "${it.recordId}, ${it.timestamp}"
         }
-        .sink(record)
+            .sink(fileSink)
+    }
 }
 ```
+
+
 
