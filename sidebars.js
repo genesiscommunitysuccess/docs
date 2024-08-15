@@ -792,6 +792,10 @@ module.exports = {
           type: 'doc',
           id: 'how-to/ht-auth'
         },
+        {
+          type: 'doc',
+          id: 'how-to/ht-auth-test'
+        },
       ],
     },
     {
