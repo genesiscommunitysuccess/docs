@@ -20,27 +20,27 @@ For any application that has more than minimal complexity, you will want to give
 The Genesis Platform enables you to do this in extremely precise ways to match your business requirements.
 
 ## What you can control, and where
-Until you start to specify any permissions, everything is accessible by any authenticated user. But you can insert permmissioning statements in the relevant places control **access to data** and **the ability to change it**.
+Until you start to specify any permissions, everything is accessible by any authenticated user. But you can insert permmission statements in the relevant places control **access to data** and **the ability to change it**.
 
 You can also control which types of change to data are permitted: (create, edit, delete).
 
-All you need to do is specify the permissions at each point. The GENESIS_AUTH component ensures that only users with these permissions are enforced. 
+All you need to do is specify the permissions at each point. The Genesis Platform ensures that only users with appropriate permissions are able to act at that point.
 
-### Permissioning the back end
-Broadly speaking, you can insert permissioning statements on the back end at three levels:
+### Permissions for the back end
+Broadly speaking, you can insert permission statements on the back end at three levels:
 
 - tables (data entities)
 - records within a table (rows)
 - fields within a table (attributes/columns)
 
-### Permissioning the front end
+### Permissions for the front end
 You can also add authorisation at the front end. For example, if a user does not have permission to insert or update records on a grid of data, you can set the front end so that the user does not see the relevant buttons or commands on that display.
 
 So, you have full control of data within your application at the most granular level.
 
 Check our [example application](https://github.com/genesislcap/platform-howto/tree/master/howto-permissions), which shows the permission features that are available.
 
-## Permissioning tables (data entities)
+## Permissions for tables (data entities)
 
 ### Applying permissions at the back end
 At this level, you can authorise users to have access to records within a table. Let us consider the example of a **TRADE** table.
@@ -52,7 +52,7 @@ You can set up the following permissions, for example:
 | User A | **view** the grid of trades                                                                       | **create**, **edit** or **delete** trades                        |
 | User B | **view** the grid of trades, and **create** and **edit** them              | **delete** trades                                                     |
 | User C | **view** the grid of trades, and **create**, **edit** and *delete**  them  |                                                                                            |
-| User D |                                                                                                   | **view** the grid of trades, or **create**, **edit** or **delete** trathemdes |
+| User D |                                                                                                   | **view** the grid of trades, or **create**, **edit** or **delete** trades |
 
 So, as a result of these permissions:
 
@@ -74,30 +74,30 @@ In a similar way, you can control the visibility of each User Interface componen
 | User C | **view** the grid of trades, and **view** buttons to  **create**, **edit** and **delete** trades  |                                                                                            |
 | User D |                                                                                                   | **view** the grid of trades, or any buttons  to  **create**, **edit** or **delete** trades |
 
-So, as a reult of these permissions:
+So, as a result of these permissions:
 
 - User A can see the grid of trades, but cannot see any buttons to  **create**, **edit** or **delete** trades.
 - User B can see the grid of trades, and sees buttons to  **create** and **edit** trades. This user does not see a button to **delete** records in the table.
 - User C can see the grid of trades, and sees buttons to  **create**, **edit** and **delete** trades. 
 - User D cannot see the grid of trades or any buttons.
 
-## Permissioning records (rows)
+## Permissions for records (rows)
 
 At the next level down, you can apply conditions for users who are authorised to **view**, **create**, **edit** and **delete**. A user's permission can depend on the content of the specific record (or row).
 
 For example, continue looking at our **trade** table:
 
-- User Aa **is permitted** to **view** trades (rows) where the country is DE, but **is not permitted** to **create**, **edit** or **delete** trades of this type.
-- User Aa **is permitted** to **view** trades (rows) where the country is FR, and **is permitted** to **create**, **edit** or **delete** trades of this type.
-- User Aa **is not permitted** to **view** trades (rows) where the country is ES, and **is not permitted** to **create**, **edit** or **delete** trades of this type.
+- User Aa **is permitted** to **view** trades (rows) where the country is DE, but **is not permitted** to **create**, **edit** or **delete** trades in other countries.
+- User Aa **is permitted** to **view** trades (rows) where the country is FR, and **is permitted** to **create**, **edit** or **delete** trades in other countries.
+- User Aa **is not permitted** to **view** trades (rows) where the country is ES, and **is not permitted** to **create**, **edit** or **delete** trades in this country.
 - User Aa **is permitted** to **view**, **create**, **edit** or **delete** trades (rows) where none of the conditions applies. 
 
-## Permissioning fields (attributes/columns)
+## Permissions for fields (attributes/columns)
 
 At the same level, you can configure access to each field in the table. You can do this in conjunction with any authorisation you set up at the record level (2A). Again, consider our example of the **trade** table:
 
 - User A (for example a member of the support team) **is not permitted** to **view** the counterparty for any trade (row).
-- User B **is permitted**  to view the counterparty but **is not permitted** to change (**edit**) the counterparty to a counterparty based in country GB
+- User B **is permitted** to view the counterparty but **is not permitted** to change (**edit**) the counterparty to a counterparty based in country GB
 
 All configuration can be applied with simple statements in the relevant part of the code. So, however precise your business requirements are, you can achieve them quickly without undue difficulty.
 
