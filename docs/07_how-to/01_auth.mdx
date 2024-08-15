@@ -221,7 +221,7 @@ You can combine table-, row- and column-level authorisation in a single data ser
 
 It is also possible to apply authorisation for all queries in a Data Server or all events in an Event Handler file. 
 
-When you do this, all queries or events within the  (file) receive these permissions. But you can override these within any specific query or event. So, effectively, you are providing default permissioining for all the queries or events in the file.
+When you do this, all queries or events within the  (file) receive these permissions. But you can override these within any specific query or event. So, effectively, you are providing default permission for all the queries or events in the file.
 
 This is useful, for example, where a project has collections of functions; you can create separate files of Data Servers or Event Handlers and simply apply the authorisation once in each file.
 
@@ -243,14 +243,33 @@ This works exactly the same way for an Event Handler file.
 
 All above patterns are the same for Request Replies (reqreps) within the Genesis platform - this can be seen in the example application referenced below.
 
+### Front end authorisation
+
+It is possible to apply authorisation at the front end to remove grids and buttons where there is no appropriate permission.  If this is not done, the system is protected (by the server) but users will receive error messages explaining their lack of permissions.
+
+Here is an example of a restricting tab visibility (based on the Right Code "TradeView" that provides access to the tab):
+
+```jsx
+    navItems: [
+      {
+        title: 'Trades',
+        permission: 'TradeView',
+      },
+    ],
+```
+
+Here is an example of a restricting button visibility (based on the Right Code "TradeUpdate" that provides access to the button):
+
+```jsx
+      createEvent="${(x) => getViewUpdateRightComponent(x.user, 'TradeUpdate', 'EVENT_TRADE_INSERT')}"
+```
+
 <aside>
 🚧 
 
 Describe user interface to assign permission codes (and users) to profiles.
 
 Show a video of adding users?   Also add some screen shots?
-
-Add front end authorisation snippets
 
 </aside>
 
