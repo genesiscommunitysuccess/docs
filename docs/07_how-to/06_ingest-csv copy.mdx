@@ -1,0 +1,180 @@
+---
+title: 'Build and run in Genesis Cloud Workspace'
+sidebar_label: 'Testing ingested CSV files'
+id: ht-ingest-csv-test
+keywords: [csv, copp clark, integration, ingest, test]
+tags:
+    - csv
+    - copp clark
+    - data server
+    - integration
+    - ingest
+    - test
+---
+
+# Build and run in Genesis Cloud Workspace
+
+The advantage of working in Genesis Cloud Workspace is that you don't need to download and any software. You can get started quickly.
+
+When you are ready to build and run your application in Genesis Cloud Workspace, click on the **Create Cloud Workspace** button.
+
+This creates a zip file of your project and opens VSCode inside the Create Cloud Workspace.
+
+## Unpacking and building the project. 
+
+1. Click on the top bar and select **Show and Run Commands** from the drop-down. 
+
+![](/img/show-run-commands.png)
+
+2. Then select the command **Genesis:Unpack Project**. After a moment, this displays a list of projects, and yours should be on top. The filename is the app name you specified at the beginning, plus a date and time stamp.
+
+![](/img/unpack-project.png)
+
+3. Click on the project to open it.
+
+4. When the project is open, select **Show and Run Commands** from the drop-down again and run **Genesis Build Project**. 
+
+This builds the entire project and downloads all the dependencies.
+
+The first time you build, the process can take up to five minutes.
+
+## Starting the app (preparing)
+
+To start your app, go to the panel on the extreme left of your VSCode window. Click on the **Run and Debug** icon. 
+
+![](/img/run-debug-button.png)
+
+Then:
+
+1. Near the top left of the window, click on the **Run and Debug** dropdown and select **remap**.
+
+2. Then click on the **Start** button to the left of the field.
+
+![](/img/run-debug-start.png)
+
+When this is complete, you have to run a command to set up the permissions:
+
+1. Click on the **Run and Debug** dropdown and select **Consolidate Rights**.
+
+2. Then click on the **Start** button to the left of the field.
+
+After the **Consolidate Rights** task has finished, you can start the server: 
+
+1. Click on the **Run and Debug** dropdown and select **Start Server**.
+
+2. Then click on the **Start** button to the left of the field.
+
+## Starting the front end
+When the server is up and running, you can start the front end. 
+
+1. Click on the **Run and Debug** dropdown and select **Start Web**.
+
+2. Then click on the **Start** button to the left of the field.
+
+The first time you start, it installs the node modules, so it will take another few minutes.
+
+## Opening your app
+To the **Ports** tab at the bottom of your screen, then select the **Globe** icon.
+
+![](/img/globe-icon.png)
+
+If necessary, make sure that pop-ups are not blocked on your browser. 
+
+![](/img/no-block.png)
+
+To login, you need the user name **Admin** and the password **genesis**. 
+
+Then you look through and interact with the different displays you have created in your app.
+
+## Viewing the code
+To view the code for your project, click on the **Explorer** button on the extreme left of your VSCode window.
+
+![](/img/explorer-button.png)
+
+This displays the directory structure and the files for your back end and front end.
+
+In the panel on the extreme left of your VSCode window, there is also a button that displays the **ToDo Tree**. When the code for your project is generated, **ToDo** comments are included at key points to direct you to the most likely places where you will want to refine or add to the code to improve your app.
+
+Click on the **ToDo Tree** button to view these directly.
+
+![](/img/todo-tree-button.png)
+
+## Changing the code
+To restart a process after making changes:
+
+1. Go to the **RUN AND DEBUG** panel, select **remap** and click on the **Start* button.
+
+2. When the back-end processes are running, a panel is displayed under the quick search panel at the top of the screen. Go to this panel, and select app-name**_COMPACT_PROCESS** from the list.
+
+3. Click on the **Restart** button.
+
+![](/img/restart.png)
+
+## Finding your project again in VSCode
+Once you have closed your prject in VSCode, you can easily find it again.
+
+In VSCode, go to **File** → **Open Recent** → and select your project.
+
+![](/img/open-recent.png)
+
+# Build and run your app locally
+
+## Install the required software
+
+You need to install the following software to be able to run Genesis projects on your local machine. There are links below to install each of the dependencies:
+
+| Software | Download info and link |
+| --- | --- |
+| IntelliJ - Community Edition | https://download-cdn.jetbrains.com/idea/ideaIC-2024.1.1.exe | https://download.jetbrains.com/idea/ideaIC-2024.1.1.dmg?_ga=2.225006931.831021149.1715028846-1909765304.1715028846 | https://www.jetbrains.com/idea/download/other.html |
+| JDK 17 | https://download.oracle.com/java/17/archive/jdk-17.0.10_windows-x64_bin.msi| https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html |
+| Node JS | https://nodejs.org/dist/v20.12.2/node-v20.12.2-x64.msi| https://nodejs.org/en/download |
+| LMDB (Mac Users Only) | https://www.notion.so/LMDB-Installation-e938a95dd75347f58b0e6f57ef0ac565?pvs=21 |
+| Genesis Plugin | Open IntelliJ and navigate to **File** → **Settings** → Plugins**. Click on **Market Place** and search for **plugin**. Install or update iwhere necessary. |
+| Genesis Server Framework (GSF) Artifact Access | You will need access to GSF artifacts which are published to the Genesis artifactory. Contact your technical representative, who can guide you; your corporate IT may have set up integration with Genesis artifactory |
+| Gradle | This comes bundled with intelliJ, gradle properties will need to be configured to point at the artifactory you go to for GSF artifacts |
+| npm | npm needs installing and configuring |
+
+## Watch the demo video
+The demo video shows the building of a simple positions app using Genesis Create. Once you have seen this, you will find it easier to start building your own app.
+
+We provide a short summary of the steps below.
+
+### Quick build-and-run summary
+
+1. Click the **Generate Project** button on the summary page to download a .zip file containing your project code
+
+2. Open your **Downloads** folder and open the downloaded zip file to see the project folder (eg. position).  Drag and drop the project folder to a working folder (for example, **C:\work\workspace**).
+
+:::tip
+Avoid using a network drive or a drive that synchronises with a cloud back-up system (such as OneDrive or Sharepoint). This could result in poor performance.
+:::
+
+3. Open intelliJ, click Open, and navigate to your project folder.
+
+:::tip
+Take care not to open the parent or any child directories
+:::
+    
+4. Go to **Settings** → **Project Structure** and make sure that **SDK** and **Language level** are set to **17**.
+
+5. If you are prompted (bottom right of the IntelliJ window) to **Load Gradle Project**, click to allow this to proceed.
+
+6. Open the Genesis IntelliJ plugin at the top right of the IntelliJ window.
+
+7. Click **Remap**. When you are prompted, type **y** and press **ENTER** each time.
+
+8. From the plugin, click on the **Tasks** tab and run **ConslidateRights**.
+
+9. Click on the **Start Processes** button. This starts the back end.
+
+10. Click on the **Start UI** button. This starts the front end.
+
+11. After a short while, you should see all processes running. Your browser opens with the URL **http://localhost:6060**. If the browser window loads before your services are showing **HEALTHY**, you might need to refresh your browser window.
+
+12. Login with the credentials:
+
+    - User: **admin**
+    - Password: **genesis**
+
+
+
