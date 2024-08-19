@@ -22,11 +22,13 @@ When you need to take in data from an external source, the first option you shou
 
 This enables you to define the data source, transform it to match fields in your tables, then insert or update the data in the specified table. This can be set upto handle streaming data or static files.
 
+A good practical example is to be able to take Copp Clark holiday data that arrives in CSV files.
+
+:::info
 You can also use the Data Pipeline component to send out data to external systems. This works the same way in reverse, taking data from tables in your Genesis application and transforming it it onto the format required by the target system.
 
 Here we are going focus on incoming data in static files.
-
-A good practical example is to be able to take Copp Clark holiday data that arrives in CSV files.
+:::
 
 ## Transforming data with Data Pipeline
 ** fetch more detail from the Data Pipeline pages**
@@ -36,11 +38,23 @@ A good practical example is to be able to take Copp Clark holiday data that arri
 
 You can create a -pipeline-name_**data-pipeline.kts** file to define a pipeline that maps data from an external source (database, file) to tables in your application. 
 
+For each Data Pipeline you need to define three main areas:
 
-Each Data Pipeline defines a source for the data and maps that data to each field in the table.
+- **source** is the location of the incoming data
+- **map** parses the source and maps data to fields in the application's database
+- **sink** acts as an data source to update the relevant tables 
 
-If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a transform function that returns Any.sources and sinks
+Where field mapping is not one-to-one, you can define a `transform` function that returns `Any`.
 
+The currently supported sources are:
+
+- PostgreSQL
+- MS SQL Server
+- Oracle Enterprise
+- Files
+  - CSV
+  - XML
+  - JSON
 
 We shall look at three different scenarios of increasing complexity.
 
@@ -58,7 +72,7 @@ code from repo
 ### Updating multiple different entities from a single source
 
 
-## How does it work?
+## Code examples
 
 **the sample apps in detail**
 
