@@ -198,7 +198,9 @@ Row level is then done via a look-up on an in-memory map (created and managed by
   query("ALL_TRADES", TRADE) {
     permissioning {
       auth(mapName = "COUNTRY_VISIBILITY") {
-        TRADE.COUNTRY_NAME
+        authKeyWithUserName {
+          key(data.countryName, userName)
+        }
       }
     }
   }
@@ -209,7 +211,9 @@ Event handler authorisation at row level is done in a similar way:
   eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
     permissioning {
       auth(mapName = "COUNTRY_VISIBILITY") {
-        field { countryName }
+        authKeyWithUserName {
+          key(data.countryName, userName)
+        }
       }
     }
   }
