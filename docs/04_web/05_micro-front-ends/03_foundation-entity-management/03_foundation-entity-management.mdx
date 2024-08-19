@@ -75,7 +75,7 @@ And you can click on the **Add** button to view the form.
 
 ### Common attributes
 
-The most common attributes you can configure for `entity-management` are listed below. Note that it is not mandatory to specify an event, but if you don't specify a `createEvent` or an  `updateEvent`, then you won't have a form created - which defeats the point of using this micro front-end. It would be simpler to use a [grid-pro](/web/web-components/grids/grid-pro/grid-pro-intro/) or [data grid](/web/web-components/grids/data-grid/).
+The most common attributes you can configure for `entity-management` are listed below. Note that it is not mandatory to specify an event, but if you don't specify a `createEvent` or an `updateEvent`, then you won't have a form created - which defeats the point of using this micro front-end. It would be simpler to use a [grid-pro](/web/web-components/grids/grid-pro/grid-pro-intro/) or [data grid](/web/web-components/grids/data-grid/).
 
 | Attribute                  | Description                                          |   Mandatory |
 | -------------------------- | -----------------------------------------------------| ------------|
@@ -89,8 +89,8 @@ The most common attributes you can configure for `entity-management` are listed 
 | `columns`                  | enables you to supply an array of `ColDef[]` properties to [customise](#customising-the-grid) the grid. | No  |
 | `createFormUiSchema`       | enables you to supply a schema to configure an insert form. | No  |
 | `updateFormUiSchema`       | enables you to supply a schema to configure an update form. | No  |
-| `crud-menu-position`       | specifies the position of the CRUD action buttons (e.g., Add, Edit, Delete) within the grid. | No  |
-| `crud-menu-style`          | defines the visual style of the CRUD action buttons. | No  |
+| `crud-menu-position`       | specifies the position of the CRUD action buttons (e.g., Add, Edit, Delete) within the grid. Possible values are: **column**, **top**, **bottom**, **action**, **none** (no menu displayed) | No  |
+| `crud-menu-style`          | defines the visual style of the CRUD action buttons. Possible values are **default** (displays the buttons side by side), **actions-vertical** (displayed vertically), **actions-horizontal** (displayed horizontally) | No  |
 | `crud-action-menu-name`    | defines the label used for the CRUD action menu. | No  |
 
 
@@ -156,7 +156,7 @@ It is designed to enable you to configure user access to the system with the min
 
 ## Profile Management
 
-The [Profile Management](/web/micro-front-ends/profile-management/profile-management/) micro front-end provides a way of managing manage the profiles on the front end. This has been built using the Entity Management micro front-end. 
+The [Profile Management](/web/micro-front-ends/profile-management/profile-management/) micro front-end provides a way of managing the profiles on the front end. This has been built using the Entity Management micro front-end. 
 
 It is designed to enable you to configure the user profiles with the minimum of effort. These user profiles control access to specific functions and information in your application.
 
