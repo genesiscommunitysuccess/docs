@@ -826,6 +826,14 @@ module.exports = {
           type: 'doc',
           id: 'how-to/ht-ingest-csv-test'
         },
+        {
+          type: 'doc',
+          id: 'how-to/ht-consume-kafka'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-consume-kafka-test'
+        },
       ],
     },
   ]
