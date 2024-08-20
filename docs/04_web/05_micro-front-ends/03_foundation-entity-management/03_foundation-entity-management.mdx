@@ -89,8 +89,8 @@ The most common attributes you can configure for `entity-management` are listed 
 | `columns`                  | enables you to supply an array of `ColDef[]` properties to [customise](#customising-the-grid) the grid. | No  |
 | `createFormUiSchema`       | enables you to supply a schema to configure an insert form. | No  |
 | `updateFormUiSchema`       | enables you to supply a schema to configure an update form. | No  |
-| `crud-menu-position`       | specifies the position of the CRUD action buttons (e.g., Add, Edit, Delete) within the grid. Possible values are: **column**, **top**, **bottom**, **action**, **none** (no menu displayed) | No  |
-| `crud-menu-style`          | defines the visual style of the CRUD action buttons. Possible values are **default** (displays the buttons side by side), **actions-vertical** (displayed vertically), **actions-horizontal** (displayed horizontally) | No  |
+| `crud-menu-position`       | specifies the position of the CRUD action buttons (Add, Edit, Delete) within the grid. Possible values are: **column**, **top**, **bottom**, **none** (no menu displayed) | No  |
+| `crud-menu-style`          | defines the visual style of the CRUD action buttons. Possible values are **default** (displays the buttons side by side), **actions-vertical** (displays a small button with three vertical dots; when the user clicks on this small button, the available CRUD options are displayed vertically), **actions-horizontal** (displays a small button with three vertical dots; when the user clicks on this small button, the available CRUD buttons are displayed horizontally) | No  |
 | `crud-action-menu-name`    | defines the label used for the CRUD action menu. | No  |
 
 
@@ -127,6 +127,21 @@ The example array below creates six columns, specifying the width of each one.
 As a result of these column definitions, the following grid is displayed:
 
 ![](/img/entity-man-coldef-02.png)
+
+#### Customising the buttons on the grid
+By default, the grid displays **Add**, **Edit** and **Delete** buttons to match the settings you have made for `createEvent` (insert), `updateEvent` (edit) and `deleteEvent`. These are placed above the grid to the right. **Edit** and **Delete** buttons are greyed out until the user selects a row in the grid.
+
+You can set the location of the buttons using the setting `crud-menu-position`. 
+
+- To position the Edit and Delete buttons in a column for every row in the grid, set `crud-menu-position = column`.
+![](/img/column-buttons.png)
+- If you don't want to display the buttons at all, set `crud-menu-position = none`.
+
+You can set the style of the buttons using the `crud-menu-style` setting. This hides the buttons and displays a small button with three vertical dots. When the user clicks on the three dots, the available buttons are then displayed for the user to select.
+
+- With `crud-menu-style = actions-horizontal`, when the user clicks on the dots, the buttons are displayed horizontally (side-by-side).
+- With `crud-menu-style = actions-vertical`, when the user clicks on the dots, the buttons are displayed vertically.
+![](/img/style-vertical.png)
 
 #### Customising the form
 If you want to control the content of a form - for example, you might want to use different forms for inserting a new record and for modifying an existing record - use either the `createFormUiSchema` attribute or the `updateFormUiSchema` attribute. These enable you to provide a schema that configures the form. 
