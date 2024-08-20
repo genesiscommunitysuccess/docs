@@ -85,12 +85,21 @@ So, as a result of these permissions:
 
 At the next level down, you can apply conditions for users who are authorised to **view**, **create**, **edit** and **delete**. A user's permission can depend on the content of the specific record (or row).
 
-For example, continue looking at our **trade** table:
+For example, continue looking at our **trade** table and consdier the following permissioning requirements:
 
-- User Aa **is permitted** to **view** trades (rows) where the country is DE, but **is not permitted** to **create**, **edit** or **delete** trades in other countries.
-- User Aa **is permitted** to **view** trades (rows) where the country is FR, and **is permitted** to **create**, **edit** or **delete** trades in other countries.
-- User Aa **is not permitted** to **view** trades (rows) where the country is ES, and **is not permitted** to **create**, **edit** or **delete** trades in this country.
-- User Aa **is permitted** to **view**, **create**, **edit** or **delete** trades (rows) where none of the conditions applies. 
+| User          | **is permitted to**         |**is _not_ permitted to**   |
+| ------------- | --------------------------- | -------------------------- |
+| User AA | **view** trades (rows) only where the country is DE                                          | **create**, **edit** or **delete** trades in other countries             |
+| User BB | **view** trades (rows) only where the country is FR, and **is permitted** to **create**, **edit** or **delete** trades in other countries   | **delete** trades                                                     |
+| User CC | **view** trades (rows) in all countries except ES, and **create**, **edit** and *delete**  them in those countries |        **view** trades (rows) where the country is ES, or to **create**, **edit** or **delete** trades in this country           |
+| User DD | **view**, **create**, **edit** or **delete** trades (rows) in all countries |                           |
+
+As a result of these permissions:
+
+- User AA can to **view** trades (rows) where the country is DE, but **is not permitted** to **create**, **edit** or **delete** trades in other countries.
+- User BB can to **view** trades (rows) where the country is FR, and **is permitted** to **create**, **edit** or **delete** trades in other countries.
+- User CC can **view** trades (rows) where the country is ES, and **is not permitted** to **create**, **edit** or **delete** trades in this country.
+- User DD can **view**, **create**, **edit** or **delete** trades (rows) for all countries. 
 
 ## Permissions for fields (attributes/columns)
 
@@ -247,7 +256,7 @@ This works exactly the same way for an Event Handler file.
 
 All above patterns are the same for Request Replies (reqreps) within the Genesis platform - this can be seen in the example application referenced below.
 
-### Front end authorisation
+### Front-end authorisation
 
 It is possible to apply authorisation at the front end to remove grids and buttons where there is no appropriate permission.  If this is not done, the system is protected (by the server) but users will receive error messages explaining their lack of permissions.
 
