@@ -20,9 +20,9 @@ For any application that has more than minimal complexity, you will want to give
 The Genesis Platform enables you to do this in extremely precise ways to match your business requirements.
 
 ## What you can control, and where
-Until you start to specify any permissions, everything is accessible by any authenticated user. But you can insert permmission statements in the relevant places control **access to data** and **the ability to change it**.
+Until you start to specify any permissions, everything is accessible by any authenticated user. But you can insert permmission statements in the relevant places to control **access to data** and **the ability to change it**.
 
-You can also control which types of change to data are permitted: (create, edit, delete).
+You can also control how users are able to change data. For example, one user might be allowed to create and edit records in a table, but not delete them. Another user might be allowed to create, edit and delete records in that table.
 
 All you need to do is specify the permissions at each point. The Genesis Platform ensures that only users with appropriate permissions are able to act at that point.
 
@@ -65,7 +65,7 @@ You can also directly apply permissions to other actions that users can perform 
 
 ### Applying permissions at the front end
 
-In a similar way, you can control the visibility of each User Interface component. For example, you can permission a component that displays a grid of data from the **TRADE** table so that different users have a different experience:
+In a similar way, you can control what users can see. For example, you can permission a User interface component that displays a grid of data from the **TRADE** table so that different users have a different experience:
 
 | User          | **is permitted to**         |**is _not_ permitted to**   |
 | ------------- | --------------------------- | -------------------------- |
@@ -76,16 +76,16 @@ In a similar way, you can control the visibility of each User Interface componen
 
 So, as a result of these permissions:
 
-- User A can see the grid of trades, but cannot see any buttons to  **create**, **edit** or **delete** trades.
-- User B can see the grid of trades, and sees buttons to  **create** and **edit** trades. This user does not see a button to **delete** records in the table.
-- User C can see the grid of trades, and sees buttons to  **create**, **edit** and **delete** trades. 
+- User A can see the grid of trades, but cannot see any buttons to  create, edit or delete trades.
+- User B can see the grid of trades, and sees buttons to  create and edit trades. This user does not see a button to delete records in the table.
+- User C can see the grid of trades, and sees buttons to  creat*, edit and delete trades. 
 - User D cannot see the grid of trades or any buttons.
 
 ## Permissions for records (rows)
 
 At the next level down, you can apply conditions for users who are authorised to **view**, **create**, **edit** and **delete**. A user's permission can depend on the content of the specific record (or row).
 
-For example, continue looking at our **trade** table and consdier the following permissioning requirements:
+For example, continue looking at our **TRADE** table and consider the following permissioning requirements. We want different users to see different information depending on the country of the trade; and we want to control which users can create, edit and delete records (trades) in the table:
 
 | User          | **is permitted to**         |**is _not_ permitted to**   |
 | ------------- | --------------------------- | -------------------------- |
@@ -96,16 +96,16 @@ For example, continue looking at our **trade** table and consdier the following 
 
 As a result of these permissions:
 
-- User AA can to **view** trades (rows) where the country is DE, but **is not permitted** to **create**, **edit** or **delete** trades in other countries.
-- User BB can to **view** trades (rows) where the country is FR, and **is permitted** to **create**, **edit** or **delete** trades in other countries.
-- User CC can **view** trades (rows) where the country is ES, and **is not permitted** to **create**, **edit** or **delete** trades in this country.
-- User DD can **view**, **create**, **edit** or **delete** trades (rows) for all countries. 
+- User AA can only see trades in Germany, but cannot create, edit or delete trades in other countries.
+- User BB can see trades in France, and can create, edit or delete trades in other countries.
+- User CC can see trades in Spain, but cannot create, edit or delete trades in that country.
+- User DD can see, create, edit and delete trades for all countries. 
 
 ## Permissions for fields (attributes/columns)
 
-At the same level, you can configure access to each field in the table. You can do this in conjunction with any authorisation you set up at the record level (2A). Again, consider our example of the **trade** table:
+At the same level, you can configure access to each field in the table. You can do this in conjunction with any authorisation you set up at the record level. Again, consider our example of the **TRADE** table:
 
-- User A (for example a member of the support team) **is not permitted** to **view** the counterparty for any trade (row).
+- User A (for example, a member of the support team) **is not permitted** to **view** the counterparty for any trade (row).
 - User B **is permitted** to view the counterparty but **is not permitted** to change (**edit**) the counterparty to a counterparty based in country GB
 
 All configuration can be applied with simple statements in the relevant part of the code. So, however precise your business requirements are, you can achieve them quickly without undue difficulty.
@@ -201,7 +201,8 @@ The code below looks up the value on the prior version and sets it on the propos
 ```
 
 You can set up row-level authorisation through a further table where (continuing the example above) Countries are mapped to Profiles. This could be any reference field as per the authorisation requirements.
-Row level is then done via a look-up on an in-memory map (created and managed by the auth process):
+
+Row-level permissioning is then performed via a look-up on an in-memory map (which is created and managed by the auth process):
 
 ```jsx
   query("ALL_TRADES", TRADE) {
@@ -215,7 +216,7 @@ Row level is then done via a look-up on an in-memory map (created and managed by
   }
 ```
 
-Event handler authorisation at row level is done in a similar way:
+You can specify row-level authorisation for each event in your Event Handler in a similar way:
 ```jsx
   eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
     permissioning {
@@ -234,10 +235,9 @@ You can combine table-, row- and column-level authorisation in a single data ser
 
 It is also possible to apply authorisation for all queries in a Data Server or all events in an Event Handler file. 
 
-When you do this, all queries or events within the  (file) receive these permissions. But you can override these within any specific query or event. So, effectively, you are providing default permission for all the queries or events in the file.
+When you do this, all queries or events within the .kts (file) receive these permissions. But you can override them within any specific query or event. So, effectively, you are providing default permission for all the queries or events in the file.
 
 This is useful, for example, where a project has collections of functions; you can create separate files of Data Servers or Event Handlers and simply apply the authorisation once in each file.
-
 
 Here is an example of a Data Server file, where the authorisation applies to every query in the file:
 
