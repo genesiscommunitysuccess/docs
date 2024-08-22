@@ -17,8 +17,6 @@ The file has two views:
 * The first view is called TRADE_VIEW. It joins the TRADE table to the COUNTERPARTY table and to the INSTRUMENT table. This view also includes a [derived field](/database/fields-tables-views/views/views-advanced/#derived-fields) called CONSIDERATION.
 * The second view is called POSITION_VIEW. Its root table is the POSITION table. There are [backwards joins](/database/fields-tables-views/views/views-basics/#backwards-joins) to the ALT_INSTRUMENT_ID and INSTRUMENT_L1_PRICE tables which allow real-time updates from all the fields. Separately, thers is a join from the root table to the INSTRUMENT table. This view also includes two [derived fields](/database/fields-tables-views/views/views-advanced/#derived-fields): VALUE and PNL.
 
-Note that there are  in the second view. These joins ensure that real-time updates from the joined table are included.
-
 ```kotlin
 views {
 
