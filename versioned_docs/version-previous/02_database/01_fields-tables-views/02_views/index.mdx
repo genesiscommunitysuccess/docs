@@ -27,6 +27,8 @@ There are some useful things to note:
 - By default, only the root table is monitored for changes - so updates to fields in the joined tables are **not** monitored. If you want to include real-time updates from those tables, you can declare your joins as backwards joins.
 - You can create derived fields in a view to create additional information. For example, you can create a notional value for the trade by multiplying the unit price by the quantity. 
 
+Like tables, views are database constructs. To make data from a table or view available to the front end, you need to create a [Request Server](/request-server/introduction/) `requestReply` for snapshot data, or a [Data Server](/data-server/introduction/) `query` for streaming data.
+
 Views are defined in the file _application-name_**-view-dictionary.kts**.
 
 If your application is called **rubicon**, then the file name will be **rubicon-view-dictionary.kts**.

@@ -69,6 +69,7 @@ The following example shows three key things:
     }
 
 ```
+It is worth noting that if you are working with real-time data in your views, you probably need to use [backwards joins](#backwards-joins), which we shall look at later in this page.
 
 Joins can be one-to-one (key field match) or one-to-many (part-key-field match).
 
@@ -127,7 +128,7 @@ You can override the name of a field using various operators:
 ## Backwards joins
 Backwards joins are important if your view is used in any real-time activity, for example, if you are going to stream data from the view or if you have [consolidators](/server/consolidator/introduction/) monitoring the view.
 
-By default, the platform (specifically, the [Update Queue](/operations/update-queue/overview/))only listens for changes on the root table of the view.
+By default, the platform (specifically, the [Update Queue](/operations/update-queue/overview/)) only listens for changes on the root table of the view.
 
 If you want to include real-time updates from the fields a joined table, then you have to specify that this a backwards join. 
 
