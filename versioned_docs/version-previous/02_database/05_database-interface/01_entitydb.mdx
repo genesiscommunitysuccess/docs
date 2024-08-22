@@ -749,7 +749,7 @@ final var subscription = db.subscribe(Trade.class)
 The `bulkSubscribe` operation combines a [`getBulk`](#getbulk) and a [`subscribe`](#subscribe) call into a single operation.
 This is useful when a class needs to read a full table and then receive updates of changes to the underlying table or view.
 
-This operation supports [backwards joins for views]](../../../database/fields-tables-views/views/views-examples/). This means that it can receive updates on both the
+This operation supports [backwards joins for views](/database/fields-tables-views/views/views-examples/). This means that it can receive updates on both the
 root table and the joined tables. The view needs to support this in the definition, and it must be enabled on the `bulkSubscribe` call.
 
 #### Example
