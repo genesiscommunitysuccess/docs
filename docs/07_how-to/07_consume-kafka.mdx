@@ -16,10 +16,10 @@ import TabItem from '@theme/TabItem';
 
 Kafka is a standard messaging infrastructure used throughout financial markets.  Genesis has the ability to consume messages from Kafka topics, and to publish messages to Kafka topics.  This is handled transactionally and can be done in a few different ways, depending on the desired functionality.
 
-Consuming from Kafka:
-This is done using a Genesis pipeline.  A pipeline allows Genesis to process incoming, and outgoing, messages and can be used for a variety of connection methods like csv files (as well as Kafka).
+## Consuming from Kafka
+This is done using a Genesis pipeline.  A pipeline allows Genesis to process incoming, and outgoing, messages and can be used for a variety of connection methods including csv files as well as Kafka topics.
 
-To implement a pipeline the following it needed:
+To implement a pipeline the following is needed:
 
 code?
 
@@ -27,23 +27,45 @@ Kafka is then configured like this:
 
 code?
 
-And the resulting message can be processed and stored in the database.. Will this fire an eventhandler?  Can we fire one if we want?
+The resulting message can be processed and stored in the database and can also trigger events __is this true?__
 
-There is an example application here that shows this in action.
+There is an example application here __need link__ that shows this in action.
 
-Publishing to Kafka:
+## Publishing to Kafka
 This can be done in several different ways:
-Triggered by an event.  You can use the AbstractProgrammaticSource to create a source implementation in one line that allows you to send to the pipeline via an event.
+- Triggered by an event.  You can use the AbstractProgrammaticSource to create a source implementation in one line that allows you to send to the pipeline from an event
+```jsx
+package global.genesis.kafka
+
+import global.genesis.gen.dao.PricePublished
+import global.genesis.pipeline.event.AbstractProgrammaticSource
+
+object ProgrammaticPriceSource : AbstractProgrammaticSource<PricePublished>()
+```
+Then in the event handler a call of:
+```jsx
+  eventHandler<PricePublished>(name = "PRICE_PUBLISH") {
+      onCommit { event ->
+        val price = event.details
+        entityDb.insert(price)
+        ProgrammaticPriceSource.send(price)
+        ack()
+      }
+  }
+```
+
+
+- Use a database subscription source which detects changes and publishes these to kafka
 code?
-Use a database subscription source which detects changes and publishes these to kafka
-code?Using scheduled cron rules to trigger the execution of a pipeline and publish the related data to kafka
+
+- Using scheduled cron rules to trigger the execution of a pipeline and publish the related data to kafka
 code?.  ? maybe, or do we do a “how to use cron jobs in Genesis”?
 
-There is an example application here that shows these in action.
+There is an example application here __need link__ that shows these in action.
 
-Data types
-All standard data/message types can be supported by Genesis, including strings, json, XML, Fix format
-Blah blah
+## Data types
+All standard data/message types can be supported by Genesis, including strings, json, XML, FIX format
+More detials on these can be found here __need link__.
 
 
 ## Testing
