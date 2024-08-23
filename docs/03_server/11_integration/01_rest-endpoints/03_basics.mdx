@@ -594,7 +594,9 @@ Request Server requests require:
 
 * `SOURCE_REF` header (a unique value must be supplied on every request with a unique value)
 * `SESSION_AUTH_TOKEN` header
-* A request body as per your event handler inside the `DETAILS` object.
+* the details that you want to pass to the request reply; these must be in the standard REST format for request parameters: `request.[request_parameter]=[value]`: for example:
+
+  `&DETAILS.MAX_ROWS=100`
 
 Here is an example request:
 
