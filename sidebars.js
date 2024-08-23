@@ -834,6 +834,22 @@ module.exports = {
           type: 'doc',
           id: 'how-to/ht-consume-kafka-test'
         },
+        {
+          type: 'doc',
+          id: 'how-to/ht-fdc3'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-fdc3-test'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-notify-email'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-notify-email-test'
+        },
       ],
     },
   ]
