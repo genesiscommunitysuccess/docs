@@ -594,9 +594,14 @@ Request Server requests require:
 
 * `SOURCE_REF` header (a unique value must be supplied on every request with a unique value)
 * `SESSION_AUTH_TOKEN` header
-* the details that you want to pass to the request reply; these must be in the standard REST format for request parameters: `request.[request_parameter]=[value]`: for example:
+* the request parameters
+  - `request.[request_parameter]=[value]`
+* the request details, for example:
+  - `DETAILS.MAX_ROWS=100`
+  
+For example:
 
-  `&DETAILS.MAX_ROWS=100`
+`http://localhost:9064/req-counterparty-details?request.counterPartyId=*&DETAILS.MAX_ROWS=100`
 
 Here is an example request:
 
