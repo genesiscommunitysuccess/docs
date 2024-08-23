@@ -17,9 +17,25 @@ import TabItem from '@theme/TabItem';
 
 ## FDC3
 
-## Testing
+## How it works
 
-:::info
-Go to our [**Testing**](/how-to/ht-fdc3-test/) page for details of how to test Kafka in your application.
-:::
+### FDC3 web client
+
+This application has been generated using Genesis Create and has been adapted to demonstrate the features of `foundation-fdc3` library.
+
+It is designed to serve several 'fdc3-apps' that use the interop features of FDC3 to interact with each other.
+
+Note, each 'fdc3-app' is a different route on the web application, but they are loaded in a different Desktop Agent container. In real life, your apps will have different origins.
+
+## Running in Desktop Agent
+
+The application should be loaded in an [FDC3 Desktop Agent](https://fdc3.finos.org/docs/api/ref/DesktopAgent) to ensure that the FDC3 functionality works.
+
+To run the app, go to the **./fdc3 client** directory and start the **how-touiexamples** server.
+
+```shell
+npm run dev
+```
+
+This starts the server that serves the urls accessed by the apps in the desktop agent. 
 
