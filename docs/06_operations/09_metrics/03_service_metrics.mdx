@@ -1,0 +1,104 @@
+---
+title: 'Service Metrics'
+sidebar_label: 'Service Metrics'
+id: service-level-metrics
+keywords: [operations, metrics]
+tags:
+- operations
+- metrics
+---
+
+These metrics are provided out of the box for specific service types.
+We can use these to keep track of how a service is behaving under load.
+All metrics are at resource level, i.e. a specific data server query, or event handler,
+
+* [Consolidator](./#consolidator)
+* [Data Server](./#data-server)
+* [Event Handler](./#event-handler)
+* [Request Server](./#request-server)
+* [Router](./#Router)
+* [Streamer](./#streamer)
+* [Streamer Client](./#streamer-client)
+
+## Consolidator
+
+The consolidator exposes metrics to measure latency.
+A high latency would indicate that the consolidator is struggling to keep up.
+
+
+| Metric                      | Explanation                          |
+|:----------------------------|:-------------------------------------|
+| calculation_latency         | latency for performing a calculation |
+| consolidator_input_latency  | latency for processing an update     |
+| consolidator_output_latency | latency for writing to database      |
+
+## Data Server
+
+The data server metrics expose a number of metrics to help monitor the service.
+These metrics expose the number of users connected, and various latency stats.
+As data servers provide real time views to users, each connection to a query will have a resource cost.
+This is not a problem under normal usage, where connections are managed by the genesis framework.
+The genesis client will automatically release these connections when no longer required.
+However, if a bespoke client is used, then these connections might not be closed properly.
+A high user or connection count can indicate a problem here.
+The latency metrics will track how well a data server is handling requests.
+
+| Metric                        | Explanation                                   |
+|:------------------------------|:----------------------------------------------|
+| user_count                    | The number of users connected to a query      |
+| connection_count              | The number of connections to a query          |
+| data_logon.processing_latency | The latency for processing DATA_LOGON request |
+| enriched_lookup_latency       | The latency for enriching data                |
+| lookup_latency                | The latency for a lookup                      |
+| message_publication_latency   | The latency for publishing an update          |
+
+## Event Handler
+
+The event handler latency metrics will show how long it takes for an event handler to process a message.
+
+| Metric             | Explanation                                                  |
+|:-------------------|:-------------------------------------------------------------|
+| processing_latency | The latency for processing events (kts event handler)        |
+| latency            | The latency for processing events (kotlin/java event handler |
+
+## Request Server
+
+The event handler latency metrics will show how long it takes for a request server to process a message.
+
+| Metric                     | Explanation                         |
+|:---------------------------|:------------------------------------|
+| message_processing_latency | The latency for processing requests |
+
+## Router
+
+The metrics around the router measure the number of connections the processing latency.
+
+| Metric                     | Explanation                         |
+|:---------------------------|:------------------------------------|
+| active_connections         | The number of client connections    |
+| message_processing_latency | The latency for processing messages |
+
+## Streamer
+
+The streamer measures how long it takes to receive a response.
+
+| Metric                    | Explanation                        |
+|:--------------------------|:-----------------------------------|
+| replay_processing_latency | The latency for processing a reply |
+
+## Streamer Client
+
+The streamer client has a processing latency.
+Additionally there it tracks the unreplied message size.
+The streamer client will publish messages, and will track ACKs received in response to those messages.
+In order not to overwhelm the consumer, it will have a maximum number of unreplied messages,
+before it starts throttling the output.
+If the unreplied message size stays at a high number, it could indicate a number of problems:
+* the consumer is unable to keep up with the message flow
+* the consumer is not sending an ack in response to the messages
+
+| Metric                      | Explanation                        |
+|:----------------------------|:-----------------------------------|
+| unreplied_messages_size     | The number of outstanding messages |
+| outbound_processing_latency | The processing latency             |
+

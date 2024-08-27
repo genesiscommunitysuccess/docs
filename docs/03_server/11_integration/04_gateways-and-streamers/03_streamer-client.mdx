@@ -191,3 +191,8 @@ ChronicleMap instances need to be pre-allocated with a fixed set of parameters. 
 For AUTH_PERMS and its internal ChronicleMap instances, the platform exposes the number of entries parameter, because we recreate the ChronicleMap file on every process restart.
 
 However, the platform does not expose a parameter in the Streamer Client for changing the number of entries, because the cache files are persisted across Streamer Client restarts.
+
+
+## Metrics
+
+Streamer client support metrics; please see [here for details](/operations/metrics/service-level-metrics/#streamer-client)
