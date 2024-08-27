@@ -5,8 +5,7 @@ id: ht-ingest-csv
 keywords: [csv, copp clark, integration, ingest]
 tags:
     - csv
-    - copp clark
-    - data server
+    - copp Clark
     - integration
     - ingest
 ---
@@ -22,7 +21,7 @@ When you need to take in data from an external source, the first option you shou
 
 This enables you to define the data source, transform it to match fields in your tables, then insert or update the data in the specified table. This can be set upto handle streaming data or static files.
 
-A good practical example is to be able to take Copp Clark holiday data that arrives in CSV files.
+A good practical example is to be able to take [Copp Clark](https://coppclark.com/) holiday data that arrives in CSV files.
 
 :::info
 You can also use the Data Pipeline component to send out data to external systems. This works the same way in reverse, taking data from tables in your Genesis application and transforming it it onto the format required by the target system.
@@ -30,23 +29,19 @@ You can also use the Data Pipeline component to send out data to external system
 Here we are going focus on incoming data in static files.
 :::
 
-## Transforming data with Data Pipeline
-** fetch more detail from the Data Pipeline pages**
+## Transforming data 
+To create a Data Pipeline for ingetsing data, you create a -pipeline-name_**data-pipeline.kts** file to define a pipeline that maps data from an external source (database, file) to tables in your application. 
 
-
-## How Data Pipeline works
-
-You can create a -pipeline-name_**data-pipeline.kts** file to define a pipeline that maps data from an external source (database, file) to tables in your application. 
-
-For each Data Pipeline you need to define three main areas:
+Each Data Pipeline must define three things:
 
 - **source** is the location of the incoming data
-- **map** parses the source and maps data to fields in the application's database
-- **sink** acts as an data source to update the relevant tables 
+- **map** parses the source and maps data to fields in the application's database; typically, you are looking to transform column headings on the incoming files into the relevant fields in the target table in your database
+- **sink** acts as a data source to update the relevant tables (you can also use this to further update the data and store it somewhere else - such as a different database or a log)
 
 Where field mapping is not one-to-one, you can define a `transform` function that returns `Any`.
 
-The currently supported sources are:
+### What can you ingest?
+You can take data from the following sources:
 
 - PostgreSQL
 - MS SQL Server
@@ -56,23 +51,124 @@ The currently supported sources are:
   - XML
   - JSON
 
-We shall look at three different scenarios of increasing complexity.
+## Three different examples
+To show how to use Data Pipeline to ingest data, we have provided three different examples. They all start with incoming data in Copp Clark holiday files:
 
+- The first example simply covers the task of parsing the incoming data (a CSV file that contains Exchange Settlement details) and then updating a table in the application's database (the EXCHANGE_HOLIDAY table).
+
+- The second example looks at two incoming files - Trading and Settlement - and applies some more sophisticated analysis and logic. The database is only updated when changes are detected, including deleting dates that are no longer designated holidays. In this example, the logic is defined in a separate file, and called from within the pipeline itself.
+
+- The third example is an extension of the second. It adds maintenance of EXCHANGE data, which is contained in every row of the inbound files. 
+
+#### Finding the examples
+The examples are within one complete example application, which includes a front end so that you can run and see the data. You can [clone the repo](https://github.com/genesislcap/platform-howto/tree/master/howto-csv-ingress) to see the code - which includes comments at the key points to highlight what is being specified - and run the application.
+
+We shall look at each example in more detail.
 
 ### Simple CSV ingestion
 The example below parses a simple CSV and upserts the Exchange Settlement Copp Clark file into the application's EXCHANGE_HOLIDAY table.
 
-```kotlin
-code from repo
-```
+This example is designed to highlight how simple it is to ingest the data. The example works, but, for initial clarity, it excludes things that you would include in a finished application:
+
+- It assumes that the file is in a valid format in file. It will not generate errors gracefully if a row has missing or badly formatted data.
+- It simply upserts records (inserts, else if present modifies). So, if you are using auditing, the audit trail can get very busy unless you typically expect delta files (where each new file contains only additions and modifications from the previous version).
+- It only logs upon completion.
+
+:::info Take a look at the code
+The [**.kts file for simple csv ingress**](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-simple-data-pipelines.kts) contains the main configuration. Comments are inserted in the code to explain each key point.
+:::
+
+:::tip Take a look at the app
+1. Run the app.
+2. Copy the files in the folder **sampleData/simple** into **localDevFileDrop/coppClarkSimple**.
+
+See the **HOWTO_CSV_INGRESS_COMPACT_PROCESS** logs for logged details. 
+
+To view the data, run the GUI or use the Genesis DbMon command.
+:::
 
 ### Snapshot file CSV ingestion
+This example shows something a bit more robust, and looks at the nuances of Copp Clark files:
 
+- The file sent each day is a full snapshot of holidays. If the latest file does not include a holiday that was present in the previous version, then it must be deleted. 
+- There are two separate files, one for Trading and one for Settlement. Each file can contain multiple lines for the same holiday date on a given exchange. Our app only needs to know if a given date is a holiday; for this reason, we key the exchange table on just **Holiday Type** (Settlement vs Trading) + ISO MIC (the Exchange) and **Holiday Date** in our EXCHANGE table definition - so we don't need the redundant lines.
+
+Two further things elevate this snapshot above the simple one:
+
+- It includes auditing: the EXCHANGE table is auditable.
+- It only writes updates if something has changed (whereas the simple example simply upserts with the same data each time).
+
+#### Keeping the data transformation separate
+A major difference between this example and the simple one is that the operators have been built separately in the **CoppClarkHolidayTransformer.kt** file. This file uses a Data Pipeline `StreamOperator`, which reads a map of the dcoded CSV rows and ouptuts a series of DbOperations (inserts, modifies, deletes and upserts) on the ExchangeHolidays table. 
+
+The operators are called from within the pipelines. This avoids large pipeline codes with complex logic. 
+
+[comment]: <> (Can we highlight the code where the operators are called? Assume this is within the main kts file?)
+
+
+:::info Take a look at the code
+The [**.kts file for snapshot data**](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-snapshot-data-pipelines.kts) contains the main configuration. Comments are inserted in the code to explain each key point.
+
+The [**CoppClarkHolidayTransformer.kt**](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/kotlin/howto/csv/ingress/copp/clark/transform/CoppClarkHolidayTransformer.kt) file contains all the logic. Comments are inserted in the code to explain each key point.
+
+:::
+
+:::tip Take a look at the app
+1. Run the app.
+2. Copy the files in the folder **sampleData/snapshot** into **localDevFileDrop/coppClarkSnapshot**.
+
+See the **HOWTO_CSV_INGRESS_COMPACT_PROCESS** logs for logged details. 
+
+To view the data, run the GUI or use the Genesis DbMon command.
+:::
 
 ### Updating multiple different entities from a single source
+You can modify more than one type of entity record from your file upload.
 
+This example is an extension of the previous Snapshot CSV file example. Additionally, it maintains EXCHANGE data, which is contained in every row of the inbound files. So, it ensures that there is an EXCHANGE entry for every calendar we're adding.
 
-## Code examples
+:::info Take a look at the code
+You can see the main configuration in the [**snapshot-exchange-data-pipelines.kts**
+](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-snapshot-exchange-data-pipelines.kts) file. This file is very similar to the [snapshot-data-pipelines.kts](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-snapshot-exchange-data-pipelines.kts) example. So, the comments in the file are exclusively focused on the logic that is related to exchange data.
 
-**the sample apps in detail**
+In the [**CoppClarkHolidayAndExchangeTransformer.kt**](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/kotlin/howto/csv/ingress/copp/clark/transform/CoppClarkHolidayAndExchangeTransformer.kt) file, the main difference to note is the StreamOperator output is of type `DbOperation<out TableEntity>`. This means it can be a DbOperation on any database type. Here we have just two table entities, but it could be any mix of entities in our application.
+:::
+
+:::tip Take a look at the app
+1. Run the app.
+2. Copy the files in the folder **sampleData/snapshot** into **localDevFileDrop/coppClarkSnapshotExchange**.
+
+See the **HOWTO_CSV_INGRESS_COMPACT_PROCESS** logs for logged details.
+
+To view the data, run the GUI or DbMon task.
+:::
+
+## Setting up a pipeline in your own app
+When you want to create a Data Pipeline in your own application, there are other things you need to do in addition to creating the pipeline files themselves.
+
+### Processes.xml
+Every process in your app must be configured in the application's [**-processes.xml**](/server/configuring-runtime/processes/) file. See the [**howto-csv-ingress-processes.xml**](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/genesis/cfg/howto-csv-ingress-processes.xml) file for a simple example. 
+
+At minimum, you need to 
+
+- add `genesis-pal-datapipeline` to `<module>`
+- add `global.genesis.pipeline` to `<package>`
+- add the relevant gpal script (e.g. [**howto-csv-ingress-cc-simple-data-pipeline.kts**](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-simple-data-pipelines.kts)) to `<script`>
+
+### System definition
+Every application also has a [main configuration file](/server/configuring-runtime/system-definitions/) called **genesis-system-definition.kts**. 
+
+Check this file and make sure that the application knows where to source the files from.
+
+[comment]: <> (surely we need to be more specific here?)
+
+## Testing
+
+:::info
+Go to our [**Testing**](/how-to/ht-ingest-csv-test/) page for details of how to test the use of Data Pipeline to ingest files and add them to your application's database.
+:::
+
+## Full technical details
+You can find full technical details of how to use the Data Pipeline in our [reference documentation](/server/integration/data-pipeline/basics/).
+
 
