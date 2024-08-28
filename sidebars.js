@@ -852,5 +852,24 @@ module.exports = {
         },
       ],
     },
+    {
+      type: 'category',
+      label: 'TESTING',
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'how-to/ht-prepare-test'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-web-unit-test'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-web-e2e-test'
+        },
+      ],
+    },
   ]
 }
