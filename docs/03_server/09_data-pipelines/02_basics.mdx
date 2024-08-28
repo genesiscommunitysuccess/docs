@@ -12,15 +12,17 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## Set Up
+## Set-up
 
-You will be able to configure your data pipelines in a file called `<app-name>-pipelines.kts`. This must be located in your application’s scripts directory. See [Configuring Runtime](/server/data-pipelines/configuring-runtime/) to see how to add this script to your application’s processes configuration.
+You can configure your data pipelines in a file called _app-name_**-pipelines.kts**. This must be located in your application’s **scripts** directory. 
 
-:::note
-If you are using the [Genesis Gradle Settings Plugin](/operations/project-structure/settings-plugin/) in your application then there is no need for this next step.
+Once created, you need to add this script to your application’s [processes configuration](/server/data-pipelines/configuring-runtime/).
+
+If you are **not** using the [Genesis Gradle Settings Plugin](/operations/project-structure/settings-plugin/) you need to add the following dependency to your app module:
+
+:::note Only if you are not using the Gradle Settings Plugin
+If you are using the [Genesis Gradle Settings Plugin](/operations/project-structure/settings-plugin/), you don't need to do this.
 :::
-
-You will need to add the following dependency to your app module:
 
 <Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
     <TabItem value="gradle">
@@ -45,20 +47,23 @@ You will need to add the following dependency to your app module:
 
 ## Pipelines
 
-There are 2 kind of pipelines:
+There are two kinds of pipeline:
 
-- Batch Pipeline
-- Realtime Pipeline
+- Batch pipeline
+- Realtime pipeline
 
-Each pipeline must have a single source and single sink, in between these stages you are able to have any number of operator steps as long as the types & ordering comply to that of the pipeline you are using.
-See below for more details on what types are available among the 2 pipelines.
+Each pipeline must have a single source and single sink. In between these stages, you can define any number of operator steps, as long as the types and ordering comply to that of the pipeline you are using.
 
-### Batch Pipeline
+See below for more details on what types are available for each type of pipelines.
 
-A batch pipeline will only run once and will need to be triggered manually via the use of its execute method. The pipeline can be retrieved from the Pipeline Manager class.
-The execute method takes in a map of input parameters which provide the context that can be used throughout the pipeline.
+### Batch pipeline
 
-Example:
+A batch pipeline will only run once and must be triggered manually via the use of its execute method. The pipeline can be retrieved from the Pipeline Manager class.
+
+The execute method takes in a map of input parameters, which provide the context to be used throughout the pipeline.
+
+Here is an example:
+
 ```kotlin
 // GPAL Script to define pipeline
 val fileStorageSource = fileStorageSource()
@@ -76,7 +81,8 @@ pipelines {
 }
 ```
 
-Example of how you would trigger the execution of this pipeline in an event handler:
+#### Triggering executionYou can trigger the execution of the above axample pipeline from an `eventHandler`.
+
 ```kotlin
 val pipelineManager = inject<PipelineManager>()
 
@@ -91,9 +97,13 @@ eventHandler<FileStorageData>(name = "FILE_PIPELINE_START") {
     }
 ```
 
-### Realtime Pipeline
+### Realtime pipeline
 
-A realtime pipeline will be started as soon as the process running the script is up and will only be stopped once the process has shut down. If you need to manually stop/start the pipeline you can also do so using the Pipeline Manager but this is not recommended. There are 2 possible scenarios you can have for a realtime Pipeline:
+A realtime pipeline is started as soon as the process running the script is healthy. It is only stopped once the process has shut down. 
+
+If you need to stop or start the pipeline manually, you can do this using the Pipeline Manager; however, this is not recommended. 
+
+There are two possible scenarios for a realtime pipeline:
 
 **Streaming**
 
@@ -102,7 +112,6 @@ You must start off with a split operator, after which you can use any combinatio
 :::
 
 GPAL Example:
-
 
 **Element**
 

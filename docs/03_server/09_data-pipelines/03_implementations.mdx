@@ -13,9 +13,11 @@ tags:
 
 ### Camel File Source (Realtime)
 
-Realtime acknowledgement source that uses camel to periodically poll a location and returns a flow of type PipelineFile which includes the file name, file path and input stream of its contents.
-The next element will only be emitted once acknowledgement is given that the previous one has been successfully processed.
-The location must be provided upon instantiation of this source, as shown below, and any camel specific configurations should be included within this string.
+This is a realtime acknowledgement source that uses camel to poll a location periodically. It returns a flow of type `PipelineFile`, which includes the file name, file path and input stream of its contents.
+
+The next element is only emitted once acknowledgement is given that the previous one has been successfully processed.
+
+The location must be provided upon instantiation of this source, as shown below. Any camel-specific configurations must be included within this string.
 
 GPAL Example:
 ```kotlin
@@ -28,17 +30,20 @@ pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
 
 ### Database Batch Poll Source (Realtime)
 
-Realtime acknowledgement source that returns a stream of updates via a batch poll on a particular database dependent on an acknowledgement having been received of the previous element. If no data is received, the source will wait for a delay before attempting to poll again. This source implementation uses the PersistenceManager to persist the latest index using the provided lambda - by default the DbPersistenceManager is used to manage the state of this source. See Persistence Manager for more details (link to persistence manager).
+This is a realtime acknowledgement source that returns a stream of updates via a batch poll on a particular database, dependent on an acknowledgement having been received of the previous element.
 
-The type of object that you would like this source to return must be given as part of the source definition, example shown below.
+If no data is received, the source waits for a delay before attempting to poll again. This source implementation uses the PersistenceManager to persist the latest index using the provided lambda; by default the DbPersistenceManager is used to manage the state of this source. See Persistence Manager for more details (link to persistence manager).
+
+The type of object that you would like this source to return must be given as part of the source definition, as shown in the example below.
 
 When configuring the db batch poller to use as part of your pipeline you must provide the following as part of the configuration:
+
 - source (required): this is what the PersistenceManager will use to find the last persisted record and should be unique across all pipelines
 - index (required): this is the table index used to order the records and get the value for the last persisted record for recovery - if single field index is provided, ensure this value is of type Long. Else, see below.
-- buildIndex (required for multi field index only): if you would like to use an index which contains multiple fields, you need to provide a lambda which converts from a Long value (the last persisted value) to your EntityIndex object using this value - you must ensure that the Long value which you would like to be used as the persistence index needs to be the final value inside your index object
+- buildIndex (required for multi-field index only): if you would like to use an index that contains multiple fields, you need to provide a lambda that converts from a Long value (the last persisted value) to your EntityIndex object using this value - you must ensure that the Long value which you would like to be used as the persistence index needs to be the final value inside your index object
 - dbLookupDelayMs (optional): this is the delay time that the poller will wait for in milliseconds after not receiving any new data from the database - it is configured to 200ms by default and is not required as part of the provided config
 
-GPAL Example:
+Here is a GPAL example of a Batch Poll source definition:
 ```kotlin
 // Single Field Index Example
 val batchPollSource = dbBatchQuery<TestIndexTable> {
@@ -65,14 +70,18 @@ pipelines {
 
 ### CSV Decoder
 
-Split Operator to decode from an InputStream (from a PipelineFile object) to a CsvRow object which contains:
+This is a split Operator that decodes from an InputStream (from a PipelineFile object) to a CsvRow object that contains:
 
-1. the line number for each CSV row
-2. an object of a user defined type representing the data of each CSV line, by default this is of type `Map<String, String>`
+- the line number for each CSV row
+- an object of a user-defined type representing the data of each CSV line; by default, this is of type `Map<String, String>`
 
-GPAL functions available are `csvRawDecoder()` to deserialise to `Map<String, String>` and `csvDecoder<T>()` to deserialise to the specified class, represented by T here.
+GPAL functions available are:
 
-GPAL Examples:
+- `csvRawDecoder()` to deserialise to `Map<String, String>`
+- `csvDecoder<T>()` to deserialise to the specified class, represented by T here.
+
+Here are some GPAL examples of a CSV Decoder:
+
 ```kotlin
 // Decoding to Map<String, String>
 pipeline("TEST_PIPELINE_RAW_DECODER") {
@@ -105,15 +114,18 @@ pipeline("TEST_PIPELINE_DECODER") {
 
 ## Sinks
 
-### Database Sink
+### Database sink
 
-A sink into the Genesis database which takes a DbOperation object as input with an object extending TableEntity i.e.  `INPUT : DbOperation<out TableEntity>` .
+This is a sink into the Genesis database, which takes a DbOperation object as input with an object extending TableEntity i.e.  `INPUT : DbOperation<out TableEntity>` .
 
 DbOperation has 4 subtypes: Insert, Modify, Upsert and Delete.
 
-GPAL functions available are `dbSink()` for non-transactional and `txDbSink()` for transactional.
+GPAL functions available are:
 
-GPAL Examples:
+- `dbSink()` for non-transactional
+- `txDbSink()` for transactional
+
+The GPAL example below contains both a transactional sink and a non-transactional sink:
 
 ```kotlin
 // Transactional db sink
@@ -151,11 +163,11 @@ pipeline("TEST_DB_SINK") {
 
 ### On Completion Handler
 
-Handler that executes after a successful pipeline. Multiple handlers can be added to a pipeline.
+This is a handler that executes after a successful pipeline operation. Multiple handlers can be added to a pipeline.
 
-For Batch pipelines, this is at the end of the whole pipeline.
+- For Batch pipelines, this is at the end of the whole pipeline.
 
-For Realtime pipelines, this is at the end of each processed element.
+- For Realtime pipelines, this is at the end of each processed element.
 
 GPAL Example:
 

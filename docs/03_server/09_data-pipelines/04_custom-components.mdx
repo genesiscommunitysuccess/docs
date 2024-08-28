@@ -11,14 +11,20 @@ tags:
 
 ### Persistence Manager
 
-There is a persistence manager interface available in the genesis-pipeline-api module which will allow you to decide how you want to manage tracking what you’ve last persisted.
-The interface can be injected directly into your class where the default implementation used is the DbPersistenceManager as mentioned below.
+There is a persistence manager interface available in the genesis-pipeline-api module, which enables you to decide how to manage tracking what you have last persisted.
+
+If you use the default DbPersistenceManager implementation, you can directly inject the interface into your class.
 
 ### Database Persistence Manager
 
 The DbPersistenceManager is an implementation of PersistenceManager that stores persistence records in the database as a record of the table mentioned below.
-This class supports transactions and will use a transaction handle if provided, otherwise will use the injected instance of the entity database.
-The latest index returned will always be the greatest value for the given source. The option is also given to the user whether or not to ‘append’ the record i.e; if true, create a new persistence record. If false, overwrite the current persistence record with the new index value.
+
+This class supports transactions and uses a transaction handle if provided. Otherwise, it uses the injected instance of the entity database.
+
+The latest index returned will always be the greatest value for the given source. The user is given the option whether or not to ‘append’ the record:
+
+- if true, create a new persistence record
+-if false, overwrite the current persistence record with the new index value
 
 As such, there has been a new table created called DATA_PIPELINE_PERSISTENCE which contains the following fields:
 

@@ -502,11 +502,10 @@ pendingApproval {
 
 You might have noticed that the original type-safe event message types are lost inside the **-approval.kts** file, as the content of `eventMessage` inside `APPROVAL` table (and also inside `PendingApprovalInsert`) is a serialised JSON string. You can deserialise the original type-safe objects using the `selectPredicate` method combined with multiple `onEvent` predicates. These methods are available in all the `pendingApproval` code blocks: `insert`, `accept`, `cancel` and `reject`.
 
-- `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function  provides a [GenesisSet](../../03_server/11_network-messages/02_genesisset.mdx) object with the contents of the original message payload.
+- `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function  provides a [GenesisSet](/server/network-messages/genesisSet/) object with the contents of the original message payload.
 - `onEvent` works very similarly to any other GPAL [Event Handler definition](#defining-an-event-handler-in-gpal). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
 
-
-Please see the example below for custom logic using a table called "RESTRICTED_SYMBOL" to prevent restricted symbols from being added to the system, as well as checking user right codes:
+The example below shows custom logic using a table called RESTRICTED_SYMBOL to prevent restricted symbols from being added to the system, as well as checking user right codes:
 
 ```kotlin
 import global.genesis.session.RightSummaryCache
@@ -558,7 +557,7 @@ pendingApproval {
 
 An approval process deliberately delays events. So it is possible that by the time a pending approval action is approved, the underlying data has changed enough to cause the delayed event to fail when executed. When this happens, the pending approval record will be marked as REJECTED_BY_SYSTEM in its `APPROVAL_STATUS` field.
 
-The platform provides an event designed to help you to reject events directly from the back end without human intervention. "EVENT_PENDING_APPROVAL_SYSTEM_REJECT" is an event that can be used to satisfy any specific requirements that fall outside the functionality of the pending approval system. The event is only accessible by back-end services. It takes two parameters:
+The platform provides an event designed to help you to reject events directly from the back end without human intervention. EVENT_PENDING_APPROVAL_SYSTEM_REJECT is an event that can be used to satisfy any specific requirements that fall outside the functionality of the pending approval system. The event is only accessible by back-end services. It takes two parameters:
 
 - `approvalMessage` is the text of the message to be sent when the message is rejected.
 - `approvalKey` is a unique identifier for each pending approval record. This identifier is never exposed to the front end, so only back-end services have access to it. That makes it impossible to trigger this event unless you have access to the database system. You need to obtain the `approvalKey` programatically so that you can supply it as a parameter value.
@@ -611,7 +610,7 @@ if (client == null || !client.isConnected) {
 
 ## Defining an Event Handler in GPAL
 
-In most cases, you will create [Event Handlers](../../../server/event-handler/introduction/) in a kts file using GPAL. This offers a method with succinct code and a good degree of flexibility.
+In most cases, you will create [Event Handlers](/server/event-handler/introduction/) in a kts file using GPAL. This offers a method with succinct code and a good degree of flexibility.
 
 However, you can also implement Event Handlers as a set of classes. Typically, this is useful where you have a complex requirement for business logic and database interaction. For example, a kts file of 1,000 lines is difficult to test and maintain; in this case, a set of individual classes is much more convenient.
 
