@@ -61,113 +61,6 @@ e2e/
 - **pages** contains Page Object Models (POMs) that encapsulate interactions with different parts of the application.
 - **test-config.ts** specifies the configuration for your testing environment.
 
-## Setting up end-to-end tests
-
-### Installing dependencies
-
-1. Install [Node.js](https://nodejs.org/), which is required for running JavaScript- and TypeScript-based tests. 
-
-2. Install Foundation Testing. This provides utilities for testing within your project, and integrates Playwright, which has Behavior-Driven Development (BDD) tools, and enables you to use [Gherkin syntax](https://cucumber.io/docs/gherkin/reference/) in tests.
-
- npm install --save-dev @genesislcap/foundation-testing
- ```
-  `npm install --save-dev @genesislcap/foundation-testing```
-@genesislcap/foundation-testing: 
-
-### A typical project structure
-A typical project structure for E2E testing has three main folders, plus a **test-config.ts** file:
-
-```plaintext
-e2e/
-├── features/
-│   ├── example.feature
-│   └── another-feature.feature
-├── steps/
-│   ├── fixtures.ts
-│   ├── index.ts
-│   └── specific-feature/
-│       └── index.ts
-├── pages/
-│   ├── login-page.ts
-│   └── home-page.ts
-└── test-config.ts
-```
-
-- **features** contains **.feature** files written in Gherkin syntax, describing the tests.
-- **steps** contains TypeScript files that define the steps corresponding to the Gherkin steps in the feature files.
-- **pages** contains Page Object Models (POMs) that encapsulate interactions with different parts of the application.
-- **test-config.ts** specifies the configuration for your testing environment.
-
-## E2E scripts in-depth
-
-Below is a comprehensive guide on how to use these scripts to run your E2E tests effectively, along with explanations of each script.
-
-### Example scripts
-Here are the key scripts that you can add to your `package.json` for E2E testing:
-
-```json
-"scripts": {
-    "test:e2e": "npx bddgen && genx test --e2e --watch",
-    "test:e2e:report": "npx playwright show-report",
-    "test:e2e:debug": "genx test --e2e --debug",
-    "test:e2e:ui": "genx test --e2e --interactive",
-    "test:e2e:watch:bdd": "npx -y nodemon -w ./test/e2e/features -w ./test/e2e/features/steps -e feature,ts --exec \"npx bddgen\"",
-    "test:e2e:watch:pw": "genx test --e2e --interactive",
-    "test:e2e:watch": "npx run-p test:e2e:watch:*"
-  }
-```
-
-### Running E2E tests
-To run all E2E tests in your project, use the following command:
-
-```bash
-npm run test:e2e
-```
-:::tip What it does
-This script runs all the E2E tests while watching for any changes in the files. The `npx bddgen` command regenerates the BDD files before running the tests, ensuring everything is up-to-date. The tests are then executed using the `genx` tool with the `--e2e` flag.
-:::
-
-### Debugging E2E tests
-
-If you need to debug your E2E tests, use the following command:
-
-```bash
-npm run test:e2e:debug
-```
-
-- **What it does**: This script runs the E2E tests in debug mode. The `genx test --e2e --debug` command allows you to pause the execution and inspect the state of your application during the tests.
-
-### Running E2E tests with UI
-
-For an interactive testing experience where you can manually interact with the tests and see them running, use:
-
-```bash
-npm run test:e2e:ui
-```
-
-- **What it does**: This script runs the E2E tests in interactive mode, where you can see the tests as they are executed and you can control the flow manually. The `genx test --e2e --interactive` command opens an interface for this purpose.
-
-### Viewing E2E test reports
-
-After running your E2E tests, you can view detailed reports by using the following command:
-
-```bash
-npm run test:e2e:report
-```
-
-- **What it does**: This script uses `npx playwright show-report` to open the Playwright report UI, where you can review the results of your tests in detail.
-
-### Watching E2E tests
-If you want to watch and run your E2E tests whenever there are changes, use:
-
-```bash
-npm run test:e2e:watch
-```
-
-- **What it does**: This script combines multiple watch commands to monitor changes in your E2E test files and automatically rerun the tests. It includes watching for changes in the feature files and step definitions and regenerating BDD files as needed.
-
----
-
 ## Writing tests
 
 ### Features
@@ -284,6 +177,172 @@ In this example:
 - The `use` function is called to provide the `loginPage` instance to the test.
 - The `PlaywrightBDD.createBdd` function is used to create the Gherkin steps (`Given`, `When`, `Then`) that use the fixtures.
 
+## Setting up environment variables
+Proper environment configuration is crucial for ensuring that your end-to-end (E2E) tests run smoothly across different environments. 
+
+There are three different ways to set the environment variables that you access from within your fixture and page set-ups.
+
+- [using the config in your **package.json** file](#using-config-in-packagejson)
+- [using **.env.local** file](#using-the-envlocal-file)
+- [using the command line](#overriding-environment-variables-from-the-command-line)
+
+We shall look at each of these methods in detail.
+
+#### Accessing environment variables in fixtures and pages
+
+After setting up your environment variables through any of the above methods, you can easily access them in your fixtures or page models.
+
+Here is an example of using environment variables in a fixture:
+
+```typescript
+export const test = base.extend({
+  loginPage: async ({ page, config }, use) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.goto();
+    await loginPage.fillUsernameAndPassword(
+      process.env.DEFAULT_USER || config.DEFAULT_USER,
+      process.env.DEFAULT_PASSWORD || config.DEFAULT_PASSWORD
+    );
+    await use(loginPage);
+  },
+});
+```
+
+#### Using config in package.json
+
+Your **package.json** includes a `config` section that can be used to define environment variables:
+
+```json
+"config": {
+    "API_HOST": "ws://localhost:9064",
+    "PORT": 6060,
+    "ENABLE_SSO": false
+}
+```
+
+These variables can be accessed in your TS/JS files as follows:
+
+```javascript
+const apiHost = process.env.npm_package_config_API_HOST;
+const port = process.env.npm_package_config_PORT;
+const enableSSO = process.env.npm_package_config_ENABLE_SSO;
+```
+
+They can also be used in your test set-up, for example, within your fixture or page set-up:
+
+```typescript
+export const test = base.extend({
+  config: async ({}, use) => {
+    const config = {
+      API_HOST: process.env.npm_package_config_API_HOST,
+      PORT: process.env.npm_package_config_PORT,
+      ENABLE_SSO: process.env.npm_package_config_ENABLE_SSO,
+    };
+    await use(config);
+  },
+});
+```
+
+#### Using the .env.local file
+
+Your **.env.local** file at the root of your project contains sensitive environment variables like `DEFAULT_USER` and `DEFAULT_PASSWORD`. These variables can be loaded using a package like `dotenv`.
+
+`genx` automatically loads environment variables from **.env.local** (or **.env**) when running tests. 
+
+To access these variables in your test set-up, load the variables into your test set-up, for example:
+
+   ```typescript
+   export const test = base.extend({
+     config: async ({}, use) => {
+       const config = {
+         DEFAULT_USER: process.env.DEFAULT_USER,
+         DEFAULT_PASSWORD: process.env.DEFAULT_PASSWORD,
+       };
+       await use(config);
+     },
+   });
+   ```
+
+   With this set-up, your test environment will have access to the variables defined in **.env.local**, allowing you to configure user credentials and other sensitive data.
+
+#### Overriding environment variables from the command line
+
+Sometimes, you need to override certain environment variables for specific test runs. You can do this directly via the command line:
+
+```bash
+genx test -e API_HOST=ws://localhost:9064,DEFAULT_USER=testuser --e2e
+```
+
+This approach temporarily sets `API_HOST` and `DEFAULT_USER` for that specific test run, overriding the values defined in **package.json** or **.env.local**.
+
+---
+
+## E2E scripts in-depth
+
+Below is a comprehensive guide on how to use these scripts to run your E2E tests effectively, along with explanations of each script.
+
+### Example scripts
+Here are the key scripts that you can add to your **package.json** for E2E testing:
+
+```json
+"scripts": {
+    "test:e2e": "npx bddgen && genx test --e2e --watch",
+    "test:e2e:report": "npx playwright show-report",
+    "test:e2e:debug": "genx test --e2e --debug",
+    "test:e2e:ui": "genx test --e2e --interactive",
+    "test:e2e:watch:bdd": "npx -y nodemon -w ./test/e2e/features -w ./test/e2e/features/steps -e feature,ts --exec \"npx bddgen\"",
+    "test:e2e:watch:pw": "genx test --e2e --interactive",
+    "test:e2e:watch": "npx run-p test:e2e:watch:*"
+  }
+```
+
+### Running E2E tests
+To run all E2E tests in your project, use the following command:
+
+```bash
+npm run test:e2e
+```
+- **What it does**. This script runs all the E2E tests while watching for any changes in the files. The `npx bddgen` command regenerates the BDD files before running the tests, ensuring everything is up-to-date. The tests are then executed using the `genx` tool with the `--e2e` flag.
+
+### Debugging E2E tests
+
+If you need to debug your E2E tests, use the following command:
+
+```bash
+npm run test:e2e:debug
+```
+
+- **What it does**. This script runs the E2E tests in debug mode. The `genx test --e2e --debug` command allows you to pause the execution and inspect the state of your application during the tests.
+
+### Running E2E tests with UI
+
+For an interactive testing experience where you can manually interact with the tests and see them running, use:
+
+```bash
+npm run test:e2e:ui
+```
+
+- **What it does**. This script runs the E2E tests in interactive mode, where you can see the tests as they are executed and you can control the flow manually. The `genx test --e2e --interactive` command opens an interface for this purpose.
+
+### Viewing E2E test reports
+
+After running your E2E tests, you can view detailed reports by using the following command:
+
+```bash
+npm run test:e2e:report
+```
+
+- **What it does**. This script uses `npx playwright show-report` to open the Playwright report UI, where you can review the results of your tests in detail.
+
+### Watching E2E tests
+If you want to watch and run your E2E tests whenever there are changes, use:
+
+```bash
+npm run test:e2e:watch
+```
+
+- **What it does**. This script combines multiple watch commands to monitor changes in your E2E test files and automatically rerun the tests. It includes watching for changes in the feature files and step definitions and regenerating BDD files as needed.
+
 ---
 
 ## Detailed examples
@@ -360,106 +419,4 @@ Then('I should see the home page content', async ({ homePage }) => {
   await expect(homePage.isContentVisible()).toBeTruthy();
 });
 ```
-
-### Setting up environment variables
-Proper environment configuration is crucial for ensuring that your end-to-end (E2E) tests run smoothly across different environments. 
-
-There are three different ways to set the environment variables that you access from within your fixture and page set-ups.
-
-- [using the config in your **package.json** file](#using-config-in-packagejson)
-- [using **.env.local** file](#using-the-envlocal-file)
-- [using the command line](#overriding-environment-variables-from-the-command-line)
-
-We shall look at each of these methods in detail.
-
-#### Accessing environment variables in fixtures and pages
-
-After setting up your environment variables through any of the above methods, you can easily access them in your fixtures or page models.
-
-Here is an example of using environment variables in a fixture:
-
-```typescript
-export const test = base.extend({
-  loginPage: async ({ page, config }, use) => {
-    const loginPage = new LoginPage(page);
-    await loginPage.goto();
-    await loginPage.fillUsernameAndPassword(
-      process.env.DEFAULT_USER || config.DEFAULT_USER,
-      process.env.DEFAULT_PASSWORD || config.DEFAULT_PASSWORD
-    );
-    await use(loginPage);
-  },
-});
-```
-
-#### Using config in package.json
-
-Your `package.json` includes a `config` section that can be used to define environment variables:
-
-```json
-"config": {
-    "API_HOST": "ws://localhost:9064",
-    "PORT": 6060,
-    "ENABLE_SSO": false
-}
-```
-
-These variables can be accessed in your TS/JS files as follows:
-
-```javascript
-const apiHost = process.env.npm_package_config_API_HOST;
-const port = process.env.npm_package_config_PORT;
-const enableSSO = process.env.npm_package_config_ENABLE_SSO;
-```
-
-They can also be used in your test set-up, for example, within your fixture or page set-up:
-
-```typescript
-export const test = base.extend({
-  config: async ({}, use) => {
-    const config = {
-      API_HOST: process.env.npm_package_config_API_HOST,
-      PORT: process.env.npm_package_config_PORT,
-      ENABLE_SSO: process.env.npm_package_config_ENABLE_SSO,
-    };
-    await use(config);
-  },
-});
-```
-
-#### Using the .env.local file
-
-Your **.env.local** file at the root of your project contains sensitive environment variables like `DEFAULT_USER` and `DEFAULT_PASSWORD`. These variables can be loaded using a package like `dotenv`.
-
-`genx` automatically loads environment variables from `.env.local` (or `.env`) when running tests. 
-To access these variables in your test set-up, load the variables into your test set-up, for example:
-
-   ```typescript
-   export const test = base.extend({
-     config: async ({}, use) => {
-       const config = {
-         DEFAULT_USER: process.env.DEFAULT_USER,
-         DEFAULT_PASSWORD: process.env.DEFAULT_PASSWORD,
-       };
-       await use(config);
-     },
-   });
-   ```
-
-   With this set-up, your test environment will have access to the variables defined in **.env.local**, allowing you to configure user credentials and other sensitive data.
-
-#### Overriding environment variables from the command line
-
-Sometimes, you need to override certain environment variables for specific test runs. You can do this directly via the command line:
-
-```bash
-genx test -e API_HOST=ws://localhost:9064,DEFAULT_USER=testuser --e2e
-```
-
-This approach temporarily sets `API_HOST` and `DEFAULT_USER` for that specific test run, overriding the values defined in `package.json` or `.env.local`.
-
-
-
-
-
 
