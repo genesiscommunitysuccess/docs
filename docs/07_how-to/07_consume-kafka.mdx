@@ -19,15 +19,58 @@ Kafka is a standard messaging infrastructure used throughout financial markets. 
 ## Consuming from Kafka
 This is done using a Genesis pipeline.  A pipeline allows Genesis to process incoming, and outgoing, messages and can be used for a variety of connection methods including csv files as well as Kafka topics.
 
-To implement a pipeline the following is needed:
+To implement a pipeline the following is needed in the processes.xml file:
+```jsx
+<processes>
+  <process name="MYAPP_MANAGER">
+    ...
+    <module>genesis-pal-datapipeline</module>
+    <package>global.genesis.pipeline</package>
+    <script>myapp-data-pipelines.kts</script>
+    ...
+  </process>
+</processes>
+```
 
-code?
+Kafka is then configured in the pipeline kts file like this:
 
-Kafka is then configured like this:
+```jsx
+val source = kafkaSource<String, Int> {
+    bootstrapServers = systemDefinition.getItem("BOOTSTRAP_SERVER").toString()
+    groupId = systemDefinition.getItem("CONSUMER_GROUP_ID").toString()
+    keyDeserializer = StringDeserializer()
+    valueDeserializer = IntegerDeserializer()
+    topic = systemDefinition.getItem("KAFKA_TOPIC").toString()
+    securityProtocol = systemDefinition.getItem("KAFKA_SECURITY_CONFIG").toString()
+}
 
-code?
+val operator: SplitOperator<ConsumerRecords<String, Int>, ConsumerRecord<String, Int>> = SplitOperator { consumerRecords ->
+    flow {
+        consumerRecords.forEach {
+            emit(it)
+        }
+    }
+}
 
-The resulting message can be processed and stored in the database and can also trigger events __is this true?__
+pipelines {
+    pipeline("KAFKA_TO_DB_PIPELINE") {
+        source(source)
+            .split(operator)
+            .map {
+                PriceReceived(it.key(), it.value())
+            }
+            .map {
+                DbOperation.Insert(it)
+            }
+            .sink(txDbSink())
+    }
+}
+```
+
+The resulting message can be processed and stored in the database and can also trigger events via:
+```jsx
+    codey codey codey
+```
 
 There is an example application here __need link__ that shows this in action.
 
@@ -56,10 +99,10 @@ Then in the event handler a call of:
 
 
 - Use a database subscription source which detects changes and publishes these to kafka
-code?
+__code?__
 
 - Using scheduled cron rules to trigger the execution of a pipeline and publish the related data to kafka
-code?.  ? maybe, or do we do a “how to use cron jobs in Genesis”?
+__code?__
 
 There is an example application here __need link__ that shows these in action.
 
