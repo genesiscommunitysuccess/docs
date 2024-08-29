@@ -50,7 +50,9 @@ source(
 ```
 
 ### Operators
-Operators are used to transform input format to output format (although they can do more). You can chain them together, where each operator simply takes the output type of the previous one. So in this case, so the output of `.split` goes into `.map` (and the output type of map is a list of DbOperations):
+Operators are used to transform input format to output format (although they can do more). You can chain them together, where each operator simply takes the output type of the previous one. 
+
+So in this case, the output of `.split` goes into `.map` and the output type of `.map` is a list of DbOperations, which the next sink (dbSync) can take as input.
 
 ```kotlin
             //1
@@ -79,7 +81,7 @@ Also, you can build multiple database entities from a single file. You can see d
 ### Sink
 Once the data is in the required format, we want to sink it. For file ingress, this means updating the database. 
 
-The example sink below takes the output from map (a set of DB operations) and handles the updating of the database accordingly.
+The example sink below takes the output from `.map` (a set of DB operations) and handles the updating of the database.
 
 ```kotlin
 .sink(dbSink())
