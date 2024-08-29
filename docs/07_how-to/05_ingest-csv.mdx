@@ -155,6 +155,35 @@ At minimum, you need to
 - add `global.genesis.pipeline` to `<package>`
 - add the relevant gpal script (e.g. [**howto-csv-ingress-cc-simple-data-pipeline.kts**](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-simple-data-pipelines.kts)) to `<script`>
 
+For example:
+```jsx
+<processes>
+  <process name="MYAPP_MANAGER">
+    ...
+    <module>genesis-pal-datapipeline</module>
+    <package>global.genesis.pipeline</package>
+    <script>myapp-data-pipelines.kts</script>
+    ...
+  </process>
+</processes>
+```
+
+We would then add code into the data pipeline file like this:
+```jsx
+pipelines {
+    pipeline("MY_PIPELINE") {
+        source(camelSource { location = getDefaultLocalFileCamelLocation(systemDefinition.get("FolderLocation").get(),"FileName") })
+            .map { LOG.info("Triggered MY_PIPELINE"); it}
+            .split(csvRawDecoder())
+            .map { row ->
+                ...
+            }
+            .sink(dbSink())
+            .onCompletion
+    }
+}
+```
+
 ### System definition
 Every application also has a [main configuration file](/server/configuring-runtime/system-definitions/) called **genesis-system-definition.kts**. 
 
