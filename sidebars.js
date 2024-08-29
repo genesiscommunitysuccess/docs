@@ -811,6 +811,14 @@ module.exports = {
           type: 'doc',
           id: 'how-to/ht-join-expose-test'
         },
+        {
+          type: 'doc',
+          id: 'how-to/ht-nested-objects'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-nested-objects-test'
+        },
       ],
     },
     {
