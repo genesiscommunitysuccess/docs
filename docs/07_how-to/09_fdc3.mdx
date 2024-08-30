@@ -1,5 +1,5 @@
 ---
-title: 'How to implement interoperability'
+title: 'How to set up interoperability'
 sidebar_label: 'Interoperability'
 id: ht-fdc3
 keywords: [fdc3, interoperability]
@@ -14,18 +14,37 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+A Genesis app can use the FDC3 standard for interoperability between front-end applications. 
 
-## FDC3
+So, if you have apps that provide services such as charting or news, then you can set up your app so that can share messages with those apps at the front end.
+
+For example, a user could click on a row in a grid of data in your Genesis application and then view view news or a chart on that instrument in a separate app window.
+
+You can achieve this with relatively few lines of code.
+
+The main steps involved in setting this up are:
+
+- Set up a channel
+- Set up events on those channels
+- Set up listeners that can listen to the channels
+
+There are four example apps in total:
+
+- FDC3 blotter
+- intent-listener is an application with a form for submitting trades. 
+- system-channel-listener listens to the active color channel for FX pair events.
+- app-channel-listener listens to the `customAppChannel` for FX trade events.
 
 ## How it works
 
 ### FDC3 web client
+We have created an example application to demonstrate how you can set up interaction between your Genesis application and other display applications.
 
-This application has been generated using Genesis Create and has been adapted to demonstrate the features of `foundation-fdc3` library.
+The application was generated using Genesis Create and has been adapted to demonstrate the features of `foundation-fdc3` library.
 
 It is designed to serve several 'fdc3-apps' that use the interop features of FDC3 to interact with each other.
 
-Note, each 'fdc3-app' is a different route on the web application, but they are loaded in a different Desktop Agent container. In real life, your apps will have different origins.
+Each 'fdc3-app' is a different route on the web application but they are loaded in a different Desktop Agent container. In real life, your apps will have different origins.
 
 ## Running in Desktop Agent
 
@@ -38,4 +57,6 @@ npm run dev
 ```
 
 This starts the server that serves the urls accessed by the apps in the desktop agent. 
+
+
 
