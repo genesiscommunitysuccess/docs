@@ -15,22 +15,27 @@ import TabItem from '@theme/TabItem';
 
 
 ## Nested objects
-Nested objects are common features of applications.  For example, a __Swap Trade__ has multiple __Legs__, each with multiple
-__Cashflows__ and each __Cashflow__ can have multiple __Fixings__.
+Financial instruments often have lengthy and complicated structures. For example, a __Swap Trade__ has multiple __Legs__, each with multiple
+__Cashflows__; and each __Cashflow__ can have multiple __Fixings__.
 
-For the example here we will use a __Counterparty Group__ which
-can contain 1 or more __Subsidiaries__.  Each __Subsidiary__ can contain 1 or more __Contacts__.
+Nested objects are common methods of incoporating this complexity into financial applications. 
 
-In the context of this explanation a __Swap Trade__ and a __Counterparty Group__ are both examples of __Nested Objects__.
+To show you how to create these nested objects, we shall use the example of a __Counterparty Group__, which can contain one or more __Subsidiaries__.  Each __Subsidiary__ can contain one or more __Contacts__.
 
-Often it is desirable, or necessary, to modify a nested object as an atomic action, rather than changing the individual objects separately.
+## Atomic updates
+It is often necessary to modify a nested object as an atomic action, rather than changing the individual objects separately. Genesis supports this capability. 
 
-Genesis supports this capability.  From Genesis Create you automatically get the ability to modify the individual objects.  To change
-this to an atomic change of the nested object we simply need to declare a Data Access Object (DAO) and pass this to events
-and allow this to be served via a Request Response (reqrep).  Optionally we will want to remove the events relating to the individual
-objects from projects created by Genesis Create.
+From applications generated using Genesis Create, you can modify the individual objects. You need to change this to allow an atomic change of the nested object.
 
-To create a DAO representation we define a file in app/src/main/kotlin such as Message.kt:
+To do this, simply declare a Data Access Object (DAO). You can then pass this DAO to events
+and allow it to be served via a Request Response (reqrep).  
+
+Optionally, you probably want to remove the events relating to the individual objects from projects created by Genesis Create.
+
+## Creating the DAO
+To create a DAO representation, define a file in your application's **/src/main/kotlin** folder. 
+For example, here is a file called **Message.kt**:
+
 ```jsx
 data class CounterpartyDAO(
     val counterpartyId: String? = null,
@@ -51,7 +56,10 @@ data class SubsidiaryContactDao(
 )
 ```
 
-These DAO's can then be passed into events and be returned by a reqrep.  For example, the event handler would be declared thus:
+## Passing the DAO to an Event Handler
+The DAOs you create can then be passed into events so that they can be returned to the front end by a `requestReply`. 
+
+Here is an example of an `eventHandler` codeblock to do this:
 ```jsx
 eventHandler {
   eventHandler<CounterpartyDAO>("INSERT_COUNTERPARTY", transactional = true) {
@@ -63,10 +71,14 @@ eventHandler {
     }
 }
 ```
+
 Within the event handler it is necessary to cycle through the nested object to perform appropriate checks and save all data.
+
 The example application, __here !need link!__, demonstrates this.
 
-To request the data back a reqrep is needed.  This would be declared as:
+## Defining the requestReply
+To eble the front end to request the data, you must define a `requestReply` codeblock Here is an example:
+
 ```jsx
 requestReplies {
   requestReply<CounterpartyGroup.ById, CounterpartyDAO>("FULL_COUNTERPARTY_GROUP") {
@@ -78,7 +90,7 @@ requestReplies {
 ```
 Within the reqrep we need to load the full nested object.  The example application, __here !need link!__, demonstrates this.
 
-## Front End Configuration
+## Front-end configuration
 This is much harder and Patrick is taking a look next week...
 Basic front end works, but looks horrendous!  Defo need Patrick magic first!
 
