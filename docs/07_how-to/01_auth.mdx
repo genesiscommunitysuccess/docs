@@ -350,12 +350,34 @@ The example code below enables any user with the Right Code **SuperUser** to per
 Go to our [**Testing**](/how-to/ht-prepare-test/) page for details of our testing tools and the dependencies that you need to declare.
 :::
 
-To test your auth set-up  on your app:
+For testing the auth permissions we have described here on the front end and back end, you can use the common automation frameworks: cucumber and playwright. Test cases are written in the Gherkin language.
 
-- *Details to follow shortly. Thank you for your patience.*
+The E2E tests use two different users to request data from the Data Server. Each user should (of course) see all the data that they are permissioned to view and none of the data that they are not: 
 
+- AmyAccess (full access)
+- RogerRestricted (limited access)
+
+The same set of tests is used to verify the behaviour on the UI side.
+
+In the feature file, we use tags to differentiate between the UI and API tests.
+
+- @API means we are testing via the back end, so the back-end processes must be running and healthy.
+- @UI the test requires the back end and the front end to be up.
+
+Before starting the servers:
+
+1. Run `remap` (which imports the data).
+2. Run `consolidate rights`.
+
+Both tasks should execute without any errors.
+
+Genesis has tested the examples successfully on the H2 and Postgres databases. 
 
 ## Full technical details
 
-See our reference data on [Authorisation](/server/access-control/authorisation-overview/) for a full explanation of the possibilities for setting up authorisation.
-See more about [using `onValidate`](/server/event-handler/basics/#adding-validation) codeblocks.
+Find more details in our in our reference documentation:
+
+- [Authorisation](/server/access-control/authorisation-overview/) 
+- [Event Handlers](/server/event-handler/basics/) 
+- [`onValidate` codeblocks](/server/event-handler/basics/#adding-validation)
+

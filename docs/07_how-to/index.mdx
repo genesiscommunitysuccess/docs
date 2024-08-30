@@ -16,23 +16,27 @@ We hope you find this useful.
 These are the things that every application has to have.
 
 <Grid container>
-    <Grid item xs={12} md={4} sx={{padding: '1%'}}>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
         <QuickCard heading="Set up authorisation" link="/how-to/ht-auth/" text="Understand the principles of authorising your users at every level.">
         </QuickCard>
     </Grid>
-    <Grid item xs={12} md={4} sx={{padding: '1%'}}>
-        <QuickCard heading="Set up authentication" link="../database/database-concepts/database-concepts/" text="Right now, this takes you to database concepts. Just saying.">
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Join tables and expose them" link="/how-to/ht-join-expose/" text="Join tables to create views - useful ways of looking at data. Then create queries so that these can be displayed at the front end.">
         </QuickCard>
     </Grid>
-    <Grid item xs={12} md={4} sx={{padding: '1%'}}>
-        <QuickCard heading="Join tables and expose them" link="/how-to/ht-join-expose/" text="Join tables to create views - useful ways of looking at data. Then create queries so that these can be displayed at the front end.">
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Handle complex data" link="/how-to/ht-nested-objects/" text="See how to set up nested objects to handle complex data structures, such as financial derivaties or counterparties with subsidiaries.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Audit tables" link="/how-to/ht-audit/" text="Create audit tables to log every change to your key tables in the database.">
         </QuickCard>
     </Grid>
 </Grid>
 
-## Another set of cards
+## Integration
 
-More amazing things that you might or might not be able to do. The general idea is that, after reading something here, you'll be able to do it.
+Extend your Genesis application so that it can operate seamlessly alongside other apps and systems.
 
 <Grid container>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
@@ -40,7 +44,11 @@ More amazing things that you might or might not be able to do. The general idea 
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Consuming and publishing Kafka data" link="/how-to/ht-consume-kafka/" text="Kafka is a standard messaging infrastructure used throughout financial markets.  Your app can consume messages from Kafka topics, and publish them to Kafka topics.  ">
+        <QuickCard heading="Consuming and publishing Kafka data" link="/how-to/ht-consume-kafka/" text="Kafka is a standard messaging infrastructure used throughout financial markets.  Your app can _consume_ messages from Kafka topics, and _publish_ them to Kafka topics.  ">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Sending emails" link="/how-to/ht-notify-email/" text="Kafka is a standard messaging infrastructure used throughout financial markets.  Your app can consume messages from Kafka topics, and publish them to Kafka topics.  ">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
