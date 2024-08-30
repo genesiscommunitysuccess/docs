@@ -44,6 +44,140 @@ GSF release notes are added to this area immediately following each software rel
 
 **As new GSF releases are added, they shall be displayed here.**
 
+## Genesis 7.2.13(genesis-server)
+
+### Fixes
+- deploy-plugin: find project jars from gradle jar task, not from version 
+- Consul: improve session check logic used to determine primary process demotion to avoid race conditions 
+- Criteria validation and compilation should handle StackOverflow errors 
+- Mon dies when system is not able to connect to CONSUL but is configured to do so
+
+## Genesis 8.1.8(genesis-server)
+
+### Fixes
+- DbMon search returns the expected number of records 
+- DbMon updateWhere fails if there is a white space in the argument
+- Allow db mon to fetch more than 500 results
+
+## Genesis 8.0.8(genesis-server)
+
+### Fixes
+- DbMon search returns the expected number of records 
+- DbMon updateWhere fails if there is a white space in the argument
+
+## Genesis 8.0.7(genesis-server)
+
+### Fixes
+- Allow db mon to fetch more than 500 results
+
+## Genesis 8.2.4(genesis-server)
+
+### Fixes
+- db batch polling source should accept NANO_TIMESTAMP index
+
+## Genesis 8.2.3(genesis-server)
+
+### Features
+- Metrics: make logging of zero values optional in logger reporter## Genesis 8.1.7(genesis-server)
+
+### Fixes
+- Fix Auth key concatenation for enriched auth clauses and AuthCache re-registration operation now uses correct record ids 
+- Refactor metric report type handling in tests and factory 
+- Add clientHandler router config with option to close client channel if becomes full 
+- Fix ms sql insert handling 
+
+## Genesis 8.1.7(genesis-server)
+
+### Features
+- Metrics: make logging of zero values optional in logger reporter
+
+### Fixes
+- Add clientHandler router config with option to close client channel if becomes 
+
+## Genesis 8.0.6(genesis-server)
+
+### Features
+- Metrics: make logging of zero values optional in logger reporter
+
+## Fixes
+- Add clientHandler router config with option to close client channel if becomes full
+
+## Genesis 7.2.12(genesis-server)
+
+### Features
+- Metrics: make logging of zero values optional in logger reporter
+
+### Fixes
+Add clientHandler router config with option to close client channel if becomes full 
+
+## Genesis 8.0.1(platform-auth)
+
+### Fixes
+
+- One time password doesn't count for historical checks 
+- Add historical check to reset password 
+
+### Dependency changes
+- Bump com.jfrog.artifactory from 5.2.0 to 5.2.1 b
+- Bump commons-codec:commons-codec from 1.16.1 to 1.17.0 
+- Bump org.gradle.test-retry from 1.5.8 to 1.5.9
+
+## Genesis 8.1.2(platform-auth)
+
+### Features
+- pbc support in angular 
+- Update package types 
+
+### Fixes
+- Add historical check to reset password 
+
+### Dependency changes
+
+- build(deps): bump com.jfrog.artifactory from 5.2.1 to 5.2.3
+
+## Genesis 8.2.1(platform-auth)
+
+### Fixes
+- Add historical check to reset password
+
+## Genesis 7.2.11(genesis-server)
+
+### Fixes
+- Fix Auth key concatenation for enriched auth clauses and AuthCache re-registration operation now uses correct record ids 
+- Exclude data folder from site specific folder copy
+
+## Genesis 8.0.5(genesis-server)
+
+### Fixes
+- Fix Auth key concatenation for enriched auth clauses and AuthCache re-registration operation now uses correct record ids 
+- Can use warningNack in context event handlers 
+- Exclude data folder from site specific folder copy
+
+## Genesis 8.1.6(genesis-server)
+
+### Fixes
+- Fix Auth key concatenation for enriched auth clauses and AuthCache re-registration operation now uses correct record ids 
+- Can use warningNack in context event handlers 
+- Exclude data folder from site specific folder copy 
+- Fix minor issues in GenesisJunit test framework
+
+
+## Genesis 8.2.2(genesis-server)
+
+## Fixes
+
+- Ensure completion handlers are only invoked when an element is processed 
+- Exclude data folder from site specific folder copy
+
+## Genesis 8.2.1(genesis-server)
+
+### Breaking changes
+- Increasing object_key field size
+
+### Fixes
+- Ensure error messages are flushed to logs on process exit
+- Fix minor issues in GenesisJunit test framework
+
 ## Genesis 8.2.0(platform-symphony)
 No functional changes.
 
