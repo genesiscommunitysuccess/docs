@@ -1,6 +1,6 @@
 ---
-title: 'Custom Metrics'
-sidebar_label: 'Custom Metrics'
+title: 'Custom metrics'
+sidebar_label: 'Custom metrics'
 id: custom-metrics
 keywords: [operations, metrics, timer, counter, gauge]
 tags:
@@ -14,12 +14,13 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This document will discuss the different metric types, and how to use them in application code.
+This document looks at the different metric types, and how you can use them in your application's code.
 
 ## Using the MetricService
 
 The `MetricService` class can be injected into any application code.
 This class is the entry point for registering and tracking metrics.
+
 There are no additional dependencies to add for using the metric service, for example:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -50,19 +51,24 @@ public class MetricsSample {
 </Tabs>
 
 ## Metrics names and tags
+When registering metrics, you should provide a metric name and, optionally, you can provide tags.
 
-When registering metrics, developers should provide a metric name and can optionally provide tags.
-The way the metric is then displayed depends on the selected reporter.
-In addition to the provided tags, the framework will automatically add the following tags to all metrics:
+The way that the metric is then displayed depends on the reporter that you select.
+
+In addition to the provided tags, the Genesis Platform automatically adds the following tags to all metrics:
+
 * process name
 * host name
 * process group name
 
-It is recommended that the metric name is sufficiently distinct, .g. processing_latency rather than just latency.
+It is recommended that you make your metric names clear and  distinct. for example, `processing_latency` rather than just `latency`.
 
 In addition to a name, tags can also be provided.
-Tags are a key value pair that are reported alongside the metric name.
-The syntax for registering all metric types is the same, so we will use counter an example here.
+
+TEach tag is a key value pair that is reported alongside the metric name.
+
+The syntax for registering all metric types is the same, so we will use *counter* as an example name here.
+
 Tags can be provided as a *vararg* or as a map.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -88,10 +94,9 @@ var counter = metricService.counter(
 </TabItem>
 </Tabs>
 
-## Different types of metrics
+## Types of metric
 
-The framework provides support for three types of metrics.
-Below, we will explain when to use these and will show examples on how to report these metrics.
+The Genesis Platform provides support for three types of metric.
 
 | Type         | Explanation                             | Example                   |
 |:-------------|:----------------------------------------|:--------------------------|
@@ -100,26 +105,29 @@ Below, we will explain when to use these and will show examples on how to report
 | gauge        | Tracks an numerical value               | Number of messages queued |
 | gaugeCounter | Gauge with a counter-like interface     | Number of messages queued |
 
-Please note that the difference between a gauge and a counter is in terms of what information we need.
-Use counters when the rate is interesting, use a gauge when the number is interesting.
+### Gauges and counters
 
-For example, when we track the number of messages received, generally,
-we are interested in the number of messages a system handles over an interval,
-rather than the total number of messages received since the last restart.
-An increase in the rate would indicate a higher load on the system.
+:::tip Gauge or counter
+Use a counter when the *rate* is interesting.
+Use a gauge when the *number* is interesting.
+:::
 
-Conversely, with gauges, the number is meaningful in and of itself.
+For example, when we track the number of messages received, generally, we are interested in the number of messages a system handles over an interval,
+rather than the total number of messages received since the last restart. An increase in the rate would indicate a higher load on the system.
+
+Conversely, with gauges, the number is meaningful in and of itself; f
+
 For example, the number of connections available in the connection pool.
-We do not mind how often connections are requested and released in the application.
-However, we would like to track that connections are always available during application runtime.
+We do not mind how often connections are requested and released in the application. However, we would like to track that connections are always available during application runtime.
 
-Please note that a timer also counts the occurrences, so there is never a need to use a counter
+Note that a timer also counts the occurrences, so there is never a need to use a counter
 and a timer in the same place.
 
 ## Counter
 
 A counter is used to track an ever-increasing number of specific events.
-Generally, these can best be thought of a providing a rate over time.
+Generally, these can best be thought of as providing a rate over time.
+
 It is generally more interesting to see how many messages have been processed in the last 5 minutes,
 than it is to see how many messages have been processed since a service was last started.
 
