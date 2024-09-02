@@ -811,6 +811,14 @@ module.exports = {
           type: 'doc',
           id: 'how-to/ht-audit'
         },
+        {
+          type: 'doc',
+          id: 'how-to/ht-front-end-simple'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-shareable-enums'
+        },
       ],
     },
     {
@@ -825,6 +833,14 @@ module.exports = {
         {
           type: 'doc',
           id: 'how-to/ht-consume-kafka'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-fdc3'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-notify-email'
         },
         {
           type: 'doc',
