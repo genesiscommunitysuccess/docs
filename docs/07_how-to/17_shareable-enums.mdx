@@ -12,5 +12,23 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-your text here...
+Often there is a need to have the same enum shared within or across entities (tables).  For example a Buy/Sell enum might
+want to be on both a trade table and an orders table and it would not necessarily want to be declared twice.
 
+A further example could be Frequency on a schedule (Daily, Weekly, Monthly, Annually etc) - this would be needed in multiple areas
+such as cashflows, fixings, compounding etc.
+
+To create a shared enum on an entity we simply declare a shared field at teh top of the tables-dictionary.kts file:
+
+```jsx
+tables {
+  val scheduleFrequency = sharedField("SCHEDULE_FREQUENCY", ENUM("Bullet","Annually","Daily","Monthly","Weekly","SemiAnnually","Quarterly"))
+
+  table(name = "TRADE", id = 11_000, audit = details(id = 11_004, sequence = "CA")) {
+    ...
+    field("CASHFLOW_FREQUENCY", scheduleFrequency).default("Bullet").notNull()
+    field("FIXING_FREQUENCY", scheduleFrequency).default("Bullet").notNull()
+    field("FIXING_COMPOUNDING_FREQUENCY", scheduleFrequency).default("Bullet").notNull()
+    ...
+  }
+```
