@@ -350,19 +350,26 @@ The example code below enables any user with the Right Code **SuperUser** to per
 Go to our [**Testing**](/how-to/ht-prepare-test/) page for details of our testing tools and the dependencies that you need to declare.
 :::
 
-For testing the auth permissions we have described here on the front end and back end, you can use the common automation frameworks: cucumber and playwright. Test cases are written in the Gherkin language.
+
+For testing the auth permissions we have described here, we use common automation frameworks: cucumber and playwright. 
+
+Our example tests are able to test authorisation via both the user interface and the API.
+
+There are three types of file.
+
+- The [feature file](https://github.com/genesislcap/platform-howto/blob/master/howto-permissions/server/permissions-app/src/test/resources/features/Permission.feature) contains the test cases, which are written in the Gherkin language. Tags are used to differentiate between the UI (`@UI`) and the API (`@API`).
+- There are separate step definitions (written in Java) for testing the user interface and the API in the [**step definitions**](https://github.com/genesislcap/platform-howto/tree/master/howto-permissions/server/permissions-app/src/test/java/global/genesis/cucumber/stepdefinitions) folder. 
+- You can find the expected results files (.json) in the [**result**](https://github.com/genesislcap/platform-howto/tree/master/howto-permissions/server/permissions-app/src/test/resources/result) folder. The actual results are written to this folder after the tests have been executed.
 
 The E2E tests use two different users to request data from the Data Server. Each user should (of course) see all the data that they are permissioned to view and none of the data that they are not: 
 
 - AmyAccess (full access)
 - RogerRestricted (limited access)
 
-The same set of tests is used to verify the behaviour on the UI side.
 
-In the feature file, we use tags to differentiate between the UI and API tests.
-
-- @API means we are testing via the back end, so the back-end processes must be running and healthy.
-- @UI the test requires the back end and the front end to be up.
+### Preparation
+- For testing the API, the back-end processes must be running and healthy.
+- For testing the UI, the both the back end and the front end must be running.
 
 Before starting the servers:
 

@@ -844,11 +844,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'how-to/ht-fdc3'
-        },
-        {
-          type: 'doc',
-          id: 'how-to/ht-notify-email'
+          id: 'how-to/ht-embed'
         },
       ],
     },

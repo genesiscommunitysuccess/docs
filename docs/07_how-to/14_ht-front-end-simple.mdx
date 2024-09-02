@@ -15,8 +15,48 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## 
-you get a home page automatically if you use genx or create
+## Pages and routes
+You get a home page automatically if you use genx or Genesis Create. But you can add as many new pages as you like.
+
+If you want to create a new page:
+
+1. In the folder **client/src/routes**, add a new folder called **new-page** (use your prferred name for this new folder).
+2. In the new folder, create three files:
+    - **new-page.ts** (this is where the component class is defined, incuding methods, properties and the custom element definition)
+    - **new-page.styles.ts** (this where your styles are defined)
+    - **new-age.template.ts** (this is where your HTML template is defined)
+
+3. In the file **src/routes/config.ts**, create a route for your new page, for example:
+
+```
+navItems: [
+  {
+    title: 'New Page',
+    icon: {
+      name: 'cog',
+      variant: 'solid',
+    },
+    permission: '',
+  },
+],
+```TypeScript
+{
+  path: 'new-page',
+  element: NewPage,
+  title: 'New Page',
+  name: 'new-page',
+  navItems: [
+{
+    title: 'New Page',
+    icon: {
+      name: 'cog', // // use any free icon from https://fontawesome.com/icons
+      variant: 'solid',
+    },
+    permission: '',
+  },
+],
+},
+```
 
 ## Adding a form
 
