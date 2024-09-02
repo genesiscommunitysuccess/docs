@@ -24,11 +24,12 @@ To create a shared enum on an entity we simply declare a shared field at teh top
 tables {
   val scheduleFrequency = sharedField("SCHEDULE_FREQUENCY", ENUM("Bullet","Annually","Daily","Monthly","Weekly","SemiAnnually","Quarterly"))
 
-  table(name = "TRADE", id = 11_000, audit = details(id = 11_004, sequence = "CA")) {
-    ...
-    field("CASHFLOW_FREQUENCY", scheduleFrequency).default("Bullet").notNull()
-    field("FIXING_FREQUENCY", scheduleFrequency).default("Bullet").notNull()
-    field("FIXING_COMPOUNDING_FREQUENCY", scheduleFrequency).default("Bullet").notNull()
-    ...
+      table(name = "TRADE", id = 11_000, audit = details(id = 11_004, sequence = "CA")) {
+        ...
+        field("CASHFLOW_FREQUENCY", scheduleFrequency).default("Bullet").notNull()
+        field("FIXING_FREQUENCY", scheduleFrequency).default("Bullet").notNull()
+        field("FIXING_COMPOUNDING_FREQUENCY", scheduleFrequency).default("Bullet").notNull()
+        ...
+      }
   }
 ```
