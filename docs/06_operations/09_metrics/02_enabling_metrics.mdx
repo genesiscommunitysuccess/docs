@@ -12,7 +12,7 @@ tags:
 - datadog
 ---
 
-To enable metrics on your application, it is necessary to add the following settings to your system definition file:
+To enable metrics on your application, add the following settings to your [system definition](/server/configuring-runtime/system-definitions/) file:
 
 ```kotlin
 item(name = "MetricsEnabled", value = "true")
@@ -24,17 +24,17 @@ item(name = "MetricsProcessorStatsEnabled", value = "true")
 | Property                       | Default | Explanation                                 |
 |:-------------------------------|:--------|:--------------------------------------------|
 | MetricsEnabled                 | `false` | enables metrics for your application        |
-| MetricsReportType              | n/a     | a comma separated list of metrics reporters |
+| MetricsReportType              | n/a     | a comma-separated list of metrics reporters |
 | MetricsProcessorStatsEnabled   | `false` | enables additional process metrics          |
 | MetricsClassLoaderStatsEnabled | `false` | enables additional classloader metrics      |
 
-## Metric Names
+## Metric names
 
-The framework provides an abstraction on top of the reporters,
-and a single interface is used regardless of how the metrics are reported.
+The framework provides an abstraction on top of the reporters. A single interface is used, regardless of how the metrics are reported. 
+
 Each metric has an identifier that consists of a name and a series of tags.
 
-The framework provides these tags for every metrics:
+The framework provides these tags for every metric:
 
 | Metric      | Explanation                                 |
 |:------------|:--------------------------------------------|
@@ -42,12 +42,11 @@ The framework provides these tags for every metrics:
 | processName | the name of the process e.g. GENESIS_ROUTER |
 | hostname    | the hostname e.g. TAM_PROD1                 |
 
-In addition to these tags, each metric can provide additional tags.
-How these tags are reported, depends on the metric reporter.
+In addition to these tags, each metric can provide additional tags. How these tags are reported depends on the metric reporter.
 
-## Metric Reporters
+## Metric reporters
 
-Multiple reporters can be specified, and should be comma separated, e.g. `GRAPHITE,DATADOG`.
+You can specify multiple reporters. Your list must be comma-separated, e.g. `GRAPHITE,DATADOG`.
 The reporter affects the name of metrics.
 Within the framework, metrics have a name and tags. 
 
@@ -57,16 +56,16 @@ The available reporters are:
 |:---------|:--------------------------------------------------------------------|
 | GRAPHITE | Publishes metrics to a [Graphite](https://graphiteapp.org/) server  |
 | DATADOG  | Publishes metrics to a [Datadog](https://www.datadoghq.com/) server |
-| SLF4J    | Publishes metrics the services' log file                            |
+| SLF4J    | Publishes metrics to the services' log file                         |
 
 ### Graphite
+Graphite is an open-source sink that you can use for metrics in Genesis applications.
 
-Graphite is an open source sink supported for metrics in genesis applications.
-Graphite is often paired with [Grafana](https://grafana.com/),
-which is able to source data from Graphite, provides means to display and set up alerts.
+Graphite is often paired with [Grafana](https://grafana.com/), which can source data from Graphite and provides the means to set up and display alerts.
 
 Graphite reports metrics in a hierarchical - tree - structure.
-There are two ways that genesis can generate the metric id for graphite, either hierarchical or dimensional.
+
+There are two ways for Genesis to generate the metric id for graphite: either hierarchical or dimensional.
 
 #### Hierarchical metric structure
 
@@ -97,14 +96,16 @@ item(name = "MetricsGraphitePort", value = "2003")
 item(name = "MetricsStructureType", value = "hierarchical")
 ```
 
-For the `MetricsStructureType`, genesis metrics supports both `hierarchical` and `dimensional`.
+For the `MetricsStructureType`, Genesis metrics supports both `hierarchical` and `dimensional`.
 
 
 ### Datadog
 
-Datadog is a propriety cloud bast metrics sink supported by genesis.
+Datadog is a proprietary cloud-based metrics sink that you can use with Genesis.
+
 Datadog supports tags, and these are provided, along with the metric name.
-To use Datadog, the following three settings should be provided in your system definition file:
+
+To use Datadog, make the following three settings to your application's [system definition](/server/configuring-runtime/system-definitions/) file:
 
 ```kotlin
 item(name = "MetricsDatadogApiKey", value = "YOUR_API_KEY")
@@ -115,8 +116,8 @@ item(name = "MetricsDatadogUri", value = "https://api.datadoghq.com")
 ### SLF4J
 
 Metrics can be reported straight to the log file.
-This is an easy way to test metrics during development and testing;
-however, this is not recommended in a production environment.
+
+This is an easy way to test metrics during development and testing; however, it is **not recommended in a production environment**.
 
 There are three optional properties for the logger reporter:
 
