@@ -101,7 +101,9 @@ to an Event Handler.
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
         permissioning {
             auth(mapName = "COMPANY"){
-                COMPANY.COMPANY_NAME
+                authKey {
+                    key(data.companyName)
+                }
             }
         }
 

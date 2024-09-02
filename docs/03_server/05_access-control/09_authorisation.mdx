@@ -255,7 +255,9 @@ Here is an example of using `ENTITY_VISIBILITY` in a Data Server or Request Serv
 query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
     permissioning {
         auth(mapName = "ENTITY_VISIBILITY") {
-            BID_OFFER_SELLER_VIEW.SELLER_DEALER_ID
+            authKey {
+                key(data.sellerDealerId)
+            }
         }
         config {
             backwardsJoins = true
@@ -288,9 +290,13 @@ This example shows an AND grouping:
 ```kotlin
 permissioning {
     auth(mapName = "ENTITY_VISIBILITY") {
-        TRADE.COUNTERPARTY_ID
+        authKey {
+            key(data.counterpartyId)
+        }
     } and auth(mapName = "SYMBOL_RESTRICTED") {
-        TRADE.SYMBOL
+        authKey {
+            key(data.symbol)
+        }
     }
 }
 ```
@@ -301,9 +307,13 @@ This example shows OR grouping:
 ```kotlin
 permissioning {
     auth(mapName = "ENTITY_VISIBILITY") {
-        BID_OFFER.BUYER_ID
+        authKey {
+            key(data.buyerId)
+        }
     } or auth(mapName = "ENTITY_VISIBILITY") {
-        BID_OFFER.SELLER_ID
+        authKey {
+            key(data.sellerId)
+        }
     }
 }
 ```
@@ -324,18 +334,24 @@ The example below shows permissioning where authorisation is successful if the u
 ```kotlin
 permissioning {
     auth(mapName = "ENTITY_VISIBILITY") {
-        TRADE.BUYING_COUNTERPARTY
+        authKey {
+            key(data.buyingCounterparty)
+        }
         where { 
             TradeState.CANCELLED != tradeState
         }
         //Only visible to users with entity access to SELLING_COUNTERPARTY ID on the trade WHERE trade state is not CANCELLED (so buyer can't see cancelled trades effectively)
     } or
     auth(mapName = "ENTITY_VISIBILITY") {
-        TRADE.SELLING_COUNTERPARTY
+        authKey {
+            key(data.sellingCounterparty)
+        }
         //No where clause, so always visible to users with entity access to SELLING_COUNTERPARTY ID on the trade
     } or 
 	auth(mapName = "USER_VISIBILITY") {
-		TRADE.OWNER
+        authKey {
+            key(data.owner)
+        }
 		where { user ->
 			user != "TEST_USER"
 		}
@@ -357,10 +373,26 @@ The example below hides the LAST_TRADED_PRICE column value for a particular inst
 ```kotlin
 permissioning {
     auth(mapName = "EXCHANGE") {
-        INSTRUMENT_DETAILS.EXCHANGE_ID
+        authKey {
+            key(data.exchangeId)
+        }
         hideField { userName, rowData ->
             if(rowData.instrumentCode == "ALLL3") LAST_TRADED_PRICE
             else null
+        }
+    }
+}
+```
+
+#### authKeyWithUserName
+
+If the dynamic authorisation map requires the requester's username as part of the auth key construction, you can use the `authKeyWithUserName` block to access it:
+
+```kotlin
+permissioning {
+    auth(mapName = "USER_COUNTERPARTY_MAP") {
+        authKey {
+            key(data.counterpartyId, userName)
         }
     }
 }
@@ -376,8 +408,9 @@ Here is an example:
 query("ALL_TRADES_WITH_ENRICHED_AUTH", TRADE_VIEW) {
     permissioning {
         enrichedAuth(mapName = "TRADE_VISIBILITY", enrichedEntity = FAVOURITE_TRADES) {
-            TRADE_VIEW.TRADE_ID
-            FAVOURITE_TRADES.USER_NAME
+            authKey {
+                key(data.tradeId, enriched?.userName)
+            }
         }
     }
     enrich(FAVOURITE_TRADES){
@@ -692,7 +725,9 @@ dataServer {
   query(FUND) {
     permissioning {
       auth(mapName = "ENTITY_VISIBILITY") {
-        FUND.FUND_ID
+        authKey {
+            key(data.fundId)
+        }
       }
     }
   }
@@ -706,7 +741,9 @@ requestReplies {
   requestReply(FUND) {
     permissioning {
       auth(mapName = "ENTITY_VISIBILITY") {
-        FUND.FUND_ID
+        authKey {
+            key(data.fundId)
+        }
       }
     }
   }
@@ -775,7 +812,9 @@ dataServer {
   query(POSITION_VIEW) {
     permissioning {
       auth(mapName = "POSITION_VIEW") { 
-        POSITION_VIEW.INSTRUMENT_ID
+        authKey {
+            key(data.instrumentId)
+        }
       }
     }
   }
@@ -788,7 +827,9 @@ requestReplies {
   requestReply(TRADE_TABLE) {
     permissioning {
       auth(mapName = "INNER_TRADES") {
-        TRADE_TABLE.TRADE_ID
+        authKey {
+            key(data.tradeId)
+        }
       }
     }
   }

@@ -29,7 +29,9 @@ Request Servers have other features distinct from a Data Server, such as allowin
     permissioning {
       permissionCodes = listOf("TRADER", "SUPPORT")
       auth(mapName = "ENTITY_VISIBILITY") {
-        TRADE_VIEW.COUNTERPARTY_ID
+        authKey {
+            key(data.counterpartyId)
+        }
       }
     }
   }
