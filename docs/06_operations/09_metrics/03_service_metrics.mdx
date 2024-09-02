@@ -8,9 +8,9 @@ tags:
 - metrics
 ---
 
-These metrics are provided out of the box for specific service types.
-We can use these to keep track of how a service is behaving under load.
-All metrics are at resource level, i.e. a specific data server query, or event handler,
+Service  metrics are provided for specific service types. You can use these to keep track of how a service is behaving under load.
+
+Metrics monitor specific resources within your application, such as a specific Data Server query, or Event Handler event.
 
 * [Consolidator](./#consolidator)
 * [Data Server](./#data-server)
@@ -23,7 +23,8 @@ All metrics are at resource level, i.e. a specific data server query, or event h
 ## Consolidator
 
 The consolidator exposes metrics to measure latency.
-A high latency would indicate that the consolidator is struggling to keep up.
+
+A high latency indicates that the consolidator is struggling to keep up.
 
 
 | Metric                      | Explanation                          |
@@ -35,13 +36,13 @@ A high latency would indicate that the consolidator is struggling to keep up.
 ## Data Server
 
 The data server metrics expose a number of metrics to help monitor the service.
-These metrics expose the number of users connected, and various latency stats.
-As data servers provide real time views to users, each connection to a query will have a resource cost.
-This is not a problem under normal usage, where connections are managed by the genesis framework.
-The genesis client will automatically release these connections when no longer required.
-However, if a bespoke client is used, then these connections might not be closed properly.
+These metrics expose the number of users connected, and various latency statistics.
+
+Data Servers provide real-time views to users, so each connection to a query has a resource cost. This is not a problem under normal usage, where connections are managed by the Genesis framework. The Genesis client automatically releases these connections when they are no longer required. However, if a bespoke client is used, then these connections might not be closed properly.
+
 A high user or connection count can indicate a problem here.
-The latency metrics will track how well a data server is handling requests.
+
+The latency metrics track how well a Data Server is handling requests.
 
 | Metric                        | Explanation                                   |
 |:------------------------------|:----------------------------------------------|
@@ -49,12 +50,12 @@ The latency metrics will track how well a data server is handling requests.
 | connection_count              | The number of connections to a query          |
 | data_logon.processing_latency | The latency for processing DATA_LOGON request |
 | enriched_lookup_latency       | The latency for enriching data                |
-| lookup_latency                | The latency for a lookup                      |
+| lookup_latency                | The latency for a look-up                      |
 | message_publication_latency   | The latency for publishing an update          |
 
 ## Event Handler
 
-The event handler latency metrics will show how long it takes for an event handler to process a message.
+The event handler latency metrics show how long it takes for a specific `eventHandler` in the Event Handler to process a message.
 
 | Metric             | Explanation                                                  |
 |:-------------------|:-------------------------------------------------------------|
@@ -63,7 +64,7 @@ The event handler latency metrics will show how long it takes for an event handl
 
 ## Request Server
 
-The event handler latency metrics will show how long it takes for a request server to process a message.
+The Request Server latency metrics show how long it takes for a specific `requestReply` in the Request Server to process a message.
 
 | Metric                     | Explanation                         |
 |:---------------------------|:------------------------------------|
@@ -71,7 +72,7 @@ The event handler latency metrics will show how long it takes for a request serv
 
 ## Router
 
-The metrics around the router measure the number of connections the processing latency.
+The metrics for Genesis Router measure the number of connections and the processing latency.
 
 | Metric                     | Explanation                         |
 |:---------------------------|:------------------------------------|
@@ -80,7 +81,7 @@ The metrics around the router measure the number of connections the processing l
 
 ## Streamer
 
-The streamer measures how long it takes to receive a response.
+The metrics for Streamer measure how long it takes to receive a response.
 
 | Metric                    | Explanation                        |
 |:--------------------------|:-----------------------------------|
@@ -88,14 +89,14 @@ The streamer measures how long it takes to receive a response.
 
 ## Streamer Client
 
-The streamer client has a processing latency.
-Additionally there it tracks the unreplied message size.
-The streamer client will publish messages, and will track ACKs received in response to those messages.
-In order not to overwhelm the consumer, it will have a maximum number of unreplied messages,
-before it starts throttling the output.
-If the unreplied message size stays at a high number, it could indicate a number of problems:
-* the consumer is unable to keep up with the message flow
-* the consumer is not sending an ack in response to the messages
+The Streamer Client has a processing latency. Additionally, there it tracks the unreplied message size.
+The Streamer Client publishes messages, and track ACKs received in response to those messages.
+
+In order not to overwhelm the consumer, it has a maximum number of unreplied messages, before it starts throttling the output.
+If the unreplied message size stays at a high number, the possible causes are:
+
+* The consumer is unable to keep up with the message flow.
+* The consumer is not sending an ack in response to the messages.
 
 | Metric                      | Explanation                        |
 |:----------------------------|:-----------------------------------|
