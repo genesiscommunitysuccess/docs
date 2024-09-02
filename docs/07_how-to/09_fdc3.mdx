@@ -59,4 +59,100 @@ npm run dev
 This starts the server that serves the urls accessed by the apps in the desktop agent. 
 
 
+### FDC3 blotter
+The file **howto-fdc3-blotter** is the main application, which displays a list of trades from the back end. Each row in the grid has a button to raise a `CreateTrade` intent. 
+
+When the user clicks on a row, the application sends two messages:
+
+- a message on an app channel with type `genesis.fxtrade` - the whole row object
+- a message on the color channel with `genesis.fxpair` - use the `mappingFunction` to create and send an object with source and target currency values.  // // use the mappingFunction... is this an instruction or a description?
+
+This is done using `<fdc3-channel-event></fdc3-channel-event>` as a child element of the parent `<rapid-grid-pro></rapid-grid-pro>` element and specifying the event-name. To broadcast on a specific app channel, the `channel-name` is specified on one of the elements.
+
+```html
+<rapid-grid-pro 
+  persist-filter-model-key="grid-pro-all-positions"
+  >
+  <fdc3-channel-event
+    event-name="rowClicked"
+    channel-type="genesis.fxpair"
+    :mappingFunction="${() => ({SOURCE_CURRENCY, TARGET_CURRENCY}) => ({SOURCE_CURRENCY, TARGET_CURRENCY})}">
+  </fdc3-channel-event>
+  <fdc3-channel-event
+    event-name="rowClicked"
+    channel-name="customAppChannel"
+    channel-type="genesis.fxtrade">
+  </fdc3-channel-event>
+  ...
+```
+
+Note that you can listen to any event emitted by any parent element.
+
+The intent is raised using the `FDC3` service from foundation-fdc3 library. In the trade button column definition, we invoked the method in the click handler to raise the intent.
+
+```ts
+cellRendererParams: {
+  actionClick: async (rowData) => {
+    this.fdc3.raiseIntent(
+      {
+        id: rowData,
+        type: 'CreateTrade',
+      },
+      'CreateTrade' as FDC3Intents,
+    );
+  },
+  ...
+},
+```
+
+### intent-listener
+This is an application with a form for submitting trades. It is launched by the `howto-fdc3-blotter` by the `CreateTrade` intent. On application load, a listener is added to retrieve the intent payload and put it in the store. This happens in the file **main.template**.
+
+```html
+    // main.template.ts
+  <fdc3-intent-listener :intentConfig="${x => [
+    { intent: 'CreateTrade', callback: message => x.handleTicketIntent(message) },
+  ]}"></fdc3-intent-listener>
+```
+
+Intents time out after 15 seconds, so it is important that the listener code happens as early as possible.
+
+When the component is loaded, it retrieves the value from the store and populates the form.
+
+### system-channel-listener
+The `system-channel-listener` application uses the `<fdc3-system-channel-listener></fdc3-system-channel-listener>` web component to listen to the active color channel for events with channel type of `genesis.fxpair`.
+
+```html
+    ...
+    <fdc3-system-channel-listener :config="${x => [
+      {
+        channelType: 'genesis.fxpair',
+        callback: message => x.handleChannelMessage(message)
+      }
+    ]}"></fdc3-system-channel-listener>
+    ...
+```
+
+### app-channel-listener
+The `app-channel-listener` application uses the `<fdc3-context-listener></fdc3-context-listener>` wep component to listen to the `customAppChannel` for events with channel type of `genesis.fxtrade`.
+
+```html
+...
+<fdc3-context-listener :config="${x => [
+  {
+    channelType: 'genesis.fxtrade',
+    channelName: 'customAppChannel',
+    callback: message => x.handleChannelMessage(message)
+  }
+]}">
+</fdc3-context-listener>
+...
+```
+
+As a non-system-channel is specified, changing color chanel will have no effect on receiving messages.
+
+
+
+
+
 
