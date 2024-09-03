@@ -107,13 +107,14 @@ The Genesis Platform provides support for three types of metric.
 
 ### Gauges and counters
 
-:::tip Gauge or counter
+:::tip Gauge or counter?
 Use a counter when the *rate* is interesting.
 Use a gauge when the *number* is interesting.
 :::
 
-For example, when we track the number of messages received, generally, we are interested in the number of messages a system handles over an interval,
-rather than the total number of messages received since the last restart. An increase in the rate would indicate a higher load on the system.
+Let us consider an example. When you track the number of messages received, generally, you are interested in the number of messages a system handles over an interval, rather than the total number of messages received since the last restart. 
+
+An increase in the rate indicates a higher load on the system.
 
 Conversely, with gauges, the number is meaningful in and of itself; f
 
@@ -126,7 +127,7 @@ and a timer in the same place.
 ## Counter
 
 A counter is used to track an ever-increasing number of specific events.
-Generally, these can best be thought of as providing a rate over time.
+You can think of this as providing a rate over time.
 
 It is generally more interesting to see how many messages have been processed in the last 5 minutes,
 than it is to see how many messages have been processed since a service was last started.
@@ -159,21 +160,22 @@ In this example we will assume that a counter with name `myCounter` has been dec
 </Tabs>
 
 ## Timer
+Timers are used for two things:
 
-Timers are used to time specific events.
-A timer will also count the number of events,
-so there is never a need to use a timer and a counter to track the same event.
+- to time specific events.
+- to count the number of events
+
+So you never need to use both a timer and a counter to track the same event.
 
 Examples of timers could be:
 
-* message latency - how long does a service take to process a specific message.
-* query latency - how long does a database operation take
+* message latency - how long a service takes to process a specific message
+* query latency - how long a database operation takes
 
 ### Usage
+To use a timer: start the sample first, and then register it on completion.
 
-Timers are more complex, to use them, you must first start the sample,
-and then register it on completion.
-In this example we will assume that a counter with name `myTimer` has been declared.
+The example below declares a timer with the name `myTimer`.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -198,22 +200,20 @@ sample.stop(myTimer);
 
 ## Gauge
 
-Gauges cover every other use-case.
-Where we are not interested in a rate, or a latency, but rather an absolute value, that can go either up or down.
+Gauges are useful when you are not interested in a rate or a latency, but you need to measure an absolute value that can go either up or down.
 
-Examples of gauges:
-
+For example:
+ 
 * queued messages - how many messages are waiting to be processed
 * memory usage - how much memory is available to a service
 
 While there might seem to be an overlap with counters, there is a clear distinction:
 
 * With counters we are concerned with the rate of events, e.g. number of messages in an interval
-* With a gauge we are concerned with the absolute value, e.g. what is the number of outstanding message
+* With a gauge we are concerned with the absolute value, e.g. what is the number of outstanding messages
 
 ### Usage
-
-Gauges require a more verbose syntax, we will need to register a class, along with a way to extract a value:
+Gauges require a more verbose syntax. You need to register a class, along with a way to extract a value:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -255,9 +255,7 @@ myClass.setValue(12.0);
 </Tabs>
 
 ## GaugeCounter
-
-A gauge counter is a gauge that is set up to behave like a counter.
-With the added benefit that the counter can increase as well as decrease.
+A gauge counter is a gauge that is set up to behave like a counter. The benefit is that the counter can increase as well as decrease.
 
 ### Usage
 
