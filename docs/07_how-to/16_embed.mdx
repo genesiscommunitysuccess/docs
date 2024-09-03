@@ -17,20 +17,24 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-There are a number of ways for you to embed your Genesis application in another application:
+There are a number of ways for you to embed your Genesis application in another application. 
 
-- iFrame
-- script tag and web component
-- Webpack 5
-- react
-- angular
+- [iFrame](#embedding-web-applications-using-iframe)
+- [script tag and web component](#including-web-applications-as-a-script-tag-and-web-component)
+- [Webpack 5](#using-webpack-5-module-federation)
+- [React](#embedding-in-a-react-application)
+- [Angular](#embedding-in-an-angular-application)
 
-Each of these is discussed below, and example applications can be found **here**
+Each of these methods is discussed in detail below. We assess the advantges and challenges of each one to help you decide which you prefer for different use cases.
 
-## 1. Embedding Web Applications Using iframe
+:::tip Check the example applications
+We have provided example applications. Take a look at the code and run these yourself to see how they behave.
+:::
+
+## Embedding web applications using iframe
 
 Concept:
-An [iframe](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe) allows embedding web application built with Genesis platform within a host application, creating a separate browsing context. If you only need particular component you might prefer option 2 which allows more fine grained selection.
+An [iframe](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe) enables you to embed your Genesis web application within a separate host application, creating a separate browsing context. 
 
 **Advantages:**
 - Isolates the embedded application’s context, preventing conflicts with the host.
@@ -40,7 +44,7 @@ An [iframe](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe) al
 - Limited interaction between the host and embedded app.
 - Performance and security issues, such as X-Frame-Options and cross-origin resource sharing (CORS) policies.
 
-## 2. Including Web Applications as a Script Tag and Web Component
+## Including web applications as a script tag and web component
 
 **Concept:**
 
@@ -55,11 +59,11 @@ A web application or single component can be included as a script tag in the hos
 - Allows for easy reuse of the component across different projects.
 - Interaction between the host and embedded app.
 
-## 3. Using Webpack 5 Module Federation
+## Using Webpack 5 Module Federation
 
 **Concept:**
 
-Genesis applications are compatible with Webpack 5 which introduced Module Federation, allowing multiple independent applications to share code and dependencies at runtime, enabling microfrontend architecture.
+Genesis applications are compatible with Webpack 5, which introduced Module Federation. This enables multiple independent applications to share code and dependencies at runtime, creating a micro-front-end architecture.
 
 **Implementation:**
 - Configure `ModuleFederationPlugin` in both the host and remote applications.
@@ -69,7 +73,7 @@ Genesis applications are compatible with Webpack 5 which introduced Module Feder
 - Enables true microfrontend architecture, allowing independent deployment and updates.
 - Reduces redundancy by sharing common dependencies between applications.
 
-## 4. Embedding in a React Application
+## Embedding in a React application
 
 **Script Tag + Web Component:**
 - Genesis provides tools that allow you to bootstrap a React application that uses Genesis Components.
@@ -82,17 +86,18 @@ Genesis applications are compatible with Webpack 5 which introduced Module Feder
 **iFrame:**
 - Similar to the general approach, an iframe can be embedded within a React component.
 
-## 5. Embedding in an Angular Application
+## Embedding in an Angular application
 
-Genesis provides tools that allow you to bootstrap an Angular application that uses Genesis Components.
+Genesis provides tools that allow you to bootstrap an Angular application that uses Genesis components.
+
 - You can find a sample application built in Angular that uses Genesis Components (client-angular/README.md).
 
 **iFrame:**
 - Embed external applications via iframe within Angular templates.
 
 **Script Tag + Web Component:**
-- Include external scripts in the `index.html` or as part of an Angular component.
-- Utilize Angular’s support for Web Components (e.g., using `customElements.define()`).
+- Include external scripts in the **index.html** or as part of an Angular component.
+- Use Angular’s support for Web Components (e.g., using `customElements.define()`).
 
 **Webpack Module Federation:**
 - Use Angular CLI’s support for Webpack 5 to configure Module Federation, allowing Angular apps to consume or expose modules dynamically.

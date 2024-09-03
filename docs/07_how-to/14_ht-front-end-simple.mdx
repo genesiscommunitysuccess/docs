@@ -59,6 +59,20 @@ navItems: [
 ```
 
 ## Adding a form
+Typically, you would use a form to add a record to a table in the database.
+
+To add a simple form, add a `<foundation-form>` to your template and specify a resource that that handles the form. 
+
+In the example below, this is an event called EVENT_TRADE_INSERT.
+
+You do not need to create a schema to design the form. In this case, it takes its contents from the metadata belonging to the resource - so in our example, the form will have all the fields relevant to inserting a trade.
+
+
+```html
+<foundation-form
+    resourceName="EVENT_TRADE_INSERT">
+</foundation-form>
+```
 
 ## Adding a modal
 To create a modal component, add the element to your template file, for example: **new-page.template.ts**. The component, and any slotted content, will be invisible until the modal is opened.
