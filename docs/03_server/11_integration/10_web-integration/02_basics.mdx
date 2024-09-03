@@ -26,8 +26,6 @@ dependencies {
 }
 ```
 
-## Core concepts
-
 ## GenesisHttpClient
 
 The `GenesisHttpClient` is the main class you'll interact with. It provides methods for making HTTP requests.
@@ -49,7 +47,7 @@ The client supports all standard HTTP methods:
 Each method returns a `TypedHttpResponse<T>` object, where `T` is the expected response body type.
 
 ## Configuring requests
-Requests are configured using a DSL within a lambda function. Common configuration options include:
+You can configure requests using a DSL within a lambda function. Common configuration options include:
 
 - `url`: The endpoint URL
 - `header`: HTTP headers
@@ -69,13 +67,13 @@ Example:
     }
 ```
 
-## Response Handling
+## Response handling
 
 The `HttpResponse<T>` object contains:
 
 - statusCode: The HTTP status code
 - headers: Response headers
-- data: The response body, deserialized to type T
+- data: The response body, deserialised to type T
 
 Example:
 
@@ -93,4 +91,4 @@ Example:
 }
 ```
 
-In the next sections, we'll explore more advanced features and usage patterns of the Genesis HTTP Client to help you make the most of it.
+In the next sections, we'll explore more advanced features and usage patterns to help you make the most of of the Genesis HTTP Client.
