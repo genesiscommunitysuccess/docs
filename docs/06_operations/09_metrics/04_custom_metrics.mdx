@@ -112,20 +112,15 @@ Use a counter when the *rate* is interesting.
 Use a gauge when the *number* is interesting.
 :::
 
-Let us consider an example. When you track the number of messages received, generally, you are interested in the number of messages a system handles over an interval, rather than the total number of messages received since the last restart. 
+Let us consider an example. When you track the number of messages received, you are usually interested in the number of messages a system handles over an interval, not the total number of messages received since the last restart. 
 
 An increase in the rate indicates a higher load on the system.
 
-Conversely, with gauges, the number is meaningful in and of itself; f
+Conversely, with gauges, the number itself is meaningful; for example, the number of connections available in the connection pool. You don't want to measure how often connections are requested and released in the application. However, you do want to track that connections are always available during application runtime.
 
-For example, the number of connections available in the connection pool.
-We do not mind how often connections are requested and released in the application. However, we would like to track that connections are always available during application runtime.
-
-Note that a timer also counts the occurrences, so there is never a need to use a counter
-and a timer in the same place.
+Note that a [timer](#timer) also counts the occurrences, so you never need to use a counter and a timer in the same place.
 
 ## Counter
-
 A counter is used to track an ever-increasing number of specific events.
 You can think of this as providing a rate over time.
 
