@@ -89,10 +89,12 @@ The metrics for Streamer measure how long it takes to receive a response.
 
 ## Streamer Client
 
-The Streamer Client has a processing latency. Additionally, there it tracks the unreplied message size.
-The Streamer Client publishes messages, and track ACKs received in response to those messages.
+The Streamer Client has a processing latency. As part of the process, it tracks the number of unreplied messages.
 
-In order not to overwhelm the consumer, it has a maximum number of unreplied messages, before it starts throttling the output.
+The Streamer Client publishes messages, and tracks ACKs received in response to those messages.
+
+In order not to overwhelm the consumer, the Streamer Client has a setting for the maximum number of unreplied messages. When the maximum number is reached, it stops sending messages.
+
 If the unreplied message size stays at a high number, the possible causes are:
 
 * The consumer is unable to keep up with the message flow.
