@@ -24,7 +24,7 @@ If you want to create a new page:
 2. In the new folder, create three files:
     - **new-page.ts** (this is where the component class is defined, incuding methods, properties and the custom element definition)
     - **new-page.styles.ts** (this where your styles are defined)
-    - **new-age.template.ts** (this is where your HTML template is defined)
+    - **new-page.template.ts** (this is where your HTML template is defined)
 
 3. In the file **src/routes/config.ts**, create a route for your new page, for example:
 
@@ -61,6 +61,19 @@ navItems: [
 ## Adding a form
 
 ## Adding a modal
+To create a modal component, add the element to your template file, for example: **new-page.template.ts**. The component, and any slotted content, will be invisible until the modal is opened.
+
+Here is a very simple example:
+
+```html
+<rapid-modal>
+  ...
+   Add your content here.
+  ...
+  
+</rapid-modal>
+```
+When open, the modal is displayed over the top of any existing content in your page. It also creates an invisible overlay that prevents you user from interacting with any content outside the modal while it is active.
 
 ## Adding a flyout
 
