@@ -20,7 +20,8 @@ You can make any table in your database an audited table; simply use the `audit`
 ## Adding the audit parameter
 The example below defines a table called TRADE in your application's **-tables-dictionary.kts** file. It also automatically generates a table called TRADE_AUDIT. Every time that the TRADE table is changed, a record will be added to the TRADE audit table.
 
-In the `audit` parameter, the audit table’s id is set to 11_500. Every record added to the table will automatically be given a unqiue sequential id prefixed with TA. 
+In the `audit` parameter, the audit table’s id is set to 11_500 (any unique number can be chosen).  Note that the table id, and the audit table id must be unique in all cases.
+Every record added to the table will automatically be given a unique sequential id prefixed with TA.
 
 ```kotlin
   table(name = "TRADE", id = 11_000, audit = details(id = 11_500, sequence = "TA")) {
