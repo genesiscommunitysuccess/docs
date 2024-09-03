@@ -65,7 +65,7 @@ It is recommended that you make your metric names clear and  distinct. for examp
 
 In addition to a name, tags can also be provided.
 
-TEach tag is a key value pair that is reported alongside the metric name.
+Each tag is a key-value-pair that is reported alongside the metric name.
 
 The syntax for registering all metric types is the same, so we will use *counter* as an example name here.
 
@@ -157,12 +157,12 @@ In this example we will assume that a counter with name `myCounter` has been dec
 ## Timer
 Timers are used for two things:
 
-- to time specific events.
+- to time specific events
 - to count the number of events
 
 So you never need to use both a timer and a counter to track the same event.
 
-Examples of timers could be:
+Examples of timers are:
 
 * message latency - how long a service takes to process a specific message
 * query latency - how long a database operation takes
@@ -202,9 +202,9 @@ For example:
 * queued messages - how many messages are waiting to be processed
 * memory usage - how much memory is available to a service
 
-While there might seem to be an overlap with counters, there is a clear distinction:
+There is a clear distinction between  counters and gauges:
 
-* With counters we are concerned with the rate of events, e.g. number of messages in an interval
+* Counters are concerned with the rate of events, e.g. the number of messages in an interval
 * With a gauge we are concerned with the absolute value, e.g. what is the number of outstanding messages
 
 ### Usage
