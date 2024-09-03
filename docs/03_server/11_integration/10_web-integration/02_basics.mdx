@@ -1,6 +1,6 @@
 ---
-title: 'Core Concepts and Setup of Genesis HTTP Client And Codegen'
-sidebar_label: 'Core Concepts and Setup'
+title: 'Core concepts and set-up'
+sidebar_label: 'Core concepts and set-up'
 id: genesis-http-client-core-concepts
 keywords: [server, web, http, integration, client, core concepts, setup, installation]
 tags:
@@ -14,13 +14,11 @@ tags:
   - installation
 ---
 
-# Core Concepts and Setup of Genesis HTTP Client
-
 Before diving into the core concepts, let's start with how to set up the Genesis HTTP Client in your project.
 
 ## Installation
 
-The Genesis HTTP Client is included in the Genesis platform from version 8.1 onwards. However, to use it properly, you need to add the following dependency to your module's `build.gradle.kts` file:
+The Genesis HTTP Client is included in the Genesis Platform from version 8.1 onwards. To use it, add the following dependency to your module's `build.gradle.kts` file:
 
 ```kotlin
 dependencies {
@@ -28,7 +26,7 @@ dependencies {
 }
 ```
 
-## Core Concepts
+## Core concepts
 
 ## GenesisHttpClient
 
@@ -38,9 +36,9 @@ The `GenesisHttpClient` is the main class you'll interact with. It provides meth
 val client = GenesisHttpClient()
 ```
 
-The Genesis HTTP Client allows you to configure the client as a constructor parameter, passing a Ktor HttpClient object if needed.
+You can configure the client as a constructor parameter, passing a Ktor HttpClient object if needed.
 
-## Request Methods
+## Request methods
 The client supports all standard HTTP methods:
 
 - GET: `client.get<T>()`
@@ -48,9 +46,9 @@ The client supports all standard HTTP methods:
 - PUT: `client.put<T>()`
 - DELETE: `client.delete<T>()`
 
-Each method returns a `TypedHttpResponse<T>` object, where T is the expected response body type.
+Each method returns a `TypedHttpResponse<T>` object, where `T` is the expected response body type.
 
-## Request Configuration
+## Configuring requests
 Requests are configured using a DSL within a lambda function. Common configuration options include:
 
 - `url`: The endpoint URL
