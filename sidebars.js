@@ -796,7 +796,7 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'SIMPLE BASICS',
+      label: 'EVERYDAY BASICS',
       collapsed: false,
       items: [
         {

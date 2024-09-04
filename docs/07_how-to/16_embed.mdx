@@ -17,7 +17,9 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-There are a number of ways for you to embed your Genesis application in another application. 
+You can embed an entire Genesis application (or specific web components from a Genesis application) within another application.
+
+There are a number of ways to achieve this: 
 
 - [iFrame](#embedding-web-applications-using-iframe)
 - [script tag and web component](#including-web-applications-as-a-script-tag-and-web-component)
@@ -27,12 +29,10 @@ There are a number of ways for you to embed your Genesis application in another 
 
 Each of these methods is discussed in detail below. 
 
+:::info
 The method you choose depends on your specific requirements, such as the need for isolation, ease of integration, or modularity.
 
-In this page, we assess the advantges and challenges of each method, to help you decide which you prefer. 
-
-:::tip Check the example applications
-We have provided example applications. Take a look at the code and run these yourself to see how they behave.
+In this page, we assess the advantages and challenges of each method, to help you decide which you prefer. 
 :::
 
 ## Embedding web applications using iframe
@@ -81,11 +81,16 @@ Genesis applications are compatible with Webpack 5, which introduced Module Fede
 
 **Script Tag + Web Component:**
 - Genesis provides tools that enable you to bootstrap a React application that uses Genesis Components.
-- You can find a sample application built in React that uses Genesis Components (client-react/README.md).
 - React supports Custom Elements (since v19): [React 19 - Support for Custom Elements](https://react.dev/blog/2024/04/25/react-19#support-for-custom-elements).
 
+:::info
+We have provided an [example React application](https://github.com/genesislcap/platform-howto/tree/master/howto-ui-integrations-react) that uses Genesis Components.
+
+From this point, you can drill down through **client/src** to look at different parts of the front-end code.
+:::
+
 **Webpack Module Federation:**
-- You can configure Webpack Module Federation in the React application,so that parts of another React or non-React app can be loaded dynamically.
+- You can configure Webpack Module Federation in the React application, so that parts of another React or non-React app can be loaded dynamically.
 
 **iFrame:**
 - Similar to the general approach, you can embed an iframe within a React component.
@@ -94,7 +99,11 @@ Genesis applications are compatible with Webpack 5, which introduced Module Fede
 
 Genesis provides tools that enable you to bootstrap an Angular application that uses Genesis components.
 
-- You can find a sample application built in Angular that uses Genesis Components (client-angular/README.md).
+:::info
+We have provided an [example Angular application](https://github.com/genesislcap/platform-howto/tree/master/howto-ui-integrations-angular) that uses Genesis Components.
+
+From this point, you can drill down through **client/src** to look at different parts of the front-end code.
+:::
 
 **iFrame:**
 - You can embed external applications via iframe within Angular templates.

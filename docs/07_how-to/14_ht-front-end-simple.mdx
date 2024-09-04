@@ -20,25 +20,45 @@ You get a home page automatically if you use genx or Genesis Create. But you can
 
 If you want to create a new page:
 
-1. In the folder **client/src/routes**, add a new folder called **new-page** (use your prferred name for this new folder).
+1. In the folder **client/src/routes**, add a new folder called **new-page** (use your preferred name for this new folder).
 2. In the new folder, create three files:
     - **new-page.ts** (this is where the component class is defined, incuding methods, properties and the custom element definition)
-    - **new-page.styles.ts** (this where your styles are defined)
+
+```ts
+    import { customElement, FoundationElement, ... } from '@genesislcap/web-core';
+    import { newPageTemplate as template } from './new-page.template';
+    import { newPageStyles as styles } from './new-page.styles';
+    
+    @customElement({
+      name: 'new-page',
+      template,
+      styles
+    })
+    export class NewPage extends FoundationElement {
+    }
+```
+  - **new-page.styles.ts** (this where your styles are defined)
+
+```ts
+    import { css } from '@genesislcap/web-core';
+    
+    export const newPageStyles = css`
+      // add your styles here
+
+```
+
     - **new-page.template.ts** (this is where your HTML template is defined)
+
+```ts
+    import { Charts } from './charts';
+    
+    export const newPageTemplate = html`
+       <div>This is the new page template!</div>
+    `
+    ```
 
 3. In the file **src/routes/config.ts**, create a route for your new page, for example:
 
-```
-navItems: [
-  {
-    title: 'New Page',
-    icon: {
-      name: 'cog',
-      variant: 'solid',
-    },
-    permission: '',
-  },
-],
 ```TypeScript
 {
   path: 'new-page',
@@ -46,46 +66,112 @@ navItems: [
   title: 'New Page',
   name: 'new-page',
   navItems: [
-{
-    title: 'New Page',
-    icon: {
-      name: 'cog', // // use any free icon from https://fontawesome.com/icons
-      variant: 'solid',
+    {
+      title: 'New Page',
+      icon: {
+        name: 'cog', // // use any free icon from https://fontawesome.com/icons
+        variant: 'solid',
+      },
+      permission: '',
     },
-    permission: '',
-  },
-],
+  ],
 },
 ```
 
 ## Adding a form
-Typically, you would use a form to add a record to a table in the database.
-
-To add a simple form, add a `<foundation-form>` to your template and specify a resource that that handles the form. 
-
-In the example below, this is an event called EVENT_TRADE_INSERT.
-
-You do not need to create a schema to design the form. In this case, it takes its contents from the metadata belonging to the resource - so in our example, the form will have all the fields relevant to inserting a trade.
 
 
-```html
-<foundation-form
-    resourceName="EVENT_TRADE_INSERT">
-</foundation-form>
+You have created a component called `NewPage`. Now you can add a form to that component. Typically, you would use a form to add a record to a table in the database.
+
+The example below adds a simple form element to the file template. It includes properties for UISchema and JsonSchema to the NewPage
+
+
+**new-page.ts**
+
+```ts
+import { customElement, FoundationElement, observable } from '@genesislcap/web-core';
+...
+export class NewPage extends FoundationElement {
+  ...
+  @observable formUiSchema = {
+    type: 'VerticalLayout',
+    elements: [
+      {
+        type: 'Control',
+        scope: '#/properties/QUANTITY',
+        label: 'Enter Quantity:'
+      },
+      {
+        type: 'Control',
+        scope: '#/properties/SIDE',
+        options: <ConnectedRenderersOptions>{
+          data: [
+            { label: 'Buy', value: 'BUY' },
+            { label: 'Sell', value: 'SELL' }
+          ],
+          valueField: 'value',
+          labelField: 'label',
+        }
+      }
+    ]
+  }
+  
+  @observable formJsonSchema = {
+    type: 'object',
+    properties: {
+      quantity: {
+        type: 'number',
+        description: 'kotlin.Double',
+      },
+      side: {
+        type: 'number',
+        description: 'kotlin.String',
+      },
+    },
+  };
+
+  handleFormSubmit(e: CustomEvent) {
+    // handle form submit
+  }
+  ...
+}
 ```
+
+**new-page.template.ts**
+```ts
+...
+<foundation-form 
+  @submit=${(x, ctx) => x.handleFormSubmit(ctx.event)} 
+  :jsonSchema=${x => x.formJsonSchema} 
+  :uischema=${x => x.formUiSchema}>
+  
+</foundation-form>
+...
+```
+
 
 ## Adding a modal
 To create a modal component, add the element to your template file, for example: **new-page.template.ts**. The component, and any slotted content, will be invisible until the modal is opened.
 
-Here is a very simple example:
+In the **new-page.ts** class we will add the property to get a handle on the modal instance.
+
+```
+export class NewPage extends FoundationElement {
+  myModal: Modal;
+}
+```
+
+In the **new-page.template.ts** add the element and a `ref` value so the class can open it.
+
+In the click handler on the button we call the `show` method on the modal.
 
 ```html
-<rapid-modal>
-  ...
-   Add your content here.
-  ...
-  
+...
+<rapid-button @click=${x => x.myModal.show()}></rapid-button>
+<rapid-modal ${ref('myModal')}>
+  <p>This paragraph will appear in the modal</p>
 </rapid-modal>
+...
 ```
 When open, the modal is displayed over the top of any existing content in your page. It also creates an invisible overlay that prevents you user from interacting with any content outside the modal while it is active.
 
@@ -95,13 +181,15 @@ To add a flyout to your application, add the `<rapid-flyout>` element to your te
 
 This element accepts a `closed` property value, a boolean for true or false. When the value is **true**, the flyout will be closed, and when the value is **false** the flyout will be open.
 
-By default, the flyout is positioned on the right side of the screen. But you can configure it to appear on the left by setting `position="left"` on the element.
+By default, the flyout is positioned on the right side of the screen. To configure it to appear on the left, set `position="left"` on the element.
 
-You can slot any content you want within the flyout. 
+You can insert any content you want within the flyout. 
 
-When the user clicks Clicking outside the flyout, it closes. Also, you can add code to close the programmatically; set the value bound to the `closed` attribute).
+:::info
+When the user clicks outside the flyout, it closes. Also, you can add code to close the programmatically; set the value bound to the `closed` attribute.
 
 When a flyout is closed, the component emits a **closed** event, which you can listen to.
+:::
 
 Here is an example declaration of a flyout:
 
@@ -116,7 +204,7 @@ Here is an example declaration of a flyout:
 </rapid-flyout>
 ```
 
-## Example applications
+## Example application
 We have created an [example application](https://github.com/genesislcap/platform-howto/tree/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples) to demonstrate the things you can set up on the front end of a Genesis application.
 
 There are multiple UIs, with links to the corresponding code.
@@ -132,13 +220,13 @@ In our case, the back end is purposely kept simple, with little functionality.  
 - time-series data of inflation rates for use in charting
 
 :::info Take a look at the code
-The [back-end code](https://github.com/genesislcap/platform-howto/tree/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/server) of the example application has its own directory structure. 
+The [**back-end code**](https://github.com/genesislcap/platform-howto/tree/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/server) of the example application has its own directory structure. 
 
 From there, you can drill down through the **uiexamples-app** to see the data files and the script files that define the back-end processes.
 :::
 
 :::tip Take a look at the app
-Check the [readme file](https://github.com/genesislcap/platform-howto/blob/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/server/README.md) before you try to run the application.
+Check the [**readme file**](https://github.com/genesislcap/platform-howto/blob/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/server/README.md) before you try to run the application.
 
 The login is admin / genesis
 :::
@@ -148,19 +236,32 @@ The principal aim of this example is to show you the code for the front end and 
 
 We recommend VSCode as your IDE for looking at the code if you are new to working with web code. This gives you full access to the Genesis plugin, which makes it easy to build and start the back end, and to start the front end.
 
-
-Take a look at the [readme file](https://github.com/genesislcap/platform-howto/blob/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/client/README.md) for the front end, which has details of how to install the dependencies, build the back end, and run it to view the application.
+Alternatively, you can use a JetBrains IDE, such as IntelliJ.
 
 :::info Take a look at the code
-You can check the code in or a jetbrains IDE, such as IntelliJ.
+The [**back-end code**](https://github.com/genesislcap/platform-howto/tree/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/client/src) of the example application has its own directory structure. 
 
-The [back-end code](https://github.com/genesislcap/platform-howto/tree/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/server) of the example application has its own directory structure. 
+From this point, you can drill down into different parts of the application, such as:
 
-From there, you can drill down through the **uiexamples-app** to see the data files and the script files that define the back-end processes.
+- [home](https://github.com/genesislcap/platform-howto/tree/pon/howto-charts/howto-uiexamples/client/src/routes/home), which has the three **.ts** files for the Home Page
+
+- [foundation-layout](https://github.com/genesislcap/platform-howto/tree/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/client/src/routes/foundation-layout-intro), which defines containers that can be resized, dragged and dropped within the UI
+
+- [charts](https://github.com/genesislcap/platform-howto/tree/pon/howto-charts/howto-uiexamples/client/src/routes/charts), which has the three **.ts** files for the Charts page
+
+- [modal](https://github.com/genesislcap/platform-howto/tree/pon/howto-charts/howto-uiexamples/client/src/routes/modal-how-to), which has the three **.ts** files for the Modal page
+
 :::
+Before you take a look at the code, make sure you follow the relevant instructions in the [**readme file**](https://github.com/genesislcap/platform-howto/blob/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/client/README.md) for the front end. 
+
+This has details of how to install the dependencies, build the back end, and run it to view the application.
+
+There is also instruction on how to install the Genesis [**Custom Elements LSP Plugin**](https://microsoft.github.io/language-server-protocol/), which gives you IntelliSense help while writing TypeScript code in the repo.
+
 
 :::tip Take a look at the app
-Once the back end is running, check the [readme file](https://github.com/genesislcap/platform-howto/blob/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/client/README.md) before you try to run the application.
+Once the back end is running, check the main [**readme file**](https://github.com/genesislcap/platform-howto/blob/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/client/README.md) before you try to run the application.
+:::
 
 
 
