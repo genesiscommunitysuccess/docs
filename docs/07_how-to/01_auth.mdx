@@ -271,7 +271,7 @@ Here is an example of a restricting tab visibility (based on the Right Code "Tra
     ],
 ```
 
-Here is an example of a restricting button visibility (based on the Right Code "TradeUpdate" that provides access to the button):
+Here is an example of a restricting button visibility (based on the Right Code **TradeUpdate** that provides access to the button):
 
 ```jsx
       createEvent="${(x) => getViewUpdateRightComponent(x.user, 'TradeUpdate', 'EVENT_TRADE_INSERT')}"
@@ -283,9 +283,12 @@ Here is an example of a restricting button visibility (based on the Right Code "
 
 ## Code examples
 
+:::info Take a look at the code
 Check our [example application](https://github.com/genesislcap/platform-howto/tree/master/howto-permissions), which shows the permission features that are available.
 
-This application has a single data table called Trade.  After a remap, this will be populated with 10 entries - 5 in each of 2 Countries.  Two further tables are added:
+:::
+
+The example application has a single data table called Trade.  After a remap, this will be populated with 10 entries - 5 in each of 2 Countries.  Two further tables are added:
 
 - Countries (single column)
 - Mapping (which maps between User and Country to enable row authorisation based upon permitted Countries)
@@ -300,7 +303,9 @@ Note that only the user **admin** can modify Profiles and add users. The passwor
 
 The application also demonstrates authorisation at a dataserver and eventhandler level.
 
+:::info
 The **ReadMe** file in the project folder provides further information on the project.
+:::
 
 ## A more complex scenario
 

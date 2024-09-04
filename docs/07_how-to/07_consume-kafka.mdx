@@ -14,12 +14,15 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Kafka is a standard messaging infrastructure used throughout financial markets.  Genesis has the ability to consume messages from Kafka topics, and to publish messages to Kafka topics.  This is handled transactionally and can be done in a few different ways, depending on the desired functionality.
+Kafka is a standard messaging infrastructure used throughout financial markets. Genesis can consume messages from Kafka topicsand  publish messages to Kafka topics. 
+
+This is handled transactionally and can be done in a few different ways, depending on the desired functionality.
 
 ## Consuming from Kafka
 This is done using a Genesis pipeline.  A pipeline allows Genesis to process incoming, and outgoing, messages and can be used for a variety of connection methods including csv files as well as Kafka topics.
 
-To implement a pipeline the following is needed in the processes.xml file:
+To implement a pipeline,you must add the following to your application's **-processes.xml** file:
+
 ```jsx
 <processes>
   <process name="MYAPP_MANAGER">
@@ -32,7 +35,7 @@ To implement a pipeline the following is needed in the processes.xml file:
 </processes>
 ```
 
-Kafka is then configured in the pipeline kts file like this:
+You can then configre Kafka in the **pipeline.kts** file like this:
 
 ```jsx
 val source = kafkaSource<String, Int> {
@@ -68,11 +71,12 @@ pipelines {
 ```
 
 The resulting message can be processed and stored in the database and can also trigger events via:
+
 ```jsx
     codey codey codey
 ```
 
-There is an example application here __need link__ that shows this in action.
+[comment]: <> (Add link to example application when ready)
 
 ## Publishing to Kafka
 This can be done in several different ways:
