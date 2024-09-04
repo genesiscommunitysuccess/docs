@@ -58,14 +58,15 @@ npm run dev
 
 This starts the server that serves the urls accessed by the apps in the desktop agent. 
 
-
 ### FDC3 blotter
 The file **howto-fdc3-blotter** is the main application, which displays a list of trades from the back end. Each row in the grid has a button to raise a `CreateTrade` intent. 
 
 When the user clicks on a row, the application sends two messages:
 
 - a message on an app channel with type `genesis.fxtrade` - the whole row object
-- a message on the color channel with `genesis.fxpair` - use the `mappingFunction` to create and send an object with source and target currency values.  // // use the mappingFunction... is this an instruction or a description?
+- a message on the color channel with `genesis.fxpair` - use the `mappingFunction` to create and send an object with source and target currency values.  
+
+[comment]: <> (use the mappingFunction... is this an instruction or a description?)
 
 This is done using `<fdc3-channel-event></fdc3-channel-event>` as a child element of the parent `<rapid-grid-pro></rapid-grid-pro>` element and specifying the event-name. To broadcast on a specific app channel, the `channel-name` is specified on one of the elements.
 
@@ -150,9 +151,4 @@ The `app-channel-listener` application uses the `<fdc3-context-listener></fdc3-c
 ```
 
 As a non-system-channel is specified, changing color chanel will have no effect on receiving messages.
-
-
-
-
-
 

@@ -25,7 +25,11 @@ There are a number of ways for you to embed your Genesis application in another 
 - [React](#embedding-in-a-react-application)
 - [Angular](#embedding-in-an-angular-application)
 
-Each of these methods is discussed in detail below. We assess the advantges and challenges of each one to help you decide which you prefer for different use cases.
+Each of these methods is discussed in detail below. 
+
+The method you choose depends on your specific requirements, such as the need for isolation, ease of integration, or modularity.
+
+In this page, we assess the advantges and challenges of each method, to help you decide which you prefer. 
 
 :::tip Check the example applications
 We have provided example applications. Take a look at the code and run these yourself to see how they behave.
@@ -70,30 +74,30 @@ Genesis applications are compatible with Webpack 5, which introduced Module Fede
 - The remote application exposes specific modules (e.g., components, utilities), which can be dynamically loaded into the host application.
 
 **Advantages:**
-- Enables true microfrontend architecture, allowing independent deployment and updates.
+- Enables true micro-front-end architecture, allowing independent deployment and updates.
 - Reduces redundancy by sharing common dependencies between applications.
 
 ## Embedding in a React application
 
 **Script Tag + Web Component:**
-- Genesis provides tools that allow you to bootstrap a React application that uses Genesis Components.
+- Genesis provides tools that enable you to bootstrap a React application that uses Genesis Components.
 - You can find a sample application built in React that uses Genesis Components (client-react/README.md).
-- React supports Custom Elements since v19: [React 19 - Support for Custom Elements](https://react.dev/blog/2024/04/25/react-19#support-for-custom-elements).
+- React supports Custom Elements (since v19): [React 19 - Support for Custom Elements](https://react.dev/blog/2024/04/25/react-19#support-for-custom-elements).
 
 **Webpack Module Federation:**
-- Configure Webpack Module Federation in the React application, allowing parts of another React or non-React app to be dynamically loaded.
+- You can configure Webpack Module Federation in the React application,so that parts of another React or non-React app can be loaded dynamically.
 
 **iFrame:**
-- Similar to the general approach, an iframe can be embedded within a React component.
+- Similar to the general approach, you can embed an iframe within a React component.
 
 ## Embedding in an Angular application
 
-Genesis provides tools that allow you to bootstrap an Angular application that uses Genesis components.
+Genesis provides tools that enable you to bootstrap an Angular application that uses Genesis components.
 
 - You can find a sample application built in Angular that uses Genesis Components (client-angular/README.md).
 
 **iFrame:**
-- Embed external applications via iframe within Angular templates.
+- You can embed external applications via iframe within Angular templates.
 
 **Script Tag + Web Component:**
 - Include external scripts in the **index.html** or as part of an Angular component.
@@ -102,11 +106,7 @@ Genesis provides tools that allow you to bootstrap an Angular application that u
 **Webpack Module Federation:**
 - Use Angular CLI’s support for Webpack 5 to configure Module Federation, allowing Angular apps to consume or expose modules dynamically.
 
-## Summary
-
-Including a web application inside another can be done through various methods like iframe, script tags with Web Components, Webpack 5 Module Federation, or specific frameworks like React and Angular. Each method has its advantages and challenges, and the choice depends on the specific requirements such as the need for isolation, ease of integration, or modularity.
-
-## Full Technical Details
+## Technical details
 
 See our reference data on [Integrations](https://learn.genesis.global/docs/web/integrations/introduction/) for a full explanation of the possibilities for working with both Angular and React applications.
 
