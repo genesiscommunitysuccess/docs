@@ -54,14 +54,15 @@ test/
 
 ### Suites
 
-Test suites are a good way to keep your unit tests organized.
-Ideally you want to have a test suite for each page or a significant component of your application.
+Test suites are a good way to keep your unit tests organised.
+
+Ideally, you want to have a test suite for every page or significant component in your application.
 Test suites can also be used to test arbitrary utility or helper functions.
 
 ### Unit tests
 
 Each test suite can contain as many unit tests as you want.
-Test tests are implemented in TypeScript using UVU and the foundation-testing libraries.
+Test  are implemented in TypeScript using UVU and the foundation-testing libraries.
 Functions are structured as arrow functions.
 
 Example (`unit/example.test.ts`):
@@ -85,7 +86,7 @@ Suite.run();
 
 ### Testing components
 
-You can use the `createComponentSuite` utility provided by `@genesislcap/foundation-testing` to easily create a test suite for your component. 
+You can use the `createComponentSuite` utility provided by `@genesislcap/foundation-testing` to create a test suite for your component. 
 
 Apart from setting up and tearing down your element fixture with a wrapping design system and DI container, this util also enables you to provide DI container mocks, which are required for certain testing flows.
 
@@ -213,7 +214,7 @@ npm run test
 
 - **What it does**. This script runs all the unit tests. The tests are executed using the `genx` tool.
 
-### Debugging Unit Tests
+### Debugging unit tests
 
 If you need to debug your unit tests, use the following command:
 
@@ -231,4 +232,4 @@ If you want to watch and run your unit tests whenever there are changes, use:
 npm run test:unit:watch
 ```
 
-- **What it does**. This script combines multiple watch commands to monitor changes in your unit test files, and reruns the tests automatically.
+- **What it does**. This script combines multiple watch commands to monitor changes in your unit-test files, and reruns the tests automatically.
