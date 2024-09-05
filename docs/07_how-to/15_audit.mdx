@@ -63,11 +63,11 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 ```
 
 ### Java Event Handlers
-If you are using Java Event Handlers, then the records of an auditable table will not be audited automatically. 
+If you are using Java Event Handlers, then the records of an auditable table are not audited automatically. 
 
 If you want an audited version of entityDb, you must create it manually using the database Java API.
 
-Below shows the creation of an audited database object which can then be used as normal with the audit records then being created automatically for each database operation.## Testing
+The example below shows the creation of an audited database object. This object can then be used in the normal way. Audit records will be created automatically for each database operation.
 
 ```Java
 var auditEntityDb = entityDb.audited(
