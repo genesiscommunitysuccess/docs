@@ -79,12 +79,12 @@ If you want to create a new page:
 ```
 
 ## Adding a form
+You have created a component called `NewPage`. Now you can add a form to that component. For example, you would use a form to add a record to a table in the database.
 
+The example below adds a simple form element to the new page. 
 
-You have created a component called `NewPage`. Now you can add a form to that component. Typically, you would use a form to add a record to a table in the database.
-
-The example below adds a simple form element to the file template. It includes properties for UISchema and JsonSchema to the NewPage
-
+- The content of the form is defined by the UISchema and the JsonSchema in the **new-page.ts** file.
+- The form is itself is then added to the **new-page.template.ts** file.
 
 **new-page.ts**
 
@@ -93,7 +93,7 @@ import { customElement, FoundationElement, observable } from '@genesislcap/web-c
 ...
 export class NewPage extends FoundationElement {
   ...
-  @observable formUiSchema = {
+  formUiSchema = {
     type: 'VerticalLayout',
     elements: [
       {
@@ -116,7 +116,7 @@ export class NewPage extends FoundationElement {
     ]
   }
   
-  @observable formJsonSchema = {
+  formJsonSchema = {
     type: 'object',
     properties: {
       quantity: {
@@ -138,22 +138,22 @@ export class NewPage extends FoundationElement {
 ```
 
 **new-page.template.ts**
+
 ```ts
 ...
 <foundation-form 
   @submit=${(x, ctx) => x.handleFormSubmit(ctx.event)} 
   :jsonSchema=${x => x.formJsonSchema} 
-  :uischema=${x => x.formUiSchema}>
-  
+  :uischema=${x => x.formUiSchema}
+>
 </foundation-form>
 ...
 ```
 
-
 ## Adding a modal
-To create a modal component, add the element to your template file, for example: **new-page.template.ts**. The component, and any slotted content, will be invisible until the modal is opened.
+To create a modal component, add the element to your **new-page.template.ts** file. The component, and any content, will be invisible until the modal is opened.
 
-In the **new-page.ts** class we will add the property to get a handle on the modal instance.
+In the **new-page.ts** class, add the property to get a handle on the modal instance.
 
 ```
 export class NewPage extends FoundationElement {
@@ -161,9 +161,9 @@ export class NewPage extends FoundationElement {
 }
 ```
 
-In the **new-page.template.ts** add the element and a `ref` value so the class can open it.
+In the **new-page.template.ts** add the element and a `ref` value so that the class can open it.
 
-In the click handler on the button we call the `show` method on the modal.
+In the click handler on the button, call the `show` method on the modal.
 
 ```html
 ...
@@ -173,10 +173,10 @@ In the click handler on the button we call the `show` method on the modal.
 </rapid-modal>
 ...
 ```
+
 When open, the modal is displayed over the top of any existing content in your page. It also creates an invisible overlay that prevents you user from interacting with any content outside the modal while it is active.
 
 ## Adding a flyout
-
 To add a flyout to your application, add the `<rapid-flyout>` element to your template. 
 
 This element accepts a `closed` property value, a boolean for true or false. When the value is **true**, the flyout will be closed, and when the value is **false** the flyout will be open.
@@ -263,9 +263,11 @@ There is also instruction on how to install the Genesis [**Custom Elements LSP P
 Once the back end is running, check the main [**readme file**](https://github.com/genesislcap/platform-howto/blob/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/client/README.md) before you try to run the application.
 :::
 
+## Technical details
 
+Find more details in our in our reference documentation:
 
-
-
-
+- [Working with forms](/web/forms/foundation-forms/) 
+- [Json schemas for forms](/web/forms/foundation-forms-json-schema/)
+- [UI schemas for forms](/web/forms/foundation-forms-ui-schema/) 
 
