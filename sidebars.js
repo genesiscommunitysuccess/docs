@@ -805,10 +805,6 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'how-to/ht-nested-objects'
-        },
-        {
-          type: 'doc',
           id: 'how-to/ht-audit'
         },
         {
