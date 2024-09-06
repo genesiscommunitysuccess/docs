@@ -8,9 +8,9 @@ requestReplies {
             ALTERNATE_TYPE
         }
 
-        where { row, parameters ->
-            row.instrumentCode == "ALLL3" &&                         
-            parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
+        filterWithParameters {
+            data.instrumentCode == "ALLL3" &&                         
+            genesisSet.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
         }
     }
 }
