@@ -65,7 +65,9 @@ You can also directly apply permissions to other actions that users can perform 
 
 ### Applying permissions at the front end
 
-In a similar way, you can control what users can see. For example, you can permission a User interface component that displays a grid of data from the **TRADE** table so that different users have a different experience:
+So users are limited in what information they have access to and in what actions they can perform by the permissions you add to the back end.
+
+But you can also add permissions at the front end. Here, you can control what is displayed for each user. For example, you can permission a User interface component that displays a grid of data from the **TRADE** table so that different users have a different experience:
 
 | User          | **is permitted to**         |**is _not_ permitted to**   |
 | ------------- | --------------------------- | -------------------------- |
@@ -81,6 +83,9 @@ So, as a result of these permissions:
 - User C can see the grid of trades, and sees buttons to  creat*, edit and delete trades. 
 - User D cannot see the grid of trades or any buttons.
 
+:::caution
+It's important to note that your front-end permissioning should add to the controls that you have created on the back end. If you don't display a button to delete a record, for example, but the user has no restrictions on deleting at the back end, then your security is at risk.
+:::
 ## Permissions for records (rows)
 
 At the next level down, you can apply conditions for users who are authorised to **view**, **create**, **edit** and **delete**. A user's permission can depend on the content of the specific record (or row).
@@ -96,7 +101,7 @@ For example, continue looking at our **TRADE** table and consider the following 
 
 As a result of these permissions:
 
-- User AA can only see trades in Britain, but cannot create, edit or delete those trades. The user cannot see or change trades in Canada.
+- User AA can only see trades in Britain (GB), but cannot create, edit or delete those trades. The user cannot see or change trades in Canada (CA).
 - User BB can only see trades in Britain, and can create or edit trades for Britain, but cannot delete those trades. The user cannot see or change trades in Canada.
 - User CC can see, create, edit and delete trades in Canada, but cannot see or change trades for Britain.
 - User DD can see, create, edit and delete trades for both countries. 
@@ -113,7 +118,7 @@ All configuration can be applied with simple statements in the relevant part of 
 ## How does it work?
 Authorisation for data is based on Right Codes that you define for your application.  
 
-All users have one or more User Profiles. Each User Profile has one or more Right Codes.
+All users can have one or more User Profiles. Each User Profile has one or more Right Codes.
 
 Once you have set up the Right Codes for your application, you can add the relevant Profiles through the front end:
 
@@ -170,7 +175,6 @@ For example, you can hide a column if a user does not have a specific Right Code
 
 In the example below, the code uses `auth` and `hideFields` to check if the user's Profile has the Right Code **TradeViewFull**. If this code is not in the Profile, then the column is not returned by the query:
 
-use :
 ```jsx
   query("ALL_TRADES", TRADE) {
     permissioning {
@@ -183,6 +187,8 @@ use :
     }
   }
 ```
+
+The example above is for a Data Server `query`; you can permission a `requestReply` in your request Server the same way.
 
 To perform similar column-level authorisation for an event in an Event Handler, you need to decide how you handle edits by a user who is not authorised to see (or therefore change) a column. For example, on **modify** you could force the unseen column to remain constant. 
 
@@ -231,7 +237,7 @@ You can specify row-level authorisation for each event in your Event Handler in 
 
 You can combine table-, row- and column-level authorisation in a single data server.
 
-### Mass authorisation
+### Multiple authorisation
 
 It is also possible to apply authorisation for all queries in a Data Server or all events in an Event Handler file. 
 
@@ -258,9 +264,9 @@ All above patterns are the same for Request Replies (reqreps) within the Genesis
 
 ### Front-end authorisation
 
-It is possible to apply authorisation at the front end to remove grids and buttons where there is no appropriate permission.  If this is not done, the system is protected (by the server) but users will receive error messages explaining their lack of permissions.
+It is possible to apply authorisation at the front end to remove grids and buttons where there is no appropriate permission.  If you don't want to do this, the system is still protected by the premissioning you have set on the back end. Users will receive error messages explaining their lack of permissions.
 
-Here is an example of a restricting tab visibility (based on the Right Code "TradeView" that provides access to the tab):
+Here is an example of restricting tab visibility (based on the Right Code **TradeView** that provides access to the tab):
 
 ```jsx
     navItems: [
@@ -271,7 +277,7 @@ Here is an example of a restricting tab visibility (based on the Right Code "Tra
     ],
 ```
 
-Here is an example of a restricting button visibility (based on the Right Code **TradeUpdate** that provides access to the button):
+Here is an example of restricting button visibility (based on the Right Code **TradeUpdate**, which provides access to the button):
 
 ```jsx
       createEvent="${(x) => getViewUpdateRightComponent(x.user, 'TradeUpdate', 'EVENT_TRADE_INSERT')}"
