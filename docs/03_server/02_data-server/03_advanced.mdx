@@ -110,6 +110,25 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
 }
 
 ```
+## Auth map tweaks
+
+Dataservers can react in real-time to changes in the permissioning model derived from the defined `auth` blocks. In order to react to new permissioning updates, an internal cache is used so we can keep track of what rows have been processed by each individual user subscription.
+In most cases, a single `auth` entity id is associated to one or more rows in a dataserver query, but in some rare scenarios there might be a one-to-one relationship. In the latter case, there is a configuration option named `rowLevelPermissions` to optimise the internal data structure that holds the cache information.
+
+For example, in the sample definition below we have a dataserver query for our COUNTERPARTY table, and we know that both the auth map and the rows themselves are uniquely identified by COUNTERPARTY_ID, so the `rowLevelPermissions` flag can be applied.
+
+```kotlin
+query("ALL_COUNTERPARTIES", COUNTERPARTY) {
+    permissioning {
+        auth("COUNTERPARTY"){
+            rowLevelPermissions = true
+            authKey {
+                key(data.counterpartyId)
+            }
+        }
+    }
+}
+```
 
 ## Index-based Data Server queries
 
