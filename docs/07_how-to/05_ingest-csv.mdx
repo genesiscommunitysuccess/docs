@@ -19,24 +19,24 @@ import TabItem from '@theme/TabItem';
 ## Using Data Pipeline to ingest data
 When you need to take in data from an external source, the first option you should consider is to use the platform's Data Pipeline component.
 
-This enables you to define the data source, transform it to match fields in your tables, then insert or update the data in the specified table. This can be set upto handle streaming data or static files.
+This enables you to define the data source, transform it to match fields in your tables, then insert or update the data in the specified table. This can be set up to handle streaming data or static files.
 
 A good practical example is to be able to take [Copp Clark](https://coppclark.com/) holiday data that arrives in CSV files.
 
 :::info
-You can also use the Data Pipeline component to send out data to external systems. This works the same way in reverse, taking data from tables in your Genesis application and transforming it it onto the format required by the target system.
+You can also use the Data Pipeline component to send out data to external systems. This works the same way in reverse, taking data from tables in your Genesis application and transforming it into the format required by the target system.
 
 Here we are going focus on incoming data in static files.
 :::
 
 ## Transforming data 
-To create a Data Pipeline for ingesting data, you create a -pipeline-name_**data-pipeline.kts** file to define a pipeline that maps data from an external source (database, file) to tables in your application. 
+To create a Data Pipeline for ingesting data, you create a -project-name_**data-pipeline.kts** file to define a pipeline that maps data from an external source (database, file) to tables in your application. 
 
 Each Data Pipeline must define three things:
 
 - **source** specifies the location of the incoming data
 - **operator** parses the source and maps the data to fields in the application's database; typically, you are looking to transform column headings on the incoming files into the relevant fields in the target table in your database
-- **sink** acts as a data source to update the relevant tables (you can also use this to further update the data and store it somewhere else - such as a different database or a log)
+- **sink** is the destination of the transformed data within your application. This can be a file or a queue, for example. You can use this to further update the data and store it somewhere else - such as a different database or a log
 
 ### Source
 Your pipeline needs a data source. The example below points to a local filesystem location. It pulls in any file that is dropped into the local file system’s directory **$USER_HOME/run/runtime/coppClarkSimple**:
@@ -107,21 +107,10 @@ In the example below, we use this to log that we’ve completed it, and to send 
 
 [comment]: <> (Waiting on error handling to add a section on it here)
 
-### What can you ingest?
-You can take data from the following sources:
-
-- PostgreSQL
-- MS SQL Server
-- Oracle Enterprise
-- Files
-  - CSV
-  - XML
-  - JSON
-
 ## Three different examples
 To show how to use Data Pipeline to ingest data, we have provided an [example application](https://github.com/genesislcap/platform-howto/tree/master/howto-csv-ingress), which has three different scenarios. All of these are based on incoming data in Copp Clark holiday files:
 
-- The first example simply covers the task of parsing the incoming data (a CSV file that contains Exchange Settlement details) and then updating a table in the application's database (the EXCHANGE_HOLIDAY table).
+- The first example simply covers the task of parsing the incoming data (a CSV file that contains Exchange Settlement Holiday details) and then updating a table in the application's database (the EXCHANGE_HOLIDAY table).
 
 - The second example looks at two incoming files - Trading and Settlement - and applies more sophisticated analysis and logic. The database is only updated when changes are detected, including deleting dates that are no longer designated holidays. In this example, the logic is defined in a separate transformer file, which is called from within the pipeline itself.
 
@@ -137,10 +126,6 @@ Throughout, the code in the application includes detailed comments explaining th
 
 #### Finding the examples
 The examples are within one complete example application, which includes a front end so that you can run and see the data. You can [clone the repo](https://github.com/genesislcap/platform-howto/tree/master/howto-csv-ingress) to see the code - which includes comments at the key points to highlight what is being specified - and run the application.
-
-:::info
-Read the [README.txt](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/README.md) file for a full overview and details of how to test the application.
-:::
 
 We shall look at each example in more detail.
 
