@@ -2,18 +2,23 @@
 title: 'How to create a simple front end'
 sidebar_label: 'Create a simple front end'
 id: ht-front-end-simple
-keywords: [web components, front end, frontend, forms, modal]
+keywords: [web components, front end, frontend, forms, modal, flyout]
 tags:
     - web components
     - front end
     - frontend
     - forms
     - modal
+    - flyout
 
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
+In this page, we shall look at how to create a simple front end for your application using the components in the Genesis Foundation UI library.
+
+First, we shall look creating a page and adding some simple components. Then we shall look at the example application we have created for you, so that you can see something more substantial.
 
 ## Pages and routes
 You get a home page automatically if you use genx or Genesis Create. But you can add as many new pages as you like.
@@ -212,17 +217,14 @@ There are multiple UIs, with links to the corresponding code.
 ### The back end
 Even if you are a front-end specialist, it is important to have some familiarity with the back end. You need to know what resources you can connect to in order to retrieve data and interact, and in many cases you will need to know exactly what fields are available on a specific resource.
 
-In our case, the back end is purposely kept simple, with little functionality.  It contains:
+In our case, the back end is purposely kept simple.  It contains:
 
 - static data tables for Entity and Client
 - a Trade table with 10 pre-loaded trades
-- Kafka topic subscription for FX Rates, to show ticking data in the front end
 - time-series data of inflation rates for use in charting
 
 :::info Take a look at the code
-The [**back-end code**](https://github.com/genesislcap/platform-howto/tree/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/server) of the example application has its own directory structure. 
-
-From there, you can drill down through the **uiexamples-app** to see the data files and the script files that define the back-end processes.
+The [**back-end code**](https://github.com/genesislcap/platform-howto/tree/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/server) has its own directory structure. You can drill down through the **uiexamples-app** to see the data files and the script files that define the back-end processes.
 :::
 
 :::tip Take a look at the app
@@ -239,7 +241,7 @@ We recommend VSCode as your IDE for looking at the code if you are new to workin
 Alternatively, you can use a JetBrains IDE, such as IntelliJ.
 
 :::info Take a look at the code
-The [**back-end code**](https://github.com/genesislcap/platform-howto/tree/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/client/src) of the example application has its own directory structure. 
+The [**front-end code**](https://github.com/genesislcap/platform-howto/tree/4a140c118916b177c0dd5fd355a5d5ec36f7d33b/howto-uiexamples/client/src) of the example application has its own directory structure. 
 
 From this point, you can drill down into different parts of the application, such as:
 
