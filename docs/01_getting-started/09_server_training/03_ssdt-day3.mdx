@@ -37,7 +37,7 @@ dataServer {
 }
 ```
 
-We saw basic concepts and common usages of Data Servers in the [Developer Training](../../../getting-started/developer-training/training-intro/) such as [specifying fields](../../../server/data-server/basics/#specifying-fields), [derived fields](../../../server/data-server/basics/#derived-fields), and [where clauses](../../../server/data-server/basics/#where-clauses). Now we are exploring Data Servers advanced concepts like [client-enriched data](#client-enriched-data), [ranged Data Server queries](#ranged-data-server-queries), [client-side runtime options](#client-side-runtime-options), and [criteria matching](#criteria-matching).
+We saw basic concepts and common usages of Data Servers in the [Developer Training](../../../getting-started/developer-training/training-intro/) such as [specifying fields](../../../server/data-server/basics/#specifying-fields), [derived fields](../../../server/data-server/basics/#derived-fields), and [filter clauses](../../../server/data-server/basics/#filter-clauses). Now we are exploring Data Servers advanced concepts like [client-enriched data](#client-enriched-data), [ranged Data Server queries](#ranged-data-server-queries), [client-side runtime options](#client-side-runtime-options), and [criteria matching](#criteria-matching).
 
 ### Client-enriched data
 
@@ -204,7 +204,7 @@ derivedField("IS_FAVOURITE", BOOLEAN) { row, favourite ->
 
 ## Advanced Request Servers
 
-Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI. As Data Servers, using Request Servers you can also [specify derived fields](../../../server/request-server/basics/#specifying-derived-fields), [use an index](../../../server/request-server/basics/#using-an-index), and add [where blocks](../../../server/request-server/basics/#where-block).
+Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI. As Data Servers, using Request Servers you can also [specify derived fields](../../../server/request-server/basics/#specifying-derived-fields), [use an index](../../../server/request-server/basics/#using-an-index), and add [filter blocks](../../../server/request-server/basics/#filter-block).
 
 :::caution Request Servers are different from Data Servers
 Request Servers will reply with a single response. Once the response is received, the transaction is over (unlike a [Data Server](../../../server/data-server/basics), which stays connected to the client and pushes updates).

@@ -213,7 +213,7 @@ requestReply<[InputClass], [OutputClass]> ("{optional name}") {
         }
         
         // predicates are supported
-        where {
+        filter {
         }
     }
   }
@@ -319,13 +319,13 @@ requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId>("FAN
     permissioning {
         auth("INSTRUMENT") {
             field { instrumentId }
-            where {
-                alternateType == "FOO"
+            filter {
+                data.alternateType == "FOO"
             }
         } or auth("ALTERNATE_CODE") {
             field { alternateCode }
-            where {
-                alternateType == "BAR"
+            filter {
+                data.alternateType == "BAR"
             }
         }
     }

@@ -273,7 +273,7 @@ The code for permissioning specific queries must be inserted into your Data Serv
 The dynamic authorisation definition in a GPAL Data Server or Request Server has 4 settings, which can be used in any combination:
 
 - grouping (and/or)
-- where clauses
+- filter clauses
 - hideFields
 - enrichedAuth
 
@@ -308,15 +308,15 @@ permissioning {
 }
 ```
 
-#### Where clauses
+#### Filter clauses
 
-You can define a `where` clause if you only want to show a row in specific cases. These authorisation definitions first evaluate the `where` clause against the permission map. This functionality on its own is not that useful, because for a single auth permissions map, the content of the `where` clause could be moved to the query `where` clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
+You can define a `filter` clause if you only want to show a row in specific cases. These authorisation definitions first evaluate the `filter` clause against the permission map. This functionality on its own is not that useful, because for a single auth permissions map, the content of the `filter` clause could be moved to the query `filter` clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
 
-The `where` clause scope is the same as the entity object, so you can reference fields directly. If required, a parameter of the username can also be included.
+The `filter` clause scope is the same as the `filter` scope in dataserver or request reserver, so you can reference the table/view fields using the `data` context property. If required, the username context property can be made available using `filterWithUserName`.
 
 The example below shows permissioning where authorisation is successful if the user satisfies one of four code blocks:
 
-- The first block has a `where` clause that prevents the user (a permissioned buying counterparty) from viewing cancelled trades.
+- The first block has a `filter` clause that prevents the user (a permissioned buying counterparty) from viewing cancelled trades.
 - The second block makes the information visible to any permissioned selling counterparty - so they can view cancelled trades.
 - The third block makes the information visible provided the trade owner is visible to the user, excluding any trades created by TEST_USER.
 - The fourth block does not require an auth map to be specified, as it just excludes any trades created by TEST_USER.
@@ -325,24 +325,24 @@ The example below shows permissioning where authorisation is successful if the u
 permissioning {
     auth(mapName = "ENTITY_VISIBILITY") {
         TRADE.BUYING_COUNTERPARTY
-        where { 
-            TradeState.CANCELLED != tradeState
+        filter {
+            TradeState.CANCELLED != data.tradeState
         }
         //Only visible to users with entity access to SELLING_COUNTERPARTY ID on the trade WHERE trade state is not CANCELLED (so buyer can't see cancelled trades effectively)
     } or
     auth(mapName = "ENTITY_VISIBILITY") {
         TRADE.SELLING_COUNTERPARTY
-        //No where clause, so always visible to users with entity access to SELLING_COUNTERPARTY ID on the trade
+        //No filter clause, so always visible to users with entity access to SELLING_COUNTERPARTY ID on the trade
     } or 
 	auth(mapName = "USER_VISIBILITY") {
 		TRADE.OWNER
-		where { user ->
-			user != "TEST_USER"
+		filterWithUserName {
+			userName != "TEST_USER"
 		}
 	} or
     auth {
-        where { user ->
-            user != "TEST_USER"
+        filterWithUserName {
+            userName != "TEST_USER"
         }
     }
 }

@@ -141,11 +141,21 @@ The `mapName` parameter refers to a specific permission entity defined on the se
 </dynamicPermissions>
 ```
 
-In cases where you do not require the auth map and just want to define a `where` clause, you can omit it from the definition. For example:
+In cases where you do not require the auth map and just want to define a `filter` clause, you can omit it from the definition. The relevant authorisation data (table/view/custom class) will be available as part of the `data` context property. For example:
 
 ```kotlin
         auth {
-            where {
+            filter {
+                ...
+            }
+        }
+```
+
+If the username value as part of the `filter` block is required, `filterWithUserName` should be used instead. This will expose the `userName` context property as well as the `data` property.
+
+```kotlin
+        auth {
+            filterWithUserName {
                 ...
             }
         }

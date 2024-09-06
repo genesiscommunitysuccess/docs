@@ -89,6 +89,20 @@ query("ALL_COUNTERPARTIES" , COUNTERPARTY_VIEW) {
     }
 }
 
+// Example: filtering rows based on whether the enrichment was successful or not
+query("ALL_ONLY_FAVOURITE_COUNTERPARTIES" , COUNTERPARTY_VIEW) {
+    // Lookup user counterparty favourite view
+    enrich(USER_COUNTERPARTY_FAVOURITE) {
+        join { userName, row ->
+            UserCounterpartyFavourite.ByUserNameCounterparty(userName, row.counterpartyId)
+        }
+        // The query should only display rows that have been enriched successfully
+        filter {
+            enriched != null
+        }
+    }
+}
+
 // Example: using "enrichedAuth" to combine fields from enrichment with authorisation mechanism
 query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
     permissioning {
@@ -131,19 +145,19 @@ query("TRADE_RANGE_USD_REFRESH", TRADE) {
 }
 ```
 
-The example below shows how advanced `where` queries differ from basic where queries.
+The example below shows how advanced `where` queries differ from basic `filter` queries.
 
 The scenario is this: you want to get trade records where the `currencyId` is `USD`. You can write a Data Server query in two ways, which affects how much data is cached:
 
-- Method 1 uses basic `where`. It initially reads all the table/view data (which could be very large) and then applies the `where` clause to confine the range to USD, so it can take a long time to get the Data Server query up and running.
+- Method 1 uses basic `filter`. It initially reads all the table/view data (which could be very large) and then applies the `filter` clause to confine the range to USD, so it can take a long time to get the Data Server query up and running.
 - Method 2 uses advanced `where`. It uses a database range search operation [getRange](../../../database/database-interface/entity-db/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
   The `where` clause is applied at database level, the data returned by the database operation already contains the correct rows.
 
 ```kotlin
 // Method 1:
 query("TRADE_USD", TRADE) {
-    where {
-        it.currencyId == "USD"
+    filter {
+        data.currencyId == "USD"
     }
 }
 

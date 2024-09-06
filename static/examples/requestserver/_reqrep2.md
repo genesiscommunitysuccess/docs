@@ -19,8 +19,8 @@ requestReplies {
             EXCHANGE_ID
         }
 
-        where { row, parameters ->
-            row.instrumentCode.equals(parameters.getString("INSTRUMENT_CODE"))
+        filter {
+            data.instrumentCode == parameters.getString("INSTRUMENT_CODE")
         }
     }
 }
