@@ -14,13 +14,15 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-A Genesis app can use the FDC3 standard for interoperability between front-end applications. You can configure your app to interoperate via channels and intents. Other applications can listen to and handle these messages according to your business requirements.
+A Genesis app can use the FDC3 standard for interoperability between front-end applications. 
+
+To do this, you can configure your app to interoperate via *channels* and *intents*. Other applications can listen to these messages and handle them according to your business requirements.
 
 ## Channel overview
 
-For example, you might have an application that uses the `<rapid-grid-pro>` component to display a list of instruments. In the FDC3 Agent we want to create a shared context for [fdc3.instrument](https://fdc3.finos.org/docs/intents/ref/ViewInstrument) on the system (aka color) channel.
+For example, you might have an application that uses the `<rapid-grid-pro>` component to display a list of instruments. In the FDC3 Agent, you want to create a shared context for [fdc3.instrument](https://fdc3.finos.org/docs/intents/ref/ViewInstrument) on the system (aka color) channel.
 
-Using the `<fdc3-channel-event>` component, we listen to the `rowClicked` event emitted from the `<rapid-grid-pro>` component. The event detail payload will contain the underlying row model which is mapped to match the schema for `fdc3.instrument` by the callback in the `mappingFunction` attribute.
+Configure the `<fdc3-channel-event>` component to listen to the `rowClicked` event emitted from the `<rapid-grid-pro>` component. The event detail payload contains the underlying row model, which is mapped to match the schema for `fdc3.instrument` by the callback in the `mappingFunction` attribute.
 
 ```html
 <rapid-grid-pro>
@@ -37,7 +39,7 @@ Using the `<fdc3-channel-event>` component, we listen to the `rowClicked` event 
 The `<fdc3-channel-event>` component can listen to any event emitted by a parent component. You could listen to `@click` on a div or any custom event you have created yourself.
 :::
 
-To listen to the shared context you can use the `<fdc3-system-channel-listener>` component, specifying a string as the `channelType` and a `callback` function to handle the message.
+To listen to the shared context, use the `<fdc3-system-channel-listener>` component, specifying a string as the `channelType` and a `callback` function to handle the message.
 
 ```
 <fdc3-system-channel-listener :config="${x => [
@@ -56,7 +58,7 @@ If you have apps that provide services such as charting or news, then you could 
 
 ## Intents overview
 
-Going back to the grid example, you might want to raise an intent with the context of a single row. To do this you can create a column definition to show a button when clicked raises the `CreateTrade` intent. This will create a button in each row which when clicked will raise the intent with the specified context.
+Going back to the grid example, you might want to raise an intent with the context of a single row. To do this you can create a column definition to show a button, which, when clicked, raises the `CreateTrade` intent. This creates a button in each row. When a user clicks on a button, this raises the intent with the specified context.
 
 ```html
 <rapid-grid-pro>
@@ -82,7 +84,8 @@ Going back to the grid example, you might want to raise an intent with the conte
 </rapid-grid-pro>
 ```
 
-To listen for an intent in an application, you can use the `<fdc3-intent-listener>` component. This takes an array of config objects with each object containing the `intent` and a `callback`.
+### Listening for an intent
+To listen for an intent in an application, use the `<fdc3-intent-listener>` component. This takes an array of config objects, with each object containing the `intent` and a `callback`.
 
 ```html
 <fdc3-intent-listener
@@ -99,7 +102,8 @@ To listen for an intent in an application, you can use the `<fdc3-intent-listene
 </fdc3-intent-listener>
 ```
 
-We have created an application in our [Platform How To - FDC3](https://github.com/genesislcap/platform-howto/tree/master/howto-fdc3) that demonstrates how applications built using the Genesis framework can leverage the FDC3 standard.
+## Example application
+We have created an [example application](https://github.com/genesislcap/platform-howto/tree/master/howto-fdc3) that demonstrates how applications built using the Genesis framework can use the FDC3 standard.
 
 There are four example 'fdc3 apps' in total:
 
@@ -109,7 +113,7 @@ There are four example 'fdc3 apps' in total:
 - app-channel-listener, listens to the `customAppChannel` for FX trade events.
 
 :::info
-Note, each 'fdc3 app' is defined by an app directory config. In our example, each app directory config url points to a different route on the one Genesis application. The FDC3 desktop agent is unaware of this and will open each app with the given url as if it were a separate application. We have done this to save you running multiple servers.
+Note, each 'fdc3 app' is defined by an app directory config. In our example, each app directory config url points to a different route on the single Genesis application. The FDC3 desktop agent is unaware of this, and opens each app with the given url as if it were a separate application. We have done this so that you don't have to run multiple servers.
 
-In a real world context you will create separate applications and deploy them and update the app directory url accordingly.
+In practice, you will create separate applications and deploy them; then you can update the app directory url accordingly.
 :::
