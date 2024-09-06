@@ -310,7 +310,7 @@ Note that only the user **admin** can modify Profiles and add users. The passwor
 The application also demonstrates authorisation at a dataserver and eventhandler level.
 
 :::info
-The **ReadMe** file in the project folder provides further information on the project.
+The [**ReadMe** file](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/README.md) in the project folder provides further information on the project.
 :::
 
 ## A more complex scenario
@@ -368,7 +368,7 @@ Our example tests are able to test authorisation via both the user interface and
 
 There are three types of file.
 
-- The [feature file](https://github.com/genesiscommunitysuccess/howto-permissions/tree/main/server/permissions-app/src/test/resources/featuresPermission.feature) contains the test cases, which are written in the Gherkin language. Tags are used to differentiate between the UI (`@UI`) and the API (`@API`).
+- The [feature file](https://github.com/genesiscommunitysuccess/howto-permissions/blob/main/server/permissions-app/src/test/resources/features/Permission.feature) contains the test cases, which are written in the Gherkin language. Tags are used to differentiate between the UI (`@UI`) and the API (`@API`).
 - There are separate step definitions (written in Java) for testing the user interface and the API in the [**step definitions**](https://github.com/genesiscommunitysuccess/howto-permissions/tree/main/server/permissions-app/src/test/java/global/genesis/cucumber/stepdefinitions) folder. 
 - You can find the expected results files (.json) in the [**result**](https://github.com/genesiscommunitysuccess/howto-permissions/tree/main/server/permissions-app/src/test/resources/result) folder. The actual results are written to this folder after the tests have been executed.
 
