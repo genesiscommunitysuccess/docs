@@ -108,7 +108,7 @@ In the example below, we use this to log that we’ve completed it, and to send 
 [comment]: <> (Waiting on error handling to add a section on it here)
 
 ## Three different examples
-To show how to use Data Pipeline to ingest data, we have provided an [example application](https://github.com/genesislcap/platform-howto/tree/master/howto-csv-ingress), which has three different scenarios. All of these are based on incoming data in Copp Clark holiday files:
+To show how to use Data Pipeline to ingest data, we have provided an [example application](https://github.com/genesiscommunitysuccess/howto-csv-ingress/tree/main), which has three different scenarios. All of these are based on incoming data in Copp Clark holiday files:
 
 - The first example simply covers the task of parsing the incoming data (a CSV file that contains Exchange Settlement Holiday details) and then updating a table in the application's database (the EXCHANGE_HOLIDAY table).
 
@@ -125,7 +125,7 @@ The application also includes guidance for:
 Throughout, the code in the application includes detailed comments explaining the steps.
 
 #### Finding the examples
-The examples are within one complete example application, which includes a front end so that you can run and see the data. You can [clone the repo](https://github.com/genesislcap/platform-howto/tree/master/howto-csv-ingress) to see the code - which includes comments at the key points to highlight what is being specified - and run the application.
+The examples are within one complete example application, which includes a front end so that you can run and see the data. You can [clone the repo](https://github.com/genesiscommunitysuccess/howto-csv-ingress/tree/main) to see the code - which includes comments at the key points to highlight what is being specified - and run the application.
 
 We shall look at each example in more detail.
 
@@ -139,7 +139,7 @@ This example is designed to highlight how simple it is to ingest the data. The e
 - It only logs upon completion.
 
 :::info Take a look at the code
-The [**.kts file for simple csv ingress**](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-simple-data-pipelines.kts) contains the main configuration. Comments are inserted in the code to explain each key point.
+The [**.kts file for simple csv ingress**](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-simple-data-pipelines.kts) contains the main configuration. Comments are inserted in the code to explain each key point.
 :::
 
 :::tip Take a look at the app
@@ -171,9 +171,9 @@ The operators are called from within the pipelines. This avoids large pipeline c
 
 
 :::info Take a look at the code
-The [**.kts file for snapshot data**](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-snapshot-data-pipelines.kts) contains the main configuration. Comments are inserted in the code to explain each key point.
+The [**.kts file for snapshot data**](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-snapshot-data-pipelines.kts) contains the main configuration. Comments are inserted in the code to explain each key point.
 
-The [**CoppClarkHolidayTransformer.kt**](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/kotlin/howto/csv/ingress/copp/clark/transform/CoppClarkHolidayTransformer.kt) file contains all the logic. Comments are inserted in the code to explain each key point.
+The [**CoppClarkHolidayTransformer.kt**](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/server/howto-csv-ingress-app/src/main/kotlin/howto/csv/ingress/copp/clark/transform/CoppClarkHolidayTransformer.kt) file contains all the logic. Comments are inserted in the code to explain each key point.
 
 :::
 
@@ -193,9 +193,9 @@ This example is an extension of the previous Snapshot CSV file example. Addition
 
 :::info Take a look at the code
 You can see the main configuration in the [**snapshot-exchange-data-pipelines.kts**
-](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-snapshot-exchange-data-pipelines.kts) file. This file is very similar to the [snapshot-data-pipelines.kts](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-snapshot-exchange-data-pipelines.kts) example. So, the comments in the file are exclusively focused on the logic that is related to exchange data.
+](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-snapshot-exchange-data-pipelines.kts) file. This file is very similar to the [snapshot-data-pipelines.kts](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-snapshot-data-pipelines.kts) example. So, the comments in the file are exclusively focused on the logic that is related to exchange data.
 
-In the [**CoppClarkHolidayAndExchangeTransformer.kt**](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/kotlin/howto/csv/ingress/copp/clark/transform/CoppClarkHolidayAndExchangeTransformer.kt) file, the main difference to note is the StreamOperator output is of type `DbOperation<out TableEntity>`. This means it can be a DbOperation on any database type. Here we have just two table entities, but it could be any mix of entities in our application.
+In the [**CoppClarkHolidayAndExchangeTransformer.kt**](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/server/howto-csv-ingress-app/src/main/kotlin/howto/csv/ingress/copp/clark/transform/CoppClarkHolidayAndExchangeTransformer.kt) file, the main difference to note is the StreamOperator output is of type `DbOperation<out TableEntity>`. This means it can be a DbOperation on any database type. Here we have just two table entities, but it could be any mix of entities in our application.
 :::
 
 :::tip Take a look at the app
@@ -211,13 +211,13 @@ To view the data, run the GUI or DbMon task.
 When you want to create a Data Pipeline in your own application, there are other things you need to do in addition to creating the pipeline files themselves.
 
 ### Processes.xml
-Every process in your app must be configured in the application's [**-processes.xml**](/server/configuring-runtime/processes/) file. See the [**howto-csv-ingress-processes.xml**](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/genesis/cfg/howto-csv-ingress-processes.xml) file for a simple example. 
+Every process in your app must be configured in the application's [**-processes.xml**](/server/configuring-runtime/processes/) file. See the [**howto-csv-ingress-processes.xml**](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/server/howto-csv-ingress-app/src/main/genesis/cfg/howto-csv-ingress-processes.xml) file for a simple example. 
 
 At minimum, you need to 
 
 - add `genesis-pal-datapipeline` to `<module>`
 - add `global.genesis.pipeline` to `<package>`
-- add the relevant gpal script (e.g. [**howto-csv-ingress-cc-simple-data-pipeline.kts**](https://github.com/genesislcap/platform-howto/blob/master/howto-csv-ingress/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-simple-data-pipelines.kts)) to `<script`>
+- add the relevant gpal script (e.g. [**howto-csv-ingress-cc-simple-data-pipeline.kts**](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-simple-data-pipelines.kts)) to `<script`>
 
 For example:
 ```jsx
@@ -226,7 +226,7 @@ For example:
     ...
     <module>genesis-pal-datapipeline</module>
     <package>global.genesis.pipeline</package>
-    <script>myapp-data-pipelines.kts</script>
+    <script>myapp-simple-data-pipelines.kts</script>
     ...
   </process>
 </processes>
