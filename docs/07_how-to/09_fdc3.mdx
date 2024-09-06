@@ -14,141 +14,102 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-A Genesis app can use the FDC3 standard for interoperability between front-end applications. 
+A Genesis app can use the FDC3 standard for interoperability between front-end applications. You can configure your app to interoperate via channels and intents. Other applications can listen to and handle these messages according to your business requirements.
 
-So, if you have apps that provide services such as charting or news, then you can set up your app so that can share messages with those apps at the front end.
+## Channel overview
 
-For example, a user could click on a row in a grid of data in your Genesis application and then view view news or a chart on that instrument in a separate app window.
+For example, you might have an application that uses the `<rapid-grid-pro>` component to display a list of instruments. In the FDC3 Agent we want to create a shared context for [fdc3.instrument](https://fdc3.finos.org/docs/intents/ref/ViewInstrument) on the system (aka color) channel.
 
-You can achieve this with relatively few lines of code.
-
-The main steps involved in setting this up are:
-
-- Set up a channel
-- Set up events on those channels
-- Set up listeners that can listen to the channels
-
-There are four example apps in total:
-
-- FDC3 blotter
-- intent-listener is an application with a form for submitting trades. 
-- system-channel-listener listens to the active color channel for FX pair events.
-- app-channel-listener listens to the `customAppChannel` for FX trade events.
-
-## How it works
-
-### FDC3 web client
-We have created an example application to demonstrate how you can set up interaction between your Genesis application and other display applications.
-
-The application was generated using Genesis Create and has been adapted to demonstrate the features of `foundation-fdc3` library.
-
-It is designed to serve several 'fdc3-apps' that use the interop features of FDC3 to interact with each other.
-
-Each 'fdc3-app' is a different route on the web application but they are loaded in a different Desktop Agent container. In real life, your apps will have different origins.
-
-## Running in Desktop Agent
-
-The application should be loaded in an [FDC3 Desktop Agent](https://fdc3.finos.org/docs/api/ref/DesktopAgent) to ensure that the FDC3 functionality works.
-
-To run the app, go to the **./fdc3 client** directory and start the **how-touiexamples** server.
-
-```shell
-npm run dev
-```
-
-This starts the server that serves the urls accessed by the apps in the desktop agent. 
-
-### FDC3 blotter
-The file **howto-fdc3-blotter** is the main application, which displays a list of trades from the back end. Each row in the grid has a button to raise a `CreateTrade` intent. 
-
-When the user clicks on a row, the application sends two messages:
-
-- a message on an app channel with type `genesis.fxtrade` - the whole row object
-- a message on the color channel with `genesis.fxpair` - use the `mappingFunction` to create and send an object with source and target currency values.  
-
-[comment]: <> (use the mappingFunction... is this an instruction or a description?)
-
-This is done using `<fdc3-channel-event></fdc3-channel-event>` as a child element of the parent `<rapid-grid-pro></rapid-grid-pro>` element and specifying the event-name. To broadcast on a specific app channel, the `channel-name` is specified on one of the elements.
+Using the `<fdc3-channel-event>` component, we listen to the `rowClicked` event emitted from the `<rapid-grid-pro>` component. The event detail payload will contain the underlying row model which is mapped to match the schema for `fdc3.instrument` by the callback in the `mappingFunction` attribute.
 
 ```html
-<rapid-grid-pro 
-  persist-filter-model-key="grid-pro-all-positions"
-  >
-  <fdc3-channel-event
-    event-name="rowClicked"
-    channel-type="genesis.fxpair"
-    :mappingFunction="${() => ({SOURCE_CURRENCY, TARGET_CURRENCY}) => ({SOURCE_CURRENCY, TARGET_CURRENCY})}">
-  </fdc3-channel-event>
-  <fdc3-channel-event
-    event-name="rowClicked"
-    channel-name="customAppChannel"
-    channel-type="genesis.fxtrade">
-  </fdc3-channel-event>
-  ...
-```
-
-Note that you can listen to any event emitted by any parent element.
-
-The intent is raised using the `FDC3` service from foundation-fdc3 library. In the trade button column definition, we invoked the method in the click handler to raise the intent.
-
-```ts
-cellRendererParams: {
-  actionClick: async (rowData) => {
-    this.fdc3.raiseIntent(
-      {
-        id: rowData,
-        type: 'CreateTrade',
-      },
-      'CreateTrade' as FDC3Intents,
-    );
-  },
-  ...
-},
-```
-
-### intent-listener
-This is an application with a form for submitting trades. It is launched by the `howto-fdc3-blotter` by the `CreateTrade` intent. On application load, a listener is added to retrieve the intent payload and put it in the store. This happens in the file **main.template**.
-
-```html
-    // main.template.ts
-  <fdc3-intent-listener :intentConfig="${x => [
-    { intent: 'CreateTrade', callback: message => x.handleTicketIntent(message) },
-  ]}"></fdc3-intent-listener>
-```
-
-Intents time out after 15 seconds, so it is important that the listener code happens as early as possible.
-
-When the component is loaded, it retrieves the value from the store and populates the form.
-
-### system-channel-listener
-The `system-channel-listener` application uses the `<fdc3-system-channel-listener></fdc3-system-channel-listener>` web component to listen to the active color channel for events with channel type of `genesis.fxpair`.
-
-```html
+<rapid-grid-pro>
+    <fdc3-channel-event
+      event-name="rowClicked"
+      channel-type="fdc3.instrument"
+      :mappingFunction="${() => ({TICKER, CUSIP}) => ({ id: { ticker: TICKER, cusip: CUSIP }) }}">
+    </fdc3-channel-event>
     ...
-    <fdc3-system-channel-listener :config="${x => [
-      {
-        channelType: 'genesis.fxpair',
-        callback: message => x.handleChannelMessage(message)
-      }
-    ]}"></fdc3-system-channel-listener>
-    ...
+</rapid-grid-pro>
 ```
 
-### app-channel-listener
-The `app-channel-listener` application uses the `<fdc3-context-listener></fdc3-context-listener>` wep component to listen to the `customAppChannel` for events with channel type of `genesis.fxtrade`.
+:::info
+The `<fdc3-channel-event>` component can listen to any event emitted by a parent component. You could listen to `@click` on a div or any custom event you have created yourself.
+:::
 
-```html
-...
-<fdc3-context-listener :config="${x => [
+To listen to the shared context you can use the `<fdc3-system-channel-listener>` component, specifying a string as the `channelType` and a `callback` function to handle the message.
+
+```
+<fdc3-system-channel-listener :config="${x => [
   {
-    channelType: 'genesis.fxtrade',
-    channelName: 'customAppChannel',
-    callback: message => x.handleChannelMessage(message)
+    channelType: 'fdc3.instrument',
+    callback: message => {
+        console.log(`channel context for instrument: ${ message.id.ticker}, cusip ${ message.id.cusip } received`)
+        // your code to handle the channel event
+    }
   }
 ]}">
-</fdc3-context-listener>
-...
+</fdc3-system-channel-listener>
 ```
 
-As a non-system-channel is specified, changing color chanel will have no effect on receiving messages.
+If you have apps that provide services such as charting or news, then you could use the message values to filter data based on the instrument.
 
+## Intents overview
+
+Going back to the grid example, you might want to raise an intent with the context of a single row. To do this you can create a column definition to show a button when clicked raises the `CreateTrade` intent. This will create a button in each row which when clicked will raise the intent with the specified context.
+
+```html
+<rapid-grid-pro>
+    ...
+    <grid-pro-column :definition="${() => (
+        {
+            cellRenderer: 'action', // AgRendererTypes.action
+            cellRendererParams: {
+              actionClick: async (rowData) => {
+                this.fdc3.raiseIntent(
+                  {
+                    id: { ticker: TICKER, cusip: CUSIP },
+                    type: 'fdc3.instrument',
+                  },
+                  'CreateTrade',
+                );
+              },
+              actionName: 'Create Trade',
+            },
+        }
+    )}"/>
+    </grid-pro-column>
+</rapid-grid-pro>
+```
+
+To listen for an intent in an application, you can use the `<fdc3-intent-listener>` component. This takes an array of config objects with each object containing the `intent` and a `callback`.
+
+```html
+<fdc3-intent-listener
+    :intentConfig="${x => [
+        {
+            intent: 'CreateTrade',
+            callback: message => {
+                console.log(`CreateTrade intent, context for instrument: ${ message.id.ticker}, cusip ${ message.id.cusip } received`);
+                // your application code to handle the intent
+            }
+        },
+    ]}"
+>
+</fdc3-intent-listener>
+```
+
+We have created an application in our [Platform How To - FDC3](https://github.com/genesislcap/platform-howto/tree/master/howto-fdc3) that demonstrates how applications built using the Genesis framework can leverage the FDC3 standard.
+
+There are four example 'fdc3 apps' in total:
+
+- FDC3 blotter, sends messages on channels and raises to intents
+- intent-listener, listens to intents and partly pre-fills a form using the intent context data
+- system-channel-listener, listens to the active color channel for FX pair events.
+- app-channel-listener, listens to the `customAppChannel` for FX trade events.
+
+:::info
+Note, each 'fdc3 app' is defined by an app directory config. In our example, each app directory config url points to a different route on the one Genesis application. The FDC3 desktop agent is unaware of this and will open each app with the given url as if it were a separate application. We have done this to save you running multiple servers.
+
+In a real world context you will create separate applications and deploy them and update the app directory url accordingly.
+:::
