@@ -779,7 +779,7 @@ module.exports = {
                 dirName: '05_components/fix'
             }
         ]
-    }
+    },
     {
         type: 'category',
         label: 'Reconciliation ',
