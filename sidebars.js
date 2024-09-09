@@ -779,10 +779,10 @@ module.exports = {
                 dirName: '05_components/fix'
             }
         ]
-    },
+    }
     {
         type: 'category',
-        label: 'Reconciliation',
+        label: 'Reconciliation ',
         collapsed: true,
         items: [
             {
@@ -790,9 +790,8 @@ module.exports = {
                 dirName: '05_components/reconciliation'
             }
         ]
-=======
     }
-],
+  ],
   howtoSidebar: [
     'how-to/how-to-landing',
     {
