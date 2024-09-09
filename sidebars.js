@@ -780,5 +780,80 @@ module.exports = {
             }
         ]
     }
+  ],
+  howtoSidebar: [
+    'how-to/how-to-landing',
+    {
+      type: 'category',
+      label: 'Authorisation',
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'how-to/ht-auth'
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'EVERYDAY BASICS',
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'how-to/ht-join-expose'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-audit'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-front-end-simple'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-shareable-enums'
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'INTEGRATION',
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'how-to/ht-ingest-csv'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-fdc3'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-embed'
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'TESTING',
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'how-to/ht-prepare-test'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-web-unit-test'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-web-e2e-test'
+        },
+      ],
+    },
   ]
 }
