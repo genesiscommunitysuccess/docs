@@ -37,18 +37,18 @@ Event Handlers are conventionally defined in the file **&#123;app-name}-eventhan
 
 So, if your application is called **positions**, then the file would conventionally be named **positions-eventhandler.kts**.
 
-You can write custom Event Handlers using our [APIs](../../../server/api-reference/event-handler-api/). These can be implemented using Kotlin or Java.
+You can write custom Event Handlers using our [APIs](/server/api-reference/event-handler-api/). These can be implemented using Kotlin or Java.
 
 :::note
 
 We recommend using **Kotlin** to implement Event Handlers.
 
-- **Java** Event Handlers are implemented using **RxJava3** and **Sync** Event Handlers only. These are described in our page on the [Event Handler API](../../../server/api-reference/event-handler-api/#rx3)
+- **Java** Event Handlers are implemented using **RxJava3** and **Sync** Event Handlers only. These are described in our page on the [Event Handler API](/server/api-reference/event-handler-api/#rx3)
 - Async Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
 
 :::
 
-All events created in the Event Handler are exposed as HTTP/HTTPs [REST endpoints](../../../server/integration/rest-endpoints/introduction/) automatically by the Genesis platform. You can use any HTTP client, such as postman, to access these custom endpoints.
+All events created in the Event Handler are exposed as HTTP/HTTPs [REST endpoints](/server/integration/rest-endpoints/introduction/) automatically by the Genesis platform. You can use any HTTP client, such as postman, to access these custom endpoints.
 
 ## Open API
 
@@ -58,6 +58,10 @@ Open API support was introduced in version 7.0 of the Genesis platform.
 
 :::
 
-To help with external integration and testing, [Open API](../../integration/open-api/) specifications are generated for each resource in the Event Handler.
+To help with external integration and testing, [Open API](/server/integration/open-api/) specifications are generated for each resource in the Event Handler.
 
-Internally, the framework uses metadata system to generate JSON schemas for input and return objects in the Open API spec. For more details on this, see our pages on [Network messages - type-safe messages](../../network-messages/type-safe-messages) and [metadata annotations](../../network-messages/metadata-annotations).
+Internally, the framework uses metadata system to generate JSON schemas for input and return objects in the Open API spec. For more details on this, see our pages on [Network messages - type-safe messages](/server/network-messages/type-safe-messages/) and [metadata annotations](/server/network-messages/metadata-annotations/).
+
+## Metrics
+You can find details of how to use metrics with Event Handlers in our pages on [metrics](/operations/metrics/service-metrics/#event-handler).
+

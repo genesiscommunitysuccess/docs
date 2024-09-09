@@ -12,7 +12,7 @@ tags:
 
 
 
-Request Servers (otherwise known as request/replies and often shortened to reqrep) provide snapshot data from a table or view in response to a request from the front end. Once the response is received, the transaction is over (unlike a [Data Server](../../../server/data-server/basics), which stays connected to the client and pushes updates).
+Request Servers (otherwise known as request/replies and often shortened to reqrep) provide snapshot data from a table or view in response to a request from the front end. Once the response is received, the transaction is over (unlike a [Data Server](/server/data-server/basics), which stays connected to the client and pushes updates).
 
 ```mermaid
 graph TD
@@ -39,7 +39,7 @@ Request Servers are conventionally configured in the file _application-name_**-r
 
 So, if your application is called **positions**, the file would be named **positions-reqrep.kts**.
 
-You should also check the Request Server component in your application's system-processes and service-definition files, as described in the [Configuring runtime](../../../server/request-server/configuring-runtime) page.
+You should also check the Request Server component in your application's system-processes and service-definition files, as described in the [Configuring runtime](/server/request-server/configuring-runtime) page.
 
 :::info
 The following examples in this section assume you have the following fields and tables present:
@@ -82,6 +82,9 @@ Open API support was introduced in version 7.0 of the Genesis platform.
 
 :::
 
-To help with external integration and testing, [Open API](../../integration/open-api/) specifications are generated for each resource in the Request Server.
+To help with external integration and testing, [Open API](/server/integration/open-api/) specifications are generated for each resource in the Request Server.
 
-Internally, the framework uses metadata system to generate JSON schemas for input and return objects in the Open API spec. For more details on this, see our pages on [Network messages - type-safe messages](../../network-messages/type-safe-messages) and [metadata annotations](../../network-messages/metadata-annotations).
+Internally, the framework uses metadata system to generate JSON schemas for input and return objects in the Open API spec. For more details on this, see our pages on [Network messages - type-safe messages](/server/network-messages/type-safe-messages/) and [metadata annotations](/server/network-messages/metadata-annotations/).
+
+## Metrics
+You can find details of how to use metrics with Request Servers in our pages on [metrics](/operations/metrics/service-metrics/#request-server).
