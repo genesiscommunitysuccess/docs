@@ -216,8 +216,8 @@ dataServer {
     query("ALL_TRADES_AUTH", TRADE) {
         permissioning {
             auth("TRADE_VISIBILITY") {
-                fields {
-                    TRADE_ID
+                authKey {
+                    key(data.tradeId)
                 }
             }
         }
