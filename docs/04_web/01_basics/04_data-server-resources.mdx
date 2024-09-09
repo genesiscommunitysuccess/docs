@@ -48,15 +48,15 @@ Expr.containsIgnoreCase(EXCHANGE_NAME, 'oves')`
 
 - `containsWordsStartingWithIgnoreCase(String, String)`
 
-  This returns `true` when the field contains a word with the string. Casing is ignored. The default delimiter is a whitespace character, but a third parameter can be passed to specify a different delimiter.
+    This returns `true` when the field contains a word with the string. Casing is ignored. The default delimiter is a whitespace character, but a third parameter can be passed to specify a different delimiter.
 
-  For example, if the DESCRIPTION field contains the value "This is a description", the following `containsWordStartingWithIgnoreCase` expression will return true:
+    For example, if the DESCRIPTION field contains the value "This is a description", the following `containsWordStartingWithIgnoreCase` expression will return true:
 
 ```
 Expr.containsWordsStartingWithIgnoreCase(DESCRIPTION, 'desc')
 ```
 
-  And in this other example, if the ORDER_TYPE field contains the value "GTC,OCO", the following expression will return true:
+    And in this next example, if the ORDER_TYPE field contains the value "GTC,OCO", the following expression will return true:
 
 ```
 Expr.containsWordsStartingWithIgnoreCase(ORDER_TYPE, 'OCO', ',')`
