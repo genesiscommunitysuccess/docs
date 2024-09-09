@@ -255,7 +255,7 @@ If you include a `where` clause in a query, the request is only processed if the
 
 Also, you can use these clauses to focus on a specific set of fields or a single field.
 
-Finally, note that `where` clauses can also be used for permissioning. In the below example, users that have the TRADER or SUPPORT permission code are able to see all trades that meet the `where` condition.
+Finally, note that `where` clauses can also be used in conjunction with permissioning. In the below example, users that have the TRADER or SUPPORT permission code are able to see all trades that meet the `where` condition.
 
 ```kotlin
 dataServer {
@@ -264,7 +264,9 @@ dataServer {
         permissioning {
             permissionCodes = listOf("TRADER", "SUPPORT")
             auth(mapName = "ENTITY_VISIBILITY") {
-                ENHANCED_TRADE_VIEW.COUNTERPARTY_ID
+                authKey {
+                    key(data.counterpartyId)
+                }
             }
         }
         where { trade -> 

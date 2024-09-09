@@ -285,7 +285,9 @@ dataServer {
     query("ALL_TRADES", TRADE_VIEW) {
         permissioning {
             auth(mapName = "ENTITY_VISIBILITY") {
-                TRADE_VIEW.COUNTERPARTY_ID
+                authKey {
+                    key(data.counterpartyId)
+                }
             }
         }
     }
@@ -299,7 +301,9 @@ requestReplies {
     requestReply("TRADE", TRADE_VIEW) {
         permissioning {
             auth(mapName = "ENTITY_VISIBILITY") {
-                TRADE_VIEW.COUNTERPARTY_ID
+                authKey {
+                    key(data.counterpartyId)
+                }
             }
         }
     }
@@ -311,7 +315,9 @@ Event Handlers are slightly different, because the input data class can be custo
   eventHandler<Trade>(name = "TRADE_INSERT") {
     permissions {
       auth(mapName = "ENTITY_VISIBILITY") {
-        field { counterpartyId }
+        authKey {
+            key(data.counterpartyId)
+        }
       }
     }
     onValidate { event ->
@@ -338,7 +344,9 @@ As with other GPAL files (e.g. Request Server and Data Server), you can use a `p
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
         permissioning {
             auth(mapName = "COMPANY"){
-                COMPANY.COMPANY_NAME
+                authKey {
+                    key(data.companyName)
+                }
             }
         }
 
