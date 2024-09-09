@@ -1,0 +1,62 @@
+---
+title: 'How to'
+sidebar_label: 'Overview'
+id: 'how-to-landing'
+---
+
+import QuickCard from '@site/src/components/Card';
+import { Grid } from '@mui/material'
+
+Welcome to our *How to...* documentation. Here, we are going to give you practical information on building Genesis applications, from the simplest introduction through use cases to working code examples.
+
+We hope you find this useful.
+
+
+## Everyday basics
+These are the things that every application has to have.
+
+<Grid container>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Set up authorisation" link="../how-to/ht-auth/" text="Understand the principles of authorising your users at every level.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Join tables and expose them" link="../how-to/ht-join-expose/" text="Join tables to create views - useful ways of looking at data. Then create queries so that these can be displayed at the front end.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Create a simple front end" link="../how-to/ht-front-end-simple/" text="See how to create pages and insert different types ofdisplay and interaction.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Use one field in many tables" link="../how-to/ht-shareable-enums/" text="You don't want to declare the same field multiple times. You can declare it once and use it any table you like. See our example of an enum.">
+        </QuickCard>
+    </Grid>
+</Grid>
+
+## Integration
+
+Extend your Genesis application so that it can operate seamlessly alongside other apps and systems.
+
+<Grid container>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Ingesting CSV files" link="../how-to/ht-ingest-csv/" text="Receive CSV files from an external source and update your database in the relevant way.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Interoperate with other front ends" link="../how-to/ht-fdc3/" text="Use the FDC3 standard for front-end interoperability; enable your users to click between your Genesis app and other front-end applications. ">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Embed Genesis in another application" link="../how-to/ht-embed/" text="See how to embed a Genesis application or Genesis web component inside another app.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Testing" link="../how-to/ht-prepare-test/" text="Find out how to prepare your system for automated testing. ">
+        </QuickCard>
+    </Grid>
+</Grid>
+
+
+
+

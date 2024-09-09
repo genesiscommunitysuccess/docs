@@ -235,7 +235,9 @@ requestReplies {
     requestReply<Hello, World>("HELLO_WORLD_AUTH") {
         permissioning {
             auth("NAMES") {
-                field { name }
+                authKey {
+                    key(data.name)
+                }
             }
         }
 
