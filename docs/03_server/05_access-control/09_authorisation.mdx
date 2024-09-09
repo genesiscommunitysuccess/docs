@@ -310,9 +310,9 @@ permissioning {
 
 #### Filter clauses
 
-You can define a `filter` clause if you only want to show a row in specific cases. These authorisation definitions first evaluate the `filter` clause against the permission map. This functionality on its own is not that useful, because for a single auth permissions map, the content of the `filter` clause could be moved to the query `filter` clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
+You can define a `filter` clause if you only want to show a row in specific cases. These authorisation definitions first evaluate the `filter` clause against the permission map. On its own, this is not that useful, because for a single auth permissions map, the content of the `filter` clause could be moved to the query `filter` clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
 
-The `filter` clause scope is the same as the `filter` scope in dataserver or request reserver, so you can reference the table/view fields using the `data` context property. If required, the username context property can be made available using `filterWithUserName`.
+The `filter` clause scope is the same as the `filter` scope in a Data Server or Request Server, so you can reference the table/view fields using the `data` context property. If required, the username context property can be made available using `filterWithUserName`.
 
 The example below shows permissioning where authorisation is successful if the user satisfies one of four code blocks:
 
