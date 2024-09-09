@@ -792,7 +792,7 @@ module.exports = {
         ]
 =======
     }
-  ],
+],
   howtoSidebar: [
     'how-to/how-to-landing',
     {
