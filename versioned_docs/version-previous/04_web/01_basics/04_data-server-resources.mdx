@@ -56,7 +56,7 @@ Expr.containsIgnoreCase(EXCHANGE_NAME, 'oves')`
 Expr.containsWordsStartingWithIgnoreCase(DESCRIPTION, 'desc')
 ```
 
-And in this other example, if the ORDER_TYPE field contains the value "GTC,OCO", the following expression will return true:
+    And in this next example, if the ORDER_TYPE field contains the value "GTC,OCO", the following expression will return true:
 
 ```
 Expr.containsWordsStartingWithIgnoreCase(ORDER_TYPE, 'OCO', ',')`
@@ -224,14 +224,14 @@ The following complex example defines:
 In Java's operator precedence, logical AND is evaluated before logical OR. For this reason, we must add `QUANTITY > 250 || QUANTITY < 350` within brackets.
 
 ### Object methods
-The Java methods corresponding to each one of the field types are also accessible from a criteria building perspective.
+You can also use the Java methods that correspond to each field type to build criteria.
 For example, if you are using a DESCRIPTION field with type STRING, you can write the following expression to check if the content starts with the string 'This':
 
 ```
 DESCRIPTION.startsWith('This')
 ```
 
-The methods available for each one of the field types can be found in their correspondent Javadoc documentation. See samples below:
+The methods available for each of the field types can be found in their Javadoc documentation. For example:
 * String: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html
 * Long: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html
 * Integer: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html
