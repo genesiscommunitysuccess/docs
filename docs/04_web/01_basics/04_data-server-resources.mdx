@@ -1,25 +1,18 @@
 ---
-title: 'Data Server resources'
-sidebar_label: 'Data Server resources'
+title: 'Criteria matching'
+sidebar_label: 'Criteria matching'
 id: data-server-resources
-keywords: [web, data server, resources, ]
+keywords: [web, data server, resources, criteria matching]
 tags:
     - web
     - data server
     - resources
+    - criteria matching
 ---
 
-The [Data Server](../../../server/data-server/introduction/) is your source of streaming data. It provides a set of queries, each of which serves some or all fields from a specific table or view. These are your resources (along with the resources in the Request Server and the Event Handler). You need to know which queries are available to you, and more importantly, exactly what is available in each query.
+This page looks at how you can apply criteria matching when you connect to [Data Server](/server/data-server/introduction/) and [Request Server](/server/request-server/introduction/) resources.
 
-When you request streaming data for an element, such as a [Grid Pro](../../../web/web-components/grids/grid-pro/grid-pro-connected/#grid-pro-genesis-datasource), the platform sends a **DATA_LOGON** message that includes any attributes you have defined for the element (such as `max-rows` and `max-view`). These attributes enable you to limit the number of rows returned, for example. 
-
-The platform creates the **DATA_LOGON** message automatically; you can view the details in our section on the [Data Server](../../../server/data-server/advanced/#incoming-data_logon-messages).
- 
-You can also apply filtering at the front end to control the data returned by the Data Server query. These filters are also automatically included in the **DATA_LOGON** message. Different ways of filtering are discussed below.
-
-## Criteria matching
-
-You can use criteria matching as part of your Data Server request to filter the data returned. This can take the form of:
+When you make a request to a resource, you can use criteria matching to filter the data returned. This can take the form of:
 
 - Common expressions
 - Groovy expressions
@@ -27,6 +20,12 @@ You can use criteria matching as part of your Data Server request to filter the 
 You can mix and match common expressions and custom groovy expressions using the && (logical AND) and || (logical OR) boolean operators. This is explained in more detail below.
 
 All expressions must return a boolean value (`true` or `false`).
+
+:::info
+When you make a request to a Request Server resource, you specify the filtering in the request message.
+
+When you connect to a Data Server resource, the attributes you specify for filtering are automatically included in the **DATA_LOGON** message that is sent to the server when the connection is first established.
+:::
 
 ## Common expressions
 
@@ -240,3 +239,13 @@ The methods available for each of the field types can be found in their Javadoc 
 * BigDecimal: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/math/BigDecimal.html
 * Boolean: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html
 * DateTime: https://www.joda.org/joda-time/apidocs/org/joda/time/DateTime.html
+
+## Streaming data
+The [Data Server](/server/data-server/introduction/) is your source of streaming data. It provides a set of queries, each of which serves some or all fields from a specific table or view. These are your resources (along with the resources in the Request Server and the Event Handler). You need to know which queries are available to you, and more importantly, exactly what is available in each query.
+
+When you request streaming data for an element, such as a [Grid Pro](/web/web-components/grids/grid-pro/grid-pro-connected/#grid-pro-genesis-datasource), the platform sends a **DATA_LOGON** message that includes any attributes you have defined for the element (such as `max-rows` and `max-view`). These attributes enable you to limit the number of rows returned, for example. 
+
+The platform creates the **DATA_LOGON** message automatically; you can view the details in our section on the [Data Server](/server/data-server/advanced/#incoming-data_logon-messages).
+ 
+You can apply filtering at the front end to control the data returned by the Data Server query. These filters are also automatically included in the **DATA_LOGON** message. 
+
