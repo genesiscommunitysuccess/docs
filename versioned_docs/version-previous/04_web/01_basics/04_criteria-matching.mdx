@@ -1,32 +1,31 @@
 ---
-title: 'Data Server resources'
-sidebar_label: 'Data Server resources'
-id: data-server-resources
-keywords: [web, data server, resources, ]
+title: 'Criteria matching'
+sidebar_label: 'Criteria matching'
+id: criteria-matching
+keywords: [web, data server, resources, criteria matching]
 tags:
     - web
     - data server
     - resources
+    - criteria matching
 ---
 
-The [Data Server](../../../server/data-server/introduction/) is your source of streaming data. It provides a set of queries, each of which serves some or all fields from a specific table or view. These are your resources (along with the resources in the Request Server and the Event Handler). You need to know which queries are available to you, and more importantly, exactly what is available in each query.
+This page looks at how you can apply criteria matching when you connect to [Data Server](/server/data-server/introduction/) and [Request Server](/server/request-server/introduction/) resources.
 
-When you request streaming data for an element, such as a [Grid Pro](../../../web/web-components/grids/grid-pro/grid-pro-connected/#grid-pro-genesis-datasource), the platform sends a **DATA_LOGON** message that includes any attributes you have defined for the element (such as `max-rows` and `max-view`). These attributes enable you to limit the number of rows returned, for example. 
+When you make a request to a resource, you can use criteria matching to filter the data returned. This can take the form of:
 
-The platform creates the **DATA_LOGON** message automatically; you can view the details in our section on the [Data Server](../../../server/data-server/advanced/#incoming-data_logon-messages).
- 
-You can also apply filtering at the front end to control the data returned by the Data Server query. These filters are also automatically included in the **DATA_LOGON** message. Different ways of filtering are discussed below.
-
-## Criteria matching
-
-You can use criteria matching as part of your Data Server request to filter the data returned. This can take the form of:
-
-- common expressions
+- Common expressions
 - Groovy expressions
 
 You can mix and match common expressions and custom groovy expressions using the && (logical AND) and || (logical OR) boolean operators. This is explained in more detail below.
 
 All expressions must return a boolean value (`true` or `false`).
+
+:::info
+When you make a request to a Request Server resource, you specify the filtering in the request message.
+
+When you connect to a Data Server resource, the attributes you specify for filtering are automatically included in the **DATA_LOGON** message that is sent to the server when the connection is first established.
+:::
 
 ## Common expressions
 
@@ -48,7 +47,19 @@ Expr.containsIgnoreCase(EXCHANGE_NAME, 'oves')`
 
 - `containsWordsStartingWithIgnoreCase(String, String)`
 
-  This returns `true` when the field starts with the string. Casing is ignored.
+    This returns `true` when the field contains a word with the string. Casing is ignored. The default delimiter is a whitespace character, but a third parameter can be passed to specify a different delimiter.
+
+    For example, if the DESCRIPTION field contains the value "This is a description", the following `containsWordStartingWithIgnoreCase` expression will return true:
+
+```
+Expr.containsWordsStartingWithIgnoreCase(DESCRIPTION, 'desc')
+```
+
+    And in this next example, if the ORDER_TYPE field contains the value "GTC,OCO", the following expression will return true:
+
+```
+Expr.containsWordsStartingWithIgnoreCase(ORDER_TYPE, 'OCO', ',')`
+```
 
 ### Date operations
 
@@ -210,3 +221,31 @@ The following complex example defines:
 ```
 
 In Java's operator precedence, logical AND is evaluated before logical OR. For this reason, we must add `QUANTITY > 250 || QUANTITY < 350` within brackets.
+
+### Object methods
+You can also use the Java methods that correspond to each field type to build criteria.
+For example, if you are using a DESCRIPTION field with type STRING, you can write the following expression to check if the content starts with the string 'This':
+
+```
+DESCRIPTION.startsWith('This')
+```
+
+The methods available for each of the field types can be found in their Javadoc documentation. For example:
+* String: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html
+* Long: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html
+* Integer: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html
+* Short: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Short.html
+* Double: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html
+* BigDecimal: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/math/BigDecimal.html
+* Boolean: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html
+* DateTime: https://www.joda.org/joda-time/apidocs/org/joda/time/DateTime.html
+
+## Streaming data
+The [Data Server](/server/data-server/introduction/) is your source of streaming data. It provides a set of queries, each of which serves some or all fields from a specific table or view. These are your resources (along with the resources in the Request Server and the Event Handler). You need to know which queries are available to you, and more importantly, exactly what is available in each query.
+
+When you request streaming data for an element, such as a [Grid Pro](/web/web-components/grids/grid-pro/grid-pro-connected/#grid-pro-genesis-datasource), the platform sends a **DATA_LOGON** message that includes any attributes you have defined for the element (such as `max-rows` and `max-view`). These attributes enable you to limit the number of rows returned, for example. 
+
+The platform creates the **DATA_LOGON** message automatically; you can view the details in our section on the [Data Server](/server/data-server/advanced/#incoming-data_logon-messages).
+ 
+You can apply filtering at the front end to control the data returned by the Data Server query. These filters are also automatically included in the **DATA_LOGON** message. 
+
