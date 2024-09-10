@@ -1,5 +1,5 @@
 ---
-title: 'Introduction to Genesis HTTP Client and external API Integration'
+title: 'Genesis HTTP Client and external API Integration'
 sidebar_label: 'Introduction'
 id: genesis-http-client-intro
 keywords: [server, web, http, integration, client, httpclient, introduction]
@@ -13,13 +13,12 @@ tags:
   - introduction
 ---
 
-## Genesis HTTP Client
-The Genesis HTTP Client is designed to simplify integration with external REST services in the Genesis Platform. It provides an intuitive DSL for making HTTP requests, enabling you to integrate Request Servers and Event Handlers with external applications.
+The Genesis HTTP Client is designed to simplify integration with external REST services in the Genesis Platform. It provides an intuitive DSL for making HTTP requests, so that you can integrate Request Servers and Event Handlers with external applications.
 
 The key features and benefits are:
 
 - **Seamless Integration**. Designed to work seamlessly with Genesis Request Servers and Event Handlers.
-- **Flexible Usage**. Supports multiple approaches including direct client usage, annotation-driven approach, and OpenAPI code generation.
+- **Flexible Usage**. Supports multiple approaches, including direct client usage, annotation-driven approach, and OpenAPI code generation.
 - **Comprehensive HTTP Support**. Full support for GET, POST, PUT, DELETE.
 - **Customizable**. Easily configure headers, query parameters, path parameters, and request bodies.
 - **Error Handling**. Built-in support for retries and error callbacks.
@@ -34,7 +33,7 @@ Ensure your Genesis Platform is updated to at least version 8.1 to use the Genes
 
 ## Basic usage
 
-Here's a quick example of using the Genesis HTTP Client within a Request Server:
+Here's a quick example of a GET request using the Genesis HTTP Client within a Request Server:
 
 ```kotlin
 requestReply<Unit, HelloWorld>("HELLO_WORLD") {
