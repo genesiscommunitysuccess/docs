@@ -105,7 +105,7 @@ No functional changes.
 A new class has been created to address an issue following a bugfix introduced in 8.3.0, 8.2.5 and 8.1.9.
 :::
 
-If your application is injecting the Google Guice Injector within the constructor, and no other classes belonging to the `<package>` definition in the **-processes.xml** file are injected alongside it, the Injector might not be able to provide the right dependencies. This causes runtime exceptions on process startup.
+If your application is injecting the Google Guice `com.google.inject.Injector` within the constructor, and no other classes belonging to the `<package>` definition in the **-processes.xml** file are injected alongside it, the Injector might not be able to provide the right dependencies. This causes runtime exceptions on process startup.
 
 In order to fix this issue, inject the new `global.genesis.commons.guice.GenesisInjector` class instead of the Google Injector instance. This ensures the correct behaviour in every scenario.
 
@@ -374,7 +374,7 @@ auth("COUNTERPARTY"){
 A new class has been created to address an issue following a bugfix introduced in 8.3.0, 8.2.5 and 8.1.9.
 :::
 
-If your application is injecting the Google Guice Injector within the constructor, and no other classes belonging to the `<package>` definition in the **-processes.xml** file are injected alongside it, the Injector might not be able to provide the right dependencies. This causes runtime exceptions on process startup.
+If your application is injecting the Google Guice `com.google.inject.Injector` within the constructor, and no other classes belonging to the `<package>` definition in the **-processes.xml** file are injected alongside it, the Injector might not be able to provide the right dependencies. This causes runtime exceptions on process startup.
 
 In order to fix this issue, inject the new `global.genesis.commons.guice.GenesisInjector` class instead of the Google Injector instance. This ensures the correct behaviour in every scenario.
 
@@ -431,7 +431,7 @@ class MyModule @Inject constructor(
 A new class has been created to address an issue following a bugfix introduced in 8.3.0, 8.2.5 and 8.1.9.
 :::
 
-If your application is injecting the Google Guice Injector within the constructor, and no other classes belonging to the `<package>` definition in the **-processes.xml** file are injected alongside it, the Injector might not be able to provide the right dependencies. This causes runtime exceptions on process startup.
+If your application is injecting the Google Guice `com.google.inject.Injector` within the constructor, and no other classes belonging to the `<package>` definition in the **-processes.xml** file are injected alongside it, the Injector might not be able to provide the right dependencies. This causes runtime exceptions on process startup.
 
 In order to fix this issue, inject the new `global.genesis.commons.guice.GenesisInjector` class instead of the Google Injector instance. This ensures the correct behaviour in every scenario.
 
