@@ -28,7 +28,7 @@ dependencies {
 
 ## GenesisHttpClient
 
-The `GenesisHttpClient` is the main class you'll interact with. It provides methods for making HTTP requests.
+The `GenesisHttpClient` is the main class you interact with. It provides methods for making HTTP requests.
 
 ```kotlin
 val client = GenesisHttpClient()
@@ -49,10 +49,10 @@ Each method returns a `TypedHttpResponse<T>` object, where `T` is the expected r
 ## Configuring requests
 You can configure requests using a DSL within a lambda function. Common configuration options include:
 
-- `url`: The endpoint URL
+- `url`: the endpoint URL
 - `header`: HTTP headers
-- `query`: Query parameters
-- `body`: Request body (for POST, PUT)
+- `query`: query parameters
+- `body`: request body (for POST, PUT)
 
 Example:
 ```kotlin
@@ -71,9 +71,9 @@ Example:
 
 The `HttpResponse<T>` object contains:
 
-- statusCode: The HTTP status code
-- headers: Response headers
-- data: The response body, deserialised to type T
+- statusCode: the HTTP status code
+- headers: response headers
+- data: the response body, deserialised to type T
 
 Example:
 
@@ -91,4 +91,4 @@ Example:
 }
 ```
 
-In the next sections, we'll explore more advanced features and usage patterns to help you make the most of of the Genesis HTTP Client.
+In the next sections, we'll explore more advanced features and usage patterns to help you make the most of the Genesis HTTP Client.
