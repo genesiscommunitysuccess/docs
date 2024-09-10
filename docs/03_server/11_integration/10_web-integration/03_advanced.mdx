@@ -20,7 +20,7 @@ The Genesis HTTP Client offers many approaches to making HTTP requests, catering
 3. OpenAPI code generation
 
 ## Direct client usage
-This approach provides the most flexibility and control over your HTTP requests by directly using the GenesisHttpClient within Genesis structures. 
+This approach provides the most flexibility and control over your HTTP requests, using the GenesisHttpClient directly within Genesis structures. 
 
 You can map the response of the call to a known structure, as you can see in the following example TradeResponse:
 
@@ -47,7 +47,7 @@ requestReply<Unit, TradeResponse>("TRADE_API_CALL") {
 ```
 
 ## Annotation-driven requests
-You can use annotated data classes to define request parameters, which gives you a more structured way to make requests. For example:
+You can use annotated data classes to define request parameters. This gives you a more structured way to make requests. For example:
 
 ```kotlin
 
@@ -122,9 +122,9 @@ tasks {
 }
 ```
 
-In this example, we are generating the code from the `trades.json`, which is an open-api specification file. The generated code will be placed in the `global.genesis.api.trades` package.
+In the example above, we are generating the code from the `trades.json`, which is an open-api specification file. The generated code will be placed in the `global.genesis.api.trades` package.
 
-After generating the code either running the `genesis-openapi-codegen` task or building the project, you can use the generated code to make API calls.
+YOu can generate the code either by running the `genesis-openapi-codegen` task or by building the project. You can then use the generated code to make API calls.
 
 ```kotlin
 val tradeApi = TradeServiceApi("http://localhost:8080")
@@ -138,7 +138,7 @@ accountsApi.registerRetryCallback(HttpStatusCode.Unauthorized) {
 }
 ```
 
-This can be used inside a Genesis Request Server or Event Handler, for example:
+The example below can be used inside a Genesis Request Server or Event Handler, for example:
 
 ```kotlin
 eventHandler<Account>("API_ACCOUNT_EH_INSERT") {
@@ -149,7 +149,7 @@ eventHandler<Account>("API_ACCOUNT_EH_INSERT") {
 }
 ```
 
-## Paginated requests and integration with requestReply
+## Paginated requests with requestReply
 
 Pagination support requires a bit of extra work, but it is possible to integrate with the `requestReply` function. The following example demonstrates how to make a paginated request using the Genesis HTTP Client:
 
@@ -174,7 +174,7 @@ genesisOpenApi {
 }
 ```
 
-Once you have done this, the Genesis Openapi Codegen plugin will generate the proper classes and functions for use in paginated requests.
+Once you have done this, the Genesis Openapi Codegen plugin generates the proper classes and functions for use in paginated requests.
 
 ```kotlin
 requestReply<FindAllPaginatedRequest, Account>("ACCOUNTS_API") {
@@ -192,8 +192,8 @@ requestReply<FindAllPaginatedRequest, Account>("ACCOUNTS_API") {
 In this example:
 
 - `FindAllPaginatedRequest` is a class generated from the open-api specification that contains the index and limit parameters. 
-- The `accountsApi.findAllPaginated(request).accounts` will make the request to the external API and return the list of accounts.
+- `accountsApi.findAllPaginated(request).accounts`  makes the request to the external API and returns the list of accounts.
 
-The `requestReply` will handle the pagination automatically.
+The `requestReply` handles the pagination automatically.
 
 In the next section, we shall look at some more examples.
