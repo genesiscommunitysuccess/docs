@@ -84,3 +84,30 @@ Below are the steps required to migrate from the Legacy structure to the Simplif
 - \{productName\}-site-specific (if present)
 7. Set the [project type](../settings-plugin/#project-type)
 8. Add any PBC project [dependencies](../settings-plugin/#dependencies).
+
+## Adding new modules to a simple project
+
+Although now it is possible to have all your application code in a single module, you may still want to extract parts of the code for easier maintenance.
+
+To add a new module: 
+1. Create a sub-directory in the /server directory.
+2. Add source directories as required (src/main/java, src/main/kotlin, /src/main/resources)
+3. Create a build.gradle.kts file:
+```kotlin
+dependencies {
+    
+}
+
+description = "myapp-newmodule"
+```
+4. Add any required dependencies for this module inside the dependencies block in the file above. If you want to depend on the code that is generated from your main app module, add the following: 
+```kotlin
+dependencies {
+    genesisGeneratedCode(withTestDependency = true)
+}
+```
+
+5. Add an include for the new module in `/server/settings.gradle.kts`:
+```kotlin
+include("myapp-newmodule")
+```
