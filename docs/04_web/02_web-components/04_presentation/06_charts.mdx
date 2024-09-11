@@ -39,7 +39,7 @@ When using charts, you are offered a component called `<chart-datasource>`. This
 
 | Name              | Description                               |
 |-------------------|-------------------------------------------|
-| resourceName      | Identifies the resource that provides the data; this can be a [Data Server](../../../../server/data-server/introduction/) `query` or a [Request Server](../../../../server/request-server/introduction/) `requestReply`|
+| resourceName      | Identifies the resource that provides the data; this can be a [Data Server](/server/data-server/introduction/) `query` or a [Request Server](/server/request-server/introduction/) `requestReply`|
 | server-fields     | Defines the fields of data to be charted; the first value is associated with the x-axis; the second value is associated with the y-axis; the third value is associated with the data series |
 
 ### Example
@@ -63,7 +63,62 @@ chartConfiguration = {
     ></chart-datasource>
 </alpha-g2plot-chart>
 ```
+- The example below declares two bar charts, which the user can switch between. 
 
+- For the stacked chart, the `isStack: true` setting is used. 
+- For the simple bar chart, the `isStack: false` setting is used.
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G2Plot isStack Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/@antv/g2plot@2.4.22/dist/g2plot.min.js"></script>
+</head>
+<body>
+    <h2>isStack: true</h2>
+    <div id="container-true" style="width: 600px; height: 400px;"></div>
+    
+    <h2>isStack: false</h2>
+    <div id="container-false" style="width: 600px; height: 400px;"></div>
+
+    <script>
+        const data = [
+        { type: 'A', value: 30, category: 'Category1' },
+        { type: 'A', value: 10, category: 'Category2' },
+        { type: 'B', value: 50, category: 'Category1' },
+        { type: 'B', value: 80, category: 'Category2' },
+        { type: 'C', value: 20, category: 'Category1' },
+        { type: 'C', value: 90, category: 'Category2' },
+        ];
+
+        // Stacked Column Chart
+        const stackedColumnPlot = new G2Plot.Bar('container-true', {
+            data,
+            xField: 'type',
+            yField: 'value',
+            seriesField: 'category',
+            isStack: true, // Enable stacking
+        });
+
+        stackedColumnPlot.render();
+
+        // Grouped Column Chart (no stacking)
+        const groupedColumnPlot = new G2Plot.Bar('container-false', {
+            data,
+            xField: 'type',
+            yField: 'value',
+            seriesField: 'category',
+            isStack: false, // Disable stacking (default behavior)
+        });
+
+        groupedColumnPlot.render();
+    </script>
+</body>
+</html>
+```
 ## Use cases
 
 - Display data
