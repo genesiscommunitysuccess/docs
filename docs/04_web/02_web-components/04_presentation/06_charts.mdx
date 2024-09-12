@@ -78,11 +78,12 @@ chartConfiguration = {
 ```javascript title="chart declaration in .ts page"
 <alpha-g2plot-chart type="bar" :config=${(x) => x.chartConfiguration}>
     <chart-datasource
-        resourceName = "ALL_STOCKS"
-        server-fields = "SYMBOL TRADING_VOLUME INDUSTRY"
+        resourceName = "EXAMPLE_RESOURCE"
+        server-fields = "YEAR TRADING_VOLUME CATEGORY"
     ></chart-datasource>
-</alpha-g2plot-chart>
+</alpha-g2plot-chart>```
 ```
+
 Here is the stacked bar chart that is rendered on the front end:
 
 ![](/img/stacked-bar-chart.png)
