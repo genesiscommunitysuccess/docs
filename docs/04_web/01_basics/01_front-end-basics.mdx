@@ -118,9 +118,30 @@ If you did not use Genesis Create or genx to create your project, you need to cr
 
 You can choose the basis of the filenames - it doesn't have to be *home*.
 
-You can add extra pages by creating subfolders and adding the three filetypes for each page that you want to create. Take care to create your subfolders in a logical way, because these become the route to each page. 
+You can add extra pages by creating subfolders and adding the three filetypes for each page that you want to create. Take care to create your subfolders in a logical way, because these become the route to each page - the url for access to the page. 
 
+For example:
 
+```
+client/src/routes/
+├─ home/
+   ├─ home.ts
+   ├─ home.template.ts
+   ├─ home.styles.ts
+      ├─ portfolio-one/
+      |  ├─ portfolio-one.ts
+      |  ├─ portfolio-one.template.ts
+      |  ├─ portfolio-one.styles.ts
+      ├─ portfolio-two/
+      |  ├─ portfolio-two.ts
+      |  ├─ portfolio-two.template.ts
+      |  ├─ portfolio-two.styles.ts
+      ├─ analytics/
+         ├─ analytics.ts
+         ├─ analytics.template.ts
+         ├─ analytics.styles.ts
+
+```
 
 ### Adding components
 You can then add components to your pages so that your users can view data and interact:
@@ -129,11 +150,13 @@ You can then add components to your pages so that your users can view data and i
 - micro front-ends, which are pre-built groups of components; the [entity management](/web/micro-front-ends/foundation-entity-management/) micro front-end gives you a grid and a submit form, for example
 
 ### Connecting to the back end
-To stream data from the relevant tables and views in the database, you need to connect to specific queries in the [Data Server](/server/data-server/introduction/). So, for example, a grid displaying orders could connect to a query that streams ALL_ORDERS.
+**To stream data** from the relevant tables and views in the database, you need to connect to specific queries in the [Data Server](/server/data-server/introduction/). So, for example, a grid displaying orders could connect to a query that streams ALL_ORDERS.
 
-To retrieve snapshot data from a table or view in the database, you need to connect to the relevant `requestReply` in the [Reauest Server](/server/request-server/introduction/). For example, a combobox that presents a list of counterparties could connect to a `requestReply` called ALL_COUNTERPARTIES.
+**To retrieve snapshot data** from a table or view in the database, you need to connect to the relevant `requestReply` in the [Reauest Server](/server/request-server/introduction/). For example, a combobox that presents a list of counterparties could connect to a `requestReply` called ALL_COUNTERPARTIES.
 
-To interact with the database, you need to connect to events in the [Event Handler](/server/event-handler/introduction/). For example, a form for entering countparty details could have a **Submit** button that connects to an `eventHandler` called INSERT_COUNTERPARTY.
+**To interact with the database**, you need to connect to events in the [Event Handler](/server/event-handler/introduction/). For example, a form for entering countparty details could have a **Submit** button that connects to an `eventHandler` called INSERT_COUNTERPARTY.
 
-## Check the Quick Start
-The best way of seeing how you change your **.ts** files to create a front end is to follow our [Quick Start Guide](/getting-started/quick-start/new-project-using-genx/create-a-user-interface/). This has examples of the amendments and additional code you need to set up a simple page with a grid and a form.
+## Try it out
+Take a look at our How To... page on [creating a simple front end](/how-to/ht-front-end-simple/), where you will find examples of adding components to a page. This also gives you access to an example application, where you can examine the code and run it to see the results.
+
+Or, you can follow our [Quick Start Guide](/getting-started/quick-start/new-project-using-genx/create-a-user-interface/). This has examples of the amendments and additional code you need to set up a simple page with a grid and a form.
