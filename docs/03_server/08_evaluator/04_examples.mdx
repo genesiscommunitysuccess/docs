@@ -64,11 +64,11 @@ Add **MYAPP_EVALUATOR**  to the file **myapp-service-definitions.xml** inside yo
 
 From the Genesis plugin for Intellij, build the application.
 
-Double-check your [Resource daemon](../../../server/tooling/intellij-plugin/#resource-daemon) using the Genesis Intellij plugin. You should be able to see the **MYAPP_EVALUATOR** process  on **Standby**.
+Double-check your [Resource daemon](/server/tooling/intellij-plugin/#resource-daemon) using the Genesis Intellij plugin. You should be able to see the **MYAPP_EVALUATOR** process  on **Standby**.
 
 This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the Primary node.
 
-Run [SetPrimary](../../../operations/clustering/genesis/#set-the-primary-node) script as explained [here](../../../server/tooling/intellij-plugin/#running-a-genesis-script) and you should be able to see all processes running.
+Run the [SetPrimary](/operations/clustering/genesis/#set-the-primary-node) script.
 
 ### 2. Create a new class
 When the Evaluator is running, create a PositionReport kotlin class to trigger the new event. This class should be created inside your project folder **server/myapp/src/main/kotlin/genesis/global/message/event/**. Use the code below:
@@ -122,7 +122,7 @@ eventHandler {
 ```
 
 ### 4. Load the cron rule into the database
-Load the cron rule csv below into the database, [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) Table.
+Load the cron rule csv below into the database, [CRON_RULE](/server/evaluator/basics/#defining-a-static-rule) table.
 
 Create a new file in the same folder as **USER.csv** and call it **CRON_RULE.csv**. Add the content below to this file.
 

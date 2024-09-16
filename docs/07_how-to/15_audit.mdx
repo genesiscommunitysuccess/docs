@@ -1,0 +1,97 @@
+---
+title: 'How to set up audited tables'
+sidebar_label: 'Set up audited tables'
+id: ht-audit
+keywords: [audit, audited]
+tags:
+    - audit
+    - audited
+
+---
+
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+You can make any table in your database an audited table; simply use the `audit` parameter when you create the table. If you use Genesis Create, there is a simple check box for this when you create your entity (table).
+
+## Adding the audit parameter
+The example below defines a table called TRADE in your application's **-tables-dictionary.kts** file. It also automatically generates a table called TRADE_AUDIT. Every time that the TRADE table is changed, a record will be added to the TRADE audit table.
+
+In the `audit` parameter, the audit table’s id is set to 11_500 (any unique number can be chosen).  Note that the table id, and the audit table id must be unique in all cases.
+Every record added to the table will automatically be given a unique sequential id prefixed with TA.
+
+```kotlin
+  table(name = "TRADE", id = 11_000, audit = details(id = 11_500, sequence = "TA")) {
+    field("TRADE_ID", STRING).sequence("TD")
+    field("COUNTRY_NAME", STRING).notNull()
+    field("CUSTOMER_ID", STRING).notNull()
+    field("CUSTOMER_NAME", STRING).notNull()
+    field("NOTIONAL", DOUBLE).notNull()
+    field("RATE", DOUBLE).notNull()
+    field("SETTLEMENT_DATE", DATE).notNull()
+    field("SIDE", ENUM("SELL","BUY")).default("BUY").notNull()
+    field("SOURCE_CURRENCY", STRING).notNull()
+    field("TARGET_CURRENCY", STRING).notNull()
+    field("VERSION", INT).notNull()
+
+    primaryKey("TRADE_ID")
+  }
+```
+
+## Auto-auditing
+
+### GPAL Event Handlers
+If you have used Genesis creat to generate your application, or if you use GPAL to create your Event Handler file, audit records are created automatically for auditable tables. 
+
+For example, the event defined by the `eventHandler` in the example below inserts records into the TRADE table. For each record inserted into  when Every time that `entityDb.insert(details)` is executed for the TRADE table, an audit record will be created and added to the TRADE_AUDIT table.
+
+In this example, the `eventHandler` is transactional (`transactional = true`), so you can be certain that there will always be a corresponding audit record for each inserted record.
+
+```kotlin
+eventHandler<Trade>("TRADE_INSERT", transactional = true) {
+    onCommit { event ->
+      val details = event.details
+      val insertedRow = entityDb.insert(details)
+      ack(listOf(mapOf(
+        "TRADE_ID" to insertedRow.record.tradeId,
+      )))
+    }
+  }
+```
+
+### Java Event Handlers
+If you are using Java Event Handlers, then the records of an auditable table are not audited automatically. 
+
+If you want an audited version of entityDb, you must create it manually using the database Java API.
+
+The example below shows the creation of an audited database object. This object can then be used in the normal way. Audit records will be created automatically for each database operation.
+
+```Java
+var auditEntityDb = entityDb.audited(
+        tradeEvent.getUserName(),
+        tradeEvent.getMessageType(),
+        "New Trade inserted by " + tradeEvent.getUserName()
+);
+```
+
+## Testing
+
+:::info
+Go to our [**Testing**](/how-to/ht-prepare-test/) page for details of our testing tools and the dependencies that you need to declare.
+:::
+
+To test that you audit tables are working as expected:
+
+- *Details to follow shortly. Thank you for your patience.*
+
+
+## Technical details
+
+Find more details in our in our reference documentation:
+
+- [audited tables](/database/fields-tables-views/tables/tables-advanced/#audit-tables) 
+- [Event Handlers](/server/event-handler/introduction/)
+- [Java Event Handlers](/server/event-handler/java-event-handlers/) 
