@@ -39,7 +39,7 @@ The type of object that you would like this source to return must be given as pa
 When configuring the db batch poller to use as part of your pipeline you must provide the following as part of the configuration:
 
 - source (required): this is what the PersistenceManager will use to find the last persisted record and should be unique across all pipelines
-- index (required): this is the table index used to order the records and get the value for the last persisted record for recovery - if single field index is provided, ensure this value is of type Long. Else, see below.
+- index (required): this is the table index used to order the records and get the value for the last persisted record for recovery - if single field index is provided, ensure this value is either the generated `TIMESTAMP` field in the table or of type Long. Else, see below.
 - buildIndex (required for multi-field index only): if you would like to use an index that contains multiple fields, you need to provide a lambda that converts from a Long value (the last persisted value) to your EntityIndex object using this value - you must ensure that the Long value which you would like to be used as the persistence index needs to be the final value inside your index object
 - dbLookupDelayMs (optional): this is the delay time that the poller will wait for in milliseconds after not receiving any new data from the database - it is configured to 200ms by default and is not required as part of the provided config
 
