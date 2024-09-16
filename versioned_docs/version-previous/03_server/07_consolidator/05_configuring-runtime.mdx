@@ -31,7 +31,7 @@ Here is an example configuration (the tags are explained in the page on the [pro
         <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false -XX:MaxHeapFreeRatio=70 -XX:MinHeapFreeRatio=30 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:OnOutOfMemoryError="handleOutOfMemoryError.sh %p"</options>
         <module>genesis-pal-consolidator</module>
         <package>global.genesis.pal.consolidator</package>
-        <primaryOnly>false</primaryOnly>
+        <primaryOnly>true</primaryOnly>
         <script>position-consolidator.kts</script>
         <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
         <language>pal</language>
