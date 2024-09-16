@@ -594,14 +594,7 @@ Request Server requests require:
 
 * `SOURCE_REF` header (a unique value must be supplied on every request with a unique value)
 * `SESSION_AUTH_TOKEN` header
-* the request parameters
-  - `request.[request_parameter]=[value]`
-* the request details, for example:
-  - `DETAILS.MAX_ROWS=100`
-  
-For example:
-
-`http://localhost:9064/req-counterparty-details?request.counterPartyId=*&DETAILS.MAX_ROWS=100`
+* A request body as per your event handler inside the `DETAILS` object.
 
 Here is an example request:
 

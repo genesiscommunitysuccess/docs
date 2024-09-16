@@ -75,7 +75,7 @@ And you can click on the **Add** button to view the form.
 
 ### Common attributes
 
-The most common attributes you can configure for `entity-management` are listed below. Note that it is not mandatory to specify an event, but if you don't specify a `createEvent` or an `updateEvent`, then you won't have a form created - which defeats the point of using this micro front-end. It would be simpler to use a [grid-pro](/web/web-components/grids/grid-pro/grid-pro-intro/) or [data grid](/web/web-components/grids/data-grid/).
+The most common attributes you can configure for `entity-management` are listed below. Note that it is not mandatory to specify an event, but if you don't specify a `createEvent` or an  `updateEvent`, then you won't have a form created - which defeats the point of using this micro front-end. It would be simpler to use a [grid-pro](/web/web-components/grids/grid-pro/grid-pro-intro/) or [data grid](/web/web-components/grids/data-grid/).
 
 | Attribute                  | Description                                          |   Mandatory |
 | -------------------------- | -----------------------------------------------------| ------------|
@@ -86,13 +86,9 @@ The most common attributes you can configure for `entity-management` are listed 
 | `deleteEvent`              | specifies an event on the back end for deleting a record in the table; once specified, this displays a **Delete** button to the right of every record in the grid. |  No  |
 | `datasourceConfig`         | configures the [interaction with the back-end resource](./docs/api/foundation-entity-management.datasourceconfiguration/#example). | No  |
 | `persist-column-state-key` | the user can change columns (the width, for example); if you want the column states to be persisted when the user navigates away from the page, specify a unique string value. By default, changes are **not** persisted, and the grid returns to its default state every time the user navigates away from it. |  No  |
-| `columns`                  | enables you to supply an array of `ColDef[]` properties to [customise](#customising-the-grid) the grid. | No  |
-| `createFormUiSchema`       | enables you to supply a schema to configure an insert form. | No  |
-| `updateFormUiSchema`       | enables you to supply a schema to configure an update form. | No  |
-| `crud-menu-position`       | specifies the position of the CRUD action buttons (Add, Edit, Delete) within the grid. Possible values are: **column**, **top**, **bottom**, **none** (no menu displayed) | No  |
-| `crud-menu-style`          | defines the visual style of the CRUD action buttons. Possible values are **default** (displays the buttons side by side), **actions-vertical** (displays a small button with three vertical dots; when the user clicks on this small button, the available CRUD options are displayed vertically), **actions-horizontal** (displays a small button with three vertical dots; when the user clicks on this small button, the available CRUD buttons are displayed horizontally) | No  |
-| `crud-action-menu-name`    | defines the label used for the CRUD action menu. | No  |
-
+| `columns`         | enables you to supply an array of `ColDef[]` properties to [customise](#customising-the-grid) the grid. | No  |
+| `createFormUiSchema`         | enables you to supply a schema to configure an insert form. | No  |
+| `updateFormUiSchema`         | enables you to supply a schema to configure an update form. | No  |
 
 :::warning
 The `persist-column-state-key` string defines the key where the serialised state of the columns is stored, as an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). 
@@ -128,29 +124,8 @@ As a result of these column definitions, the following grid is displayed:
 
 ![](/img/entity-man-coldef-02.png)
 
-#### Customising the buttons on the grid
-By default, the grid displays **Add**, **Edit** and **Delete** buttons to match the settings you have made for `createEvent` (insert), `updateEvent` (edit) and `deleteEvent`. These are placed above the grid to the right. **Edit** and **Delete** buttons are greyed out until the user selects a row in the grid.
-
-You can set the location of the buttons using the setting `crud-menu-position`. 
-
-- To position the **Edit** and **Delete** buttons in a column for every row in the grid, set `crud-menu-position = column`.
-![](/img/column-buttons.png)
-- If you don't want to display the buttons at all, set `crud-menu-position = none`.
-
-You can set the style of the buttons using the `crud-menu-style` setting. This hides the buttons and displays a small button with three vertical dots. When the user clicks on the three dots, the available buttons are then displayed for the user to select.
-
-- With `crud-menu-style = actions-horizontal`, when the user clicks on the dots, the buttons are displayed horizontally (side-by-side).
-- With `crud-menu-style = actions-vertical`, when the user clicks on the dots, the buttons are displayed vertically.
-![](/img/style-vertical.png)
-
 #### Customising the form
-If you want to control the content of a form - for example, you might want to use different forms for inserting a new record and for modifying an existing record - use either the `createFormUiSchema` attribute or the `updateFormUiSchema` attribute. These enable you to provide a schema that configures the form. 
-
-:::tip
-There is a lot of useful information about defining and customising forms in our section on [Forms](/web/forms/foundation-forms/), along with working examples. 
-
-You can also find detailed information about using these attributes in the [API documentation](/web/micro-front-ends/foundation-entity-management/docs/api/foundation-entity-management.entitymanagement/).
-:::
+If you want to control the content of a form - for example, you might want to use different forms for inserting a new record and for modifying an existing record - use either the `createFormUiSchema` attribute or the `updateFormUiSchema` attribute. These enable you to provide a schema that configures the form. There is more information about using these attributes in the [API documentation](/web/micro-front-ends/foundation-entity-management/docs/api/foundation-entity-management.entitymanagement/)
 
 #### Customising colours, fonts and more
 Your **designtokens.js** contains the details of the default fonts, colours, borders and padding, all of which control the appearance of your user interface.
@@ -171,7 +146,7 @@ It is designed to enable you to configure user access to the system with the min
 
 ## Profile Management
 
-The [Profile Management](/web/micro-front-ends/profile-management/profile-management/) micro front-end provides a way of managing the profiles on the front end. This has been built using the Entity Management micro front-end. 
+The [Profile Management](/web/micro-front-ends/profile-management/profile-management/) micro front-end provides a way of managing manage the profiles on the front end. This has been built using the Entity Management micro front-end. 
 
 It is designed to enable you to configure the user profiles with the minimum of effort. These user profiles control access to specific functions and information in your application.
 

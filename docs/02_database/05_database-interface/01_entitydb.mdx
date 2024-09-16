@@ -707,7 +707,6 @@ Subscribe supports the following parameters:
 | fields | `Set<String>` | ❌ | Only listen to changes on selected fields | listen to all fields |
 | delay | `Int` | ❌ | Group and publish updates every x ms | no grouping |
 | subscribeLocally | `Boolean` | ❌ | When in a cluster, only listen to local updates | false |
-| listenerName | `String` | ❌ | When in a cluster, only listen to local updates | generated name |
 
 
 #### Overloads
@@ -750,7 +749,7 @@ final var subscription = db.subscribe(Trade.class)
 The `bulkSubscribe` operation combines a [`getBulk`](#getbulk) and a [`subscribe`](#subscribe) call into a single operation.
 This is useful when a class needs to read a full table and then receive updates of changes to the underlying table or view.
 
-This operation supports [backwards joins for views](../../../database/fields-tables-views/views/views-examples/). This means that it can receive updates on both the
+This operation supports [backwards joins for views]](../../../database/fields-tables-views/views/views-examples/). This means that it can receive updates on both the
 root table and the joined tables. The view needs to support this in the definition, and it must be enabled on the `bulkSubscribe` call.
 
 #### Example
@@ -784,7 +783,6 @@ var bulk = db.bulkSubscribe(Trade.class);
 | delay | `Int` | ❌ | Batch updates x ms | no batching |
 | subscribeLocally | `Boolean` | ❌ | When in a cluster, only listen to local updates | false |
 | backwardJoins  | `Boolean` | ❌ | subscribe to changes on sub tables (backwards joins) | false |
-| listenerName | `String` | ❌ | When in a cluster, only listen to local updates | generated name |
 
 #### Java support
 
@@ -954,7 +952,6 @@ In the Java API, the function returns a builder, where optional parameters can b
 | fields           | `Set<String>`    | ❌                  | Only listen to changes on selected fields (filters `ModifyResult` on fields) | listen to all fields |
 | subscribeLocally | `Boolean`        | ❌                  | When in a cluster, only listen to local updates                              | false                |
 | backwardJoins    | `Boolean`        | ❌                  | subscribe to changes on sub-tables (backwards joins)                         | false                |
-| listenerName | `String` | ❌ | When in a cluster, only listen to local updates | generated name |
 
 #### Example
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>

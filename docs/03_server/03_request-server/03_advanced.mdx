@@ -117,9 +117,7 @@ Similar to a Data Server, you can provide dynamic permissioning on a Request Ser
 
         permissioning {
             auth("EXCHANGE") {
-                authKey {
-                    key(data.exchangeId)
-                }
+                INSTRUMENT_DETAILS.EXCHANGE_ID // This cannot be done on Custom request-server see ex below
             }
         }
 
@@ -133,15 +131,14 @@ Similar to a Data Server, you can provide dynamic permissioning on a Request Ser
     }
 ```
 
-When you use [Custom Request Servers](#custom-request-servers), permissioning works the same way, the only difference being the fact you can use any class/DAO as input and output classes.
+When you use [Custom Request Servers](#custom-request-servers), permissioning is different; it is similar to permissioning for Event Handlers.
+You can use any class/DAO as input and output classes; however, you cannot use field syntax in an auth block: for example, Use instrumentId instead of INSTRUMENT_DETAILS.INSTRUMENT_ID
 
 ```kotlin
 requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
     permissioning {
         auth("INSTRUMENT") {
-            authKey {
-                key(data.instrumentId)
-            }
+            field { instrumentId }
         }
     }
 
@@ -206,17 +203,9 @@ requestReply<[InputClass], [OutputClass]> ("{optional name}") {
     // multiple auth blocks can be combined with the and operator and the or operator
     auth("{map name}") {
         // use a single field of output_class
-        authKey {
-            key(data.fieldName)
-        }
+        field { fieldName }
         // or use multiple fields of output_class
-        authKey {
-            key(data.fieldNameA, data.fieldNameB)
-        }
-        // or use multiple fields of output_class as well as the username
-        authKeyWithUserName {
-            key(data.fieldNameA, data.fieldNameB, userName)
-        }
+        fields { listof(fieldNameA, fieldNameB) }
         
         // hide fields are supported
         hideFields { userName ->
@@ -307,9 +296,7 @@ Next is a more complex example.
 requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
     permissioning {
         auth("INSTRUMENT") {
-            authKey {
-                key(data.instrumentId)
-            }
+            field { instrumentId }
         }
     }
     
@@ -331,16 +318,12 @@ In the example below, we have defined a more complicated auth logic:
 requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId>("FANCY_INSTRUMENT") {
     permissioning {
         auth("INSTRUMENT") {
-            authKey {
-                key(data.instrumentId)
-            }
+            field { instrumentId }
             where {
                 alternateType == "FOO"
             }
         } or auth("ALTERNATE_CODE") {
-            authKey {
-                key(data.alternateCode)
-            }
+            field { alternateCode }
             where {
                 alternateType == "BAR"
             }

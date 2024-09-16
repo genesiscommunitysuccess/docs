@@ -30,7 +30,8 @@ When you declare an `<alpha-g2plot-chart>`, you can provide the following attrib
 |-----------------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | type            | `string`  | Sets the type of the chart: area, donut, dual-axes, pie, rose, scatter, stock. **Default: Bar**.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | config          | - | Sets the configuration for the chart; click on a link to view the g2plot api definition with the settings available for each type of chart: [area](https://g2plot.antv.antgroup.com/en/api/plots/area), [bar](https://g2plot.antv.antgroup.com/en/api/plots/bar), [column](https://g2plot.antv.antgroup.com/en/api/plots/column), [donut (which is a type of pie)](https://g2plot.antv.antgroup.com/en/examples/pie/donut/#basic), [dual-axes](https://g2plot.antv.antgroup.com/en/api/plots/dual-axes), [line](https://g2plot.antv.antgroup.com/en/api/plots/line), [mix](https://g2plot.antv.antgroup.com/en/api/advanced-plots/mix), [pie](https://g2plot.antv.antgroup.com/en/api/plots/pie), [rose](https://g2plot.antv.antgroup.com/en/api/plots/rose), [scatter](https://g2plot.antv.antgroup.com/en/api/plots/scatter), [stock](https://g2plot.antv.antgroup.com/en/api/plots/stock). |
-| data            | - | Where you are not using the `<chart-datasource>` component (see below), use this attribute to provide the array of data to be displayed in the chart.                                                                                                                                                     |
+| data            | - | Where you are not using the `<chart-datasource>` component (see below), use this attribute to provide the array of data to be displayed in the chart.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+
 
 ## Chart datasource
 
@@ -38,10 +39,10 @@ When using charts, you are offered a component called `<chart-datasource>`. This
 
 | Name              | Description                               |
 |-------------------|-------------------------------------------|
-| resourceName      | Identifies the resource that provides the data; this can be a [Data Server](/server/data-server/introduction/) `query` or a [Request Server](/server/request-server/introduction/) `requestReply`|
+| resourceName      | Identifies the resource that provides the data; this can be a [Data Server](../../../../server/data-server/introduction/) `query` or a [Request Server](../../../../server/request-server/introduction/) `requestReply`|
 | server-fields     | Defines the fields of data to be charted; the first value is associated with the x-axis; the second value is associated with the y-axis; the third value is associated with the data series |
 
-### Examples
+### Example
 
 Below we have a simple example of a configuration for a chart. 
 
@@ -62,34 +63,6 @@ chartConfiguration = {
     ></chart-datasource>
 </alpha-g2plot-chart>
 ```
-- The example below configures a stacked bar chart using the `isStack: true` setting in the **.template.ts** file for the page. 
-
-```javascript title="chart configuration in .template.ts page"
-chartConfiguration = {
-    xField: 'groupBy',
-    yField: 'value',
-    seriesField: 'series',
-    isStack: true,
-};
-```
-- You can then declare the bar chart in the **.ts** file for the page. This example displays data for three fields in the EXAMPLE_RESOURCE in the database - which could be a table or a view.
-
-```javascript title="chart declaration in .ts page"
-<alpha-g2plot-chart type="bar" :config=${(x) => x.chartConfiguration}>
-    <chart-datasource
-        resourceName = "EXAMPLE_RESOURCE"
-        server-fields = "YEAR TRADING_VOLUME CATEGORY"
-    ></chart-datasource>
-</alpha-g2plot-chart>```
-```
-
-Here is the stacked bar chart that is rendered on the front end:
-
-![](/img/stacked-bar-chart.png)
-
-In this stacked bar chart, three years are displayed as bars, and each year has trading volumes for three categories of data. 
-
-The chart groups (stacks) these categories for each year into a single bar, with each category displayed in a different colour. 
 
 ## Use cases
 

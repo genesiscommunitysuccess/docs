@@ -90,7 +90,7 @@ dataServer {
 In the example above, you are exposing a view through a Data Server query. It's also possible to inject a view into a Request Server or even your Event Handler code. This makes it easier to access complex data from multiple tables in your Kotlin or Java code. Look at **package global.genesis.gen.view.repository**.
 :::
 
-Run [build and deploy](../../../getting-started/developer-training/training-content-day1/), and test the view with Postman or Console.
+Run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process), and test the view with Postman or Console.
 
 ### Exercise 3.1: using views
 :::info ESTIMATED TIME
@@ -217,7 +217,7 @@ dependencies {
 
 #### Adding Testing: AlphaTradeViewTest
 
-Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. We are extending the class [AbstractDatabaseTest](/operations/testing/integration-testing-previous/#abstractdatabasetest) to allow a proper integration testing, as well as using the [TradeView](/getting-started/developer-training/training-content-day3/#usage) we created to assert results. 
+Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. We are extending the class [AbstractDatabaseTest](/operations/testing/integration-testing/#abstractdatabasetest) to allow a proper integration testing, as well as using the [TradeView](/getting-started/developer-training/training-content-day3/#usage) we created to assert results. 
 
 In summary, the new test will:
 * load the necessary data inputs from a CSV file 
@@ -336,10 +336,10 @@ You can run the test from IntelliJ by right-clicking on the test class and selec
 
 #### Adding Testing: AlphaEventHandlerTest
 
-Now we will add a new automated test for checking the Trade insert method that we [created](../../../getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](/operations/testing/integration-testing-previous/#abstractgenesistestsupport) to allow proper integration testing. In summary, the new test will:
+Now we will add a new automated test for checking the Trade insert method that we [created](../../../getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](../../../operations/testing/integration-testing/#abstractgenesistestsupport) to allow proper integration testing. In summary, the new test will:
 
 * load the necessary data inputs from a CSV file 
-* use the network API [Genesis MessageClient](/server/api-reference/network-api/#genesismessageclient​) to call the Event Handler methods.
+* use the network API [Genesis MessageClient](../../../server/api-reference/network-api/#genesismessageclient​) to call the Event Handler methods.
 * retrieve data using [Genesis Database API](/database/)
 
 So, first, let's do the following:
@@ -503,7 +503,7 @@ view("TRADE_VIEW", TRADE) {
 Let's add a new derived field in the TRADE_VIEW now. The derived field should display ASSET_CLASS from the INSTRUMENT join. If this field is null or empty, the view should display "UNKNOWN".
 
 :::tip
-After changing the files, remember to run [build and deploy](../../../getting-started/developer-training/training-content-day1/).
+After changing the files, remember to run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 :::
 
 
@@ -574,7 +574,7 @@ dataServer {
 }
 ```
 
-When you finish, remember to run [generatedao](../../../getting-started/developer-training/training-content-day1/#generatedao) and [build and deploy](../../../getting-started/developer-training/training-content-day1/).
+When you finish, remember to run [generatedao](../../../getting-started/developer-training/training-content-day1/#generatedao) and [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 
 So, let's define a **alpha-consolidator.kts** file inside **server/alpha-app/src/main/genesis/scripts/**. This is where you define the consolidator logic.
 
@@ -679,7 +679,7 @@ Add a new entry to **alpha-service-definitions.xml** with the consolidator detai
 </configuration>
 ```
 
-Run [build and deploy](../../../getting-started/developer-training/training-content-day1/) to verify that the new process works as expected.
+Run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) to verify that the new process works as expected.
 
 ## UI configuring 
 

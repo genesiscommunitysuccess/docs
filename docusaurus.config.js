@@ -161,7 +161,6 @@ const config = {
         { type: "doc", docId: "web/front-end", label: "Web" },
         { type: "doc", docId: "components/components", label: "Components", when: { routeMatch: "docs" } },
         { type: "doc", docId: "operations/operations", label: "Operations" },
-        { type: "doc", docId: "how-to/how-to-landing", label: "How to..." },
         {
           type: "html",
           position: "right",

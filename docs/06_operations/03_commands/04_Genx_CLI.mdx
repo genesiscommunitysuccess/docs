@@ -24,7 +24,6 @@ The `genx` command has several options available to create, configure or modify 
 |Command | Argument      | Description|
 |--------|---------------|-------------|
 | [init](#init)   |`<app_Name>`          | create a new project |
-| [add](#add)     |`<seed_Name>`         | add a seed to an existing project project |
 | [analyze](#analyze) |[folder]       | analyse the production bundle |
 | [clean](#clean)   |[...paths]     | delete specified paths (defaults to dist folder) |
 | [build](#build)  |[folder]       | build a production bundle |
@@ -205,28 +204,6 @@ Here is an example of creating a new project named **myApp** changing the log le
 
 ```terminal
 npx -y @genesislcap/genx@latest init myApp --log-level verbose
-```
-
-## Add
-
-The `add` command copies the blank seed and places it in an existing project. The basic structure of this command is:
-
-```terminal
-npx -y @genesislcap/genx@latest init <seed_Name>
-```
-
-To use this command:
-
-- You must have an existing project open.
-- You must specify the seed that you want to copy.
-
-This command has the same properties as the `init` command, with one important difference; the `-s` argument specifies the seed that you want to add. It is mandatory to do this.
-
-The following example adds the Reporting seed to the existing open project:
-
-```
-npx @genesislcap/genx add -s genesislcap/pbc-reporting-seed
-
 ```
 
 ## Analyze

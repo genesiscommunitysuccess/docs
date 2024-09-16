@@ -219,9 +219,7 @@ eventHandler {
 
         permissioning {
             auth("NAMES") {
-                authKey {
-                    key(data.name)
-                }
+                field { name }
             }
         }
 
@@ -497,9 +495,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
     permissioning {
         permissionCodes = listOf("TRADER")
         auth(mapName = "ENTITY_VISIBILITY") {
-            authKey {
-                key(data.counterpartyId)
-            }
+            field { counterpartyId }
         }
     }
     onValidate { event ->

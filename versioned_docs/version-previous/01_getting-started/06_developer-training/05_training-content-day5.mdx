@@ -86,7 +86,7 @@ Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside y
 </configuration>
 ```
 
-Run [build and deploy](../../../getting-started/developer-training/training-content-day1/) to verify that the new process works as expected.
+Run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) to verify that the new process works as expected.
 
 Double-check your [Resource daemon](../../../server/tooling/intellij-plugin/#resource-daemon) using the Genesis IntelliJ plugin. You should be able to see the ALPHA_EVALUATOR process is present, but on `Standby`.
 
@@ -146,7 +146,7 @@ eventHandler {
 ```
 
 #### 4.Load the cron rule on to the database
-Load the cron rule csv below into the database, [CRON_RULE](/server/evaluator/basics/#defining-a-static-rule) Table.
+Load the cron rule csv below into the database, [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) Table.
 
 Create a new file in the same folder as **USER.csv** and name it as **CRON_RULE.csv**. Copy the content below into the file that you just created.
 ```csv
@@ -160,7 +160,7 @@ Then import the local csv using the Genesis plugin as we saw [here](../../../get
 10 mins
 :::
 
-Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](/server/evaluator/basics/#defining-a-static-rule) table, and insert a new rule changing the CRON_EXPRESSION value.
+Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) table, and insert a new rule changing the CRON_EXPRESSION value.
 
 :::tip
 To delete rows you can use [DbMon](../../../operations/commands/server-commands/#dbmon) and the command `delete`. After that you can use [SendIt](../../../operations/commands/server-commands/#sendit) to insert a new row again.
@@ -273,7 +273,7 @@ systemDefinition {
 }
 ```
 
-Run [build and deploy](../../../getting-started/developer-training/training-content-day1/) to apply these changes.
+Run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) to apply these changes.
 
 ### How to configure dynamic permissions
 
@@ -401,7 +401,7 @@ That is it! You can now insert some trades and see the permissions happening in 
 :::tip
 Remember to change the **alpha-eventhandler.kts** file, as well as inserting the record via `SendIt` command in the configuration table *RIGHT_SUMMARY* too.
 
-After the configurations, you should run [build and deploy](../../../getting-started/developer-training/training-content-day1/) again to deploy the new version.
+After the configurations, you should run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) again to deploy the new version.
 :::
 
 ### The application is complete!

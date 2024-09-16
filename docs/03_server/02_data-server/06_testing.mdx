@@ -216,8 +216,8 @@ dataServer {
     query("ALL_TRADES_AUTH", TRADE) {
         permissioning {
             auth("TRADE_VISIBILITY") {
-                authKey {
-                    key(data.tradeId)
+                fields {
+                    TRADE_ID
                 }
             }
         }
@@ -269,7 +269,7 @@ class DataServerTest {
 
         await untilCallTo { view } has { size == 2 }
 
-        authCache.revoke(
+        authCache.authorise(
             authMap = "TRADE_VISIBILITY",
             entityCode = "00000000001TRSP0",
             userName = "JohnDoe"

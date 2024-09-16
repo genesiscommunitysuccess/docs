@@ -170,10 +170,6 @@ The following are valid without additional changes or caveats:
 | Long                | Float          |
 | Long                | Double         |
 
-### String to Enum conversion
+### String to Enum Conversion
 
-A common issue with type conversions is a String to Enum conversion where not all the data matches the allowed list of Enum values. Most instances are simple to address; you might just need to capitalise the non-matching value, or add an underscore, or both. Where this is the case, you can run the `FixEnumValues` script, or add an installHook that calls it for you. See the section in [server commands](../../../operations/commands/server-commands/#fixenumvalues)).
-
-### Skipping confirmation checks
-
-The system definition key `RemapEnableAutoConfirm` can be set to `true`, this will cause Remap to skip its prompts (assuming `Y` for all prompts). This is convenient for local and CI/CD development workflows,  but **use with caution (or avoid) for production deployments**.
+A common issue with type conversions is a String to Enum conversion where not all the data matches the allowed list of Enum values. Often, this mismatch is just a case of needing to capitalise the non-matching value, or add an underscore, or both. Where this is the case, you can run the `FixEnumValues` script, or add an installHook that calls it for you. See the section in [server commands](../../../operations/commands/server-commands/#fixenumvalues)).

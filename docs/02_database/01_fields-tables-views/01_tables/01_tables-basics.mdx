@@ -32,11 +32,13 @@ Here is a very simple example table definition. It contains a single table with 
 ```kotlin
 tables {
     table(name = "POSITION", id = 11002) {
-        field("POSITION_ID", INT).autoIncrement().primaryKey()
-        field("INSTRUMENT_ID", STRING)
+        field("ID", INT).autoIncrement().primaryKey()
+        field("INSTRUMENT_ID")
         field("QUANTITY", INT)
         field("NOTIONAL", DOUBLE)
+
     }
+
 }
 ```
 
@@ -44,9 +46,9 @@ Let's look at this more closely.
 
 - The table has a unique name (POSITION) and ID (1102); the id must be a number; this ensures that you can rename a table without losing the data in it.
 
-- The first field, POSITION_ID, uses autoincrement to set the field automatically to the next number in the sequence when a new record is written to the database. So every record will have a unique number. We shall discuss this further in the [Advanced](/database/fields-tables-views/tables/tables-advanced/) page.
+- The first field, POSITION_ID, uses autoincrement to set the field automatically to the next number in the sequence when a new record is written to the database. So every record will have a unique number. We shall discuss this further in the [Advanced](../../../../database/fields-tables-views/tables/tables-advanced/) page.
 
-- The other three fields (INSTRUMENT_ID, QUANTITY and NOTIONAL) have their type specified. 
+- The other three fields - have their type specified. 
 
 - POSITION_ID is also the primary key for this table. So you will be able to search for records using a single POSITION_ID value or a range of values. It is common to use a single sequenced/autoIncrement field as a `primaryKey` in this way.
 
@@ -139,28 +141,6 @@ For example, if the entity is passed to a logger.
 
 ```kotlin
 field("MY_SECRET").sensitive()
-```
-
-### Sharing field definitions
-
-You can use the same field in more than one table. Why would you want to define the same field twice?  This is particularly useful with ENUM definitions.
-
-For example, here we have a field `transactionStatusEnum` holding the status of a transaction. We have used it in two different tables:
-
-```kotlin {2}
-tables {
-    val transactionStatusEnum = sharedField("TRAN_STATUS", ENUM("CAPTURED", "PRICED", "VERIFIED"))
-    
-    table("TRAN", 1) {
-        field(transactionStatusEnum)
-        field("MY_FIELD", STRING).primaryKey()
-    }
-    
-    table("CONS", 2) {
-        field("ID").primaryKey()
-        field("MY_ENUM_ALIAS", transactionStatusEnum)
-    }
-}
 ```
 
 ## Primary key and other indices
@@ -308,7 +288,7 @@ table(name = "ORDERS", id = 21003) {
 ### Default index name
 By default, names are auto-generated for all indices. In most cases, these names work well.
 
-The name matters because it is how you refer to the index in your code; for more information see [operations and indices](/database/data-structures/indices/)
+The name matters because it is how you refer to the index in your code; for more information see [operations and indices](../../../../database/data-structures/indices/)
 
 Names are auto-generated in the following format: `[TABLE_NAME]_BY_[FIELD_1](_[FIELD_N])`.
 

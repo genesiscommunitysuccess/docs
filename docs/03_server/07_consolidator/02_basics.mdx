@@ -325,8 +325,7 @@ Within the curly brackets of the function, you can access all the fields on a ro
 | countDistinct | counts distinct value values              | anything   | INTEGER       | always        |
 | countBig      | counts all records                        | -          | LONG          | never         |
 |               | counts records that have a value          | any value  | LONG          | never         |
-| avg           | average value                             | any number | DOUBLE        | always        |
-| avgBig        | average value                             | any number | BIG_DECIMAL   | always        |
+| avg           | average value                             | any number | same as input | always        |
 | min           | minimum value                             | any number | same as input | sometimes `*` |
 | max           | maximum value                             | any number | same as input | sometimes `*` |
 | stdev         | standard deviation for value              | any number | DOUBLE        | always        |

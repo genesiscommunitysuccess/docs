@@ -149,9 +149,7 @@ eventHandler {
         permissioning {
             permissionCodes = listOf("TRADER")
             auth(mapName = "ENTITY_VISIBILITY") {
-                authKey {
-                    key(data.counterpartyId)
-                }
+                field { counterpartyId }
             }
         }
         onValidate { event ->

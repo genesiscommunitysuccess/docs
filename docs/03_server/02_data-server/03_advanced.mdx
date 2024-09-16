@@ -34,14 +34,10 @@ query("ALL_BUYER_SELLER_TRADES", BUYER_SELLER_TRADE_VIEW){
     permissioning {
         permissionCodes = listOf("ViewTrades")
         auth("ENTITY_VISIBILITY"){
-            authKey {
-                key(data.buyerCounterpartyId)
-            }
+            BUYER_SELLER_TRADE_VIEW.BUYER_COUNTERPARTY_ID
         } or
         auth("ENTITY_VISIBILITY"){
-            authKey {
-                key(data.sellerCounterpartyId)
-            }
+            BUYER_SELLER_TRADE_VIEW.SELLER_COUNTERPARTY_ID
         }
     }
     enrich(USER_COUNTERPARTY_MAP) {
@@ -97,9 +93,8 @@ query("ALL_COUNTERPARTIES" , COUNTERPARTY_VIEW) {
 query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
     permissioning {
         enrichedAuth("COUNTERPARTY_FAVOURITE_VISIBILITY", USER_COUNTERPARTY_FAVOURITE) {
-            authKey {
-                key(data.counterpartyId, enriched?.isFavourite)
-            }
+            COUNTERPARTY_VIEW.COUNTERPARTY_ID
+            USER_COUNTERPARTY_FAVOURITE.IS_FAVOURITE
         }
     }
     enrich(USER_COUNTERPARTY_FAVOURITE) {
@@ -109,25 +104,6 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
     }
 }
 
-```
-## Auth map tweaks
-
-Dataservers can react in real-time to changes in the permissioning model derived from the defined `auth` blocks. In order to react to new permissioning updates, an internal cache is used so we can keep track of what rows have been processed by each individual user subscription.
-In most cases, a single `auth` entity id is associated to one or more rows in a dataserver query, but in some rare scenarios there might be a one-to-one relationship. In the latter case, there is a configuration option named `rowLevelPermissions` to optimise the internal data structure that holds the cache information.
-
-For example, in the sample definition below we have a dataserver query for our COUNTERPARTY table, and we know that both the auth map and the rows themselves are uniquely identified by COUNTERPARTY_ID, so the `rowLevelPermissions` flag can be applied.
-
-```kotlin
-query("ALL_COUNTERPARTIES", COUNTERPARTY) {
-    permissioning {
-        auth("COUNTERPARTY"){
-            rowLevelPermissions = true
-            authKey {
-                key(data.counterpartyId)
-            }
-        }
-    }
-}
 ```
 
 ## Index-based Data Server queries
@@ -436,6 +412,6 @@ Let's summarise all that.
 
 The incoming data **DATA_LOGON** message can also include filtering to control the rows returned. The incoming filtering is specified in the CRITERIA_MATCH option.
 
-The filters can be specified using common expressions, Groovy expressions, or even a mix of the two. See more detail in our page in the [Web section of our documentation](/web/basics/criteria-matching/).
+The filters can be specified using common expressions, Groovy expressions, or even a mix of the two. See more detail in our page in the [Web section of our documentation](/web/basics/data-server-resources/).
 
 
