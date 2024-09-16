@@ -66,6 +66,39 @@ pipelines {
 }
 ```
 
+### Abstract Programmatic Source
+
+This is an abstract implementation of a realtime acknowledgement source that additionally has a send method which can be used by any custom code to provide data to the pipeline.
+
+This source is dependent on the calling code being a part of the same process as the pipeline using this source - ensure this is done by updating your process definition. See [processes](../../../server/configuring-runtime/processes)
+
+Here is an example of using this source to provide Trade objects:
+```kotlin
+object ProgrammaticTradeSource : AbstractProgrammaticSource<Trade>()
+```
+
+Here is an eventhandler that sends to this `ProgrammaticTradeSource`:
+
+```kotlin
+eventHandler<Trade>("TRADE_INSERT", transactional = true) {
+    onCommit { event ->
+      val trade = event.details
+      ProgrammaticTradeSource.send(trade)
+      ack()
+    }
+  }
+```
+
+The resulting pipeline:
+```kotlin
+pipelines {
+    pipeline("TEST_BATCH_POLL_PIPELINE") {
+        source(ProgrammaticTradeSource)
+        .sink(testSink)
+    }
+}
+```
+
 ## Operators
 
 ### CSV Decoder
