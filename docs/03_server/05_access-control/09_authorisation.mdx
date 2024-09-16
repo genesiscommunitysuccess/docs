@@ -70,7 +70,7 @@ This is an easy way to bulk-load permissions data in a brand new environment, fo
 However, when you change any of the permissions tables in this way, the RIGHT_SUMMARY table **will not be maintained automatically**. To update the the RIGHT_SUMMARY so that the changes take effect, run `ConsolidateRights`.
 
 :::warning
-Did we make that clear? If you update any of the permission tables manually, the changes won't take effect until you run `ConsolidateRights`.
+If you update any of the permission tables manually, the changes won't take effect until you run `ConsolidateRights`.
 :::
 
 ### Sample explanation
@@ -116,6 +116,12 @@ Entries are stored in a memory-mapped file located in **$GENESIS_HOME/runtime/au
 If you need to clear out the entries by hand, simply delete everything in that directory and restart GENESIS_AUTH_PERMS.
 
 More than one permission map per table can be created.
+
+:::warning
+The back end infra-structure utilizes ChronicleMap to store and serve real time up-to-date dynamic authorizations, that means the application must know ahead how many entries are required to be stored on each Auth Map.
+These are defined using the correct combination of `averageEntityChars`, `averageUserNameChars` and `averageUsers` which are referenced in the next sections of this document.
+For more technical details, check [Configure Entries](https://github.com/OpenHFT/Chronicle-Map/blob/ea/docs/CM_Tutorial.adoc#configure-entries) from ChronicleMap docs.
+:::
 
 ## Generic permissions
 
@@ -713,9 +719,9 @@ You must define an entity block for every entity you want to authorise.  Each bl
 | idField              | Field(s) to use for keying internal collection (should be unique). Multiple fields must be separated with the \| symbol.                                                                                      | Yes                                    |
 | updateOnUserFields   | Specify a list of USER and USER_ATTRIBUTE fields; an update to a field on this list should trigger a re-check of the entity's permissions | No. If this is left undefined, permissions checks will only be re-triggered on updates to the USER.STATUS field, and no others; STATUS does not need to be included in this field list - it is assumed. |
 | updateOnEntityFields | Specify a list of fields belonging to the entity table; an update to a field on this list triggers a re-check of this entity's permissions | No. If this is left undefined, permissions checks will be triggered for any field change at the entity level. |
-| averageUserNameChars | Average number of characters in each username. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                          | No. Default = 20                       |
-| averageEntityChars   | Average number of characters of each entity. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                            | No. Default = 7                        |
-| averageUsers         | Average number of users on the system. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                                  | No. Default = 1,000                    |
+| averageUserNameChars | Average number of characters in each username. This setting defines the backing data structure for the authorisation map.                                                                          | No. Default = 20                       |
+| averageEntityChars   | Average number of characters of each entity. This setting defines the backing data structure for the authorisation map.                                                                            | No. Default = 7                        |
+| averageUsers         | Average number of users on the system. This setting defines the backing data structure for the authorisation map.                                                                                  | No. Default = 1,000                    |
 | updateOn             | Custom logic to trigger authorisation updates in specific scenarios. When tables defined in this section are modified, the authorisation map is refreshed following the configuration logic. See the example. | No                                     |
 
 ### Data Server snippet
@@ -762,9 +768,9 @@ You must define an entity block for every entity you want to authorise.  Each bl
 | maxEntries | The maximum number of entries that the authorisation map will contain. | Yes |
 | batchingPeriod | Period in seconds to batch records before processing | Yes  |
 | idField | Field(s) to use for keying internal collection (should be unique) | No. Default value is the primary key for the entity |
-| averageUserNameChars | Average number of characters in each username. This setting helps to fine-tune the backing data structure for the authorisation map. | No. Default = 7 |
-| averageEntityChars   | Average number of characters of each entity. This setting helps to fine-tune the backing data structure for the authorisation map. | No. Default = 20 |
-| averageUsers | Average number of users on the system. This setting helps to fine-tune the backing data structure for the authorisation map. | No. Default = 1,000 |
+| averageUserNameChars | Average number of characters in each username. This setting defines backing data structure for the authorisation map. | No. Default = 7 |
+| averageEntityChars   | Average number of characters of each entity. This setting defines the backing data structure for the authorisation map. | No. Default = 20 |
+| averageUsers | Average number of users on the system. This setting defines the backing data structure for the authorisation map. | No. Default = 1,000 |
 | expression | Function that calculates whether an entity can be accessed by a user. The result is either `true` or `false` | Yes |
 
 Each `expression` has the following properties and should return either `true` or `false` based on whether the `user` can access the `entity`:
