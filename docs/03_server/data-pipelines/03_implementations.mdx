@@ -183,6 +183,41 @@ pipeline("TEST_ON_COMPLETION_PIPELINE") {
 ```
 
 ### Send Event On Completion Handler
- TODO
+
+This is a type of on completion handler that triggers an event.
+It takes in the name of the event as well as the input object that the event will need to run.
+
+For example, for an event that does some logic based on the Trade object:
+
+```kotlin
+eventHandler<TradeDetails>("TRADE_LOGIC", transactional = true) {
+    onCommit { event ->
+      val trade = event.details
+      // further logic here using trade object
+      ack()
+    }
+  }
+```
+
+The following handler can be used:
+
+```kotlin
+
+val insertTradeOnCompletionHandler = sendEventOnCompletion<Bulk<Bond>, TradeDetails> {
+            eventName = "EVENT_TRADE_LOGIC"
+            buildEvent { context: PipelineContext<Bulk<Bond>> ->
+                TradeDetails(
+                    // construct TradeDetails object based on provided context object
+                )
+            }
+        }
+
+pipeline("TEST_TRADE_PIPELINE") {
+    source(dbBulkRealtimeSource)
+        .map(mapper)
+        .sink(logSink)
+        .onCompletion(insertTradeOnCompletionHandler)
+}
+```
 
 See [Document Management Pipelines](/components/doc-management/doc-management-server/doc-management-pipelines/) for more implementations.
