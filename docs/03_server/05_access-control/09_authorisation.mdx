@@ -115,12 +115,14 @@ Entries are stored in a memory-mapped file located in **$GENESIS_HOME/runtime/au
 
 If you need to clear out the entries by hand, simply delete everything in that directory and restart GENESIS_AUTH_PERMS.
 
-More than one permission map per table can be created.
+You can create more than one permission map for each table.
 
 :::warning
-The back end infra-structure utilizes ChronicleMap to store and serve real time up-to-date dynamic authorizations, that means the application must know ahead how many entries are required to be stored on each Auth Map.
-These are defined using the correct combination of `averageEntityChars`, `averageUserNameChars` and `averageUsers` which are referenced in the next sections of this document.
-For more technical details, check [Configure Entries](https://github.com/OpenHFT/Chronicle-Map/blob/ea/docs/CM_Tutorial.adoc#configure-entries) from ChronicleMap docs.
+The back-end infrastructure uses ChronicleMap to store and serve real-time dynamic authorisations. Therefore, the application must know in advance how many entries need to be stored on each Auth Map.
+
+You can define this using  `averageEntityChars`, `averageUserNameChars` and `averageUsers`, which are described in the sections on [defining a permission rule using Groovy and XML]/server/access-control/authorisation/#defining-a-permission-rule-using-groovy-and-xml) and [defining a permission rule using GPAL](/server/access-control/authorisation/#defining-a-permission-rule-using-gpal).
+
+For more technical details, go to [Configure Entries](https://github.com/OpenHFT/Chronicle-Map/blob/ea/docs/CM_Tutorial.adoc#configure-entries) in the ChronicleMap docs.
 :::
 
 ## Generic permissions
