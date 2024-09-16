@@ -253,4 +253,48 @@ pipeline("TEST_TRADE_PIPELINE") {
 }
 ```
 
+### On Uncaught Error Handler
+
+This is a handler that allows the user to set up custom exception handling for errors that have not been caught during the course of the pipeline.
+Multiple handlers can be added to the pipeline, each handler has access to the throwable.
+
+For example:
+
+```kotlin
+pipeline("TEST_PIPELINE") {
+    source(dbBulkRealtimeSource)
+        .map(mapper)
+        .sink(logSink)
+        .onUncaughtError { t ->
+            LOG.error("An exception was thrown in TEST_PIPELINE", t)
+        }
+}
+```
+
+### On Operation Error Handler
+
+This is a handler that allows the user to set up custom exception handling for errors thrown at the individual operation level.
+Multiple handlers can be added to each operation stage. Each handler has access to: the element which caused the exception, the PipelineContext and the throwable.
+
+The user must provide an action for each handler in order to signify what the pipeline should do once it catches this exception:
+- `SKIP_ELEMENT`: skip the element that caused this exception (e.g; in an operation processing lines from a file, skip that individual line)
+- `SKIP_STREAM`: skip the stream that caused this exception (e.g; for the file example mentioned above, skip the entire file - any lines already processed will continue to the sink)
+- `STOP_PIPELINE`: stop the pipeline from processing any more data
+`SKIP_STREAM` is only applicable to realtime pipeline as batch pipelines do not have the concept of a continuous stream of data.
+As such, choosing `SKIP_STREAM` in a batch pipeline would result in the same behaviour as `STOP_PIPELINE`.
+
+For example:
+
+```kotlin
+pipeline("TEST_PIPELINE") {
+    source(dbBulkRealtimeSource)
+        .map(mapper)
+        .onOperationError { element, context, throwable ->
+            LOG.error("An exception was thrown in TEST_PIPELINE while processing $element", throwable)
+            OperationErrorAction.SKIP_ELEMENT
+         }
+        .sink(logSink)
+}
+```
+
 See [Document Management Pipelines](/components/doc-management/doc-management-server/doc-management-pipelines/) for more implementations.
