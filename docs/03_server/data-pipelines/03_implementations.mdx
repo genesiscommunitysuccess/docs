@@ -66,11 +66,11 @@ pipelines {
 }
 ```
 
-### Abstract Programmatic Source
+### Abstract Programmatic Source (Realtime)
 
 This is an abstract implementation of a realtime acknowledgement source that additionally has a send method which can be used by any custom code to provide data to the pipeline.
 
-This source is dependent on the calling code being a part of the same process as the pipeline using this source - ensure this is done by updating your process definition. See [processes](../../../server/configuring-runtime/processes)
+This source is dependent on the calling code being a part of the same process as the pipeline using this source - ensure this is done by updating your process definition. See [processes](/server/configuring-runtime/processes)
 
 Here is an example of using this source to provide Trade objects:
 ```kotlin
@@ -92,11 +92,85 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 The resulting pipeline:
 ```kotlin
 pipelines {
-    pipeline("TEST_BATCH_POLL_PIPELINE") {
+    pipeline("TEST_PIPELINE") {
         source(ProgrammaticTradeSource)
         .sink(testSink)
     }
 }
+```
+
+### HTTP Source (Batch)
+
+There are 2 sources that you can use to make HTTP requests, behind the scenes this uses the [Genesis HTTP Client](server/integration/web-integration/introduction).
+1. `httpSource` - only requires the type of the response
+2. `typedHttpSource` - requires the type of the response as well as the request object being used (which should be provided in the execute method when triggering this pipeline)
+
+You need to provide a request builder which contains information about the HTTP request you would like to send, the default HttpMethod is GET.
+When supplying this builder, you will have access to what is being provided to the execute method; the context parameters map and for typedHttpSource you will also have access to the request object being used.
+
+Example of httpSource:
+```kotlin
+val source = httpSource<Trade> {
+    requestBuilder {
+        url = "https://api.example.com/get-trade?tradeId=${contextParameters["tradeId"]}"
+    }
+}
+
+pipelines {
+    pipeline("TEST_PIPELINE") {
+        source(source)
+        .sink(testSink)
+    }
+}
+```
+
+Triggering the above pipeline in an eventhandler:
+```kotlin
+val pipelineManager = inject<PipelineManager>()
+
+eventHandler<Trade>(name = "TEST_PIPELINE_START") {
+        onCommit { event ->
+            val details = event.details
+
+            val pipeline = pipelineManager.getBatchPipeline("TEST_PIPELINE")
+            // provide values in the context map that you have used in the request builder when setting up the pipeline
+            pipeline?.execute(mapOf("tradeId" to details.tradeId))
+            ack()
+        }
+    }
+```
+
+Example of typedHttpSource:
+```kotlin
+val source = httpSource<Trade, List<Trade>> {
+    requestBuilder {
+        // using the request which will be provided in the execute call
+        url = "https://api.example.com/all-trades?tradeId=${request.tradeId}"
+    }
+}
+
+pipelines {
+    pipeline("TEST_PIPELINE") {
+        source(source)
+        .sink(testSink)
+    }
+}
+```
+
+Triggering the above pipeline in an eventhandler:
+```kotlin
+val pipelineManager = inject<PipelineManager>()
+
+eventHandler<Trade>(name = "TEST_PIPELINE_START") {
+        onCommit { event ->
+            val trade = event.details
+
+            val pipeline = pipelineManager.getBatchPipeline("TEST_PIPELINE")
+            // provide the request as shown below  in the context map that you have used in the request builder when setting up the pipeline
+            pipeline?.execute(trade, emptyMap())
+            ack()
+        }
+    }
 ```
 
 ## Operators
