@@ -807,6 +807,17 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'EXAMPLE APPS',
+      collapsed: false,
+      items: [
+        {
+          type: 'doc',
+          id: 'how-to/ht-run-examples'
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'EVERYDAY BASICS',
       collapsed: false,
       items: [
