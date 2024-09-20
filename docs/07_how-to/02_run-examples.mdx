@@ -1,6 +1,6 @@
 ---
-title: 'Example apps'
-sidebar_label: 'Example apps'
+title: 'Running an example application'
+sidebar_label: 'Running an example app'
 id: ht-run-examples
 keywords: [csv, copp clark, integration, ingest]
 tags:
@@ -26,7 +26,7 @@ There is always a main readme file for the example application, which you can sc
 
 You can clone an app in the standard way:
 
-1. Follow the relevant link to the repository in the How To... page, for example [Ingesting csv files](https://github.com/genesiscommunitysuccess/howto-csv-ingress/tree/main).
+1. Follow the relevant link to the repository in the *How To...* page, for example [Ingesting csv files](https://github.com/genesiscommunitysuccess/howto-csv-ingress/tree/main).
 
 2. Copy the url for the repository.
 
@@ -35,6 +35,10 @@ You can clone an app in the standard way:
 ```
 C:\Users\MarcusAurelius\projects>git clone https://github.com/genesiscommunitysuccess/howto-csv-ingress.git
 ```
+
+:::tip
+Avoid using a network drive or a drive that synchronises with a cloud back-up system (such as OneDrive or Sharepoint). This could result in poor performance.
+:::
 
 ## Running the app locally
 
@@ -63,7 +67,10 @@ cp /opt/homebrew/opt/lmdb/lib/liblmdb.dylib ~/Library/Java/Extensions/
 ### Opening the project
 
 1. Open IntelliJ, click Open, and navigate to your project folder.
+
+:::tip
 Take care not to open the parent or any child directories
+:::
 
 2. Go to **Settings** → **Project Structure** and make sure that **SDK** and **Language level** are set to 17 .
 
