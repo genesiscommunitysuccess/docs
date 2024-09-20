@@ -52,12 +52,17 @@ You can [clone the repo](https://github.com/genesiscommunitysuccess/howto-csv-in
 :::
 
 ## Setting up a pipeline in your own app
+
+:::info How to create a similar app
+To find out how to create an app similar to our example, go to the [readme file](https://github.com/genesiscommunitysuccess/howto-csv-ingress/tree/main) in the repository for instructions.
+:::
+
 When you want to create a Data Pipeline in your own application, there are other things you need to do in addition to creating the pipeline files themselves.
 
 ### Processes.xml
 Every process in your app must be configured in the application's [**-processes.xml**](/server/configuring-runtime/processes/) file. See the [**howto-csv-ingress-processes.xml**](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/server/howto-csv-ingress-app/src/main/genesis/cfg/howto-csv-ingress-processes.xml) file for a simple example. 
 
-At minimum, you need to 
+At minimum, you need to:
 
 - add `genesis-pal-datapipeline` to `<module>`
 - add `global.genesis.pipeline` to `<package>`
