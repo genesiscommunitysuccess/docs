@@ -21,12 +21,12 @@ Each Data Pipeline defines a source, some mapping operations and a sink.
 | sink | Does something with the mapped data from the data source |
 
 ### Source
-Your pipeline needs a data source. The example below points to a local filesystem location. It pulls in any file that is dropped into the local file system’s directory **$USER_HOME/run/runtime/coppClarkSimple**:
+Your pipeline needs a data source. The example below points to a local filesystem location. It pulls in any file that is dropped into the local file system’s directory **run/runtime/coppClarkSimple**:
 
 ```kotlin
 source(
     camelSource { 
-        location = file://run/runtime/coppClarkSimple
+        location = "file://run/runtime/coppClarkSimple"
     }
 )
 ```
