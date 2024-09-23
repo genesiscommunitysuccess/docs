@@ -1,7 +1,6 @@
 ---
 title: 'React - Sharing data'
 sidebar_label: 'Sharing data'
-sidebar_position: 3
 id: react-sharing-data
 keywords: [web, integrations, react, sharing-data]
 tags:
