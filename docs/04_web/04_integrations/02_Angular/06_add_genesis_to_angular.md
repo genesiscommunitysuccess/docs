@@ -1,6 +1,7 @@
 ---
 title: 'Angular - adding Genesis to Angular'
 sidebar_label: 'Add Genesis to Angular'
+sidebar_position: 4
 id: add-genesis-to-angular
 keywords: [web, integrations, angular]
 tags:

@@ -14,7 +14,7 @@ Here, we look at how to pass both primitive and non-primitive values.
 
 ## Passing values (primitive and non-primitive)
 
-You can directly pass primitive and non-primitive values as attributes from Angular to web components. This is similar to the way that data is [passed between Angular components](https://angular.io/guide/inputs-outputs).
+You can directly pass primitive and non-primitive values as attributes from Angular to web components. This is similar to the way that data is [passed between Angular components](https://angular.dev/guide/components/inputs).
 
 ### Primitive values
 Primitive values include strings, numbers, and boolean values. 
