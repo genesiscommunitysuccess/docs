@@ -1,6 +1,7 @@
 ---
 title: 'Angular - Position app'
 sidebar_label: 'Position app'
+sidebar_position: 6
 id: angular-position-app
 keywords: [web, integrations, angular]
 tags:

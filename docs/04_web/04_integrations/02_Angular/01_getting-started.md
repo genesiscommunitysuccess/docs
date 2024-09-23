@@ -1,6 +1,7 @@
 ---
 title: 'Angular - Getting started'
 sidebar_label: 'Getting started'
+sidebar_position: 1
 id: getting-started
 keywords: [web, integrations, angular]
 tags:

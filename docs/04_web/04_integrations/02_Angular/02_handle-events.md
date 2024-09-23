@@ -1,6 +1,7 @@
 ---
 title: 'Angular - Handle events'
 sidebar_label: 'Handle events'
+sidebar_position: 2
 id: angular-passing-data
 keywords: [web, integrations, angular, handle events]
 tags:

@@ -1,6 +1,7 @@
 ---
 title: 'Angular - Showcase client app'
 sidebar_label: 'Showcase client-app'
+sidebar_position: 5
 id: angular-showcase-client-app
 keywords: [web, integrations, angular, handle events]
 tags:
