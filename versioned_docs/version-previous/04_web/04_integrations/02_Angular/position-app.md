@@ -145,7 +145,7 @@ Compare this to the form you see when click on the **Edit** button. This has mor
 
 ![](/img/angular-tutorial-entities.png)
 
-## Step 6. Add a donut chart with configuration
+## 6. Add a donut chart with configuration
 
 1. Add the chart and its datasource to the template:
 ```html title="home.component.html"
