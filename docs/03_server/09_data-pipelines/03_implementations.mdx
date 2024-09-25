@@ -13,7 +13,7 @@ tags:
 
 ### Camel File Source (Realtime)
 
-This is a realtime acknowledgement source that uses camel to poll a location periodically. It returns a flow of type `PipelineFile`, which includes the file name, file path and input stream of its contents.
+This is a real-time acknowledgement source that uses camel to poll a location periodically. It returns a flow of type `PipelineFile`, which includes the file name, file path and input stream of its contents.
 
 The next element is only emitted once acknowledgement is given that the previous one has been successfully processed.
 
@@ -30,7 +30,7 @@ pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
 
 ### Database Batch Poll Source (Realtime)
 
-This is a realtime acknowledgement source that returns a stream of updates via a batch poll on a particular database, dependent on an acknowledgement having been received of the previous element.
+This is a real-time acknowledgement source that returns a stream of updates via a batch poll on a particular database, dependent on an acknowledgement having been received of the previous element.
 
 If no data is received, the source waits for a delay before attempting to poll again. This source implementation uses the PersistenceManager to persist the latest index using the provided lambda; by default the DbPersistenceManager is used to manage the state of this source. See Persistence Manager for more details (link to persistence manager).
 
@@ -106,6 +106,7 @@ There are 2 sources that you can use to make HTTP requests, behind the scenes th
 2. `typedHttpSource` - requires the type of the response as well as the request object being used (which should be provided in the execute method when triggering this pipeline)
 
 You need to provide a request builder which contains information about the HTTP request you would like to send, the default HttpMethod is GET.
+
 When supplying this builder, you will have access to what is being provided to the execute method; the context parameters map and for typedHttpSource you will also have access to the request object being used.
 
 Example of httpSource:
@@ -223,7 +224,7 @@ pipeline("TEST_PIPELINE_DECODER") {
 
 ### Database sink
 
-This is a sink into the Genesis database, which takes a DbOperation object as input with an object extending TableEntity i.e.  `INPUT : DbOperation<out TableEntity>` .
+This is a sink into the Genesis database, which takes a DbOperation object as input with an object extending TableEntity i.e.  `INPUT : DbOperation<out TableEntity>`.
 
 DbOperation has 4 subtypes: Insert, Modify, Upsert and Delete.
 
