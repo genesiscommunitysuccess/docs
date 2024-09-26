@@ -1,18 +1,13 @@
 ---
-title: 'How to set up authorisation'
-sidebar_label: 'Authorisation'
-id: ht-auth
-keywords: [auth, authorisation, permissions]
+title: 'Access control - an introduction to authorisation'
+sidebar_label: 'Introducing authorisation'
+id: authorisation-introduction
+keywords: [server, access control, authorisation]
 tags:
-    - auth
-    - authorisation
-    - permissions
+  - server
+  - access control
+  - authorisation
 ---
-
-
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 
 For any application that has more than minimal complexity, you will want to give some users access to specific information and functions, and you will want to deny that access to others. For example, you might want to give an admin user the ability to delete an order, but you don't want anyone else to be able to do that.
@@ -34,12 +29,58 @@ Broadly speaking, you can insert permission statements on the back end at three 
 - fields within a table (attributes/columns)
 
 ### Permissions for the front end
-You can also add authorisation at the front end. This reinforces the back-end permissions and creates a seamless experience for users with different permissions.
-
-For example, if a user does not have permission to insert or update records on a grid of data, you can set the front end so that the user does not see the relevant buttons or commands on that display. 
+You can also add authorisation at the front end. For example, if a user does not have permission to insert or update records on a grid of data, you can set the front end so that the user does not see the relevant buttons or commands on that display.
 
 So, you have full control of data within your application at the most granular level.
 
+Check our [example application](https://github.com/genesiscommunitysuccess/howto-permissions), which shows the permission features that are available.
+
+## Permissions for tables (data entities)
+
+### Applying permissions at the back end
+At this level, you can authorise users to have access to records within a table. Let us consider the example of a **TRADE** table.
+
+You can set up the following permissions, for example:
+
+| User          | **is permitted to**         |**is _not_ permitted to**   |
+| ------------- | --------------------------- | -------------------------- |
+| User A | **view** the grid of trades                                                                       | **create**, **edit** or **delete** trades                        |
+| User B | **view** the grid of trades, and **create** and **edit** them              | **delete** trades                                                     |
+| User C | **view** the grid of trades, and **create**, **edit** and *delete**  them  |                                                                                            |
+| User D |                                                                                                   | **view** the grid of trades, or **create**, **edit** or **delete** trades |
+
+So, as a result of these permissions:
+
+- User A can view trades, but cannot create, edit or delete trades in the table.
+- User B can view, create and edit trades, but cannot delete trades in the table.
+- User C can view, create, edit, and delete trades in the table.
+- User D cannot view, create, edit or delete trades in the table.
+
+You can also directly apply permissions to other actions that users can perform on a table, such as “assign a trade to a book”. Authorisation for any finer-grained events can also easily be controlled with minimal code.
+
+### Applying permissions at the front end
+
+So users are limited in what information they have access to and in what actions they can perform by the permissions you add to the back end.
+
+But you can also add permissions at the front end. Here, you can control what is displayed for each user. For example, you can permission a User interface component that displays a grid of data from the **TRADE** table so that different users have a different experience:
+
+| User          | **is permitted to**         |**is _not_ permitted to**   |
+| ------------- | --------------------------- | -------------------------- |
+| User A | **view** the grid of trades                                                                       | **view** any buttons  to  **create**, **edit** or **delete** trades                        |
+| User B | **view** the grid of trades, and **view** buttons to  **create** and **edit** trades              | **view** the button to **delete** trades                                                   |
+| User C | **view** the grid of trades, and **view** buttons to  **create**, **edit** and **delete** trades  |                                                                                            |
+| User D |                                                                                                   | **view** the grid of trades, or any buttons  to  **create**, **edit** or **delete** trades |
+
+So, as a result of these permissions:
+
+- User A can see the grid of trades, but cannot see any buttons to  create, edit or delete trades.
+- User B can see the grid of trades, and sees buttons to  create and edit trades. This user does not see a button to delete records in the table.
+- User C can see the grid of trades, and sees buttons to  creat*, edit and delete trades. 
+- User D cannot see the grid of trades or any buttons.
+
+:::caution
+It's important to note that your front-end permissioning should add to the controls that you have created on the back end. If you don't display a button to delete a record, for example, but the user has no restrictions on deleting at the back end, then your security is at risk.
+:::
 ## Permissions for records (rows)
 
 At the next level down, you can apply conditions for users who are authorised to **view**, **create**, **edit** and **delete**. A user's permission can depend on the content of the specific record (or row).
@@ -236,120 +277,3 @@ Here is an example of restricting button visibility (based on the Right Code **T
 ```jsx
       createEvent="${(x) => getViewUpdateRightComponent(x.user, 'TradeUpdate', 'EVENT_TRADE_INSERT')}"
 ```
-
-[comment]: <> (Describe user interface to assign permission codes and users to profiles.)
-[comment]: <> (Show a video of adding users? Also add some screen shots?)
-
-
-## Code examples
-
-:::info Take a look at the code
-Check our [example application](https://github.com/genesiscommunitysuccess/howto-permissions), which shows the permission features that are available.
-
-:::
-
-The example application has a single data table called Trade.  After a remap, this will be populated with 10 entries - 5 in each of 2 Countries.  Two further tables are added:
-
-- Countries (single column)
-- Mapping (which maps between User and Country to enable row authorisation based upon permitted Countries)
-
-The front-end grid demonstrates different authorisations in each quadrant - these map directly to four different Data Server queries, which you can see in the file **Permissions-dataserver.kts**.
-
-Only Users assigned to the Profile **Full_Access** can insert or modify trades. Currently, this is the user **AmyAccess**, but more Profiles and Users can be added to the application once it is installed and running.
-
-For example, you can edit the User Country table on the **Static** tab to remove Canada from AmyAccess. Once you have done that, AmyAccess will only be able to enter trades against the UK. You can see the code in the file **Permissions-eventhandler.kts**.
-
-Note that only the user **admin** can modify Profiles and add users. The password for all users who are set up in advance is **genesis**.
-
-The application also demonstrates authorisation at a dataserver and eventhandler level.
-
-:::info
-The [**ReadMe** file](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/README.md) in the project folder provides further information on the project.
-:::
-
-## A more complex scenario
-
-Consider how authorisation can manage more complex situations.
-
-For example, consider the lifecycle of a trade. Perhaps you want to ensure that only super users can modify trades that have settled. 
-
-To achieve this, we are going to modify an existing TRADE_MODIFY event and then create a new modify event for super users only.
-
-The following code modifies the earlier TRADE_MODIFY event to prevent users from changing the transaction if it has a status of `Settled`. This is defined in an [`onValidate`](/server/event-handler/basics/#adding-validation) codeblock:
-
-```jsx
-  eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("TradeUpdate")
-    }
-    onValidate { event ->
-        val trade = entityDb.get(Trade.ById(event.details.tradeId))!!
-        require(trade != null) { "Trade Id does not exist" }
-        require(trade.status != status.Settled) { "Trade is already settled" }
-        ack()
-    }
-    onCommit { event ->
-    ...
-    }
-  }
-```
-
-You can then easily create a separate event so that super users can modify any trade. In this event, you don't need to check the status - you simply make sure that it is only available to super users.
-
-The example code below enables any user with the Right Code **SuperUser** to perform any edit on a trade. Users without this Profile cannot gain access to this event. They can only use the TRADE_MODIFY event above, which, as you saw, prevents them from editing settled trades.
-
-```jsx
-  eventHandler<Trade>("TRADE_MODIFY_SUPERUSER", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("SuperUser")
-    }
-    onCommit { event ->
-      ...
-    }
-  }
-```
-
-## Testing
-
-:::info
-Go to our [**Testing**](/how-to/ht-prepare-test/) page for details of our testing tools and the dependencies that you need to declare.
-:::
-
-
-For testing the auth permissions we have described here, we use common automation frameworks: cucumber and playwright. 
-
-Our example tests are able to test authorisation via both the user interface and the API.
-
-There are three types of file.
-
-- The [feature file](https://github.com/genesiscommunitysuccess/howto-permissions/blob/main/server/permissions-app/src/test/resources/features/Permission.feature) contains the test cases, which are written in the Gherkin language. Tags are used to differentiate between the UI (`@UI`) and the API (`@API`).
-- There are separate step definitions (written in Java) for testing the user interface and the API in the [**step definitions**](https://github.com/genesiscommunitysuccess/howto-permissions/tree/main/server/permissions-app/src/test/java/global/genesis/cucumber/stepdefinitions) folder. 
-- You can find the expected results files (.json) in the [**result**](https://github.com/genesiscommunitysuccess/howto-permissions/tree/main/server/permissions-app/src/test/resources/result) folder. The actual results are written to this folder after the tests have been executed.
-
-The E2E tests use two different users to request data from the Data Server. Each user should (of course) see all the data that they are permissioned to view and none of the data that they are not: 
-
-- AmyAccess (full access)
-- RogerRestricted (limited access)
-
-
-### Preparation
-- For testing the API, the back-end processes must be running and healthy.
-- For testing the UI, the both the back end and the front end must be running.
-
-Before starting the servers:
-
-1. Run `remap` (which imports the data).
-2. Run `consolidate rights`.
-
-Both tasks should execute without any errors.
-
-Genesis has tested the examples successfully on the H2 and Postgres databases. 
-
-## Full technical details
-
-Find more details in our in our reference documentation:
-
-- [Authorisation](/server/access-control/authorisation-overview/) 
-- [Event Handlers](/server/event-handler/basics/) 
-- [`onValidate` codeblocks](/server/event-handler/basics/#adding-validation)
-
