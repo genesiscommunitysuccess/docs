@@ -1,0 +1,63 @@
+---
+title: 'How to integrate external REST APIs'
+sidebar_label: 'Integrate external REST APIs'
+id: ht-rest
+keywords: [REST, HTTP Client]
+tags:
+    - REST
+    - HTTP client
+
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The Genesis HTTP Client provides a simple way of integrating external REST services with the Genesis Platform. It contains an intuitive DSL for making HTTP requests, so that you can integrate your Request Servers and Event Handlers seamlessly with external applications.
+
+All the standard HTTP requests are supported: GET, POST, PUT, DELETE.
+
+To handle errors, there is built-in support for retries and error callbacks.
+
+And pagination is supported for Request Servers.
+
+You can choose which way to implement the integration:
+
+- using the client directly
+- generating type-safe code via OpenAPI
+- creating a Data Pipeline
+
+## Example
+We have created an example application that shows you how to integrate external REST APIs.
+
+There is a main README file that fives an overview of the application.
+
+There is a second README file that explains the two main approaches to integration:
+
+### Open API REST integration with code generation
+Starting from an Open API/Swagger specification, this example generates type-safe code and then embeds it in Genesis components such as the Request Server. 
+
+There are stepped instructions for creating this example, including:
+
+    - adding the dependencies
+    - configuring the Open API plugin
+    - mapping parameters to handle pagination in the Request Server
+    - adding the code to `requestReply` in a Request Server
+
+### Using HTTP clients directly
+If you do not have a specification to generate code from, you can define your own data classes and use them with the Genesis HTTP Client, or work with the raw response. 
+ 
+Our example uses the Genesis HTTP Client, but you can use any client that you are familiar with, such as [Ktor](https://ktor.io/docs/welcome.html).
+
+### Displaying the results in the front end
+There are also instructions for creating a grid to view the data in the front end, including:
+
+    - adding the dependencies
+    - registering modules in the .ts page
+    - defining the grid, including handline infinite scrolling and pagination
+  
+### Using Data Pipeline to integrate external APIs
+You can also integrate your external API with data pipelines. These pipelines can be triggered by other components and reused across your application, reducing duplication.
+
+A separate example, which has its own README file, shows you how to use the Data Pipeline this way, including instructions for displaying the results on the front end.
+
+

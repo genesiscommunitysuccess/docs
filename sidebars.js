@@ -837,6 +837,10 @@ module.exports = {
           type: 'doc',
           id: 'how-to/ht-shareable-enums'
         },
+        {
+          type: 'doc',
+          id: 'how-to/ht-fdc3'
+        },
       ],
     },
     {
@@ -851,6 +855,10 @@ module.exports = {
         {
           type: 'doc',
           id: 'how-to/ht-fdc3'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-rest'
         },
       ],
     },
