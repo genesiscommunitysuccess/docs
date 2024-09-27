@@ -17,8 +17,8 @@ Each Data Pipeline defines a source, some mapping operations and a sink.
 | term | description |
 | ---- | ----------- |
 | source | Changes in data at this location trigger your Data Pipeline |
-| operators | Transform data from the data source |
-| sink | Does something with the mapped data from the data source |
+| operators | Transform data from the data source to match the requirements of the database|
+| sink | Inserts the mapped data to the database |
 
 ### Source
 Your pipeline needs a data source. The example below points to a local filesystem location. It pulls in any file that is dropped into the local file system’s directory **run/runtime/coppClarkSimple**:
@@ -56,7 +56,7 @@ The example above has two operators. Let's look at them more closely.
 - `split` uses the pre-built decoder which converts the CSV file and outputs a map containing each row in column + value: `CsvRow<Map<String, String>>`
 - `map` takes the data we need from the row columns and formats it accordingly. We are building up ExchangeHoliday, a database entity in our app, wrapped in the Db operation we want to perform on it; in this case, we want to upsert.
 
-For more complex requirements, you can create your own [transformer](#keeping-the-data-transformation-separate) in a seperate file. You can see this in two of our examples.
+For more complex requirements, you can create your own transformer in a separate file. You can see this in two of our examples.
 
 Also, you can build multiple database entities from a single file. You can see details of this in the [third example](#updating-multiple-different-entities-from-a-single-source).
 
@@ -71,7 +71,7 @@ The example sink below takes the output from `.map` (a set of DB operations) and
 
 That’s all you need to ingest the data and put it in your database.
 
-However, there are additional helpers for things such as `onCompletion`. This enables you specify what happens after the file processing is complete. 
+However, there are additional helpers for things such as `onCompletion`. This enables you to specify what happens after the file processing is complete. 
 
 In the example below, we use this to log that we’ve completed it, and to send a notification to users:
 
@@ -207,4 +207,4 @@ Ingress:
 - Custom sinks
 
 Egress:
-- All SQL based databases over JDBC are supported.
+- All SQL-based databases over JDBC are supported.
