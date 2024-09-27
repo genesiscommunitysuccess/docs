@@ -15,7 +15,7 @@ Let's make things really simple.
 - A Request Server is a module that supplies static data to the front end of your application.
 - You define your application's Request Server in a kotlin script file  _application-name_**-reqrep.kts**. This file should be in the _application-name_-script-config module.
 - In this file, you define specific `requestReply` codeblocks, each of which is designed to supply different sets of data; this could be a table or view, or just a subset of the fields in a table or view.
-- A `requestReply` can include a number of other subtleties, such as `where` clauses or ranges, so that you can create code that matches your precise requirements.
+- A `requestReply` can include a number of other subtleties, such as `filter` clauses or ranges, so that you can create code that matches your precise requirements.
 - If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the module.
 - Otherwise, you can build your kts by defining each `requestReply` codeblock from scratch. 
 
@@ -130,7 +130,7 @@ requestReplies {
 ```
 
 :::note
-Derived fields cannot be used within a `where` block.
+Derived fields cannot be used within a `filter` block.
 :::
 
 ## Using an index
@@ -145,14 +145,16 @@ requestReplies {
 }
 ```
 
-## Where block
+## Filter block
 
-The `where` block enables you to specify the conditions for which data should be returned. The `where` block can take two optional parameters:
+The `filter` block enables you to specify the conditions for which data should be returned. The `filter` blocks in request servers come in different flavours:
 
-* `row` - this represents a row from the table or view
-* `parameters` - this is a GenesisSet that holds the parameters that are passed on the request; the parameters can be accessed by using the GenesisSet getters to access named parameters
+* `filter` - contains a context property named `data` with the row from the table or view.
+* `filterWithUserName` - Contains the `data` context property (see `filter`) as well as a `userName` context property with the username who requested the data.
+* `filterWithParameters` - Same as `filter` but adding a `genesisSet` context property that holds the parameters that are passed on the request; the parameters can be accessed by using the GenesisSet getters.
+* `filterWithRequest` - Similar to `filterWithParameters` but the `genesisSet` context property contains the whole request payload and not just the parameters.
 
-In this contrived example below, the `where` block filters rows whose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG". 
+In this contrived example below, the `filterWithParameters` block filters rows whose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG".
 
 The row parameter represents the rows returned from the table or view defined at the top of the `requestReply` definition, in this case, INSTRUMENT_DETAILS.
 
