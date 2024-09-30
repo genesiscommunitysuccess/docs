@@ -5,7 +5,7 @@ id: ht-run-examples
 keywords: [csv, copp clark, integration, ingest]
 tags:
     - csv
-    - copp Clark
+    - Copp Clark
     - integration
     - ingest
 ---
@@ -51,43 +51,41 @@ You need to install the following software to be able to run Genesis projects on
 |JDK 17	                | **[Windows (.msi)](https://download.oracle.com/java/17/archive/jdk-17.0.10_windows-x64_bin.msi)** --- **[Other Platforms](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)** |
 |Node.js	            | **[Windows (.msi)](https://nodejs.org/dist/v20.12.2/node-v20.12.2-x64.msi)** --- **[Other Platforms](https://nodejs.org/en/download)** |
 |Genesis Server Framework (GSF) Artifact Access	| Contact your technical representative for access. |
-|LMDB  (Mac Users Only)	| Install **[Homebrew](https://brew.sh/)**. Then follow the instructions [below](#homebrew-mac-users) |
-|Genesis Server Framework (GSF) Artifact Access	| Contact your technical representative for access. |
+|Genesis Front End (FUI) Artifact Access	| Contact your technical representative for access. |
+|LMDB  (Mac Users Only)	| With **[Homebrew](https://brew.sh/)** installed, follow the instructions [below](#homebrew-mac-users) |
 |Gradle	               | Bundled with IntelliJ. Configure Gradle properties to point to the GSF artifactory.
 
 ### Homebrew (Mac users)
-If you are using a Mac, after you have downloaded Homebrew, run the following commands in sequence:
-
-```
-brew install lmdb
-mkdir ~/Library/Java/Extensions
-cp /opt/homebrew/opt/lmdb/lib/liblmdb.dylib ~/Library/Java/Extensions/
-```
+If you are using a Mac, you need to download and install LMDB. Using homebrew, you can install this dependency easily by following this [short guide](https://learn.genesis.global/docs/server/tooling/intellij-plugin/?_highlight=lm#installing-lmdb-for-macos)
 
 ### Opening the project
 
-1. Open IntelliJ, click Open, and navigate to your project folder.
+1. Open IntelliJ, click **Open**, and navigate to your project folder.
 
 :::tip
 Take care not to open the parent or any child directories
 :::
 
-2. Go to **Settings** → **Project Structure** and make sure that **SDK** and **Language level** are set to 17 .
+2. Go to **File** → **Project Structure** and make sure that **SDK** and **Language level** are set to 17 .
 
-3. If you are prompted (bottom right of the IntelliJ window) to Load Gradle Project , click to allow this to proceed.
+:::info
+Intellij will pick up the Java version from the project default, set above. However, if you've inadvertently started a build on a newer JVM, you may need to update your gradle build settings. To do this, go to **Settings** → **Build, Execution, Deployment** -> **Build Tools** -> **Gradle** and set your **Gradle JVM** to 17
+:::
+
+3. If you are prompted (bottom right of the IntelliJ window) to Load Gradle Project, click to allow this to proceed.
 
 ### Building and running the project
 
 1. Open the Genesis IntelliJ plugin at the top right of the IntelliJ window.
 
-2. Click Remap. 
+2. Click Remap. Agree to all options to ensure your data model is created and all necessary data is imported.
 
-3. Click on the **Tasks** tab in the plugin and run **ConslidateRights**.
+3. Click on the **Tasks** tab in the plugin and run **ConsolidateRights**.
 
 4. Click on the **Start Processes** button. This starts the back end.
 
 5. Click on the **Start UI** button. This starts the front end.
-After a short while, you should see all processes running. Your browser opens with the URL http://localhost:6060.
+After a short while, you should see all processes running. Your browser will open automatically, pointing to the URL http://localhost:6060.
 
 7. Login with the credentials:
    - User: admin
