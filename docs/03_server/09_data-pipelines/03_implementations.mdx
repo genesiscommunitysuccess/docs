@@ -9,6 +9,9 @@ tags:
   - implementations
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Sources
 
 ### Camel File Source (Realtime)
@@ -174,6 +177,66 @@ eventHandler<Trade>(name = "TEST_PIPELINE_START") {
     }
 ```
 
+### Kafa Source (Realtime)
+
+This source is available through the kafka-genesis module. In order to use this you must add the following dependency to your application:
+
+<Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
+    <TabItem value="gradle">
+
+        ```kotlin
+        implementation("global.genesis:kafka-genesis:${properties["genesisIntegrationVersion"]}")
+        ```
+
+    </TabItem>
+    <TabItem value="maven">
+
+        ```xml
+        <dependency>
+            <groupId>global.genesis</groupId>
+            <artifactId>kafka-genesis</artifactId>
+            <version>genesisIntegrationVersion</version>
+        </dependency>
+        ```
+
+    </TabItem>
+</Tabs>
+
+This is a real-time acknowledgement source that creates a consumer and polls a Kafka topic. It returns a flow of ConsumerRecords and
+the consumer will only commit to kafka once acknowledgement has been received of the previous batch.
+The types specified when instantiating the source refer to the type of the Key and Value for the record being read from the kafka topic.
+
+When you configure the kafka source to use as part of your pipeline, you must provide the following as part of the configuration:
+- bootstrapServers (required): these are the bootstrap servers for your kafka instance
+- groupId (required): this is the group id you would like to specify for the consumer
+- keyDeserializer (required): this is the Deserializer for the key of your consumer record - this Deserializer must be for an object that matches the key type defined in the source instantiation
+- valueDeserializer (required): this is the Deserializer for the value of your consumer record - this Deserializer must be for an object that matches the value type defined in the source instantiation
+- topic (required): this is the kafka topic you would like to consume from
+- securityProtocol (optional): this is the security protocol you would like to use, the default is "SSL"
+- maxPollRecords (optional): this is the maximum number of records returned when the consumer polls, the default is 500
+- pollTimeoutMs (optional): this is the amount of time in milliseconds the consumer will wait when receiving no records before polling again, the default is 200
+- additionalConfig (optional): if you wish to set additional config for your source that has not been specified above, you can do so using this map (see example below)
+
+Here is a GPAL example of a Kafka source definition:
+```kotlin
+val source = kafkaSource<String, Int> {
+    bootstrapServers = "localhost"
+    groupId = "my-group"
+    keyDeserializer = StringDeserializer()
+    valueDeserializer = IntegerDeserializer()
+    topic = "my-topic"
+    securityProtocol = "SSL"
+    additionalConfig = mapOf("auto.offset.reset" to "earliest")
+}
+
+pipelines {
+    pipeline("TEST_KAFKA_PIPELINE") {
+        source(source)
+            .sink(testSink)
+    }
+}
+```
+
 ## Operators
 
 ### CSV Decoder
@@ -217,7 +280,6 @@ pipeline("TEST_PIPELINE_DECODER") {
         }
         .sink(txDbSink())
 }
-
 ```
 
 ## Sinks
@@ -264,6 +326,61 @@ pipeline("TEST_DB_SINK") {
                 }
       }
       .sink(dbSink())
+}
+```
+
+### Kafka Sink
+
+This sink is available through the kafka-genesis module. In order to use this you must add the following dependency to your application:
+
+<Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
+    <TabItem value="gradle">
+
+        ```kotlin
+        implementation("global.genesis:kafka-genesis:${properties["genesisIntegrationVersion"]}")
+        ```
+
+    </TabItem>
+    <TabItem value="maven">
+
+        ```xml
+        <dependency>
+            <groupId>global.genesis</groupId>
+            <artifactId>kafka-genesis</artifactId>
+            <version>genesisIntegrationVersion</version>
+        </dependency>
+        ```
+
+    </TabItem>
+</Tabs>
+
+This is a sink which creates a producer and sends ProducerRecords to a kafka topic. You can either send a single ProducerRecord of a flow of ProducerRecords.
+The types specified when instantiating the sink refer to the type of the Key and Value for the record being sent to the kafka topic.
+
+When you configure the kafka sink to use as part of your pipeline, you must provide the following as part of the configuration:
+- bootstrapServers (required): these are the bootstrap servers for your kafka instance
+- clientId (required): this is the client id you would like to specify for the producer
+- keySerializer (required): this is the Serializer for the key of your producer record - this Serializer must be for an object that matches the key type defined in the sink instantiation
+- valueSerializer (required): this is the Serializer for the value of your producer record - this Serializer must be for an object that matches the value type defined in the sink instantiation
+- securityProtocol (optional): this is the security protocol you would like to use, the default is "SSL"
+- additionalConfig (optional): if you wish to set additional config for your sink that has not been specified above, you can do so using this map (see example below)
+
+Here is a GPAL example of a Kafka sink definition:
+```kotlin
+val sink = kafkaSink<String, Int> {
+    bootstrapServers = "localhost"
+    clientId = "my-client"
+    keySerializer = StringSerializer()
+    valueSerializer = IntegerSerializer()
+    securityProtocol = "SSL"
+    additionalConfig = mapOf("request.timeout.ms" to "500")
+}
+
+pipelines {
+    pipeline("TEST_KAFKA_PIPELINE") {
+        source(testSource)
+            .sink(sink)
+    }
 }
 ```
 
