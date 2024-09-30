@@ -27,18 +27,27 @@ You can choose which way to implement the integration:
 - creating a Data Pipeline
 
 ## Example
-We have created an example application that shows you how to integrate external REST APIs.
+To show how to start integrating with REST services, we have provided an [example application](https://github.com/genesiscommunitysuccess/howto-rest/tree/main).
 
-There is a main README file that fives an overview of the application.
+:::tip Download, view and run
+The example is within one complete example application, which includes a front end so that you can run and see the data.
 
-There is a second README file that explains the two main approaches to integration:
+You can [clone the repo](https://github.com/genesiscommunitysuccess/howto-rest/tree/main) to see the code - which includes comments at the key points to highlight what is being specified - and run a provided docker file to REST integrations in action.
+:::
+
+There is a main README file that gives an overview of the application, and two subsequent README file that explains the two main approaches to integration:
+
+- REST Integration with Open API and using HTTP clients directly
+- Integrating External APIs with Pipelines
+
+You'll find links to these subjects as you step through the [example application](https://github.com/genesiscommunitysuccess/howto-rest/tree/main).
 
 ### Open API REST integration with code generation
 Starting from an Open API/Swagger specification, this example generates type-safe code and then embeds it in Genesis components such as the Request Server. 
 
-There are stepped instructions for creating this example, including:
+Here you will find stepped instructions for recreating this example, including:
 
-    - adding the dependencies
+    - adding the required dependencies
     - configuring the Open API plugin
     - mapping parameters to handle pagination in the Request Server
     - adding the code to `requestReply` in a Request Server
@@ -52,7 +61,7 @@ Our example uses the Genesis HTTP Client, but you can use any client that you ar
 There are also instructions for creating a grid to view the data in the front end, including:
 
     - adding the dependencies
-    - registering modules in the .ts page
+    - registering modules in the `.ts` page
     - defining the grid, including handline infinite scrolling and pagination
   
 ### Using Data Pipeline to integrate external APIs
