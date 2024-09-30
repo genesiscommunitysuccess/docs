@@ -272,7 +272,7 @@ Likely uses for Apache Camel include:
 - sending data to an external location
 
 :::info
-Note that Camel's power and flexibility comes at the cost of some complexity and configuration overhead. If you simply want to ingest and transform data from the most common sources (e.g. CSV files and certain relational databases), you should first investigate the new [Genesis Data Pipeline](../../../server/integration/data-pipeline/introduction/), which offers a higher-level ingestion workflow than the Apache Camel DSL.
+Note that Camel's power and flexibility comes at the cost of some complexity and configuration overhead. If you simply want to ingest and transform data from the most common sources (e.g. CSV files and certain relational databases), you should first investigate the [Genesis Data Pipeline](../../../server/data-pipelines/introduction/), which offers a higher-level ingestion workflow than the Apache Camel DSL.
 :::
 
 Apache Camel integrations are defined within your application's **-camel.kts** file. This is located in the **src/main/resources/scripts** directory within your application's **-script-config** submodule.
@@ -357,7 +357,7 @@ In order to save your local resources and allow a good experience, we do recomme
 
 ## Data Pipeline
 
-Genesis [Data Pipelines](../../../server/integration/data-pipeline/introduction/) is a feature that allows you to stream data in and/or out of your Genesis application.
+Genesis [Data Pipelines](../../../server/data-pipelines/introduction/) is a feature that allows you to stream data in and/or out of your Genesis application.
 
 You can define data pipelines that map data from an external source (database, file) to [Tables](../../../database/fields-tables-views/tables/) in your application. By default, the resulting table objects are stored in the database. 
 
@@ -381,7 +381,7 @@ dependencies {
 description = "alpha-script-config"
 ```
 
-- Configure data pipelines in a file (i.e. alpha-data-pipeline.kts). This file must be located in your application's configuration directory (**server/jvm/alpha-script-config/src/main/resources/scripts/alpha-data-pipeline.kts**). A pipeline configuration contains a collection of [sources](../../../server/integration/data-pipeline/basics/#how-to-define-a-source), [map functions](../../../server/integration/data-pipeline/basics/#map-functions), and [sink functions](../../../server/integration/data-pipeline/basics/#sink-functions), like the sample below.
+- Configure data pipelines in a file (i.e. alpha-data-pipeline.kts). This file must be located in your application's configuration directory (**server/jvm/alpha-script-config/src/main/resources/scripts/alpha-data-pipeline.kts**). A pipeline configuration contains a collection of sources, operators, and sink functions, like the sample below.
 
 ```kotlin
 val postgresConfig = postgresConfiguration(
@@ -458,7 +458,7 @@ As well as to your alpha-service-definitions.xml file:
 30 mins
 :::
 
-We are now creating a Data Pipeline to ingest Counterparty files using [csvSource](../../../server/integration/data-pipeline/basics/#file). 
+We are now creating a Data Pipeline to ingest Counterparty files using csvSource. 
 
 To do that, configure the location as a local filesystem source with an absolute path to the user account's `alpha` **run/runtime/fileIngress** directory. This directory should be created automatically the first time your application is started.
 
@@ -467,7 +467,6 @@ The remaining configuration defines a mapper from our CSV to the data model of t
 Follow the data pipeline definition as explained above. And as soon as you made the changes run [build and deploy](../../../getting-started/developer-training/training-content-day1/) again.
 
 :::tip
-Check the CSV options [here](../../../server/integration/data-pipeline/basics/#csv) and some [examples](../../../server/integration/data-pipeline/examples/) to do the exercise.
 
 The input CSV file should look like this
 ```csv
