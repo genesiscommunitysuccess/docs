@@ -52,12 +52,13 @@ There are two kinds of pipeline:
 - Batch pipeline
 - Realtime pipeline
 
-Whether or not a pipeline is batch or realtime is dependent on the source used to configure it.
+Whether a pipeline is batch or realtime simpley depends on the source used to configure it.
+
 Each pipeline must have a single source and single sink. In between these stages, you can define any number of operator steps.
 
 ### Batch pipeline
 
-A batch pipeline will only run once and must be triggered manually via the use of its execute method. The pipeline can be retrieved from the Pipeline Manager class.
+A batch pipeline will only run once and must be triggered manually via its execute method. The pipeline can be retrieved from the Pipeline Manager class.
 
 The execute method takes in a map of input parameters, which provide the context to be used throughout the pipeline.
 
@@ -82,7 +83,9 @@ pipelines {
 
 #### Triggering execution
 
-You can trigger the execution of the above example pipeline from anywhere in your codebase, here is an example of triggering inside an `eventHandler`:
+You can trigger the execution of the above example pipeline from anywhere in your codebase.
+
+Here is an example of triggering inside an `eventHandler`:
 
 ```kotlin
 val pipelineManager = inject<PipelineManager>()
@@ -98,13 +101,13 @@ eventHandler<FileStorageData>(name = "FILE_PIPELINE_START") {
     }
 ```
 
-### Realtime pipeline
+### Real-time pipeline
 
-A realtime pipeline is started as soon as the process running the script is healthy. It is only stopped once the process has shut down. 
+A real-time pipeline is started as soon as the process running the script is healthy. It is only stopped once the process has shut down. 
 
 If you need to stop or start the pipeline manually, you can do this using the Pipeline Manager; however, this is not recommended. 
 
-Here is an example of a realtime pipeline:
+Here is an example of a real-time pipeline:
 
 ```kotlin
 // GPAL Script to define pipeline
