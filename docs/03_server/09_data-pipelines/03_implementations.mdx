@@ -14,9 +14,9 @@ import TabItem from '@theme/TabItem';
 
 ## Sources
 
-### Camel File Source (Realtime)
+### Camel File Source (Real-time)
 
-This is a real-time acknowledgement source that uses camel to poll a location periodically. It returns a flow of type `PipelineFile`, which includes the file name, file path and input stream of its contents.
+This is a real-time acknowledgement source that uses Camel to poll a location periodically. It returns a flow of type `PipelineFile`, which includes the file name, file path and input stream of its contents.
 
 The next element is only emitted once acknowledgement is given that the previous one has been successfully processed.
 
@@ -31,11 +31,11 @@ pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
 }
 ```
 
-### Database Batch Poll Source (Realtime)
+### Database Batch Poll Source (Real-time)
 
 This is a real-time acknowledgement source that returns a stream of updates via a batch poll on a particular database, dependent on an acknowledgement having been received of the previous element.
 
-If no data is received, the source waits for a delay before attempting to poll again. This source implementation uses the PersistenceManager to persist the latest index using the provided lambda; by default the DbPersistenceManager is used to manage the state of this source. See Persistence Manager for more details (link to persistence manager).
+If no data is received, the source waits for a delay before attempting to poll again. This source implementation uses the PersistenceManager to persist the latest index using the provided lambda; by default the DbPersistenceManager is used to manage the state of this source. See [Persistence Manager](../../../server/data-pipelines/custom-components/#persistence-manager) for more details.
 
 The type of object that you would like this source to return must be given as part of the source definition, as shown in the example below.
 
@@ -44,7 +44,7 @@ When configuring the db batch poller to use as part of your pipeline you must pr
 - source (required): this is what the PersistenceManager will use to find the last persisted record and should be unique across all pipelines
 - index (required): this is the table index used to order the records and get the value for the last persisted record for recovery - if single field index is provided, ensure this value is either the generated `TIMESTAMP` field in the table or of type Long. Else, see below.
 - buildIndex (required for multi-field index only): if you would like to use an index that contains multiple fields, you need to provide a lambda that converts from a Long value (the last persisted value) to your EntityIndex object using this value - you must ensure that the Long value which you would like to be used as the persistence index needs to be the final value inside your index object
-- dbLookupDelayMs (optional): this is the delay time that the poller will wait for in milliseconds after not receiving any new data from the database - it is configured to 200ms by default and is not required as part of the provided config
+- dbLookupDelayMs (optional): this is the delay time that the poller will wait for in milliseconds after not receiving any new data from the database - the default is 200ms, and is not required as part of the provided config
 
 Here is a GPAL example of a Batch Poll source definition:
 ```kotlin
@@ -69,18 +69,19 @@ pipelines {
 }
 ```
 
-### Abstract Programmatic Source (Realtime)
+### Abstract Programmatic Source (Real-time)
 
-This is an abstract implementation of a realtime acknowledgement source that additionally has a send method which can be used by any custom code to provide data to the pipeline.
+This is an abstract implementation of a real-time acknowledgement source that additionally has a send method which can be used by any custom code to provide data to the pipeline.
 
 This source is dependent on the calling code being a part of the same process as the pipeline using this source - ensure this is done by updating your process definition. See [processes](/server/configuring-runtime/processes)
 
 Here is an example of using this source to provide Trade objects:
+
 ```kotlin
 object ProgrammaticTradeSource : AbstractProgrammaticSource<Trade>()
 ```
 
-Here is an eventhandler that sends to this `ProgrammaticTradeSource`:
+Here is an `eventHandler` that sends to this `ProgrammaticTradeSource`:
 
 ```kotlin
 eventHandler<Trade>("TRADE_INSERT", transactional = true) {
@@ -102,15 +103,20 @@ pipelines {
 }
 ```
 
-### HTTP Source (Batch)
+### HTTP Source (batch)
 
-There are 2 sources that you can use to make HTTP requests, behind the scenes this uses the [Genesis HTTP Client](/server/integration/web-integration/genesis-http-client-intro/).
-1. `httpSource` - only requires the type of the response
-2. `typedHttpSource` - requires the type of the response as well as the request object being used (which should be provided in the execute method when triggering this pipeline)
+There are two sources that you can use to make HTTP requests. These use the [Genesis HTTP Client](/server/integration/web-integration/genesis-http-client-intro/).
 
-You need to provide a request builder which contains information about the HTTP request you would like to send, the default HttpMethod is GET.
+- `httpSource` - only requires the type of the response
+- `typedHttpSource` - requires the type of the response as well as the request object being used (which should be provided in the execute method when triggering this pipeline)
 
-When supplying this builder, you will have access to what is being provided to the execute method; the context parameters map and for typedHttpSource you will also have access to the request object being used.
+You need to provide a request builder, which contains information about the HTTP request you would like to send. The default HttpMethod is GET.
+
+When supplying this builder, you have access to:
+
+- what is being provided to the execute method
+- the context parameters map
+- (`typedHttpSource` only) the request object being used
 
 Example of httpSource:
 ```kotlin
@@ -128,7 +134,8 @@ pipelines {
 }
 ```
 
-Triggering the above pipeline in an eventhandler:
+Triggering the above pipeline in an `eventHandler`:
+
 ```kotlin
 val pipelineManager = inject<PipelineManager>()
 
@@ -145,6 +152,7 @@ eventHandler<Trade>(name = "TEST_PIPELINE_START") {
 ```
 
 Example of typedHttpSource:
+
 ```kotlin
 val source = httpSource<Trade, List<Trade>> {
     requestBuilder {
@@ -161,7 +169,8 @@ pipelines {
 }
 ```
 
-Triggering the above pipeline in an eventhandler:
+Triggering the above pipeline in an `eventHandler`:
+
 ```kotlin
 val pipelineManager = inject<PipelineManager>()
 
@@ -177,9 +186,9 @@ eventHandler<Trade>(name = "TEST_PIPELINE_START") {
     }
 ```
 
-### Kafka Source (Realtime)
+### Kafka Source (real-time)
 
-This source is available through the kafka-genesis module. In order to use this you must add the following dependency to your application:
+This source is available through the kafka-genesis module. To use this, you must add the following dependency to your application:
 
 <Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
     <TabItem value="gradle">
@@ -202,11 +211,12 @@ This source is available through the kafka-genesis module. In order to use this 
     </TabItem>
 </Tabs>
 
-This is a real-time acknowledgement source that creates a consumer and polls a Kafka topic. It returns a flow of ConsumerRecords and
-the consumer will only commit to kafka once acknowledgement has been received of the previous batch.
+This is a real-time acknowledgement source that creates a consumer and polls a Kafka topic. It returns a flow of ConsumerRecords and the consumer will only commit to kafka once acknowledgement has been received of the previous batch.
+
 The types specified when instantiating the source refer to the type of the Key and Value for the record being read from the kafka topic.
 
 When you configure the kafka source to use as part of your pipeline, you must provide the following as part of the configuration:
+
 - bootstrapServers (required): these are the bootstrap servers for your kafka instance
 - groupId (required): this is the group id you would like to specify for the consumer
 - keyDeserializer (required): this is the Deserializer for the key of your consumer record - this Deserializer must be for an object that matches the key type defined in the source instantiation
@@ -218,6 +228,7 @@ When you configure the kafka source to use as part of your pipeline, you must pr
 - additionalConfig (optional): if you wish to set additional config for your source that has not been specified above, you can do so using this map (see example below)
 
 Here is a GPAL example of a Kafka source definition:
+
 ```kotlin
 val source = kafkaSource<String, Int> {
     bootstrapServers = "localhost"
@@ -331,7 +342,7 @@ pipeline("TEST_DB_SINK") {
 
 ### Kafka Sink
 
-This sink is available through the kafka-genesis module. In order to use this you must add the following dependency to your application:
+This sink is available through the kafka-genesis module. To use this, you must add the following dependency to your application:
 
 <Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
     <TabItem value="gradle">
@@ -354,10 +365,12 @@ This sink is available through the kafka-genesis module. In order to use this yo
     </TabItem>
 </Tabs>
 
-This is a sink which creates a producer and sends ProducerRecords to a kafka topic. You can either send a single ProducerRecord of a flow of ProducerRecords.
+This is a sink that creates a producer and sends ProducerRecords to a kafka topic. You can either send a single ProducerRecord of a flow of ProducerRecords.
+
 The types specified when instantiating the sink refer to the type of the Key and Value for the record being sent to the kafka topic.
 
 When you configure the kafka sink to use as part of your pipeline, you must provide the following as part of the configuration:
+
 - bootstrapServers (required): these are the bootstrap servers for your kafka instance
 - clientId (required): this is the client id you would like to specify for the producer
 - keySerializer (required): this is the Serializer for the key of your producer record - this Serializer must be for an object that matches the key type defined in the sink instantiation
@@ -390,9 +403,9 @@ pipelines {
 
 This is a handler that executes after a successful pipeline operation. Multiple handlers can be added to a pipeline.
 
-- For Batch pipelines, this is at the end of the whole pipeline.
+- For batch pipelines, this is at the end of the whole pipeline.
 
-- For Realtime pipelines, this is at the end of each processed element.
+- For real-time pipelines, this is at the end of each processed element.
 
 GPAL Example:
 
@@ -410,6 +423,7 @@ pipeline("TEST_ON_COMPLETION_PIPELINE") {
 ### Send Event On Completion Handler
 
 This is a type of on completion handler that triggers an event.
+
 It takes in the name of the event as well as the input object that the event will need to run.
 
 For example, for an event that does some logic based on the Trade object:
@@ -448,7 +462,8 @@ pipeline("TEST_TRADE_PIPELINE") {
 ### On Uncaught Error Handler
 
 This is a handler that allows the user to set up custom exception handling for errors that have not been caught during the course of the pipeline.
-Multiple handlers can be added to the pipeline, each handler has access to the throwable.
+
+Multiple handlers can be added to the pipeline. Each handler has access to the throwable.
 
 For example:
 
@@ -466,14 +481,22 @@ pipeline("TEST_PIPELINE") {
 ### On Operation Error Handler
 
 This is a handler that allows the user to set up custom exception handling for errors thrown at the individual operation level.
-Multiple handlers can be added to each operation stage. Each handler has access to: the element which caused the exception, the PipelineContext and the throwable.
 
-The user must provide an action for each handler in order to signify what the pipeline should do once it catches this exception:
+You can add multiple handlers to each operation stage. Each handler has access to: 
+
+- the element that caused the exception
+- the PipelineContext
+- the throwable
+
+To specify what the pipeline should do once when it catches an exception, you must provide an action for each handler:
+
 - `SKIP_ELEMENT`: skip the element that caused this exception (e.g; in an operation processing lines from a file, skip that individual line)
-- `SKIP_STREAM`: skip the stream that caused this exception (e.g; for the file example mentioned above, skip the entire file - any lines already processed will continue to the sink)
+- `SKIP_STREAM`: skip the stream that caused this exception (e.g; for the file example mentioned above, skip the entire file - any lines already processed will continue to the sink); this is only for real-time pipelines 
 - `STOP_PIPELINE`: stop the pipeline from processing any more data
-`SKIP_STREAM` is only applicable to realtime pipeline as batch pipelines do not have the concept of a continuous stream of data.
-As such, choosing `SKIP_STREAM` in a batch pipeline would result in the same behaviour as `STOP_PIPELINE`.
+
+:::tip
+`SKIP_STREAM` is only for real-time pipelines.
+If you use `SKIP_STREAM` in a batch pipeline, this effectlively acts as STOP_PIPELINE`.
 
 For example:
 
