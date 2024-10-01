@@ -7,4 +7,25 @@ on:
         description: 'Branch to hard reset'
         required: true
         default: 'pk/hard-reset-workflow' # Change to master once tested
-  push:
+
+jobs:
+  hard_reset_branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch_to_reset }}
+          fetch-depth: 0  # Fetch all history for git reset
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Hard reset the branch to preprod
+        run: git reset --hard origin/preprod
+
+      - name: Push hard reset branch
+        run: git push origin ${{ github.event.inputs.branch_to_reset }} --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
