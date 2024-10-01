@@ -348,23 +348,20 @@ permissioning {
         filter {
             TradeState.CANCELLED != data.tradeState
         }
-        //Only visible to users with entity access to SELLING_COUNTERPARTY ID on the trade WHERE trade state is not CANCELLED (so buyer can't see cancelled trades effectively)
-    } or
-    auth(mapName = "ENTITY_VISIBILITY") {
+        //Only visible to users with entity access to BUYING_COUNTERPARTY_ID on the trade WHERE trade state is not CANCELLED (so buyer can't see cancelled trades effectively)
+    } or auth(mapName = "ENTITY_VISIBILITY") {
         authKey {
             key(data.sellingCounterparty)
         }
         //No filter clause, so always visible to users with entity access to SELLING_COUNTERPARTY ID on the trade
-    } or 
-	auth(mapName = "USER_VISIBILITY") {
+    } or auth(mapName = "USER_VISIBILITY") {
         authKey {
             key(data.owner)
         }
-		filterWithUserName {
-			userName != "TEST_USER"
-		}
-	} or
-    auth {
+        filterWithUserName {
+            userName != "TEST_USER"
+        }
+	  } or auth {
         filterWithUserName {
             userName != "TEST_USER"
         }
