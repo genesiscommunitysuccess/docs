@@ -868,6 +868,10 @@ module.exports = {
           type: 'doc',
           id: 'how-to/ht-rest'
         },
+        {
+          type: 'doc',
+          id: 'how-to/ht-consume-kafka'
+        },
       ],
     },
     {

@@ -2,118 +2,41 @@
 title: 'How to consume and publish Kafka'
 sidebar_label: 'Consume and publish Kafka'
 id: ht-consume-kafka
-keywords: [kafka, integration, ingest]
+keywords: [kafka, consume, publish, data pipeline]
 tags:
     - kafka
-    - integration
-    - ingest
+    - consume
+    - publish
+    - data pipeline
 ---
-
-
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Kafka is a standard messaging infrastructure used throughout financial markets. Genesis can consume messages from Kafka topicsand  publish messages to Kafka topics. 
+Apache Kafka is a common message streaming platform used throughout financial markets. The Genesis Platform enables you to consume and/or produce messages seamlessly to Kafka topics. 
 
-This is handled transactionally and can be done in a few different ways, depending on the desired functionality.
+For example, you can listen to market data ticks directly from your internal Kafka Cluster, publish FIX messages directly to an intermediate topic, or consume messages from an external Kafka source.
 
-## Consuming from Kafka
-This is done using a Genesis pipeline.  A pipeline allows Genesis to process incoming, and outgoing, messages and can be used for a variety of connection methods including csv files as well as Kafka topics.
+## Example
+We have created an example application that shows how to consume incoming messages and to publish them to a Kafka topic.
 
-To implement a pipeline,you must add the following to your application's **-processes.xml** file:
+The application provides two pipelines, one to consume and one to publish. These have been set up as independent processes. So if a message is published to Kafka when the consumer process is down, the application will process it as soon as the process starts back up.
 
-```jsx
-<processes>
-  <process name="MYAPP_MANAGER">
-    ...
-    <module>genesis-pal-datapipeline</module>
-    <package>global.genesis.pipeline</package>
-    <script>myapp-data-pipelines.kts</script>
-    ...
-  </process>
-</processes>
-```
+:::tip Download, view and run
+The examples are within one complete example application, which includes a front end so that you can run and see the data.
 
-You can then configre Kafka in the **pipeline.kts** file like this:
+You can [clone the repo](https://github.com/genesiscommunitysuccess/howto-csv-ingress/tree/main) to see the code - which includes comments at the key points to highlight what is being specified - and run the application.
 
-```jsx
-val source = kafkaSource<String, Int> {
-    bootstrapServers = systemDefinition.getItem("BOOTSTRAP_SERVER").toString()
-    groupId = systemDefinition.getItem("CONSUMER_GROUP_ID").toString()
-    keyDeserializer = StringDeserializer()
-    valueDeserializer = IntegerDeserializer()
-    topic = systemDefinition.getItem("KAFKA_TOPIC").toString()
-    securityProtocol = systemDefinition.getItem("KAFKA_SECURITY_CONFIG").toString()
-}
-
-val operator: SplitOperator<ConsumerRecords<String, Int>, ConsumerRecord<String, Int>> = SplitOperator { consumerRecords ->
-    flow {
-        consumerRecords.forEach {
-            emit(it)
-        }
-    }
-}
-
-pipelines {
-    pipeline("KAFKA_TO_DB_PIPELINE") {
-        source(source)
-            .split(operator)
-            .map {
-                PriceReceived(it.key(), it.value())
-            }
-            .map {
-                DbOperation.Insert(it)
-            }
-            .sink(txDbSink())
-    }
-}
-```
-
-The resulting message can be processed and stored in the database and can also trigger events via:
-
-```jsx
-    codey codey codey
-```
-
-[comment]: <> (Add link to example application when ready)
+The README file for the application provides set-up instructions for creating a similar application. As well as the pipeline definitions, this includes setting up dependencies, system definitions, the Event Handler (to trigger an event) and the Request Server (to provide data to the front end.)
+:::
 
 ## Publishing to Kafka
-This can be done in several different ways:
-- Triggered by an event.  You can use the AbstractProgrammaticSource to create a source implementation in one line that allows you to send to the pipeline from an event
-```jsx
-package global.genesis.kafka
+In the example application, a pipeline is set up to respond to an event, such as when the user inserts a new price. The pipeline publishes this data to the specified Kafka topic.
 
-import global.genesis.gen.dao.PricePublished
-import global.genesis.pipeline.event.AbstractProgrammaticSource
+## Consuming from Kafka
+The example contains a second pipeline that runs in the background and polls a Kafka topic. Whenever new records are detected on the topic, it retries them and inserts them to the database.
 
-object ProgrammaticPriceSource : AbstractProgrammaticSource<PricePublished>()
-```
-Then in the event handler a call of:
-```jsx
-  eventHandler<PricePublished>(name = "PRICE_PUBLISH") {
-      onCommit { event ->
-        val price = event.details
-        entityDb.insert(price)
-        ProgrammaticPriceSource.send(price)
-        ack()
-      }
-  }
-```
-
-
-- Use a database subscription source which detects changes and publishes these to kafka
-__code?__
-
-- Using scheduled cron rules to trigger the execution of a pipeline and publish the related data to kafka
-__code?__
-
-There is an example application here __need link__ that shows these in action.
-
-## Data types
-All standard data/message types can be supported by Genesis, including strings, json, XML, FIX format
-More detials on these can be found here __need link__.
-
+The pipeline only retrieves the next record (or batch of records) once the previous record (or batch) has been added to the database.
 
 ## Testing
 
@@ -121,8 +44,14 @@ More detials on these can be found here __need link__.
 Go to our [**Testing**](/how-to/ht-prepare-test/) page for details of our testing tools and the dependencies that you need to declare.
 :::
 
-To test your auth set-up  on your app:
+To test the set-up of a Data Pipeline for Kafka on your app:
 
 - *Details to follow shortly. Thank you for your patience.*
 
+## Full technical details
+You can find full technical details in our reference documentation:
+
+- [Data Pipeline](/server/data-pipelines/introduction)
+- [Event Handler](/server/event-handler/introduction/)
+- [Request Server](/server/request-server/introduction/)
 
