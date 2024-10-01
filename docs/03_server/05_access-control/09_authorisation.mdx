@@ -70,7 +70,7 @@ This is an easy way to bulk-load permissions data in a brand new environment, fo
 However, when you change any of the permissions tables in this way, the RIGHT_SUMMARY table **will not be maintained automatically**. To update the the RIGHT_SUMMARY so that the changes take effect, run `ConsolidateRights`.
 
 :::warning
-Did we make that clear? If you update any of the permission tables manually, the changes won't take effect until you run `ConsolidateRights`.
+If you update any of the permission tables manually, the changes won't take effect until you run `ConsolidateRights`.
 :::
 
 ### Sample explanation
@@ -115,7 +115,15 @@ Entries are stored in a memory-mapped file located in **$GENESIS_HOME/runtime/au
 
 If you need to clear out the entries by hand, simply delete everything in that directory and restart GENESIS_AUTH_PERMS.
 
-More than one permission map per table can be created.
+You can create more than one permission map for each table.
+
+:::warning
+The back-end infrastructure uses ChronicleMap to store and serve real-time dynamic authorisations. Therefore, the application must know in advance how many entries need to be stored on each Auth Map.
+
+You can define this using  `averageEntityChars`, `averageUserNameChars` and `averageUsers`, which are described in the sections on [defining a permission rule using Groovy and XML](/server/access-control/authorisation/#defining-a-permission-rule-using-groovy-and-xml) and [defining a permission rule using GPAL](/server/access-control/authorisation/#defining-a-permission-rule-using-gpal).
+
+For more technical details, go to [Configure Entries](https://github.com/OpenHFT/Chronicle-Map/blob/ea/docs/CM_Tutorial.adoc#configure-entries) in the ChronicleMap docs.
+:::
 
 ## Generic permissions
 
@@ -275,7 +283,7 @@ The code for permissioning specific queries must be inserted into your Data Serv
 The dynamic authorisation definition in a GPAL Data Server or Request Server has 4 settings, which can be used in any combination:
 
 - grouping (and/or)
-- where clauses
+- filter clauses
 - hideFields
 - enrichedAuth
 
@@ -318,15 +326,15 @@ permissioning {
 }
 ```
 
-#### Where clauses
+#### Filter clauses
 
-You can define a `where` clause if you only want to show a row in specific cases. These authorisation definitions first evaluate the `where` clause against the permission map. This functionality on its own is not that useful, because for a single auth permissions map, the content of the `where` clause could be moved to the query `where` clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
+You can define a `filter` clause if you only want to show a row in specific cases. These authorisation definitions first evaluate the `filter` clause against the permission map. On its own, this is not that useful, because for a single auth permissions map, the content of the `filter` clause could be moved to the query `filter` clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
 
-The `where` clause scope is the same as the entity object, so you can reference fields directly. If required, a parameter of the username can also be included.
+The `filter` clause scope is the same as the `filter` scope in a Data Server or Request Server, so you can reference the table/view fields using the `data` context property. If required, the username context property can be made available using `filterWithUserName`.
 
 The example below shows permissioning where authorisation is successful if the user satisfies one of four code blocks:
 
-- The first block has a `where` clause that prevents the user (a permissioned buying counterparty) from viewing cancelled trades.
+- The first block has a `filter` clause that prevents the user (a permissioned buying counterparty) from viewing cancelled trades.
 - The second block makes the information visible to any permissioned selling counterparty - so they can view cancelled trades.
 - The third block makes the information visible provided the trade owner is visible to the user, excluding any trades created by TEST_USER.
 - The fourth block does not require an auth map to be specified, as it just excludes any trades created by TEST_USER.
@@ -337,29 +345,28 @@ permissioning {
         authKey {
             key(data.buyingCounterparty)
         }
-        where { 
-            TradeState.CANCELLED != tradeState
+        filter {
+            TradeState.CANCELLED != data.tradeState
         }
-        //Only visible to users with entity access to SELLING_COUNTERPARTY ID on the trade WHERE trade state is not CANCELLED (so buyer can't see cancelled trades effectively)
-    } or
-    auth(mapName = "ENTITY_VISIBILITY") {
+        //Only visible to users with entity access to BUYING_COUNTERPARTY_ID on the trade WHERE trade state is not CANCELLED (so buyer can't see cancelled trades effectively)
+    } or auth(mapName = "ENTITY_VISIBILITY") {
         authKey {
             key(data.sellingCounterparty)
         }
-        //No where clause, so always visible to users with entity access to SELLING_COUNTERPARTY ID on the trade
-    } or 
-	auth(mapName = "USER_VISIBILITY") {
+        //No filter clause, so always visible to users with entity access to SELLING_COUNTERPARTY ID on the trade
+    } or auth(mapName = "USER_VISIBILITY") {
         authKey {
             key(data.owner)
         }
-		where { user ->
-			user != "TEST_USER"
-		}
-	} or
-    auth {
-        where { user ->
-            user != "TEST_USER"
+        filterWithUserName {
+            userName != "TEST_USER"
         }
+        // Only visible to users with entity access to USER_VISIBILITY for the OWNER field on the trade as long as they are not TEST_USER
+	  } or auth {
+        filterWithUserName {
+            userName != "TEST_USER"
+        }
+        // Visible to all users except TEST_USER
     }
 }
 ```
@@ -713,9 +720,9 @@ You must define an entity block for every entity you want to authorise.  Each bl
 | idField              | Field(s) to use for keying internal collection (should be unique). Multiple fields must be separated with the \| symbol.                                                                                      | Yes                                    |
 | updateOnUserFields   | Specify a list of USER and USER_ATTRIBUTE fields; an update to a field on this list should trigger a re-check of the entity's permissions | No. If this is left undefined, permissions checks will only be re-triggered on updates to the USER.STATUS field, and no others; STATUS does not need to be included in this field list - it is assumed. |
 | updateOnEntityFields | Specify a list of fields belonging to the entity table; an update to a field on this list triggers a re-check of this entity's permissions | No. If this is left undefined, permissions checks will be triggered for any field change at the entity level. |
-| averageUserNameChars | Average number of characters in each username. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                          | No. Default = 20                       |
-| averageEntityChars   | Average number of characters of each entity. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                            | No. Default = 7                        |
-| averageUsers         | Average number of users on the system. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                                  | No. Default = 1,000                    |
+| averageUserNameChars | Average number of characters in each username. This setting defines the backing data structure for the authorisation map.                                                                          | No. Default = 20                       |
+| averageEntityChars   | Average number of characters of each entity. This setting defines the backing data structure for the authorisation map.                                                                            | No. Default = 7                        |
+| averageUsers         | Average number of users on the system. This setting defines the backing data structure for the authorisation map.                                                                                  | No. Default = 1,000                    |
 | updateOn             | Custom logic to trigger authorisation updates in specific scenarios. When tables defined in this section are modified, the authorisation map is refreshed following the configuration logic. See the example. | No                                     |
 
 ### Data Server snippet
@@ -762,9 +769,9 @@ You must define an entity block for every entity you want to authorise.  Each bl
 | maxEntries | The maximum number of entries that the authorisation map will contain. | Yes |
 | batchingPeriod | Period in seconds to batch records before processing | Yes  |
 | idField | Field(s) to use for keying internal collection (should be unique) | No. Default value is the primary key for the entity |
-| averageUserNameChars | Average number of characters in each username. This setting helps to fine-tune the backing data structure for the authorisation map. | No. Default = 7 |
-| averageEntityChars   | Average number of characters of each entity. This setting helps to fine-tune the backing data structure for the authorisation map. | No. Default = 20 |
-| averageUsers | Average number of users on the system. This setting helps to fine-tune the backing data structure for the authorisation map. | No. Default = 1,000 |
+| averageUserNameChars | Average number of characters in each username. This setting defines backing data structure for the authorisation map. | No. Default = 7 |
+| averageEntityChars   | Average number of characters of each entity. This setting defines the backing data structure for the authorisation map. | No. Default = 20 |
+| averageUsers | Average number of users on the system. This setting defines the backing data structure for the authorisation map. | No. Default = 1,000 |
 | expression | Function that calculates whether an entity can be accessed by a user. The result is either `true` or `false` | Yes |
 
 Each `expression` has the following properties and should return either `true` or `false` based on whether the `user` can access the `entity`:

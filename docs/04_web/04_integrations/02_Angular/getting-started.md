@@ -1,6 +1,7 @@
 ---
 title: 'Angular - Getting started'
 sidebar_label: 'Getting started'
+sidebar_position: 1
 id: getting-started
 keywords: [web, integrations, angular]
 tags:
@@ -9,7 +10,7 @@ tags:
     - angular
 ---
 
-FoundationUI integrates nicely with Angular. Let's take a look at how you can set up an Angular project, starting from scratch.
+Foundation UI integrates nicely with Angular. Let's take a look at how you can set up an Angular project, starting from scratch.
 
 ## Setting up the Angular project
 

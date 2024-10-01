@@ -650,7 +650,7 @@ Unhealthy processes includes all processes that are not `HEALTHY` or `STANDBY`.
 The example below runs `mon` with a polling interval of one second.
 
 ```bash
-mon -1
+mon 5
 ```
 
 The example below runs `mon`; it shows the status of every process and outputs the config files used by each process.

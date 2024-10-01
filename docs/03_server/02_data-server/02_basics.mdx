@@ -16,7 +16,7 @@ Let's make things really simple.
 - You define your application's Data Server in a Kotlin script file named _application-name_**-dataserver.kts**. This file can be found inside the _application-name_**-script-config** module (_application-name_\\_application-name_-script-config\src\main\resources\scripts\\_application-name_-dataserver.kts). 
 - In this file, you define specific `query` codeblocks, each of which is designed to supply different sets of data.
 - Each `query` listens to a specified table or view; when data on that source changes, it publishes the changes. 
-- A `query` can include a number of other subtleties, such as `where` clauses or ranges, so that you can create code that matches your precise requirements.
+- A `query` can include a number of other subtleties, such as `filter` clauses or ranges, so that you can create code that matches your precise requirements.
 - If you use `AppGen` to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the component.
 - Otherwise, you can build your kts by defining each `query` codeblock from scratch. 
 
@@ -249,13 +249,13 @@ Monitoring of backwards joins can come at a cost, as it can cause significant ex
 
 The backwards join flag is true by default. You must explicitly set `backwardsJoins = false` if you wish to turn backwards joins off for your query.
 
-## Where clauses
+## Filter clauses
 
-If you include a `where` clause in a query, the request is only processed if the criteria specified in the clause are met. For example, If you have an application that deals with derivatives that have parent and child trades, you can use a `where` clause to confine the query to parent trades only.
+If you include a `filter` clause in a query, the request is only processed if the criteria specified in the clause are met. For example, If you have an application that deals with derivatives that have parent and child trades, you can use a `filter` clause to confine the query to parent trades only.
 
 Also, you can use these clauses to focus on a specific set of fields or a single field.
 
-Finally, note that `where` clauses can also be used in conjunction with permissioning. In the below example, users that have the TRADER or SUPPORT permission code are able to see all trades that meet the `where` condition.
+Finally, note that `filter` clauses can also be used in conjunction with permissioning. In the below example, users that have the TRADER or SUPPORT permission code are able to see all trades that meet the `filter` condition.
 
 ```kotlin
 dataServer {
@@ -269,8 +269,8 @@ dataServer {
                 }
             }
         }
-        where { trade -> 
-            (trade.quantity * trade.price) > 1000000 
+        filter {
+            (data.quantity * data.price) > 1000000
         }
     }
 }
