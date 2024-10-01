@@ -361,10 +361,12 @@ permissioning {
         filterWithUserName {
             userName != "TEST_USER"
         }
+        // Only visible to users with entity access to USER_VISIBILITY for the OWNER field on the trade as long as they are not TEST_USER
 	  } or auth {
         filterWithUserName {
             userName != "TEST_USER"
         }
+        // Visible to all users except TEST_USER
     }
 }
 ```
