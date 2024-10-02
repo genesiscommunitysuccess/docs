@@ -363,13 +363,9 @@ Before the change, if a STRING field in a target table or view was greater in si
 
 Any Data Server definition that has indices that include STRING type fields could be affected - if these fields could potentially end up truncated by a string overflow.
 
-:::tip
-**Simple fix**
-
 In most cases, you do not need to take action. This is a simple change in behaviour. 
 
 You only need to take action if your Data Server has been configured to respond to an ERROR state caused by truncated string index fields or ignored rows. This is not a likely design scenario, but if this is the case for your application, you need to create new code to replicate this behaviour.
-:::
 
 ### where blocks replaced with the new filter syntax
 This new feature is consistent across our different modules, such as authorisation, Data Server, REQUEST SERVER, etc.
