@@ -896,7 +896,10 @@ The data you want to send must be in a .csv file or files:
 - The name of the file (or files) should match the name of the table where the new or amended data is to be sent. **If you want to use a different filename, you must specify this using the `-f` argument.**
 
 :::info
-Make sure your data is in the correct format before sending to your target table. For example, dates should be ISO standard in the format of `YYYY-MM-DD` (for example 2026-05-25).
+Make sure your data is in the correct format before sending to your target table. 
+For example:
+- DATE values should be in the format of `yyyy-MM-dd` (for example 2026-05-25).
+- DATETIME values should be in the format of `yyyy-MM-dd HH:mm:ss.SSS Z` (for example 2026-05-25 12:30:01.123 +0000).
 
 If you're having trouble sending in data, use the verbose option with `-v` to get a row-by-row report!
 :::
