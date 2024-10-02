@@ -13,7 +13,7 @@ tags:
 ---
 
 :::info
-<font size="5">**This version of the documentation describes version 8.3 of the Genesis Platform**</font>.
+<font size="5">**This version of the documentation describes version 8.4 of the Genesis Platform**</font>.
 :::
 
 ## History
@@ -36,11 +36,458 @@ Remember to click on **Current** when you want to return to the most recent vers
 
 Foundation UI has a programme of regular continual releases. These are documented along with their source code on [github](https://github.com/genesislcap/foundation-ui/releases).
 
+## v8.4
+
+### What's changed
+* fix(foundation-ui): port resetCombobox function from genesis-create 
+* feat(foundation-fdc3): marking types as deprecated, fix channel broadcast payload 
+* fix(foundation-forms): check if oneOf exist for genesisType in date renderer 
+* fix: smart forms correct errors placement 
+* fix(foundation-entity-management): show entityLabel on notification description 
+* fix(foundation-forms): pass jsonSchema to arrayList renderer if uiSchema is provided 
+* chore: change SLACK_CHANNEL on CI workflows  
+* chore: add new circular.yml workflow script + circular dep fixes 
+* feat(foundation-fdc3): bumping fdc3 package version 
+* fix(foundation-entity-management): changeCase for search-bar if headerName isn't provided 
+
+
+## v8.3
+
+## What's changed
+* chore: allowing releases from maintenance branches 
+* chore: allowing releases from maintenance branches - enabling jobs 
+* fix(g2plot-chart): address error loop when used within foundation-layout 
+* feat(foundation-forms): Adding label placement option 
+* feat: allow crud buttons to be placed above the grid 
+* feat(foundation-fdc3): using color channels splitting raise intent
+* feat(grid-pro): reqRep support when SSRM + new filters + complete overhaul
+* feat(foundation-testing): add playwright-bdd to foundation-testing + README update 
+* chore(foundation-testing): minor README changes
+* chore: bumping @playwright/test to latest 
+* fix(foundation-logger): restore log level support on package loggers 
+* chore: display toast on crud operations - FUI-2097 
+* fix: handle spacebar selection/deselection and update CRUD buttons
+* feat(foundation-header): ability to add nav items in side-bar 
+* fix(grid-pro): update server-side reqRep to match latest GSF
+* feat(foundation-forms): default filter for combobox renderer 
+* fix(foundation-testing): mock JSDOM dialog methods 
+* feat(foundation-entity-management): search-bar value/label mapping 
+* fix(foundation-ui): convert initial label to string 
+* fix(foundation-forms): include additionalErrors in main errors array in smart-forms 
+
+## v8.2
+
+### What's changed
+* chore(grid-pro): remove sourceRef leftover 
+* feat: allowing to specify development server public path 
+* fix(foundation-comms): refreshToken to be updated on MFA_FAILED error code 
+* fix: accessibility changes 
+* chore: use default FUI .env file in PR test steps if exists 
+* fix: address custom rowId when using EM + re-work of deferredGridOptions 
+* feat(build-kit): support for dotenv files 
+* chore: increase lighthouse audit thresholds 
+* fix(foundation-ui): address multiselect auto positioning 
+* chore: address stylelint warnings
+* fix(foundation-ui): address zero tab contrast ratio 
+* fix: grid-pro TS type tweaks and grid-tabulator styling
+* fix(foundation-ui): keyboard enabled X button 
+* fix(foundation-entity-management): address -any- types
+* fix(rapid-design-system): change display property to block for flex compatibility
+* fix: login / auth should visually indicate required fields 
+* feat(foundation-header): add slot on right-side of foundation header 
+* fix(foundation-ui): notifications announced by screen readers
+* chore: ability to trigger master build manually 
+* fix(foundation-header): remove button styles from nav menu 
+* fix(foundation-ui): sync progress bar after tabs/tab-panels change 
+* feat: seed utils is able to add additional server artifacts 
+* chore(client-app): add high-frequency demo + route tweaks
+* fix(foundation-forms): Fixing vertical alignment issues in rapid foundation form
+* feat(foundation-utils): add number and date formatters
+* chore(grid-pro): replacing grid-pro-genesis-datasource with grid-pro-client-side-datasource
+* fix(foundation-ui): updated number-field to accept negative numbers 
+* feat: pbc support in angular 
+* chore: fix typeRampPlus4Font size token value for rapid 
+* docs(grid-pro): adding documentation for grids and datasources 
+* feat(foundation-entity-management): allow EM to use SSRM / server-side-datasource 
+* fix(g2plot-chart): chart rendering 
+
+## v8.1
+
+### What's changed
+* feat(genx): support for seeds hosted in NPM registry 
+* fix(foundation-header): revert "address showcase code that E2E depends on 
+* fix(foundation-header): revert  #1294 
+* feat(seed-utils): new package for seed-related utilities 
+* build: shared https and proxy setup 
+* fix(foundation-entity-management): revert foundation-login dependency 
+* feat: handle events added to grid-pro from template 
+* fix: husky usage deprecation notice 
+* fix(foundation-comms): add MSG_NACK error logging when SOURCE_REF is empty 
+* fix(g2plot-chart): g2plot-chart fix 
+* fix(genx): correctly handle subdir param for NPM seeds
+* feat(genx): making app parameter optional for genx add command 
+* fix(genx): permission error in Powershell 
+* chore: explicitly listing bundler dependencies 
+* chore: added script for checking module size 
+* chore: upgrade deprecated GH actions to v4 
+* feat(grid-pro): allow headers to have different case types 
+* test: temp disable proxy test
+* feat: allow connect component to retrieve all available resources 
+* chore(foundation-explorer): address grid theme switching 
+* feat: allow host router to redirect after successful login 
+* docs: pull small changes upstream 
+* feat(webpack-builder): adding circular dependency plugin 
+* chore: husky install command 
+* chore: updating jsdom, sinon, workbox-webpack-plugin 
+* chore: bump lsp versions 
+* fix: address invalid sorting scenarios with custom colDef forcing sortable 
+* build: removing husky for CI builds
+* fix(g2plot-chart): add events directly in component 
+* feat(foundation-entity-management): default searchBarConfig if not defined
+* chore: address all circular dependency warnings 
+* fix(grid-pro): address SSRM criteria changing + add dataLogoff for those
+* feat(grid-pro): add KVStorage type for state persistence
+* chore: remove console log from rapid-grid-pro
+* chore(grid-pro): clean row group defs to avoid enterprise warnings by default
+* chore: replace remaining console.log usages for logger util
+* fix: remove hardcoded row height from EM 
+* fix: fixed rapid grid pro text color in light mode
+* feat(build-kit): support for absolute app dir paths
+* feat(foundation-form): resolve ref reference in json schema
+* fix(foundation-ui): adjust stepper-tab-panel styles
+* fix(foundation-login): persist refresh token across tabs
+* fix(foundation-comms): include mfaToken in session refresh flow
+* feat: add categorized-multiselect
+* fix: address removeStyles null scenarios 
+* feat(foundation-ui): add stacking icons component
+* fix(foundation-utils): address double disconnectedCallback cycle on layout items
+* fix(foundation-ui): fix content wrapping issue in categorized-multiselect
+* feat: add web-core package for FAST re-exports and wc utils
+* feat(grid-pro): allow filterModel saving to storage
+* fix(foundation-forms): get correct value for boolean renderer on change
+* chore: update storybook to v8 (and prettier to v3) 
+* fix(foundation-forms): handle ui and json schema in layout
+* feat(foundation-ui): hide-submit-button attr in stepper
+* feat(build-kit): helpers for conditional check and partials
+* fix: address logout issue when user session is expired or regular flow
+* docs(foundation-i18n): update README
+* docs: update all README files (baseline) 
+* feat(build-kit): export change-case library
+* chore: set packages deprecated 
+* feat(grid-pro): keep column definitions on restart 
+* fix(grid-pro): address AG attribute setup on grid-pro connectedCallback
+* fix(foundation-forms): allow changing local data in datasources
+* fix(grid-pro): allow column state to be kept on datasource restart
+* fix: add tabs & tab-panel default height
+* fix(foundation-comms): make mfaToken optional in BasicAuthType
+* fix(build-kit): using absolute dir path internally
+* chore: passing correct auth NPM tokens after registry re-order
+* chore: removing tmp folder before CLI tests
+* chore: adjust typorgraphy token values and  rapid-badge variations 
+* fix: column state not applying correctly on restart 
+* feat(foundation-form): support array without providing resource name
+* feat(foundation-form): labels for checkboxes 
+* chore: update CODEOWNERS file 
+* chore: address husky hooks execution 
+* feat(build-kit): allow skipping seed dependency install 
+* fix(grid-pro): improve datasource cloning 
+* fix(foundation-entity-management): fixing clone node + layout issue when setting functions in grid options
+* feat(uvu-playwright-builder): add file targeting for unit tests
+* feat: handle service errors 
+* fix(grid-pro): deepClone for columnDefs in datasource/grid-pro-column
+* fix(foundation-forms): styling overflow in small container
+* chore: services-status - allow user to set messages 
+* chore: update webpack deps 
+* feat: network monitor 
+* feat: global error handling - overlays 
+* feat: add foundation-fdc3 package
+* feat(foundation-fdc3): add channel eventelement
+* fix: removing federation dashboard from webpack-builder 
+* feat(foundation-broadcast-channel): add strongly typed broadcast-channel
+* chore: set profile package deprecated
+* chore: datasource emit size-changed event
+* fix(foundation-forms): include readOnly type in forms 
+* chore: Multiselect with option to add new items when not available from the list 
+* fix: improve grid tab content DSC app 
+* fix(build-kit): ensure loadGenxModule is not affected by require module caching 
+* chore: datasource emit event after DATASERVER process stoped 
+* feat: handle components errors - chart 
+* chore: added logic to default to Design System of the client app for which DSC was launched
+* fix(foundation-ui): default order of pbc routes to the end 
+* fix(build-kit): allow default blank values in seeds 
+* fix: seed utils to update server dependencies rather than duplicating
+* fix(foundation-ui): correctly handle non-string option labels
+* docs(foundation-fdc3): update README
+* chore: multiselect add css vars 
+* feat(foundation-form): handle json forms default values 
+* feat(foundation-fdc3): adding interop notifications component 
+* feat(foundation-entity-management): ability to change rowSelection
+* chore: prefix added in entity management 
+* build: network monitor and user intersection ahead of v15 
+* feat(foundation-ui): allow contains search in multiselect 
+* chore: add translations to foundation-login
+* fix(foundation-entity-management): address prefixed layout lifecycle
+* fix(foundation-comms): revert change to transform rights and profiles 
+* fix(grid-tabulator): upgrade to v6 
+* feat(web-core): add genesis exports and update client-app
+* feat(foundation-fdc3): adding fdc3 util elements
+* docs: update README for main Design System packages 
+* docs(foundation-utils): update README
+* docs(foundation-comms): update README
+* feat(foundation-header): multi ds header tweaks 
+* fix(foundation-forms): set dev only button to rapid
+* fix(foundation-forms): correctly switch between date and datetime input 
+* fix(foundation-broadcast-channel): testing for random failures 
+* test: skip tests failing on CI flow 
+* docs: update README for foundation-i18n
+* chore: form add additional renderers 
+* fix(foundation-ui): snackbar auto-close/stacking/height tweaks 
+* fix(foundation-entity-management): scroll on modal position center
+* fix(foundation-ui): overflow-wrap for long string in snackbar
+* fix(foundation-forms): set scrollbar-color 
+* chore(foundation-auth): add translations 
+* chore: header title styles fixed for entity management 
+* fix(foundation-ui): ability to set position in search-bar
+* feat(foundation-forms): enum renderers support server default value 
+* fix(rapid-design-system): default background color for tab-panel
+* test(foundation-fdc3): adding unit tests 
+* feat(foundation-entity-management): support reqRep in default search bar config 
+* fix(rapid-design-system): export notification listener in rapid 
+* fix(rapid-design-system): font fixed for snackbar 
+* feat(rapid-design-system): danger appearance for button 
+* feat: make local dev builds accessible on the network 
+* fix: remove manual dataLogoff calls
+* chore: added warning, buy, sell tokens in zero 
+* fix(foundation-ui): address dialog outline styling 
+* fix(foundation-entity-management): address add entity button spacing
+* fix: address server-side filtering + WS messages teardown conflict
+* fix(foundation-forms): formatting for date and datetime
+* fix(seed-utils): improved major version check error message 
+* chore: update PR description job 
+* chore: upgrade actions-gh-pages to v4 
+* fix(foundation-ui): validation for last step in stepper if submit button is hidden 
+* fix(foundation-forms): pinning down ajv version due to a breaking change 
+* chore: update types dep for tabulator-tables 
+* feat(grid-pro): improvements for cell renderers 
+* chore: monorepo packages cleanup 
+* chore: add rapid storybook to gh-pages 
+* chore: remove circular references 
+* feat(foundation-comms): stream latest state of the dataserver 
+* chore: update genx-cli test CI job step 
+* feat: network monitoring enhancements 
+* fix: address DOM disconnection when using entity-management with layout + better layout styling
+* feat(foundation-header): conditional nav item based on permission 
+* fix(foundation-ui): address user-select for tab component
+* feat: genesis resources and datasource enhancements 
+* feat: server handle errors 
+* feat(vite-builder): enable vite prod build + scripts
+* chore: reverting vite build temporarily for github-pages
+* feat(design-system-configurator): automatically opens browser window
+* fix(foundation-fdc3): fixing deep clone and event property 
+* feat(grid-pro): add set row data property to element 
+* fix(foundation-explorer): address multiple visual issues
+* fix(foundation-fdc3): override deep clone methods to handle functions, defaulting to using e.detail.data 
+* chore: rename show passwords -> show password 
+* chore: update PR template
+
 ## Genesis Server Framework (GSF)
 
 GSF release notes are added to this area immediately following each software release. The most recent release is at the top.
 
 **As new GSF releases are added, they shall be displayed here.**
+
+## GSF 8.4
+
+### Breaking changes
+
+### Modified GenesisHTTPClient
+This now allows invocations from different contexts.
+
+**Are you affected?**
+
+If you are using the http client directly, some methods are now marked as internal. You could receive a compilation error if you refer to a function that is now internal.
+
+:::tip
+**Simple fix**
+
+Use only the [methods](https://learn.genesis.global/docs/server/integration/web-integration/genesis-http-client-core-concepts/#request-methods) exposed as public in the interface (get, put, post, delete). 
+
+Read the pages on [GenesisHTTPClient](https://learn.genesis.global/docs/server/integration/web-integration/genesis-http-client-intro/) for full information.
+
+:::
+
+### DbOperation class has changed packages as part of a refactor
+
+**Are you affected?**
+
+You need to take action if:
+- you use the Data Pipelines component in your application
+- you have any compiler errors when you build your app after the upgrade with **cannot find Symbol DbOperation**
+
+:::tip
+**Simple fix**
+
+1. Search your imports for all instances of `global.genesis.datapipeline.pal.sink`.
+2. Replace with `global.genesis.pipeline.api.db`.
+:::
+
+### Ensure Data Server doesn't go into error state
+This change the Data Server going into an error state when string index fields are truncated or when rows are ignored.
+
+Before the change, if a STRING field in a target table or view was greater in size than that defined by the Data Server index definition, the Data Server would go into ERROR state. From that point onward, it would not serve any more requests, essentially rejecting all messages. 
+
+**Are you affected?**
+
+Any Data Server definition that has indices that include STRING type fields could be affected - if these fields could potentially end up truncated by a string overflow.
+
+:::tip
+**Simple fix**
+
+You only need to take action if your Data Server has been configured to go into ERROR state when this situation arises. This is not a likely design scenario, but if this is the case for your application, you need to create new code to replicate this behaviour.
+:::
+
+### Made rxSources non-functional interfaces, standardised http source syntax and added utilities
+The unused RxSink interface not a functional interface anymore; it is now a regular interface. Only applications that use the RxSink interface in the Data Pipeline are affected. 
+
+Any new implementations of Data Pipeline must only use the [standard http web calls](/server/integration/web-integration/genesis-http-client-core-concepts/#request-methods). Check the revised [reference documentation for Data Pipeline](/server/data-pipelines/introduction/) for full details.
+
+### Added type safe onOperationError handling to data pipelines
+Error handling for Data Pipeline has been redesigned. 
+
+**Are you affected?**
+
+If your application uses Data Pipeline and you want to migrate to version 8.4 of the Genesis Platform, you have to  change your error handling based on the [new handlers](/server/data-pipelines/implementations/#handlers).
+
+### where blocks replaced with the new filter syntax
+This new feature is consistent across our different modules, such as authorisation, Data Server, REQUEST SERVER, etc.
+
+The new `filter` clause replaces the old `where` clause functionality. The old `where` clause is now deprecated. Use `filter` from now on.
+
+### Fixes
+* (deploy-plugin): deploy zip task reference correct file when product name set in settings plugin 
+* (deploy-plugin): find project jars from gradle jar task, not from version 
+* Consul: improve session check logic used to determine primary process demotion to avoid race conditions 
+* Criteria validation and compilation should handle StackOverflow errors
+* Dataserver backwardsJoin view does not recover in case of a buffered out-of-order update
+* DbMon search returns the expected number of records 
+* DbMon updateWhere fails if there is a white space in the argument
+* Fix "and" operator usage in generic GPAL "auth" blocks for eventhandler and custom req/rep 
+* Generate non-required properties as nullable for paginated requests 
+* Improve error message when a system definition property is expected but is not specified 
+* Make http response function suspending to fix issues with generated code 
+* Mon dies when system is not able to connect to CONSUL but is configured to do so
+* Remap Oracle Script needs a / between 2 Declare blocks 
+* Rename "authKeyWithUsername" to "authKeyWithUserName" for consistency 
+* Allow db mon to fetch more than 500 results 
+* Allow for req rep GET without request param 
+* Correctly parse criteria expressions for custom req reps 
+* Filter out genesis.testsupport from TestContext package scan
+* Remove unnecessary kotlinx-serialization dependency 
+* When using @SysDefOverwrite annotation in tests and scripts use sys def receiver
+
+### Features
+* Added convenience function for building local file camel string 
+* Added get all pipelines functions to PipelineManager 
+* Added get all pipelines functions to PipelineManager 
+* Implement context based "filter" support as shared functionality for dataserver/req-rep/auth blocks, including enriched dataserver queries 
+* Add support for REST integration in datapipelines 
+* Added source for use by event handlers. 
+* Deprecate safeWriteTransaction in favour of writeTransaction 
+
+### Dependency changes
+* Added constraint on jackson-dataformat-cbor to prevent classpath issues 
+* Bump actions/upload-artifact from 3 to 4 by 
+* Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.7 to 0.17.8 in /genesis-subcore/deploy-gradle-plugin 
+* Bump com.github.oshi:oshi-core from 6.6.2 to 6.6.3 in /genesis-conventions 
+* Bump com.jfrog.artifactory from 5.2.3 to 5.2.4 in /genesis-publish-config 
+* Bump com.jfrog.artifactory from 5.2.4 to 5.2.5 in /genesis-publish-config 
+* Bump com.microsoft.sqlserver:mssql-jdbc from 12.6.1.jre11 to 12.8.1.jre11 in /genesis-conventions 
+* Bump com.networknt:json-schema-validator from 1.5.0 to 1.5.1 in /genesis-conventions 
+* Bump commons-cli:commons-cli from 1.8.0 to 1.9.0 in /genesis-conventions 
+* Bump debeziumVersion from 2.7.0.Final to 2.7.1.Final in /genesis-conventions 
+* Bump io.github.classgraph:classgraph from 4.8.174 to 4.8.175 in /genesis-conventions 
+* Bump oracleJdbcVersion from 23.4.0.24.05 to 23.5.0.24.07 in /genesis-conventions 
+* Bump org.apache.commons:commons-compress from 1.26.2 to 1.27.1 in /genesis-conventions 
+* Bump org.apache.fury:fury-core from 0.6.0 to 0.7.0 in /genesis-conventions 
+* Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.3 to 5.2.4 in /genesis-publish-config 
+* Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.4 to 5.2.5 in /genesis-publish-config
+* Bump slf4jVersion from 2.0.13 to 2.0.16 in /genesis-conventions 
+* Bump sshdVersion from 2.13.1 to 2.13.2 in /genesis-conventions 
+
+## Genesis 8.2.3(platform-notify)
+
+### Fixes
+- Ensure client API sends correct gateway field on email notification messages
+
+## Genesis 8.3.2(platform-notify)
+
+### Fixes
+- Ensure client API sends correct gateway field on email notification messages
+
+## Genesis 7.2.15(genesis-server)
+
+### Fixes
+- (codegen): include dependant scripts in codegen cache key 
+- ResourceDaemon: Fix Dependency Injection initialisation on startup
+
+## Genesis 8.3.1(platform-notify)
+
+### Features
+- Add support for email subject prefixes
+- Create clear all alerts button
+
+### Fixes
+- Ensure no data race for attachments 
+
+## Genesis 8.2.2(platform-notify)
+
+### Features
+- Add support for email subject prefixes
+- Create clear all alerts button
+
+## Genesis 8.3.1(genesis-server)
+
+### Fixes
+- (deploy-plugin): deploy zip task reference correct file when product name set in settings plugin
+- Dataserver backwardsJoin view does not recover in case of a buffered out of order update 
+- When using @SysDefOverwrite annotation in tests and scripts, use sys def receiver
+
+## Genesis 8.2.6(genesis-server)
+
+### Fixes
+- Dataserver backwardsJoin view does not recover in case of a buffered out-of-order update 
+
+## Genesis 8.1.10(genesis-server)
+
+### Fixes
+- Dataserver backwardsJoin view does not recover in case of a buffered out-of-order update
+
+## Genesis 8.0.9(genesis-server)
+
+### Fixes
+- Dataserver backwardsJoin view does not recover in case of a buffered out-of-order update 
+- Mon dies when system is not able to connect to CONSUL but is configured to do so
+
+## Genesis 7.2.14(genesis-server)
+
+### Fixes
+- Dataserver backwardsJoin view does not recover in case of a buffered out-of-order update
+
+## Genesis 7.1.23(genesis-server)
+
+### Fixes
+- Dataserver backwardsJoin view does not recover in case of a buffered out-of-order update
+- Add type conversion from Integer to Short ## Genesis 6.7.36(genesis-server)
+
+## Genesis 6.7.36(genesis-server)
+
+### Fixes
+- Dataserver backwardsJoin view does not recover in case of a buffered out-of-order update
+
+## Genesis 7.0.13(genesis-server)
+
+### Fixes
+- Dataserver backwardsJoin view does not recover in case of a buffered out-of-order update
 
 ## Genesis 8.2.1(platform-notify)
 
