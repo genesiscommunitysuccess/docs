@@ -16,9 +16,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-Many of the *How To...* pages here point you at example applications. You can clone these applications so that you can examine the code in the files (which include helpful comments). And you can build and run the app locally to see what it looks like in practice.
+The *How To...* pages in this section point you at example applications. 
 
-Where an example app is available a link takes you directly to the repository, for example, [How to ingest csv files](https://github.com/genesiscommunitysuccess/howto-csv-ingress/tree/main).
+You can clone these applications so that you can examine the code in the files (which include helpful comments). And you can build and run the app locally to see what it looks like in practice.
+
+Each page here links you directly to the repository, for example, [How to ingest csv files](https://github.com/genesiscommunitysuccess/howto-csv-ingress/tree/main), so that you can quickly see what the code is doing at any point.
 
 There is always a main readme file for the example application, which you can scroll down to view. This gives you a good description of the purpose of the app and the key components.
 
@@ -63,22 +65,22 @@ If you are using a Mac, you need to download and install LMDB. Using homebrew, y
 1. Open IntelliJ, click **Open**, and navigate to your project folder.
 
 :::tip
-Take care not to open the parent or any child directories
+Take care not to open the parent or any of the child directories
 :::
 
-2. Go to **File** → **Project Structure** and make sure that **SDK** and **Language level** are set to 17 .
+2. Go to **File** → **Project Structure** and make sure that **SDK** and **Language level** are set to 17.
 
 :::info
-Intellij will pick up the Java version from the project default, set above. However, if you've inadvertently started a build on a newer JVM, you may need to update your gradle build settings. To do this, go to **Settings** → **Build, Execution, Deployment** → **Build Tools** → **Gradle** and set your **Gradle JVM** to 17
+Intellij will pick up the Java version from the project default, set above. However, if you've inadvertently started a build on a newer JVM, you may need to update your gradle build settings. To do this, go to **Settings** → **Build, Execution, Deployment** → **Build Tools** → **Gradle** and set your **Gradle JVM** to 17.
 :::
 
-3. If you are prompted (bottom right of the IntelliJ window) to Load Gradle Project, click to allow this to proceed.
+3. If you are prompted (bottom right of the IntelliJ window) to **Load Gradle Project**, click to allow this to proceed.
 
 ### Building and running the project
 
 1. Open the Genesis IntelliJ plugin at the top right of the IntelliJ window.
 
-2. Click Remap. Agree to all options to ensure your data model is created and all necessary data is imported.
+2. Click **remap**. Agree to all options to ensure your data model is created and all necessary data is imported.
 
 3. Click on the **Tasks** tab in the plugin and run **ConsolidateRights**.
 

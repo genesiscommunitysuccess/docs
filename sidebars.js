@@ -819,20 +819,13 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'EXAMPLE APPS',
+      label: 'EVERYDAY BASICS',
       collapsed: false,
       items: [
         {
           type: 'doc',
-          id: 'how-to/ht-run-examples'
+          id: 'how-to/ht-kotlin'
         },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'EVERYDAY BASICS',
-      collapsed: false,
-      items: [
         {
           type: 'doc',
           id: 'how-to/ht-join-expose'
@@ -853,9 +846,13 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'INTEGRATION',
+      label: 'EXAMPLE APPS',
       collapsed: false,
       items: [
+        {
+          type: 'doc',
+          id: 'how-to/ht-run-examples'
+        },
         {
           type: 'doc',
           id: 'how-to/ht-ingest-csv'
@@ -871,6 +868,10 @@ module.exports = {
         {
           type: 'doc',
           id: 'how-to/ht-consume-kafka'
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-front-end-example'
         },
       ],
     },

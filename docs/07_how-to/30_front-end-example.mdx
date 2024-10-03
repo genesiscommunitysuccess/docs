@@ -1,0 +1,85 @@
+---
+title: 'How to create a simple front end'
+sidebar_label: 'Create a simple front end'
+id: ht-front-end-example
+keywords: [web components, front end, frontend, forms, modal, flyout]
+tags:
+    - web components
+    - front end
+    - frontend
+    - forms
+    - modal
+    - flyout
+
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+:::tip
+Looking for a simpler place to start?
+
+Check our easy guide to [add a new page with simple content](/how-to/ht-front-end-simple/).
+:::
+
+In this page, we shall look at how to create a simple front end for your application using the components in the Genesis Foundation UI library.
+
+We have created an [example application](https://github.com/genesiscommunitysuccess/howto-uiexamples) to demonstrate the things you can set up on the front end of a Genesis application.
+
+There are multiple UIs, with links to the corresponding code.
+
+### The back end
+Even if you are a front-end specialist, it is important to have some familiarity with the back end. You need to know what resources you can connect to in order to retrieve data and interact, and in many cases you will need to know exactly what fields are available on a specific resource.
+
+In our example, the back end is purposely kept simple.  It contains:
+
+- static data tables for Entity and Client
+- a Trade table with 10 pre-loaded trades
+- time-series data of inflation rates for use in charting
+
+:::info Take a look at the code
+The [**back-end code**](https://github.com/genesiscommunitysuccess/howto-uiexamples/tree/main/server) has its own directory structure. You can drill down through the **uiexamples-app** to see the data files and the script files that define the back-end processes.
+
+Check the [**readme file**](https://github.com/genesiscommunitysuccess/howto-uiexamples/blob/main/server/README.md) before you try to run the application.
+
+The login is admin / genesis
+:::
+
+### The front end
+The principal aim of this example is to show you the code for the front end and enable you to run it and see the results.
+
+We recommend VSCode as your IDE for looking at the code if you are new to working with web code. This gives you full access to the Genesis plugin, which makes it easy to build and start the back end, and to start the front end.
+
+Alternatively, you can use a JetBrains IDE, such as IntelliJ.
+
+:::info Take a look at the code
+The [**front-end code**](https://github.com/genesiscommunitysuccess/howto-uiexamples/tree/main/client/src) of the example application has its own directory structure. 
+
+From this point, you can drill down into different parts of the application, such as:
+
+- [home](https://github.com/genesiscommunitysuccess/howto-uiexamples/tree/main/client/src/routes/home), which has the three **.ts** files for the Home Page
+
+- [foundation-layout](https://github.com/genesiscommunitysuccess/howto-uiexamples/tree/main/client/src/routes/foundation-layout-intro), which defines containers that can be resized, dragged and dropped within the UI
+
+- [charts](https://github.com/genesiscommunitysuccess/howto-uiexamples/tree/main/client/src/routes/charts), which has the three **.ts** files for the Charts page
+
+- [modal](https://github.com/genesiscommunitysuccess/howto-uiexamples/tree/main/client/src/routes/modal-how-to), which has the three **.ts** files for the Modal page
+
+:::
+
+:::tip Take a look at the app
+Before you take a look at the code, make sure you follow the relevant instructions in the [**readme file**](https://github.com/genesiscommunitysuccess/howto-uiexamples/blob/main/client/README.md) for the front end. 
+
+This has details of how to install the dependencies, build the back end, and run it to view the application.
+
+There is also instruction on how to install the Genesis [**Custom Elements LSP Plugin**](https://microsoft.github.io/language-server-protocol/), which gives you IntelliSense help while writing TypeScript code in the repo.
+:::
+
+## Technical details
+
+Find more details in our in our reference documentation:
+
+- [Working with forms](/web/forms/foundation-forms/) 
+- [Json schemas for forms](/web/forms/foundation-forms-json-schema/)
+- [UI schemas for forms](/web/forms/foundation-forms-ui-schema/) 
+
