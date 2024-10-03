@@ -516,7 +516,7 @@ val sink = jmsSink<MessageSent> {
 
 pipelines {
     pipeline("TEST_JMS_PIPELINE") {
-        source(ProgrammaticMessageSource)
+        source(testSource)
             .map { it }
             .sink(sink)
     }
