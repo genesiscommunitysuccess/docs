@@ -178,6 +178,34 @@ joining({usual join syntax}) {
    }
 }
 ```
+
+### Multiple joins on the same table
+
+To be able to perform multiple joins on the same table, you need to use alias:
+
+```kotlin
+    val firm = BID_OFFER withAlias "firm"
+    val draft = BID_OFFER withAlias "draft"
+
+    joins {
+        joining(firm, backwardsJoin = true) {
+            on(firm { BID_STATE } to BidState.FIRM)
+        }
+        joining(draft, backwardsJoin = true) {
+            on(draft { BID_STATE } to BidState.DRAFT)
+        }
+    }
+    fields {
+        firm {
+            BID_PRC withAlias "FIRM_BID_PRC
+        }
+        draft {
+            BID_PRC withAlias "DRAFT_BID_PRC"
+        }
+    }
+
+```
+
 ### Examples
 
 #### Example 1
