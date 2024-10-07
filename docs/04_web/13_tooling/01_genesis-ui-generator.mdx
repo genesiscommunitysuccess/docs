@@ -1,5 +1,5 @@
 ---
-title: "Web tooling - Genesis UI Generator"
+title: "Genesis UI Generator"
 sidebar_label: "Genesis UI Generator"
 id: genesis-ui-generator
 keywords: [web, tooling, code snippets, vscode, extension, ai, local]
@@ -12,7 +12,7 @@ tags:
   - ai
 ---
 
-The Genesis UI Generator is a Visual Studio Code extension designed to enhance the development experience on the Genesis Platform. 
+The Genesis UI Generator is a Visual Studio Code extension designed to enhance the development experience on the Genesis Platform.
 
 Starting with an image of the desired UI, it creates the code for a working UI, along with the files that enable you to add it to a new or existing application. This can be a major boost to productivity.
 
@@ -92,19 +92,27 @@ This displays the image in a new UI dedicated to Genesis View:
 
 ![Genesis View Completed](/img/vscode-extension/genesis-view-completed.png)
 
-The components are generated separately from the main screen (for code modularity).
+The components are generated separately from the main screen (for code modularity):
 
 ![Genesis View Completed](/img/vscode-extension/files-generation.png)
 
 And that's it! You've created a new UI page in just a few minutes!
 
-### Genesis routes/components
-
-1. Create new routes (a new folder with a new route component), new components, and new components with data source (grid or chart).
-
-2. Define your component name, then click on the type of component you want to create. The component and all necessary files will be created automatically in the correct folder.
+### Genesis routes and components
 
 ![VSCode Routes](/img/vscode-extension/vscode-routes.png)
+
+#### New
+
+It's possible to create a new route or a new component defining its name and clicking on Create.
+
+The new route will be created under the folder `routes` and declared on the `config.ts` file.
+
+The new component will be created under the folder `components` and declared on the `components.ts` file.
+
+#### Component with Datasource
+
+It's also possible to create a grid or a chart with a datasource plugged into the back-end. All the queries available will be identified by the AI and will be loaded for the user to pick up. After clicking on Create, all necessary files will be created automatically in the correct folder.
 
 ### Genesis Design System Configurator
 
@@ -142,4 +150,4 @@ Type `gg` followed by the first letters of the component you are looking for to 
 
 ### Documentation
 
-Within the extension, you can also find links to Genesis Documentation and Genesis Playground.
+Within the extension, you can also find links to [Official Documentation](https://learn.genesis.global/docs/getting-started/) and [Genesis Playground](https://playground.demo.genesis.global/).
