@@ -13,7 +13,7 @@ tags:
 
 Let's make things really simple.
 - A Request Server is a module that supplies static data to the front end of your application.
-- You define your application's Request Server in a kotlin script file  _application-name_**-reqrep.kts**. This file should be in the _application-name_-script-config module.
+- You define your application's Request Server in a Kotlin script file:<br></br>**server/**_appname_**/src/main/genesis/scripts/**_appname_**-reqrep.kts**
 - In this file, you define specific `requestReply` codeblocks, each of which is designed to supply different sets of data; this could be a table or view, or just a subset of the fields in a table or view.
 - A `requestReply` can include a number of other subtleties, such as `filter` clauses or ranges, so that you can create code that matches your precise requirements.
 - If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the module.
