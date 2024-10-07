@@ -189,6 +189,7 @@ joining(fix, backwardsJoin = true) {
       .joining(fixCal, JoinType.INNER, backwardsJoin = true) {
         on(fix { CALENDAR_ID } to fixCal { CALENDAR_ID })
       }
+}
 ```
 After:
 ```kotlin
@@ -200,6 +201,7 @@ joining(fix, backwardsJoin = true) {
    }
    .and(fix { SIDE_TYPE } to SideType.FIX)
    .joining(fixCal, JoinType.INNER, backwardsJoin = true)
+}
 ```
 
 #### Example 2
