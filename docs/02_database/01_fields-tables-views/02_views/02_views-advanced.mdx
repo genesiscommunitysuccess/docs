@@ -178,6 +178,33 @@ joining({usual join syntax}) {
    }
 }
 ```
+### Multiple joins on the same table
+
+To be able to perform multiple joins on the same table, you need to use one or more aliases:
+
+```kotlin
+    val firm = BID_OFFER withAlias "firm"
+    val draft = BID_OFFER withAlias "draft"
+
+    joins {
+        joining(firm, backwardsJoin = true) {
+            on(firm { BID_STATE } to BidState.FIRM)
+        }
+        joining(draft, backwardsJoin = true) {
+            on(draft { BID_STATE } to BidState.DRAFT)
+        }
+    }
+    fields {
+        firm {
+            BID_PRC withAlias "FIRM_BID_PRC
+        }
+        draft {
+            BID_PRC withAlias "DRAFT_BID_PRC"
+        }
+    }
+
+```
+
 ### Examples
 
 #### Example 1
@@ -189,6 +216,7 @@ joining(fix, backwardsJoin = true) {
       .joining(fixCal, JoinType.INNER, backwardsJoin = true) {
         on(fix { CALENDAR_ID } to fixCal { CALENDAR_ID })
       }
+}
 ```
 After:
 ```kotlin
@@ -200,6 +228,7 @@ joining(fix, backwardsJoin = true) {
    }
    .and(fix { SIDE_TYPE } to SideType.FIX)
    .joining(fixCal, JoinType.INNER, backwardsJoin = true)
+}
 ```
 
 #### Example 2
