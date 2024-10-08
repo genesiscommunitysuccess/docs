@@ -7,7 +7,12 @@ id: 'how-to-landing'
 import QuickCard from '@site/src/components/Card';
 import { Grid } from '@mui/material'
 
-Welcome to our *How to...* documentation. Here, we are going to give you practical information on building Genesis applications, from the simplest introduction through use cases to working code examples.
+Welcome to our *How to...* documentation. Here, we are going to give you practical information on building Genesis applications. 
+
+First, we have provided a set of simple focused items that are easy to pick up.
+
+Separately, we have provided a collection of example applications that demonstrate key use cases. You can clone these, build and run, and dive into the code to see what's happening.
+
 
 We hope you find this useful.
 
@@ -25,7 +30,7 @@ These are the things that every application has to have.
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Create a simple front end" link="../how-to/ht-front-end-simple/" text="See how to create pages and insert different types of display and interaction.">
+        <QuickCard heading="Create a new page" link="../how-to/ht-front-end-simple/" text="See how to create new pages and insert simple components.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
@@ -34,13 +39,17 @@ These are the things that every application has to have.
     </Grid>
 </Grid>
 
-## Integration
+## Example applications
 
-Extend your Genesis application so that it can operate seamlessly alongside other apps and systems.
+Run, build, and dive into the code to see what's happening. Comments are included at key points in the files to show you what is controlling what.
 
 <Grid container>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
         <QuickCard heading="Running an example app" link="../how-to/ht-run-examples/" text="Find out how to clone, build and run our example apps.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Set up audited tables" link="../how-to/ht-audit/" text="Make any table in your database an audited table.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
@@ -49,6 +58,10 @@ Extend your Genesis application so that it can operate seamlessly alongside othe
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
         <QuickCard heading="Interoperate with other front ends" link="../how-to/ht-fdc3/" text="Use the FDC3 standard for front-end interoperability; enable your users to click between your Genesis app and other front-end applications. ">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Create a simple front end" link="../how-to/ht-front-end-example/" text="See an application with multiple pages and a useful set of displays and interactivity.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>

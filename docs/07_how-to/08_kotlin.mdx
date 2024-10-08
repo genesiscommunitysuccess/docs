@@ -1,0 +1,224 @@
+---
+title: 'How to use Kotlin'
+sidebar_label: 'Kotlin'
+id: ht-kotlin
+keywords: [kotlin]
+tags:
+    - kotlin
+  
+---
+
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Kotlin is often referred to as a dialect of Java. 
+
+Here, we are going to show you a few practical examples of Kotlin code that will help you achieve some things that are pretty necessary in just about any Genesis application.
+
+## Basic concepts
+To work with Kotlin code in Genesis, you must already have coding experience, or at least be familiar with basic coding concepts.
+
+Take a look at the [Kotlin introductory course](https://kotlinlang.org/docs/getting-started.html).
+
+This is a well-written and simple introduction to the skill set you need. Either check that you are familiar with it or take a little time to pick up this knowledge.
+
+## Using basic Kotlin in Genesis
+
+Your basic Kotlin skills will enable you to view and update some parts of the code in a newly generated application created via Genesis Create.
+
+Here are some examples of this in Genesis. In the examples, we often explicitly specify the type to make it easier to understand. Note though, that Kotlin can infer the types, so this is not necessarily required.
+
+The example snippets in this page include comments to highlight what is happening in each area of the code. 
+
+## Overwriting fields on existing objects
+This `eventHandler` is called TRADE_INSERT. It sets the trade status to `NEW` in the trade and then inserts a record into the Trade table.
+
+The ID for the inserted trade is inserted in the response.
+
+```kotlin
+eventHandler<Trade>("TRADE_INSERT", transactional = true) {
+
+    onCommit { event: Event<Trade> ->
+        // Get the Trade from `event` and assign to `trade` variable
+        val trade: Trade = event.details
+
+				// Now overwrite a field on the existing `trade` object
+        // Set the `tradeStatus` field to NEW using the TradeStatus enum
+        trade.tradeStatus = TradeStatus.NEW
+
+        // Insert the trade into the database using `entityDb.insert()` and assign the result to `insertedRow` variable
+        val insertedRow: InsertResult<Trade> = entityDb.insert(trade)
+
+        // Return an ack response which contains the generated Id of the inserted trade
+        ack(listOf(mapOf(
+            "TRADE_ID" to insertedRow.record.tradeId,
+        )))
+    }
+}
+```
+
+
+## If condition
+This `eventHandler` handles trade inserts. It checks to see if the counterparty ID on the trade is GENESIS. If it is, then it marks the trade for review. Otherwise, it sets `trade.needsReview` to false and inserts the trade.
+
+```kotlin
+eventHandler<Trade>("TRADE_INSERT", transactional = true) {
+
+    onCommit { event: Event<Trade> ->
+        // Get the Trade from `event` and assign to `trade` variable
+        val trade: Trade = event.details
+
+        // Check if the value of the trade's `counterpartyId` is GENESIS.
+        val isCounterpartyGenesis = trade.counterpartyId == "GENESIS"
+
+        // If the trade's `counterpartyId` is GENESIS, then set the trade's `needsReview` field to true, otherwise false
+        if (isCounterpartyGenesis) {
+            trade.needsReview = true
+        } else {
+		        trade.needsReview = false
+        }
+
+        // Insert the trade into the database using `entityDb.insert()` and assign the result to `insertedRow` variable
+        val insertedRow: InsertResult<Trade> = entityDb.insert(trade)
+
+        // Return an ack response which contains the generated Id of the inserted trade
+        ack(listOf(mapOf(
+            "TRADE_ID" to insertedRow.record.tradeId,
+        )))
+    }
+}
+```
+
+## Handling null
+This `eventHandler` has an `onValidate` block, which checks that the counterparty on the trade exists in the database. If the counterparty does not exist in the database, then it returns a `nack()` with an error response.
+
+If the counterparty exists, then the `onCommit` block reads the counterparty ID from the database and sets the counterparty field to this value.
+
+Finally, it sets `trade.needsReview` to `counterparty.needsReview` and inserts the trade into the database. 
+
+```Kotlin
+eventHandler<Trade>("TRADE_INSERT", transactional = true) {
+
+    onValidate { event: Event<Trade> ->
+        // Get the Trade from `event` and assign to `trade` variable
+        val trade: Trade = event.details
+
+        // Get Counterparty from database by its Id field using the Genesis Database API `entityDb`
+        // `entityDb.get()` reads from the database
+        // `counterparty` variable has type Counterparty?. Note the ?, this means the variable could be null
+        val counterparty: Counterparty? = entityDb.get(Counterparty.ById(trade.counterpartyId))
+
+        if (counterparty == null) {
+            // If `counterparty` is null then return an error response using nack()
+            // We use interpolation to include the `trade.counterpartyId` property in the response string
+            nack("Counterparty ${trade.counterpartyId} does not exist")
+        } else {
+            // Otherwise, `counterparty` is not null and we pass validation and return an ack response
+            ack()
+        }
+    }
+
+    onCommit { event: Event<Trade> ->
+        // Get the Trade from `event` and assign to `trade` variable
+        val trade: Trade = event.details
+
+        // Get Counterparty from database as we did in onValidate above
+        // Now we can be assured that the counterparty exists, so we can use !! which tells Kotlin
+        // that we know the variable will not be null, so our `counterparty` object is now not-null, notice the absence
+        // of the ? compared to above in onValidate
+        val counterparty: Counterparty = entityDb.get(Counterparty.ById(trade.counterpartyId))!!
+
+        // Set the `trade.needsReview` field's value with the value from the `counterparty` record
+        trade.needsReview = counterparty.needsReview
+
+        // Insert the trade into the database using `entityDb.insert()` and assign the result to `insertedRow` variable
+        val insertedRow: InsertResult<Trade> = entityDb.insert(trade)
+
+        // Return an ack response which contains the generated Id of the inserted trade
+        ack(listOf(mapOf(
+            "TRADE_ID" to insertedRow.record.tradeId,
+        )))
+    }
+}
+```
+
+## For loop
+This `eventHandler` has an `onValidate` block, which checks that the counterparty is in the database, the same way as the [Handling null](#handling-null) example.
+
+In the `onCommit` block, it iterates through each trade in the `tradesForCounterparty` list and adds the quantity of each trade to the `totalTradesQuantity`. 
+
+If that value exceeds the `counterparty.maxQuantity`, then the trade is rejected. 
+
+Otherwise, the trade is inserted into the database.
+
+```kotlin
+eventHandler<Trade>("TRADE_INSERT", transactional = true) {
+
+    onValidate { event: Event<Trade> ->
+        // onValidate same as Example 3
+    }
+
+    onCommit { event: Event<Trade> ->
+        // Get the Trade from `event` and assign to `trade` variable
+        val trade: Trade = event.details
+
+        // Get Counterparty from database by its Id field using the Genesis Database API `entityDb`
+        // We are assured the Counterparty is not-null, refer to Example 3 for more details
+        val counterparty: Counterparty = entityDb.get(Counterparty.ById(trade.counterpartyId))!!
+
+        // Get all trade records in the database for counterparty
+        val tradesForCounterparty: List<Trade> =
+            entityDb.getRange(Trade.ByCounterpartyId(trade.counterpartyId)).toList()
+
+        // Create a new variable for calculating total trade quantity. We use `var` here so this variable can be updated
+        var totalTradesQuantity = 0
+
+        // For loop which iterates through each trade in the `tradesForCounterparty` list
+        for (counterpartyTrade: Trade in tradesForCounterparty) {
+            // Add the quantity from the counterparty trade to the total
+            // `totalTradesQuantity += counterpartyTrade.quantity` is the same as `totalTradesQuantity = totalTradesQuantity + counterpartyTrade.quantity`
+            totalTradesQuantity += counterpartyTrade.quantity
+        }
+
+        // If the quantity of all counterparty's trades exceeds the counterparty's max quantity
+        // then return an error response informing user that the trade has been rejected and the reason why
+        if (totalTradesQuantity > counterparty.maxQuantity) {
+            nack("Trade rejected. Accepting the trade would exceed counterparty ${trade.counterpartyId}'s max quantity")
+        } else {
+            // If the quantity is not exceeded, then insert the trade into the database using `entityDb.insert()`
+            // and assign the result to `insertedRow` variable
+            val insertedRow: InsertResult<Trade> = entityDb.insert(trade)
+
+            // Return an ack response which contains the generated Id of the inserted trade
+            ack(listOf(mapOf(
+                "TRADE_ID" to insertedRow.record.tradeId,
+            )))
+        }
+    }
+}
+```
+## Filter function
+This example uses a custom `requestReply` to read all the trades for a counterparty from the database. 
+
+It filters the list to include only those that need review.
+
+```
+// Custom request server to get all trades that need review for a particular counterparty
+requestReply<Counterparty.ById, Trade>("COUNTERPARTY_TRADES_NEED_REVIEW") {
+
+  replyList { request: Counterparty.ById ->
+  
+    // Read all trades from the database that have particular counterparty Id
+     val counterpartyTrades: List<Trade> = db.getRange(Trade.ByCounterpartyId(request.counterpartyId)).toList()
+     
+    // Filter the list of trades to only those that have `needsReview` as true
+    // The collection `filter` function takes a condition that evaluates to a boolean value; true or false
+    // For more details see https://kotlinlang.org/docs/collection-filtering.html
+    counterpartyTrades.filter { trade: Trade ->
+      trade.needsReview
+    }
+  }
+}
+```
