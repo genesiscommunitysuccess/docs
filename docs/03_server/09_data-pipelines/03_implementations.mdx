@@ -501,7 +501,7 @@ If you provide your own monitor name, ensure this is unique across all JMS Sourc
 When you configure the JMS sink to use as part of your pipeline, you must provide the following as part of the configuration:
 
 - factory (required): this is any instance of QueueConnectionFactory e.g; MQQueueConnectionFactory (IBM MQ), ActiveMQConnectionFactory (Active MQ) etc
-- queueName (required): the name of the message queue you would like to consume from
+- queueName (required): the name of the message queue you would like to publish to
 - username (required): the username used to create the queue connection
 - password (required): the password used to create the queue connection
 - buildMessage (required): the lambda to convert from the element sent to your sink to a valid Message object using the JMS session provided by the sink
