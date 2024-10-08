@@ -28,14 +28,16 @@ This is a well-written and simple introduction to the skill set you need. Either
 
 Your basic Kotlin skills will enable you to view and update some parts of the code in a newly generated application created via Genesis Create.
 
-Here are some examples of this in Genesis. In the below examples, a lot of the time we are explicitly specifying the type to make it easier to understand. Note though, that Kotlin can infer the types, so this is not necessarily required.
+Here are some examples of this in Genesis. In the examples, we often explicitly specify the type to make it easier to understand. Note though, that Kotlin can infer the types, so this is not necessarily required.
 
 The example snippets in this page include comments to highlight what is happening in each area of the code. 
 
 ## Overwriting fields on existing objects
-This `eventHandler` 
+This `eventHandler` is called TRADE_INSERT. It sets the trade status to `NEW` in the trade and then inserts a record into the Trade table.
+
+The ID for the inserted trade is inserted in the response.
+
 ```kotlin
-// Event handler for inserting trades
 eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 
     onCommit { event: Event<Trade> ->
@@ -59,10 +61,9 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 
 
 ## If condition
-This `eventHandler` 
+This `eventHandler` handles trade inserts. It checks to see if the counterparty ID on the trade is GENESIS. If it is, then it marks the trade for review. Otherwise, it sets `trade.needsReview` to false and inserts the trade.
 
 ```kotlin
-// Event handler for inserting trades
 eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 
     onCommit { event: Event<Trade> ->
@@ -91,10 +92,13 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 ```
 
 ## Handling null
-This `eventHandler` 
+his `eventHandler` has an `onValidate block`, which checks that the counterparty on the trade exists in the database. If the counterparty does not exist in the database, then it returns a nack() with an error response.
+
+If the counterparty exists, then the 'onCommit` block reads the counterparty ID from the database and sets the counterparty field to this value.
+
+Finally, it sets `trade.needsReview` to `counterparty.needsReview` and inserts the trade into the database. 
 
 ```Kotlin
-// Event handler for inserting trades
 eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 
     onValidate { event: Event<Trade> ->
@@ -126,7 +130,7 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
         // of the ? compared to above in onValidate
         val counterparty: Counterparty = entityDb.get(Counterparty.ById(trade.counterpartyId))!!
 
-        // Update the `trade.needsReview` field's value with the value from the `counterparty` record
+        // Set the `trade.needsReview` field's value with the value from the `counterparty` record
         trade.needsReview = counterparty.needsReview
 
         // Insert the trade into the database using `entityDb.insert()` and assign the result to `insertedRow` variable
@@ -141,10 +145,11 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 ```
 
 ## For loop
-This `eventHandler` 
+This `eventHandler` validates the counterparty the same way as the previous example. 
+
+in the `onCommit` block, it iterates through each trade in the `tradesForCounterparty` list and 
 
 ```kotlin
-// Event handler for inserting trades
 eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 
     onValidate { event: Event<Trade> ->
@@ -178,7 +183,7 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
         if (totalTradesQuantity > counterparty.maxQuantity) {
             nack("Trade rejected. Accepting the trade would exceed counterparty ${trade.counterpartyId}'s max quantity")
         } else {
-            // If the quantity won't be exceeded, then insert the trade into the database using `entityDb.insert()`
+            // If the quantity is not exceeded, then insert the trade into the database using `entityDb.insert()`
             // and assign the result to `insertedRow` variable
             val insertedRow: InsertResult<Trade> = entityDb.insert(trade)
 
@@ -190,93 +195,26 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
     }
 }
 ```
+## Filter function
+This example uses a custom `requestReply` to read all the trades for a counterparty from the database. 
 
-## Handling null
-This `eventHandler` 
+It filters the list to include only those that need review.
 
-```Kotlin
-// Event handler for inserting trades
-eventHandler<Trade>("TRADE_INSERT", transactional = true) {
+```
+// Custom request server to get all trades that need review for a particular counterparty
+requestReply<Counterparty.ById, Trade>("COUNTERPARTY_TRADES_NEED_REVIEW") {
 
-    onValidate { event: Event<Trade> ->
-        // onValidate same as Example 3
+  replyList { request: Counterparty.ById ->
+  
+    // Read all trades from the database that have particular counterparty Id
+     val counterpartyTrades: List<Trade> = db.getRange(Trade.ByCounterpartyId(request.counterpartyId)).toList()
+     
+    // Filter the list of trades to only those that have `needsReview` as true
+    // The collection `filter` function takes a condition that evaluates to a boolean value; true or false
+    // For more details see https://kotlinlang.org/docs/collection-filtering.html
+    counterpartyTrades.filter { trade: Trade ->
+      trade.needsReview
     }
-
-    onCommit { event ->
-        // Get Trade from event and assign to `trade` variable
-        val trade: Trade = event.details
-
-        // Insert the trade into the database using `entityDb.insert()` and assign the result to `insertedRow` variable
-        val insertedRow: InsertResult<Trade> = entityDb.insert(trade)
-
-        // Get the Trade object from `insertedRow` and assign to new variable `insertedTrade`
-        val insertedTrade: Trade = insertedRow.record
-
-        // Check if the `insertedTrade` needs a review by checking the value of `needsReview` which is a boolean
-        if (insertedTrade.needsReview) {
-
-            // If the trade needs a review then we will create a new review and insert new review question records
-            // into the database which will need to be answered in the future. We are going to set the answers of
-            // the new question records to be the answers of the previous review.
-            //
-            // Firstly, we get all previous reviews for the counterparty using the `counterpartyId` from `trade`
-            // The Trade CounterpartyId field is an index on the Trade table
-            // `entityDb.getRange()` returns a list of database records. `getRange` returns a Kotlin Flow type
-            // so we must call `toList()` on it to perform further operations on the result
-            val previousReviewsForCounterparty =
-                entityDb.getRange(TradeReview.ByCounterpartyId(trade.counterpartyId)).toList()
-
-            // Next we use the `maxBy` function which can be used on lists. We are getting a single TradeReview
-            // object from the list which has the latest datetime using the TradeReview's `reviewCreated` field
-            val lastReviewForCounterparty: TradeReview = previousReviewsForCounterparty.maxBy { it.reviewCreated }
-
-            // Insert new TradeReview record, using the values from `insertedTrade` to set the fields `tradeId`
-            // and `counterpartyId` on the new record.
-            val newReviewRecordResult: InsertResult<TradeReview> = entityDb.insert(
-                TradeReview {
-                    tradeId = insertedTrade.tradeId
-                    counterpartyId = insertedTrade.counterpartyId
-                }
-            )
-
-            // Get TradeReview object from the inserted record result
-            val newReview: TradeReview = newReviewRecordResult.record
-
-            // Get the review questions of the last review using the `reviewId` from `lastReviewForCounterparty`
-            // using `entityDb.getRange()`
-            // The ReviewQuestion ReviewId field is an index on the ReviewQuestion table
-            val previousReviewQuestions: List<ReviewQuestion> =
-                entityDb.getRange(ReviewQuestion.ByReviewId(lastReviewForCounterparty.reviewId)).toList()
-
-            // Next, we use the `map` function on the `previousReviewQuestions` list. `map` is a Kotlin function
-            // which can be applied to collections, such as lists. It can be used to create a list of items
-            // of a different type based off of another list. It iterates over each item and will add the return value
-            // of the `map` lambda to the new list. For more info, see: https://kotlinlang.org/docs/collection-transformations.html#map
-            //
-            // Below we are applying the `map` function to the `previousReviewQuestions` list and inside the `map`
-            // lambda we are creating a new ReviewQuestion object. So, for each item in the `previousReviewQuestions`
-            // list we are created a new one. This new ReviewQuestion object is created in the `map` function's
-            // lambda. The `questionNumber`, `question` and `answer` fields on the new ReviewQuestion object
-            // are being set from the `previousReviewQuestion` object's fields
-            val newReviewQuestions: List<ReviewQuestion> =
-                previousReviewQuestions.map { previousReviewQuestion: ReviewQuestion ->
-                    ReviewQuestion {
-                        reviewId = newReview.reviewId
-                        questionNumber = previousReviewQuestion.questionNumber
-                        question = previousReviewQuestion.question
-                        answer = previousReviewQuestion.answer
-                    }
-                }
-
-            // Here we use `entityDb.insertAll()` to insert multiple records into the database in one go
-            entityDb.insertAll(newReviewQuestions)
-        }
-
-        // Return an ack response which contains the generated Id of the inserted trade
-        ack(listOf(mapOf(
-            "TRADE_ID" to insertedRow.record.tradeId,
-        )))
-    }
+  }
 }
 ```
-## Filter function
