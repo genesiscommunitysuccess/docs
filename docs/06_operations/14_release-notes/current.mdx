@@ -307,8 +307,8 @@ This now allows invocations from different contexts.
 
 If you are using the http client directly, some methods are now marked as internal. You could receive a compilation error if you refer to a function that is now internal.
 
-:::tip
-**Simple fix**
+:::info
+**Medium fix**
 
 Use only the [methods](https://learn.genesis.global/docs/server/integration/web-integration/genesis-http-client-core-concepts/#request-methods) exposed as public in the interface (get, put, post, delete). 
 
@@ -322,7 +322,7 @@ Read the pages on [GenesisHTTPClient](https://learn.genesis.global/docs/server/i
 
 You need to take action if:
 - you use the Data Pipelines component in your application
-- you have any compiler errors when you build your app after the upgrade with **cannot find Symbol DbOperation**
+- you have any compiler errors when you build your app after the upgrade with **cannot find Symbol DbOperation**.
 
 :::tip
 **Simple fix**
@@ -331,8 +331,31 @@ You need to take action if:
 2. Replace with `global.genesis.pipeline.api.db`.
 :::
 
+### Made rxSources non-functional interfaces, standardised http source syntax and added utilities
+The unused RxSink interface is not a functional interface anymore; it is now a regular interface. 
+
+**Are you affected?**
+
+Only applications that use the RxSink interface in the Data Pipeline are affected. 
+
+:::tip
+**Simple fix**
+
+Any new implementations of Data Pipeline must only use the [standard http web calls](/server/integration/web-integration/genesis-http-client-core-concepts/#request-methods). Check the revised [reference documentation for Data Pipeline](/server/data-pipelines/introduction/) for full details.
+
+:::
+
+### Added type safe onOperationError handling to data pipelines
+Error handling for Data Pipeline has been redesigned. 
+
+**Are you affected?**
+
+If your application uses Data Pipeline and you want to migrate to version 8.4 of the Genesis Platform, you have to change your error handling based on the [new handlers](/server/data-pipelines/implementations/#handlers).
+
+### Noteworthy features
+
 ### Ensure Data Server doesn't go into error state
-This change the Data Server going into an error state when string index fields are truncated or when rows are ignored.
+This change prevents the Data Server from going into an error state when string index fields are truncated or when rows are ignored. This now triggers a WARNING, and the Data Server continues to function.
 
 Before the change, if a STRING field in a target table or view was greater in size than that defined by the Data Server index definition, the Data Server would go into ERROR state. From that point onward, it would not serve any more requests, essentially rejecting all messages. 
 
@@ -340,28 +363,22 @@ Before the change, if a STRING field in a target table or view was greater in si
 
 Any Data Server definition that has indices that include STRING type fields could be affected - if these fields could potentially end up truncated by a string overflow.
 
-:::tip
-**Simple fix**
+In most cases, you do not need to take action. This is a simple change in behaviour. 
 
-You only need to take action if your Data Server has been configured to go into ERROR state when this situation arises. This is not a likely design scenario, but if this is the case for your application, you need to create new code to replicate this behaviour.
-:::
-
-### Made rxSources non-functional interfaces, standardised http source syntax and added utilities
-The unused RxSink interface not a functional interface anymore; it is now a regular interface. Only applications that use the RxSink interface in the Data Pipeline are affected. 
-
-Any new implementations of Data Pipeline must only use the [standard http web calls](/server/integration/web-integration/genesis-http-client-core-concepts/#request-methods). Check the revised [reference documentation for Data Pipeline](/server/data-pipelines/introduction/) for full details.
-
-### Added type safe onOperationError handling to data pipelines
-Error handling for Data Pipeline has been redesigned. 
-
-**Are you affected?**
-
-If your application uses Data Pipeline and you want to migrate to version 8.4 of the Genesis Platform, you have to  change your error handling based on the [new handlers](/server/data-pipelines/implementations/#handlers).
+You only need to take action if your Data Server has been configured to respond to an ERROR state caused by truncated string index fields or ignored rows. This is not a likely design scenario, but if this is the case for your application, you need to create new code to replicate this behaviour.
 
 ### where blocks replaced with the new filter syntax
 This new feature is consistent across our different modules, such as authorisation, Data Server, REQUEST SERVER, etc.
 
 The new `filter` clause replaces the old `where` clause functionality. The old `where` clause is now deprecated. Use `filter` from now on.
+
+### Features
+* Added convenience function for building local file camel string 
+* Added get all pipelines functions to PipelineManager 
+* Implement context based "filter" support as shared functionality for dataserver/req-rep/auth blocks, including enriched dataserver queries 
+* Add support for REST integration in datapipelines 
+* Added source for use by event handlers. 
+* Deprecate safeWriteTransaction in favour of writeTransaction 
 
 ### Fixes
 * (deploy-plugin): deploy zip task reference correct file when product name set in settings plugin 
@@ -384,15 +401,6 @@ The new `filter` clause replaces the old `where` clause functionality. The old `
 * Filter out genesis.testsupport from TestContext package scan
 * Remove unnecessary kotlinx-serialization dependency 
 * When using @SysDefOverwrite annotation in tests and scripts use sys def receiver
-
-### Features
-* Added convenience function for building local file camel string 
-* Added get all pipelines functions to PipelineManager 
-* Added get all pipelines functions to PipelineManager 
-* Implement context based "filter" support as shared functionality for dataserver/req-rep/auth blocks, including enriched dataserver queries 
-* Add support for REST integration in datapipelines 
-* Added source for use by event handlers. 
-* Deprecate safeWriteTransaction in favour of writeTransaction 
 
 ### Dependency changes
 * Added constraint on jackson-dataformat-cbor to prevent classpath issues 
