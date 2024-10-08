@@ -275,6 +275,8 @@ This source is available through the jms-genesis module. To use this, you must a
 
 This is a real-time acknowledgement source that creates a JMS consumer and polls a message queue. It returns a flow of Message objects and
 the consumer only acknowledges the message has been received once the pipeline confirms it has been processed by the sink successfully.
+If the source is unable to connect to the message queue, the process running the pipeline will enter a WARNING state.
+The message displayed next to this state will include a monitor name, you have the option to configure this as shown below otherwise a default one will be generated based on the queue name.
 
 When you configure the JMS source to use as part of your pipeline, you must provide the following as part of the configuration:
 
@@ -284,6 +286,7 @@ When you configure the JMS source to use as part of your pipeline, you must prov
 - password (required): the password used to create the queue connection
 - retryDelayMs (optional): how long the source should wait before attempting to connect to the queue again after failure to do so
 - pollTimeoutMs (optional): how long the consumer should wait in milliseconds before attempting to poll the message queue again after no data has been received, the default is 200
+- monitorName (optional): name to be displayed when process state is set to WARNING, default name will be of the format: JMSSourceMonitor-0-{QUEUE_NAME}
 
 Here is a GPAL example of a JMS source definition:
 
@@ -487,6 +490,9 @@ This is a sink that creates a JMS producer and sends Message objects to a messag
 
 The type specified when instantiating the sink refer to the type of element that the sink can expect to receive, as part of the configuration you must provide a valid lambda to convert this element type to a valid Message object to send to the message queue.
 
+If the sink is unable to connect to the message queue, the process running the pipeline will enter a WARNING state.
+The message displayed next to this state will include a monitor name, you have the option to configure this as shown below otherwise a default one will be generated based on the queue name.
+
 When you configure the JMS sink to use as part of your pipeline, you must provide the following as part of the configuration:
 
 - factory (required): this is any instance of QueueConnectionFactory e.g; MQQueueConnectionFactory (IBM MQ), ActiveMQConnectionFactory (Active MQ) etc
@@ -496,6 +502,7 @@ When you configure the JMS sink to use as part of your pipeline, you must provid
 - buildMessage (required): the lambda to convert from the element sent to your sink to a valid Message object using the JMS session provided by the sink
 - retryDelayMs (optional): how long the sink should wait before attempting to connect to the queue again after failure to do so
 - maxRetries (optional): how many times the producer should attempt to resend the message upon failure, the default is 100
+- monitorName (optional): name to be displayed when process state is set to WARNING, default name will be of the format: JMSSinkMonitor-0-{QUEUE_NAME}
 
 Here is a GPAL example of a JMS sink definition:
 
