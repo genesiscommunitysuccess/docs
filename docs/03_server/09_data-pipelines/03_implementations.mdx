@@ -273,21 +273,22 @@ This source is available through the jms-genesis module. To use this, you must a
     </TabItem>
 </Tabs>
 
-This is a real-time acknowledgement source that creates a JMS consumer and polls a message queue. It returns a flow of Message objects and
-the consumer only acknowledges the message has been received once the pipeline confirms it has been processed by the sink successfully.
+This is a real-time acknowledgement source that creates a JMS consumer and polls a message queue. It returns a flow of Message objects. The consumer only acknowledges the message has been received once the pipeline confirms it has been processed by the sink successfully.
+
 If the source is unable to connect to the message queue, the process running the pipeline will enter a WARNING state.
-The message displayed next to this state will include a monitor name, you have the option to configure this as shown below otherwise a default one will be generated based on the queue name.
-If you are providing your own monitor name, ensure this is unique across all JMS Sources + Sinks for that process.
+The message displayed next to this state includes a monitor name, which you can configure (as shown below); the default name generated is based on the queue name.
+
+If you provide your own monitor name, ensure this is unique across all JMS Sources and Sinks for that process.
 
 When you configure the JMS source to use as part of your pipeline, you must provide the following as part of the configuration:
 
 - factory (required): this is any instance of QueueConnectionFactory e.g; MQQueueConnectionFactory (IBM MQ), ActiveMQConnectionFactory (Active MQ) etc
-- queueName (required): the name of the message queue you would like to consumer from
+- queueName (required): the name of the message queue you would like to consume from
 - username (required): the username used to create the queue connection
 - password (required): the password used to create the queue connection
 - retryDelayMs (optional): how long the source should wait before attempting to connect to the queue again after failure to do so
-- pollTimeoutMs (optional): how long the consumer should wait in milliseconds before attempting to poll the message queue again after no data has been received, the default is 200
-- monitorName (optional): name to be displayed when process state is set to WARNING, default name will be of the format: JMSSourceMonitor-0-{QUEUE_NAME}
+- pollTimeoutMs (optional): how long the consumer should wait in milliseconds before attempting to poll the message queue again after no data has been received; the default is 200
+- monitorName (optional): name to be displayed when the process state is set to WARNING; the default name has the format: JMSSourceMonitor-0-{QUEUE_NAME}
 
 Here is a GPAL example of a JMS source definition:
 
