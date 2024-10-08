@@ -1,0 +1,69 @@
+---
+title: 'Server tooling - Genesis Launcher'
+sidebar_label: 'Genesis Launcher'
+id: genesis-launcher
+keywords: [server, tooling, code snippets, launcher, jetbrains, local]
+tags:
+  - server
+  - tooling
+  - code snippets
+  - launcher
+---
+
+Genesis Launcher is a tool to launch genesis applications without the need for a supported IDE.
+
+![Genesis Launcher Screenshot](/img/genesis-launcher/genesis-launcher-empty.png)
+
+## Enable
+
+Genesis Launcher is distributed as a gradle plugin.
+
+### Step 1
+
+Firstly, in your project's **settings.gradle.kts** file, you will need to add `google()` to `repositories` under `pluginManagement`.
+
+```kotlin
+// in repositories under plugin management, add google() at the end:
+pluginManagement {
+    repositories {
+        // other repositories
+        google() // <- add this
+    }
+}
+```
+
+### Step 2
+
+Secondly, in your project's **build.gradle.kts** file, you will need to add the plugin:
+
+```kotlin
+// add the launcher to plugins
+plugins {
+    // other plugins..
+    id("global.genesis.genesis-launcher-gui") version "0.1.0"
+}
+```
+
+### Step 3
+
+After syncing your gradle project, there should now be a `genesisLauncher` gradle task.
+You can start the launcher by running that task from an IDE, or from the command line, run:
+
+```shell
+./gradlew genesisLauncher
+```
+
+## Usage
+
+Once you open Genesis Launcher for your project, all the services will be listed, including the Web UI.
+To get started for the first time; click on the 🚀icon, just underneath the Genesis logo.
+
+This will bootstrap the database and launch the application.
+Once the database has been initialised, feel free to run "Start All" instead.
+
+Bootstrap will run "Start All" as well, but will first run [remap](/operations/commands/remap/) and ConsolidateRights.
+
+Prior to starting service, build tasks will be run.
+
+Once a processes are running, you can click on a process name to view its log file:
+![Genesis Launcher Screenshot](/img/genesis-launcher/genesis-launcher-running.png)
