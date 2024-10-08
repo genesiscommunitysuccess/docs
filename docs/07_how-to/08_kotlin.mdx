@@ -92,9 +92,9 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 ```
 
 ## Handling null
-his `eventHandler` has an `onValidate block`, which checks that the counterparty on the trade exists in the database. If the counterparty does not exist in the database, then it returns a nack() with an error response.
+This `eventHandler` has an `onValidate` block, which checks that the counterparty on the trade exists in the database. If the counterparty does not exist in the database, then it returns a `nack()` with an error response.
 
-If the counterparty exists, then the 'onCommit` block reads the counterparty ID from the database and sets the counterparty field to this value.
+If the counterparty exists, then the `onCommit` block reads the counterparty ID from the database and sets the counterparty field to this value.
 
 Finally, it sets `trade.needsReview` to `counterparty.needsReview` and inserts the trade into the database. 
 
@@ -145,9 +145,13 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 ```
 
 ## For loop
-This `eventHandler` validates the counterparty the same way as the previous example. 
+This `eventHandler` has an `onValidate` block, which checks that the counterparty is in the database, the same way as the [Handling null](#handling-null) example.
 
-in the `onCommit` block, it iterates through each trade in the `tradesForCounterparty` list and 
+In the `onCommit` block, it iterates through each trade in the `tradesForCounterparty` list and adds the quantity of each trade to the `totalTradesQuantity`. 
+
+If that value exceeds the `counterparty.maxQuantity`, then the trade is rejected. 
+
+Otherwise, the trade is inserted into the database.
 
 ```kotlin
 eventHandler<Trade>("TRADE_INSERT", transactional = true) {
