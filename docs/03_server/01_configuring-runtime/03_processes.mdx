@@ -9,12 +9,17 @@ tags:
   - processes
 ---
 
-Your application must have a **-processes.xml** file. This contains the configuration of each module in the application (Data Server, Request Server, Event Handler, etc). It is created automatically when you start a new Genesis project using  [GenX CLI tool](../../../getting-started/quick-start/new-project-using-genx/create-a-new-project/), but you might well want to update it - and you certainly want to take a good look at it.
+Your application must have a **-processes.xml** file. This contains the configuration of each module in the application (Data Server, Request Server, Event Handler, etc). 
+
+It is created automatically when you start a new Genesis project using Genesis Create or the [GenX CLI tool](../../../getting-started/quick-start/new-project-using-genx/create-a-new-project/), but you might well want to update it - and you certainly want to take a good look at it.
+
+By default, this file is located in the folder:<br></br>
+**server/**_appname_**/src/main/genesis/cfg/**
 
 Every process (module) in your application needs to have an entry in this **-processes.xml** file. If you add a new process, then you must add its details to this file. Otherwise, it will simply not be part of the built application.
 
-## The generated file
-When you run the command `genesisInstall`, the platform takes your **processes.xml** file and adds details from internal Genesis files (for example, **auth-processes.xml**) to create a new **processes.xml** file in the **generated** folder.
+## After genesisInstall
+As part of the build process, or when you run the command `genesisInstall`, the platform takes your **processes.xml** file and adds details from internal Genesis files (for example, **auth-processes.xml**) to create a new **processes.xml** file in the **generated** folder.
 
 It is the version in the **generated** folder that the platform uses to control its actions (such as executing a **startServer**, or a  **killProcess** command). So, if you make any changes to your **process.xml**, make sure you run `genesisInstall` afterwards.
 

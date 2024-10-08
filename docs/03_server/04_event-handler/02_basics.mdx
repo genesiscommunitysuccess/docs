@@ -14,7 +14,7 @@ tags:
 Let's make things really simple.
 
 - The Event Handler is the component that enables the application to write to the database.
-- You define your application's Event Handler in a Kotlin script file (**.kts**).
+- You define your application's Event Handler in a Kotlin script file:<br></br>**server/**_appname_**/src/main/genesis/scripts/**_appname_**-eventhandler.kts**
 - In this file, you define specific `eventHandler` codeblocks, each of which has full access to the database.
 - Each `eventHandler` can be invoked from the front end, from other `eventHandler` codeblocks, or from custom components in the application.
 - If you use AppGen to build from your dictionary, then a basic **.kts** file will be built automatically for you, creating basic insert, modify and delete `eventHandler` code blocks for all the tables and views in your data model. You can edit this file to customise the component.
