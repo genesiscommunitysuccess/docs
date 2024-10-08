@@ -277,6 +277,7 @@ This is a real-time acknowledgement source that creates a JMS consumer and polls
 the consumer only acknowledges the message has been received once the pipeline confirms it has been processed by the sink successfully.
 If the source is unable to connect to the message queue, the process running the pipeline will enter a WARNING state.
 The message displayed next to this state will include a monitor name, you have the option to configure this as shown below otherwise a default one will be generated based on the queue name.
+If you are providing your own monitor name, ensure this is unique across all JMS Sources + Sinks for that process.
 
 When you configure the JMS source to use as part of your pipeline, you must provide the following as part of the configuration:
 
@@ -492,6 +493,7 @@ The type specified when instantiating the sink refer to the type of element that
 
 If the sink is unable to connect to the message queue, the process running the pipeline will enter a WARNING state.
 The message displayed next to this state will include a monitor name, you have the option to configure this as shown below otherwise a default one will be generated based on the queue name.
+If you are providing your own monitor name, ensure this is unique across all JMS Sources + Sinks for that process.
 
 When you configure the JMS sink to use as part of your pipeline, you must provide the following as part of the configuration:
 
