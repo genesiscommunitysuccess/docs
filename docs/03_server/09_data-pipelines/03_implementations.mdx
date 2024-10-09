@@ -31,7 +31,7 @@ pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
 }
 ```
 
-### Database Batch Poll Source (Real-time)
+### Database Batch Poll Source (real-time)
 
 This is a real-time acknowledgement source that returns a stream of updates via a batch poll on a particular database, dependent on an acknowledgement having been received of the previous element.
 
@@ -186,7 +186,7 @@ eventHandler<Trade>(name = "TEST_PIPELINE_START") {
     }
 ```
 
-### Kafka Source (real-time)
+### Kafka Source (Real-time)
 
 This source is available through the kafka-genesis module. To use this, you must add the following dependency to your application:
 
@@ -365,7 +365,7 @@ This sink is available through the kafka-genesis module. To use this, you must a
     </TabItem>
 </Tabs>
 
-This is a sink that creates a producer and sends ProducerRecords to a kafka topic. You can either send a single ProducerRecord of a flow of ProducerRecords.
+This is a sink that creates a producer and sends ProducerRecords to a kafka topic. You can either send a single ProducerRecord or a flow of ProducerRecords.
 
 The types specified when instantiating the sink refer to the type of the Key and Value for the record being sent to the kafka topic.
 
