@@ -186,7 +186,7 @@ eventHandler<Trade>(name = "TEST_PIPELINE_START") {
     }
 ```
 
-### Kafka Source (real-time)
+### Kafka Source (Real-time)
 
 This source is available through the kafka-genesis module. To use this, you must add the following dependency to your application:
 
@@ -365,7 +365,7 @@ This sink is available through the kafka-genesis module. To use this, you must a
     </TabItem>
 </Tabs>
 
-This is a sink that creates a producer and sends ProducerRecords to a kafka topic. You can either send a single ProducerRecord of a flow of ProducerRecords.
+This is a sink that creates a producer and sends ProducerRecords to a kafka topic. You can either send a single ProducerRecord or a flow of ProducerRecords.
 
 The types specified when instantiating the sink refer to the type of the Key and Value for the record being sent to the kafka topic.
 
