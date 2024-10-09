@@ -44,7 +44,7 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
         // Get the Trade from `event` and assign to `trade` variable
         val trade: Trade = event.details
 
-				// Now overwrite a field on the existing `trade` object
+	// Now overwrite a field on the existing `trade` object
         // Set the `tradeStatus` field to NEW using the TradeStatus enum
         trade.tradeStatus = TradeStatus.NEW
 
@@ -77,7 +77,7 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
         if (isCounterpartyGenesis) {
             trade.needsReview = true
         } else {
-		        trade.needsReview = false
+	    trade.needsReview = false
         }
 
         // Insert the trade into the database using `entityDb.insert()` and assign the result to `insertedRow` variable
@@ -92,7 +92,7 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 ```
 
 ## Handling null
-This `eventHandler` has an `onValidate` block, which checks that the counterparty on the trade exists in the database. If the counterparty does not exist in the database, then it returns a `nack()` with an error response.
+This `eventHandler` has an `onValidate` block, which checks that the counterparty on the trade exists in the database. If the counterparty does not exist in the database, then the counterparty will be `null` and the event handler returns a `nack()` with an error response.
 
 If the counterparty exists, then the `onCommit` block reads the counterparty ID from the database and sets the counterparty field to this value.
 
@@ -204,7 +204,7 @@ This example uses a custom `requestReply` to read all the trades for a counterpa
 
 It filters the list to include only those that need review.
 
-```
+```kotlin
 // Custom request server to get all trades that need review for a particular counterparty
 requestReply<Counterparty.ById, Trade>("COUNTERPARTY_TRADES_NEED_REVIEW") {
 
