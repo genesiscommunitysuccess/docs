@@ -1,0 +1,57 @@
+---
+title: 'Genesis Launcher - Enable'
+sidebar_label: 'Enable'
+id: enable-launcher
+keywords: [server, tooling, code snippets, launcher, jetbrains, local]
+tags:
+  - server
+  - tooling
+  - code snippets
+  - launcher
+---
+
+Genesis Launcher is a tool to launch genesis applications without the need for a supported IDE.
+
+![Genesis Launcher Screenshot](/img/genesis-launcher/genesis-launcher-empty.png)
+
+:::note
+Genesis Launcher only supports projects with the simplified structure,
+or projects which have the genesis settings plugin enabled.
+This will include all projects generated through Genesis Create.
+New projects generated through Create will have the plugin enabled by default.
+Please see [this page](/operations/project-structure/introduction/) for more details
+
+:::
+
+## Enable
+
+Genesis Launcher is distributed as a gradle plugin.
+To enable the launcher in your project; you will need add this plugin.
+Once the plugin is enabled you should be able to start it.
+See [here](../running-launcher) for more details
+
+## Amending the settings file
+
+Firstly, in your project's **settings.gradle.kts** file, you will need to add `google()` to `repositories` under `pluginManagement`.
+
+```kotlin
+// in repositories under plugin management, add google() at the end:
+pluginManagement {
+    repositories {
+        // other repositories
+        google() // <- add this
+    }
+}
+```
+
+## Amending the build file
+
+Secondly, in your project's **build.gradle.kts** file, you will need to add the plugin:
+
+```kotlin
+// add the launcher to plugins
+plugins {
+    // other plugins..
+    id("global.genesis.genesis-launcher-gui") version "0.1.0"
+}
+```

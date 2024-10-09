@@ -1,7 +1,7 @@
 ---
-title: 'Server tooling - Genesis Launcher'
-sidebar_label: 'Genesis Launcher'
-id: genesis-launcher
+title: 'Genesis Launcher - Running'
+sidebar_label: 'Running'
+id: running-launcher
 keywords: [server, tooling, code snippets, launcher, jetbrains, local]
 tags:
   - server
@@ -10,41 +10,7 @@ tags:
   - launcher
 ---
 
-Genesis Launcher is a tool to launch genesis applications without the need for a supported IDE.
-
-![Genesis Launcher Screenshot](/img/genesis-launcher/genesis-launcher-empty.png)
-
-## Enable
-
-Genesis Launcher is distributed as a gradle plugin.
-
-### Step 1
-
-Firstly, in your project's **settings.gradle.kts** file, you will need to add `google()` to `repositories` under `pluginManagement`.
-
-```kotlin
-// in repositories under plugin management, add google() at the end:
-pluginManagement {
-    repositories {
-        // other repositories
-        google() // <- add this
-    }
-}
-```
-
-### Step 2
-
-Secondly, in your project's **build.gradle.kts** file, you will need to add the plugin:
-
-```kotlin
-// add the launcher to plugins
-plugins {
-    // other plugins..
-    id("global.genesis.genesis-launcher-gui") version "0.1.0"
-}
-```
-
-### Step 3
+## Starting the Launcher
 
 After syncing your gradle project, there should now be a `genesisLauncher` gradle task.
 You can start the launcher by running that task from an IDE, or from the command line, run:
