@@ -11,7 +11,7 @@ tags:
 
 ## Persistence Manager
 
-There is a persistence manager interface available in the genesis-pipeline-api module, which enables you to decide how to manage tracking what you have last persisted.
+The persistence manager interface in the genesis-pipeline-api module enables you to decide how to track what you have last persisted.
 
 If you use the default DbPersistenceManager implementation, you can directly inject the interface into your class.
 
@@ -19,23 +19,23 @@ If you use the default DbPersistenceManager implementation, you can directly inj
 
 The DbPersistenceManager is an implementation of PersistenceManager that stores persistence records in the database as a record of the table mentioned below.
 
-This class supports transactions and uses a transaction handle if provided. Otherwise, it uses the injected instance of the entity database.
+This class supports transactions and uses a transaction handle, if provided. Otherwise, it uses the injected instance of the entity database.
 
 The latest index returned will always be the greatest value for the given source. The user is given the option whether or not to ‘append’ the record:
 
 - if true, create a new persistence record
 - if false, overwrite the current persistence record with the new index value
 
-As such, there has been a new table created called DATA_PIPELINE_PERSISTENCE which contains the following fields:
+The table DATA_PIPELINE_PERSISTENCE contains the following fields:
 
 - source: String = the source name for which we are storing the persistence information (needs to be unique per pipeline)
 - index: Long = the index number which will allow us to retrieve the last persisted record
 
-If no other implementation of `PersistenceManager` has been provided, this implementation will be the default instance of `PersistenceManager`.
+If no other implementation of `PersistenceManager` has been provided, this will be the default instance of `PersistenceManager`.
 
 ## StateManager
 
-There is a state manager interface available in the genesis-pipeline-api-module, which enables you to perform certain actions when setting the pipeline status to warn or healthy.
+The state manager interface in the genesis-pipeline-api-module enables you to perform specific actions when setting the pipeline status to warn or healthy.
 
 If you use the DefaultStateManager implementation, you can directly inject the interface into your class.
 
@@ -43,11 +43,11 @@ If you use the DefaultStateManager implementation, you can directly inject the i
 
 The DefaultStateManager is an implementation of StateManager that updates the state of the process running the pipeline to either WARNING or HEALTHY.
 
-It has 2 methods that can be called:
-- warn(name: String, message: String)
-- healthy(name: String, message: String)
+It has two methods that can be called:
+- `warn(name: String, message: String)`
+- `healthy(name: String, message: String)`
 
-name = the name of the monitor to be updated.
-message = optional parameter to provide a custom message when updating to this state; if none is provided, a default message will be used.
+name = the name of the monitor to be updated
+message = optional parameter to provide a custom message when updating to this state; if none is provided, a default message is used
 
-If no other implementation of `StateManager` has been provided, this implementation will be the default instance of `StateManager`.
+If no other implementation of `StateManager` has been provided, this will be the default instance of `StateManager`.
