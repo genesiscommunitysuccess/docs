@@ -11,7 +11,7 @@ tags:
 
 ## Persistence Manager
 
-There is a persistence manager interface available in the genesis-pipeline-api module, which enables you to decide how to manage tracking what you have last persisted.
+The persistence manager interface in the genesis-pipeline-api module enables you to specify how to track what you have last persisted.
 
 If you use the default DbPersistenceManager implementation, you can directly inject the interface into your class.
 
@@ -19,16 +19,16 @@ If you use the default DbPersistenceManager implementation, you can directly inj
 
 The DbPersistenceManager is an implementation of PersistenceManager that stores persistence records in the database as a record of the table mentioned below.
 
-This class supports transactions and uses a transaction handle if provided. Otherwise, it uses the injected instance of the entity database.
+This class supports transactions and uses a transaction handle, if provided. Otherwise, it uses the injected instance of the entity database.
 
 The latest index returned will always be the greatest value for the given source. The user is given the option whether or not to ‘append’ the record:
 
 - if true, create a new persistence record
 - if false, overwrite the current persistence record with the new index value
 
-As such, there has been a new table created called DATA_PIPELINE_PERSISTENCE which contains the following fields:
+The table DATA_PIPELINE_PERSISTENCE contains the following fields for managing persistence:
 
-- source: String = the source name for which we are storing the persistence information (needs to be unique per pipeline)
-- index: Long = the index number which will allow us to retrieve the last persisted record
+- source: String = the name of the source for which we are storing the persistence information (this must be unique to each pipeline)
+- index: Long = the index number which is used to retrieve the last persisted record
 
 If no other implementation of `PersistenceManager` has been provided, this implementation will be the default instance of PersistenceManager.
