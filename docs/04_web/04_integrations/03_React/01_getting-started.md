@@ -13,26 +13,26 @@ This guide walks you through setting up a React project from scratch and integra
 
 ## Setting up the React project
 
-Ensure that you have [Node.js](https://nodejs.org/) installed on your system.
+Ensure that you have [Node.js](https://nodejs.org/) and [Genx](https://learn.genesis.global/docs/getting-started/prerequisites/genx) installed on your system.
 
-Once you have Node.js, use the following command to create a new React project named "alpha-react" using Create React App:
+Once you have Node.js and genx, use the following command to create a new React project named ```myApp``` using Create React App:
 
 ```shell
-npx create-react-app alpha-react
+npx -y @genesislcap/genx@latest init myApp -s blank-app-seed --framework React -x
 ```
 
-Navigate into your new project directory:
+Navigate into your new project ```client``` directory:
 
 ```shell
-cd alpha-react
+cd ./myApp/client
 ```
 
-## Install the Genesis Foundation packages
+## Install the dependencies
 
-1. Run this command from your project folder:
+1. Run the following command from your project folder:
 
 ```shell
-npm install --save @genesislcap/alpha-design-system
+npm run bootstrap
 ```
 
 2. Start the app in development mode:
@@ -41,115 +41,69 @@ npm install --save @genesislcap/alpha-design-system
 npm start
 ```
 
-The development server launches your project and makes it available on localhost. Initially, it displays the default Create React App page.
+The development server launches your project and makes it available on localhost. After opening the application, it should look like the above:
 
-## Integrate the Foundation UI components
-
-1. Open your **src/App.js** file and update it to use Genesis Foundation Design System components. To do this, add the following code to import and use the `<AlphaCard>`, `<AlphaButton>`, and `<AlphaTextField>` components:
-
-```jsx
-import './App.css';
-import { useState } from 'react';
-import { useCustomEventListener } from './hooks/useCustomEventListener';
-import { 
-  provideDesignSystem, 
-  alphaCard, 
-  alphaButton,
-  alphaTextField
-} from '@genesislcap/alpha-design-system';
-
-provideDesignSystem()
-    .register(
-        alphaCard(),
-        alphaButton(),
-        alphaTextField()
-    );
-
-function App() {
-  const [value, setValue] = useState('');
-  const webComponentRef = useCustomEventListener('input', (event) => {
-    setValue(event.target.value);
-  });
-
-  return (
-    <alpha-card>
-      <h2>Genesis Foundation React</h2>
-      <alpha-text-field name='exampleTextField' placeholder="Enter Some Text" ref={webComponentRef}></alpha-text-field>
-      <alpha-button appearance="accent" onClick={() => console.log(value)}>Click Me</alpha-button>
-  </alpha-card>
-  );
-}
-
-export default App;
-```
-
-The `useCustomEventListener` hook is a custom React hook that simplifies the process of adding and removing event listeners to DOM elements. This is particularly useful when dealing with web components or other third-party UI libraries.
-
-2. Add file `hooks/useCustomEventListener.js`: 
-
-```js
-import { useRef, useEffect } from 'react';
-
-export const useCustomEventListener = (eventName, handler) => {
-    const ref = useRef(null);
-
-    useEffect(() => {
-        const element = ref.current;
-        if (element) {
-            element.addEventListener(eventName, handler);
-
-            return () => {
-                element.removeEventListener(eventName, handler);
-            };
-        }
-    }, [eventName, handler]);
-
-    return ref;
-}
-
-```
-
-Here is what is happening in the code:
-
-- **`useRef`** is used to keep a mutable reference to the DOM element. Unlike state variables in React, updating a ref does not trigger a re-render.
-- **`useEffect`** manages the lifecycle of the event listener. It is responsible for setting up and tearing down the event listener. The effect runs when the component mounts; when the component unmounts, it runs the cleanup function to prevent memory leaks.
-- **`addEventListener` and `removeEventListener`** are native DOM APIs that attach and detach event listeners to the DOM element.
+![React blank-app-seed](/integrations/react/react-blank-app-seed.png)
 
 :::note
-
-For third-party components or libraries that require form handling, ensure that you manage the state appropriately in your React components to facilitate two-way data binding.
-
+The project is currently based on React 19, which is in the Release Candidate (RC) stage. We are using this version because it provides improved support for integration with Web Components, making it easier to share data and manage state between React components and Web Components.
 :::
 
-## Styling the components
+## Project Folder Structure and Main Elements
 
-To add some styles, replace the contents of your **src/App.css** file with the following CSS:
+### `src/main.tsx`
+This is the main entry point of the application. It is responsible for bootstrapping the app by rendering the `App.tsx` component into the DOM. The file also registers [PBCs](../../../../server/packaged-business-capabilities/pbc-intro/) using `registerPBCs`
 
-```css
-alpha-card {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-}
+---
 
-alpha-text-field {
-  margin-bottom: 12px;
-}
+### `src/pbc`
+This folder contains components that are responsible for enabling the insertion of slots within the application. These slots act as placeholders where content, provided by the registered Project Building Components ([PBCs](../../../../server/packaged-business-capabilities/pbc-intro/)), is dynamically rendered. The [PBCs](../../../../server/packaged-business-capabilities/pbc-intro/) are registered in the application through main.tsx, ensuring that specific components can be inserted into the designated slots at runtime.
 
-h2 {
-  font-size: var(--type-ramp-plus-5-font-size);
-  line-height: var(--type-ramp-plus-5-line-height);
-}
+---
 
-alpha-card > alpha-button {
-  align-self: flex-end;
-}
-```
-## Congratulations!
+### `src/share`
+The `share` folder holds shared resources and components that are used across the entire application. It includes components like `genesis-components.ts`, which registers Genesis framework components, and `foundation-login.ts`, which sets up the login-related functionality for the app.
 
-🎉 Congratulations! You're now set up to use Genesis Foundation with React! 🎉
+#### Key Files:
+- `genesis-components.ts`: Registers various Genesis components, including forms, layouts, and charts.
+- `foundation-login.ts`: Configures the foundation-login microfrontend component responsible for handling authorization and integrates it with the routing system.
 
+---
 
-![React basic demo](/integrations/react/react-basic-demo.gif)
+### `src/pages`
+This folder contains the main pages of the application. Each page represents a different route or view, such as the `AuthPage`, which handles authentication-related flows.
 
-[repository with working code from the example](https://github.com/genesiscommunitysuccess/integration-examples/tree/main/react/alpha-react)
+---
+
+### `src/components`
+This folder contains reusable UI components that are utilized throughout the app. Components in this folder are not tied to specific pages but are used as building blocks across multiple sections of the application.
+
+## Routing
+
+In React, routing is essential for creating single-page applications with navigation capabilities. The routing configuration in `store/RoutesContext.tsx` manages and provides routes throughout the application. This file defines a `RoutesProvider` component that combines routes from the main application and additional routes from PBC (Pluggable Business Components).
+
+The `pbcRoutes` are dynamically generated by mapping over the routes provided by the PBC, extracting essential properties, and wrapping them in a `PBCContainer` component. These routes are then combined with the main application's routes into a single `allRoutes` array. The `RoutesProvider` uses the React Context API to make these routes available to the rest of the application by wrapping its children with the `RoutesContext.Provider`.
+
+Additionally, the `useRoutesContext` hook is provided to easily access the routes context within functional components. This setup ensures seamless integration and accessibility of both main application routes and PBC routes throughout the application.
+
+## Styling the Application
+
+### Global styles:
+You can add global styles by modifying the main stylesheet located at `src/styles/styles.css`. This file contains styles that apply to the entire application.
+
+---
+
+### Component or page specific styles:
+For more granular control, you can add styles specific to a page or component. For example, you can create a stylesheet for a specific page like `src/pages/NotFoundPage/NotFoundPage.css` and include styles that only apply to that page.
+
+---
+
+### Design tokens
+
+You can change design tokens, which are declared in the `src/styles/design-tokens.json` file. Design tokens allow you to define and manage design-related values such as colors, fonts, and spacing in a centralized manner. Modifying these tokens will propagate changes throughout the application where these tokens are used.
+
+:::note
+You can read more about design system here: [Design systems - introduction](../../../design-systems/introduction/)
+:::
+
+By using these methods, you can effectively manage and apply styles to your application, ensuring a consistent and maintainable design system.
