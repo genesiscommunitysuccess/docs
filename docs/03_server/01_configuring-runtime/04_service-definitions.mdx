@@ -10,7 +10,7 @@ tags:
 ---
 
 
-Every application must have  a **-service-definitions.xml** file. This is where you specify the ports of the various processes. These are used to communicate internally between processes.
+Every application must have a **-service-definitions.xml** file. This is where you specify the ports of the various processes. These are used to communicate internally between processes.
 
 ```xml
 <configuration>
@@ -19,8 +19,13 @@ Every application must have  a **-service-definitions.xml** file. This is where 
     <service host="localhost" name="GENESIS_WEB_ADAPTER" port="8512"/>
 </configuration>
 ```
+By default, this file is located in the folder:<br></br>
+**server/**_appname_**/src/main/genesis/cfg/**
 
-When `genesisInstall` is executed, all products have their **-service-definitions.xml** files compiled into a system-wide **$GC/global-service-definitions.xml**. Here is an example of a **global-service-definitions.xml** file where we have the _auth_, _genesis_ and _gcom_ products installed:
+## After genesisInstall
+As part of the build process, or when `genesisInstall` is executed, your application's **-service-definitions.xml** file is compiled into a system-wide **$GC/global-service-definitions.xml**. 
+
+Here is an example of a **global-service-definitions.xml** file where we have the _auth_, _genesis_ and _gcom_ products installed:
 
 ```xml
 <configuration>

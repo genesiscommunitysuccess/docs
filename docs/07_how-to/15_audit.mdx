@@ -44,6 +44,7 @@ Every record added to the table will automatically be given a unique sequential 
 ## Auto-auditing
 
 ### GPAL Event Handlers
+
 If you have used Genesis create to generate your application, or if you use GPAL to create your Event Handler file, audit records are created automatically for auditable tables. 
 
 For example, the event defined by the `eventHandler` in the example below inserts records into the TRADE table. For each record inserted into  when Every time that `entityDb.insert(details)` is executed for the TRADE table, an audit record will be created and added to the TRADE_AUDIT table.
