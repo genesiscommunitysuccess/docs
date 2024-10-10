@@ -16,19 +16,19 @@ The Genesis UI Generator is a Visual Studio Code extension designed to enhance t
 
 Starting with an image of the desired UI, it creates the code for a working UI, along with the files that enable you to add it to a new or existing application. This can be a major boost to productivity.
 
-## Installation
-
-1. To install, visit [Genesis UI Generator on Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=GenesisGlobal.genesis-ui-generator). Click on **Install** or search for **Genesis UI Generator** in the extensions panel within VS Code.
-
-2. After installing the extension, the Genesis icon will be visible in your VS Code side panel.
-
-![Genesis UI Generator Icon](/img/vscode-extension/icon-extension.png)
-
 ## Requirements
 
 - Visual Studio Code version 1.88.0 or greater.
 - Install [literally-html](https://marketplace.visualstudio.com/items?itemName=webreflection.literally-html), which provides syntax highlighting and IntelliSense for html inside JavaScript and TypeScript tagged template strings.
 - For the extension development, install the [TypeScript + Webpack Problem Matchers](https://marketplace.visualstudio.com/items?itemName=amodio.tsl-problem-matcher) extension.
+
+## Installation
+
+1. To install, visit [Genesis UI Generator on Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=GenesisGlobal.genesis-ui-generator). Click on **Install** or search for **Genesis UI Generator** in the extensions panel in VS Code.
+
+2. After installing the extension, the Genesis icon will be visible in your VS Code side panel.
+
+![Genesis UI Generator Icon](/img/vscode-extension/icon-extension.png)
 
 ## Configuration
 
@@ -75,7 +75,7 @@ This displays the image in a new UI dedicated to Genesis View:
 
 ![Genesis View 2](/img/vscode-extension/genesis-view-2.png)
 
-2. Open Advanced Config to configure your generation:
+2. Click on **Advanced Config** to configure your generation:
 
 ![Genesis View Filled](/img/vscode-extension/genesis-view-filled.png)
 
@@ -84,7 +84,7 @@ This displays the image in a new UI dedicated to Genesis View:
 - **Custom Grid Styles** generates a file that provides custom colours and style for grids in your Genesis application.
 - **Design Tokens** generates or replaces the **design-tokens.json** file, managing the colours and theme of your entire application.
 
-3. When you have completed the configuration, click on **Start** UI.
+3. When you have completed the configuration, click on **Start**.
 
 ![Genesis View Started](/img/vscode-extension/genesis-view-started.png)
 
@@ -100,26 +100,38 @@ And that's it! You now have a new UI page.
 
 ### Genesis routes and components
 
+The **Components** tab enables you to create a new route, component, or component with data source. 
+
 ![VSCode Routes](/img/vscode-extension/vscode-routes.png)
 
 #### New
 
-To create a new route or a new component, define its name and click on **Create**.
+To enter a new route or component:
+
+1. Select **Route** or **Component**.
+
+2. Enter a suitable name, then click on **Create**.
 
 - New routes are created under the folder `routes` and declared in the **config.ts** file.
 - New components are created under the folder **components** and declared in the **components.ts** file.
 
 #### Component with Datasource
 
-It's also possible to create a grid or a chart with a datasource plugged into the back end. All the queries available are identified by the AI and will be loaded for the user to pick up. After clicking on Create, all necessary files will be created automatically in the correct folder.
+To create a grid or a chart with a datasource plugged into the back end:
+
+1. Select whether you want a grid or a chart. 
+
+2. Enter a suitable name, then click on **Create**.
+
+All the queries (data sources) available are identified by the AI and will be loaded for the user to pick up. After clicking on **Create**, all necessary files will be created automatically in the correct folder.
 
 ### Genesis Design System Configurator
 
-To start the Genesis Design System Configurator, click on the **Genesis Design System Config** button.
+To start the Genesis [Design System Configurator](../../../web/design-systems/preview/), click on the **Genesis Design System Config** button.
 
 ![Genesis DSC](/img/vscode-extension/design-system-1.png)
 
-This starts a terminal process that runs the Genesis Design System Configurator. A new VS Code file will open with the Design System Configurator inside it. If this doesn't appear the first time, click on **Reload DSConfig**.
+This starts a terminal process that runs the Genesis Design System Configurator. A new VS Code file opens with the Design System Configurator inside it. If this doesn't appear the first time, click on **Reload DSConfig**.
 
 ### HTML Catalog
 
@@ -149,4 +161,4 @@ Type `gg` followed by the first letters of the component you are looking for to 
 
 ### Documentation
 
-Within the extension, you can also find links to [Official Documentation](https://learn.genesis.global/docs/getting-started/) and [Genesis Playground](https://playground.demo.genesis.global/).
+Within the extension, there are links to this documentation and to [Genesis Playground](https://playground.demo.genesis.global/).
