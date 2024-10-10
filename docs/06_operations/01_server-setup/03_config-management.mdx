@@ -73,9 +73,9 @@ For a manual set-up of nginx, use this nginx.conf file:
 
 ```text
 map $http_upgrade $connection_upgrade {
-      default upgrade;
-      ''      close;
-    }
+    default upgrade;
+    ''      close;
+}
 
 server {
 
@@ -86,8 +86,9 @@ server {
     root /data/positions/web;
 
     location ~ ^/(gwf)(.*)$ {
+        rewrite                 ^/gwf(.*)/$ /$1 break;
+        proxy_pass              http://127.0.0.1:9064;
         proxy_set_header        Host $host:$server_port;
-        proxy_pass              http://127.0.0.1:9064$2$is_args$args;
         proxy_http_version      1.1;
         proxy_set_header        X-Real-IP $remote_addr;
         proxy_set_header        HOSTNAME $remote_addr;
