@@ -788,7 +788,7 @@ module.exports = {
     {
       type: "category",
       label: "Authorisation",
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: "doc",
@@ -799,7 +799,7 @@ module.exports = {
     {
       type: 'category',
       label: 'EVERYDAY BASICS',
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: 'doc',
@@ -826,7 +826,7 @@ module.exports = {
     {
       type: 'category',
       label: 'EXAMPLE APPS',
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: 'doc',
@@ -857,7 +857,7 @@ module.exports = {
     {
       type: "category",
       label: "LOOK + LEARN: SERIOUS APPS",
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: "category",
@@ -875,7 +875,7 @@ module.exports = {
     {
       type: "category",
       label: "TESTING",
-      collapsed: false,
+      collapsed: true,
       items: [
         {
           type: "doc",
