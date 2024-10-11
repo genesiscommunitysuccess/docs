@@ -14,4 +14,412 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Here we are going to look at ingesting data from other applications.
+C.3 - Loading Data
+We can set up a few ways to load data into the application. In these steps we’ll go through some different methods to ingest data in to the database.
+
+C.3.1 - Loading example data
+We may want to load some example static data into our application.
+
+To start with, we’ll only want to load `BOOK`, `CLIENT`, and `ENTITY` data (the other files will be used later).
+You can find the files here:
+
+Data.zip
+
+
+If you move this inside IntelliJ, you’ll need to choose `Refactor` and then `Overwrite` options.
+
+Once the content is copied across, shift select each of `BOOK.csv`, `CLIENT.csv` and `ENTITY.csv`, right click and select `Genesis: SendIt` to add the data.
+
+
+
+C.3.2 - Configuring up a data pipeline
+
+You may have noticed during the Genesis Create set up we have specified a data pipeline.
+Here we will try inputting some data to this pipeline.
+You can see the code for the pipeline in `ALM/server/ALM-app/src/main/genesis/scripts/ALM-pipelines.kts`
+
+This has been set up so that when the application is running, a folder `loadData` should be created in `ALM/server/ALM-app/src/main/genesis/data`
+This pipeline will listen in this folder for any CSV file with the prefix `CDs`. When it sees a file it will process it and add any records to the `CD_TRADE` table.
+Once processed, these files move into a `.done` directory, with a timestamp added to the filename.
+
+There is a sample file you can test with here:
+`CDs.csv`
+
+
+
+
+C.3.3 - Loading Data via Rest API
+
+For this demo we have set up a rest server which can provide us with Loan Trade data.
+To call it, we'll need to firstly start by defining the receiving message.
+
+Create a new file at `ALM\server\ALM-app\src\main\kotlin` called `Messages.kt`
+
+Paste the following into the file:
+```jsx
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
+import global.genesis.gen.dao.LoanTrade
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
+
+/**
+ * Note:
+ * We can avoid having to define all these classes by swapping the external app for a simple spring boot app
+ * Then we can generate an OpenAPI spec and use the genesis open api plugin to generate these types for us
+ * */
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class LoanMessage(
+    @JsonProperty("LOAN_ID")
+    val loanId: String,
+    @JsonProperty("CLIENT_NAME")
+    val clientName: String,
+    @JsonProperty("FACILITY_NAME")
+    val facilityName: String,
+    @JsonProperty("FACILITY_AMOUNT")
+    val facilityAmount: Double,
+    @JsonProperty("FACILITY_CCY")
+    val facilityCurrency: String,
+    @JsonProperty("DRAWDOWN_DATE")
+    val drawdownDate: Long,
+    @JsonProperty("DRAWDOWN_AMOUNT")
+    val drawdownAmount: Double,
+    @JsonProperty("DRAWDOWN_CURRENCY")
+    val drawdownCurrency: String,
+    @JsonProperty("PAYMENT_DATE")
+    val paymentDate: Long,
+    @JsonProperty("PAYMENT_CURRENCY")
+    val paymentCurrency: String,
+    @JsonProperty("PAYMENT_AMOUNT")
+    val paymentAmount: Double
+)
+
+data class AllLoansResponse(
+    @JsonProperty("ROWS_COUNT")
+    val rowsCount: Int,
+    @JsonProperty("MESSAGE_TYPE")
+    val messageType: String = "EVENT_LOGIN_AUTH",
+    @JsonProperty("ROW")
+    val row: List<LoanMessage>,
+    @JsonProperty("MORE_ROWS")
+    val moreRows: Boolean,
+    @JsonProperty("SOURCE_REF")
+    val sourceRef: String,
+    @JsonProperty("SEQUENCE_ID")
+    val sequenceId: Int
+)
+
+data class DataLogonDetails(
+    @JsonProperty("MAX_ROWS")
+    val maxRows: Int,
+    @JsonProperty("MAX_VIEW")
+    val maxView: Int,
+)
+
+data class DataLogonRequest(
+    @JsonProperty("DETAILS")
+    val details: DataLogonDetails
+)
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class LoginResponse(
+    @JsonProperty("SESSION_AUTH_TOKEN")
+    val sessionAuthToken: String,
+)
+
+data class Details(
+    @JsonProperty("USER_NAME")
+    val username: String = "JaneDee",
+    @JsonProperty("PASSWORD")
+    val password: String = "beONneON*74"
+)
+
+data class LoginRequest(
+    @JsonProperty("SOURCE_REF")
+    val sourceRef: String = "login-1",
+    @JsonProperty("MESSAGE_TYPE")
+    val messageType: String = "EVENT_LOGIN_AUTH",
+    @JsonProperty("DETAILS")
+    val details: Details = Details()
+)
+
+fun LoanMessage.asLoanTrade() = LoanTrade(
+    clientName = clientName,
+    drawdownAmount = drawdownAmount,
+    drawdownCurrency = drawdownCurrency,
+    drawdownDate = unixTimestampToDateTime(drawdownDate),
+    facilityAmount = facilityAmount,
+    facilityCurrency = facilityCurrency,
+    facilityName = facilityName,
+    loanId = loanId,
+    paymentAmount = paymentAmount,
+    paymentCurrency = paymentCurrency,
+    paymentDate = unixTimestampToDateTime(paymentDate)
+)
+
+private fun unixTimestampToDateTime(timestamp: Long) =
+    DateTime(timestamp * 1000L, DateTimeZone.UTC)
+
+data object Message
+```
+Now we can add an event to trigger a request to the REST API.
+
+Open ALM\server\ALM-app\src\main\genesis\scripts\ALM-eventhandler.kts and add these imports to the very top of the file:
+```jsx
+import global.genesis.gen.dao.enums.ALM.fx_trade.TradeStatus
+import global.genesis.httpclient.GenesisHttpClient
+import global.genesis.httpclient.request.HttpMethod
+import global.genesis.httpclient.request.HttpRequest
+import global.genesis.message.core.HttpStatusCode
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.http.ContentType
+import io.ktor.serialization.jackson.jackson
+import io.ktor.util.reflect.TypeInfo
+```
+
+
+
+Then add the following event to the end of the the `eventHandler{}`:
+```jsx
+    eventHandler<Message>("LOAN_TRADE_REST_API", transactional = true) {
+      // Instantiate the client outside the onCommit to avoid repeating
+      val baseUrl = "https://playground.demo.genesis.global/gwf"
+      val authUrl = "$baseUrl/event-login-auth"
+      val loansUrl = "$baseUrl/ALL_LOAN"
+
+      val ktorClient = HttpClient {
+          install(ContentNegotiation) {
+              jackson(ContentType.Application.Json)
+          }
+      }
+      val client = GenesisHttpClient(ktorClient)
+
+      onCommit {
+          // Login to the external application
+          val response = client.submitRequest<LoginRequest, LoginResponse>(
+              HttpRequest(
+                  url = authUrl,
+                  method = HttpMethod.POST,
+                  body = LoginRequest(),
+                  headers = mapOf("Content-Type" to "application/json")
+              ),
+              responseTypeInfo = TypeInfo(type = LoginResponse::class, reifiedType = LoginResponse::class.java),
+          )
+
+          val statusCode = response.statusCode
+          if (statusCode != HttpStatusCode.Ok)
+              return@onCommit nack("Received $statusCode from $authUrl")
+
+          val responseAuthToken = response.data.sessionAuthToken
+          LOG.info("Retrieved session auth token")
+
+          // Send a data logon to the external dataserver and retrieve the current loan data
+          val loanMessages = client.dataLogon(loansUrl, responseAuthToken).data.row
+
+          /**
+           * Note:
+           * Why are we inserting into a table? We retrieve from a dataserver, inherently this data can change
+           * We retrieve updates for loan messages not a full view of all loan messages, which means we get inserts, updates, deletes etc.
+           * If we keep blindly inserting and the data changes this will break, or we write even more code to deal with each operation and keep our DB in sync
+           * If we just want to display these messages in a UI, use a req-rep on the external app instead of a dataserver
+           * Even better, as mentioned elsewhere, use a simple spring boot app for the external app and simplify everything
+           * I would estimate an 80%+ code reduction if you use this approach
+           *
+           */
+          // Map and insert the retrieved loan messages
+          loanMessages.map { loanMessage ->
+              loanMessage.asLoanTrade()
+          }.forEach { loanTrade ->
+              LOG.info("Loan Trade: {}", loanTrade)
+              entityDb.upsert(loanTrade)
+          }
+
+          // Close the dataserver subscription (important!)
+          val closeResponse = client.delete<String> {
+              url = loansUrl
+              headers(
+                  "Content-Type" to "application/json",
+                  "SESSION_AUTH_TOKEN" to responseAuthToken,
+                  "SOURCE_REF" to "data-logon-1", // must match source ref of data logon
+              )
+          }
+
+          LOG.info("Received status {} from close subscription request", closeResponse.statusCode)
+
+          ack()
+      }
+
+  }
+```
+The use of upsert in the code will ensure any loan trades are updated, being inserted if not present.  They can be deleted at the front end and will reappear each time the cron job runs.
+
+After the end of the eventHandler{} section, add the following function, which is required to get the authentication token:
+```jsx
+suspend fun GenesisHttpClient.dataLogon(url: String, authToken: String) = submitRequest<DataLogonRequest, AllLoansResponse>(
+    HttpRequest(
+        url = url,
+        method = HttpMethod.POST,
+        body = DataLogonRequest(
+            // Max rows will determine the number of records retrieved
+            DataLogonDetails(
+                maxRows = 10,
+                maxView = 100
+            )
+        ),
+        headers = mapOf(
+            "Content-Type" to "application/json",
+            "SESSION_AUTH_TOKEN" to authToken,
+            "SOURCE_REF" to "data-logon-1",
+            "USER_NAME" to "JaneDee",
+        )
+    ),
+    responseTypeInfo = TypeInfo(type = AllLoansResponse::class, reifiedType = AllLoansResponse::class.java),
+)
+
+```
+
+
+
+
+Now that we've added these event, we may want to set up some way to regularly call this.
+We can do this by adding and defining an EVALUATOR process.
+ Open `ALM\server\ALM-app\src\main\genesis\cfg\ALM-processes.xml` and insert the following code:
+```jsx
+  <process name="ALM_EVALUATOR">
+    <start>true</start>
+    <groupId>MYAPP</groupId>
+    <options>-Xmx512m -DXSD_VALIDATE=false</options>
+    <module>genesis-evaluator</module>
+    <primaryOnly>true</primaryOnly>
+    <package>global.genesis.eventhandler,global.genesis.evaluator</package>
+    <description>Dynamic/time rules engine</description>
+    <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
+  </process>
+```
+Then open ALM\server\ALM-app\src\main\genesis\cfg\ALM-service-definitions.xml  and add:
+```jsx
+  <service host="localhost" name="ALM_EVALUATOR" port="9703"/>
+```
+This gives us a new service that the Cron Scheduler can call to trigger the rest api call as needed.  Create a new csv file in ALM\server\ALM-app\src\main\genesis\data\ called CRON_RULE.csv
+
+Insert the following line:
+```jsx
+CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
+"0 0/10 * * * ?","Loan Import Rule","Europe/London","ENABLED","Loan Rule","admin","ALM_COMPACT_PROCESS","EVENT_LOAN_MESSAGE"
+```
+You are welcome to set the cron schedule as needed.  This example will run every 10 minutes.
+
+Right click on the file in the Project window and select Genesis: SendIt to insert this record into the database.
+
+
+
+C.3.4 - Kafka
+
+We can also set up a connection to a Kafka source, to consume messages from it.
+Similar to the Rest API, we've set up a Kafka producer which we can connect to for some `FX_RATE` data.
+
+To start, we'll need to add some implementations to our application.
+In `server/ALM-app/build.gradle.kts`, add the following implementations:
+
+```jsx
+    implementation("global.genesis:kafka-genesis:${properties["platformIntegrationVersion"]}")
+    implementation("software.amazon.msk:aws-msk-iam-auth:2.2.0")
+```
+
+Then in `server/gradle.properties` we'll need to add the following property:
+
+```jsx
+platformIntegrationVersion=8.4.0
+```
+
+We'll also have to add this to the classpath of the ALM_PIPELINE process. In `server/ALM-app/src/main/genesis/cfg/ALM-processes.xml` add the following to the ALM_DATAPIPLINE process:
+```jsx
+    <classpath>ALM-app*,aws-msk-iam-auth*</classpath>
+```
+
+We will need to set up some properties for our Kafka source. We'll do this in the global section of `server/ALM-app/src/main/genesis/cfg/ALM-system-definition.kts`:
+```jsx
+        // the following have been set up as global definitions to be used as part of the pipelines script, these can be host specific as well
+        item("BOOTSTRAP_SERVER", "boot-qjjhmpj3.c2.kafka-serverless.eu-west-2.amazonaws.com:9098")
+        item("CONSUMER_GROUP_ID", InetAddress.getLocalHost().getHostName())
+        // see topic creation comment in docker-compose.yml
+        item("KAFKA_TOPIC", "fx-rate")
+        // for running kafka locally we have set all security configurations to be PLAINTEXT, ensure that you use the appropriate security config for your application
+        item("KAFKA_SECURITY_CONFIG", "SASL_SSL")
+```
+
+Now for the new pipeline. In `server/ALM-app/src/main/genesis/scripts/ALM-pipelines.kts` we'll need to add some imports, and initialise some methods. Add the below to the beginning of the file
+```jsx
+import global.genesis.pipeline.file.CsvRow
+import global.genesis.CdTradeLoadCdTradeCsvDataMapper
+import global.genesis.pipeline.api.db.DbOperation
+import kotlinx.coroutines.flow.flow
+import org.apache.kafka.clients.consumer.ConsumerRecord
+import org.apache.kafka.clients.consumer.ConsumerRecords
+import org.apache.kafka.common.serialization.StringDeserializer
+
+val source = kafkaSource<String, String> {
+    // now you can define the kafka specific configurations, these can either be hardcoded into this script or configurable via system definitions as shown below
+    bootstrapServers = systemDefinition.getItem("BOOTSTRAP_SERVER").toString()
+    groupId = systemDefinition.getItem("CONSUMER_GROUP_ID").toString()
+    // here we are using the out of box deserialisers for simplicity but as mentioned in the README you can create your own as per your requirement
+    // you can provide any deserialiser as per your requirement as long as it is of type Deserializer<T> where T is the type of your key / value respectively specified when initialising kafkaSource above
+    keyDeserializer = StringDeserializer()
+    // here you can use PriceReceivedDeserialiser() for the value and the ConsumerRecord returned would have key String, value PriceReceived
+    valueDeserializer = StringDeserializer()
+    // ensure that this kafka topic has been created, in this example we do so when initialising the docker container
+    topic = systemDefinition.getItem("KAFKA_TOPIC").toString()
+    securityProtocol = systemDefinition.getItem("KAFKA_SECURITY_CONFIG").toString()
+    // if you would like to provide any additional kafka consumer config you can do this like so
+    additionalConfig = mapOf(
+        "sasl.mechanism" to "AWS_MSK_IAM",
+        "sasl.jaas.config" to "software.amazon.msk.auth.iam.IAMLoginModule required awsDebugCreds=false awsMaxRetries=\"10\" awsMaxBackOffTimeMs=\"500\";",
+        "sasl.client.callback.handler.class" to "software.amazon.msk.auth.iam.IAMClientCallbackHandler"
+    )
+    
+}
+
+// initialise the operator that converts the output of the kafka source (ConsumerRecords<String, Int> and returns a flow of each ConsumerRecord object in that batch
+val splitOperator: SplitOperator<ConsumerRecords<String, String>, ConsumerRecord<String, String>> = SplitOperator { consumerRecords ->
+    flow {
+        // here we iterate over every ConsumerRecord
+        consumerRecords.forEach {
+            // here we emit it to the resulting flow
+            emit(it)
+        }
+    }
+}
+```
+
+Then we can add a new pipeline itself in the `pipelines{}` section:
+```jsx
+  pipeline("KAFKA_TO_DB_PIPELINE") {
+    // sourcing from the kafka source as defined above
+    source(source)
+        // split operator to split up batch of ConsumerRecords as defined above
+        .split(splitOperator).split { input -> 
+            flow<FxRate>{
+                val values = input.value().split("\",\"")
+                // processing to seperate each Fx Rate.
+                for (fxRates in values) {
+                    val fxRate = fxRates.split(",")
+                    val rate = fxRate[0].substring(fxRate[0].indexOf("\"") + 1).trim()
+                    val targetCurrency = fxRate[1].substringBefore("\\")
+                    val sourceCurrency = fxRate[2].substringBefore("\\").substringBefore("\"")
+                    emit(FxRate(rate.toDouble(), targetCurrency, sourceCurrency))
+                }
+            }
+        }
+        // here we are converting each PriceReceived object into a DbOperation to insert into the database
+        .map {
+            // in order to use the database sink we must provide it a DbOperation to perform - in this case it's an insert on each PriceReceived object provided by the above operation
+            DbOperation.Upsert(it)
+        }
+        // here we are using a simple database sink to perform the above operation - txDbSink is a transactional database sink
+        // if you would like to use a non-transactional database sink, simple replace txDbSink() with dbSink()
+        .sink(txDbSink())
+    }
+```
+
+Now we're all set up!
