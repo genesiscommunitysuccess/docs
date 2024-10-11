@@ -14,4 +14,234 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Here we are going to look at the code and make improvements to the back end.
+Section B
+
+B.1 - Application and Logic enhancements
+We’ll start with some small code changes to enhance some of the logic within the application.
+
+B.1.1 - Multiple field keys
+For some of our tables, it makes sense for us to use a key based on multiple fields rather than one, as we may want to store multiple values for specific keys. For example in the `FX_RATE` table, we would like to index on both `TARGET_CURRENCY` and `SOURCE_CURRENCY`. 
+We can add these now by navigating to `ALM\server\ALM-app\src\main\genesis\cfg\ALM-tables-dictionary.kts`, where we will want to change the table definitions for the `POSITION` and `FX_RATE` tables. 
+Find the `primaryKey` line for each table definition and update them as follows:
+```jsx
+  table(name = "POSITION", id = 11_004) {
+    field("AMOUNT", DOUBLE).notNull()
+    field("CURRENCY", STRING(100)).notNull()
+    field("SETTLEMENT_DATE", DATE).notNull()
+
+    primaryKey("CURRENCY", "SETTLEMENT_DATE")
+
+  }
+```
+```jsx
+  table(name = "FX_RATE", id = 11_007) {
+    field("RATE", DOUBLE).notNull()
+    field("SOURCE_CURRENCY", STRING(100)).notNull()
+    field("TARGET_CURRENCY", STRING(100)).notNull()
+
+    primaryKey("SOURCE_CURRENCY", "TARGET_CURRENCY")
+
+  }
+```
+
+Having made these changes, we'll also have to update the events in `ALM\server\ALM-app\src\main\genesis\cfg\ALM-event-handler.kts`, as they will still be calling the old primary keys.
+We will need to update the following two delete events, updating the primary key to:
+```jsx
+  eventHandler<Position.ByCurrencySettlementDate>("POSITION_DELETE", transactional = true) {
+    onCommit { event ->
+      val details = event.details
+      entityDb.delete(details)
+      ack()
+    }
+  }
+```
+```jsx
+  eventHandler<FxRate.BySourceCurrencyTargetCurrency>("FX_RATE_DELETE", transactional = true) {
+    onCommit { event ->
+      val details = event.details
+      entityDb.delete(details)
+      ack()
+    }
+  }
+```
+
+It's worth then rebuilding the project, as we'll be using these new `primaryKeys` in later steps.
+B.1.2 - Multi-directional Trade Calculations
+If you have entered some trades within the default application, you may have noticed that the position calculation keeps a running total, and does not consider the `SIDE` for the trade. Let’s add some pro-code to get the position calculation to include the directionality of the trade. 
+
+The file is found in `ALM\server\ALM-app\src\main\genesis\scripts` with file name `ALM-consolidator.kts`.  The original consolidator script should look similar to below (but likely with additional comments):
+```jsx
+### This is  an example to show what Consolidators look like, no need to copy ###
+
+consolidators {
+  consolidator("POSITION_CALC", FX_TRADE, POSITION) {
+    select {
+      POSITION {
+        sum { notional } into AMOUNT
+      }
+    }
+    groupBy {
+      Position.ByCurrency(sourceCurrency)
+    } into {
+      build {
+        Position {
+          currency = groupId.currency
+          amount = 0.0
+          settlementDate = DateTime.now()
+        }
+      }
+    }
+  }
+}
+```
+This consolidator is consolidating `FX_TRADE` records into the `POSITION` table.  This means it is listening all the changes in `FX_TRADE` records and updating `POSITION` table by summing the `NOTIONAL` field into the `AMOUNT` field. As the `groupBy` block indicates, this consolidation is only using the source currency from `FX_TRADE` table.  As a result we are only having single row inserted or updated in `POSITION` table for each `FX_TRADE`.
+
+To be able to have `POSITION` update/insert for source and target currency as a result of single trade, we need 2 consolidation blocks.  Genesis Consolidator can handle two consolidation operation with one consolidator block by having 2 group by statements [documented here](https://learn.genesis.global/docs/server/consolidator/advanced/?_highlight=consolid#multiple-groupby-statements), but we want different calculations for target and source currency. So having two consolidator blocks is the way to implement this.  As you can see below, the final implementation has `POSITION_CALC_SOURCE` and `POSITION_CALC_TARGET`. The first calc uses source currency from the trade in the group by block and second uses target currency. There is a small change in select block as well.  Now the `SIDE` field from the `FX_TRADE` table is also taken into account to decide the sign of amount. When buying, source is negative and vice versa. The `RATE` field from the `FX_TRADE` table is used to calculate the correct amount.
+
+We can add further consolidators to also take into account `LOAN_TRADE` and `CD_TRADE` movements.
+
+You can copy the entire code block below and replace what existed in the `ALM-consolidator.kts` file before.
+```jsx
+import global.genesis.gen.dao.enums.ALM.fx_trade.Side
+import global.genesis.gen.dao.enums.ALM.fx_trade.TradeStatus
+
+consolidators {
+  consolidator("POSITION_CALC_SOURCE", FX_TRADE, POSITION) {
+    select {
+      POSITION {
+        sum { notional / rate * ( if(side==Side.Buy) -1 else 1) } into AMOUNT
+      }
+    }
+    where {
+      tradeStatus != TradeStatus.Cancelled
+    }
+    groupBy {
+      Position.byCurrencySettlementDate(sourceCurrency, settlementDate)
+    } into {
+      build {
+        Position {
+          settlementDate = groupId.settlementDate
+          currency = groupId.currency
+          amount = 0.0
+        }
+      }
+    }
+  }
+
+  consolidator("POSITION_CALC_TARGET", FX_TRADE, POSITION) {
+    select {
+      POSITION {
+        sum { notional * ( if(side==Side.Sell) -1 else 1) } into AMOUNT
+      }
+    }
+    where {
+      tradeStatus != TradeStatus.Cancelled
+    }
+    groupBy {
+      Position.byCurrencySettlementDate(targetCurrency, settlementDate)
+    } into {
+      build {
+        Position {
+          settlementDate = groupId.settlementDate
+          currency = groupId.currency
+          amount = 0.0
+        }
+      }
+    }
+  }
+
+  consolidator("POSITION_LOAN", LOAN_TRADE, POSITION) {
+    select {
+      POSITION {
+        sum { paymentAmount } into AMOUNT
+      }
+    }
+    groupBy {
+      Position.byCurrencySettlementDate(paymentCurrency, paymentDate)
+    } into {
+      build {
+        Position {
+          settlementDate = groupId.settlementDate
+          currency = groupId.currency
+          amount = 0.0
+        }
+      }
+    }
+  }
+
+  consolidator("POSITION_CD", CD_TRADE, POSITION) {
+    select {
+      POSITION {
+        sum { maturityAmount } into AMOUNT
+      }
+    }
+    groupBy {
+      Position.byCurrencySettlementDate(depositCurrency, maturityDate)
+    } into {
+      build {
+        Position {
+          settlementDate = groupId.settlementDate
+          currency = groupId.currency
+          amount = 0.0
+        }
+      }
+    }
+  }
+
+  // TODO - add new consolidators here
+}
+```
+B.1.3 - Trade Versioning
+Genesis automatically audits data if you select `Generate Audit Trail` during Create. This ensures the platform monitors all events that happen on your base table, for example `FX_TRADE`, keeping a full audit history of your trade and logging the user details and/or events involved in the update. However, there is often a requirement for a version to appear directly on the trade - this can be done simply with Pro-code.
+
+Firstly, ensure the `TRADE_VERSION` field is available on your `FX_TRADE` table, and add a default value to it (file `ALM/server/ALM-app/src/main/genesis/cfg/ALM-tables-dictionary.kts`). We set the default value to 1 so every new trade entering the system will always start on version 1
+```jsx
+field("TRADE_VERSION", LONG).notNull().default(1)
+```
+Next, let’s add the logic to the events. You’ll first need to add the following to increment the version on modification, so in the `FX_TRADE_MODIFY` section of file `ALM/server/ALM-app/src/main/genesis/scripts/ALM-eventhandler.kts` we can add:
+```jsx
+details.tradeVersion = details.tradeVersion + 1
+details.tradeStatus = TradeStatus.Amended
+```
+and for deletion, in the `FX_TRADE_DELETE` section add:
+```jsx
+details.tradeVersion = details.tradeVersion + 1
+details.tradeStatus = TradeStatus.Cancelled
+```
+This should ensure the trade version is incremented and the status updated on every modification or deletion event. 
+
+When the trade is deleted, we no longer want it to be removed from the database, just updated:
+```jsx
+entityDb.modify(details)
+```
+When making these changes, we also want to change the whole object, not just the ID, so we'll need to update the object used by the event:
+```jsx
+eventHandler<FxTrade>("FX_TRADE_DELETE", transactional = true) {
+```
+So your events now look as follows:
+```jsx
+  eventHandler<FxTrade>("FX_TRADE_MODIFY", transactional = true) {
+    onCommit { event ->
+      val details = event.details
+      //Increment version number and set to amended
+      details.tradeVersion = details.tradeVersion + 1
+      details.tradeStatus = TradeStatus.Amended
+      entityDb.modify(details)
+      ack()
+    }
+  }
+  //Event object changed to <FxTrade> rather than ById
+  eventHandler<FxTrade>("FX_TRADE_DELETE", transactional = true) {
+    onCommit { event ->
+      val details = event.details
+      //Increment version number and set to cancelled
+      details.tradeVersion = details.tradeVersion + 1
+      details.tradeStatus = TradeStatus.Cancelled
+      //Call modify, rather than delete so it stays in blotter
+      entityDb.modify(details)
+      ack()
+    }
+  }
+```
+You may have noticed that the delete event is now parsing in the full `FX_TRADE` object, rather than `FxTrade.ByTradeId`. A delete event will simply look up the Id and delete the row, but the full `FxTrade` object contains all the information we require to update, allowing us to call `event.details` to update specific attributes of the `FX_TRADE`.
+
