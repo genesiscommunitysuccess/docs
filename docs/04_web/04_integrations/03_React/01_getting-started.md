@@ -15,7 +15,7 @@ This guide walks you through setting up a React project from scratch and integra
 
 Ensure that you have [Node.js](https://nodejs.org/) and [Genx](https://learn.genesis.global/docs/getting-started/prerequisites/genx) installed on your system.
 
-Once you have Node.js and genx, use the following command to create a new React project named ```myApp``` using Create React App:
+Once you have Node.js and genx, use the following command to create a new React project named ```myApp``` using Genx with `--framework React`:
 
 ```shell
 npx -y @genesislcap/genx@latest init myApp -s blank-app-seed --framework React -x
@@ -24,7 +24,7 @@ npx -y @genesislcap/genx@latest init myApp -s blank-app-seed --framework React -
 Navigate into your new project ```client``` directory:
 
 ```shell
-cd ./myApp/client
+cd ./client
 ```
 
 ## Install the dependencies
@@ -38,7 +38,7 @@ npm run bootstrap
 2. Start the app in development mode:
 
 ```shell
-npm start
+npm run dev
 ```
 
 The development server launches your project and makes it available on localhost. After opening the application, it should look like the above:

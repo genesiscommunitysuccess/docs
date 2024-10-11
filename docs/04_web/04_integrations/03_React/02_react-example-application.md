@@ -1,7 +1,7 @@
 ---
-title: 'React - Complex Application Example'
-sidebar_label: 'Complex Application Example'
-id: react-complex-application-example
+title: 'React: example application'
+sidebar_label: 'Example application'
+id: react-example-application
 keywords: [web, integrations, react]
 tags:
     - web
