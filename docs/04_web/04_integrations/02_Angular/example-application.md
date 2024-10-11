@@ -1,0 +1,23 @@
+---
+title: 'Angular: example application'
+sidebar_label: 'Example application'
+sidebar_position: 5
+id: angular-example-application
+keywords: [web, integrations, angular]
+tags:
+    - web
+    - integrations
+    - angular
+---
+
+We have provided an extensive example application showcasing the capabilities of integrating Angular with Genesis Foundation-UI.
+
+The repository contains a comprehensive Angular application that imports and showcases the functionalities of a wide range of components available in the Genesis Foundation-UI suite, including charts, forms, grids, and more. Additionally, the application integrates various [PBC's](../../../../server/packaged-business-capabilities/pbc-intro/) that insert their own content into specific parts of the application and extend its routing by adding specific pages.
+
+This hands-on approach allows you to witness the comprehensive capabilities of the platform in action.
+
+## Explore the repository
+
+We invite you to take a thorough look at the code and detailed examples in the [repository of the application example](https://github.com/genesiscommunitysuccess/howto-ui-integrations-angular/tree/main) to deepen your understanding of how to integrate Angular with Genesis Foundation-UI components.
+
+The repository is an invaluable resource for learning and reference, offering insights into best practices and sophisticated usage scenarios. By examining the code, you will see intricate use cases and discover how to use the platform's full capabilities for your own projects.
