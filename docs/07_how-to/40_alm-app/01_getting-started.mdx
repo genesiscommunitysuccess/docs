@@ -14,41 +14,57 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Welcome to the ALM Application tutorial.
 
-This tutorial has been designed to show you how to build and edit an example application from scratch, with the end goal of simulating something similar what might be seen in the real-world.
+To follow this tutorial, you need to have an account for Genesis Launchpad. This site gives you an evironment for running Genesis Create, an IDE for looking at the project code, and a plugin that enables you to build and run the app.
 
-This guide has been split into three sections.
-Section A will take you through Launchpad experience, using Genesis Create to kickstart the project, and then we'll get it up and running using the Launchpad Cloud workspace.
+If you haven't received this or don't know your details, contact:<br></br> dev.support@genesis.global.
 
-In Section B we'll go through some pro-code enhancements to the project, in both the front and back ends.
+## Genesis Launchpad
 
-Finally in Section C we'll cover ingesting data into the application from multiple different sources.
+1. Go to [Genesis launchpad](https://launchpad.genesis.global/) and sign in.
 
-And we believe you can do all this in a day (although you should be happy to do this at your own pace).
+2. Click on the **Start Cloud Workspace** button. 
 
-We hope you enjoy the experience.
+3. Wait for Cloud Workspace to start. Then click on the **Open Create** button.
 
 
+## Genesis Create
 
-Section A
+Genesis Create enables you to create a Genesis application from scratch in a very short space of time, without writing any code.
 
-A.1 - Genesis Launchpad
+In this tutorial, we want to highlight how easily you can take an app created using Genesis Create, and dive into the code to add new features and functions.
 
-We'll need to start off by signing into Genesis Launchpad. You should have had an account already created, if you haven't received this or don't know your details, please contact dev.support@genesis.global.
+So, we are going to give you the whole ALM app, created using Genesis Create.
+And here it is:
 
-Once signed in, you can follow along [this](https://scribehow.com/shared/Running_and_Testing_Using_Genesis_Cloud_Workspace__GkNIBZLWQC-p8myYhxoaIg) guide until you have reached step 3 and opened Genesis Create.
-
-
-A.2 - Genesis Create
-
-Genesis Create is a powerful tool that helps kickstart the process of creating a Genesis application from scratch.
-You are welcome to play around and set up your own application, but for the purposes of this tutorial we've pre-prepared a project to speed things up.
-
-You can find a JSON which can be loaded into Genesis Create below:
 [Create_Export_ALM.json](https://github.com/genesiscommunitysuccess/docs/tree/MAX-JOHN-PTL-1478/docs/07_how-to/40_alm-app/Create_Export_ALM.json)
 
-To load this into Genesis Create, you'll first need to copy/download the JSON file onto your PC.
-Click the three dots in the top right of the screen in Genesis Create, and select 'Load'. You can then select the JSON to automatically upload and populate all the required fields.
-Feel free to look into the entities/queries/consoldiators that have been created.
-Once you are ready to continue, click the 'Next' button in the bottom right until you have reached the 'Summary' page. You can then continue with [the guide](https://scribehow.com/shared/Running_and_Testing_Using_Genesis_Cloud_Workspace__GkNIBZLWQC-p8myYhxoaIg) which will provide the steps to create, build and start your application.
+1. Copy or download this file onto your PC.
+
+2. In Genesis Create, click on the three dots in the top right of the screen, then select **Load**. 
+
+3. Select the JSON file. This automatically uploads and populates all the required fields for the app.
+
+Looking at your app in Genesis Create
+In short, Genesis Create enables you to:
+
+- select the components you need for your app
+- create the tables (entities) for your database
+- create views that draw data from different tables
+- set up queries that provide this data to the front end
+- set up Event Handlers that enable you to insert, modify and delete data in the tables
+- configure consolidators that aggregate data, such as the value of a set of trades
+- create a front end that enables users to view grids of data and charts
+
+These stages are all set out at the top left of the Create window.
+
+You can use the **Next** and **Back** buttons to move back and forward through the steps.
+
+Feel free to look into each step and see what has been set up.
+
+Once you have done this, click on the **Next** until you reach the Summary page.
+
+### Running and building
+
+You can then continue with [the guide](https://scribehow.com/shared/Running_and_Testing_Using_Genesis_Cloud_Workspace_V2__G0NsYlJ4Qaa1HBOVLrwotQ) which will provide the steps to create, build and start your application.
+
