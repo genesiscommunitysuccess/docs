@@ -34,7 +34,7 @@ Let's add these now.
 ```jsx
   table(name = "POSITION", id = 11_004) {
     field("AMOUNT", DOUBLE).notNull()
-    field("CURRENCY", STRING(100)).notNull()
+    field("CURRENCY", STRING).notNull()
     field("SETTLEMENT_DATE", DATE).notNull()
 
     primaryKey("CURRENCY", "SETTLEMENT_DATE")
@@ -47,8 +47,8 @@ Let's add these now.
 ```jsx
   table(name = "FX_RATE", id = 11_007) {
     field("RATE", DOUBLE).notNull()
-    field("SOURCE_CURRENCY", STRING(100)).notNull()
-    field("TARGET_CURRENCY", STRING(100)).notNull()
+    field("SOURCE_CURRENCY", STRING).notNull()
+    field("TARGET_CURRENCY", STRING).notNull()
 
     primaryKey("SOURCE_CURRENCY", "TARGET_CURRENCY")
 
@@ -57,7 +57,7 @@ Let's add these now.
 
 Having made these changes, we also need to update the events in the Event Handler file, because these will still be calling the old primary keys.
 
-1. Go to the file **ALM\server\ALM-app\src\main\genesis\cfg\ALM-event-handler.kts**.
+1. Go to the file **ALM\server\ALM-app\src\main\genesis\scripts\ALM-event-handler.kts**.
 
 
 2. Update the primary key for the POSITION_DELETE event to:

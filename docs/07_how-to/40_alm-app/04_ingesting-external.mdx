@@ -63,11 +63,7 @@ import global.genesis.gen.dao.LoanTrade
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 
-/**
- * Note:
- * We can avoid having to define all these classes by swapping the external app for a simple spring boot app
- * Then we can generate an OpenAPI spec and use the genesis open api plugin to generate these types for us
- * */
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class LoanMessage(
     @JsonProperty("LOAN_ID")
@@ -217,16 +213,6 @@ Then add the following event to the end of the the `eventHandler{}`:
           // Send a data logon to the external dataserver and retrieve the current loan data
           val loanMessages = client.dataLogon(loansUrl, responseAuthToken).data.row
 
-          /**
-           * Note:
-           * Why are we inserting into a table? We retrieve from a dataserver, inherently this data can change
-           * We retrieve updates for loan messages not a full view of all loan messages, which means we get inserts, updates, deletes etc.
-           * If we keep blindly inserting and the data changes this will break, or we write even more code to deal with each operation and keep our DB in sync
-           * If we just want to display these messages in a UI, use a req-rep on the external app instead of a dataserver
-           * Even better, as mentioned elsewhere, use a simple spring boot app for the external app and simplify everything
-           * I would estimate an 80%+ code reduction if you use this approach
-           *
-           */
           // Map and insert the retrieved loan messages
           loanMessages.map { loanMessage ->
               loanMessage.asLoanTrade()
@@ -314,7 +300,7 @@ Right click on the file in the Project window and select Genesis: SendIt to inse
 
 
 
-C.3.4 - Kafka
+C.3.4 - Kafka Integration
 
 We can also set up a connection to a Kafka source, to consume messages from it.
 Similar to the Rest API, we've set up a Kafka producer which we can connect to for some `FX_RATE` data.
@@ -411,13 +397,11 @@ Then we can add a new pipeline itself in the `pipelines{}` section:
                 }
             }
         }
-        // here we are converting each PriceReceived object into a DbOperation to insert into the database
         .map {
-            // in order to use the database sink we must provide it a DbOperation to perform - in this case it's an insert on each PriceReceived object provided by the above operation
+            // in order to use the database sink we must provide it a DbOperation to perform - in this case it's an upsert on each FxRate object provided by the above operation
             DbOperation.Upsert(it)
         }
         // here we are using a simple database sink to perform the above operation - txDbSink is a transactional database sink
-        // if you would like to use a non-transactional database sink, simple replace txDbSink() with dbSink()
         .sink(txDbSink())
     }
 ```
