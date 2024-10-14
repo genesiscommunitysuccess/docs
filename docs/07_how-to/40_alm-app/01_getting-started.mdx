@@ -36,10 +36,10 @@ In this tutorial, we want to highlight how easily you can take an app created us
 So, we are going to give you the whole ALM app, created using Genesis Create.
 And here it is:
 
-[Create_Export_ALM.json](pathname:///file/Create_Export_ALM.json)
+[Create_Export_ALM.json](https://github.com/genesiscommunitysuccess/alm-app)
 
 
-1. Copy or download this file onto your PC.
+1. Copy or download this file onto your PC. (When you view the file, you can click on the three dots at the top right to download the raw file.)
 
 2. In Genesis Create, click on the three dots in the top right of the screen, then select **Load**. 
 
@@ -68,5 +68,42 @@ Once you have done this, click on the **Next** until you reach the Summary page.
 
 ### Running and building
 
-You can then continue with [the guide](https://scribehow.com/shared/Running_and_Testing_Using_Genesis_Cloud_Workspace_V2__G0NsYlJ4Qaa1HBOVLrwotQ) which will provide the steps to create, build and start your application.
+Make sure you are on the Summary page of Genesis Create, then click on the **Open in Genesis Cloud Workspace** tab. This generates a project and opens an IDE in the Cloud Workspace.
+
+You can now build and run the app.
+
+1. Click on the menu icon to the left and select **View** -> **Command Palette**.  
+
+![](/img/view-palette.png)
+
+2. To see the list of available commands, type **Genesis:**. Then select **Genesis: Unpack project** to display a list of available projects.
+
+![](/img/unpack-project.png)
+
+3. Select the appropriate project to open. After a moment, this displays a list of projects, and yours should be on top. The filename is the app name you specified at the beginning, plus a date and time stamp.<br></br>
+Click on your project to open it.<br></br>
+Now you can browse through the project that has been generated be Genesis Create.
+
+- The **client** subdirectory contains a fully working web application for the front end of our application.
+- The **server** subdirectory contains the generated Genesis configuration files for each of the microservices that make up the back-end of the application.
+
+4. Select **View** -> **Command Palette** and then select **Genesis Build Project**. This starts a full build. When this is complete, you will see the message **BUILD SUCCESSFUL** in the terminal tab at the bottom right of the screen.
+
+5. Now you can initialise the database and start our server and client processes. Click the **Run and Debug** icon and select **Bootstrap + Start App**. 
+
+![](/img/run-debug-icon.png)
+
+This creates the database, loads some data and applies permissions. It takes a few minutes to complete. 
+
+6. When all the processes are **UP**, switch to the **PORTS** tab at the bottom. Go to the **Web** line and and click on the **Open in Browser** icon.
+
+![](/img/ports-web.png)
+
+This displays the web application, where you can login using:
+
+- username: admin
+- password: genesis
+
+
+That's it. Now you can take a look at your working app.
 

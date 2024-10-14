@@ -3,59 +3,78 @@ title: 'ALM app: ingesting external data'
 sidebar_label: 'Ingesting external data'
 id: ht-alm-ingesting-external
 sidebar_position: 5
-keywords: [ALM, genesis create, genesis launchpad]
+keywords: [ALM, static data, data pipeline, kafka]
 tags:
     - ALM
-    - genesis create
-    - genesis launchpad
+    - static data
+    - data pipeline
+    - kafka
  
 ---
+
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-C.3 - Loading Data
-We can set up a few ways to load data into the application. In these steps we’ll go through some different methods to ingest data in to the database.
 
-C.3.1 - Loading example data
-We may want to load some example static data into our application.
+There are several different ways of loading data into a Genesis application. 
 
-To start with, we’ll only want to load `BOOK`, `CLIENT`, and `ENTITY` data (the other files will be used later).
-You can find the files here:
+In this page, we’ll go through some different methods to ingest data in to the database.
 
-Data.zip
+## Loading example data
+First, let's look at loading some example static data into our application.
 
+There is a simple command - **Genesis: SendIt** - that loads data to the database.
 
-If you move this inside IntelliJ, you’ll need to choose `Refactor` and then `Overwrite` options.
+To start with, we shall load three files: `BOOK`, `CLIENT`, and `ENTITY`.
 
-Once the content is copied across, shift select each of `BOOK.csv`, `CLIENT.csv` and `ENTITY.csv`, right click and select `Genesis: SendIt` to add the data.
+You can find these three files in the **Data** folder of the [ALM repo](https://github.com/genesiscommunitysuccess/alm-app/tree/master/Data).
 
+Once you have copied the content, press **SHIFT** and select **BOOK.csv**, **CLIENT.csv** and **ENTITY.csv**, then right-click and select **Genesis: SendIt** to add the data.
 
+:::tip
+By default, **SendIt** simply adds data. Note that:
 
-C.3.2 - Configuring up a data pipeline
+- it will not clear any existing records
+- it will not overwrite any record that is already in the database 
 
-You may have noticed during the Genesis Create set up we have specified a data pipeline.
-Here we will try inputting some data to this pipeline.
-You can see the code for the pipeline in `ALM/server/ALM-app/src/main/genesis/scripts/ALM-pipelines.kts`
+However, there is a lot more you can do with this command. See the [SendIt specification](/operations/commands/server-commands/#sendit) for full details
+:::
 
-This has been set up so that when the application is running, a folder `loadData` should be created in `ALM/server/ALM-app/src/main/genesis/data`
-This pipeline will listen in this folder for any CSV file with the prefix `CDs`. When it sees a file it will process it and add any records to the `CD_TRADE` table.
-Once processed, these files move into a `.done` directory, with a timestamp added to the filename.
+## Configuring a data pipeline
 
-There is a sample file you can test with here:
-`CDs.csv`
+The Genesis Create set-up includes a data pipeline. You can now try to use this to input some data.
 
+### What the pipeline definitions
+The code for the pipeline is in **ALM/server/ALM-app/src/main/genesis/scripts/ALM-pipelines.kts**.
 
+The pipeline has been set up so that when the application is running, a folder called **loadData** is created in **ALM/server/ALM-app/src/main/genesis/data**.
 
+1. The pipeline listens to this folder for any CSV file with the prefix **CDs**. 
 
-C.3.3 - Loading Data via Rest API
+2. When it sees a file, it processes it and adds any records to the `CD_TRADE` table.
 
-For this demo we have set up a rest server which can provide us with Loan Trade data.
-To call it, we'll need to firstly start by defining the receiving message.
+3. Once processed, the files move into a sub-directory called **.done**, with a timestamp added to the filename.
 
-Create a new file at `ALM\server\ALM-app\src\main\kotlin` called `Messages.kt`
+### Try it out
 
-Paste the following into the file:
+1. Download the file **CDs.csv** from the **Data** folder of the [ALM repo](https://github.com/genesiscommunitysuccess/alm-app/tree/master/Data).
+
+2. Paste this file into the **loadData** folder in your app. 
+
+That's it! The data pipeline will then process the file automatically.
+
+## Loading data via Rest API
+
+For this exercise, we have set up a rest server that provides Loan Trade data.
+
+### Define the receiving message
+To call the rest server, we first need to define the receiving message.
+
+1. Create a new file called **Messages.kt** at **ALM\server\ALM-app\src\main\kotlin**.
+
+2. Paste the following into the file:
+
 ```jsx
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -158,9 +177,13 @@ private fun unixTimestampToDateTime(timestamp: Long) =
 
 data object Message
 ```
+
+### Add an event trigger
+
 Now we can add an event to trigger a request to the REST API.
 
-Open ALM\server\ALM-app\src\main\genesis\scripts\ALM-eventhandler.kts and add these imports to the very top of the file:
+1. Open the file **ALM\server\ALM-app\src\main\genesis\scripts\ALM-eventhandler.kts** and add the following imports to the very top of the file:
+
 ```jsx
 import global.genesis.gen.dao.enums.ALM.fx_trade.TradeStatus
 import global.genesis.httpclient.GenesisHttpClient
@@ -174,9 +197,8 @@ import io.ktor.serialization.jackson.jackson
 import io.ktor.util.reflect.TypeInfo
 ```
 
+2. Add the following event to the end of the the `eventHandler{}`:
 
-
-Then add the following event to the end of the the `eventHandler{}`:
 ```jsx
     eventHandler<Message>("LOAN_TRADE_REST_API", transactional = true) {
       // Instantiate the client outside the onCommit to avoid repeating
@@ -238,9 +260,11 @@ Then add the following event to the end of the the `eventHandler{}`:
 
   }
 ```
-The use of upsert in the code will ensure any loan trades are updated, being inserted if not present.  They can be deleted at the front end and will reappear each time the cron job runs.
 
-After the end of the eventHandler{} section, add the following function, which is required to get the authentication token:
+The use of upsert in the code ensures that any loan trades are updated, being inserted if not present. They can be deleted at the front end and will reappear each time the cron job runs.
+
+3. After the end of the `eventHandler{}` section, add the following function, which is required to get the authentication token:
+
 ```jsx
 suspend fun GenesisHttpClient.dataLogon(url: String, authToken: String) = submitRequest<DataLogonRequest, AllLoansResponse>(
     HttpRequest(
@@ -265,12 +289,13 @@ suspend fun GenesisHttpClient.dataLogon(url: String, authToken: String) = submit
 
 ```
 
+### Setting up an evaluator
+Now that we've added these events, we shall set up some ways to call this.
 
-
-
-Now that we've added these event, we may want to set up some way to regularly call this.
 We can do this by adding and defining an EVALUATOR process.
- Open `ALM\server\ALM-app\src\main\genesis\cfg\ALM-processes.xml` and insert the following code:
+
+1. Open **ALM\server\ALM-app\src\main\genesis\cfg\ALM-processes.xml** and insert the following code:
+
 ```jsx
   <process name="ALM_EVALUATOR">
     <start>true</start>
@@ -283,48 +308,69 @@ We can do this by adding and defining an EVALUATOR process.
     <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
   </process>
 ```
-Then open ALM\server\ALM-app\src\main\genesis\cfg\ALM-service-definitions.xml  and add:
+
+2. Open **ALM\server\ALM-app\src\main\genesis\cfg\ALM-service-definitions.xml**  and add:
+
 ```jsx
   <service host="localhost" name="ALM_EVALUATOR" port="9703"/>
 ```
-This gives us a new service that the Cron Scheduler can call to trigger the rest api call as needed.  Create a new csv file in ALM\server\ALM-app\src\main\genesis\data\ called CRON_RULE.csv
+This gives us a new service that the Cron Scheduler can call to trigger the rest api call as needed. 
 
-Insert the following line:
+To define the Cron Scheduler:
+
+1. In the folder **ALM\server\ALM-app\src\main\genesis\data**, create a new csv file called **CRON_RULE.csv**. 
+
+2. Insert the following line:
+
 ```jsx
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
-"0 0/10 * * * ?","Loan Import Rule","Europe/London","ENABLED","Loan Rule","admin","ALM_COMPACT_PROCESS","EVENT_LOAN_MESSAGE"
+"0 0/10 * * * ?","Loan Import Rule","Europe/London","ENABLED","Loan Rule","admin","ALM_COMPACT_PROCESS","EVENT_LOAN_TRADE_REST_API"
 ```
-You are welcome to set the cron schedule as needed.  This example will run every 10 minutes.
+By default, this example will run every 10 minutes. But you are welcome to set the cron schedule as needed. 
 
-Right click on the file in the Project window and select Genesis: SendIt to insert this record into the database.
+3. Right click on the file in the Project window and select **Genesis: SendIt** to insert this record into the database.
 
+## Kafka integration
 
+You can also set up a connection to a Kafka source, to consume messages from it.
 
-C.3.4 - Kafka Integration
+For this exercise, we have set up a Kafka producer which we can connect to for some `FX_RATE` data.
 
-We can also set up a connection to a Kafka source, to consume messages from it.
-Similar to the Rest API, we've set up a Kafka producer which we can connect to for some `FX_RATE` data.
-
+### Add implementations and properties
 To start, we'll need to add some implementations to our application.
-In `server/ALM-app/build.gradle.kts`, add the following implementations:
+
+1. Open the file **server/ALM-app/build.gradle.kts**, then add the following implementations:
 
 ```jsx
     implementation("global.genesis:kafka-genesis:${properties["platformIntegrationVersion"]}")
     implementation("software.amazon.msk:aws-msk-iam-auth:2.2.0")
 ```
 
-Then in `server/gradle.properties` we'll need to add the following property:
+2. Then in the file **server/gradle.properties**,  add the following property:
 
 ```jsx
 platformIntegrationVersion=8.4.0
 ```
 
-We'll also have to add this to the classpath of the ALM_PIPELINE process. In `server/ALM-app/src/main/genesis/cfg/ALM-processes.xml` add the following to the ALM_DATAPIPLINE process:
+3. Also add this to the classpath of the ALM_PIPELINE process. Open the file **server/ALM-app/src/main/genesis/cfg/ALM-processes.xml**, then add the following to the ALM_PIPLINE process:
+
 ```jsx
     <classpath>ALM-app*,aws-msk-iam-auth*</classpath>
 ```
 
-We will need to set up some properties for our Kafka source. We'll do this in the global section of `server/ALM-app/src/main/genesis/cfg/ALM-system-definition.kts`:
+### Set up source properties
+We need to set up some properties for our Kafka source. 
+
+1. Open the file **server/ALM-app/src/main/genesis/cfg/ALM-system-definition.kts**.
+
+2. At the top of the file, add the following import:
+
+```
+import java.net.InetAddress;
+```
+
+3. Go to the global section and add the following:
+
 ```jsx
         // the following have been set up as global definitions to be used as part of the pipelines script, these can be host specific as well
         item("BOOTSTRAP_SERVER", "boot-qjjhmpj3.c2.kafka-serverless.eu-west-2.amazonaws.com:9098")
@@ -335,7 +381,12 @@ We will need to set up some properties for our Kafka source. We'll do this in th
         item("KAFKA_SECURITY_CONFIG", "SASL_SSL")
 ```
 
-Now for the new pipeline. In `server/ALM-app/src/main/genesis/scripts/ALM-pipelines.kts` we'll need to add some imports, and initialise some methods. Add the below to the beginning of the file
+### Creating a new pipeline for Kafka
+
+1. Open the file **server/ALM-app/src/main/genesis/scripts/ALM-pipelines.kts**. 
+
+2. We need to add some imports, and initialise some methods. Add the code below to the beginning of the file:
+
 ```jsx
 import global.genesis.pipeline.file.CsvRow
 import global.genesis.CdTradeLoadCdTradeCsvDataMapper
@@ -378,7 +429,8 @@ val splitOperator: SplitOperator<ConsumerRecords<String, String>, ConsumerRecord
 }
 ```
 
-Then we can add a new pipeline itself in the `pipelines{}` section:
+3. You can add a new pipeline itself in the `pipelines{}` section. Use the code below:
+
 ```jsx
   pipeline("KAFKA_TO_DB_PIPELINE") {
     // sourcing from the kafka source as defined above
