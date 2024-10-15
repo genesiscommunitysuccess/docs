@@ -165,18 +165,20 @@ npm run dsconfig
 
 ### Slots
 
-When you use an `entity-management` you can use the following slots to define content and actions. The slots are dynamically generated based on the `crud-menu-position` attribute value.
+Slots enable you to define content and actions. The slots are dynamically generated, based on the value of the `crud-menu-position` attribute.
 
-#### Static Slots
+#### Static slots
 
 | Name    | Description                                                         |
 |---------|---------------------------------------------------------------------|
 | `header`| The content to be displayed in the header section. If `crud-menu-position` is set to `top`, this slot content will overwrite the `crud-top` content. |
 | `footer`| The content to be displayed in the footer section. If `crud-menu-position` is set to `bottom`, this slot content will overwrite the `crud-bottom` content. |
 
-#### Dynamic Slots
+#### Dynamic slots
 
-The `crud-menu-position` attribute can be one of the following values: `column`, `top`, `bottom`, `action`. Based on this value, the following slots will be available:
+You can set the `crud-menu-position` attribute to one of the following values: `column`, `top`, `bottom`, `action`. 
+
+Based on this value, the following slots will be available:
 
 | Name                        | Description                                                         |
 |-----------------------------|---------------------------------------------------------------------|
@@ -184,7 +186,7 @@ The `crud-menu-position` attribute can be one of the following values: `column`,
 | `crud-{position}`           | The main content for the specified position                         |
 | `crud-{position}-after`     | The content to be displayed after the specified position            |
 
-#### Default Behavior
+#### Default behaviour
 
 - The default value for `crud-menu-position` is `column`.
 - If `crud-menu-position` is set to `bottom` and the `footer` slot is also set in `entity-management`, the `footer` slot content will overwrite the `crud-bottom` content.
@@ -230,11 +232,11 @@ Example 2: `crud-menu-position` set to `bottom`
 _preview_:
 ![React basic demo](/img/foundation-entity-management/crud-bottom-example.png)
 
-##### Notes
-
+:::tip
 - If you create multiple slots of content or actions, the slots will be placed side by side.
 - Ensure that the `crud-menu-position` is set appropriately to avoid conflicts with the `header` and `footer` slots.
 - The dynamic slots (`crud-{position}-before`, `crud-{position}`, `crud-{position}-after`) are generated inside the `header` and `footer` slots. Therefore, if the `header` or `footer` slots contain content, they will overwrite the dynamic slots.
+:::
 
 ## User Management
 
