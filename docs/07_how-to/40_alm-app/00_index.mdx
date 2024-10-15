@@ -8,13 +8,25 @@ id: 'ht-alm-intro'
 
 We have created an ALM application that you can use to learn how to create and refine applications on the Genesis Platform.
 
-This is a substantial application that has been created in a very short time.
+This is a substantial Trade-booking application that includes Trade version management. It has been created in a very short time. 
 
-You can follow the sequence of creating the app, setting it up in Genesis Create, generating the code, and then reworking the code to add refinements in both the front and back ends. Finally, you will see how to ingest information from other sources to make it part of a broader workflow.
+To achieve this, the application includes:
+
+- consolidation of data across multiple asset classes to provide a single position ladder; this enables you to see aggregate cash movements by date and currency
+- three different ways of ingesting data from external sources:
+	- via a csv data pipeline
+	- via a reoccurring RestAPI call
+	- via Kafka topic subscription
+- a clear usable front end with display grids, submission forms and charting
+
+## Learning with the ALM app
+In these pages, you can follow the sequence of creating the app, setting it up in Genesis Create, generating the code, and then reworking the code to add refinements in both the front and back ends. Finally, you will see how to ingest information from other sources to make it part of a broader workflow.
 
 - [Getting started](/how-to/alm-app/ht-alm-getting-started/) shows you how to use Genesis Launchpad to run Genesis Create. At the end of this, you will have generated a project and you will have built and run the app.
 - [Improving the back end](/how-to/alm-app/ht-alm-improving-back-end/) shows you how to look at the code and make a adjustments that give the server extra features and enhancements - such as adding currency conversion to view a set of varied trades in the current value of a specific currency.
 - [Improving the front end](/how-to/alm-app/ht-alm-improving-front-end/) shows you how to make adjustments to the front-end code, such as to format numbers so that positive numbers are displayed in green and negative numbers in red.
-[Ingesting external data](/how-to/alm-app/ht-alm-ingesting-external/) shows different ways of taking in data from an external source, such as taking FX rates from a Kafka source.
+- [Ingesting external data](/how-to/alm-app/ht-alm-ingesting-external/) shows different ways of taking in data from an external source, such as taking FX rates from a Kafka source.
 
+We hope you enjoy these exercises; we believe they give you a quick way of exploring the code, the build process and the application itself.
 
+If you want to have the simplest possible overview of the architecture of an application on the Genesis Platform, take a few minutes to look at our [simple introduction](/getting-started/learn-the-basics/simple-introduction/).
