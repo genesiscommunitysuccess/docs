@@ -367,6 +367,32 @@ module.exports = {
     },
     {
       type: "category",
+      label: "GRIDS",
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "web/grids/grid-pro/grid-pro",
+        },
+        {
+          type: "doc",
+          id: "web/grids/grid-tabulator/grid-tabulator",
+        }
+      ],
+    },
+    {
+      type: "category",
+      label: "CHARTS",
+      collapsed: true,
+      items: [
+        {
+          type: "doc",
+          id: "web/charts/g2plot-chart/g2plot-chart",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "DESIGN SYSTEMS",
       collapsed: true,
       items: [

@@ -17,4 +17,5 @@ module.exports = {
 	"@genesislcap/foundation-login": "14.200.0",
 	"@genesislcap/foundation-reporting": "14.200.0",
 	"@genesislcap/foundation-testing": "14.200.0",
+  // "@genesislcap/grid-pro": "14.200.0",
 };

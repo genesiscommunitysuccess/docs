@@ -1,3 +1,4 @@
 label: 'Grid Pro'
-className: 'menu__nested-category'
+# className: 'menu__nested-category'
+className: 'hidden'
 collapsed: true

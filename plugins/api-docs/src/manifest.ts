@@ -3,77 +3,33 @@ import { PackageConfig } from "./types";
 export default {
   packages: <PackageConfig[]>[
     {
-      name: "@genesislcap/foundation-testing",
+      name: "@genesislcap/grid-pro",
       enabled: true,
       src: {
         api_docs: "./docs/api",
+        img_dir: "docs/img",
         readme: "./README.md",
       },
       output: {
-        directory: "./docs/04_web/06_testing",
+        directory: "./docs/04_web/14_grids/01_grid-pro",
         api_docs: "docs/api",
-        readme: "01_foundation-testing.mdx",
-        keywords: ["genesis", "foundation", "ui", "testing"],
+        readme: "01_grid-pro.mdx",
+        keywords: ["genesis", "foundation", "ui", "grid", "grid-pro", "ag"],
         tags: [
-          "test",
-          "testing",
-          "frontend",
-          "ui",
-          "unit",
-          "end-to-end",
-          "e2e",
-          "uvu",
-          "playwright",
+          "data server",
+          "request server",
+          "event handler",
+          "stream",
+          "snapshot",
+          "grid",
+          "ag",
+          "grid-pro"
         ],
         pages: [
           {
-            title: "Foundation Testing",
-            id: "foundation-testing",
-            sidebar_label: "Foundation Testing",
-          },
-        ],
-      },
-    },
-    {
-      name: "@genesislcap/foundation-filters",
-      enabled: true,
-      src: {
-        api_docs: "./docs/api",
-        readme: "./README.md",
-      },
-      output: {
-        directory: "./docs/04_web/09_filters",
-        api_docs: "docs/api",
-        readme: "01_foundation-filters.mdx",
-        keywords: ["genesis", "foundation", "ui", "filters"],
-        tags: ["filter", "feature", "flags", "conditions"],
-        pages: [
-          {
-            title: "Foundation Filters",
-            sidebar_label: "Foundation Filters",
-            id: "foundation-filters",
-          },
-        ],
-      },
-    },
-    {
-      name: "@genesislcap/pbc-reporting-ui",
-      enabled: true,
-      src: {
-        img_dir: "docs/img",
-        readme: "./README.md",
-      },
-      output: {
-        directory: "./docs/05_components/reporting",
-        img_dir: "docs/img",
-        readme: "foundation-reporting.mdx",
-        keywords: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
-        tags: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
-        pages: [
-          {
-              title: "Foundation Reporting",
-              sidebar_label: "Foundation Reporting",
-              id: "foundation-reporting",
+            title: "Grid Pro",
+            sidebar_label: "Grid Pro",
+            id: "grid-pro",
           },
         ],
       },
@@ -198,6 +154,60 @@ export default {
       },
     },
     {
+      name: "@genesislcap/foundation-testing",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/06_testing",
+        api_docs: "docs/api",
+        readme: "01_foundation-testing.mdx",
+        keywords: ["genesis", "foundation", "ui", "testing"],
+        tags: [
+          "test",
+          "testing",
+          "frontend",
+          "ui",
+          "unit",
+          "end-to-end",
+          "e2e",
+          "uvu",
+          "playwright",
+        ],
+        pages: [
+          {
+            title: "Foundation Testing",
+            id: "foundation-testing",
+            sidebar_label: "Foundation Testing",
+          },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-filters",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/04_web/09_filters",
+        api_docs: "docs/api",
+        readme: "01_foundation-filters.mdx",
+        keywords: ["genesis", "foundation", "ui", "filters"],
+        tags: ["filter", "feature", "flags", "conditions"],
+        pages: [
+          {
+            title: "Foundation Filters",
+            sidebar_label: "Foundation Filters",
+            id: "foundation-filters",
+          },
+        ],
+      },
+    },
+    {
       name: "@genesislcap/foundation-layout",
       enabled: true,
       src: {
@@ -281,6 +291,28 @@ export default {
             title: "Foundation Forms",
             sidebar_label: "Foundation Forms",
             id: "foundation-forms",
+          },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/pbc-reporting-ui",
+      enabled: true,
+      src: {
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/05_components/reporting",
+        img_dir: "docs/img",
+        readme: "foundation-reporting.mdx",
+        keywords: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
+        tags: ["web", "frontend", "ui", "micro-front-ends", "reporting"],
+        pages: [
+          {
+              title: "Foundation Reporting",
+              sidebar_label: "Foundation Reporting",
+              id: "foundation-reporting",
           },
         ],
       },
