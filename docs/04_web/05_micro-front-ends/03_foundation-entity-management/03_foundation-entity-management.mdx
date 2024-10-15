@@ -65,7 +65,7 @@ In this example, we have used three attributes when declaring the `entity-manage
 - `title = "Instruments"` displays this text as the title of the grid.
 - `createEvent = "EVENT_TRADE_INSERT"` generates a form with all the fields from the metadata of the event and adds a button at the top of the grid so that the user can access this form.
 
-As long as your back end has the correct resources, you can now see the grid in the Home page if you run the application locally.
+With this code in place, you can see the grid in your page if you run the application locally (as long as your back end has the correct resources).
 
 ![](/img/entity-man-grid.png)
 
@@ -85,6 +85,7 @@ The most common attributes you can configure for `entity-management` are listed 
 | `updateEvent`              | specifies an event on the back end for modifying a record in the table; once specified, this displays an **Edit** button to the right of every record in the grid. | No  |
 | `deleteEvent`              | specifies an event on the back end for deleting a record in the table; once specified, this displays a **Delete** button to the right of every record in the grid. |  No  |
 | `datasourceConfig`         | configures the [interaction with the back-end resource](./docs/api/foundation-entity-management.datasourceconfiguration/#example). | No  |
+| `defaultEntityValues`      | an object that contains default values to populate the form when the user is adding an entity. | No  |
 | `persist-column-state-key` | the user can change columns (the width, for example); if you want the column states to be persisted when the user navigates away from the page, specify a unique string value. By default, changes are **not** persisted, and the grid returns to its default state every time the user navigates away from it. |  No  |
 | `columns`                  | enables you to supply an array of `ColDef[]` properties to [customise](#customising-the-grid) the grid. | No  |
 | `createFormUiSchema`       | enables you to supply a schema to configure an insert form. | No  |
@@ -142,6 +143,31 @@ You can set the style of the buttons using the `crud-menu-style` setting. This h
 - With `crud-menu-style = actions-horizontal`, when the user clicks on the dots, the buttons are displayed horizontally (side-by-side).
 - With `crud-menu-style = actions-vertical`, when the user clicks on the dots, the buttons are displayed vertically.
 ![](/img/style-vertical.png)
+
+#### Adding default values to the form
+To provide default values for when the form is displayed, use the `defaultEntityValues` attribute and supply an object that contains the default values. For example:
+
+```kotlin
+      <entity-management
+        design-system-prefix="rapid"
+        resourceName="ALL_COUNTERPARTYS"
+        :defaultEntityValues="${(x) => defaultData}"
+        createEvent="EVENT_COUNTERPARTY_INSERT"
+      ></entity-management>
+```
+
+Here is a very simple object that provides one default value:
+
+```kotlin
+const defaultData = {
+  COUNTERPARTY_ID: 'DEFAULT_ID',
+  ENABLED: true,
+};
+```
+
+And here we can see that default value in the form:
+
+![](/img/default-value-form.png)
 
 #### Customising the form
 If you want to control the content of a form - for example, you might want to use different forms for inserting a new record and for modifying an existing record - use either the `createFormUiSchema` attribute or the `updateFormUiSchema` attribute. These enable you to provide a schema that configures the form. 
