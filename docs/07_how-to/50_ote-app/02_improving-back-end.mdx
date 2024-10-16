@@ -55,7 +55,9 @@ field("VERSION", INT).notNull().default(1)
 ```
 
 
-C. Go to the folder OTE\server\OTE-app\src\main\Kotlin, here we will add an additional folder structure and a file.
+C. Adding Additional Folder Structures and Files 
+
+Go to the folder OTE\server\OTE-app\src\main\Kotlin, here we will add an additional folder structure and a file.
 
 1. If using intelliJ: 
 
@@ -88,7 +90,7 @@ query("ALL_USER_NAMES", USER) {
 }
 ```
 
-As we made some changes to the primary Keys in step A above, we now need to edit the consolidators, to take this changes into consideration and solve for the new primaryKey aggregations
+As we made some changes to the primary Keys in step A above, we now need to edit the consolidators, to take the changes made into consideration and solve for the new primaryKey aggregations
 
 E. Go to the file OTE\server\OTE-app\src\main\genesis\scripts\OTE-consolidator.kts
 
@@ -106,7 +108,7 @@ participantName = groupId.participantName
 
 F. Using the existing `PARTICIPANT_POSITION_AGG` Consolidator code we are going to create separate Consolidators for the Buy and Sell Partcipant Positions, to do this
 
-1. In the PARTICIPANT_POSITION_AGG consolidator find `PARTICIPANT_POSITION_AGG`. Update it as follows:
+1. Find `PARTICIPANT_POSITION_AGG` in the PARTICIPANT_POSITION_AGG consolidator. Update it as follows:
 
 ```
 BUY_PARTICIPANT_POSITION_AGG
@@ -184,13 +186,13 @@ eventHandler<ClosingPrice.ByInstrumentIdClosingDate>("CLOSING_PRICE_DELETE", tra
 eventHandler<InstrumentToUnderlying.ByInstrumentIdTypeUnderlyingId>("INSTRUMENT_TO_UNDERLYING_DELETE", transactional = true) {
 ```
 
-3. Find [ information to be added] . Update as follows:
+3. To make orders Active or withdrawb find [ information to be added] . Update as follows:
 
 ```
 eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_MODIFY", transactional = true) {
 ```
 
-J. All of the eventHandlers set out below will need to be removed in their entirety:
+J. All of the eventHandlers set out below will need to be removed in their entirety, these are replaced with code and consolidators:
 
 1. To remove the following Trade  and Trade.ById eventHandlers find:
 
@@ -403,7 +405,7 @@ eventHandler<ClosingPosition>("CLOSING_POSITION_INSERT", transactional = true) {
   }
 ```
   
-K. There may be instances where events need to be managed in a different file.Currently the code for the `PASSIVE_ORDER_BOOK_INSERT`
+K. There may be instances where events need to be managed in a different file. Currently the code for the `PASSIVE_ORDER_BOOK_INSERT`
 and `PASSIVE_ORDER_BOOK_DELETE` events can be found in the OTE-eventhandler.kts, we are going to change this so that the events are catered for in a new file
 
 1. Go to OTE\server\OTE-app\src\main\genesis\scripts and add a file called:
@@ -475,7 +477,7 @@ eventHandler {
 
             //Get all instruments
             entityDb.getBulk(INSTRUMENT).toList().forEach {
-                val trades = entityDb.getRange(Trade.byInstrumentTradeDatetime(it.instrumentId, now().withTimeAtStartOfDay().plusHours(priceCheckStartHour)),Trade.byInstrumentTradeDatetime(it.instrumentId, now().withTimeAtStartOfDay().plusHours(priceCheckEndHour)))
+                val trades = entityDb.getRange(Trade.byInstrumentIdTradeDatetime(it.instrumentId, now().withTimeAtStartOfDay().plusHours(priceCheckStartHour)),Trade.byInstrumentIdTradeDatetime(it.instrumentId, now().withTimeAtStartOfDay().plusHours(priceCheckEndHour)))
                     .toList()
                 var weightedPrice = 0.0
                 var quantity = 0.0
