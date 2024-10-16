@@ -18,3 +18,222 @@ Now we can tidy up and improve some elements of the GUI to make things look a bi
 
 The majority of this section will see changes made in the front-end folder, which is found under **OTE/client**.
 
+A. Modifying the Grid layout.
+
+In the GUI we are going to modify the grid layout, changing the 2x2 grid layout, to a layout whereby orders are displayed at the top of the screen and three section are displayed beneath the Orders grid.
+
+1. Go to OTE\client\src\routes\orders\orders.template.ts. Update it as follows:
+
+```
+ <rapid-layout-region type="horizontal">
+             <rapid-layout-item title="Passive Order Book">
+                 <orders-passive-order-book-manager></orders-passive-order-book-manager>
+             </rapid-layout-item>
+        <rapid-layout-region type="vertical">
+             <rapid-layout-item title="Participant Positions">
+                 <orders-participant-positions-grid></orders-participant-positions-grid>
+             </rapid-layout-item>
+                <rapid-layout-item title="Trades">
+                 <orders-trades-grid></orders-trades-grid>
+             </rapid-layout-item>
+             <rapid-layout-item title="Open Positions">
+                 <orders-open-positions-grid></orders-open-positions-grid>
+             </rapid-layout-item>
+         </rapid-layout-region>
+     </rapid-layout-region>
+  </rapid-layout>
+`;
+```
+2. Go to file OTE\client\src\routes\balances\cash-movements-manager\cash-movement.create.form.schema.ts
+
+Replacing the following code:
+
+```
+{
+  "type": "Control",
+  "label": "Participant Name",
+  "scope": "#/properties/PARTICIPANT_NAME",
+  "options": {
+  }
+},
+```
+
+with the following:
+
+```
+{
+  "type": "Control",
+  "label": "Participant Name",
+  "scope": "#/properties/PARTICIPANT_NAME",
+  "options": {
+    "allOptionsResourceName": "ALL_USER_NAMES",
+    "valueField": "USER_NAME",
+    "labelField": "USER_NAME"
+  }
+},
+```
+
+As we updated the create form schema we also need to update the update form schema.
+
+3. Go to file OTE\client\src\routes\balances\cash-movements-manager\cash-movement.update.form.schema.ts
+
+Replacing the following code:
+
+```
+{
+  "type": "Control",
+  "label": "Participant Name",
+  "scope": "#/properties/PARTICIPANT_NAME",
+  "options": {
+  }
+},
+```
+
+with the following:
+
+```
+{
+  "type": "Control",
+  "label": "Participant Name",
+  "scope": "#/properties/PARTICIPANT_NAME",
+  "options": {
+    "allOptionsResourceName": "ALL_USER_NAMES",
+    "valueField": "USER_NAME",
+    "labelField": "USER_NAME"
+  }
+},
+```
+
+B: Simulating Intraday and End Of Day processing.
+
+To simulate the intraday and end of day processes that this type of application would require we will be adding buttons in the GUI, so that the user can trigger these processes manually. 
+
+In a Production application these types of processes may be called by a CRON_RULE.
+
+1. Go to OTE\client\src\routes\processes\process-history-manager\process-history.ts file, where we will add the following import code to enable a connection to the eventHandler.
+
+Add the following code [Location to be advised]
+
+```
+import { Connect } from "@genesislcap/foundation-comms";
+```
+
+2. Find  the code below:
+
+```
+export class ProcessesProcessHistoryManager extends GenesisElement {
+  @User user: User;
+
+}
+```
+
+and replace it with the following:
+
+```
+export class ProcessesProcessHistoryManager extends GenesisElement {
+  @User user: User;
+  @Connect connect: Connect;
+
+  runExpiryProcess() {
+    this.connect.commitEvent("EVENT_EXPIRE_ORDERS", {DETAILS:{}})
+  }
+
+  runClosingPrices() {
+    this.connect.commitEvent("EVENT_RUN_CLOSING_PRICES", {DETAILS:{}})
+  }
+
+  runVariationMargin() {
+    this.connect.commitEvent("EVENT_RUN_VARIATION_MARGIN", {DETAILS:{}})
+  }
+
+}
+```
+
+This code should now look as follows:
+
+```
+import { User } from '@genesislcap/foundation-user';
+import { customElement, GenesisElement } from '@genesislcap/web-core';
+import { ProcessHistoryStyles as styles } from './process-history.styles';
+import { ProcessHistoryTemplate as template } from './process-history.template';
+import { Connect } from "@genesislcap/foundation-comms";
+
+@customElement({
+  name: 'processes-process-history-manager',
+  template,
+  styles,
+})
+export class ProcessesProcessHistoryManager extends GenesisElement {
+  @User user: User;
+  @Connect connect: Connect;
+
+  runExpiryProcess() {
+    this.connect.commitEvent("EVENT_EXPIRE_ORDERS", {DETAILS:{}})
+  }
+
+  runClosingPrices() {
+    this.connect.commitEvent("EVENT_RUN_CLOSING_PRICES", {DETAILS:{}})
+  }
+
+  runVariationMargin() {
+    this.connect.commitEvent("EVENT_RUN_VARIATION_MARGIN", {DETAILS:{}})
+  }
+
+}
+```
+
+3. Go to file Go to OTE\client\src\routes\processes\process-history-manager\process-history.template.ts. Remove the following two (2) lines:
+
+```
+createEvent="${(x) => getViewUpdateRightComponent(x.user, 'ProcessLogUpdate', 'EVENT_PROCESS_LOG_INSERT')}"
+:createFormUiSchema=${() => createFormSchema }
+```
+4. Find line `></entity-management>` and update it so that is is split as follows:
+
+```
+  crud-menu-position="top"
+>
+  <rapid-button slot="crud-top-before" @click=${x => x.runExpiryProcess()}>Run Expiry Process</rapid-button>
+  <rapid-button slot="crud-top-before" @click=${x => x.runClosingPrices()}>Run Closing Prices</rapid-button>
+  <rapid-button slot="crud-top-before" @click=${x => x.runVariationMargin()}>Run Variation Margin Calls</rapid-button>
+</entity-management>
+```
+
+This code should now look as follows:
+
+```
+import { html, whenElse, repeat } from '@genesislcap/web-core';
+import { getViewUpdateRightComponent } from '../../../utils';
+import type { ProcessesProcessHistoryManager } from './process-history';
+import { createFormSchema } from './process-history.create.form.schema';
+import { updateFormSchema } from './process-history.update.form.schema';
+import { columnDefs } from './process-history.column.defs';
+
+export const ProcessHistoryTemplate = html<ProcessesProcessHistoryManager>`
+    ${whenElse(
+        (x) => getViewUpdateRightComponent(x.user, 'ProcessLogView'),
+        html`
+            <entity-management
+                design-system-prefix="rapid"
+                header-case-type="capitalCase"
+                enable-row-flashing
+                enable-cell-flashing
+                resourceName="ALL_PROCESS_LOGS"
+                entityLabel="Process Log"
+                :columns=${() => columnDefs }
+                modal-position="centre"
+                size-columns-to-fit
+                enable-search-bar
+            crud-menu-position="top"
+          >
+          <rapid-button slot="crud-top-before" @click=${x => x.runExpiryProcess()}>Run Expiry Process</rapid-button>
+          <rapid-button slot="crud-top-before" @click=${x => x.runClosingPrices()}>Run Closing Prices</rapid-button>
+          <rapid-button slot="crud-top-before" @click=${x => x.runVariationMargin()}>Run Variation Margin Calls</rapid-button>
+         </entity-management>
+        `,
+        html`
+          <not-permitted-component></not-permitted-component>
+        `,
+    )}`;
+```
+
