@@ -7,6 +7,11 @@ format: md
 
 ## GridProGenesisDatasource.deinit() method
 
+> Warning: This API is now obsolete.
+> 
+> Use `destroy` instead
+> 
+
 Deinitialises the datasource, resetting it to its initial state.
 
 **Signature:**

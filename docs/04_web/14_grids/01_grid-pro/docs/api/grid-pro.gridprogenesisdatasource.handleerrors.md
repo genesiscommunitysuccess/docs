@@ -10,14 +10,14 @@ format: md
 **Signature:**
 
 ```typescript
-handleErrors(message: string): void;
+handleErrors(errors: string | any[]): void;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  message | string |  |
+|  errors | string \| any\[\] |  |
 
 **Returns:**
 

@@ -8,14 +8,16 @@ module.exports = {
 	 * from reprocessing during re-builds and retain my changes as final. You can also toggle "enabled": true/false in
 	 * the manifest.json files itself. Removing this static package ref will always re-process enabled packages.
 	 */
-	"@genesislcap/foundation-comms": "14.200.0",
-	"@genesislcap/foundation-entity-management": "14.200.0",
-	"@genesislcap/foundation-filters": "14.200.0",
-	"@genesislcap/foundation-forms": "14.200.0",
-	"@genesislcap/foundation-header": "14.200.0",
-	"@genesislcap/foundation-layout": "14.200.0",
-	"@genesislcap/foundation-login": "14.200.0",
-	"@genesislcap/foundation-reporting": "14.200.0",
-	"@genesislcap/foundation-testing": "14.200.0",
-  // "@genesislcap/grid-pro": "14.200.0",
+	"@genesislcap/foundation-comms": "14.214.3",
+	"@genesislcap/foundation-entity-management": "14.214.3",
+	"@genesislcap/foundation-filters": "14.214.3",
+	"@genesislcap/foundation-forms": "14.214.3",
+	"@genesislcap/foundation-header": "14.214.3",
+	"@genesislcap/foundation-layout": "14.214.3",
+	"@genesislcap/foundation-login": "14.214.3",
+	"@genesislcap/foundation-reporting": "14.214.3",
+	"@genesislcap/foundation-testing": "14.214.3",
+  "@genesislcap/g2plot-chart": "14.214.3",
+  "@genesislcap/grid-pro": "14.214.3",
+  "@genesislcap/grid-tabulator": "14.214.3",
 };

@@ -26,12 +26,7 @@ Only supports Client-Side Row Model.
 |  --- | --- | --- | --- |
 |  [applyAsyncFuncName](./grid-pro.gridprogenesisdatasource.applyasyncfuncname.md) |  | string |  |
 |  [applyFuncName](./grid-pro.gridprogenesisdatasource.applyfuncname.md) |  | string |  |
-|  [auth](./grid-pro.gridprogenesisdatasource.auth.md) |  | Auth |  |
-|  [datasource](./grid-pro.gridprogenesisdatasource.datasource.md) |  | Datasource |  |
-|  [disablePolling](./grid-pro.gridprogenesisdatasource.disablepolling.md) |  | boolean |  |
 |  [keepColDefsOnClearRowData](./grid-pro.gridprogenesisdatasource.keepcoldefsonclearrowdata.md) |  | boolean |  |
-|  [pollingInterval](./grid-pro.gridprogenesisdatasource.pollinginterval.md) |  | number |  |
-|  [request](./grid-pro.gridprogenesisdatasource.request.md) |  | any |  |
 |  [restartOnReconnection](./grid-pro.gridprogenesisdatasource.restartonreconnection.md) |  | boolean |  |
 
 ## Methods
@@ -44,8 +39,9 @@ Only supports Client-Side Row Model.
 |  [criteriaChanged(oldCriteria, newCriteria)](./grid-pro.gridprogenesisdatasource.criteriachanged.md) |  |  |
 |  [deepClone()](./grid-pro.gridprogenesisdatasource.deepclone.md) |  |  |
 |  [deinit()](./grid-pro.gridprogenesisdatasource.deinit.md) |  | Deinitialises the datasource, resetting it to its initial state. |
+|  [destroy()](./grid-pro.gridprogenesisdatasource.destroy.md) |  | Destroys the datasource, resetting it to its initial state. |
 |  [disconnectedCallback()](./grid-pro.gridprogenesisdatasource.disconnectedcallback.md) |  |  |
-|  [handleErrors(message)](./grid-pro.gridprogenesisdatasource.handleerrors.md) |  |  |
+|  [handleErrors(errors)](./grid-pro.gridprogenesisdatasource.handleerrors.md) |  |  |
 |  [init(columnDefinitions, columnStates)](./grid-pro.gridprogenesisdatasource.init.md) |  | Initializes the datasource. |
 |  [refreshRows()](./grid-pro.gridprogenesisdatasource.refreshrows.md) |  | Force the grid to redispatch the current rows |
 |  [removeFilter(fieldName)](./grid-pro.gridprogenesisdatasource.removefilter.md) |  |  |

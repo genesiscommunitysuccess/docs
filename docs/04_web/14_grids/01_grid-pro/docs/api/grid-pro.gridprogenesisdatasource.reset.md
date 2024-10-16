@@ -9,7 +9,7 @@ format: md
 
 > Warning: This API is now obsolete.
 > 
-> Use `deinit` instead
+> Use `destroy` instead
 > 
 
 Resets the datasource to its initial state.

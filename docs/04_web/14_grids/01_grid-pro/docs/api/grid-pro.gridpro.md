@@ -72,7 +72,7 @@ Grid Pro is a Web Component wrapper around the AG Grid Community library.
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [addEventListener(type, listener, options)](./grid-pro.gridpro.addeventlistener.md) |  |  |
+|  [addEventListener(eventType, listener, options)](./grid-pro.gridpro.addeventlistener.md) |  | Adds an event listener to the grid element. |
 |  [agAttributeChangedCallback(attName, oldValue, newValue)](./grid-pro.gridpro.agattributechangedcallback.md) |  |  |
 |  [applyTemplateDefinitions(columnDefs, deferredColumnDefsOrState)](./grid-pro.gridpro.applytemplatedefinitions.md) |  | Will merge templated column definitions with <code>columnDefs</code> plus localStorage's column state or <code>deferredColumnStates</code>. |
 |  [combineAllGridComponents(gridOptionsComponents)](./grid-pro.gridpro.combineallgridcomponents.md) |  |  |

@@ -7,19 +7,21 @@ format: md
 
 ## GridPro.addEventListener() method
 
+Adds an event listener to the grid element.
+
 **Signature:**
 
 ```typescript
-addEventListener(type: any, listener: any, options?: boolean | AddEventListenerOptions): void;
+addEventListener(eventType: string, listener: any, options?: boolean | AddEventListenerOptions): void;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  type | any |  |
-|  listener | any |  |
-|  options | boolean \| AddEventListenerOptions | _(Optional)_ |
+|  eventType | string | The event type to listen for. Recommened to use the <code>Events</code> from AG Grid. |
+|  listener | any | The event listener to call when the event is fired. |
+|  options | boolean \| AddEventListenerOptions | _(Optional)_ An options object that specifies characteristics about the event listener. |
 
 **Returns:**
 

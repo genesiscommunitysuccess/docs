@@ -7,6 +7,11 @@ format: md
 
 ## GRID\_READY\_EVENT variable
 
+> Warning: This API is now obsolete.
+> 
+> - Use `Events.EVENT_GRID_READY` from `@ag-grid-community/core` instead
+> 
+
 Event fired when grid is ready
 
 **Signature:**

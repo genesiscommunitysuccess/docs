@@ -3,38 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     packages: [
         {
-            name: "@genesislcap/grid-pro",
-            enabled: true,
-            src: {
-                api_docs: "./docs/api",
-                img_dir: "docs/img",
-                readme: "./README.md",
-            },
-            output: {
-                directory: "./docs/04_web/14_grids/01_grid-pro",
-                api_docs: "docs/api",
-                readme: "01_grid-pro.mdx",
-                keywords: ["genesis", "foundation", "ui", "grid", "grid-pro", "ag"],
-                tags: [
-                    "data server",
-                    "request server",
-                    "event handler",
-                    "stream",
-                    "snapshot",
-                    "grid",
-                    "ag",
-                    "grid-pro"
-                ],
-                pages: [
-                    {
-                        title: "Grid Pro",
-                        sidebar_label: "Grid Pro",
-                        id: "grid-pro",
-                    },
-                ],
-            },
-        },
-        {
             name: "@genesislcap/foundation-header",
             enabled: true,
             src: {
@@ -312,6 +280,93 @@ exports.default = {
                         title: "Foundation Reporting",
                         sidebar_label: "Foundation Reporting",
                         id: "foundation-reporting",
+                    },
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/grid-pro",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/04_web/14_grids/01_grid-pro",
+                api_docs: "docs/api",
+                readme: "01_grid-pro.mdx",
+                keywords: ["genesis", "foundation", "ui", "grid", "grid-pro", "ag"],
+                tags: [
+                    "connected",
+                    "datasource",
+                    "grid",
+                    "grid-pro",
+                    "ag",
+                ],
+                pages: [
+                    {
+                        title: "Grid Pro",
+                        sidebar_label: "Grid Pro",
+                        id: "grid-pro",
+                    },
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/grid-tabulator",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/04_web/14_grids/02_grid-tabulator",
+                api_docs: "docs/api",
+                readme: "01_grid-tabulator.mdx",
+                keywords: ["genesis", "foundation", "ui", "grid", "grid-tabulator", "tabulator"],
+                tags: [
+                    "connected",
+                    "datasource",
+                    "grid",
+                    "grid-tabulator",
+                    "tabulator",
+                ],
+                pages: [
+                    {
+                        title: "Grid Tabulator",
+                        sidebar_label: "Grid Tabulator",
+                        id: "grid-tabulator",
+                    },
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/g2plot-chart",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/04_web/15_charts/01_g2plot-chart",
+                api_docs: "docs/api",
+                readme: "01_g2plot-chart.mdx",
+                keywords: ["genesis", "foundation", "ui", "chart", "g2plot-chart", "g2plot"],
+                tags: [
+                    "connected",
+                    "datasource",
+                    "chart",
+                    "g2plot-chart",
+                    "g2plot",
+                ],
+                pages: [
+                    {
+                        title: "G2Plot Chart",
+                        sidebar_label: "G2Plot Chart",
+                        id: "g2plot-chart",
                     },
                 ],
             },
