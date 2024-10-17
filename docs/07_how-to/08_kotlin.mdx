@@ -226,7 +226,7 @@ requestReply<Counterparty.ById, Trade>("COUNTERPARTY_TRADES_NEED_REVIEW") {
 ## Map function
 This example uses a custom `requestReply` to read all the trades for a counterparty from the database. 
 
-It uses the `map` function to transform the list into another list of Trade.ById objects so only the Trade IDs are returned on the response.
+It uses the `map` function to transform the list into another list of `Trade.ById objects`, so that only the Trade IDs are returned on the response.
 
 ```kotlin
 // Custom request server to get all trade IDs for a particular counterparty
@@ -252,7 +252,7 @@ requestReply<Counterparty.ById, Trade.ById>("COUNTERPARTY_TRADE_IDS") {
 ```
 
 ## Dates
-This `eventHandler` handles trade inserts. The TRADE table has a `reviewDate` field which is type `DATETIME`. 
+This `eventHandler` handles trade inserts. The TRADE table has a `reviewDate` field, which is type `DATETIME`. 
 
 The `eventHandler` sets the `reviewDate` value to be 7 days from today before inserting the record into the database.
 
