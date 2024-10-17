@@ -24,11 +24,45 @@ The location must be provided upon instantiation of this source, as shown below.
 
 GPAL Example:
 ```kotlin
-pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
-	source(camelSource {
-      location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
-  }).sink(filesSink)
-}
+    pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
+        source(
+            camelSource {
+                location = "file://src/test/resources/camel-source-test?noop=true"
+            }
+        ).sink(filesSink)
+    }
+```
+
+You can also enable Camel Idempotent Repositories for filtering out duplicate messages.
+
+In Memory Idempotent Repository:
+```kotlin
+    pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
+        source(
+            camelSource {
+                location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
+                idempotentConfig = inMemoryIdempotentConfig {
+                    cacheSize = 300000
+                }
+            }
+        ).sink(filesSink)
+    }
+```
+
+File Idempotent Repository:
+```kotlin
+    pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
+        source(
+            camelSource {
+                location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
+                idempotentConfig = fileIdempotentConfig {
+                    consumedLocation = ""
+                    cacheSize = 300000
+                    maxFileStoreSize = 15000000
+                }
+            }
+        ).sink(filesSink)
+    }
 ```
 
 ### Database Batch Poll Source (Real-time)
