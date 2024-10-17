@@ -222,3 +222,57 @@ requestReply<Counterparty.ById, Trade>("COUNTERPARTY_TRADES_NEED_REVIEW") {
   }
 }
 ```
+
+## Map function
+This example uses a custom `requestReply` to read all the trades for a counterparty from the database. 
+
+It uses the `map` function to transform the list into another list of `Trade.ById objects`, so that only the Trade IDs are returned on the response.
+
+```kotlin
+// Custom request server to get all trade IDs for a particular counterparty
+requestReply<Counterparty.ById, Trade.ById>("COUNTERPARTY_TRADE_IDS") {
+  replyList { request: Counterparty.ById ->
+    // Read all trades from the database that have particular counterparty Id
+    val counterpartyTrades: List<Trade> = db.getRange(Trade.ByCounterpartyId(request.counterpartyId)).toList()
+    // Next, we use the `map` function on the `counterpartyTrades` list. `map` is a Kotlin function
+    // which can be applied to collections, such as lists. It can be used to transform a list of items
+    // to a list with items of a different type. It iterates over each item and will add the return value
+    // of the `map` lambda to the new list. For more info, see: https://kotlinlang.org/docs/collection-transformations.html#map
+    //
+    // Below we use the `map` function to transform the list of trades to a list of Trade.ById objects
+    // which just contains the tradeId for each trade
+    // For the purpose of this example we have assigned the result of `map` to a new variable so the new list type can be seen: `List<Trade.ById>`
+    // However, this is not required as the last line of a lambda function becomes the return value
+    val tradeIds: List<Trade.ById> = counterpartyTrades.map { trade: Trade ->
+        Trade.ById(trade.tradeId)
+    }
+    tradeIds
+  }
+}
+```
+
+## Dates
+This `eventHandler` handles trade inserts. The TRADE table has a `reviewDate` field, which is type `DATETIME`. 
+
+The `eventHandler` sets the `reviewDate` value to be 7 days from today before inserting the record into the database.
+
+```kotlin
+eventHandler<Trade>("TRADE_INSERT", transactional = true) {
+    onCommit { event ->
+        // Get the Trade from `event` and assign to `trade` variable
+        val trade = event.details
+
+        // Set the Trade's review date to be 7 days from today
+        // now() is a helpful function to get the current datetime to the precision of milliseconds
+        trade.reviewDate = now().plusDays(7)
+
+        // Insert the trade into the database using `entityDb.insert()` and assign the result to `insertedRow` variable
+        val insertedRow: InsertResult<Trade> = entityDb.insert(trade)
+
+        // Return an ack response which contains the generated Id of the inserted trade
+        ack(listOf(mapOf(
+            "TRADE_ID" to insertedRow.record.tradeId,
+        )))
+    }
+}
+```
