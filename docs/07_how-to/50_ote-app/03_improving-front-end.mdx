@@ -111,11 +111,17 @@ with the following:
 },
 ```
 
-## Simulating intraday and End Of Day processing.
+## Simulating intraday and End Of Day processing
 
-To simulate the intraday and end-of-day processes that this type of application requires, you need to add that enable the user to trigger these processes. 
+Typically, an application for orders and executed trades has end-of-day processes, such as to expire any outstanding orders.
 
-In a Production application, these types of processes can be triggered automtically by a CRON_RULE.
+In a Production application, these types of processes can be triggered automatically by a CRON_RULE.
+
+But here, we can simulate these processes by adding buttons that enable the user to trigger the processes. Here, we shall add buttons to trigger three processes:
+
+- expire orders
+- closing prices
+- variation margin
 
 1. Go to the file **OTE\client\src\routes\processes\process-history-manager\process-history.ts** file.<br></br>Add the following import code, which creates a connection to the `eventHandler`.
 
@@ -196,7 +202,7 @@ Remove the following two lines:
 createEvent="${(x) => getViewUpdateRightComponent(x.user, 'ProcessLogUpdate', 'EVENT_PROCESS_LOG_INSERT')}"
 :createFormUiSchema=${() => createFormSchema }
 ```
-4. Find the line `></entity-management>` and update it so that is is split as follows:
+4. Now you can add the action buttons that enable the user to trigger the processes. Find the line `></entity-management>` and update it so that is is split as follows:
 
 ```ts
   crud-menu-position="top"
@@ -245,3 +251,4 @@ export const ProcessHistoryTemplate = html<ProcessesProcessHistoryManager>`
     )}`;
 ```
 
+The buttons now are displayed at the top right of the menu for the component. When the user clicks on a buttons, it triggers the relevant event.
