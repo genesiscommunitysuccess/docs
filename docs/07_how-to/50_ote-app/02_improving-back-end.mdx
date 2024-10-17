@@ -15,11 +15,13 @@ import TabItem from '@theme/TabItem';
 
 Here, we shall look into the back-end code and make some useful changes to increase the usability and range of the app.
 
-A. Go to the file OTE\server\OTE-app\src\cfg\OTE-tables-dictionary.kts here we change the table definitions for the following tables:
-`CLOSING_PRICE`
-`CASH_BALANCE`
-`INSTRUMENT_TO_UNDERLYING`
-`PARTICPANT_POSITION`
+## Changing table definitions
+Go to the file **OTE\server\OTE-app\src\cfg\OTE-tables-dictionary.kts**. Here we can change the definitions of the following tables:
+
+- `CLOSING_PRICE`
+- `CASH_BALANCE`
+- `INSTRUMENT_TO_UNDERLYING`
+- `PARTICPANT_POSITION`
 
 1. Find the `primaryKey` line for the CLOSING_PRICE table definition. Update it as follows:
 
@@ -46,7 +48,8 @@ primaryKey("INSTRUMENT_ID", "PARTICIPANT_NAME")
 ```
 
 
-B. [Rationale for the below step to be provided:]
+### Adding a default value
+[Rationale for the below step to be provided:]
 
 Check that the following default is present on the `PASSIVE_ORDER_BOOK` table:
 
