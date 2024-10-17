@@ -52,13 +52,15 @@ primaryKey("INSTRUMENT_ID", "PARTICIPANT_NAME")
 
 Check that the following default is present on the `PASSIVE_ORDER_BOOK` table:
 
-```
+```kotlin
 field("VERSION", INT).notNull().default(1)
 ```
 
 ## Adding additional folders and files 
 
-Go to the folder **OTE\server\OTE-app\src\main\Kotlin**/ Here we will add an additional folder structure and a file.
+Go to the folder **OTE\server\OTE-app\src\main\Kotlin**. Here we will add an additional folder and file.
+
+[do we include intellij stuff here? I think the whole exercise is in launchpad]
 
 ### Using intelliJ
 
@@ -68,21 +70,27 @@ Go to the folder **OTE\server\OTE-app\src\main\Kotlin**/ Here we will add an add
 
 ### Using Launchpad
 
-1. Create the following folder structure manually OTE\server\OTE-app\src\main\Kotlin\genesis\global\message\event
+1. Create the following folder structure manually:
 
-2. Add file `ExpireOrderMessage.kt` to the event folder in the folder structure just created
+**OTE\server\OTE-app\src\main\Kotlin\genesis\global\message\event**.
 
-3. Add the following code to the `ExpireOrderMessage.kt` file:
-```
+2. Add the file **ExpireOrderMessage.kt** to the **event** folder that you have just created.
+
+3. Add the following code to the **ExpireOrderMessage.kt** file:
+
+```kotlin
 package genesis.global.message.event
 
 class ExpireOrderMessage {
 }
 ```
 
-D. Go to folder OTE\server\OTE-app\src\main\genesis\scripts, here we will add a dataserver user query to the [so that......rationale]
+## Adding a query
+Now add a new query to your Data Server to make this information available to the front end.
 
-Go to file OTE\server\OTE-app\src\main\genesis\scripts\OTE-dataserver.kts and add the following to OTE-dataserver.kts
+1. Go to the folder **OTE\server\OTE-app\src\main\genesis\scripts**. 
+
+2. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-dataserver.kts** and add the following code [Need to specify where] to define the new query.
 
 ```
 query("ALL_USER_NAMES", USER) {
@@ -92,109 +100,119 @@ query("ALL_USER_NAMES", USER) {
 }
 ```
 
-As we made some changes to the primary Keys in step A above, we now need to edit the consolidators, to take the changes made into consideration and solve for the new primaryKey aggregations
+## Updating the consolidators
+Because you changed the primary keys, you need to edit the consolidators so that they can include the new aggregations.
 
-E. Go to the file OTE\server\OTE-app\src\main\genesis\scripts\OTE-consolidator.kts
+1. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-consolidator.kts**.
 
-1. In the `PARTICIPANT_POSITION_AGG consolidator` find `ParticipantPosition.ByInstrumentId(instrumentId)`. Update it as follows:
+2. In the `PARTICIPANT_POSITION_AGG consolidator`, find `ParticipantPosition.ByInstrumentId(instrumentId)`. Update it as follows:
 
-```
+```kotlin
 ParticipantPosition.ByInstrumentIdParticipantName(instrumentId, buyParticipantName)
 ```
 
-2. In the PARTICIPANT_POSITION_AGG consolidator find `participantName = ""`. Update it as follows:
+3. In the PARTICIPANT_POSITION_AGG consolidator, find `participantName = ""`. Update it as follows:
 
-```
+```kotlin
 participantName = groupId.participantName
 ```
 
-F. Using the existing `PARTICIPANT_POSITION_AGG` Consolidator code we are going to create separate Consolidators for the Buy and Sell Partcipant Positions, to do this
+### Creating new consolidators
+Using the existing `PARTICIPANT_POSITION_AGG` Consolidator code, create separate Consolidators for the Buy and Sell Partcipant Positions. 
 
 1. Find `PARTICIPANT_POSITION_AGG` in the PARTICIPANT_POSITION_AGG consolidator. Update it as follows:
 
-```
+```kotlin
 BUY_PARTICIPANT_POSITION_AGG
 ```
-2. Select all of the `BUY_PARTICIPANT_POSITION_AGG` code and copy this code  and paste it below the code for the `BUY_PARTICIPANT_POSITION_AGG`
+2. Select all of the `BUY_PARTICIPANT_POSITION_AGG` code. Copy this and paste it after the code for the `BUY_PARTICIPANT_POSITION_AGG`.
 
-3. In the copied code find `BUY_PARTICIPANT_POSITION_AGG`. Update it as follows:
+3. In the copied code, find `BUY_PARTICIPANT_POSITION_AGG`. Update it as follows:
 
-```
+```kotlin
 SELL_PARTICIPANT_POSITION_AGG
 ```
 
-4. In the copied code find `ParticipantPosition.ByInstrumentIdParticipantName(instrumentId, buyParticipantName)`. Update it as follows:
+4. In the copied code, find `ParticipantPosition.ByInstrumentIdParticipantName(instrumentId, buyParticipantName)`. Update it as follows:
 
-```
+```kotlin
 ParticipantPosition.ByInstrumentIdParticipantName(instrumentId, sellParticipantName)
 ```
 
-5. In the copied code find `sum { quantity * -1 }`. Update it as follows:
+5. In the copied code, find `sum { quantity * -1 }`. Update it as follows:
 
-```
+```kotlin
 QUANTITY
 ```
 
-G. [Rationale for this change required] Modify the CASH_BALANCE_AAG consolidator [so that rationale]
+## Modify the cash balance
+ [Rationale for this change required] Modify the CASH_BALANCE_AAG consolidator [so that rationale]
 
-1. In the `CASH_BALANCE_AAG` find `CashBalance.ByParticipantName(participantName, currency)`. Update it as follows:
+1. In the `CASH_BALANCE_AAG`, find `CashBalance.ByParticipantName(participantName, currency)`. Update it as follows:
 
-```
+```kotlin
 CashBalance.ByParticipantNameCurrency(participantName, currency)
 ```
 
-2. In the `CASH_BALANCE_AAG` find [field name required]. Update it as follows:
-```
+2. In the `CASH_BALANCE_AAG`, find [field name required]. Update it as follows:
+
+```kotlin
 currency = groupId.currency
 ```
 
-H. To ensure that Buy and Sell data is aggregated and captured for the correct side in the `OPEN_POSITION_AGG` consolidator we now need to make the following edits
+### Aggregate buy and sell
+To ensure that Buy and Sell data is aggregated and captured for the correct side in the `OPEN_POSITION_AGG` consolidator:
 
 1. Add the following code [in the following location]
 
-```
+```kotlin
 import global.genesis.gen.dao.enums.OTE.passive_order_book.side
 ```
 2. Find `sum { openQuantity } into BUY_QUANTITY` and `sum { openQuantity } into SELL_QUANTITY`. Update as follows:
 
-```
+```kotlin
 sum { openQuantity } onlyIf { side == Side.Buy } into BUY_QUANTITY
 sum { openQuantity } onlyIf { side == Side.Sell } into SELL_QUANTITY
 ```
-3. Find `groupBy` and add the following clase above this label:
+3. Find `groupBy` and add the following clause above this label:
 
-```
+[we are supposed to be using filter now instead of where]
+
+```kotlin
 where {
       status == Status.Active
     }
 ```
-Updating eventHandlers
+## Updating eventHandlers
 
-As the first changes we made in section A were primaryKey changes,  we now need to make sure these changes are taken into consideration and make edits to the OTE-eventhandler.kts file
+You need to ensure that the primaryKey changes can be handled by the relevant `eventHandler` codeblocks. 
 
-I.  Go to the file OTE\server\OTE-app\src\main\genesis\scripts\OTE-eventhandler.kts, here we will edit the following eventHandlers:
-`ClosingPrice.ByInstrumentId`
-`PassiveOrderBook`
+1.  Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-eventhandler.kts**. <br></br>
+Edit the following `eventHandler` codeblocks:
 
-1. Find `eventHandler<ClosingPrice.ByInstrumentId>("CLOSING_PRICE_DELETE", transactional = true) {`. Update as follows:
+- `ClosingPrice.ByInstrumentId`
+- `PassiveOrderBook`
+
+2. Find `eventHandler<ClosingPrice.ByInstrumentId>("CLOSING_PRICE_DELETE", transactional = true) {`. <br></br> Update this as follows:
 
 ```
 eventHandler<ClosingPrice.ByInstrumentIdClosingDate>("CLOSING_PRICE_DELETE", transactional = true) {
 ```
 
-2. Find ` eventHandler<InstrumentToUnderlying.ByInstrumentId>("INSTRUMENT_TO_UNDERLYING_DELETE", transactional = true) {`. Update as follows:
+3. Find ` eventHandler<InstrumentToUnderlying.ByInstrumentId>("INSTRUMENT_TO_UNDERLYING_DELETE", transactional = true) {`. <br></br> Update this as follows:
 
 ```
 eventHandler<InstrumentToUnderlying.ByInstrumentIdTypeUnderlyingId>("INSTRUMENT_TO_UNDERLYING_DELETE", transactional = true) {
 ```
 
-3. To make orders Active or withdrawb find [ information to be added] . Update as follows:
+4. To make orders Active or withdrawn [?] find [ information to be added] . Update as follows:
 
 ```
 eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_MODIFY", transactional = true) {
 ```
 
-J. All of the eventHandlers set out below will need to be removed in their entirety, these are replaced with code and consolidators:
+### Remove redundant eventHandlers
+All the `eventHandler` codeblocks set out below need to be removed. These requirements are handled by the code changes and consilidator updates that you have made.
 
 1. To remove the following Trade  and Trade.ById eventHandlers find:
 
@@ -407,25 +425,24 @@ eventHandler<ClosingPosition>("CLOSING_POSITION_INSERT", transactional = true) {
   }
 ```
   
-K. There may be instances where events need to be managed in a different file. Currently the code for the `PASSIVE_ORDER_BOOK_INSERT`
-and `PASSIVE_ORDER_BOOK_DELETE` events can be found in the OTE-eventhandler.kts, we are going to change this so that the events are catered for in a new file
+## Handling the passive order book
+Currently the code for the `PASSIVE_ORDER_BOOK_INSERT`
+and `PASSIVE_ORDER_BOOK_DELETE` events is in the file **OTE-eventhandler.kts**. But it would be useful [why?] to manage these in a different file. 
 
-1. Go to OTE\server\OTE-app\src\main\genesis\scripts and add a file called:
-```
-OTE-pob-eventhandler.kts
-```
+1. Go to **OTE\server\OTE-app\src\main\genesis\scripts**. Add a file called **OTE-pob-eventhandler.kts**.
 
-2. This newly created file will need to be added to the OTE_MANAGER. Go to OTE\server\OTE-app\src\main\genesis\cfg\processes.xml
 
-Find `<script>OTE-eventhandler.kts,OTE-reqrep.kts,OTE-dataserver.kts</script>`. Update as follows:
+2. Add this newly created file to the OTE_MANAGER. To do this, go to the file **OTE\server\OTE-app\src\main\genesis\cfg\processes.xml**.
 
-```
+In this file, find `<script>OTE-eventhandler.kts,OTE-reqrep.kts,OTE-dataserver.kts</script>`. Update this using the code below:
+
+```html
 <script>OTE-eventhandler.kts,OTE-pob-eventhandler.kts,OTE-reqrep.kts,OTE-dataserver.kts</script>
 ```
 
-3. Go to file OTE\server\OTE-app\src\main\genesis\scripts\OTE-eventhandler.kts and remove the following code:
+3. Go to file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-eventhandler.kts** and remove the following code:
 
-```
+```kotlin
 eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_INSERT", transactional = true) {
     permissioning {
       permissionCodes = listOf("PassiveOrderBookUpdate")
@@ -450,9 +467,9 @@ eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_INSERT", transactional = true
     }
   }
   ```
-4. Go to file OTE\server\OTE-app\src\main\genesis\scripts\OTE-pob-eventhandler.kts. Add the following code:
+4. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-pob-eventhandler.kts**. Add the following code:
 
-```
+```kotlin
 import genesis.global.message.event.ExpireOrderMessage
 import global.genesis.gen.dao.enums.OTE.cash_movement.Reason
 import global.genesis.gen.dao.enums.OTE.instrument.Type
@@ -926,8 +943,3 @@ eventHandler {
 
 }
 ```
-
-
-
-
-

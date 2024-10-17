@@ -18,11 +18,15 @@ Now we can tidy up and improve some elements of the GUI to make things look a bi
 
 The majority of this section will see changes made in the front-end folder, which is found under **OTE/client**.
 
-A. Modifying the Grid layout.
+## Enhancing the Grid layout
 
-In the GUI we are going to modify the grid layout, changing the 2x2 grid layout, to a layout whereby orders are displayed at the top of the screen in the Passive Order Book section and three sections (Particpant Positions, Trades and Open Positions) are displayed beneath the Orders grid.
+You can change the existing 2x2 grid layout to a more sophisticated layout where:
 
-1. Go to OTE\client\src\routes\orders\orders.template.ts. Update it as follows:
+- orders are displayed at the top of the screen in the Passive Order Book section
+- three sections (Particpant Positions, Trades and Open Positions) are displayed beneath the Orders grid
+
+### 1. Update the template.ts
+Go to **OTE\client\src\routes\orders\orders.template.ts**. Update it as follows:
 
 ```
  <rapid-layout-region type="horizontal">
@@ -44,9 +48,43 @@ In the GUI we are going to modify the grid layout, changing the 2x2 grid layout,
   </rapid-layout>
 `;
 ```
-2. Go to file OTE\client\src\routes\balances\cash-movements-manager\cash-movement.create.form.schema.ts
 
-Replacing the following code:
+### 2. Update the form for creating a new record
+Go to the file **OTE\client\src\routes\balances\cash-movements-manager\cash-movement.create.form.schema.ts**.<br></br>
+
+Replace the following code:
+
+```ts
+{
+  "type": "Control",
+  "label": "Participant Name",
+  "scope": "#/properties/PARTICIPANT_NAME",
+  "options": {
+  }
+},
+```
+
+with the following:
+
+```ts
+{
+  "type": "Control",
+  "label": "Participant Name",
+  "scope": "#/properties/PARTICIPANT_NAME",
+  "options": {
+    "allOptionsResourceName": "ALL_USER_NAMES",
+    "valueField": "USER_NAME",
+    "labelField": "USER_NAME"
+  }
+},
+```
+
+### 3. Update the form for creating a new record
+Because you have updated the schema for creating a new record, you also need to change the schema for updaing a record.
+
+Go to the file **OTE\client\src\routes\balances\cash-movements-manager\cash-movement.update.form.schema.ts**.
+
+Replace the following code:
 
 ```
 {
@@ -73,44 +111,13 @@ with the following:
 },
 ```
 
-As we updated the create form schema we also need to make changes to the update form schema.
+## Simulating intraday and End Of Day processing.
 
-3. Go to file OTE\client\src\routes\balances\cash-movements-manager\cash-movement.update.form.schema.ts
+To simulate the intraday and end-of-day processes that this type of application requires, you need to add that enable the user to trigger these processes. 
 
-Replacing the following code:
+In a Production application, these types of processes can be triggered automtically by a CRON_RULE.
 
-```
-{
-  "type": "Control",
-  "label": "Participant Name",
-  "scope": "#/properties/PARTICIPANT_NAME",
-  "options": {
-  }
-},
-```
-
-with the following:
-
-```
-{
-  "type": "Control",
-  "label": "Participant Name",
-  "scope": "#/properties/PARTICIPANT_NAME",
-  "options": {
-    "allOptionsResourceName": "ALL_USER_NAMES",
-    "valueField": "USER_NAME",
-    "labelField": "USER_NAME"
-  }
-},
-```
-
-B: Simulating Intraday and End Of Day processing.
-
-To simulate the intraday and end of day processes that this type of application would require we will be adding buttons in the GUI, so that the user can trigger these processes manually. 
-
-In a Production application these types of processes may be called by a CRON_RULE.
-
-1. Go to OTE\client\src\routes\processes\process-history-manager\process-history.ts file, where we will add the following import code to enable a connection to the eventHandler.
+1. Go to the file **OTE\client\src\routes\processes\process-history-manager\process-history.ts** file.<br></br>Add the following import code, which creates a connection to the `eventHandler`.
 
 Add the following code [Location to be advised]
 
@@ -118,7 +125,7 @@ Add the following code [Location to be advised]
 import { Connect } from "@genesislcap/foundation-comms";
 ```
 
-2. Find  the code below:
+2. Find the code below:
 
 ```
 export class ProcessesProcessHistoryManager extends GenesisElement {
@@ -149,7 +156,7 @@ export class ProcessesProcessHistoryManager extends GenesisElement {
 }
 ```
 
-This code should now look as follows:
+Your code should now look like this:
 
 ```
 import { User } from '@genesislcap/foundation-user';
@@ -182,15 +189,16 @@ export class ProcessesProcessHistoryManager extends GenesisElement {
 }
 ```
 
-3. Go to file Go to OTE\client\src\routes\processes\process-history-manager\process-history.template.ts. Remove the following two (2) lines:
+3. Go to the file **OTE\client\src\routes\processes\process-history-manager\process-history.template.ts**. <br></br>
+Remove the following two lines:
 
-```
+```ts
 createEvent="${(x) => getViewUpdateRightComponent(x.user, 'ProcessLogUpdate', 'EVENT_PROCESS_LOG_INSERT')}"
 :createFormUiSchema=${() => createFormSchema }
 ```
-4. Find line `></entity-management>` and update it so that is is split as follows:
+4. Find the line `></entity-management>` and update it so that is is split as follows:
 
-```
+```ts
   crud-menu-position="top"
 >
   <rapid-button slot="crud-top-before" @click=${x => x.runExpiryProcess()}>Run Expiry Process</rapid-button>
@@ -199,7 +207,7 @@ createEvent="${(x) => getViewUpdateRightComponent(x.user, 'ProcessLogUpdate', 'E
 </entity-management>
 ```
 
-This code should now look as follows:
+Your code should now look like this:
 
 ```
 import { html, whenElse, repeat } from '@genesislcap/web-core';
