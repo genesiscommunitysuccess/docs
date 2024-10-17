@@ -75,7 +75,7 @@ To call the rest server, we first need to define the receiving message.
 
 2. Paste the following into the file:
 
-```jsx
+```kotlin
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import global.genesis.gen.dao.LoanTrade
@@ -184,7 +184,7 @@ Now we can add an event to trigger a request to the REST API.
 
 1. Open the file **ALM\server\ALM-app\src\main\genesis\scripts\ALM-eventhandler.kts** and add the following imports to the very top of the file:
 
-```jsx
+```kotlin
 import global.genesis.gen.dao.enums.ALM.fx_trade.TradeStatus
 import global.genesis.httpclient.GenesisHttpClient
 import global.genesis.httpclient.request.HttpMethod
@@ -199,7 +199,7 @@ import io.ktor.util.reflect.TypeInfo
 
 2. Add the following event to the end of the the `eventHandler{}`:
 
-```jsx
+```kotlin
     eventHandler<Message>("LOAN_TRADE_REST_API", transactional = true) {
       // Instantiate the client outside the onCommit to avoid repeating
       val baseUrl = "https://playground.demo.genesis.global/gwf"
@@ -265,7 +265,7 @@ The use of upsert in the code ensures that any loan trades are updated, being in
 
 3. After the end of the `eventHandler{}` section, add the following function, which is required to get the authentication token:
 
-```jsx
+```kotlin
 suspend fun GenesisHttpClient.dataLogon(url: String, authToken: String) = submitRequest<DataLogonRequest, AllLoansResponse>(
     HttpRequest(
         url = url,
@@ -296,7 +296,7 @@ We can do this by adding and defining an EVALUATOR process.
 
 1. Open **ALM\server\ALM-app\src\main\genesis\cfg\ALM-processes.xml** and insert the following code:
 
-```jsx
+```kotlin
   <process name="ALM_EVALUATOR">
     <start>true</start>
     <groupId>MYAPP</groupId>
@@ -311,7 +311,7 @@ We can do this by adding and defining an EVALUATOR process.
 
 2. Open **ALM\server\ALM-app\src\main\genesis\cfg\ALM-service-definitions.xml**  and add:
 
-```jsx
+```kotlin
   <service host="localhost" name="ALM_EVALUATOR" port="9703"/>
 ```
 This gives us a new service that the Cron Scheduler can call to trigger the rest api call as needed. 
@@ -322,7 +322,7 @@ To define the Cron Scheduler:
 
 2. Insert the following line:
 
-```jsx
+```
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
 "0 0/10 * * * ?","Loan Import Rule","Europe/London","ENABLED","Loan Rule","admin","ALM_COMPACT_PROCESS","EVENT_LOAN_TRADE_REST_API"
 ```
@@ -341,20 +341,20 @@ To start, we'll need to add some implementations to our application.
 
 1. Open the file **server/ALM-app/build.gradle.kts**, then add the following implementations:
 
-```jsx
+```kotlin
     implementation("global.genesis:kafka-genesis:${properties["platformIntegrationVersion"]}")
     implementation("software.amazon.msk:aws-msk-iam-auth:2.2.0")
 ```
 
 2. Then in the file **server/gradle.properties**,  add the following property:
 
-```jsx
+```kotlin
 platformIntegrationVersion=8.4.0
 ```
 
 3. Also add this to the classpath of the ALM_PIPELINE process. Open the file **server/ALM-app/src/main/genesis/cfg/ALM-processes.xml**, then add the following to the ALM_PIPLINE process:
 
-```jsx
+```xml
     <classpath>ALM-app*,aws-msk-iam-auth*</classpath>
 ```
 
@@ -371,7 +371,7 @@ import java.net.InetAddress;
 
 3. Go to the global section and add the following:
 
-```jsx
+```kotlin
         // the following have been set up as global definitions to be used as part of the pipelines script, these can be host specific as well
         item("BOOTSTRAP_SERVER", "boot-qjjhmpj3.c2.kafka-serverless.eu-west-2.amazonaws.com:9098")
         item("CONSUMER_GROUP_ID", InetAddress.getLocalHost().getHostName())
@@ -387,7 +387,7 @@ import java.net.InetAddress;
 
 2. We need to add some imports, and initialise some methods. Add the code below to the beginning of the file:
 
-```jsx
+```kotlin
 import global.genesis.pipeline.file.CsvRow
 import global.genesis.CdTradeLoadCdTradeCsvDataMapper
 import global.genesis.pipeline.api.db.DbOperation
@@ -431,7 +431,7 @@ val splitOperator: SplitOperator<ConsumerRecords<String, String>, ConsumerRecord
 
 3. You can add a new pipeline itself in the `pipelines{}` section. Use the code below:
 
-```jsx
+```kotlin
   pipeline("KAFKA_TO_DB_PIPELINE") {
     // sourcing from the kafka source as defined above
     source(source)
