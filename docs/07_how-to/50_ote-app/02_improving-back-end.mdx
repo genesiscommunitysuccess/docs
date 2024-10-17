@@ -41,12 +41,11 @@ primaryKey("PARTICIPANT_NAME", "CURRENCY")
 primaryKey("INSTRUMENT_ID", "TYPE", "UNDERLYING_ID”)
 ```
 
-3. Find the `primaryKey` line for the PARTICIPANT_POSITION table definition. Update it as follows:
+4. Find the `primaryKey` line for the PARTICIPANT_POSITION table definition. Update it as follows:
 
 ```
 primaryKey("INSTRUMENT_ID", "PARTICIPANT_NAME")
 ```
-
 
 ### Adding a default value
 [Rationale for the below step to be provided:]
@@ -57,21 +56,21 @@ Check that the following default is present on the `PASSIVE_ORDER_BOOK` table:
 field("VERSION", INT).notNull().default(1)
 ```
 
+## Adding additional folders and files 
 
-C. Adding Additional Folder Structures and Files 
+Go to the folder **OTE\server\OTE-app\src\main\Kotlin**/ Here we will add an additional folder structure and a file.
 
-Go to the folder OTE\server\OTE-app\src\main\Kotlin, here we will add an additional folder structure and a file.
+### Using intelliJ
 
-1. If using intelliJ: 
+1. Right-click on `add new package` and call this package genesis.global.message.event
 
-1.1. Right click on `add new package` and call this package genesis.global.message.event
+2. Right-click on the genesis.global.message.event package and add a new "Kotlin class" called **ExpireOrderMessage.kt**.
 
-1.2. Then right click on the genesis.global.message.event package and add a new "Kotlin class" called ExpireOrderMessage.kt
+### Using Launchpad
 
-2. If in Launchpad:
+1. Create the following folder structure manually OTE\server\OTE-app\src\main\Kotlin\genesis\global\message\event
 
-2.1. Create the following folder structure manually OTE\server\OTE-app\src\main\Kotlin\genesis\global\message\event
-2.2. Add file `ExpireOrderMessage.kt` to the event folder in the folder structure just created
+2. Add file `ExpireOrderMessage.kt` to the event folder in the folder structure just created
 
 3. Add the following code to the `ExpireOrderMessage.kt` file:
 ```
