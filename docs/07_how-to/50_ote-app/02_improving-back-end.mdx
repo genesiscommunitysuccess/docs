@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 Here, we shall look into the back-end code and make some useful changes to increase the usability and range of the app.
 
 ## Changing table definitions
-Go to the file **OTE\server\OTE-app\src\cfg\OTE-tables-dictionary.kts**. Here we can change the definitions of the following tables:
+Go to the file **OTE\server\OTE-app\src\cfg\OTE-tables-dictionary.kts**. Here we shall change the definitions of the following tables:
 
 - `CLOSING_PRICE`
 - `CASH_BALANCE`
@@ -64,7 +64,7 @@ Go to the folder **OTE\server\OTE-app\src\main\Kotlin**. Here we will add an add
 
 ### Using intelliJ
 
-1. Right-click on `add new package` and call this package genesis.global.message.event
+1. Right-click on **add new package** and call this package genesis.global.message.event
 
 2. Right-click on the genesis.global.message.event package and add a new "Kotlin class" called **ExpireOrderMessage.kt**.
 
@@ -118,7 +118,7 @@ participantName = groupId.participantName
 ```
 
 ### Creating new consolidators
-Using the existing `PARTICIPANT_POSITION_AGG` Consolidator code, create separate Consolidators for the Buy and Sell Partcipant Positions. 
+Using the existing `PARTICIPANT_POSITION_AGG` Consolidator code, create separate Consolidators for the Buy and Sell Participant Positions. 
 
 1. Find `PARTICIPANT_POSITION_AGG` in the PARTICIPANT_POSITION_AGG consolidator. Update it as follows:
 
@@ -221,6 +221,7 @@ All the `eventHandler` codeblocks set out below need to be removed. These requir
 `eventHandler<Trade.ById>("TRADE_DELETE", transactional = true) {`
 
 Remove the following code:
+
 ```
 eventHandler<Trade>("TRADE_INSERT", transactional = true) {
     permissioning {
@@ -257,7 +258,7 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
   }
   ```
 
-2. To remove the following CashBalance and CashBalance.ByParticipantName eventHandlers find:
+2. To remove the following CashBalance and CashBalance.ByParticipantName eventHandlers, find:
 
 `eventHandler<CashBalance>("CASH_BALANCE_INSERT", transactional = true) {`
 `eventHandler<CashBalance>("CASH_BALANCE_MODIFY", transactional = true) {`
@@ -298,7 +299,7 @@ eventHandler<CashBalance>("CASH_BALANCE_INSERT", transactional = true) {
 	  }
 ```
 
-3. To remove the following  OpenPosition and OpenPosition.ByInstrumentId eventHandlers find:
+3. To remove the following  OpenPosition and OpenPosition.ByInstrumentId eventHandlers, find:
 
 `eventHandler<OpenPosition>("OPEN_POSITION_INSERT", transactional = true) {`
 `eventHandler<OpenPosition>("OPEN_POSITION_MODIFY", transactional = true) {`
@@ -340,7 +341,7 @@ eventHandler<OpenPosition>("OPEN_POSITION_INSERT", transactional = true) {
   
   ```
   
-4. To remove the following ParticipantPosition and ParticipantPosition.ByInstrumentId eventHandlers find:
+4. To remove the following ParticipantPosition and ParticipantPosition.ByInstrumentId eventHandlers, find:
 
 `eventHandler<ParticipantPosition>("PARTICIPANT_POSITION_INSERT", transactional = true) {`
 `eventHandler<ParticipantPosition>("PARTICIPANT_POSITION_MODIFY", transactional = true) {`
@@ -381,7 +382,7 @@ eventHandler<ParticipantPosition>("PARTICIPANT_POSITION_INSERT", transactional =
   }
   ```
 
-5. To remove the following ClosingPosition and ClosingPosition.ByClosngPositionIeventHandlers find:
+5. To remove the following ClosingPosition and ClosingPosition.ByClosngPositionIeventHandlers, find:
 
 `eventHandler<ClosingPosition>("CLOSING_POSITION_INSERT", transactional = true) {`
 `eventHandler<ClosingPosition>("CLOSING_POSITION_MODIFY", transactional = true) {`
@@ -426,11 +427,9 @@ eventHandler<ClosingPosition>("CLOSING_POSITION_INSERT", transactional = true) {
 ```
   
 ## Handling the passive order book
-Currently the code for the `PASSIVE_ORDER_BOOK_INSERT`
-and `PASSIVE_ORDER_BOOK_DELETE` events is in the file **OTE-eventhandler.kts**. But it would be useful [why?] to manage these in a different file. 
+Currently, the code for the `PASSIVE_ORDER_BOOK_INSERT` and `PASSIVE_ORDER_BOOK_DELETE` events is in the file **OTE-eventhandler.kts**. But it would be useful [why?] to manage these in a different file. 
 
 1. Go to **OTE\server\OTE-app\src\main\genesis\scripts**. Add a file called **OTE-pob-eventhandler.kts**.
-
 
 2. Add this newly created file to the OTE_MANAGER. To do this, go to the file **OTE\server\OTE-app\src\main\genesis\cfg\processes.xml**.
 
