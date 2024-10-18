@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 
 Now we can tidy up and improve some elements of the GUI to make things look a bit nicer.
 
-The majority of this section will see changes made in the front-end folder, which is found under **OTE/client**.
+The majority of this section is for changes made in the front-end folder, which is found under **OTE/client**.
 
 ## Enhancing the Grid layout
 
@@ -52,7 +52,7 @@ Go to **OTE\client\src\routes\orders\orders.template.ts**. Update it as follows:
 ### 2. Update the form for creating a new record
 Go to the file **OTE\client\src\routes\balances\cash-movements-manager\cash-movement.create.form.schema.ts**.<br></br>
 
-Replace the following code:
+Replace the code below:
 
 ```ts
 {
@@ -64,7 +64,7 @@ Replace the following code:
 },
 ```
 
-with the following:
+... with the following:
 
 ```ts
 {
@@ -84,7 +84,7 @@ Because you have updated the schema for creating a new record, you also need to 
 
 Go to the file **OTE\client\src\routes\balances\cash-movements-manager\cash-movement.update.form.schema.ts**.
 
-Replace the following code:
+Replace the code below:
 
 ```
 {
@@ -96,7 +96,7 @@ Replace the following code:
 },
 ```
 
-with the following:
+... with the following:
 
 ```
 {
@@ -115,9 +115,9 @@ with the following:
 
 Typically, an application for orders and executed trades has end-of-day processes, such as to expire any outstanding orders.
 
-In a Production application, these types of processes can be triggered automatically by a CRON_RULE.
+In a Production application, these processes can be triggered automatically by a CRON_RULE.
 
-But here, we can simulate these processes by adding buttons that enable the user to trigger the processes. Here, we shall add buttons to trigger three processes:
+But here, we can simulate them by adding buttons that enable the user to trigger the processes. Here, we shall add buttons to trigger three processes:
 
 - expire orders
 - closing prices
@@ -140,7 +140,7 @@ export class ProcessesProcessHistoryManager extends GenesisElement {
 }
 ```
 
-and replace it with the following:
+... and replace it with the following:
 
 ```
 export class ProcessesProcessHistoryManager extends GenesisElement {
@@ -202,7 +202,7 @@ Remove the following two lines:
 createEvent="${(x) => getViewUpdateRightComponent(x.user, 'ProcessLogUpdate', 'EVENT_PROCESS_LOG_INSERT')}"
 :createFormUiSchema=${() => createFormSchema }
 ```
-4. Now you can add the action buttons that enable the user to trigger the processes. Find the line `></entity-management>` and update it so that is is split as follows:
+4. Now you can add the action buttons that enable the user to trigger the processes. Find the line `></entity-management>` and update it so that is split as follows:
 
 ```ts
   crud-menu-position="top"
@@ -251,4 +251,4 @@ export const ProcessHistoryTemplate = html<ProcessesProcessHistoryManager>`
     )}`;
 ```
 
-The buttons now are displayed at the top right of the menu for the component. When the user clicks on a buttons, it triggers the relevant event.
+The buttons now are displayed at the top right of the menu for the component. When the user clicks on a button, it triggers the relevant event.
