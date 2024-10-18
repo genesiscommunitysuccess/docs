@@ -1,28 +1,19 @@
 ---
-title: 'Site-specific'
-sidebar_label: 'Site-specific'
+title: 'Overriding configs'
+sidebar_label: 'Overriding configs'
 id: site-specific
-keywords: [site specific, override, configuration, server]
+keywords: [site specific, override, configuration, config]
 tags:
 - site specific
 - override
 - configuration
-- server
+- config
 ---
 
-Site-specific is an area of the run directory where you can override the standard definitions found elsewhere in your application. By default, its location is:
 
-<strong><em>application-name</em>\server\jvm\\<em>application-name</em>-site-specific</strong>
+If you want to override one of the config files for a deployment (for example, if you want to use a different database in a UAT environment), you must create an override copy of the relevant config file and place this in the same folder as the other config files. 
 
-
-## Changing system definitions
-The [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/) is always found in the **site-specific** folder. 
-
-Within that folder, it is located at:
-
- **\src\main\resources\cfg**
-
-You can change the settings in the **genesis-system-definition.kts** file to make fundamental changes to your application. For example, if you want to change to a different database technology, you can change the `DbLayer` and `DbHost` settings.
+For example, if you want to change to a different database technology for your your UAT environment, you can have a copy of your **service-definitions.xml** file with a suitable name.
 
 Here is an example where we have changed the underlying technology to Postgres.
 
@@ -54,15 +45,31 @@ systemDefinition {
 }
 ```
 
-## Overriding scripts
+:::tip Overriding scripts
 
-If you want to override any scripts in your application such as **&#123;app-name}-dataserver.kts**, **&#123;app-name}-eventhandler.kts**, etc, you need to go to **site-specific/main/src/main/resources/scripts** folder and create the new script file with the same name as the script you want to override.
+If you want to override any scripts in your application when you are building and deploying (for example, if you want to use a different Event Handler), you must place the override script in the same folder as the other files, using a suitable name:
+
+**server/**_appname_**/src/main/genesis/scripts/**_appname_**-test-eventhandler.kts**.
+
+Do **not** override any standard modules, such as GENESIS_AUTH.
+:::
+
+## The build process
+For application projects, the build process creates a site-specific distribution file. This is located in the root project's (server) build folder: **server/build/distributions**. 
+
+Non-project config and script files are included in the distribution. All folders and files in the main module's **src/main/genesis** folder, (except cfg and scripts) are included.
+
+****
+Genesis Distribution
+Creates the project's server distribution zip file. presently, this is based on the default configuration within the plugin. If you want to customise your distribution then you will need to disable this plugin and create your own configuration using the Gradle distribution plugin. In the future we will support customisation from this plugin directly.
+
 
 To see the changes, you need to deploy your application, and if you are using intellij plugin, you shall see these files under your **.genesis-home/site-specific**
 
-This is essential where you use standard modules, such as Auth; you should never change these modules. 
 
-:::danger
-Never change the standard modules, such as Auth. You can copy their script files to **site-specific** and change them there.
-:::
+
+
+
+
+
 
