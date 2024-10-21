@@ -40,7 +40,7 @@ genesis {
 
 The Reporting Server uses Data Server queries and Request Server requestReplies as the sources of data for generating reports. However, these sources are not available by default (in case they contain sensitive information). 
 
-To make a query or requestReply available as a source of data for a report, add it to the `REPORTING_DATASOURCE_LIST` system definition in the file **reporting-system-definition.kts**.
+To make a dataserver or requestReply available as a source of data for a report, add the query name to the `REPORTING_DATASOURCE_LIST` system definition in the file **reporting-system-definition.kts**.
 
 :::info 
 This system definition is added automatically if you created your project in Genesis Create or if the queries were provided when installing via GenX.
