@@ -463,6 +463,14 @@ killServer GENESIS_ROUTER --hostname HARRY, GARY
 
 To change the logging levels by code (dynamically) on any Genesis process, use the `LogLevel` command.
 
+:::info
+The logging level of Genesis scripts is set to "WARN" by default, these scripts include: DbMon, DumpIt, SendIt etc. 
+
+To change the level, you need to set the environment variable `GENESIS_LOGGING_LEVEL` to any valid level ("ERROR", "WARN", "INFO", "DEBUG", "TRACE").
+
+If `GENESIS_LOGGING_LEVEL` is not explicitly set or is set to a non-valid level, this log level will be reset to default.
+:::
+
 ### Syntax
 The `LogLevel` command can take the following arguments:
 <!-- The LogLevel command has a list of possible arguments: -c, -DATADUMP_NACK_OFF, -DATADUMP_NACK_ON, -DATADUMP_OFF, -DATADUMP_ON,-h, -l, -p, -r, -STATUSDUMP_OFF, -STATUSDUMP_ON, -t -->
