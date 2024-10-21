@@ -35,18 +35,19 @@ genesis {
 ## Enabling Data Server queries for Reporting
 
 The Reporting Server uses Data Server queries defined in the system as sources of data for report generation. However, not all sources are available by default - in case they contain sensitive information. In order to make a query available as a source of data for a report,
-you must add the relevant entity to the `REPORTING_DATASOURCE_LIST` system definition in `reporting-system-definition.kts`.
-Note: This system definition would already have been added if queries were provided when installing via GenX. If the aforementioned file does not exist, please create this in the `genesis/cfg` directory in the same format as your _application_**-system-definition.kts.
+you must add the relevant query to the `REPORTING_DATASOURCE_LIST` system definition in `reporting-system-definition.kts`.
+Note: This system definition would already have been added if queries were provided when installing via GenX.
+If `reporting-system-definition.kts` does not exist, please create this in the `genesis/cfg` directory in the same format as your _application_**-system-definition.kts and add in the system definition as mentioned below.
 
-In most cases, you will have already set up queries in your [Data Server](../../../server/data-server/basics/) to provide the data, but you can add new sources by creating new queries in your _application_**-dataserver.kts**.
+In most cases, you will have already set up queries in your [Data Server](/server/data-server/basics/) or [Request Server](/server/request-server/basics/) to provide the data, but you can add new sources by creating new queries in your _application_**-dataserver.kts** or _application_**-reqrep.kts**.
 
-For example, to make two Data Server queries and a Request Response query available to the reporting server, you must add the following system definition to the `reporting-system-definition.kts`:
+For example, to make two Data Server queries and a Request Response query available to the reporting server, you must add your queries to the following system definition to the `reporting-system-definition.kts`:
 
 ```kotlin
 item("REPORTING_DATASOURCE_LIST", listOf("ALL_SAVED_REPORTS", "SAVED_REPORTS", "ALL_REPORT_DATASOURCES"))
 ```
 
-The Report Server thus adds the following metadata services:
+The Report Server then adds the following metadata services:
 
 - ALL_SAVED_REPORTS (Data Server)
 - SAVED_REPORTS (Request Response)
