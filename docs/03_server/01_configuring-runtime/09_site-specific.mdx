@@ -45,15 +45,6 @@ systemDefinition {
 }
 ```
 
-:::tip Overriding scripts
-
-If you want to override any scripts in your application when you are building and deploying (for example, if you want to use a different Event Handler), you must place the override script in the same folder as the other files, using a suitable name:
-
-**server/**_appname_**/src/main/genesis/scripts/**_appname_**-test-eventhandler.kts**.
-
-Do **not** override any standard modules, such as GENESIS_AUTH.
-:::
-
 ## The build process
 For application projects, the build process creates a site-specific distribution file. This is located in the root project's (server) build folder: **server/build/distributions**. 
 
