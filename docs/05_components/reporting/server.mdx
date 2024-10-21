@@ -46,7 +46,7 @@ To make a query or requestReply available as a source of data for a report, add 
 This system definition is added automatically if you created your project in Genesis Create or if the queries were provided when installing via GenX.
 :::
 
-Here is an example `REPORTING_DATASOURCE_LIST` from a **reporting-system-definition.kts** file. It makes two Data Server queries and one Request Server requestReply available to the Reporting Server:
+Here is an example `REPORTING_DATASOURCE_LIST` from a **reporting-system-definition.kts** file. It makes a Data Server query and two Request Server requestReply queries available to the Reporting Server:
 
 ```kotlin
 item("REPORTING_DATASOURCE_LIST", listOf("ALL_SAVED_REPORTS", "SAVED_REPORTS", "ALL_REPORT_DATASOURCES"))
