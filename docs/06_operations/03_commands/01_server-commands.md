@@ -16,6 +16,14 @@ Once an application has been built and zipped, you can install it in any another
 
 To ensure a correct installation, you must follow the product installation procedure.
 
+## Logging level for commands
+
+The logging level for Genesis commands is set to "WARN" by default. 
+
+To change the level for a command, set the environment variable `GENESIS_LOGGING_LEVEL` to any valid level ("ERROR", "WARN", "INFO", "DEBUG", "TRACE").
+
+If you set `GENESIS_LOGGING_LEVEL` to a non-valid level, it is automatically reset to the default.
+
 ## CountRecords
 
 This counts the number of records in the database, grouped by table; the results are printed to screen.
