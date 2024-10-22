@@ -838,6 +838,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "how-to/ht-notify-email",
+        },
+        {
+          type: "doc",
           id: "how-to/ht-fdc3",
         },
         {
