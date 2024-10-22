@@ -1,0 +1,100 @@
+# Quick Start
+
+Let's create a simple web component using Genesis. There are three parts that make up a component: the HTML template, the CSS styles and the component logic. Web components can vary in complexity, from a simple button to a very detailed interactive experience.
+
+## Create Custom Element
+Start by importing all necessary part:
+
+```shell
+import { css, customElement, GenesisElement, html } from '@genesislcap/web-core';
+```
+
+```shell
+
+# Create an HTML template using the html tag template literal
+const template = html`<h1>Hello World</h1>`
+
+# Create CSS styles using the css tag template literal
+const styles = css`
+    h1 {
+      color: red;
+    }
+`;
+# The @customElement decorator is a function that helps define and register a custom HTML element. It associates a class with a specific custom tag name in the DOM.
+
+@customElement({
+  name: 'hello-world',
+  template,
+  styles,
+})
+
+export class HelloWorld extends GenesisElement {}
+
+```
+
+We have now created a custom component called `<hello-world></hello-world>` and this can display 'Hello World' on the browser, but since it can't do much more than that, let's add an attribute so it can render something.
+
+:::important
+
+Web Component names are required to include a hyphen (-) to avoid conflicts with native HTML elements and to provide a way to namespace components from various libraries.
+
+:::
+
+## Add an Attribute
+
+We can add an `attr` decorator which allows us to link a class property to an HTML attribute, ensuring that changes in the attribute are automatically reflected in the JavaScript property, and vice versa, allowing for clean and declarative state management of custom elements.
+
+Let's declare an attribute called **_name_** and then change tha value to see it reflected:
+
+```shell
+import { attr, css, customElement, GenesisElement, html } from '@genesislcap/web-core';
+
+const template = html`<h1>Hello World</h1>`
+
+const styles = css`
+    h1 {
+      color: red;
+    }
+`;
+
+@customElement({
+  name: 'hello-world',
+  template,
+  styles,
+})
+
+export class HelloWorld extends GenesisElement {
+    @attr name: string = 'User'
+}
+
+```
+
+Now let's update the template to display the value:
+
+```shell
+
+const template = html`<h1>Hello ${x => x.name}</h1>`
+```
+
+If we want to assign the value of attribute in the HTML then we have to provide a method that allows this.
+
+```shell
+  nameChanged(oldValue, newValue) {
+        console.log(`Name changed from ${oldValue} to ${newValue}`);
+    }
+
+    <hello-world name="Second User"></hellow-world>
+```
+
+The code above should trigger the `nameChanged` method and consequently log the following statement:
+
+> Name changed from User to Second User
+
+## Add it to your project
+
+Now that the component is created, it can be added in your HTML this way:
+
+```shell
+    <script type="module" src="path/to/hello-world.js"></script>
+    <hello-world name="Earth"></hello-world>
+```
