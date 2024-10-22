@@ -167,7 +167,7 @@ currency = groupId.currency
 ### Aggregate buy and sell in the consolidators
 To ensure that Buy and Sell data is aggregated and captured for the correct side in the `OPEN_POSITION_AGG` consolidator:
 
-1. Add the following code [in the following location]
+1. Add the following code to the imports section:
 
 ```kotlin
 import global.genesis.gen.dao.enums.OTE.passive_order_book.side
@@ -179,8 +179,7 @@ sum { openQuantity } onlyIf { side == Side.Buy } into BUY_QUANTITY
 sum { openQuantity } onlyIf { side == Side.Sell } into SELL_QUANTITY
 ```
 3. Find `groupBy` and add the following clause above this label:
-
-[we are supposed to be using filter now instead of where]
+<!-- TODO: We should be using filter instead of where now -->
 
 ```kotlin
 where {
@@ -209,7 +208,7 @@ eventHandler<ClosingPrice.ByInstrumentIdClosingDate>("CLOSING_PRICE_DELETE", tra
 eventHandler<InstrumentToUnderlying.ByInstrumentIdTypeUnderlyingId>("INSTRUMENT_TO_UNDERLYING_DELETE", transactional = true) {
 ```
 
-4. To make orders Active or withdrawn uppdate as follows:
+4. To make orders Active or Withdrawn, update as follows:
 
 ```
 eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_MODIFY", transactional = true) {
@@ -218,7 +217,7 @@ eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_MODIFY", transactional = true
 ### Remove redundant eventHandlers
 All the `eventHandler` codeblocks set out below need to be removed. These requirements are handled by the code changes and consolidator updates that you have made.
 
-1. To remove the following Trade  and Trade.ById eventHandlers find:
+1. To remove the following Trade  and Trade.ById eventHandlers, find:
 
 `eventHandler<Trade>("TRADE_INSERT", transactional = true) {`
 `eventHandler<Trade>("TRADE_MODIFY", transactional = true) {`
@@ -431,13 +430,15 @@ eventHandler<ClosingPosition>("CLOSING_POSITION_INSERT", transactional = true) {
 ```
   
 ## Handling the passive order book
-Currently, the code for the `PASSIVE_ORDER_BOOK_INSERT` and `PASSIVE_ORDER_BOOK_DELETE` events is in the file **OTE-eventhandler.kts**. This will be managed in the New OTE-pob-eventhandler.kts file.
+To handle the passive order book correctly, you need to remove the code for the `PASSIVE_ORDER_BOOK_INSERT` and `PASSIVE_ORDER_BOOK_DELETE` events from the file **OTE-eventhandler.kts**. 
 
-Go to **OTE\server\OTE-app\src\main\genesis\scripts**. Add a file called **OTE-pob-eventhandler.kts**.
+Then you can create a new file and add the code. This is in a large snippet at the end of this section.
+
+1. Go to the folder **OTE\server\OTE-app\src\main\genesis\scripts**. Add a file called **OTE-pob-eventhandler.kts**.
 
 2. Add this newly created file to the OTE_MANAGER. To do this, go to the file **OTE\server\OTE-app\src\main\genesis\cfg\processes.xml**.
 
-In this file, find `<script>OTE-eventhandler.kts,OTE-reqrep.kts,OTE-dataserver.kts</script>`. Update this using the code below:
+In this file, find `<script>OTE-eventhandler.kts,OTE-reqrep.kts,OTE-dataserver.kts</script>`. Replace this with the code below:
 
 ```html
 <script>OTE-eventhandler.kts,OTE-pob-eventhandler.kts,OTE-reqrep.kts,OTE-dataserver.kts</script>
@@ -470,7 +471,7 @@ eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_INSERT", transactional = true
     }
   }
   ```
-4. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-pob-eventhandler.kts**. Add the following code:
+4. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-pob-eventhandler.kts**. Add the following large code snippet:
 
 ```kotlin
 import genesis.global.message.event.BlankMessage
@@ -946,3 +947,5 @@ eventHandler {
 
 }
 ```
+
+That's it. Once your new file has this code, you have successfully set the logic for handling the passive order book. 
