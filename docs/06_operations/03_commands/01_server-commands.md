@@ -16,14 +16,13 @@ Once an application has been built and zipped, you can install it in any another
 
 To ensure a correct installation, you must follow the product installation procedure.
 
-## Command Logging Level
+## Logging level for commands
 
-The logging level of Genesis commands is set to "WARN" by default, these commands include: DbMon, DumpIt, SendIt etc. which will be discussed below.
+The logging level for Genesis commands is set to "WARN" by default. 
 
-To change the level, you need to set the environment variable `GENESIS_LOGGING_LEVEL` to any valid level ("ERROR", "WARN", "INFO", "DEBUG", "TRACE").
+To change the level for a command, set the environment variable `GENESIS_LOGGING_LEVEL` to any valid level ("ERROR", "WARN", "INFO", "DEBUG", "TRACE").
 
-If `GENESIS_LOGGING_LEVEL` is not explicitly set or is set to a non-valid level, this log level will be reset to default.
-
+If you set `GENESIS_LOGGING_LEVEL` to a non-valid level, it is automatically reset to the default.
 
 ## CountRecords
 
