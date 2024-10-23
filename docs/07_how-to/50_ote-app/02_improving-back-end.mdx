@@ -217,7 +217,7 @@ eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_MODIFY", transactional = true
 ### Remove redundant eventHandlers
 All the `eventHandler` codeblocks set out below need to be removed. These requirements are handled by the code changes and consolidator updates that you have made.
 
-1. To remove the following Trade  and Trade.ById eventHandlers, find:
+1. To remove the following Trade and Trade.ById eventHandlers, find:
 
 `eventHandler<Trade>("TRADE_INSERT", transactional = true) {`
 `eventHandler<Trade>("TRADE_MODIFY", transactional = true) {`
@@ -430,9 +430,12 @@ eventHandler<ClosingPosition>("CLOSING_POSITION_INSERT", transactional = true) {
 ```
   
 ## Handling the passive order book
-To handle the passive order book correctly, you need to remove the code for the `PASSIVE_ORDER_BOOK_INSERT` and `PASSIVE_ORDER_BOOK_DELETE` events from the file **OTE-eventhandler.kts**. 
+To handle the passive order book correctly, you need to do two things:
 
-Then you can create a new file and add the code. This is in a large snippet at the end of this section.
+- create a new file with the relevant logic; we provide a large code snippet here to provide that logic
+- the code for the `PASSIVE_ORDER_BOOK_INSERT` and `PASSIVE_ORDER_BOOK_DELETE` events in the **OTE-eventhandler.kts** file is no longer necessary, so you need to remove it 
+
+To do this:
 
 1. Go to the folder **OTE\server\OTE-app\src\main\genesis\scripts**. Add a file called **OTE-pob-eventhandler.kts**.
 
@@ -949,3 +952,7 @@ eventHandler {
 ```
 
 That's it. Once your new file has this code, you have successfully set the logic for handling the passive order book. 
+
+:::tip
+This large code snippet has comments throughout to indicate the purpose of each codeblock.
+:::
