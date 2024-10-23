@@ -1,0 +1,38 @@
+---
+title: 'Genesis Launcher - Running'
+sidebar_label: 'Running'
+id: running-launcher
+keywords: [server, tooling, code snippets, launcher, jetbrains, local]
+tags:
+  - server
+  - tooling
+  - code snippets
+  - launcher
+---
+
+## Starting the Launcher
+
+After syncing your gradle project, there should now be a `genesisLauncher` gradle task in the **server** directory.
+
+You can start the launcher by running that task from an IDE, or from the command line, run:
+
+```shell
+./gradlew genesisLauncher
+```
+
+## Usage
+
+Once you open Genesis Launcher for your project, all the services are listed, including the Web UI.
+
+To get started for the first time; click on the 🚀 icon, just underneath the Genesis logo.
+
+This bootstraps the database and launches the application.
+Once the database has been initialised, feel free to run "Start All" instead.
+
+Bootstrap will run "Start All" as well, but will first run [remap](/operations/commands/remap/) and ConsolidateRights.
+
+Prior to starting service, build tasks will be run.
+
+Once a process is running, you can click on the process name to view its log file:
+
+![Genesis Launcher Screenshot](/img/genesis-launcher/genesis-launcher-running.png)
