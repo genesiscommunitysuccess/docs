@@ -18,7 +18,7 @@ const config = {
   url: "https://learn.genesis.global/",
   baseUrl,
   favicon: "img/favicon.ico",
-  organizationName: "genesislcap",
+  organizationName: "genesis",
   projectName: "docs",
   trailingSlash: true,
   markdown: {
@@ -139,6 +139,11 @@ const config = {
   ],
   themeConfig: {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    docs: {
+      sidebar: {
+        autoCollapseCategories: true,
+      },
+    },
     colorMode: {
       disableSwitch: true,
       defaultMode: "light",
@@ -146,22 +151,14 @@ const config = {
     },
     navbar: {
       items: [
-        { type: "docsVersionDropdown", className: "version-menu " },
-        {
-          type: "doc",
-          docId: "getting-started/introduction",
-          label: "Learning",
-        },
+        { type: "doc", docId: "how-to/how-to-landing", label: "How To Guides" },
         {
           type: "doc",
           docId: "database/database-landing",
-          label: "Database",
+          label: "Developer Documentation",
         },
-        { type: "doc", docId: "server/server-modules", label: "Server" },
-        { type: "doc", docId: "web/front-end", label: "Web" },
-        { type: "doc", docId: "components/components", label: "Components", when: { routeMatch: "docs" } },
-        { type: "doc", docId: "operations/operations", label: "Operations" },
-        { type: "doc", docId: "how-to/how-to-landing", label: "How to..." },
+        { type: "doc", docId: "server/server-modules", label: "Operations Documentation" },
+        { type: "doc", docId: "release-notes/releases", label: "Release Notes" },        
         {
           type: "html",
           position: "right",
@@ -180,10 +177,11 @@ const config = {
         src: "img/logo-icon--light.svg",
         width: 25,
         height: 25,
-        href: "/getting-started",
-        target: "_self",
+        //href: "/how-to",
+        href: "https://genesis.global/",
+        //target: "_self",
       },
-      title: "DOCUMENTATION",
+      title: "Genesis",
     },
     footer: {
       links: [],
