@@ -28,7 +28,7 @@ Go to the file **OTE\server\OTE-app\src\cfg\OTE-tables-dictionary.kts**. Here we
 ```
 primaryKey("INSTRUMENT_ID", "CLOSING_DATE")
 ```
-This will ensure that the appropriate closing price will be used, based on the closing date.
+This ensures that the appropriate closing price will be used, based on the closing date.
 
 2. Find the `primaryKey` line for the CASH_BALANCE table definition. Update it as follows:
 
@@ -63,9 +63,7 @@ field("VERSION", INT).notNull().default(1)
 
 Go to the folder **OTE\server\OTE-app\src\main\Kotlin**. Here we will add an additional folder and file.
 
-[do we include intellij stuff here? I think the whole exercise is in launchpad]
-
-### Using intelliJ
+### Using IntelliJ
 
 1. Right-click on **add new package** and call this package genesis.global.message.event
 
