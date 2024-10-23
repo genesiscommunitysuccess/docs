@@ -20,9 +20,8 @@ This is a real-time acknowledgement source that uses Camel to poll a location pe
 
 The next element is only emitted once acknowledgement is given that the previous one has been successfully processed.
 
-The location must be provided upon instantiation of this source, as shown below. Any camel-specific configurations must be included within this string.
+A location or a route builder must be provided:
 
-GPAL Example:
 ```kotlin
     pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
         source(
@@ -33,9 +32,6 @@ GPAL Example:
     }
 ```
 
-You can also enable Camel Idempotent Repositories for filtering out duplicate messages.
-
-In Memory Idempotent Repository:
 ```kotlin
     pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
         source(
@@ -49,21 +45,6 @@ In Memory Idempotent Repository:
     }
 ```
 
-File Idempotent Repository:
-```kotlin
-    pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
-        source(
-            camelSource {
-                location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
-                idempotentConfig = fileIdempotentConfig {
-                    consumedLocation = ""
-                    cacheSize = 300000
-                    maxFileStoreSize = 15000000
-                }
-            }
-        ).sink(filesSink)
-    }
-```
 
 ### Database Batch Poll Source (Real-time)
 
