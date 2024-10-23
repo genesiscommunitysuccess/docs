@@ -35,10 +35,13 @@ A location or a route builder must be provided:
 ```kotlin
     pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
         source(
-            camelSource {
-                location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
-                idempotentConfig = inMemoryIdempotentConfig {
-                    cacheSize = 300000
+            camelFileSource {
+                routeHandler {
+                    from("file://src/test/resources/camel-source-test?noop=true&idempotent=true")
+                        .idempotentConsumer(
+                            header("CamelFileName"),
+                            FileIdempotentRepository.fileIdempotentRepository(File("factInPathStrConsumerRepo"), 300000, 15000000)
+                        ).process(dataPipelineProcessor)
                 }
             }
         ).sink(filesSink)
