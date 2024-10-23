@@ -8,31 +8,30 @@ tags:
   - tooling
   - code snippets
   - launcher
+  - jetbrains
+  - local
 ---
 
-Genesis Launcher is a tool to launch genesis applications without the need for a supported IDE.
+Genesis Launcher enables you to launch Genesis applications without the need for a supported IDE.
 
 ![Genesis Launcher Screenshot](/img/genesis-launcher/genesis-launcher-empty.png)
 
 :::note
-Genesis Launcher only supports projects with the simplified structure,
-or projects which have the genesis settings plugin enabled.
-This will include all projects generated through Genesis Create.
-New projects generated through Create will have the plugin enabled by default.
-Please see [this page](/operations/project-structure/introduction/) for more details
+Genesis Launcher only supports projects with the [simplified structure](/operations/project-structure/introduction/),
+or projects that have the genesis settings plugin enabled.
 
+All projects generated through Genesis Create have the simplified structure. New projects generated through Create have the plugin enabled by default.
 :::
 
 ## Enable
 
-Genesis Launcher is distributed as a gradle plugin.
-To enable the launcher in your project; you will need add this plugin.
-Once the plugin is enabled you should be able to start it.
-See [here](../running-launcher) for more details
+Genesis Launcher is distributed as a gradle plugin. You must add this plugin to enable the launcher in your project.
+
+Once the plugin is enabled you can [start Genesis Launcher](../running-launcher).
 
 ## Amending the settings file
 
-Firstly, in your project's **settings.gradle.kts** file, you will need to add `google()` to `repositories` under `pluginManagement`.
+In your project's **settings.gradle.kts** file, add `google()` to `repositories` under `pluginManagement`.
 
 ```kotlin
 // in repositories under plugin management, add google() at the end:
@@ -46,7 +45,7 @@ pluginManagement {
 
 ## Amending the build file
 
-Secondly, in your project's **build.gradle.kts** file, you will need to add the plugin:
+In your project's **build.gradle.kts** file, add the plugin:
 
 ```kotlin
 // add the launcher to plugins
