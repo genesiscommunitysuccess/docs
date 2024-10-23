@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 Here, we shall look into the back-end code and make some useful changes to increase the usability and range of the app.
 
 ## Changing table definitions
-Go to the file **OTE\server\OTE-app\src\cfg\OTE-tables-dictionary.kts**. Here we shall change the definitions of the following tables:
+Go to the file **OTE\server\OTE-app\src\main\genesis\cfg\OTE-tables-dictionary.kts**. Here we shall change the definitions of the following tables:
 
 - `CLOSING_PRICE`
 - `CASH_BALANCE`
@@ -28,17 +28,19 @@ Go to the file **OTE\server\OTE-app\src\cfg\OTE-tables-dictionary.kts**. Here we
 ```
 primaryKey("INSTRUMENT_ID", "CLOSING_DATE")
 ```
+This ensures that the appropriate closing price will be used, based on the closing date.
 
 2. Find the `primaryKey` line for the CASH_BALANCE table definition. Update it as follows:
 
 ```
 primaryKey("PARTICIPANT_NAME", "CURRENCY")
 ```
+This allows the the application to determine a Participant's Cash Balance for a particular currency.
 
 3. Find the `primaryKey` line for the INSTRUMENT_TO_UNDERLYING table definition. Update it as follows:
 
 ```
-primaryKey("INSTRUMENT_ID", "TYPE", "UNDERLYING_ID”)
+primaryKey("INSTRUMENT_ID", "TYPE", "UNDERLYING_ID")
 ```
 
 4. Find the `primaryKey` line for the PARTICIPANT_POSITION table definition. Update it as follows:
@@ -47,8 +49,9 @@ primaryKey("INSTRUMENT_ID", "TYPE", "UNDERLYING_ID”)
 primaryKey("INSTRUMENT_ID", "PARTICIPANT_NAME")
 ```
 
+This allows the application to determine a Participant's Position for a particular instrument.
+
 ### Adding a default value
-[Rationale for the below step to be provided:]
 
 Check that the following default is present on the `PASSIVE_ORDER_BOOK` table:
 
@@ -60,13 +63,11 @@ field("VERSION", INT).notNull().default(1)
 
 Go to the folder **OTE\server\OTE-app\src\main\Kotlin**. Here we will add an additional folder and file.
 
-[do we include intellij stuff here? I think the whole exercise is in launchpad]
-
-### Using intelliJ
+### Using IntelliJ
 
 1. Right-click on **add new package** and call this package genesis.global.message.event
 
-2. Right-click on the genesis.global.message.event package and add a new "Kotlin class" called **ExpireOrderMessage.kt**.
+2. Right-click on the genesis.global.message.event package and add a new "Kotlin class" called **BlankMessage.kt**.
 
 ### Using Launchpad
 
@@ -74,14 +75,14 @@ Go to the folder **OTE\server\OTE-app\src\main\Kotlin**. Here we will add an add
 
 **OTE\server\OTE-app\src\main\Kotlin\genesis\global\message\event**.
 
-2. Add the file **ExpireOrderMessage.kt** to the **event** folder that you have just created.
+2. Add the file **BlankMessage.kt** to the **event** folder that you have just created.
 
-3. Add the following code to the **ExpireOrderMessage.kt** file:
+3. Add the following code to the **BlankMessage.kt** file:
 
 ```kotlin
 package genesis.global.message.event
 
-class ExpireOrderMessage {
+class BlankMessage {
 }
 ```
 
@@ -100,8 +101,8 @@ query("ALL_USER_NAMES", USER) {
 }
 ```
 
-## Updating the consolidators
-Because you changed the primary keys, you need to edit the consolidators so that they can include the new aggregations.
+## Updating the consolidators.
+As the primary keys have changed, you need to edit the consolidators so that they can include the new aggregations.
 
 1. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-consolidator.kts**.
 
@@ -145,28 +146,30 @@ ParticipantPosition.ByInstrumentIdParticipantName(instrumentId, sellParticipantN
 QUANTITY
 ```
 
-## Modify the cash balance
- [Rationale for this change required] Modify the CASH_BALANCE_AAG consolidator [so that rationale]
+### Modify existing consolidators
 
-1. In the `CASH_BALANCE_AAG`, find `CashBalance.ByParticipantName(participantName, currency)`. Update it as follows:
+Modify the CASH_BALANCE_AGG consolidator so that the new aggregations are included as a result of the primary key changes that were made.
+
+1. In the `CASH_BALANCE_AGG`, find `CashBalance.ByParticipantName(participantName)`. Update it as follows:
 
 ```kotlin
 CashBalance.ByParticipantNameCurrency(participantName, currency)
 ```
 
-2. In the `CASH_BALANCE_AAG`, find [field name required]. Update it as follows:
+2. In the `CASH_BALANCE_AGG`, find [field name required]. Update it as follows:
 
 ```kotlin
 currency = groupId.currency
 ```
 
-### Aggregate buy and sell
+### Aggregate buy and sell in the consolidators
 To ensure that Buy and Sell data is aggregated and captured for the correct side in the `OPEN_POSITION_AGG` consolidator:
 
-1. Add the following code [in the following location]
+1. Add the following code to the imports section:
 
 ```kotlin
-import global.genesis.gen.dao.enums.OTE.passive_order_book.side
+import global.genesis.gen.dao.enums.OTE.passive_order_book.Side
+import global.genesis.gen.dao.enums.OTE.passive_order_book.Status
 ```
 2. Find `sum { openQuantity } into BUY_QUANTITY` and `sum { openQuantity } into SELL_QUANTITY`. Update as follows:
 
@@ -175,8 +178,7 @@ sum { openQuantity } onlyIf { side == Side.Buy } into BUY_QUANTITY
 sum { openQuantity } onlyIf { side == Side.Sell } into SELL_QUANTITY
 ```
 3. Find `groupBy` and add the following clause above this label:
-
-[we are supposed to be using filter now instead of where]
+<!-- TODO: We should be using filter instead of where now -->
 
 ```kotlin
 where {
@@ -185,7 +187,7 @@ where {
 ```
 ## Updating eventHandlers
 
-You need to ensure that the primaryKey changes can be handled by the relevant `eventHandler` codeblocks. 
+To ensure that the primaryKey changes can be handled by the relevant `eventHandler` codeblocks, make the following changes:
 
 1.  Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-eventhandler.kts**. <br></br>
 Edit the following `eventHandler` codeblocks:
@@ -205,16 +207,16 @@ eventHandler<ClosingPrice.ByInstrumentIdClosingDate>("CLOSING_PRICE_DELETE", tra
 eventHandler<InstrumentToUnderlying.ByInstrumentIdTypeUnderlyingId>("INSTRUMENT_TO_UNDERLYING_DELETE", transactional = true) {
 ```
 
-4. To make orders Active or withdrawn [?] find [ information to be added] . Update as follows:
+4. To make orders Active or Withdrawn, update as follows:
 
 ```
 eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_MODIFY", transactional = true) {
 ```
 
 ### Remove redundant eventHandlers
-All the `eventHandler` codeblocks set out below need to be removed. These requirements are handled by the code changes and consilidator updates that you have made.
+All the `eventHandler` codeblocks set out below need to be removed. These requirements are handled by the code changes and consolidator updates that you have made.
 
-1. To remove the following Trade  and Trade.ById eventHandlers find:
+1. To remove the following Trade and Trade.ById eventHandlers, find:
 
 `eventHandler<Trade>("TRADE_INSERT", transactional = true) {`
 `eventHandler<Trade>("TRADE_MODIFY", transactional = true) {`
@@ -426,14 +428,19 @@ eventHandler<ClosingPosition>("CLOSING_POSITION_INSERT", transactional = true) {
   }
 ```
   
-## Handling the passive order book
-Currently, the code for the `PASSIVE_ORDER_BOOK_INSERT` and `PASSIVE_ORDER_BOOK_DELETE` events is in the file **OTE-eventhandler.kts**. But it would be useful [why?] to manage these in a different file. 
+## Create a new passive order book eventHandler
+To handle the Passive Order Book correctly, we are going to do two things:
 
-1. Go to **OTE\server\OTE-app\src\main\genesis\scripts**. Add a file called **OTE-pob-eventhandler.kts**.
+- create a new **-eventhandler.kts**file with the relevant logic for the Passive Order Book; we provide a large code snippet here that contains the logic
+- this makes the `PASSIVE_ORDER_BOOK_INSERT` and `PASSIVE_ORDER_BOOK_DELETE` events in the **OTE-eventhandler.kts** file unnecessary, so you need to remove them.
 
-2. Add this newly created file to the OTE_MANAGER. To do this, go to the file **OTE\server\OTE-app\src\main\genesis\cfg\processes.xml**.
+To do this:
 
-In this file, find `<script>OTE-eventhandler.kts,OTE-reqrep.kts,OTE-dataserver.kts</script>`. Update this using the code below:
+1. Go to the folder **OTE\server\OTE-app\src\main\genesis\scripts**. Add a file called **OTE-pob-eventhandler.kts**.
+
+2. Add this newly created file to the OTE_MANAGER. To do this, go to the file **OTE\server\OTE-app\src\main\genesis\cfg\OTE-processes.xml**.
+
+In this file, find `<script>OTE-eventhandler.kts,OTE-reqrep.kts,OTE-dataserver.kts</script>`. Replace this with the code below:
 
 ```html
 <script>OTE-eventhandler.kts,OTE-pob-eventhandler.kts,OTE-reqrep.kts,OTE-dataserver.kts</script>
@@ -466,10 +473,10 @@ eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_INSERT", transactional = true
     }
   }
   ```
-4. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-pob-eventhandler.kts**. Add the following code:
+4. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-pob-eventhandler.kts**. Add the following large code snippet:
 
 ```kotlin
-import genesis.global.message.event.ExpireOrderMessage
+import genesis.global.message.event.BlankMessage
 import global.genesis.gen.dao.enums.OTE.cash_movement.Reason
 import global.genesis.gen.dao.enums.OTE.instrument.Type
 import global.genesis.gen.dao.enums.OTE.passive_order_book.Side
@@ -484,7 +491,7 @@ eventHandler {
     //This event runs a closing price process that calculates a weighted average price from the trades booked in a
     //given time period prior to the process
     //There could be a number of ways of doing this depending on the requirements of the end user
-    eventHandler<ExpireOrderMessage>("RUN_CLOSING_PRICES") {
+    eventHandler<BlankMessage>("RUN_CLOSING_PRICES") {
         onCommit {
             //Currently this uses the time the event is run to set a range for weighted average price calculations
             //This will usually be more specific and based on actual trading times (such as last 30 minutes of the
@@ -529,7 +536,7 @@ eventHandler {
     //This process takes the most recent closing prices and triggers cash movements to reflect a variation margin
     //based upon the movement seen in the market.  This assumes a 100% variation call after a closing price is
     //run.  This is only done for Type == Future.  This function could vary by end user requirement
-    eventHandler<ExpireOrderMessage>("RUN_VARIATION_MARGIN") {
+    eventHandler<BlankMessage>("RUN_VARIATION_MARGIN") {
         onValidate { event ->
             val lastClosingPriceRun = entityDb.getBulk(CLOSING_PRICE)
             require(lastClosingPriceRun.count() != 0) {"No closing prices - run closing prices first!"}
@@ -699,7 +706,7 @@ eventHandler {
     //In the order insert, this is checked again anyway, but in production this process should run on a sensible
     //schedule to ensure orders expire in a timely fashion
     //Currently called from a front end button, but could easily be a CRON_RULE triggering this
-    eventHandler<ExpireOrderMessage>("EXPIRE_ORDERS") {
+    eventHandler<BlankMessage>("EXPIRE_ORDERS") {
         onCommit {
             entityDb.getRange(PassiveOrderBook.byExpiry(DateTime.parse("2000-01-01")), PassiveOrderBook.byExpiry(now()))
                 .toList().filter { it.status == Status.Active }.forEach {
@@ -942,3 +949,9 @@ eventHandler {
 
 }
 ```
+
+That's it. Once your new file has this code, you have successfully set the logic for handling the passive order book. 
+
+:::tip
+This large code snippet has comments throughout to indicate the purpose of each codeblock.
+:::
