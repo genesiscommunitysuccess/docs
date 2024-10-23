@@ -12,7 +12,8 @@ tags:
 
 ## Starting the Launcher
 
-After syncing your gradle project, there should now be a `genesisLauncher` gradle task.
+After syncing your gradle project, there should now be a `genesisLauncher` gradle task in the **server** directory.
+
 You can start the launcher by running that task from an IDE, or from the command line, run:
 
 ```shell
@@ -21,15 +22,17 @@ You can start the launcher by running that task from an IDE, or from the command
 
 ## Usage
 
-Once you open Genesis Launcher for your project, all the services will be listed, including the Web UI.
-To get started for the first time; click on the 🚀icon, just underneath the Genesis logo.
+Once you open Genesis Launcher for your project, all the services are listed, including the Web UI.
 
-This will bootstrap the database and launch the application.
+To get started for the first time; click on the 🚀 icon, just underneath the Genesis logo.
+
+This bootstraps the database and launches the application.
 Once the database has been initialised, feel free to run "Start All" instead.
 
 Bootstrap will run "Start All" as well, but will first run [remap](/operations/commands/remap/) and ConsolidateRights.
 
 Prior to starting service, build tasks will be run.
 
-Once a processes are running, you can click on a process name to view its log file:
+Once a process is running, you can click on the process name to view its log file:
+
 ![Genesis Launcher Screenshot](/img/genesis-launcher/genesis-launcher-running.png)
