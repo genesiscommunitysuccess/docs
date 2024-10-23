@@ -429,10 +429,10 @@ eventHandler<ClosingPosition>("CLOSING_POSITION_INSERT", transactional = true) {
 ```
   
 ## Create a new passive order book eventHandler.
-Currently, the code for the `PASSIVE_ORDER_BOOK_INSERT` and `PASSIVE_ORDER_BOOK_DELETE` events is in the file **OTE-eventhandler.kts**. You must remove these events  and add them in a new eventHandler files set out in the steps below.
+To handle the Passive Order Book correctly, we are going to do two things:
 
-- create a new file with the relevant logic; we provide a large code snippet here to provide that logic
-- the code for the `PASSIVE_ORDER_BOOK_INSERT` and `PASSIVE_ORDER_BOOK_DELETE` events in the **OTE-eventhandler.kts** file is no longer necessary, so you need to remove it 
+- create a new **-eventhandler.kts**file with the relevant logic for the Passive Order Book; we provide a large code snippet here that contains the logic
+- this makes the `PASSIVE_ORDER_BOOK_INSERT` and `PASSIVE_ORDER_BOOK_DELETE` events in the **OTE-eventhandler.kts** file unnecessary, so you need to remove them.
 
 To do this:
 
