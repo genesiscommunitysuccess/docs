@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 Here, we shall look into the back-end code and make some useful changes to increase the usability and range of the app.
 
 ## Changing table definitions
-Go to the file **OTE\server\OTE-app\src\cfg\OTE-tables-dictionary.kts**. Here we shall change the definitions of the following tables:
+Go to the file **OTE\server\OTE-app\src\main\genesis\cfg\OTE-tables-dictionary.kts**. Here we shall change the definitions of the following tables:
 
 - `CLOSING_PRICE`
 - `CASH_BALANCE`
@@ -40,7 +40,7 @@ This allows the the application to determine a Participant's Cash Balance for a 
 3. Find the `primaryKey` line for the INSTRUMENT_TO_UNDERLYING table definition. Update it as follows:
 
 ```
-primaryKey("INSTRUMENT_ID", "TYPE", "UNDERLYING_ID”)
+primaryKey("INSTRUMENT_ID", "TYPE", "UNDERLYING_ID")
 ```
 
 4. Find the `primaryKey` line for the PARTICIPANT_POSITION table definition. Update it as follows:
@@ -148,15 +148,15 @@ QUANTITY
 
 ### Modify existing consolidators
 
-Modify the CASH_BALANCE_AAG consolidator so that the new aggregations are included as a result of the primary key changes that were made.
+Modify the CASH_BALANCE_AGG consolidator so that the new aggregations are included as a result of the primary key changes that were made.
 
-1. In the `CASH_BALANCE_AAG`, find `CashBalance.ByParticipantName(participantName, currency)`. Update it as follows:
+1. In the `CASH_BALANCE_AGG`, find `CashBalance.ByParticipantName(participantName)`. Update it as follows:
 
 ```kotlin
 CashBalance.ByParticipantNameCurrency(participantName, currency)
 ```
 
-2. In the `CASH_BALANCE_AAG`, find [field name required]. Update it as follows:
+2. In the `CASH_BALANCE_AGG`, find [field name required]. Update it as follows:
 
 ```kotlin
 currency = groupId.currency
@@ -168,7 +168,8 @@ To ensure that Buy and Sell data is aggregated and captured for the correct side
 1. Add the following code to the imports section:
 
 ```kotlin
-import global.genesis.gen.dao.enums.OTE.passive_order_book.side
+import global.genesis.gen.dao.enums.OTE.passive_order_book.Side
+import global.genesis.gen.dao.enums.OTE.passive_order_book.Status
 ```
 2. Find `sum { openQuantity } into BUY_QUANTITY` and `sum { openQuantity } into SELL_QUANTITY`. Update as follows:
 
@@ -427,8 +428,8 @@ eventHandler<ClosingPosition>("CLOSING_POSITION_INSERT", transactional = true) {
   }
 ```
   
-## Handling the passive order book
-To handle the passive order book correctly, you need to do two things:
+## Create a new passive order book eventHandler.
+Currently, the code for the `PASSIVE_ORDER_BOOK_INSERT` and `PASSIVE_ORDER_BOOK_DELETE` events is in the file **OTE-eventhandler.kts**. You must remove these events  and add them in a new eventHandler files set out in the steps below.
 
 - create a new file with the relevant logic; we provide a large code snippet here to provide that logic
 - the code for the `PASSIVE_ORDER_BOOK_INSERT` and `PASSIVE_ORDER_BOOK_DELETE` events in the **OTE-eventhandler.kts** file is no longer necessary, so you need to remove it 
@@ -437,7 +438,7 @@ To do this:
 
 1. Go to the folder **OTE\server\OTE-app\src\main\genesis\scripts**. Add a file called **OTE-pob-eventhandler.kts**.
 
-2. Add this newly created file to the OTE_MANAGER. To do this, go to the file **OTE\server\OTE-app\src\main\genesis\cfg\processes.xml**.
+2. Add this newly created file to the OTE_MANAGER. To do this, go to the file **OTE\server\OTE-app\src\main\genesis\cfg\OTE-processes.xml**.
 
 In this file, find `<script>OTE-eventhandler.kts,OTE-reqrep.kts,OTE-dataserver.kts</script>`. Replace this with the code below:
 

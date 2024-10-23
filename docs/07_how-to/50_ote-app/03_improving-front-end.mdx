@@ -20,13 +20,13 @@ The majority of this section is for changes made in the front-end folder, which 
 
 ## Enhancing the Grid layout
 
-You can change the existing 2x2 grid layout to a more sophisticated layout where:
+In this section you will change the existing 2x2 grid layout to a more sophisticated layout where:
 
 - orders are displayed at the top of the screen in the Passive Order Book section
 - three sections (Particpant Positions, Trades and Open Positions) are displayed beneath the Orders grid
 
 ### 1. Update the template.ts
-Go to **OTE\client\src\routes\orders\orders.template.ts**. Update it as follows:
+Go to **OTE\client\src\routes\orders\orders.template.ts**. Replace the existing code as follows:
 
 ```
  <rapid-layout-region type="horizontal">
@@ -46,7 +46,6 @@ Go to **OTE\client\src\routes\orders\orders.template.ts**. Update it as follows:
          </rapid-layout-region>
      </rapid-layout-region>
   </rapid-layout>
-`;
 ```
 
 With the next set of steps you will be making a change to allow user names to appear in a drop down list in the GUI
@@ -144,7 +143,7 @@ export class ProcessesProcessHistoryManager extends GenesisElement {
 }
 ```
 
-... and replace it with the following, which will make the button specifically call the right event in the eventHhandler:
+... and replace it with the following, which will make the button specifically call the right event in the eventHandler:
 
 ```
 export class ProcessesProcessHistoryManager extends GenesisElement {
