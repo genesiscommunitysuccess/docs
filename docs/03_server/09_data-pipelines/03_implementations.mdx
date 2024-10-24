@@ -20,7 +20,7 @@ This is a real-time acknowledgement source that uses Camel to poll a location pe
 
 The next element is only emitted once acknowledgement is given that the previous one has been successfully processed.
 
-A location or a route builder must be provided:
+A location or a route builder must be provided. The location must be provided upon instantiation of this source, as shown below.
 
 ```kotlin
     pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
@@ -32,6 +32,7 @@ A location or a route builder must be provided:
     }
 ```
 
+Alternatiely, you can instantiate a camel route builder directly  
 ```kotlin
     pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
         source(
