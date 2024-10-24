@@ -1,0 +1,57 @@
+---
+title: 'How to consume from and publish to IBM Message Queue'
+sidebar_label: 'Consume and publish IBM Message Queue'
+id: ht-ibm-mq
+keywords: [jms, ibm, mq, data pipeline]
+tags:
+- jms
+- ibm
+- mq
+- data pipeline
+---
+
+IBM Message Queue is a software that allows different applications to send and receive messages reliably through message queues.
+The Genesis platform enables you to consume from and publish to any JMS message queue including IBM.
+
+For example, these message queues are often used to access Murex trade data. These pipelines will allow you to consumer your Murex trade data directly from the message queue and into your Genesis Application.
+
+## Example
+
+We have created an [example application](https://github.com/genesiscommunitysuccess/howto-ibm-mq-pipelines/tree/main) that shows specifically how to publish to an IBM message queue as well as consumer incoming messages.
+Note: the same how to guide can be followed for any other valid JMS message queue implementation, it has been explained in the relevant places where you can provide a different instance (for example; Active MQ etc).
+
+The application provides two pipelines, one to consumer and one to publish.
+These have been set up as independent processes. So if a message is published to the queue when the consumer process is down, the application will process it as soon as the process starts back up.
+
+:::tip Download, view and run
+The examples are within one complete example application, which includes a front end so that you can run and see the data.
+
+You can [clone the repo](https://github.com/genesiscommunitysuccess/howto-ibm-mq-pipelines/tree/main) to see the code - which includes comments at the key points to highlight what is being specified - and run the application.
+
+The README file for the application provides set-up instructions for creating a similar application. As well as the pipeline definitions, this includes setting up dependencies, system definitions, the Event Handler (to trigger an event) and the Request Server (to provide data to the front end.)
+:::
+
+## Publishing to IBM Message Queue
+In the example application, a pipeline is set up to respond to an event, such as when the user inserts a new message. The pipeline publishes this data to the specified message queue.
+
+## Consuming from IBM Message Queue
+The example contains a second pipeline that runs in the background and polls a configured message queue. Whenever new records are detected on the queue, it retrieves them and inserts them to the database.
+
+The pipeline only retrieves the next record (or batch of records) once the previous record (or batch) has been added to the database.
+
+## Testing
+
+:::info
+Go to our [**Testing**](/how-to/ht-prepare-test/) page for details of our testing tools and the dependencies that you need to declare.
+:::
+
+To test the set-up of a Data Pipeline for IBM Message Queue on your app:
+
+- *Details to follow shortly. Thank you for your patience.*
+
+## Full technical details
+You can find full technical details in our reference documentation:
+
+- [Data Pipeline](/server/data-pipelines/introduction)
+- [Event Handler](/server/event-handler/introduction/)
+- [Request Server](/server/request-server/introduction/)
