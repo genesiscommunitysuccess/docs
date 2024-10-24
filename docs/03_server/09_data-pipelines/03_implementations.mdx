@@ -39,7 +39,7 @@ First of all, lets explain what a route builder is. In this context, it is Apach
 If you are already familar with Camel APIs, you should feel right at home here. If not, [you can read more about them here.](https://camel.apache.org/manual/routes.html)
 
 Passing in a route builder gives you the most flexability and control over your routes logic, allowing for more advanced configurations, such as specifying processors and idempotency logic.
-Also, within the routeHandler block you can always access the dataPipelineProcessor variable, this is a custom processor we create that will emit the messages from the data pipeline source into your gensis pipeline.
+Also, within the routeHandler block you can always access the dataPipelineProcessor variable, this is a custom processor we create that will emit the messages from the data pipeline source into your genesis pipeline.
 ```kotlin
     pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
         source(
