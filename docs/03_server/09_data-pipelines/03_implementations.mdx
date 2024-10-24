@@ -23,7 +23,7 @@ The next element is only emitted once acknowledgement is given that the previous
 There are two ways to create a camel source. One is by passing the location directly, the second is by passing in a route builder.
 
 ### Passing the the location string
-Passing in the location directly will automatically create a route builder and adds it to the intenral pipeline processors:
+Passing in the location directly will automatically create a route builder and add it to the internal pipeline processors:
 ```kotlin
     pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
         source(
@@ -35,11 +35,11 @@ Passing in the location directly will automatically create a route builder and a
 ```
 
 ### Passing the route builder
-First off all, lets explain what a route builder is. In this context, it is Apache Camels API for defining where and how to read messages.
+First of all, lets explain what a route builder is. In this context, it is Apache Camels API for defining where and how to read messages.
 If you are already familar with Camel APIs, you should feel right at home here. If not, [you can read more about them here.](https://camel.apache.org/manual/routes.html)
 
-Passing in a route builder gives you the most flexability and control over your routes logic, allowing for more advanced configurations, such as specifying processors and idempotency logic. 
-Here, the processor emits messages directly in to the intenral pipeline processors within the scope of the route builder block:
+Passing in a route builder gives you the most flexability and control over your routes logic, allowing for more advanced configurations, such as specifying processors and idempotency logic.
+Also, within the routeBuilder block you can always access the dataPipelineProcessor variable, this is a custom processor we create that will emit the messages from the data pipeline source into your gensis pipeline.
 ```kotlin
     pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
         source(
