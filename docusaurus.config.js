@@ -97,7 +97,7 @@ const config = {
            * that would leave the default unchanged even after their edit was accepted, which may confuse contributors.
            */
           editCurrentVersion: false,
-          breadcrumbs: false,
+          breadcrumbs: true,
           routeBasePath,
           sidebarPath: "./sidebars.js",
           lastVersion: "current",
