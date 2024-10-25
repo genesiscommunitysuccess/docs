@@ -421,7 +421,6 @@ li.theme-doc-sidebar-item-category-level-1
   font-family: var(--medium-font);
   font-size: 14px;
   color: var(--warm-gray-2);
-  text-transform: uppercase;
 }
 
 ul.theme-doc-sidebar-menu.menu__list * {
