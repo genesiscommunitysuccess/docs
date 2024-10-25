@@ -83,7 +83,7 @@ module.exports = {
     "database/database-landing",
     {
       type: "category",
-      label: "FIELDS, TABLES AND VIEWS",
+      label: "Fields, tables and views",
       collapsed: true,
       items: [
         {
@@ -94,7 +94,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "DATABASE CONCEPTS",
+      label: "Database concepts",
       collapsed: true,
       items: [
         {
@@ -105,7 +105,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "DATA STRUCTURES",
+      label: "Data structures",
       collapsed: true,
       items: [
         {
@@ -116,7 +116,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "DATA TYPES",
+      label: "Data types",
       collapsed: true,
       items: [
         {
@@ -127,7 +127,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "DATABASE INTERFACE",
+      label: "Database interface",
       collapsed: true,
       items: [
         {
@@ -138,7 +138,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "HELPER CLASSES",
+      label: "Helper classes",
       collapsed: true,
       items: [
         {
@@ -149,7 +149,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "TYPES OF API",
+      label: "Types of API",
       collapsed: true,
       items: [
         {
@@ -160,7 +160,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "DATABASE TECHNOLOGY",
+      label: "Database technology",
       collapsed: true,
       items: [
         {
@@ -174,7 +174,7 @@ module.exports = {
     "server/server-modules",
     {
       type: "category",
-      label: "CONFIGURING RUNTIME",
+      label: "Configuring runtime",
       collapsed: true,
       items: [
         {
@@ -196,7 +196,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "DATA SERVER",
+      label: "Data server",
       collapsed: true,
       items: [
         {
@@ -207,7 +207,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "REQUEST SERVER",
+      label: "Request server",
       collapsed: true,
       items: [
         {
@@ -218,7 +218,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "EVENT HANDLER",
+      label: "Event Handler",
       collapsed: true,
       items: [
         {
@@ -229,7 +229,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "ACCESS CONTROL",
+      label: "Access control",
       collapsed: true,
       items: [
         {
@@ -240,7 +240,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "STATE MACHINE",
+      label: "State machine",
       collapsed: true,
       items: [
         {
@@ -251,7 +251,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "CONSOLIDATOR",
+      label: "Consolidator",
       collapsed: true,
       items: [
         {
@@ -262,7 +262,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "EVALUATOR",
+      label: "Evaluator",
       collapsed: true,
       items: [
         {
@@ -273,7 +273,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "DATA PIPELINES",
+      label: "Data pipelines",
       collapsed: true,
       items: [
         {
@@ -284,7 +284,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "NETWORK MESSAGES",
+      label: "Network messages",
       collapsed: true,
       items: [
         {
@@ -295,7 +295,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "INTEGRATION",
+      label: "Integration",
       collapsed: true,
       items: [
         {
@@ -306,7 +306,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "TOOLING",
+      label: "Tooling",
       collapsed: true,
       items: [
         {
@@ -317,7 +317,7 @@ module.exports = {
     },
     {
       type: "category",
-      label: "API REFERENCE",
+      label: "API reference",
       collapsed: true,
       items: [
         {
