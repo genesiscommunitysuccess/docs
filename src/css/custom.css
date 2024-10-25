@@ -1,3 +1,4 @@
+
 /* stylelint-disable docusaurus/copyright-header */
 /**
  * Any CSS included here will be global. The classic template
@@ -53,6 +54,11 @@
   --ifm-navbar-shadow: -5px 3px 16px 0px rgba(0, 0, 0, 0.15);
 
   --ifm-pre-background: #2b2b2b;
+
+  --ifm-container-width-xl: 100%;
+  
+  --doc-sidebar-width: 325px !important;
+
 }
 
 body {
@@ -179,11 +185,24 @@ h5 {
   transition: all 1s ease-in-out;
 }
 
+.main-wrapper main article {
+  max-width: 100rem;
+}
+
 @media (min-aspect-ratio: 1/1) and (min-width: 1512px) {
   .main-wrapper main {
-    max-width: 50%;
     margin-left: auto;
     margin-right: auto;
+  }
+}
+
+@media (min-aspect-ratio: 1/1) and (max-width: 996px) {
+  .main-wrapper main {
+    padding-left: 0;
+  }
+
+  .main-wrapper main article {
+    max-width: 100%;
   }
 }
 /**********************************************/
@@ -716,4 +735,12 @@ a.table-of-contents__link--active {
   cursor: pointer;
   border-bottom: 2px solid;
 }
+
+/* Image size control */
+.image500{
+  width:100%;
+  max-width:500px;
+}
+
+
 /**********************************************/
