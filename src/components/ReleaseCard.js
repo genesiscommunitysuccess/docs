@@ -22,7 +22,7 @@ export default function ReleaseCard({ heading, blog_link, rn_link, img_url, alt_
     <Card sx={{ backgroundColor: 'var(--warm-gray-4)', padding: '2%', display: 'flexbox', flexGrow: '1', flexDirection: 'row', margin: '1%' }} style={{ height: '100%' }}>
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         <h4 style={{ display: 'flexbox', fontSize: '32px', fontWeight: 'bolder' }}>{heading}</h4>
-        {imageSrc && <img src={imageSrc} alt={alt_text} />}
+        {imageSrc && <img src={imageSrc} alt={alt_text} class="image500"/>}
         <p />
         <a href={blog_link} target="_blank" style={{ display: 'flexbox', fontSize: '14px', fontWeight: 'bold' }}>
           Read the blog

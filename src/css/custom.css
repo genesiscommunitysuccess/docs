@@ -33,7 +33,7 @@
   --medium-font: "Aeonik Medium", "Aeonik", "Arial", "Helvetica", "sans-serif";
 
   line-height: 1.4;
-
+  
   --ifm-container-width-xl: 1140px;
 
   --ifm-color-primary: var(--primary-blue);
@@ -55,6 +55,9 @@
   --ifm-pre-background: #2b2b2b;
 
   --ifm-container-width-xl: 100%;
+  
+  --doc-sidebar-width: 325px !important;
+
 }
 
 body {
@@ -182,7 +185,7 @@ h5 {
 }
 
 .main-wrapper main article {
-  max-width: 42rem;
+  max-width: 100rem;
 }
 
 @media (min-aspect-ratio: 1/1) and (min-width: 1512px) {
@@ -731,4 +734,12 @@ a.table-of-contents__link--active {
   cursor: pointer;
   border-bottom: 2px solid;
 }
+
+/* Image size control */
+.image500{
+  width:100%;
+  max-width:600px;
+}
+
+
 /**********************************************/
