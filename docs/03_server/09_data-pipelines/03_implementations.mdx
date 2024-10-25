@@ -20,16 +20,42 @@ This is a real-time acknowledgement source that uses Camel to poll a location pe
 
 The next element is only emitted once acknowledgement is given that the previous one has been successfully processed.
 
-The location must be provided upon instantiation of this source, as shown below. Any camel-specific configurations must be included within this string.
+There are two ways to create a camel source. One is by passing the location directly, the second is by passing in a route builder.
 
-GPAL Example:
+### Passing the the location string
+Passing in the location directly will automatically create a route builder and add it to the internal pipeline processors:
 ```kotlin
-pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
-	source(camelSource {
-      location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
-  }).sink(filesSink)
-}
+    pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
+        source(
+            camelSource {
+                location = "file://src/test/resources/camel-source-test?noop=true"
+            }
+        ).sink(filesSink)
+    }
 ```
+
+### Passing the route builder
+First of all, lets explain what a route builder is. In this context, it is Apache Camels API for defining where and how to read messages.
+If you are already familar with Camel APIs, you should feel right at home here. If not, [you can read more about them here.](https://camel.apache.org/manual/routes.html)
+
+Passing in a route builder gives you the most flexability and control over your routes logic, allowing for more advanced configurations, such as specifying processors and idempotency logic.
+Also, within the routeHandler block you can always access the dataPipelineProcessor variable, this is a custom processor we create that will emit the messages from the data pipeline source into your genesis pipeline.
+```kotlin
+    pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
+        source(
+            camelFileSource {
+                routeHandler {
+                    from("file://src/test/resources/camel-source-test?noop=true&idempotent=true")
+                        .idempotentConsumer(
+                            header("CamelFileName"),
+                            FileIdempotentRepository.fileIdempotentRepository(File("factInPathStrConsumerRepo"), 300000, 15000000)
+                        ).process(dataPipelineProcessor)
+                }
+            }
+        ).sink(filesSink)
+    }
+```
+
 
 ### Database Batch Poll Source (Real-time)
 
