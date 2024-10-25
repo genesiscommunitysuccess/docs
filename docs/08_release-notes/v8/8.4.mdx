@@ -12,6 +12,7 @@ id: '8.4'
 * Add support for REST integration in datapipelines 
 * Added source for use by event handlers. 
 * Deprecate safeWriteTransaction in favour of writeTransaction 
+* feat: added support for camel Idempotent repositories in data pipelines (8.4.2+)
 
 ### Fixes
 * (deploy-plugin): deploy zip task reference correct file when product name set in settings plugin 
@@ -158,6 +159,11 @@ Change your error handling based on the [new handlers](/server/data-pipelines/im
 :::
 
 ## Patch Releases
+
+
+### 8.4.2
+
+* fix: Ensure only generated jars are added to process classpath when using WriteClasspathToManifest
 
 ### 8.4.1
 

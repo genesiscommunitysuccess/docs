@@ -8,7 +8,7 @@ export default function ReleaseCard({ heading, blog_link, rn_link, img_url, alt_
   useEffect(() => {
     const loadImage = async () => {
       try {
-        const image = await import(`@site/static/img/${img_url}`);
+        const image = await import(`@site/static/img/release-notes/${img_url}`);
         setImageSrc(image.default);
       } catch (err) {
         console.error(`Error loading image: ${err}`);
