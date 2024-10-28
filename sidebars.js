@@ -1,4 +1,18 @@
 module.exports = {
+  platformOverviewSidebar: [
+    "platform-overview/overview",
+    // {
+    //   type: "category",
+    //   label: "Overview",
+    //   collapsed: false,
+    //   items: [
+    //     {
+    //       type: 'doc',
+    //       id: 'platform-overview/overview'
+    //     },
+    //   ],
+    // },
+  ],
   howtoSidebar: [
     "how-to/how-to-landing",
     {
