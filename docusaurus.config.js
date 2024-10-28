@@ -157,7 +157,7 @@ const config = {
       items: [
         { type: "doc", docId: "platform-overview/overview", label: "Platform Overview" },
         { type: "doc", docId: "how-to/how-to-landing", label: "How To Guides" },
-        { type: "doc", docId: "database/database-landing", label: "Develop", },
+        { type: "doc", docId: "develop/develop-landing", label: "Develop", },
         { type: "doc", docId: "server/server-modules", label: "Build, Deploy & Operate" },
         { type: "doc", docId: "release-notes/releases", label: "Release Notes" },        
         {
