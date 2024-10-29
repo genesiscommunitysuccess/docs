@@ -59,6 +59,7 @@
   
   --doc-sidebar-width: 325px !important;
 
+  --toc-sidebar-width: 200px;
 }
 
 body {
@@ -403,6 +404,27 @@ nav.menu {
   --side-nav-color-background: var(--warm-gray-4);
   padding: 1rem 0.5rem;
   background-color: var(--side-nav-color-background);
+}
+
+/* main container */
+.main-wrapper main {
+  article {
+    max-width: 100rem;
+  }
+  
+  .container .row {
+    .col:first-child {
+      @media (min-width: 997px) {
+        max-width: calc(100% - var(--toc-sidebar-width)) !important;
+      }
+    }
+  
+    .col:first-child + .col--3 {
+      @media (min-width: 997px) {
+        --ifm-col-width: var(--toc-sidebar-width);
+      }
+    }
+  }
 }
 
 /* sidebar carets */
