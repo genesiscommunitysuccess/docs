@@ -278,16 +278,17 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
 ```
 
 ## Custom class
-Sometimes you want to have an event that contains different fields to the generated classes that are created from Genesis code generation.
+Most of the time, you can use the fields from your application's **-tables-dictionary.kts** file to handle events. But if you need an event that contains different fields from the Genesis generated classes, you can create your own custom class.
 
-For that, you can create a custom class.
+This example creates a new class and a new `eventHandler` codeblock so that users can mark trades for review (or not).
 
-1. Create your custom class. This could be in your main module, a different module or even in your GPAL script. In this example we are going to create a new class in the main module. 
+1. Create your custom class. This could be in your main module, a different module, or even in your GPAL script. 
+
 Below we have created a new class called `EventTradeReview` in our main module "position-app".
 
 ![](/img/eventtradereview.png)
 
-Its contents:
+The new class has two properties: a `counterpartyID` and a boolean called `needsReview`.
 
 ```kotlin
 package global.genesis
@@ -298,13 +299,19 @@ data class EventTradeReview(
 )
 ```
 
-2. Add an import of the class to the GPAL script you want to use it in. This goes at the top of the file. In this example we will add it to the eventhandler script.
+2. Add an import of the class to the GPAL script you want to use it in. This goes at the top of the file. In this example, we have added it to the application's **-eventhandler.kts** file.
 
 ```kotlin
 import global.genesis.EventTradeReview
 ```
 
-3. Use the custom class in an event handler. Below `EventTradeReview` is the eventHandler type.
+3. To use this new class, create a new `eventHandler` in the the application's **-eventhandler.kts** file. In response to an event, this codeblock:
+
+- gets all the trades for the counterpartyId
+- for all these trades, it sets the value of the `needsReview` field to the value of the `needsReview` property in the event
+- upserts all these trades to the database
+
+Here is the `eventHandler` codeblock:
 
 ```kotlin
 // Event handler for setting the review status of trades for a particular counterparty
