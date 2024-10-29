@@ -156,10 +156,10 @@ const config = {
     navbar: {
       items: [
         { type: "doc", docId: "platform-overview/overview", label: "Platform Overview" },
-        { type: "doc", docId: "how-to/how-to-landing", label: "How To Guides" },
         { type: "doc", docId: "develop/develop-landing", label: "Develop", },
+        { type: "doc", docId: "how-to/how-to-landing", label: "How To Guides" },
         { type: "doc", docId: "server/server-modules", label: "Build, Deploy & Operate" },
-        { type: "doc", docId: "release-notes/releases", label: "Release Notes" },        
+        { type: "doc", docId: "release-notes/latest-releases", label: "Release Notes" },        
         {
           type: "html",
           position: "right",
