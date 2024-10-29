@@ -69,13 +69,13 @@ These are the supported field types:
 | DATE                               | `field("MY_DATE", DATE)`                               |
 | DATETIME                           | `field("MY_DATETIME", DATETIME)`                       |
 | ENUM("VALUE", ...)                 | `field("MY_ENUM", ENUM("YES", "NO"))`                  |
-| ENUM("VALUE" to "json alias", ...) | `field("MY_ENUM", ENUM("YES" to "Yes", "NO" to "No"))` |
+| ENUM("VALUE" to "alias", ...)      | `field("MY_ENUM", ENUM("YES" to "Yes", "NO" to "No"))` |
 | LONG                               | `field("MY_LONG", LONG)`                               |
 | INT                                | `field("MY_INT", INT)`                                 |
 | SHORT                              | `field("MY_SHORT", SHORT)`                             |
 | DOUBLE                             | `field("MY_DOUBLE", DOUBLE)`                           |
 | BIGDECIMAL                         | `field("MY_BIGDECIMAL", BIGDECIMAL)`                   |
-| BIGDECIMAL(precision, scale)       | `field("MY_BIGDECIMAL", BIGDECIMAL(10, 3)`             |
+| BIGDECIMAL(precision, scale)       | `field("MY_BIGDECIMAL", BIGDECIMAL(10, 3))`            |
 | NANO_TIMESTAMP                     | `field("MY_NANO_TIMESTAMP", NANO_TIMESTAMP)`           |
 | RAW                                | `field("MY_RAW", RAW)`                                 |
 | RAW(maxSize)                       | `field("MY_RAW", RAW(256))`                            |
