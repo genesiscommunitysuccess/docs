@@ -460,8 +460,12 @@ li.theme-doc-sidebar-item-category-level-1
   > div.menu__list-item-collapsible
   > .menu__link.menu__link--sublist:first-child {
   font-family: var(--medium-font);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--warm-gray-2);
+}
+
+.menu__list .menu__list {
+  font-size: 1rem;
 }
 
 ul.theme-doc-sidebar-menu.menu__list * {
