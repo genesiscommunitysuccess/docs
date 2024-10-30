@@ -9,19 +9,19 @@ tags:
     - react
 ---
 
-This guide walks you through setting up a React project from scratch and integrating the Genesis Foundation packages.
+This guide shows you how to set up a React project from scratch and integrate it into the Genesis Foundation packages.
 
 ## Setting up the React project
 
 Ensure that you have [Node.js](https://nodejs.org/) and [Genx](https://learn.genesis.global/docs/getting-started/prerequisites/genx) installed on your system.
 
-Once you have Node.js and genx, use the following command to create a new React project named ```myApp``` using Genx with `--framework React`:
+Once you have Node.js and genx, create a new React project. This example creates a project called **myApp** using Genx with `--framework React`:
 
 ```shell
 npx -y @genesislcap/genx@latest init myApp -s blank-app-seed --framework React -x
 ```
 
-Navigate into your new project ```client``` directory:
+Navigate to your new project's **client** directory:
 
 ```shell
 cd ./client
@@ -41,15 +41,15 @@ npm run bootstrap
 npm run dev
 ```
 
-The development server launches your project and makes it available on localhost. After opening the application, it should look like the above:
+The development server launches your project and makes it available on localhost:
 
 ![React blank-app-seed](/integrations/react/react-blank-app-seed.png)
 
 :::note
-The project is currently based on React 19, which is in the Release Candidate (RC) stage. We are using this version because it provides improved support for integration with Web Components, making it easier to share data and manage state between React components and Web Components.
+The project is currently based on React 19, which is in the Release Candidate (RC) stage. This version provides improved support for integration with Web Components, making it easier to share data and manage state between React components and Web Components.
 :::
 
-## Project Folder Structure and Main Elements
+## Project folder structure and main elements
 
 ### `src/main.tsx`
 This is the main entry point of the application. It is responsible for bootstrapping the app by rendering the `App.tsx` component into the DOM. The file also registers [PBCs](../../../../server/packaged-business-capabilities/pbc-intro/) using `registerPBCs`
