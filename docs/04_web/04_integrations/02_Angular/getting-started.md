@@ -10,19 +10,19 @@ tags:
     - angular
 ---
 
-This guide allows you to create an Angular app integrated with Genesis components, microfrontends, and PBCs.
+This guide enables you to create an Angular app integrated with Genesis components, micro front-ends, and PBCs.
 
 ## Setting up the Angular project
 
 Ensure that you have [Node.js](https://nodejs.org/) and [Genx](https://learn.genesis.global/docs/getting-started/prerequisites/genx) installed on your system.
 
-Once you have Node.js and genx, use the following command to create a new Angular project named `myApp` using Genx with `--framework Angular`:
+Once you have Node.js and genx, you can create a new Angular project. The example below creates a project called **myApp** using Genx with `--framework Angular`:
 
 ```shell
 npx -y @genesislcap/genx@latest init myApp -s blank-app-seed --framework Angular -x
 ```
 
-Navigate into your new project ```client``` directory:
+Navigate to your new project's **client** directory:
 
 ```shell
 cd ./client
@@ -42,7 +42,7 @@ npm run bootstrap
 npm run dev
 ```
 
-The development server launches your project and makes it available on localhost. After opening the application, it should look like the above:
+The development server launches your project and makes it available on localhost:
 
 ![Angular blank-app-seed](/integrations/angular/angular-blank-app-seed.png)
 
@@ -50,44 +50,51 @@ The development server launches your project and makes it available on localhost
 The project is currently based on Angular 18.
 :::
 
-## Project Folder Structure and Main Elements
+## Project folder structure and main elements
 
-### `src/main.ts`
-This is the main entry point of the application. It is responsible for bootstrapping the app by rendering the `app.module.ts` module into the DOM. The file also registers [PBCs](../../../../server/packaged-business-capabilities/pbc-intro/) using `registerPBCs`
-
----
-
-### `src/pbc`
-This folder contains components that are responsible for enabling the insertion of slots within the application. These slots act as placeholders where content, provided by the registered Project Building Components ([PBCs](../../../../server/packaged-business-capabilities/pbc-intro/)), is dynamically rendered. The [PBCs](../../../../server/packaged-business-capabilities/pbc-intro/) are registered in the application through main.ts, ensuring that specific components can be inserted into the designated slots at runtime.
+### src/main.ts
+This is the main entry point for the application. It bootstraps the app by rendering the **app.module.ts** module into the DOM. The file also registers [PBCs](../../../../server/packaged-business-capabilities/pbc-intro/) using `registerPBCs`
 
 ---
 
-### `src/app/share`
-The `share` folder holds shared resources and components that are used across the entire application. It includes components like `genesis-components.ts`, which registers Genesis framework components, and `foundation-login.ts`, which sets up the login-related functionality for the app.
+### src/pbc
+This folder contains components that are responsible for enabling the insertion of slots within the application. 
 
-#### Key Files:
-- `genesis-components.ts`: Registers various Genesis components, including forms, layouts, and charts.
-- `foundation-login.ts`: Configures the foundation-login microfrontend component responsible for handling authorization and integrates it with the routing system.
+These slots act as placeholders where content, provided by the registered Project Building Components ([PBCs](../../../../server/packaged-business-capabilities/pbc-intro/)), is rendered dynamically. The [PBCs](../../../../server/packaged-business-capabilities/pbc-intro/) are registered in the application through **main.ts**, ensuring that specific components can be inserted into the designated slots at runtime.
 
 ---
 
-### `src/app/pages`
-This folder contains the main pages of the application. Each page represents a different route or view, such as the `auth-login.component.ts`, which handles authentication-related flows.
+### src/app/share
+The **share** folder holds shared resources and components that are used across the entire application. 
+
+Key files are: 
+
+- **genesis-components.ts**. This registers Genesis framework components, including forms, layouts, and charts.
+- **foundation-login.ts**. This configures the foundation-login micro front-end component that handles authorisation and integrates it with the routing system. 
 
 ---
 
-### `src/app/components`
+### src/app/pages
+This folder contains the main pages of the application. Each page represents a different route or view, such as the **auth-login.component.ts**, which handles authentication-related flows.
+
+---
+
+### src/app/components
 This folder contains reusable UI components that are utilized throughout the app. Components in this folder are not tied to specific pages but are used as building blocks across multiple sections of the application.
 
 ## Routing
 
-In Angular, routing is essential for creating single-page applications with navigation capabilities. The routing configuration in `app/service/route.service.ts` manages and provides routes throughout the application. This file defines a `RouteService` service that combines routes from the main application and additional routes from PBC (Pluggable Bu
+In Angular, routing is essential for creating single-page applications with navigation capabilities. 
 
-The `pbcRoutes` are dynamically generated by mapping over the routes provided by the PBC, extracting essential properties, and wrapping them in a `PBCContainer` component. These routes are then combined with the main application's routes into a single `allRoutes` array. The `RoutesProvider` uses Angular's dependency injection to make these routes available to the rest of the application by providing them through the `RoutesService`.
+The routing configuration in **app/service/route.service.ts** manages and provides routes throughout the application. This file defines a `RouteService` service that combines routes from the main application and additional routes from PBC (Pluggable Business Components).
 
-Additionally, the `RoutesService` is provided to easily access the routes within Angular components. This setup ensures seamless integration and accessibility of both main application routes and PBC routes throughout the application.
+The `pbcRoutes` are generated dynamically by mapping over the routes provided by the PBC, extracting essential properties, and wrapping them in a `PBCContainer` component. These routes are then combined with the main application's routes into a single `allRoutes` array. 
 
-## Styling the Application
+The `RoutesProvider` uses Angular's dependency injection to make these routes available to the rest of the application by providing them through the `RoutesService`.
+
+Additionally, the `RoutesService` is provided to access the routes within Angular components. This ensures seamless integration and accessibility of both main application routes and PBC routes throughout the application.
+
+## Styling the application
 
 ### Global styles:
 You can add global styles by modifying the main stylesheet located at `src/styles/styles.css`. This file contains styles that apply to the entire application.
