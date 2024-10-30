@@ -10,17 +10,20 @@ tags:
 - data pipeline
 ---
 
-IBM Message Queue is a software that allows different applications to send and receive messages reliably through message queues.
-The Genesis platform enables you to consume from and publish to any JMS message queue including IBM.
+IBM Message Queue enables different applications to send and receive messages reliably through message queues.
 
-For example, these message queues are often used to access Murex trade data. These pipelines will allow you to consumer your Murex trade data directly from the message queue and into your Genesis Application.
+The Genesis Platform enables you to consume from and publish to any JMS message queue, including IBM.
+
+These message queues are often used to access trade data, for example. You can create pipelines to consume trade data directly from the message queue and into your Genesis application.
 
 ## Example
 
-We have created an [example application](https://github.com/genesiscommunitysuccess/howto-ibm-mq-pipelines/tree/main) that shows specifically how to publish to an IBM message queue as well as consumer incoming messages.
+We have created an [example application](https://github.com/genesiscommunitysuccess/howto-ibm-mq-pipelines/tree/main) that shows how to publish to an IBM message queue and consume incoming messages.
+
 Note: the same how to guide can be followed for any other valid JMS message queue implementation, it has been explained in the relevant places where you can provide a different instance (for example; Active MQ etc).
 
-The application provides two pipelines, one to consumer and one to publish.
+The application provides two pipelines, one to consume and one to publish.
+
 These have been set up as independent processes. So if a message is published to the queue when the consumer process is down, the application will process it as soon as the process starts back up.
 
 :::tip Download, view and run
@@ -37,7 +40,7 @@ In the example application, a pipeline is set up to respond to an event, such as
 ## Consuming from IBM Message Queue
 The example contains a second pipeline that runs in the background and polls a configured message queue. Whenever new records are detected on the queue, it retrieves them and inserts them to the database.
 
-The pipeline only retrieves the next record (or batch of records) once the previous record (or batch) has been added to the database.
+The pipeline retrieves the next record (or batch of records) only after the previous record (or batch) has been added to the database.
 
 ## Testing
 
