@@ -117,11 +117,52 @@ export class AppComponent {
 ```
 View
 ```html
-<alpha-checkbox
+<rapid-checkbox
 name="isSelected"
 [checked]="isSelected"
 (change)="onCheckboxChange($event)"
-></alpha-checkbox>
+></rapid-checkbox>
 ```
 </TabItem>
 </Tabs>
+
+## DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+| Attribute | Use | Example |
+|---|---|---|
+|readonly|Configures the component so the user cannot alter the state via the web browser. A readonly checkbox value can still be sent along with the form submit.|`<rapid-checkbox readonly>`|
+
+### Properties
+
+| Property | Use | Example |
+|---|---|---|
+|checked|The boolean value of whether the checkbox is checked. |`<rapid-checkbox :checked="${(x) => x.isChecked}">`|
+
+### Slots
+
+| Slot | Use |
+|---|---|
+| Default | The default slot for the label. |
+| checked-indicator | The checked-state indicator. |
+| indicator-indicator | The indeterminate (non-checked) indicator. |
+
+### Parts
+
+| Part | Use |
+|---|---|
+| control | The element representing the visual checkbox control.|
+| label | The label text.|
+
+### Fired Events
+
+| Part | Use | Example |
+|---|---|---|
+| change | Emits a custom change event when the checked state changes. Access the value on the event via `.target.checked`.|`<rapid-checkbox @change="${(x) => x.myChangeHandler(event)}">`|
+
+### Listened Events
+
+This component doesn't listen to any events.
