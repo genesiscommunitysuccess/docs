@@ -88,8 +88,40 @@ export function MyComponent() {
 </TabItem>
 <TabItem value="angular">
 
-```javascript
-// Angular example
+Declaration
+```typescript
+<rapid-checkbox></rapid-checkbox>
+```
+
+Model
+```typescript my.component.ts
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+@Component({
+  selector: 'my-root',
+  templateUrl: './my.component.html',
+  styleUrls: ['./my.component.css'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [FormsModule],
+})
+
+export class AppComponent {
+  isSelected: boolean = false;
+  onCheckboxChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.isSelected = target.checked;
+    console.log(this.isSelected);
+  }
+}
+```
+View
+```html
+<alpha-checkbox
+name="isSelected"
+[checked]="isSelected"
+(change)="onCheckboxChange($event)"
+></alpha-checkbox>
 ```
 </TabItem>
 </Tabs>
