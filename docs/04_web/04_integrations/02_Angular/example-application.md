@@ -19,7 +19,7 @@ Additionally, the application integrates various Genesis [PBCs](../../../../serv
 ## Explore the repository
 
 :::tip
-Take a thorough look at the code and detailed examples in the repository of the [**Genesis and React example**](https://github.com/genesiscommunitysuccess/howto-ui-integrations-react/tree/main) to deepen your understanding of how to integrate Angular with Genesis Foundation-UI components.
+Take a thorough look at the code and detailed examples in the repository of the [**Genesis and Angular example**](https://github.com/genesiscommunitysuccess/howto-ui-integrations-angular/tree/main) to deepen your understanding of how to integrate Angular with Genesis Foundation-UI components.
 :::
 
 The code gives you insights into best practices and sophisticated usage. You can see intricate use cases and discover how to use the platform's full capabilities for your own projects.
