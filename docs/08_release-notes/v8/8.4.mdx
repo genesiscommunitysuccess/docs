@@ -76,11 +76,11 @@ id: '8.4'
 
 ### New filter syntax
 
-`where` blocks replaced with the new `filter` syntax
+`where` blocks replaced with the new `filter` syntax.
 
-This new feature is consistent across our different modules, such as authorisation, Data Server, REQUEST SERVER, etc.
+This new feature is consistent across our different modules, such as authorisation, Data Server, and REQUEST SERVER.
 
-The new `filter` clause replaces the old `where` clause functionality. The old `where` clause is now deprecated. Use `filter` from now on.
+The new `filter` clause replaces the old `where` clause. The old `where` clause is now deprecated. Use `filter` from now on.
 
 ### Warn on truncated keys
 
@@ -131,7 +131,8 @@ You need to take action if:
 
 ### `rxSources` updates
 
-Made rxSources non-functional interfaces, standardised http source syntax and added utilities
+We have made rxSources non-functional interfaces, standardised our http source syntax and added utilities. 
+
 The unused RxSink interface is not a functional interface anymore; it is now a regular interface. 
 
 **Are you affected?**
@@ -146,20 +147,18 @@ Any new implementations of Data Pipeline must only use the [standard http web ca
 
 ### `onOperationError` type safety
 
-Added type safe onOperationError handling to data pipelines
-Error handling for Data Pipeline has been redesigned. 
+we have added type safe onOperationError handling to data pipelines. Error handling for Data Pipeline has been redesigned. 
 
 **Are you affected?**
 
-If your application uses Data Pipelines and are using error handlers in them, you are affected.
+If your application uses Data Pipelines and has error handlers in them, you are affected.
 
 :::info
 **Medium fix**
 Change your error handling based on the [new handlers](/server/data-pipelines/implementations/#handlers).
 :::
 
-## Patch Releases
-
+## Patch releases
 
 ### 8.4.2
 
