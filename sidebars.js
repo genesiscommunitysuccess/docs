@@ -871,6 +871,10 @@ module.exports = {
         },
         {
           type: 'doc',
+          id: 'how-to/ht-ibm-mq'
+        },
+        {
+          type: 'doc',
           id: 'how-to/ht-front-end-example'
         },
       ],
