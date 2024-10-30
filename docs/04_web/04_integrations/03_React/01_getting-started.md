@@ -80,9 +80,13 @@ This folder contains UI components that are used throughout the app. Components 
 
 ## Routing
 
-In React, routing is essential for creating single-page applications with navigation capabilities. The routing configuration in **store/RoutesContext.tsx** manages and provides routes throughout the application. This file defines a `RoutesProvider` component that combines routes from the main application and additional routes from PBC (Pluggable Business Components).
+In React, routing is essential for creating single-page applications with navigation capabilities. 
 
-The `pbcRoutes` are generated dynamically by mapping over the routes provided by the PBC, extracting essential properties, and wrapping them in a `PBCContainer` component. These routes are then combined with the main application's routes into a single `allRoutes` array. The `RoutesProvider` uses the React Context API to make these routes available to the rest of the application by wrapping its children with the `RoutesContext.Provider`.
+The routing configuration in **store/RoutesContext.tsx** manages and provides routes throughout the application. This file defines a `RoutesProvider` component that combines routes from the main application and additional routes from PBC (Pluggable Business Components).
+
+The `pbcRoutes` are generated dynamically by mapping over the routes provided by the PBC, extracting essential properties, and wrapping them in a `PBCContainer` component. These routes are then combined with the main application's routes into a single `allRoutes` array. 
+
+The `RoutesProvider` uses the React Context API to make these routes available to the rest of the application by wrapping its children with the `RoutesContext.Provider`.
 
 Additionally, the `useRoutesContext` hook is provided to access the routes context within functional components. This ensures seamless integration and accessibility of both main application routes and PBC routes throughout the application.
 
@@ -94,7 +98,9 @@ You can add global styles by modifying the main stylesheet located at **src/styl
 ---
 
 ### Styling specific components or pages
-For more granular control, you can add styles to a specific page or component. For example, if you want to have styling for the page displayed when a requested page cannot be found, create a stylesheet called **src/pages/NotFoundPage/NotFoundPage.css** with styles that only apply to that page.
+For more granular control, you can add styles to a specific page or component. 
+
+For example, if you want to have styling for the page that is displayed when a requested page cannot be found, create a stylesheet called **src/pages/NotFoundPage/NotFoundPage.css** with styles that only apply to that page.
 
 ---
 
