@@ -96,26 +96,24 @@ Additionally, the `RoutesService` is provided to access the routes within Angula
 
 ## Styling the application
 
-### Global styles:
-You can add global styles by modifying the main stylesheet located at `src/styles/styles.css`. This file contains styles that apply to the entire application.
+### Global styles
+You can add global styles by modifying the main stylesheet located at **src/styles/styles.css**. This file contains styles that apply to the entire application.
 
 ---
 
-### Component or page specific styles:
-For more granular control, you can add styles specific to a page or component. For example, you can create a stylesheet for a specific page like `src/app/pages/not-permitted/not-permitted.component.scss` and include styles that only apply to that page.
+### Styling components or pages
+For more granular control, you can add styles specific to a page or component. 
+
+For example, if you want to have unique styling for the page that is displayed when a requested page cannot be found, create a stylesheet called **src/pages/NotFoundPage/NotFoundPage.css** with styles that only apply to that page.
 
 ---
 
 ### Design tokens
 
-You can change design tokens, which are declared in the `src/styles/design-tokens.json` file. Design tokens allow you to define and manage design-related values such as colors, fonts, and spacing in a centralized manner. Modifying these tokens will propagate changes throughout the application where these tokens are used.
+Design tokens are declared in the **src/styles/design-tokens.json** file. They offer an effective way to manage and apply styles in your application in a consistent and maintainable manner.
+
+The design tokens enable you to define and manage values such as colours, fonts, and spacing across the whole application. You can modify these tokens to propagate changes wherever they are used in the application.
 
 :::note
-You can read more about design system here: [Design systems - introduction](../../../design-systems/introduction/)
+See more details in our page on [Design systems](../../../design-systems/introduction/)
 :::
-
-By using these methods, you can effectively manage and apply styles to your application, ensuring a consistent and maintainable design system.
-
-## Congratulations!
-
-🎉 Congratulations! You're now set up to use Genesis Foundation and Angular! 🎉
