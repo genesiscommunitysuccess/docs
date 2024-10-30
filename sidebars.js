@@ -1,6 +1,6 @@
 module.exports = {
   platformOverviewSidebar: [
-    "platform-overview/overview",
+    "platform-overview/platform-overview",
     // {
     //   type: "category",
     //   label: "Overview",
