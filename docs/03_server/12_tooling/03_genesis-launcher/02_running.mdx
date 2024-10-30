@@ -22,18 +22,26 @@ You can start the launcher by running that task from an IDE, or from the command
 
 ## Usage
 
-Once you open Genesis Launcher for your project, all the services are listed, including the Web UI.
+Once you open Genesis Launcher for your project, all the services for the application are listed, including the Web UI.
 
+### Starting for the first time
 To get started for the first time; click on the 🚀 icon, just underneath the Genesis logo.
 
-This bootstraps the database and launches the application.
+This bootstraps the database and launches the application. 
 
-Once the database has been initialised, feel free to run **Start All** instead.
+:::
+Bootstrap runs first runs [**remap**](/operations/commands/remap/), then **ConsolidateRights** and finally **Start All**. 
+:::
 
-Bootstrap will run **Start All** as well, but it first runs [**remap**](/operations/commands/remap/) and **ConsolidateRights**.
+### Starting after the database has been initialised
+Once the database has been initialised, you can simply run **Start All** to start the application.
 
 Prior to starting service, build tasks will be run.
 
 Once a process is running, you can click on the process name to view its log file:
 
 ![Genesis Launcher Screenshot](/img/genesis-launcher/genesis-launcher-running.png)
+
+:::tip Saving local resources
+If you need to cut down on memory usage when you build and run locally, select **File** => **Settings** => **Use Compact Processes** before you start. 
+:::
