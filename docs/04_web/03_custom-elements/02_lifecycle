@@ -1,0 +1,75 @@
+# Component Lifecycles
+
+Web Components go through several lifecycle stages from creation to removal. Understanding these lifecycles is crucial for proper component initialization, cleanup, and state management.
+
+Here are some lifecycle methods that we have access to through `GenesisElement`:
+
+### Connected & Disconnected
+
+`connectedCallback` lifecycle runs when component is added to DOM - perfect time for setup
+
+`disconnectedCallback` lifecycle runs when component is removed from DOM - perfect time for cleanup.
+
+```shell
+import { attr, css, customElement, GenesisElement, html } from '@genesislcap/web-core';
+
+const template = html`<button>Click Me</button>`;
+
+@customElement({
+  name: 'my-button',
+  template,
+  styles,
+})
+
+export class MyButton extends GenesisElement {
+    @attr label: string = "Submit";
+    @attr disabled: boolean = false;
+
+    connectedCallback() {
+        super.connectedCallback(); # Let GenesisElement do its setup first
+        console.log('Button is now connected to the DOM and ready for interaction');
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback(); # Let GenesisElement do its cleanup first
+        console.log('Button is no longer interactive and removed from DOM');
+    }
+}
+```
+
+### Changed Callbacks
+
+Changed Callback lifecycle runs when attributes/properties update - handle state changes. The name varies depending on the name of the attribute. 
+
+:::note
+
+In the following example you'll notice we have not included the `connectedCallback` and `disconnectedCallback`. It's important to remember that these two lifecycles are only necessary for things that need DOM presence. We can skip them for basic component setup that don't need DOM.
+
+:::
+
+```shell
+import { attr, css, customElement, GenesisElement, html } from '@genesislcap/web-core';
+
+const template = html`<button>Click Me</button>`;
+
+@customElement({
+  name: 'my-button',
+  template,
+  styles,
+})
+
+export class MyButton extends GenesisElement {
+    @attr label: string = "Submit";
+    @attr disabled: boolean = false;
+
+    labelChanged(oldValue, newValue) {
+        console.log(`Button text changed from ${oldValue} to ${newValue}`);
+    }
+}
+```
+
+The `labelChanged` method will be triggered and consequently log the following statement when the label attribute is changed in the template:
+
+`<my-button label="Cancel"></my-button>`
+
+> Button text changed from Submit to Cancel

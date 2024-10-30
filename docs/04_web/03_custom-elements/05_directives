@@ -1,0 +1,26 @@
+# Advanced Rendering: Using Directives
+## DIRECTIVES
+
+- ref
+- slotted
+- children
+- when 
+- whenElse
+- repeat (as well as c as context object)
+- sync
+
+
+Directives
+A. Content & Template Directives
+
+ref (DOM references)
+slotted (content projection)
+children (child elements)
+'c' context object
+
+B. Flow Control Directives
+
+when
+whenElse
+repeat
+sync
