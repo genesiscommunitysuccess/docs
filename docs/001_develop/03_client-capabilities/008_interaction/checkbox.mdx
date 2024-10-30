@@ -64,8 +64,26 @@ export class MyElement extends GenesisElement {
 </TabItem>
 <TabItem value="react">
 
-```javascript
-// React example
+Declaration
+```typescript
+<rapid-checkbox></rapid-checkbox>
+```
+Usage
+```typescript
+export function MyComponent() {
+    const [isSelected, setIsSelected] = useState(false);
+    // TODO: import this listener!
+    const webComponentRef = useCustomEventListener('change', (event) => {
+        setIsSelected(event.target.checked);
+        console.log({isSelected});
+    });
+
+    return (
+        <div>
+            <rapid-checkbox ref={webComponentRef}></rapid-checkbox>
+        </div>
+    );
+}
 ```
 </TabItem>
 <TabItem value="angular">
