@@ -20,6 +20,8 @@ sidebar_position: 8
 ---
 
 import CheckboxDemo from '../../../../examples/ui/client-capabilities/interaction/checkbox.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Checkbox
 
@@ -28,3 +30,48 @@ A form-connected implementation of a [checkbox](https://developer.mozilla.org/en
 ## Example
 
 <CheckboxDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration
+```typescript
+<rapid-checkbox></rapid-checkbox>
+```
+Usage
+```typescript
+@customElement({
+    name: 'my-element',
+    templte: html`
+        <rapid-checkbox
+            ?disabled="${(x) => x.disabled}"
+            ?checked="${sync((x) => x.isSelected, 'boolean')}"
+            @change="${(x) => x.checkChanged()}"
+        >Checkbox
+        </rapid-checkbox>
+    `,
+})
+export class MyElement extends GenesisElement {
+    @observable disabled = false;
+    @observable isSelected = false;
+    checkChanged() {
+        console.log(this.isSelected);
+    }
+}
+```
+
+</TabItem>
+<TabItem value="react">
+
+```javascript
+// React example
+```
+</TabItem>
+<TabItem value="angular">
+
+```javascript
+// Angular example
+```
+</TabItem>
+</Tabs>
