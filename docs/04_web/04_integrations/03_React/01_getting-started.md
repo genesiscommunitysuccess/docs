@@ -79,9 +79,10 @@ This folder contains components that are responsible for enabling the insertion 
 ### src/share
 The **share** folder holds shared resources and components that are used across the entire application. It includes components like **genesis-components.ts**, which registers Genesis framework components, and **foundation-login.ts**, which sets up the login function for the app.
 
-#### Key files
-- **genesis-components.ts** registers various Genesis components, including forms, layouts, and charts.
-- **foundation-login.ts** configures the foundation-login micro front-end component that handles authorisation, and integrates it with the routing system.
+Key files are: 
+
+- **genesis-components.ts**. This registers Genesis framework components, including forms, layouts, and charts.
+- **foundation-login.ts**. This configures the foundation-login micro front-end component that handles authorisation and integrates it with the routing system. 
 
 ---
 
