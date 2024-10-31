@@ -13,7 +13,7 @@ tags:
 - fdc3 channel
 - fdc3 context
 - data
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # FDC3 Channel Event
@@ -25,7 +25,22 @@ Use cases:
 * Send event on app channel
 * Map the event payload before broadcasting on a channel
 
-## Example 1 - Send event on system channel
+import FDCBrowsers from '../../../_includes/_fdc3-browsers.mdx'
+
+<FDCBrowsers />
+
+Declaration
+```html
+<fdc3-channel-event></<fdc3-channel-event>
+```
+
+## Examples
+
+import FDC3Entity from '../../../_includes/_fdc3-entity.mdx'
+
+<FDC3Entity />
+
+### Example 1 - Send event on system channel
 
 This will listen to the `rowClicked` event that is fired by the `rapid-grid-pro` element whenever a row is clicked.
 
@@ -37,13 +52,17 @@ The context payload will contain the `event.detail.data` payload in the `id` pro
 
 ```html
 <rapid-grid-pro>
+    <grid-pro-genesis-datasource
+        resource-name="ALL_INSTRUMENT_REF"
+    >
+    </grid-pro-genesis-datasource>
     <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position">
 
     </fdc3-channel-event>
 </rapid-grid-pro>
 ```
 
-## Example 2 - Send event on app channel
+### Example 2 - Send event on app channel
 
 This will listen to the `rowClicked` event that is fired by the `rapid-grid-pro` element whenever a row is clicked.
 
@@ -51,13 +70,17 @@ It will broadcast on the specified app channel, in this case `appChannel`.
 
 ```html
 <rapid-grid-pro>
+    <grid-pro-genesis-datasource
+        resource-name="ALL_INSTRUMENT_REF"
+    >
+    </grid-pro-genesis-datasource>
     <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position" channel-name="appChannel">
 
     </fdc3-channel-event>
 </rapid-grid-pro>
 ```
 
-## Example 3 - Send mapped event on system channel
+### Example 3 - Send mapped event on system channel
 
 This will listen to the `rowClicked` event that is fired by the `rapid-grid-pro` element whenever a row is clicked.
 
@@ -69,17 +92,16 @@ The mapping function will map the `event.detail.data` payload and create a new o
 
 ```html
 <rapid-grid-pro>
+    <grid-pro-genesis-datasource
+        resource-name="ALL_INSTRUMENT_REF"
+    >
+    </grid-pro-genesis-datasource>
     <fdc3-channel-event
         :mappingFunction="${() => ({TICKER}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}"
         event-name="rowClicked"
         channel-type="fdc3.position">
     </fdc3-channel-event>
 </rapid-grid-pro>
-```
-
-Declaration
-```html
-<fdc3-channel-event></<fdc3-channel-event>
 ```
 
 ## DOM API
@@ -102,11 +124,11 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 ### Slots
 
-This component has no slots
+This component has no slots.
 
 ### Parts
 
-This component has no parts
+This component has no parts.
 
 ### Fired Events
 
@@ -114,4 +136,4 @@ This component doesn't fire any events.
 
 ### Listened Events
 
-This component doesn't listen to any events.
+This component listens to the event on its parent element that you specify in the `event-name` attribute.
