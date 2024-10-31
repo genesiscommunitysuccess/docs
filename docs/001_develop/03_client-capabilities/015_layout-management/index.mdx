@@ -35,6 +35,8 @@ sidebar_position: 15
 ---
 
 import LayoutExample from './layout_example.js'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Layout Management
 
@@ -53,3 +55,91 @@ You should **not** use this module if simply need some fixed items on a static l
 Click and drag each title to re-order the items, and to create tabs. Drag the handles between items to resize the items.
 
 <LayoutExample />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration
+```typescript
+<rapid-layout>
+    <rapid-layout-region>
+        <rapid-layout-item>
+        </rapid-layout-item>
+    </rapid-layout-region>
+</rapid-layout>
+```
+Usage
+
+```typescript
+@customElement({
+  name: 'layout-example',
+  template: html`
+    <rapid-layout>
+        <rapid-layout-region>
+            <rapid-layout-region type="vertical">
+                <rapid-layout-item title="Button">
+                    <rapid-button>Rapid Button</rapid-button>
+                </rapid-layout-item>
+                <rapid-layout-item title="Checkbox">
+                    <rapid-checkbox>Rapid Checkbox</rapid-checkbox>
+                </rapid-layout-item>
+            </rapid-layout-region>
+            <rapid-layout-item title="Text">
+                <p style="color: #FFFFFF">Hello World</p>
+            </rapid-layout-item>
+        </rapid-layout-region>
+    </rapid-layout>
+    `,
+})
+export class LayoutExample extends GenesisElement { }
+```
+
+</TabItem>
+<TabItem value="react">
+
+Declaration
+```typescript
+<rapid-layout>
+    <rapid-layout-region>
+        <rapid-layout-item>
+        </rapid-layout-item>
+    </rapid-layout-region>
+</rapid-layout>
+```
+
+Usage, with nested React component.
+```typescript
+function ReactComponent({ }) {
+	return (
+		<p style={{ color: '#FFFFFF' }}>Hello World</p>
+	);
+}
+
+export default function LayoutExample({ }) {
+	return (
+        <rapid-layout>
+            <rapid-layout-region>
+                <rapid-layout-region type="vertical">
+                    <rapid-layout-item title="Button">
+                        <rapid-button>Rapid Button</rapid-button>
+                    </rapid-layout-item>
+                    <rapid-layout-item title="Checkbox">
+                        <rapid-checkbox>Rapid Checkbox</rapid-checkbox>
+                    </rapid-layout-item>
+                </rapid-layout-region>
+                <rapid-layout-item title="Text">
+                    <ReactComponent />
+                </rapid-layout-item>
+            </rapid-layout-region>
+        </rapid-layout>
+	);
+}
+```
+</TabItem>
+<TabItem value="angular">
+
+Rapid layout is currently not supported in Angular. You can use the layout if you're only using Genesis components inside of it, but Angular components inside of the layout does not currently work.
+
+</TabItem>
+</Tabs>
