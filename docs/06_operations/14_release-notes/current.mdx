@@ -294,7 +294,176 @@ Foundation UI has a programme of regular continual releases. These are documente
 
 GSF release notes are added to this area immediately following each software release. The most recent release is at the top.
 
-**As new GSF releases are added, they shall be displayed here.**
+## Genesis 8.4.3(genesis-server)
+
+### Fixes
+- Fixed an issue in Remap for Oracle DB where foreign keys would be violated for auto increment columns
+
+## Genesis 7.2.18(genesis-server)
+
+### Fixes
+- Fixed an issue in Remap for Oracle DB where foreign keys would be violated for auto increment columns
+
+## Genesis 6.7.37(genesis-server)
+
+### Fixes
+- Fixed an issue in Remap for Oracle DB where foreign keys would be violated for auto increment columns
+
+## Genesis 8.4.1(platform-documents)
+
+### Fixes
+- file_name should store original file name
+
+## Genesis 8.3.1(platform-documents)
+
+### Fixes
+- file_name should store original file name
+
+## Genesis 8.2.1(platform-documents)
+
+### Fixes
+- file_name should store original file name
+
+## Genesis 8.4.2(genesis-server)
+
+### Features
+- Added support for camel Idempotent repositories in data pipelines
+
+### Fixes
+- Ensure only generated jars are added to process classpath when using WriteClasspathToManifest 
+
+## Genesis 8.4.1(genesis-server)
+
+### Fixes
+- Ensure groovy compilation exceptions are handled 
+- Fail preCompileScripts gradle task by default and add option to disable failing on error
+
+## Genesis 7.2.17(genesis-server)
+
+## What's changed
+- Add debug logging to FullDuplexClientHandler around subscription management
+
+## Genesis 7.2.16(genesis-server)
+
+### Fixes
+- remap: table removal + table rename to the table name of the removed table now works as expected
+
+## Genesis 8.4.1(platform-symphony)
+
+### Fixes
+- Version 8.4 depends on beta version rather than official release
+
+## Genesis 8.4.1(platform-reconciliation)
+
+### Fixes
+- fix:√
+
+## Genesis 8.4.1(platform-notify)
+
+### Fixes
+- Version 8.4 depends on beta version rather than official release
+
+## Genesis 8.4.0(platform-integrations)
+
+### Features
+- Added kafka source implementation
+
+## Genesis 8.4.0(platform-symphony)
+
+### Dependency changes
+- Updating all versions to 8.4.0-beta1 for release 
+- Bump org.gradle.test-retry from 1.5.8 to 1.5.10 
+- Bump org.jetbrains.kotlinx.kover from 0.7.6 to 0.8.3
+
+## Genesis 8.4.0(platform-reconciliation)
+
+### Features
+- Added endpoint for returning available data pipelines 
+- Added index and records received flag on record results for easier grid visualisation 
+- Add comment field in reconciliation result 
+- Added first and second record received to RECONCILIATION_RECORD_VIEW 
+- Added request endpoint for returning data source pairs in a Reconciliation 
+- Creates rule results for unmatched records 
+- Data pipeline support added in reconciliation configuration 
+- Removed unnecessary audit tables which will contain no data 
+
+### Fixes
+- Enabled backwards joins on RECONCILIATION_VIEW 
+- Ensure record received flags are set correctly 
+- Removes the bom from files if its present 
+- Added backwards join to RECONCILIATION_RECORD_RESULT_VIEW 
+- Treatment of empty space values on Record Information 
+- Updated inputParameters in data server test to not use blank string 
+
+### Dependency changes
+- Bump com.jfrog.artifactory from 5.2.3 to 5.2.4
+
+## Genesis 8.4.0(platform-notify)
+
+### Features
+- Add support for email subject prefixes 
+- Create clear all alerts button 
+
+### Fixes
+- Ensure client API sends correct gateway field on email notification messages  
+- Correct events names for modifying email dist l/294
+- Ensure no data race for attachments 
+
+### Dependency changes
+- Bump org.simplejavamail:simple-java-mail from 8.8.4 to 8.11.2
+
+## Genesis 8.4.0(platform-elektron)
+
+### Dependency changes
+- Bump com.jfrog.artifactory from 5.2.0 to 5.2.3 
+- Bump org.gradle.test-retry from 1.5.8 to 1.5.10
+
+## Genesis 8.4.0(platform-fix)
+
+No functional changes.
+
+## Genesis 8.4.0(platform-auth)
+
+### Features
+- Add user first name and last name to login ack message 15
+
+### Fixes
+- Using GenesisInjector instead of plain Guice injector 
+
+### Dependency changes
+- Bump com.unboundid:unboundid-ldapsdk from 7.0.0 to 7.0.1 b/498
+- Bump commons-codec:commons-codec from 1.17.0 to 1.17.1 
+- Bump jjwtVersion from 0.12.5 to 0.12.6 
+- Bump org.awaitility:awaitility-kotlin from 4.2.1 to 4.2.2 
+- Bump org.gradle.test-retry from 1.5.9 to 1.5.10 
+- Bump org.mockito.kotlin:mockito-kotlin from 5.3.1 to 5.4.0 
+- Bump org.passay:passay from 1.6.4 to 1.6.5
+
+## Genesis 8.4.0(platform-documents)
+
+### Dependency changes
+- Bump com.amazonaws:aws-java-sdk-s3 from 1.12.701 to 1.12.770 
+- Bump org.sonarqube from 4.4.1.3373 to 5.1.0.4882
+
+## Genesis 8.4.0(platform-market-data)
+
+### Dependency changes
+- Bump com.jfrog.artifactory from 5.2.0 to 5.2.3 
+- Bump org.gradle.test-retry from 1.5.8 to 1.5.10
+
+## Genesis 8.4.0(ref_data_app-server)
+
+### Fixes
+- Removing duplicated package definition
+
+## Genesis 8.4.0(platform-reporting)
+
+### Fixes
+- Address grid loading flows when running reports 
+
+### Dependency changes
+- Bump com.jfrog.artifactory from 5.1.13 to 5.2.4 
+- Bump org.gradle.test-retry from 1.5.8 to 1.5.10
 
 ## GSF 8.4
 
