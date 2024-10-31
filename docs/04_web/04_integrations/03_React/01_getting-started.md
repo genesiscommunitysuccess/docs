@@ -13,7 +13,7 @@ It is easy to set up a new project where your front end uses the React framework
 
 On this page, we shall show you how to set up an empty project that you can use as a blank canvas for adding React and Genesis components.
 
-These simple steps create an app you log run and log into, and an empty home page. You are then ready to go into the code and add some  components.
+These simple steps create an app you log run and log into, and an empty home page. You are then ready to go into the code and add some components.
 
 We shall also look briefly at:
 
