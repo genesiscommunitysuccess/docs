@@ -1,6 +1,6 @@
 ---
-title: 'Genesis Launcher - Enable'
-sidebar_label: 'Enable'
+title: 'Enabling Genesis Launcher'
+sidebar_label: 'Enabling'
 id: enable-launcher
 keywords: [server, tooling, code snippets, launcher, jetbrains, local]
 tags:
@@ -16,19 +16,20 @@ Genesis Launcher enables you to launch Genesis applications without the need for
 
 ![Genesis Launcher Screenshot](/img/genesis-launcher/genesis-launcher-empty.png)
 
-:::note
-Recently created projects already have the launcher enabled.
+:::info
+You do not need to enable recently created projects; these already have the Genesis Launcher enabled.
 
-Genesis Launcher can be enabled in an existing projects if it uses:
-* the [simplified structure](/operations/project-structure/introduction/). This includes any project generated through Create
+An older existing project can be enabled to use the Launcher if it uses:
+* the [simplified structure](/operations/project-structure/introduction/); this includes any project generated through Create
 * the [Genesis Gradle Settings plugin](/operations/project-structure/settings-plugin/)
 :::
 
-## Enable
+## Enabling
 
-Genesis Launcher is distributed as a gradle plugin. You must add this plugin to enable the launcher in your project.
+If you need to enable Launcher, there are two things that you need to do:
 
-Once the plugin is enabled you can [start Genesis Launcher](../running-launcher).
+1. Amend the settings file.
+2. Amend the build file.
 
 ## Amending the settings file
 
@@ -55,3 +56,6 @@ plugins {
     id("global.genesis.genesis-launcher-gui") version "0.1.3"
 }
 ```
+
+## Next step
+Once the plugin is enabled you can [start Genesis Launcher](../running-launcher).
