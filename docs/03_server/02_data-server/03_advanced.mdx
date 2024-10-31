@@ -68,7 +68,7 @@ query("ALL_BUYER_SELLER_TRADES", BUYER_SELLER_TRADE_VIEW){
             }
             // If a user belongs to the buyer counterparty, "DIRECTION" will be "BUY"
             // in the reverse scenario it will be "SELL"
-            derivedField("DIRECTION", STRING) { row, userData ->
+            derivedField("DIRECTION", STRING) {
                 when {
                     enriched?.counterpartyId == data.buyerId -> "BUY"
                     enriched?.counterpartyId == data.sellerId -> "SELL"
