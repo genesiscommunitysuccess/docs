@@ -114,3 +114,35 @@ dependencies {
 ```kotlin
 include("myapp-newmodule")
 ```
+
+## Adding multiple source sets (logical sub-apps)
+
+It is possible to split `configuration` and `scripts` into multiple folders. This can be convinient when logically grouping different logical applications user the same Genesis application stack.
+
+Example: Assuming a product called `alpha-app`, one could add `beta` and `charlie` configuration and scripts:
+
+```
+alpha-app
+├── build.gradle.kts
+└── src
+    ├── main
+    │   ├── charlie
+    │   │   ├── cfg
+    │   │   └── scripts
+    │   ├── genesis
+    │   │   ├── cfg
+    │   │   ├── data
+    │   │   └── scripts
+    │   ├── java
+    │   │   └── mycompany
+    │   └── kotlin
+    │       ├── global
+    │       └── mycompany
+    └── test
+        ├── kotlin
+        │   └── global
+        └── resources
+            └── genesisHome
+```
+
+During the build and packaging processing, all configuration and scripts are treated as belonging to the same unit.
