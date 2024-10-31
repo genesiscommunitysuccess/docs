@@ -1,5 +1,5 @@
 ---
-title: 'Angular - Getting started'
+title: 'Angular - getting started'
 sidebar_label: 'Getting started'
 sidebar_position: 1
 id: getting-started
@@ -10,25 +10,40 @@ tags:
     - angular
 ---
 
-This guide enables you to create an Angular app integrated with Genesis components, micro front-ends, and PBCs.
+It is easy to set up a new project where your front end uses the Angular framework. 
+
+On this page, we shall show you how to set up an empty project that you can use as a blank canvas for adding Angular and Genesis components.
+
+These simple steps create an app you log run and log into, and an empty home page. You are then ready to go into the code and add some components.
+
+We shall also look briefly at:
+
+- the folder structure of the project 
+- the principles of routing and styling an application
+
+:::tip
+You can find out more by looking into our [**example application**](/web/integrations/Angular/angular-example-application/), where you can look at the code and check the results against the running application. 
+:::
 
 ## Setting up the Angular project
 
-Ensure that you have [Node.js](https://nodejs.org/) and [Genx](https://learn.genesis.global/docs/getting-started/prerequisites/genx) installed on your system.
+:::info prerequisites
+Before you start, ensure that you have [Node.js](https://nodejs.org/) and [Genx](https://learn.genesis.global/docs/getting-started/prerequisites/genx) installed on your system.
+:::
 
-Once you have Node.js and genx, you can create a new Angular project. The example below creates a project called **myApp** using Genx with `--framework Angular`:
+1. Create a new Angular project. The example below creates a project called **myApp** using Genx with `--framework Angular`:
 
 ```shell
 npx -y @genesislcap/genx@latest init myApp -s blank-app-seed --framework Angular -x
 ```
 
-Navigate to your new project's **client** directory:
+2. Navigate to your new project's **client** directory:
 
 ```shell
 cd ./client
 ```
 
-## Install the dependencies
+## Install the dependencies and run the app
 
 1. Run the following command from your project folder:
 
