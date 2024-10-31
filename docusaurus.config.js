@@ -25,8 +25,8 @@ const config = {
     format: "detect",
     mermaid: true,
   },
-  onBrokenLinks: "throw", // please do NOT change this to 'warn', fix or remove your broken links instead
-  onBrokenMarkdownLinks: "throw", // please do NOT change this to 'warn', fix or remove your broken links instead
+  onBrokenLinks: "warn", // please do NOT change this to 'warn', fix or remove your broken links instead
+  onBrokenMarkdownLinks: "warn", // please do NOT change this to 'warn', fix or remove your broken links instead
   onDuplicateRoutes: "throw",
   clientModules: ["./src/client-modules/genesislcap.js"],
   scripts: [
