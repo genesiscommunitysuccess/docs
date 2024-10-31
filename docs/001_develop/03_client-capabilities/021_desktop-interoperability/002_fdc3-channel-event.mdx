@@ -16,6 +16,9 @@ tags:
 sidebar_position: 2
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # FDC3 Channel Event
 
 A utility element to that listens to an event on its parent element and broadcasts the event detail payload on an FDC3 Channel.
@@ -28,11 +31,6 @@ Use cases:
 import FDCBrowsers from '../../../_includes/_fdc3-browsers.mdx'
 
 <FDCBrowsers />
-
-Declaration
-```html
-<fdc3-channel-event></<fdc3-channel-event>
-```
 
 ## Examples
 
@@ -50,17 +48,86 @@ It will broadcast with the context type `fdc3.position`.
 
 The context payload will contain the `event.detail.data` payload in the `id` property of the Context object.
 
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+
+Usage
+```typescript
+@customElement({
+    name: 'my-element',
+    template: html`
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    `,
+})
+export class MyElement extends GenesisElement {}
+```
+</TabItem>
+
+<TabItem value="react">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+
+Usage
+```typescript
+export function MyComponent() {
+    return (
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    );
+}
+```
+</TabItem>
+
+<TabItem value="angular">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+@Component({
+    selector: 'my-root',
+    templateUrl: './my.component.html',
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule],
+})
+export class AppComponent {}
+```
+
+View
 ```html
 <rapid-grid-pro>
     <grid-pro-genesis-datasource
-        resource-name="ALL_INSTRUMENT_REF"
-    >
+        resource-name="ALL_INSTRUMENT_REF">
     </grid-pro-genesis-datasource>
     <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position">
-
     </fdc3-channel-event>
 </rapid-grid-pro>
 ```
+</TabItem>
+</Tabs>
 
 ### Example 2 - Send event on app channel
 
@@ -68,17 +135,95 @@ This will listen to the `rowClicked` event that is fired by the `rapid-grid-pro`
 
 It will broadcast on the specified app channel, in this case `appChannel`.
 
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+Usage
+```typescript
+@customElement({
+    name: 'my-element',
+    template: html`
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event
+                event-name="rowClicked"
+                channel-type="fdc3.position"
+                channel-name="appChannel">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    `,
+})
+export class MyElement extends GenesisElement {}
+```
+</TabItem>
+
+<TabItem value="react">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+
+Usage
+```typescript
+export function MyComponent() {
+    return (
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event
+                event-name="rowClicked"
+                channel-type="fdc3.position"
+                channel-name="appChannel">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    );
+}
+```
+</TabItem>
+
+<TabItem value="angular">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+@Component({
+    selector: 'my-root',
+    templateUrl: './my.component.html',
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule],
+})
+export class AppComponent {}
+```
+
+View
 ```html
 <rapid-grid-pro>
     <grid-pro-genesis-datasource
-        resource-name="ALL_INSTRUMENT_REF"
-    >
+        resource-name="ALL_INSTRUMENT_REF">
     </grid-pro-genesis-datasource>
-    <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position" channel-name="appChannel">
-
+    <fdc3-channel-event
+        event-name="rowClicked"
+        channel-type="fdc3.position"
+        channel-name="appChannel">
     </fdc3-channel-event>
 </rapid-grid-pro>
 ```
+</TabItem>
+</Tabs>
+
 
 ### Example 3 - Send mapped event on system channel
 
@@ -88,21 +233,93 @@ It will broadcast on the current system color channel.
 
 It will broadcast with the context type `fdc3.position`.
 
-The mapping function will map the `event.detail.data` payload and create a new object..
+The mapping function will map the `event.detail.data` payload and create a new object.
 
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+Usage
+```typescript
+@customElement({
+    name: 'my-element',
+    template: html`
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event
+                :mappingFunction="${() => ({TICKER, CUSIP}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}"
+                event-name="rowClicked"
+                channel-type="fdc3.position">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    `,
+})
+export class MyElement extends GenesisElement {}
+```
+</TabItem>
+
+<TabItem value="react">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+Usage
+```typescript
+export function MyComponent() {
+    return (
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF>
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event
+                mappingFunction="{() => ({TICKER, CUSIP}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}"
+                event-name="rowClicked"
+                channel-type="fdc3.position">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    );
+}
+```
+</TabItem>
+<TabItem value="angular">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+@Component({
+    selector: 'my-root',
+    templateUrl: './my.component.html',
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule],
+})
+export class AppComponent {}
+```
+
+View
 ```html
 <rapid-grid-pro>
     <grid-pro-genesis-datasource
-        resource-name="ALL_INSTRUMENT_REF"
-    >
+        resource-name="ALL_INSTRUMENT_REF">
     </grid-pro-genesis-datasource>
     <fdc3-channel-event
-        :mappingFunction="${() => ({TICKER}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}"
+        [mappingFunction]="${() => ({TICKER, CUSIP}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}"
         event-name="rowClicked"
         channel-type="fdc3.position">
     </fdc3-channel-event>
 </rapid-grid-pro>
 ```
+</TabItem>
+</Tabs>
 
 ## DOM API
 
