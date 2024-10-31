@@ -50,7 +50,7 @@ import "./my-button"; # Import the my-button component
 @customElement({
     name: "parent-component",
     template: html`
-        <my-button @button-clicked="${(x, c) => x.handleButtonClicked(c.event)}"></my-button>
+        <button @button-clicked="${(x, c) => x.handleButtonClicked(c.event)}"></button>
     `,
 })
 export class ParentComponent extends GenesisElement {

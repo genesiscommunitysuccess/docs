@@ -218,7 +218,7 @@ See `clickCount`
 @customElement({
   name: 'my-button',
   template: html`
-    <my-button :clickCount="${x => x.clickCount}"></my-button>
+    <<button> :clickCount="${x => x.clickCount}"></button>
 `;,
   styles,
 })
@@ -251,7 +251,7 @@ Observables are a powerful tool for creating reactive components. They allow pro
 @customElement({
   name: 'my-button',
   template: html`
-    <my-button :clickCount="${x => x.clickCount}"></my-button>
+    <button :clickCount="${x => x.clickCount}"></button>
 `;,
   styles,
 })
@@ -283,9 +283,9 @@ import { observable, customElement, GenesisElement, html } from '@genesislcap/we
 @customElement({
   name: 'my-button',
   template: html`
-    <my-button @click="${x => x.increment()}">
+    <button @click="${x => x.increment()}">
         ${x => `Clicked: ${x.count} times`}
-    </my-button>
+    </button>
 `;,
   styles,
 })
