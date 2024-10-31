@@ -45,21 +45,22 @@ Any use where the user is to give a boolean type input choice.
 <TabItem value="genesis">
 
 Declaration
-```typescript
+```html
 <rapid-checkbox></rapid-checkbox>
 ```
+
 Usage
 ```typescript
 @customElement({
   name: 'my-element',
   template: html`
-        <rapid-checkbox
-            ?disabled="${(x) => x.disabled}"
-            ?checked="${sync((x) => x.isSelected, 'boolean')}"
-            @change="${(x) => x.checkChanged()}"
-        >Checkbox
-        </rapid-checkbox>
-    `,
+    <rapid-checkbox
+      ?disabled="${(x) => x.disabled}"
+      ?checked="${sync((x) => x.isSelected, 'boolean')}"
+      @change="${(x) => x.checkChanged()}"
+    >Checkbox
+    </rapid-checkbox>
+  `,
 })
 export class MyElement extends GenesisElement {
   @observable disabled = false;
@@ -74,44 +75,49 @@ export class MyElement extends GenesisElement {
 <TabItem value="react">
 
 Declaration
-```typescript
+```html
 <rapid-checkbox></rapid-checkbox>
 ```
 Usage
 ```typescript
 export function MyComponent() {
-	const [checkboxValue, setCheckboxState] = useState(false);
-	const handleCheckboxChange = (event) => {
-		setCheckboxState(!!event.target.checked);
-		console.log({ checkboxValue })
-	};
+  const [checkboxValue, setCheckboxState] = useState(false);
+  const handleCheckboxChange = (event) => {
+    setCheckboxState(!!event.target.checked);
+    console.log({ checkboxValue })
+  };
 
-	return (
-		<rapid-checkbox onChange={handleCheckboxChange}></rapid-checkbox>
-	);
+  return (
+    <rapid-checkbox onChange={handleCheckboxChange}></rapid-checkbox>
+  );
 }
 ```
 </TabItem>
 <TabItem value="angular">
 
 Declaration
-```typescript
+```html
 <rapid-checkbox></rapid-checkbox>
 ```
 
-Model
-```typescript my.component.ts
+Usage
+```typescript
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'my-root',
-  templateUrl: './my.component.html',
+  template: `
+    <rapid-checkbox
+      name="isSelected"
+      [checked]="isSelected"
+      (change)="onCheckboxChange($event)"
+    ></rapid-checkbox>
+  `,
   styleUrls: ['./my.component.css'],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [FormsModule],
 })
-
 export class AppComponent {
   isSelected: boolean = false;
   onCheckboxChange(event: Event) {
@@ -120,14 +126,6 @@ export class AppComponent {
     console.log(this.isSelected);
   }
 }
-```
-View
-```html
-<rapid-checkbox
-name="isSelected"
-[checked]="isSelected"
-(change)="onCheckboxChange($event)"
-></rapid-checkbox>
 ```
 </TabItem>
 </Tabs>
