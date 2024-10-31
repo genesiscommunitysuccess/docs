@@ -41,6 +41,7 @@
     "@genesislcap/documentation-components": "14.200.0",
     "@genesislcap/foundation-comms": "14.200.0",
     "@genesislcap/foundation-entity-management": "14.200.0",
+    "@genesislcap/foundation-fdc3": "14.200.0",
     "@genesislcap/foundation-filters": "14.200.0",
     "@genesislcap/foundation-forms": "14.200.0",
     "@genesislcap/foundation-header": "14.200.0",
