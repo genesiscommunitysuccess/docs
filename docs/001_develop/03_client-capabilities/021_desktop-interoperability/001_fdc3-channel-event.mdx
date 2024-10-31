@@ -1,0 +1,117 @@
+---
+title: 'FDC3 Channel Event'
+sidebar_label: 'FDC3 Channel Event'
+id: fdc3-channel-event
+keywords: [interaction, interactive, interoperability, openfin, interop.io, fdc3, fdc3 channel, fdc3 context, data]
+tags:
+- interaction
+- interactive
+- interoperability
+- openfin
+- interop.io
+- fdc3
+- fdc3 channel
+- fdc3 context
+- data
+sidebar_position: 1
+---
+
+# FDC3 Channel Event
+
+A utility element to that listens to an event on its parent element and broadcasts the event detail payload on an FDC3 Channel.
+
+Use cases:
+* Send event on system color channel
+* Send event on app channel
+* Map the event payload before broadcasting on a channel
+
+## Example 1 - Send event on system channel
+
+This will listen to the `rowClicked` event that is fired by the `rapid-grid-pro` element whenever a row is clicked.
+
+It will broadcast on the current system color channel.
+
+It will broadcast with the context type `fdc3.position`.
+
+The context payload will contain the `event.detail.data` payload in the `id` property of the Context object.
+
+```html
+<rapid-grid-pro>
+    <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position">
+
+    </fdc3-channel-event>
+</rapid-grid-pro>
+```
+
+## Example 2 - Send event on app channel
+
+This will listen to the `rowClicked` event that is fired by the `rapid-grid-pro` element whenever a row is clicked.
+
+It will broadcast on the specified app channel, in this case `appChannel`.
+
+```html
+<rapid-grid-pro>
+    <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position" channel-name="appChannel">
+
+    </fdc3-channel-event>
+</rapid-grid-pro>
+```
+
+## Example 3 - Send mapped event on system channel
+
+This will listen to the `rowClicked` event that is fired by the `rapid-grid-pro` element whenever a row is clicked.
+
+It will broadcast on the current system color channel.
+
+It will broadcast with the context type `fdc3.position`.
+
+The mapping function will map the `event.detail.data` payload and create a new object..
+
+```html
+<rapid-grid-pro>
+    <fdc3-channel-event
+        :mappingFunction="${() => ({TICKER}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}"
+        event-name="rowClicked"
+        channel-type="fdc3.position">
+    </fdc3-channel-event>
+</rapid-grid-pro>
+```
+
+Declaration
+```html
+<fdc3-channel-event></<fdc3-channel-event>
+```
+
+## DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+| Attribute | Type | Use | Example |
+|---|---|---|---|
+|event-name|`string`|The name of the javascript event to listen to on the parent|`<fdc3-channel-event event-name="click">`|
+|channel-type|`string`|The name of the channel context type that will be broadcast|`<fdc3-channel-event channel-type="fdc3.position">`|
+|channel-name|`string`|If specified, the element will broadcast on a named app channel|`<fdc3-channel-event channel-type="exampleChannel">`|
+
+### Properties
+
+| Property | Type | Use | Example |
+|---|---|---|---|
+|mappingFunction|`(any) => any`|An optional function to override the channel broadcast payload. It should be a function which returns a value. It will receive the custom event `detail.data` property value (or `detail` if data is not present) as a parameter. The returned value will be broadcast on the channel |`<fdc3-channel-event :mappingFunction="${() => ({TICKER}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}"`|
+
+### Slots
+
+This component has no slots
+
+### Parts
+
+This component has no parts
+
+### Fired Events
+
+This component doesn't fire any events.
+
+### Listened Events
+
+This component doesn't listen to any events.
