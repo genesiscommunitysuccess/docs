@@ -42,8 +42,8 @@ Declaration
 Usage
 ```typescript
 @customElement({
-    name: 'my-element',
-    templte: html`
+  name: 'my-element',
+  template: html`
         <rapid-checkbox
             ?disabled="${(x) => x.disabled}"
             ?checked="${sync((x) => x.isSelected, 'boolean')}"
@@ -53,11 +53,11 @@ Usage
     `,
 })
 export class MyElement extends GenesisElement {
-    @observable disabled = false;
-    @observable isSelected = false;
-    checkChanged() {
-        console.log(this.isSelected);
-    }
+  @observable disabled = false;
+  @observable isSelected = false;
+  checkChanged() {
+    console.log(this.isSelected);
+  }
 }
 ```
 
