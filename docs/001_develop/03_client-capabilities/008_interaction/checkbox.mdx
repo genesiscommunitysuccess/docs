@@ -71,18 +71,15 @@ Declaration
 Usage
 ```typescript
 export function MyComponent() {
-    const [isSelected, setIsSelected] = useState(false);
-    // TODO: import this listener!
-    const webComponentRef = useCustomEventListener('change', (event) => {
-        setIsSelected(event.target.checked);
-        console.log({isSelected});
-    });
+	const [checkboxValue, setCheckboxState] = useState(false);
+	const handleCheckboxChange = (event) => {
+		setCheckboxState(!!event.target.checked);
+		console.log({ checkboxValue })
+	};
 
-    return (
-        <div>
-            <rapid-checkbox ref={webComponentRef}></rapid-checkbox>
-        </div>
-    );
+	return (
+		<rapid-checkbox onChange={handleCheckboxChange}></rapid-checkbox>
+	);
 }
 ```
 </TabItem>
