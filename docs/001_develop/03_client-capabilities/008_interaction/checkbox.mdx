@@ -138,15 +138,15 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 ### Attributes
 
-| Attribute | Use | Example |
-|---|---|---|
-|readonly|Configures the component so the user cannot alter the state via the web browser. A readonly checkbox value can still be sent along with the form submit.|`<rapid-checkbox readonly>`|
+| Attribute | Type | Use | Example |
+|---|---|---|---|
+|readonly|_boolean_|Configures the component so the user cannot alter the state via the web browser. A readonly checkbox value can still be sent along with the form submit.|`<rapid-checkbox readonly>`|
 
 ### Properties
 
-| Property | Use | Example |
-|---|---|---|
-|checked|The boolean value of whether the checkbox is checked. |`<rapid-checkbox :checked="${(x) => x.isChecked}">`|
+| Property | Type | Use | Example |
+|---|---|---|---|
+|checked|_boolean_|The boolean value of whether the checkbox is checked. |`<rapid-checkbox ?checked="${sync((x) => x.isSelected, 'boolean')}">`|
 
 ### Slots
 
@@ -165,9 +165,9 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 ### Fired Events
 
-| Part | Use | Example |
-|---|---|---|
-| change | Emits a custom change event when the checked state changes. Access the value on the event via `.target.checked`.|`<rapid-checkbox @change="${(x) => x.myChangeHandler(event)}">`|
+| Part | Type | Use | Example |
+|---|---|---|---|
+| change |_boolean_| Emits a custom change event when the checked state changes. Access the value on the event via `.target.checked`.|`<rapid-checkbox @change="${(x) => x.myChangeHandler(event)}">`|
 
 ### Listened Events
 
