@@ -22,8 +22,8 @@ query(POSITION) {
     enrich(FAVOURITE_TRADE) {
         join { userName, row -> FavouriteTrade.byUserName(userName) }
         fields {
-            derivedField("IS_FAVOURITE", BOOLEAN) { row, favourite ->
-                row.code == favourite?.code
+            derivedField("IS_FAVOURITE", BOOLEAN) {
+                data.code == enriched?.code
             }
         }
     }

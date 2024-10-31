@@ -102,10 +102,8 @@ In the example below, we add a new boolean derived field:
 ```kotlin
 requestReplies {
     requestReply(INSTRUMENT_DETAILS) {
-        derivedFields {
-            derivedField("IS_USD", BOOLEAN) {
-                tradedCurrency == "USD"
-            }
+        derivedField("IS_USD", BOOLEAN) {
+            data.tradedCurrency == "USD"
         }
     }
 }
@@ -116,13 +114,11 @@ You can use any logic you would like inside the `derivedField` codeblock, such a
 ```kotlin
 requestReplies {
     requestReply(INSTRUMENT_DETAILS) {
-        derivedFields {
-            derivedField("IS_BUY", BOOLEAN) {
-                if (DIRECTION.toString() == "BUY"){
-                    true
-                } else {
-                    false
-                }
+        derivedField("IS_BUY", BOOLEAN) {
+            if (data.direction.toString() == "BUY"){
+                true
+            } else {
+                false
             }
         }
     }

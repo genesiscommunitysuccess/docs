@@ -428,8 +428,8 @@ query("ALL_TRADES_WITH_ENRICHED_AUTH", TRADE_VIEW) {
             )
         }
         fields {
-            derivedField("FAVOURITE", BOOLEAN) { row, userData ->
-                userData != null
+            derivedField("FAVOURITE", BOOLEAN) {
+                enriched != null
             }
         }
     }
