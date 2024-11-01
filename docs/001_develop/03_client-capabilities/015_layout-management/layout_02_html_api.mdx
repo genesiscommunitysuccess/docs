@@ -85,8 +85,48 @@ This component doesn't listen to any events.
 
 An element for declaratively setting the layout structure.
 ```html
-<rapid-layout-region type="tabs"></rapid-layout-region>
+<rapid-layout-region>
+  <rapid-layout-item></rapid-layout-item>
+  <rapid-layout-region type="tabs">
+    <!-- more nested regions/items ... -->
+  </rapid-layout-region>
+  <!-- more nested regions/items ... -->
+</rapid-layout-region>
 ```
+
+#### Attributes
+
+| Attribute | Type | Use | Example |
+|---|---|---|---|
+|size|`string`|Controls the size of the region. See [here](#sizing).|`<rapid-layout-region size="50%">`|
+|type|`vertical/horizontal/tabs`| Union type which configures the grouping type. See below. Defaults to `horizontal`.|`<rapid-layout-region type="tabs">`|
+
+Layout region types:
+* `vertical` - Indicates to the layout system that all immediate children are (by default) to be split equally within the available space of this component using n-1 column split(s). Can be nested within other horizontal and vertical regions.
+* `horizontal` - Indicates to the layout system that all immediate children are (by default) to be split equally among the available space of this component using n-1 row split(s). Can be nested within other horizontal and vertical regions.
+* `tabs` - Indicates to the layout system that all immediate children are to be added as tabs in the available space of this component, with a tab for each child. The tabs are ordered according to which child the layout item is (e.g. the second `<rapid-layout-item>` of the tab split is the second tab). The first child will be the one that is open by default. Can be nested within horizontal and vertical regions, but cannot have more layout sections inside it.
+
+#### Properties
+
+There are no properties in addition to the properties controlled via attributes.
+
+#### Slots
+
+| Slot | Use |
+|---|---|
+|Default|The default slot is where a combination of `<rapid-layout-item>` and `<rapid-layout-region>` elements are placed. No other element may be placed into this slot, to put general components into the layout you must wrap them in `<rapid-layout-item>`|
+
+#### Parts
+
+This component doesn't have any css parts.
+
+#### Fired Events
+
+This component doesn't fire any events.
+
+### Listened Events
+
+This component doesn't listen to any events.
 
 ## Rapid layout item
 
@@ -106,14 +146,10 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 | Attribute | Type | Use | Example |
 |---|---|---|---|
-|title|`string`|Set the title of the pane that contains the content. Defaults to `Item x`, where `x` is the pane number.|`<rapid-layout title="My title">`|
+|title|`string`|Set the title of the pane that contains the content. Defaults to `Item x`, where `x` is the pane number.|`<rapid-layout-item title="My title">`|
 |closable|`boolean`|Controls whether the user can close the pane. Default is `false`.|`<rapid-layout closable>`|
-|size|`string`|Controls the size of the pane. See below.|`<rapid-layout size="50%">`|
-|registration|`string`|Sets the registered name of the component. Not required to be set unless you're also using the javascript API. See here. <!-- TODO -->. By default each item that doesn't have a registration is registered sequentially starting at `"1"`.|`<rapid-layout registration="checkbox">`|
-
-##### Sizing
-
-`size`: optional string defining the size. For rows, it specifies height. For columns, it specifies width. Has format `<number><size-unit>`. Currently only supports units `fr` and `%`. Space is first proportionally allocated to items with `sizeUnit` `%`. If there is any space left over (less than 100% allocated), then the remainder is allocated to the items with unit `fr` according to the fractional size. If more than 100% is allocated, then an extra 50% is allocated to items with unit `fr` and is allocated to each item according to its fractional size. All item sizes are then adjusted to bring the total back to 100%.
+|size|`string`|Controls the size of the pane. See [here](#sizing).|`<rapid-layout-item size="50%">`|
+|registration|`string`|Sets the registered name of the component. Not required to be set unless you're also using the javascript API. See here. <!-- TODO -->. By default each item that doesn't have a registration is registered sequentially starting at `"1"`.|`<rapid-layout-item registration="checkbox">`|
 
 #### Properties
 
@@ -127,7 +163,7 @@ There are no properties in addition to the properties controlled via attributes.
 
 #### Parts
 
-This element doesn't have any css parts.
+This component doesn't have any css parts.
 
 #### Fired Events
 
@@ -136,4 +172,12 @@ This component doesn't fire any events.
 ### Listened Events
 
 This component doesn't listen to any events.
+
+## Sizing
+
+`size`: optional string attribute which can be configured on both `<rapid-layout-item>` and `<rapid-layout-region>`. For rows, it specifies height. For columns, it specifies width. Has format `<number><size-unit>`.
+
+Currently only supports units `fr` and `%`. Space is first proportionally allocated to items with `sizeUnit` `%`. If there is any space left over (less than 100% allocated), then the remainder is allocated to the items with unit `fr` according to the fractional size.
+
+If more than 100% is allocated, then an extra 50% is allocated to items with unit `fr` and is allocated to each item according to its fractional size. All item sizes are then adjusted to bring the total back to 100%.
 
