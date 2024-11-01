@@ -1,5 +1,5 @@
 ---
-title: 'Angular - Getting started'
+title: 'Angular - getting started'
 sidebar_label: 'Getting started'
 sidebar_position: 1
 id: getting-started
@@ -10,115 +10,125 @@ tags:
     - angular
 ---
 
-Foundation UI integrates nicely with Angular. Let's take a look at how you can set up an Angular project, starting from scratch.
+It is easy to set up a new project where your front end uses the Angular framework. 
+
+On this page, we shall show you how to set up an empty project that you can use as a blank canvas for adding Angular and Genesis components.
+
+These simple steps create an app you log run and log into, and an empty home page. You are then ready to go into the code and add some components.
+
+We shall also look briefly at:
+
+- the folder structure of the project 
+- the principles of routing and styling an application
+
+:::tip
+You can find out more by looking into our [**example application**](/web/integrations/Angular/angular-example-application/), where you can look at the code and check the results against the running application. 
+:::
 
 ## Setting up the Angular project
 
-First, make sure that you have [Node.js](https://nodejs.org/) installed. 
-
-With Node.js installed, run the following command to install the Angular CLI:
-
-```shell
-npm install -g @angular/cli
-```
-
-With the CLI installed, you have access to the `ng` command-line interface. This can be used to create a new Angular project. For example, to create a new Angular App named "alpha-angular", use the command:
-
-```shell
-ng new alpha-angular
-```
-
-Follow the prompts, answering each question in turn. At the end, you should have a basic runnable Angular application.
-
-Navigate into your new project directory:
-
-```shell
-cd alpha-angular
-```
-
-## Use Genesis Foundation packages
-
-To install the Genesis Foundation packages. Run this command from your project folder:
-
-```shell
-npm install --save @genesislcap/alpha-design-system
-```
-
-Now let's run our app in dev mode:
-```shell
-ng serve --open
-```
-
-The Angular CLI should build your project and make it available on localhost. Right now, it displays a basic welcome message, since we haven't added any code or interesting HTML.
-
-Let's change that. Open your **src/main.ts** file and add the following code:
-
-import CodeBlock from '@theme/CodeBlock';
-import Example from '!!raw-loader!/examples/ui/alphaImports';
-
-<CodeBlock className="language-ts">{Example}</CodeBlock>
-
-This code uses the Genesis Foundation Design System to register the `<alpha-card>`, `<alpha-button>` and `<alpha-text-field>` components.
-
-Once you have saved the file, the dev server is rebuilt and your browser is refreshed. However, you still won't see anything. To see the user interface, you need to write some HTML that uses our components. Replace the HTML template in your **app/app.component.html** file with the following markup:
-
-import BasicExampleHtml from '!!raw-loader!/examples/ui/angular/basic.html';
-
-<CodeBlock className="language-html">{BasicExampleHtml}</CodeBlock>
-
-:::note
-
-Third-party controls require a ControlValueAccessor for writing a value and listening to changes on input elements. Add the `ngDefaultControl` attribute to your component to set up two-way binding with the `FormControlDirective`, `FormControlName`, or `NgModel` directives:
-
+:::info prerequisites
+Before you start, ensure that you have [Node.js](https://nodejs.org/) and [Genx](https://learn.genesis.global/docs/getting-started/prerequisites/genx) installed on your system.
 :::
 
-Replace the code in your **app/app.component.ts** file with this:
+1. Create a new Angular project. The example below creates a project called **myApp** using Genx with `--framework Angular`:
 
-import BasicExampleComponent from '!!raw-loader!/examples/ui/angular/basic.ts';
-
-<CodeBlock className="language-ts">{BasicExampleComponent}</CodeBlock>
-
-In the above code, this code enables you to use non-angular elements (web components) in an Angular component ([read more](https://angular.io/api/core/CUSTOM_ELEMENTS_SCHEMA)).:
-
-```ts
-standalone: true,
-schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+```shell
+npx -y @genesislcap/genx@latest init myApp -s blank-app-seed --framework Angular -x
 ```
 
-In our example, we use [`ngModel`](https://angular.io/api/forms/NgModel#description). So, to enable form-related features in the Angular application, we added:
-```ts
-  imports: [
-    FormsModule,
-  ],
+2. Navigate to your new project's **client** directory:
+
+```shell
+cd ./client
 ```
-These changes configure your Angular component to accommodate Non-Angular element names and to harness the full capabilities of Angular’s template-driven forms.
 
-To add a splash of style, replace the contents of the **app/app.component.css** file with this:
+## Install the dependencies and run the app
 
-```css
-alpha-card {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-}
+1. Run the following command from your project folder:
 
-alpha-text-field {
-  margin-bottom: 12px;
-}
-
-h2 {
-  font-size: var(--type-ramp-plus-5-font-size);
-  line-height: var(--type-ramp-plus-5-line-height);
-}
-
-alpha-card > alpha-button {
-  align-self: flex-end;
-}
+```shell
+npm run bootstrap
 ```
-## Congratulations!
 
-🎉 Congratulations! You're now set up to use Genesis Foundation and Angular! 🎉
+2. Start the app in development mode:
 
-![Angular basic demo](/integrations/angular/angular-basic-demo.gif)
+```shell
+npm run dev
+```
 
-[repository with working code from the example](https://github.com/genesiscommunitysuccess/integration-examples/tree/main/angular/alpha-angular)
+The development server launches your project and makes it available on localhost:
+
+![Angular blank-app-seed](/integrations/angular/angular-blank-app-seed.png)
+
+:::note
+The project is currently based on Angular 18.
+:::
+
+## Project folder structure and main elements
+
+### src/main.ts
+This is the main entry point for the application. It bootstraps the app by rendering the **app.module.ts** module into the DOM. The file also registers [PBCs](../../../../server/packaged-business-capabilities/pbc-intro/) using `registerPBCs`
+
+---
+
+### src/pbc
+This folder contains components that are responsible for enabling the insertion of slots within the application. 
+
+These slots act as placeholders where content, provided by the registered Project Building Components ([PBCs](../../../../server/packaged-business-capabilities/pbc-intro/)), is rendered dynamically. The [PBCs](../../../../server/packaged-business-capabilities/pbc-intro/) are registered in the application through **main.ts**, ensuring that specific components can be inserted into the designated slots at runtime.
+
+---
+
+### src/app/share
+The **share** folder holds shared resources and components that are used across the entire application. 
+
+Key files are: 
+
+- **genesis-components.ts**. This registers Genesis framework components, including forms, layouts, and charts.
+- **foundation-login.ts**. This configures the foundation-login micro front-end component that handles authorisation and integrates it with the routing system. 
+
+---
+
+### src/app/pages
+This folder contains the main pages of the application. Each page represents a different route or view, such as the **auth-login.component.ts**, which handles authentication-related flows.
+
+---
+
+### src/app/components
+This folder contains reusable UI components that are utilized throughout the app. Components in this folder are not tied to specific pages but are used as building blocks across multiple sections of the application.
+
+## Routing
+
+In Angular, routing is essential for creating single-page applications with navigation capabilities. 
+
+The routing configuration in **app/service/route.service.ts** manages and provides routes throughout the application. This file defines a `RouteService` service that combines routes from the main application and additional routes from PBC (Pluggable Business Components).
+
+The `pbcRoutes` are generated dynamically by mapping over the routes provided by the PBC, extracting essential properties, and wrapping them in a `PBCContainer` component. These routes are then combined with the main application's routes into a single `allRoutes` array. 
+
+The `RoutesProvider` uses Angular's dependency injection to make these routes available to the rest of the application by providing them through the `RoutesService`.
+
+Additionally, the `RoutesService` is provided to access the routes within Angular components. This ensures seamless integration and accessibility of both main application routes and PBC routes throughout the application.
+
+## Styling the application
+
+### Global styles
+You can add global styles by modifying the main stylesheet located at **src/styles/styles.css**. This file contains styles that apply to the entire application.
+
+---
+
+### Styling components or pages
+For more granular control, you can add styles specific to a page or component. 
+
+For example, if you want to have unique styling for the page that is displayed when a requested page cannot be found, create a stylesheet called **src/pages/NotFoundPage/NotFoundPage.css** with styles that only apply to that page.
+
+---
+
+### Design tokens
+
+Design tokens are declared in the **src/styles/design-tokens.json** file. They offer an effective way to manage and apply styles in your application in a consistent and maintainable manner.
+
+The design tokens enable you to define and manage values such as colours, fonts, and spacing across the whole application. You can modify these tokens to propagate changes wherever they are used in the application.
+
+:::note
+See more details in our page on [Design systems](../../../design-systems/introduction/)
+:::
