@@ -125,3 +125,469 @@ You can import `LAYOUT_ICONS`, `CustomButton`, `LayoutReceiveEvents`, and `Layou
 :::warning
 You'll probably want to improve this callback function to handle cases where the user doesn't enter a prompt value.
 :::
+
+## Examples
+
+### Simple example
+
+Simple example with a vertical split and two items that will take up equal space.
+
+```html
+<rapid-layout>
+  <rapid-layout-region type="horizontal">
+    <rapid-layout-item title="Component 1">
+      <!-- Content -->
+    </rapid-layout-item>
+    <rapid-layout-item title="Component 2">
+      <!-- Content -->
+    </rapid-layout-item>
+  </rapid-layout-region>
+</rapid-layout>
+```
+
+Will be rendered as:
+
+```
++-----------------------------------------------------+
+|                                                     |
+|              Component 1 Contents                   |
+|                                                     |
++-----------------------------------------------------+
+|                                                     |
+|              Component 2 Contents                   |
+|                                                     |
++-----------------------------------------------------+
+```
+
+### Nested example
+
+A slightly more complicated example:
+
+```html
+<rapid-layout>
+  <rapid-layout-region type="vertical">
+    <rapid-layout-item title="Component 1" size="25%" closable>
+      <!-- Content -->
+    </rapid-layout-item>
+
+    <rapid-layout-region type="horizontal">
+      <rapid-layout-item title="Component 2">
+        <!-- Content -->
+      </rapid-layout-item>
+      <rapid-layout-item title="Component 3">
+        <!-- Content -->
+      </rapid-layout-item>
+    </rapid-layout-region>
+  </rapid-layout-region>
+
+</rapid-layout>
+```
+
+Would render the following:
+
+```
++-------------+---------------------------------------+
+|             |                                       |
+|             |        Component 2 Contents           |
+|  Component  |                                       |
+|      1      +---------------------------------------+
+|  Contents   |                                       |
+|             |        Component 3 Contents           |
+|             |                                       |
++-------------+---------------------------------------+
+```
+
+Component 1 has a Close button. By default, Component 1 would be 50% width and 2 and 3 would take up the other 50% width, but here we set `25%`
+as the width of Component 1 layout item (width because it is the size in the context of a vertical split).
+
+### Multi-nested example
+
+If instead we had:
+
+```html
+<rapid-layout>
+  <rapid-layout-region type="vertical">
+    <rapid-layout-item title="Component 1" size="25%" closable>
+      <!-- Content -->
+    </rapid-layout-item>
+
+    <rapid-layout-region type="horizontal">
+      <rapid-layout-region type="vertical">
+        <rapid-layout-item title="Component 2">
+          <!-- Content -->
+        </rapid-layout-item>
+        <rapid-layout-item title="Component 3">
+          <!-- Content -->
+        </rapid-layout-item>
+        <rapid-layout-item title="Component 4">
+          <!-- Content -->
+        </rapid-layout-item>
+      </rapid-layout-region>
+
+      <rapid-layout-region type="tabs">
+        <rapid-layout-item title="Component 5">
+          <!-- Content -->
+        </rapid-layout-item>
+        <rapid-layout-item title="Component 6">
+          <!-- Content -->
+        </rapid-layout-item>
+      </rapid-layout-region>
+    </rapid-layout-region>
+  </rapid-layout-region>
+
+</rapid-layout>
+```
+
+This would render the following:
+
+```
++-------------+------------+-------------+------------+
+|             |            |             |            |
+|             |   Comp 2   |    Comp 3   |   Comp 4   |
+|  Component  |            |             |            |
+|      1      +------------+-------------+------------+
+|  Contents   |_5_|_6_|                               |
+|             |        Component 5 Contents           |
+|             |                                       |
++-------------+---------------------------------------+
+```
+Component 1 has a **Close** button. Component 1 takes up 25% of the initial width. Components 2,3,4 take up a third of the _remaining_ width between them
+(default behaviour) and 5 and 6 are tabbed.
+
+### `repeat` directive
+
+You can use template directives such as `repeat`:
+
+```javascript
+interface Position {
+	symbol: string;
+}
+
+class Commodities extends GenesisElement {
+	positions: Position[] // Not @observable - see following section
+
+	...
+}
+
+const template = html<Commodities>`
+<rapid-layout>
+	<rapid-layout-region type="horizontal">
+		${when(x => x.positions, html<Position>`
+			<rapid-layout-item title="${x => x.symbol}">
+				<chart symbol="${x => x.symbol}"></chart>
+			</rapid-layout-item>`)}
+	</rapid-layout-region>
+</rapid-layout>`;
+```
+
+For an example where the `Commodities` object has three positions, you will see the following output:
+```
++-----------------------------------------------------+
+|              Component 1 Contents                   |
++-----------------------------------------------------+
+|              Component 2 Contents                   |
++-----------------------------------------------------+
+|              Component 3 Contents                   |
++-----------------------------------------------------+
+```
+
+
+:::note
+`<chart>` is just an example component; it doesn't exist within `foundation-ui`.
+:::
+
+### `when` directive
+
+Using the `when` directive:
+
+```javascript
+@customElement({
+	name: 'my-element',
+	template,
+})
+class Analytics extends GenesisElement {
+	showIndexFunds = true; // not @observable
+}
+
+const template = html<Analytics>`
+	<button class="toggle">Toggle Index</button>
+	<rapid-layout>
+		<rapid-layout-region>
+			<rapid-layout-item>
+				<chart type="stocks"></chart>
+			</rapid-layout-item>
+
+			${when(x => x.showIndexFunds, html`
+				<rapid-layout-item>
+					<chart type="index-funds"></chart>
+				</rapid-layout-item>
+			`)}
+
+		</rapid-layout-region>
+	</rapid-layout>
+`;
+```
+
+You would see both items rendered like this:
+```
++---------------------------------------------+
+|              Stocks Chart                   |
++---------------------------------------------+
+|              Index  Chart                   |
++---------------------------------------------+
+```
+
+If you had `showIndexFunds = false;` then only the `Stocks Chart` would be rendered.
+
+:::danger
+Directives are for initialising the layout only and should *not* be used with changing `@observable` attributes, which would cause the
+layout to reinitialise incorrectly - this will duplicate the panels. For example, you can use the `when` directive to conditionally render a pane during initialisation, but not to toggle whether to show/hide the pane afterwards.
+See [this example](#observables-with-directives).
+:::
+
+### Multiple instances
+
+Consider the following example:
+```html
+<div class="container" style="display: grid; grid-template-columns: 1fr; grid-auto-rows: minmax(46vh, auto)">
+	<div style="display: block; position: relative;">
+		<rapid-layout>
+			<rapid-layout-region>
+				<rapid-layout-item><h1>Item 1</h1></rapid-layout-item>
+				<rapid-layout-item><h1>Item 2</h1></rapid-layout-item>
+			</rapid-layout-region>
+		</rapid-layout>
+	</div>
+	<div style="display: block; position: relative;">
+		<rapid-layout>
+			<rapid-layout-region type="vertical">
+				<rapid-layout-item><h1>Item 3</h1></rapid-layout-item>
+				<rapid-layout-item><h1>Item 4</h1></rapid-layout-item>
+			</rapid-layout-region>
+		</rapid-layout>
+	</div>
+</div>
+```
+
+This describes the following layout:
+```
++---------------------------------------------+
+|                   Item 1                    |
++---------------------------------------------+
+|                   Item 2                    |
++---------------------------------------------+
+
++----------------------+----------------------+
+|                      |                      |
+|       Item 3         |        Item 4        |
+|                      |                      |
++----------------------+----------------------+
+```
+Here a grid region has been used to style two completely separate instances of the dynamic layout. Even though we have named each
+`<h1>` sequentially, the two layouts are completely separate and the default titles of each tab (Item 1 and Item 2 for both layouts),
+will reflect this. You can configure each layout separately, and you cannot drag layout items from one layout into the other one.
+
+:::info
+This is just an example; you could have more than two layouts on a page or style them with a different method to the grid.
+:::
+
+### Adding items dynamically
+
+This is an example of using the JavaScript API to add items to the layout at runtime. Before reading this example, you should familiarise yourself with the [API Section](#javascript-api).
+
+Say you want the user to be able to choose between three different types of item that can be put onto the layout - a profile-management table, a pie chart, and a column chart.
+
+```typescript
+// Can either create an element and initialise it completely using JavaScript
+const profileManagement = document.createElement('profile-management');
+// Or could grab a reference to one you create via markup
+const pieChart = document.getElementById('pie-chart');
+// We can have a reference using `ref` directive
+// const colChart = this.columnChart;
+```
+
+We can then register these elements with the layout system. Registering it with the layout system removes it from its original location.
+```typescript
+// Using a duplicate registration name is a runtime error
+this.layout.registerItem('profile', [profileManagement]);
+this.layout.registerItem('pie', [pieChart]);
+this.layout.registerItem('colChart', [this.columnChart]);
+```
+
+Finally, use the `addItem` API to add a pane onto the layout using a previously registered item.
+```typescript
+this.layout.addItem({
+	registration: 'profile',
+	name: 'Profile Management',
+	closable: true,
+})
+```
+Using `addItem` with a `registration` that has not been set is a runtime error. Remember `addItem` has an optional second parameter for setting the placement of the new pane.
+
+:::tip
+Items registered using the declarative API use the same pool of registration names, so you can also use `addItem` to add them to the layout too.
+:::
+
+#### Contained example
+
+This is a complete example of the above, omitting imports.
+
+```typescript
+// template
+export const template = html<ContainedExample>`
+  <div style="display: grid; grid-template-columns: 1fr; grid-auto-rows: minmax(7vh, auto)">
+    <div style="display: block; position: relative;">
+      <rapid-button @click=${(x) => x.addItem('1')}>Test 1</rapid-button>
+      <rapid-button @click=${(x) => x.addItem('2')}>Test 2</rapid-button>
+      <rapid-button @click=${(x) => x.addItem('3')}>Test 3</rapid-button>
+    </div>
+    <div style="display: block; position: relative; grid-row-start: 2; grid-row-end: 12;">
+      <rapid-layout
+        auto-save-key="layout-preview-contained-example"
+        :missingItemPlaceholder=${(x) => x.missingItemOverride()}
+        ${ref('containedExampleLayout')}
+      ></rapid-layout>
+    </div>
+  </div>
+`;
+
+// class
+@customElement({
+  name: 'contained-example',
+  template,
+})
+export class ContainedExample extends GenesisElement {
+  containedExampleLayout: FoundationLayout;
+  private _addedPaneCount = 0;
+
+  connectedCallback(): void {
+    super.connectedCallback();
+
+    const h1 = document.createElement('h1');
+    h1.innerHTML = 'Example 1';
+    const p1 = document.createElement('p');
+    p1.innerHTML = 'Ex 1';
+
+    const h2 = document.createElement('h2');
+    h2.innerHTML = 'Example 2';
+    const p2 = document.createElement('p');
+    p2.innerHTML = 'Ex 2';
+
+    const h3 = document.createElement('h3');
+    h3.innerHTML = 'Example 3';
+    const p3 = document.createElement('p');
+    p3.innerHTML = 'Ex 3';
+
+    this.containedExampleLayout.registerItem('1', [h1, p1]);
+    this.containedExampleLayout.registerItem('2', [h2, p2]);
+    this.containedExampleLayout.registerItem('3', [h3, p3]);
+    this.containedExampleLayout.tryLoadLayoutFromLocalStorage();
+  }
+
+  addItem(registration: string) {
+    this.containedExampleLayout.addItem({
+      registration,
+      title: `${registration} (${(this._addedPaneCount += 1)})`,
+      closable: true,
+    });
+  }
+
+  missingItemOverride = () => (missingItem: string) => `Missing Item: ${missingItem}`;
+}
+```
+
+### Loading serialised layouts
+
+This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example, you should familiarise yourself with the [API Section](#javascript-api):
+
+```html
+<rapid-layout>
+  <rapid-layout-region type="horizontal">
+    <rapid-layout-item title="Trades" registration="trades">
+      <!-- Content -->
+    </rapid-layout-item>
+    <rapid-layout-item title="Users" registration="users">
+      <!-- Content -->
+    </rapid-layout-item>
+  </rapid-layout-region>
+</rapid-layout>
+```
+
+We can use `layoutRequiredRegistrations()` on the config returned from `getLayout()` to see the registered names that are required to load the layout.
+
+```javascript
+const layout = document.querySelector('rapid-layout'); // as FoundatonLayout in TypeScript;
+const layoutConfig = layout.getLayout();
+console.log(FoundatonLayout.layoutRequiredRegistrations(layoutConfig))
+```
+This will log `['trades','users']` because these are the two registered panes. You can then load any layout that only contains either/both of these items.
+
+Consider the situation where we dynamically add an item to the right-hand side of the layout.
+```javascript
+const newItem = document.createElement('p'); //simple example
+newItem.innerText = 'Test';
+
+layout.registerItem(test, [newItem]);
+const layoutConfigTwo = layout.getLayout()
+console.log(FoundationLayout.layoutRequiredRegistrations(layoutConfigTwo));
+```
+Now we get `[ "test", "trades", "users"]` as the output, because to load `layoutConfigTwo` we now need all three of those registered panes.
+
+Consider now where the user refreshes the page to go back to the original state of the layout with just the two elements added, but then tries to load:
+
+`layoutConfigTwo`:
+```javascript
+// User has refreshed page
+
+console.log(layout.registeredItems());
+// Ouputs ['trades','users']
+
+layout.loadLayout(layoutConfigTwo);
+// Uncaught Error: Trying to load layout with extra components. The component(s) not currently loaded are "test"
+```
+Notice the error message says that the `test` component is missing. This is because it was required as part of the layout when we used `getLayout()`, but it hasn't been added as part of the layout now. If we added the item using `registerItem()` we could subsequently run `layout.loadLayout(layoutConfigTwo);` to  load the layout successfully.
+
+:::warning
+Just because an item is not displayed on the layout does not mean it is not registered. `.getLayout()` gets only the current layout config, so you cannot use it to see every single item that is currently registered (unless every item is added). This is why you should use `.registeredItems()` to get the currently registered items.
+:::
+
+#### Proactively registering items
+
+Here is a simple approach to ensure that all items are registered when you load a layout; loop through all the items that you could possibly load and register them.
+
+```javascript
+const allItems = [
+	{registration: 'trades', elements: [...], },
+	{registration: 'users', elements: [...], },
+	{registration: 'profiles', elements: [...], },
+	{registration: 'notifications', elements: [...], },
+];
+
+allItems.forEach(({registration, elements}) => {
+	layout.registerItem(registration, elements);
+})
+```
+Now all those items will be registered with the layout for potential use when calling `loadLayout()`, or added using `addItem()`.
+
+#### Reactively registering items
+
+Alternatively, you could query the current layout and the layout you want to load to see if there are any missing registered items; you can then register the missing ones. Using our previous examples:
+
+```javascript
+const currentRegistrations = FoundatonLayout.registeredItems();
+// ['trades','users']
+const requiredRegistrations = FoundatonLayout.layoutRequiredRegistrations(layoutConfigTwo);
+// ['test','trades','users']
+
+// We can see 'test' is missing and therefore we should register it
+layout.registerItem(test, [element]);
+```
+
+:::info
+Only items _missing_ from the `requiredRegistrations` are an issue. If there are items in the `currentRegistrations` that are not in `requiredRegistrations`, this is *not* an issue - because these will simply be unused registrations.
+:::
+
+:::warning
+If you are calling `registerItem` manually and are using the autosave feature, [see here](#reloading-the-layout).
+:::
+
