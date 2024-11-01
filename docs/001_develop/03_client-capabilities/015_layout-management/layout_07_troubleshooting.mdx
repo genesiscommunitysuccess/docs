@@ -1,0 +1,460 @@
+---
+title: 'Pitfalls and troubleshooting'
+sidebar_label: 'Pitfalls and troubleshooting'
+id: client-layout-management-ptifalls
+keywords: [ layout, layout management, Drag and drop, Resizable panels, Tabbed , Responsive , Customizable, Splitting, Stacking, Popouts, Nested , State persistence, Flexible, Container, Item, Component, Content item, Stack, Row, Column, Header, Tabs, Lifecycle methods, API, Resize events, Drag , Close events Declerative HTML, Attribute, Property, Template]
+tags:
+- layout
+- layout management
+- Drag and drop
+- Resizable panels
+- Tabbed
+- Responsive
+- Customizable
+- Splitting
+- Stacking
+- Popouts
+- Nested
+- State persistence
+- Flexible
+- Container
+- Item
+- Component
+- Content item
+- Stack
+- Row
+- Column
+- Header
+- Tabs
+- Lifecycle methods
+- API
+- Resize events
+- Drag
+- Close events
+- Declerative HTML
+- Attribute
+- Property
+- Template
+sidebar_position: 15
+---
+
+## Incorrect examples
+
+The following section contains examples of incorrect usage, which are useful for troubleshooting.
+
+### Inline bindings and events
+
+A common pitfall is having markup like this...
+```typescript
+const template = html`
+<div>
+    <rapid-checkbox ?checked=${sync((x) => x.isChecked, 'boolean')}></rapid-checkbox>
+    <!-- more items... -->
+</div>
+`;
+```
+...then wrapping it in a layout. If you do that the inline binding will not work. This will happen for events and other types of bindings too.
+
+See [this section](./layout_05_binding_events_store.mdx) for details of how to properly implement this..
+
+### Non-layout child
+
+The following example is invalid:
+
+```html
+<rapid-layout>
+  <rapid-layout-region type="horizontal">
+    <h1>My splits</h1>
+    <rapid-layout-item title="Component 1">
+      <!-- Content -->
+    </rapid-layout-item>
+    <rapid-layout-item title="Component 2">
+      <!-- Content -->
+    </rapid-layout-item>
+  </rapid-layout-region>
+</rapid-layout>
+```
+This is because there is a child of one of the layout regions which isn't another layout region or layout item (the `<h1>`). This will throw a runtime error.
+
+### Layout region in tabs
+
+The following example is invalid:
+
+```html
+<rapid-layout>
+	<rapid-layout-region type="tabs">
+
+		<rapid-layout-region type="vertical">
+			<rapid-layout-item title="Component 1">
+				<!-- Content -->
+			</rapid-layout-item>
+			<rapid-layout-item title="Component 2">
+				<!-- Content -->
+			</rapid-layout-item>
+		</rapid-layout-region>
+
+		<rapid-layout-item title="Component 3">
+			<!-- Content -->
+		</rapid-layout-item>
+
+	</rapid-layout-region>
+</rapid-layout>
+```
+This is because you cannot have more layout regions nested inside a tab region. You will get undefined behaviour.
+
+
+### Multiple items in root
+
+The following example is invalid:
+
+```html
+<rapid-layout>
+		<rapid-layout-item title="Component 1">
+			<!-- Content -->
+		</rapid-layout-item>
+		<rapid-layout-item title="Component 2">
+			<!-- Content -->
+		</rapid-layout-item>
+		<rapid-layout-item title="Component 3">
+			<!-- Content -->
+		</rapid-layout-item>
+</rapid-layout>
+```
+This is because you cannot have multiple layout elements as the immediate child of the layout root. You will get a runtime error.
+
+### Multiple nested layouts
+
+The following example is invalid:
+
+```html
+<rapid-layout>
+		<rapid-layout-item title="Component 1">
+      <another-component></another-component>
+		</rapid-layout-item>
+		<rapid-layout-item title="Component 2">
+			<!-- Content -->
+		</rapid-layout-item>
+</rapid-layout>
+```
+Where the markup of `another-component` is something like:
+```html
+<!--other markup-->
+<rapid-layout>
+		<rapid-layout-item title="Component 1">
+			<!-- Content -->
+		</rapid-layout-item>
+		<rapid-layout-item title="Component 2">
+			<!-- Content -->
+		</rapid-layout-item>
+		<rapid-layout-item title="Component 3">
+			<!-- Content -->
+		</rapid-layout-item>
+</rapid-layout>
+<!--other markup-->
+```
+
+This is because you cannot have an instance of the layout nested inside of another layout instance. You could try adding multiple items at once using `.addItem([elem1,..,elemN])` instead.
+
+### Nested item
+
+The following example is invalid:
+
+```html
+<rapid-layout>
+		<rapid-layout-item title="Component 1">
+			<rapid-layout-item title="Component 2">
+				<!-- Content -->
+			</rapid-layout-item>
+			<rapid-layout-item title="Component 3">
+				<!-- Content -->
+			</rapid-layout-item>
+		</rapid-layout-item>
+</rapid-layout>
+```
+This is because you cannot have `<rapid-layout-item>` inside other `<rapid-layout-item>`. You will get a runtime error.
+
+### Observables with directives
+
+The following is invalid:
+
+```javascript
+@customElement({
+	name: 'my-element',
+	template,
+})
+class Analytics extends GenesisElement {
+	@observable showIndexFunds = true;
+
+	toggleShowIndexFunds() {
+		this.showIndexFunds = !this.showIndexFunds;
+	}
+}
+
+const template = html<Analytics>`
+	<button
+		class="toggle"
+		@click=${x => x.toggleShowIndexFunds()}
+	>Toggle Index</button>
+	<rapid-layout>
+		<rapid-layout-region>
+			<rapid-layout-item>
+				<chart type="stocks"></chart>
+			</rapid-layout-item>
+
+			${when(x => x.showIndexFunds, html`
+				<rapid-layout-item>
+					<chart type="index-funds"></chart>
+				</rapid-layout-item>
+			`)}
+
+		</rapid-layout-region>
+	</rapid-layout>
+`;
+```
+
+Initially, you will see both items correctly rendered like this:
+```
++---------------------------------------------+
+|              Stocks Chart                   |
++---------------------------------------------+
+|              Index  Chart                   |
++---------------------------------------------+
+```
+But as the user clicks the toggle button, the `Index Chart` will not be taken away and added back in.
+Instead, it will be added as a duplicate every time the observable is set true. Additionally, the contents
+of the panel will be wiped as duplicates are added.
+
+To work around this, you would use directives inside custom web components inside the layout.
+
+### Binding events inline in the declarative API
+The following example is invalid:
+
+```html
+<rapid-layout>
+		<rapid-layout-item>
+			<input type="checkbox" @change=${(x,c) => x.doSomething()} />
+		</rapid-layout-item>
+</rapid-layout>
+```
+
+Because of a limitation in the [cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode), event listeners are *not* copied.
+This process is part of the process of adding an item to the layout, using both the declarative HTML and JavaScript APIs. So while you will see
+a checkbox on the screen as part of the layout, the event listener will *not* fire when you `change` the checkbox. This applies to all items and events.
+
+The idiomatic way of implementing this event binding is to create a custom element and attach the event internally.
+
+```typescript
+// template
+export const exampleComponentTemplate = html<ExampleComponent>`
+  <template>
+    <input type="checkbox" ${ref('checkbox')} @change=${(x, c) => x.doSomething()} />
+  </template>
+`;
+
+// model
+@customElement({
+  name: 'example-component',
+  template: exampleComponentTemplate,
+})
+export class ExampleComponent extends GenesisElement {
+  checkbox: Checkbox;
+	doSomething() { } // do something important
+}
+```
+
+You can then use the custom component in the layout:
+
+```html
+<rapid-layout>
+		<rapid-layout-item>
+			<example-component><example-component/>
+		</rapid-layout-item>
+</rapid-layout>
+```
+
+See [here](#custom-components-to-handle-bindings-and-event-listeners) for a thorough technical explanation.
+
+### New layout item not displaying
+Say you have the following layout, [the simple example](#simple-example), with autosave enabled.
+```html
+<rapid-layout auto-save-key="simple-example">
+  <rapid-layout-region type="horizontal">
+    <rapid-layout-item title="Component 1">
+      <!-- Content -->
+    </rapid-layout-item>
+    <rapid-layout-item title="Component 2">
+      <!-- Content -->
+    </rapid-layout-item>
+  </rapid-layout-region>
+</rapid-layout>
+```
+
+The user of your layout will move things around and this will cache the layout. Say you then update the layout to add an item.
+```html
+<rapid-layout auto-save-key="simple-example">
+  <rapid-layout-region type="horizontal">
+    <rapid-layout-item title="Component 1">
+      <!-- Content -->
+    </rapid-layout-item>
+    <rapid-layout-item title="Component 2">
+      <!-- Content -->
+    </rapid-layout-item>
+    <rapid-layout-item title="Component 3">
+      <!-- Content -->
+    </rapid-layout-item>
+  </rapid-layout-region>
+</rapid-layout>
+```
+
+You and the user will still only see the first two items. This is because the cached layout is being loaded, which does not contain the
+new item. To fix this, you must [invalidate the cache](#invalidating-the-cache).
+
+### Resource-intensive component resetting in layout
+
+Say you have a component which has to initialise a resource-heavy or long-awaited asynchronous task, such as the following:
+```typescript
+@customElement({
+  name: 'mock-connected',
+})
+export class MockConnected extends GenesisElement {
+  @observable resource = '';
+
+  async connectedCallback(): Promise<void> {
+    super.connectedCallback();
+    // Simulate doing some work with an external service
+  }
+
+  async disconnectedCallback(): Promise<void> {
+    super.disconnectedCallback();
+    // Simulate cleaning an external service
+  }
+}
+```
+
+As explained in the [lifecycle info section](#element-lifecycle-gating), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initialising a potentially heavy resource.
+
+Use `LifecycleMixin` to access properties on the class, which can be used to run lifecycle functionality more thoughtfully. In the following example, the resource-intensive tasks are called conditionally - only when needed.
+
+```typescript
+@customElement({
+  name: 'mock-connected',
+})
+export class MockConnected extends LifecycleMixin(GenesisElement) {
+  @observable resource = '';
+
+  async connectedCallback(): Promise<void> {
+    super.connectedCallback();
+    const shouldRunConnect = this.shouldRunConnect;
+    DOM.queueUpdate(async () => {
+      if (!shouldRunConnect) return;
+      await this.init();
+    });
+  }
+
+  async disconnectedCallback(): Promise<void> {
+    super.disconnectedCallback();
+    const shouldRunDisconnect = this.shouldRunDisconnect;
+    DOM.queueUpdate(async () => {
+      if (!shouldRunDisconnect) return;
+      await this.deInit();
+    });
+  }
+
+  // Simulate doing work with an external service
+  async init(): Promise<void> { }
+
+  // Simulate cleaning an external service
+  async deInit(): Promise<void> { }
+}
+```
+
+The above is quite a comprehensive example, but it doesn't necessarily have to be so complicated. You might just want to exit early from the connected callback without using the `DOM.queueUpdate` functionality. However, it is useful for handling the `async` setup process properly.
+
+:::warning
+It is important to capture the parameter in the example above (e.g. `const shouldRunDisconnect = shouldRunDisconnect`) so that the information is cached at the time of the lifecycle change, for use when the `DOM.queueUpdate` work is performed. This is not required if you run your lifecycle methods synchronously; however, if you follow the pattern above, you need to schedule the `async` functionality to run after the layout considers the relevant lifecycle-gating functionality (such as dragging) to be complete.
+:::
+
+### Consuming lifecycle value multiple times
+
+Consider the following example, where multiple bits of functionality are being gated with `shouldRunConnect`:
+```typescript
+@customElement({
+  name: 'mock-connected',
+})
+export class MockConnected extends LifecycleMixin(GenesisElement) {
+  @observable resource = '';
+
+  async connectedCallback(): Promise<void> {
+    super.connectedCallback();
+    console.log("shouldRunConnect: " + this.shouldRunConnect)
+    if (this.shouldRunConnect) {
+      await this.init();
+    }
+    await otherSetup(this.shouldRunConnect);
+  }
+
+  // Simulate doing work with an external service
+  async init(): Promise<void> { }
+  async otherSetup(connectToResource: boolean): Promise<void> {}
+  // Similar setup in disconnectedCallback...
+}
+```
+
+In this example, when you have this item inside the layout, the functionality will not correctly be gated when you add or remove other items as intended.
+
+This is because `shouldRunConnect` (and `shouldRunDisconnect`) perform a check to see whether the layout has performed an event that should gate functionality; reading the value multiple times will incorrectly signal that there hasn't been another lifecycle event upon subsequent reads during the same cycle. The mental model you can use here is thinking of consuming the check when you read the variable.
+
+Therefore, if you want to use the value multiple times in the `connectedCallback` and `disconnectedCallback` functions, you should cache the variable.
+
+** You should only read the variables `this.shouldRunConnect` and `this.shouldRunDisconnect` once per `shouldRunConnect` and `shouldRunDisconnect` cycle respectively. **
+
+```typescript
+  async connectedCallback(): Promise<void> {
+    super.connectedCallback();
+    if (this.shouldRunConnect) {
+      console.log("shouldRunConnect: " + this.shouldRunConnect)
+      await this.init();
+      await otherSetup(true);
+    } else {
+      await otherSetup(false);
+    }
+  }
+  // or....
+  async connectedCallback(): Promise<void> {
+    super.connectedCallback();
+    const runFullConnect = this.shouldRunConnect;
+    console.log("shouldRunConnect: " + runFullConnect)
+    if (runFullConnect) {
+      await this.init();
+    }
+    await otherSetup(runFullConnect);
+  }
+```
+
+:::danger
+The same limitation applies if you're checking the variable multiple times because you have a hierarchy of extending classes. Again, you should cache the variable for checking in this case.
+:::
+
+## Supplementary information
+
+### Custom components to handle bindings and event listeners
+As shown in [this example](#binding-events-inline-in-the-declarative-api), you need to wrap html that uses fast bindings and event listeners into their own custom
+components. This section is a technical explanation for why this is necessary. It is required that we make use of `cloneNode` to allow the layout to add multiple instances
+of a registered component.
+
+Consider the following, which is the order of events for loading the layout when using html that includes bindings.
+
+1. As the DOM is parsed, the elements inside the layout are created. At this point, the bindings are attached and the event listeners are created, and the `connectedCallback` lifecycle method executes.
+2. Once all the elements contained in the layout have been created, the layout itself initialises\*.
+3. As part of the initialisation process, it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache.
+4. We then load golden layout with the layout config and the registered items, where the registered items create a clone of the items in the document fragment.
+
+The issue occurs during step four - the clone from `cloneNode` doesn't have the event listeners, so the new copy (which is the one you see on the layout) has no event listeners. Compare this with the similar but different process if you've wrapped up the html into its own custom component.
+
+1. As the DOM is parsed, the elements inside the layout are created. At this point, the bindings are attached and the event listeners are created, and the `connectedCallback` lifecycle method executes.
+2. Once all the elements contained in the layout have been created, the layout itself initialises\*.
+3. As part of the initialisation process, it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache. This is just a tag, such as `<filtered-chart></filtered-chart>`, not a definition that includes bindings or event listeners.
+4. We then load golden layout with the layout config and the registered items, where the registered items create a clone of the items in the document fragment.
+5. When that clone is put on the DOM, it is a custom element. And so it calls the lifecycle method again `connectedCallback` as well as other initialisation methods that include attaching the event listener to the component as required.
+
+>>\* It initialises after the timeout specified by the `reload-buffer` attribute if using the declarative HTML API, or if steps `3` and `4` occur during calls to `registerItem` and `addItem` respectively.
