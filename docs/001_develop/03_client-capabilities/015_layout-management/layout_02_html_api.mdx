@@ -47,6 +47,40 @@ Top level web component, which is used to initialise a custom layout.
 <rapid-layout></rapid-layout>
 ```
 
+### DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+#### Attributes
+
+| Attribute | Type | Use | Example |
+|---|---|---|---|
+
+#### Properties
+
+| Property | Type | Use | Example |
+|---|---|---|---|
+
+#### Slots
+
+| Slot | Use |
+|---|---|
+
+#### Parts
+
+| Part | Use |
+|---|---|
+
+#### Fired Events
+
+| Part | Type | Use | Example |
+|---|---|---|---|
+
+### Listened Events
+
+This component doesn't listen to any events.
+
+
 ## Rapid layout region
 
 An element for declaratively setting the layout structure.
@@ -63,3 +97,43 @@ A wrapper element that is required to enclose elements to be put inside of the l
     <!-- more elements... --->
 </rapid-layout-item>
 ```
+
+### DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+#### Attributes
+
+| Attribute | Type | Use | Example |
+|---|---|---|---|
+|title|`string`|Set the title of the pane that contains the content. Defaults to `Item x`, where `x` is the pane number.|`<rapid-layout title="My title">`|
+|closable|`boolean`|Controls whether the user can close the pane. Default is `false`.|`<rapid-layout closable>`|
+|size|`string`|Controls the size of the pane. See below.|`<rapid-layout size="50%">`|
+|registration|`string`|Sets the registered name of the component. Not required to be set unless you're also using the javascript API. See here. <!-- TODO -->. By default each item that doesn't have a registration is registered sequentially starting at `"1"`.|`<rapid-layout registration="checkbox">`|
+
+##### Sizing
+
+`size`: optional string defining the size. For rows, it specifies height. For columns, it specifies width. Has format `<number><size-unit>`. Currently only supports units `fr` and `%`. Space is first proportionally allocated to items with `sizeUnit` `%`. If there is any space left over (less than 100% allocated), then the remainder is allocated to the items with unit `fr` according to the fractional size. If more than 100% is allocated, then an extra 50% is allocated to items with unit `fr` and is allocated to each item according to its fractional size. All item sizes are then adjusted to bring the total back to 100%.
+
+#### Properties
+
+There are no properties in addition to the properties controlled via attributes.
+
+#### Slots
+
+| Slot | Use |
+|---|---|
+|Default|The default slot is the contents of the layout pane. You may put one or more elements into the default slot, and they'll all be added into the element set for this item's registration|
+
+#### Parts
+
+This element doesn't have any css parts.
+
+#### Fired Events
+
+This component doesn't fire any events.
+
+### Listened Events
+
+This component doesn't listen to any events.
+
