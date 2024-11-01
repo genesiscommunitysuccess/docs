@@ -1,12 +1,20 @@
-# DIRECTIVES
+---
+title: 'directives'
+sidebar_label: 'Directives'
+id: directives
+
+sidebar_position: 3
+---
+
+# Directives
 
 ## Ref
 
 The ref directive lets you directly reference a specific DOM element within your component's template, enabling direct interaction with that element.
 
-Here’s how to use ref in <my-button> to reference the button element, making it accessible for direct manipulation in code.
+Here’s how to use ref in `<my-button>` to reference the button element, making it accessible for direct manipulation in code.
 
-```shell
+```typescript
 import {customElement, GenesisElement, html, ref } from '@genesislcap/web-core';
 
 @customElement({
@@ -38,7 +46,7 @@ Even though the `<button>` element is part of our `<my-button>` component’s te
 
 ### Syntax breakdown
 
-```shell
+```typescript
 ref(propertyName);
 ```
 - Property Name: The name of the property that will store the DOM reference in the component. The element with ref(propertyName) will be assigned to this property.
@@ -51,7 +59,7 @@ The slotted directive captures all nodes assigned to a slot in `<my-button>`.
 
 A `<slot>` is like a placeholder inside a component. Any content you add between `<my-button>` tags in HTML will appear in this slot. This setup makes the `<my-button>` component more flexible, as it can display different content depending on how it’s used.
 
-```shell
+```typescript
 import { GenesisElement, customElement, html, ref, slotted, observable } from "@genesislcap/web-core";
 
 @customElement({
@@ -71,7 +79,7 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-- The `<slot>` element inside `<button>` is a placeholder. Any content added within `<my-button> in HTML will appear here.
+- The `<slot>` element inside `<button>` is a placeholder. Any content added within `<my-button>` in HTML will appear here.
 `slotted("slotContent")`:
 
 - The slotted directive links the slot’s content to the slotContent property.
@@ -82,7 +90,7 @@ export class MyButton extends GenesisElement {
 
 ### Usage in HTML
 
-```shell
+```typescript
 <my-button>
     Click <strong>Here</strong>!
 </my-button>
@@ -100,7 +108,7 @@ In this example, we’ll modify `<my-button>` to capture any child elements plac
 
 <!-- We’ll also use a filter to ensure only `<span>` elements are captured, making the list of children more specific. -->
 
-```shell
+```typescript
 import { GenesisElement, customElement, html, children, observable, elements } from "@genesislcap/web-core";
 
 @customElement({
@@ -134,7 +142,7 @@ export class MyButton extends GenesisElement {
 
 ### Usage in HTML
 
-```shell
+```typescript
 <my-button>
     <span>Item 1</span>
     Text node
@@ -143,13 +151,13 @@ export class MyButton extends GenesisElement {
 </my-button>
 ```
 
--childNodes will contain everything inside <div>, including <span> elements, text nodes like "Text node", and <div> elements.
+-childNodes will contain everything inside `<div>`, including `<span>` elements, text nodes like "Text node", and `<div>` elements.
 
 - Any changes in the slot content (e.g., adding or removing nodes) will trigger childNodesChanged and log the updated list.
 
 ### Syntax breakdown
 
-```shell
+```typescript
 children(propertyName, options);
 ```
 - Property Name: Specifies the property that will store the array of child nodes.
@@ -161,7 +169,7 @@ children(propertyName, options);
 
 The `when` directive allows you to conditionally render sections of HTML. By providing a condition to `when`, it will display the specified template in the DOM when the condition is true and remove it when false. If the condition never becomes true, the template won’t be rendered at all.
 
-```shell
+```typescript
 import { GenesisElement, customElement, observable, html, when } from "@genesislcap/web-core";
 
 function delay(ms) {
@@ -213,7 +221,7 @@ After 2 Seconds:
 
 ### Syntax breakdown
 
-```shell
+```typescript
 when(condition, template);
 ```
 
@@ -234,7 +242,7 @@ The `repeat` directive is used to dynamically render a list of items. This direc
 
 `<my-button-list>` will display a static list of button labels, each rendered as a button. This example shows how to use repeat to render each item in the list.
 
-```shell
+```typescript
 import { GenesisElement, customElement, observable, html, repeat } from "@genesislcap/web-core";
 
 @customElement({
@@ -260,9 +268,9 @@ export class MyButtonList extends GenesisElement {
 
 ### Usage in HTML
 
-To test <my-button-list>, add it to your HTML page:
+To test `<my-button-list>`, add it to your HTML page:
 
-```shell
+```typescript
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -276,7 +284,7 @@ To test <my-button-list>, add it to your HTML page:
 
 ### Syntax breakdown
 
-```shell
+```typescript
 repeat(expression, itemTemplate, options);
 ```
 

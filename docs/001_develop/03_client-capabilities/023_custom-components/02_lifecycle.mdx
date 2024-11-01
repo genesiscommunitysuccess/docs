@@ -1,16 +1,24 @@
+---
+title: 'Lifecycle'
+sidebar_label: 'Lifecycle'
+id: lifecycle
+
+sidebar_position: 3
+---
+
 # Component Lifecycles
 
-Web Components go through several lifecycle stages from creation to removal. Understanding these lifecycles is crucial for proper component initialization, cleanup, and state management.
+Genesis Elements go through several lifecycle stages from creation to removal. Understanding these lifecycles is crucial for proper component initialization, cleanup, and state management.
 
 Here are some lifecycle methods that we have access to through `GenesisElement`:
 
 ### Connected & Disconnected
 
-`connectedCallback` lifecycle runs when component is added to DOM - perfect time for setup
+`connectedCallback` lifecycle runs when component is added to DOM - perfect time for setup.
 
 `disconnectedCallback` lifecycle runs when component is removed from DOM - perfect time for cleanup.
 
-```shell
+```typescript
 import { attr, css, customElement, GenesisElement, html } from '@genesislcap/web-core';
 
 const template = html`<button>Click Me</button>`;
@@ -26,12 +34,12 @@ export class MyButton extends GenesisElement {
     @attr disabled: boolean = false;
 
     connectedCallback() {
-        super.connectedCallback(); # Let GenesisElement do its setup first
+        super.connectedCallback(); // Let GenesisElement do its setup first
         console.log('Button is now connected to the DOM and ready for interaction');
     }
 
     disconnectedCallback() {
-        super.disconnectedCallback(); # Let GenesisElement do its cleanup first
+        super.disconnectedCallback(); // Let GenesisElement do its cleanup first
         console.log('Button is no longer interactive and removed from DOM');
     }
 }
@@ -43,11 +51,11 @@ Changed Callback lifecycle runs when attributes/properties update - handle state
 
 :::note
 
-In the following example you'll notice we have not included the `connectedCallback` and `disconnectedCallback`. It's important to remember that these two lifecycles are only necessary for things that need DOM presence. We can skip them for basic component setup that don't need DOM.
+In the following example you'll notice we have not included the `connectedCallback` and `disconnectedCallback`. You only need to add them explicitly if you need to run your own code in the lifecycles, you can omit them otherwise.
 
 :::
 
-```shell
+```typescript
 import { attr, css, customElement, GenesisElement, html } from '@genesislcap/web-core';
 
 const template = html`<button>Click Me</button>`;
