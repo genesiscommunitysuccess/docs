@@ -109,6 +109,15 @@ import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'my-root',
     templateUrl: './my.component.html',
+    template: `
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule],
@@ -116,16 +125,6 @@ import { FormsModule } from '@angular/forms';
 export class AppComponent {}
 ```
 
-View
-```html
-<rapid-grid-pro>
-    <grid-pro-genesis-datasource
-        resource-name="ALL_INSTRUMENT_REF">
-    </grid-pro-genesis-datasource>
-    <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position">
-    </fdc3-channel-event>
-</rapid-grid-pro>
-```
 </TabItem>
 </Tabs>
 
@@ -201,25 +200,23 @@ import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'my-root',
     templateUrl: './my.component.html',
+    template: `
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event
+                event-name="rowClicked"
+                channel-type="fdc3.position"
+                channel-name="appChannel">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    `
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule],
 })
 export class AppComponent {}
-```
-
-View
-```html
-<rapid-grid-pro>
-    <grid-pro-genesis-datasource
-        resource-name="ALL_INSTRUMENT_REF">
-    </grid-pro-genesis-datasource>
-    <fdc3-channel-event
-        event-name="rowClicked"
-        channel-type="fdc3.position"
-        channel-name="appChannel">
-    </fdc3-channel-event>
-</rapid-grid-pro>
 ```
 </TabItem>
 </Tabs>
@@ -271,13 +268,15 @@ Declaration
 Usage
 ```typescript
 export function MyComponent() {
+    const mappingFunction = (params: any) => ({ id: { ticker: params.TICKER, cusip: params.CUSIP } })
+
     return (
         <rapid-grid-pro>
             <grid-pro-genesis-datasource
-                resource-name="ALL_INSTRUMENT_REF>
+                resource-name="ALL_INSTRUMENT_REF">
             </grid-pro-genesis-datasource>
             <fdc3-channel-event
-                mappingFunction="{() => ({TICKER, CUSIP}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}"
+                mappingFunction={mappingFunction}
                 event-name="rowClicked"
                 channel-type="fdc3.position">
             </fdc3-channel-event>
@@ -297,27 +296,29 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'my-root',
-    templateUrl: './my.component.html',
+    templateUrl: `
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event
+                [mappingFunction]="mappingFunction"
+                event-name="rowClicked"
+                channel-type="fdc3.position">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule],
 })
-export class AppComponent {}
+export class AppComponent {
+  mappingFunction(params: any) {
+    return { id: { ticker: params.TICKER, cusip: params.CUSIP } };
+  }
+}
 ```
 
-View
-```html
-<rapid-grid-pro>
-    <grid-pro-genesis-datasource
-        resource-name="ALL_INSTRUMENT_REF">
-    </grid-pro-genesis-datasource>
-    <fdc3-channel-event
-        [mappingFunction]="${() => ({TICKER, CUSIP}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}"
-        event-name="rowClicked"
-        channel-type="fdc3.position">
-    </fdc3-channel-event>
-</rapid-grid-pro>
-```
 </TabItem>
 </Tabs>
 
