@@ -1,7 +1,7 @@
 ---
-title: 'How to consume from and publish to IBM Message Queue'
-sidebar_label: 'Consume and publish IBM MQ'
-id: ht-ibm-mq
+title: 'How to consume from and publish to a JMS Provider'
+sidebar_label: 'Consume and publish JMS'
+id: ht-jms
 keywords: [jms, ibm, mq, data pipeline]
 tags:
 - jms
@@ -12,15 +12,15 @@ tags:
 
 IBM Message Queue enables different applications to send and receive messages reliably through message queues.
 
-The Genesis Platform enables you to consume from and publish to any JMS message queue, including IBM.
+The Genesis Platform enables you to consume from and publish to any JMS provider, including IBM.
 
 These message queues are often used to access trade data, for example. You can create pipelines to consume trade data directly from the message queue and into your Genesis application.
 
 ## Example
 
-We have created an [example application](https://github.com/genesiscommunitysuccess/howto-ibm-mq-pipelines/tree/main) that shows how to publish to an IBM message queue and consume incoming messages.
+We have created an [example application](https://github.com/genesiscommunitysuccess/howto-jms-pipelines/tree/main) that shows how to publish to an IBM message queue and consume incoming messages.
 
-Note: the same how to guide can be followed for any other valid JMS message queue implementation, it has been explained in the relevant places where you can provide a different instance (for example; Active MQ etc).
+Note: the same how to guide can be followed for any other valid JMS provider, it has been explained in the relevant places where you can provide a different instance (for example; Active MQ etc).
 
 The application provides two pipelines, one to consume and one to publish.
 
@@ -29,7 +29,7 @@ These have been set up as independent processes. So if a message is published to
 :::tip Download, view and run
 The examples are within one complete example application, which includes a front end so that you can run and see the data.
 
-You can [clone the repo](https://github.com/genesiscommunitysuccess/howto-ibm-mq-pipelines/tree/main) to see the code - which includes comments at the key points to highlight what is being specified - and run the application.
+You can [clone the repo](https://github.com/genesiscommunitysuccess/howto-jms-pipelines/tree/main) to see the code - which includes comments at the key points to highlight what is being specified - and run the application.
 
 The README file for the application provides set-up instructions for creating a similar application. As well as the pipeline definitions, this includes setting up dependencies, system definitions, the Event Handler (to trigger an event) and the Request Server (to provide data to the front end.)
 :::

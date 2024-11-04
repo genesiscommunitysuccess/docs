@@ -871,7 +871,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'how-to/ht-ibm-mq'
+          id: 'how-to/ht-jms'
         },
         {
           type: 'doc',
