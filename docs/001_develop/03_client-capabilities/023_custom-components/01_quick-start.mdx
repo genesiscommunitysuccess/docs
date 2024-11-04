@@ -1,0 +1,102 @@
+---
+title: 'quickstart'
+sidebar_label: 'Quick Start'
+id: quick-start
+
+sidebar_position: 3
+---
+
+# Quick Start
+
+Let's create a simple web component using Genesis. There are three parts that make up a component: the HTML template, the CSS styles and the component logic. Web components can vary in complexity, from a simple button to a very detailed interactive experience.
+
+## Create Custom Element
+
+Start by importing all necessary parts:
+
+```typescript
+import { css, customElement, GenesisElement, html } from '@genesislcap/web-core';
+```
+
+```typescript
+
+// Create an HTML template using the html tag template literal
+const template = html`<button>Click Me</button>`;
+
+// Create CSS styles using the css tag template literal
+const styles = css`
+    h1 {
+      color: grey;
+    }
+`;
+// The @customElement decorator is a function that helps define and register a custom HTML element. It associates a class with a specific custom tag name in the DOM.
+
+@customElement({
+  name: 'my-button',
+  template,
+  styles,
+})
+
+export class MyButton extends GenesisElement {};
+
+```
+
+We’ve created a custom component called `<my-button>`, which currently displays a basic button in the browser with the text "Click Me." To make it more useful, let's add an attribute that allows us to customize the button's label and give it more dynamic functionality.
+
+:::important
+
+Like web Components, Genesis Elements are required to include a hyphen (-) in their name in order to avoid conflicts with native HTML elements and to provide a way to namespace components from various libraries.
+
+:::
+
+## Add an Attribute
+
+We can add an `attr` decorator which allows us to link a class property to an HTML attribute, ensuring that changes in the attribute are automatically reflected in the JavaScript property, and vice versa, allowing for clean and declarative state management of custom elements.
+
+You can define a default value for an attribute directly within the class definition. This ensures that if no value is provided, the attribute will fall back to the specified default.
+
+Let's declare an attribute called **_name_** and then change that value to see it reflected:
+
+```typescript
+import { attr, css, customElement, GenesisElement, html } from '@genesislcap/web-core';
+
+@customElement({
+  name: 'my-button',
+  template: html`<button>Click Me </button>`;,
+  styles,
+})
+
+export class MyButton extends GenesisElement {
+    @attr label = 'Submit'; // setting Submit as default value
+}
+
+```
+
+Now let's update the template to display the value:
+
+```typescript
+
+const template = html`<button>${x => x.label}</button>`
+```
+
+## Add it to your project
+
+:::note
+After defining your custom component, you need to import it somewhere in your application's code to ensure it gets registered. 
+:::
+
+By importing the file, `MyButton` will be registered with the browser, allowing you to use the `<my-button>` element in your HTML.
+
+```typescript
+import './MyButton'; 
+```
+
+
+Now it can be added in your HTML this way:
+
+```typescript
+<script type="module" src="path/to/hello-world.js"></script>
+<my-button label="Cancel"></my-button>
+```
+
+>In this example, we created a custom web component using `GenesisElement`. We defined a button template and added a label attribute using the `@attr` decorator, allowing the button text to be customized via HTML. We implemented the `labelChanged` method, which is automatically called whenever the label value changes. The template dynamically updates with the new value, ensuring the button remains responsive to changes in its attributes.
