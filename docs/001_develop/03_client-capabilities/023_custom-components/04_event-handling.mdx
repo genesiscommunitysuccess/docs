@@ -1,0 +1,85 @@
+---
+title: 'Event Handling'
+sidebar_label: 'Event Handling'
+id: event-handling
+
+sidebar_position: 3
+---
+
+
+### Event Handling
+
+In this section we will be covering the core aspects of event handling:
+
+- Component Communication: Enables a component (like `<my-button>`) to notify or interact with parent components or other parts of the application. Here, we achieve this by emitting a custom event from `<my-button>` when it’s clicked.
+
+- Custom Events: Custom events are unique, developer-defined events (like button-clicked in this example) that communicate specific actions or states. We use `$emit` helper to create and dispatch a custom event.
+
+- Event Data Passing: When emitting custom events, additional data can be sent along with the event. We use `event.detail` to pass contextual information (in this case, label and count) to any listener that handles the event.
+
+See implementation in the example below:
+
+```typescript
+import { GenesisElement, customElement, html, observable } from "@genesislcap/web-core";
+
+@customElement({
+    name: "my-button",
+    template: html<MyButton>`
+        <button @click="${(x, c) => x.handleClick(c.event)}">
+            ${x => `${x.label}: ${x.count}`}
+        </button>
+    `,
+    styles,
+})
+export class MyButton extends GenesisElement {
+    @observable label = "Clicks"; // Label text for the button
+    @observable count = 0;        // Tracks the number of clicks
+
+    handleClick(event: Event) {
+        this.count++; // Increment the click count
+
+        console.log("Event Target:", event.target); // Log the event target element
+        console.log("Component Label:", this.label); // Log the current label
+
+        # Emit a custom "button-clicked" event with the current label and count
+        this.$emit("button-clicked", {
+            label: this.label,
+            count: this.count
+        });
+    }
+}
+```
+
+Now let's show how we can listen in another component providing for component communication:
+
+```typescript
+import { GenesisElement, customElement, html } from "@genesislcap/web-core";
+import "./my-button"; # Import the my-button component
+
+@customElement({
+    name: "parent-component",
+    template: html`
+        <button @button-clicked="${(x, c) => x.handleButtonClicked(c.event)}"></button>
+    `,
+})
+export class ParentComponent extends GenesisElement {
+    handleButtonClicked(event: CustomEvent) {
+        console.log("Custom event received in ParentComponent:", event.detail);
+        // Output: { label: "Clicks", count: X }
+    }
+}
+```
+
+Explanation of key elements in the above example:
+
+Component Communication: 
+- This allows `<my-button>` to communicate with its parent or other parts of the application by notifying them whenever it’s clicked.
+- Using the `$emit` helper method, `<my-button>` emits a button-clicked event that any parent component or listener can handle.
+
+Custom Events:
+- `button-clicked` is a custom event that’s unique to `<my-button>`. It’s created to indicate that the button has been clicked, providing a specific trigger for listeners.
+- The `$emit` method simplifies the creation and dispatch of the button-clicked event with bubbles: true and composed: true, making it available to parent components and global listeners.
+
+Event Data Passing:
+- The custom event includes data (the label and count properties) to provide context on the button’s state when the event was emitted.
+- Implementation: The `$emit` method’s second parameter passes `{ label: this.label, count: this.count }` as event.detail, enabling any listener to access this information for further processing.
