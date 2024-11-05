@@ -13,58 +13,104 @@ tags:
 sidebar_position: 2
 ---
 
-The data model is a fundamental part of any Genesis Application. Within the data model we define the [entities (tables)](#tables) relevant to the application which will store the application's data. We also define [views](#views) which join related entities together to represent wholistic views onto the applications dataset. The application's tables and views power most Genesis Server and Client services and components by making them aware of the application's data structure, and by notifying them of relevant changes to the data.
+The data model is a fundamental part of any Genesis Application. Within the data model we define the [entities (tables)](#tables) relevant to the application which will store the application's data. We also define [views](#views) which join related entities together to provide wholistic views onto the applications dataset. The application's tables and views power most Genesis Server and Client services and components by making them aware of the application's data structure, and by notifying them of relevant changes to the data.
 
 The data model of a Genesis Application is defined in `*-dictionary.kts` files.
 
-## Tables
-
-Tables represent sets of records for each of the entities in an application. 
-Each table is defined with a set of fields (entity attributes) which make up a record representing the entity. 
+## Example configuration
 
 Tables and their fields are defined in  `*-tables-dictionary.kts` files, these files are placed in the `cfg` folder in your application's server codebase.
+
+Each table is defined with a set of fields (entity attributes) which make up a record representing the entity. 
 
 Each table requires:
 
 - a unique name and unique id
-- one or more fields
+- one or more fields (attributes)
 - one primary key
 
-Below shows an example table definition:
+Below shows an example configuration of three tables: `TRADE`, `COUNTERPARTY` and `INSTRUMENT`
 
 ```kotlin
 tables {
-    table(name = "ORDER", id = 11_000, audit = details(id = 11_500, sequence = "OA")) {
-        field("ORDER_ID", LONG).autoIncrement()
+    table(name = "TRADE", id = 11_000, audit = details(id = 11_500, sequence = "TA")) {
+        field("TRADE_ID", LONG).autoIncrement()
+        field("TRADE_PRICE", DOUBLE).notNull()
+        field("DIRECTION", ENUM("SELL","SHORT_SELL","BUY")).default("BUY").notNull()
+        field("QUANTITY", INT).notNull()
         field("COUNTERPARTY_ID", LONG).notNull()
         field("INSTRUMENT_ID", LONG).notNull()
-        field("DIRECTION", ENUM("SELL","SHORT_SELL","BUY")).default("BUY").notNull()
-        field("PRICE", DOUBLE).notNull()
-        field("QUANTITY", INT).notNull()
-        field("ORDER_DATE", DATE).notNull()
-        field("ORDER_DATETIME", DATETIME).notNull()
-        field("IS_AGENCY", BOOLEAN).default(false).notNull()
 
-        primaryKey("ORDER_ID")
+        primaryKey("TRADE_ID")
 
         indices {
-            nonUnique("COUNTERPARTY_ID").name("ORDER_BY_COUNTERPARTY_ID")
-            nonUnique("INSTRUMENT_ID").name("ORDER_BY_INSTRUMENT_ID")
+            nonUnique("COUNTERPARTY_ID").name("TRADE_BY_COUNTERPARTY_ID")
+            nonUnique("INSTRUMENT_ID").name("TRADE_BY_INSTRUMENT_ID")
         }
+    }
+
+    table(name = "INSTRUMENT", id = 11_001) {
+        field("INSTRUMENT_ID", LONG).autoIncrement()
+        field("NAME", STRING).notNull()
+
+        primaryKey("INSTRUMENT_ID")
+    }
+
+    table(name = "COUNTERPARTY", id = 11_002) {
+        field("COUNTERPARTY_ID", LONG).autoIncrement()
+        field("COUNTERPARTY_CODE", STRING).notNull()
+        field("NAME", STRING).notNull()
+
+        primaryKey("COUNTERPARTY_ID")
     }
 }
 ```
 
-### Table and entity terminology
+Views are defined in  `*-views-dictionary.kts` files, they need to be defined in the `cfg` folder in your application's server codebase.
 
-The following table gives an overview of terms for table and entity used in Genesis, in relation to the example above.
+Every view defines a "root" table, the main table powering the view. It then defines tables which join to it in order to make up the view.
 
-| Object Type  | Name        |
-| ------------ | ----------- |
-| Table        | ORDER       |
-| Entity       | Order       |
-| Index        | ORDER_BY_ID |
-| Entity Index | Order.ById  |
+Taking the example table configuration above, we can create a `TRADE_VIEW` as follows, which joins onto `INSTRUMENT` and `COUNTEPARTY` tables to include their fields in the view
+
+![](/img/views-basics.png)
+
+Views can also contain derived fields, which are fields with values derived from one or more fields in the view. In the above example we see `NOTIONAL` which is the product of `QUANTITY` and `TRADE_PRICE`.
+
+The above example can be configured as follows:
+```kotlin
+views {
+    view("TRADE_VIEW", TRADE) {
+        joins {
+            joining(INSTRUMENT, backwardsJoin = true) {
+              on(TRADE { INSTRUMENT_ID } to INSTRUMENT { INSTRUMENT_ID })
+            }
+            joining(COUNTERPARTY) {
+              on(TRADE { COUNTERPARTY_ID } to INSTRUMENT { COUNTERPARTY_ID })
+            }
+        }
+        fields {
+            TRADE.allFields()
+
+            INSTRUMENT.NAME withPrefix INSTRUMENT
+            COUNTERPARTY.COUNTERPARTY_CODE withAlias CTPTY_CODE
+            COUNTERPARTY.NAME withAlias CTPTY_NAME
+            
+            derivedField("NOTIONAL", DOUBLE) {
+                withInput(TRADE.QUANTITY, TRADE.PRICE) { quantity, price -> 
+                    quantity * price
+                }
+            }
+
+        }
+  }
+}
+```
+
+Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and other data visualisation web client components. 
+
+Tables and views are also be used to power server server capabilities such as [real-time aggregation](/develop/server-capabilities/real-time-aggregation-consolidator/), [real-time triggers](/develop/server-capabilities/real-time-triggers-evaluator/) and outbound integrations. 
+
+## Table configuration options
 
 ### Table fields
 Each table requires one or more fields to be defined.
@@ -472,29 +518,7 @@ table(name = "GENESIS_PROCESS", id = 12) {
 }
 ```
 
-----------
-
-## Views
-
-Views are used to define a single entity representing data across tables.
-
-Every view defines a "root" table, the main table powering the view. It then defines tables which join to it in order to make up the view.
-
-Take the following scenario:
-- Root table is called `TRADE`
-- The `TRADE` table references both `INSTRUMENT` and `COUNTERPARTY` tables via their respective ID fields `INSTRUMENT_ID` and `COUNTERPARTY_ID`
-
-You could then define a TRADE_VIEW as follows, which pulls in INSTRUMENT_NAME, CTPTY_CODE and CTPTY_NAME fields from those joined tables
-
-![](/img/views-basics.png)
-
-Views can also contain derived fields, which are fields with values derived from one or more fields in the view. In the above example we see NOTIONAL which is the product of QUANTITY and TRADE_PRICE.
-
-This single view of data, containing field values across multiple joined tables and derived values, can then be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and other data visualisation web client components. 
-
-Views are also be used to power server server capabilities such as [real-time aggregation](/develop/server-capabilities/real-time-aggregation-consolidator/), [real-time triggers](/develop/server-capabilities/real-time-triggers-evaluator/) and outbound integrations. 
-
-Views are defined in  `*-views-dictionary.kts` files, they need to be defined in the `cfg` folder in your application's server codebase.
+## View configuration options
 
 ### Joining tables
 
@@ -558,7 +582,7 @@ views {
   view("TRADE_VIEW", TRADE) {
 
     joins {
-      joining(INSTRUMEN, backwardsJoin = true) {
+      joining(INSTRUMENT, backwardsJoin = true) {
         on(TRADE.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
       }
     }
@@ -801,44 +825,9 @@ derivedField("SPREAD", DOUBLE) {
 }
 ```
 
----
-### Example views
+###### Example view with more complex derived fields
 
-The file has two views:
-
-* The first view is called TRADE_VIEW. It joins the TRADE table to the COUNTERPARTY table and to the INSTRUMENT table. This view also includes a [derived field](#derived fields) called NOTIONAL.
-* The second view is called POSITION_VIEW. Its root table is the POSITION table. There are [backwards joins](/database/fields-tables-views/views/views-basics/#backwards-joins) to the ALT_INSTRUMENT_ID and INSTRUMENT_L1_PRICE tables which allow real-time updates from all the fields to trigger updates. Separately, there is a join from the root table to the INSTRUMENT table. This view also includes two [derived fields](/database/fields-tables-views/views/views-advanced/#derived-fields): VALUE and PNL.
-
-```kotlin
-views {
-
-  view("TRADE_VIEW", TRADE) {
-
-    joins {
-      joining(COUNTERPARTY) {
-        on(TRADE.COUNTERPARTY_ID to COUNTERPARTY { COUNTERPARTY_ID })
-      }
-      joining(INSTRUMENT) {
-        on(TRADE.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
-      }
-    }
-
-    fields {
-      TRADE.allFields()
-
-      COUNTERPARTY.NAME withPrefix COUNTERPARTY
-      INSTRUMENT.NAME withPrefix INSTRUMENT
-      INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
-
-      derivedField("NOTIONAL", DOUBLE) {
-        // I: F2*H2
-        withInput(TRADE.QUANTITY, TRADE.PRICE) { QUANTITY, PRICE ->
-          QUANTITY * PRICE
-        }
-      }
-    }
-  }
-
+```kotlin {24-58}
   view("POSITION_VIEW", POSITION) {
 
     joins {
