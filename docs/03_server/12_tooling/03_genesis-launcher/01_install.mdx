@@ -1,32 +1,32 @@
 ---
-title: 'Enabling Genesis Launcher'
+title: 'Enabling Genesis Start'
 sidebar_label: 'Enabling'
-id: enable-launcher
-keywords: [server, tooling, code snippets, launcher, jetbrains, local]
+id: enable-start
+keywords: [server, tooling, code snippets, start, jetbrains, local]
 tags:
   - server
   - tooling
   - code snippets
-  - launcher
+  - start
   - jetbrains
   - local
 ---
 
-Genesis Launcher enables you to launch Genesis applications without the need for downloading and installing an IDE. 
+Genesis Start enables you to launch Genesis applications without the need for downloading and installing an IDE.
 
-![Genesis Launcher Screenshot](/img/genesis-launcher/genesis-launcher-empty.png)
+![Genesis Start Screenshot](/img/genesis-launcher/genesis-launcher-empty.png)
 
 :::info
-You do not need to enable recently created projects; these already have the Genesis Launcher enabled.
+You do not need to enable recently created projects; these already have the Genesis Start enabled.
 
-An older existing project can be enabled to use the Launcher if it uses:
+An older existing project can be enabled to use Genesis Start if it uses:
 * the [simplified structure](/operations/project-structure/introduction/); this includes any project generated through Create
 * the [Genesis Gradle Settings plugin](/operations/project-structure/settings-plugin/)
 :::
 
 ## Enabling
 
-If you need to enable Launcher, there are two things that you need to do:
+If you need to enable Genesis Start, there are two things that you need to do:
 
 1. Amend the settings file.
 2. Amend the build file.
@@ -50,12 +50,12 @@ pluginManagement {
 In your project's **build.gradle.kts** file, add the plugin:
 
 ```kotlin
-// add the launcher to plugins
+// add Genesis Start to plugins
 plugins {
     // other plugins..
-    id("global.genesis.genesis-launcher-gui") version "0.1.3"
+    id("global.genesis.genesis-start-gui") version "0.1.4"
 }
 ```
 
 ## Next step
-Once the plugin is enabled you can [start Genesis Launcher](../running-launcher).
+Once the plugin is enabled you can [start Genesis Start](../running-start).

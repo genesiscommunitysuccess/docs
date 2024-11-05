@@ -1,30 +1,33 @@
 ---
-title: 'Running Genesis Launcher'
+title: 'Running Genesis Start'
 sidebar_label: 'Running'
-id: running-launcher
-keywords: [server, tooling, code snippets, launcher, jetbrains, local]
+id: running-start
+keywords: [server, tooling, code snippets, start, jetbrains, local]
 tags:
   - server
   - tooling
   - code snippets
-  - launcher
+  - start
+  - jetbrains
+  - local
+
 ---
 
-## Starting the Launcher
+## Starting 
 
-All [enabled](/server/tooling/genesis-launcher/enable-launcher/) projects have a **genesisLauncher** gradle task in the **server** directory.
+All [enabled](/server/tooling/genesis-start/enable-start/) projects have a **genesisStart** gradle task in the **server** directory.
 
-You can start the launcher by running that task from an IDE. 
+You can launch Genesis Start by running that task from an IDE.
 
 Alternatively, from the command line, run:
 
 ```shell
-./gradlew genesisLauncher
+./gradlew genesisStart
 ```
 
 ## Usage
 
-Once you open Genesis Launcher for your project, all the services for the application are listed, including the Web UI.
+Once you open Genesis Start for your project, all the services for the application are listed, including the Web UI.
 
 ### Starting for the first time
 To get started for the first time; click on the 🚀 icon, just underneath the Genesis logo.
@@ -40,7 +43,7 @@ Once the database has been initialised, you can simply run **Start All** to star
 
 Once a process is running, you can click on the process name to view its log file:
 
-![Genesis Launcher Screenshot](/img/genesis-launcher/genesis-launcher-running.png)
+![Genesis Start Screenshot](/img/genesis-launcher/genesis-launcher-running.png)
 
 :::tip Saving local resources
 If you need to cut down on memory usage when you build and run locally, select **File** => **Settings** => **Use Compact Processes** before you start. 
