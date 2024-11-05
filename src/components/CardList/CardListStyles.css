@@ -81,8 +81,8 @@
 }
 
 .card-list-tag:hover {
-  background-color:  var(--ifm-link-color);
-  color: #fff;
+  background-color:  var(--ifm-navbar-background-color);
+  color: var(--ifm-navbar-link-color);
   text-decoration: none;
 }
 
