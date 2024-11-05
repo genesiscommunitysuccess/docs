@@ -1216,52 +1216,52 @@ The behaviour of this command depends on which database implementation your appl
 
 And remember, only use this command when all your applications have been stopped. After running `SetAutoIncrement`, you need to restart the server.
 
-## DictionaryBuilder
+## Dictionary Builder
 
-`DictionaryBuilder` connects to an RDBMS, parses schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
+`DictionaryBuilder` connects to an RDBMS, parses schemas and uses this information to generate a Genesis tables dictionary. It supports SQLServer and PostgreSQL databases.
 
-The script accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc).
-
-<!-- The DictionaryBuilder command has a list of possible arguments: -c, -d, -h, -H, -i, -l, -o, -p, -P, -R, -s, -t, -U, -V -->
+The script accepts a series of arguments to establish a connection to the database and inform the scripts behaviour:
 
 ### Syntax
 
-| Short | Long Argument                          | Mandatory | Description                                                                                                               |
-|----|----------------------------------------|----|--------------------------------------------------------------------------------------------------------------------------|
-| -c <!-- DictionaryBuilder -c  -->  | --comments  <!-- DictionaryBuilder -c  -->                                      |     | Include original SQL in Comments defaults to true                                                                         |
-| -d <!-- DictionaryBuilder -d  -->  | --databaseName=\<databaseName\>  <!-- DictionaryBuilder --databaseName=\  -->   | Yes | Database name                                                                                                             |
-| -h <!-- DictionaryBuilder -h  -->  | --help  <!-- DictionaryBuilder --help  -->                                      |     | Show this help message and exit.                                                                                          |
-| -H <!-- DictionaryBuilder -H  -->  | --host=\<hostname\>   <!-- DictionaryBuilder --host=[HOST]  -->                 | Yes | The database hostname.                                                                                                    |
-| -i <!-- DictionaryBuilder -i  -->  | --tableid=\<tableIdStart\>  <!-- DictionaryBuilder --tableid=[TABLE ID]  -->    |     | Table Id start number, defaults = 0                                                                                       |
-| -l <!-- DictionaryBuilder -l  -->  | --tables=\<tables\>\[,\<tables\>...\] <!-- DictionaryBuilder --tables=\  -->    |     | table list to include, default is all tables                                                                              |
-| -o <!-- DictionaryBuilder -o  -->  | --output=\<outputDirectory\>  <!-- DictionaryBuilder --output=[DIRECTORY]  -->  |     | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created             |
-| -p <!-- DictionaryBuilder -p  -->  | --port=\<port\>  <!-- DictionaryBuilder --port=[PORT]  -->                      | Yes | The database port                                                                                                        |
-| -P <!-- DictionaryBuilder -P  -->  | --password\[=\<password\>\]  <!-- DictionaryBuilder --password=[PASSWORD]  -->  | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively |
-| -R <!-- DictionaryBuilder -R  -->  | --product=\<productName\>   <!-- DictionaryBuilder --productName=[NAME]  -->    | Yes | Represents the product name and affects the output file                                                                 |
-| -s <!-- DictionaryBuilder -s  -->  | --sid=\<oracleSidId\>  <!-- DictionaryBuilder --sid=[ID]  -->                   |     | The Oracle System ID if using oracle, or the schema ID if using MSSQL                                                    |
-| -t <!-- DictionaryBuilder -t  -->  | --type=\<databaseType\>  <!-- DictionaryBuilder --type=[DB TYPE]  -->           | Yes | Database type, valid values: MSSQL, Oracle, Postgres                                                                      |
-| -U <!-- DictionaryBuilder -U  -->  | --username=\<username\>  <!-- DictionaryBuilder --username=[USERNAME]  -->      | Yes | Username                                                                                                                  |
-| -V <!-- DictionaryBuilder -V  -->  | --version   <!-- DictionaryBuilder --version=[VERSION]  -->                     |     | Print version information and exit                                                                                       |
-
-You can use double-dash notation for any argument.
+| Arg | Long Argument              | Mandatory | Description                                                                                                  |
+|-----|----------------------------|-----------|--------------------------------------------------------------------------------------------------------------|
+| -j  | --jdbcUrl \<jdbcUrl\>      | Yes       | JDBC URL of the database.                                                                                    |
+| -p  | --product \<productName\>  | Yes       | Represents the product name and affects the output files.                                                    |
+| -c  | --createFormat             |           | Generates JSON ready for use with Genesis Create, instead of the standard tables dictionary.                 |
+| -e  | --export                   |           | Exports table data to CSV                                                                                    |
+| -g  | --genesisTables            |           | Read from existing Genesis database                                                                          |
+| -t  | --tables \<table1,table2>  |           | table list to include, default is all tables                                                                 |
+| -o  | --output \<outputDir\>     |           | Output directory for files. If the directory does not exist, it will be created. Defaults to project root.   |
+| -s  | --schema \<schemaId\>      |           | Schema name / System ID                                                                                      |
+|     | --tableid \<tableIdStart\> |           | Table ID start number, default = 2000. Ignored if reading from Genesis DB.                                   |
 
 ### Example
 
-```bash
-DictionaryBuilder -u TAS -p my_password -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
+Generates a Genesis tables dictionary from a PostgreSQL database and exports data to a TABLE_NAME.csv file in the root of the project:
+```shell
+DictionaryBuilder --jdbcUrl jdbc:postgresql://localhost:5432/?user=postgres&password=docker --product my-app --export
+```
+
+Generates Genesis Create compatible JSON from a SqlServer database:
+```shell
+DictionaryBuilder --jdbcUrl jdbc:sqlserver://localhost:1433;trustServerCertificate=true;username=SA;password=VerySecure123 --product my-app --createFormat
+```
+
+Generates a Genesis tables dictionary from a PostgreSQL database called `myDatabase` 
+```shell
+DictionaryBuilder --jdbcUrl jdbc:postgresql://localhost:5432/myDatabase?user=postgres&password=docker --product my-app --export --tables user_trades
 ```
 
 ### How the script behaves
 
-The script tries to connect to the RDBMS currently specified in the arguments. It generates Genesis dictionary fields for column names and their types, and it creates tables with their fields and keys.
+The script connects via the given JDBC Url and retrieves the information it requires to build a Genesis tables dictionary.
 
 There are a few considerations you should be aware of:
 
-* If a column name (e.g. DATE) is found in several tables, and it always has the same type, only one field will be specified in the dictionary. However, if the same column name is found in different tables with different types, a new field will be created for each type, keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so you can fix the name and/or type it manually later on.
-* The types are mapped from [http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html "http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html") to Genesis dictionary types. Each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate; you must check the results for correctness.
-* If there is no mapping available for the `java.sql.Type` retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type `STRING`. This event will be shown on standard output too, so you can know that there is an uncommon type that you should take care of.
-* Every time a table is successfully parsed, the script will give feedback: `TABLE USERS complete`.
-* Views are not parsed.
+* Table and column names parsed in lowerCamelCase format will be transformed to UPPER_SNAKE_CASE
+* If there is no mapping available for the `java.sql.Type` the column will be ignored and the name logged in the output.
+* Exporting extremely large datasets with the `--export` flag is not supported.
 
 #### Keys and indexes
 Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based.
@@ -1270,22 +1270,6 @@ Only unique indexes will be parsed as secondary keys.
 
 There is no concept of foreign keys in Genesis, so these are ignored.
 
-Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE).
-
-### Type mapping
-
-| Genesis Type | JDBC Types |   |   |   |   |   |   |
-| -- | -- | -- | -- | -- |
-| STRING | CHAR | LONGNVARCHAR | LONGVARCHAR | NCHAR | NVARCHAR | VARCHAR | CLOB |
-| LONG | BIGINT |   |   |   |   |   |   |
-| RAW | BINARY | LONGVARBINARY | VARBINARY | BLOB |   |   |   |
-| INT | INTEGER | SMALLINT | TINYINT |   |   |   |   |
-| DOUBLE | FLOAT | DOUBLE |   |   |   |   |   |
-| BIGDECIMAL | DECIMAL |   |   |   |   |   |   |
-| DATETIME | TIMESTAMP |   |   |   |   |   |   |
-| BOOLEAN | BOOLEAN |   |   |   |   |   |   |
-| DATE | DATE |   |   |   |   |   |   |
-| TIME | TIME |   |   |   |   |   |   |
 
 ## ReconcileDatabaseSync
 

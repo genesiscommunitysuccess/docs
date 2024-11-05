@@ -1206,7 +1206,7 @@ And remember, only use this command when all your applications have been stopped
 
 ## DictionaryBuilder
 
-`DictionaryBuilder` connects to an RDBMS, parses schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
+`DictionaryBuilder` connects to an RDBMS, parses schemas and uses this information to generate a Genesis dictionary. It supports MSSQL databases.
 
 The script accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc).
 
@@ -1259,21 +1259,6 @@ Only unique indexes will be parsed as secondary keys.
 There is no concept of foreign keys in Genesis, so these are ignored.
 
 Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE).
-
-### Type mapping
-
-| Genesis Type | JDBC Types |   |   |   |   |   |   |
-| -- | -- | -- | -- | -- |
-| STRING | CHAR | LONGNVARCHAR | LONGVARCHAR | NCHAR | NVARCHAR | VARCHAR | CLOB |
-| LONG | BIGINT |   |   |   |   |   |   |
-| RAW | BINARY | LONGVARBINARY | VARBINARY | BLOB |   |   |   |
-| INT | INTEGER | SMALLINT | TINYINT |   |   |   |   |
-| DOUBLE | FLOAT | DOUBLE |   |   |   |   |   |
-| BIGDECIMAL | DECIMAL |   |   |   |   |   |   |
-| DATETIME | TIMESTAMP |   |   |   |   |   |   |
-| BOOLEAN | BOOLEAN |   |   |   |   |   |   |
-| DATE | DATE |   |   |   |   |   |   |
-| TIME | TIME |   |   |   |   |   |   |
 
 ## ReconcileDatabaseSync
 
