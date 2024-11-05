@@ -19,15 +19,15 @@ export default function ReleaseCard({ blog_link, rn_link, img_url, alt_text }) {
   }, [img_url]);
 
   return (
-    <Card sx={{ backgroundColor: 'var(--warm-gray-4)', padding: '2%', display: 'flexbox', flexGrow: '1', flexDirection: 'row', margin: '1%' }} className='release-card' >
+    <Card sx={{ backgroundColor: 'var(--warm-gray-4)', padding: '2%', flexGrow: '1', flexDirection: 'row', margin: '1%' }} className='release-card' >
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
         {imageSrc && <img src={imageSrc} alt={alt_text} className="release-card-image"/>}
         <p />
-        <a href={blog_link} target="_blank" style={{ display: 'flexbox', fontSize: '14px', fontWeight: 'bold' }}>
+        <a href={blog_link} target="_blank" style={{ fontSize: '14px', fontWeight: 'bold' }}>
           Blog
           <ArrowForward sx={{ height: '10px', width: 'auto', paddingLeft: '1%' }} />
         </a>
-        <a href={rn_link} style={{ display: 'flexbox', fontSize: '14px', fontWeight: 'bold' }}>
+        <a href={rn_link} style={{ fontSize: '14px', fontWeight: 'bold' }}>
           Release notes
           <ArrowForward sx={{ height: '10px', width: 'auto', paddingLeft: '1%' }} />
         </a>
@@ -35,3 +35,10 @@ export default function ReleaseCard({ blog_link, rn_link, img_url, alt_text }) {
     </Card>
   );
 }
+
+ReleaseCard.propTypes = {
+  blog_link: PropTypes.string,
+  rn_link: PropTypes.string,
+  img_url: PropTypes.string,
+  alt_text: PropTypes.string,
+};

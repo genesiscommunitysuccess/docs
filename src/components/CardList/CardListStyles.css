@@ -1,0 +1,106 @@
+:root {
+  --card-list-item-max-width: 350px;
+}
+.card-list-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: left;
+}
+
+.card-list {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1%;
+  max-width: calc(3 * var(--card-list-item-max-width) + 2 * 1%);
+}
+
+.card-list-item {
+  flex: 1 1 calc(33.333% - 2%);
+  max-width: var(--card-list-item-max-width);
+  transition: transform 0.3s;
+  display: flex;
+  justify-content: center;
+}
+
+.card-list-item-content {
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.87);
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-radius: 4px;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  background-color: var(--warm-gray-4);
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100% - 10px);
+  margin: 5px 0;
+}
+
+.card-list-image-wrapper {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: 300px;
+  line-height: 0;
+  text-align: center;
+}
+.card-list-image {
+  max-height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.card-list-content {
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+  display: flex;
+  padding: 10px 0;
+  flex-wrap: nowrap;
+}
+
+.card-list-title {
+  align-items: center;
+  display: flex;
+  font-weight: 700;
+  flex-grow: 1;
+}
+
+.card-list-tag {
+  text-align: right;
+  background-color: var(--warm-gray-3);
+  color: var(--darker-blue);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.card-list-tag:hover {
+  background-color:  var(--ifm-link-color);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Responsive styles */
+@media (min-width: 1200px) {
+  .card-list {
+    justify-content: space-around;
+  }
+
+  .card-list-item {
+    flex: 1 1 calc(33.333% - 2%);
+  }
+}
+
+@media (max-width: 1199px) {
+  .card-list-item {
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin: 1% auto;
+  }
+}

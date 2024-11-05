@@ -5,6 +5,7 @@ id: 'latest-releases'
 ---
 
 import ReleaseCard from '@site/src/components/ReleaseCard';
+import CardList from '@site/src/components/CardList/CardList';
 import { Grid } from '@mui/material'
 
 Genesis Application Platform releases
@@ -49,5 +50,45 @@ Genesis Application Platform releases
           img_url="Release-8.0.webp"
           alt_text="8.0 Release"
         />
+    </Grid>
+    <Grid item xs={12} md={12} sx={{padding: '1%'}}>
+      <CardList
+        items={[
+          {
+            image: 'release-notes/Release-8.4.webp',
+            title: 'Genesis 8.4',
+            link: 'https://genesis.global/blog/genesis-release-8-4/',
+          },
+          {
+            image: 'release-notes/Release-8.3.webp',
+            title: 'Genesis 8.3',
+            link: 'https://genesis.global/blog/genesis-release-8-3/',
+            tag: {
+              label: 'label',
+              link: 'https://genesis.global/blog/genesis-release-8-3/',
+            },
+          },
+          {
+            image: 'release-notes/Release-8.2.webp',
+            title: 'Genesis 8.2',
+            link: 'https://genesis.global/blog/genesis-release-8-2/',
+          },
+          {
+            image: 'release-notes/Release-8.1.webp',
+            title: 'Genesis 8.1',
+            link: 'https://genesis.global/blog/genesis-release-8-1/',
+          },
+          {
+            image: 'release-notes/Release-8.0.webp',
+            title: 'Genesis 8.0',
+            link: 'https://genesis.global/blog/genesis-release-8-0/',
+          },
+          {
+            image: 'release-notes/Release-8.0.webp',
+            title: 'Genesis 8.0',
+            link: 'https://genesis.global/blog/genesis-release-8-0/',
+          },
+        ]}
+      />
     </Grid>
 </Grid>
