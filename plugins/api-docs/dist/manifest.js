@@ -270,16 +270,16 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/04_web/12_forms",
+                directory: "./docs/001_develop/03_client-capabilities/007_forms/002_smart-forms",
                 api_docs: "docs/api",
-                readme: "01_foundation-forms.mdx",
+                readme: "01_smart-forms.mdx",
                 keywords: ["genesis", "foundation", "ui", "forms", "smart forms"],
                 tags: ["genesis", "foundation", "ui", "forms", "smart forms"],
                 pages: [
                     {
-                        title: "Foundation Forms",
-                        sidebar_label: "Foundation Forms",
-                        id: "foundation-forms",
+                        title: "Smart forms",
+                        sidebar_label: "Smart Forms",
+                        id: "smart-forms",
                     },
                 ],
             },
