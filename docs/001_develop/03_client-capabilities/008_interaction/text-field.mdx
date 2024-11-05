@@ -46,11 +46,17 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-text-field>
+        <rapid-text-field :value=${sync((x) => x.fieldValue)}>
           Sample Text Field
         </rapid-text-field>
       `,
     })
+    export class MyElement extends GenesisElement {
+      @observable fieldValue = '';
+      fieldValueChanged() {
+        console.log(this.fieldValue);
+      }
+    }
     ```
 
   </TabItem>
@@ -63,11 +69,11 @@ Use cases:
     Usage
     ```typescript
     export function MyComponent() {
-      const handleButtonClicked = (event) => {
-        console.log('Button clicked')
+      const handleTextFieldChanged = (event) => {
+        console.log({ event.target.value })
       };
       return (
-        <rapid-text-field onClick={handleButtonClicked}></rapid-text-field>
+        <rapid-text-field onChange={handleTextFieldChanged}></rapid-text-field>
       );
     }
     ```
@@ -86,9 +92,9 @@ Use cases:
     @Component({
       selector: 'my-root',
       template: `
-        <rapid-button
-          (click)="onButtonClicked($event)"
-        ></rapid-checkbox>
+        <rapid-text-field
+          (change)="onTextFieldChange($event)"
+        ></rapid-text-field>
       `,
       styleUrls: ['./my.component.css'],
       standalone: true,
@@ -96,8 +102,9 @@ Use cases:
       imports: [FormsModule],
     })
     export class AppComponent {
-      onButtonClicked(event: Event) {
-        console.log('Button clicked');
+      onCheckboxChange(event: Event) {
+        const target = event.target as HTMLInputElement;
+        console.log(target.value);
       }
     }
     ```
