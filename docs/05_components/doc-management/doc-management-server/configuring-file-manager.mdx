@@ -57,6 +57,14 @@ item(name = "S3_BUCKET_NAME", value = "<bucketName>")
 item(name = "S3_FOLDER_PREFIX", value = "<folderPrefix>")
 ```
 
+The AWS Storage Manager will upload the file in multiple parts if it's above a certain size in bytes, the part size of which can be configured as shown below.
+It should be noted that AWS has a minimum part size of 5MiB. Therefore, setting this configuration to lower than 5MiB and uploading a file smaller than 5MiB but greater than the limit will fail.
+See [Amazon S3 multipart upload limits](https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html) for more details.
+This configuration is optional and will be set to 5MiB by default where the value below should be an integer:
+```kotlin
+item(name = "S3_MULTIPART_SIZE_BYTES", value = <partSizeBytes>)
+```
+
 Once you have set your storage mode and bucket config, your must set the individual config for your chosen storage mode.
 
 ### S3_STORAGE_MODE = LOCAL
