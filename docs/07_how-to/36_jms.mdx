@@ -1,5 +1,5 @@
 ---
-title: 'How to consume from and publish to a JMS Provider'
+title: 'How to consume from and publish to JMS'
 sidebar_label: 'Consume and publish JMS'
 id: ht-jms
 keywords: [jms, ibm, mq, data pipeline]
@@ -10,17 +10,17 @@ tags:
 - data pipeline
 ---
 
-IBM Message Queue enables different applications to send and receive messages reliably through message queues.
+JMS (Jakarta Messaging - formerly Java Messaging Service) provides generic messaging models that enable applications to send and receive messages reliably through message queues. There are many messaging systems based on this, such as IBM MQ.
 
-The Genesis Platform enables you to consume from and publish to any JMS provider, including IBM.
-
-These message queues are often used to access trade data, for example. You can create pipelines to consume trade data directly from the message queue and into your Genesis application.
+Message queues are often used to access trade data, for example. You can create pipelines to consume trade data directly from the message queue and into your Genesis application.
 
 ## Example
 
-We have created an [example application](https://github.com/genesiscommunitysuccess/howto-jms-pipelines/tree/main) that shows how to publish to an IBM message queue and consume incoming messages.
+We have created an [example application](https://github.com/genesiscommunitysuccess/howto-jms-pipelines/tree/main) that shows how to publish to an IBM message queue and consume incoming messages. 
 
-Note: the same how to guide can be followed for any other valid JMS provider, it has been explained in the relevant places where you can provide a different instance (for example; Active MQ etc).
+:::tip
+You can use publish to other message queues from other valid JMS providers (such as Active MQ). We explain how you can provide a different instance in the relevant places.
+:::
 
 The application provides two pipelines, one to consume and one to publish.
 
@@ -34,10 +34,10 @@ You can [clone the repo](https://github.com/genesiscommunitysuccess/howto-jms-pi
 The README file for the application provides set-up instructions for creating a similar application. As well as the pipeline definitions, this includes setting up dependencies, system definitions, the Event Handler (to trigger an event) and the Request Server (to provide data to the front end.)
 :::
 
-## Publishing to IBM Message Queue
-In the example application, a pipeline is set up to respond to an event, such as when the user inserts a new message. The pipeline publishes this data to the specified message queue.
+## Publishing to the message queue
+The example application uses IBM Message Queue. It sets up a pipeline to respond to an event, such as when the user inserts a new message. The pipeline publishes this data to the specified message queue.
 
-## Consuming from IBM Message Queue
+## Consuming from the message queue
 The example contains a second pipeline that runs in the background and polls a configured message queue. Whenever new records are detected on the queue, it retrieves them and inserts them to the database.
 
 The pipeline retrieves the next record (or batch of records) only after the previous record (or batch) has been added to the database.
