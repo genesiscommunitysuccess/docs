@@ -37,7 +37,7 @@
     "@easyops-cn/docusaurus-search-local": "0.44.5",
     "@emotion/react": "11.13.0",
     "@emotion/styled": "11.13.0",
-    "@genesislcap/design-system-configurator": "",
+    "@genesislcap/design-system-configurator": "14.216.0",
     "@genesislcap/documentation-components": "14.216.0",
     "@genesislcap/foundation-comms": "14.216.0",
     "@genesislcap/foundation-entity-management": "14.216.0",

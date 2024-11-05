@@ -17,4 +17,7 @@ module.exports = {
 	// "@genesislcap/foundation-login": "14.216.0",
 	// "@genesislcap/foundation-reporting": "14.216.0",
 	// "@genesislcap/foundation-testing": "14.216.0",
+  "@genesislcap/g2plot-chart": "14.216.0",
+  "@genesislcap/grid-pro": "14.216.0",
+  "@genesislcap/grid-tabulator": "14.216.0",
 };
