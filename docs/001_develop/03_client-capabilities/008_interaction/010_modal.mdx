@@ -49,7 +49,7 @@ Use cases:
         @customElement({
             name: 'my-element',
             template: html`
-                <rapid-button @click=${>Open Modal</rapid-button>
+                <rapid-button @click=${x => x.modal.show()}>Open Modal</rapid-button>
                 <rapid-modal
                     ${ref('modal')}
                     :onShowCallback=${x => x.showCallback()}
@@ -75,10 +75,92 @@ Use cases:
         ```
     </TabItem>
     <TabItem value="react">
+        Declaration
+        ```html
+        <rapid-modal></rapid-modal>
+        ```
 
+        Usage
+        ```typescript
+        export function MyComponent() {
+            const modalRef = useRef(null);
+
+            useEffect(() => {
+                if (modalRef.current) {
+                    modalRef.current.onShowCallback = () => console.log('modal shown')
+                    modalRef.current.onCloseCallback = () => console.log('modal closed')
+                }
+            })
+
+            const handleClick = (ref) => {
+                if (modalRef.current) {
+                    modalRef.current.show();
+                }
+            };
+
+            return (
+                <rapid-button onClick={() => handleClick()}>Open Modal</rapid-button>
+                <rapid-modal
+                    ref={modalRef}
+                >
+                    <h3 slot="top">Top slot</h3>
+                    Main content in the modal
+                    <div slot="bottom">
+                        <i>Slotted content in the bottom</i>
+                    </div>
+                </rapid-modal>
+            );
+        }
+        ```
     </TabItem>
     <TabItem value="angular">
+    Usage
+    ```typescript
+    import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
 
+    @Component({
+    selector: 'modal-example',
+    template: `
+      <rapid-button (click)="showModal()">Show modal</rapid-button>
+      <rapid-modal #modal
+      >
+          <h3 slot="top">Top slot</h3>
+          Main content in the modal
+          <div slot="bottom">
+              <i>Slotted content in the bottom</i>
+          </div>
+      </rapid-modal>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [FormsModule],
+    })
+    export class ModalExampleComponent implements AfterViewInit {
+      @ViewChild('modal') modalRef!: ElementRef;
+
+        ngAfterViewInit() {
+            if (this.modalRef.nativeElement) {
+                this.modalRef.nativeElement.onShowCallback = this.showCallback.bind(this);
+                this.modalRef.nativeElement.onCloseCallback = this.closeCallback.bind(this);
+            }
+        }
+
+        showModal() {
+            if (this.modalRef.nativeElement) {
+                this.modalRef.nativeElement.show()
+            }
+        }
+
+        showCallback() {
+            console.log('modal shown')
+        }
+
+        closeCallback() {
+            console.log('modal close')
+        }
+    }
+    ```
     </TabItem>
 </Tabs>
 
@@ -110,7 +192,7 @@ If you set `position` to be `left` or `right`, the modal will assume `height: 10
 | Method | Params | Returns | Use | Example |
 |---|---|---|---|---|
 |show|none|void|When called will show the modal.|`modal.show()`|
-|hide|none|void|When called will close the modal.|`modal.close()`|
+|close|none|void|When called will close the modal.|`modal.close()`|
 
 ### Slots
 
