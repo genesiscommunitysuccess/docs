@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Card } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
 
