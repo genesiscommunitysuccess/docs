@@ -1,0 +1,163 @@
+---
+title: 'Text Field'
+sidebar_label: 'Text Field'
+id: client-interaction-text-field
+keywords: [interaction, interactive, button, form, click, submit, data]
+tags:
+- interaction
+- interactive
+- form
+- change
+- data
+sidebar_position: 8
+---
+
+import TextFieldDemo from '../../../../examples/ui/client-capabilities/interaction/text-field.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Text Field
+
+Implementation of a [text-field](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text) component.
+
+Use cases:
+* User registration and login
+* Data entry
+* Search boxes
+* Comment sections
+* Search filters
+
+## Example
+
+<TextFieldDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-text-field>Sample Text Field</rapid-text-field>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-text-field>
+          Sample Text Field
+        </rapid-text-field>
+      `,
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-text-field></rapid-text-field>
+    ```
+    Usage
+    ```typescript
+    export function MyComponent() {
+      const handleButtonClicked = (event) => {
+        console.log('Button clicked')
+      };
+      return (
+        <rapid-text-field onClick={handleButtonClicked}></rapid-text-field>
+      );
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-text-field></rapid-text-field>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+    @Component({
+      selector: 'my-root',
+      template: `
+        <rapid-button
+          (click)="onButtonClicked($event)"
+        ></rapid-checkbox>
+      `,
+      styleUrls: ['./my.component.css'],
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [FormsModule],
+    })
+    export class AppComponent {
+      onButtonClicked(event: Event) {
+        console.log('Button clicked');
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax.
+
+| Name        | Type      | Description                                                                                                                             |
+|-------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| autofocus   | `boolean` | When true, the component will be focused when the page has finished loading                                                             |
+| appearance  | `string`  | Can be `outline` or `filled`                                                                                                            |
+| disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                                                                                 |
+| form        | `string`  | Associates this component with a form. Form `id` needs to be passed. If no Id is provided, then it will be associated with the ancestor form |
+| maxlength   | `number`  | The maximum number of characters allowed                                                                                                |
+| minlength   | `number`  | The minimum number of characters allowed                                                                                                |
+| name        | `string`  | Defines the name of the element                                                                                                         |
+| placeholder | `string`  | Sets placeholder text for the element (which disappears when the user starts typing)                                                    |
+| readonly    | `boolean` | If true, the user cannot change the value of this field                                                                                 |
+| size        | `number`  | Sets the width of the component                                                                                                         |
+| step        | `number`  | **Only works with** `type="number`. Defines the amount the field value changes each time the user clicks to increase or decrease the field value |
+| type        | `string`  | Sets the type of the text-field. Can be {"email", "password","tel","number","text","url"}                                               |
+| value       | `string`  | Sets the value for this component                                                                                                       |
+
+
+### Examples (closing tag omitted):
+
+Attributes:
+```typescript
+<rapid-text-field placeholder="Placeholder text">
+```
+
+Properties:
+```typescript
+<rapid-text-field value=${sync((x) => x.text_field_value)}>
+```
+
+### Slots
+
+| Slot | Use |
+|---|---|
+| start | Start slot. |
+| control | The input element. |
+| end | End slot. |
+
+### Parts
+
+| Part |
+|---|
+| start |
+| control |
+| end |
+
+### Fired Events
+
+| Event | Use |
+|---|---|
+| click | Emits a change event when the button is pressed |
+
+### Listened Events
+
+This component doesn't listen to any events.
