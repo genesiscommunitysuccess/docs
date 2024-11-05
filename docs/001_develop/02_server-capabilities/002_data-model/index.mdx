@@ -13,16 +13,16 @@ tags:
 sidebar_position: 2
 ---
 
-The data model is a fundamental part of any Genesis Application. It defines the entities (tables) relevant to the application, including their associated attributes. These table structures define the data that is to be entered and persisted within the application.
+The data model is a fundamental part of any Genesis Application. Within the data model we define the [entities (tables)](#tables) relevant to the application which will store the application's data. We also define [views](#views) which join related entities together to represent wholistic views onto the applications dataset. The application's tables and views power most Genesis Server and Client services and components by making them aware of the application's data structure, and by notifying them of relevant changes to the data.
 
 The data model of a Genesis Application is defined in `*-dictionary.kts` files.
 
 ## Tables
 
-Tables store records for each entity defined in your application. 
-Each table is defined with a set of fields (entity attributes) which make up a record for that particular entity. 
+Tables represent sets of records for each of the entities in an application. 
+Each table is defined with a set of fields (entity attributes) which make up a record representing the entity. 
 
-Tables and their fields are defined in  `*-tables-dictionary.kts` files, they need to be defined in the `cfg` folder in your application's server codebase.
+Tables and their fields are defined in  `*-tables-dictionary.kts` files, these files are placed in the `cfg` folder in your application's server codebase.
 
 Each table requires:
 
