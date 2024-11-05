@@ -12,7 +12,6 @@ export default function ModalDemo({ children, color }) {
     const modalRefLeft = useRef(null);
     const modalRefRight = useRef(null);
 
-
     const [showCallbackMessage, setShowCallbackMessage] = useState('');
     const [closeCallbackMessage, setCloseCallbackMessage] = useState('');
     const showCallback = (message) => {
@@ -74,7 +73,7 @@ export default function ModalDemo({ children, color }) {
                     <label>On show callback: {showCallbackMessage}</label>
                 </div>
                 <div>
-                    <label>On hide callback: {closeCallbackMessage}</label>
+                    <label>On close callback: {closeCallbackMessage}</label>
                 </div>
             </div>
             <rapid-modal
@@ -87,9 +86,6 @@ export default function ModalDemo({ children, color }) {
             >
                 <h3 slot="top">Top slot</h3>
                 Modal example with top slot
-                <div slot="bottom">
-                    <i>Slotted content in the bottom</i>
-                </div>
             </rapid-modal>
             <rapid-modal
                 ref={modalRefSlotBottom}
