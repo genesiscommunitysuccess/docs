@@ -114,49 +114,42 @@ Use cases:
 
 Attributes:
 
-| Name        | Type      | Description                                                                                                 |
-|-------------|-----------|-------------------------------------------------------------------------------------------------------------|
-| appearance  | `string`  | Changes the general view of the element; this can be **filled** or **outline**                              |
-| autofocus   | `boolean` | When true, the component will be focused when the page has finished loading                                 |
-| cols        | `number`  | Defines the size of the element horizontally. **Default: 20**                                               |
-| disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                                                     |
-| form        | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form |
-| maxlength   | `number`  | The maximum number of characters allowed                                                                    |
-| minlength   | `number`  | The minimum number of characters allowed                                                                    |
-| name        | `string`  | Defines the name of the element                                                                             |
-| placeholder | `string`  | Sets placeholder text for the element, which disappears when the user starts inputting                      |
-| readonly    | `boolean` | If true, the user cannot change the value of this field                                                     |
-| resize      | `string`  | Allows the user to resize the element; this can be {"none","both","vertical","horizontal"}. **Default: none** |
-| row         | `number`  | Defines the size of the element vertically. **Default: 2**                                                  |
-| value       | `string`  | The text area content                                                                                       |
-
-
-### Examples (closing tag omitted):
-
-Attributes:
-```typescript
-<rapid-text-area placeholder="Placeholder text">
-```
-
-Properties:
-```typescript
-<rapid-text-area value=${sync((x) => x.text_area_value)}>
-```
+| Name        | Type      | Description                                                                                                 | Example |
+|-------------|-----------|-------------------------------------------------------------------------------------------------------------|----|
+| appearance  | `string`  | Changes the general view of the element; this can be **filled** or **outline**                              | |
+| autofocus   | `boolean` | When true, the component will be focused when the page has finished loading                                 | |
+| cols        | `number`  | Defines the size of the element horizontally. **Default: 20**                                               | |
+| disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                                                     | |
+| formId      | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form | |
+| maxlength   | `number`  | The maximum number of characters allowed                                                                    | |
+| minlength   | `number`  | The minimum number of characters allowed                                                                    | |
+| name        | `string`  | Defines the name of the element                                                                             | |
+| placeholder | `string`  | Sets placeholder text for the element, which disappears when the user starts inputting                      | `<rapid-text-area placeholder="Placeholder text">` |
+| readonly    | `boolean` | If true, the user cannot change the value of this field                                                     | |
+| resize      | `string`  | Allows the user to resize the element; this can be {"none","both","vertical","horizontal"}. **Default: none** | |
+| rows        | `number`  | Defines the size of the element vertically. **Default: 2**                                                  | |
+| value       | `string`  | The text area content                                                                                       | `<rapid-text-area :value=${sync((x) => x.text_area_value)}>` |
 
 ### Slots
 
-None
+| Slot | Description |
+|---|---|
+| start | Content before the text area input |
+| end | Content after the text area input |
 
 ### Parts
 
 | Part | Description |
 |---|---|
-| label | The label for the text area. |
-| control | The inpuot for the text area |
+| label   | The label for the text area. |
+| control | The input for the text area |
+| field   | The text area element  |
 
 ### Events fired
 
-This component doesn't emit any events.
+| Part | Type | Use | Example |
+|---|---|---|---|
+| change | | Emits a custom change event when the text area content changes |`<rapid-text-area @change="${(x) => x.myChangeHandler(event)}">`|
 
 ### Events listened to
 
