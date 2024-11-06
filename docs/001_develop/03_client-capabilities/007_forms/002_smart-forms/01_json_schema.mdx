@@ -14,6 +14,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import JsonSchemaFormExample from './examples/jsonSchema_example.js'
+import FormsEntity from '../../../../_includes/_forms-entity.mdx'
 
 # Foundation Forms JSON schema
 
@@ -31,50 +32,9 @@ The examples provided are simple, but it is worth exploring these sections in mo
 
 ### Server-side JSON schema
 
-Here is an example of a simple table defined in an application's **-tables-dictionary.kts** file. It is a simple table with three fields:
-
-**smart-forms-examples-tables-dictionary.kts**
-```kts
- tables {
-    table(name = "SIMPLE_TRADE", id = 10_000) {
-        field("SIMPLE_TRADE_ID", STRING).sequence("ST")
-        field("QUANTITY", DOUBLE)
-        field("SIDE", STRING)
-        primaryKey("SIMPLE_TRADE_ID")
-    }
-    ...
-}
-```
-
-The data for this table is provided by a query in the application's **-dataserver.kts** file. This is the data source:
-
-**smart-forms-examples-dataserver.kts**
-```kts
-dataServer {
-    query("ALL_SIMPLE_TRADES", SIMPLE_TRADE)
-    ...
-}
-```
-
-The event that enables you to insert the data from the form into the database table is provided in the application's **-eventhandler.kts** file. This is the data source:
-
-**smart-forms-examples-eventhandler.kts**
-```kts
-eventHandler {
-    eventHandler<SimpleTrade>("SIMPLE_TRADE_INSERT", transactional = true) {
-        onCommit { event ->
-            val details = event.details
-            entityDb.insert(details)
-            ack()
-        }
-    }
-    ...
-}
-...
-```
+<FormsEntity />
 
 To insert the automatically-generated JSON schema for this resource in your **template** file, use the code below:
-
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 
