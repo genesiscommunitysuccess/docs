@@ -1230,7 +1230,7 @@ The script accepts a series of arguments to establish a connection to the databa
 | -p  | --product \<productName\>  | Yes       | Represents the product name and affects the output files.                                                    |
 | -c  | --createFormat             |           | Generates JSON ready for use with Genesis Create, instead of the standard tables dictionary.                 |
 | -e  | --export                   |           | Exports table data to CSV                                                                                    |
-| -g  | --genesisTables            |           | Read from existing Genesis database                                                                          |
+<!-- | -g  | --genesisTables            |           | Read from existing Genesis database                                                                          | -->
 | -t  | --tables \<table1,table2>  |           | table list to include, default is all tables                                                                 |
 | -o  | --output \<outputDir\>     |           | Output directory for files. If the directory does not exist, it will be created. Defaults to project root.   |
 | -s  | --schema \<schemaId\>      |           | Schema name / System ID                                                                                      |
