@@ -41,7 +41,9 @@ Usage
 @customElement({
   name: 'my-element',
   template: html`
-    <rapid-switch>
+    <rapid-switch
+      :checked="${x => x.isSelected}"
+      @change=${x => x.switchChanged()}>
       Theme
       <span slot="checked-message">Dark</span>
       <span slot="unchecked-message">Light</span>
@@ -49,6 +51,10 @@ Usage
   `,
 })
 export class MyElement extends GenesisElement {
+  @observable isSelected: boolean = false;
+  switchChanged() {
+    console.log("Switch changed ${this.isSelected}")
+  }
 }
 ```
 
@@ -62,7 +68,6 @@ Declaration
 Usage
 ```typescript
 export function MyComponent() {
-  const [switchValue, setSwitchState] = useState(false);
   const handleSwitchChange = (event) => {
     setSwitchState(!!event.target.checked);
     console.log({ switchValue })
@@ -89,12 +94,10 @@ import { FormsModule } from '@angular/forms';
   selector: 'my-root',
   template: `
     <rapid-switch
-      name="isSelected"
       [checked]="isSelected"
       (change)="onSwitchChange($event)"
     ></rapid-switch>
   `,
-  styleUrls: ['./my.component.css'],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [FormsModule],
