@@ -23,19 +23,19 @@ There are three versions of the entity db:
 
 | API           | Languages   | Description                                                                                                             | 
 |---------------|-------------|-------------------------------------------------------------------------------------------------------------------------|
-|`SyncEntityDb` |Kotlin + Java|A blocking API, simplist to use and helpful when performance isn't critical                                              |
+|`SyncEntityDb` |Kotlin + Java|A blocking API, simplest to use and helpful when performance isn't critical                                              |
 |`AsyncEntityDb`|Kotlin only  |An asynchronous API powered by [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html)                 |
 |`RxEntityDb`   |Java only    |An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki)                                        |
 |`RxDb`         |Kotlin + Java|An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki) which does NOT use type-safe entities  |
 
 The difference between blocking (synchronous) and asynchronous is that if the code needs to wait on results to occur before moving on.
 
-- In blocking code, the thread will block until the database responds. This code is easie to write and think about logically
-- In async code, the thread will not block: instead, resumes after the database responds. This is more difficult to write and comprehend, but can handle more requests concurrently
+- In blocking code, the thread will block until the database responds. This code is easier to write and think about logically
+- In async code, the thread will not block: instead, it resumes after the database responds. This is more difficult to write and comprehend, but can handle more requests concurrently
 
-All of these implementations implement the same methods, but their [return types](#return-types) differ and need handling differently in code.
+All of the APIs implement the same methods for reading and writing, but their [return types](#return-types) differ and need handling differently in code.
 
-### Access control
+###### Access control
 The database APIs are not aware of the user accessing them, as such user access control implementations are not considered in the API. User facing capabilities such as dataservers, request servers and event handlers all apply [access control](/develop/server-capabilities/access-control/) measures over their DB API interactions. When writing custom code which is writing or reading data for a given users, you should apply the same before return read results, or attempting any writes.
 
 ## Data Types
@@ -155,7 +155,7 @@ The objects cannot be used with entity Db APIs.
 
 ## Entity Db API
 
-All three entity DB APIs (SyncEntityDb, AsyncEntityDb, RxEntityDb) use the same types and implement the same API methods with the exception of their [return types](#return-types).
+All three entity DB APIs (`SyncEntityDb`, `AsyncEntityDb`, `RxEntityDb`) use the same types and implement the same API methods with the exception of their [return types](#return-types).
 
 ### Type convention
 
