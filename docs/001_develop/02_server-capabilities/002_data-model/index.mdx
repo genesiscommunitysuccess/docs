@@ -19,6 +19,8 @@ The data model of a Genesis Application is defined in `*-dictionary.kts` files.
 
 ## Example configuration
 
+### Tables
+
 Tables and their fields are defined in  `*-tables-dictionary.kts` files, these files are placed in the `cfg` folder in your application's server codebase.
 
 Each table is defined with a set of fields (entity attributes) which make up a record representing the entity. 
@@ -31,6 +33,8 @@ Each table requires:
 
 Below shows an example configuration of three tables: `TRADE`, `COUNTERPARTY` and `INSTRUMENT`
 
+###### Example Data Model
+
 ```kotlin
 tables {
     table(name = "TRADE", id = 11_000, audit = details(id = 11_500, sequence = "TA")) {
@@ -40,12 +44,14 @@ tables {
         field("QUANTITY", INT).notNull()
         field("COUNTERPARTY_ID", LONG).notNull()
         field("INSTRUMENT_ID", LONG).notNull()
+        field("DATE", DATE).notNull()
 
         primaryKey("TRADE_ID")
 
         indices {
             nonUnique("COUNTERPARTY_ID").name("TRADE_BY_COUNTERPARTY_ID")
             nonUnique("INSTRUMENT_ID").name("TRADE_BY_INSTRUMENT_ID")
+            nonUnique("DATE").name("TRADE_BY_DATE")
         }
     }
 
@@ -66,6 +72,7 @@ tables {
 }
 ```
 
+### Views
 Views are defined in  `*-views-dictionary.kts` files, they need to be defined in the `cfg` folder in your application's server codebase.
 
 Every view defines a "root" table, the main table powering the view. It then defines tables which join to it in order to make up the view.
@@ -105,6 +112,8 @@ views {
   }
 }
 ```
+
+### Summary
 
 Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and other data visualisation web client components. 
 
