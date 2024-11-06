@@ -6,7 +6,6 @@ registerComponents();
 export default function ButtonDemo({ children, color }) {
 	return (
 		<CodeSection>
-			<CodeLabel>Button:</CodeLabel>
 			<rapid-button>
 				Button
 			</rapid-button>
