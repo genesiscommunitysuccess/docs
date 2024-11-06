@@ -119,10 +119,10 @@ Use cases:
 
 | Attribute | Type | Use | Example |
 |---|---|---|---|
-|autofocus|`boolean`|The boolean value of whether the checkbox is checked. | |
+|autofocus|`boolean`|The boolean value of whether the button is checked. | |
 |appearance|`string`|Configures the component so the user cannot alter the state via the web browser.| `<rapid-button appearance="natural">Button</rapid-button>` |
-|disabled|`boolean`|Same functionality as `readonly`, and additionally adds visual opacity to the component.| `<rapid-button disabled>Button</rapid-button>` |
-|form|`string`|Associates this component to a form. Form id needs to be passed. If no Id informed, then it will be associated with the ancestor form.| |
+|disabled|`boolean`|Makes the component visually opaque, and configures it so that the user cannot alter the state via the web browser.| `<rapid-button disabled>Button</rapid-button>` |
+|form|`string`|Associates this component with a form. The Form id must be passed. If no Id is passed, then it will be associated with the ancestor form.| |
 |name|`string`|Defines the name of the element.| |
 |type|`string`|Defines the mode of the button.| |
 |value|`string`|Defines the value associated with name.| |
@@ -151,12 +151,12 @@ No additional properties
 | content |
 | end |
 
-### Fired Events
+### Events fired
 
 | Event | Use |
 |---|---|
 | click | Emits a change event when the button is pressed |
 
-### Listened Events
+### Events listened to
 
 This component doesn't listen to any events.
