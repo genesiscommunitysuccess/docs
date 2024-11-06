@@ -137,9 +137,9 @@ Property and attribute binding examples for Genesis Component syntax.
 | Attribute/Property | Type | Description |
 |---|---|---|
 |checked|`boolean`|The boolean value of whether the checkbox is checked. |
-|readonly|`boolean`|Configures the component so the user cannot alter the state via the web browser.|
-|disabled|`boolean`|Same functionality as `readonly`, and additionally adds visual opacity to the component.|
-|form|`string`|Associates this component to a form. Form id needs to be passed. If no Id informed, then it will be associated with the ancestor form.|
+|readonly|`boolean`|Configures the component so that the user cannot alter the state via the web browser.|
+|disabled|`boolean`|Makes the component visually opaque, and configures it so that the user cannot alter the state via the web browser.|
+|form|`string`|Associates this component with a form. The Form id must be passed. If no Id is passed, then it will be associated with the ancestor form.|
 
 ### Examples (closing tag omitted):
 
@@ -173,12 +173,12 @@ Properties:
 | control | The element representing the visual checkbox control.|
 | label | The label text.|
 
-### Fired Events
+### Events fired
 
 | Event | Use | Example |
 |---|---|---|
 | change | Emits a custom change event when the checked state changes. Access the value on the event via `.target.checked`.|`<rapid-checkbox @change="${(x) => x.myChangeHandler(event)}">`|
 
-### Listened Events
+### Events listened to
 
 This component doesn't listen to any events.
