@@ -43,9 +43,9 @@ When using AWS S3 as your storage solution, you must have an S3 bucket created e
 Next, you must set your `S3_STORAGE_MODE`.
 
 `S3_STORAGE_MODE` supports the following values:
-- LOCAL (app running locally with local S3 bucket)
-- DEV (app running locally with remote S3 bucket)
-- AWS (app running remotely on a AWS resource with remote S3 bucket)
+- LOCAL (app running locally on your development machine with a locally mocked S3 bucket)
+- DEV (app running locally connecting to a remote S3 bucket with credentials managed locally)
+- AWS (app running on an AWS resource with credentials managed externally, i.e. role attached to resource)
 
 ```kotlin
 item(name = "S3_STORAGE_MODE", value = "<storageMode>")
