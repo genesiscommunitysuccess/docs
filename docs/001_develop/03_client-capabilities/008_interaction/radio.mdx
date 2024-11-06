@@ -1,0 +1,143 @@
+---
+title: 'Radio'
+sidebar_label: 'Radio'
+id: client-interaction-radio
+keywords: [interaction, interactive, input, radio, form, data]
+tags:
+- interaction
+- interactive
+- input
+- radio
+- form
+- data
+sidebar_position: 8
+---
+
+import RadioDemo from '../../../../examples/ui/client-capabilities/interaction/radio.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Radio
+
+Use cases:
+* Selecting multiple options in the same input
+
+## Example
+
+<RadioDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-radio>Sample radio field</rapid-radio>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+          <rapid-radio
+            checked="true"
+            @change="${(x) => x.changeRadio()}"
+            :value="${sync((x) => x.radioValue)}">
+            Radio
+          </rapid-radio>
+        `,
+    })
+    export class MyElement extends GenesisElement {
+      @observable radioValue: string;
+      changeRadio() {
+        console.log(this.radioValue);
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+  <rapid-radio></rapid-radio>
+  ```
+  Usage
+  ```typescript
+  export function MyComponent() {
+    const handleRadioFieldChanged = (event) => {
+      console.log({ event.target.value })
+    };
+    return (
+      <rapid-radio onChange={handleRadioFieldChanged}></rapid-text-field>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+  <rapid-radio></rapid-radio>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  import { FormsModule } from '@angular/forms';
+  @Component({
+    selector: 'my-root',
+    template: `
+          <rapid-radio
+            (change)="onRadioFieldChange($event)"
+          ></rapid-radio>
+        `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule],
+  })
+  export class AppComponent {
+    onRadioFieldChange(event: Event) {
+      const target = event.target as HTMLInputElement;
+      console.log(target.value);
+    }
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax.
+
+| Name     | Type      | Description                                                                      |
+|----------|-----------|----------------------------------------------------------------------------------|
+| checked  | `boolean` | Sets or retrieves the current state of the component. **Default: `false`**       |
+| disabled | `boolean` | Similar to `readonly`, but with a blur on the component                          |
+| value    | `string`  | Sets a value for the component. Not visible to the user                          |
+| readonly | `boolean` | If true, the user cannot change the value of this checkbox (which is greyed out) |                                                                                                    |
+
+### Slots
+
+| Slot | Use |
+|---|---|
+| checked-indicator	| The checked indicator |
+
+### Parts
+
+| Part |
+|---|
+| control |	The element representing the visual radio control |
+| label |	The label |
+
+### Fired Events
+| Name    | Description                                 |
+|---------|---------------------------------------------|
+| @change | Fires the event when the radio component changes its state |
+
+### Listened Events
+This component doesn't listen to any events.
+
+### Further details
+This component is an implementation of an HTML [radio](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio) element.
