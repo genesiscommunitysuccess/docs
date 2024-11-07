@@ -1,0 +1,201 @@
+---
+title: 'FDC3 System Channel Listener'
+sidebar_label: 'FDC3 System Channel Listener'
+id: fdc3-system-channel-listener
+keywords: [interaction, interactive, interoperability, openfin, interop.io, fdc3, fdc3 channel, fdc3 context, data]
+tags:
+- interaction
+- interactive
+- interoperability
+- openfin
+- interop.io
+- fdc3
+- fdc3 channel
+- fdc3 system
+- data
+sidebar_position: 3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# FDC3 Channel System Listener
+
+This is a utility element that listens to FDC3 system channel for the specified system.
+
+Use cases:
+* Listen to events for a specified system on an FDC3 app channel
+
+## Examples
+
+This will listen to the specified app channels for changes in the specified system.
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+    <TabItem value="genesis">
+        Declaration
+        ```html
+        <fdc3-system-channel-listener></fdc3-system-channel-listener>
+        ```
+        Usage
+        ```typescript
+        @customElement({
+        name: 'my-element',
+        template: html`
+            <div>Instrument message:<i>${x => x.instrumentMessage}</i></div>
+            <div>Contact message:<i>${x => x.contactMessage}</i></div>
+            <fdc3-system-channel-listener
+                :config="${(x) => [
+                    {
+                        channelType: 'fdc3.instrument',
+                        callback: (message) => x.handleInstrumentMessage(message),
+                    },
+                    {
+                        channelType: 'fdc3.contact',
+                        callback: (message) => x.handleContactMessage(message),
+                    },
+                ]}"
+            >
+            </fdc3-system-channel-listener>
+        `,
+        })
+        export class MyElement extends GenesisElement {
+
+            @observable contactMessage: any = {};
+
+            @observable instrumentMessage: any = {};
+
+            handleContactMessage(message) {
+                this.contactMessage = JSON.stringify(message);
+            }
+
+            handleInstrumentMessage(message) {
+                this.instrumentMessage = JSON.stringify(message)
+            }
+        }
+        ```
+    </TabItem>
+
+    <TabItem value="react">
+        Declaration
+        ```html
+        <fdc3-system-channel-listener></fdc3-system-channel-listener>
+        ```
+
+        Usage
+        ```typescript
+        export function MyComponent() {
+        useEffect(() => {
+
+            const [instrumentMessage, setInstrumentMessage] = useState('');
+            const [contactMessage, setContactMessage] = useState('');
+
+
+            if (systemChannelListenerRef.current) {
+                systemChannelListenerRef.current.config = [
+                    {
+                        channelType: 'fdc3.instrument',
+                        callback: (message) => setInstrumentMessage(JSON.stringify(message)),
+                    },
+                    {
+                        channelType: 'fdc3.contact',
+                        callback: (message) => setContactMessage(JSON.stringify(message)),
+                    },
+                ]
+            }
+        })
+        return (
+            <div>Instrument message:<i>{instrumentMessage}</i></div>
+            <div>Contact message:<i>{contactMessage}</i></div>
+            <fdc3-system-channel-listener ref={systemChannelListenerRef}>
+            </fdc3-system-channel-listener>
+            );
+    }
+```
+</TabItem>
+
+<TabItem value="angular">
+    Declaration
+    ```html
+    <fdc3-system-channel-listener></fdc3-system-channel-listener>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+    @Component({
+        selector: 'my-root',
+        templateUrl: './my.component.html',
+        template: `
+            <div>Instrument message:<i>{{ instrumentMessage }}</i></div>
+            <div>Contact message:<i>{{ contactMessage }}</i></div>
+            <fdc3-system-channel-listener #systemChannelListenerRef>
+            </fdc3-system-channel-listener>
+        `,
+        standalone: true,
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        imports: [FormsModule],
+    })
+    export class AppComponent {
+        @ViewChild('systemChannelListenerRef') systemChannelListener!: ElementRef;
+
+        instrumentMessage: any;
+
+        contactMessage: any;
+
+        ngAfterViewInit() {
+            if (this.systemChannelListener.nativeElement) {
+                this.systemChannelListener.nativeElement.config = [
+                    {
+                        channelType: 'fdc3.instrument',
+                        callback: (message) => this.setInstrumentMessage(JSON.stringify(message)),
+                    },
+                    {
+                        channelType: 'fdc3.contact',
+                        callback: (message) => this.setContactMessage(JSON.stringify(message)),
+                    },
+                ]
+            }
+        }
+
+        setInstrumentMessage(message) {
+            this.instrumentMessage = JSON.stringify(message);
+        }
+
+        setContactMessage(message) {
+            this.contactMessage = JSON.stringify(message);
+        }
+    }
+    ```
+</TabItem>
+</Tabs>
+
+## DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+This component has no attributes
+
+### Properties
+
+| Property | Type | Use | Example |
+|---|---|---|---|
+|config|`SystemChannelListenerConfig`|An array of objects which configure which context type and a handler for channel event payloads|`<fdc3-system-channel-listener :config="${() => [ { contextType: 'fdc.instrument', callback: (message) => console.log(JSON.stringify(message)} ]"`|
+
+### Slots
+
+This component has no slots.
+
+### Parts
+
+This component has no parts.
+
+### Fired Events
+
+This component doesn't fire any events.
+
+### Listened Events
+
+This component listens to the event on its parent element that you specify in the `event-name` attribute.
