@@ -1,0 +1,168 @@
+---
+title: 'Stepper'
+sidebar_label: 'Stepper'
+id: client-interaction-stepper
+keywords: [interaction, interactive, input, stepper, form, data]
+tags:
+- interaction
+- interactive
+- input
+- stepper
+- form
+- data
+sidebar_position: 8
+---
+
+import StepperDemo from '../../../../examples/ui/client-capabilities/interaction/stepper.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Stepper
+
+Use cases:
+* Provide a multi-step process or dynamic form that the user can follow.
+
+Rapid Stepper requires `rapid-stepper-tab` and `rapid-stepper-tab-panel` in order to work properly.
+
+## Example
+
+<StepperDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-stepper @submit=${() => alert('Form Submitted')}>
+      <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+      <rapid-stepper-tab-panel>
+        Tab Panel 1
+      </rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>
+        Tab Panel 2
+      </rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>
+        Tab Panel 3
+      </rapid-stepper-tab-panel>
+    </rapid-stepper>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+            <rapid-stepper @submit="${(x) => x.handleSubmit()}">
+              <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+              <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+              <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+              <rapid-stepper-tab-panel>
+                Tab Panel 1
+              </rapid-stepper-tab-panel>
+              <rapid-stepper-tab-panel>
+                Tab Panel 2
+              </rapid-stepper-tab-panel>
+              <rapid-stepper-tab-panel>
+                Tab Panel 3
+              </rapid-stepper-tab-panel>
+            </rapid-stepper>
+          `,
+    })
+    export class MyElement extends GenesisElement {
+      @observable radioValue: string;
+      handleSubmit() {
+        console.log('Form submitted');
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-stepper></rapid-stepper>
+    ```
+    Usage
+    ```typescript
+    export function MyComponent() {
+      const handleSubmit = (event) => {
+        console.log('Form submitted');
+      };
+      return (
+        <rapid-stepper onSubmit={handleSubmit}></rapid-stepper>
+      );
+    }
+  ```
+</TabItem>
+<TabItem value="angular">
+
+  Declaration
+  ```html
+  <rapid-stepper></rapid-stepper>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  import { FormsModule } from '@angular/forms';
+  @Component({
+    selector: 'my-root',
+    template: `
+            <rapid-stepper
+              (submit)="handleSubmit($event)"
+            ></rapid-stepper>
+          `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule],
+  })
+  export class AppComponent {
+    handleSubmit(event: Event) {
+      console.log('Form submitted');
+    }
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax.
+
+| Name     | Type      | Description                                                                      | Examples |
+|----------|-----------|----------------------------------------------------------------------------------|----------|
+| hide-submit-button | `boolean` | Hides or shows the submit button | `<rapid-stepper hide-submit-button>` |
+| orientation | `string` | There are two stepper orientations to choose from: vertical and horizontal. | `<rapid-stepper orientation="horizontal">` |
+
+### Slots
+
+| Slot |
+|---|
+| tab	|
+| tab-panel |
+| action-buttons |
+
+### Parts
+
+| Part |
+|---|
+| stepper-tab |
+| stepper-tab-menu |
+| stepper-tab-progress |
+| progress-ring |
+| stepper-tab-panel |
+| stepper-panel-container |
+| action-buttons-container |
+
+### Events fired
+
+| Name    | Description                                 |
+|---------|---------------------------------------------|
+| @submit | Possibility to pass the function to be performed in the last step after clicking submit. |
+
+### Events listened to
+This component doesn't listen to any events.
