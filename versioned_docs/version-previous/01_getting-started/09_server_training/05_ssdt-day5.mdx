@@ -34,7 +34,7 @@ import TabItem from '@theme/TabItem';
 
 ## Custom endpoints
 
-The Genesis low-code platform provides a series of REST endpoints exposing all configured resources (like Event Handlers, Request Server, Data Servers, Authentication) as HTTP endpoints via the [GENESIS_ROUTER](../../../server/configuring-runtime/genesis-router/) service. 
+The Genesis application platform provides a series of REST endpoints exposing all configured resources (like Event Handlers, Request Server, Data Servers, Authentication) as HTTP endpoints via the [GENESIS_ROUTER](../../../server/configuring-runtime/genesis-router/) service. 
 
 You can extend the platform by creating custom endpoints, which make it easy to integrate with existing systems. Likely uses for these custom endpoints include: file upload and download, and integration into external authentication systems.
 
@@ -277,7 +277,7 @@ Note that Camel's power and flexibility comes at the cost of some complexity and
 
 Apache Camel integrations are defined within your application's **-camel.kts** file. This is located in the **src/main/resources/scripts** directory within your application's **-script-config** submodule.
 
-The Genesis low-code platform only includes the `camel-core` dependency. You will want to declare additional dependencies to make best use of the different available Camel components.
+The Genesis application platform only includes the `camel-core` dependency. You will want to declare additional dependencies to make best use of the different available Camel components.
 
 ### Configuration
 
@@ -347,7 +347,7 @@ It is your time! Use the Camel module to build a Reading structure using an [SFT
 To do that, do the steps described above in the [configuration](#configuration), and see a similar example [here](../../../server/integration/apache-camel/examples/#reading-from-an-sftp-server).
 
 :::note
-To help you in this task, as The Genesis low-code platform only includes the camel-core dependency, the project you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed) created a new local module called `alpha-camel-libs` declaring the Camel dependencies needed as described [here](../../../server/integration/apache-camel/configuring-runtime/#dependencies).
+To help you in this task, as The Genesis application platform only includes the camel-core dependency, the project you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed) created a new local module called `alpha-camel-libs` declaring the Camel dependencies needed as described [here](../../../server/integration/apache-camel/configuring-runtime/#dependencies).
 
 Also, the project you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed) has a docker container with an [SFTP](https://hub.docker.com/r/atmoz/sftp) server to do this task, including the `hostname` **sftp**, `user ` **JohnDoe**, and `password` **Password11**.
 
