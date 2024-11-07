@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { registerComponents } from "../../../../../../examples/ui/rapidImports";
 import {
   CodeSection,
-  CodeLabel,
 } from "../../../../../../examples/ui/documentationBase";
+import useIsBrowser from "@docusaurus/useIsBrowser";
 
 const simpleTradeJsonSchema = {
   type: "object",
@@ -25,9 +24,14 @@ const simpleTradeJsonSchema = {
 };
 
 export default function TradeFiltersExample() {
-  registerComponents();
-
+  const isBrowser = useIsBrowser();
   const filter = useRef(null);
+
+  if (isBrowser) {
+    const RapidImports = require("../../../../../../examples/ui/rapidImports");
+    RapidImports.registerComponents();
+  }
+
   const [filterValue, setFilterValue] = useState("");
 
   useEffect(() => {

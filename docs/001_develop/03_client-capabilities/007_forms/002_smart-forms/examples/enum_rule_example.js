@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
-import { registerComponents } from "../../../../../../examples/ui/rapidImports";
 import { CodeSection } from "../../../../../../examples/ui/documentationBase";
 import { RuleEffect } from "@jsonforms/core";
+import useIsBrowser from "@docusaurus/useIsBrowser";
 
 const selectData = ["United States", "Canada", "United Kingdom"];
 
@@ -62,9 +62,13 @@ export const formsWithRulesUiSchema = {
 };
 
 export default function EnumRuleFormExample() {
-  registerComponents();
-
+  const isBrowser = useIsBrowser();
   const form = useRef(null);
+
+  if (isBrowser) {
+    const RapidImports = require("../../../../../../examples/ui/rapidImports");
+    RapidImports.registerComponents();
+  }
 
   useEffect(() => {
     form.current.jsonSchema = jsonSchema;

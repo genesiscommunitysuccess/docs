@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import { registerComponents } from "../../../../../../examples/ui/rapidImports";
 import { CodeSection } from "../../../../../../examples/ui/documentationBase";
+import useIsBrowser from "@docusaurus/useIsBrowser";
 
 const sampleJsonSchema = {
   type: "object",
@@ -17,8 +17,13 @@ const sampleJsonSchema = {
 };
 
 export default function JsonSchemaFormExample() {
-  registerComponents();
+  const isBrowser = useIsBrowser();
   const form = useRef(null);
+
+  if (isBrowser) {
+    const RapidImports = require("../../../../../../examples/ui/rapidImports");
+    RapidImports.registerComponents();
+  }
 
   useEffect(() => {
     form.current.jsonSchema = sampleJsonSchema;

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import { registerComponents } from "../../../../../../examples/ui/rapidImports";
 import { CodeSection } from "../../../../../../examples/ui/documentationBase";
+import useIsBrowser from "@docusaurus/useIsBrowser";
 
 const primitiveUISchema = {
   type: "VerticalLayout",
@@ -60,9 +60,13 @@ const primitiveJSONSchema = {
 };
 
 export default function PrimitiveFormUISchemaExample() {
-  registerComponents();
-
+  const isBrowser = useIsBrowser();
   const form = useRef(null);
+
+  if (isBrowser) {
+    const RapidImports = require("../../../../../../examples/ui/rapidImports");
+    RapidImports.registerComponents();
+  }
 
   useEffect(() => {
     form.current.jsonSchema = primitiveJSONSchema;
