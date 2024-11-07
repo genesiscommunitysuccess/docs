@@ -1,0 +1,169 @@
+---
+title: 'Radio Group'
+sidebar_label: 'Radio Group'
+id: client-interaction-radio-group
+keywords: [interaction, interactive, input, radio, radio-group, form, data]
+tags:
+ - interaction
+ - interactive
+ - input
+ - radio
+ - radio-group
+ - form
+ - data
+sidebar_position: 8
+---
+
+import RadioGroupDemo from '../../../../examples/ui/client-capabilities/interaction/radiogroup.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Radio group
+
+Use cases:
+* A radio group is a set of checkable buttons known as radio buttons.
+* No more than one button can be checked at a time.
+* When a user checks an unchecked button, the previously checked button is automatically unchecked.
+
+## Example
+
+<RadioGroupDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration
+```html
+<rapid-radio-group>
+  <rapid-radio value="one">One</rapid-radio>
+  <rapid-radio value="two">Two</rapid-radio>
+  <rapid-radio value="three">Three</rapid-radio>
+</rapid-radio-group>
+```
+
+Usage
+```typescript
+@customElement({
+  name: 'my-element',
+  template: html`
+    <rapid-radio-group
+      @change="${(x) => x.selectionChanged()}"
+      :value="${sync((x) => x.radioGroupValue)}"
+    >
+      <rapid-radio value="one">One</rapid-radio>
+      <rapid-radio value="two">Two</rapid-radio>
+      <rapid-radio value="three">Three</rapid-radio>
+    </rapid-radio-group>
+  `,
+})
+export class MyElement extends GenesisElement {
+  @observable radioGroupValue: string;
+  selectionChanged() {
+    console.log(this.radioGroupValue);
+  }
+}
+```
+
+</TabItem>
+<TabItem value="react">
+
+Declaration
+```html
+<rapid-radio-group>
+  <rapid-radio value="one">One</rapid-radio>
+  <rapid-radio value="two">Two</rapid-radio>
+  <rapid-radio value="three">Three</rapid-radio>
+</rapid-radio-group>
+```
+Usage
+```typescript
+export function MyComponent() {
+  const selectionChanged = (event) => {
+    console.log({ radioGroupValue })
+  };
+
+  return (
+    <rapid-radio-group onChange={handleCheckboxChange}>
+      <rapid-radio value="one">One</rapid-radio>
+      <rapid-radio value="two">Two</rapid-radio>
+      <rapid-radio value="three">Three</rapid-radio>
+    </rapid-radio-group>
+  );
+}
+```
+</TabItem>
+<TabItem value="angular">
+
+Declaration
+```html
+<rapid-radio-group>
+  <rapid-radio value="one">One</rapid-radio>
+  <rapid-radio value="two">Two</rapid-radio>
+  <rapid-radio value="three">Three</rapid-radio>
+</rapid-radio-group>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+@Component({
+  selector: 'my-root',
+  template: `
+    <rapid-radio-group
+      (change)="selectionChanged($event)"
+    >
+      <rapid-radio value="one">One</rapid-radio>
+      <rapid-radio value="two">Two</rapid-radio>
+      <rapid-radio value="three">Three</rapid-radio>
+    </rapid-radio-group>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [FormsModule],
+})
+export class AppComponent {
+  selectionChanged(event: Event) {
+    const target = event.target as HTMLInputElement;
+    console.log(target.value);
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+## DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+| Name        | Type      | Description                                                                               | Example |
+|-------------|-----------|-------------------------------------------------------------------------------------------|---------|
+| disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                                   | `<rapid-radio-group disabled>` |
+| name        | `string`  | Sets a name for the component                                                             | `<rapid-radio-group name="name">` |
+| orientation | `string`  | Sets the orientation of the group of radios components can be `vertical` or `horizontal`. **Default: `horizontal`** | `<rapid-radio-group orientation="vertical">` |
+| readonly    | `boolean` | If true, the user cannot change the value of this checkbox (which is greyed out)          | `<rapid-radio-group readonly>` |
+| value       | `string`  | Sets a initial value for the component, so the corresponding radio component gets checked | `<rapid-radio-group value="one">` |
+
+### Slots
+
+| Slot | Use |
+|---|---|
+| label	| The slot for the label |
+
+### Parts
+
+| Part | Use |
+|---|---|
+| positioning-region | The positioning region for laying out the radios |
+
+### Fired Events
+| Name    | Description                                   |
+|---------|-----------------------------------------------|
+| @change | Fires the event when a radio change its state |
+
+### Listened Events
+
+This component doesn't listen to any events.
