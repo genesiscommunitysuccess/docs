@@ -111,12 +111,12 @@ Use cases:
 
 Property and attribute binding examples for Genesis Component syntax.
 
-| Name     | Type      | Description                                                                      |
-|----------|-----------|----------------------------------------------------------------------------------|
-| checked  | `boolean` | Sets or retrieves the current state of the component. **Default: `false`**       |
-| disabled | `boolean` | Similar to `readonly`, but with a blur on the component                          |
-| value    | `string`  | Sets a value for the component. Not visible to the user                          |
-| readonly | `boolean` | If true, the user cannot change the value of this checkbox (which is greyed out) |                                                                                                    |
+| Name     | Type      | Description                                                                      | Examples |
+|----------|-----------|----------------------------------------------------------------------------------|---|
+| checked  | `boolean` | Sets or retrieves the current state of the component. **Default: `false`**       | `<rapid-radio checked>` |
+| disabled | `boolean` | Similar to `readonly`, but with a blur on the component                          | `<rapid-radio disabled>` |
+| value    | `string`  | Sets a value for the component. Not visible to the user                          | |
+| readonly | `boolean` | If true, the user cannot change the value of this checkbox (which is greyed out) | `<rapid-radio readonly>` |
 
 ### Slots
 
@@ -131,12 +131,12 @@ Property and attribute binding examples for Genesis Component syntax.
 | control |	The element representing the visual radio control |
 | label |	The label |
 
-### Fired Events
+### Events fired
 | Name    | Description                                 |
 |---------|---------------------------------------------|
 | @change | Fires the event when the radio component changes its state |
 
-### Listened Events
+### Events listened to
 This component doesn't listen to any events.
 
 ### Further details
