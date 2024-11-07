@@ -17,45 +17,45 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 | Attribute | Type | Use | Example |
 |---|---|---|---|
-|resourceName|`string`|Name of the backend resource which will provide metadata used to generate form and later used for submitting data|`<foundation-form resourceName="EVENT_COUNTERPARTY_INSERT">`|
-|readonly|`boolean`|Allows you to enable read-only mode, which disables all input on the form and hides the submit button.|`<foundation-form readonly>`|
-|hide-submit-button|`boolean`|Controls the visibility of the submit button.|`<foundation-form hide-submit-button>`|
+|resourceName|`string`|Name of the back-end resource which provides the metadata used to generate form and for submitting data|`<foundation-form resourceName="EVENT_COUNTERPARTY_INSERT">`|
+|readonly|`boolean`|Allows you to enable read-only mode, which disables all input on the form and hides the **Submit** button.|`<foundation-form readonly>`|
+|hide-submit-button|`boolean`|Controls the visibility of the **Submit** button.|`<foundation-form hide-submit-button>`|
 |design-system-prefix|`string`|Name of the design system prefix that will be used in renderers.|`<foundation-form design-system-prefix="rapid">`|
 
 ## Properties
 
 | Property | Type | Use | Example |
 |---|---|---|---|
-|additionalRenderers|`RendererEntry[]`|Allows to provide set of additional renderers used by the form.|`<foundation-form :additionalRenderers=${(x) => x.additionalRenderers}>`|
+|additionalRenderers|`RendererEntry[]`|Allows you to provide a set of additional renderers used by the form.|`<foundation-form :additionalRenderers=${(x) => x.additionalRenderers}>`|
 |data|`any`|Initial data for the form. |`<foundation-form :data=${(x) => x.data}>`|
-|jsonSchema|`JSONSchema7`|Alternatively to providing Form.resourceName you can hardcode the JSON schema on the client.|`<foundation-form :jsonSchema=${(x) => x.jsonSchema}>`|
-|renderers|`RendererEntry[]`|Allows to provide the main set of renderers used by the form. If not provided, the built-in renderers will be used by default.|`<foundation-form :renderers=${(x) => x.renderers}>`|
+|jsonSchema|`JSONSchema7`|Instead of providing Form.resourceName you can hardcode the JSON schema on the client.|`<foundation-form :jsonSchema=${(x) => x.jsonSchema}>`|
+|renderers|`RendererEntry[]`|Allows you to provide the main set of renderers used by the form. If not provided, the built-in renderers are used by default.|`<foundation-form :renderers=${(x) => x.renderers}>`|
 |uischema	|`UiSchema`|UI schema used to define configuration of the layout and elements in the form Check UiSchema for possible options.|`<foundation-form :uischema=${(x) => x.uischema}>`|
 
 ## Slots
 
 | Slot | Use |
 |---|---|
-|userActions|Using this slot allows you to override the default submit-button component.`|
+|userActions|Using this slot enables you to override the default submit-button component.|
 
 ## Parts
 
 | Part | Use |
 |---|---|
-|userActions|Using this part allows you to change the styles for the items in the userActions slot.`|
+|userActions|Using this part enables you to change the styles for the items in the userActions slot.|
 
 
-## Fired Events
+## Events fired 
 
 Events can be received by the emitting `<rapid-layout>`, or any parent element.
 
 | Part | Type | Use | Example |
 |---|---|---|---|
- | submit | `{ payload, errors }` | emitted after clicking submit button | `<foundation-form @submit="${() => ...}">`|
- | submit-success | `{ payload }` | emitted when the form has no errors and the form has been successfully submitted | `<foundation-form @submit-success="${() => ...}">`|
- | submit-failure | `{ payload, errors }` | emitted when the form has errors after being submitted | `<foundation-form @submit-failure="${() => ...}">`|
+ | submit | `{ payload, errors }` | Emitted after the user clicks on the **Submit** button | `<foundation-form @submit="${() => ...}">`|
+ | submit-success | `{ payload }` | Emitted when the form has no errors and the form has been submitted successfully. | `<foundation-form @submit-success="${() => ...}">`|
+ | submit-failure | `{ payload, errors }` | Emitted when the form has errors after being submitted. | `<foundation-form @submit-failure="${() => ...}">`|
 
-## Listened Events
+## Events listened to
 
 This component doesn't listen to any public API events.
 
