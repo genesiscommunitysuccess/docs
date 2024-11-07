@@ -164,5 +164,57 @@ Property and attribute binding examples for Genesis Component syntax.
 |---------|---------------------------------------------|
 | @submit | Possibility to pass the function to be performed in the last step after clicking submit. |
 
+
 ### Events listened to
 This component doesn't listen to any events.
+
+
+### Advanced Concepts
+#### Validation
+
+Use the validation field to set the condition for when the stepper permits the user to move forward.
+
+You define the validation attribute as follows:
+
+```html title="Stepper"
+  <rapid-stepper
+    :validation=${(x) => [
+  {
+    isValid: () => x.valid === '123' && x.valid2 === 'abc' && x.valid3 === 'test',
+  },
+  { isValid: () => x.valid4 === 'abc' },
+  { isValid: () => x.valid5 === 'finish' },
+]}
+    @submit=${() => alert('You completed form')}
+  >
+    <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+    <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+    <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+    <rapid-stepper-tab-panel>
+      <rapid-text-field style="margin-left: 10px;" value=${sync((x) => x.valid)}>
+        Must be equal to: 123
+      </rapid-text-field>
+      <rapid-text-field style="margin-left: 10px;" value=${sync((x) => x.valid2)}>
+        Must be equal to: abc
+      </rapid-text-field>
+      <rapid-text-field style="margin-left: 10px;" value=${sync((x) => x.valid3)}>
+        Must be equal to: test
+      </rapid-text-field>
+    </rapid-stepper-tab-panel>
+    <rapid-stepper-tab-panel>
+      <h5>Must be equal to: abc</h5>
+      <rapid-select style="margin: 10px 0 0 10px;" :value=${sync((x) => x.valid4)}>
+        <rapid-option>123</rapid-option>
+        <rapid-option>abc</rapid-option>
+      </rapid-select>
+    </rapid-stepper-tab-panel>
+    <rapid-stepper-tab-panel>
+      <rapid-text-field style="margin-left: 10px;" value=${sync((x) => x.valid5)}>
+        Must be equal to: finish
+      </rapid-text-field>
+    </rapid-stepper-tab-panel>
+  </rapid-stepper>
+```
+The index of each array element is related to the corresponding tab position. E.g. index number 1 is related to the first tab of the stepper, index number 2 is related to the second tab of the stepper, etc.
+
+The corresponding tab will only allow the user to proceed to the next step when the field `isValid` receives a `true` value. You can define this as in the example above, or you can call a function to perform more complicated logic tests.
