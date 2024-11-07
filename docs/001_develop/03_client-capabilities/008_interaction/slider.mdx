@@ -34,7 +34,11 @@ Use cases:
 
     Declaration
     ```html
-    <rapid-slider></rapid-slider>
+    <rapid-slider>
+      <rapid-slider-label position="0"> Low </rapid-slider-label>
+      <rapid-slider-label position="50"> Mid </rapid-slider-label>
+      <rapid-slider-label position="100"> High </rapid-slider-label>
+    </rapid-slider>
     ```
 
     Usage
@@ -42,9 +46,11 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-            <rapid-slider
-              @change="${(x) => x.handleChange()}"
-              :value="${sync((x) => x.sliderValue)}">
+            <rapid-slider @change="${(x) => x.handleChange()}"
+                          :value="${sync((x) => x.sliderValue)}">
+              <rapid-slider-label position="0"> Low </rapid-slider-label>
+              <rapid-slider-label position="50"> Mid </rapid-slider-label>
+              <rapid-slider-label position="100"> High </rapid-slider-label>
             </rapid-slider>
           `,
     })
@@ -61,7 +67,11 @@ Use cases:
 
     Declaration
     ```html
-    <rapid-slider></rapid-slider>
+    <rapid-slider>
+      <rapid-slider-label position="0"> Low </rapid-slider-label>
+      <rapid-slider-label position="50"> Mid </rapid-slider-label>
+      <rapid-slider-label position="100"> High </rapid-slider-label>
+    </rapid-slider>
     ```
 
     Usage
@@ -71,7 +81,11 @@ Use cases:
         console.log({ event.target.value })
       };
       return (
-        <rapid-slider onChange={handleChange}></rapid-slider>
+        <rapid-slider onChange={handleChange}>
+          <rapid-slider-label position="0"> Low </rapid-slider-label>
+          <rapid-slider-label position="50"> Mid </rapid-slider-label>
+          <rapid-slider-label position="100"> High </rapid-slider-label>
+        </rapid-slider>
       );
     }
   ```
@@ -80,7 +94,11 @@ Use cases:
 
   Declaration
   ```html
-  <rapid-slider></rapid-slider>
+  <rapid-slider>
+    <rapid-slider-label position="0"> Low </rapid-slider-label>
+    <rapid-slider-label position="50"> Mid </rapid-slider-label>
+    <rapid-slider-label position="100"> High </rapid-slider-label>
+  </rapid-slider>
   ```
 
   Usage
@@ -90,9 +108,11 @@ Use cases:
   @Component({
     selector: 'my-root',
     template: `
-              <rapid-slider
-                (change)="handleChange($event)"
-              ></rapid-slider>
+              <rapid-slider (change)="handleChange($event)">
+                <rapid-slider-label position="0"> Low </rapid-slider-label>
+                <rapid-slider-label position="50"> Mid </rapid-slider-label>
+                <rapid-slider-label position="100"> High </rapid-slider-label>
+              </rapid-slider>
               `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -107,6 +127,8 @@ Use cases:
   ```
 </TabItem>
 </Tabs>
+
+Use of the `<rapid-slider-label>` is optional.
 
 ## API
 
