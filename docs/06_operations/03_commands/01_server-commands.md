@@ -1220,21 +1220,21 @@ And remember, only use this command when all your applications have been stopped
 
 `DictionaryBuilder` connects to an RDBMS, parses schemas and uses this information to generate a Genesis tables dictionary. It supports SQLServer and PostgreSQL databases.
 
-The script accepts a series of arguments to establish a connection to the database and inform the scripts behaviour:
+The script accepts a series of arguments to establish a connection to the database and to control the behaviour of the script:
 
 ### Syntax
 
-| Arg | Long Argument              | Mandatory | Description                                                                                                  |
+| Arg | Long argument              | Mandatory | Description                                                                                                  |
 |-----|----------------------------|-----------|--------------------------------------------------------------------------------------------------------------|
 | -j  | --jdbcUrl \<jdbcUrl\>      | Yes       | JDBC URL of the database.                                                                                    |
-| -p  | --product \<productName\>  | Yes       | Represents the product name and affects the output files.                                                    |
-| -c  | --createFormat             |           | Generates JSON ready for use with Genesis Create, instead of the standard tables dictionary.                 |
-| -e  | --export                   |           | Exports table data to CSV                                                                                    |
-<!-- | -g  | --genesisTables            |           | Read from existing Genesis database                                                                          | -->
+| -p  | --product \<productName\>  | Yes       | represents the product name and affects the output files                                                   |
+| -c  | --createFormat             |           | generates JSON ready for use with Genesis Create, instead of the standard tables dictionary                 |
+| -e  | --export                   |           | exports table data to CSV                                                                                    |
+<!-- | -g  | --genesisTables       |           | reads from existing Genesis database                                                                          | -->he
 | -t  | --tables \<table1,table2>  |           | table list to include, default is all tables                                                                 |
-| -o  | --output \<outputDir\>     |           | Output directory for files. If the directory does not exist, it will be created. Defaults to project root.   |
+| -o  | --output \<outputDir\>     |           | output directory for files; if the directory does not exist, it will be created. Defaults to project root.   |
 | -s  | --schema \<schemaId\>      |           | Schema name / System ID                                                                                      |
-|     | --tableid \<tableIdStart\> |           | Table ID start number, default = 2000. Ignored if reading from Genesis DB.                                   |
+|     | --tableid \<tableIdStart\> |           | Table ID start number, default = 2000; ignored if reading from Genesis DB.                                   |
 
 ### Example
 
@@ -1243,19 +1243,19 @@ Generates a Genesis tables dictionary from a PostgreSQL database and exports dat
 DictionaryBuilder --jdbcUrl jdbc:postgresql://localhost:5432/?user=postgres&password=docker --product my-app --export
 ```
 
-Generates Genesis Create compatible JSON from a SqlServer database:
+The example below generates JSON for use with Genesis Create from an SqlServer database:
 ```shell
 DictionaryBuilder --jdbcUrl jdbc:sqlserver://localhost:1433;trustServerCertificate=true;username=SA;password=VerySecure123 --product my-app --createFormat
 ```
 
-Generates a Genesis tables dictionary from a PostgreSQL database called `myDatabase` 
+The example below generates a Genesis tables dictionary from a PostgreSQL database called `myDatabase` 
 ```shell
 DictionaryBuilder --jdbcUrl jdbc:postgresql://localhost:5432/myDatabase?user=postgres&password=docker --product my-app --export --tables user_trades
 ```
 
 ### How the script behaves
 
-The script connects via the given JDBC Url and retrieves the information it requires to build a Genesis tables dictionary.
+The script connects to the specified JDBC Url and retrieves the information it requires to build a Genesis tables dictionary.
 
 There are a few considerations you should be aware of:
 
@@ -1269,7 +1269,6 @@ Primary keys will be parsed as primary keys in Genesis, whether they are single-
 Only unique indexes will be parsed as secondary keys.
 
 There is no concept of foreign keys in Genesis, so these are ignored.
-
 
 ## ReconcileDatabaseSync
 
