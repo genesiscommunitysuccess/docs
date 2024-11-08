@@ -1008,11 +1008,13 @@ The filters can be specified using common expressions, Groovy expressions, or ev
 
 ### `MORE_ROWS`
 
+Used to request more rows on an active subscription.
+
 TBD
 
 ### `MORE_COLUMNS`
 
-Used to request more columns on an active subscription
+Used to request more columns on an active subscription.
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
@@ -1145,7 +1147,9 @@ connection: keep-alive
 
 ### `DATA_LOGOFF`
 
-<Tabs defaultValue="websocket" values={[{ label: 'Websocket', value: 'websocket', }, { label: 'REST', value: 'rest', }]}>
+This will end a dataserver subscription.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
 <TabItem value="websocket">
 Request
 ```
@@ -1189,6 +1193,10 @@ connection: keep-alive
 
 ## Metrics
 
+:::info
+Ensure you have [enabled metrics](/build-deploy-operate/operate/metrics/#enabling-metrics) in your environment to view them.
+:::
+
 The data server metrics expose a number of metrics to help monitor the service.
 These metrics expose the number of users connected, and various latency statistics.
 
@@ -1207,9 +1215,7 @@ The latency metrics track how well a Data Server is handling requests.
 | lookup_latency                | The latency for a look-up                      |
 | message_publication_latency   | The latency for publishing an update          |
 
-:::info
-Ensure you have [enabled metrics](/build-deploy-operate/operate/metrics/#enabling-metrics) in your environment to see metrics
-:::
+
 
 ## Configuring runtime
 
