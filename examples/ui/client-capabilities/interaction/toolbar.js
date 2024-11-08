@@ -1,8 +1,6 @@
 import { CodeSection } from '../../documentationBase';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 
-registerComponents();
-
 export default function ToolbarDemo({ children, color }) {
 
 	const isBrowser = useIsBrowser();
