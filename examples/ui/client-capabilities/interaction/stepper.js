@@ -1,8 +1,6 @@
 import { CodeLabel, CodeSection } from '../../documentationBase';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 
-registerComponents();
-
 export default function StepperDemo({ children, color }) {
 
 	const isBrowser = useIsBrowser();
