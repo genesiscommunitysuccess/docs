@@ -1,9 +1,14 @@
 import { CodeLabel, CodeSection } from '../../documentationBase';
-import { registerComponents } from '../../rapidImports';
-
-registerComponents();
-
+import useIsBrowser from '@docusaurus/useIsBrowser';
 export default function TextAreaDemo({ children, color }) {
+
+	const isBrowser = useIsBrowser();
+
+	if (isBrowser) {
+		const RapidImports = require('../../rapidImports');
+		RapidImports.registerComponents();
+	}
+	
 	return (
 		<CodeSection>
 			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
