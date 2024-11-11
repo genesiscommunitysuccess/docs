@@ -12,7 +12,7 @@ tags:
 Genesis has numerous built-in commands that have their own individual functions.
 This page goes through them and details the function, parameters and use cases of those commands.
 
-Once an application has been built and zipped, you can install it in any another system that contains the Genesis low-code platform.
+Once an application has been built and zipped, you can install it in any another system that contains the Genesis application platform.
 
 To ensure a correct installation, you must follow the product installation procedure.
 
@@ -816,7 +816,7 @@ You need to provide:
 
 ## remap
 
-Remap is a schema-migration tool used to apply the current schema (defined in the deployed field and table GPAL dictionaries) to the underlying database layer used by the Genesis low-code platform.
+Remap is a schema-migration tool used to apply the current schema (defined in the deployed field and table GPAL dictionaries) to the underlying database layer used by the Genesis application platform.
 
 The `remap` command performs the following tasks:
 

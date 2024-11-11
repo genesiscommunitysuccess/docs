@@ -12,7 +12,7 @@ const GTM_ID = process.env.GTM_ID || "GTM-5GTR43J"; // default to uat GTM_ID, pr
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Low-code Platform For Financial Markets",
+  title: "Genesis Application Platform for Financial Markets",
   tagline:
     "The Platform with 50+ Modern Building Blocks to Accelerate App Development.",
   url: "https://learn.genesis.global/",

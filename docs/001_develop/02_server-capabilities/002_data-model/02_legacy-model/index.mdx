@@ -1,0 +1,837 @@
+---
+title: 'Legacy fields and tables'
+sidebar_label: 'Legacy Fields and tables'
+id: legacy-fields-intro
+sidebar_position: 3
+---
+
+:::warning
+This page is only for applications running version GSF version 7.1 or earlier, or those which have not migrated to the [latest way to define tables and views](/develop/server-capabilities/data-model/)
+
+If your app is running version 7.2+, but is still using this legacy structure, follow [these simple migration instructions](/develop/server-capabilities/data-model/legacy-model/tables-migration/) and enable your application to take advantage of all the latest features.
+:::
+
+## Example configuration
+
+### Fields
+
+There is no complexity to a **fields-dictionary.kts** file.
+
+As you can see, each field is named in its own row and given a type, all within a `fields` statement. 
+
+Some of the fields in the example below have extra parameters. For example, `DESCRIPTION` is given a `maxSize`of 255.
+
+```kotlin
+fields {
+    field(name = "ACTIVE", type = BOOLEAN)
+    field(name = "ALERT_ID", type = STRING)
+    field(name = "ATTRIBUTES", type = STRING)
+    field(name = "AUDIT_CODE", type = STRING)
+    field(name = "AUDIT_TEXT", type = STRING)
+    field(name = "CLIENT_ORDER_ID", type = STRING)
+    field(name = "RIGHT_CODE", type = STRING)
+    field(name = "CREATED_AT", type = DATETIME)
+    field(name = "CREATED_BY", type = STRING)
+    field(name = "DESCRIPTION", type = STRING, maxSize = 255)
+    field(name = "ENTITY_ID", type = STRING)
+    field(name = "EVENT_DATETIME", type = DATETIME)
+    field(name = "EVENT_TYPE", type = STRING)
+    field(name = "EXTERNAL_ID", type = STRING)
+    field(name = "FIELD_NAME", type = STRING)
+    field(name = "FIELD_VALUE", type = STRING)
+    field(name = "HOST", type = STRING)
+    field(name = "LAST_ACCESS_TIME", type = DATETIME)
+    field(name = "MESSAGE_TYPE", type = STRING)
+    field(name = "NAME", type = STRING)
+    field(name = "NODE", type = STRING)
+    field(name = "NOTIFICATION_CODE", type = STRING)
+    field(name = "NOTIFICATION_ID", type = STRING)
+    field(name = "NOTIFICATION_TIMESTAMP", type = DATETIME)
+    field(name = "QUERY_NAME", type = STRING)
+    field(name = "REF", type = STRING)
+    field(name = "REJECT_REASON", type = STRING)
+    field(name = "RESULT_EXPRESSION", type = STRING)
+    field(name = "RULE_EXPRESSION", type = STRING)
+    field(name = "RULE_STATUS", type = ENUM("ENABLED", "DISABLED", default = "DISABLED"))
+    field(name = "RULE_TABLE", type = STRING)
+    field(name = "RX_SEQUENCE", type = LONG)
+    field(name = "SESSION_AUTH_TOKEN", type = STRING)
+    field(name = "SESSION_ID", type = STRING)
+    field(name = "SOURCE_ID", type = STRING)
+    field(name = "RULE_START_TIME", type = STRING)
+    field(name = "RULE_END_TIME", type = STRING)
+    field(name = "START_TIMESTAMP", type = DATETIME)
+    field(name = "SYSTEM_KEY", type = STRING)
+    field(name = "SYSTEM_VALUE", type = STRING)
+    field(name = "TEXT", type = STRING)
+    field(name = "TIMEOUT", type = LONG)
+    field(name = "USER_NAME", type = STRING)
+    field(name = "VERSION", type = INT)
+    field(name = "TABLE_OPERATION", type = STRING, default = "INSERT")
+    field(name = "PROCESS", type = STRING)
+    field(name = "PROCESS_NAME", type = STRING)
+    field(name = "PROCESS_STATUS", type = BOOLEAN)
+    field(name = "PROCESS_STATUS_MESSAGE", type = STRING)
+    field(name = "PROCESS_STATE_TEXT", type = ENUM("DOWN", "ERROR", "WARNING", "STANDBY", "UP", default = "DOWN"))
+    field(name = "PROCESS_RESOURCES", type = STRING, maxSize = dbMaxSize(target = 5000))
+    field(name = "PROCESS_HOSTNAME", type = STRING)
+    field(name = "PROCESS_CPU_USAGE", type = DOUBLE)
+    field(name = "PROCESS_MEM_USAGE", type = DOUBLE)
+    field(name = "PROCESS_SECURE", type = BOOLEAN)
+    field(name = "PROCESS_PORT", type = INT)
+    field(name = "RESOURCE_TYPES", type = STRING)
+    field(name = "LOG_LEVEL", type = STRING)
+    field(name = "DATADUMP", type = BOOLEAN)
+    field(name = "START_TIME", type = DATETIME)
+    field(name = "HOST_NAME", type = STRING)
+    field(name = "SYSTEM_CPU_LOAD", type = DOUBLE)
+    field(name = "TOTAL_PHYSICAL_MEMORY_SIZE", type = LONG)
+    field(name = "FREE_PHYSICAL_MEMORY_SIZE", type = LONG)
+    field(name = "CRON_EXPRESSION", type = STRING)
+    field(name = "TIME_ZONE", type = STRING)
+    field(name = "APPROVAL_ID", type = STRING)
+    field(name = "APPROVAL_KEY", type = STRING)
+    field(
+        name = "APPROVAL_STATUS",
+        type = ENUM("PENDING", "APPROVED", "CANCELLED", "REJECTED_BY_USER", "REJECTED_BY_SERVICE", default = "PENDING")
+    )
+    field(name = "APPROVAL_MESSAGE", type = STRING)
+    field(name = "DESTINATION", type = STRING)
+    field(name = "EVENT_MESSAGE", type = STRING)
+    field(name = "EVENT_DETAILS", type = STRING)
+    field(name = "ENTITY_TABLE", type = STRING)
+    field(name = "AWAITING_COUNTER", type = INT)
+    field(name = "APPROVED_COUNTER", type = INT)
+    field(name = "CANCELLED_COUNTER", type = INT)
+    field(name = "REJECTED_BY_USER_COUNTER", type = INT)
+    field(name = "REJECTED_BY_SERVER_COUNTER", type = INT)
+    field(name = "MONITOR_NAME", type = STRING)
+    field(name = "MONITOR_MESSAGE", type = STRING)
+    field(name = "MONITOR_STATE", type = STRING)
+    field(name = "QUANTITY", type = BIGDECIMAL)
+    field(name = "FX_RATE", type = BIGDECIMAL(18,8))
+}
+```
+
+### Tables
+
+###### Simple table with autoincrement
+This very simple table contains one field (POSITION_ID) that uses `autoIncrement` to generate the next sequence number. This field is also the primary key for the table.
+
+```kotlin
+tables {
+
+  table(name = "POSITION", id = 11002) {
+    autoIncrement(POSITION_ID)
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
+
+    primaryKey { 
+      POSITION_ID
+    }
+  }
+
+}
+``` 
+
+###### Simple table with sequence
+This very simple table contains one field (POSITION_ID) that uses `sequence` to generate the next sequence number. A sequence must always have a unique two-character id - in this case, PS. The POSITION_ID field is also the primary key for the table.
+
+```kotlin
+tables {
+
+  table(name = "POSITION", id = 11002) {
+    sequence(POSITION_ID, "PS")
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
+
+    primaryKey { 
+      POSITION_ID
+    }
+  }
+
+}
+```
+
+###### Two tables and an audit table
+Our example below shows an application's **tables-dictionary.kts** file containing two tables. The first contains trades and the second contains simple position information for each instrument (as seen in the first example).
+
+Note that the first table has been declared with an audit table, so this creates two tables: one called TRADE and one called TRADE_AUDIT. The TRADE_AUDIT table automatically logs all changes to the TRADE table. The schema will actually have three tables:
+
+- TRADE
+- TRADE_AUDIT
+- POSITION
+
+Audit tables use `sequence` to generate the sequence number for each entry in the table. In this example, the sequence has the id TR.
+
+```kotlin
+tables {
+  table(name = "TRADE", id = 11000, audit = details(id = 11001, sequence = "TR", tsKey = true)) {
+    // Source: Trade
+    autoIncrement(TRADE_ID)
+    INSTRUMENT_ID not null
+    COUNTERPARTY_ID not null
+    QUANTITY not null
+    SIDE not null
+    PRICE not null
+    TRADE_DATETIME
+    ENTERED_BY
+    TRADE_STATUS
+
+    primaryKey {
+      TRADE_ID
+    }
+
+    indices {
+      nonUnique {
+        TRADE_DATETIME
+      }
+    }
+  }
+
+  table(name = "POSITION", id = 11002) {
+    autoIncrement(POSITION_ID)
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
+
+    primaryKey {
+      POSITION_ID
+    }
+  }
+
+}
+```
+
+
+## Configuration options
+
+### Fields
+
+Fields are the individual elements that hold data in your application. For example, this could be a price, an instrument name, an instrument code, or a date. Every basic individual item of data you need has to be defined as a field.  
+
+A single field can be used in multiple tables.
+
+You define your fields in a specific file that has the name _application_**-fields-dictionary.kts**.
+
+So, if your application is called **heracleum**, the file name will be **heracleum-fields-dictionary.kts**.
+
+
+#### Field types
+
+The following field types are available:
+
+* STRING
+* DATE
+* DATETIME
+* ENUM
+* LONG
+* INT
+* SHORT
+* DOUBLE
+* BIGDECIMAL
+* NANO_TIMESTAMP
+* RAW
+
+To define a field, supply a unique `name` and `type`. There are also [optional parameters](#optional-parameters) you can specify, such as default value and non-nullable. (Some options are only relevant for certain types.)
+
+For example, here we define two fields. In the first, we simply supply the field type (STRING). In the second, we supply the type as `ENUM`, specify the two possible values for the field, and then a default value:
+
+```kotlin
+fields {
+    field("PROJECT_ID", type = STRING)
+    field("PROJECT_OPERATIONAL_STATUS", type = ENUM("OPERATIONAL", "NEW_BUILD", default = "NEW_BUILD"))
+}
+```
+###### Optional parameters
+You can add one or more parameters to any field that you declare.
+
+| Parameter | Default value | Sample Usage | Value Type | Description |
+|---|---|---|---|---|
+| default | null | `field(name = "AGE", type = INT, default = 20)` | The same type as the field | Set a default value for the field where not supplied on a database insert. This is mandatory for `ENUM` inside the field declaration. For example: `field(name = "COUNTRY", type = ENUM("BRAZIL", "KUWAIT", "BHUTAN", default = "BRAZIL")` |
+| maxSize | 64 (unlimited for non sql DB) | `field(name = "DESCRIPTION", type = STRING, maxSize = 1000)` | integer | Set the maxSize of a field. Applicable for `STRING`, `ENUM`, `RAW`. Needed for [HFT](../../../../getting-started/glossary/glossary/#hft) and SQL data structures. See below for more details |
+| format | N/A | `field(name = "SETTLEMENT_AMOUNT", type = BIG_DECIMAL, format = "#,##0.000")` | Dependent on type | Set the valid format of a field entry  |
+| sensitive | false | `field(name = "PASSWORD", type = STRING, sensitive = true)` | boolean | true if the field should be obfuscated (masked by asterisk (*) symbols) in the system logs  |
+| nullable | true | `field(name = "DESCRIPTION", type = STRING, nullable = false)`; see below | boolean | false if the field is not nullable. This argument is not available if `type = ENUM` |
+
+###### Nullable fields
+By default, all fields except `ENUM` are nullable. 
+
+You can make a field not nullable by adding the parameter `nullable=false` when you declare the field. By doing this, the field is not nullable wherever it is used in the application.
+
+If you want more flexibility, leave the field nullable by default, but when you [add the field to a table](../../../../database/fields-tables-views/tables/tables-basics/), declare it as 'not null'. This means that the field can be nullable when used in other tables.
+
+###### ENUM fields
+When you declare an ENUM field, you have to provide:
+
+- a fixed list of available values
+- a default value 
+
+For example, here we specify three different states and then specify the default state (NEW):
+
+```kotlin
+field(name = "TRADE_STATUS", type = ENUM("NEW", "ALLOCATED", "CANCELLED", default = "NEW"))
+```
+Remember that ENUM fields are always not nullable. If you try and add `nullable = true' Intellij will warn you. If you go ahead and build, it will generate an error.
+
+###### Naming fields
+
+As is always the case, it is worth being careful with the names you give fields. It is good practice to use clear descriptive names.
+
+###### Duplicate names
+
+If you create a field name that already exists, there are no consequences - as long as the field type is also the same. In effect, the second definition is simply ignored.
+
+However, if you create a field name that matches an existing name and you give it a different field type, this generates a duplication error.
+
+The error is shown when you generate the code.
+
+If the code has already been generated - typically, if you are making changes to an existing server - the error is generated when you run `genesisInstall` after the change.
+
+More specifically, when you build, this generates a duplication warning if the fields are defined in the same way, or an error if they are defined differently. If the duplication is between your own field and one you have inherited from another module, make sure you change the name of your own field, not the one from the other module.
+
+When you define a new field, it is good practice to run `codegen:generateSysDef`. This will generate code based on the fields you have defined, and you will be able to use Intellisense to pick this new field within table definitions.
+
+###### Using the maxSize parameter 
+
+When using an SQL database and you want a field's max size to be the same as that supported by the underlying database, you can use the helper function `dbMaxSize()`.
+
+For example, if using Postgres and wanting a `STRING` field's size to be equal to the max size Postgres supports, then you would define the field as:
+
+```kotlin
+field(name = "DESCRIPTION", type = STRING, maxSize = dbMaxSize())
+```
+
+You can also specify a target `maxSize`. This is useful when you want to limit a field's size to a particular length, but you want to be flexible enough to support different SQL databases.
+
+For example:
+
+```kotlin
+field(name = "DESCRIPTION", type = STRING, maxSize = dbMaxSize(target = 9000))
+```
+If the underlying database is Postgres this sets the field's `maxSize` to 9000, because Postgres can support up to 65535. But if you are using MS SQL then the `maxSize` is set to 8000; the maximum supported size for MS SQL.
+
+###### Pre-defined fields
+
+By default, you have access to all the standard field definitions in the Genesis application platform. You also have access to all the fields in any module that you include in your application (for example, the Auth module comes with a set of pre-defined fields).
+
+###### DisplayDefaultSensitiveFields
+The platform declares the following framework fields as sensitive by default: 
+
+- PASSWORD
+- REFRESH_TOKEN
+- REFRESH_AUTH_TOKEN
+- SESSION_AUTH_TOKEN
+
+The values of sensitive fields are displayed as asterisks on screen. For debugging purposes, you can set the `DisplayDefaultSensitiveFields` system property to `true` to display the values. 
+
+By default, sensitive fields are set to `false`, and this only applies on `toString()` output of GenesisSet and DbRecord objects.
+
+###### SQL databases: storage precision and scale for BIGDECIMAL fields
+
+For historical reasons, SQL databases have a default precision and scale for BIGDECIMAL fields: the maximum number of digits that can be stored is 20, of which 5 can be after the decimal point. 
+
+However, you can change this if you need to store more characters or decimal places in your application's SQL database.
+
+For example, if you need 8 decimal places:
+
+```kotlin
+field(name = "FX_RATE", type = BIGDECIMAL(20,8))
+```
+
+- When not specified, the default value of `(20,5)` is used.
+- When an invalid value is supplied (depending on the database vendor), `remap` will set the field to the default value.
+- You can increase the maximum number of characters, but how much depends on the database vendor. Check with them before trying this.
+
+:::note
+This is not relevant to other database technologies.
+:::
+
+
+
+###### Modularity
+
+Genesis is modular, so if you have a dependency on another module (e.g. Auth), your project naturally inherits all the fields from that module and and they are available in your project. 
+
+It makes sense to re-use fields in dependent modules wherever possible; this cuts down your need to define field names that are unique across all modules and the project itself.
+
+###### Scripting
+
+[GPAL](../../../../getting-started/glossary/glossary/#gpal) is a scripting language that gives engineers plenty of advantages, especially when it comes to repetition. 
+
+For example, where you need to create a large number of table fields, say `ALGO_PARAM_1` through to `ALGO_PARAM_50`, you can introduce `for` loops:
+
+```kotlin
+  val algoParamPrefix = "ALGO_PARAM_"
+  for(i in 1..51) {
+    field(name = algoParamPrefix + i, type = STRING)
+  }
+```
+
+###### Default empty values and non-nullable STRING fields
+
+You can define an `empty` and `non-nullable` **STRING** field as:
+
+```kotlin
+field(name = "REFERENCE", type = STRING, default = "", nullable = false)
+```
+
+:::danger
+Although this is a valid set-up by ANSI SQL standards, Oracle currently doesn't support this configuration, leading to failed database writes.
+:::
+
+If you want to implement this set-up in Oracle, you have a choice of how to do it:
+
+- Change all default values to have **at least one character**.
+
+OR
+- Provide a `SysDef` level override property: `OracleEmptyStringFieldDefaultValue`, with **at least one character**.
+
+For maximum simplicity and compatibility, consider simply declaring the field as `nullable`:
+
+```
+field(name = "REFERENCE", type = STRING)
+```
+###### Precision and scale 
+
+The Genesis platform has predetermined column sizes, so the platform automatically translates the field types into the most suitable precision and scale.
+
+
+
+### Tables
+In your application's **tables-dictionary.kts** file, you need to define every table that your application needs. Let us look at a very simple example definition. This contains a single table with three fields in it.
+
+Then you can look closer at all the elements that can go into a table definition.
+
+```kotlin
+tables {
+
+  table(name = "POSITION", id = 11002) {
+      autoIncrement(POSITION_ID)
+      INSTRUMENT_ID
+      QUANTITY
+      NOTIONAL
+
+      primaryKey { 
+        POSITION_ID
+      }
+  }
+
+}
+```
+
+The `autoIncrement` keyword is used to set this field automatically to the next number in the sequence when a new record is written to the database. We shall discuss this further in the [Advanced](../../../../database/fields-tables-views/tables/tables-advanced/) page.
+
+###### Table name
+
+When you define a table, you must start by giving it a name that is unique to the application: 
+
+
+```kotlin
+  table(name = "POSITION")
+```
+
+###### Table ID
+
+Tables must also be given a Table ID that is unique to the application. This ensures that you can rename a table without losing the data in it.
+ 
+```kotlin
+  table(name = "POSITION", id = 11002)
+```
+
+###### Fields
+After specifying a name and a Table ID, specify the fields in the table. 
+
+You do not need to specify field types and other attributes - just the field name.
+
+If you are using intelliJ IDE, it will auto-suggest the available fields; any references that are not known will be shown in red.
+
+
+```kotlin
+
+  table(name = "POSITION", id = 11002) {
+      autoIncrement(POSITION_ID)
+      INSTRUMENT_ID
+      QUANTITY
+      NOTIONAL
+
+  }
+
+```
+
+###### Making a field not null
+All [field types](../../../../database/fields-tables-views/fields/fields-basics) except ENUM are nullable by default.  However, you can set a nullable field so that it is not nullable on a specific table. When you add the field to the table, just add `not null`. Effectively, this makes the field mandatory for that table. It does not affect usage of the field in other tables in your application.
+
+For example, here we have set two fields to be `not null`:
+
+
+```kotlin
+table(name = "TRADE", id = 2000) {
+      autoIncrement(TRADE_ID)
+      COUNTERPARTY_ID
+      INSTRUMENT_ID not null
+      QUANTITY
+      PRICE not null
+      NOTIONAL
+
+      primaryKey { 
+        TRADE_ID
+      }
+  }
+```
+
+###### Primary key
+
+By default, a table is a set of columns (fields), where you can insert and maintain a number of rows (records). You need to provide ways to query the database so that a specific record or records can be found. So you need to define one or more indices.
+
+The most important index (plural: indices) is called the primary key. This is mandatory, and must be defined by one or more fields which have a unique value or combination of values.
+
+So let's add a simple primary key to the example above. It is on the POSITION_ID field, so that we can find a specific record or range of records. It is common to use a single sequenced/autoIncrement field as a `primaryKey` in this way:
+
+```kotlin
+tables {
+
+  table(name = "POSITION", id = 11002) {
+      autoIncrement(POSITION_ID)
+      INSTRUMENT_ID
+      QUANTITY
+      NOTIONAL
+      
+      primaryKey {
+          POSITION_ID 
+      }
+  }
+
+}
+```
+
+#### Providing other indices
+
+In many cases, you will want to provide other indices so that all the useful ways of looking at the table are made possible.
+
+There are two types of index that you can specify:
+
+- A **unique index** ensures that no two records in the table can have the same value for the specified field or fields. For example, this could be a TRADE_ID in a TRADES table, where the unique value is generated via autoIncrement or sequence. Or it could be a CURRENCY_SYMBOL in a table of CURRENCIES.  
+- A **non-unique index** is useful when uniqueness is not important or not possible. For example, you could add a non-unique index on the ORDER_ID field in your TRADE table. This enables you to find all the trades that match a specified order.  (ORDER_ID would be unique in the ORDERS table, but the order can be filled by multiple trades.) 
+
+So how does that work in practice? Imagine a scenario where you have projects and users.
+
+- You have a PROJECTS table where each project has a unique PROJ_ID.
+- You have a USERS table where each project has a unique USER_ID.
+
+There is a many-to-many relationship between the two tables - projects can have more than one user, and users can belong to more than one project. To allocate users to projects, you need a third table: PROJECT_USERS.
+
+In the the PROJECT_USERS table, you only need two fields:
+
+- PROJ_ID
+- USER_ID
+
+Each record in this table states that PROJ_ID = x has USER_ID = y. However, we require that each unique combination of PROJ_ID and USER_ID can only occur once in the table. So in our table, we define the primary key on PROJ_ID and USER_ID. We can rely on the database to ensure uniqueness; an attempt to insert a record with a PROJ_ID and USER_ID combination that already exists will fail.
+
+Here is our table definition for PROJECT_USERS:
+
+```kotlin
+  table(name = "PROJECT_USERS", id = 11020) {
+      PROJ_ID
+      USER_ID
+      primaryKey {
+          PROJ_ID
+          USER_ID
+      }
+     indices {
+         nonUnique {
+             USER_ID
+         }
+     }
+  }
+```
+ 
+In the above example:
+
+- We can query on the primary key just on PROJ_ID to find the users associated with that project. 
+- We can also query the primary key on both PROJ_ID and USER_ID to find if a specific user is associated with a specific project.
+- However, we **cannot skip** a field and query the primary key on only USER_ID. So, we have provided the non-unique index on USER_ID, which enable us to find all projects associated with a specific user.
+
+###### Indices with multiple fields
+Any index you create - the primary key or other unique or non-unique indices - can have multiple fields.
+
+If you create an index with multiple fields, it is possible to make a search based on all the fields specified or to make a partial search based on some of the fields. However, there are strict limits to this; see our page on [operations and indices](../../../../database/data-structures/indices/) for information.
+
+Also note:
+
+- The order of the fields is important if you want partial searches to be useful and efficient.
+- You cannot define two identical indices; you cannot supply exactly the same fields in exactly the same order as the primary key or another index on the same table.
+
+###### How is data retrieved from the database?
+
+See our page on [operations and indices](../../../../database/data-structures/indices/) for information on the operations that can be used to perform look-ups on an index.
+
+###### Naming the primary index and other indices
+
+It is best practice for you to give each primary key or index a name when you declare it. 
+
+Use the `name` parameter to specify the name of a primary key or index, for example:
+
+```kotlin
+    primaryKey(name = "POSITION_PRIMARY_KEY") {
+      POSITION_ID
+    }
+```
+
+###### Accepting default names
+It is not mandatory to specify a name for a primary key or index. If you don't provide one, Genesis creates one using the following rule:
+
+ `[TABLE_NAME]_BY_[FIELD_1](_[FIELD_N])`
+ 
+ where FIELD_1 - FIELD_N are all the fields that make up the key/index in the order specified.
+
+There is one exception; this is the common use case where the primary key is made up of a single field with a name in the format `[TABLE_NAME]_[ID]`. In this case, Genesis creates the name in the format `[TABLE_NAME]_BY_ID`.
+
+Let's see some examples. Below, the table name is `POSITION`. The names created by Genesis are shown in the comment before each primary key.
+
+
+```kotlin
+    
+    //POSITION_BY_ID
+    primaryKey { 
+        POSITION_ID
+    }
+
+    //POSITION_BY_OTHER_FIELD
+    primaryKey { 
+        OTHER_FIELD
+    }
+    
+    //POSITION_BY_OTHER_FIELD_ANOTHER_FIELD
+    primaryKey { 
+        OTHER_FIELD
+        ANOTHER_FIELD
+    }
+```
+
+#### Automatically generated sequences
+
+There are two keywords that enable you to define a field that automatically generates a sequence number (such as you would need for identifying a new trade or a new order):
+
+- `autoIncrement`, which simply generates an integer value in sequence; by default, the first number generated will be 1
+- `sequence`, which generates either a [UUID](https://www.uuidtools.com/what-is-uuid) or a value in a Genesis format (see below), depending on the database technology you are using
+
+:::info
+For all new development, we recommended that you use `autoIncrement` fields rather than `sequence`.
+
+There is no known efficiency between one keyword and the other. But `autoIncrement`is easier to define and generates a simple integer with no padding or leading zeroes; it keeps things simple.
+:::
+
+###### Default format when using sequence
+
+When you use the keyword `sequence` to generate sequence numbers, the value generated is actually a combination of sequence number and other parameters defined in your application's System definition. For example, a table with the field `TRADE_ID` defined as:
+
+```kotlin
+table (name = "TRADE", id = 2000) {
+        sequence(TRADE_ID, "TR")
+        QUANTITY
+        PRICE
+        SYMBOL
+        DIRECTION
+
+        primaryKey {
+            TRADE_ID
+        }
+    }
+```
+
+will generate `TRADE_ID` fields in the following format: `SEQUENTIAL_VALUE` (padded by `paddingSize`) + `SEQUENCE` + `LOCATION` + 1 (fixed)
+
+Using the default settings (see details below), the first value generated for the field defined above will be: `000000000000001TRLO1`
+
+###### Using sequence with an SQL database (UUID)
+
+If you are using an SQL database, `sequence` behaves differently by default; it generates a `UUID`.
+
+To switch off UUID generation and use the default Genesis format for `sequence`:
+
+1. Add or modify the following keys in the file **site-specific/genesis-system-definition.kts**:
+
+| Item | Default Value | Description
+| ---- | ------------- | -----------
+| Location | 'LO' |
+| SqlSequencePaddingSize| 15 | The number of zeros used to pad the sequential number.
+| SqlEnableSequenceGeneration | false | Must be set to true.
+
+2. Run 'genesisInstall` to apply the settings.
+
+3. If you have any new or changed sequences, run `remap` to generate any new database sequences.
+
+4. If there are existing fields using sequences, run the server command [CreateMissingSqlSequences](../../../../operations/commands/server-commands/#createmissingsqlsequences).
+
+5. If you need to adjust the initial value of the sequences (for example if you are migrating data), use the server command [SetSequence](../../../../operations/commands/server-commands/#setsequence).
+
+#### Subtables
+
+Within the body of the table definition, you can use `subtables` to define one or more subtables. A subtable provides a unique point of view on the data schema, which goes further than a simple join relationship. It gives extra functionality to a main table.
+
+For example, you might have an EXECUTION_VENUE table to provide details of different exchanges and trading venues. This table on its own probably cannot represent all the possible symbologies for an exchange. So, you could add a subtable called ALT_VENUE_CODE, in which the relationship is one-to-many from EXECUTION_VENUE_ID to ALT_VENUE_CODE.
+
+ALT_VENUE_CODE inherits key fields from the EXECUTION_VENUE table, and it simply acts as a lookup table for EXECUTION_VENUE records.
+
+The example below shows this.
+
+After the fields and the primary key have been defined, you can see the subtable `ALT_VENUE_CODE`.
+
+- The EXECUTION_VENUE_ID field is used to generate the join operation. This field is inherited automatically.
+- Then the additional fields ALT_VENUE_CODE and ALT_VENUE_CODE_TYPE are defined.
+- Then the key for the subtable is defined.
+
+```kotlin
+    table(name = "EXECUTION_VENUE", id = 5043) {
+        COUNTRY_CODE
+        OPERATING_MIC
+        DESCRIPTION
+        EXECUTION_VENUE_ID
+
+        primaryKey(name = "EXECUTION_VENUE_BY_EXECUTION_VENUE_ID", id = 1){
+            EXECUTION_VENUE_ID
+        }
+        subTables {
+            fields(EXECUTION_VENUE_ID)
+                .joiningNewTable(name = "ALT_VENUE_CODE", id = 5044) {
+                    ALT_VENUE_CODE
+                    ALT_VENUE_CODE_TYPE
+
+                    primaryKey(name = "ALT_VENUE_CODE_BY_EXECUTION_VENUE_ID_ALT_VENUE_CODE_TYPE", id = 1) {
+                        EXECUTION_VENUE_ID
+                        ALT_VENUE_CODE_TYPE
+                    }
+                }
+        }
+    }
+```
+Some tables provided by the platform have subtables. The example below shows the `GENESIS_PROCESS` monitoring table, which includes a subtable called `GENESIS_PROCESS_MONITOR`.
+
+```kotlin
+table(name = "GENESIS_PROCESS", id = 12) {
+    PROCESS_NAME
+    PROCESS_STATUS
+    PROCESS_STATUS_MESSAGE
+    PROCESS_STATE_TEXT
+    PROCESS_RESOURCES
+    PROCESS_HOSTNAME
+    PROCESS_CPU_USAGE
+    PROCESS_MEM_USAGE
+    PROCESS_SECURE
+    PROCESS_PORT
+    LOG_LEVEL
+    DATADUMP
+    START_TIME
+    RESOURCE_TYPES
+    primaryKey {
+        PROCESS_NAME
+        PROCESS_HOSTNAME
+    }
+    subTables {
+        fields(PROCESS_HOSTNAME, PROCESS_NAME)
+            .joiningNewTable(name = "GENESIS_PROCESS_MONITOR", id = 20) {
+                MONITOR_NAME
+                MONITOR_MESSAGE
+                MONITOR_STATE
+
+            primaryKey(name = "GENESIS_PROCESS_MONITOR_BY_HOSTNAME", id = 1) {
+                    PROCESS_HOSTNAME
+                    PROCESS_NAME
+                    MONITOR_NAME
+                }
+            }
+    }
+}
+```
+
+#### Audit tables
+
+If you want to be able to track the changes made to a table, you need an audit table. This is useful, for example, if you want to:
+
+- keep track of the changes to trades, with times and modifications, to provide an accurate record of events
+- be able to roll back to a specific time following an outage
+
+Audit tables don't exist in isolation. They exist to audit activity on a source table. To create an audit table, you simply need to include the parameter `audit = details()` when you define the source table itself. The syntax is:
+
+
+```kotlin
+table (name = <TABLE_NAME>, id = <TABLE_ID>, audit = details(id = <TABLE_NAME_AUDIT_ID>, sequence = <TABLE_SEQUENCE>, tskey = <TRUE_OR_FALSE>))
+        ...
+
+```
+
+The following details can be added when you use the `audit = details()`parameter:
+
+| Parameter name            | Type | Description |
+| ---                       | ---       | ---  |
+| `id`    | Integer  | **Unique** `id` to identify the audit table |
+| `sequence`        | STRING    | **Unique** name to identify its `sequence`   |
+| `tskey`        | boolean  | Set a timestamp index |
+
+
+The audit table that is created has the same name as the source table, plus the suffix **_AUDIT**. Here is an example table definition, which creates a table called `EUR_TRADES` and an audit table called `EUR_TRADES_AUDIT`:
+
+```kotlin {1}
+table (name = "EUR_TRADE", id = 2000, audit = details(id = 2100, sequence = "EA")) {
+    sequence(TRADE_ID, "TR")
+    COUNTERPARTY_ID
+    INSTRUMENT_ID not null
+    QUANTITY
+    PRICE not null
+    TRADE_DATE
+    TRADE_STATUS
+
+    primaryKey {
+        TRADE_ID
+    }
+}
+```
+
+Whenever an `eventHandler` interacts with the table `EUR_TRADES`, a record is automatically inserted to the audit table `EUR_TRADES_AUDIT`to log the event.
+
+So, to be clear:
+
+- An audit table monitors and logs details of changes on a specific table.
+- If the table and the `eventHandlers` that interact with it are set up correctly, then the auditing is performed automatically.
+- Every change to the table is automatically logged and timestamped on the audit table.
+
+###### Structure of audit tables
+
+When you create an audit table, it has all the same fields as the source table, plus the following fields:
+
+| Field name                | Data Type | Description |
+| ---                       | ---       | ---  |
+| `AUDIT_EVENT_DATETIME`    | DATETIME  | Autogenerated date and time of the event  |
+| `AUDIT_EVENT_TEXT`        | STRING    | Optional “REASON” value sent as part of the event message |
+| `AUDIT_EVENT_TYPE`        | STRING    | Event that wrote on the source table |
+| `AUDIT_EVENT_USER`        | STRING    | User on the event message |
+
+###### ACID
+Every `eventHandler` that interacts with the audited table must be [transactional](../../../../server/event-handler/basics/#transactional-event-handlers-acid). This ensures [ACID](../../../../getting-started/glossary/glossary/#acid) compliance.
+
+Here is a simple example of a transactional `eventHandler`:
+
+```kotlin
+
+    eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
+        onValidate {
+            ack()
+        }
+        onCommit { event ->
+            val company = event.details
+            entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to "SUCCESS!")))
+        }
+    }
+```
+
+:::warning
+Make sure your database supports transactions.
+:::
+
+
+
+
