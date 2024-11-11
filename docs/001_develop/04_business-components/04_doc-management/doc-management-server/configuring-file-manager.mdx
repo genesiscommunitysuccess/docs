@@ -40,24 +40,39 @@ item(name = "LOCAL_STORAGE_FOLDER", value = "<folderName>")
 ## AWS S3
 When using AWS S3 as your storage solution, you must have an S3 bucket created either locally or remotely.
 
-Next, you must set your `S3_STORAGE_MODE`.
+Once this is available, there are four steps you need to take to configure AWS S3:
 
-`S3_STORAGE_MODE` supports the following values:
-- LOCAL (app running locally with local S3 bucket)
-- DEV (app running locally with remote S3 bucket)
-- AWS (app running remotely on a AWS resource with remote S3 bucket)
+1. Set your `S3_STORAGE_MODE`.
 
 ```kotlin
 item(name = "S3_STORAGE_MODE", value = "<storageMode>")
 ```
+  `S3_STORAGE_MODE` can be:
+  - LOCAL (app running locally on your development machine with a locally mocked S3 bucket)
+  - DEV (app running locally connecting to a remote S3 bucket with credentials managed locally)
+  - AWS (app running on an AWS resource with credentials managed externally, i.e. role attached to resource)
 
-Next, you need to set your bucket config as follows.
+2. Set your bucket config as follows.
 ```kotlin
 item(name = "S3_BUCKET_NAME", value = "<bucketName>")
 item(name = "S3_FOLDER_PREFIX", value = "<folderPrefix>")
 ```
 
-Once you have set your storage mode and bucket config, your must set the individual config for your chosen storage mode.
+3. Set the threshold for multiple-part uploads.
+
+This step is optional. For handling large files, you can set a threshold in bytes; any file larger than the threshold be will uploaded in multiple parts by the AWS Storage Manager. By default, the threshold is 5MiB. To override this, specify the file size in bytes as an integer:
+
+```kotlin
+item(name = "S3_MULTIPART_SIZE_BYTES", value = <partSizeBytes>)
+```
+
+:::tip
+AWS has a minimum part size of 5MiB. Therefore, setting this configuration to lower than 5MiB and uploading a file smaller than 5MiB but greater than the configured size will fail.
+
+See [Amazon S3 multipart upload limits](https://docs.aws.amazon.com/AmazonS3/latest/userguide/qfacts.html) for more details.
+:::
+
+4. Set the individual config for your chosen storage mode.
 
 ### S3_STORAGE_MODE = LOCAL
 ```kotlin
@@ -73,7 +88,7 @@ item(name = "AWS_SECRET_ACCESS_KEY", value = "<secretAccessKey>")
 ```
 
 ### S3_STORAGE_MODE = AWS
-No extra config is required. The AWS resource your app is running on will extract the required config from the environment it's running on.
+No extra config is required. The AWS resource your app is running on automatically extracts the required config from the environment.
 
 ## Sharepoint
 When using Sharepoint as your storage solution, you must have a Sharepoint instance created either on-premises or remotely.
