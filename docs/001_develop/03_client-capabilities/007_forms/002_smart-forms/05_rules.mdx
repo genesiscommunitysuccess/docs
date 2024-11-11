@@ -1,0 +1,145 @@
+---
+title: 'Foundation Forms - rules'
+sidebar_label: 'Rules'
+id: foundation-forms-rules
+keywords: [genesis, foundation, ui, forms, smart forms]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - forms
+  - smart forms
+---
+
+import BooleanRuleFormExample from './examples/boolean_rule_example.js';
+import EnumRuleFormExample from './examples/enum_rule_example.js';
+
+# Foundation Forms - rules
+
+Rules enable you to add dynamic aspects to a form. For example, you can show, hide, enable or disable a UI Schema element based on another value in the form.
+
+## Rule type
+
+Foundation forms can use a value `RuleEffect` enum from the `jsonforms` library. There are four possible options:
+
+- `RuleEffect.SHOW` - shows a UI Schema element
+- `RuleEffect.HIDE` - hides a UI Schema element
+- `RuleEffect.ENABLE` - enables a UI Schema element
+- `RuleEffect.DISABLE` - disables a UI Schema element
+
+## Rule condition
+
+To create a rule in a `UISchemaElement`, set the `rule` property equal to an object with `effect`, which can be one of the `RuleEffect` enum values, and a `condition`.
+
+In the `condition` property, you create an object with `scope`, a string value corresponding to the value you want to test and a `schema` property which evaluates the value from the scope value against a test.
+
+## Examples
+
+### Boolean rule
+
+In the below example, there is a checkbox `withLimit`. When this is set to true, it enables the `limitPrice` field.
+
+```ts
+const formsWithRulesJsonSchema: JSONSchema7 = {
+  type: "object",
+  properties: {
+    withLimit: {
+      type: "boolean",
+      description: "kotlin.Boolean",
+    },
+    limitPrice: {
+      type: "number",
+      description: "kotlin.Double",
+    },
+  },
+};
+
+const formsWithRulesUiSchema: UiSchema = {
+  type: "VerticalLayout",
+  elements: [
+    {
+      type: "Control",
+      scope: "#/properties/withLimit",
+      label: "Add limit price?",
+    },
+    {
+      type: "Control",
+      scope: "#/properties/limitPrice",
+      rule: {
+        effect: RuleEffect.ENABLE,
+        condition: {
+          scope: "#/properties/withLimit",
+          schema: { const: true },
+        },
+      },
+    },
+  ],
+};
+```
+
+The result of this is that when the `withLimit` box is not checked, the limit price field is disabled. When checked, the limit price field is enabled.
+
+<BooleanRuleFormExample/>
+
+### Enum rule
+
+The example below shows you how to use the enum condition. In this case, we show the `zipCode` control if the user selects United States and `postCode` if the user selects either United Kingdom or Canada.
+
+```ts
+const selectData = ["United States", "Canada", "United Kingdom"];
+
+export const formsWithRulesUiSchema: UiSchema = {
+  type: "VerticalLayout",
+  elements: [
+    {
+      type: "Control",
+      scope: "#/properties/country",
+      label: "Country",
+      options: {
+        data: selectData.map((value) => ({ value })),
+        labelField: "value",
+        valueField: "value",
+      },
+    },
+    {
+      type: "Control",
+      scope: "#/properties/zipCode",
+      rule: {
+        effect: RuleEffect.HIDE,
+        condition: {
+          scope: "#/properties/country",
+          schema: { enum: ["United Kingdom", "Canada"] },
+        },
+      },
+    },
+    {
+      type: "Control",
+      scope: "#/properties/postalCode",
+      rule: {
+        effect: RuleEffect.SHOW,
+        condition: {
+          scope: "#/properties/country",
+          schema: { enum: ["United Kingdom", "Canada"] },
+        },
+      },
+    },
+  ],
+};
+```
+
+When the value of `country` is United States, the zip code field is shown. When the value of `country` is either United Kingdom or Canada, the postal code field is shown.
+
+<EnumRuleFormExample/>
+
+:::info
+After you have looked at the basics here, you can find more details in our [API Docs](./docs/api/index.md)
+
+Full source code at [Rules](https://github.com/genesiscommunitysuccess/form-examples/tree/main/client/src/routes/forms-with-rules)
+:::
+
+## License
+
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform
