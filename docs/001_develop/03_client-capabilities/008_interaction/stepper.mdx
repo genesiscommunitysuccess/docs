@@ -17,8 +17,6 @@ import StepperDemo from '../../../../examples/ui/client-capabilities/interaction
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Stepper
-
 Use cases:
 * Provide a multi-step process or dynamic form that the user can follow.
 
@@ -162,14 +160,14 @@ Property and attribute binding examples for Genesis Component syntax.
 
 | Name    | Description                                 |
 |---------|---------------------------------------------|
-| @submit | Possibility to pass the function to be performed in the last step after clicking submit. |
+| @submit | Enables you to pass the function to be performed in the last step after clicking submit. |
 
 
 ### Events listened to
 This component doesn't listen to any events.
 
 
-### Advanced Concepts
+### Advanced concepts
 #### Validation
 
 Use the validation field to set the condition for when the stepper permits the user to move forward.
@@ -215,6 +213,8 @@ You define the validation attribute as follows:
     </rapid-stepper-tab-panel>
   </rapid-stepper>
 ```
-The index of each array element is related to the corresponding tab position. E.g. index number 1 is related to the first tab of the stepper, index number 2 is related to the second tab of the stepper, etc.
+The index of each array element is related to the corresponding tab position. Index number 1 is related to the first tab of the stepper, index number 2 is related to the second tab of the stepper, and so on.
 
-The corresponding tab will only allow the user to proceed to the next step when the field `isValid` receives a `true` value. You can define this as in the example above, or you can call a function to perform more complicated logic tests.
+In the example above, each tab only allows the user to proceed to the next step when the field `isValid` receives a `true` value. 
+
+If you want to perform more complicated logic tests to control how the user can proceed to the next step, you can define the logic in a separate function. Use the `@submit` event to call that function.
