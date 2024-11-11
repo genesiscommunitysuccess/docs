@@ -79,7 +79,10 @@ Use cases:
     };
 
     return (
-      <rapid-select onChange={handleSelectChanged}></rapid-select>
+      <rapid-select onChange={handleSelectChanged}>
+        <rapid-option value="s">Small</rapid-option>
+        <rapid-option value="l">Large</rapid-option>
+      </rapid-select>
     );
   }
   ```
@@ -101,9 +104,10 @@ Use cases:
   @Component({
     selector: 'my-root',
     template: `
-          <rapid-select
-            (change)="onSelectChanged($event)"
-          ></rapid-checkbox>
+          <rapid-select (change)="onSelectChanged($event)">
+            <rapid-option>Option 1</rapid-option>
+            <rapid-option>Option 2</rapid-option>
+          </rapid-select>
         `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
