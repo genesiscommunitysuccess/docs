@@ -19,8 +19,10 @@ import TabItem from '@theme/TabItem';
 
 Use cases:
 * Provide a multi-step process or dynamic form that the user can follow.
+* Validate step by step before the user can move on through the workflow.
 
 Rapid Stepper requires `rapid-stepper-tab` and `rapid-stepper-tab-panel` in order to work properly.
+The order of the rapid-stepper-tab corresponds to the order of the rapid-stepper-tab-panel.
 
 ## Example
 
@@ -215,6 +217,6 @@ You define the validation attribute as follows:
 ```
 The index of each array element is related to the corresponding tab position. Index number 1 is related to the first tab of the stepper, index number 2 is related to the second tab of the stepper, and so on.
 
-In the example above, each tab only allows the user to proceed to the next step when the field `isValid` receives a `true` value. 
+In the example above, each tab only allows the user to proceed to the next step when the field `isValid` receives a `true` value.
 
 If you want to perform more complicated logic tests to control how the user can proceed to the next step, you can define the logic in a separate function. Use the `@submit` event to call that function.
