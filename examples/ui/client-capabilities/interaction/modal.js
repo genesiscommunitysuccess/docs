@@ -1,8 +1,13 @@
 import { CodeLabel, CodeSection } from '../../documentationBase';
-import { registerComponents } from '../../rapidImports';
 import React, { useEffect, useRef, useState } from 'react';
+import useIsBrowser from '@docusaurus/useIsBrowser';
 
-registerComponents();
+const isBrowser = useIsBrowser();
+
+if (isBrowser) {
+    const RapidImports = require('../../rapidImports');
+    RapidImports.registerComponents();
+}
 
 export default function ModalDemo({ children, color }) {
 
