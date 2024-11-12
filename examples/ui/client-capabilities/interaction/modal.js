@@ -2,14 +2,14 @@ import { CodeLabel, CodeSection } from '../../documentationBase';
 import React, { useEffect, useRef, useState } from 'react';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 
-const isBrowser = useIsBrowser();
-
-if (isBrowser) {
-    const RapidImports = require('../../rapidImports');
-    RapidImports.registerComponents();
-}
-
 export default function ModalDemo({ children, color }) {
+
+    const isBrowser = useIsBrowser();
+
+    if (isBrowser) {
+        const RapidImports = require('../../rapidImports');
+        RapidImports.registerComponents();
+    }
 
     const modalRef = useRef(null);
     const modalRefSlotTop = useRef(null);
