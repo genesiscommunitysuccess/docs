@@ -21,14 +21,14 @@ import TabItem from '@theme/TabItem';
 
 # FDC3 Channel System Listener
 
-This is a utility element that listens to FDC3 system channel for the specified system.
+This is a utility element that listens to the FDC3 system channel for the specified context.
 
 Use cases:
-* Listen to events for a specified system on an FDC3 app channel
+* Listen to and handle events for a specified context system on an FDC3 system channel.
 
 ## Examples
 
-This will listen to the specified app channels for changes in the specified system.
+This will listen to the system channel for changes in the specified context.
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
     <TabItem value="genesis">
@@ -108,7 +108,7 @@ This will listen to the specified app channels for changes in the specified syst
             <div>Contact message:<i>{contactMessage}</i></div>
             <fdc3-system-channel-listener ref={systemChannelListenerRef}>
             </fdc3-system-channel-listener>
-            );
+        );
     }
 ```
 </TabItem>
@@ -198,4 +198,4 @@ This component doesn't fire any events.
 
 ### Listened Events
 
-This component listens to the event on its parent element that you specify in the `event-name` attribute.
+This component doesn't listen to any events.
