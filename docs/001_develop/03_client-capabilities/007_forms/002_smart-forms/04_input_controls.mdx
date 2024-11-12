@@ -1,0 +1,319 @@
+---
+title: 'Foundation Forms - controls'
+sidebar_label: 'Input controls'
+id: foundation-forms-controls
+keywords: [genesis, foundation, ui, forms, smart forms]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - forms
+  - smart forms
+---
+
+import StringFormExample from './examples/string_input_example.js';
+import NumberFormExample from './examples/number_input_example.js';
+import BooleanFormExample from './examples/boolean_input_example.js';
+import DateFormExample from './examples/date_input_example.js';
+import TextAreaFormExample from './examples/textarea_input_example.js';
+import PasswordFormExample from './examples/password_input_example.js';
+import SelectFormExample from './examples/select_input_example.js';
+
+# Foundation Forms - controls
+
+Foundation forms has a range of advanced components for entering text, numbers, floats, dates and booleans, as well as select and autocomplete input boxes. You can use these to create polished, complex forms for your application in quick time.
+
+## Examples
+
+### Text control
+
+This is the standard renderer. This creates a `text-field` in your form. The input takes any characters.
+
+```ts
+const textInputJsonSchema: JSONSchema7 = {
+  type: "object",
+  properties: {
+    textInput: {
+      type: "string",
+      description: "kotlin.String",
+    },
+  },
+};
+
+const textInputUiSchema: UiSchema = {
+  type: "VerticalLayout",
+  elements: [{ type: "Control", scope: "#/properties/textInput" }],
+};
+```
+
+<StringFormExample/>
+
+### Number control
+
+The number renderer creates a `number-field` in your form. This input only accepts numeric data. It sets a numeric value on the underlying form model.
+
+```ts
+const numberJsonSchema: JSONSchema7 = {
+  type: "object",
+  properties: {
+    numberInput: {
+      type: "number",
+      description: "kotlin.Double",
+    },
+  },
+};
+
+const numberInputUiSchema: UiSchema = {
+  type: "VerticalLayout",
+  elements: [
+    {
+      type: "Control",
+      scope: "#/properties/numberInput",
+    },
+  ],
+};
+```
+
+<NumberFormExample/>
+
+### Boolean control
+
+The boolean renderer creates a checkbox control. Set the `type` value in the `JSONSchema` to `boolean` to invoke this renderer. It sets a `true` or `false` on the underlying form model.
+
+```ts
+const booleanInputJsonSchema: JSONSchema7 = {
+  type: "object",
+  properties: {
+    booleanInput: {
+      type: "boolean",
+      description: "kotlin.Boolean",
+    },
+  },
+};
+
+const booleanInputUiSchema: UiSchema = {
+  type: "VerticalLayout",
+  elements: [
+    {
+      type: "Control",
+      scope: "#/properties/booleanInput",
+    },
+  ],
+};
+```
+
+<BooleanFormExample/>
+
+### Date control
+
+The date control schema creates a date renderer with an input field and a date picker. To invoke this control, set the `description` property in the `JSONSchema` to `org.joda.time.DateTime`. The form only allows numbers to be input. it stores the date value in miliseconds in the underlying form model.
+
+```ts
+const dateInputJsonSchema: JSONSchema7 = {
+  type: "object",
+  properties: {
+    dateInput: {
+      type: "number",
+      description: "org.joda.time.DateTime",
+    },
+  },
+};
+
+const dateInputUiSchema: UiSchema = {
+  type: "VerticalLayout",
+  elements: [
+    {
+      type: "Control",
+      scope: "#/properties/dateInput",
+    },
+  ],
+};
+```
+
+<DateFormExample/>
+
+### Password control
+
+The password control schema creates a password field. This is a text field with the input characters obscured. To invoke this renderer, set the `isPassword` property in `options` to be `true` in the `JSONSchema`.
+
+```ts
+const passwordInputJsonSchema: JSONSchema7 = {
+  type: "object",
+  properties: {
+    textInput: {
+      type: "string",
+      description: "kotlin.String",
+    },
+  },
+};
+
+const passwordInputUiSchema: UiSchema = {
+  type: "VerticalLayout",
+  elements: [
+    {
+      type: "Control",
+      scope: "#/properties/password",
+      options: <StringRendererOptions>{
+        isPassword: true,
+      },
+    },
+  ],
+};
+```
+
+<PasswordFormExample/>
+
+### Textarea control
+
+The textarea control schema creates a textarea field. This a multi-line entry field. To invoke this renderer, set the `textarea` property in `options` to be `true` in the `JSONSchema`.
+
+```ts
+const textAreaInputJsonSchema: JSONSchema7 = {
+  type: "object",
+  properties: {
+    textarea: {
+      type: "string",
+      description: "kotlin.String",
+    },
+  },
+};
+
+const textAreaInputUiSchema: UiSchema = {
+  type: "VerticalLayout",
+  elements: [
+    {
+      type: "Control",
+      scope: "#/properties/textarea",
+      options: <StringRendererOptions>{
+        textarea: true,
+      },
+    },
+  ],
+};
+```
+
+<TextAreaFormExample/>
+
+### Select control
+
+The select control schema creates a dropdown select box. Users can select only one value from the given list. 
+
+Tp invoke this renderer, include an `options` section in the `UISchemaElement` with an array of data. You can specify which properties of your array objects are used for the underlying option value, `valueField`, and for the display value, `labelField`.
+
+```ts
+// Select Input
+const selectData = ['Miami', 'New York', 'London', 'Dublin', 'São Paulo', 'Bengaluru']
+
+const selectInputJsonSchema: JSONSchema7 = {
+  type: "object",
+  properties: {
+    selectInput: {
+      type: "string",
+      description: "kotlin.String",
+      enum: selectData,
+    },
+  },
+};
+
+const selectInputUiSchema: UiSchema = {
+  type: "VerticalLayout",
+  elements: [
+    {
+      type: "Control",
+      scope: "#/properties/selectInput",
+      options: <ConnectedRenderersOptions>{
+        data: selectData.map((label) => ({ label })),
+        labelField: "label",
+        valueField: "label",
+      },
+    },
+  ],
+};
+```
+
+<SelectFormExample/>
+
+### Connected select
+
+The connected select renderer creates a select input field that populates the list of dropdown options from an endpoint in your Data Server.
+
+In the `UISchemaElement` options property, specify the `allOptionsResourceName`. In this example, we use the `ALL_COUNTERPARTIES` endpoint from **sales-forms-examples.dataserver.kts** to use the list of counterparties. The display value is the counterparty name and the underlying value is the counterparty id.
+
+
+```ts
+const selectInputJsonSchema: JSONSchema7 = {
+  type: "object",
+  properties: {
+    connectedSelectInput: {
+      type: "string",
+      description: "kotlin.String",
+    },
+  },
+};
+
+const selectInputUiSchema: UiSchema = {
+  type: "VerticalLayout",
+  elements: [
+    {
+      type: "Control",
+      scope: "#/properties/selectInput",
+      options: <ConnectedRenderersOptions>{
+        allOptionsResourceName: 'ALL_COUNTERPARTIES',
+        valueField: 'COUNTERPARTY_ID',
+        labelField: 'NAME',
+      },
+    },
+  ],
+};
+```
+<SelectFormExample/>
+
+
+### Connected multi select
+
+The connected multi select renderer connects to your back end in the same way as the connected select renderer. 
+
+To invoke the connected multi select renderer, in the `JSONSchema`, specify the `type` property to be `array`.
+
+```ts
+const connectedMultiSelectJsonSchema: JSONSchema7 = {
+  type: "object",
+  properties: {
+    connectedMultiSelectInput: {
+      type: "array",
+      description: "Kotlin.String",
+    },
+  },
+};
+
+const connectedMultiSelectUISchema: UiSchemaElement = {
+  type: "VerticalLayout",
+  elements: [
+    {
+      type: "Control",
+      label: "Connected select",
+      scope: "#/properties/connectedMultiSelectInput",
+      options: {
+        allOptionsResourceName: "ALL_COUNTERPARTIES",
+        valueField: "COUNTERPARTY_ID",
+        labelField: "NAME",
+      },
+    },
+  ],
+};
+```
+
+![Connected Multi Select](/img/smart-forms/multi-select-connected-input.png)
+
+:::info
+After you have looked at the basics here, you can find more details in our [API Docs](./docs/api/index.md)
+
+Full source code at [Controls](https://github.com/genesiscommunitysuccess/form-examples/tree/main/client/src/routes/form-controls)
+:::
+
+## License
+
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform
