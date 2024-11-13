@@ -25,7 +25,7 @@ The Request Server is a microservice responsible for providing APIs to request s
 ≤
 ```mermaid
 graph TD
-A[UI] --> |1. Connection| B(REQUEST_SERVER)
+A[UI] --> |1. Request| B(REQUEST_SERVER)
 B -->|3. Set Response| A
 B <-->|2. Read|C[Database] 
 ```

@@ -20,7 +20,20 @@ import CommonProcesses from '/snippet/_common-see-processes.md'
 
 ## Overview
 
-TODO
+The Genesis application platform has a real-time event-driven architecture. The Event Handler is a microservice responsible for providing these events, which can apply business logic and affect the application's data set. Developers configure events, including optional and mandatory input fields, which client can trigger via APIs. 
+
+```mermaid
+graph TD
+A[UI] --> |1. Event| B(EVENT_HANDLER)
+B -->|3. Ack/Nack| A
+B <-->|2. Read/Write|C[Database] 
+```
+
+Many of the tables in an app will need **Insert**, **Modify** and **Delete** events, so that you can specify the processing that these events require. You can create any events as needed by the application's business logic. For example, most applications built on the platform include typical **business entities** for the financial market, such as orders, trades, bids, allocations and positions. These business entities have a lifecycle where they go through various **states**. The transition from one state to another is an event that needs to be handled. The paths through those states are workflows, and to assist the workflows, we use [state machines](/develop/server-capabilities/workflow-state-machine/).
+
+Genesis Event handlers are defined in the `*-eventhandler.kts` files.
+
+All Event Handler events are available via REST automatically, including Open API conforming spec.
 
 ## Example configuration
 

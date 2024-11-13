@@ -25,10 +25,10 @@ The Data Server is a microservice responsible for providing APIs to request real
 
 ```mermaid
 graph TD
-A[UI] --> |1. Connection| B(DATA_SERVER)
+A[UI] --> |1. Data logon| B(DATA_SERVER)
 B -->|3. Initial data| A
 B --> |5. Updates| A
-B <-->|2. Connection & Initial Read| C[Database]
+B <-->|2. Initial read| C[Database]
 C --> |4. Changes in table/view trigger a read|B
 ```
 
