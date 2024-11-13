@@ -37,6 +37,30 @@ Data pipelines takes care of the boilerplate of creating these integrations, so 
 
 Genesis Data Pipelines are defined in the *-pipelines.kts files.
 
+## Runtime configuration
+
+To include your `*-pipelines.kts` file definitions in a runtime process, you will need to ensure the process definition:
+
+1. Ensure `genesis-pal-datapipeline` is included in `module`
+1. Ensure `global.genesis.pipelines` is included in `package`
+1. Ensure your *-pipelines.kts file(s) are defined in `script`
+1. Ensure `pal` is set in `language`
+
+If you wish to run a dedicated process as a data pipeline, the following gives an example full process definition:
+
+```xml
+  <process name="POSITION_DATAPIPELINE">
+    <groupId>POSITION</groupId>
+    <start>true</start>
+    <options>-Xmx1024m -DXSD_VALIDATE=false</options>
+    <module>genesis-pal-datapipeline</module>
+    <package>global.genesis.pipelines</package>
+    <script>position-pipelines.kts</script>
+    <description>Pipelines</description>
+    <language>pal</language>
+  </process>
+```
+
 ## Core Concepts
 
 ### Batch vs. Real-time
