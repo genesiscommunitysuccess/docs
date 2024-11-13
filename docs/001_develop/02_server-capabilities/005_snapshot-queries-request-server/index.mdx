@@ -154,7 +154,21 @@ In this example, with reference to [data model examples](/develop/server-capabil
 - `DATE`
 Requests would be looked up using that table index.
 
-####
+###### Picking an index
+
+Request servers will attempt to use the most efficient mechanism to retrieve data from the data base. Given the `REQUEST` fields which are input, and not wildcarded, it will cycle through the indices of the table or view used and score accordingly. If it is a full match we give max score to that index, any partial matches are scored and that with the highest score is used.
+
+###### Audit table recommendations
+
+Audit table request servers are very helpful for requesting all the audit records for a given record, or set of records. Audits can get very large, so having real-time data server can come with a large overhead due to it's caching nature. It is encouraged to instead use request servers for requesting audit rows for of a particular record ID.
+
+All audit tables come with a key `*_BY_UNDERLYING_ID` which utilizes the primary key of the parent table. It is recommended to use this as the `request` configuration option for all audit tables. For example:
+
+```kotlin
+  requestReply(TRADE_AUDIT) {
+    request(TRADE_AUDIT.BY_UNDERLYING_ID)
+  }
+```
 
 ##### `withTransformation`
 
