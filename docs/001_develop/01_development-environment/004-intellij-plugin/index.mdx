@@ -9,4 +9,142 @@ tags:
 sidebar_position: 4
 ---
 
-Coming soon...
+The Genesis Intellij Plugin enables you to run the full stack of a Genesis application locally within IntelliJ, so you can check and test your development work as you progress.
+
+## Installation
+
+1. To install the plugin, click on the button below:
+<iframe width="245px" height="48px" src="https://plugins.jetbrains.com/embeddable/install/21131"></iframe>
+
+2. Open a Genesis project. This starts IntelliJ, and you can see the Genesis button in the  [toolbar](https://www.jetbrains.com/help/idea/tool-windows.html#bars_and_buttons) on the right of the window.
+
+![Genesis Tool Window](/img/intellij-plugin/genesis-tool-window.png)
+
+:::tip
+If the tool window does not appear in a Genesis project, please make sure that you have opened the correct folder.
+The plugin will expect your project to have a folder called **server**; it checks the **settings.gradle.kts** file in
+that folder for Genesis dependencies:
+```
+my project/
+├─ client/
+├─ server/
+│  ├─ settings.gradle.kts
+```
+Sometimes, especially when opening a project extracted from a zip file, there might be a nested project folder:
+```
+my project/     <-- don't open this folder
+├─ my project/  <-- open this folder
+│  ├─ client/
+│  ├─ server/
+│  │  ├─ settings.gradle.kts
+```
+:::
+
+3. For MacOs specifically, you need to install LMDB locally to start a Genesis [Data Server](/develop/server-capabilities/real-time-queries-data-server/).
+
+### Installing LMDB for MacOs
+
+:::info
+You do not need to do this if you are using Windows locally.
+:::
+
+1. Install lmdb using `brew`:
+
+```shell
+brew install lmdb
+```
+
+2. Create a symlink to make LMDB accessible through Java:
+
+```shell
+ln -s /opt/homebrew/opt/lmdb/lib/liblmdb.dylib /Users/<your.username>/Library/Java/Extensions/liblmdb.dylib
+```
+
+Note that your processes might not be showing at this point.
+
+## Getting help
+
+When you are using the IntelliJ plugin, you can link back to this documentation at any time. Click on the he Genesis Documentation is available straight from the tool window.
+
+![Get Help](/img/intellij-plugin/get-help.png)
+
+## First-time set-up
+
+Once the Genesis tool window is visible, you are ready for the first-time set-up.
+
+Before you can start any services, there are a few things you need to do:
+
+1. Configure your database.
+2. Run `remap`.
+3. Load some stock data.
+
+:::info
+If you see the message below when you start the plugin:
+
+![Genesis Install](/img/intellij-plugin/install-genesis.png)
+
+...this means that you are using a deployed [set-up](#deploy-mode). You need to run the install process before running `remap`.
+:::
+
+### Database configuration
+
+Unless your project is configured to use H2 out of the box, you need to configure the plugin to use a supported database.
+
+Below, you will find example configurations for the following databases:
+
+* Postgres
+* MS Sql Server
+* H2
+
+To configure the database in the plugin, go to the Genesis Tool Window and click on **Open Genesis Settings**.
+
+![Open Settings](/img/intellij-plugin/setting-in-toolbar.png)
+
+#### Postgres
+
+For a local PostgreSQL installation using the docker `run` command below, your settings should look like this:
+
+![Genesis Settings with Postgres](/img/intellij-plugin/settings-postgres.png)
+
+To run Postgres using a docker or rancher desktop, use the following command:
+
+```shell
+docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c shared_buffers=80MB -c max_connections=250
+```
+
+Once the container is set up, use the following database configuration in the plugin:
+
+| Option     | Setting                             |
+|------------|-------------------------------------|
+| DbLayer    | `SQL`                               |
+| DbHost     | `jdbc:postgresql://localhost:5432/` |
+| DbUsername | `postgres`                          |
+| DbPassword | `docker`                            |
+
+#### MS SQL Server
+
+For a local MS SQL Server installation using a docker or rancher desktop, use the following command:
+
+```shell
+docker run -d --name sql1 --hostname sql1 -p 1433:1433 -e ACCEPT_EULA=1 -e MSSQL_SA_PASSWORD=G3n3s1sGl0bal -e MSSQL_PID=Developer  mcr.microsoft.com/azure-sql-edge
+```
+
+Once the container is set up, use the following database configuration in the plugin:
+
+| Option     | Setting                                                  |
+|------------|----------------------------------------------------------|
+| DbLayer    | `SQL`                                                    |
+| DbHost     | `jdbc:sqlserver://localhost;trustServerCertificate=true` |
+| DbUsername | `SA`                                                     |
+| DbPassword | `G3n3s1sGl0bal`                                          |
+
+#### H2
+
+H2 is the easiest database to run locally.
+There is no need to install anything, as H2 uses a local file to store the database. While H2 is not supported for production, it does help you to start developing quickly locally.
+
+| Option  | Setting                                                                                                         |
+|---------|-----------------------------------------------------------------------------------------------------------------|
+| DbLayer | `SQL`                                                                                                           |
+| DbHost  | `jdbc:h2:file:~/genesis-local-db/{{appName}}/h2/test;DB_CLOSE_DELAY=-1;NON_KEYWORDS=VALUE,KEY;AUTO_SERVER=TRUE` |
+
