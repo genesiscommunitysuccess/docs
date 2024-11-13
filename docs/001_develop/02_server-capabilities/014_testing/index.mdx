@@ -1,0 +1,1364 @@
+---
+title: 'Testing'
+sidebar_label: 'Testing'
+id: server-testing
+keywords: [component, testing, unit, test, curl, junit]
+tags:
+  - component
+  - unit
+  - testing
+  - test
+  - junit
+  - curl
+sidebar_position: 14
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+## Integration testing
+
+:::info
+
+**GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
+If you are testing against previous versions of the framework, see the page on [legacy testing](#integration-testing-legacy)
+
+:::
+
+Genesis provides a Junit 5 extension that helps developers write integration tests.
+The extension will create a Genesis microservice for the duration of each test case.
+This page will deal with the GenesisJunit extension in general. 
+
+### Testing specific services
+
+In addition to general test support; **GenesisJunit** also provides support for specific services. 
+For more information, have a look at the links below.
+* [Testing Data Servers](/develop/server-capabilities/real-time-queries-data-server/#testing)
+* [Testing Request Servers](/develop/server-capabilities/snapshot-queries-request-server/#testing)
+* [Testing Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/#testing)
+
+### A simple example
+
+Let's have a look at a simple test. 
+We have a `TradeProcessor` class that takes a trade Id, processes the trade and updates the status. 
+We want to make sure our trade is marked as processed, once complete.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class) // 1
+@CsvData("my-trades.csv") // 2
+class TradeProcessorTest {
+
+    @Inject
+    lateinit var db: SyncEntityDb // 3
+
+    @Inject
+    lateinit var tradeProcessor: TradeProcessor // 4
+    
+    @Test
+    fun myTest() {
+        tradeProcessor.processTrade("TRADE_1") // 5
+
+        val dbTrade = db.get(Trade.byId("TRADE_1")) // 6
+
+        assert(dbTrade.status == TradeStatus.PROCESSED) // 7
+    }
+}
+```
+
+</TabItem>
+
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit::class) // 1
+@CsvData("my-trades.csv") // 2
+public class SimpleEventHandlerTest {
+
+    @Inject 
+    private SyncEntityDb db = null; // 3
+
+    @Inject 
+    private TradeProcessor tradeProcessor = null; // 4
+    
+    @Test
+    public void simpleTestExample() {
+        tradeProcessor.processTrade("TRADE_1"); // 5
+
+        var dbTrade = db.get(Trade.byId("TRADE_1")); // 6
+
+        assert(dbTrade.status == TradeStatus.PROCESSED); // 7
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+Let's break down what is happening here.
+1. `@ExtendWith(GenesisJunit.class)` - using this annotation will enable the Genesis Junit extension. It will manage the Genesis resources during the test.
+2. `@CsvData("my-trades.csv")` - our test relies on trade data existing in the database. Here we specify that data. 
+3. `@Inject` and `SyncEntityDb` - all classes available for injection during runtime, are available in our test. Here we're getting a reference to the database.
+4. `@Inject` and `TradeProcessor` - we can also inject our own classes. `TradeProcessor` has a constructor annotated with `@Inject`, so the dependency injection mechanism knows how to instantiate it. 
+5. By the time the test starts, our injected instances are available and we can start testing.
+6. We can access the database as we would normally to get the updated state of the trade.
+7. We verify that the trade status has been updated as expected. 
+
+#### GenesisJunit
+
+**GenesisJunit** will take care of the Genesis side of the test and will do the following for each test:
+
+* instantiate the database, including applying the schema
+* start the database, apply the schema/ truncate tables
+* load csv data
+* start a Genesis microservice
+* inject properties into the test class
+* run the test
+* clean up resources
+
+
+### Annotation Reference
+
+**GenesisJunit** supports the following annotations.
+Please note that none of these will work without adding `@ExtendWith(GenesisJunit::class)`
+or `@ExtendWith(GenesisJunit.class)` to your class or function.
+
+These `@ExtendWith(GenesisJunit.class)` and any of the annotations below work on both the class and method level.
+Some of the annotations are Repeatable, this means that you can provide multiple values at the same class or method.
+If you provide those Repeatable annotations on both the class and method level, both would be applied.
+If you provide non-Repeatable annotations on both the class and method level, the method level annotion would take precedence.
+The enable annotations (i.e. EnableDataDump and EnableInMemoryTestAuthCache) do not support disabling at the method level once enabled on the class level.
+
+#### ScriptFile
+
+Use this annotation to load a script file as part of the test.
+This annotation is Repeatable.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@ScriptFile("my-eventhandler.kts")
+internal class ScriptFileExamples {
+
+    @Test
+    fun testScriptFileExamples() {
+        // just uses "my-eventhandler.kts"
+    }
+
+    @Test
+    @ScriptFile("other-eventhandler.kts")
+    fun testMoreScriptFiles() {
+        // uses "my-eventhandler.kts" and "other-eventhandler.kts"
+    }
+
+    @Test
+    @ScriptFile("other-eventhandler.kts")
+    @ScriptFile("more-eventhandler.kts")
+    fun testManyScriptFiles() {
+        // uses "my-eventhandler.kts", "other-eventhandler.kts" and "more-eventhandler.kts"
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@ScriptFile("my-eventhandler.kts")
+public class ScriptFileJavaExample {
+
+    @Test
+    public void testScriptFileExamples() {
+        // just uses "my-eventhandler.kts"
+    }
+
+    @Test
+    @ScriptFile("other-eventhandler.kts")
+    public void testMoreScriptFiles() {
+        // uses "my-eventhandler.kts" and "other-eventhandler.kts"
+    }
+
+    @Test
+    @ScriptFile("other-eventhandler.kts")
+    @ScriptFile("more-eventhandler.kts")
+    public void testManyScriptFiles() {
+        // uses "my-eventhandler.kts", "other-eventhandler.kts" and "more-eventhandler.kts"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+#### ConfigFile
+Use this annotation is used to load a config file as part of a test.
+This annoatation is not Repeatable.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@ConfigFile("my-process-config.kts")
+internal class ConfigFileExamples {
+
+    @Test
+    fun myProcessConfig() {
+        // just uses "my-process-config.kts"
+    }
+
+    @Test
+    @ConfigFile("other-process-config.kts")
+    fun otherProcessConfig() {
+        // uses "other-process-config.kts"
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@ConfigFile("my-process-config.kts")
+public class ConfigFileExampleJavaTest {
+
+    @Test
+    public void myProcessConfig() {
+        // just uses "my-process-config.kts"
+    }
+
+    @Test
+    @ConfigFile("other-process-config.kts")
+    public void otherProcessConfig() {
+        // uses "other-process-config.kts"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+
+#### CsvData
+
+This annotation is used to load CSV data as part of a test.
+This annotation is Repeatable.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@CsvData("my-data.csv")
+internal class CsvDataExamples {
+
+    @Test
+    fun loadCsvData() {
+        // just uses "my-data.csv"
+    }
+
+    @Test
+    @CsvData("other-data.csv")
+    fun loadCsvDataFromOtherDataFile() {
+        // uses "my-data.csv" and "other-data.csv"
+    }
+
+    @Test
+    @CsvData("other-data.csv")
+    @CsvData("more-data.csv")
+    fun loadCsvDataFromMultipleFiles() {
+        // uses "my-data.csv", "other-data.csv" and "more-data.csv"
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@CsvData("my-data.csv")
+public class CsvDataExamplesJavaTest {
+
+    @Test
+    public void loadCsvData() {
+        // just uses "my-data.csv"
+    }
+
+    @Test
+    @CsvData("other-data.csv")
+    public void loadCsvDataFromOtherDataFile() {
+        // uses "my-data.csv" and "other-data.csv"
+    }
+
+    @Test
+    @CsvData("other-data.csv")
+    @CsvData("more-data.csv")
+    public void loadCsvDataFromMultipleFiles() {
+        // uses "my-data.csv", "other-data.csv" and "more-data.csv"
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+#### EnableInMemoryTestAuthCache
+
+This annotation enables the in-memory auth cache.
+To set or remove entity authorization, you will need to inject an `InMemoryTestAuthCache` into your class.
+You can apply this annotation on both classes and methods.
+However, once enabled on the class level, there is no way to disable on the method level.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@EnableInMemoryTestAuthCache
+internal class EnableInMemoryTestAuthCacheExamples {
+
+    /**
+     * inject [InMemoryTestAuthCache] to programmatically change authorisations
+     */
+    @Inject
+    lateinit var authCache: InMemoryTestAuthCache
+
+    @Test
+    fun testAuthorizeAndRevokeAuthCache() {
+        // to authorize:
+        authCache.authorise(
+            authMap = "TRADE_VISIBILITY",
+            entityCode = "00000000001TRSP0",
+            userName = "JohnDoe"
+        )
+
+        // and then to revoke authorisation:        
+        authCache.authorise(
+            authMap = "TRADE_VISIBILITY",
+            entityCode = "00000000001TRSP0",
+            userName = "JohnDoe"
+        )
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@EnableInMemoryTestAuthCache
+public class EnableInMemoryTestAuthCacheExamplesJavaTest {
+
+    /**
+     * inject InMemoryTestAuthCache to programmatically change authorisations
+     */
+    @Inject
+    private InMemoryTestAuthCache authCache = null;
+
+    @Test
+    public void testAuthorizeAndRevokeAuthCache() {
+        // to authorize:
+        authCache.builder()
+                .withAuthMap("TRADE_VISIBILITY")
+                .withEntityCode("00000000001TRSP0")
+                .withUserName("JohnDoe")
+                .authorise();
+
+        // and then to revoke authorisation:
+        authCache.builder()
+                .withAuthMap("TRADE_VISIBILITY")
+                .withEntityCode("00000000001TRSP0")
+                .withUserName("JohnDoe")
+                .revoke();
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+
+#### EnableDataDump
+
+This annotation will enable the DATADUMP log level in the microservice.
+This will output any messages sent and received to the logger.
+You can apply this annotation on both classes and methods.
+However, once enabled on the class level, there is no way to disable on the method level.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@EnableDataDump
+class DataDumpTest {
+
+    @Test
+    @EnableDataDump
+    fun myTest() {
+        // ...
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@EnableDataDump
+public class DataDumpTest {
+
+    @Test
+    @EnableDataDump
+    public void myTest() {
+        // ...
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+
+#### RootLogLevel
+
+This annotation will adjust the log level for the life of the test.
+You can apply this annotation on both classes and methods.
+Providing this annotation at the method level will take precedence over the class level annotation.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@RootLogLevel(Level.INFO)
+class LogLevelTest {
+
+    @Test
+    fun myTest() {
+        // root log level set to INFO
+    }
+
+    @Test
+    @RootLogLevel(Level.TRACE)
+    fun myOtherTest() {
+        // root log level set to TRACE
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@EnableDataDump
+public class LogLevelTest {
+
+    @Test
+    public void myTest() {
+        // root log level set to INFO
+    }
+
+    @Test
+    @RootLogLevel(Level.TRACE)
+    public void myOtherTest() {
+        // root log level set to TRACE
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+
+#### GenesisHome
+
+Annotation used to specify the Genesis home directory path.
+It can be applied to classes or functions/methods.
+If the annotation is not provided, genesis home will default to `/genesisHome`.
+Providing this annotation at the method level will take precedence over the class level annotation.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@GenesisHome("/genesisHomeA")
+class GenesisHomeTest {
+
+    @Test
+    fun myTest() {
+        // this test uses genesisHomeA
+    }
+
+    @Test
+    @GenesisHome("/genesisHomeB")
+    fun myOtherTest() {
+        // this test uses genesisHomeB
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@GenesisHome("/genesisHomeA")
+public class GenesisHomeTest {
+
+    @Test
+    public void myTest() {
+        // this test uses genesisHomeA
+    }
+
+    @Test
+    @GenesisHome("/genesisHomeB")
+    public void myOtherTest() {
+        // this test uses genesisHomeB
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+#### SysDefOverwrite
+
+Annotation used to indicate that a specific system definition property should be overwritten.
+This annotation can be applied to classes or functions.
+When specifying this annotation on both the class and the function level,
+both will be taken into account,
+unless the same property is overwritten, in which case the method-level annotation will take precedence.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@SysDefOverwrite("MY_VALUE", "ABC")
+internal class OverwriteSysDefTest {
+
+    @Test
+    fun simpleExample() {
+        // MY_VALUE is set to ABC
+    }
+
+    @Test
+    @SysDefOverwrite("OTHER_VALUE", "DEF")
+    fun multipleLevels() {
+        // MY_VALUE is set to ABC, OTHER_VALUE is set to DEF
+    }
+
+    @Test
+    @SysDefOverwrite("OTHER_VALUE", "DEF")
+    @SysDefOverwrite("MY_VALUE", "GHI")
+    fun overwritingClassLevelSysDef() {
+        // MY_VALUE is set to GHI, OTHER_VALUE is set to DEF
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@SysDefOverwrite(key = "MY_VALUE", keyValue = "ABC")
+public class OverwriteSysDefTest {
+
+    @Test
+    public void simpleExample() {
+        // MY_VALUE is set to ABC
+    }
+
+    @Test
+    @SysDefOverwrite(key = "OTHER_VALUE", keyValue = "DEF")
+    public void multipleLevels() {
+        // MY_VALUE is set to ABC, keyValue = OTHER_VALUE is set to DEF
+    }
+
+    @Test
+    @SysDefOverwrite(key = "OTHER_VALUE", keyValue = "DEF")
+    @SysDefOverwrite(key = "MY_VALUE", keyValue = "GHI")
+    public void overwritingClassLevelSysDef() {
+        // MY_VALUE is set to GHI, OTHER_VALUE is set to DEF
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+#### PackageScan
+
+Annotation used to mark classes or functions for package scanning.
+This annotation should be used to mark classes or functions that require package scanning.
+It is used to specify the marker interface or class to be used for scanning packages.
+This annotation is Repeatable.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@PackageScan(MyClass::class)
+internal class PackageScanTest {
+    @Test
+    fun myTest() {
+        // scans the package of MyClass
+    }
+
+    @Test
+    @PackageScan(MyOtherClass::class)
+    fun myOtherTest() {
+        // scans the package of MyClass and MyOtherClass
+    }
+
+    @Test
+    @PackageScan(MyOtherClass::class)
+    @PackageScan(MyThirdClass::class)
+    fun myThirdTest() {
+        // scans the package of MyClass, MyOtherClass and MyThirdClass
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@PackageScan(MyClass.class)
+public class PackageScanTest {
+    @Test
+    public void myTest() {
+        // scans the package of MyClass
+    }
+
+    @Test
+    @PackageScan(MyOtherClass.class)
+    public void myOtherTest() {
+        // scans the package of MyClass and MyOtherClass
+    }
+
+    @Test
+    @PackageScan(MyOtherClass.class)
+    @PackageScan(MyThirdClass.class)
+    public void myThirdTest() {
+        // scans the package of MyClass, MyOtherClass and MyThirdClass
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+#### ProvidedInstance
+
+Annotation used to mark properties or methods as provided instances.
+Marked properties or methods should be used to provide instances during runtime.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+internal class ProvidedInstanceTest {
+
+    /**
+     * Will provide [MyClass] as an instance of [MyInterface] during the dependency injection phase.
+     */
+    @ProvidedInstance
+    private val myInstance: MyInterface = MyClass()
+
+    @Test
+    fun myTest() {
+        //
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+public class ProvidedInstanceTest {
+    /**
+     * Will provide [MyClass] as an instance of [MyInterface] during the dependency injection phase.
+     */
+    @ProvidedInstance
+    private MyInterface myInstance = new MyClass();
+
+    @Test
+    public void myTest() {
+        //
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+
+
+
+## Integration testing (legacy)
+
+:::info
+
+If you are testing against version 8+ of the Genesis Server Framework (GSF) you should instead refer to the [Integration testing](#integration-testing)
+
+:::
+
+### Database and service tests
+
+Two types of test are included in the platform:
+
+* database test (AbstractDatabaseTest)
+* service test (AbstractGenesisTestSupport and GenesisTestSupport)
+
+For both types, you need to start with a dictionary. This section will guide you through using GPAL dictionaries in Genesis tests.
+
+:::note
+As of Genesis 5.2, a sample test case that uses production dictionary will be created automatically when a new project is generated.
+:::
+
+### Types of dictionary
+
+There are three types of dictionary you can use:
+
+* Production dictionary
+* Inline dictionary
+* File dictionary
+
+#### Production dictionary
+
+Use this type of dictionary if you want to test against the production dictionary. This is the preferred way of using a dictionary in product tests, as production and test dictionaries are always in sync.
+
+This dictionary type is easiest to use, and it is supported in both Java and Kotlin. When writing a test extending `AbstractGenesisTestSupport`, the production dictionary is used by default. To use it from an `AbstractDatabaseTest` class, is a couple of lines of code:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+override fun createMockDictionary(): GenesisDictionary = prodDictionary()
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Override
+protected GenesisDictionary createMockDictionary() {
+    return prodDictionary();
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### Inline dictionary
+
+When writing a test in Kotlin, you can use Genesis GPAL syntax to define a dictionary inline. Use this type of dictionary if the dictionary you want to use in your tests is different from the production dictionary. This dictionary should only be used in framework-type components where you want to test dictionaries that are distinct from your production dictionary.
+
+```kotlin
+val USER_NAME by field(name = "USER_NAME", type = STRING)
+val AGE by field(name = "AGE", type = INT)
+
+override fun createMockDictionary(): GenesisDictionary = testDictionary {
+    table(name = "USER", id = 1) {
+        USER_NAME
+        AGE
+        primaryKey {
+            USER_NAME
+        }
+    }
+}
+```
+
+:::important
+Please note that the table definitions should be valid. If you specify an invalid table, e.g. by not defining a primary key, the test will fail.
+:::
+
+#### File dictionary
+
+Only use a File dictionary if the dictionary you want to test is:
+
+-  different from the production dictionary
+-  too big to be practical in an inline dictionary
+
+Please note that the test will need to resolve the absolute location of the dictionary file, for example:
+
+```java
+@Override
+protected GenesisDictionary createMockDictionary() throws Exception {
+    return TestUtil.getDictionaryFromPath(Paths.get(this.getClass().getResource("/DeleteDependentRecords/Dictionaries/KeyIsIntAndString-dictionary.xml").toURI()).toString());
+}
+```
+
+In `AbstractDatabaseTest`, you can also overwrite the `dictionaryName()` method:
+
+```java
+@Override
+protected String dictionaryName() {
+    return "/dictionaries/standard-dictionary.xml";
+}
+```
+
+### Writing tests
+There two types of test described here:
+
+- Database tests - use this type for testing classes that require database access.
+- Test support tests - use this type of test for testing a service.
+
+Both types of test work with all three dictionary types.
+
+#### AbstractDatabaseTest
+
+Use this for testing classes that require database access. These tests will instantiate an `RxDb` object, with a dictionary. The full range of database operations are available, including the update queue. However, no other Genesis components are provided. The only requirement for this type of test is a dictionary.
+
+To write a database test, begin by extending `AbstractDatabaseTest`, and overwrite the  `createMockDictionary` method, as in the samples below.
+
+In the first instance, we are using a **production directory**.
+
+- in Kotlin, through the `rxDb` property
+- in Java, using the `getRxDb()` method
+
+The test makes sure there are no records in the `USER` table. In both languages, the `RxDb` is available.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+class SampleKotlinTest : AbstractDatabaseTest() {
+
+    override fun createMockDictionary(): GenesisDictionary = prodDictionary()
+
+    @Test
+    fun `test count`() {
+        assert(rxDb.count("USER").blockingGet() == 0L)
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public class SampleJavaTest extends AbstractDatabaseTest {
+
+    @Override
+    protected GenesisDictionary createMockDictionary() throws Exception {
+        return prodDictionary();
+    }
+
+    @Test
+    public void testCount() {
+        assert getRxDb().count("USER").blockingGet() == 0L;
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+
+
+Here is a similar test using an **inline dictionary**.
+
+In this test, we define two fields and a table that uses these. We make sure there are no records in the `USER` table. Since we are creating a stand-alone dictionary, we can start with id 1.
+
+
+```kotlin
+class SampleKotlinTest : AbstractDatabaseTest() {
+
+    val USER_NAME by field(name = "USER_NAME", type = STRING)
+    val AGE by field(name = "AGE", type = INT)
+
+    override fun createMockDictionary(): GenesisDictionary = testDictionary {
+        table(name = "USER", id = 1) {
+            USER_NAME
+            AGE
+            primaryKey {
+                USER_NAME
+            }
+        }
+    }
+
+    @Test
+    fun `test count`() {
+        assert(rxDb.count("USER").blockingGet() == 0L)
+    }
+}
+```
+
+
+Finally, here is a test using a **file dictionary**.
+
+In this test, the dictionary is read from an external file.
+
+In all other regards, the database tests are normal JUnit tests. If you need additional components, you need to construct them or mock them. You won’t be able to specify a `GENESIS_HOME` folder for additional configuration.
+
+If you add the `genesis-generated-dao` jar to your classpath, you will be able to use repository classes as normal.
+
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+class SampleKotlinTest : AbstractDatabaseTest() {
+
+    override fun dictionaryName() = "/genesisHome/genesis/cfg/genesis-dictionary.xml"
+
+    @Test
+    fun `test count`() {
+        assert(rxDb.count("USER").blockingGet() == 0L)
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public class SampleJavaTest extends AbstractDatabaseTest {
+
+    @Test
+    public void testCount() {
+        assert getRxDb().count("USER").blockingGet() == 0L;
+    }
+
+    @Nullable
+    @Override
+    protected String dictionaryName() {
+        return "/genesisHome/genesis/cfg/genesis-dictionary.xml"
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+
+#### AbstractGenesisTestSupport
+
+This is a more powerful type of test. In addition to setting up the database, it offers:
+
+- start-up of a Genesis service in memory
+- scanning of a `GENESIS_HOME` folder for additional configuration
+- injection of other components directly into the test
+- mock auth-perms
+- asynchronous message handling with timeout and parsing
+
+To create a test, you need to provide a `GenesisTestConfig` instance in the constructor:
+
+| Property | Required | Sets |
+| --- | --- | --- |
+| packageName | yes | corresponds to the <package/> tag in processes.xml |
+| genesisHome | yes | GENESIS_HOME folder for additional configuration |
+| parser | yes | function that takes a GenesisSet and transforms it, this will determine the generic type of AbstractGenesisTestSupport |
+| initialDataFile | no | csv files to load into the database |
+| configFileName | no | corresponds to the <config/> tag in processes.xml |
+| authCacheOverride | no | overrides auth-perms map to test |
+
+Any path provided for `genesisHome` and `initialDataFile` must be an absolute location.
+
+To use `AbstractGenesisTestSupport`, create a new class and extend:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+class UserControllerTest : AbstractGenesisTestSupport<EventResponse>(
+    GenesisTestConfig {
+        packageName = "global.genesis.auth.manager"
+        genesisHome = "/genesisHome"
+        initialDataFile = "standard-user-setup.csv"
+        authCacheOverride = "USER_VISIBILITY"
+        parser = EventResponse
+        configFileName = "config.xml"
+    }
+) {
+  // no tests defined yet
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public class UserControllerJavaTest extends AbstractGenesisTestSupport<EventResponse> {
+
+    public UserControllerJavaTest() {
+        super(
+                new GenesisTestConfigImpl.Builder<EventResponse>()
+                        .addPackageName("global.genesis.auth.manager")
+                        .setGenesisHome("/genesisHome")
+                        .addInitialDataFile("standard-user-setup.csv")
+                        .setParser(EventResponse.Companion)
+                        .setConfigFileName("config.xml")
+                        .build()
+        );
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### Parsing messages
+
+`AbstractGenesisTestSupport` tests require a parser. This should take a `GenesisSet` and transform it. 
+
+This is so that all logic dealing with reading values in these messages is in a single place, and that this can be dealt with by the test support class, so that it can return a type-safe object for the test to verify. 
+
+`EventResponse` is provided as an option. This parses messages into either an `EventResponse.Ack` or an `EventResponse.Nack`. The `Ack` does not hold a lot of data, but the `Nack` will provide `errorCode` and text properties to test failure conditions.
+
+It is recommended that the response type is a [sealed class in Kotlin](https://kotlinlang.org/docs/sealed-classes.html) with a companion object that implements `(GenesisSet) -> xxx`, where `xxx` is your sealed class.
+
+```kotlin
+sealed class LoginResponse {
+    data class LoginAuthAck(
+        val sessionAuthToken: String,
+        val refreshAuthToken: String,
+        val sessionId: String,
+        val userName: String,
+        val daysToPasswordExpiry: Int?,
+        val notifyExpiry: Int?
+    ) : LoginResponse()
+
+    data class LoginAuthNack(
+        val errorCode: AuthFailure,
+        val text: String
+    ) : LoginResponse()
+
+    data class LogoutNack(val errorCode: AuthFailure) : LoginResponse()
+    object LogoutAck : LoginResponse()
+    object Other : LoginResponse()
+
+    companion object : (GenesisSet) -> LoginResponse {
+        override fun invoke(genesisSet: GenesisSet): LoginResponse =
+            when (genesisSet.getString("MESSAGE_TYPE")) {
+                "EVENT_LOGIN_AUTH_ACK" -> LoginAuthAck(
+                    sessionAuthToken = genesisSet.getString("SESSION_AUTH_TOKEN")!!,
+                    refreshAuthToken = genesisSet.getString("REFRESH_AUTH_TOKEN")!!,
+                    sessionId = genesisSet.getString("SESSION_ID")!!,
+                    userName = genesisSet.getString("USER_NAME")!!,
+                    daysToPasswordExpiry = genesisSet.getInteger("DETAILS.DAYS_TO_PASSWORD_EXPIRY"),
+                    notifyExpiry = genesisSet.getInteger("DETAILS.NOTIFY_EXPIRY")
+                )
+                "EVENT_LOGIN_AUTH_NACK" -> {
+                    val firstError = genesisSet.getArray<GenesisSet>("ERROR")!!
+                        .filterNotNull()
+                        .first()
+
+                    LoginAuthNack(
+                        errorCode = AuthFailure.valueOf(firstError.getString("CODE")!!),
+                        text = firstError.getString("TEXT", "NOT_SET")
+                    )
+                }
+                "LOGOUT_ACK" -> LogoutAck
+                "LOGOUT_NACK" -> LogoutNack(
+                    AuthFailure.valueOf(genesisSet.getString("CODE")!!)
+                )
+                else -> Other
+            }
+    }
+}
+```
+
+Having this parsing logic outside your tests cases makes these a lot simpler to write. For example, using the sealed class and parser above, testing the logging in and logging out again, becomes very simple:
+
+```kotlin
+@Test
+fun `test logout - success`() {
+    val message = sendMessage(buildLoginSet())      // build login request
+        .blockingGet()                              // await response
+        .assertedCast<LoginResponse.LoginAuthAck>() // assert message is LoginAuthNack
+        
+    sendMessage(buildLogoutSet(message.sessionId))  // build logout request with 
+                                                    //    provided session id
+        .blockingGet()                              // await response
+        .assertedCast<LoginResponse.LogoutAck>()    // assert message is LogoutAck
+}
+
+@Test
+fun `test logout - failure on session not found`() {
+    val message = sendMessage(buildLogoutSet("invalid...")) // send logout request 
+                                                            //    with invalid id
+        .blockingGet()                                     
+        .assertedCast<LoginResponse.LogoutNack>()           
+        
+    assert(message.errorCode == AuthFailure.SESSION_NOT_FOUND)
+}
+```
+
+`buildLoginSet` and `buildLogoutSet` supporting functions
+
+```kotlin
+private fun buildLoginSet(overrides: GenesisSet.() -> Unit = {}): GenesisSet {
+    val set = GenesisSet()
+    set.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
+    set.setDirect("DETAILS.USER_NAME", USER_NAME)
+    set.setDirect("DETAILS.PASSWORD", "genesis")
+    set.overrides()
+    return set
+}
+
+private fun buildLogoutSet(sessionId: String): GenesisSet {
+    val set = GenesisSet()
+    set.setString("USER_NAME", USER_NAME)
+    set.setString("SESSION_ID", sessionId)
+    set.setString("MESSAGE_TYPE", "EVENT_LOGOUT")
+    return set
+}
+```
+
+#### Sending messages
+
+There are two functions for sending messages to a service:
+
+- one uses RxJava2 Single
+- the other uses Kotlin coroutines 
+
+Whichever one you use shouldn’t make a whole lot of difference in your test. 
+
+- The method `sendMessage(…)` will return a `Single`; this will require a call to `blockingGet()` for every message you’re interested in. 
+- `sendMessageAsync` requires you to wrap your test in a `runBlocking { … }` block.
+
+```kotlin
+@Test
+fun `test logon failure - incorrect password (rxjava)`() {
+    val loginSet = buildLoginSet { setDirect("DETAILS.PASSWORD", "WRONG") }
+    
+    val message = sendMessage(loginSet)
+        .blockingGet()
+        .assertedCast<LoginResponse.LoginAuthNack>()
+        
+    assert(message.errorCode == AuthFailure.INCORRECT_CREDENTIALS) { message.toString() }
+}
+
+@Test
+fun `test logon failure - incorrect password (coroutines)`() = runBlocking {
+    val loginSet = buildLoginSet { setDirect("DETAILS.PASSWORD", "WRONG") }
+    
+    val message = sendMessageAsync(loginSet)
+        .assertedCast<LoginResponse.LoginAuthNack>()
+        
+    assert(message.errorCode == AuthFailure.INCORRECT_CREDENTIALS) { message.toString() }
+}
+```
+
+Both functions take a `GenesisSet` and, optionally, a timeout. If no timeout is provided, it will default to 500. Timeouts are set in milliseconds. Behind the scenes, a call will be made to `GenesisMessageClient`, which handles source refs and waiting for a response (within the timeout).
+
+#### Type-safe tests for Request Servers
+
+Below is an example of writing a type-safe test for a Request Server, using a `RequestReplyWorkflow`. 
+
+`RequestReplyWorkflow` requires two type parameters. 
+
+- The first is the inbound class.
+- The second is the outbound class.
+
+```kotlin
+    object CompanyFlow : RequestReplyWorkflow<Company.ById, Company> by requestReplyWorkflowBuilder()
+
+    @Test
+    fun `test req rep`(): Unit = runBlocking {
+        val request = Company.ById("1")
+
+        val reply = sendRequest(CompanyFlow, request)
+
+        assertEquals(1, reply.size)
+        assertEquals("1", reply.first().companyId)
+    }
+```
+
+#### Overriding the system definition
+
+You can override system definition properties in your test class by overriding the `systemDefinition()` function.
+
+#### assertedCast
+
+This extension function can be called on any value with a type parameter. If the value is of that type, it will be cast to that type; if not, the call will fail with an `AssertError`, and a helpful description.
+
+```kotlin
+// message will be LoginResponse; our generic response type
+val message = sendMessageAsync(loginSet)
+
+// loginAuthAck will be of type LoginResponse.LoginAuthAck
+val loginAuthAck = message
+    .assertedCast<LoginResponse.LoginAuthAck>()
+```
+
+#### assertIsAuditedBy
+
+This function helps assertions related to audit tables. It will check that all fields in the audited record match the audit record.
+
+In the test below:
+
+- We build a request to insert a user. 
+- We then get the user from the database to make sure it exists. 
+- Next, we check a USER_ATTRIBUTE row has been created. 
+- Finally, we check to make sure a matching row in USER_AUDIT has been created.
+
+```kotlin
+@Test
+fun `test add users - success`() = runBlocking {
+    sendMessageAsync(buildUserSet(INSERT_USER))
+        .assertedCast<EventResponse.Ack>()
+
+    val user = userRepo.getByName("test-user")
+        ?: throw IllegalArgumentException("User not found!")
+
+    assert(user.userName == "test-user") { user }
+    assert(user.firstName == "Test") { user }
+    assert(user.lastName == "User") { user }
+    assert(user.emailAddress == "test-user@genesis.global") { user }
+    assert(user.status == "PASSWORD_EXPIRED") { user }
+
+    assert(passwordService.passwordIsValid(user, "TestPass123")) { "Password check failed" }
+
+    val attributes = attributeRepo.getByUserName(user.userName)
+        ?: throw IllegalArgumentException("Attributes not found!")
+
+    assert(attributes.accessType == AccessType.ALL) { attributes }
+
+    val userAudit = userAuditRepo.getRangeByUnderlyingId("tuser")
+        .consumeAsFlow()
+        .first()
+
+    // assert all fields in user match in userAudit
+    user assertIsAuditedBy userAudit
+
+    assert(userAudit.auditEventType == "INSERT_USER") { userAudit.toString() }
+    assert(userAudit.auditEventUser == "JohnWalsh") { userAudit.toString() }
+
+}
+```
+
+
+
+
+
+
+## Component testing
+
+There are two easy ways of testing components in your application:
+
+- using an API client
+- using the `curl` tool from the command line
+
+### Before you start
+Before you start, make sure your server is running. Then run `mon` to check that your particular component’s process is running. For example, if you want to test  one or more `requestReply` codeblocks (i.e. resources) in your Request Server, check that the _application_**_REQUEST_SERVER** process is running.
+
+For any testing, you need to know:
+- the IP address of name of your server
+- the user name and password that will enable you to login and authenticate yourself
+
+### Using an API client
+This type of software offers an easy way of testing each of your resources.
+
+Two clients that Genesis uses for component testing are:
+- [Postman](https://www.postman.com/downloads/)
+- [Insomnia](https://insomnia.rest/download)
+
+Broadly speaking, Postman offers more features, but Insomnia is also good and is simpler to use.
+
+#### Logging on 
+Whichever client you are using, you need to log in before you can send test requests to the server. This involves two things:
+- providing a SOURCE_REF - this can be any string that identifies all your activity while you are logged in
+- retrieving a SESSION_AUTH_TOKEN, which you can copy and use to authorise all your test requests
+
+For example, to login using Insomnia:
+1. Create a new query in Insomnia.
+2. In front of the url, set the call to **POST**.
+3. For the url, you need to supply your server instance, then **:9064** (in order to send you to the application's Router), and then **event-login-auth**. For example:
+**https://test-mynewapp:9064/event-login-auth**
+4. Set the Body to JSON and insert the message below (substituting your correct user name and password) in the main body. 
+
+```
+{
+    "MESSAGE_TYPE": "TXN_LOGIN_AUTH",
+    "SERVICE_NAME": "AUTH_MANAGER",
+    "DETAILS": {
+        "USER_NAME": "DonJuan",
+        "PASSWORD": "2BisTODO"
+    }
+}
+```
+5. Click to view the header, then insert SOURCE_REF in the header. For this field, you can use any string that will identify you (in effect). In the example below, we have set SOURCE_REF to BAUDOIN1 (for no particular reason).
+
+![](/img/test-login-result.png)
+
+6. When you have done this, click on the **Send** button.
+
+This returns a set of details in the right side of the Insomnia window, where you can copy the SESSION_AUTH_TOKEN, which you will need for your test requests.
+
+### Testing with curl
+
+You can use the `curl` tool to test a module from the command line.
+
+The simple example below tests the resource `event-account-validate-request`. It sends a request to see if this resource in the Event Handler is able to validate an account.
+
+```bash
+curl --request POST 'localhost:9064/event-account-validate-request' \
+--header 'SOURCE_REF: 1' \
+--header "SESSION_AUTH_TOKEN: $1" \
+--header 'Content-Type: application/json' \
+-d '{"DETAILS": {"ACCOUNT_ID" : 9 }}'
+```
+Now let's look more closely at that.
+
+- At the beginning, we use the `--request` parameter, which specifies a custom request, followed by POST to indicate that we are posting data to the resource. The data itself comes later (in the `-d` parameter).
+
+- The resource that you are accessing must be part of the URL. In this case, the resource is `event-account-validate-request`. (Remember that the events you specify are transformed when you generate the objects. for example, EVENT_NAME becomes event-name.)
+
+- Three `--header` parameters have been specified:
+
+    - The first header, `SOURCE_REF`,  uniquely identifies your message. In our example, this is simply 1.
+
+    - The `SESSION_AUTH_TOKEN` is required because, as is usually the case, the resource is non-public; you need to be logged in for access.
+
+    - The `Content-Type ... ` header indicates the media type of the content you are requesting - for example JSON or a png file. This tells the server how to deal with your message. You can find more about [content type](https://www.geeksforgeeks.org/http-headers-content-type/) in html online.
+
+- The `-d` parameter specifies the input for the resource. The request itself is always JSON and should always be contained in the `DETAILS` tag. In this case, we are requesting to validate account id 9.
+
+Now here is a more complex example, which tests the ability to upsert to an `eventHandler` resource called `event-upsert-inventory`.
+
+```
+curl --request POST 'myserver-dev-fictional/ws/event-upsert-inventory' \
+--header 'SOURCE_REF: 15' \
+--header 'Content-Type: application/json' \
+--header 'SESSION_AUTH_TOKEN: SnpTI4dvX9gcXDd4BQlOTkp4JSCrXR3t' \
+--data-raw '{
+    "MESSAGE_TYPE": "EVENT_UPSERT_INVENTORY",
+    "SERVICE_NAME":"FOXTROT_EVENT_HANDLER",
+    "DETAILS":{
+        "INSTRUMENT_ID": "8200",
+        "INSTRUMENT_ID_TYPE": "FOXTROT_ID",
+        "UNIT_OFFER_PRICE":"102.55",
+        "UNIT_OFFER_SIZE": "1000000",
+        "UNIT_BID_PRICE":"100",
+        "UNIT_BID_SIZE": "2000000",
+        "PARTIAL_BID_ALLOWED": "TRUE",
+        "PARTIAL_OFFER_ALLOWED": "TRUE",
+        "IOI_ID" : "12345",
+        "TRADER_NAME" : "Ronald.Zappa@madeup.com"
+    }
+}'
+```
+
+Note that the data to be upserted is specified using the `--data-raw` parameter. This is because the set of fields is reasonably complicated, and it includes an email address - you don't want that `@` character to trigger any unwanted processing.
+
+You can find more details about [curl parameters](https://curl.se/docs/manpage.html) online.
+
+The POSTMAN tool has a useful feature tucked away with the icons at the right of the screen. This enables you to translate automatically the query you have built into curl format (or a large number of others).
+
+![](/img/postman-code.png)
+
+In the area displayed, just select `cURL` as the code, and the code for your current query is displayed below for you to copy.
+
+![](/img/postman-curl-2.png)
