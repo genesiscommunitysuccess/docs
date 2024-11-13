@@ -203,7 +203,7 @@ dataServer {
 There are two scenarios where an index is useful:
 
 * **Optimising query criteria search**. in the example above, if the front-end request specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, then the Data Server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means that the platform doesn't need to scan all the query rows stored in the Data Server memory-mapped file cache; instead, it performs a very efficient indexed search.
-* **Where the front-end request specifies an index**. You can specify one or more indices in your Data Server query. And the [front end can specify which index to use](../../../server/data-server/advanced/#incoming-data_logon-messages) by supplying `ORDER_BY` as part of the `DATA_LOGON` process. The Data Server will use that index to query the data. The data will be returned to the client in ascending order, based on the index field definition.  
+* **Where the front-end request specifies an index**. You can specify one or more indices in your Data Server query. And the front end can specify which index to use by supplying `ORDER_BY` as part of the `DATA_LOGON` process. The Data Server will use that index to query the data. The data will be returned to the client in ascending order, based on the index field definition.  
 
 *Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add `SIMPLE_ID` to the index definition to ensure we maintain uniqueness.
 
@@ -373,7 +373,7 @@ table(name = "FAVOURITE_TRADE", id = 1601) {
 
 #### Index driven
 
-You can specify "index-based" Data Server queries which will only read a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](../../../database/database-interface/entity-db/#getrange).
+You can specify "index-based" Data Server queries which will only read a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](/develop/server-capabilities/data-access-apis/#getrange).
 
 You can use the following options when you create index-based queries:
 
@@ -401,7 +401,7 @@ The example below shows how advanced `where` queries differ from basic `filter` 
 The scenario is this: you want to get trade records where the `currencyId` is `USD`. You can write a Data Server query in two ways, which affects how much data is cached:
 
 - Method 1 uses basic `filter`. It initially reads all the table/view data (which could be very large) and then applies the `filter` clause to confine the range to USD, so it can take a long time to get the Data Server query up and running.
-- Method 2 uses advanced `where`. It uses a database range search operation [getRange](../../../database/database-interface/entity-db/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
+- Method 2 uses advanced `where`. It uses a database range search operation [getRange](/develop/server-capabilities/data-access-apis/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
   The `where` clause is applied at database level, the data returned by the database operation already contains the correct rows.
 
 ```kotlin
@@ -422,7 +422,7 @@ query("TRADE_RANGED_USD", TRADE) {
 
 Use the `ranged` keyword to create a query that provides a range of data. You need to provide the index and the number of key fields:
 
-- The `index` property must be a unique [index](../../../database/data-types/index-entities/#types). However, you can have what is effectively a non-unique index by adding a field that is not unique (such as QUANTITY) and a field that is unique (such as TRADE_ID) to create a compound unique index:
+- The `index` property must be a [unique index](/develop/server-capabilities/data-model/#unique). However, you can have what is effectively a non-unique index by adding a field that is not unique (such as QUANTITY) and a field that is unique (such as TRADE_ID) to create a compound unique index:
 
 ```
 unique {
@@ -897,7 +897,7 @@ connection: keep-alive
 
 #### Rows & view concepts
 ###### MAX_ROWS
-MAX_ROWS determines how many rows will be sent when the front end requests data. It also determines how many rows are sent when the front end makes a [MORE_ROWS request](/server/integration/rest-endpoints/basics/#more_rows). 
+MAX_ROWS determines how many rows will be sent when the front end requests data. It also determines how many rows are sent when the front end makes a [MORE_ROWS request](#more_rows). 
 
 The rows are queried based on the REVERSE setting (which only applies to non-real-time updates). So it is important to note the following behaviour. 
 
@@ -1180,7 +1180,7 @@ If you wish to run a dedicated process as a dataserver, the following gives an e
 
 **GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
 
-If you are testing against an earlier version of the framework, go to the [legacy](./#integration-testing-legacy) section.
+If you are testing against an earlier version of the framework, go to the [legacy](/develop/server-capabilities/testing/#integration-testing) section.
 
 :::
 
@@ -1188,7 +1188,7 @@ If you are testing against an earlier version of the framework, go to the [legac
 
 This document looks at the basics of testing Data Servers. 
 
-We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/operations/testing/integration-testing/), which is designed to make testing easy.
+We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/develop/server-capabilities/testing/#integration-testing), which is designed to make testing easy.
 
 #### Preparation
 There are some simple steps to follow in order to set up yor test.
@@ -1230,7 +1230,7 @@ This test class does three things:
 * It identifies the Data Server script that we want to test, using the `ScriptFile` annotation.
 * It identifies the source data for our test, using the `CsvData` annotation.
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/operations/testing/integration-testing/).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing/#integration-testing).
 
 ###### 2. Load test data
 
@@ -1597,7 +1597,7 @@ class DataServerTests : AbstractGenesisTestSupport<Reply<*>>(
     }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing-previous/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing/#abstractgenesistestsupport).
 
 Let's load some test data into the `seed-data.csv` in the root of the resources folder for your tests.
 
