@@ -127,7 +127,7 @@ In the below example we use a generated database entity called `Company` as mess
 If you use custom class instead of generated database entities as message-type of events, we recommend that you locate your classes within the messages module of your application. This is where we place all the custom message types for our application. You need to ensure that the _app-name_**-script-config** module has a dependency on the messages module.
 
 ```bash
-    api(project(":&#123;app-name}-messages"))
+    api(project(":{app-name}-messages"))
 ```
 ### Permission codes
 
@@ -598,9 +598,9 @@ if (client == null || !client.isConnected) {
                 )
                 when (reply) {
                     is EventReply.EventAck ->
-                        println("Successfully rejected APPROVAL_ID: $&#123;approval.approvalId}")
+                        println("Successfully rejected APPROVAL_ID: ${approval.approvalId}")
                     is EventReply.EventNack ->
-                        println("Failed to rejected APPROVAL_ID: $&#123;approval.approvalId}: $reply")
+                        println("Failed to rejected APPROVAL_ID: ${approval.approvalId}: $reply")
                     else ->
                         println("Unexpected response from pending approval system: $reply")
                 }
