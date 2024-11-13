@@ -447,4 +447,13 @@ public class TestEndpoint extends AbstractGenesisTestSupport<GenesisSet> {
 
 ## Metrics
 
-You can find details of how to use metrics with Genesis Router in our pages on [metrics](/operations/metrics/service-metrics/#router).
+:::info
+Ensure you have [enabled metrics](/build-deploy-operate/operate/metrics/#enabling-metrics) in your environment to view them.
+:::
+
+The metrics for Genesis Router measure the number of connections and the processing latency.
+
+| Metric                     | Explanation                         |
+|:---------------------------|:------------------------------------|
+| active_connections         | The number of client connections    |
+| message_processing_latency | The latency for processing messages |
