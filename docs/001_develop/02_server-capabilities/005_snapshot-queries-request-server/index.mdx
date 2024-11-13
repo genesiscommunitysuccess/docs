@@ -17,6 +17,7 @@ import Log from '/snippet/_LOG.md'
 import QueryPermissions from '/snippet/_query-permissions.md'
 import CommonFieldOverrides from '/snippet/_common-field-overrides.md'
 import CommonQueryFields from '/snippet/_common-query-fields.md'
+import CommonProcesses from '/snippet/_common-see-processes.md'
 
 ## Overview
 
@@ -471,6 +472,9 @@ Helpers assist you to interact with the Kotlin Flow type, which is the return ty
 
 ## Client API
 
+:::tip
+Request servers are also accessible via [Open API](/develop/server-capabilities/integrations-open-api/)
+:::
 
 ### `REQ_<REQUEST_SERVER_NAME>`
 
@@ -649,7 +653,7 @@ The Request Server latency metrics show how long it takes for a specific `reques
 | message_processing_latency | The latency for processing requests |
 
 
-## Configuring runtime
+## Runtime configuration
 
 To include your `*-reqrep.kts` file definitions in a runtime process, you will need to ensure the process definition:
 
@@ -658,7 +662,7 @@ To include your `*-reqrep.kts` file definitions in a runtime process, you will n
 1. Ensure your reqrep.kts file(s) are defined in `script`
 1. Ensure `pal` is set in `language`
 
-If you wish to run a dedicated process as a dataserver, the following gives an example full process definition:
+If you wish to run a dedicated process for a request server, the following gives an example full process definition:
 
 ```xml
   <process name="POSITION_REQUEST_SERVER">
@@ -672,6 +676,8 @@ If you wish to run a dedicated process as a dataserver, the following gives an e
     <language>pal</language>
   </process>
 ```
+
+<CommonProcesses/>
 
 ## Testing
 
