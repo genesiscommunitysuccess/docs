@@ -11,57 +11,59 @@ tags:
 sidebar_position: 3
 ---
 
-Genesis Start is a small program which allows you to preview an application, including during the development cycle, by running it on your local desktop. 
+Genesis Start enables you to run an application on your local desktop. This is useful when you are developing locally.
 
-From the command line, go to your project's `server` directory, run:
+From the command line, go to your project's **server** directory and run:
 
 ```shell
 ./gradlew genesisStart
 ```
 
-If the command fails, you may need to [enable Genesis Start](#enabling-genesis-start)
+If the command fails, you probably need to [enable Genesis Start](#enabling-genesis-start)
 
-Genesis start provides a simple UI to run your app.
+Genesis Start provides a simple UI to run your app.
+
+A list of processes is displayed in the main area, and a side toolbar provides buttons for selecting different actions.
 
 ![Genesis Start Full Application](/img/genesis-start/genesis-start-full-app.png)
 
-## How to use
+## Using Genesis Start
 
-### Bootstap and launch 
+### Bootstrap and launch 
 ![Bootstrap and Launch](/img/genesis-start/genesis-start-bootstrap.png)
 
-Bootstrap the application with a single click.
+This button bootstraps the application with a single click.
 
 It is helpful when:
-- Starting an application for the first time
-- Starting an application having made changes to the database schema
+- starting an application for the first time
+- starting an application after you have made changes to the database schema
 
 :::info
-Bootstrap first runs **remap**, imports project data, then runs **ConsolidateRights**, and finally **Start All**. 
+Bootstrap first runs **remap**, imports the project data, then runs **ConsolidateRights**, and finally **Start All**. 
 :::
 
 ### Import data
 ![Import data](/img/genesis-start/genesis-start-import-data.png)
 
-Select csv files to import into your application's database. Uses the `SendIt`(/build-deploy-operate/operate/commands#sendit) command.
+This button enables you to select csv files to import into your application's database. It uses the Genesis `SendIt`(/build-deploy-operate/operate/commands#sendit) command to do this.
 
-### Sync processes
+### Synchronise processes
 ![Sync processes](/img/genesis-start/genesis-start-sync-processes.png)
 
-Syncs any changes made to the project's [process configuration](/develop/server-capabilities/runtime-configuration/processes/).
+This button synchronises any changes made to the project's [process configuration](/develop/server-capabilities/runtime-configuration/processes/).
 
-Where `File -> Settings -> Use Genesis Sync` is enabled (which it is by default) project changes are automatically synced. Where it is enabled this button can be used as a force sync.
+Where `File -> Settings -> Use Genesis Sync` is enabled (which it is by default), project changes are synchronised automatically. You can then use this button to force synchronisation.
 
 ### Start all
 ![Start all](/img/genesis-start/genesis-start-start-all.png)
 
-Starts all processes and the web UI.
+This button starts all processes and the web UI. This is the quickest way of starting your app if you haven't made any changes to the schema.
 
-### Process interaction
+### Controlling individual processes
 
-You can stop/start individual processes using the button next to the process name. 
+You can stop and start individual processes using the button next to the process name. 
 
-Clicking on the process when running will open up a real-time log viewer for that process.
+To view a real-time log of a process that is running, click on the process in the list.
 
 ![Process list](/img/genesis-start/genesis-start-process-list.png)
 
