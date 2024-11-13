@@ -1,0 +1,48 @@
+---
+title: 'Authorization'
+sidebar_label: 'Authorization'
+id: server-authorisation
+keywords: [access, control, auth, authorisation, authorization, permission, permissions, rights, codes, profile]
+tags:
+- access
+- control
+- auth
+- authorisation
+- authorization
+- permission
+- permissions
+- rights
+- codes
+- profile
+sidebar_position: 7
+---
+
+
+
+## Permission codes
+
+
+TODO: Rights codes etc...
+TODO explain users and profiles 
+
+
+## Entity Access
+
+TODO: Mention row level permissions
+
+### Query entity access
+
+For example, in the sample definition below we have a dataserver query for our COUNTERPARTY table, and we know that both the auth map and the rows themselves are uniquely identified by COUNTERPARTY_ID, so the `rowLevelPermissions` flag can be applied.
+
+```kotlin
+query("ALL_COUNTERPARTIES", COUNTERPARTY) {
+    permissioning {
+        auth("COUNTERPARTY"){
+            rowLevelPermissions = true
+            authKey {
+                key(data.counterpartyId)
+            }
+        }
+    }
+}
+```

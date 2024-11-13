@@ -14,6 +14,10 @@ sidebar_position: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Log from '/snippet/_LOG.md'
+import QueryPermissions from '/snippet/_query-permissions.md'
+import CommonFieldOverrides from '/snippet/_common-field-overrides.md'
+import CommonQueryFields from '/snippet/_common-query-fields.md'
+import CommonProcesses from '/snippet/_common-see-processes.md'
 
 ## Overview
 
@@ -21,11 +25,11 @@ The Data Server is a microservice responsible for providing APIs to request real
 
 ```mermaid
 graph TD
-A[UI] --> |Connection| B(DATA_SERVER)
-B -->|Initial data| A
-B --> |Updates| A
-B -->|Connection| C[Database]
-C --> |Changes in table/view trigger a read|B
+A[UI] --> |1. Data logon| B(DATA_SERVER)
+B -->|3. Initial data| A
+B --> |5. Updates| A
+B <-->|2. Initial read| C[Database]
+C --> |4. Changes in table/view trigger a read|B
 ```
 
 
@@ -37,7 +41,7 @@ All Data Server queries are available via REST automatically too.
 
 ## Example configuration
 
-Keeping with the [data model examples](/develop/server-capabilities/data-model/#example-configuration) the following show example dataserver configurations
+Keeping with the [data model examples](/develop/server-capabilities/data-model/#example-configuration) the following show example dataserver configurations.
 
 ```kotlin
 dataServer {
@@ -53,7 +57,7 @@ dataServer {
   query("ALL_TRADES", TRADE_VIEW) {
     permissioning {
       permissionCodes = listOf("TradeView")
-      auth("COUNTERPARTY"){
+      auth(mapName = "COUNTERPARTY"){
         rowLevelPermissions = true
         authKey {
             key(data.counterpartyId)
@@ -104,7 +108,7 @@ A Data Server file consists of a number of queries onto a table or view. All the
 
 ### `query`
 
-`query` takes a `name` (optional) and an `entity` (table or view)
+`query` defines a new data server query. It takes a `name` (optional) and an `entity` (table or view)
 
 `name` is optional. Left unspecified, it is defaulted `ALL_\{table/view name\}S`.
 
@@ -115,11 +119,11 @@ So, in the example below:
 
 ```kotlin
 dataserver {
-    // Name of the dataserver: INSTRUMENT_DETAILS
-    query("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS)
+  // Name of the data server: ALL_INSTRUMENTS
+  query(INSTRUMENT)
 
-    // Name of the dataserver: ALL_COUNTERPARTYS
-    query(COUNTERPARTY)
+  // Name of the data server: ALL_COUNTERPARTYS
+  query("ALL_COUNTERPARTYS", COUNTERPARTY) {
 }
 ```
 
@@ -129,13 +133,13 @@ The following settings can be applied at a query-level. See [global config](#glo
 Example:
 ```kotlin
 dataServer {
-    query("SIMPLE_QUERY", SIMPLE_TABLE) {
-        config {
-            defaultCriteria = "SIMPLE_PRICE > 0"
-            backwardsJoins = false
-            disableAuthUpdates = false
-        }
+  query("ALL_TRADES", TRADE_VIEW) {
+    config {
+      defaultCriteria = "TRADE_PRICE > 0"
+      backwardsJoins = false
+      disableAuthUpdates = false
     }
+  }
 }
 ```
 
@@ -152,81 +156,28 @@ This block is optional. Where not specified all table or view fields in a query 
 
 ```kotlin
 dataServer {
-    query(INSTRUMENT_DETAILS) {
-        fields {
-            INSTRUMENT_CODE
-            INSTRUMENT_ID
-            INSTRUMENT_NAME
-            LAST_TRADED_PRICE
-            VWAP
-            SPREAD
-            TRADED_CURRENCY
-            EXCHANGE_ID
-        }
-    }
-}
-```
-
-TODOTODO : Can we also use withAlias and withPrefix here?0
-
-#### `derivedField`
-
-You can also define derived fields in a Data Server, to supplement the fields supplied by the table or view. The input for the derived field is the Data Server query row.  All fields are available for use.
-
-In the example below, we add a field to our Data Server from the previous example. The new field is a derived field:
-
-```kotlin
-dataServer {
-    query(INSTRUMENT_DETAILS) {
-        fields {
-            INSTRUMENT_CODE
-            INSTRUMENT_ID
-            INSTRUMENT_NAME
-            LAST_TRADED_PRICE
-            VWAP
-            SPREAD
-            TRADED_CURRENCY
-            EXCHANGE_ID
-            derivedField("IS_USD", BOOLEAN) {
-                tradedCurrency == "USD"
-            }
-        }
-    }
-}
-```
-
-TODO : What else is available? can we use entity as input as well as fields?
-
-#### `filter`
-
-`filter` requires boolean logic and has access to all fields defined in the query.
-
-Where specified data is filtered by the query and this supersedes any client criteria specified.
-
-```kotlin
-...
-    filter {
-      data.date > DateTime.now().minusDays(30)
-    }
-...
-```
-
-Note in this example DateTime.now() will be run every row which comes with a small overhead. To stop this, you could define it outside of the query to have it created at runtime per the example below:
-
-```kotlin
-dataServer {
-  ...
-
-  val today = DateTime.now()
-
   query("ALL_TRADES", TRADE_VIEW) {
-    ...
-    filter {
-      data.date > today.minusDays(30)
+    fields {
+      TRADE_ID
+      TRADE_PRICE
+      DIRECTION
+      QUANTITY
+      DATE
+      COUNTERPARTY_ID
+      COUNTERPARTY_CODE
+      COUNTERPARTY_NAME
+      INSTRUMENT_NAME
+      NOTIONAL
     }
   }
 }
 ```
+
+<CommonFieldOverrides />
+
+`withSize <NUMBER OF CHARACTERS>` can also be specified at a field level on the rare occassion you are seeing issues with LMDB truncating a String value you can specify the maximum number of characters by specifying this.
+
+<CommonQueryFields />
 
 #### `indices`
 
@@ -252,33 +203,13 @@ dataServer {
 There are two scenarios where an index is useful:
 
 * **Optimising query criteria search**. in the example above, if the front-end request specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, then the Data Server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means that the platform doesn't need to scan all the query rows stored in the Data Server memory-mapped file cache; instead, it performs a very efficient indexed search.
-* **Where the front-end request specifies an index**. You can specify one or more indices in your Data Server query. And the [front end can specify which index to use](../../../server/data-server/advanced/#incoming-data_logon-messages) by supplying `ORDER_BY` as part of the `DATA_LOGON` process. The Data Server will use that index to query the data. The data will be returned to the client in ascending order, based on the index field definition.  
+* **Where the front-end request specifies an index**. You can specify one or more indices in your Data Server query. And the front end can specify which index to use by supplying `ORDER_BY` as part of the `DATA_LOGON` process. The Data Server will use that index to query the data. The data will be returned to the client in ascending order, based on the index field definition.  
 
 *Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add `SIMPLE_ID` to the index definition to ensure we maintain uniqueness.
 
+Note that table indexes are NOT available in dataserver queries.
 
-TODOTODO : Is it true we inherit table (or root table of view) indices too?
-
-
-#### `permissioning`
-
-Dataservers can react in real-time to changes in the permissioning model derived from the defined `auth` blocks. In order to react to new permissioning updates, an internal cache is used so we can keep track of what rows have been processed by each individual user subscription.
-In most cases, a single `auth` entity id is associated to one or more rows in a dataserver query, but in some rare scenarios there might be a one-to-one relationship. In the latter case, there is a configuration option named `rowLevelPermissions` to optimise the internal data structure that holds the cache information.
-
-For example, in the sample definition below we have a dataserver query for our COUNTERPARTY table, and we know that both the auth map and the rows themselves are uniquely identified by COUNTERPARTY_ID, so the `rowLevelPermissions` flag can be applied.
-
-```kotlin
-query("ALL_COUNTERPARTIES", COUNTERPARTY) {
-    permissioning {
-        auth("COUNTERPARTY"){
-            rowLevelPermissions = true
-            authKey {
-                key(data.counterpartyId)
-            }
-        }
-    }
-}
-```
+<QueryPermissions />
 
 #### `enrich`
 
@@ -442,7 +373,7 @@ table(name = "FAVOURITE_TRADE", id = 1601) {
 
 #### Index driven
 
-You can specify "index-based" Data Server queries which will only read a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](../../../database/database-interface/entity-db/#getrange).
+You can specify "index-based" Data Server queries which will only read a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](/develop/server-capabilities/data-access-apis/#getrange).
 
 You can use the following options when you create index-based queries:
 
@@ -470,7 +401,7 @@ The example below shows how advanced `where` queries differ from basic `filter` 
 The scenario is this: you want to get trade records where the `currencyId` is `USD`. You can write a Data Server query in two ways, which affects how much data is cached:
 
 - Method 1 uses basic `filter`. It initially reads all the table/view data (which could be very large) and then applies the `filter` clause to confine the range to USD, so it can take a long time to get the Data Server query up and running.
-- Method 2 uses advanced `where`. It uses a database range search operation [getRange](../../../database/database-interface/entity-db/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
+- Method 2 uses advanced `where`. It uses a database range search operation [getRange](/develop/server-capabilities/data-access-apis/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
   The `where` clause is applied at database level, the data returned by the database operation already contains the correct rows.
 
 ```kotlin
@@ -491,7 +422,7 @@ query("TRADE_RANGED_USD", TRADE) {
 
 Use the `ranged` keyword to create a query that provides a range of data. You need to provide the index and the number of key fields:
 
-- The `index` property must be a unique [index](../../../database/data-types/index-entities/#types). However, you can have what is effectively a non-unique index by adding a field that is not unique (such as QUANTITY) and a field that is unique (such as TRADE_ID) to create a compound unique index:
+- The `index` property must be a [unique index](/develop/server-capabilities/data-model/#unique). However, you can have what is effectively a non-unique index by adding a field that is not unique (such as QUANTITY) and a field that is unique (such as TRADE_ID) to create a compound unique index:
 
 ```
 unique {
@@ -726,13 +657,13 @@ The backwards join flag is true by default. You must explicitly set `backwardsJo
 
 <Log />
 
-
-
 ## Client API
+
+Client's can connect and query via Websocket or REST HTTP calls. Websockets are required for real-time updates to be pushed. 
 
 ### `DATA_LOGON`
 
-To initiate a stream from a Data Server, the front end sends a DATA_LOGON message (which is generated automatically by the platform).
+To initiate a stream from a Data Server, the client sends a `DATA_LOGON` message.
 
 To control the flow of data and allow for filtering  and ordering, the following options can be included in the `DATA_LOGON` message within the `DETAILS` block.
 
@@ -966,7 +897,7 @@ connection: keep-alive
 
 #### Rows & view concepts
 ###### MAX_ROWS
-MAX_ROWS determines how many rows will be sent when the front end requests data. It also determines how many rows are sent when the front end makes a [MORE_ROWS request](/server/integration/rest-endpoints/basics/#more_rows). 
+MAX_ROWS determines how many rows will be sent when the front end requests data. It also determines how many rows are sent when the front end makes a [MORE_ROWS request](#more_rows). 
 
 The rows are queried based on the REVERSE setting (which only applies to non-real-time updates). So it is important to note the following behaviour. 
 
@@ -1002,7 +933,7 @@ Let's summarise all that.
 
 #### `CRITERIA_MATCH`
 
-The incoming filtering is specified in the `CRITERIA_MATCH` option.
+Client filtering is specified in the `CRITERIA_MATCH` option.
 
 The filters can be specified using common expressions, Groovy expressions, or even a mix of the two. See more detail in [Client capabilities - server communications](/develop/client-capabilities/server-communications/criteria-matching/).
 
@@ -1217,7 +1148,7 @@ The latency metrics track how well a Data Server is handling requests.
 
 
 
-## Configuring runtime
+## Runtime configuration
 
 To include your `*-dataserver.kts` file definitions in a runtime process, you will need to ensure the process definition:
 
@@ -1241,7 +1172,7 @@ If you wish to run a dedicated process as a dataserver, the following gives an e
   </process>
 ```
 
-
+<CommonProcesses/>
 
 ## Testing
 
@@ -1249,7 +1180,7 @@ If you wish to run a dedicated process as a dataserver, the following gives an e
 
 **GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
 
-If you are testing against an earlier version of the framework, go to the [legacy](./#integration-testing-legacy) section.
+If you are testing against an earlier version of the framework, go to the [legacy](/develop/server-capabilities/testing/#integration-testing) section.
 
 :::
 
@@ -1257,14 +1188,14 @@ If you are testing against an earlier version of the framework, go to the [legac
 
 This document looks at the basics of testing Data Servers. 
 
-We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/operations/testing/integration-testing/), which is designed to make testing easy.
+We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/develop/server-capabilities/testing/#integration-testing), which is designed to make testing easy.
 
 #### Preparation
 There are some simple steps to follow in order to set up yor test.
 
 ###### 1. Create the test class
 
-Create the test class using the code provided below.
+Create the test class using the code provided below:
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
@@ -1299,7 +1230,7 @@ This test class does three things:
 * It identifies the Data Server script that we want to test, using the `ScriptFile` annotation.
 * It identifies the source data for our test, using the `CsvData` annotation.
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/operations/testing/integration-testing/).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing/#integration-testing).
 
 ###### 2. Load test data
 
@@ -1666,7 +1597,7 @@ class DataServerTests : AbstractGenesisTestSupport<Reply<*>>(
     }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing-previous/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing/#abstractgenesistestsupport).
 
 Let's load some test data into the `seed-data.csv` in the root of the resources folder for your tests.
 
