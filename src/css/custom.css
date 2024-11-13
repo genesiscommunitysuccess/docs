@@ -11,21 +11,21 @@
   font-family: "Aeonik";
   font-style: normal;
   font-weight: 400;
-  src: url(/fonts/Aeonik-Regular.woff2) format("woff2");
+  src: url(/static/fonts/Aeonik-Regular.woff2) format("woff2");
 }
 
 @font-face {
   font-family: "Aeonik Medium";
   font-style: normal;
   font-weight: 600;
-  src: url(/fonts/Aeonik-Medium.woff2) format("woff2");
+  src: url(/static/fonts/Aeonik-Medium.woff2) format("woff2");
 }
 
 @font-face {
   font-family: "Aeonik Light";
   font-style: normal;
   font-weight: 300;
-  src: url(/fonts/Aeonik-Light.woff2) format("woff2");
+  src: url(/static/fonts/Aeonik-Light.woff2) format("woff2");
 }
 
 :root {
