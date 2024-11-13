@@ -75,7 +75,7 @@ If a sink is writing to the Genesis Application Database, it may be designated a
 ### Operators
 An operator is a stage in the pipeline that applies some kind of transformation to elements in the stream. Each operator has an input type and an output type. In order to chain operators together, the input type of the operator to be added must match the output type of the previous operator (or source). In order to send the stream to the sink, the output type of the last operator must be compatible with the element type supported by the sink.
 
-#### Filter Operator
+#### `filter`
 A filter operator allows you to exclude certain elements from being sent to the sink. The input and output type remain the same with a filter operator.
 
 ```kotlin
@@ -84,9 +84,11 @@ pipeline(name = "Simple Integer Pipeline With Filtering") {
     BatchSource {
       (1..10).toList().asFlow()
     }
-  ).filter { i ->
+  )
+  .filter { i ->
     i % 2 == 0
-  }.sink { i, _ ->
+  }
+  .sink { i, _ ->
     println(i)
     true
   }
@@ -94,7 +96,7 @@ pipeline(name = "Simple Integer Pipeline With Filtering") {
 ```
 In this example we have a simple pipeline that will emit the integer values 1 to 10 from the source, and the sink will print them to the console. The filter operator will only include even numbers.
 
-#### Map Operator
+#### `map`
 A map operator transforms the input type to the output type.
 
 ```kotlin
@@ -103,9 +105,11 @@ pipeline(name = "Simple Integer Pipeline With Mapping") {
     BatchSource {
       (1..10).toList().asFlow()
     }
-  ).map { i ->
+  )
+  .map { i ->
     i.toString()
-  }.sink { s, _ ->
+  }
+  .sink { s, _ ->
     println(s)
     true
   }
@@ -113,7 +117,7 @@ pipeline(name = "Simple Integer Pipeline With Mapping") {
 ```
 In this example we have a simple pipeline that will emit the integer values 1 to 10 from the source, and the sink will print them to the console. The map operator will mutate the integer values into their string representation.
 
-#### Split Operator
+#### `split`
 A split operator transforms an input elemnent into many output elements. For example, you can split a file object into its constituent lines.
 
 ```kotlin
@@ -122,13 +126,15 @@ pipeline(name = "Simple Integer Pipeline With Split") {
     BatchSource {
       (1..10).toList().asFlow()
     }
-  ).split { i ->
+  )
+  .split { i ->
     flow<Int> {
       for (j in 1..10) {
         emit(j * i)
       }
     }
-  }.sink { i, _ ->
+  }
+  .sink { i, _ ->
     println(i)
     true
   }
@@ -136,7 +142,7 @@ pipeline(name = "Simple Integer Pipeline With Split") {
 ```
 In this example we have a simple pipeline that will emit the integer values 1 to 10 from the source, and the sink will print them to the console. The split operator will emit multiple elements for each number, resulting in the multiplication table for each number being printed.
 
-#### Transform Operator
+#### `transform`
 A transform operator allows you to apply a transformation operation to the entire input stream, rather than just an individual element. For example, if you want to sort records before sinking them to a file, or remove elements with duplicate data, these are stream level operations rather than element level operations and require a transform operator.
 
 ```kotlin
@@ -145,9 +151,11 @@ pipeline(name = "Simple Integer Pipeline With Transform") {
     BatchSource {
       listOf(1, 1, 2, 2, 3, 3, 4, 4, 5, 5).asFlow()
     }
-  ).transform { flow ->
+  )
+  .transform { flow ->
     flow.toSet().asFlow()
-  }.sink { i, _ ->
+  }
+  .sink { i, _ ->
     println(i)
     true
   }
@@ -157,7 +165,101 @@ In this example we have a simple pipeline that will emit the integer values 1 to
 
 ### Error handling
 
-## API Reference
+#### `onOperationError`
+You can attach an error handling callback to any individual `map` or `split` operation in the pipeline. When you call `onOperationError` on a pipeline builder, it attaches the error handler to the previous operation in the pipleine. The error handler is a function that recieves the thrown exception, the pipeline context, and most importantly, the element that was being processed when the error was thrown. This allows for easy tracing of exactly which elements in the pipeline could not be processed. The function returns an 'action', which is how the pipeline should proceed. The available actions are:
+
+| Action       | Description |
+|--------------|-------------|
+|`SKIP_ELEMENT`| Exclude the output element from being sent to the sink. For example, if processing a file that has been split into many lines, do not process that line. |
+|`SKIP_STREAM` | Exclude the current processing stream from being sent to the sink. |
+|`STOP_PIPELINE` | Stop the pipeline execution, which will raise an operational alert. |
+
+Note that the semantic meaning of these actions is slightly different depending on whether the pipeline is a batch or real-time pipeline. SKIP_STREAM and STOP_PIPELINE are equivalent for a batch pipeline, and result in the current batch execution being terminated. SKIP_STREAM for a real-time pipeline results in the current input element, i.e. the stream of elements derived from the input element, to be ignored. For example, if processing a real time stream of files, and the current file has been split into many lines, SKIP_STREAM will mean the entire file is discarded from processing.
+```kotlin
+pipeline(name = "Simple Integer Pipeline With Error handling") {
+  source(IntegerSource())
+    .map { i ->
+      if (i == 7) throw Exception()
+      i
+    }
+    .onOperationError { int, context, throwable ->
+      LOG.warn("Error caught while handling value $int, error was: ", throwable)
+      OperationErrorAction.SKIP_ELEMENT
+    }
+    .sink(IntegerSink())
+}
+```
+
+#### `onUncaughtError`
+This error handler accepts an exception as an argument and allows you to take action when an exception that is not caught by any operation level error handlers unexpectedly terminates the pipeline. There is no action to be taken in terms of recovery at this point, as the pipeline has already terminated. This handler can be attached by calling `onUncaughtError()` on a complete pipeline (after calling `.sink()`).
+
+```kotlin
+pipeline(name = "Simple Integer Pipeline With Error handling") {
+  source(IntegerSource())
+    .map { i ->
+      if (i == 7) throw Exception()
+      i
+    }
+    .sink(IntegerSink())
+    .onUncaughtError { throwable ->
+      LOG.warn("Error uncaught:", throwable)
+    }
+}
+```
+
+### Completion Handling
+#### `onCompletion`
+This handler can be attached by calling `onCompletion()` on a complete pipeline (after calling `.sink()`), and will fire when each element has completed processing in a real-time pipeline, or when a batch has completed processing in a batch pipeline. Note that these handlers are only called when the element has finished being processed by the sink, therefore if the element is filtered using a filter operator or a map operator that returns null, the completion handlers will not fire.
+
+```kotlin
+pipeline(name = "Simple Integer Pipeline With OnCompletion") {
+  source(IntegerSource())
+    .map { i -> i.toString()}
+    .sink(StringSink())
+    .onCompletion { context ->
+      LOG.info("Successfully processed input ${context.data}")
+    }
+}
+```
+
+### Pipeline Context
+The pipeline context is an object that contains processing state that can be passed between the source, sink, error handlers and completion handlers. In a realtime pipeline, a separate context is created for each input element, and a reference to that element is stored in the context. In a batch pipeline, a context is created for each batch execution. In both cases, the context will contain the name of the pipeline executing, a transaction handle (if the sink is transactional), and a mutable map of context parameters for storing state.
+
+## Core Components
+
+### Source
+
+### Filter Operator
+
+### Map Operator
+
+### Split Operator
+
+### Transform Operator
+
+### Sink
+
+### Operation Error Handler
+
+### 
+
+## Creating Custom Components
+
+### Source
+
+### Filter Operator
+
+### Map Operator
+
+### Split Operator
+
+### Transform Operator
+
+### Sink
+
+### Operation Error Handler
+
+### 
 
 
 
