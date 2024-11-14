@@ -14,7 +14,7 @@ sidebar_position: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Log from '/snippet/_LOG.md'
-import QueryPermissions from '/snippet/_query-permissions.md'
+import CommonPermissions from '/snippet/_common-permissions.md'
 import CommonFieldOverrides from '/snippet/_common-field-overrides.md'
 import CommonQueryFields from '/snippet/_common-query-fields.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
@@ -209,7 +209,7 @@ There are two scenarios where an index is useful:
 
 Note that table indexes are NOT available in dataserver queries.
 
-<QueryPermissions />
+<CommonPermissions />
 
 #### `enrich`
 
@@ -656,6 +656,10 @@ The backwards join flag is true by default. You must explicitly set `backwardsJo
 ### Logging
 
 <Log />
+
+## Optimistic concurrency
+
+Find details around [how data servers work with optimistic concurrency](/develop/server-capabilities/data-access-apis/#data-server)
 
 ## Client API
 

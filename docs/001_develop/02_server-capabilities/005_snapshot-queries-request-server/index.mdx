@@ -14,7 +14,7 @@ sidebar_position: 5
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Log from '/snippet/_LOG.md'
-import QueryPermissions from '/snippet/_query-permissions.md'
+import CommonPermissions from '/snippet/_common-permissions.md'
 import CommonFieldOverrides from '/snippet/_common-field-overrides.md'
 import CommonQueryFields from '/snippet/_common-query-fields.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
@@ -254,7 +254,7 @@ Similar to `filterWithParameters` but the `genesisSet` context property contains
 ```
 
 
-<QueryPermissions />
+<CommonPermissions />
 
 
 #### `rowReturnLimit`
@@ -483,6 +483,10 @@ Helpers assist you to interact with the Kotlin Flow type, which is the return ty
 ### Logging
 
 <Log />
+
+## Optimistic concurrency
+
+Find details around [how request servers work with optimistic concurrency](/develop/server-capabilities/data-access-apis/#request-server)
 
 ## Client API
 
