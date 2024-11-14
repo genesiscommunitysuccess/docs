@@ -50,9 +50,9 @@ Use cases:
       })
       export class MyElement extends GenesisElement {
         const toolbarOptions: CriteriaSegmentedControlOption[] = [
-          { label: 'A', field: 'INSTRUMENT_ID', value: 'id1', serialiser: Serialisers.EQ },
-          { label: 'B', field: 'INSTRUMENT_ID', value: 'id2', serialiser: Serialisers.EQ },
-          { label: 'C', field: 'INSTRUMENT_ID', value: 'id3', serialiser: Serialisers.EQ },
+          { label: 'A', field: 'CHOSEN_OPTION', value: 'option-A', serialiser: Serialisers.EQ },
+          { label: 'B', field: 'CHOSEN_OPTION', value: 'option-B', serialiser: Serialisers.EQ },
+          { label: 'C', field: 'CHOSEN_OPTION', value: 'option-C', serialiser: Serialisers.EQ },
         ];
       }
     ```
@@ -69,9 +69,9 @@ Use cases:
       export function MyComponent() {
 
         const criteriaOptions = [
-          { label: 'A', field: 'INSTRUMENT_ID', value: 'id1', serialiser: Serialisers.EQ },
-          { label: 'B', field: 'INSTRUMENT_ID', value: 'id2', serialiser: Serialisers.EQ },
-          { label: 'C', field: 'INSTRUMENT_ID', value: 'id3', serialiser: Serialisers.EQ },
+          { label: 'A', field: 'CHOSEN_OPTION', value: 'option-A', serialiser: Serialisers.EQ },
+          { label: 'B', field: 'CHOSEN_OPTION', value: 'option-B', serialiser: Serialisers.EQ },
+          { label: 'C', field: 'CHOSEN_OPTION', value: 'option-C', serialiser: Serialisers.EQ },
         ];
 
         const handleCriteriaChange = (event) => {
@@ -114,9 +114,9 @@ Use cases:
       export class AppComponent {
 
         const criteriaOptions = [
-          { label: 'A', field: 'INSTRUMENT_ID', value: 'id1', serialiser: Serialisers.EQ },
-          { label: 'B', field: 'INSTRUMENT_ID', value: 'id2', serialiser: Serialisers.EQ },
-          { label: 'C', field: 'INSTRUMENT_ID', value: 'id3', serialiser: Serialisers.EQ },
+          { label: 'A', field: 'CHOSEN_OPTION', value: 'option-A', serialiser: Serialisers.EQ },
+          { label: 'B', field: 'CHOSEN_OPTION', value: 'option-B', serialiser: Serialisers.EQ },
+          { label: 'C', field: 'CHOSEN_OPTION', value: 'option-C', serialiser: Serialisers.EQ },
         ];
 
         handleCriteriaChange(event: Event) {

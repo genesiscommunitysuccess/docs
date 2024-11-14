@@ -13,14 +13,13 @@ export default function CriteriaSegmentedControlDemo({ children, color }) {
 
 	const segmentedControlRef = useRef(null);
 
-	const [outputValue, setOutputValue] = useState('Generated Expression Here');
-	const yo = useRef(null);
+	const [outputValue, setOutputValue] = useState('');
 
 	useEffect(() => {
 		segmentedControlRef.current.criteriaOptions = [
-			{ label: 'A', field: 'INSTRUMENT_ID', value: 'id1', serialiser: Serialisers.EQ },
-			{ label: 'B', field: 'INSTRUMENT_ID', value: 'id2', serialiser: Serialisers.EQ },
-			{ label: 'C', field: 'INSTRUMENT_ID', value: 'id3', serialiser: Serialisers.EQ },
+			{ label: 'A', field: 'CHOSEN_OPTION', value: 'option-A', serialiser: Serialisers.EQ },
+			{ label: 'B', field: 'CHOSEN_OPTION', value: 'option-B', serialiser: Serialisers.EQ },
+			{ label: 'C', field: 'CHOSEN_OPTION', value: 'option-C', serialiser: Serialisers.EQ },
 		];
 	}, []);
 
@@ -32,11 +31,15 @@ export default function CriteriaSegmentedControlDemo({ children, color }) {
 		<CodeSection>
 			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
 				<div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', flexDirection: 'column', }}>
-					<criteria-segmented-control ref={segmentedControlRef} onChange={handleChange}>
+					<criteria-segmented-control ref={segmentedControlRef} onClick={handleChange}>
 						<label slot="label">Select option</label>
 					</criteria-segmented-control>
-					<rapid-text-field value={outputValue}>
-						Generated expression:
+					<rapid-text-field
+						readOnly
+						value={outputValue}
+						placeholder="Generated expression output."
+					>
+						<label slot="label">Output:</label>
 					</rapid-text-field>
 				</div>
 			</div>
