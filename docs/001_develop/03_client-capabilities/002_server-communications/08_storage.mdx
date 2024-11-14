@@ -1,21 +1,20 @@
 ---
-title: 'Storage Solutions'
-sidebar_label: 'Storage Solutions'
+title: 'Storage (Key-Value)'
+sidebar_label: 'Storage (Key-Value)'
 id: comms-storage
-# keywords: [genesis, foundation]
-# tags:
-#   - connected
+keywords: [genesis, foundation, comms, storage, key-value, kv]
+tags:
+  - comms
+  - storage
+  - key-value
+  - kv
 ---
 
-# Storage
+# Key-Value Storage
 
-In the "storage/kv" folder, the focus is on providing a Key-Value (KV) storage solution, currently the sole storage option available. This solution offers a standardized way to interact with key-value data storage, facilitating operations such as put, get, delete, and list within a KV namespace. The system is designed with future expansions in mind, hinting at the potential inclusion of additional storage mechanisms beyond KV.
+Provides a versatile Key-Value (KV) storage system for managing data within the application, abstracting over the specifics of the underlying storage technology to offer a unified API for data operations. This feature enables developers to interact with the KV storage seamlessly, performing CRUD operations such as inserting, updating, retrieving, and deleting data items.
 
-## KV Storage System
-
-This feature encapsulates the functionalities for interacting with a Key-Value (KV) storage system, abstracting over the specifics of the underlying storage technology to provide a unified API for data operations. 
-
-### Key Components
+## Key Components
 
 - **KVStorage Interface:** Outlines the contract for KV storage operations, including methods to delete, get, list, and put items in the KV storage.
 - **DefaultKVStorage Implementation:** Implements the `KVStorage` interface, providing concrete logic to interact with the KV storage, checking for availability, and performing CRUD operations.
@@ -25,7 +24,7 @@ This feature encapsulates the functionalities for interacting with a Key-Value (
 
 #### Coonfiguring KV Storage
 
-Set up the KV storage with custom configuration options if necessary. By default, `defaultKVStorageConfig` provides a starting point.
+Set up the KV storage **with** custom configuration options if necessary. By default, `defaultKVStorageConfig` provides a starting point.
 
 First, we define a custom `KVStorageConfig` that suits our application's needs, different from the default configuration. This might involve specifying a unique account, namespace, auth key, and auth email to tailor the KV Storage behavior.
 
