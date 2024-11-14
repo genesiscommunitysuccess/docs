@@ -11,9 +11,9 @@ tags:
 sidebar_position: 3
 ---
 
-Genesis Start enables you to run an application on your local desktop. This is useful when you are developing locally.
+Genesis Start enables you to run and preview an application on your local desktop. This is useful when you are developing locally.
 
-From the command line, go to your project's **server** directory and run:
+From the command line, go to your project's `server` directory and run:
 
 ```shell
 ./gradlew genesisStart
@@ -39,15 +39,15 @@ It is helpful when:
 - starting an application after you have made changes to the database schema
 
 :::info
-Bootstrap first runs **remap**, imports the project data, then runs **ConsolidateRights**, and finally **Start All**. 
+Bootstrap first runs `remap`, imports the project data, then runs `ConsolidateRights`, and finally `Start All`. 
 :::
 
 ### Import data
 ![Import data](/img/genesis-start/genesis-start-import-data.png)
 
-This button enables you to select csv files to import into your application's database. It uses the Genesis `SendIt`(/build-deploy-operate/operate/commands#sendit) command to do this.
+This button enables you to select csv files to import into your application's database. It uses the Genesis [`SendIt`](/build-deploy-operate/operate/commands#sendit) command to do this.
 
-### Synchronise processes
+### Sync processes
 ![Sync processes](/img/genesis-start/genesis-start-sync-processes.png)
 
 This button synchronises any changes made to the project's [process configuration](/develop/server-capabilities/runtime-configuration/processes/).
@@ -69,14 +69,14 @@ To view a real-time log of a process that is running, click on the process in th
 
 ### Compacting processes
 
-The `Process Profile` menu allows you to select process configuration
+The `Process Profile` menu allows you to select process configuration.
 
 - `Dev Compact` compacts processes efficiently to run more server capabilities under single processes and save on processing and memory overheads. It is the recommended option for efficiently previewing your application.
-- `Compact` will compact processes in such a way that they would still run in a cluster
-- `Production` will set process configuration per the project setup. See [process configuration](/develop/server-capabilities/runtime-configuration/processes/) for more details on configuring processes.
+- `Compact` compacts processes in such a way that they would still run in a cluster
+- `Production` sets process configuration per the project set-up. See [process configuration](/develop/server-capabilities/runtime-configuration/processes/) for more details on configuring processes.
 
 :::tip Saving local resources
-If you need to cut down on memory usage when you build and run locally, select **File** => **Settings** => **Use Compact Processes** before you start. 
+If you need to cut down on memory usage when you build and run locally, select `File -> Settings -> Use Compact Processes` before you start. 
 :::
 
 ## Enabling Genesis Start
@@ -92,7 +92,7 @@ If you need to enable Genesis Start, there are two things that you need to do:
 
 ### Amending the settings file
 
-In your project's **settings.gradle.kts** file, add `google()` to `repositories` under `pluginManagement`.
+In your project's `settings.gradle.kts` file, add `google()` to `repositories` under `pluginManagement`.
 
 ```kotlin
 // in repositories under plugin management, add google() at the end:
@@ -106,7 +106,7 @@ pluginManagement {
 
 ### Amending the build file
 
-In your project's **build.gradle.kts** file, add the plugin:
+In your project's `build.gradle.kts` file, add the plugin:
 
 ```kotlin
 // add Genesis Start to plugins
