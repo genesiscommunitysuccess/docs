@@ -79,7 +79,13 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
       <td>reload-buffer (1)</td>
       <td><code>number</code></td>
       <td>Numerical attribute that controls the buffer between how long the layout is reloaded. The default is 500ms. In this case, the layout is only reloaded if the child elements of the layout region are manipulated once every 500ms. This is to stop the layout being reloaded over and over for every single item during initialisation. The higher the value is, the more performant the component is, but the first load will appear to take longer.</td>
-      <td><code>&lt;rapid-layout reload-buffer="2000"&gt;</code></td>
+<td>
+
+```typescript
+<rapid-layout reload-buffer=${(x) => x.reloadBuffer || '2000'}>
+```
+
+</td>
     </tr>
   </tbody>
 </table>
