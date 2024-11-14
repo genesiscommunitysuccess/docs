@@ -1,0 +1,160 @@
+---
+title: 'Criteria Segmented Control'
+sidebar_label: 'Criteria Segmented Control'
+id: client-interaction-criteria-segmented-control
+keywords: [interaction, interactive, criteria, segmented control, form]
+tags:
+- interaction
+- interactive
+- criteria
+- segmented
+- control
+- form
+sidebar_position: 8
+---
+
+import CriteriaSegmentedControlDemo from '../../../../examples/ui/client-capabilities/interaction/criteria-segmented-control.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Criteria Segmented Control
+
+This version allows you to use a segmented control that generates criteria based on the selected item.
+
+Use cases:
+* Visually and structurally group related interactive criteria.
+
+## Examples
+
+<CriteriaSegmentedControlDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+     <criteria-segmented-control></criteria-segmented-control>
+    ```
+
+    Usage
+    ```typescript
+      @customElement({
+        name: 'my-element',
+        template: html`
+            <criteria-segmented-control
+              :criteriaOptions=${() => toolbarOptions}
+              :value=${sync((x) => x.criteriaFilter)}>
+            </criteria-segmented-control>
+          `,
+      })
+      export class MyElement extends GenesisElement {
+        const toolbarOptions: CriteriaSegmentedControlOption[] = [
+          { label: 'A', field: 'INSTRUMENT_ID', value: 'id1', serialiser: Serialisers.EQ },
+          { label: 'B', field: 'INSTRUMENT_ID', value: 'id2', serialiser: Serialisers.EQ },
+          { label: 'C', field: 'INSTRUMENT_ID', value: 'id3', serialiser: Serialisers.EQ },
+        ];
+      }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+      <criteria-segmented-control></criteria-segmented-control>
+    ```
+    Usage
+    ```typescript
+      export function MyComponent() {
+
+        const criteriaOptions = [
+          { label: 'A', field: 'INSTRUMENT_ID', value: 'id1', serialiser: Serialisers.EQ },
+          { label: 'B', field: 'INSTRUMENT_ID', value: 'id2', serialiser: Serialisers.EQ },
+          { label: 'C', field: 'INSTRUMENT_ID', value: 'id3', serialiser: Serialisers.EQ },
+        ];
+
+        const handleCriteriaChange = (event) => {
+          console.log(event.target.value)
+        }
+
+        return (
+          <criteria-segmented-control criteriaOptions={{criteriaOptions}} onChange={handleCriteriaChange}>
+            <label slot="label">Filter by instrument name</label>
+          </criteria-segmented-control>
+
+        );
+      }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+      <criteria-segmented-control></criteria-segmented-control>
+    ```
+
+    Usage
+    ```typescript
+      import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+      import { FormsModule } from '@angular/forms';
+      @Component({
+        selector: 'my-root',
+        template: `
+              <criteria-segmented-control
+                [criteriaOptions]="criteriaOptions"
+                (change)="handleCriteriaChange($event)">
+                <label slot="label">Filter by instrument name</label>
+              </criteria-segmented-control>
+            `,
+        standalone: true,
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        imports: [FormsModule],
+      })
+      export class AppComponent {
+
+        const criteriaOptions = [
+          { label: 'A', field: 'INSTRUMENT_ID', value: 'id1', serialiser: Serialisers.EQ },
+          { label: 'B', field: 'INSTRUMENT_ID', value: 'id2', serialiser: Serialisers.EQ },
+          { label: 'C', field: 'INSTRUMENT_ID', value: 'id3', serialiser: Serialisers.EQ },
+        ];
+
+        handleCriteriaChange(event: Event) {
+          const target = event.target as HTMLInputElement;
+          console.log(target.value);
+        }
+      }
+      ```
+    </TabItem>
+  </Tabs>
+
+## API
+
+Properties:
+
+| Name             | Type    | Description                                          | Example |
+|-----------------|----------|------------------------------------------------------|---------|
+| criteriaOptions | array    | Array of criteria objects that can be selected       |         |
+| value           | `string` | The value of the constructed criteria expression     |         |
+| selectedLabel   | `string` | The selected options label                           |         |
+
+### Slots
+
+| Slot | Description |
+|---|---|
+| label | The label |
+
+### Parts
+
+There are no parts.
+
+### Events fired
+
+| Part | Type | Use | Example |
+|---|---|---|---|
+| change | | Emits a custom change event when the selection state changes.| |
+
+
+### Events listened to
+
+This component doesn't listen to any events.
