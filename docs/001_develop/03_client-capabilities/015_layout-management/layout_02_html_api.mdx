@@ -70,7 +70,9 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 <td>
 
 ```typescript
-<rapid-layout auto-save-key=${(x) => x.autoSaveKey || 'default'}>
+html`
+    <rapid-layout auto-save-key=${(x) => x.autoSaveKey || 'default'}>
+`
 ```
 
 </td>
@@ -82,7 +84,9 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 <td>
 
 ```typescript
-<rapid-layout reload-buffer=${(x) => x.reloadBuffer || '2000'}>
+html`
+    <rapid-layout reload-buffer=${(x) => x.reloadBuffer || '2000'}>
+`
 ```
 
 </td>
@@ -96,11 +100,60 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 #### Properties
 
-| Property | Type | Use | Example |
-|---|---|---|---|
-|missingItemPlaceholder|`(x: string) => string`|Function which receives the name of a pane with a missing registration. Returns the placeholder text to be shown in the pane.|`<rapid-layout :missingItemPlaceholder="${() => (name: string) => name + ' not registered.'}">`|
-|dimensionsConfig|`LayoutcConfig.Dimensions`|Object which configures certain size items on the layout such as the size of the drag handles or the title bar sizes. |`<rapid-layout :dimensionsConfig="${(_) => ({ borderWidth: 50, })}">`|
-|customButtons|`CustomButton[]`|An array that contains <!-- TODO link --> configurations to add custom buttons to the header. |`<rapid-layout :customButtons="${(_) => [{ /* config */ }]}">`|
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>missingItemPlaceholder</td>
+      <td><code>(x: string) => string</code></td>
+      <td>Function which receives the name of a pane with a missing registration. Returns the placeholder text to be shown in the pane.</td>
+<td>
+
+```typescript
+html`
+    <rapid-layout :missingItemPlaceholder="${() => (n: string) => n + ' not registered.'}">
+`
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>dimensionsConfig</td>
+      <td><code>LayoutcConfig.Dimensions</code></td>
+      <td>Object which configures certain size items on the layout such as the size of the drag handles or the title bar sizes.</td>
+<td>
+
+```typescript
+html`
+    <rapid-layout :dimensionsConfig="${(_) => ({ borderWidth: 50, })}">
+`
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>customButtons</td>
+      <td><code>CustomButton[]</code></td>
+      <td>An array that contains configurations to add custom buttons to the header.</td>
+<td>
+
+```typescript
+html`
+    <rapid-layout :customButtons="${(_) => [{ /* config */ }]}">
+`
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
 
 #### Slots
 
