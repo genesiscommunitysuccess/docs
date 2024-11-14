@@ -496,9 +496,9 @@ Request servers are also accessible via [Open API](/develop/server-capabilities/
 
 ### `REQ_<REQUEST_SERVER_NAME>`
 
-To query a Request Server, the client sends a `REQ_` message.
+To query a Request Server, the client sends a `MESSAGE_TYPE` of `REQ_<request server name>`.
 
-There are several options that can be optionally specified:
+There are several options that can be optionally specified in the message header:
 
 | Option         | Default                                                  | Description                                                         |
 | -------------- |----------------------------------------------------------|---------------------------------------------------------------------|
@@ -573,8 +573,11 @@ Response
 </TabItem>
 <TabItem value="rest">
 Request
+
+Input parameters are encoded into the URL per REST and GET convention
 ```
-GET http://localhost:9064/req-trade?REQUEST.COUNTERPARTY_ID=1&REQUEST.DATE_FROM=1731369600000&DATE_TO=1730419200000&DETAILS.MAX_ROWS=5&DETAILS.CRITERIA_MATCH=DIRECTION%20%3D%3D%20%27BUY%27 HTTP/1.1
+GET /req-trade?REQUEST.COUNTERPARTY_ID=1&REQUEST.DATE_FROM=1731369600000&DATE_TO=1730419200000&DETAILS.MAX_ROWS=5&DETAILS.CRITERIA_MATCH=DIRECTION%20%3D%3D%20%27BUY%27 HTTP/1.1
+Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
 SOURCE_REF: 123

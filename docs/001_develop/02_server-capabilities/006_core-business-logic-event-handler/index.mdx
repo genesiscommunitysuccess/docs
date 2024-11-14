@@ -306,19 +306,21 @@ Where setting mandatory fields to be optional, you must have a default supplied 
 
 This is used where particular system events require a second system user to approve them before they take effect in the application. 
 
-Per the example below, you can optionally set the approval message, this is the message that will be set on the approval record which an authorised approver will see during their review. 
-The function must return boolean logic, where it evaluates to false the event will be subject to approval.
+Per the example below, you can **optionally** set the approval message, this is the message that will be set on the approval record which an authorised approver will see during their review. 
+The function must return boolean logic, where it evaluates to false the event will be subject to approval. 
 
 ```kotlin
   eventHandler<Trade>("TRADE_INSERT") {
     requiresPendingApproval { event ->
-      event.approvalMessage
+      event.approvalMessage = "Please approve my new trade"
       event.userName != "system.user"
     }
     ...
   }
 ```
 In this example only a user with username "system.user" will be able to trigger this event without it first being approved.
+
+Note the client may also send `APPROVAL_MESSAGE` and where specific, `approvalMessage` will take precedence over it.
 
 See [approval workflow](#appoval-workflow) for more details.
 
@@ -507,11 +509,97 @@ Find details around [how event handlers work with optimistic concurrency](/devel
 Event handlers are also accessible via [Open API](/develop/server-capabilities/integrations-open-api/)
 :::
 
-TODO
+### `EVENT_<EVENT_HANDLER_NAME>`
 
-IGNORE_WARNINGS
+To trigger an Event Handler, the client sends a `MESSAGE_TYPE` of `EVENT_<event name>` .
 
+There are several options that can be optionally specified in the message header:
 
+| Option              | Default | Description                                                          |
+| --------------------|---------|----------------------------------------------------------------------|
+| `VALIDATE`          | `false` | Where `true`, events will return after the [`onValidate`](#onvalidate) block ack and not trigger the [`onCommit`](#oncommit) block |
+| `IGNORE_WARNINGS`   | `false` | Where `true`, any [`warningNack`](#warningnack) in the code will be ignored and not cause the event to fail validation |
+| `REQUIRES_APPROVAL` | `false` | A client can force the [approval workflow](#approval-workflow) for the event by setting this to true | 
+| `APPROVAL_MESSAGE`  | | Where [approval workflow](#approval-workflow) is triggered, this is the approval message the approver will see. This may be overridden in the event ['requirespendingapproval`](#requirespendingapproval) which takes precedence | 
+| `REASON`            | | Where the event is set as `transactional` and the tables written by the event are enabled for [`audit`](/develop/server-capabilities/data-model/#audited-tables) this String will be set in the audit record's `AUDIT_EVENT_TEXT` | 
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+Request
+```
+{
+  "SOURCE_REF": "345",
+  "SESSION_AUTH_TOKEN": "snsFDc7AdjG8Khl95uUdUBm5UO1uqIfq",
+  "MESSAGE_TYPE": "EVENT_TRADE_INSERT",
+  "DETAILS": {
+    "COUNTERPARTY_ID": 1,
+    "DATE": 1731542400000,
+    "DIRECTION": "BUY",
+    "INSTRUMENT_ID": 2,
+    "QUANTITY": 1000,
+    "TRADE_PRICE": 1.23
+  }
+}
+```
+Response
+```
+{
+  "MESSAGE_TYPE": "EVENT_ACK",
+  "SOURCE_REF": "345",
+  "GENERATED": [
+    {
+      "TRADE_ID": 5
+    }
+  ],
+  "METADATA": {
+    "IS_EMPTY": true,
+    "ALL": {}
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+Request
+```
+POST /event-trade-insert HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: snsFDc7AdjG8Khl95uUdUBm5UO1uqIfq
+SOURCE_REF: 345
+
+{
+  "DETAILS": {
+    "COUNTERPARTY_ID": 1,
+    "DATE": 1731542400000,
+    "DIRECTION": "BUY",
+    "INSTRUMENT_ID": 2,
+    "QUANTITY": 1000,
+    "TRADE_PRICE": 1.23
+  }
+}
+```
+Response
+```
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 556
+connection: keep-alive
+{
+  "MESSAGE_TYPE": "EVENT_ACK",
+  "SOURCE_REF": "345",
+  "GENERATED": [
+    {
+      "TRADE_ID": 5
+    }
+  ],
+  "METADATA": {
+    "IS_EMPTY": true,
+    "ALL": {}
+  }
+}
+```
+</TabItem>
+</Tabs>
 
 
 ## Appoval workflow
