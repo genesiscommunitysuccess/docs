@@ -22,14 +22,22 @@ SSO Token authentication covers both [SAML](https://en.wikipedia.org/wiki/Securi
 
 Some of these techniques support [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication) to bring additional security.
 
-Each of these requires its own configuration settings in the application's **auth-preferences.kts** file. To change the default **auth-preferences.kts** you need to create a new **auth-preferences.kts** under this path: &#123;application-name-script}**-config/src/main/resources/scripts/**.
+Each of these requires its own configuration settings in the application's **auth-preferences.kts** file, which is created bu the build process. To change the default **auth-preferences.kts**, create the details in a new **auth-preferences.kts** file and replace the existing file in: 
+
+_app-name_**/server/**_app-name_**-app/build/genesis-home/auth/scripts/auth-preferences.kts**
 
 ## Authentication workflow
-Regardless of which authentication method is used, the process for logging in remains the same. The client (either a Genesis UI or an API client) sends a request to the EVENT_LOGIN_AUTH endpoint.
-The body of this request contains different fields depending on the target authentication mechanism. For example, the field SSO_TOKEN is only valid for SAML and OIDC authenticators, whereas USERNAME and PASSWORD must be provided if using GenesisPassword or LDAP.
-Each authenticator is tried in turn, and returns one of three possible responses, Succcess, Failure or Incompatible.
-On the first success received, a USER_SESSION record is created; a SESSION_AUTH_TOKEN and REFRESH_AUTH_TOKEN are issued and returned on the EVENT_LOGIN_AUTH_ACK message.
-If all configured authenticators return a Failure or Incompatible, then a NACK message will be sent to the client with an error.
+Regardless of which authentication method is used, the process for logging in remains the same. 
+
+1. The client (either a Genesis UI or an API client) sends a request to the EVENT_LOGIN_AUTH endpoint.
+
+    The body of this request contains different fields depending on the target authentication mechanism. For example, the field SSO_TOKEN is only valid for SAML and OIDC authenticators, whereas USERNAME and PASSWORD must be provided if using GenesisPassword or LDAP.
+
+2. Each authenticator is tried in turn, and returns one of three possible responses, Succcess, Failure or Incompatible.
+
+3. On the first success received, a USER_SESSION record is created; a SESSION_AUTH_TOKEN and REFRESH_AUTH_TOKEN are issued and returned on the EVENT_LOGIN_AUTH_ACK message.
+
+4. If all configured authenticators return a Failure or Incompatible, then a NACK message will be sent to the client with an error.
 
 The session token must be included on all future requests sent from the client in this session.
 
