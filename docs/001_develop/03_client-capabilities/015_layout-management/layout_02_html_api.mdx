@@ -53,10 +53,36 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 #### Attributes
 
-| Attribute | Type | Use | Example |
-|---|---|---|---|
-|auto-save-key|`string`|Optional string which if set, will enable autosaving the layout under this key in local storage. See here for more<!-- todo -->|`<rapid-layout auto-save-key="my-layout">`|
-|reload-buffer (1)|`number`|Numerical attribute that controls the buffer between how long the layout is reloaded. The default is 500ms. In this case, the layout is only reloaded if the child elements of the layout region are manipulated once every 500ms. This is to stop the layout being reloaded over and over for every single item during initialisation. The higher the value is, the more performant the component is, but the first load will appear to take longer.|`<rapid-layout reload-buffer="2000">`|
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>auto-save-key</td>
+      <td><code>string</code></td>
+      <td>Optional string which if set, will enable autosaving the layout under this key in local storage. See here for more<!-- todo --></td>
+<td>
+
+```typescript
+<rapid-layout auto-save-key=${(x) => x.autoSaveKey || 'default'}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>reload-buffer (1)</td>
+      <td><code>number</code></td>
+      <td>Numerical attribute that controls the buffer between how long the layout is reloaded. The default is 500ms. In this case, the layout is only reloaded if the child elements of the layout region are manipulated once every 500ms. This is to stop the layout being reloaded over and over for every single item during initialisation. The higher the value is, the more performant the component is, but the first load will appear to take longer.</td>
+      <td><code>&lt;rapid-layout reload-buffer="2000"&gt;</code></td>
+    </tr>
+  </tbody>
+</table>
 
 :::tip
 (1) This only applies for usage with the declarative HTML API. When the layout first loads after this amount of time, it emits an event <!-- TODO link -->.
