@@ -13,7 +13,7 @@ tags:
 sidebar_position: 8
 ---
 
-import TextFieldDemo from '../../../../examples/ui/client-capabilities/interaction/text-field.js';
+import TextFieldDemo, { TextFieldWithSlot } from '../../../../examples/ui/client-capabilities/interaction/text-field.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -321,6 +321,19 @@ This component doesn't have any properties which are not also controlled via att
 | start | Start slot. |
 | control | The input element. |
 | end | End slot. |
+
+#### Example
+Numeric amount using `$` symbol in start slot
+<TextFieldWithSlot />
+
+Implementation
+```html
+<rapid-text-field type="text" inputmode="numeric" pattern="\d*">
+    <div slot="start">
+        $
+    </div>
+</rapid-text-field>
+```
 
 ### Parts
 
