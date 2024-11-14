@@ -26,7 +26,7 @@ Use cases:
 * Comment sections
 * Search filters
 
-## Examples
+## Example
 
 <TextFieldDemo />
 
@@ -113,33 +113,206 @@ Use cases:
 
 Property and attribute binding examples for Genesis Component syntax.
 
-| Name        | Type      | Description                                                                                                                             |
-|-------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| autofocus   | `boolean` | When true, the component will be focused when the page has finished loading                                                             |
-| appearance  | `string`  | Can be `outline` or `filled`                                                                                                            |
-| disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                                                                                 |
-| form        | `string`  | Associates this component with a form. Form `id` needs to be passed. If no Id is provided, then it will be associated with the ancestor form |
-| maxlength   | `number`  | The maximum number of characters allowed                                                                                                |
-| minlength   | `number`  | The minimum number of characters allowed                                                                                                |
-| name        | `string`  | Defines the name of the element                                                                                                         |
-| placeholder | `string`  | Sets placeholder text for the element (which disappears when the user starts typing)                                                    |
-| readonly    | `boolean` | If true, the user cannot change the value of this field                                                                                 |
-| size        | `number`  | Sets the width of the component                                                                                                         |
-| step        | `number`  | **Only works with** `type="number`. Defines the amount the field value changes each time the user clicks to increase or decrease the field value |
-| type        | `string`  | Sets the type of the text-field. Can be {"email", "password","tel","number","text","url"}                                               |
-| value       | `string`  | Sets the value for this component                                                                                                       |
+### Attributes
 
-### Examples (closing tag omitted):
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>autofocus</td>
+      <td><code>boolean</code></td>
+      <td>When true, the component will be focused when the page has finished loading</td>
+<td>
 
-Attributes:
 ```typescript
-<rapid-text-field placeholder="Placeholder text">
+html`
+    <rapid-text-field ?autofocus="${(x) => x.autoFocus}">
+`
 ```
 
-Properties:
+</td>
+    </tr>
+    <tr>
+      <td>appearance</td>
+      <td><code>string</code></td>
+      <td>Can be <code>outline</code> or <code>filled</code></td>
+<td>
+
 ```typescript
-<rapid-text-field value=${sync((x) => x.text_field_value)}>
+html`
+    <rapid-text-field appearance="outline">
+`
 ```
+
+</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Similar to <code>readonly</code>, but with a blur on the component</td>
+<td>
+
+```typescript
+html`
+    <rapid-text-field ?disabled="${(x) => x.isDisabled}">
+`
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>form</td>
+      <td><code>string</code></td>
+      <td>Associates this component with a form. Form <code>id</code> needs to be passed. If no Id is provided, then it will be associated with the ancestor form</td>
+<td>
+
+```typescript
+html`
+    <rapid-text-field form="myForm">
+`
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>maxlength</td>
+      <td><code>number</code></td>
+      <td>The maximum number of characters allowed</td>
+<td>
+
+```typescript
+html`
+    <rapid-text-field maxlength="${(x) => x.maxLength}">
+`
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>minlength</td>
+      <td><code>number</code></td>
+      <td>The minimum number of characters allowed</td>
+<td>
+
+```typescript
+html`
+    <rapid-text-field minlength="${(x) => x.minLength}">
+`
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>Defines the name of the element</td>
+<td>
+
+```typescript
+html`
+    <rapid-text-field name="username">
+`
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>placeholder</td>
+      <td><code>string</code></td>
+      <td>Sets placeholder text for the element (which disappears when the user starts typing)</td>
+<td>
+
+```typescript
+html`
+    <rapid-text-field placeholder="Enter your name">
+`
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>readonly</td>
+      <td><code>boolean</code></td>
+      <td>If true, the user cannot change the value of this field</td>
+<td>
+
+```typescript
+html`
+    <rapid-text-field ?readonly="${(x) => x.isReadonly}">
+`
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td><code>number</code></td>
+      <td>Sets the width of the component</td>
+<td>
+
+```typescript
+html`
+    <rapid-text-field size="${(x) => x.fieldSize}">
+`
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>step</td>
+      <td><code>number</code></td>
+      <td><strong>Only works with</strong> <code>type="number"</code>. Defines the amount the field value changes each time the user clicks to increase or decrease the field value</td>
+<td>
+
+```typescript
+html`
+    <rapid-text-field type="number" step="${(x) => x.stepValue}">
+`
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td><code>string</code></td>
+      <td>Sets the type of the text-field. Can be {"email", "password","tel","number","text","url"}</td>
+<td>
+
+```typescript
+html`
+    <rapid-text-field type="email">
+`
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>string</code></td>
+      <td>Sets the value for this component. Use the `sync` utility to bind the data the template back to the model.</td>
+<td>
+
+```typescript
+html`
+    <rapid-text-field value="${sync((x) => x.fieldValue)}">
+`
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+
+This component doesn't have any properties which are not also controlled via attributes.
 
 ### Slots
 
