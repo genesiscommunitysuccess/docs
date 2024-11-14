@@ -19,7 +19,8 @@ import TabItem from '@theme/TabItem';
 
 # Criteria Segmented Control
 
-This version allows you to use a segmented control that generates criteria based on the selected item.
+The segmented control generates criteria based on the selected item.
+This criteria can be used to filter data from a Genesis dataserver endpoint.
 
 Use cases:
 * Visually and structurally group related interactive criteria.
@@ -44,16 +45,23 @@ Use cases:
         template: html`
             <criteria-segmented-control
               :criteriaOptions=${() => toolbarOptions}
-              :value=${sync((x) => x.criteriaFilter)}>
+              :value=${sync((x) => x.criteriaFilter)}
+              @change=${(x) => x.onChange()}
+              >
             </criteria-segmented-control>
           `,
       })
       export class MyElement extends GenesisElement {
+        const criteriaFilter: string;
         const toolbarOptions: CriteriaSegmentedControlOption[] = [
           { label: 'A', field: 'CHOSEN_OPTION', value: 'option-A', serialiser: Serialisers.EQ },
           { label: 'B', field: 'CHOSEN_OPTION', value: 'option-B', serialiser: Serialisers.EQ },
           { label: 'C', field: 'CHOSEN_OPTION', value: 'option-C', serialiser: Serialisers.EQ },
         ];
+
+        onChange() {
+          console.log(this.criteriaFilter)
+        }
       }
     ```
 
@@ -79,8 +87,8 @@ Use cases:
         }
 
         return (
-          <criteria-segmented-control criteriaOptions={{criteriaOptions}} onChange={handleCriteriaChange}>
-            <label slot="label">Filter by instrument name</label>
+          <criteria-segmented-control criteriaOptions={{criteriaOptions}} onClick={handleCriteriaChange}>
+            <label slot="label">Select option</label>
           </criteria-segmented-control>
 
         );
