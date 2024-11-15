@@ -177,7 +177,7 @@ Once this is configured, a service provider metadata endpoint will be available 
 Other endpoints provided are:
 
 - the `ssoLoginUrl`
-  - The format of this is: `https://&#123;appHost}{ssoLoginRoute}?idp={id}` where:
+  - The format of this is: `https://{appHost}{ssoLoginRoute}?idp={id}` where:
     - `appHost` is hostname of the app, e.g. dev-position2
     - `ssoLoginRoute` is `/gwf/saml/login` by default (this is configurable)
     - `id` is the ID of the selected identity provider
@@ -256,7 +256,7 @@ Then, make sure that auth saml has been added to the Genesis Router configuratio
 </process>
 ```
 
-Next, in your application's **jvm/&#123;application-name}-site-specific** directory, create an _application-name-_**saml-config.kts** file with the following SAML details:
+Next, in your application's **jvm/{application-name}-site-specific** directory, create an _application-name-_**saml-config.kts** file with the following SAML details:
 
 ```kotlin
     saml {

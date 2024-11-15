@@ -87,7 +87,7 @@ The `dictionaryBuilder` script generates the **fields-dictionary.kts** and **tab
 
 To create a [Streamer](../../../server/integration/gateways-and-streamers/streamer/):
 
-1. Add the `genesis-pal-streamer` dependency to your **&#123;applicationName}-script-config\build.gradle.kts** file. In this training our file is **alpha-script-config\build.gradle.kts**:
+1. Add the `genesis-pal-streamer` dependency to your **{applicationName}-script-config\build.gradle.kts** file. In this training our file is **alpha-script-config\build.gradle.kts**:
 
 ```kotlin {3}
 dependencies {
@@ -99,7 +99,7 @@ dependencies {
 description = "alpha-script-config"
 ```
 
-2. Create a Kotlin script file named &#123;applicationName}-streamer.kts inside **&#123;applicationName}-script-config/src/main/resources/scripts** folder. Add the following information:
+2. Create a Kotlin script file named {applicationName}-streamer.kts inside **{applicationName}-script-config/src/main/resources/scripts** folder. Add the following information:
     * A stream name
     * A GPAL index reference for a unique index with a single LONG field, this could refer to a table index or a view index.
 
@@ -129,7 +129,7 @@ This example creates a stream called `ORDER_OUT`, based on the `ORDERS_OUT` tabl
 </processes>
 ```
 
-4. Next, add the service definition to the &#123;applicationName}-service-definitions.xml file. In this training our file is **alpha-service-definitions.xml**:
+4. Next, add the service definition to the {applicationName}-service-definitions.xml file. In this training our file is **alpha-service-definitions.xml**:
 
 ```xml {3}
 <configuration>
@@ -220,7 +220,7 @@ Let's see how to create a Streamer Client. It also looks at the syntax of the tw
 ### Creating a Streamer Client
 To create a [Streamer-Client](../../../server/integration/gateways-and-streamers/streamer-client/):
 
-1. Add the genesis-pal-streamerclient` dependency to your *&#123;applicationName}-script-config\build.gradle.kts* file. In this training our file is **alpha-script-config\build.gradle.kts**:
+1. Add the genesis-pal-streamerclient` dependency to your *{applicationName}-script-config\build.gradle.kts* file. In this training our file is **alpha-script-config\build.gradle.kts**:
 
 ```kotlin {3}
 dependencies {
@@ -232,7 +232,7 @@ dependencies {
 description = "alpha-script-config"
 ```
 
-2. Create a Kotlin script file named &#123;applicationName}-streamer-client.kts inside **&#123;applicationName}-script-config/src/main/resources/scripts** folder, and add the following details:
+2. Create a Kotlin script file named {applicationName}-streamer-client.kts inside **{applicationName}-script-config/src/main/resources/scripts** folder, and add the following details:
     * A streamer client name
     * A streamer data source process and stream name
     * One or more `onMessage` tags
@@ -280,7 +280,7 @@ sendFormatted("QUOTE_HANDLER", "QUOTE_EVENT") {
 ```
 
 
-3. Add the configuration for the Streamer Client process to the &#123;applicationName}-processes.xml file. In this training our file is **alpha-processes.xml**:
+3. Add the configuration for the Streamer Client process to the {applicationName}-processes.xml file. In this training our file is **alpha-processes.xml**:
 
 ```xml {3-10}
 <processes>
@@ -296,7 +296,7 @@ sendFormatted("QUOTE_HANDLER", "QUOTE_EVENT") {
 </processes>
 ```
 
-4. Next, add the service definition to the &#123;applicationName}-service-definitions.xml file. In this training our file is **alpha-service-definitions.xml**:
+4. Next, add the service definition to the {applicationName}-service-definitions.xml file. In this training our file is **alpha-service-definitions.xml**:
 
 ```xml {3}
 <configuration>

@@ -1,0 +1,173 @@
+---
+title: '8.4'
+sidebar_label: '8.4'
+sidebar_position: 1
+id: '8.4'
+---
+## Server
+
+### Features
+* Added convenience function for building local file camel string 
+* Added get all pipelines functions to PipelineManager 
+* Implement context based "filter" support as shared functionality for dataserver/req-rep/auth blocks, including enriched dataserver queries 
+* Add support for REST integration in datapipelines 
+* Added source for use by event handlers. 
+* Deprecate safeWriteTransaction in favour of writeTransaction 
+* feat: added support for camel Idempotent repositories in data pipelines (8.4.2+)
+
+### Fixes
+* (deploy-plugin): deploy zip task reference correct file when product name set in settings plugin 
+* (deploy-plugin): find project jars from gradle jar task, not from version 
+* Consul: improve session check logic used to determine primary process demotion to avoid race conditions 
+* Criteria validation and compilation should handle StackOverflow errors
+* Dataserver backwardsJoin view does not recover in case of a buffered out-of-order update
+* DbMon search returns the expected number of records 
+* DbMon updateWhere fails if there is a white space in the argument
+* Fix "and" operator usage in generic GPAL "auth" blocks for eventhandler and custom req/rep 
+* Generate non-required properties as nullable for paginated requests 
+* Improve error message when a system definition property is expected but is not specified 
+* Make http response function suspending to fix issues with generated code 
+* Mon dies when system is not able to connect to CONSUL but is configured to do so
+* Remap Oracle Script needs a / between 2 Declare blocks 
+* Rename "authKeyWithUsername" to "authKeyWithUserName" for consistency 
+* Allow db mon to fetch more than 500 results 
+* Allow for req rep GET without request param 
+* Correctly parse criteria expressions for custom req reps 
+* Filter out genesis.testsupport from TestContext package scan
+* Remove unnecessary kotlinx-serialization dependency 
+* When using @SysDefOverwrite annotation in tests and scripts use sys def receiver
+
+### Dependency changes
+* Added constraint on jackson-dataformat-cbor to prevent classpath issues 
+* Bump actions/upload-artifact from 3 to 4 by 
+* Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.7 to 0.17.8 in /genesis-subcore/deploy-gradle-plugin 
+* Bump com.github.oshi:oshi-core from 6.6.2 to 6.6.3 in /genesis-conventions 
+* Bump com.jfrog.artifactory from 5.2.3 to 5.2.4 in /genesis-publish-config 
+* Bump com.jfrog.artifactory from 5.2.4 to 5.2.5 in /genesis-publish-config 
+* Bump com.microsoft.sqlserver:mssql-jdbc from 12.6.1.jre11 to 12.8.1.jre11 in /genesis-conventions 
+* Bump com.networknt:json-schema-validator from 1.5.0 to 1.5.1 in /genesis-conventions 
+* Bump commons-cli:commons-cli from 1.8.0 to 1.9.0 in /genesis-conventions 
+* Bump debeziumVersion from 2.7.0.Final to 2.7.1.Final in /genesis-conventions 
+* Bump io.github.classgraph:classgraph from 4.8.174 to 4.8.175 in /genesis-conventions 
+* Bump oracleJdbcVersion from 23.4.0.24.05 to 23.5.0.24.07 in /genesis-conventions 
+* Bump org.apache.commons:commons-compress from 1.26.2 to 1.27.1 in /genesis-conventions 
+* Bump org.apache.fury:fury-core from 0.6.0 to 0.7.0 in /genesis-conventions 
+* Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.3 to 5.2.4 in /genesis-publish-config 
+* Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.4 to 5.2.5 in /genesis-publish-config
+* Bump slf4jVersion from 2.0.13 to 2.0.16 in /genesis-conventions 
+* Bump sshdVersion from 2.13.1 to 2.13.2 in /genesis-conventions 
+
+## Web
+
+### Features
+* feat(foundation-fdc3): marking types as deprecated, fix channel broadcast payload 
+* feat(foundation-fdc3): bumping fdc3 package version 
+
+### Fixes
+* fix(foundation-ui): port resetCombobox function from genesis-create 
+* fix(foundation-forms): check if oneOf exist for genesisType in date renderer 
+* fix(foundation-forms): smart forms correct errors placement 
+* fix(foundation-forms): pass jsonSchema to arrayList renderer if uiSchema is provided 
+* fix(foundation-entity-management): show entityLabel on notification description 
+* fix(foundation-entity-management): changeCase for search-bar if headerName isn't provided 
+* chore: change SLACK_CHANNEL on CI workflows  
+* chore: add new circular.yml workflow script + circular dep fixes 
+
+## Noteworthy changes
+
+### New filter syntax
+
+`where` blocks replaced with the new `filter` syntax
+
+This new feature is consistent across our different modules, such as authorisation, Data Server, REQUEST SERVER, etc.
+
+The new `filter` clause replaces the old `where` clause functionality. The old `where` clause is now deprecated. Use `filter` from now on.
+
+### Warn on truncated keys
+
+This change prevents the Data Server from going into an error state when string index fields are truncated or when rows are ignored. This now triggers a WARNING, and the Data Server continues to function.
+
+Before the change, if a STRING field in a target table or view was greater in size than that defined by the Data Server index definition, the Data Server would go into ERROR state. From that point onward, it would not serve any more requests, essentially rejecting all messages. 
+
+Any Data Server definition that has indices that include STRING type fields could be affected - if these fields could potentially end up truncated by a string overflow.
+
+In most cases, you do not need to take action. This is a simple change in behaviour. 
+
+You only need to take action if your Data Server has been configured to respond to an ERROR state caused by truncated string index fields or ignored rows. This is not a likely design scenario, but if this is the case for your application, you need to create new code to replicate this behaviour.
+
+## Breaking changes
+
+### Updated `GenesisHTTPClient`
+
+This now allows invocations from different contexts.
+
+**Are you affected?**
+
+If you are using the http client directly, some methods are now marked as internal. You could receive a compilation error if you refer to a function that is now internal.
+
+:::info
+**Medium fix**
+
+Use only the [methods](https://learn.genesis.global/docs/server/integration/web-integration/genesis-http-client-core-concepts/#request-methods) exposed as public in the interface (get, put, post, delete). 
+
+Read the pages on [GenesisHTTPClient](https://learn.genesis.global/docs/server/integration/web-integration/genesis-http-client-intro/) for full information.
+:::
+
+### `DbOperation` updates
+
+DbOperation class has changed packages as part of a refactor
+
+**Are you affected?**
+
+You need to take action if:
+- you use the Data Pipelines component in your application
+- you have any compiler errors when you build your app after the upgrade with **cannot find Symbol DbOperation**.
+
+:::tip
+**Simple fix**
+
+1. Search your imports for all instances of `global.genesis.datapipeline.pal.sink`.
+2. Replace with `global.genesis.pipeline.api.db`.
+:::
+
+### `rxSources` updates
+
+Made rxSources non-functional interfaces, standardised http source syntax and added utilities
+The unused RxSink interface is not a functional interface anymore; it is now a regular interface. 
+
+**Are you affected?**
+
+Only applications that use the RxSink interface in the Data Pipeline are affected. 
+
+:::tip
+**Simple fix**
+
+Any new implementations of Data Pipeline must only use the [standard http web calls](/server/integration/web-integration/genesis-http-client-core-concepts/#request-methods). Check the revised [reference documentation for Data Pipeline](/server/data-pipelines/introduction/) for full details.
+:::
+
+### `onOperationError` type safety
+
+Added type safe onOperationError handling to data pipelines
+Error handling for Data Pipeline has been redesigned. 
+
+**Are you affected?**
+
+If your application uses Data Pipelines and are using error handlers in them, you are affected.
+
+:::info
+**Medium fix**
+Change your error handling based on the [new handlers](/server/data-pipelines/implementations/#handlers).
+:::
+
+## Patch Releases
+
+
+### 8.4.2
+
+* fix: Ensure only generated jars are added to process classpath when using WriteClasspathToManifest
+
+### 8.4.1
+
+* fix: ensure groovy compilation exceptions are handled
+* fix: fail preCompileScripts gradle task by default and add option to disable failing on error
+* Fixed multiple components dependencies pointing at beta version
