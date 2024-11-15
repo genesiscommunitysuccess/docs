@@ -1,7 +1,7 @@
 ---
 title: 'State Machine - basics'
 sidebar_label: 'Basics'
-id: basics
+id: basics-this
 keywords: [server, state machine, basics]
 tags:
   - server
@@ -9,7 +9,7 @@ tags:
   - basics
 ---
 
-You define your State Machine as a specific type of [Event Handler](../../../server/event-handler/introduction/). 
+You define your State Machine as a specific type of [Event Handler](/docs/develop/server-capabilities/core-business-logic-event-handler/). 
 
 Within your application's **eventhandler.kts**, you must define the conditions for each possible change of state. Remember, if you don't define the conditions for changing from one state to another, then it will not be possible for the application to make that transition.
 
@@ -41,7 +41,7 @@ With a State Machine, you can perform all the same operations that you are able 
 
 ## insertEvent
 
-This event enables you to insert a trade. The name of the event must be EVENT_{entity_name}_INSERT. So, in this example it is `EVENT_TRADE_INSERT`.
+This event enables you to insert a trade. The name of the event must be `EVENT_<entity_name>_INSERT`. So, in this example it is `EVENT_TRADE_INSERT`.
 
 ```kotlin
 eventHandler {
@@ -80,7 +80,7 @@ Let's look at the codeblocks inside `insertEvent`:
 
 ## modifyEvent
 
-This event enables you to modify a trade. The name of the event must be EVENT_{entity_name}_MODIFY. So, in this example it is `EVENT_TRADE_MODIFY`.
+This event enables you to modify a trade. The name of the event must be `EVENT_<entity_name>_MODIFY`. So, in this example it is `EVENT_TRADE_MODIFY`.
 
 ```kotlin
 eventHandler {
@@ -161,4 +161,4 @@ Let's look at the codeblocks inside `transitionEvent`:
 - **fromStates** : this enables you to specify the transitions (from and to). In the above example, the transitions are: DRAFT to OPEN, DRAFT to CLOSED, DRAFT to CANCELLED. No other transitions are possible.
 - **onEvent** : this provides event information, which can be used to get information such as event user, event time, etc.
 
-You can click to view the [whole file for this example State Machine](../../../server/state-machine/examples/) and see how each of the events is handled.
+You can click to view the whole file for this example State Machine and see how each of the events is handled.
