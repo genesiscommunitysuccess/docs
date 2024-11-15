@@ -16,6 +16,7 @@ import TabItem from '@theme/TabItem';
 Here, we shall look into the back-end code and make some useful changes to increase the usability and range of the app.
 
 ## Multi-directional trade calculations
+
 If you have entered some trades within the default application, you may have noticed that the position calculation keeps a running total, but this does not consider the `SIDE` for the trade. 
 
 Let’s add some pro-code to get the position calculation to include the direction of the trade. 
@@ -24,7 +25,7 @@ Let’s add some pro-code to get the position calculation to include the directi
 
 The original consolidator script should look this (but it probably includes additional comments):
 
-```jsx
+```kotlin
 ### This is  an example to show what Consolidators look like, no need to copy ###
 
 consolidators {
@@ -73,7 +74,7 @@ So, we shall now use two consolidator blocks to implement our change.
 
 2. Copy the entire code block below and replace the entire contents of the file **ALM-consolidator.kts**.
 
-```jsx
+```kotlin
 import global.genesis.gen.dao.enums.ALM.fx_trade.Side
 import global.genesis.gen.dao.enums.ALM.fx_trade.TradeStatus
 
@@ -173,7 +174,7 @@ However, there is often a requirement for a version to appear directly on the tr
 
 2. Ensure the `TRADE_VERSION` field is available on your `FX_TRADE` table, and add a default value to it. Set the default value to 1 so every new trade entering the system starts as version 1.
 
-```jsx
+```kotlin
 field("TRADE_VERSION", LONG).notNull().default(1)
 ```
 Next, let’s add the logic to the events. 
@@ -182,14 +183,14 @@ Next, let’s add the logic to the events.
 
 2. Go to the `FX_TRADE_MODIFY` section and add the following code to increment the version on modification:
 
-```jsx
+```kotlin
 details.tradeVersion = details.tradeVersion + 1
 details.tradeStatus = TradeStatus.Amended
 ```
 
 3. To handle deletion, go to the `FX_TRADE_DELETE` section and add:
 
-```jsx
+```kotlin
 details.tradeVersion = details.tradeVersion + 1
 details.tradeStatus = TradeStatus.Cancelled
 ```
@@ -200,7 +201,7 @@ When the trade is deleted, we no longer want it to be removed from the database,
 
 Go to the next line down in the `FX_TRADE_DELETE` section and change the `entityDb.delete(details)` to:
 
-```jsx
+```kotlin
 entityDb.modify(details)
 ```
 
@@ -208,7 +209,7 @@ Because we have changed the delete to a modify, these changes affect the whole o
 
 So our two events now look like this:
 
-```jsx
+```kotlin
   eventHandler<FxTrade>("FX_TRADE_MODIFY", transactional = true) {
     onCommit { event ->
       val details = event.details

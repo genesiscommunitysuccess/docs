@@ -1,0 +1,61 @@
+---
+title: 'Enabling Genesis Start'
+sidebar_label: 'Enabling'
+id: enable-start
+keywords: [server, tooling, code snippets, start, jetbrains, local]
+tags:
+  - server
+  - tooling
+  - code snippets
+  - start
+  - jetbrains
+  - local
+---
+
+Genesis Start enables you to launch Genesis applications without the need for downloading and installing an IDE.
+
+![Genesis Start Screenshot](/img/genesis-launcher/genesis-launcher-empty.png)
+
+:::info
+You do not need to enable recently created projects; these already have the Genesis Start enabled.
+
+An older existing project can be enabled to use Genesis Start if it uses:
+* the [simplified structure](/operations/project-structure/introduction/); this includes any project generated through Create
+* the [Genesis Gradle Settings plugin](/operations/project-structure/settings-plugin/)
+:::
+
+## Enabling
+
+If you need to enable Genesis Start, there are two things that you need to do:
+
+1. Amend the settings file.
+2. Amend the build file.
+
+## Amending the settings file
+
+In your project's **settings.gradle.kts** file, add `google()` to `repositories` under `pluginManagement`.
+
+```kotlin
+// in repositories under plugin management, add google() at the end:
+pluginManagement {
+    repositories {
+        // other repositories
+        google() // <- add this
+    }
+}
+```
+
+## Amending the build file
+
+In your project's **build.gradle.kts** file, add the plugin:
+
+```kotlin
+// add Genesis Start to plugins
+plugins {
+    // other plugins..
+    id("global.genesis.genesis-start-gui") version "0.1.4"
+}
+```
+
+## Next step
+Once the plugin is enabled you can [start Genesis Start](../running-start).

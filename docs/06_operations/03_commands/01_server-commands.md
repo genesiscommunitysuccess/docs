@@ -16,6 +16,14 @@ Once an application has been built and zipped, you can install it in any another
 
 To ensure a correct installation, you must follow the product installation procedure.
 
+## Logging level for commands
+
+The logging level for Genesis commands is set to "WARN" by default. 
+
+To change the level for a command, set the environment variable `GENESIS_LOGGING_LEVEL` to any valid level ("ERROR", "WARN", "INFO", "DEBUG", "TRACE").
+
+If you set `GENESIS_LOGGING_LEVEL` to a non-valid level, it is automatically reset to the default.
+
 ## CountRecords
 
 This counts the number of records in the database, grouped by table; the results are printed to screen.
@@ -697,7 +705,7 @@ This enables you to define the data-retention policy. Data will be removed from 
 
 Example: For the TRADE table, you could decide to keep allocated trades for 60 days, and 30 days for the rest.
 
-To use this tool, you must have an _application_**-purger.kts* file in the application's config folder. Invoking the **PurgeTables** command will pick up all files that are found in the **$GENESIS_HOME/generated/cfg/** directory.
+To use this tool, you must have an _application_**-purger.kts** file in the application's config folder. Invoking the **PurgeTables** command will pick up all files that are found in the **$GENESIS_HOME/generated/cfg/** directory.
 
 In order to enable syntax highlighting and autocompletion for purger files, you must add **genesis-environment** as a dependency of your application's **-config** module. See simple examples below for purger definitions:
 

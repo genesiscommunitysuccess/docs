@@ -13,7 +13,7 @@ tags:
 ---
 
 :::info
-<font size="5">**This version of the documentation describes version 8.4 of the Genesis Platform**</font>.
+<font size="5">**This version of the documentation describes version 8.5 of the Genesis Platform**</font>.
 :::
 
 ## History
@@ -36,6 +36,27 @@ Remember to click on **Current** when you want to return to the most recent vers
 
 Foundation UI has a programme of regular continual releases. These are documented along with their source code on [github](https://github.com/genesislcap/foundation-ui/releases).
 
+## v8.5
+
+### Bug fix
+- foundation-ui: update scrolling behavior and flags for combobox
+
+### What's changed
+- fix(foundation-forms): fix clearing array type input NOTIFY
+- fix(grid-pro): update addEventListener flow + add tsdoc
+- feat(foundation-fdc3): re-exporting finos/fdc3 types - 
+- fix(foundation-ui): set initialValue if async mode is off 
+- fix(foundation-ui): improve combobox accessibility - 
+- feat(foundation-ui): add tooltip functionality to icon in UI/Forms 
+- chore: temporary disabling publishing to github registry 
+- fix(foundation-ui): resetCombobox before new component data sync 
+- fix(foundation-entity-management): prevent sending invalid form 
+- fix(foundation-ui): improve combobox accessibility (2)
+- fix(foundation-forms): correct client validation for forms 
+- fix(foundation-ui): address scrolling on listbox components 
+- feat: add new helpers to Handlebars
+- fix(foundation-ui): update scrolling behavior and flags for combobox
+
 ## v8.4
 
 ### What's changed
@@ -53,7 +74,7 @@ Foundation UI has a programme of regular continual releases. These are documente
 
 ## v8.3
 
-## What's changed
+### What's changed
 * chore: allowing releases from maintenance branches 
 * chore: allowing releases from maintenance branches - enabling jobs 
 * fix(g2plot-chart): address error loop when used within foundation-layout 
@@ -65,7 +86,7 @@ Foundation UI has a programme of regular continual releases. These are documente
 * chore(foundation-testing): minor README changes
 * chore: bumping @playwright/test to latest 
 * fix(foundation-logger): restore log level support on package loggers 
-* chore: display toast on crud operations - FUI-2097 
+* chore: display toast on crud operations 
 * fix: handle spacebar selection/deselection and update CRUD buttons
 * feat(foundation-header): ability to add nav items in side-bar 
 * fix(grid-pro): update server-side reqRep to match latest GSF
@@ -287,14 +308,250 @@ Foundation UI has a programme of regular continual releases. These are documente
 * feat(grid-pro): add set row data property to element 
 * fix(foundation-explorer): address multiple visual issues
 * fix(foundation-fdc3): override deep clone methods to handle functions, defaulting to using e.detail.data 
-* chore: rename show passwords -> show password 
+* chore: rename show passwords => show password 
 * chore: update PR template
 
 ## Genesis Server Framework (GSF)
 
 GSF release notes are added to this area immediately following each software release. The most recent release is at the top.
 
-**As new GSF releases are added, they shall be displayed here.**
+## GSF 8.5
+
+## Genesis 8.5.0(genesis-server)
+
+### Features
+- dictionary: add support for tableId offset overrides at dictionary level in the dictionary schema definition 
+- Add "derivedFieldWithUserName" support to dataservers and req/reps 
+- Add an Integration test for CSV Raw Decoder 
+- Return unsuccessful excel sheet names with error
+- Add pipeline monitor to update process status 
+- Add stop method to realtime source/sink interface 
+- Added support for camel Idempotent repositories in data pipelines 
+- Allow processes templates to be consumed by projectOverViewBuilder 
+- Support multiple process profiles in ProjectOverviewBuilderTask  
+
+### Fixes
+- SendTable: ensure SendIt waits for audit record write operations to finish before exiting 
+- codegen: include dependant scripts in codegen cache key 
+- remap: table removal + table rename to the table name of the removed table now works as expected 
+- router: when GET request only has request parameters 
+- Allow primitive type values for parameters with type Any in JSON schema 
+- Ensure only generated jars are added to process classpath when using WriteClasspathToManifest 
+- Exclude unnecessary "kotlin-scripting-dependencies-maven-all" in genesis-shell to clean vulnerability report 
+- Fixed an issue in Remap for Oracle DB where foreign keys would be violated for auto increment columns
+- ResourceDaemon: fix Dependency Injection initialisation on startup 
+- SysDefOverwrite test annotation overwrites specified properties with others retrieved from system definition files 
+- Added next stage call to stream wrapped ops 
+- Allow audit tabes to be generated when a field name clashes with the main table 
+- Duplicate handling strategy in plugin instead of app build.gradle 
+- Ensure groovy compilation exceptions are handled 
+- Fail preCompileScripts gradle task by default and add option to disable failing on error 
+- Websockets for the docker default nginx config 
+- Remove deprecated config from router-process-config.kts 
+- Revert resolving sys def from genesis home in TestSystemDefinitionService
+
+### Dependency changes
+- Bump aeronVersion from 1.44.1 to 1.46.0 in /genesis-conventions
+- Bump aeronVersion from 1.46.0 to 1.46.2 in /genesis-conventions
+- Bump byteBuddyVersion from 1.14.18 to 1.15.1 in /genesis-conventions 
+- Bump byteBuddyVersion from 1.15.1 to 1.15.3 in /genesis-conventions 
+- Bump com.github.oshi:oshi-core from 6.6.3 to 6.6.4 in /genesis-conventions 
+- Bump com.google.errorprone:error_prone_annotations from 2.29.2 to 2.32.0 in /genesis-conventions 
+- Bump com.google.errorprone:error_prone_annotations from 2.32.0 to 2.33.0 in /genesis-conventions 
+- Bump com.google.guava:guava from 33.2.1-jre to 33.3.0-jre in /genesis-conventions 
+- Bump commons-io:commons-io from 2.16.1 to 2.17.0 in /genesis-conventions 
+- Bump de.cronn:reflection-util from 2.16.0 to 2.17.0 in /genesis-subcore/genesis-db 
+- Bump debeziumVersion from 2.7.1.Final to 2.7.3.Final in /genesis-conventions 
+- Bump io.github.classgraph:classgraph from 4.8.175 to 4.8.176 in /genesis-conventions 
+- Bump io.reactivex.rxjava3:rxjava from 3.1.8 to 3.1.9 in /genesis-conventions 
+- Bump joda-time:joda-time from 2.12.7 to 2.13.0 in /genesis-conventions 
+- Bump log4jVersion from 2.23.1 to 2.24.0 in /genesis-conventions 
+- Bump log4jVersion from 2.24.0 to 2.24.1 in /genesis-conventions 
+- Bump micrometerVersion from 1.13.2 to 1.13.4 in /genesis-conventions 
+- Bump micrometerVersion from 1.13.4 to 1.13.5 in /genesis-conventions 
+- Bump mockitoVersion from 5.12.0 to 5.13.0 in /genesis-conventions 
+- Bump mockitoVersion from 5.13.0 to 5.14.1 in /genesis-conventions 
+- Bump org.agrona:agrona from 1.21.2 to 1.23.0 in /genesis-conventions 
+- Bump org.apache.commons:commons-lang3 from 3.16.0 to 3.17.0 in /genesis-conventions 
+- Bump org.apache.fury:fury-core from 0.7.0 to 0.7.1 in /genesis-conventions 
+- Bump org.gradle:test-retry-gradle-plugin from 1.5.10 to 1.6.0 in /genesis-conventions 
+- Bump org.hamcrest:hamcrest-library from 2.2 to 3.0 in /genesis-conventions 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.3 to 5.2.5 in /genesis-conventions 
+- Bump org.openapitools:openapi-generator from 7.7.0 to 7.8.0 in /genesis-conventions 
+- Bump org.postgresql:postgresql from 42.7.3 to 42.7.4 in /genesis-conventions 
+- Bump pekkoVersion from 1.0.3 to 1.1.1 in /genesis-conventions 
+- Bump testcontainersVersion from 1.20.1 to 1.20.2 in /genesis-conventions
+
+## Genesis 8.4.3(genesis-server)
+
+### Fixes
+- Fixed an issue in Remap for Oracle DB where foreign keys would be violated for auto increment columns
+
+## Genesis 7.2.18(genesis-server)
+
+### Fixes
+- Fixed an issue in Remap for Oracle DB where foreign keys would be violated for auto increment columns
+
+## Genesis 6.7.37(genesis-server)
+
+### Fixes
+- Fixed an issue in Remap for Oracle DB where foreign keys would be violated for auto increment columns
+
+## Genesis 8.4.1(platform-documents)
+
+### Fixes
+- file_name should store original file name
+
+## Genesis 8.3.1(platform-documents)
+
+### Fixes
+- file_name should store original file name
+
+## Genesis 8.2.1(platform-documents)
+
+### Fixes
+- file_name should store original file name
+
+## Genesis 8.4.2(genesis-server)
+
+### Features
+- Added support for camel Idempotent repositories in data pipelines
+
+### Fixes
+- Ensure only generated jars are added to process classpath when using WriteClasspathToManifest 
+
+## Genesis 8.4.1(genesis-server)
+
+### Fixes
+- Ensure groovy compilation exceptions are handled 
+- Fail preCompileScripts gradle task by default and add option to disable failing on error
+
+## Genesis 7.2.17(genesis-server)
+
+## What's changed
+- Add debug logging to FullDuplexClientHandler around subscription management
+
+## Genesis 7.2.16(genesis-server)
+
+### Fixes
+- remap: table removal + table rename to the table name of the removed table now works as expected
+
+## Genesis 8.4.1(platform-symphony)
+
+### Fixes
+- Version 8.4 depends on beta version rather than official release
+
+## Genesis 8.4.1(platform-reconciliation)
+
+### Fixes
+- fix:√
+
+## Genesis 8.4.1(platform-notify)
+
+### Fixes
+- Version 8.4 depends on beta version rather than official release
+
+## Genesis 8.4.0(platform-integrations)
+
+### Features
+- Added kafka source implementation
+
+## Genesis 8.4.0(platform-symphony)
+
+### Dependency changes
+- Updating all versions to 8.4.0-beta1 for release 
+- Bump org.gradle.test-retry from 1.5.8 to 1.5.10 
+- Bump org.jetbrains.kotlinx.kover from 0.7.6 to 0.8.3
+
+## Genesis 8.4.0(platform-reconciliation)
+
+### Features
+- Added endpoint for returning available data pipelines 
+- Added index and records received flag on record results for easier grid visualisation 
+- Add comment field in reconciliation result 
+- Added first and second record received to RECONCILIATION_RECORD_VIEW 
+- Added request endpoint for returning data source pairs in a Reconciliation 
+- Creates rule results for unmatched records 
+- Data pipeline support added in reconciliation configuration 
+- Removed unnecessary audit tables which will contain no data 
+
+### Fixes
+- Enabled backwards joins on RECONCILIATION_VIEW 
+- Ensure record received flags are set correctly 
+- Removes the bom from files if its present 
+- Added backwards join to RECONCILIATION_RECORD_RESULT_VIEW 
+- Treatment of empty space values on Record Information 
+- Updated inputParameters in data server test to not use blank string 
+
+### Dependency changes
+- Bump com.jfrog.artifactory from 5.2.3 to 5.2.4
+
+## Genesis 8.4.0(platform-notify)
+
+### Features
+- Add support for email subject prefixes 
+- Create clear all alerts button 
+
+### Fixes
+- Ensure client API sends correct gateway field on email notification messages  
+- Correct events names for modifying email dist l/294
+- Ensure no data race for attachments 
+
+### Dependency changes
+- Bump org.simplejavamail:simple-java-mail from 8.8.4 to 8.11.2
+
+## Genesis 8.4.0(platform-elektron)
+
+### Dependency changes
+- Bump com.jfrog.artifactory from 5.2.0 to 5.2.3 
+- Bump org.gradle.test-retry from 1.5.8 to 1.5.10
+
+## Genesis 8.4.0(platform-fix)
+
+No functional changes.
+
+## Genesis 8.4.0(platform-auth)
+
+### Features
+- Add user first name and last name to login ack message 15
+
+### Fixes
+- Using GenesisInjector instead of plain Guice injector 
+
+### Dependency changes
+- Bump com.unboundid:unboundid-ldapsdk from 7.0.0 to 7.0.1 b/498
+- Bump commons-codec:commons-codec from 1.17.0 to 1.17.1 
+- Bump jjwtVersion from 0.12.5 to 0.12.6 
+- Bump org.awaitility:awaitility-kotlin from 4.2.1 to 4.2.2 
+- Bump org.gradle.test-retry from 1.5.9 to 1.5.10 
+- Bump org.mockito.kotlin:mockito-kotlin from 5.3.1 to 5.4.0 
+- Bump org.passay:passay from 1.6.4 to 1.6.5
+
+## Genesis 8.4.0(platform-documents)
+
+### Dependency changes
+- Bump com.amazonaws:aws-java-sdk-s3 from 1.12.701 to 1.12.770 
+- Bump org.sonarqube from 4.4.1.3373 to 5.1.0.4882
+
+## Genesis 8.4.0(platform-market-data)
+
+### Dependency changes
+- Bump com.jfrog.artifactory from 5.2.0 to 5.2.3 
+- Bump org.gradle.test-retry from 1.5.8 to 1.5.10
+
+## Genesis 8.4.0(ref_data_app-server)
+
+### Fixes
+- Removing duplicated package definition
+
+## Genesis 8.4.0(platform-reporting)
+
+### Fixes
+- Address grid loading flows when running reports 
+
+### Dependency changes
+- Bump com.jfrog.artifactory from 5.1.13 to 5.2.4 
+- Bump org.gradle.test-retry from 1.5.8 to 1.5.10
 
 ## GSF 8.4
 

@@ -26,17 +26,49 @@ You can also construct an index entity from a view entity. `byPrimaryKey()` wi
 
 ## Building a view entity
 
-Generated ViewEntities are Kotlin data classes and can be built using the primary constructor. Just before the object is built, the object is validated to make sure all [required fields](../../../database/data-types/table-entities/) have been set. In addition to [DbEntity](../../../database/data-types/dbentity/) methods, there are some useful methods/properties, which are described below:
+Generated ViewEntities are Kotlin data classes and can be built using the primary constructor. Just before the object is built, the object is validated to make sure all [required fields](../../../database/data-types/table-entities/) have been set. 
 
-```markup
-| Name | Signature | Description |
-| --- | --- | --- |
-| byPrimaryKey | `fun byPrimaryKey(): UniqueEntityIndex<*, *>` | gets entity by primaryKey |
-| by{indexField} | `fun by{indexField}(): By{indexField}` | gets entity by index fields |
-| toString | fun toString(): String | gets the string representation of the view with sensitive fields masked (for example, passwords) |
-| toStringWithSensitivesUnmasked | `fun toStringWithSensitivesUnmasked(): String` | gets the string representation of view with sensitive fields(Ex: Password) unmasked |
-| fieldToPropertyMap | `val fieldToPropertyMap: Map<String, KProperty1<V, Any?>>` | this is a class property that maps a field name to its property |
+In addition to [DbEntity](../../../database/data-types/dbentity/) methods, there are some useful methods and properties, which are described below:
+
+### Get an entity by primary key
+ 
+ ```
+ fun byPrimaryKey(): UniqueEntityIndex<*, *>` 
+ ```
+
+ This function gets an entity by primaryKey.
+
+### Get an entity by index fields
+
 ```
+fun by{indexField}(): By{indexField}`
+```
+
+This function gets an entity by index fields.
+
+### Get a string representation of a view
+
+```
+fun toString(): String'
+```
+
+This function gets the string representation of the view, but any sensitive fields (such as passwords) are masked.
+
+### Get a string representation including sensitive fields
+
+```
+fun toStringWithSensitivesUnmasked(): String`
+```
+
+This function gets the string representation of the view. Sensitive fields (such as passwords) are **unmasked**.
+
+### Map a field name to its property
+
+```
+val fieldToPropertyMap: Map<String, KProperty1<V, Any?>>`
+```
+
+This is a class property that maps a field name to its property.
 
 ## Examples
 

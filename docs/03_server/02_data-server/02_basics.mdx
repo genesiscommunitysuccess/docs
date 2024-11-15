@@ -103,7 +103,7 @@ dataServer {
             TRADED_CURRENCY
             EXCHANGE_ID
             derivedField("IS_USD", BOOLEAN) {
-                tradedCurrency == "USD"
+                data.tradedCurrency == "USD"
             }
         }
     }

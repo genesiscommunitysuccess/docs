@@ -10,7 +10,7 @@ tags:
   - basics
 ---
 
-Apache Camel integrations are defined within your application's **jvm/&#123;app-name}-script-config/&#123;app-name}-camel.kts** file.
+Apache Camel integrations are defined within your application's **jvm/**_app-name_**-script-config/**_app-name_**-camel.kts** file.
 
 ## A simple Camel configuration
 
@@ -86,5 +86,5 @@ The parameters for `createProcessor` on the `CSVEventProcessorProvider` are:
 * `charset` is an optional parameter defaulting to UTF 8. This defines which character set the CSV is using.
 
 :::info
-If you want to ingest a CSV directly into GenesisDB rather than calling a Request Server, you might want to investigate the Genesis Data Pipeline [CSV source](../../../../server/data-pipelines/basics/#csv) first.
+If you want to ingest a CSV directly into GenesisDB rather than calling a Request Server, you might want to investigate the Genesis Data Pipeline [batch pipeline](../../../../server/data-pipelines/basics/#batch-pipeline) first.
 :::

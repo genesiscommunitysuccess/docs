@@ -1,0 +1,35 @@
+---
+title: 'How to create an OTE application'
+sidebar_label: 'Create an OTE app'
+sidebar_position: 1
+id: 'ht-ote-intro'
+---
+
+
+Our Orders & Trade Execution (OTE) application demonstrates an order and trading venue. It is centred on a Passive Order Book. 
+
+In the application, you can configure multiple assets of two different types (although you can easily extend this to others): **mark as cash** or **future settlement**. 
+
+- Cash balances are required, per person, to place an order. Once an order is matched, trades are executed and recorded. 
+- Positions are displayed by participant and by open positions.  
+- An end-of-day process enables you to trigger an end-of-day closing price and variation margin calls, based upon the close.
+
+Throughout the code, logic is commented to guide you through different parts of each file.
+
+This is a working app and you can easily use it as a baseline for creating similar types of application. You can download the code and change it to match your exact requirements.
+
+## Learning with the OTE app
+
+The OTE application is a substantial application for orders and trades, which has been created in a very short time. 
+
+In these pages, you can follow the sequence of creating the app, setting it up in Genesis Create, generating the code, and then reworking the code to add refinements in both the front and back ends. Finally, you will see how to ingest information from other sources to make it part of a broader workflow.
+
+- [Getting started](/how-to/ote-app/ht-ote-getting-started/) shows you how to use Genesis Launchpad to run Genesis Create. At the end of this, you will have generated a project and you will have built and run the app.
+- [Improving the back end](/how-to/ote-app/ht-ote-improving-back-end/) shows you how to look at the code and make adjustments that give the server extra features and enhancements - such as determining a Participant's Position and Cash Balance
+- [Improving the front end](/how-to/ote-app/ht-ote-improving-front-end/) shows you how to make adjustments to the front-end code, such as adding buttons to allow the user to run end-of-day processes manually.
+
+We hope you enjoy these exercises; we believe they give you a quick way of exploring the code, the build process and the application itself.
+
+:::tip 
+If you want to have the simplest possible overview of the architecture of an application on the Genesis Platform, take a few minutes to look at our [simple introduction](/getting-started/learn-the-basics/simple-introduction/).
+:::

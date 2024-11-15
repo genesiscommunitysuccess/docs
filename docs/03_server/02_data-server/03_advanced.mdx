@@ -59,19 +59,19 @@ query("ALL_BUYER_SELLER_TRADES", BUYER_SELLER_TRADE_VIEW){
         fields {
             // If a user belows to the buyer counterparty, "COUNTERPARTY" value will be the seller name
             // in the reverse scenario it will be the buyer name
-            derivedField("COUNTERPARTY", STRING) { row, userData ->
+            derivedField("COUNTERPARTY", STRING) {
                 when {
-                    userData?.counterpartyId == row.buyerId -> row.sellerName
-                    userData?.counterpartyId == row.sellerId -> row.buyerName
+                    enriched?.counterpartyId == data.buyerId -> data.sellerName
+                    enriched?.counterpartyId == data.sellerId -> data.buyerName
                     else -> ""
                 }
             }
             // If a user belongs to the buyer counterparty, "DIRECTION" will be "BUY"
             // in the reverse scenario it will be "SELL"
-            derivedField("DIRECTION", STRING) { row, userData ->
+            derivedField("DIRECTION", STRING) {
                 when {
-                    userData?.counterpartyId == row.buyerId -> "BUY"
-                    userData?.counterpartyId == row.sellerId -> "SELL"
+                    enriched?.counterpartyId == data.buyerId -> "BUY"
+                    enriched?.counterpartyId == data.sellerId -> "SELL"
                     else -> ""
                 }
             }

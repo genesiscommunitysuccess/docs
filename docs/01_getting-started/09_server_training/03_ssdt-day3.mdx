@@ -195,8 +195,8 @@ To do that, create a table *FAVOURITE_TRADE* with the fields TRADE_ID and USER_N
 :::tip
 Inside the enrich block, after the join, the derived field definition should look like this
 ```kotlin
-derivedField("IS_FAVOURITE", BOOLEAN) { row, favourite ->
-    row.tradeId == favourite?.tradeId
+derivedField("IS_FAVOURITE", BOOLEAN) {
+    data.tradeId == enriched?.tradeId
 }
 ```
 :::

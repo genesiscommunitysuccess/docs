@@ -91,15 +91,45 @@ TradeAudit = trade.toAuditEntity(
 
 
 ## Some of the most useful methods
-```markup
-| Name | Signature | Description |
-| --- | --- | --- |
-| byPrimaryKey | `fun byPrimaryKey(): UniqueEntityIndex<*, *>` | gets entity by primaryKey |
-| by{indexField} | `fun by{indexField}(): By{indexField}` | gets entity by index fields |
-| toString | fun toString(): String | gets the string representation of the view with sensitive fields masked (for example, passwords) |
-| toStringWithSensitivesUnmasked | `fun toStringWithSensitivesUnmasked(): String` | gets the string representation of view with sensitive fields(Ex: Password) unmasked |
-| set | `operator fun <T> set(field: TableField<*, T>, value: T?)` | to set table field with provided value |
+
+### Get an entity by primary key
+ 
 ```
+fun byPrimaryKey(): UniqueEntityIndex<*, *>` 
+```
+
+This function gets an entity by primaryKey.
+
+### Get an entity by index fields
+
+```
+fun by{indexField}(): By{indexField}`
+```
+
+This function gets an entity by index fields.
+
+### Get a string representation of a view
+
+```
+fun toString(): String'
+```
+
+This function gets the string representation of the view, but any sensitive fields (such as passwords) are masked.
+
+### Get a string representation including sensitive fields
+
+```
+fun toStringWithSensitivesUnmasked(): String`
+```
+
+This function gets the string representation of the view. Sensitive fields (such as passwords) are **unmasked**.
+
+### Set a table field to a value
+
+```
+operator fun <T> set(field: TableField<*, T>, value: T?)
+```
+This sets a table field to the value provided.
 
 ## Examples
 
