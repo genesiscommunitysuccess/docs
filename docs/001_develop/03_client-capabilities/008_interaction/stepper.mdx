@@ -34,7 +34,7 @@ The order of the rapid-stepper-tab corresponds to the order of the rapid-stepper
 
     Declaration
     ```html
-    <rapid-stepper @submit=${() => alert('Form Submitted')}>
+    <rapid-stepper>
       <rapid-stepper-tab>Step 1</rapid-stepper-tab>
       <rapid-stepper-tab>Step 2</rapid-stepper-tab>
       <rapid-stepper-tab>Step 3</rapid-stepper-tab>
@@ -84,7 +84,21 @@ The order of the rapid-stepper-tab corresponds to the order of the rapid-stepper
 
     Declaration
     ```html
-    <rapid-stepper></rapid-stepper>
+    <rapid-stepper>
+      <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+      <rapid-stepper-tab-panel>
+        Tab Panel 1
+      </rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>
+        Tab Panel 2
+      </rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>
+        Tab Panel 3
+      </rapid-stepper-tab-panel>
+    </rapid-stepper>
+
     ```
     Usage
     ```typescript
@@ -93,7 +107,20 @@ The order of the rapid-stepper-tab corresponds to the order of the rapid-stepper
         console.log('Form submitted');
       };
       return (
-        <rapid-stepper onSubmit={handleSubmit}></rapid-stepper>
+        <rapid-stepper onSubmit={handleSubmit}>
+            <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+            <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+            <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+            <rapid-stepper-tab-panel>
+                Tab Panel 1
+            </rapid-stepper-tab-panel>
+            <rapid-stepper-tab-panel>
+                Tab Panel 2
+            </rapid-stepper-tab-panel>
+            <rapid-stepper-tab-panel>
+                Tab Panel 3
+            </rapid-stepper-tab-panel>
+        </rapid-stepper>
       );
     }
   ```
@@ -102,7 +129,20 @@ The order of the rapid-stepper-tab corresponds to the order of the rapid-stepper
 
   Declaration
   ```html
-  <rapid-stepper></rapid-stepper>
+    <rapid-stepper>
+      <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+      <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+      <rapid-stepper-tab-panel>
+        Tab Panel 1
+      </rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>
+        Tab Panel 2
+      </rapid-stepper-tab-panel>
+      <rapid-stepper-tab-panel>
+        Tab Panel 3
+      </rapid-stepper-tab-panel>
+    </rapid-stepper>
   ```
 
   Usage
@@ -112,10 +152,23 @@ The order of the rapid-stepper-tab corresponds to the order of the rapid-stepper
   @Component({
     selector: 'my-root',
     template: `
-            <rapid-stepper
-              (submit)="handleSubmit($event)"
-            ></rapid-stepper>
-          `,
+        <rapid-stepper
+            (submit)="handleSubmit($event)"
+        >
+        <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+        <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+        <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+        <rapid-stepper-tab-panel>
+            Tab Panel 1
+        </rapid-stepper-tab-panel>
+        <rapid-stepper-tab-panel>
+            Tab Panel 2
+        </rapid-stepper-tab-panel>
+        <rapid-stepper-tab-panel>
+            Tab Panel 3
+        </rapid-stepper-tab-panel>
+        </rapid-stepper>
+        `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule],
@@ -133,10 +186,79 @@ The order of the rapid-stepper-tab corresponds to the order of the rapid-stepper
 
 Property and attribute binding examples for Genesis Component syntax.
 
-| Name     | Type      | Description                                                                      | Examples |
-|----------|-----------|----------------------------------------------------------------------------------|----------|
-| hide-submit-button | `boolean` | Hides or shows the submit button | `<rapid-stepper hide-submit-button>` |
-| orientation | `string` | There are two stepper orientations to choose from: vertical and horizontal. | `<rapid-stepper orientation="horizontal">` |
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Examples</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>hide-submit-button</td>
+            <td><code>boolean</code></td>
+            <td>Hides or shows the submit button</td>
+<td>
+
+```typescript
+<rapid-stepper hide-submit-button>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>orientation</td>
+            <td><code>string</code></td>
+            <td>There are two stepper orientations to choose from: vertical and horizontal.</td>
+<td>
+
+```typescript
+<rapid-stepper orientation="horizontal">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Properties
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Examples</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>validation</td>
+<td>
+
+```typescript
+Array<{isValid: (x: this) => boolean}>
+```
+
+</td>
+<td>If set, the predicate function defined at index `x` is executed to check whether step `x` is valid when trying to move onto the subsequent step.
+If the predicate returns false the stepper will not move to the next step. See [this example](#validation).</td>
+<td>
+
+```typescript
+<rapid-stepper :validation=${(x) => x.validationConfig}>
+```
+
+</td>
+</tr>
+</tbody>
+</table>
+
 
 ### Slots
 
@@ -160,31 +282,54 @@ Property and attribute binding examples for Genesis Component syntax.
 
 ### Events fired
 
-| Name    | Description                                 |
-|---------|---------------------------------------------|
-| @submit | Enables you to pass the function to be performed in the last step after clicking submit. |
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@submit</td>
+            <td><code>void</code></td>
+            <td>Enables you to pass the function to be performed in the last step after clicking submit.</td>
+<td>
+
+```typescript
+<rapid-stepper @submit="${(x) => x.submitHandler()}">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 
 ### Events listened to
 This component doesn't listen to any events.
 
 
-### Advanced concepts
-#### Validation
+## Advanced concepts
+### Validation
 
 Use the validation field to set the condition for when the stepper permits the user to move forward.
 
 You define the validation attribute as follows:
 
-```html title="Stepper"
+```typescript title="Stepper"
+const template = html`
   <rapid-stepper
     :validation=${(x) => [
-  {
-    isValid: () => x.valid === '123' && x.valid2 === 'abc' && x.valid3 === 'test',
-  },
-  { isValid: () => x.valid4 === 'abc' },
-  { isValid: () => x.valid5 === 'finish' },
-]}
+        {
+            isValid: () => x.valid === '123' && x.valid2 === 'abc' && x.valid3 === 'test',
+        },
+        { isValid: () => x.valid4 === 'abc' },
+        { isValid: () => x.valid5 === 'finish' },
+    ]}
     @submit=${() => alert('You completed form')}
   >
     <rapid-stepper-tab>Step 1</rapid-stepper-tab>
@@ -214,6 +359,7 @@ You define the validation attribute as follows:
       </rapid-text-field>
     </rapid-stepper-tab-panel>
   </rapid-stepper>
+`;
 ```
 The index of each array element is related to the corresponding tab position. Index number 1 is related to the first tab of the stepper, index number 2 is related to the second tab of the stepper, and so on.
 
