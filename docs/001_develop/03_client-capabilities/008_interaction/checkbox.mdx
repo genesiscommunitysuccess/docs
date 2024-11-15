@@ -24,8 +24,6 @@ import TabItem from '@theme/TabItem';
 
 # Checkbox
 
-A form-connected implementation of a [checkbox](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) input.
-
 Use cases:
 * Multi-selection forms
 * Filtering
@@ -130,31 +128,70 @@ export class AppComponent {
 
 ## DOM API
 
-Property and attribute binding examples for Genesis Component syntax.
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
 
-| Attribute/Property | Type | Description |
-|---|---|---|
-|checked|`boolean`|The boolean value of whether the checkbox is checked. |
-|readonly|`boolean`|Configures the component so that the user cannot alter the state via the web browser.|
-|disabled|`boolean`|Makes the component visually opaque, and configures it so that the user cannot alter the state via the web browser.|
-|form|`string`|Associates this component with a form. The Form id must be passed. If no Id is passed, then it will be associated with the ancestor form.|
+### Attributes
 
-### Examples (closing tag omitted):
+<table>
+  <tr>
+    <th>Attribute</th>
+    <th>Type</th>
+    <th>Use</th>
+    <th>Example</th>
+  </tr>
+  <tr>
+    <td>checked</td>
+    <td><code>boolean</code></td>
+    <td>The boolean value of whether the checkbox is checked. Use the `sync` utility to allow for data from from the template back to the model.</td>
+<td>
 
-Attributes:
-```typescript
-<rapid-checkbox checked>
-<rapid-checkbox readonly>
-<rapid-checkbox disabled>
-<rapid-checkbox form="myForm">
-```
-Properties:
 ```typescript
 <rapid-checkbox ?checked="${sync((x) => x.isSelected, 'boolean')}">
-<rapid-checkbox ?readonly="${(x) => x.readOnly}">
-<rapid-checkbox ?disabled="${(x) => x.disabled}">
-<rapid-checkbox :form="${(x) => x.myForm}">
 ```
+
+</td>
+  </tr>
+  <tr>
+    <td>readonly</td>
+    <td><code>boolean</code></td>
+    <td>Configures the component so the user cannot alter the state via the web browser.</td>
+<td>
+
+```typescript
+<rapid-checkbox readonly>
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>disabled</td>
+    <td><code>boolean</code></td>
+    <td>Same functionality as <code>readonly</code>, and additionally adds visual opacity to the component.</td>
+<td>
+
+```typescript
+<rapid-checkbox disabled>
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>form</td>
+    <td><code>string</code></td>
+    <td>Associates this component to a form. Form id needs to be passed. If no Id informed, then it will be associated with the ancestor form.</td>
+<td>
+
+```typescript
+<rapid-checkbox form="myForm">
+```
+
+</td>
+  </tr>
+</table>
+
+### Properties
+
+This component doesn't have any properties which are not also controlled via attributes.
 
 ### Slots
 
@@ -162,7 +199,7 @@ Properties:
 |---|---|
 | Default | The default slot for the label. |
 | checked-indicator | The checked-state indicator. |
-| indeterminate-indicator | The indeterminate (non-checked) indicator. |
+| indicator-indicator | The indeterminate (non-checked) indicator. |
 
 ### Parts
 
@@ -171,12 +208,38 @@ Properties:
 | control | The element representing the visual checkbox control.|
 | label | The label text.|
 
-### Events fired
+### Fired Events
 
-| Event | Use | Example |
-|---|---|---|
-| change | Emits a custom change event when the checked state changes. Access the value on the event via `.target.checked`.|`<rapid-checkbox @change="${(x) => x.myChangeHandler(event)}">`|
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>change</td>
+            <td><code>boolean</code></td>
+            <td>Emits a custom change event when the checked state changes. Access the value on the event via <code>.target.checked</code>.</td>
+<td>
 
-### Events listened to
+```typescript
+<rapid-checkbox @change="${(x) => x.myChangeHandler(event)}">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Listened Events
 
 This component doesn't listen to any events.
+
+## Info
+
+### Further details
+This component is an implementation of an HTML [checkbox](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) element.
