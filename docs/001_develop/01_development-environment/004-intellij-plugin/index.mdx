@@ -298,12 +298,12 @@ Note that we are using [GENESIS_ROUTER](../../../server/configuring-runtime/gene
 
 Depending on your edition and version of IntelliJ, the following NPM tasks will run:
 
-* On the Ultimate Edition - the plugin uses the built-in NPM run configuration
+* On the Ultimate Edition - the plugin uses the built-in NPM run configuration.
 * On the Community Edition - the plugin uses the built-in shell run configuration to run NPM when available:
     - MacOs - any version
     - Windows - IntelliJ version 2023.3 and after
     - Windows - any IntelliJ version, if the "SHELL" env variable is set to 'powershell.exe'
-* Else it will run the front end from the Build screen
+* Otherwise,  it will run the front end from the Build screen.
 
 #### NPM run configurations
 
@@ -318,9 +318,10 @@ You can trigger these configurations either from the Genesis Tool Window or dire
 #### Shell run configuration
 
 On community editions of IntelliJ, this is the preferred option. With this run configuration, the plugin uses whichever node interpreter is available on the terminal.
+
 It creates a `UI-script` and an `npm bootstrap` run configuration.
 
-You can trigger both of these from either the Genesis Tool Window or  directly from IntelliJ.
+You can trigger both of these from either the Genesis Tool Window or directly from IntelliJ.
 
 ![Shell Run Config](/img/intellij-plugin/shell-runconfig.png)
 
@@ -334,13 +335,13 @@ If this does not resolve the issue, use the build screen starter by selecting `U
 
 #### Starting from the build screen
 
-If the script run config is not available, or if the legacy ui starter is selected, the UI starter is shown in the build screen. This can only be started from the Genesis Tool Window.
+If the script run config is not available, or if the legacy UI starter is selected, the UI starter is shown in the build screen. This can only be started from the Genesis Tool Window.
 
 ![UI Launcher in build screen](/img/intellij-plugin/build-screen-ui.png)
 
 ### The mon window
 
-The `Mon` tab mirrors the [mon](/operations/commands/server-commands/?_highlight=mon#mon) command on the server.
+The `Mon` tab mirrors the [`mon`](/operations/commands/server-commands/?_highlight=mon#mon) command on the server.
 
 From here you are able to:
 
@@ -371,7 +372,7 @@ Disabled columns persist to the project settings, so they stay disabled between 
 
 ### OpenAPI
 
-The plugin can contact the router to provide [an openapi spec](/server/integration/open-api). To do this, the plugin asks for a username and password to log in to your application. It then requests the openapi spec and shows a dialog to save it into your project.
+The plugin can contact the Genesis Router to provide [an openapi spec](/server/integration/open-api). To do this, the plugin asks for a username and password to log in to your application. It then requests the openapi spec and shows a dialog to save it into your project.
 
 To start this process, click on the `Genesis` menu and then on `Generate OpenApi Spec`:
 
@@ -381,11 +382,11 @@ This triggers a username and password dialog.
 
 ![Open Api Dialog](/img/intellij-plugin/openapi-dialog.png)
 
-After supplying the details, you are asked to save the spec, and the app should open automatically.
+After supplying the details, you are asked to save the spec. The app should open automatically.
 
 ### Using the terminal
 
-The Genesis Plugin integrates directly into IntelliJ's terminal. Most commands supported on the server can be run straight from there. Supported commands are highlighted in green.
+The Genesis Plugin integrates directly within IntelliJ's terminal. Most commands supported on the server can be run straight from there. Supported commands are highlighted in green.
 
 You can run these using `CTRL`+ `Enter` on Windows, or `Command` + `Enter` on MAC.
 
@@ -411,12 +412,12 @@ If the commands are not highlighted and you are not able to run them, check your
 
 These are some of the commonly used commands in the plugin:
 
-* [DbMon](/operations/commands/dbmon/) - the Genesis Database client
-* [DumpIt](/operations/commands/server-commands/#dumpit) - export CSV data from the database
-* [SendIt](/operations/commands/server-commands/#sendit) - send CSV data to the database
-* [LogLevel](/operations/commands/server-commands/#loglevel) - dynamically adjust log levels of running processes
+* [`DbMon`](/operations/commands/dbmon/) - the Genesis Database client
+* [`DumpIt`](/operations/commands/server-commands/#dumpit) - export CSV data from the database
+* [`SendIt`](/operations/commands/server-commands/#sendit) - send CSV data to the database
+* [`LogLevel`](/operations/commands/server-commands/#loglevel) - dynamically adjust log levels of running processes
 
-There is  a [full list of Genesis commands](/operations/commands/server-commands/) in our documentation.
+There is a [full list of Genesis commands](/operations/commands/server-commands/) in our documentation.
 
 ### Resource daemon
 
@@ -434,7 +435,7 @@ If process information is not showing in the `mon` window, you can start the dae
 
 However, regardless of this setting, the resource daemon will be started whenever you start any back-end service.
 
-## Keeping your local Genesis Home in sync
+## Keeping your local Genesis Home synchronised
 
 Every Genesis application, whether deployed to a server or running locally, needs a `home` folder. This folder is the installation location; it includes all dependencies and configuration needed to run the application.
 
