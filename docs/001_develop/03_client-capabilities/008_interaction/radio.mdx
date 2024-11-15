@@ -20,7 +20,7 @@ import TabItem from '@theme/TabItem';
 # Radio
 
 Use cases:
-* Selecting multiple options in the same input
+* Selecting exactly one from multiple options in the same input
 
 ## Example
 
@@ -121,44 +121,55 @@ Property and attribute binding examples for Genesis Component syntax.
       <td><code>boolean</code></td>
       <td>Sets or retrieves the current state of the component. **Default: `false`**</td>
       <td>
-        ```typescript
-        <rapid-radio checked>
-        ```
+
+```typescript
+<rapid-radio checked>
+```
+
       </td>
     </tr>
     <tr>
       <td>disabled</td>
       <td><code>boolean</code></td>
       <td>Similar to `readonly`, but with a blur on the component</td>
-      <td>
-        ```typescript
-        <rapid-radio disabled>
-          ```
-      </td>
+<td>
+
+```typescript
+<rapid-radio disabled>
+```
+
+</td>
     </tr>
     <tr>
       <td>value</td>
       <td><code>string</code></td>
       <td>Sets a value for the component. Not visible to the user</td>
-      <td>
-        ```typescript
-        <rapid-radio
-          :value=${sync((x) => x.radioValue)}>
-          ```
-      </td>
+<td>
+
+```typescript
+<rapid-radio
+value=${sync((x) => x.radioValue)}>
+```
+
+</td>
     </tr>
     <tr>
       <td>readonly</td>
       <td><code>boolean</code></td>
       <td>If true, the user cannot change the value of this checkbox (which is greyed out)</td>
-      <td>
-        ```typescript
-        <rapid-radio readonly>
-        ```
-      </td>
+
+<td>
+```typescript
+<rapid-radio readonly>
+```
+</td>
+
     </tr>
   </tbody>
 </table>
+
+### Properties
+This component doesn't have any properties which are not also controlled via attributes.
 
 ### Slots
 
