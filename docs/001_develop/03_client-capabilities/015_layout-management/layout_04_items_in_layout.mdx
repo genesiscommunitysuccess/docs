@@ -37,7 +37,7 @@ sidebar_position: 15
 
 ## Contained elements
 
-This section concerns the behaviour of elements inside the layout. If you are using simple elements or Genesis-supplied elements, this is less of a concern; but if you are building complex custom components yourself, you need this information.
+This section concerns the behaviour of elements inside the layout. If you are using simple elements or Genesis-supplied elements, this is less of a concern; but if you are building complex custom components yourself you need this information.
 
 ### Element lifecycle (gating)
 
@@ -69,6 +69,8 @@ You do not need to de-register a component that is registered in the layout whil
 
 - Once the component is actually initialised in the layout on the DOM, then `shouldRunConnect` will be true, and you can then perform all the required initialisation.
 
+See more info [here](../client-layout-management-ptifalls/#resource-intensive-component-resetting-in-layout).
+
 ### Managing the state
 
 Items inside the layout can save and restore the state using various methods, but it can become difficult to manage the state if you're adding the same item to the layout multiple times (multiple instances of the same web component).
@@ -92,7 +94,7 @@ This is the case both when items are added with `.addItem()`, and when they are 
 There are certain limitations to this function, especially when using custom elements with the shadow DOM. <!-- TODO link -->.
 
 :::tip
-As a general rule, if you need to have elements with FAST bindings inside the layout, wrap them in custom elements.
+As a general rule, if you need to have elements with Genesis bindings inside the layout, wrap them in custom elements.
 :::
 
 If you are writing your own custom element that needs to work inside the layout, follow these steps.

@@ -226,53 +226,6 @@ of the panel will be wiped as duplicates are added.
 
 To work around this, you would use directives inside custom web components inside the layout.
 
-### Binding events inline in the declarative API
-The following example is invalid:
-
-```html
-<rapid-layout>
-		<rapid-layout-item>
-			<input type="checkbox" @change=${(x,c) => x.doSomething()} />
-		</rapid-layout-item>
-</rapid-layout>
-```
-
-Because of a limitation in the [cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode), event listeners are *not* copied.
-This process is part of the process of adding an item to the layout, using both the declarative HTML and JavaScript APIs. So while you will see
-a checkbox on the screen as part of the layout, the event listener will *not* fire when you `change` the checkbox. This applies to all items and events.
-
-The idiomatic way of implementing this event binding is to create a custom element and attach the event internally.
-
-```typescript
-// template
-export const exampleComponentTemplate = html<ExampleComponent>`
-  <template>
-    <input type="checkbox" ${ref('checkbox')} @change=${(x, c) => x.doSomething()} />
-  </template>
-`;
-
-// model
-@customElement({
-  name: 'example-component',
-  template: exampleComponentTemplate,
-})
-export class ExampleComponent extends GenesisElement {
-  checkbox: Checkbox;
-	doSomething() { } // do something important
-}
-```
-
-You can then use the custom component in the layout:
-
-```html
-<rapid-layout>
-		<rapid-layout-item>
-			<example-component><example-component/>
-		</rapid-layout-item>
-</rapid-layout>
-```
-
-See [here](#custom-components-to-handle-bindings-and-event-listeners) for a thorough technical explanation.
 
 ### New layout item not displaying
 Say you have the following layout, [the simple example](#simple-example), with autosave enabled.
@@ -331,7 +284,7 @@ export class MockConnected extends GenesisElement {
 }
 ```
 
-As explained in the [lifecycle info section](#element-lifecycle-gating), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initialising a potentially heavy resource.
+As explained in the [lifecycle info section](../client-layout-management-items/#resource-intensive-components), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initialising a potentially heavy resource.
 
 Use `LifecycleMixin` to access properties on the class, which can be used to run lifecycle functionality more thoughtfully. In the following example, the resource-intensive tasks are called conditionally - only when needed.
 
