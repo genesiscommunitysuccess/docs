@@ -1,15 +1,15 @@
 ---
-title: 'Communications meta'
+title: 'Process communications'
 sidebar_label: 'Communications meta'
 id: server-communications-meta
-keywords: [communications, message, messaging, messages, meta, metdata, input]
+keywords: [communications, message, messaging, messages, meta, metadata, input]
 tags:
   - communications
   - message
   - messaging
   - messages
   - meta
-  - metdata
+  - metadata
   - input
 sidebar_position: 15
 ---
@@ -17,7 +17,7 @@ sidebar_position: 15
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This section gives an overview of the message formats and defining message metadata in the Genesis application platform. 
+This section gives details around client to server and server to server communications. This includes message formats and defining message metadata in the Genesis application platform, as well as how to set up encrypted process communication.
 
 ## GenesisSet
 
@@ -170,7 +170,7 @@ GenesisSet(fields: MutableMap\<String, Any?\>) | Creates a GenesisSet object usi
 
 ## Type-safe messages
 
-The Genesis application platform uses type-safe messages to perform message serialisation and deserialisation. In addition, it automatically extracts relevant metadata to expose this to the front end in the form of a [Json Schema](https://json-schema.org/) definition that is compliant with the 2019-09 specification. These messages will be validated automatically in the back end, based on their definition.
+The Genesis application platform uses type-safe messages to perform message serialization and deserialization. In addition, it automatically extracts relevant metadata to expose this to the front end in the form of a [Json Schema](https://json-schema.org/) definition that is compliant with the 2019-09 specification. These messages will be validated automatically in the back end, based on their definition.
 
 These type-safe messages are most commonly used in Request Servers, GPAL Event Handlers and Event Handlers that have been [implemented as a set of classes](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api).
 
@@ -235,9 +235,9 @@ data class SetLogLevel(
 }
 ```
 
-### Deserialised fields
+### Deserialized fields
 
-There is a significant disadvantage in using type-safe messages with support for default values; once the message has been deserialised, you don't know what the original payload contained.
+There is a significant disadvantage in using type-safe messages with support for default values; once the message has been deserialized, you don't know what the original payload contained.
 
 Following the previous example with the `SetLogLevel` data class, it is possible to receive a message with just a `processName` value; you will still have default values for all the other fields because of the automatic defaults. This causes problems where you have business logic where those fields were part of the original payload.
 
@@ -310,7 +310,7 @@ sealed class EventSetLogLevelReply : Outbound() {
 }
 ```
 
-These custom reply types allow a predetermined number of customised replies for a single `eventHandler` codeblock, with their type information exposed in the metadata system. They need to be handled carefully, as the internal error-handling mechanism for the Event Handler is only able to handle `EventReply` messages. Therefore, non-captured exceptions and errors will break the type-safety guarantees of the reply.
+These custom reply types allow a predetermined number of customized replies for a single `eventHandler` codeblock, with their type information exposed in the metadata system. They need to be handled carefully, as the internal error-handling mechanism for the Event Handler is only able to handle `EventReply` messages. Therefore, non-captured exceptions and errors will break the type-safety guarantees of the reply.
 
 :::warning
 IMPORTANT! The success message should always end in `Ack` in order for the internal `eventHandler` logic to handle validation correctly.
@@ -389,7 +389,7 @@ These are the main types of Nack (error or warning) message. Most of them are se
 
 #### Error codes
 
-Below is the list of standard error codes, along with their HTTP Status code. The framework implementation is standardised to provide error code `CODE` as Enum represented by `ErrorCode` class, but it also provides the flexibility to include any error code.
+Below is the list of standard error codes, along with their HTTP Status code. The framework implementation is standardized to provide error code `CODE` as Enum represented by `ErrorCode` class, but it also provides the flexibility to include any error code.
 
 ###### ErrorCode class definition
 
@@ -531,3 +531,159 @@ The `UniqueItems` annotation will generate a Json schema `uniqueItems` definitio
 | DoubleMax | Property | max: Double | Defines the maximum value expected for a Double property
 | BigDecimalMin | Property | min: String | Defines the minimum value expected for a BigDecimal property
 | BigDecimalMax | Property | max: String | Defines the maximum value expected for a BigDecimal property
+
+## SSL/TLS Support
+
+Genesis supports SSL / TLS for client->server and process->process communications where needed.
+
+### Generating a self-signed keystore and respective certificate (optional)
+
+This step is only required if you are using a self-signed certificate due to the absence of one issued by a proper trusted root authority.
+
+```bash
+$ keytool -genkey -keyalg RSA -keysize 2048 -alias selfsigned -storepass Password1233 -keystore keystore.jks -ext SAN=dns:genesisserv1,dns:genesisserv1.ad.genesis.global,dns:genesisserv2,dns:genesisserv2.ad.genesis.global,dns:genesisserv3,dns:genesisserv3.ad.genesis.global,dns:genesisserv4,dns:genesisserv4.ad.genesis.global,ip:193.144.16.43
+
+What is your first and last name?
+    [Unknown]:  Fred Bloggs
+
+What is the name of your organizational unit?
+    [Unknown]:  IT
+
+What is the name of your organization?
+    [Unknown]:  Genesis Global Technology Ltd
+
+What is the name of your City or Locality?
+    [Unknown]:  London
+
+What is the name of your State or Province?
+    [Unknown]:  Greater London
+
+What is the two-letter country code for this unit?
+    [Unknown]:  GB
+
+Is CN=Fred Bloggs, OU=IT, O=Genesis Global Technology Ltd, L=London, ST=Greater London, C=GB correct?
+    [no]:  yes
+
+Enter key password for <selfsigned>
+    (RETURN if same as keystore password):
+```
+
+Assuming no problems with privileges, you will now have a certificate called "selfsigned" with a private key using the same password as the keystore password e.g. Password123.
+
+In our example, this certificate can be found at: `/home/exmon/keystore.jks`
+
+Please note, however, that this certificate should be stored in another directory outside the application.
+
+The keystore (.jks) is, in a way, the private key to be used in the two-way authentication in the SSL protocol. As such, you need to use it to generate the certificate that has to be installed by the target computers, or to be loaded by the processes that the application intends to communicate with.
+
+```bash
+$ keytool -export -alias mykey -file certificate.crt -keystore keystore.jks
+```
+
+### Installing TLS certificate in different environments
+
+#### Linux
+
+This varies according to the distribution being used. In Ubuntu:
+
+```bash
+$ cp certificate.crt /usr/local/share/ca-certificates/
+
+$ sudo update-ca-certificates
+```
+
+#### Windows
+
+Right-click on certificate.crt and select 'Install Certificate'. On 'Place all certificates in the following store', select 'Trusted Root Certification Authorities'.
+
+## Securing Genesis processes
+
+### Setting the process to communication via SSL/TLS
+
+All Genesis modules are defined inside the service definition files:
+
+Syntax:
+
+```bash
+~/run/<product>/cfg/<product>-service-definitions.xml
+```
+
+Example:
+
+```bash
+~/run/exmon/cfg/exmon-service-definitions.xml
+```
+
+To enable a process to be set to communicate via SSL, set the `secure` element to `true`.
+
+For example:
+
+```xml
+<configuration>
+    <service host="localhost" name="EXMON_DATASERVER" port="8911" secure="true"/>
+</configuration>
+```
+
+### Setting the TLS settings for all processes by default
+
+Open the **genesis-system-definitions.xml** file and edit the values for `DefaultKeystoreLocation`, `DefaultKeystoreLocation` and `DefaultCertificate`.
+
+For example:
+
+```xml
+<!-- Required if the processes are to communicate through SSL -->
+<Item name="DefaultKeystoreLocation" value="/home/exmon/keystore.jks" />
+<Item name="DefaultKeystorePassword" value="Password123" />
+<Item name="DefaultCertificate" value="/home/exmon/certificate.crt" />
+```
+
+These will be used by all processes to communicate with encrypted processes or to accept connections if they are encrypted themselves.
+
+### Setting the TLS settings for each individual process
+
+:::tip
+You can have different processes secured via different certificates, if required.
+:::
+
+This setting is used if the develop wants to override the defaults established above for a specific process.
+
+Open the configuration file for the process (as defined in `<product>-processes.xml`). Make sure it has the following settings:-
+
+```xml
+<authManager>
+    <settings>
+        <messaging>
+            <keyStoreLocation>
+                /home/poc/keystore.jks
+            </keyStoreLocation>
+            <keyStorePassword>
+                Password123
+            </keyStorePassword>
+        </messaging>
+    </settings>
+</authManager>
+```
+
+Once the files have been saved, run **genesisInstall**. When the processes starts again, it will be secure.
+
+### GUI
+
+To enable the GUI to connect securely, edit the **%ProgramData%\\Genesis\\exmon\\Rel\\Config\\PrimaryServiceConfig.xml** setting `encrypted` to `true`.
+
+#### Example
+
+```xml
+<?xml version="1.0"?>
+<primary_service xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <encrypted>true</encrypted>
+    <hosts>
+    <host name="genesisserv4.ad.genesis.global" port="8001" />
+    </hosts>
+</primary_service>
+```
+
+Note: With encryption, if you are using a self-signed certificate, you must install the certificate.crt in the target machine's operating system as a trusted root CA.
+
+### Web front-end
+
+Install the `certificate.crt` in the target machine's operating system as a trusted root CA. That is all you need to do.
