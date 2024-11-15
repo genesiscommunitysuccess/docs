@@ -15,76 +15,8 @@ import TabItem from '@theme/TabItem';
 
 Here, we shall look into the back-end code and make some useful changes to increase the usability and range of the app.
 
-## Multiple field keys
-For some tables, it makes sense to use a key based on multiple fields rather than one, as we may want to store multiple values for specific keys. 
+## Multi-directional trade calculations
 
-For example, in the `FX_RATE` table, we would like to index on both `TARGET_CURRENCY` and `SOURCE_CURRENCY`. 
-
-Let's add these now.
-
-1. Go to the file **ALM\server\ALM-app\src\main\genesis\cfg\ALM-tables-dictionary.kts**. Here, we can change the table definitions for two tables:
-
-- `POSITION`
-- `FX_RATE`
-
-2. Find the `primaryKey` line for the POSITION table definition. Update it as follows:
-
-```kotlin
-  table(name = "POSITION", id = 11_004) {
-    field("AMOUNT", DOUBLE).notNull()
-    field("CURRENCY", STRING).notNull()
-    field("SETTLEMENT_DATE", DATE).notNull()
-
-    primaryKey("CURRENCY", "SETTLEMENT_DATE")
-
-  }
-```
-
-3. Find the `primaryKey` line for the FX_RATE table definition. Update it as follows:
-
-```kotlin
-  table(name = "FX_RATE", id = 11_007) {
-    field("RATE", DOUBLE).notNull()
-    field("SOURCE_CURRENCY", STRING).notNull()
-    field("TARGET_CURRENCY", STRING).notNull()
-
-    primaryKey("SOURCE_CURRENCY", "TARGET_CURRENCY")
-
-  }
-```
-
-Having made these changes, we also need to update the events in the Event Handler file, because these will still be calling the old primary keys.
-
-1. Go to the file **ALM\server\ALM-app\src\main\genesis\scripts\ALM-event-handler.kts**.
-
-
-2. Update the primary key for the POSITION_DELETE event to:
-
-```kotlin
-  eventHandler<Position.ByCurrencySettlementDate>("POSITION_DELETE", transactional = true) {
-    onCommit { event ->
-      val details = event.details
-      entityDb.delete(details)
-      ack()
-    }
-  }
-```
-
-3. Update the primary key for the FX_RATE_DELETE event to:
-
-```kotlin
-  eventHandler<FxRate.BySourceCurrencyTargetCurrency>("FX_RATE_DELETE", transactional = true) {
-    onCommit { event ->
-      val details = event.details
-      entityDb.delete(details)
-      ack()
-    }
-  }
-```
-
-It's worth then rebuilding the project at this point, as we'll be using these new `primaryKeys` in later steps.
-
-## Multi-directional Trade Calculations
 If you have entered some trades within the default application, you may have noticed that the position calculation keeps a running total, but this does not consider the `SIDE` for the trade. 
 
 Let’s add some pro-code to get the position calculation to include the direction of the trade. 
@@ -122,7 +54,7 @@ This consolidator is consolidating `FX_TRADE` records into the `POSITION` table.
 
 To do this, it is listens for all the changes in `FX_TRADE` records, then updates the `POSITION` table by summing the `NOTIONAL` field into the `AMOUNT` field. 
 
-As the `groupBy` block indicates, this consolidation uses only using the source currency from the`FX_TRADE` table. As a result, we only have a single row inserted or updated in the `POSITION` table for each `FX_TRADE`.
+As the `groupBy` block indicates, this consolidation uses only the source currency from the`FX_TRADE` table. As a result, we only have a single row inserted or updated in the `POSITION` table for each `FX_TRADE`.
 
 If we want to have `POSITION` update/insert for source and target currency as a result of single trade, we need to have two consolidation blocks. 
 
