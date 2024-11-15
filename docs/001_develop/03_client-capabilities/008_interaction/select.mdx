@@ -1,0 +1,307 @@
+---
+title: 'Select'
+sidebar_label: 'Select'
+id: client-interaction-select
+keywords: [interaction, interactive, select, form, submit, data]
+tags:
+- interaction
+- interactive
+- select
+- form
+- submit
+- data
+sidebar_position: 8
+---
+
+import SelectDemo from '../../../../examples/ui/client-capabilities/interaction/select.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Select
+
+Use cases:
+* Selecting from a list of options
+* Selecting multiple options
+* Sorting
+* Filtering
+
+## Example
+
+<SelectDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-select>
+      <rapid-option value="s">Small</rapid-option>
+      <rapid-option value="l">Large</rapid-option>
+    </rapid-select>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-select @change=${x => x.selectChanged()}>
+          <rapid-option value="s">Small</rapid-option>
+          <rapid-option value="l">Large</rapid-option>
+        </rapid-select>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      selectChanged() {
+        alert('Select Changed')
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+  <rapid-select>
+    <rapid-option value="s">Small</rapid-option>
+    <rapid-option value="l">Large</rapid-option>
+  </rapid-select>
+  ```
+  Usage
+  ```typescript
+  export function MyComponent() {
+    const handleSelectChanged = (event) => {
+      console.log('Select changed')
+    };
+
+    return (
+      <rapid-select onChange={handleSelectChanged}>
+        <rapid-option value="s">Small</rapid-option>
+        <rapid-option value="l">Large</rapid-option>
+      </rapid-select>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+  <rapid-select>
+    <rapid-option value="s">Small</rapid-option>
+    <rapid-option value="l">Large</rapid-option>
+  </rapid-select>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  import { FormsModule } from '@angular/forms';
+  @Component({
+    selector: 'my-root',
+    template: `
+          <rapid-select (change)="onSelectChanged($event)">
+            <rapid-option value="s">Small</rapid-option>
+            <rapid-option value="l">Large</rapid-option>
+          </rapid-select>
+        `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule],
+  })
+  export class AppComponent {
+    onSelectChanged(event: Event) {
+      console.log('Select changed');
+    }
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## API
+
+ Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Similar to `readonly`, but with a blur on the component.</td>
+<td>
+
+```typescript
+<rapid-select disabled>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>form</td>
+      <td><code>string</code></td>
+      <td>Associates this component with a form. Form `id` needs to be passed. If no Id is provided, then it will be associated with the ancestor form.</td>
+<td>
+
+```typescript
+<rapid-select form="sampleForm">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>multiple</td>
+      <td><code>boolean</code></td>
+      <td>Enables the user to select more than one option; this automatically opens the selection and removes the side arrow. **Default:** `false`</td>
+<td>
+
+```typescript
+<rapid-select multiple>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>Gives this component a name.</td>
+<td>
+
+```typescript
+<rapid-select name="mySelect">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>open</td>
+      <td><code>boolean</code></td>
+      <td>Defines whether the list starts opened or not. **Default:** `false`</td>
+<td>
+
+```typescript
+<rapid-select open>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>position</td>
+      <td><code>string</code></td>
+      <td>Places the list **above** or **below** the component; can be `above` or `below`. **Default:** it will try to fit with the page.</td>
+<td>
+
+```typescript
+<rapid-select position="below">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td><code>number</code></td>
+      <td>Defines the display size of the list. For example, if you set `size="2"`, then the list displays two items at a time for the user to scroll through; **Default:** it will try to fit with the page.</td>
+<td>
+
+```typescript
+<rapid-select size=2>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>string</code></td>
+      <td>Sets a value for this component.</td>
+<td>
+
+```typescript
+<rapid-select value="s">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+:::note
+  If you set the `size`, the list is displayed by default (the user does not need to click to view it). This overrides any setting you make for `open`.
+:::
+
+### Option attributes
+
+In order to use the select component, you need to create a list of options for the user to select from. You create this list using `<rapid-option>`. You can define the following attributes for an `<rapid-option>`:
+
+| Name     | Type      | Description                                                                                  |
+|----------|-----------|----------------------------------------------------------------------------------------------|
+| disabled | `boolean` | Disables an option so that the user cannot interact with it, but the option is still visible |
+| selected | `boolean` | Selects the option, so it turns to the selected mode                                         |
+| value    | `string`  | The value of the attribute                                                                   |
+
+:::note
+- If you specify a `selected` or `value` to more than one `option` while `multiple = false`, then the component selects only the first in the `rapid-option` list
+:::
+
+
+You can also use the repeat directive to create options dynamically in the code:
+
+```typescript
+  const sampleSelectOptions = [
+    {label: 'Large', value: 'l'},
+    {label: 'Small', value: 's'},
+  ]
+```
+
+```typescript
+import {html, repeat} from '@microsoft/fast-element';
+html`
+  <rapid-select>
+    ${repeat(
+  (x) => x.sampleSelectOptions,
+  html`
+        <rapid-option value="${(x) => x.value}">${(x) => x.label}</rapid-option>
+      `,
+  )}
+    </rapid-select>
+`
+```
+
+# Properties
+
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+
+| Name | Description |
+|---|---|
+| start | Content which can be provided before the button content |
+| end | Content which can be provided after the button content |
+| button-container | The element representing the select button |
+| selected-value | The selected value |
+| indicator | The visual indicator for the expand/collapse state of the button |
+
+### Parts
+
+| Name | Description |
+|---|---|
+| control| The element representing the select invoking element |
+| selected-value | The element wrapping the selected value |
+| indicator | The element wrapping the visual indicator |
+| listbox | The listbox element |
+
+### Events fired
+
+| Name | Description |
+|---|---|
+| change | Fires a custom 'change' event when the value updates |
+| input  | Fires a custom 'input' event when the value updates  |
+
+### Events listened to
+
+This component doesn't listen to any events.
+
+
+### Further details
+This component is an implementation of a HTML [select](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) element.
