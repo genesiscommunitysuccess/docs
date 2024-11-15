@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 Here, we shall look into the back-end code and make some useful changes to increase the usability and range of the app.
 
-## Multi-directional Trade Calculations
+## Multi-directional trade calculations
 If you have entered some trades within the default application, you may have noticed that the position calculation keeps a running total, but this does not consider the `SIDE` for the trade. 
 
 Let’s add some pro-code to get the position calculation to include the direction of the trade. 
@@ -53,7 +53,7 @@ This consolidator is consolidating `FX_TRADE` records into the `POSITION` table.
 
 To do this, it is listens for all the changes in `FX_TRADE` records, then updates the `POSITION` table by summing the `NOTIONAL` field into the `AMOUNT` field. 
 
-As the `groupBy` block indicates, this consolidation uses only using the source currency from the`FX_TRADE` table. As a result, we only have a single row inserted or updated in the `POSITION` table for each `FX_TRADE`.
+As the `groupBy` block indicates, this consolidation uses only the source currency from the`FX_TRADE` table. As a result, we only have a single row inserted or updated in the `POSITION` table for each `FX_TRADE`.
 
 If we want to have `POSITION` update/insert for source and target currency as a result of single trade, we need to have two consolidation blocks. 
 
