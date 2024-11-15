@@ -48,7 +48,7 @@ Use cases:
       name: 'my-element',
       template: html`
             <rapid-slider @change="${(x) => x.handleChange()}"
-                          :value="${sync((x) => x.sliderValue)}">
+                          value="${sync((x) => x.sliderValue, 'number')}">
               <rapid-slider-label position="0"> Low </rapid-slider-label>
               <rapid-slider-label position="50"> Mid </rapid-slider-label>
               <rapid-slider-label position="100"> High </rapid-slider-label>
@@ -56,8 +56,8 @@ Use cases:
           `,
     })
     export class MyElement extends GenesisElement {
-    @observable sliderValue: string;
-     handleChange() {
+      @observable sliderValue: number;
+      handleChange() {
         console.log(this.sliderValue);
       }
     }
@@ -215,7 +215,7 @@ Property and attribute binding examples for Genesis Component syntax.
     <tr>
       <td>value</td>
       <td><code>number</code></td>
-      <td>Defines a value for the component when it is created.</td>
+      <td>Defines a value for the component when it is created. If omitted the default is halfway between the min and max values.</td>
 <td>
 
 ```typescript
@@ -264,9 +264,25 @@ This component doesn't have any properties which are not also controlled via att
 | thumb	| The thumb element. |
 
 ### Events fired
-| Name    | Description                                 |
-|---------|---------------------------------------------|
-| @change | Fires the event when the slider component changes its state. |
+
+<table>
+  <thead><tr><th>Event</th><th>Type</th><th>Use</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>change</td>
+      <td><code>event</code></td>
+      <td>Emits a custom change event when the checked state changes. Access the value on the event via <code>.target.value</code>.</td>
+<td>
+
+```typescript
+<rapid-slider @change="${(x) => x.myChangeHandler(event)}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
 
 ### Events listened to
 This component doesn't listen to any events.
