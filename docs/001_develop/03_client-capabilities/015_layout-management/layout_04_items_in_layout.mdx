@@ -1,0 +1,136 @@
+---
+title: 'Writing Genesis elements to work in the layout'
+sidebar_label: 'Writing Genesis elements to work in the layout'
+id: client-layout-management-items
+keywords: [ layout, layout management, Drag and drop, Resizable panels, Tabbed, Responsive, Customizable, Splitting, Stacking, Popouts, Nested, State persistence, Flexible, Element lifecycle, Component lifecycle functions, LifecycleMixin, Resource-intensive components, Layout state management, LayoutComponentWithState interface, Element cloning, Custom element cloning, Shadow DOM limitations, FAST bindings, deepClone, Component state serialization, Layout item registration, Node cloneNode API, Lifecycle gating, ]
+tags:
+- layout
+- layout management
+- Drag and drop
+- Resizable panels
+- Tabbed
+- Responsive
+- Customizable
+- Splitting
+- Stacking
+- Popouts
+- Nested
+- State persistence
+- Flexible
+- Element lifecycle
+- Component lifecycle functions
+- LifecycleMixin
+- Resource-intensive components
+- Layout state management
+- LayoutComponentWithState interface
+- Element cloning
+- Custom element cloning
+- Shadow DOM limitations
+- FAST bindings
+- deepClone
+- Component state serialization
+- Layout item registration
+- Node cloneNode API
+- Lifecycle gating
+sidebar_position: 15
+---
+
+## Contained elements
+
+This section concerns the behaviour of elements inside the layout. If you are using simple elements or Genesis-supplied elements, this is less of a concern; but if you are building complex custom components yourself, you need this information.
+
+### Element lifecycle (gating)
+
+Some actions that the user can perform with items in the layout will run the component lifecycle functions (`connectedCallback` and `disconnectedCallback`) when you don't want them to run:
+- when an item is dragged around the layout
+- potentially, when another item is removed from the layout
+- potentially, when new items are added to the layout
+- when an item is maximised or minimised
+
+For example, if you have a component with a loaded resource on the layout (such as a grid with a `grid-pro-genesis-datasource`) and you add a new item to the layout with the JavaScript API, then the component with the loaded resource will have to reload too. It is important that any such element accounts for this, including such requirements as caching data, or resizing correctly.
+
+In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin` which exposes two protected members:
+
+-  `shouldRunConnect`
+-  `shouldRunDisconnect`
+
+These can be used to gate specific functionality.
+
+For example, if there are parts of `disconnectedCallback` that you don't want to run when the item is being dragged around the layout, you can gate it behind a `(!this.shouldRunDisconnect) return;` early return. <!-- TODO link --> and <!-- TODO link -->.
+
+:::warning
+At the very least, you must run `super` calls to the lifecycle methods, or else your custom element will not work correctly.
+:::
+
+### Resource-intensive components
+You do not need to de-register a component that is registered in the layout while it is not in use.  However, if you have a component that is extremely resource-intensive, then you can use this lifecycle control method to ensure that it only consumes resources when it is in use.
+
+- When the element is part of the layout registry, then `shouldRunConnect` will be false and you can use this to ensure that your component isn't doing unnecessary work while part of the cache.
+
+- Once the component is actually initialised in the layout on the DOM, then `shouldRunConnect` will be true, and you can then perform all the required initialisation.
+
+### Managing the state
+
+Items inside the layout can save and restore the state using various methods, but it can become difficult to manage the state if you're adding the same item to the layout multiple times (multiple instances of the same web component).
+
+You can implement the LayoutComponentWithState interface <!-- TODO link -->, which enables you to save and load the state *per instance* of your components. See the linked interface and the associated functions API documentation for examples and explanations of usage.
+
+Usage of this interface is optional; if you do not need to manage the state for your components in this way, then simply do not implement the interface.
+
+:::warning
+The layout system only interacts with the immediately contained items - so if you have components that contain other components, each top-level component must interact with the contained components to manage their states.
+:::
+
+:::danger
+Each layout item can contain multiple components, and most of the time there are no extra considerations when doing this. However, the state of each component in an instance is saved in order of the components on the DOM, so if the serialised state is manually changed to have the items out of order with their state, then the incorrect states will be passed into each item. This should not occur during defined behaviour, but is possible if the end-user is able to change the state passed into `loadLayout()` manually.
+:::
+
+### Element cloning
+
+To enable you to add multiple items from the same `registration`, the layout system clones elements to add to the layout.
+This is the case both when items are added with `.addItem()`, and when they are added using the declarative API. Under the hood, this uses the Node [cloneNode](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) api.
+There are certain limitations to this function, especially when using custom elements with the shadow DOM. <!-- TODO link -->.
+
+:::tip
+As a general rule, if you need to have elements with FAST bindings inside the layout, wrap them in custom elements.
+:::
+
+If you are writing your own custom element that needs to work inside the layout, follow these steps.
+
+1. In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin`, which overrides the `cloneNode` API.
+
+```typescript
+// Make a call to `deepClone` and manually clone children
+override cloneNode(deep?: boolean): Node {
+        const thisClone = this.deepClone();
+        if (deep) {
+                Array.from(this.childNodes).forEach((child) => {
+                        thisClone.appendChild(child.cloneNode(true));
+                });
+        }
+        return thisClone;
+}
+
+// Create a new element of the same name and copy over attributes
+deepClone(): Node {
+        const copy = document.createElement(this.tagName.toLowerCase());
+        this.getAttributeNames().forEach((at) => copy.setAttribute(at, this.getAttribute(at)));
+        return copy;
+}
+```
+
+2. You can then extend the cloning functionality for your specific requirements. For example, our charts component needs to copy over `config` and `data` parameters.
+
+```typescript
+export class G2PlotChart extends LifecycleMixin(GenesisElement) {
+        ...
+  override deepClone(): Node {
+    const copy = super.deepClone() as G2PlotChart;
+    copy.config = structuredClone(this.config);
+    copy.data = structuredClone(this.data);
+    return copy;
+  }
+        ...
+}
+```
+Some items you'll probably want to copy over are `eventListeners` and other non-attribute configuration elements on your custom element.

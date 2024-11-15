@@ -2,11 +2,149 @@
 title: 'Layout management'
 sidebar_label: 'Layout management'
 id: client-layout-management
-keywords: [layout, layout management]
+keywords: [ layout, layout management, Drag and drop, Resizable panels, Tabbed , Responsive , Customizable, Splitting, Stacking, Popouts, Nested , State persistence, Flexible, Container, Item, Component, Content item, Stack, Row, Column, Header, Tabs, Lifecycle methods, API, Resize events, Drag , Close events]
 tags:
 - layout
 - layout management
+- Drag and drop
+- Resizable panels
+- Tabbed
+- Responsive
+- Customizable
+- Splitting
+- Stacking
+- Popouts
+- Nested
+- State persistence
+- Flexible
+- Container
+- Item
+- Component
+- Content item
+- Stack
+- Row
+- Column
+- Header
+- Tabs
+- Lifecycle methods
+- API
+- Resize events
+- Drag
+- Close events
 sidebar_position: 15
 ---
 
-Coming soon...
+import LayoutExample from './layout_example.js'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Layout Management
+
+Rapid layout is a module which facilitates the user to be able to perform actions such as dragging, resizing, and re-ordering windows.
+As a developer this module allows you to implement the above with low effort, or you can build upon it to create create powerful interactions such as dynamically adding/removing items, and saving/loading layouts.
+
+Use cases:
+* Allow the user to alter the layout of the page, such as dragging and resizing items.
+* Create a system where the user can choose items dynamically from menus or lists to configure their own layout.
+* Allow the user to choose from a list of pre-configured layouts, or to save and load their own layouts.
+
+You should **not** use this module if simply need some fixed items on a static layout.
+
+## Example
+
+Click and drag each title to re-order the items, and to create tabs. Drag the handles between items to resize the items.
+
+<LayoutExample />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration:
+```html
+<rapid-layout>
+  <rapid-layout-region>
+    <rapid-layout-item>
+    </rapid-layout-item>
+  </rapid-layout-region>
+</rapid-layout>
+```
+
+Usage:
+```typescript
+@customElement({
+  name: 'layout-example',
+  template: html`
+    <rapid-layout>
+      <rapid-layout-region>
+        <rapid-layout-region type="vertical">
+          <rapid-layout-item title="Button">
+            <rapid-button>Rapid Button</rapid-button>
+          </rapid-layout-item>
+          <rapid-layout-item title="Checkbox">
+            <rapid-checkbox>Rapid Checkbox</rapid-checkbox>
+          </rapid-layout-item>
+        </rapid-layout-region>
+        <rapid-layout-item title="Text">
+          <p style="color: #FFFFFF">Hello World</p>
+        </rapid-layout-item>
+      </rapid-layout-region>
+    </rapid-layout>
+  `,
+})
+export class LayoutExample extends GenesisElement { }
+```
+
+</TabItem>
+<TabItem value="react">
+
+Declaration:
+```html
+<rapid-layout>
+  <rapid-layout-region>
+    <rapid-layout-item>
+    </rapid-layout-item>
+  </rapid-layout-region>
+</rapid-layout>
+```
+
+Usage, with nested React component:
+```typescript
+function ReactComponent({ }) {
+  return (
+    <p style={{ color: '#FFFFFF' }}>Hello World</p>
+  );
+}
+
+export default function LayoutExample({ }) {
+  return (
+    <rapid-layout>
+      <rapid-layout-region>
+        <rapid-layout-region type="vertical">
+          <rapid-layout-item title="Button">
+            <rapid-button>Rapid Button</rapid-button>
+          </rapid-layout-item>
+          <rapid-layout-item title="Checkbox">
+            <rapid-checkbox>Rapid Checkbox</rapid-checkbox>
+          </rapid-layout-item>
+        </rapid-layout-region>
+        <rapid-layout-item title="Text">
+          <ReactComponent />
+        </rapid-layout-item>
+      </rapid-layout-region>
+    </rapid-layout>
+  );
+}
+```
+
+</TabItem>
+<TabItem value="angular">
+
+Rapid layout is currently not supported in Angular. You can use the layout if you're only using Genesis components inside of it, but Angular components inside of the layout does not currently work.
+
+</TabItem>
+</Tabs>
+
+:::warning
+Important! Bindings such as events and data don't work directly in the layout. [See this page](./layout_05_binding_events_store.mdx).
+:::
