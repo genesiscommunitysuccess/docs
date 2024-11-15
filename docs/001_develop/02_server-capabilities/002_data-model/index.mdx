@@ -1,5 +1,5 @@
 ---
-title: 'Data model overview'
+title: 'Data model'
 sidebar_label: 'Data model'
 id: server-data-model
 keywords: [data, data model, database, tables]
@@ -13,13 +13,15 @@ tags:
 sidebar_position: 2
 ---
 
+## Overview
+
 The data model is a fundamental part of any Genesis Application. Within the data model we define the [entities (tables)](#tables) relevant to the application which will store the application's data. We also define [views](#views) which join related entities together to provide wholistic views onto the applications dataset. The application's tables and views power most Genesis Server and Client services and components by making them aware of the application's data structure, and by notifying them of relevant changes to the data.
 
 The data model of a Genesis Application is defined in `*-dictionary.kts` files.
 
 ## Example configuration
 
-Tables and their fields are defined in  `*-tables-dictionary.kts` files, these files are placed in the `cfg` folder in your application's server codebase.
+### Tables
 
 Each table is defined with a set of fields (entity attributes) which make up a record representing the entity. 
 
@@ -31,42 +33,57 @@ Each table requires:
 
 Below shows an example configuration of three tables: `TRADE`, `COUNTERPARTY` and `INSTRUMENT`
 
+###### Example Data Model
+
 ```kotlin
 tables {
-    table(name = "TRADE", id = 11_000, audit = details(id = 11_500, sequence = "TA")) {
-        field("TRADE_ID", LONG).autoIncrement()
-        field("TRADE_PRICE", DOUBLE).notNull()
-        field("DIRECTION", ENUM("SELL","SHORT_SELL","BUY")).default("BUY").notNull()
-        field("QUANTITY", INT).notNull()
-        field("COUNTERPARTY_ID", LONG).notNull()
-        field("INSTRUMENT_ID", LONG).notNull()
 
-        primaryKey("TRADE_ID")
+  table(name = "TRADE", id = 11_000, audit = details(id = 11_500, sequence = "TA")) {
+    field("TRADE_ID", LONG).autoIncrement()
+    field("COUNTERPARTY_ID", LONG).notNull()
+    field("DATE", DATE).notNull()
+    field("DIRECTION", ENUM("SELL","SHORT_SELL","BUY")).default("BUY").notNull()
+    field("INSTRUMENT_ID", LONG).notNull()
+    field("QUANTITY", INT).notNull()
+    field("TRADE_PRICE", DOUBLE).notNull()
 
-        indices {
-            nonUnique("COUNTERPARTY_ID").name("TRADE_BY_COUNTERPARTY_ID")
-            nonUnique("INSTRUMENT_ID").name("TRADE_BY_INSTRUMENT_ID")
-        }
+    primaryKey("TRADE_ID")
+
+    indices {
+      nonUnique("COUNTERPARTY_ID").name("TRADE_BY_COUNTERPARTY_ID")
+      nonUnique("INSTRUMENT_ID").name("TRADE_BY_INSTRUMENT_ID")
+      nonUnique("DATE").name("TRADE_BY_DATE")
+      nonUnique("COUNTERPARTY_ID, DATE").name("TRADE_BY_COUNTERPARTY_ID_DATE")
+    }
+  }
+
+  table(name = "INSTRUMENT", id = 11_001) {
+    field("INSTRUMENT_ID", LONG).autoIncrement()
+    field("NAME", STRING(100)).notNull().metadata {
+      maxLength = 100
     }
 
-    table(name = "INSTRUMENT", id = 11_001) {
-        field("INSTRUMENT_ID", LONG).autoIncrement()
-        field("NAME", STRING).notNull()
+    primaryKey("INSTRUMENT_ID")
 
-        primaryKey("INSTRUMENT_ID")
+  }
+
+  table(name = "COUNTERPARTY", id = 11_002) {
+    field("COUNTERPARTY_ID", LONG).autoIncrement()
+    field("COUNTERPARTY_CODE", STRING(100)).notNull().metadata {
+      maxLength = 100
+    }
+    field("NAME", STRING(100)).notNull().metadata {
+      maxLength = 100
     }
 
-    table(name = "COUNTERPARTY", id = 11_002) {
-        field("COUNTERPARTY_ID", LONG).autoIncrement()
-        field("COUNTERPARTY_CODE", STRING).notNull()
-        field("NAME", STRING).notNull()
+    primaryKey("COUNTERPARTY_ID")
 
-        primaryKey("COUNTERPARTY_ID")
-    }
+  }
+
 }
 ```
 
-Views are defined in  `*-views-dictionary.kts` files, they need to be defined in the `cfg` folder in your application's server codebase.
+### Views
 
 Every view defines a "root" table, the main table powering the view. It then defines tables which join to it in order to make up the view.
 
@@ -91,7 +108,9 @@ views {
         fields {
             TRADE.allFields()
 
-            INSTRUMENT.NAME withPrefix INSTRUMENT
+            INSTRUMENT.NAME withPrefix INSTRUMENT 
+
+            COUNTERPARTY.COUNTERPARTY_ID
             COUNTERPARTY.COUNTERPARTY_CODE withAlias CTPTY_CODE
             COUNTERPARTY.NAME withAlias CTPTY_NAME
             
@@ -106,20 +125,68 @@ views {
 }
 ```
 
+### Summary
+
 Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and other data visualisation web client components. 
 
 Tables and views are also be used to power server server capabilities such as [real-time aggregation](/develop/server-capabilities/real-time-aggregation-consolidator/), [real-time triggers](/develop/server-capabilities/real-time-triggers-evaluator/) and outbound integrations. 
 
-## Table configuration options
+## Configuration options
 
-### Table fields
+### `table`
+
+Tables and their fields are defined in  `*-tables-dictionary.kts` files, these files are placed in the `cfg` folder in your application's server codebase.
+
+| Parameter name | Type     | Description                                                                 |
+|----------------|----------|-----------------------------------------------------------------------------|
+| `name`         | `String` | name of the table, must be unique across the application                    |
+| `sequence`     | `String` | **Unique** characters for the [`sequence`](#sequence) ID on the audit table |
+| `audit`        | details  | See below                                                                   |
+
+#### audited tables
+
+`audit` can optionally be defined to make the table auditable
+
+Auditing changes to system records is a common requiement in compliant financial systems.
+        
+The following details can be added when you use the `audit = details()` parameter:
+
+| Parameter name | Type    | Description                                                                 |
+|----------------|---------|-----------------------------------------------------------------------------|
+| `id`           | Integer | **Unique** `id` for the audit table                                         |
+| `sequence`     | STRING  | **Unique** characters for the [`sequence`](#sequence) ID on the audit table |
+| `tskey`        | boolean | Set a timestamp index (defaulted to false where not specified)              |
+
+
+The audit table that is created has the same name as the source table, plus the suffix **_AUDIT**. Here is an example table definition, for a table `TRADE` which will have a `TRADE_AUDIT` table automatically generated to store audit records.
+
+```kotlin {1}
+  table(name = "TRADE", id = 11_000, audit = details(id = 11_500, sequence = "TA")) {
+    field("TRADE_ID", LONG).autoIncrement()
+    ...
+  }
+```
+
+###### Structure of audit tables
+
+When you create an audit table, it has all the same fields as the source table, plus the following fields:
+
+| Field name             | Data Type | Description                                               |
+|------------------------|-----------|-----------------------------------------------------------|
+| `AUDIT_EVENT_DATETIME` | DATETIME  | Autogenerated date and time of the event                  |
+| `AUDIT_EVENT_TEXT`     | STRING    | Optional “REASON” value sent as part of the event message |
+| `AUDIT_EVENT_TYPE`     | STRING    | The event that wrote on the source table                      |
+| `AUDIT_EVENT_USER`     | STRING    | User on the event message                                 |
+
+Every `eventHandler` that interacts with the audited table and is set up correctly, will automatically record audit.
+
+#### `field`
+
 Each table requires one or more fields to be defined.
 
-Each field must have a unique name (unique within the table definition) and a data type defined:
+Each field must have a unique name (unique within the table definition) and a data type defined. The following data types are available
 
-#### Data types
-
-##### `String`
+###### `String`
 String fields can contain any set of characters up to the maximum length of characters specified for the field. 
 The value in the parenthesis in the second example below is the maximum number of characters that can be stored in this field for a given record. Where not specified the default length will be 64 characters.
 `dbMaxSize` can be used to set the field length to be the maximum allowed for the database technology used by the application.  It is helpful as different database technologies have different limits.
@@ -129,7 +196,7 @@ The value in the parenthesis in the second example below is the maximum number o
 `field("MY_STRING", STRING(256))`  
 `field("MY_STRING", STRING(dbMaxSize))`
 
-##### `Enum`
+###### `Enum`
 Enum (aka enumerated) fields specify the exact set of values which the field can be set to. They are helpful when you have a definitive set of values and want to present users with a picklist.
 Each value of the enum can also be have an "alias" which is typically a human readable representation of the value.
 Enums must have a default value. The third example below shows how to set this. Where no default is specified the first value in the list is set as the default.
@@ -139,52 +206,52 @@ Enums must have a default value. The third example below shows how to set this. 
 `field("MY_ENUM", ENUM("B" to "Buy", "S" to "Sell", "SS" to "Short Sell"))`  
 `field("MY_ENUM", ENUM("B", "S", "SS")).default("S")`  
 
-##### `Boolean`
+###### `Boolean`
 Boolean fields must contain a value of either true or false.
 
 ###### Example Definition:
 `field("MY_BOOLEAN", BOOLEAN)`
 
-##### `Date`
+###### `Date`
 Date fields must contain a value representing a date. Dates represent a day in time, they do not include time precision. 
 
 ###### Example Definition:
 `field("MY_DATE", DATE)`
 
-##### `Datetime`
+###### `Datetime`
 Datetime fields must contain a value representing a point in date and time
 
 ###### Example Definition:
 `field("MY_DATETIME", DATETIME)`
 
-##### `Integer`
+###### `Integer`
 Integer (aka Int) fields represent whole numbers, with no decimal places.
 Integers can only hold 32 bits, and the maximum value is just over 2.14 billion. If you need larger numbers use the type Long
 
 ###### Example Definition:
 `field("MY_INT", INT)` 
 
-##### `Long`
+###### `Long`
 Long fields are similar to integer, but represented in 64 bits. 
 This means it has a much larger maximum value. Long's are used a lot for auto-generated primary keys so that we can theortically store many more records. 
 
 ###### Example Definition:
 `field("MY_LONG", LONG)` 
 
-##### `Short`
+###### `Short`
 Short fields can store whole numbers from -32,768 to 32,767. 
 They are very rarely used, but are a choice if the data needs to be stored in memory more efficiently.
 
 ###### Example Definition:
 `field("MY_SHORT", SHORT)` 
 
-##### `Double`
+###### `Double`
 Double fields are used to store numerical values with decimal places.
 
 ###### Example Definition:
 `field("MY_DOUBLE", DOUBLE)`
 
-##### `BigDecimal`
+###### `BigDecimal`
 Big Decimal fields are similar to Double's and also store numerical values with decimal places. 
 Double values can lose precision for large numbers, or numbers with many numbers to the right of the decimal place. 
 Big Decimals allow the user to define the `precision` and `scale` (the 2 inputs shown in the second example below) to better ensure values are accurate for their use case. 
@@ -195,36 +262,30 @@ Big Decimals allow the user to define the `precision` and `scale` (the 2 inputs 
 `field("MY_BIGDECIMAL", BIGDECIMAL)`   
 `field("MY_BIGDECIMAL", BIGDECIMAL(10, 3)`
 
-##### `Nano Timestamp`
+###### `Nano Timestamp`
 A nano timestamp is a precise way to record a timestamp to the closest nano seconds.
 
 ###### Example Definition:
 `field("MY_NANO_TIMESTAMP", NANO_TIMESTAMP)`
 
-##### `Raw`
+###### `Raw`
 Raw fields are intended to store large values, they will often contain large structured payloads, else binary data and other non human readable data.
 
 ###### Example Definition:
 `field("MY_RAW", RAW)`
 
-#### Field configuration options
-
 Fields can also have metadata defined to give them additional characteristics
 
-##### Auto-generate unique value
-All tables require a Primary Key to be defined, and the field(s) value(s) set for the primary key must guarantee only one record has the (combination of) value(s). This is why it is very common to want a field which is automatically generated, and set as the single primary key field, for example if you receive data.
-
-Two types of field can be set to auto-generate:
-- `Long`
-- `String`
-
-For `Long` fields, `autoIncrement` is set and will ensure a long number, starting from 1, will be incremented for each record added.
+##### `autoIncrement`
+Only valid for fields of type `LONG`
+This setting will ensure a long number, starting from 1, will be auto-generated. It will increment for each record added.
 
 `field("ID", LONG).autoIncrement()`
 
-For `String` fields, either `sequence(<2 character ref>)` or `uuid` can be set.
+##### `sequence` 
+Syntax is `sequence(<2 character ref>)`
 
-###### `sequence` 
+Only valid for fields of type `STRING` fields, either  or `uuid` can be set.  
 Sequence takes a  2 character reference as a value, similar to autoIncrement the numerical part of the value will be incremented for each record added, however this value is padded as follows: `SEQUENTIAL_VALUE` (padded by paddingSize) + `SEQUENCE` + `LOCATION` + `1`.
 
 `field("TRADE_ID", STRING).sequence("TR")`
@@ -237,12 +298,12 @@ If your application is set to use an SQL database then sequence will generate a 
 `item(name = "SqlEnableSequenceGeneration", value = true)`
 :::
 
-###### `uuid`
+##### `uuid`
 A `uuid` is a [Universally Unique Identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier) and is a randomly generated string, is not sequenced, but will guarantee generation of a unique value.
 
 `field("TRADE_ID", STRING).uuid()`
 
-##### Default
+##### `default`
 Define a default value for the field. This value will be set on the record where no value has been set for this field before writing the record to the database.
 Add `.default(<value>)` to your field definition to set a default. The value must be valid for the data type of the field.
 
@@ -252,9 +313,9 @@ _any_
 ###### Example Definitions:
 `field("IS_CORRECT", BOOLEAN).default(true)`
 
-##### Mandatory
-To define a field as "Not nullable" this means, a value MUST be set for this field on every record. Where the field value is not set for a given record, the database API will reject the record.
-Add `.notNull()` to your field definition to set as not nullable. 
+##### `notNull`
+To define a field as mandatory. A value MUST be set for this field on every record. Where the field value is not set for a given record, the database API will reject the record.  
+Add `.notNull()` to your field definition to set as not nullable.  
 Where this is not set for a field, it's values can be left as null except if it is part of the primary key or any index on the table, else if they have a `default` value defined.
 
 ###### Valid for types:
@@ -262,19 +323,31 @@ _any_
 ###### Example Definitions:
 `field("MY_BOOLEAN", BOOLEAN).default(false)`
 
-
-##### Sensitive
+##### `sensitive`
 String fields can be marked as `sensitive()`. Values will be masked when printed to console or logs, else when `toString()` is used in conjunction with the field on a database API. It is typically set when the value needs to store keys, passwords or other sensitive data.
 
 ###### Valid for types:
-`String`
+`STRING`
 
 ###### Example Definitions:
 `field("KEY", STRING).sensitive()`
 
 
-##### Numeric boundaries
-`min` and `max` can be specified to validate that values for the given field are greater than or equal to `min`, and less than or equal to `max`.
+##### `min`
+`min` can be specified to validate that values for the given field are greater than or equal to this value
+
+###### Valid for types:
+Any numeric types except BigDecimal
+
+###### Example Definitions:
+```kotlin
+field("RATING", INT).metadata {
+    min = 0
+}
+```
+
+##### `max`
+`max` can be specified to validate that values for the given field are less than or equal to this value
 
 ###### Valid for types:
 Any numeric types except BigDecimal
@@ -283,30 +356,52 @@ Any numeric types except BigDecimal
 ```kotlin
 field("RATING", INT).metadata {
     max = 10
-    min = 0
 }
 ```
 
-##### String boundaries and patterns
-String fields can have extra validation added to ensure values comply.
-- `minLength` sets the minimum number of characters the value must contain
-- `maxLength` sets the maximum number of characters the value must contain
-- `pattern` sets a [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) pattern that values must adhere to.
-Any combination can be set, in the example below we set all of them.
+##### `minLength` 
+
+Sets the minimum number of characters allowed
 
 ###### Valid for types:
-String
+`STRING`
+
+###### Example Definitions:
+```kotlin
+field("ISIN").metadata {
+    minLength = 12
+}
+```
+
+##### `maxLength` 
+
+Sets the maximum number of characters allowed
+
+###### Valid for types:
+`STRING`
+
+###### Example Definitions:
+```kotlin
+field("ISIN").metadata {
+    maxLength = 14
+}
+```
+
+##### `pattern`
+
+Sets a [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) pattern that values must adhere to.  
+
+###### Valid for types:
+`STRING`
 
 ###### Example Definitions:
 ```kotlin
 field("ISIN").metadata {
     pattern = "^[A-Z]{2}[-]{0,1}[A-Z0-9]{9}[-]{0,1}[0-9]{1}$"
-    minLength = 12
-    maxLength = 14
 }
 ```
 
-##### Title
+##### `title`
 Title gives the field a name, typically more descriptive and for use when displaying the field in the front end of the application.
 Every field has a default title (derived from the field name converted to title case, e.g. `MY_STRING_FIELD` becomes "My String Field"), but `title(<title value>)` can be specified to override this.
 
@@ -345,7 +440,7 @@ table(name = "TRADE", id = 11002) {
 }
 ```
 
-### Primary Key
+#### `primaryKey`
 
 Every table must have a single Primary Key defined. A primary key needs setting to be one or more fields from the table, and the values for the primary key fields must uniquely identify a record in the table.
 
@@ -362,7 +457,7 @@ Primary Key names are auto-generated in the following format: [TABLE_NAME]_BY_[F
 - `field("ID", LONG).autoIncrement().primaryKey().name("POSITION_BY_IDENTIFIER")`
 - `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID").name("POSITION_BY_BOOK_INST_CPTY)`
 
-### Indices
+#### `indices`
 
 Indices are typically specified for one or two reasons:
 
@@ -375,7 +470,7 @@ As with primary keys, index names are auto-generated but if you wish to give you
 
 There are two types of index:
 
-#### unique index
+##### `unique`
 
 Unique indices are the same as a primary key, in that any combination of values for fields defined in the index must uniquely identify a record.
 
@@ -385,7 +480,7 @@ A unique index can be defined by:
 
 As with multi-field primary keys, the order in which the fields are specified should be considered.
 
-#### non-unique index
+##### `nonUnique`
 Non-unique indices are used to ensure efficient ranged lookup of records, and there are no constraints around record value uniqueness as seen with primary keys and unique indices.
 
 An example usage would be if you had a `POSITION` table which had a non-unique index set on `COUNTERPARTY_ID`, it allows for efficient lookups of all `POSITION` records for a given `COUNTERPARTY_ID`
@@ -418,51 +513,7 @@ As with multi-field primary keys, the order in which the fields are specified sh
     }
 ```
 
-### Audit tables
-
-Auditing changes to system records is a common requiement in compliant financial systems.
-
-If you want to record an audit of every change made to a table's records, include the parameter `audit = details()` when you define the source table. The syntax is:
-
-`table (name = <TABLE_NAME>, id = <TABLE_ID>, audit = details(id = <AUDIT_TABLE_ID>, sequence = <AUDIT_TABLE_SEQUENCE>, tskey = <TRUE_OR_FALSE>))`
-        
-The following details can be added when you use the `audit = details()` parameter:
-
-| Parameter name | Type    | Description                                                                 |
-|----------------|---------|-----------------------------------------------------------------------------|
-| `id`           | Integer | **Unique** `id` for the audit table                                         |
-| `sequence`     | STRING  | **Unique** characters for the [`sequence`](#sequence) ID on the audit table |
-| `tskey`        | boolean | Set a timestamp index (defaulted to false where not specified)              |
-
-
-The audit table that is created has the same name as the source table, plus the suffix **_AUDIT**. Here is an example table definition, for a table `TRADE` which will have a `TRADE_AUDIT` table automatically generated to store audit records.
-
-```kotlin {1}
-table (name = "TRADE", id = 11002, audit = details(id = 11502, sequence = "TA")) {
-    field("TRADE_ID").sequence("TR").primaryKey()
-    field("COUNTERPARTY_ID")
-    field("INSTRUMENT_ID").notNull()
-    field("QUANTITY", INT)
-    field("PRICE", DOUBLE).notNull()
-    field("TRADE_DATE", DATE)
-    field("TRADE_STATUS", ENUM("ACCEPTED", "CANCELLED"))
-}
-```
-
-###### Structure of audit tables
-
-When you create an audit table, it has all the same fields as the source table, plus the following fields:
-
-| Field name             | Data Type | Description                                               |
-|------------------------|-----------|-----------------------------------------------------------|
-| `AUDIT_EVENT_DATETIME` | DATETIME  | Autogenerated date and time of the event                  |
-| `AUDIT_EVENT_TEXT`     | STRING    | Optional “REASON” value sent as part of the event message |
-| `AUDIT_EVENT_TYPE`     | STRING    | The event that wrote on the source table                      |
-| `AUDIT_EVENT_USER`     | STRING    | User on the event message                                 |
-
-Every `eventHandler` that interacts with the audited table and is set up correctly, will automatically record audit.
-
-### Sub Tables
+#### `subTables`
 
 Within the body of the table definition, you can use `subtables` to define one or more subtables. A subtable provides is a related table to the parent, in that it will share any fields defined in the parent's key.
 
@@ -518,9 +569,18 @@ table(name = "GENESIS_PROCESS", id = 12) {
 }
 ```
 
-## View configuration options
+## `view`
 
-### Joining tables
+Views are defined in  `*-views-dictionary.kts` files, they need to be defined in the `cfg` folder in your application's server codebase.
+
+| Parameter name | Type     | Description                                                                 |
+|----------------|----------|-----------------------------------------------------------------------------|
+| `name`         | `String` | Name of the view, must be unique across the application                     |
+| `table`        | `String` | Root table of the view                                                      |
+
+Updates to the `table`, referred to as the root table of the view will always trigger updates for any subscribing clients.
+
+### `joins`
 
 Joins are defined in the `joins` block.
 
@@ -569,7 +629,7 @@ The above example also demonstrates how to use a hardcoded value to join, see th
 
 Joins can be one-to-one (key field match) or one-to-many (part-key-field match), however *Views with one-to-many joins cannot be used to power [real-time queries](/develop/server-capabilities/real-time-queries-data-server/) as they would be very inneficient and potentially use up a lot of the cache.
 
-#### Backwards joins
+#### `backwardsJoin`
 
 Joins can be set as backwards joins, using `backwardsJoin = true` in the joining definition.
 
@@ -598,12 +658,14 @@ There is a memory storage and processing overhead when a join is defined as a ba
 Only specify a backwards join where it is essential to publish updates to the joined table in real-time.
 :::
 
-#### Inner vs Outer joins
+#### `joinType`
 
-Available join types are INNER and OUTER. If you do not specify the type, it defaults to OUTER.
+Available join types are `JoinType.INNER` and `JoinType.OUTER`. 
 
 - `INNER` joins require all joins to match exactly; if one single join fails to match, the row will be discarded.
 - `OUTER` joins provide null references for failed joins and will still allow the row to be built.
+
+If you do not specify the `joinType`, it defaults to `JoinType.OUTER`.
 
 ```kotlin
 joining(INSTRUMENT, JoinType.INNER) {
@@ -736,7 +798,7 @@ To be able to perform multiple joins on the same table, you need to use one or m
 
 ```
 
-### View fields
+### `fields`
 
 The `fields` block allows you to define which fields you would like to include in your view. You can reference fields from any of the tables that have been joined inside your view.
 
@@ -767,7 +829,7 @@ You can override the name of a table's field in a view using various operators, 
       INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
 ```
 
-#### Derived fields
+#### `derivedField`
 
 Derived fields are used to serve up data that is constructed from one or more fields; this is modified programatically before progressing.
 
