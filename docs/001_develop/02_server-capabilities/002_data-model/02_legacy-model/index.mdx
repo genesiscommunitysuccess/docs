@@ -115,7 +115,7 @@ fields {
 
 ### Tables
 
-###### Simple table with autoincrement
+###### Simple table with auto-increment
 This very simple table contains one field (POSITION_ID) that uses `autoIncrement` to generate the next sequence number. This field is also the primary key for the table.
 
 ```kotlin
@@ -274,7 +274,7 @@ For example, here we specify three different states and then specify the default
 ```kotlin
 field(name = "TRADE_STATUS", type = ENUM("NEW", "ALLOCATED", "CANCELLED", default = "NEW"))
 ```
-Remember that ENUM fields are always not nullable. If you try and add `nullable = true' Intellij will warn you. If you go ahead and build, it will generate an error.
+Remember that ENUM fields are always not nullable. If you try and add `nullable = true' IntelliJ will warn you. If you go ahead and build, it will generate an error.
 
 ###### Naming fields
 

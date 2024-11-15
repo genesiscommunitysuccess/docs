@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-Genesis data access APIs facilitate access to Genesis application data. They are used by most of the server capabilities to power writing, reading and subscribing to data updates. Developers have access to these APIs within the context of some server capabilities, such as [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/), used for core business logic. The APIs can also be injencted into any application for use in custom modules and processes.
+Genesis data access APIs facilitate access to Genesis application data. They are used by most of the server capabilities to power writing, reading and subscribing to data updates. Developers have access to these APIs within the context of some server capabilities, such as [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/), used for core business logic. The APIs can also be injected into any application for use in custom modules and processes.
 
 The EntityDb API gives access to write to and query the Genesis Application data that is stored in it's database. With the exception of RxDb, they are powered by type-safe entities for tables, [DAO](/build-deploy-operate/build/bdo-build-overview/#dao)s, generated at build time based on the [data model](/develop/server-capabilities/data-model/) defined in the application.
 
@@ -326,7 +326,7 @@ val flow = db.getBulk(Trade.ByTypeId)
 // we can pass in Trade as a type parameter
 final var flowable = db.getBulk(Trade.class);
 // we can pass in the TRADE object
-final var flowable = db.getBulk(TRADE.INSTACE);
+final var flowable = db.getBulk(TRADE.INSTANCE);
 // or we can pass in an index reference
 final var flowable = db.getBulk(Trade.ById.Companion);
 ```
@@ -555,7 +555,7 @@ For example, where `TRADE_ID` field on `TRADE` table is generated:
 <TabItem value="kotlin">
 
 ```kotlin
-trade.tradeId                   // will cause an exception if not initialised
+trade.tradeId                   // will cause an exception if not initialized
 trade.tradeIdOrNull             // will return the tradeId if set, or else null
 trade.isTradeIdInitialised      // will return true if set
 ```
@@ -564,7 +564,7 @@ trade.isTradeIdInitialised      // will return true if set
 <TabItem value="java">
 
 ```java
-trade.getTradeId();             // will cause an exception if not initialised
+trade.getTradeId();             // will cause an exception if not initialized
 trade.getTradeIdOrNull();       // will return the tradeId if set, or else null
 trade.isTradeIdInitialised();   // will return true if set
 ```
@@ -1152,7 +1152,7 @@ Batching happens in two phases:
 So what does this mean in practice?
 The batching period covers the whole subscription. It is always set globally, i.e. for an update queue subscription or on a data server query. It is never set at the individual row level.
 
-The goal of this batching is to minimise work, and to publish updates that are accurate, rather than to publish every change.
+The goal of this batching is to minimize work, and to publish updates that are accurate, rather than to publish every change.
 
 In this regard it is better to think in terms of a batching interval, rather than a batching period, which looks something like this:
 
@@ -1187,8 +1187,8 @@ The point here is that there is no way of determining whether a series of update
 
 Note that batching happens at both the data server and the update-queue level. 
 
-- Genesis batches on the queue level to minimise the amount of work the data server has to do. Because we pre-allocate LMDB when the data sever starts, having too many needless updates would eat into that allocation.
-- Batching is performed on the data server to minimise the load on the client and the connection.
+- Genesis batches on the queue level to minimize the amount of work the data server has to do. Because we pre-allocate LMDB when the data sever starts, having too many needless updates would eat into that allocation.
+- Batching is performed on the data server to minimize the load on the client and the connection.
 
 #### Out-of-sequence updates on the queue
 
@@ -1402,7 +1402,7 @@ When you generate a database on the Genesis platform, every table in the databas
 
 The database generates a new `TIMESTAMP` for every modify operation, even if no other fields are changed.
 
-To create these values, GenesisFlake generates IDs in a similar manner to Twitter’s [snowflake](https://developer.twitter.com/en/docs/basics/twitter-ids). It is able to generate these IDs without having to perform database-level synchronisation - which ensures high performance. 
+To create these values, GenesisFlake generates IDs in a similar manner to Twitter’s [snowflake](https://developer.twitter.com/en/docs/basics/twitter-ids). It is able to generate these IDs without having to perform database-level synchronization - which ensures high performance. 
 
 An ID includes:
 

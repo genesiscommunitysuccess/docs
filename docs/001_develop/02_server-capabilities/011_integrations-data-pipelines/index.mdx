@@ -23,7 +23,7 @@ Data Pipelines is a stream processing library for creating point-to-point data i
 
 Data pipelines provides a toolbox of pre-built elements for common development tasks, such as file processing, protocol encoding and decoding, integration with messaging middleware and querying external APIs.
 
-Many Genesis Business Components also add additional elements to allow pipelines to integrate directly into systems such as FIX Gateways, Notifications, File Management and Reconciliation, giving you a rich feature set that can be utilised with only a few lines of code.
+Many Genesis Business Components also add additional elements to allow pipelines to integrate directly into systems such as FIX Gateways, Notifications, File Management and Reconciliation, giving you a rich feature set that can be utilized with only a few lines of code.
 
 Many application integrations follow the same logical pattern. Extract data from a source, apply some transformations on it and store it elsewhere.
 
@@ -67,7 +67,7 @@ If you wish to run a dedicated process as a data pipeline, the following gives a
 A data pipeline can be considered 'batch' or 'real-time'.
 
 ###### Batch
-A Batch pipeline consumes data using a request/response based model, utilising data sources that return a fixed-size result set at a given point in time. Examples include:
+A Batch pipeline consumes data using a request/response based model, utilizing data sources that return a fixed-size result set at a given point in time. Examples include:
  - sending a query to a REST API
  - executing a SQL command to query a database
  - reading a file from a file store
@@ -75,20 +75,20 @@ A Batch pipeline consumes data using a request/response based model, utilising d
 A batch pipeline must be invoked via some kind of trigger, it does not execute continuously.
 
 ###### Real-Time
-A real-time Pipeline consumes data via a 'push' model, utilising data sources that continuously deliver data based on subscriptions. Examples include:
+A real-time Pipeline consumes data via a 'push' model, utilizing data sources that continuously deliver data based on subscriptions. Examples include:
  - reading data from a message broker (JMS, Kafka etc.)
  - monitoring a file store for any new files
  - listening for updates on a database table or view
 
-A real-time pipeline is started when the process initialises and runs continuously.
+A real-time pipeline is started when the process initializes and runs continuously.
 
 Both batch and real-time pipelines are defined using the same syntax, but the implementation is determined by the source of data used to feed the pipeline.
  
 ### Source
 The source is the entry point to a data pipeline. As stated above, a source can be batch or real-time, but it may also have additional properties.
 
-##### Acknowledgable Sources
-Acknowledgable Sources or Ack Sources, support an acknowledgement mechanism. The acknowledge method is called when the pipeline has finished processing an element in the stream, allowing the source to persist some stateful information for the purposes of recovery.
+##### Acknowledgeable Sources
+Acknowledgeable Sources or Ack Sources, support an acknowledgement mechanism. The acknowledge method is called when the pipeline has finished processing an element in the stream, allowing the source to persist some stateful information for the purposes of recovery.
 
 ##### Typed Batch Sources
 A typed batch source is an extension of a batch source, where the input to the execution is a well defined type. This allows the creation of dynamic batch queries in a type safe way. An example use case may be a REST API that allows querying of trade data by trade date. Defining an object that has a date field allows easy construction of the query.
@@ -373,9 +373,9 @@ pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
 
 ###### Using the Camel Route Builder
 The Route Builder is Apache Camel's API for defining how to read messages, and where from.
-If you are already familar with Camel APIs, you should feel right at home here. If not, [you can read more about them here.](https://camel.apache.org/manual/routes.html)
+If you are already familiar with Camel APIs, you should feel right at home here. If not, [you can read more about them here.](https://camel.apache.org/manual/routes.html)
 
-Passing in a route builder gives you the most flexability and control over your routes logic, allowing for more advanced configurations, such as specifying processors and idempotency logic.
+Passing in a route builder gives you the most flexibility and control over your routes logic, allowing for more advanced configurations, such as specifying processors and idempotency logic.
 Within the routeHandler block you can access the `dataPipelineProcessor` variable, this is a custom processor that is always created that will emit the messages from the source into the pipeline.
 ```kotlin
 pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
@@ -577,7 +577,7 @@ pipeline("TEST_PIPELINE_DECODER") {
       location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
     }
   )
-  .split(csvDecoder<System>()) // Deserialise to System class
+  .split(csvDecoder<System>()) // Deserialize to System class
   .map { input: CsvRow<System> ->
     DbOperation.Insert(input.data)
   }
@@ -587,7 +587,7 @@ pipeline("TEST_PIPELINE_DECODER") {
 
 You also have the option of providing configuration to specify the following:
 - columnSeparator (optional Char) [default: ',']: this is the character used to separate values.
-- quoteChar (optional Char) [default: '"']: this is the character used for quoting values that contain quote characters or linefeeds.
+- quoteChar (optional Char) [default: '"']: this is the character used for quoting values that contain quote characters or line feeds.
 
 Example:
 ```kotlin
@@ -614,7 +614,7 @@ pipeline("TEST_PIPELINE_RAW_DECODER") {
       location = "file://src/test/resources/camel-source-test?noop=true&idempotent=true"
     }
   )
-  .split(csvRawDecoder()) // Default to deserialising to Map<String, String>
+  .split(csvRawDecoder()) // Default to deserializing to Map<String, String>
   .map { input: CsvRow<Map<String, String>> ->
     DbOperation.Insert(
       System {
