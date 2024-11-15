@@ -32,7 +32,7 @@ Use cases:
 
     Declaration
     ```html
-    <rapid-radio>Sample radio field</rapid-radio>
+    <rapid-radio>Radio</rapid-radio>
     ```
 
     Usage
@@ -61,7 +61,7 @@ Use cases:
 
   Declaration
   ```html
-  <rapid-radio></rapid-radio>
+  <rapid-radio>Radio</rapid-radio>
   ```
   Usage
   ```typescript
@@ -70,7 +70,9 @@ Use cases:
       console.log({ event.target.value })
     };
     return (
-      <rapid-radio onChange={handleRadioFieldChanged}></rapid-text-field>
+      <rapid-radio onChange={handleRadioFieldChanged}>
+        Radio
+      </rapid-radio>
     );
   }
   ```
@@ -79,7 +81,7 @@ Use cases:
 
   Declaration
   ```html
-  <rapid-radio></rapid-radio>
+  <rapid-radio>Radio</rapid-radio>
   ```
 
   Usage
@@ -89,10 +91,10 @@ Use cases:
   @Component({
     selector: 'my-root',
     template: `
-          <rapid-radio
-            (change)="onRadioFieldChange($event)"
-          ></rapid-radio>
-        `,
+      <rapid-radio (change)="onRadioFieldChange($event)">
+        Radio
+      </rapid-radio>
+    `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule],
@@ -111,12 +113,52 @@ Use cases:
 
 Property and attribute binding examples for Genesis Component syntax.
 
-| Name     | Type      | Description                                                                      | Examples |
-|----------|-----------|----------------------------------------------------------------------------------|---|
-| checked  | `boolean` | Sets or retrieves the current state of the component. **Default: `false`**       | `<rapid-radio checked>` |
-| disabled | `boolean` | Similar to `readonly`, but with a blur on the component                          | `<rapid-radio disabled>` |
-| value    | `string`  | Sets a value for the component. Not visible to the user                          | |
-| readonly | `boolean` | If true, the user cannot change the value of this checkbox (which is greyed out) | `<rapid-radio readonly>` |
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>checked</td>
+      <td><code>boolean</code></td>
+      <td>Sets or retrieves the current state of the component. **Default: `false`**</td>
+      <td>
+        ```typescript
+        <rapid-radio checked>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Similar to `readonly`, but with a blur on the component</td>
+      <td>
+        ```typescript
+        <rapid-radio disabled>
+          ```
+      </td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>string</code></td>
+      <td>Sets a value for the component. Not visible to the user</td>
+      <td>
+        ```typescript
+        <rapid-radio
+          :value=${sync((x) => x.radioValue)}>
+          ```
+      </td>
+    </tr>
+    <tr>
+      <td>readonly</td>
+      <td><code>boolean</code></td>
+      <td>If true, the user cannot change the value of this checkbox (which is greyed out)</td>
+      <td>
+        ```typescript
+        <rapid-radio readonly>
+        ```
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ### Slots
 
@@ -125,15 +167,15 @@ Property and attribute binding examples for Genesis Component syntax.
 | checked-indicator	| The checked indicator |
 
 ### Parts
-
-| Part |
-|---|
+| Part    | Description                                       |
+|---------| ------------------------------------------------- |
 | control |	The element representing the visual radio control |
-| label |	The label |
+| label   |	The label                                         |
+| checked-indicator | The checked indicator                   |
 
 ### Events fired
-| Name    | Description                                 |
-|---------|---------------------------------------------|
+| Name    | Description                                                |
+|---------|------------------------------------------------------------|
 | @change | Fires the event when the radio component changes its state |
 
 ### Events listened to
