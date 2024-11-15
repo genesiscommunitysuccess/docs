@@ -1,0 +1,452 @@
+---
+title: 'Foundation Filters'
+sidebar_label: 'Foundation Filters'
+id: foundation-filters
+keywords: [genesis, foundation, ui, filters]
+tags:
+  - filter
+  - feature
+  - flags
+  - conditions
+---
+
+import FiltersDemo from '../../../../examples/ui/client-capabilities/filters/filters.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Genesis Foundation Filters
+
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
+
+`foundation-filters` provides a collection of client-side filters.
+
+Client-side filters in Genesis allow users to filter and process data locally within the web application. They may also access runtime data or state to provide an outcome. These filters, including options like userTargeting and timeWindow, enable customised data manipulation directly in the browser, enhancing responsiveness by reducing server requests.
+
+Client-side filters generally take primitive input parameters, and return `true` or `false` based on these values.  They can be combined using the [ClientFilterRunner](./docs/api/foundation-filters.runner.md) utility provided in the `foundation-filters` package to create layered filtering conditions for complex data scenarios.When a filter is used without all the input parameters needed, Genesis logs a warning and returns `true` by convention so that the chain can continue. This is currently controlled at an individual filter level, and may change in time.
+
+:::important
+It's important to highlight that filters are purposefully decoupled from any `effect`, like pairing with a `when()` directive or custom-effect logic. This flexibility allows these filters to be reused for numerous purposes.
+:::
+
+## Installation
+
+To enable this module in your application, follow the steps below.
+
+1. Add `@genesislcap/foundation-filters` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../../web/basics/package-json-basics/) page.
+
+```json
+{
+  "dependencies": {
+    "@genesislcap/foundation-filters": "latest"
+  },
+}
+```
+
+## Available Filters
+
+Here is a list of available filters in Genesis's `foundation-filters` package:
+
+* [nodeEnv](./docs/api/foundation-filters.nodeenvfilter.md): This filter is used to match the current environment(production, development etc.) with the environment specified(passed as function param). It is useful for supporting environment-specific conditions ensuring that certain features are only available for targetted environment.
+* [percentage](./docs/api/foundation-filters.percentagefilter.md): The percentage filter in Genesis foundation filters checks if a randomly generated number between 0 and 100 is within a specified percentage threshold. This allows for setting probabilistic conditions, enabling features or elements to be displayed to a proportion of users based on the given percentage. This filter is useful for scenarios like A/B testing or gradually rolling out new features.
+* [timeWindow](./docs/api/foundation-filters.timewindowfilter.md): This filter is used to check whether the current date and time come in between the start and end period specified in the parameters.The filter returns true if the current date and time falls between the range, thus making it useful for time-sensitive conditions.
+* [urlTargeting](./docs/api/foundation-filters.urltargetingfilter.md): It is used to filter content based on URL parts like scheme, path, host, or pattern matching. It allows to target specific URLs based on particular criteria, which can be useful for enabling or restricting features.
+* [userAgent](./docs/api/foundation-filters.useragentfilter.md): It filters content based on user's browser, OS, devices or specified user agent string.It allows customized expereince according to specific environments, such as targetting mobile devices audience or restricting access on a particular browser.
+* [userTargeting](./docs/api/foundation-filters.usertargetingfilter.md): This filters content on basis of user related attributes like usernames, permissions and profiles. It aids in showing personalized content or restricting access to specific content depending on the soecified user conditions.
+
+## Example
+lets do an example to test the `timeWindow` filter. In below example you need to select a start period and end period. When you click on check button it executes the timeWindow method with start and end period as input parameters.
+
+<FiltersDemo />
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      styles: css`
+        .container {
+          display: flex;
+          flex-direction: column;
+          gap: calc(var(--design-unit) * 3px);
+          padding: calc(var(--design-unit) * 4px);
+        }
+      `,
+      template: html`
+        <div class="container">
+          <rapid-text-field type="datetime-local" :value=${sync((x) => x.startDate)}>
+            Start Period
+          </rapid-text-field>
+          <rapid-text-field type="datetime-local" :value=${sync((x) => x.endDate)}>
+            End Period
+          </rapid-text-field>
+          <rapid-button @click=${(x) => x.checkWindow()}>Check</rapid-button>
+          <span>${(x) => x.resultString}</span>
+        </div>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      @observable startDate: string;
+      @observable endDate: string;
+      @observable resultString: string;
+      checkWindow() {
+        this.resultString = timeWindowFilter(this.startDate, this.endDate)
+          ? 'Exists within the start and end period'
+          : 'Doesnot fall between start and end period';
+      }
+    }
+
+    ```
+
+  </TabItem>
+  
+  
+</Tabs>
+
+## Usage
+
+Each filter is provided in two flavours:
+1. Functions
+2. Dependency Injection(DI)
+
+These flavours are explained in detail below with help of code examples
+<FiltersDemo />
+### As Functions
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    ```typescript
+    import { timeWindowFilter } from '@genesislcap/foundation-filters';
+
+    @customElement({
+      name: 'my-element',
+      styles: css`
+        .container {
+          display: flex;
+          flex-direction: column;
+          gap: calc(var(--design-unit) * 3px);
+          padding: calc(var(--design-unit) * 4px);
+        }
+      `,
+      template: html`
+        <div class="container">
+          <rapid-text-field type="datetime-local" :value=${sync((x) => x.startDate)}>
+            Start Period
+          </rapid-text-field>
+          <rapid-text-field type="datetime-local" :value=${sync((x) => x.endDate)}>
+            End Period
+          </rapid-text-field>
+          <rapid-button @click=${(x) => x.checkWindow()}>Check</rapid-button>
+          <span>${(x) => x.resultString}</span>
+        </div>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      @observable startDate: string;
+      @observable endDate: string;
+      @observable resultString: string;
+      checkWindow() {
+        this.resultString = timeWindowFilter(this.startDate, this.endDate)
+          ? 'Exists within the start and end period'
+          : 'Doesnot fall between start and end period';
+      }
+    }
+
+    ```
+  </TabItem> 
+</Tabs>
+
+### With Dependency Injection(DI)
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    ```typescript
+    import { TimeWindow } from '@genesislcap/foundation-filters';
+
+    @customElement({
+      name: 'my-element',
+      styles: css`
+        .container {
+          display: flex;
+          flex-direction: column;
+          gap: calc(var(--design-unit) * 3px);
+          padding: calc(var(--design-unit) * 4px);
+        }
+      `,
+      template: html`
+        <div class="container">
+          <rapid-text-field type="datetime-local" :value=${sync((x) => x.startDate)}>
+            Start Period
+          </rapid-text-field>
+          <rapid-text-field type="datetime-local" :value=${sync((x) => x.endDate)}>
+            End Period
+          </rapid-text-field>
+          <rapid-button @click=${(x) => x.checkWindow()}>Check</rapid-button>
+          <span>${(x) => x.resultString}</span>
+        </div>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      @observable startDate: string;
+      @observable endDate: string;
+      @observable resultString: string;
+      @TimeWindow timeWindow: TimeWindow;
+      checkWindow() {
+        this.resultString = this.timeWindow.filter({start: this.startDate, end: this.endDate})
+          ? 'Exists within the start and end period'
+          : 'Doesnot fall between start and end period';
+      }
+    }
+
+    ```
+  </TabItem> 
+</Tabs>
+
+The function version is pretty self-explanatory, and you may be wondering why you would use the DI injected version. The
+reason is at the point of calling a filter, either directly or indirectly as (say) part of a chain, you may not know what
+data or state from the application it needs to provide its outcome. The DI versions encapsulate this complexity, which aids later refactoring, and leaves callers free to pass only primitive input parameters where possible.
+
+### DI use cases
+
+```ts
+import { UserTargeting } from '@genesislcap/foundation-filters';
+...
+@UserTargeting userTargeting: UserTargeting;
+...
+const outcome = this.userTargeting.filter({
+  profiles: ['ADMIN']
+});
+```
+
+Here we've used the `UserTargeting` filter without the need to provide the current user or other data points to the underlying function directly. If we source the current user from changes over time, the author of the filter can refactor centrally.
+
+All DI-based filters implement the [ClientFilter](./docs/api/foundation-filters.clientfilter.md) interface; however, they may provide other APIs for convenience to abstract underlying implementation details. For example, `UserTargeting` provides a `hasAdminProfile` API, so the previous example can be re-written as:
+
+```ts
+import { UserTargeting } from '@genesislcap/foundation-filters';
+...
+@UserTargeting userTargeting: UserTargeting;
+...
+const outcome = this.userTargeting.hasAdminProfile();
+```
+
+This is quite a simplistic example, but we hope it helps to highlight that common parameters can be predefined in the
+filters themselves where needed. It is also worth mentioning that DI-based filters are registered as transient, meaning
+you will get a new instance for every dependency request or container.get(). The ClientFilterRunner used to run chained
+filters is also transient.
+
+## Combining Filters with the Runner Method
+
+A [ClientFilterRunner](./docs/api/foundation-filters.clientfilterrunner.md) will return true when all the filters in the array pass.
+
+### Example
+```ts
+import { ClientFilterRunner } from '@genesislcap/foundation-filters';
+...
+@customElement({
+  name: 'runner-example',
+  template: html`
+    <template>
+      ${when(
+        (x) => x.seasonsGreetings,
+        html`
+          <happy-christmas-chome-users></happy-christmas-chome-users>
+        `
+      )}
+      ${when(
+        (x) => x.santasShift,
+        html`
+          <working-hard-or-hardly-working>Santa!</working-hard-or-hardly-working>
+        `
+      )}
+    </template>
+  `,
+})
+class RunnerExample extends GenesisElement {
+  @ClientFilterRunner runner: ClientFilterRunner;
+  /**
+   * This getter will remain reactive to any observable state each filter may use. Filters can be defined with strong
+   * typings as shown, or they can be simply loaded in from json files etc. Here we've defined the chain in the element,
+   * but you could inject a ClientFilterRunner into a store fragment to centralise and share such logic. Here we're
+   * targeting non-admin users on chrome between Christmas and New Year.
+   */
+  get seasonsGreetings() {
+    return this.runner.run([
+      {
+        name: 'userTargeting',
+        parameters: {
+          profiles: ['USER'],
+        },
+      },
+      {
+        name: 'userAgent',
+        parameters: {
+          browsers: ['Chrome']
+        },
+      },
+      {
+        name: 'timeWindow',
+        parameters: {
+          start: '2022-12-25',
+          end: '2022-12-31',
+        },
+      }]);
+  }
+
+  get santasShift() {
+    return this.runner.run([
+      {
+        name: 'userTargeting',
+        parameters: {
+          username: ['santa'],
+        },
+      },
+      {
+        name: 'timeWindow',
+        parameters: {
+          start: '2022-12-24',
+          end: '2022-12-25',
+        },
+      }]);
+  }
+}
+```
+
+## Detailed Filters Explanations with Examples:
+
+### nodeEnv
+The nodeEnv filter in Genesis’s foundation filters checks the current application environment (such as "development," "production," etc.) and returns true if the filter’s specified environment matches the current one. This filter ensures that certain features or configurations are available only in intended environments by managing environment-specific conditions.
+
+** Example **
+
+As Function:
+```typescript
+import { nodeEnvFilter } from '@genesislcap/foundation-filters';
+...
+const outcome = nodeEnvFilter(['development']);
+```
+As DI:
+```typescript
+import { NodeEnv } from '@genesislcap/foundation-filters';
+...
+@NodeEnv nodeEnv: NodeEnv;
+...
+const outcome = this.nodeEnv.filter({envs:[ 'development']});
+```
+The nodeEnv also provides a `isDevelopment` variable that can be used directly so the above example can be rewritten as:
+```typescript
+import { NodeEnv } from '@genesislcap/foundation-filters';
+...
+@NodeEnv nodeEnv: NodeEnv;
+...
+const outcome = this.nodeEnv.isDevelopment;
+```
+
+you can find other available API for nodeEnv in the API Docs TODO:enter link here from docs
+
+### percentage
+The percentage filter in Genesis foundation filters checks if a randomly generated number between 0 and 100 is within a specified percentage threshold. This allows for setting probabilistic conditions, enabling features or elements to be displayed to a proportion of users based on the given percentage. This filter is useful for scenarios like A/B testing or gradually rolling out new features.
+
+The percentage filter allows you to display certain features or messages to a set percentage of users. For example, if you set the filter to 20%, each time it runs, it has a 20% chance of passing, meaning only about 20% of users will see the feature or content. This is useful for controlled feature rollouts or A/B testing without requiring complex setups.
+
+** Example **
+
+### timeWindow
+This filter is used to check whether the current date and time fall between the specified start and end period.The filter returns true if the current date and time is within the specified range. `timeWindow` filter can be helpful when you want to manipulate data within a specific time frame.
+
+** Example **
+
+As Function:
+```ts
+import { timeWindowFilter } from '@genesislcap/foundation-filters';
+...
+const outcome = timeWindowFilter('Sun Sep 25 2022 16:51:55 GMT+0000', 'Fri Nov 25 2022 17:51:55 GMT+0000');
+```
+As DI:
+```ts
+import { TimeWindow } from '@genesislcap/foundation-filters';
+...
+@TimeWindow timeWindow: TimeWindow;
+...
+const outcome = this.timeWindow.filter({
+  start: 'Sun Sep 25 2022 16:51:55 GMT+0000',
+  end: 'Fri Nov 25 2022 17:51:55 GMT+0000',
+});
+```
+
+
+### urlTargeting
+The `urlTargeting` is used to filter content on the basis of URL structure, allowing you to use specific criteria to target matching URLs or patterns. Following parameters are used to configure this filter:
+
+**url**: A full URL to match.
+
+**pattern**: A regular expression pattern for matching URLs.
+
+**schemes**: An array of valid URL schemes (e.g., "https").
+
+**hosts**: A list of acceptable hostnames or domain names.
+
+**paths**: A list of URL path segments to match.
+
+This filter  will return true when the current URL matches on **ANY** of the parameters explained. If you wish to match on multiple parameters, consider chaining an array of urlTargeting filters together using [ClientFilterRunner](./docs/api/foundation-filters.clientfilterrunner.md).
+
+This filter helps in targeting specific URLs based on these parameters, which can be extremely useful for restricting or enabling features based on URL parameters or domains.
+For example, you could use the filter to only allow access to certain content when the URL matches a secure HTTPS connection on specific hosts, like `https://test.genesislab.global`.
+
+** Example **
+
+### userAgent
+The `userAgent` filters content on the basis of user’s browser, device, operating system (OS), or specific user agent string parameters. It allows user to specify which browsers(e.g. Chrome, Firefox), devices (e.g., mobile or desktop), or OS (e.g., IOS, Windows) have access to certain features. You can use this filter for providing tailored experience on the basis of user's environment for instance customizing content for a specic browser or device.
+
+
+
+** Example **
+
+### userTargeting
+This filter is used to filter content on the basis of user-specific attributes. It uses the following criteria for filtering:
+
+Usernames: filters on the basis of usernames.
+Profiles: filters on the basis of assigned user profiles.
+Permissions: Applies filtering on the basis of assigned permissions on user profile.
+
+It will return true when the current user matches on ANY of the parameters mentioned above. If you wish to match on multipleparameters, consider chaining an array of userTargeting filters together using [ClientFilterRunner](./docs/api/foundation-filters.clientfilterrunner.md).
+
+** Example **
+
+As Function:
+
+As DI:
+```ts
+import { UserTargeting } from '@genesislcap/foundation-filters';
+...
+@UserTargeting userTargeting: UserTargeting;
+...
+const outcome = this.userTargeting.filter({
+  profiles: ['ADMIN']
+});
+```
+One usecase of this filter is checking if the user is an **admin**. For this purpose, `hasAdmnProfile` utility provided by this filter can be used to determine whether a user has administrative access.
+```ts
+import { UserTargeting } from '@genesislcap/foundation-filters';
+...
+@UserTargeting userTargeting: UserTargeting;
+...
+const outcome = this.userTargeting.hasAdminProfile();
+```
+This filter is extremely helpful for restricting features or allowing personalized content. Another important application of this filter might be in managing access control on basis of profile, role, or permissions.
+
+
+
+## [API Docs](./docs/api/index.md)
+
+## License
+
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis application platform
