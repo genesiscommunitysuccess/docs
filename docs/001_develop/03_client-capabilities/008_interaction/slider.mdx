@@ -23,6 +23,7 @@ Use cases:
 * Interact with data visualization
 * Input for numeric values
 * Dynamic filters
+* Have a visually labelled scale for the user to choose a value from
 
 ## Example
 
@@ -134,16 +135,109 @@ Use of the `<rapid-slider-label>` is optional.
 
 Property and attribute binding examples for Genesis Component syntax.
 
-| Name        | Type      | Description                                                   | Examples |
-|-------------|-----------|---------------------------------------------------------------|---|
-| disabled    | `boolean` | Similar to `readonly`, but with a blur layer in the component. | `<rapid-slider disabled>` |
-| form        | `string`  | Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form. | |
-| max         | `number`  | Defines maximum number of the slider.                          | `<rapid-slider max=50>` |
-| min         | `number`  | Defines minimum number of the slider.                          | `<rapid-slider min=10>` |
-| step        | `number`  | Defines the value of each step of the slider.                  | `<rapid-slider step=5>` |
-| readonly    | `boolean` | The slider is for display only, and cannot be changed by the user. | `<rapid-slider readonly>` |
-| value       | `number`  | Defines a value for the component when it is created.          | `<rapid-slider value=20>` |
-| orientation | `string`  | Defines the orientation: `vertical` or `horizontal`.           | `<rapid-slider orientation="horizontal">` |
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>readonly</td>
+      <td><code>boolean</code></td>
+      <td>The slider is for display only, and cannot be changed by the user.</td>
+<td>
+
+```typescript
+<rapid-slider readonly>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Similar to `readonly`, but component is also greyed out.</td>
+<td>
+
+```typescript
+<rapid-slider disabled>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>form</td>
+      <td><code>string</code></td>
+      <td>Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form.</td>
+<td>
+
+```typescript
+<rapid-slider form="myForm">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>max</td>
+      <td><code>number</code></td>
+      <td>Defines maximum number of the slider.</td>
+<td>
+
+```typescript
+<rapid-slider max=50>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>min</td>
+      <td><code>number</code></td>
+      <td>Defines minimum number of the slider.</td>
+<td>
+
+```typescript
+<rapid-slider min=10>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>step</td>
+      <td><code>number</code></td>
+      <td>Defines the value of each step of the slider.</td>
+<td>
+
+```typescript
+<rapid-slider step=5>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>number</code></td>
+      <td>Defines a value for the component when it is created.</td>
+<td>
+
+```typescript
+<rapid-slider value=20>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>orientation</td>
+      <td><code>string</code></td>
+      <td>Defines the orientation: `vertical` or `horizontal`.</td>
+<td>
+
+```typescript
+<rapid-slider orientation="horizontal">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+
 
 ### Slots
 
