@@ -264,8 +264,6 @@ eventHandler<Trade.ById>(name = "TRADE_DELETE") {
 
 `excludeMetadataFields` takes a set of field names which are defined as part of the event meta (e.g `Trade` in our example below), to exclude them from event metadata.
 
-By default `excludeMetadataFields` has 2 fields, `RECORD_ID` and `TIMESTAMP`, 2 fields which are part of every database object but will always be set by the database and thus client shouldn't send.
-
 ```kotlin
   eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
     excludeMetadataFields = setOf("DATE")
@@ -273,17 +271,17 @@ By default `excludeMetadataFields` has 2 fields, `RECORD_ID` and `TIMESTAMP`, 2 
   }
 ```
 
-In this example `DATE` defined on Trade will not be part of the meta for this event.
+In this example `DATE` defined on `Trade` will not be part of the meta for this event.
+
+By default `excludeMetadataFields` has 2 fields, `RECORD_ID` and `TIMESTAMP`, 2 fields which are part of every database object but will always be set by the database and thus client shouldn't send
 
 :::warning
-Typically when using a table entity as the eventHandler Type, you don't need to use `excludeMetadataFields`, but if you do be sure to keep these 2 fields listed in your set.
-Where [optimistic concurrency is required](#optimistic-concurrency) Be sure not to exclude critical fields 
-TODO checking with Karim
+Typically when using a table entity as the eventHandler Type, you don't need to use `excludeMetadataFields`, but if you do be sure to keep the 2 default fields `RECORD_ID` and `TIMESTAPE` listed in your set except when you are using [optimistic concurrency](#optimistic-concurrency) mode, in which case the `TIMESTAMP` field is critical to **include** in the event meta, so do not define in this list.
 :::
 
 #### `overrideMetadataFields`
 
-Setting used to override the metadata field properties of the eventHandler type, this isn't to change the type of a field, more to override fields being optional vs mandatory
+`overrideMetadataFields` is used to override the metadata field properties of the eventHandler type, this isn't to change the type of a field, more to override fields being optional vs mandatory or default valuees.
 
 ```kotlin
   eventHandler<TriggerReport>(name = "TRADE_INSERT", transactional = true) {
