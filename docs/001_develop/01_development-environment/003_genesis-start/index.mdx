@@ -11,13 +11,26 @@ tags:
 sidebar_position: 3
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Genesis Start is a small program which allows you to preview an application, including during the development cycle, by running it on your local desktop. 
 
 From the command line, go to your project's `server` directory, run:
 
+
+<Tabs defaultValue="windows" values={[{ label: 'Windows', value: 'windows', }, { label: 'Mac OSX / Linux', value: 'mac', }]}>
+<TabItem value="windows">
 ```shell
+.\gradlew.bat genesisStart
+```
+</TabItem>
+<TabItem value="mac">
+```bash
 ./gradlew genesisStart
 ```
+</TabItem>
+</Tabs>
 
 If the command fails, you may need to [enable Genesis Start](#enabling-genesis-start)
 
@@ -27,7 +40,7 @@ Genesis start provides a simple UI to run your app.
 
 ## How to use
 
-### Bootstap and launch 
+### Bootstrap and launch 
 ![Bootstrap and Launch](/img/genesis-start/genesis-start-bootstrap.png)
 
 Bootstrap the application with a single click.

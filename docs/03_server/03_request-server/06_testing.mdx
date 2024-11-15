@@ -1,0 +1,525 @@
+---
+title: 'Request Server - testing'
+sidebar_label: 'Testing'
+id: testing
+keywords: [server, request server, testing]
+tags:
+  - server
+  - request server
+  - testing
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+:::info
+
+**GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
+
+If you are testing against a previous version of the framework, go to the [legacy](./#integration-testing-legacy) section.
+
+:::
+
+## Integration testing
+
+This document looks at the basics of testing Request Servers.
+
+We shall use a very simple example and work through the communication between our tests and the Request Server we are testing. This example relies on GenesisJunit, which is designed to make testing easy.
+
+In this example, we shall test the following Request Server:
+
+```kotlin 
+data class Hello(
+    val name: String,
+)
+
+data class World(
+    val message: String,
+)
+
+requestReplies {
+    requestReply<Hello, World>("HELLO_WORLD") {
+        replySingle { hello: Hello ->
+            World("Hello ${hello.name}")
+        }
+    }
+}
+```
+
+
+
+### Create the test class
+First, create the test class. Use the code below:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@ScriptFile("hello-world-reqrep.kts")
+class RequestServerTest {
+
+    // our tests go here ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@ScriptFile("hello-world-reqrep.kts")
+public class RequestServerTest {
+
+    // our tests go here ...
+}
+```
+</TabItem>
+</Tabs>
+
+The code above:
+* enables `GenesisJunit`
+* uses the `ScriptFile` annotation to identify the Request Server script that we want to test
+
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/operations/testing/integration-testing/).
+
+### Injecting references
+Here, you need to set up two things:
+
+- inject a Request Server client so that it can communicate with the Request Server you are testing
+- define your workflow, so that the client knows both the request and the reply type
+
+Use the code below:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@ScriptFile("hello-world-reqrep.kts")
+class RequestServerTest {
+
+    @Inject
+    private lateinit var client: RequestClientSync
+
+    private val helloWorldFlow = requestReplyWorkflowBuilder<Hello, World>("HELLO_WORLD")
+
+    // our tests go here ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@ScriptFile("hello-world-reqrep.kts")
+public class RequestServerTest {
+
+    @Inject
+    private RequestClientSync client = null;
+
+    private RequestReplyWorkflow<Hello, World> helloWorldFlow = new AbstractRequestReplyWorkflow<>("HELLO_WORLD") { };
+
+    // our tests go here ...
+}
+```
+</TabItem>
+</Tabs>
+
+### Define the workflow
+
+The syntax for defining the request-reply workflow depends on whether you use Kotlin or Java. However, in both instances you need to provide the input type, the output type and the request name.
+
+In Kotlin, you can build the flow in a method call:
+
+```kotlin 
+private val helloWorldFlow = requestReplyWorkflowBuilder<Hello, World>("HELLO_WORLD")
+```
+
+In Java, you need to construct an abstract class:
+
+```java
+private RequestReplyWorkflow<Hello, World> helloWorldFlow = new AbstractRequestReplyWorkflow<>("HELLO_WORLD") { };
+```
+
+### A first test
+Here is a very simple first test. 
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Test
+fun testHelloWorldRequestServer() {
+    val hello = Hello("John")
+    val result = client.sendRequest(helloWorldFlow, hello)
+    assertEquals(1, result.size)
+    val world = result[0]
+    assertEquals("Hello, John!", world.message)
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Test
+fun testHelloWorldRequestServer() {
+    val hello = Hello("John")
+    val result = client.sendRequest(helloWorldFlow, hello)
+    assertEquals(1, result.size)
+    val world = result[0]
+    assertEquals("Hello, John!", world.message)
+}
+```
+</TabItem>
+</Tabs>
+
+### Providing a user name
+
+As you can see, to send a request, you need to provide both the workflow and the content. 
+You can optionally provide a username as well:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Test
+public void testHelloWorldRequestServerWithUser() {
+    var hello = new Hello("John");
+    var result = client.sendRequest(helloWorldFlow, hello, "JohnDoe");
+    assertEquals(1, result.size());
+    var world = result.get(0);
+    assertEquals("Hello, John!", world.getMessage());
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Test
+fun testHelloWorldRequestServerWithUser() {
+    val hello = Hello("John")
+    val result = client.sendRequest(helloWorldFlow, hello, "JohnDoe")
+    assertEquals(1, result.size)
+    val world = result[0]
+    assertEquals("Hello, John!", world.message)
+}
+```
+</TabItem>
+</Tabs>
+
+### Dynamic authorisation
+
+To test dynamic authorisation, you need to amend your Request Server definition:
+
+```kotlin
+data class Hello(
+    val name: String,
+)
+
+data class World(
+    val message: String,
+    val name: String,
+)
+
+requestReplies {
+    requestReply<Hello, World>("HELLO_WORLD") {
+        replySingle { hello: Hello ->
+            World("Hello, ${hello.name}!", hello.name)
+        }
+    }
+
+    requestReply<Hello, World>("HELLO_WORLD_AUTH") {
+        permissioning {
+            auth("NAMES") {
+                authKey {
+                    key(data.name)
+                }
+            }
+        }
+
+        replySingle { hello: Hello ->
+            World("Hello, ${hello.name}!", hello.name)
+        }
+    }
+}
+```
+
+You then need to create your new test cases. Note that the authorisation for Request Servers is on the outgoing message. The Request Server filters out values to which the requesting user has no access. 
+
+In the code below, there are two tests, which both check the result of the authorisation process:
+
+- In the first test, if the result is 1 (authorised), then the Hello message is sent (as in the earlier example).
+- In the second test, if the result is 0 (unauthorised), then an empty message is returned.
+
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@ScriptFile("hello-world-reqrep.kts")
+@EnableInMemoryTestAuthCache
+class HelloWorldRequestServerTest {
+    @Inject
+    private lateinit var client: RequestClientSync
+
+    @Inject
+    private lateinit var authCache: InMemoryTestAuthCache
+
+    private val helloWorldFlow = requestReplyWorkflowBuilder<Hello, World>("HELLO_WORLD")
+
+    @Test
+    fun testHelloWorldAuthorised() {
+        authCache.authorise(
+            authMap = "NAMES",
+            entityCode = "John",
+            userName = "JohnDoe"
+        )
+
+        val hello = Hello("John")
+        val result = client.sendRequest(helloWorldAuthorisedFlow, hello, "JohnDoe")
+        assertEquals(1, result.size)
+        val world = result[0]
+        assertEquals("Hello, John!", world.message)
+    }
+
+    @Test
+    fun testHelloWorldNotAuthorised() {
+        authCache.revoke(
+            authMap = "NAMES",
+            entityCode = "John",
+            userName = "JohnDoe"
+        )
+
+        val hello = Hello("John")
+        val result = client.sendRequest(helloWorldAuthorisedFlow, hello, "JohnDoe")
+
+        assertEquals(0, result.size)
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@ScriptFile("hello-world-reqrep.kts")
+@EnableInMemoryTestAuthCache
+public class HelloWorldRequestServerJavaTest {
+
+    @Inject
+    private RequestClientSync client = null;
+
+    @Inject
+    private InMemoryTestAuthCache authCache = null;
+
+    private RequestReplyWorkflow<Hello, World> helloWorldAuthorisedFlow = new AbstractRequestReplyWorkflow<>("HELLO_WORLD_AUTH") { };
+
+    @Test
+    public void testHelloWorldAuthorised() {
+        authCache.builder()
+                .withAuthMap("NAMES")
+                .withEntityCode("John")
+                .withUserName("JohnDoe")
+                .authorise();
+
+        var hello = new Hello("John");
+        var result = client.sendRequest(helloWorldFlow, hello);
+        assertEquals(1, result.size());
+        var world = result.get(0);
+        assertEquals("Hello, John!", world.getMessage());
+    }
+
+    @Test
+    public void testHelloWorldNotAuthorised() {
+        authCache.builder()
+                .withAuthMap("NAMES")
+                .withEntityCode("John")
+                .withUserName("JohnDoe")
+                .revoke();
+
+        var hello = new Hello("John");
+        var result = client.sendRequest(helloWorldFlow, hello, "JohnDoe");
+        assertEquals(0, result.size());
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+### Different clients
+
+There are three request clients available:
+
+* RequestClientSync - blocking implementation
+* RequestClientAsync - supports coroutines
+* RequestClientRx - supports rx java
+
+In most cases, the **RequestClientSync** client will suffice.
+
+### Conclusion
+
+At this point we have tested our very simple Request Server. We haven't even had to use the database! However, we have covered the basics of communication between tests and Request Servers.
+
+We have covered:
+* defining a request flows
+* sending our request and receiving the response
+* setting the username on the request
+* handling dynamic authorisation
+
+## Integration testing (legacy)
+
+:::info
+This section covers testing your Request Server if you are using any version of the Genesis Server Framework before GSF v8.
+:::
+
+It is good practice to test your Request Servers. This is the best way to prevent any unexpected side effects of changes to your application over time.
+
+The Genesis platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Request Server configuration is used to create our Request Server. We also need to add the required packages and genesis home. 
+
+```kotlin
+class ReqRepTests : AbstractGenesisTestSupport<Reply<*>>(
+    GenesisTestConfig {
+        addPackageName("global.genesis.requestreply.pal")
+        genesisHome = "/GenesisHome/"
+        scriptFileName = "your-application-reqrep.kts"
+        initialDataFile = "seed-data.csv"
+    }
+) {
+    ...
+}
+```
+
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing-previous/#abstractgenesistestsupport).
+
+Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](../../../server/request-server/advanced/#custom-request-servers).
+
+### Standard Request Servers
+
+Let's run a very simple example.
+Copy the following into a csv file and save as `seed-data.csv` in the test Resources folder.
+
+```text
+#COUNTERPARTY
+COUNTERPARTY_ID,COUNTERPARTY_NAME
+testID 1,TestName 1
+testID 2,TestName 2
+```
+We shall send a message to our Genesis application, pointing at the correct Request Server (making sure to add the *REQ_* prefix) and wait for the response.
+The Genesis platform uses Kotlin coroutines which gives us a degree of non-blocking asynchronous computation. For this reason, we must wrap our tests in a `runBlocking` coroutine scope as seen below.
+
+
+```kotlin
+class ReqrepTest : AbstractGenesisTestSupport<GenesisSet>(
+    GenesisTestConfig {
+        addPackageName("global.genesis.requestreply.pal")
+        genesisHome = "/GenesisHome/"
+        scriptFileName = "positions-app-tutorial-reqrep.kts"
+        initialDataFile = "seed-data.csv"
+        parser = { it }
+    }
+) {
+
+    @Test
+    fun `can get all counterparty`() = runBlocking {
+        val request = GenesisSet.genesisSet {
+            MessageType.MESSAGE_TYPE with "REQ_COUNTERPARTY"
+        }
+        val counterparties = sendMessageAsync(request).getArray<GenesisSet>("REPLY")
+        assertNotNull(counterparties)
+        assertEquals(2, counterparties.size)
+    }
+}
+
+```
+
+In the above example, we are asserting that there are five rows within the response from our Request Server. This is based on the two rows of data that we have in `seed-data.csv` declared earlier.
+
+### Custom Request Servers
+
+For custom Request Servers, we must declare a workflow object that matches the custom Request Server that we have declared. This should match the same input and output types for the custom Request Server.
+
+Given a custom Request Server that takes an input of type `Hello` and returns type `World`, we pass the same types into the requestReplyWorkflow. We can optionally pass the name of the Request Server to the builder.
+
+```kotlin
+object HelloWorldFlow : RequestReplyWorkflow<Hello, World> by requestReplyWorkflowBuilder("HELLO_WORLD")
+
+@Test
+fun `can get hello world`() = runBlocking {
+    val reply = sendRequest(HelloWorldFlow, Hello("Peter")).first()
+
+    assert(reply.message == "Hello Peter")
+}
+```
+
+If you want to reuse a workflow with the same input and output types, you can use the unary plus overload to change the name of the Request Server being pointed to. In the  example below, we reuse `HelloWorldFlow` and change the Request Server to "HELLO_WORLD_CAPS", a variant of the same Request Server which returns a string in all caps.
+
+```kotlin
+@Test
+fun `can get hello world`() = runBlocking {
+    val reply = sendRequest(HelloWorldFlow + "HELLO_WORLD_CAPS", Hello("Peter")).first()
+
+    assert(reply.message == "HELLO PETER")
+}
+```
+
+## Manual testing
+
+### Testing with Console
+
+If you use Genesis Console, this gives you a simple way of testing components.
+
+1. In your browser, go to http://genesislcap.com/console/console-next2/.
+2. Enter the IP address of your server. If you get a blank page without any response, then this is probably because you don't have [NGINX configured](../../../operations/server-setup/config-management/#nginx-configuration).
+3. Log in with your user name and password. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
+4. Click on the **RESOURCES** tab.
+5. Filter the **Resource type** to show only Request Servers. Once you click into your Request Server, you will see the current response from the Request Server and any input fields that you have defined. You can change the inputs and verify that the correct behaviour is being seen. Make sure that your database has some data for you to search through.
+
+![](/img/test-console-rs-success.png)
+
+For more detailed information about using Genesis Console for manual testing, go to our [testing documentation](../../../server/request-server/testing).
+
+### Testing with an API client
+
+An API client is a useful way of testing components. As a client, it is effectively a front end seeking information from the server.
+
+The API client enables you to create calls to the resources in your server - Data Servers, Request Servers and Event Handlers. Then you can just click to run a call and see what response you get.
+
+Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](../../../operations/testing/component-testing/#using-an-api-client) page.
+
+Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
+
+In the example below, we are using Postman as the client API.
+
+![](/img/test-rs-postman.png)
+
+There is no need for any information in the body, as this is a **GET** request.
+
+In the header, you need to supply:
+
+- a SOURCE_REF (always), which identifies you; you can use any string value that suits you
+- the SESSION_AUTH_TOKEN that permissions you to access the server
+
+In front of the url, this has been set to a **GET** call.
+
+The url consists of:
+
+- the address or hostname of the server
+- if necessary, some extra routing;
+- the name of the request server, preceded by **REQ_**
+
+A Request Server requires additional parameters as part of the request. Here we provide the query parameters: `REQUEST.{NAME_OF_THE_FIELD}`. So your URL would be like this:
+
+```postman
+.../REQ_{NAME_OF_THE_REQUEST}?REQUEST.{NAME_OF_THE_FIELD1}=1&REQUEST.{NAME_OF_THE_FIELD2}=2
+```
+
+When you have this in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
+
+import { getTableHeadUtilityClass } from "@mui/material"
+
