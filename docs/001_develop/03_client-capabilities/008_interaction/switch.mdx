@@ -40,7 +40,7 @@ Usage
   name: 'my-element',
   template: html`
     <rapid-switch
-      :checked="${x => x.isSelected}"
+      ?checked="${x => x.isSelected}"
       @change=${x => x.switchChanged()}>
       Theme
       <span slot="checked-message">Dark</span>
@@ -126,7 +126,7 @@ Property and attribute binding examples for Genesis Component syntax (closing ta
 <td>
 
 ```typescript
-<rapid-switch checked>
+<rapid-switch ?checked=${sync(x => x.isSelected, 'boolean'}>
 ```
 
 </td>
