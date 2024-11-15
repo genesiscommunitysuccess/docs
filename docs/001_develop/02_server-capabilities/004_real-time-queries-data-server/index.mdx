@@ -21,7 +21,15 @@ import CommonProcesses from '/snippet/_common-see-processes.md'
 
 ## Overview
 
-The Data Server is a microservice responsible for providing APIs to request real-time views of an application's data.  Developers configure specific data sets as named queries, which are then preloaded by the Data Server and kept up to date as the underlying data is changed by the application. The Data Server utilizes the push mechanism of web sockets to update subscribed clients with real time updates the data they are subscribed to and filtering on, and also offers a REST API.
+<p align="center"><iframe src="https://player.vimeo.com/video/792592108?h=ccbf47bf29&amp" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></p>
+
+A Data Server supplies real-time (streaming) data to the front end of your application.
+
+Data Servers preload and monitor specific tables or views in the database. When a change in data occurs, the Data Server sends the changed data to all users who have subscribed to the table or view.
+
+The first time the user subscribes, all the data for the table or view is sent. The connection between the user and the Data Server remains open; so from then on, the Data Server automatically sends changes.
+
+DThe Data Server utilizes the push mechanism of web sockets to update subscribed clients with real time updates the data they are subscribed to and filtering on, and also offers a REST API.
 
 ```mermaid
 graph TD
@@ -31,7 +39,6 @@ B --> |5. Updates| A
 B <-->|2. Initial read| C[Database]
 C --> |4. Changes in table/view trigger a read|B
 ```
-
 
 When the client first requests to subscribe to a query in a Data Server, the initial data is returned, and the subscription between the client and the query remains active. The data server will continue to push data updates to the client, for example newer entries or modifications to data rows already sent to the client. The client can also make changes for example to request more rows.
 
