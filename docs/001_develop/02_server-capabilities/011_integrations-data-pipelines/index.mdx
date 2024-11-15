@@ -262,30 +262,30 @@ Note that if your pipeline produces only single elements and not streams of elem
 ```kotlin
 // Example using a platform provided sink
 pipelines {
-    pipeline(name = "My Pipeline") {
-        source(testSource)
-            .map(testMapper)
-            .sink(dbSink())
-    }
+  pipeline(name = "My Pipeline") {
+    source(testSource)
+      .map(testMapper)
+      .sink(dbSink())
+  }
 }
 
 // Example using a custom source class
 pipelines {
-    pipeline(name = "My Pipeline") {
-        source(testSource)
-            .sink(inject<MyCustomSink>())
+  pipeline(name = "My Pipeline") {
+    source(testSource)
+      .sink(inject<MyCustomSink>())
     }
 }
 
 // Example using a source defined in-line
 pipelines {
-    pipeline(name = "My Pipeline") {
-        source(testSource)
-            .sink { it, context ->
-                // Add your logic here 
-                true
-            }
-    }
+  pipeline(name = "My Pipeline") {
+    source(testSource)
+      .sink { it, context ->
+        // Add your logic here 
+        true
+      }
+  }
 }
 ```
 
@@ -415,22 +415,22 @@ Here is a GPAL example of a Batch Poll source definition:
 ```kotlin
 // Single Field Index Example
 val batchPollSource = dbBatchQuery<TestIndexTable> {
-    source = "SINGLE_INDEX_SOURCE"
-    index = TestIndexTable.ByIndex
+  source = "SINGLE_INDEX_SOURCE"
+  index = TestIndexTable.ByIndex
 }
 
 // Multiple Field Index Example
 val batchPollMultiIndexSource = dbBatchQuery<TestMultiIndexTable> {
-    source = "MULTI_INDEX_SOURCE"
-    index = TestMultiIndexTable.ByNameIndex
-    buildIndex { value -> TestMultiIndexTable.ByNameIndex("NAME", value) }
+  source = "MULTI_INDEX_SOURCE"
+  index = TestMultiIndexTable.ByNameIndex
+  buildIndex { value -> TestMultiIndexTable.ByNameIndex("NAME", value) }
 }
 
 pipelines {
-    pipeline("TEST_BATCH_POLL_PIPELINE") {
-        source(batchPollSource)
-            .sink(testSink)
-    }
+  pipeline("TEST_BATCH_POLL_PIPELINE") {
+    source(batchPollSource)
+      .sink(testSink)
+  }
 }
 ```
 
@@ -450,21 +450,21 @@ Here is an `eventHandler` that sends to this `ProgrammaticTradeSource`:
 
 ```kotlin
 eventHandler<Trade>("TRADE_INSERT", transactional = true) {
-    onCommit { event ->
-      val trade = event.details
-      ProgrammaticTradeSource.send(trade)
-      ack()
-    }
+  onCommit { event ->
+    val trade = event.details
+    ProgrammaticTradeSource.send(trade)
+    ack()
   }
+}
 ```
 
 The resulting pipeline:
 ```kotlin
 pipelines {
-    pipeline("TEST_PIPELINE") {
-        source(ProgrammaticTradeSource)
-        .sink(testSink)
-    }
+  pipeline("TEST_PIPELINE") {
+    source(ProgrammaticTradeSource)
+      .sink(testSink)
+  }
 }
 ```
 
