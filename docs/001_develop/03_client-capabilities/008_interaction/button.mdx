@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 
 # Button
 
-Implementation of a [button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/button) component.
+
 
 Use cases:
 * Submit forms
@@ -54,7 +54,7 @@ Use cases:
     })
     export class MyElement extends GenesisElement {
       buttonClicked() {
-        alert('Button Clicked')
+        console.log('Button Clicked')
       }
     }
     ```
@@ -64,7 +64,7 @@ Use cases:
 
     Declaration
     ```html
-    <rapid-button></rapid-button>
+    <rapid-button>Button</rapid-button>
     ```
     Usage
     ```typescript
@@ -83,7 +83,7 @@ Use cases:
 
     Declaration
     ```html
-    <rapid-button></rapid-button>
+    <rapid-button>Button</rapid-button>
     ```
 
     Usage
@@ -95,9 +95,8 @@ Use cases:
       template: `
         <rapid-button
           (click)="onButtonClicked($event)"
-        ></rapid-checkbox>
+        ></rapid-button>
       `,
-      styleUrls: ['./my.component.css'],
       standalone: true,
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [FormsModule],
@@ -111,29 +110,102 @@ Use cases:
   </TabItem>
 </Tabs>
 
- DOM API
+## API
 
- Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
 
- ### Attributes
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>autofocus</td>
+      <td><code>boolean</code></td>
+      <td>The boolean value of whether the button is checked.</td>
+<td>
 
-| Attribute | Type | Use | Example |
-|---|---|---|---|
-|autofocus|`boolean`|The boolean value of whether the button is checked. | |
-|appearance|`string`|Configures the component so the user cannot alter the state via the web browser.| `<rapid-button appearance="natural">Button</rapid-button>` |
-|disabled|`boolean`|Makes the component visually opaque, and configures it so that the user cannot alter the state via the web browser.| `<rapid-button disabled>Button</rapid-button>` |
-|form|`string`|Associates this component with a form. The Form id must be passed. If no Id is passed, then it will be associated with the ancestor form.| |
-|name|`string`|Defines the name of the element.| |
-|type|`string`|Defines the mode of the button.| |
-|value|`string`|Defines the value associated with name.| |
+```typescript
+<rapid-button autofocus>
+```
 
-The type attribute can be:
-* button (default) - performs an action when clicked
-* reset - can influence a group of components associated with the same form.
+</td>
+    </tr>
+    <tr>
+      <td>appearance</td>
+      <td><code>string</code></td>
+      <td>Configures the component so the user cannot alter the state via the web browser.</td>
+<td>
+
+```typescript
+<rapid-button appearance="natural">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Makes the component visually opaque, and configures it so that the user cannot alter the state via the web browser.</td>
+<td>
+
+```typescript
+<rapid-button disabled>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>form</td>
+      <td><code>string</code></td>
+      <td>Associates this component with a form. The Form id must be passed. If no Id is passed, then it will be associated with the ancestor form.</td>
+<td>
+
+```typescript
+<rapid-button form="myForm">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>Defines the name of the element.</td>
+<td>
+
+```typescript
+<rapid-button name="buttonName">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td><code>string</code></td>
+      <td>Defines the mode of the button. button (default) - performs an action when clicked | reset - can influence a group of components associated with the same form)</td>
+<td>
+
+```typescript
+<rapid-button type="button">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>string</code></td>
+      <td>Defines the value associated with this button.</td>
+<td>
+
+```typescript
+<rapid-button value="sample">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
 
 # Properties
-
-No additional properties
+This component doesn't have any properties which are not also controlled via attributes.
 
 ### Slots
 
@@ -144,7 +216,6 @@ No additional properties
 | end | End slot. |
 
 ### Parts
-
 | Part |
 |---|
 | start |
@@ -160,3 +231,6 @@ No additional properties
 ### Events listened to
 
 This component doesn't listen to any events.
+
+### Further details
+This component is an implementation of an HTML [button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/button) element.
