@@ -136,15 +136,76 @@ Use cases:
     </TabItem>
   </Tabs>
 
+Criteria options are JSON objecst constructed using serialisers
+
+The choice of serialisers are:
+
+```typescript
+    Serialisers.AND
+    Serialisers.OR
+    Serialisers.NOT
+    Serialisers.GT
+    Serialisers.GE
+    Serialisers.LT
+    Serialisers.LE
+    Serialisers.NE
+    Serialisers.EQ
+    Serialisers.equals
+    Serialisers.equalsIgnoreCase
+    Serialisers.contains
+    Serialisers.fieldContains
+    Serialisers.containsIgnoreCase
+    Serialisers.dateIsEqual
+    Serialisers.dateIsGreaterEqual
+    Serialisers.dateIsLessEqual
+```
+
+
 ## API
 
-Properties:
+### Properties:
 
-| Name             | Type    | Description                                          | Example |
-|-----------------|----------|------------------------------------------------------|---------|
-| criteriaOptions | array    | Array of criteria objects that can be selected       |         |
-| value           | `string` | The value of the constructed criteria expression     |         |
-| selectedLabel   | `string` | The selected options label                           |         |
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>criteriaOptions</td>
+      <td><code>array</code></td>
+      <td>Array of criteria objects that can be selected</td>
+<td>
+
+```typescript
+<criteria-segmented-control criteriaOptions=${(x) => x.sampleCriteriaOptions)}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>string</code></td>
+      <td>The value of the constructed criteria expression</td>
+<td>
+
+```typescript
+<criteria-segmented-control value="sampleValue">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>selectedLabel</td>
+      <td><code>string</code></td>
+      <td>The selected options label</td>
+<td>
+
+```typescript
+<criteria-segmented-control selectedLabel="selectedLabel">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Slots
 
@@ -153,16 +214,28 @@ Properties:
 | label | The label |
 
 ### Parts
-
 There are no parts.
 
 ### Events fired
 
-| Part | Type | Use | Example |
-|---|---|---|---|
-| change | | Emits a custom change event when the selection state changes.| |
+<table>
+  <thead><tr><th>Event</th><th>Type</th><th>Use</th><th>Example</th></tr></thead>
+  <tbody>
+  <tr>
+    <td>change</td>
+    <td><code>event</code></td>
+    <td>Emits a custom change event when the component state changes.</td>
+<td>
+
+```typescript
+<criteria-segmented-control @change="${(x) => x.myChangeHandler(event)}">
+```
+
+</td>
+  </tr>
+  </tbody>
+</table>
 
 
 ### Events listened to
-
 This component doesn't listen to any events.
