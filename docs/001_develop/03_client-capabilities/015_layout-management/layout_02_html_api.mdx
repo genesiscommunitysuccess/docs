@@ -70,9 +70,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 <td>
 
 ```typescript
-html`
-    <rapid-layout auto-save-key=${(x) => x.autoSaveKey || 'default'}>
-`
+<rapid-layout auto-save-key=${(x) => x.autoSaveKey || 'default'}>
 ```
 
 </td>
@@ -84,9 +82,7 @@ html`
 <td>
 
 ```typescript
-html`
-    <rapid-layout reload-buffer=${(x) => x.reloadBuffer || '2000'}>
-`
+<rapid-layout reload-buffer=${(x) => x.reloadBuffer || '2000'}>
 ```
 
 </td>
@@ -117,9 +113,7 @@ html`
 <td>
 
 ```typescript
-html`
-    <rapid-layout :missingItemPlaceholder="${() => (n: string) => n + ' not registered.'}">
-`
+<rapid-layout :missingItemPlaceholder=${() => (n: string) => n + ' not registered.'}>
 ```
 
 </td>
@@ -131,9 +125,7 @@ html`
 <td>
 
 ```typescript
-html`
-    <rapid-layout :dimensionsConfig="${(_) => ({ borderWidth: 50, })}">
-`
+<rapid-layout :dimensionsConfig=${(_) => ({ borderWidth: 50, })}>
 ```
 
 </td>
@@ -145,9 +137,7 @@ html`
 <td>
 
 ```typescript
-html`
-    <rapid-layout :customButtons="${(_) => [{ /* config */ }]}">
-`
+<rapid-layout :customButtons=${(_) => [{ /* config */ }]}>
 ```
 
 </td>
@@ -169,13 +159,66 @@ This component doesn't have any css parts.
 
 Events can be received by the emitting `<rapid-layout>`, or any parent element.
 
-| Part | Type | Use | Example |
-|---|---|---|---|
- | first-loaded | `void` | emitted when the layout has finished loading the first time | `<my-component @first-loaded="${() => ...}">`|
- | item-added | `void` | emitted when an item is added to the layout | `<my-component @item-added="${() => ...}">`|
- | item-removed | `void` | emitted when an item is removed from the layout | `<my-component @item-removed="${() => ...}">`|
- | item-resized | `void` | emitted when the user drags the divider to resize elements | `<my-component @item-resized="${() => ...}">`|
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>first-loaded</td>
+      <td><code>void</code></td>
+      <td>emitted when the layout has finished loading the first time</td>
+<td>
 
+```typescript
+<my-component @first-loaded="${(x) => x.layoutFirstLoaded()}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>item-added</td>
+      <td><code>void</code></td>
+      <td>emitted when an item is added to the layout</td>
+<td>
+
+```typescript
+<my-component @item-added="${(x) => x.layoutItemAdded()}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>item-removed</td>
+      <td><code>void</code></td>
+      <td>emitted when an item is removed from the layout</td>
+<td>
+
+```typescript
+<my-component @item-removed="${(x) => x.layoutItemRemoved()}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>item-resized</td>
+      <td><code>void</code></td>
+      <td>emitted when the user drags the divider to resize elements</td>
+<td>
+
+```typescript
+<my-component @item-resized="${(x) => x.layoutItemResized()}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Listened Events
 
@@ -198,10 +241,42 @@ An element for declaratively setting the layout structure.
 
 #### Attributes
 
-| Attribute | Type | Use | Example |
-|---|---|---|---|
-|size|`string`|Controls the size of the region. See [here](#sizing).|`<rapid-layout-region size="50%">`|
-|type|`vertical/horizontal/tabs`| Union type which configures the grouping type. See below. Defaults to `horizontal`.|`<rapid-layout-region type="tabs">`|
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>size</td>
+            <td><code>string</code></td>
+            <td>Controls the size of the region. See <a href="#sizing">here</a>.</td>
+<td>
+
+```typescript
+<rapid-layout-region size="50%">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td><code>"vertical" | "horizontal" | "tabs"</code></td>
+            <td>Union type which configures the grouping type. See below. Defaults to <code>horizontal</code>.</td>
+<td>
+
+```typescript
+<rapid-layout-region type="tabs">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 Layout region types:
 * `vertical` - Indicates to the layout system that all immediate children are (by default) to be split equally within the available space of this component using n-1 column split(s). Can be nested within other horizontal and vertical regions.
@@ -246,12 +321,66 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 #### Attributes
 
-| Attribute | Type | Use | Example |
-|---|---|---|---|
-|title|`string`|Set the title of the pane that contains the content. Defaults to `Item x`, where `x` is the pane number.|`<rapid-layout-item title="My title">`|
-|closable|`boolean`|Controls whether the user can close the pane. Default is `false`.|`<rapid-layout closable>`|
-|size|`string`|Controls the size of the pane. See [here](#sizing).|`<rapid-layout-item size="50%">`|
-|registration|`string`|Sets the registered name of the component. Not required to be set unless you're also using the javascript API. See here. <!-- TODO -->. By default each item that doesn't have a registration is registered sequentially starting at `"1"`.|`<rapid-layout-item registration="checkbox">`|
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>title</td>
+      <td><code>string</code></td>
+      <td>Set the title of the pane that contains the content. Defaults to <code>Item x</code>, where <code>x</code> is the pane number.</td>
+<td>
+
+```typescript
+<rapid-layout-item title="My title">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>closable</td>
+      <td><code>boolean</code></td>
+      <td>Controls whether the user can close the pane. Default is <code>false</code>.</td>
+<td>
+
+```typescript
+<rapid-layout closable>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td><code>string</code></td>
+      <td>Controls the size of the pane. See <a href="#sizing">here</a>.</td>
+<td>
+
+```typescript
+<rapid-layout-item size="50%">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>registration</td>
+      <td><code>string</code></td>
+      <td>Sets the registered name of the component. Not required to be set unless you're also using the javascript API. See here. <!-- TODO -->. By default each item that doesn't have a registration is registered sequentially starting at <code>"1"</code>.</td>
+<td>
+
+```typescript
+<rapid-layout-item registration="checkbox">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
 
 #### Properties
 
