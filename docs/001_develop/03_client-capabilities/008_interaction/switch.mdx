@@ -191,6 +191,28 @@ Property and attribute binding examples for Genesis Component syntax (closing ta
 |---------|------------------------------------------------------------|
 | change  | Fires the event when the radio component changes its state |
 
+### Events fired
+
+<table>
+  <thead><tr><th>Event</th><th>Type</th><th>Use</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>change</td>
+      <td><code>event</code></td>
+      <td>Emits a custom change event when the component state changes. Access the value on the event via <code>.target.checked</code>.</td>
+<td>
+
+```typescript
+<rapid-switch @change="${(x) => x.myChangeHandler(event)}">
+```
+
+</td>
+   </tr>
+  </tbody>
+</table>
+
+
+
 ### Events listened to
 This component doesn't listen to any events.
 
