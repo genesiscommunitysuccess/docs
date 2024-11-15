@@ -128,21 +128,123 @@ Use cases:
 
  ### Attributes
 
-| Name     | Type      | Description                                                                                                                                    |
-|----------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| disabled | `boolean` | Similar to `readonly`, but with a blur on the component.                                                                                       |
-| form     | `string`  | Associates this component with a form. Form `id` needs to be passed. If no Id is provided, then it will be associated with the ancestor form.  |
-| length   | `number`  | The number of options.
-| multiple | `boolean` | Enables the user to select more than one option; this automatically opens the selection and removes the side arrow. **Default:** `false`       |
-| name     | `string`  | Gives this component a name.                                                                                                                   |
-| open     | `boolean` | Defines whether the list starts opened or not. **Default:** `false`                                                                            |
-| position | `string`  | Places the list **above** or **below** the component; can be `above` or `below`. **Default:** it will try to fit with the page.                |
-| size     | `number`  | Defines the display size of the list. For example, if you set `size="2"`, then the list displays two items at a time for the user to scroll through; **Default:** it will try to fit with the page. |
-| value    | `string`  | Sets a value for this component                                                                                                                |
 
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Similar to `readonly`, but with a blur on the component.</td>
+<td>
+
+```typescript
+<rapid-select disabled>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>form</td>
+      <td><code>string</code></td>
+      <td>Associates this component with a form. Form `id` needs to be passed. If no Id is provided, then it will be associated with the ancestor form.</td>
+<td>
+
+```typescript
+<rapid-select form="sampleForm">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>length</td>
+      <td><code>number</code></td>
+      <td>The number of options.</td>
+<td>
+
+```typescript
+<rapid-select number=10>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>multiple</td>
+      <td><code>boolean</code></td>
+      <td>Enables the user to select more than one option; this automatically opens the selection and removes the side arrow. **Default:** `false`</td>
+<td>
+
+```typescript
+<rapid-select multiple>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>Gives this component a name.</td>
+<td>
+
+```typescript
+<rapid-select name="mySelect">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>open</td>
+      <td><code>boolean</code></td>
+      <td>Defines whether the list starts opened or not. **Default:** `false`</td>
+<td>
+
+```typescript
+<rapid-select open>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>position</td>
+      <td><code>string</code></td>
+      <td>Places the list **above** or **below** the component; can be `above` or `below`. **Default:** it will try to fit with the page.</td>
+<td>
+
+```typescript
+<rapid-select position="below">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td><code>number</code></td>
+      <td>Defines the display size of the list. For example, if you set `size="2"`, then the list displays two items at a time for the user to scroll through; **Default:** it will try to fit with the page.</td>
+<td>
+
+```typescript
+<rapid-select size=2>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>string</code></td>
+      <td>Sets a value for this component.</td>
+<td>
+
+```typescript
+<rapid-select size=2>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
 
 :::note
-If you set the `size`, the list is displayed by default (the user does not need to click to view it). This overrides any setting you make for `open`.
+  If you set the `size`, the list is displayed by default (the user does not need to click to view it). This overrides any setting you make for `open`.
 :::
 
 ### Option attributes
@@ -181,7 +283,7 @@ ${repeat(
 
 # Properties
 
-No additional properties
+This component doesn't have any properties which are not also controlled via attributes.
 
 ### Slots
 
