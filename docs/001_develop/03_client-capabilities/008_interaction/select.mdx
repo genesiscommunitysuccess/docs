@@ -19,8 +19,6 @@ import TabItem from '@theme/TabItem';
 
 # Select
 
-
-
 Use cases:
 * Selecting from a list of options
 * Selecting multiple options
@@ -154,18 +152,6 @@ Use cases:
 </td>
     </tr>
     <tr>
-      <td>length</td>
-      <td><code>number</code></td>
-      <td>The number of options.</td>
-<td>
-
-```typescript
-<rapid-select number=10>
-```
-
-</td>
-    </tr>
-    <tr>
       <td>multiple</td>
       <td><code>boolean</code></td>
       <td>Enables the user to select more than one option; this automatically opens the selection and removes the side arrow. **Default:** `false`</td>
@@ -232,7 +218,7 @@ Use cases:
 <td>
 
 ```typescript
-<rapid-select size=2>
+<rapid-select value="s">
 ```
 
 </td>
@@ -252,6 +238,7 @@ In order to use the select component, you need to create a list of options for t
 |----------|-----------|----------------------------------------------------------------------------------------------|
 | disabled | `boolean` | Disables an option so that the user cannot interact with it, but the option is still visible |
 | selected | `boolean` | Selects the option, so it turns to the selected mode                                         |
+| value    | `string`  | The value of the attribute                                                                   |
 
 :::note
 - If you specify a `selected` or `value` to more than one `option` while `multiple = false`, then the component selects only the first in the `rapid-option` list
@@ -269,13 +256,16 @@ You can also use the repeat directive to create options dynamically in the code:
 
 ```typescript
 import {html, repeat} from '@microsoft/fast-element';
-
-${repeat(
+html`
+  <rapid-select>
+    ${repeat(
   (x) => x.sampleSelectOptions,
   html`
-    <rapid-option value="${(x) => x.value}">${(x) => x.label}</rapid-option>
-  `,
-)}
+        <rapid-option value="${(x) => x.value}">${(x) => x.label}</rapid-option>
+      `,
+  )}
+    </rapid-select>
+`
 ```
 
 # Properties
