@@ -1,0 +1,169 @@
+---
+title: 'Request Server - basics'
+sidebar_label: 'Basics'
+id: basics
+keywords: [server, request server, introduction]
+tags:
+  - server
+  - request server
+  - introduction
+---
+
+
+
+Let's make things really simple.
+- A Request Server is a module that supplies static data to the front end of your application.
+- You define your application's Request Server in a Kotlin script file:<br></br>**server/**_appname_**/src/main/genesis/scripts/**_appname_**-reqrep.kts**
+- In this file, you define specific `requestReply` codeblocks, each of which is designed to supply different sets of data; this could be a table or view, or just a subset of the fields in a table or view.
+- A `requestReply` can include a number of other subtleties, such as `filter` clauses or ranges, so that you can create code that matches your precise requirements.
+- If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the module.
+- Otherwise, you can build your kts by defining each `requestReply` codeblock from scratch. 
+
+## Basic definition
+
+Here is the definition of a simple Request Server file. 
+
+- The whole content is wrapped in a single `requestReplies` statement. This applies no matter how many `requestReply` codeblocks you specify.
+- In the `requestReply` codeblock, you must at least specify either a table or a view. In this example, we are using the table `INSTRUMENT_DETAILS`. A request to this Request Server will return all the fields in that table.
+
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS)
+}
+```
+
+Almost certainly, your application will need to have more than one `requestReply`. So, let us state the obvious and show you a file with two `requestReply` codeblocks. Again, each is the simplest kind you could possibly have.
+
+```kotlin
+requestReplies {
+    requestReply(COUNTERPARTY)
+
+    requestReply(INSTRUMENT_DETAILS)
+}
+```
+
+## Adding a name
+
+Every `requestReply` in your .kts must have a unique name. If you don't give the `requestReply` a name, the platform will create a name, based on the table or view. In the first example above, no name has been supplied. The table used is INSTRUMENT_DETAILS, so the platform calls this `requestReply` REQ_INSTRUMENT_DETAILS.
+
+It is easy to specify a name for the `requestReply`. For example, here we are calling our `requestReply` ALL_COUNTERPARTIES:
+
+
+```kotlin
+requestReplies {
+    requestReply("ALL_COUNTERPARTIES", COUNTERPARTY)
+    ...
+}
+```
+
+When you run `genesisInstall`, the Genesis platform adds the prefix `REQ_` to the name you have specified. So, in the example above, the `requestReply` becomes REQ_ALL_COUNTERPARTIES. That is the name you will need to use when you access this `requestReply`.
+
+So, all the resources in your Request Server have names beginning with REQ_ regardless of whether you specify a name.
+
+## Specifying fields on request and reply
+With all the `requestReply` codeblocks we have seen so far, all the fields in the table are returned.
+
+We can add some precision using `request` and `reply` blocks within a `requestReply` statement.
+
+Within a `request` block, you must define at least one primary key or index. In the example below, the fields `ALTERNATE_TYPE` AND `INSTRUMENT_CODE` together form the primary key.
+
+
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS) {
+        request {
+            ALTERNATE_TYPE
+            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
+        }
+
+        reply {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+Note the following:
+- When you do not define a `request` block, the primary key for the table or view is used as the default request field.
+- When you do not define a `reply block`, all the fields will be returned.
+
+## Specifying derived fields
+
+You can also define derived fields in a Request Server, to supplement the fields supplied by the table or view. The input for the derived field is the reply entity. All fields are available for use.
+
+In the example below, we add a new boolean derived field:
+
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS) {
+        derivedFields {
+            derivedField("IS_USD", BOOLEAN) {
+                tradedCurrency == "USD"
+            }
+        }
+    }
+}
+```
+
+You can use any logic you would like inside the `derivedField` codeblock, such as `if`, `switch` and so on. Here is a simple example of how to use `if` inside the `derivedField`:
+
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS) {
+        derivedFields {
+            derivedField("IS_BUY", BOOLEAN) {
+                if (DIRECTION.toString() == "BUY"){
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+    }
+}
+```
+
+:::note
+Derived fields cannot be used within a `filter` block.
+:::
+
+## Using an index
+
+The example below uses an index as the request definition. This provides additional indexing at the request level.
+
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS) {
+        request(INSTRUMENT_DETAILS.BY_INSTRUMENT_ID)
+    }
+}
+```
+
+## Filter block
+
+The `filter` block enables you to specify the conditions for which data should be returned. The `filter` blocks in request servers come in different flavours:
+
+* `filter` - contains a context property named `data` with the row from the table or view.
+* `filterWithUserName` - Contains the `data` context property (see `filter`) as well as a `userName` context property with the username who requested the data.
+* `filterWithParameters` - Same as `filter` but adding a `genesisSet` context property that holds the parameters that are passed on the request; the parameters can be accessed by using the GenesisSet getters.
+* `filterWithRequest` - Similar to `filterWithParameters` but the `genesisSet` context property contains the whole request payload and not just the parameters.
+
+In this contrived example below, the `filterWithParameters` block filters rows whose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG".
+
+The row parameter represents the rows returned from the table or view defined at the top of the `requestReply` definition, in this case, INSTRUMENT_DETAILS.
+
+import Example1 from '/examples/requestserver/_reqrep1.md'
+
+<Example1 />
+
+## Custom Log messages
+
+import Log from '/snippet/_LOG.md'
+
+<Log />
