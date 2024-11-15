@@ -10,7 +10,7 @@ tags:
     - criteria matching
 ---
 
-This page looks at how you can apply criteria matching when you connect to [Data Server](/server/data-server/introduction/) and [Request Server](/server/request-server/introduction/) resources.
+This page looks at how you can apply criteria matching when you connect to [Real-time queries (Data Server)](/develop/server-capabilities/real-time-queries-data-server/) and [Snapshot queries (Request Server)](/develop/server-capabilities/snapshot-queries-request-server/) resources.
 
 When you make a request to a resource, you can use criteria matching to filter the data returned. This can take the form of:
 
@@ -231,14 +231,14 @@ DESCRIPTION.startsWith('This')
 ```
 
 The methods available for each of the field types can be found in their Javadoc documentation. For example:
-* String: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html
-* Long: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html
-* Integer: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html
-* Short: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Short.html
-* Double: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html
-* BigDecimal: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/math/BigDecimal.html
-* Boolean: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html
-* DateTime: https://www.joda.org/joda-time/apidocs/org/joda/time/DateTime.html
+* [String](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html)
+* [Long](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html)
+* [Integer](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html)
+* [Short](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Short.html)
+* [Double](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html)
+* [BigDecimal](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/math/BigDecimal.html)
+* [Boolean](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html)
+* [DateTime](https://www.joda.org/joda-time/apidocs/org/joda/time/DateTime.html)
 
 ## Streaming data
 The [Data Server](/server/data-server/introduction/) is your source of streaming data. It provides a set of queries, each of which serves some or all fields from a specific table or view. These are your resources (along with the resources in the Request Server and the Event Handler). You need to know which queries are available to you, and more importantly, exactly what is available in each query.

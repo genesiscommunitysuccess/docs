@@ -12,72 +12,8 @@ Service metrics are provided for specific service types. You can use these to ke
 
 Metrics monitor specific resources within your application, such as a specific Data Server query, or Event Handler event.
 
-* [Consolidator](./#consolidator)
-* [Data Server](./#data-server)
-* [Event Handler](./#event-handler)
-* [Request Server](./#request-server)
-* [Router](./#Router)
 * [Streamer](./#streamer)
 * [Streamer Client](./#streamer-client)
-
-## Consolidator
-
-The consolidator exposes metrics to measure latency.
-
-A high latency indicates that the consolidator is struggling to keep up.
-
-
-| Metric                      | Explanation                          |
-|:----------------------------|:-------------------------------------|
-| calculation_latency         | latency for performing a calculation |
-| consolidator_input_latency  | latency for processing an update     |
-| consolidator_output_latency | latency for writing to database      |
-
-## Data Server
-
-The data server metrics expose a number of metrics to help monitor the service.
-These metrics expose the number of users connected, and various latency statistics.
-
-Data Servers provide real-time views to users, so each connection to a query has a resource cost. This is not a problem under normal usage, where connections are managed by the Genesis framework. The Genesis client automatically releases these connections when they are no longer required. However, if a bespoke client is used, then these connections might not be closed properly.
-
-A high user or connection count can indicate a problem here.
-
-The latency metrics track how well a Data Server is handling requests.
-
-| Metric                        | Explanation                                   |
-|:------------------------------|:----------------------------------------------|
-| user_count                    | The number of users connected to a query      |
-| connection_count              | The number of connections to a query          |
-| data_logon.processing_latency | The latency for processing DATA_LOGON request |
-| enriched_lookup_latency       | The latency for enriching data                |
-| lookup_latency                | The latency for a look-up                      |
-| message_publication_latency   | The latency for publishing an update          |
-
-## Event Handler
-
-The event handler latency metrics show how long it takes for a specific `eventHandler` in the Event Handler to process a message.
-
-| Metric             | Explanation                                                  |
-|:-------------------|:-------------------------------------------------------------|
-| processing_latency | The latency for processing events (kts event handler)        |
-| latency            | The latency for processing events (kotlin/java event handler |
-
-## Request Server
-
-The Request Server latency metrics show how long it takes for a specific `requestReply` in the Request Server to process a message.
-
-| Metric                     | Explanation                         |
-|:---------------------------|:------------------------------------|
-| message_processing_latency | The latency for processing requests |
-
-## Router
-
-The metrics for Genesis Router measure the number of connections and the processing latency.
-
-| Metric                     | Explanation                         |
-|:---------------------------|:------------------------------------|
-| active_connections         | The number of client connections    |
-| message_processing_latency | The latency for processing messages |
 
 ## Streamer
 

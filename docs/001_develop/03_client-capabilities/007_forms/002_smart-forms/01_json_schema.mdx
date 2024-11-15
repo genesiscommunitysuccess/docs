@@ -1,0 +1,275 @@
+---
+title: 'Foundation Forms - JSON schema'
+sidebar_label: 'JSON schema'
+id: foundation-forms-json-schema
+keywords: [genesis, foundation, ui, forms, smart forms]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - forms
+  - smart forms
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import JsonSchemaFormExample from './examples/jsonSchema_example.js'
+import FormsEntity from '../../../../_includes/_forms-entity.mdx'
+
+# Foundation Forms JSON schema
+
+Foundation forms use a [JSON Schema](https://json-schema.org/understanding-json-schema/about) to define the underlying model of the form. This defines the objects and properties, as well as their types.
+
+If the source of the data is a resource in a [Data Server](/develop/server-capabilities/real-time-queries-data-server/) or [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) of your application, then you can use the JSON schema that is generated automatically by the Genesis Platform. Alternatively, you can define your own schema on the client.
+
+:::info
+This section covers aspects of the [Data Server](/develop/server-capabilities/real-time-queries-data-server/) and [DataBase](/develop/server-capabilities/data-model/) sections.
+The examples provided are simple, but it is worth exploring these sections in more depth.
+:::
+
+
+## Examples 
+
+### Server-side JSON schema
+
+<FormsEntity />
+
+To insert the automatically-generated JSON schema for this resource into your **template** file, use the code below:
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration:
+```html
+<foundation-form
+  design-system-prefix="rapid"
+  resourceName="EVENT_TRADE_INSERT"
+></foundation-form>
+```
+
+Usage:
+```typescript
+@customElement({
+  name: 'form-example',
+  template: html`
+    <foundation-form
+      design-system-prefix="rapid"
+      resourceName="EVENT_TRADE_INSERT"
+    ></foundation-form>
+  `,
+})
+export class FormExample extends GenesisElement {}
+```
+
+</TabItem>
+<TabItem value="react">
+
+Declaration:
+```html
+<foundation-form
+  design-system-prefix="rapid"
+  resourceName="EVENT_TRADE_INSERT"
+></foundation-form>
+```
+
+Usage:
+```typescript
+export default function FormExample({}) {
+  return (
+    <foundation-form
+      design-system-prefix="rapid"
+      resourceName="EVENT_TRADE_INSERT"
+    ></foundation-form>
+  );
+}
+```
+
+</TabItem>
+<TabItem value="angular">
+
+Declaration
+```html
+<foundation-form
+  design-system-prefix="rapid"
+  resourceName="EVENT_TRADE_INSERT"
+></foundation-form>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'my-root',
+  template: `
+    <foundation-form
+      design-system-prefix="rapid"
+      resourceName="EVENT_TRADE_INSERT"
+    ></foundation-form>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [FormsModule],
+})
+export class AppComponent {}
+```
+</TabItem>
+</Tabs>
+
+Once you have done this, you will see a form that looks like this:
+
+![](/img/smart-forms/simple-trade-json-schema.png)
+
+### Client-side JSON schema
+You can create your own JSON schema on the client side if you want to specify the exact content layout of the form.
+
+Here is an example of a JSON schema defined on the client. It describes an object with two properties - QUANTITY and SIDE, similar to the one we described above.
+
+You set the JSON schema on the `foundation-form` element using the `jsonSchema` attribute.
+
+The resulting form looks similar but it has no id field:
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration:
+```html
+<foundation-form
+  design-system-prefix="rapid"
+  :jsonSchema="${sampleJsonSchema}"
+></foundation-form>
+```
+
+Usage:
+```typescript
+const sampleJsonSchema = {
+  type: 'object',
+  properties: {
+    QUANTITY: {
+      type: 'number',
+      description: 'kotlin.Double',
+    },
+    SIDE: {
+      type: 'number',
+      description: 'kotlin.String',
+    },
+  },
+};
+
+@customElement({
+  name: 'form-example',
+  template: html`
+    <foundation-form
+      design-system-prefix="rapid"
+      :jsonSchema="${sampleJsonSchema}"
+    ></foundation-form>
+  `,
+})
+export class FormExample extends GenesisElement {}
+```
+
+</TabItem>
+<TabItem value="react">
+
+Declaration:
+```html
+<foundation-form
+  design-system-prefix="rapid"
+  jsonSchema={sampleJsonSchema}
+></foundation-form>
+```
+
+Usage:
+```typescript
+const sampleJsonSchema = {
+  type: 'object',
+  properties: {
+    QUANTITY: {
+      type: 'number',
+      description: 'kotlin.Double',
+    },
+    SIDE: {
+      type: 'number',
+      description: 'kotlin.String',
+    },
+  },
+};
+
+export default function FormExample({}) {
+  return (
+    <foundation-form
+      design-system-prefix="rapid"
+      jsonSchema={sampleJsonSchema}
+    ></foundation-form>
+  );
+}
+```
+
+</TabItem>
+<TabItem value="angular">
+
+Declaration
+```html
+<foundation-form
+  design-system-prefix="rapid"
+  [jsonSchema]="jsonSchema"
+></foundation-form>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+const sampleJsonSchema = {
+  type: 'object',
+  properties: {
+    QUANTITY: {
+      type: 'number',
+      description: 'kotlin.Double',
+    },
+    SIDE: {
+      type: 'number',
+      description: 'kotlin.String',
+    },
+  },
+};
+
+@Component({
+  selector: 'my-root',
+  template: `
+    <foundation-form
+      design-system-prefix="rapid"
+      [jsonSchema]="jsonSchema"
+    ></foundation-form>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [FormsModule],
+})
+export class AppComponent {
+  jsonSchema = sampleJsonSchema;
+}
+```
+</TabItem>
+</Tabs>
+
+<JsonSchemaFormExample/>
+
+##
+
+:::info
+After you have looked at the basics here, you can find more details in our [API Docs](./docs/api/index.md)
+
+Full source code at [JSON/UI Schema example](https://github.com/genesiscommunitysuccess/form-examples/tree/main/client/src/routes/forms-json-schema).
+:::
+
+## License
+
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform

@@ -88,7 +88,7 @@ The process definition is made up of several fields that set up the main configu
 
 * `tables` Similar to DataServer configuration, you can specify a seed Genesis table with its seed key and join it to other Genesis tables so you can get all the data you need. GenesisToDb works with a timestamp system, and it can keep track of the last timestamp processed for each record, so the seedKey should be a timestamp field (e.g. "TIMESTAMP", "DATE_TIMESTAMP", "CREATED_AT", etc.) if you want to take full advantage of GenesisToDb capabilities.
 * `fields` is the representation of the SQL row to be written inside the RDBMS. Parameters are ordered by number from first to last. In the example, we could associate "TRADE_ID" with parameter 1, "TRADE_QUANTITY" with parameter 2, and so on.
-* `proc` contains the store procedure calls for each of the use cases: insert, modify and delete. The standard JDBC call to RDBMS store procedures is standardised as _&#123;call procedure(param1,param2,param3)&#125;_. The configuration is flexible and allows you to change the parameter order depending on the current call. A stored procedure could be called like this: _insertIdAndClientName(1,3)_ and _modifyQuantity(2)_.
+* `proc` contains the store procedure calls for each of the use cases: insert, modify and delete. The standard JDBC call to RDBMS store procedures is standardised as `{call procedure(param1,param2,param3)}`. The configuration is flexible and allows you to change the parameter order depending on the current call. A stored procedure could be called like this: _insertIdAndClientName(1,3)_ and _modifyQuantity(2)_.
 
 Example:
 
