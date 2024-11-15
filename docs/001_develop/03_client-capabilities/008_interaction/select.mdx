@@ -92,8 +92,8 @@ Use cases:
   Declaration
   ```html
   <rapid-select>
-    <rapid-option>Option 1</rapid-option>
-    <rapid-option>Option 2</rapid-option>
+    <rapid-option value="s">Small</rapid-option>
+    <rapid-option value="l">Large</rapid-option>
   </rapid-select>
   ```
 
@@ -105,8 +105,8 @@ Use cases:
     selector: 'my-root',
     template: `
           <rapid-select (change)="onSelectChanged($event)">
-            <rapid-option>Option 1</rapid-option>
-            <rapid-option>Option 2</rapid-option>
+            <rapid-option value="s">Small</rapid-option>
+            <rapid-option value="l">Large</rapid-option>
           </rapid-select>
         `,
     standalone: true,
