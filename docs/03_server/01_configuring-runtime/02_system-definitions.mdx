@@ -131,6 +131,10 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.
 
+**ClusterEnableDbTableCaching**: This setting specifies if [Database caching](./06_cache.mdx) should be enabled in the table `PROCESS_STATIC_INFO`. This table holds the current status each node in the cluster whe using Database clustering strategy. Defaults to `false`, set only to `true` in **development environments** that might be sharing database resources to decrease db load.
+
+**ClusterDbStatusUpdateFrequencyInSeconds**: This setting specifies the frequency (in seconds) of which node statuses are publish and saved into the `PROCESS_STATIC_INFO` table. Defaults to `2` seconds, set only to a larger value (must be under `20` seconds) in **development environments** that might be sharing database resources to decrease db load.
+
 **Location**: This item contains a 2-character value used to generate the **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR", then the generated ID will be `000000000001TRLO1` where "LO" represents Location string. There is more information around compatibility and behaviour of sequences in our page on [Tables advanced](/database/fields-tables-views/tables/tables-advanced/)
 
 **LogFramework**: Contains name of the logging framework. Supported framework: LOG4J2

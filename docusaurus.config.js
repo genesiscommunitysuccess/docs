@@ -100,17 +100,6 @@ const config = {
           breadcrumbs: true,
           routeBasePath,
           sidebarPath: "./sidebars.js",
-          lastVersion: "current",
-          versions: {
-            current: {
-              label: "Current",
-              banner: "none",
-            },
-            previous: {
-              label: "Previous",
-              banner: "none",
-            }
-          },
         },
         theme: {
           customCss: "./src/css/custom.css",

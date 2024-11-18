@@ -1,0 +1,129 @@
+---
+title: 'Genesis Start'
+sidebar_label: 'Genesis Start'
+id: development-environment-genesis-start
+keywords: [start, genesis start, start, preview]
+tags:
+- launcher
+- genesis start
+- start
+- preview
+sidebar_position: 3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Genesis Start is a small program which allows you to preview an application, including during the development cycle, by running it on your local desktop. 
+
+From the command line, go to your project's `server` directory, run:
+
+
+<Tabs defaultValue="windows" values={[{ label: 'Windows', value: 'windows', }, { label: 'Mac OSX / Linux', value: 'mac', }]}>
+<TabItem value="windows">
+```shell
+.\gradlew.bat genesisStart
+```
+</TabItem>
+<TabItem value="mac">
+```bash
+./gradlew genesisStart
+```
+</TabItem>
+</Tabs>
+
+If the command fails, you may need to [enable Genesis Start](#enabling-genesis-start)
+
+Genesis start provides a simple UI to run your app.
+
+![Genesis Start Full Application](/img/genesis-start/genesis-start-full-app.png)
+
+## How to use
+
+### Bootstrap and launch 
+![Bootstrap and Launch](/img/genesis-start/genesis-start-bootstrap.png)
+
+Bootstrap the application with a single click.
+
+It is helpful when:
+- Starting an application for the first time
+- Starting an application having made changes to the database schema
+
+:::info
+Bootstrap first runs **remap**, imports project data, then runs **ConsolidateRights**, and finally **Start All**. 
+:::
+
+### Import data
+![Import data](/img/genesis-start/genesis-start-import-data.png)
+
+Select csv files to import into your application's database. Uses the `SendIt`(/build-deploy-operate/operate/commands#sendit) command.
+
+### Sync processes
+![Sync processes](/img/genesis-start/genesis-start-sync-processes.png)
+
+Syncs any changes made to the project's [process configuration](/develop/server-capabilities/runtime-configuration/processes/).
+
+Where `File -> Settings -> Use Genesis Sync` is enabled (which it is by default) project changes are automatically synced. Where it is enabled this button can be used as a force sync.
+
+### Start all
+![Start all](/img/genesis-start/genesis-start-start-all.png)
+
+Starts all processes and the web UI.
+
+### Process interaction
+
+You can stop/start individual processes using the button next to the process name. 
+
+Clicking on the process when running will open up a real-time log viewer for that process.
+
+![Process list](/img/genesis-start/genesis-start-process-list.png)
+
+### Compacting processes
+
+The `Process Profile` menu allows you to select process configuration
+
+- `Dev Compact` compacts processes efficiently to run more server capabilities under single processes and save on processing and memory overheads. It is the recommended option for efficiently previewing your application.
+- `Compact` will compact processes in such a way that they would still run in a cluster
+- `Production` will set process configuration per the project setup. See [process configuration](/develop/server-capabilities/runtime-configuration/processes/) for more details on configuring processes.
+
+:::tip Saving local resources
+If you need to cut down on memory usage when you build and run locally, select **File** => **Settings** => **Use Compact Processes** before you start. 
+:::
+
+## Enabling Genesis Start
+
+
+An older existing project can be enabled to use Genesis Start if it uses:
+* the simplified structure; this includes any project generated through Create
+* the Genesis Gradle Settings plugin
+
+If you need to enable Genesis Start, there are two things that you need to do:
+
+1. Amend the settings file.
+2. Amend the build file.
+
+### Amending the settings file
+
+In your project's **settings.gradle.kts** file, add `google()` to `repositories` under `pluginManagement`.
+
+```kotlin
+// in repositories under plugin management, add google() at the end:
+pluginManagement {
+    repositories {
+        // other repositories
+        google() // <- add this
+    }
+}
+```
+
+### Amending the build file
+
+In your project's **build.gradle.kts** file, add the plugin:
+
+```kotlin
+// add Genesis Start to plugins
+plugins {
+    // other plugins..
+    id("global.genesis.genesis-start-gui") version "0.1.4"
+}
+```

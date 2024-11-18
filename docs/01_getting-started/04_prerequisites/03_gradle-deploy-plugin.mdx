@@ -19,7 +19,7 @@ The plugin is designed to work on workstations running Linux, or on WSL.
 
 ### Adding the deployment plugin to your project
 
-The Genesis Gradle deploy plugin uses the project classpath to resolve dependent resources. So, in order not to interfere with any of your other project modules, it is best to add a **$&#123;projectName}-deploy** module to your project.
+The Genesis Gradle deploy plugin uses the project classpath to resolve dependent resources. So, in order not to interfere with any of your other project modules, it is best to add a `<projectName>-deploy` module to your project.
 
 If you follow the Quick Start in this Learning Area, this module will provide you with part of the project template.
 
@@ -181,7 +181,7 @@ These tasks deploy each external distribution, as well as site-specific configur
 | `createGenesisHome`                                                            | This task creates the genesis home.                                                                                                                 |
 | `install-genesis-distribution.zip`                                             | This task copies and unzips the Genesis distribution specified as a dependency.                                                                     |
 | `install-auth-distribution.zip`                                                | This task copies and unzips the auth distribution specified as a dependency.                                                                        |
-| `install-<project-name>-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip` | This task copies and unzips the `<project-name>-site-specific>` distribution specified as a dependency.                                             |
+| `install-<project-name>-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip` | This task copies and unzips the `<project-name>-site-specific` distribution specified as a dependency.                                             |
 | `loadInitialData`                                                              | This task executes `install-<project-name>-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip` and then calls all the `SendIt-<file>.csv` tasks. |
 | `setupEnvironment`                                                             | This task executes `createGenesisHome` then `install-genesis-distribution` and then configures the installed distribution.                          |
 | `SendIt-<file>.csv`                                                            | This task executes the script command `SendIt` with the parameters -t `<file-name (in Uppercase)>` and -f `<file-location>`.                        |

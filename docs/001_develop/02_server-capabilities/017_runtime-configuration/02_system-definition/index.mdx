@@ -1,0 +1,300 @@
+---
+title: 'System definition'
+sidebar_label: 'System definition'
+id: server-system-definition
+keywords: [system definition, server, configuration, ]
+tags:
+  - system definition
+  - configuration
+  - server
+---
+
+The system-definition file `genesis-system-definition.kts` is the main configuration file for your application, controlling how the application behaves at runtime.
+
+The file is found in the server `cfg` directory.
+
+This section explains all the different items that can be contained in the file.
+
+Here is an example of a `genesis-system-definition.kts` file for an application:
+
+```kotlin
+package genesis.cfg
+
+systemDefinition {
+  global {
+    item(name = "MqLayer", value = "ZeroMQ")
+    item(name = "DbLayer", value = "H2")
+    item(name = "DictionarySource", value = "DB")
+    item(name = "AliasSource", value = "DB")
+    item(name = "MetricsEnabled", value = "false")
+
+    item(name = "ZeroMQProxyInboundPort", value = "5001")
+    item(name = "ZeroMQProxyOutboundPort", value = "5000")
+
+    item(name = "DbHost", value = "localhost")
+    item(name = "DbMode", value = "POSTGRESQL")
+    item(name = "GenesisNetProtocol", value = "V2")
+    item(name = "ResourcePollerTimeout", value = "5")
+    item(name = "ReqRepTimeout", value = "60")
+    item(name = "MetadataChronicleMapAverageKeySizeBytes", value = "128")
+    item(name = "MetadataChronicleMapAverageValueSizeBytes", value = "1024")
+    item(name = "MetadataChronicleMapEntriesCount", value = "512")
+    item(name = "DaemonServerPort", value = "4568")
+    item(
+      name = "JVM_OPTIONS",
+      value = "-XX:MaxHeapFreeRatio=70 -XX:MinHeapFreeRatio=30 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:OnOutOfMemoryError=\"handleOutOfMemoryError.sh %p\""
+    )
+  }
+
+  systems {
+    system(name = "DEV") {
+      hosts {
+        host(name = "genesis-serv")
+      }
+
+      item(name = "DbNamespace", value = "genesis")
+      item(name = "ClusterPort", value = "6000")
+      item(name = "Location", value = "LO")
+      item(name = "LogFramework", value = "LOG4J2")
+      item(name = "LogFrameworkConfig", value = "log4j2-default.xml")
+    }
+  }
+}
+```
+
+## Global, System and Host levels
+
+As you can see from the example, you can define items at global, system and host level.
+* **Global**: These properties will be available to all systems.
+* **System**: These properties contain information about a particular system and can have a free text field. Each system is associated with a host or hosts. The content should specify the type of environment the system is running in.
+Local values can be specified in this block. **These values override the global values**.
+
+* **Host**: In this section you can define the properties of the host or hosts (if running in a cluster environment). A Host block can only exist under the system section, as you can see in the above example.
+ The host name defines what environment you are running in. By default, only one host will be used and you must set its value to the hostname of the current machine.
+
+## Items defined
+**MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues.
+
+**DbLayer**: Default value is set to H2. If you want to use PostgreSQL, Oracle or MSSQL, then you need to change this value and then [change the value of the DbHost item](/develop/server-capabilities/runtime-configuration/database-configuration/).
+
+**DbHost**: Contains information about the hostname/JDBC connection string pointing to local database. For example:
+
+
+```kotlin
+item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432”)
+```
+
+See our pages on [database technology](/database/database-technology/overview/) for more information on how to configure a specific database.
+
+**Database username and password encryption**
+You can add an encrypted username and password for the database system.
+Run the command `encryptUserPassWithKey`, which will ask you to supply the plain username, password and Genesis Key. Genesis Key is 32 characters long.
+This will generate encrypted username and password, which can then be added into a system definition file. You can directly add the encrypted values or you can embed these fields into the local system environment variables and refer to them as follows:
+
+```kotlin
+item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)
+item(name = "DbPassword", value = System.getenv("DBPASSWORD"), encrypted = true)
+item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
+```
+
+**DictionarySource**: This setting defines where you want to store the dictionary schema. You can choose between DB dictionary source and FILE dictionary source using this setting. Accepted values `DB` and `FILE`. DB dictionary source is preferred, because if you are running a cluster, all nodes will refer to the same dictionary. FILE dictionary source has the problem of being only available on each node.
+
+**DbSqlMaxPoolSize**: This setting limits the maximum number of connections to the database.
+
+**AliasSource**: This setting defines where you want to store dictionary alias schema. The alias schema maps aliases to fields and to tables, and it is updated every time we change the data schema. You can choose between DB alias source and FILE alias source using this setting. Accepted values `DB` and `FILE`. DB alias source is recommended, because if you are running a cluster, all nodes will refer to the same alias dictionary. FILE alias source has the problem of being only available on each node.
+
+**GenesisNetProtocol**: This is the Genesis network protocol. It is used by the platform only. **Do not change this value**.
+
+**MetricsEnabled**: Default value is false. For more information, go to the page on [metrics](/operations/metrics/introduction/).
+
+**ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
+
+**DbMode**: This setting is only used for [PostgresSQL](/database/database-technology/sql/#postgresql); it can be one of two values:
+
+- POSTGRESQL if you want PostgreSQL to work with namespaces/schemas
+- LEGACY, which is the default mode; this stores the dictionary in a table called `dictionary` and a schema called `metadata`
+
+**ResourcePollerTimeout**: This setting controls how often (in seconds) the genesis daemon process keeps the processes and their metadata up to date.
+
+**ReqRepTimeout**: This setting contains the default timeout (in seconds) for the request server resources in the system.
+
+**MetadataChronicleMapAverageKeySizeBytes**, **MetadataChronicleMapAverageValueSizeBytes**, **MetadataChronicleMapEntriesCount**: These are the settings for chronicle map and are related to the way processes store their own metadata resources inside **/runtime/proc_metadata**.
+
+**DaemonServerPort**: This defines the port for daemon process, daemon process is the background process, which collects information about micro-services.
+
+**JVM_OPTIONS**: This defines common JVM options to be applied to all processes defined in the environment.
+
+**DbNamespace**: This item defines different things, depending on the databases in use:
+- For [FoundationDB](/database/database-technology/foundationdb/), this is used when creating internal DirectoryLayers
+- For [Postgres](/database/database-technology/sql/#postgresql), [MSSQL](/database/database-technology/sql/#sql-server) and [ORACLE](/database/database-technology/sql/#oracle), this refers to namespace/schema of database. This enables you to segregate data from multiple apps while using a single database.
+
+**ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.
+
+**Location**: This item contains a 2-character value used to generate the **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR", then the generated ID will be `000000000001TRLO1` where "LO" represents Location string. There is more information around compatibility and behaviour of sequences in our page on [Tables advanced](/database/fields-tables-views/tables/tables-advanced/)
+
+**LogFramework**: Contains name of the logging framework. Supported framework: LOG4J2
+
+**LogFrameworkConfig**: Contains name of the log framework configuration file.
+
+**GlobalClasspathAdditions**: A list of delimited (':'), fully-qualified paths to any JVM files to be included on the classpath for all processes.
+
+**LogFrameworkConfig**: Contains name of the log framework configuration file.
+
+**ProcessDependencyTimeoutSeconds**: If you have a dependent process listed in your **processes.xml**, this config sets a timeout (in seconds) for that process. If the process it depends on is not up, the dependent process will terminate after the timeout period has elapsed. 
+
+**DEPLOYED_PRODUCT**: This specifies that the product's generated code is bundled in the product's distribution. This means that remap can skip the code-generation step. This property's value should be the name of the product. To bundle the generated code into the distribution, see [here](/database/fields-tables-views/genesisDao/#bundling-generated-code-with-product-distribution).
+
+If you want to enable SSL for your process communication, this is done in the [service definition](/server/configuring-runtime/service-definitions/#enabling-ssl-for-processes).
+
+## Setting system-definition values from environment variables
+
+You can override system-definition values from the environments. This is preferable, for example, if you wish to set values for a given environment dynamically.
+
+To do this, you can set an environment variable that has the same name as the system-definition item name prefixed with `GENESIS_SYSDEF_`: for example, `GENESIS_SYSDEF_DbHost=jdbc:postgresql://localhost/genesis`.
+
+In this example, we fetch the value of `DbHost` from the environment variable. If the environment variable is not set, then the value from the system-definitions file will be used.
+
+## Retrieving system-definition properties
+
+There are examples of how to retrieve properties from an application's system definition in our page on [dependency injection](/server/api-reference/dependency-injection/#injectable-properties-from-system-definition) in the API section.
+
+Genesis enables you to store encrypted values in the configuration. You can access the encrypted values from custom components using:
+
+- `ByteArrayProvider`
+- [`getItem()`](../../network-messages/genesisSet/#functions)
+
+By default, you can inject those values into your classes using a syntax such as:
+
+`@Named("DBUSERNAME") val passwordString: String`
+
+This is then decrypted by the platform into memory.
+
+### Protecting against memory scanning
+To reduce the risk of a malicious attacker being able to run a memory scan on a running instance and acquire the decrypted value, the platform enables you to:
+
+- delay decrypting of the value by using a Provider wrapper, and
+- obfuscate the scanning of the value by using a ByteArray instead of a String; this approach requires you to deserialize back to a String at the point of use.
+
+The Provider `ByteArray` provides the best protection against memory scanning for passwords from a malicious agent, because the password is not decrypted until the point of use and doesn’t present itself as an ordinary string.
+
+There are various ways you can pull an encrypted value into a Kotlin class.
+
+- `String` - means that the encrypted value will be decrypted in memory immediately.
+- `ByteArray` - loaded as a decrypted ByteArray, adds some obfuscation by not using a String directly.
+- `Provider<String>` - will not be decrypted until the moment that the value is required via the get.
+- `Provider<ByteArray>` - will not be decrypted until the moment that the value is required via the get.
+
+```kotlin
+@Module
+class TestModule
+@Inject
+constructor(
+  @Named("DBUSERNAME") val passwordString: String,
+  @Named("DBUSERNAME") val passwordByteArray: ByteArray,
+  @Named("DBUSERNAME") val passwordByteArrayProvider: Provider<ByteArray>,
+  @Named("DBUSERNAME") val passwordStringProvider: Provider<String>
+) {
+  init {
+    assertThat(passwordStringProvider.get()).isEqualTo("johndoe")
+    assertThat(passwordString).isEqualTo("johndoe")
+
+    assertThat(passwordByteArrayProvider.get().toString(Charsets.UTF_8)).isEqualTo("johndoe")
+    assertThat(passwordByteArray.toString(Charsets.UTF_8)).isEqualTo("johndoe")
+  }
+}
+```
+
+## HashiCorp Vault support
+
+:::important
+
+This feature is supported from version 6.0
+
+:::
+
+Services can also load their configuration from HashiCorp vault.
+This can be done by adding a `vault` tag in the `global`, `system` or `host`
+tags.
+
+The `vault` tag has three sub tags, `config`, `sslConfig` and `readSecrets`. Of
+these three, `config` and `readSecrets` are required:
+
+```kotlin
+vault {
+  config {
+    ...
+  }
+
+  sslConfig {
+    ...
+  }
+
+  readSecrets {
+    ...
+  }
+}
+```
+
+### Config
+
+This part of the configuration tells the service where to read secrets from:
+
+```kotlin
+config {
+  address("http://localhost:8200")     // Defaults to "VAULT_ADDR" environment variable
+  token("s.NSxyuF4ClXxd4YoSFvKwil0i")  // Defaults to "VAULT_TOKEN" environment variable
+  openTimeout(5)                       // Defaults to "VAULT_OPEN_TIMEOUT" environment variable
+  readTimeout(30)                      // Defaults to "VAULT_READ_TIMEOUT" environment variable
+}
+```
+
+### sslConfig
+
+This part of the configuration tells the service how to handle the ssl hand
+shake with the vault server. For details regarding the ssl config, please see
+[here](https://github.com/BetterCloud/vault-java-driver#ssl-config).
+Note that the `SslConfig` object will be passed as the receiver within
+the `sslConfig` tag.
+
+### readSecrets
+
+This part of the configuration tells the service which secrets to load:
+
+```kotlin
+readSecrets {
+  read("secret/path_to_secret")
+}
+```
+
+Currently, a single call to `read` is supported. This takes a single parameter,
+which is the path to the secrets.
+
+Secrets are always provided as `String`
+
+### Linked properties support
+
+:::important
+
+This feature is supported from version 6.0
+
+:::
+
+When reading secrets from external systems, the keys to these secrets might
+not map directly to the required properties in Genesis. To help with this, the platform supports the linking of properties.
+
+The links can be applied as tags at `global`,
+`system` or `host` level.
+
+To create a link, use `link`, as per below, where we link `DbHost` to `secret.db.host`:
+
+```kotlin
+systemDefinition {
+  global {
+    link(name = "DbHost", source = "secret.db.host")
+  }
+  ...
+}
+```
+
+Multiple levels of linking are supported. However, `genesisInstall` will fail if a circular link is detected, or if the `source` of a link is not found.
+
