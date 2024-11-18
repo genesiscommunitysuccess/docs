@@ -51,6 +51,9 @@ Use cases:
             </criteria-segmented-control>
           `,
       })
+
+      import { CriteriaSegmentedControlOption, Serialisers } from '@genesislcap/foundation-criteria';
+
       export class MyElement extends GenesisElement {
         const criteriaFilter: string;
         const toolbarOptions: CriteriaSegmentedControlOption[] = [
@@ -74,6 +77,9 @@ Use cases:
     ```
     Usage
     ```typescript
+
+      import { CriteriaSegmentedControlOption, Serialisers } from '@genesislcap/foundation-criteria';
+
       export function MyComponent() {
 
         const criteriaOptions = [
@@ -106,6 +112,7 @@ Use cases:
     ```typescript
       import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
       import { FormsModule } from '@angular/forms';
+      import { CriteriaSegmentedControlOption, Serialisers } from '@genesislcap/foundation-criteria';
       @Component({
         selector: 'my-root',
         template: `
@@ -160,11 +167,12 @@ The choice of serialisers are:
     Serialisers.dateIsLessEqual
 ```
 
-
 ## API
 
-### Properties:
+### Attributes
+This component doesn't have any attributes.
 
+### Properties:
 <table>
   <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
   <tbody>
@@ -175,7 +183,7 @@ The choice of serialisers are:
 <td>
 
 ```typescript
-<criteria-segmented-control criteriaOptions=${(x) => x.sampleCriteriaOptions)}>
+<criteria-segmented-control :criteriaOptions=${(x) => x.sampleCriteriaOptions)}>
 ```
 
 </td>
@@ -187,7 +195,7 @@ The choice of serialisers are:
 <td>
 
 ```typescript
-<criteria-segmented-control value="sampleValue">
+<criteria-segmented-control :value=${sync((x) => x.criteriaFilter)}>
 ```
 
 </td>
