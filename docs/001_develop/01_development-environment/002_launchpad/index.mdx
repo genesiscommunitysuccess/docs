@@ -77,9 +77,9 @@ For each attribute that you want to add, make sure that the `New Attributes` pan
 5.	Click on the `Add Attribute` button. This adds the attribute to the list in the main area.
 
 #### Primary key
-The primary key is the default way to find records in an entity. Every entity has to have a primary key.
+The [primary key](/develop/server-capabilities/data-model/#primarykey) is the default way to find records in an entity. Every entity has to have a primary key.
 
-With the attributes listed for your entry in the main area, you can set the primary key for the entity, select the `Primary Key` checkbox for the relevant attribute.
+When the attributes for your entity are listed in the main area, you can set the primary key for the entity. Select the `Primary Key` checkbox for the relevant attribute.
 
 Here, we have selected CURRENCY ID as the primary key. We have also set `Generated` so that the value of this attribute is generated automatically. Each new record submitted will have a unique sequential integer for this field, prefixed with the letters CU.
 
@@ -87,17 +87,42 @@ Here, we have selected CURRENCY ID as the primary key. We have also set `Generat
 
 Note that edit and delete buttons are available to the right of each attribute in the list, so you can go back and change any attribute you have already set up.
 
+Indices
+An index gives you extra ways of searching for records on the entity. For example, users might want to find trades by instrument or by currency symbol.
+
+Indices can be [unique](/develop/server-capabilities/data-model/#unique), which enables you to find a single record or [non-unique](/develop/server-capabilities/data-model/#nonunique), which enables you to find a range of records.
+
+To add an index to the entity that you are creating or editing:
+
+1.	Click on the `Indices` tab to view the indices for the entity. 
+2.	A delete button is displayed to the right of each index (except the primary key, which cannot be deleted).  
+3.	Use the `New Index panel` to add a new index. 
+    - You can select one or more fields for the search, depending on the attributes in the entity.
+    - use the `Type` field to make the index unique or non-unique.
+    - A default name for the index is displayed in the `Name` field. You can change this, if necessary. 
+    - When ready, click `Add index`. The new index is listed in the main area under the `Indices` tab. 
+4. When you have finished, click on the `Done` button to return to the Entity Models screen, where all your entities are listed..
+
 #### Entity references
-Entity references are useful, because they enable you to add attributes from different entities to form [views](#views) Once you have created an entity, its attributes are available for use in other entities. 
+Entity references are useful, because they enable you to add attributes from different entities to create [views](#views). You can select another entity as a reference, and then you will be able to add fields from that entity to create a view later on.
 
-When you click at the end of the `Type` field, the dropdown list includes all the primitives (attributes that are not a primary key or index) and entity references (attributes that are primary keys or indices).
+:::tip
+You must have at least one entity reference in a view if you want to be able to create a view from that entity
+:::
 
-If you select a field that is marked entity reference, you can use this to create a view in the next step.
+To create a reference to another entity:
 
-In many cases, you need to add attributes from other entities to your entity. You can use these to create views (which is the next step).
+1. In the `New Attribute` panel for your entity (when you are creating or editing a new entity), click on the `Entity Reference` button.
 
-Once you have added all the attributes to your entity, click on the `Done` button. Your new entity is listed in the main area.
+2. Click at the end of the `Type` field. The dropdown list includes all the entities that you can refer to.
 
+![Entity references](/img/genesis-launchpad/entity-reference.png)
+
+3. Select the relevant entity. The primary key of that table is displayed for information.
+
+4. Click on the `Add references` button. This displays the reference in your list of attributes. 
+
+Once you have added all the attributes to your entity, click on the `Done` button to return to the main area, where all your entities are listed.
 
 :::tip Right codes
  ![Right codes](/img/genesis-launchpad/right-codes.png)
@@ -108,8 +133,8 @@ We strongly recommend that you use these.
 #### Adding more entities
 When you have finished adding entities, click on the `Next` button at the bottom right of the window to go to the next step.
 
-## Views
-Views enable you to display information from more than one table in a single place. 
+### Views
+[Views](/develop/server-capabilities/data-model/#views) enable you to display information from more than one table in a single place. 
 
 For example, if you want a view of all your trades, you would want the TRADE table (we call that the root entity for the view), but you would add information from the COUNTERPARTY and INSTRUMENT tables as well.
 
@@ -117,13 +142,36 @@ To create a new view, click on the `New View` button at the top right.
 
 Click at the end of the `Root Entity` field and select an entity from the dropdown list. This displays a default name for the view in the `View Name` field. 
 
-Underneath, this displays the entities you can join with to create a view. These are listed because your root entity includes entity references to attributes in those tables.
+Underneath, this displays the entities you can join with to create a view. These are listed because your root entity includes entity references to those tables.
  
 To join to one of the entities listed:
 1.	Click on the `Selected` checkbox.
 2.	Click on the `Attributes` tab; you can now see all the attributes for the view, including the attributes from the entity you have joined.
-3.	Click on a `Select` checkbox for an attribute to add it to or remove it from the view.
+3.	Click on a `Selected` checkbox for an attribute to add it to or remove it from the view.
+
+![Selecting attributes for a view](/img/genesis-launchpad/create-view.png)
+
 When you have finished, click on `Done`.
+
+#### Derived attributes
+You can also create derived attributes. These enable you to create a new value from one or more existing attributes. For example, you could divide NOTIONAL attribute by 100 to produce a fee of 1 percent.
+
+To add a derived attribute to the view you are creating or editing:
+
+1. Click on the `Derived Attributes` tab.
+2. Click on `Add Derived Attribute`. 
+3. Enter a name for the attribute.
+4. Select one or more attributes to be used to create the new value. 
+5. In the `Output Type` field, select the data type of the attribute (such as DOUBLE or INT).
+    In the example below, we are creating a derived attribute called FEE of type DOUBLE from two existing attributes.
+
+![Entity references](/img/genesis-launchpad/entity-reference.png)
+
+6. Click on `Save and Return` to the main screen for your view.
+7. When you have finished, click on the `Done` button. This returns you to the list of views.
+
+#### Finishing views
+When you have finished, click on the `Next` button at the bottom right of the window to move on to the next step.
 
 
 _______
