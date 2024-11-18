@@ -127,6 +127,7 @@ Once you have added all the attributes to your entity, click on the `Done` butto
 :::tip Right codes
  ![Right codes](/img/genesis-launchpad/right-codes.png)
 You have the chance to set right codes at many points in Genesis Create. These codes enable you to control which users have access to items in the database. They give you a great deal of flexibility in controlling access.
+
 We strongly recommend that you use these.
 :::
 
@@ -173,6 +174,108 @@ To add a derived attribute to the view you are creating or editing:
 #### Finishing views
 When you have finished, click on the `Next` button at the bottom right of the window to move on to the next step.
 
+### Queries
+Queries make real-time information available to the front end.
+
+:::tip Adding To Dos and comments
+ ![Right codes](/img/genesis-launchpad/right-codes.png)
+At various points, this link enables you to insert TO DO statements and comments that will appear in the generated code.
+Take time to use this feature; it will save you time later on.
+
+:::
+To add a query:
+1.	Click on the `New Query` button at the top right.
+2.	Click at the end of the `Entity or View` field and select an entity from the dropdown list. This displays a default name for the view in the Query Name field, which you can change if necessary.
+3.	Click on the `Add Query` button.
+4.	This displays all the fields in that entity. You can click to remove any fields you don’t want to include.
+5.	When you have finished, click on `Don`e. Your new query appears in the list on the Queries page.
+
+After you have added all the queries you need, click on the `Next` button to move on to the next step.
+
+### Consolidators (optional component)
+A consolidator can aggregate records in useful ways. It listens to changes to records in a specified entity and aggregates their values into a specified output entity.
+
+For example, it can aggregate Trades into Positions or Orders. Or it can aggregate Payments into Netted Payments.
+
+To add a consolidator:
+
+1.	Click on the `New Consolidator` button at the top right.
+2.	Type a name for the consolidator in the `Consolidator Name` field. 
+3.	To aggregate, you need to select the `Input Attribute` and `Output Attribute` to group by. The output attribute is determined by the input attribute you select. 
+4.	Check the fields for configuring the aggregation. The most important field is the `Aggregation Function`, which enables you to select the logic for the aggregation, which could be SUM or AVG, for example. (To handle more complex logic, you can customise this in the generated code later on.) When you are happy, make sure that the `Enabled` checkbox is set.
+5.	Click on `Done` to return to the Consolidators page, where your new consolidator is listed.
+
+When you have finished working with consolidators, click on the `Next` button at the bottom right to moe on to the next step.
+
+### Business Components
+For each Business Component that you selected at the beginning of the process, an extra step is displayed. Each step enables you to configure the chosen component.
+
+For example, the fields for setting up the details of an incoming or outgoing data pipeline look like this:
+
+![Editing the details of the Data Pipeline component](/img/genesis-launchpad/edit-pipeline.png)
+
+After you have configured the Business Component, click on the `Next` button at the bottom right to go to the next step.
+
+### User Interface
+This step enables you to create the web client for your application.
+
+By default, you are given a main or home page that is the landing page for your app (login is set up for you automatically). You can change the name of the page or add new pages to work with.
+
+In the example below, we have called our landing page FX Blotter. You can create another page by clicking on the `+` tab next to the page title and supplying a name for the new page.
+
+![Landing page and tab for creating a new page](/img/genesis-launchpad/main-page.png)
+
+:::tip
+When you have multiple pages, you can click on the `Manage pages` link on the tight to edit, add and delete pages.
+:::
+
+You can build each page by a adding tiles. Each tile contains a component, such as a grid display or a chart.
+
+#### Adding a tile and component
+To add a component to a page:
+
+1.	Click on `Add Tile`. This displays a panel where you can select your components.
+2.	Type a name for the tile. This is used in the code, so keep it short and practical.
+3.	Scroll through the components in the panel and select the radio button for the one you want, for example, `Real-Time Data Grid+Modifications`. Then click on `Submit`.
+
+![Adding a new tile and component](/img/genesis-launchpad/new tile.png)
+
+4.	The display changes and you need to complete the configuration fields for the component. These depend on the component you have selected. At minimum, you need to specify a `Data Source`. 
+
+    For example, the fields for configuring a grid look like this:
+
+![Adding a new tile and component](/img/genesis-launchpad/new-tile.png)
+
+    Once you have specified the source of the data, you can see the attributes that will be displayed in the form.
+
+    ![Adding a new tile and component](/img/genesis-launchpad/config-grid.png)
+
+    Note that you can select to hide some or all of the attributes. You can also change the order of fields and the format (such the number of decimal places).
+
+    ![Configuring the attributes in a form](/img/genesis-launchpad/grid-form-attributes.png)
+
+5.	Once you have finished, click on the `Done` button. This displays the tile and its component in the main list.
+
+#### Configuring each component
+In the main list, there are edit and delete buttons for each tile in the list. There is also a Config column, which shows a red warning triangle if the component needs to be configured.
+
+![Configuration icons for UI components](/img/genesis-launchpad/edit-ui.png)
+
+Click on the edit button for the tile. This displays the configuration details for the relevant component in the tile.
+
+#### Completing the UI
+When you have added all the UI components you need, click on the `Next` button at the bottom right of the window to move on.
+
+### Summary
+When you reach the Summary page, you have completed the configuration of your project.
+
+The next step is to generate the code so that you can build and deploy.
+
+1.	Go back to the Genesis Launchpad tab in your browser and click on Start  Cloud Workspace. Wait for three minutes to ensure this is running.
+2.	Click on Open Cloud Workspace. This generates your code and opens a workspace where you can build and run your application without needing  to download any other software or IDE.  
+Alternatively, you can click on Download Project Locally to download your project and build locally using your own IDE. This does involve some extra set-up.
+
+## Genesis Cloud Workspace
 
 _______
 Create 
