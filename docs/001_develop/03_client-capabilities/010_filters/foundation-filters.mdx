@@ -322,7 +322,7 @@ class RunnerExample extends GenesisElement {
 ### nodeEnv
 The nodeEnv filter in Genesis’s foundation filters checks the current application environment (such as "development," "production," etc.) and returns true if the filter’s specified environment matches the current one. This filter ensures that certain features or configurations are available only in intended environments by managing environment-specific conditions.
 
-** Example **
+Lets look at the usage examples as function and when used with DI:
 
 As Function:
 ```typescript
@@ -359,13 +359,14 @@ The percentage filter allows you to display certain features or messages to a se
 ### timeWindow
 This filter is used to check whether the current date and time fall between the specified start and end period.The filter returns true if the current date and time is within the specified range. `timeWindow` filter can be helpful when you want to manipulate data within a specific time frame.
 
-** Example **
+Lets look at the usage examples as function and with DI:
 
 As Function:
 ```ts
 import { timeWindowFilter } from '@genesislcap/foundation-filters';
 ...
 const outcome = timeWindowFilter('Sun Sep 25 2022 16:51:55 GMT+0000', 'Fri Nov 25 2022 17:51:55 GMT+0000');
+console.log(outcome); // returns true if current date/time falls within the start and end period
 ```
 As DI:
 ```ts
@@ -377,35 +378,90 @@ const outcome = this.timeWindow.filter({
   start: 'Sun Sep 25 2022 16:51:55 GMT+0000',
   end: 'Fri Nov 25 2022 17:51:55 GMT+0000',
 });
+console.log(outcome); // returns true if current date/time falls within the start and end period
 ```
+Both params start and end can be provided in any format recognized by the Date.parse() method.
 
 
 ### urlTargeting
 The `urlTargeting` is used to filter content on the basis of URL structure, allowing you to use specific criteria to target matching URLs or patterns. Following parameters are used to configure this filter:
 
-**url**: A full URL to match.
+**url**: A full URL.
 
-**pattern**: A regular expression pattern for matching URLs.
+**pattern**: A regex for matching URLs.
 
-**schemes**: An array of valid URL schemes (e.g., "https").
+**schemes**: An array of schemes or protocols to target (e.g., "http").
 
-**hosts**: A list of acceptable hostnames or domain names.
+**hosts**: An array of host names or domain names.
 
-**paths**: A list of URL path segments to match.
+**paths**: A list of  path to target.
 
 This filter  will return true when the current URL matches on **ANY** of the parameters explained. If you wish to match on multiple parameters, consider chaining an array of urlTargeting filters together using [ClientFilterRunner](./docs/api/foundation-filters.clientfilterrunner.md).
 
 This filter helps in targeting specific URLs based on these parameters, which can be extremely useful for restricting or enabling features based on URL parameters or domains.
 For example, you could use the filter to only allow access to certain content when the URL matches a secure HTTPS connection on specific hosts, like `https://test.genesislab.global`.
 
-** Example **
+Lets look at the usage examples as function and with DI:
+
+As Function:
+```ts
+import { urlTargetingFilter } from '@genesislcap/foundation-filters';
+...
+const outcome = urlTargetingFilter(
+    'https://test.com/inbox', 
+    /test\.com\/dashboard/, 
+    ['https','http'],
+    ['test.com'],
+    ['dashboard','inbox']
+  );
+console.log(outcome); // returns true if any one of the above parameters matches with the passed url
+```
+As DI:
+```ts
+import { URLTargeting } from '@genesislcap/foundation-filters';
+...
+@URLTargeting urlTargeting: URLTargeting;
+...
+const outcome = this.urlTargeting.filter({
+  url: 'https://www.test.com',
+  schemes: ['http', 'https'],
+  hosts: ['test.com']
+});
+console.log(outcome); // returns true if any one of the above parameters matches with the passed url
+```
+
 
 ### userAgent
 The `userAgent` filters content on the basis of user’s browser, device, operating system (OS), or specific user agent string parameters. It allows user to specify which browsers(e.g. Chrome, Firefox), devices (e.g., mobile or desktop), or OS (e.g., IOS, Windows) have access to certain features. You can use this filter for providing tailored experience on the basis of user's environment for instance customizing content for a specic browser or device.
 
+Lets look at the usage examples as function and with DI:
 
-
-** Example **
+As Function:
+```ts
+import { userAgentFilter } from '@genesislcap/foundation-filters';
+...
+const outcome = userAgentFilter(
+    ['Chrome', 'Firefox'], 
+    ['mobile', 'tablet'], 
+    ['Android', 'Window'],
+    navigator.userAgent
+  );
+console.log(outcome); // returns true if any one of the above parameters matches with the userAgent string
+```
+As DI:
+```ts
+import { UserAgent } from '@genesislcap/foundation-filters';
+...
+@UserAgent userAgent: UserAgent;
+...
+const outcome = this.userAgent.filter({
+  browsers: ['Firefox'], 
+  devices: ['mobile', 'tablet'], 
+  oss: ['Mac OS', 'Android', 'Window'],
+  ua: navigator.userAgent
+});
+console.log(outcome); // returns true if any one of the above parameters matches with the passed userAgent string
+```
 
 ### userTargeting
 This filter is used to filter content on the basis of user-specific attributes. It uses the following criteria for filtering:
@@ -416,11 +472,12 @@ Permissions: Applies filtering on the basis of assigned permissions on user prof
 
 It will return true when the current user matches on ANY of the parameters mentioned above. If you wish to match on multipleparameters, consider chaining an array of userTargeting filters together using [ClientFilterRunner](./docs/api/foundation-filters.clientfilterrunner.md).
 
-** Example **
+**Example**
 
 As Function:
 
 As DI:
+
 ```ts
 import { UserTargeting } from '@genesislcap/foundation-filters';
 ...
@@ -430,7 +487,7 @@ const outcome = this.userTargeting.filter({
   profiles: ['ADMIN']
 });
 ```
-One usecase of this filter is checking if the user is an **admin**. For this purpose, `hasAdmnProfile` utility provided by this filter can be used to determine whether a user has administrative access.
+One use case of this filter is checking if the user is an **admin**. For this purpose, `hasAdmnProfile` utility provided by this filter can be used to determine whether a user has administrative access.
 ```ts
 import { UserTargeting } from '@genesislcap/foundation-filters';
 ...
