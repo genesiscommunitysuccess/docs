@@ -627,6 +627,33 @@ pipeline("TEST_PIPELINE_RAW_DECODER") {
 }
 ```
 
+### Transform Operators
+
+#### `csvEncoder`
+This is a transform operator that encodes an object of a user-defined type into a stream of CSV formatted Strings including the header. This stream can then be used to write to a file
+
+```kotlin
+    pipeline("TEST_CSV_ENCODER") {
+        source(dbBulkQuery<Trade>())
+            // encoder is expecting objects of type Trade as defined in source
+            .transform(csvEncoder())
+            .sink(streamSink)
+    }
+```
+
+You also have the option of providing configuration to specify the following:
+- columnSeparator (optional Char) [default: ',']: this is the character used to separate values.
+- quoteChar (optional Char) [default: '"']: this is the character used for quoting values that contain quote characters or line feeds.
+
+Example:
+```kotlin
+// use the csvEncoder in the same way as above
+csvEncoder<Trade>() {
+      // specify custom columnSeparator and/or quoteChar here
+      columnSeparator = '|'
+      quoteChar = '$'
+  }
+```
 
 ### Sinks
 
