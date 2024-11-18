@@ -133,19 +133,80 @@ export class AppComponent {
 </TabItem>
 </Tabs>
 
-## DOM API
+## API
 
 Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
 
 ### Attributes
 
-| Name        | Type      | Description                                                                               | Example |
-|-------------|-----------|-------------------------------------------------------------------------------------------|---------|
-| disabled    | `boolean` | Similar to `readonly`, but with a blur on the component                                   | `<rapid-radio-group disabled>` |
-| name        | `string`  | Sets a name for the component                                                             | `<rapid-radio-group name="name">` |
-| orientation | `string`  | Sets the orientation of the group of radios components can be `vertical` or `horizontal`. **Default: `horizontal`** | `<rapid-radio-group orientation="vertical">` |
-| readonly    | `boolean` | If true, the user cannot change the value of this checkbox (which is greyed out)          | `<rapid-radio-group readonly>` |
-| value       | `string`  | Sets a initial value for the component, so the corresponding radio component gets checked | `<rapid-radio-group value="one">` |
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>readonly</td>
+      <td><code>boolean</code></td>
+      <td>If true, the user cannot change the value of this checkbox (which is greyed out).</td>
+<td>
+
+```typescript
+<rapid-radio-group readonly>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Similar to `readonly`, but with a blur on the component.</td>
+<td>
+
+```typescript
+<rapid-radio-group disabled>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>Sets a name for the component.</td>
+<td>
+
+```typescript
+<rapid-radio-group name="Name">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>orientation</td>
+      <td><code>string</code></td>
+      <td>Sets the orientation of the group of radios components can be `vertical` or `horizontal`. **Default: `horizontal`**</td>
+<td>
+
+```typescript
+<rapid-radio-group orientation="vertical">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>string</code></td>
+      <td>Sets a initial value for the component, so the corresponding radio component gets checked</td>
+<td>
+
+```typescript
+<rapid-radio-group value=${sync((x) => x.radioGroupValue)}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+This component doesn't have any properties which are not also controlled via attributes.
 
 ### Slots
 
@@ -159,11 +220,26 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 |---|---|
 | positioning-region | The positioning region for laying out the radios |
 
-### Fired Events
-| Name    | Description                                   |
-|---------|-----------------------------------------------|
-| @change | Fires the event when a radio change its state |
+### Events fired
 
-### Listened Events
+<table>
+  <thead><tr><th>Event</th><th>Type</th><th>Use</th><th>Example</th></tr></thead>
+  <tbody>
+  <tr>
+    <td>change</td>
+    <td><code>event</code></td>
+    <td>Emits a custom change event when the radio group changes its state. Access the value on the event via <code>.target.value</code>.</td>
+<td>
 
+```typescript
+<rapid-radio-group @change="${(x) => x.myChangeHandler(event)}">
+```
+
+</td>
+  </tr>
+  </tbody>
+</table>
+
+
+### Events listened to
 This component doesn't listen to any events.
