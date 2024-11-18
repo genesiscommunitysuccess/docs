@@ -328,17 +328,87 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 ### Attributes
 
-| Attribute | Type | Use | Example |
-|---|---|---|---|
-|event-name|`string`|The name of the javascript event to listen to on the parent|`<fdc3-channel-event event-name="click">`|
-|channel-type|`string`|The name of the channel context type that will be broadcast|`<fdc3-channel-event channel-type="fdc3.position">`|
-|channel-name|`string`|If specified, the element will broadcast on a named app channel|`<fdc3-channel-event channel-type="exampleChannel">`|
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>event-name</td>
+            <td><code>string</code></td>
+            <td>The name of the javascript event to listen to on the parent</td>
+<td>
+
+```typescript
+<fdc3-channel-event event-name="click">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>channel-type</td>
+            <td><code>string</code></td>
+            <td>The name of the channel context type that will be broadcast</td>
+<td>
+
+```typescript
+<fdc3-channel-event channel-type="fdc3.position">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>channel-name</td>
+            <td><code>string</code></td>
+            <td>If specified, the element will broadcast on a named app channel</td>
+<td>
+
+```typescript
+<fdc3-channel-event channel-type="exampleChannel">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Properties
 
-| Property | Type | Use | Example |
-|---|---|---|---|
-|mappingFunction|`(any) => any`|An optional function to override the channel broadcast payload. It should be a function which returns a value. It will receive the custom event `detail.data` property value (or `detail` if data is not present) as a parameter. The returned value will be broadcast on the channel |`<fdc3-channel-event :mappingFunction="${() => ({TICKER}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}"`|
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>mappingFunction</td>
+<td>
+
+```typescript
+(e: Event.detail.data | Event.detail) => any
+```
+
+</td>
+            <td>An optional function to override the channel broadcast payload. It should be a function which returns a value, corresponding to the fdc3 type. It will receive the custom event <code>detail.data</code> property value (or <code>detail</code> if data is not present) as a parameter. The returned value will be broadcast on the channel</td>
+<td>
+
+```typescript
+<fdc3-channel-event :mappingFunction=${() => ({TICKER}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Slots
 
