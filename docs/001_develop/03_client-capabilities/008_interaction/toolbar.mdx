@@ -169,9 +169,26 @@ Use cases:
 
 Property and attribute binding examples for Genesis Component syntax.
 
-| Name     | Type      | Description                                                                      | Examples |
-|----------|-----------|----------------------------------------------------------------------------------|---|
-| orientation  | ToolbarOrientation | The orientation of the toolbar, `horizontal` or `vertical`. |  |
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>orientation</td>
+      <td><code>ToolbarOrientation</code></td>
+      <td>The orientation of the toolbar, `horizontal` or `vertical`.</td>
+<td>
+
+```typescript
+<rapid-toolbar orientation="horizontal">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+This component doesn't have any properties which are not also controlled via attributes.
 
 ### Slots
 
@@ -186,7 +203,6 @@ Property and attribute binding examples for Genesis Component syntax.
 | Part | Description |
 |---|---|
 | positioning-region | The element containing the items, start and end slots |
-
 
 ### Events fired
 No events fired.
