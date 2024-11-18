@@ -226,12 +226,95 @@ This component doesn't listen to any events.
 
 ### Attributes
 
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>heading-level</td>
+            <td><code>1 - 6</code></td>
+            <td>Sets the header level of the heading inside of the accordion item. This is equivalent to the <code>h1</code> - <code>h6</code> tags. The default is <code>2</code>.</td>
+<td>
+
+```typescript
+<rapid-accordion-item heading-level=3>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>expanded</td>
+            <td><code>boolean</code></td>
+            <td>Sets the accordion item to be expanded, allowing the contents to be visible to the user.</td>
+<td>
+
+```typescript
+<rapid-accordion-item expanded>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
 ### Properties
 
 ### Slots
 
+| Slot | Description |
+| --- | --- |
+| Default | The default slot for accordion item content |
+| start | Content which can be provided between the heading and the icon |
+| end | Content which can be provided between the start slot and icon |
+| heading | Content which serves as the accordion item heading and text of the expand button |
+| expanded-icon | The expanded icon |
+| collapsed-icon | The collapsed icon |
+
 ### CSS Parts
+
+| Part | Description |
+| --- | --- |
+| heading | Wraps the button |
+| button | The button which serves to invoke the item |
+| heading-content | Wraps the slot for the heading content within the button |
+| icon | The icon container |
+| expanded-icon | The expanded icon slot |
+| collapsed-icon | The collapsed icon |
+| region | The wrapper for the accordion item content |
 
 ### Events fired
 
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>change</td>
+            <td><code>void</code></td>
+            <td>Fires the accordion's button is clicked</td>
+<td>
+
+```typescript
+<rapid-accordion-item @change="${(x) => x.myChangeHandler()}">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
 ### Events listened
+
+This component doesn't listen to any events.
