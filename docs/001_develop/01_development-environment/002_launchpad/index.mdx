@@ -57,11 +57,47 @@ Each entity needs a list of attributes (fields), and one of these must be the pr
 #### Creating a new entity
 To define an entity, click on the `New Entity` button at the top right. In the screen displayed:
 
-1.	Type a name for the entity and click on `Save`  . All characters are converted to caps and all spaces are converted to underscore.
+1.	Type a name for the entity and click on `Save`. All characters are converted to caps and all spaces are converted to underscore.
 2.	Optionally, you can click to set two things:
     •	Generate Audit Trail sets automatic auditing of every change to the table.
     •	Enable right codes creates codes that control view and update access to this table. You can edit the default codes, if required. 
 3.	To add the attributes for the entity, make sure that the `New Attributes` panel is displayed on the right (select the `Attributes` tab in the main area if necessary).
+
+#### Adding attributes to an entity
+For each attribute that you want to add, make sure that the `New Attributes` panel is displayed. First, let's look at adding a primitive - a standard type of data, such as STRING or INTEGER.
+
+1.	Make sure that the `Primitive` button is selected. 
+2. Select the `Type` of data (STRING, INTEGER, BOOLEAN, etc). This controls the other fields available for that type.
+3.	Enter a unique name for the field.
+4.	Enter or select any other relevant values in the panel, such as default values.
+    In the example below, we are adding an attribute called CURRENCY_ID of type STRING.
+
+ ![new primitive](/img/genesis-launchpad/new-primitive.png)
+
+5.	Click on the `Add Attribute` button. This adds the attribute to the list in the main area.
+
+#### Primary key
+The primary key is the default way to find records in an entity. Every entity has to have a primary key.
+
+With the attributes listed for your entry in the main area, you can set the primary key for the entity, select the `Primary Key` checkbox for the relevant attribute.
+
+Here, we have selected CURRENCY ID as the primary key. We have also set `Generated` so that the value of this attribute is generated automatically. Each new record submitted will have a unique sequential integer for this field, prefixed with the letters CU.
+
+![Primary key](/img/genesis-launchpad/create-primary-key.png)
+
+Note that edit and delete buttons are available to the right of each attribute in the list, so you can go back and change any attribute you have already set up.
+
+#### Entity references
+Once you have created an entity, its attributes are available for use in other entities. 
+
+When you click at the end of the Type field, the dropdown list includes all the primitives (attributes that are not a primary key or index) and references (attributes that are).
+
+If you select a field that is marked entity reference, you can use this to create a view in the next step.
+
+In many cases, you need to add attributes from other entities to your entity. You can use these to create views (which is the next step).
+
+Once you have added all the attributes to your entity, click on the `Done` button. Your new entity is listed in the main area.
+
 
 :::tip Right codes
  ![Right codes](/img/genesis-launchpad/right-codes.png)
@@ -69,14 +105,7 @@ You have the chance to set right codes at many points in Genesis Create. These c
 We strongly recommend that you use these.
 :::
 
-#### Adding attributes to an entity
-For each attribute that you want to add, make sure that the `New Attributes` panel is displayed, then:
 
-1.	Select the `Type` of data (STRING, INTEGER, BOOLEAN, etc). This controls the other fields available for that type.
-2.	Enter a unique name for the field.
-3.	Enter or select any other relevant values in the panel, such as default values.
-4.	Click on the `Add Attribute` button. This adds the attribute to the list in the main area.
-5.	Once you have added all the attributes, click on the `Done` button. Your new entity is listed in the main area.
 
 _______
 Create 
