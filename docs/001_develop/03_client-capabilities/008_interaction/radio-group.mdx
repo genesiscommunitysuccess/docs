@@ -60,7 +60,8 @@ Usage
 export class MyElement extends GenesisElement {
   @observable radioGroupValue: string;
   selectionChanged() {
-    console.log(this.radioGroupValue);
+    const target = event.target as HTMLInputElement;
+    console.log(target.value);
   }
 }
 ```
