@@ -52,7 +52,7 @@ When you have finished, click on the `Next` button at the bottom right of the wi
 ### Entity Models
 In this step, you define the entities for your application. An entity is essentially a table that can contain records. For example, you could define a counterparty, a trade, a currency, and so on.
 
-Each entity needs a list of attributes (fields), and one of these must be the primary key - the unique way of identifying each record in the table. So, your COUNTERPARTY entity might need an automatically-generated unique ID (which would make a good primary key) as the first attribute. \you could then add attributes such as COUNTERPARTY_LONG_NAME, COUNTERPARTY_SHORT_NAME, and so on.
+Each entity needs a list of attributes (fields), and one of these must be the primary key - the unique way of identifying each record in the table. So, your COUNTERPARTY entity might need an automatically-generated unique ID (which would make a good primary key) as the first attribute. You could then add attributes such as COUNTERPARTY_LONG_NAME, COUNTERPARTY_SHORT_NAME, and so on.
 
 #### Creating a new entity
 To define an entity, click on the `New Entity` button at the top right. In the screen displayed:
@@ -88,9 +88,9 @@ Here, we have selected CURRENCY ID as the primary key. We have also set `Generat
 Note that edit and delete buttons are available to the right of each attribute in the list, so you can go back and change any attribute you have already set up.
 
 #### Entity references
-Once you have created an entity, its attributes are available for use in other entities. 
+Entity references are useful, because they enable you to add attributes from different entities to form [views](#views) Once you have created an entity, its attributes are available for use in other entities. 
 
-When you click at the end of the Type field, the dropdown list includes all the primitives (attributes that are not a primary key or index) and references (attributes that are).
+When you click at the end of the `Type` field, the dropdown list includes all the primitives (attributes that are not a primary key or index) and entity references (attributes that are primary keys or indices).
 
 If you select a field that is marked entity reference, you can use this to create a view in the next step.
 
@@ -105,6 +105,25 @@ You have the chance to set right codes at many points in Genesis Create. These c
 We strongly recommend that you use these.
 :::
 
+#### Adding more entities
+When you have finished adding entities, click on the `Next` button at the bottom right of the window to go to the next step.
+
+## Views
+Views enable you to display information from more than one table in a single place. 
+
+For example, if you want a view of all your trades, you would want the TRADE table (we call that the root entity for the view), but you would add information from the COUNTERPARTY and INSTRUMENT tables as well.
+
+To create a new view, click on the `New View` button at the top right.
+
+Click at the end of the `Root Entity` field and select an entity from the dropdown list. This displays a default name for the view in the `View Name` field. 
+
+Underneath, this displays the entities you can join with to create a view. These are listed because your root entity includes entity references to attributes in those tables.
+ 
+To join to one of the entities listed:
+1.	Click on the `Selected` checkbox.
+2.	Click on the `Attributes` tab; you can now see all the attributes for the view, including the attributes from the entity you have joined.
+3.	Click on a `Select` checkbox for an attribute to add it to or remove it from the view.
+When you have finished, click on `Done`.
 
 
 _______
