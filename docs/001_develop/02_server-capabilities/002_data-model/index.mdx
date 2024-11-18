@@ -53,6 +53,7 @@ tables {
       nonUnique("COUNTERPARTY_ID").name("TRADE_BY_COUNTERPARTY_ID")
       nonUnique("INSTRUMENT_ID").name("TRADE_BY_INSTRUMENT_ID")
       nonUnique("DATE").name("TRADE_BY_DATE")
+      nonUnique("COUNTERPARTY_ID, DATE").name("TRADE_BY_COUNTERPARTY_ID_DATE")
     }
   }
 
@@ -86,7 +87,7 @@ tables {
 
 Every view defines a "root" table, the main table powering the view. It then defines tables which join to it in order to make up the view.
 
-Taking the example table configuration above, we can create a `TRADE_VIEW` as follows, which joins onto `INSTRUMENT` and `COUNTEPARTY` tables to include their fields in the view
+Taking the example table configuration above, we can create a `TRADE_VIEW` as follows, which joins onto `INSTRUMENT` and `COUNTERPARTY` tables to include their fields in the view
 
 ![](/img/views-basics.png)
 
@@ -126,7 +127,7 @@ views {
 
 ### Summary
 
-Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and other data visualisation web client components. 
+Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and other data visualization web client components. 
 
 Tables and views are also be used to power server server capabilities such as [real-time aggregation](/develop/server-capabilities/real-time-aggregation-consolidator/), [real-time triggers](/develop/server-capabilities/real-time-triggers-evaluator/) and outbound integrations. 
 
@@ -146,7 +147,7 @@ Tables and their fields are defined in  `*-tables-dictionary.kts` files, these f
 
 `audit` can optionally be defined to make the table auditable
 
-Auditing changes to system records is a common requiement in compliant financial systems.
+Auditing changes to system records is a common requirement in compliant financial systems.
         
 The following details can be added when you use the `audit = details()` parameter:
 
@@ -196,7 +197,7 @@ The value in the parenthesis in the second example below is the maximum number o
 `field("MY_STRING", STRING(dbMaxSize))`
 
 ###### `Enum`
-Enum (aka enumerated) fields specify the exact set of values which the field can be set to. They are helpful when you have a definitive set of values and want to present users with a picklist.
+Enum (aka enumerated) fields specify the exact set of values which the field can be set to. They are helpful when you have a definitive set of values and want to present users with a pick-list.
 Each value of the enum can also be have an "alias" which is typically a human readable representation of the value.
 Enums must have a default value. The third example below shows how to set this. Where no default is specified the first value in the list is set as the default.
 
@@ -232,7 +233,7 @@ Integers can only hold 32 bits, and the maximum value is just over 2.14 billion.
 
 ###### `Long`
 Long fields are similar to integer, but represented in 64 bits. 
-This means it has a much larger maximum value. Long's are used a lot for auto-generated primary keys so that we can theortically store many more records. 
+This means it has a much larger maximum value. Long's are used a lot for auto-generated primary keys so that we can theoretically store many more records. 
 
 ###### Example Definition:
 `field("MY_LONG", LONG)` 
@@ -289,7 +290,7 @@ Sequence takes a  2 character reference as a value, similar to autoIncrement the
 
 `field("TRADE_ID", STRING).sequence("TR")`
 
-In this example, in an application which has system definintion `Location` set to `NY`, will generated values 000000000000001TRNY1, then 000000000000002TRNY1, and so on...
+In this example, in an application which has system definition `Location` set to `NY`, will generated values 000000000000001TRNY1, then 000000000000002TRNY1, and so on...
 
 :::info
 If your application is set to use an SQL database then sequence will generate a uuid by default. To have it generate a sequence as defined here set the following system definition items in your application:   
@@ -448,7 +449,7 @@ There are two different ways to define a primary key:
 - Set `.primaryKey()` against a field defined in the table. e.g. `field("ID", LONG).autoIncrement().primaryKey()`
 - Define `primaryKey(<field 1>, <field 2>, ...)` within a table definition with one or more fields as inputs, for example `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID")`
 
-When defining a multi-field primary key the order in which the fields are specified should be considered. There precendence sets more efficient ways to look up ranges of records in the API, for example in the definition above we could effeciently get a list of the entity for a given BOOK_ID, else for a given combination of BOOK_ID and INSTRUMENT_ID. 
+When defining a multi-field primary key the order in which the fields are specified should be considered. There precedence sets more efficient ways to look up ranges of records in the API, for example in the definition above we could efficiently get a list of the entity for a given BOOK_ID, else for a given combination of BOOK_ID and INSTRUMENT_ID. 
 
 Fields marked as part of a primary key may not be null.
 
@@ -485,7 +486,7 @@ Non-unique indices are used to ensure efficient ranged lookup of records, and th
 An example usage would be if you had a `POSITION` table which had a non-unique index set on `COUNTERPARTY_ID`, it allows for efficient lookups of all `POSITION` records for a given `COUNTERPARTY_ID`
 
 A non-unique index can be defined by:
-- adding `.nonUniqueIndex()` to a field defintion (single field non-unique indices only)
+- adding `.nonUniqueIndex()` to a field definition (single field non-unique indices only)
 - adding `nonUnique(<field 1>, <field 2>, ...)` to the `indices` block of a table.
 
 As with multi-field primary keys, the order in which the fields are specified should be considered.
@@ -494,7 +495,7 @@ As with multi-field primary keys, the order in which the fields are specified sh
 
 ```kotlin {4}
     //Field level
-    table(name = "POSTION", id = 11003) {
+    table(name = "POSITION", id = 11003) {
         ...
         field("COUNTERPARTY_ID", LONG).nonUniqueIndex()
         ...
@@ -502,7 +503,7 @@ As with multi-field primary keys, the order in which the fields are specified sh
 ```
 ```kotlin {6-8}
     //Indices block
-    table(name = "POSTION", id = 11003) {
+    table(name = "POSITION", id = 11003) {
         ...
         field("COUNTERPARTY_ID", LONG)
         ...
@@ -626,7 +627,7 @@ You can also add nested joins, joining to joined tables, recursively as needed b
 
 The above example also demonstrates how to use a hardcoded value to join, see the `ALTERNATE_TYPE` being set to "REFINITIV".
 
-Joins can be one-to-one (key field match) or one-to-many (part-key-field match), however *Views with one-to-many joins cannot be used to power [real-time queries](/develop/server-capabilities/real-time-queries-data-server/) as they would be very inneficient and potentially use up a lot of the cache.
+Joins can be one-to-one (key field match) or one-to-many (part-key-field match), however *Views with one-to-many joins cannot be used to power [real-time queries](/develop/server-capabilities/real-time-queries-data-server/) as they would be very inefficient and potentially use up a lot of the cache.
 
 #### `backwardsJoin`
 
@@ -671,8 +672,8 @@ joining(INSTRUMENT, JoinType.INNER) {
     on(TRADE { INSTRUMENT_ID } to INSTRUMENT { INSTRUMENT_ID })
 ```
 
-#### Parameterised joins
-Some join operations require external parameters that are not available in the context of the table-join definition, but will be available when the view repository is accessed (e.g. client-enriched definitions), so an option exists to create parameterised joins.
+#### Parameterized joins
+Some join operations require external parameters that are not available in the context of the table-join definition, but will be available when the view repository is accessed (e.g. client-enriched definitions), so an option exists to create parameterized joins.
 
 These are typically used in Request Server queries:
 
@@ -830,7 +831,7 @@ You can override the name of a table's field in a view using various operators, 
 
 #### `derivedField`
 
-Derived fields are used to serve up data that is constructed from one or more fields; this is modified programatically before progressing.
+Derived fields are used to serve up data that is constructed from one or more fields; this is modified programmatically before progressing.
 
 For example, if a `TRADE` table has a `PRICE` and a `QUANTITY` field, a derived field `NOTIONAL` can be defined as the product of them both.
 
