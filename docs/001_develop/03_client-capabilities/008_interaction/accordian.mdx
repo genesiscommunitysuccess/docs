@@ -145,3 +145,93 @@ Use cases:
     ```
   </TabItem>
 </Tabs>
+
+## Accordion API
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>expand-mode</td>
+            <td><code>"single" | "multi"</code></td>
+            <td>When using the <em>default</em> <code>multi</code> expand mode, the user can expand multiple sections at the same time. When using the <code>single</code> expand mode, the user can only expand one section at a time.</td>
+<td>
+
+```typescript
+<rapid-accordion expand-mode="single">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Properties
+
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+
+| Slot | Description |
+| --- | --- |
+| Default | The default slot which should be filled with `<rapid-accordion-item>`. |
+
+### CSS Parts
+
+| Part | Description |
+| --- | --- |
+| item | The slot which is populated with accordion items.|
+
+### Events fired
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>change</td>
+      <td><code>string</code></td>
+      <td>Fires the event when the accordion item changes its state. The event detail is the index active item.</td>
+<td>
+
+```typescript
+<rapid-accordion @change="${(x,ctx) => x.myChangeHandler(ctx.event)}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Events listened
+
+This component doesn't listen to any events.
+
+## Accordion item API
+
+### Attributes
+
+### Properties
+
+### Slots
+
+### CSS Parts
+
+### Events fired
+
+### Events listened
