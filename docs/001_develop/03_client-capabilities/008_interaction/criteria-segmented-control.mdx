@@ -167,6 +167,8 @@ The choice of serialisers are:
     Serialisers.dateIsLessEqual
 ```
 
+Further details on criteria matching can be found [here](https://learn.genesis.global/docs/web/basics/criteria-matching/)
+
 ## API
 
 ### Attributes
@@ -178,7 +180,7 @@ This component doesn't have any attributes.
   <tbody>
     <tr>
       <td>criteriaOptions</td>
-      <td><code>array</code></td>
+      <td><code>Array\<CriteriaSegmentedControlOption\></code></td>
       <td>Array of criteria objects that can be selected</td>
 <td>
 
@@ -203,11 +205,11 @@ This component doesn't have any attributes.
     <tr>
       <td>selectedLabel</td>
       <td><code>string</code></td>
-      <td>The selected options label</td>
+      <td>The selected options label. If you only need to work with the value for a form then use the `value` property, but you can use this property to set the default selected value, or set the selection when rehydrating state.</td>
 <td>
 
 ```typescript
-<criteria-segmented-control selectedLabel="selectedLabel">
+<criteria-segmented-control :selectedLabel=${(x) => defaultSelected}>
 ```
 
 </td>
