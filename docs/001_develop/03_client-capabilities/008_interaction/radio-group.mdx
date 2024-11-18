@@ -21,9 +21,7 @@ import TabItem from '@theme/TabItem';
 # Radio group
 
 Use cases:
-* A radio group is a set of checkable buttons known as radio buttons.
-* No more than one button can be checked at a time.
-* When a user checks an unchecked button, the previously checked button is automatically unchecked.
+* Grouping radio buttons together so that only one can be selected at a time
 
 ## Example
 
@@ -49,7 +47,7 @@ Usage
   template: html`
     <rapid-radio-group
       @change="${(x) => x.selectionChanged()}"
-      :value="${sync((x) => x.radioGroupValue)}"
+      value="${sync((x) => x.radioGroupValue)}"
     >
       <rapid-radio value="one">One</rapid-radio>
       <rapid-radio value="two">Two</rapid-radio>
@@ -182,8 +180,8 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
     </tr>
     <tr>
       <td>orientation</td>
-      <td><code>string</code></td>
-      <td>Sets the orientation of the group of radios components can be `vertical` or `horizontal`. **Default: `horizontal`**</td>
+      <td><code>"vertical" | "horizontal"</code></td>
+      <td>Sets the orientation of the group of radios components. **Default: `horizontal`**</td>
 <td>
 
 ```typescript
