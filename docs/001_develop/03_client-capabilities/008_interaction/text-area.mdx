@@ -117,7 +117,7 @@ Use cases:
   <tbody>
     <tr>
       <td>appearance</td>
-      <td><code>string</code></td>
+      <td><code>"filled" | "outline"</code></td>
       <td>Changes the general view of the element; this can be **filled** or **outline**</td>
 <td>
 
@@ -237,8 +237,8 @@ Use cases:
     </tr>
     <tr>
       <td>resize</td>
-      <td><code>string</code></td>
-      <td>Allows the user to resize the element; this can be {"none","both","vertical","horizontal"}. **Default: none**</td>
+      <td><code>"none" | "both" | "vertical" | "horizontal"</code></td>
+      <td>Configures which ways the user can resize the text area. **Default: none**</td>
 <td>
 
 ```typescript
@@ -262,11 +262,11 @@ Use cases:
     <tr>
       <td>value</td>
       <td><code>string</code></td>
-      <td>The text area content</td>
+      <td>The text area content. Use the `sync` utility to bind the data from the template back to the model.</td>
 <td>
 
 ```typescript
-<text-area value="Text area value">
+<text-area value=${sync((x) => x.textAreaValue)}>
 ```
 
 </td>
@@ -274,6 +274,8 @@ Use cases:
   </tbody>
 </table>
 
+### Properties
+This component doesn't have any properties which are not also controlled via attributes.
 
 ### Slots
 
