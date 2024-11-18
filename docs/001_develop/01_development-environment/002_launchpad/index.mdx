@@ -26,13 +26,59 @@ Genesis Create takes you through all the steps you need to set up a project and 
 ![Create steps](/img/genesis-launchpad/create-steps.png)
 
 ### Project Attributes
+The first step  is to name your project and select the Genesis components that you need. 
+
 To start your project:
 1.	Give your project a usable name. This will be used in the file names, so keep it short and practical, and do not use spaces.
 2.	Provide a description of the project, which will become the README file. Markdown formatting is supported.
-3.	Select the components that you want to include in your application (in addition to the mandatory components). To add a component, click on the Add Genesis Components button.
+3.	Select the components that you want to include in your application (in addition to the mandatory components). To add a component, click on the `Add Genesis Components` button at the top right.
 
+:::tip
+Selected Components
+A Genesis application is built from a set of components that have different purposes. The components you have selected are listed in the `Selected Components` area. 
 
+Note that Base Genesis Server and User Authorization are mandatory. 
 
+You need to give some thought to your requirements at this point. Click on 1Add Genesis Components` and take a look at what is available.
+
+You almost certainly want to select `Real Time Queries`. This makes data from your database available to the front end. 
+
+If you want to consume data from another system or to publish data from this application to another system, select `Data Pipelines`.
+
+:::
+
+When you have finished, click on the `Next` button at the bottom right of the window to go to the next step.
+
+### Entity Models
+In this step, you define the entities for your application. An entity is essentially a table that can contain records. For example, you could define a counterparty, a trade, a currency, and so on.
+
+Each entity needs a list of attributes (fields), and one of these must be the primary key - the unique way of identifying each record in the table. So, your COUNTERPARTY entity might need an automatically-generated unique ID (which would make a good primary key) as the first attribute. \you could then add attributes such as COUNTERPARTY_LONG_NAME, COUNTERPARTY_SHORT_NAME, and so on.
+
+#### Creating a new entity
+To define an entity, click on the `New Entity` button at the top right. In the screen displayed:
+
+1.	Type a name for the entity and click on `Save`  . All characters are converted to caps and all spaces are converted to underscore.
+2.	Optionally, you can click to set two things:
+    •	Generate Audit Trail sets automatic auditing of every change to the table.
+    •	Enable right codes creates codes that control view and update access to this table. You can edit the default codes, if required. 
+3.	To add the attributes for the entity, make sure that the `New Attributes` panel is displayed on the right (select the `Attributes` tab in the main area if necessary).
+
+:::tip Right codes
+ ![Right codes](/img/genesis-launchpad/right-codes.png)
+You have the chance to set right codes at many points in Genesis Create. These codes enable you to control which users have access to items in the database. They give you a great deal of flexibility in controlling access.
+We strongly recommend that you use these.
+:::
+
+#### Adding attributes to an entity
+For each attribute that you want to add, make sure that the `New Attributes` panel is displayed, then:
+
+1.	Select the `Type` of data (STRING, INTEGER, BOOLEAN, etc). This controls the other fields available for that type.
+2.	Enter a unique name for the field.
+3.	Enter or select any other relevant values in the panel, such as default values.
+4.	Click on the `Add Attribute` button. This adds the attribute to the list in the main area.
+5.	Once you have added all the attributes, click on the `Done` button. Your new entity is listed in the main area.
+
+_______
 Create 
 
  - General 
