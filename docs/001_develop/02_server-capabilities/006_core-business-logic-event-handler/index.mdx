@@ -449,7 +449,47 @@ As with `onValidate` the block must finish with an [`ack`](#ack). If the event i
     }
   }
 }
-``` 
+```
+
+##### `trigger`
+
+The `trigger` method can be used to call on another event within the same event handler script and takes the event metadata as a parameter.
+
+```kotlin
+    eventHandler<TriggerTrade>(name = "TRIGGER_TRADE_INSERT") {
+        onValidate {
+            ack()
+        }
+        onCommit { event ->
+            val trade = Trade {
+                // do some logic with event details to get new details for next event call
+            }
+            // set the messageType to the name of the event you wish to call and details to the new trade object
+            trigger(event.copyMeta(messageType = "TRADE_INSERT", details = trade))
+        }
+    }
+```
+
+##### `triggerRemote`
+
+The `triggerRemote` method can be used to call on an event from another microservice and takes the following parameters:
+- event metadata
+- timeout on the remote event call in milliseconds (optional)
+
+```kotlin
+    eventHandler<TriggerTrade>(name = "TRIGGER_REMOTE_TRADE_INSERT") {
+        onValidate {
+            ack()
+        }
+        onCommit { event ->
+            val trade = Trade {
+                // do some logic with event details to get new details for next event call
+            }
+            // set the messageType to the name of the event you wish to call and details to the new trade object
+            triggerRemote(event.copyMeta(messageType = "TRADE_INSERT", details = trade))
+        }
+    }
+```
 
 ### `contextEventHandler`
 
