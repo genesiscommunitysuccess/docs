@@ -18,13 +18,9 @@ tags:
 - data
 sidebar_position: 8
 ---
-
+import CheckboxDemo from '/examples/ui/client-capabilities/interaction/checkbox.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# Checkbox
-
-A form-connected implementation of a [checkbox](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) input.
 
 Use cases:
 * Multi-selection forms
@@ -36,7 +32,7 @@ Use cases:
 Any use where the user is to give a boolean type input choice.
 
 ## Example
-
+<CheckboxDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 
@@ -134,21 +130,66 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 ### Attributes
 
-| Attribute | Type | Use | Example |
-|---|---|---|---|
-|checked|`boolean`|The boolean value of whether the checkbox is checked. |`<rapid-checkbox checked>`|
-|readonly|`boolean`|Configures the component so the user cannot alter the state via the web browser.|`<rapid-checkbox readonly>`|
-|disabled|`boolean`|Same functionality as `readonly`, and additionally adds visual opacity to the component.|`<rapid-checkbox readonly>`|
-|form|`string`|Associates this component to a form. Form id needs to be passed. If no Id informed, then it will be associated with the ancestor form.|`<rapid-checkbox form="myForm">`|
+<table>
+  <tr>
+    <th>Attribute</th>
+    <th>Type</th>
+    <th>Use</th>
+    <th>Example</th>
+  </tr>
+  <tr>
+    <td>checked</td>
+    <td><code>boolean</code></td>
+    <td>The boolean value of whether the checkbox is checked. Use the `sync` utility to allow for data from from the template back to the model.</td>
+<td>
+
+```typescript
+<rapid-checkbox ?checked="${sync((x) => x.isSelected, 'boolean')}">
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>readonly</td>
+    <td><code>boolean</code></td>
+    <td>Configures the component so the user cannot alter the state via the web browser.</td>
+<td>
+
+```typescript
+<rapid-checkbox readonly>
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>disabled</td>
+    <td><code>boolean</code></td>
+    <td>Same functionality as <code>readonly</code>, and additionally adds visual opacity to the component.</td>
+<td>
+
+```typescript
+<rapid-checkbox disabled>
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>form</td>
+    <td><code>string</code></td>
+    <td>Associates this component to a form. Form id needs to be passed. If no Id informed, then it will be associated with the ancestor form.</td>
+<td>
+
+```typescript
+<rapid-checkbox form="myForm">
+```
+
+</td>
+  </tr>
+</table>
 
 ### Properties
 
-| Property | Type | Use | Example |
-|---|---|---|---|
-|checked|`boolean`|The boolean value of whether the checkbox is checked. |`<rapid-checkbox ?checked="${sync((x) => x.isSelected, 'boolean')}">`|
-|readonly|`boolean`|Configures the component so the user cannot alter the state via the web browser.|`<rapid-checkbox ?readonly="${(x) => x.readOnly}">`|
-|disabled|`boolean`|Same functionality as `readonly`, and additionally adds visual opacity to the component.|`<rapid-checkbox ?disabled="${(x) => x.disabled}">`|
-|form|`string`|Associates this component to a form. Form id needs to be passed. If no Id informed, then it will be associated with the ancestor form.|`<rapid-checkbox :form="${(x) => x.myForm}">`|
+This component doesn't have any properties which are not also controlled via attributes.
 
 ### Slots
 
@@ -167,10 +208,36 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 ### Fired Events
 
-| Part | Type | Use | Example |
-|---|---|---|---|
-| change |`boolean`| Emits a custom change event when the checked state changes. Access the value on the event via `.target.checked`.|`<rapid-checkbox @change="${(x) => x.myChangeHandler(event)}">`|
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>change</td>
+            <td><code>boolean</code></td>
+            <td>Emits a custom change event when the checked state changes. Access the value on the event via <code>.target.checked</code>.</td>
+<td>
+
+```typescript
+<rapid-checkbox @change="${(x) => x.myChangeHandler(event)}">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Listened Events
 
 This component doesn't listen to any events.
+
+## Info
+
+### Further details
+This component is an implementation of an HTML [checkbox](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) element.

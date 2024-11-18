@@ -12,4 +12,263 @@ tags:
 sidebar_position: 9
 ---
 
-Coming soon...
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Log from '/snippet/_LOG.md'
+import CommonProcesses from '/snippet/_common-see-processes.md'
+
+## Overview
+
+TODO
+
+## Example configuration
+
+TODO
+
+## Configuration options
+
+TODO
+
+### Logging
+
+<Log />
+
+## Metrics
+
+:::info
+Ensure you have [enabled metrics](/build-deploy-operate/operate/metrics/#enabling-metrics) in your environment to view them.
+:::
+
+The consolidator exposes metrics to measure latency.
+
+A high latency indicates that the consolidator is struggling to keep up.
+
+
+| Metric                      | Explanation                          |
+|:----------------------------|:-------------------------------------|
+| calculation_latency         | latency for performing a calculation |
+| consolidator_input_latency  | latency for processing an update     |
+| consolidator_output_latency | latency for writing to database      |
+
+## Runtime configuration
+
+To include your `*-consolidator.kts` file definitions in a runtime process, you will need to ensure the process definition:
+
+1. Ensure `genesis-pal-consolidator` is included in `module`
+1. Ensure `global.genesis.pa.consolidator` is included in `package`
+1. Ensure your consolidator.kts file(s) are defined in `script`
+1. Ensure `pal` is set in `language`
+
+If you wish to run a dedicated process for a request server, the following gives an example full process definition:
+
+```kotlin
+<process name="POSITION_CONSOLIDATOR">
+  <groupId>POSITION</groupId>
+  <description>Consolidates trades to calculate positions</description>
+  <start>true</start>
+  <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false -XX:MaxHeapFreeRatio=70 -XX:MinHeapFreeRatio=30 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:OnOutOfMemoryError="handleOutOfMemoryError.sh %p"</options>
+  <module>genesis-pal-consolidator</module>
+  <package>global.genesis.pal.consolidator</package>
+  <primaryOnly>true</primaryOnly>
+  <script>position-consolidator.kts</script>
+  <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
+  <language>pal</language>
+</process>
+```
+
+:::important
+
+In a multi-node environment, Consolidator services should be set to primary only; otherwise, the changes will be applied
+multiple times.
+
+:::
+
+### `arguments`
+
+In addition to the tags in the example, you can also add an `<arguments></arguments>` tag. This allows you to define process arguments that should be passed to the process on start-up.
+
+It is helpful for consolidators where you wish your consolidator process to [`coldStart`](#coldstart) each time the process restarts
+
+For example:
+
+```kotlin{13}
+<process name="POSITION_CONSOLIDATOR">
+        <groupId>POSITION</groupId>
+        <description>Consolidates trades to calculate positions</description>
+        <start>true</start>
+        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false -XX:MaxHeapFreeRatio=70 -XX:MinHeapFreeRatio=30 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:OnOutOfMemoryError="handleOutOfMemoryError.sh %p"</options>
+        <module>genesis-pal-consolidator</module>
+        <package>global.genesis.pal.consolidator</package>
+        <primaryOnly>false</primaryOnly>
+        <script>position-consolidator.kts</script>
+        <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
+        <language>pal</language>
+        <arguments>--coldStart</arguments>
+    </process>
+</process>
+```
+
+<CommonProcesses/>
+
+## Testing
+
+
+### Integration testing
+
+:::info
+For the latest information on testing, go to our page on [Integration testing](/operations/testing/integration-testing/).
+:::
+
+The Genesis application platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Consolidator configuration is used to create our Consolidator. 
+
+First, we need to add the required packages and genesis home. Then we need to set the "IS_SCRIPT" System Definition property to true (this is required as part of the Consolidator initialisation).
+
+```kotlin
+class ConsolidatorTest : AbstractGenesisTestSupport<GenesisSet>(
+    GenesisTestConfig {
+        addPackageName("global.genesis.pal.consolidator")
+        genesisHome = "/GenesisHome/"
+        scriptFileName = "position-consolidator.kts"
+        initialDataFile = "seed-data.csv"
+        parser = { it }
+    }) {
+
+    override fun systemDefinition(): Map<String, Any> = mapOf("IS_SCRIPT" to "true")
+}
+```
+
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing-previous/#abstractgenesistestsupport).
+
+Once you have set up your configuration, you can start writing tests against our Consolidators.
+
+#### Writing tests
+
+Let's write some tests for this Consolidator defined below, defined below
+
+```kotlin
+consolidators {
+    consolidator("CON_ORDER_FROM_TRADES", CONSOLIDATOR_TRADE, ORDER) {
+        config {
+            tableTransient = true
+        }
+
+        select {
+            ORDER {
+                max { price } into MAX_PRICE
+                min { price } into MIN_PRICE
+                sum { price * quantity} into TOTAL_NOTIONAL
+                sum { quantity } into TOTAL_QUANTITY
+                count() into TRADE_COUNT
+            }
+        }
+
+        groupBy { Order.ById(orderId) } into {
+            val start = DateTime(2022, 1, 1, 0, 0)
+            build {
+                val id = groupId.orderId.toInt()
+                Order {
+                    orderId = groupId.orderId
+                    orderDate = start.plusMonths(id % 12)
+                    filledQuantity = 0
+                    counterpartyId = "1"
+                }
+            }
+        }
+
+        onCommit {
+            output.counterpartyId = "ON_COMMIT_TEST"
+        }
+    }
+}
+```
+
+Before we write test, add the below method and variable to test class:
+
+```kotlin
+private var lastTradeId = 0
+
+private fun trade(
+    orderId: String = "1",
+    price: Double,
+    quantity: Long,
+) = ConsolidatorTrade {
+    this.tradeId = "TR_${lastTradeId++}"
+    this.orderId = orderId
+    this.price = price
+    this.quantity = quantity
+}
+```
+
+##### Consolidation test
+
+```kotlin
+    @Test
+    fun `test consolidate only`() = runBlocking {
+
+        val trade = trade(price = 10.0, quantity = 100)
+        val trade2 = trade(price = 12.0, quantity = 100)
+        entityDb.insert(trade)
+        entityDb.insert(trade2)
+
+        await untilAsserted {
+            runBlocking {
+                val record = entityDb.get(Order.ById("1"))
+                assertEquals(22.0*100, record?.totalNotional)
+            }
+        }
+    }
+```
+
+##### `onCommit` test
+
+```kotlin
+    @Test
+    fun `fields modified in onCommit block are written to database`() = runBlocking {
+        val trade = trade(price = 10.0, quantity = 100)
+        entityDb.insert(trade)
+
+        await untilAsserted {
+            runBlocking {
+                val record = entityDb.get(Order.ById("1"))
+                assertEquals("ON_COMMIT_TEST", record?.counterpartyId)
+            }
+        }
+    }
+```
+
+##### Nested consolidation test
+
+To test this, add the Consolidator below to the Consolidator definition above:
+
+```kotlin
+    consolidator(ORDER, ORDER_SUMMARY) {
+        select {
+            ORDER_SUMMARY {
+                sum { totalNotional } into TOTAL_NOTIONAL
+                sum { totalQuantity } into TOTAL_QUANTITY
+                sum { tradeCount } into TRADE_COUNT
+            }
+        }
+
+        groupBy { OrderSummary.byGroupId("${orderDate.year}") }
+    }
+```
+
+You will see that adding a trade would build ORDER and ORDER_SUMMARY tables.
+
+```kotlin
+@Test
+fun `test nested consolidation`() = runBlocking {
+        val trade = trade(price = 10.0, quantity = 100)
+        val trade2 = trade(price = 12.0, quantity = 100)
+        entityDb.insert(trade)
+        entityDb.insert(trade2)
+        await untilAsserted {
+            runBlocking {
+                val record = entityDb.get(OrderSummary.byGroupId("2022"))
+                assertEquals(200, record?.totalQuantity)
+                assertEquals(22.0 * 100, record?.totalNotional!!, 0.01)
+            }
+        }
+    }
+```

@@ -1,0 +1,67 @@
+---
+title: 'DOM API'
+sidebar_label: 'DOM API'
+id: foundation-forms-html-api
+keywords: [genesis, foundation, ui, forms, smart forms]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - forms
+  - smart forms
+---
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+## Attributes
+
+| Attribute | Type | Use | Example |
+|---|---|---|---|
+|resourceName|`string`|Name of the back-end resource which provides the metadata used to generate form and for submitting data|`<foundation-form resourceName="EVENT_COUNTERPARTY_INSERT">`|
+|readonly|`boolean`|Allows you to enable read-only mode, which disables all input on the form and hides the **Submit** button.|`<foundation-form readonly>`|
+|hide-submit-button|`boolean`|Controls the visibility of the **Submit** button.|`<foundation-form hide-submit-button>`|
+|design-system-prefix|`string`|Name of the design system prefix that will be used in renderers.|`<foundation-form design-system-prefix="rapid">`|
+
+## Properties
+
+| Property | Type | Use | Example |
+|---|---|---|---|
+|additionalRenderers|`RendererEntry[]`|Allows you to provide a set of additional renderers used by the form.|`<foundation-form :additionalRenderers=${(x) => x.additionalRenderers}>`|
+|data|`any`|Initial data for the form. |`<foundation-form :data=${(x) => x.data}>`|
+|jsonSchema|`JSONSchema7`|Instead of providing Form.resourceName you can hardcode the JSON schema on the client.|`<foundation-form :jsonSchema=${(x) => x.jsonSchema}>`|
+|renderers|`RendererEntry[]`|Allows you to provide the main set of renderers used by the form. If not provided, the built-in renderers are used by default.|`<foundation-form :renderers=${(x) => x.renderers}>`|
+|uischema	|`UiSchema`|UI schema used to define configuration of the layout and elements in the form. Check [UiSchema](./docs/api/foundation-forms.uischema.md) for possible options.|`<foundation-form :uischema=${(x) => x.uischema}>`|
+
+## Slots
+
+| Slot | Use |
+|---|---|
+|userActions|Using this slot enables you to override the default submit-button component.|
+
+## Parts
+
+| Part | Use |
+|---|---|
+|userActions|Using this part enables you to change the styles for the items in the userActions slot.|
+
+
+## Events fired 
+
+Events can be received by the emitting `<rapid-layout>`, or any parent element.
+
+| Part | Type | Use | Example |
+|---|---|---|---|
+ | submit | `{ payload, errors }` | Emitted after the user clicks on the **Submit** button | `<foundation-form @submit="${() => ...}">`|
+ | submit-success | `{ payload }` | Emitted when the form has no errors and the form has been submitted successfully. | `<foundation-form @submit-success="${() => ...}">`|
+ | submit-failure | `{ payload, errors }` | Emitted when the form has errors after being submitted. | `<foundation-form @submit-failure="${() => ...}">`|
+
+## Events listened to
+
+This component doesn't listen to any public API events.
+
+## License
+
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform
