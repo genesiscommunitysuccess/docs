@@ -1,0 +1,147 @@
+---
+title: 'Accordion'
+sidebar_label: 'Accodion'
+id: client-interaction-accordion
+keywords: [ interaction, interactive, accordion, accordian, disclosure, expand, hide, collapse, fold]
+tags:
+- interaction
+- interactive
+- accordion
+- accordian
+- disclosure
+- expand
+- hide
+- collapse
+- fold
+sidebar_position: 8
+---
+
+import AccordionDemo from '/examples/ui/client-capabilities/interaction/accordion.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Accordions are a type of disclosure that allows users to expand or collapse sections of content on a page.
+
+Use cases:
+* Presenting multiple sections of content
+* Allow the users to show or hide different sections of related information
+
+
+## Example
+<AccordionDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-accordion>
+      <rapid-accordion-item>
+      </rapid-accordion-item>
+      <rapid-accordion-item>
+      </rapid-accordion-item>
+    </rapid-accordion>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-accordion>
+          <rapid-accordion-item expanded>
+            <span slot="heading">Panel one</span>
+            Panel one content
+          </rapid-accordion-item>
+          <rapid-accordion-item>
+            <span slot="heading">Panel two</span>
+            Panel two content
+          </rapid-accordion-item>
+          <rapid-accordion-item expanded>
+            <span slot="heading">Panel three</span>
+            Panel three content
+          </rapid-accordion-item>
+        </rapid-accordion>
+    `,
+    })
+    export class MyElement extends GenesisElement { }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-accordion>
+      <rapid-accordion-item>
+      </rapid-accordion-item>
+      <rapid-accordion-item>
+      </rapid-accordion-item>
+    </rapid-accordion>
+    ```
+
+    Usage
+    ```typescript
+    export function MyComponent() {
+      return (
+        <rapid-accordion>
+          <rapid-accordion-item expanded>
+            <span slot="heading">Panel one</span>
+            Panel one content
+          </rapid-accordion-item>
+          <rapid-accordion-item>
+            <span slot="heading">Panel two</span>
+            Panel two content
+          </rapid-accordion-item>
+          <rapid-accordion-item expanded>
+            <span slot="heading">Panel three</span>
+            Panel three content
+          </rapid-accordion-item>
+        </rapid-accordion>
+      );
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-accordion>
+      <rapid-accordion-item>
+      </rapid-accordion-item>
+      <rapid-accordion-item>
+      </rapid-accordion-item>
+    </rapid-accordion>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+    @Component({
+      selector: 'my-root',
+      template: `
+        <rapid-accordion>
+          <rapid-accordion-item expanded>
+            <span slot="heading">Panel one</span>
+            Panel one content
+          </rapid-accordion-item>
+          <rapid-accordion-item>
+            <span slot="heading">Panel two</span>
+            Panel two content
+          </rapid-accordion-item>
+          <rapid-accordion-item expanded>
+            <span slot="heading">Panel three</span>
+            Panel three content
+          </rapid-accordion-item>
+        </rapid-accordion>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [FormsModule],
+    })
+    export class AppComponent { }
+    ```
+  </TabItem>
+</Tabs>
