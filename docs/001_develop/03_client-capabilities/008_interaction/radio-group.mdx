@@ -81,7 +81,8 @@ Usage
 ```typescript
 export function MyComponent() {
   const selectionChanged = (event) => {
-    console.log({ radioGroupValue })
+    const target = event.target as HTMLInputElement;
+    console.log(target.value);
   };
 
   return (
