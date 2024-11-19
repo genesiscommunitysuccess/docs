@@ -56,8 +56,8 @@ Shows trends over time or continuous data, ideal for tracking changes.
 ```html
 <rapid-g2plot-chart 
   type="line"
-  :config=${chartConfiguration}
-  :data=${chartData}
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
 ></rapid-g2plot-chart>
 ```
 
@@ -155,8 +155,8 @@ Highlights cumulative data over time, useful for displaying totals or progress.
 ```html
 <rapid-g2plot-chart 
   type="area"
-  :config=${chartConfiguration}
-  :data=${chartData}
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
 ></rapid-g2plot-chart>
 ```
 
@@ -237,8 +237,8 @@ Compares values across categories with vertical bars, making group differences c
 ```html
 <rapid-g2plot-chart 
   type="column"
-  :config=${chartConfiguration}
-  :data=${chartData}
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
 ></rapid-g2plot-chart>
 ```
 
@@ -309,8 +309,8 @@ Similar to column charts but uses horizontal bars, great for categorical compari
 ```html
 <rapid-g2plot-chart 
   type="bar"
-  :config=${chartConfiguration}
-  :data=${chartData}
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
 ></rapid-g2plot-chart>
 ```
 
@@ -358,8 +358,8 @@ Visualizes parts of a whole, effective for showing percentage distributions.
 ```html
 <rapid-g2plot-chart 
   type="pie"
-  :config=${chartConfiguration}
-  :data=${chartData}
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
 ></rapid-g2plot-chart>
 ```
 
@@ -415,8 +415,8 @@ Similar to pie charts, with a hollow center, suitable for data composition.
 ```html
 <rapid-g2plot-chart 
   type="donut"
-  :config=${chartConfiguration}
-  :data=${chartData}
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
 ></rapid-g2plot-chart>
 ```
 
@@ -472,8 +472,8 @@ Combines two data sets with different scales on a single chart, ideal for multi-
 ```html
 <rapid-g2plot-chart 
   type="dualaxes"
-  :config=${chartConfiguration}
-  :data=${[chartData, chartData]}
+  :config=${() => chartConfiguration}
+  :data=${() => [chartData, chartData]}
 ></rapid-g2plot-chart>
 ```
 
@@ -526,8 +526,8 @@ Displays categorical data with radial segments, highlighting distribution across
 ```html
 <rapid-g2plot-chart 
   type="rose"
-  :config=${chartConfiguration}
-  :data=${chartData}
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
 ></rapid-g2plot-chart>
 ```
 
@@ -571,8 +571,8 @@ Plots individual data points to show relationships or correlations between varia
 ```html
 <rapid-g2plot-chart 
   type="scatter"
-  :config=${chartConfiguration}
-  :data=${chartData}
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
 ></rapid-g2plot-chart>
 ```
 
@@ -646,8 +646,8 @@ Used for financial data, showing stock price changes over time with high, low, a
 ```html
 <rapid-g2plot-chart 
   type="stock"
-  :config=${chartConfiguration}
-  :data=${chartData}
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
 ></rapid-g2plot-chart>
 ```
 
@@ -781,8 +781,8 @@ Combines multiple chart types for complex data representation, allowing deeper i
 ```html
 <rapid-g2plot-chart 
   type="mix"
-  :config=${chartConfiguration}
-  :data=${chartData}
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
 ></rapid-g2plot-chart>
 ```
 
