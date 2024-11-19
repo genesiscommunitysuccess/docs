@@ -18,6 +18,8 @@ import TabItem from '@theme/TabItem';
 import Log from '/snippet/_LOG.md'
 import CommonPermissions from '/snippet/_common-permissions.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
+import CommonAuthenticateFirst from '/snippet/_common-authenticate-first.md'
+import CommonOpenAPI from '/snippet/_common-open-api.md'
 
 ## Overview
 
@@ -503,9 +505,9 @@ Find details around [how event handlers work with optimistic concurrency](/devel
 
 ## Client API
 
-:::tip
-Event handlers are also accessible via [Open API](/develop/server-capabilities/integrations-open-api/)
-:::
+<CommonAuthenticateFirst />
+
+<CommonOpenAPI />
 
 ### `EVENT_<EVENT_HANDLER_NAME>`
 

@@ -11,9 +11,2299 @@ tags:
 sidebar_position: 7
 ---
 
-Access control relates to restricting access to the application, and it's features, including data.
+import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-We can break it down into two sections:
+Authentication is required to use a Genesis application, whether it be via a user interface, or using a client API.
 
-- Authentication : Verifying a user's identity
-- Authorisation : Varifying a user has access to a feature, or set of data, served up by the application
+There are a few authentication setups which can be configured for Genesis applications:
+
+- [Genesis password](#genesis-password) : Authentication is completely within the application with no external authenticating systems involved.
+- [LDAP](#ldap-authentication) : Authentication requires an external LDAP server, which is used to authenticate users.
+- [SSO](#sso-authentication) : Authentication requires an external SSO (aka ID) provider, which is used to authenticate users.
+
+Larger organizations will typically require [LDAP](#ldap-authentication) or [SSO](#sso-authentication) setups, so that:
+1. Users can use a familiar username and password that they use to authenticate with most org-wide applications.
+1. User access can be controlled by a central authentication server
+1. Features such as password maintenance, and security features such as MFA, are administered and handler by a central authentication server.
+1. With SSO setup, users can authenticate just once and have authenticated access to many applications including those built using the Genesis application platform.
+
+Your application can be set up to use more than one authentication types concurrently. Each configured authenticator will be tried in turn to see if a logon message can be successfully authenticated.
+
+## Authentication setups
+
+### Genesis password
+
+Genesis password authentication is completely within the application, and as such offers the most configuration and features so the application can be set up with the security required by your application.
+
+Genesis Password authentication uses internally stored hashed credentials to authenticate users. It checks user credentials against an internal table. This provides the following features:
+
+- User accounts can be locked.
+- Passwords can be set to expire.
+- Passwords can be required to conform to a configurable standard.
+- Users can reset or change their password (assuming they can log in first).
+- Applications can be set up for MFA
+
+This is configured by setting up the [`genesisPassword`](#genesispassword) block under `authentication`, for example:
+
+### LDAP authentication
+
+LDAP authentication requires set up of network access and credentials to an LDAP server, which is a central Active Directory services used by some organizations to control authentication from a central server.
+
+See [LDAP configuration section](#ldap) for full details on configuring LDAP
+
+### SSO authentication
+
+See [setting up SSO](#setting-up-sso) for more details
+
+## Configuration options
+
+`auth-preferences.kts` is the main file used to configure authentication for a Genesis application. This should be places in your application's `scripts` folder. 
+
+Everything is configured under the outer block `security`
+
+### `genesisPassword`
+
+This block is required where setting up for [Genesis password](#genesis-password) authentication.
+
+Example configuration:
+
+```kotlin
+security {
+  authentication {
+    genesisPassword {
+      validation {
+        enabled = true
+        passwordSalt = ""
+        passwordStrength {
+          minimumLength = null
+          maximumLength = null
+          minDigits = null
+          maxRepeatCharacters = null
+          minUppercaseCharacters = null
+          minLowercaseCharacters = null
+          minNonAlphaNumericCharacters = null
+          restrictWhiteSpace = true
+          restrictAlphaSequences = false
+          restrictQWERTY = true
+          restrictNumericalSequences = true
+          illegalCharacters = "\$£^"
+          historicalCheck = 0
+          restrictDictionarySubstring = false
+          restrictUserName = false
+          repeatCharacterRestrictSize = null
+          passwordExpiryDays = null
+          passwordExpiryNotificationDays = null
+        }
+      }
+    }
+  }
+}
+```
+
+#### `validation`
+
+Adding the `validation` block enables password validation, and is used to set the variables relating to this validation.
+
+##### `enabled`
+
+**you must set this to `true` in order for the rest of the `validation` configuration to take effect**.
+
+#####`passwordSalt` 
+
+Defines a system-specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different applications built on the Genesis application platform are stored as different hashes. 
+
+Default: empty string indicating no additional salting.
+
+:::warning
+Changing this setting to an established application will require all users reset their password, which will include the salting of the password.
+:::
+
+##### `passwordStrength` 
+
+Including this block you can set a range of configuration variables. These enable you to specify in detail the mandatory characteristics for the password.
+
+* `minimumLength` specifies the minimum length of password. If null or undefined, this assumes there is no minimum limit. Default: null.
+* `maximumLength` specifies the maximum length of password. If null or undefined, this assumes there is no maximum limit. Default: null.
+* `minDigits` specifies the minimum number of numeric digits required in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
+* `maxRepeatCharacters` specifies the maximum number of the same characters across an entire password. This does not just include consecutive repeat characters, which is controlled by the `repeatCharacterRestrictSize` variable, below. If null or undefined, this assumes there is no maximum limit. Default: null.
+* `minUppercaseCharacters` specifies the minimum number of upper-case characters in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
+* `minLowercaseCharacters` specifies the minimum number of lower-case characters in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
+* `minNonAlphaNumericCharacters` specifies the minimum number of non-alphanumeric characters, such as punctuation and other special characters. If null or undefined, this assumes there is no minimum limit. Default: null.
+* `restrictWhitespace` specifies if whitespace characters are prevented from being used in passwords. Default: true.
+* `restrictAlphaSequences` specifies if alphabetical sequences in passwords (e.g. abcdefg) are restricted. Sequences greater than or equal to five characters won't be permitted if this is true. Default: false.
+* `restrictQWERTY` specifies if QWERTY sequences in passwords (e.g. qwertyuiop) are restricted. Sequences greater or equal to five characters won't be permitted if this is true. Default: true.
+* `restrictNumericalSequences` specifies if numeric sequences in passwords (e.g. 123456) are restricted. Sequences greater or equal to five numbers won't be allowed if active. Default: true.
+* `illegalCharacters` specifies which characters are not permitted in user passwords. Default: empty.
+* `historicalCheck` specifies how many previous passwords to check against, in order to prevent password re-use. If null or undefined, no historical check is performed. Default: null.
+* `restrictPassword` specifies if the password should differ from a list of the worst passwords stored within the application. Default: false.
+* `restrictDictionarySubstring` specifies if any dictionary word of four or more characters can be included in a password (either forwards or backwards). Default: false.
+* `restrictUserName` specifies if the user's username is restricted as part of their password. Default: false.
+* `repeatCharacterRestrictSize` specifies the number of consecutive repeated characters that make a password restricted. If null or undefined, this assumes there is no limit. Default: null.
+* `passwordExpiryDays` specifies how many days before a password expires. If null or undefined, this assumes there is no limit. Default: null.
+* `passwordExpiryNotificationDays` specifies how many days before password expiry a user is notified. If null or undefined, the user is not notified in advance of their password expiry. Default: null.
+
+See example configuration above under [`genesisPassword`](#genesispassword)
+
+#### `selfServiceReset`
+
+This block needs to be configured for user's to be able to self service password resets.
+
+```kotlin
+  selfServiceReset {
+    timeoutInMinutes = 20
+    coolDownInMinutes = 5
+    notifyTopic = "smtpEmail"
+    redirectUrl = "https://genesis.global/login/password-reset"
+  }
+```
+
+* `timeoutInMinutes` specifies The time in minutes for which a reset link remains valid. Default is 10
+* `coolDownInMinutes` specifies time in minutes before the next password reset can be made. Default is 5
+* `notifyTopic` specifies the email topic in Genesis Notify to be used, this is used to route to the right notify service for sending to the user, and should be an SMTP based route. Default is `SMTPEmail` ( a standard notify route for emails)
+* `redirectUrl` Specifies the url that will direct the user to the web page containing the form used for them to input their new password using the token provided in the email notification. Default is null so this must be set. A typical value is `https://$HOSTNAME/login/reset-password`
+* `acceptClientUrl` If true, the reset will use the client-provided reset url instead of `redirectUrl`
+
+:::warning
+You should only ever set `acceptClientUrl` to `true` in a development environment. For security, always set it to `false` in all other environments. Always.
+:::
+
+##### `resetMessage`
+This setting within `selfServiceRequest` controls the email password reset email that is sent to a user requesting their password to be reset.
+
+```kotlin
+  selfServiceReset {
+    ...
+    resetMessage {
+        subject = "Donkey"
+        body = """
+          Dear {{USER}}, 
+          
+          You have requested your password be reset for Positions application. 
+          
+          Please click the link below to reset your password.
+  
+          {{RESET_URL}}
+          
+          This link will expire after {{TIMEOUT}} minutes.
+        """.trimIndent()
+    }
+  }
+```
+
+`subject` will be the email subject.
+
+`body` will be the body of the email. Per the example you have access to use parameters:
+- `{{USER}}` the name of the user resetting their password.
+- `{{RESET_URL}}` the auto-generated secure URL the user needs to click in order to start the password reset workflow.
+- `{{TIMEOUT}}` the [`timeoutInMinutes`](#timeoutinminutes) configuration setting.
+
+### `ldap`
+
+Within the scope of the `authentication` function, you can insert an `ldap` block in order to define connections to one or more LDAP servers.
+
+#### `connection`
+
+Define connection details to an LDAP server. You can define multiple `connection` sections if you have multiple LDAP servers users are spread across, the system will try and authenticate users with each of them in the order specified, one of which will need to return a successful login message to authenticate the user and cease calling the connections.
+
+When using multiple LDAP connections, the connections will be used in the order specified to authenticate a login request. Only one server need return a successful result for the login to be successful.
+
+The following variables are used to configure an LDAP `connection`, details for which you should obtain from the owner of the LDAP server.
+
+* `url` specifies the LDAP server hostname. Default: `localhost`.
+* `port` specifies the LDAP server port. Default: 389.
+* `searchBases` defines the location(s) in the directory in which the LDAP search begins. Default: an organizational unit of `temp` with a domain component of `temp` (`ou=temp,dc=temp`).
+  * This is set by first invoking the `searchBases` function, and repeatedly invoking `searchBase(location)` function(s) within it, where `location` is the exact name of the application on the LDAP server.
+* `userGroups` defines the group(s) that the user needs to belong to on the LDAP server in order to log in. Default: no groups.
+  * This is set by first invoking the `userGroups` function, and repeatedly invoking `userGroup(group)` function(s) within it, where `group` is the specific name of a group.
+* `userPrefix` specifies a prefix added to every username when communicating with the LDAP server. Default: an empty string.
+* `bindDn` specifies the exact name of the application within the LDAP server. Normally, LDAP servers do not allow anonymous searches, so this name is essential. If `bindDn` is not specified, no bindings will be used. Default: null
+* `bindPassword` specifies the password for the `bindDn`account. If `bindDn` is not specified, this value is not used. Default: null.
+* `userIdType` defines the attribute to match in the directory search against the provided username. Default: `cn`.
+  * Amongst the most common LDAP implementations, you can find three main ways of configuring usernames:
+    * using the `uid` attribute (Userid)
+    * using the `cn` attribute (Common Name)
+    * using the `sAMAccountName` in Windows
+* `bypassLoginInternalAuth` is a boolean flag that prevents internal authorization checks on login.
+* `onFirstLogin` is a function that is called the first time a user who doesn't already exist in the database has been authenticated. Here you can define two things:
+  * how the `User` and its `UserAttributes` will be created from the token after the user has been authenticated, using the `createUser` function
+  * which user permissions are allocated, using `createUserPermissions`
+* `onLoginSuccess` is a function that is invoked on a successful LDAP login; for example, it allows you to insert a user into the database when it exists in LDAP but not yet in your application's database.
+* `useTLS` is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
+
+
+Example ldap connection:
+
+```kotlin{3-5}
+security {
+  authentication {
+    ldap {
+			connection {
+				url = "localhost"
+          port = 389
+          searchBase {
+            searchBase("ou=temp,dc=temp")
+          }
+          userGroups {
+          }
+          userPrefix = ""
+          bindDn = ldap.server.user
+          bindPassword = ldap.server.password
+          userIdType = "cn"
+			}
+		}
+  }
+}
+```
+
+### `ssoToken`
+
+This needs to be set whenever an application is being configured for [SSO authentication](#setting-up-sso)
+
+Example:
+
+```kotlin
+authentication {
+  ssoToken()
+}
+```
+
+### `sessionTimeoutMins` 
+
+Specifies a time out (in minutes) for the session. Sessions are timed out (logged out) after the amount of time in minutes specified by this value, at which point the session is expired and the client is told to re-authenticate.  
+A genesis UI is configured by default to perform a [refresh login](#event_login_refresh) upon expiry to avoid users needing to manually re-authenticate.
+
+```kotlin
+security {
+  sessionTimeoutMins = 60
+}
+```
+
+Default value: 30
+
+### `refreshTokenExpirationMins` 
+
+Specifies a time out (in minutes) for the refresh token value that was provided on successful login. One refresh token is associated with one user session on a 1-to-1 basis; the value of the refresh token can be used to create a new user session after the session token has expired. Once the refresh token has expired, it can't be used to create a new user session. The client will need to ask a user to re-authenticate to obtain a new token.
+
+```kotlin
+security {
+  refreshTokenExpirationMins = 2880
+}
+```
+
+Default value: 7200 (5 days)  
+
+### `expiryCheckMins` 
+
+Specifies the time interval (in minutes) the application will use to check for idle sessions in the system and expire any which have timed out.
+
+```kotlin
+security {
+  expiryCheckMins = 10
+}
+```
+
+Default value: 5  
+
+### `maxSimultaneousUserLogins` 
+
+Specifies the maximum number of concurrent active sessions a single user can maintain. Once this limit has been reached, the user cannot activate additional sessions until one or more of the active sessions has been logged out.  
+A value of 1 means that only one session can be logged in at any time; a value of two allows two sessions to be logged in concurrently, and so on.  
+If the value is zero, is not defined, or is not a positive integer, then any number of sessions is permitted.
+
+```kotlin
+security {
+  maxSimultaneousUserLogins = 2
+}
+```
+
+Default value: 5  
+
+### `retry`
+
+```kotlin{5-8}
+security {
+  authentication {
+    ...
+    retry {
+      maxAttempts = 3
+      waitTimeMins = 5
+    }
+    ...
+  }
+}
+```
+
+Configures the amount of retry attempts a client has with respect to trying to authenticate a given username.
+
+User login attempts are stored in the `USER_LOGIN_ATTEMPT` table. If a user exceeds the allowed limit of password entry attempts, the system updates the corresponding record in the `USER_LOGIN_ATTEMPT` table, and locks the user.
+
+To assist users who have exceeded their limit of password retries, an administrator can delete or amend the relevant record(s) in the `USER_LOGIN_ATTEMPT` table. The user can then try to login again.
+
+#### `maxAttempts`
+
+The maximum number failed authentication attempts for a client user before they are required to wait for the configured `waitTimeMins`.
+
+#### `waitTimeMins`
+
+The number of minutes the client will need to wait until another authentication attempt after failing authentication as many times as configured in `maxAttempts`
+
+
+### `mfa`
+The `mfa` function enables you to configure [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function, you can choose between different implementations of MFA providers.
+
+You can set up mfa regardless of the authentication type, however with SSO it is recommended to utilize the SSO provider's mfa setup which will live outside of genesis.
+
+#### `qrcode`
+
+This method of MFA generates a qrCode that can be imported into apps such as Google and Microsoft authenticator; the code generates a one-time-only time-based password to use as multi-factor codes to login. This block exposes the following configuration items:
+
+* `codePeriodSeconds` specifies how many seconds a Time-based One-time Password (TOTP) remains valid. Default: 30 seconds.
+* `codePeriodDiscrepancy` specifies the allowed discrepancy to the TOTP. 1 would mean a single block of each `codePeriodSeconds` either side of the time window. Default: 1.
+* `codeDigits` specifies the number of digits used in the TOTP. Default: 6 digits.
+* `hashingAlgorithm` specifies the Hashing Algorithm to use. Available choices are: `HashingFunction.SHA1`, `HashingFunction.SHA256` or `HashingFunction.SHA512`. Default: `HashingFunction.SHA1`.
+* `issuer` specifies a reference to the organization or entity issuing the MFA. Default: Genesis.
+* `label` specifies a label for the MFA. This is typically an email address of the issuing entity or organization. Default: genesis.global.
+* `confirmWaitPeriodSecs` specifies the time period in seconds before a secret has to be confirmed. Default: 300 seconds.
+* `secretEncryptKey` specifies the key that is used to encrypt Secrets in the database. If this is null or undefined, Secrets will not be encrypted in the database. Default: null.
+* `usernameTableLookUpSalt` specifies the salt with which a username is hashed when stored in the database with the above Secret. If this is null or undefined, the username will not be hashed in the database. Default: null.
+
+Example configuration: 
+
+```kotlin
+security {
+  ...
+  mfa {
+    qrcode {
+      codePeriodSeconds = 30
+      codePeriodDiscrepancy = 1   
+      codeDigits = 6
+      usernameTableLookUpSalt = null
+      secretEncryptKey = null
+      hashingAlgorithm = HashingFunction.SHA1
+      issuer = "Genesis"
+      label = "genesis.global"
+      confirmWaitPeriodSecs = 300
+    }
+  }
+  ...
+}
+```
+
+#### `notify`
+
+This method of MFA generates a one-time login link that is sent via the Genesis Notify module.
+
+Each time a login is unsuccessful, a new one-time link is generated, using a temporary code with a short-timed expiry.
+
+When login is successful using a temporary code, an active code is generated with the configured expiry. This can either be stored or saved as a cookie, preventing the need for the user to perform a second-factor authentication again until it has expired.
+
+This block exposes the following configuration items:
+
+* `loginUrl` specifies the base URL to open in the one-time login link.
+* `tempCodeExpiryDuration` specifies a duration for temporary generated codes. Default is 15 minutes.
+* `activeCodeExpiryDuration` specifies a duration for active generated codes. Default is 30 days.
+* `notifyTopic` is the topic to publish to the notify module on. Default is 'MFA'.
+* `messageHeader` is the header of the resulting message.
+* `messageBody` is the body of the resulting message. This has 2 templated variables you must include, `{{MFA_CODE}}` is the code the user has to type in and `{{LOGIN_URL}}` which is a link to the application's login page where the user will be prompted.
+
+Example configuration: 
+
+```kotlin
+security {
+  ...
+  mfa {
+    notify {
+      loginUrl = "https://my-application/login"
+      messageHeader = "My App MFA"
+      messageBody = """
+          Your MFA Code is {{MFA_CODE}} 
+  
+          {{LOGIN_URL}}
+        """.trimIndent()
+    }
+  }
+  ...
+}
+```
+
+### `loginAck`
+
+The `loginAck` block enables you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message sent upon successful authentication. When you configure the `loginAck` function, you have to supply a table or view as a parameter.
+
+The following functions will be invoked on this table or view:
+
+- The `loadRecord` within the `loginAck` function loads a single record from the previously supplied table or view.
+- The `fields` function within the `loginAck` function specifies which additional fields should be sent back to the client as part of the LOGIN_ACK message.
+
+Example configuration:
+
+
+```kotlin
+security {
+  ...
+  loginAck(USER_ATTRIBUTES) {
+    loadRecord { UserAttributes.byUserName(userName) }
+    fields {
+      USER_TYPE
+      ACCESS_TYPE withPrefix "USER"
+      ADDRESS_LINE1
+    }
+  }
+  ...
+}
+```
+
+### `customLoginAck`
+
+The `customLoginAck` function enables you to modify the list of permissions, profiles and user preferences returned to the client as part of the `LOGIN_ACK` message. It is part of the authentication mechanism, and documented here as such, however it is closely linked to [authorization](/develop/server-capabilities/access-control/authorization/).
+
+This can be helpful in combination with `customPermissions` blocks being set in your client facing genesis services for which a typical use case is when using an external permissions system. In this case you can define logic to send the front end the external system's normalized access codes and then the genesis application's front end can permission UI components using the same logic as the back end without requiring any integration with the custom permission system:
+
+- [Data Servers](/develop/server-capabilities/real-time-queries-data-server/#custompermissions)
+- [Request Servers](/develop/server-capabilities/snapshot-queries-request-server/#custompermissions) 
+- [Event handlers](/develop/server-capabilities/core-business-logic-event-handler/#custompermissions)
+
+The `user` record is provided as a parameter, and there are three properties to set:
+* permissions - a mutable list containing all the right codes associated with the user. Given its mutability, codes can be added or removed.
+* profiles - a mutable list containing all the profiles associated with the user.  Given its mutability, profiles can be added or removed.
+* userPreferences - a [GenesisSet](../../03_server/10_network-messages/02_genesisset.mdx) object containing additional fields provided as part of the [loginAck](#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
+
+In this example an `entitlementUtils` object wraps an external API we can call to check the user's name has access.
+
+```
+  security {
+    ...
+    customLoginAck { user ->
+      if(user.userName == "TestUser"){
+        permissions += entitlementUtils.getAllEntitlementsFor(user.getUserName())
+        profiles += entitlementUtils.getAllProfilesFor(user.getUserName())
+        userPreferences = userPreferences.apply {
+          setString("A_CUSTOM_APP_PREFERENCE", "CUSTOM_PREFERENCE_VALUE")
+        }
+      }
+    }
+    ...
+  }
+```
+
+## Client API
+
+Auth events are the same as any other event handler you build into your project, the API is described in the [Event Handler Client API section](/develop/server-capabilities/core-business-logic-event-handler/#client-api). There are no special message headers for these events other than for some, no `SESSION_AUTH_TOKEN` is required (i.e. user doesn't need to be logged in), which is noted for each event where it is the case.
+
+This section will give an overview of the auth API events available to users, which are already available in a client UI in any applications using the [User management](/develop/business-components/user-management/user-management-introduction/) component. They are listed here for those who wish to build their own Client API to authenticate to use the application API, and further if they wish to interact with users/profile setup from their client.
+
+### Auth tokens
+
+The Genesis authentication setup utilizes tokens in various ways. The main tokens are listed here:
+
+| Token              | Description  |
+|--------------------|--------------|
+|`SESSION_AUTH_TOKEN`| This should be supplied on all messages and is used by the server to know a client is authenticated. The user's name is derived from this token. It is returned as part of the `EVENT_LOGIN_AUTH` login operation |
+|`SESSION_ID`        | This represents a user's session ID. Users can have as many as [`maxSimultaneousUserLogins`](/develop/server-capabilities/access-control/authentication/#maxsimultaneoususerlogins) setting permits. It is returned as part of the `EVENT_LOGIN_AUTH` login operation |
+|`REFRESH_TOKEN`     | This token is used by the client to "refresh" a login when the session expires and the server notifies that a refresh login is required. It's usage stops the need to ask a client user to re-enter a password. It is returned as part of the `EVENT_LOGIN_AUTH` login operation |
+
+
+Session tokens and refresh tokens work in pairs together to enable you to control secure user sessions. These tokens always have an associated expiry date. This is in DATETIME format, and is typically a number of minutes in the future.
+
+The expiry date of the refresh token is always further in the future than the expiry date of the session token, so that session tokens can be refreshed.
+
+Once a session token expires, you can use its associated refresh token to create a new user session - assuming the refresh token has not expired yet.
+
+### `EVENT_LOGIN_AUTH`
+
+Authenticates and logs the user in.
+
+:::info
+No `SESSION_AUTH_TOKEN` required.
+:::
+
+There are 2 example events here, one takes a `USER_NAME` and `PASSWORD`, and the other a `REFRESH_TOKEN` which is used to "refresh" a user's login as described above.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+Username and password login example
+```
+{
+  "SOURCE_REF": "001",
+  "MESSAGE_TYPE": "EVENT_LOGIN_AUTH"
+  "DETAILS": {
+    "USER_NAME": "admin",
+    "PASSWORD": "genesis",
+  }
+}
+```
+
+Refresh token login example
+```
+{
+  "SOURCE_REF": "001b",
+  "MESSAGE_TYPE": "EVENT_LOGIN_AUTH"
+  "DETAILS": {
+    "REFRESH_AUTH_TOKEN": "FmqF9CGzo2MiujEZoiRUjGXh8ybDC62L"
+  }
+}
+```
+
+Response
+```
+{
+  "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i",
+  "REFRESH_AUTH_TOKEN": "ewqYFLJDhNb2QWzSrp0H6TAvcNZTFw7N",
+  "SESSION_ID": "aa0daccd-b5ee-4ee2-abab-d0a0816c99a7",
+  "USER_NAME": "admin",
+  "DETAILS": {
+    "HEARTBEAT_INTERVAL_SECONDS": 30,
+    "SESSION_TIMEOUT_MINS": 20,
+    "REFRESH_TOKEN_EXPIRATION_MINS": 7200,
+    "FAILED_LOGIN_ATTEMPTS": 0,
+    "REJECTED_LOGIN_ATTEMPTS": 0,
+    "LAST_LOGIN_DATE_TIME": 1732013678013,
+    "DAYS_TO_PASSWORD_EXPIRY": 730,
+    "NOTIFY_EXPIRY": null,
+    "MFA_CODE": null,
+    "MFA_CODE_EXPIRY_MINS": null,
+    "SYSTEM": {
+      "DATE": "Tue Nov 19 10:54:38 UTC 2024"
+    },
+    "PRODUCT": [
+      {
+        "NAME": "genesis-notify",
+        "VERSION": "8.5.0"
+      },
+      {
+        "NAME": "auth",
+        "VERSION": "8.5.0"
+      },
+      {
+        "NAME": "reporting",
+        "VERSION": "8.5.0"
+      },
+      {
+        "NAME": "genesis",
+        "VERSION": "8.5.1"
+      }
+    ]
+  },
+  "PERMISSION": [
+    "AMEND_PROFILE",
+    "AMEND_USER",
+    "CHANGE_PWD",
+    "CounterpartyUpdate",
+    "CounterpartyView",
+    "DELETE_PROFILE",
+    "DELETE_USER",
+    "DISABLE_USER",
+    "ENABLE_USER",
+    "EXPIRE_PWD",
+    "FileStorageAdminAction",
+    "FileStorageDownload",
+    "FileStorageUpload",
+    "FileStorageView",
+    "INSERT_PROFILE",
+    "INSERT_USER",
+    "InstrumentUpdate",
+    "InstrumentView",
+    "NotificationAdminAction",
+    "NotificationAuditView",
+    "NotificationRouteCreate",
+    "NotificationRouteDelete",
+    "NotificationRouteTopicsView",
+    "NotificationRouteUpdate",
+    "NotificationRouteView",
+    "NotificationRuleCreate",
+    "NotificationRuleDelete",
+    "NotificationRuleDisable",
+    "NotificationRuleEnable",
+    "NotificationRuleSubscribe",
+    "NotificationRuleTemplateCreate",
+    "NotificationRuleTemplateDelete",
+    "NotificationRuleTemplateUpdate",
+    "NotificationRuleTemplateView",
+    "NotificationRuleUnsubscribe",
+    "NotificationRuleUpdate",
+    "NotificationRuleView",
+    "NotificationView",
+    "OrderTotalUpdate",
+    "OrderTotalView",
+    "OrderUpdate",
+    "OrderView",
+    "ReconciliationCancel",
+    "ReconciliationComment",
+    "ReconciliationConfigDelete",
+    "ReconciliationConfigInsert",
+    "ReconciliationConfigUpdate",
+    "ReconciliationConfigView",
+    "ReconciliationDictionaryDelete",
+    "ReconciliationDictionaryInsert",
+    "ReconciliationDictionaryUpdate",
+    "ReconciliationDictionaryView",
+    "ReconciliationResultView",
+    "ReconciliationRun",
+    "RefDataView",
+    "TemplateAssetsInsert",
+    "TradeUpdate",
+    "TradeView",
+    "USER_PROFILE_AMEND"
+  ],
+  "PROFILE": [
+    "FILE_STORAGE_ADMIN",
+    "FILE_STORAGE_USER",
+    "NOTIFICATION_ADMIN",
+    "NOTIFICATION_ROUTE_ADMIN",
+    "NOTIFICATION_RULE_ADMIN",
+    "NOTIFICATION_RULE_TEMPLATE_ADMIN",
+    "NOTIFICATION_RULE_USER",
+    "NOTIFICATION_USER",
+    "RECONCILIATION_USER",
+    "TRADERS",
+    "USER_ADMIN",
+    "demo-oems_ADMIN"
+  ],
+  "UPDATE_QUEUE_DETAILS": {
+    "UPDATE_QUEUE": "ZeroMq",
+    "ZERO_MQ_PROXY_MODE_ENABLED": false,
+    "ZERO_MQ_PROXY_INBOUND_PORT": 5001,
+    "ZERO_MQ_PROXY_OUTBOUND_PORT": 5000,
+    "AERON_SERVICE_PORT": null
+  },
+  "USER": null,
+  "USER_DETAILS": {
+    "FIRST_NAME": "admin",
+    "LAST_NAME": "global"
+  },
+  "MESSAGE_TYPE": "EVENT_LOGIN_AUTH_ACK",
+  "SOURCE_REF": "418c3d31-5e69-4be0-9bbe-0745238f6867",
+  "METADATA": {
+    "IS_EMPTY": true,
+    "ALL": {}
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+Username and password login example
+```
+POST /event-login-auth HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SOURCE_REF: 001
+{
+  "DETAILS": {
+    "USER_NAME": "admin",
+    "PASSWORD": "genesis",
+  }
+}
+```
+
+Refresh token login example
+```
+POST /event-login-auth HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SOURCE_REF: 001b
+{
+  "DETAILS": {
+    "USER_NAME": "admin",
+    "REFRESH_AUTH_TOKEN": "FmqF9CGzo2MiujEZoiRUjGXh8ybDC62L"
+  }
+}
+```
+
+Response
+```
+{
+  "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i",
+  "REFRESH_AUTH_TOKEN": "ewqYFLJDhNb2QWzSrp0H6TAvcNZTFw7N",
+  "SESSION_ID": "aa0daccd-b5ee-4ee2-abab-d0a0816c99a7",
+  "USER_NAME": "admin",
+  "DETAILS": {
+    "HEARTBEAT_INTERVAL_SECONDS": 30,
+    "SESSION_TIMEOUT_MINS": 20,
+    "REFRESH_TOKEN_EXPIRATION_MINS": 7200,
+    "FAILED_LOGIN_ATTEMPTS": 0,
+    "REJECTED_LOGIN_ATTEMPTS": 0,
+    "LAST_LOGIN_DATE_TIME": 1732013678013,
+    "DAYS_TO_PASSWORD_EXPIRY": 730,
+    "NOTIFY_EXPIRY": null,
+    "MFA_CODE": null,
+    "MFA_CODE_EXPIRY_MINS": null,
+    "SYSTEM": {
+      "DATE": "Tue Nov 19 10:54:38 UTC 2024"
+    },
+    "PRODUCT": [
+      {
+        "NAME": "genesis-notify",
+        "VERSION": "8.5.0"
+      },
+      {
+        "NAME": "auth",
+        "VERSION": "8.5.0"
+      },
+      {
+        "NAME": "reporting",
+        "VERSION": "8.5.0"
+      },
+      {
+        "NAME": "genesis",
+        "VERSION": "8.5.1"
+      }
+    ]
+  },
+  "PERMISSION": [
+    "AMEND_PROFILE",
+    "AMEND_USER",
+    "CHANGE_PWD",
+    "CounterpartyUpdate",
+    "CounterpartyView",
+    "DELETE_PROFILE",
+    "DELETE_USER",
+    "DISABLE_USER",
+    "ENABLE_USER",
+    "EXPIRE_PWD",
+    "FileStorageAdminAction",
+    "FileStorageDownload",
+    "FileStorageUpload",
+    "FileStorageView",
+    "INSERT_PROFILE",
+    "INSERT_USER",
+    "InstrumentUpdate",
+    "InstrumentView",
+    "NotificationAdminAction",
+    "NotificationAuditView",
+    "NotificationRouteCreate",
+    "NotificationRouteDelete",
+    "NotificationRouteTopicsView",
+    "NotificationRouteUpdate",
+    "NotificationRouteView",
+    "NotificationRuleCreate",
+    "NotificationRuleDelete",
+    "NotificationRuleDisable",
+    "NotificationRuleEnable",
+    "NotificationRuleSubscribe",
+    "NotificationRuleTemplateCreate",
+    "NotificationRuleTemplateDelete",
+    "NotificationRuleTemplateUpdate",
+    "NotificationRuleTemplateView",
+    "NotificationRuleUnsubscribe",
+    "NotificationRuleUpdate",
+    "NotificationRuleView",
+    "NotificationView",
+    "OrderTotalUpdate",
+    "OrderTotalView",
+    "OrderUpdate",
+    "OrderView",
+    "ReconciliationCancel",
+    "ReconciliationComment",
+    "ReconciliationConfigDelete",
+    "ReconciliationConfigInsert",
+    "ReconciliationConfigUpdate",
+    "ReconciliationConfigView",
+    "ReconciliationDictionaryDelete",
+    "ReconciliationDictionaryInsert",
+    "ReconciliationDictionaryUpdate",
+    "ReconciliationDictionaryView",
+    "ReconciliationResultView",
+    "ReconciliationRun",
+    "RefDataView",
+    "TemplateAssetsInsert",
+    "TradeUpdate",
+    "TradeView",
+    "USER_PROFILE_AMEND"
+  ],
+  "PROFILE": [
+    "FILE_STORAGE_ADMIN",
+    "FILE_STORAGE_USER",
+    "NOTIFICATION_ADMIN",
+    "NOTIFICATION_ROUTE_ADMIN",
+    "NOTIFICATION_RULE_ADMIN",
+    "NOTIFICATION_RULE_TEMPLATE_ADMIN",
+    "NOTIFICATION_RULE_USER",
+    "NOTIFICATION_USER",
+    "RECONCILIATION_USER",
+    "TRADERS",
+    "USER_ADMIN",
+    "demo-oems_ADMIN"
+  ],
+  "UPDATE_QUEUE_DETAILS": {
+    "UPDATE_QUEUE": "ZeroMq",
+    "ZERO_MQ_PROXY_MODE_ENABLED": false,
+    "ZERO_MQ_PROXY_INBOUND_PORT": 5001,
+    "ZERO_MQ_PROXY_OUTBOUND_PORT": 5000,
+    "AERON_SERVICE_PORT": null
+  },
+  "USER": null,
+  "USER_DETAILS": {
+    "FIRST_NAME": "admin",
+    "LAST_NAME": "global"
+  },
+  "MESSAGE_TYPE": "EVENT_LOGIN_AUTH_ACK",
+  "SOURCE_REF": "418c3d31-5e69-4be0-9bbe-0745238f6867",
+  "METADATA": {
+    "IS_EMPTY": true,
+    "ALL": {}
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+### `EVENT_LOGOUT`
+
+Logs the user out.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "SOURCE_REF": "002",
+  "MESSAGE_TYPE": "EVENT_LOGOUT",
+  "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i",
+  "SESSION_ID": "b08f6955-48a0-4d42-83a0-41e65c0dc084"
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-logout HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 002
+SESSION_ID: b08f6955-48a0-4d42-83a0-41e65c0dc084
+```
+</TabItem>
+</Tabs>
+
+### `EVENT_SELF_SERVICE_PASSWORD_RESET`
+
+This triggers a self-service password reset. [Self Service Reset](#selfservicereset) must be configured in the application for this event to work.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "MESSAGE_TYPE": "EVENT_SELF_SERVICE_PASSWORD_RESET",
+  "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i"
+  "DETAILS": {
+    "USER_NAME":  "JohnDoe"
+  }
+}
+
+```
+</TabItem>
+<TabItem value="rest">
+```
+
+```
+</TabItem>
+</Tabs>
+
+
+### `EVENT_CHANGE_USER_PASSWORD`
+
+Changes a user's password.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "USER_NAME": "admin",
+  "SOURCE_REF": "004",
+  "MESSAGE_TYPE": "EVENT_CHANGE_USER_PASSWORD",
+  "DETAILS": {
+    "OLD_PASSWORD": "genesis",
+    "NEW_PASSWORD": "genesis123"
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-change-user-password HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 004
+{
+  "DETAILS": {
+    "OLD_PASSWORD": "genesis",
+    "NEW_PASSWORD": "genesis123"
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+### `EVENT_EXPIRE_USER_PASSWORD`
+
+Used to expire a user's password. 
+
+`PASSWORD` is optional:
+- where set it is the new password the user needs to use as a one time password. 
+- where not included, the user will be required to enter their existing password to update the expired password.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "MESSAGE_TYPE": "EVENT_EXPIRE_USER_PASSWORD",
+  "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i"
+  "SOURCE_REF": "005"
+  "DETAILS": {
+    "PASSWORD": "optional",
+    "USER_NAME": "JohnDoe"
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-expire-user-password HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 004
+"DETAILS": {
+  "PASSWORD": "optional",
+  "USER_NAME": "JohnDoe"
+}
+```
+</TabItem>
+</Tabs>
+
+### `EVENT_LOGIN_DETAILS`
+
+Returns the same info as [`EVENT_LOGIN_AUTH`](#event_login_auth)'s `EVENT_LOGIN_ACK` response. It is helpful for cookie authentication support to know if your session is still valid and retrieve the necessary info from the ACK message on browser refresh.
+If you are using cookie auth we don't store anything in the browser storage to avoid security issues and on refresh foundation-ui will call `EVENT_LOGIN_DETAILS` to know if session is still active and all details associated to it.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "MESSAGE_TYPE": "EVENT_LOGIN_DETAILS",
+  "SOURCE_REF": "006",
+  "DETAILS": {
+    "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i"
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-login-details HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 006
+{
+  "DETAILS": {
+    "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i"
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+
+### User and Profile management
+
+#### `EVENT_INSERT_USER`
+
+Inserts a new user.
+
+Note you can optionally supply one or more `USER_PROFILES` in the array, per this example, to set the user with the profile.
+
+We can optionally include `USER_DETAILS` fields as part of this insert.
+
+User will be challenged to update their password when logging in for the first time.
+
+This example includes the response as an `EVENT_LOGIN_ACK` is more special in that it provides a lot of user metadata the client can use including the profiles and rights the user has assigned to them. These are then used to control user access to any UI components which have permissions.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "SOURCE_REF": "010",
+  "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i",
+  "MESSAGE_TYPE": "EVENT_INSERT_USER",
+  "DETAILS": {
+    "ACCESS_TYPE": "ALL",
+    "USER_NAME": "JohnDoe",
+    "EMAIL_ADDRESS": "johndoe@genesis.global",
+    "FIRST_NAME": "John",
+    "LAST_NAME": "Doe",
+    "ONE_TIME_PASSWORD": "ChangeMe$563",
+    "USER_PROFILES": [
+      "my-app-ADMIN"
+    ]
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-insert-user HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 010
+{
+  "DETAILS": {
+    "ACCESS_TYPE": "ALL",
+    "USER_NAME": "JohnDoe",
+    "EMAIL_ADDRESS": "johndoe@genesis.global",
+    "FIRST_NAME": "John",
+    "LAST_NAME": "Doe",
+    "ONE_TIME_PASSWORD": "ChangeMe$563",
+    "LAST_LOGIN": null,
+    "COMPANY_NAME": null,
+    "COMPANY_ID": null,
+    "DOMAIN": null,
+    "USER_TYPE": "USER",
+    "CITY": null,
+    "REGION": null,
+    "POSTAL_CODE": null,
+    "COUNTRY": null,
+    "TITLE": null,
+    "WEBSITE": null,
+    "MOBILE_NUMBER": null,
+    "TELEPHONE_NUMBER_DIRECT": null,
+    "TELEPHONE_NUMBER_OFFICE": null,
+    "ADDRESS_LINE_1": null,
+    "ADDRESS_LINE_2": null,
+    "ADDRESS_LINE_3": null,
+    "ADDRESS_LINE_4": null,
+    "USER_PROFILES": [
+      "my-app-ADMIN"
+    ]
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+#### `EVENT_AMEND_USER`
+
+Amends a user.
+
+We can optionally include `USER_DETAILS` fields as part of this amend.
+
+Here we have added a new `USER_PROFILES` entry of `RECONCILIATION_USER` on the amendment
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "SOURCE_REF": "011",
+  "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i",
+  "MESSAGE_TYPE": "EVENT_AMEND_USER",
+  "DETAILS": {
+    "USER_NAME": "JohnDoe",
+    "FIRST_NAME": "John",
+    "LAST_NAME": "Doe",
+    "EMAIL_ADDRESS": "johndoe@genesis.global",
+    "LAST_LOGIN": null,
+    "COMPANY_NAME": null,
+    "COMPANY_ID": null,
+    "DOMAIN": null,
+    "USER_TYPE": "USER",
+    "ACCESS_TYPE": "ALL",
+    "CITY": null,
+    "REGION": null,
+    "POSTAL_CODE": null,
+    "COUNTRY": null,
+    "TITLE": null,
+    "WEBSITE": null,
+    "MOBILE_NUMBER": null,
+    "TELEPHONE_NUMBER_DIRECT": null,
+    "TELEPHONE_NUMBER_OFFICE": null,
+    "ADDRESS_LINE_1": null,
+    "ADDRESS_LINE_2": null,
+    "ADDRESS_LINE_3": null,
+    "ADDRESS_LINE_4": null,
+    "USER_PROFILES": [
+      "demo-oems_ADMIN",
+      "RECONCILIATION_USER"
+    ],
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-amend-user HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 011
+{
+  "DETAILS": {
+    "USER_NAME": "JohnDoe",
+    "FIRST_NAME": "John",
+    "LAST_NAME": "Doe",
+    "EMAIL_ADDRESS": "johndoe@genesis.global",
+    "LAST_LOGIN": null,
+    "COMPANY_NAME": null,
+    "COMPANY_ID": null,
+    "DOMAIN": null,
+    "USER_TYPE": "USER",
+    "ACCESS_TYPE": "ALL",
+    "CITY": null,
+    "REGION": null,
+    "POSTAL_CODE": null,
+    "COUNTRY": null,
+    "TITLE": null,
+    "WEBSITE": null,
+    "MOBILE_NUMBER": null,
+    "TELEPHONE_NUMBER_DIRECT": null,
+    "TELEPHONE_NUMBER_OFFICE": null,
+    "ADDRESS_LINE_1": null,
+    "ADDRESS_LINE_2": null,
+    "ADDRESS_LINE_3": null,
+    "ADDRESS_LINE_4": null,
+    "USER_PROFILES": [
+      "demo-oems_ADMIN",
+      "RECONCILIATION_USER"
+    ],
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+#### `EVENT_DELETE_USER`
+
+Delete's a user.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "SOURCE_REF": "012",
+  "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i",
+  "MESSAGE_TYPE": "EVENT_DELETE_USER",
+  "DETAILS": {
+    "USER_NAME": "JohnDoe",
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-delete-user HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 012
+{
+  "DETAILS": {
+    "USER_NAME": "JohnDoe",
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+#### `EVENT_INSERT_PROFILE`
+
+Inserts a new profile.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "SOURCE_REF": "013",
+  "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i",
+  "MESSAGE_TYPE": "EVENT_INSERT_PROFILE",
+  "DETAILS": {
+    "NAME": "TRADERS",
+    "DESCRIPTION": "A profile for users who are traders",
+    "STATUS": "ENABLED",
+    "RIGHT_CODES": [
+      "TradeView",
+      "TradeUpdate",
+      "OrderTotalView",
+      "OrderUpdate",
+      "OrderView"
+    ],
+    "USER_NAMES": [
+      "JohnDoe"
+    ]
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-insert-profile HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 013
+{
+  "DETAILS": {
+    "NAME": "TRADERS",
+    "DESCRIPTION": "A profile for users who are traders",
+    "STATUS": "ENABLED",
+    "RIGHT_CODES": [
+      "TradeView",
+      "TradeUpdate",
+      "OrderTotalView",
+      "OrderUpdate",
+      "OrderView"
+    ],
+    "USER_NAMES": [
+      "JohnDoe"
+    ]
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+#### `EVENT_AMEND_PROFILE`
+
+Amends a profile.
+
+Amending the inserted profile to add `FileStorageUpload` right code (permission) and added "JaneDoe" as a user on the profile.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "SOURCE_REF": "014",
+  "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i",
+  "MESSAGE_TYPE": "EVENT_AMEND_PROFILE",
+  "DETAILS": {
+    "DESCRIPTION": "A profile for users who are traders",
+    "STATUS": "ENABLED",
+    "RIGHT_CODES": [
+      "OrderTotalView",
+      "OrderUpdate",
+      "OrderView",
+      "TradeUpdate",
+      "TradeView",
+      "FileStorageUpload"
+    ],
+    "USER_NAMES": [
+      "JohnDoe",
+      "JaneDoe"
+    ],
+    "NAME": "TRADERS"
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-amend-profile HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 014
+{
+  "DETAILS": {
+    "DESCRIPTION": "A profile for users who are traders",
+    "STATUS": "ENABLED",
+    "RIGHT_CODES": [
+      "OrderTotalView",
+      "OrderUpdate",
+      "OrderView",
+      "TradeUpdate",
+      "TradeView",
+      "FileStorageUpload"
+    ],
+    "USER_NAMES": [
+      "JohnDoe",
+      "JaneDoe"
+    ],
+    "NAME": "TRADERS"
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+#### `EVENT_DELETE_PROFILE`
+
+Delete's a profile.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "SOURCE_REF": "015",
+  "SESSION_AUTH_TOKEN": "RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i",
+  "MESSAGE_TYPE": "EVENT_DELETE_PROFILE",
+  "DETAILS": {
+    "NAME": "TRADERS"
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-delete-profile HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 015
+{
+  "DETAILS": {
+    "NAME": "TRADERS"
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+#### `ALL_USER_RIGHTS`
+
+The Data server query `ALL_USER_RIGHTS` displays all users and codes. A logged-in user should automatically set the Filter expression to be `USER_NAME=='JohnDoe'` (in this example, if the user's name were "JohnDoe") to receive push updates to user privileges.
+
+This is a Data Server, and will use the [Data Server client API message constructs](/develop/server-capabilities/real-time-queries-data-server/#client-api) with `MESSAGE_TYPE` = `ALL_USER_RIGHTS`
+
+### Event Auditing
+
+Each authentication event is audited in one way or another, either using the automatic mechanism provided at the table definition level (e.g. PROFILE, PROFILE_RIGHT, PROFILE_USER, PASSWORD_RESET, USER and USER_ATTRIBUTES), or by providing custom tables with the audit information.
+
+In the first case scenario, auditing works as it would do for any other Genesis table: AUDIT_EVENT_TYPE reflects the event message type (i.e. EVENT_INSERT_USER), AUDIT_EVENT_TEXT may contain a free text field provided by the user calling the event, AUDIT_EVENT_DATETIME is autogenerated with the current date and time the change happened and AUDIT_EVENT_USER corresponds to the user who triggered the event in question.
+
+In the second case scenario, we have automatic events to log changes in USER_AUDIT and USER_ATTRIBUTES when a password expires. And we also have specific handling for USER_LOGIN audits. The USER_LOGIN_AUDIT table will contain entries for the following events: LOGIN, LOGOUT, SESSION_EXPIRED, REJECTED (only available if a maximum number of user sessions has been configured), FAILED_LOGIN, and FAILED_LOGOUT (if an incorrect session ID or user name has been provided).
+
+Additionally, all USER_LOGIN audit events are logged to a file at INFO level in the following format:
+
+```shell
+[25 Jan 2024 16:31:18.823 12729 [dbCoroutinesContext-4 @coroutine#994] INFO  global.genesis.auth.manager.controller.LoginAuditController - AuditLoginEvent: UserLoginAudit{serialVersionUID='1',userLoginAuditId={not-set}, userName=JohnDoe, authAction=LOGIN, ipAddress=/127.0.0.1, reason=, recordId={not-set}, timestamp={not-set}}]
+```
+
+## Setting up SSO
+
+There are three different types of SSO authentication presently supported by the Genesis application platform. These are:
+
+* [JWT (JSON Web Token) SSO](https://jwt.io/introduction) 
+* [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language)
+* [OpenID Connect](https://openid.net/connect/)
+
+### JWT
+
+By giving a user a JSON web token (JWT) when they authenticate with your identity provider, they can automatically have their identity verified when they attempt to access your Genesis application.
+
+You can authorize the user's access to specific relevant systems (and no others), using tools such as the [Microsoft Azure AD](https://azure.microsoft.com/en-gb/services/active-directory/#overview) component. So you have control over who has access to your Genesis applications.
+
+:::note
+The IT infrastructure or security team at your organization is usually responsible for setting up and managing your company's JWT authentication service. If a solution is not in place, Genesis can provide detailed instructions and assistance.
+:::
+
+#### Message flow
+
+The SSO workflow depends on whether or not CORS is configured on your internal authentication service to allow the Genesis application platform to make direct authentication requests, or not.
+
+##### CORS enabled
+
+If CORS is enabled, the SSO workflow is:
+
+1. An unauthenticated user navigates to the Genesis application. For example: **https://your-subdomain.genesisapplication.com/**.
+2. The Genesis web platform recognizes that SSO is enabled from the subdomain and that the user is not authenticated.
+3. A request is made to the Genesis back end to request the URL for the specific authentication service.
+4. The Genesis web platform makes an HTTPS request to your organization's authentication service, which will include the end user’s internal authentication parameters.
+5. The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends it back to the Genesis web platform.
+6. With the signed JWT, the Genesis web platform makes an SSO authentication request for the specific organization. If this is successful, an active Session token is returned.
+
+##### CORS not enabled
+
+This set-up uses the browser’s redirect functionality, so the user experience might not be as seamless.
+
+If CORS is not enabled, the SSO workflow is:
+
+1. An unauthenticated user navigates to the Genesis application. For example: **https://your-subdomain.genesisapplication.com/**.
+2. The Genesis web platform recognizes that SSO is enabled from the subdomain and that the user is not authenticated.
+3. A request is made to the Genesis back end framework to request the URL for the specific authentication service.
+4. A redirect is triggered for the browser to the internal authentication service, which will include the end user’s internal authentication parameters. A return parameter to **https://your-subdomain.genesisapplication.com/** is also part of the request.
+5. The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends a redirect trigger to the browser for **https://your-subdomain.genesisapplication.com/**, which includes the JWT as a request parameter.
+6. The Genesis platform is reloaded. It recognizes that SSO is enabled, but now with the JWT as a parameter. The platform sends an SSO authentication request with the JWT for the specific organization. If this is successful, an active session token is returned.
+
+#### Prerequisites
+
+Make sure that the`JWT_CONFIG` table of your application is correctly configured:
+
+* The `DOMAIN` must contain the domain for which this JWT is valid.
+* The `PUBLIC_KEY` should contain the public key of the JWT key pair, (the private key is used to sign the JWT at the internal authentication service).
+* Alternatively, the `PUBLIC_KEY_URL` can be set as a URL to obtain this dynamically. Public keys obtained in this way are expected to be in JSON Web Key Sets format.
+* The `REDIRECT_URL` must contain the URL for which the user is redirected to log in, should they not possess a valid JWT.
+* The `KEY_ALGORITHM` should be set either to `KeyAlgorithm.RSA` or `KeyAlgorithm.HMAC`.
+
+#### Configuring SSO
+
+To enable SSO, you need to configure a `jwt` block within the `authentication` block.
+
+You can set the following variables:
+
+* `enabled` is a boolean value that defines whether the SSO functionality is enabled. Default: `true` when the `sso` function is invoked, otherwise `false`.
+* `onFirstLogin` is a function that is called when a user has been authenticated for the first time in an application, and doesn't yet exist in the database. Here you can define two things:
+  * how a `User` and its `UserAttributes` will be created from the token after the user has been authenticated using the `createUser` function
+* `onLoginSuccess` is a function that is called each time the user is authenticated. Inside the function, you have access to `entityDb` and the token that was used for authentication and database access, allowing custom writes to the database upon login if required.
+
+###### Example configuration
+```kotlin
+// applicationName-auth-preferences.kts:
+authentication {
+  jwt {
+    enabled = true
+    onFirstLogin {
+      createUser { jwtSuccessOutcome ->
+        val userName = jwtSuccessOutcome.id
+        User(userName, domain = jwtSuccessOutcome.domain) to UserAttributes(userName)
+      }
+    }
+    onLoginSuccess { entityDb, jwtLoginRequestToken ->
+      
+    }
+  }
+}
+```
+
+:::note
+When using a JWT, the `maxAttempts` property in the [password retry config](#retry) refers to the maximum number of attempts allowed if a user enters an incorrect SSO token.
+:::
+
+#### Revalidating the token
+
+To allow for periodic updating and revalidation of a JWT token, the Auth service provides an Event Handler. This is called `EVENT_VALIDATE_JWT`. It takes the following parameters:
+
+```kotlin
+data class DomainJWT(
+    val domain: String,
+    val jwt: String
+)
+```
+
+### SAML
+
+SAML is an SSO protocol that can be used to authenticate users on the Genesis application platform. It works by connecting a Service Provider (SP) - the Genesis application in this case - and an Identity Provider (IDP), which would be an external party.
+
+The SP and the IDP communicate using the user's web browser, and do not need to be accessible to each other.
+
+#### Message flow
+When SAML is enabled, a user can click on an SSO button in the GUI. This starts the SAML authentication flow:
+
+1. The user is directed to a Genesis endpoint, which generates the authentication (authn) request.
+1. The user is redirected to the IDP, with the authn request as a query parameter.
+1. The user identifies him or herself to the IDP.
+1. The user is redirected back to the Genesis SAML endpoint, with a response as a query parameter.
+1. The response is validated, and the user is redirected back to the Genesis login endpoint with a token.
+1. The front end starts the login process into Genesis using this token.
+
+For more information, see [wikipedia](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language).
+
+This workflow is described in more detail in the section on [Front-to-back flow](#front-to-back-flow).
+
+
+Once you have checked this, there are two things you need to do:
+
+1. Enable SAML support in the Router.
+1. Configure SAML.
+
+We shall now look at these in detail.
+
+#### Metadata file
+
+Before starting, ensure you have access to the IDP metadata that is shared by the IDP and the SP. You may be given a URL which you can set in `metadataUrl` in your [saml configuration script file](#-saml-configkts) else you can store as a file, similar to the example below, and reference the filename in `metadataUrl`
+
+Example file provided by IDP:
+
+```xml
+<?xml version="1.0"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" entityID="http://localhost:8080/simplesaml/saml2/idp/metadata.php">
+  <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIIDXTCCAkWgAwIBAgIJALmVVuDWu4NYMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMTYxMjMxMTQzNDQ3WhcNNDgwNjI1MTQzNDQ3WjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzUCFozgNb1h1M0jzNRSCjhOBnR+uVbVpaWfXYIR+AhWDdEe5ryY+CgavOg8bfLybyzFdehlYdDRgkedEB/GjG8aJw06l0qF4jDOAw0kEygWCu2mcH7XOxRt+YAH3TVHa/Hu1W3WjzkobqqqLQ8gkKWWM27fOgAZ6GieaJBN6VBSMMcPey3HWLBmc+TYJmv1dbaO2jHhKh8pfKw0W12VM8P1PIO8gv4Phu/uuJYieBWKixBEyy0lHjyixYFCR12xdh4CA47q958ZRGnnDUGFVE1QhgRacJCOZ9bd5t9mr8KLaVBYTCJo5ERE8jymab5dPqe5qKfJsCZiqWglbjUo9twIDAQABo1AwTjAdBgNVHQ4EFgQUxpuwcs/CYQOyui+r1G+3KxBNhxkwHwYDVR0jBBgwFoAUxpuwcs/CYQOyui+r1G+3KxBNhxkwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAAiWUKs/2x/viNCKi3Y6blEuCtAGhzOOZ9EjrvJ8+COH3Rag3tVBWrcBZ3/uhhPq5gy9lqw4OkvEws99/5jFsX1FJ6MKBgqfuy7yh5s1YfM0ANHYczMmYpZeAcQf2CGAaVfwTTfSlzNLsF2lW/ly7yapFzlYSJLGoVE+OHEu8g5SlNACUEfkXw+5Eghh+KzlIN7R6Q7r2ixWNFBC/jWf7NKUfJyX8qIG5md1YUeT6GBW9Bm2/1/RiO24JTaYlfLdKK9TYb8sG5B+OLab2DImG99CJ25RkAcSobWNF5zD0O6lgOo3cEdB/ksCq3hmtlC/DlLZ/D8CJ+7VuZnS1rR2naQ==</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:KeyDescriptor use="encryption">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIIDXTCCAkWgAwIBAgIJALmVVuDWu4NYMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMTYxMjMxMTQzNDQ3WhcNNDgwNjI1MTQzNDQ3WjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzUCFozgNb1h1M0jzNRSCjhOBnR+uVbVpaWfXYIR+AhWDdEe5ryY+CgavOg8bfLybyzFdehlYdDRgkedEB/GjG8aJw06l0qF4jDOAw0kEygWCu2mcH7XOxRt+YAH3TVHa/Hu1W3WjzkobqqqLQ8gkKWWM27fOgAZ6GieaJBN6VBSMMcPey3HWLBmc+TYJmv1dbaO2jHhKh8pfKw0W12VM8P1PIO8gv4Phu/uuJYieBWKixBEyy0lHjyixYFCR12xdh4CA47q958ZRGnnDUGFVE1QhgRacJCOZ9bd5t9mr8KLaVBYTCJo5ERE8jymab5dPqe5qKfJsCZiqWglbjUo9twIDAQABo1AwTjAdBgNVHQ4EFgQUxpuwcs/CYQOyui+r1G+3KxBNhxkwHwYDVR0jBBgwFoAUxpuwcs/CYQOyui+r1G+3KxBNhxkwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAAiWUKs/2x/viNCKi3Y6blEuCtAGhzOOZ9EjrvJ8+COH3Rag3tVBWrcBZ3/uhhPq5gy9lqw4OkvEws99/5jFsX1FJ6MKBgqfuy7yh5s1YfM0ANHYczMmYpZeAcQf2CGAaVfwTTfSlzNLsF2lW/ly7yapFzlYSJLGoVE+OHEu8g5SlNACUEfkXw+5Eghh+KzlIN7R6Q7r2ixWNFBC/jWf7NKUfJyX8qIG5md1YUeT6GBW9Bm2/1/RiO24JTaYlfLdKK9TYb8sG5B+OLab2DImG99CJ25RkAcSobWNF5zD0O6lgOo3cEdB/ksCq3hmtlC/DlLZ/D8CJ+7VuZnS1rR2naQ==</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://localhost:8080/simplesaml/saml2/idp/SingleLogoutService.php"/>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://localhost:8080/simplesaml/saml2/idp/SSOService.php"/>
+  </md:IDPSSODescriptor>
+</md:EntityDescriptor>
+```
+
+#### Configuring SAML in the Router 
+
+To enable SAML on the Genesis Router service, change the Router's config in your _application-name-_**processes.xml** file. The process name is `GENESIS_ROUTER`.
+
+Specifically, you have to add:
+
+- `global.genesis.auth.saml` to the `<package …/>` tag
+- `auth-saml-*.jar` to the `<classpath …/>` tag
+
+You can see these additions highlighted in the example below:
+
+```xml {6,8}
+  <process name="GENESIS_ROUTER">
+    <start>true</start>
+    <groupId>GENESIS</groupId>
+    <options>-Xmx512m -DXSD_VALIDATE=false</options>
+    <module>router</module>
+    <package>global.genesis.router,global.genesis.console,global.genesis.auth.saml,global.genesis.auth.sso.endpoint</package>
+    <script>genesis-router.kts</script>
+    <classpath>genesis-console-5.2.*.jar,auth-saml-*.jar,auth-sso-endpoint-*.jar</classpath>
+    <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
+  </process>
+```
+
+#### `*-saml-config.kts`
+Additionally, you need a file `<app_name>-saml-config.kts` file in your `scripts` directory. Copy the configuration below and set according to the comment descriptions.
+
+This file does not need to be configured anywhere. As long as the filename ends `-saml-config.kts` it will be used in authentication configuration.
+
+```kotlin
+saml {
+  strictMode = false
+  debugMode = true
+  // this should be the URL of the application logon screen
+  loginEndpoint = "https://my.genesis.app/login" 
+  tokenLifeInSeconds = 3000
+
+  serviceProvider {
+    // this should be the url for accessing the router
+    entityId = "https://my.genesis.app/gwf" 
+  }
+
+  // for every identity provider we support we need one of these
+  identityProvider("genesis") {
+    // we need the IDP metadata, either a file:
+    metadataUrl = "genesismetadata.xml" 
+    // or a url (IDP should be accessible from genesis box):
+    metadataUrl = "http://localhost:8080/simplesaml/saml2/idp/metadata.php?output=xml" // IDP metadata endpoint
+
+    // where do we get the email address from
+    mapNameIdToUser()
+    // or 
+    mapToAttribute("email")
+
+    // optional -> add url parameter to auth request
+    modifyRequest { config ->
+      addParameter("PartnerSpId", config.settings.spEntityId)
+    }
+
+    // optional -> called on first user login when the user doesn't exist in the database
+    onFirstLogin {
+      // optional -> should return a User and it UserAttributes from the SamlResponse
+      createUser {}
+
+      // optional -> configures user's permissions
+      createUserPermissions {
+        userProfiles("emp", "trader")
+      }
+    }
+
+    // optional -> called every time after successful authentication. Has access to the database and the SamlResponse returned by the IDP
+    onLoginSuccess {
+    
+    }
+  }
+}
+```
+:::warning
+The `loginEndpoint` is the URL to which the front end is redirected once the full SAML workflow has been completed and an `SSO_TOKEN` has been issued. 
+If this URL itself is a redirect, the `SSO_TOKEN` query parameter could be lost.
+
+Additionally, if the web server is routing via scripts, navigating to this URL could throw a **404 Not Found** error. The remedy in this case is to add an override for 404 errors to redirect back to your application logon screen. 
+
+Here is an example of how to do this in your NGINX:
+
+```
+error_page 404 =200 /index.html;
+```
+:::
+
+Finally, you need to ensure [`ssoToken()`](#ssotoken) is in your `auth-preferences.kts` file:
+
+```kotlin
+authentication {
+  ssoToken ()
+}
+```
+
+If necessary, you can define advanced configuration in the file **onelogin.saml.properties**. You need to use this if - for example - you need to configure a key for signing the authn request.
+
+Once this is configured, a service provider metadata endpoint will be available on: `https://{url}/gwf/saml/metadata?idp={idp name}`.
+
+Other endpoints provided are:
+
+- the `ssoLoginUrl`
+  - The format of this is: `https://{appHost}{ssoLoginRoute}?idp={id}` where:
+    - `appHost` is hostname of the app, e.g. dev-position2
+    - `ssoLoginRoute` is `/gwf/saml/login` by default (this is configurable)
+    - `id` is the ID of the selected identity provider
+  - For example: `https://dev-position2/gwf/saml/login?idp=provider1`
+
+- the `ssoListEndpoint`
+  - By default, this is `gwf/saml/list` (configurable)
+  - This endpoint returns a list of identity providers:
+  ```
+  [
+    {ID:'provider1', DESCRIPTION:'Description 1'},
+    {ID:'provider2', DESCRIPTION:'Description 2'}
+  ]
+  ```
+
+#### Enabling users for SAML
+
+To enable users to be able to sign in using SAML, you must add them to the `USER`, `USER_ATTRIBUTES` and `SSO_USER` tables within your Genesis application.
+
+In the `SSO_USER` table:
+
+* `SSO_METHOD` must be set to SAML
+* `SSO_SOURCE` must be set to the identity provider name defined in the **saml-config.kts** file
+
+The Genesis username should be the user’s email address.
+
+#### Front-to-back flow
+
+This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes that the [front end has been configured correctly](../../access-control/sso-front-end-config/).
+
+###### The flow
+1. The front end hits **ssoListEndpoint** - by default, this is `gwf/sso/listJWT/SSO` (this is configurable).
+2. **ssoListEndpoint** returns a list of identity providers:
+    ```
+    [
+    {ID:'provider1', DESCRIPTION:'Description 1'},
+    {ID:'provider2', DESCRIPTION:'Description 2'}
+    ]
+    ```
+3. Identity providers are parsed and the dropdown is populated on the login page.
+4. The user selects an identity provider using the dropdown (or keeps the preselected default). Then the user clicks the **SSO Login** button.
+5. The browser redirects to the **ssoLoginUrl**, which might be, for example: `https://dev-position2/gwf/saml/login?idp=provider1`.
+6. The server sends the user to the identity provider’s login page.
+7. The user logs in using their SSO credentials.
+8. The server redirects the client back to the client-app with a new url param: `SSO_TOKEN`.
+9. The front end checks for the presence of an `SSO_TOKEN` url parameter. If found, it stores it in session storage and uses it to perform an SSO Login.
+10. The server responds with an ACK and the user is now logged in. If there is an error, a NACK is returned and the login fails.
+
+#### Testing SAML
+
+##### Server - setting up local SAML
+
+In order to test the SAML flow, first, you need to run SAML locally. You can do this using a docker container, for example:
+
+```bash
+docker run -p 8080:8080 -p 8443:8443 -e SIMPLESAMLPHP_SP_ENTITY_ID=https://localhost/gwf/saml/metadata?idp=test -e SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=https://localhost/gwf/saml/logon?idp=test -e SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE=https://localhost/gwf/saml/logout?idp=test -d kristophjunge/test-saml-idp
+```
+In the above command, you need to replace:
+
+- _IP_ with the address/IP of your Genesis instance
+- _test_  with the name of the IDP
+
+Then, make sure that auth saml has been added to the Genesis Router configuration in **processes.xml**, for example:
+
+```xml
+<process name="GENESIS_ROUTER">
+    <start>true</start>
+    <groupId>GENESIS</groupId>
+    <options>-Xmx512m -DXSD_VALIDATE=false</options>
+    <module>router</module>
+    <package>global.genesis.router,global.genesis.console,global.genesis.auth.saml</package>
+    <script>genesis-router.kts</script>
+    <language>pal</language>
+    <classpath>genesis-console-*.jar,auth-saml-*.jar</classpath>
+    <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
+</process>
+```
+
+Next, in your application's `scripts` directory, create an _application-name-_**saml-config.kts** file with the following SAML details:
+
+```kotlin
+    saml {
+        strictMode = false
+        debugMode = true
+    
+        loginEndpoint = "http://localhost:6060/login" 
+        tokenLifeInSeconds = 3000
+    
+        serviceProvider {
+            // this should be the url for accessing the router
+            entityId = "http://localhost/gwf" 
+        }
+    
+        // for every identity provider we support we need one of these
+        identityProvider("test") {
+            metadataUrl = "http://localhost:8080/simplesaml/saml2/idp/metadata.php?output=xml" // IDP metadata endpoint
+    
+            // where do we get the email address from
+            mapToAttribute("email")
+        }
+    }
+```
+
+4. Now you are ready to add some users.
+
+* Add user to USER table with username “user1@example.com”
+
+* Add user to SSO_USER table:
+
+```csv
+"SSO_SOURCE","SSO_METHOD","SSO_DETAILS","USER_NAME”
+SSO_SOURCE = Identity Provider (as per above SAML config ’test’)
+SSO_METHOD = SAML
+SSO_DETAILS = an internal identifier (for example, TRADE_DESK_1)
+USER_NAME = user1@example.com
+```
+
+* Add user to USER_ATTRIBUTES table:
+```csv
+  "TELEPHONE_NUMBER_DIRECT","MOBILE_NUMBER","USER_NAME","TELEPHONE_NUMBER_OFFICE","REGION","ADDRESS_LINE1","ADDRESS_LINE2","ADDRESS_LINE3","CITY","COUNTRY","ADDRESS_LINE4","POSTAL_CODE","USER_TYPE","ACCESS_TYPE","TITLE","WEBSITE”
+  Only three are relevant!
+  USER_NAME = user1@example.com
+  USER_TYPE = USER
+  ACCESS_TYPE = ALL
+```
+
+5. With the users set up, you can run your server.
+
+##### Running the user interface
+
+
+1. Run an NGINX proxy docker container, for example:
+
+
+```bash
+docker run -it --rm -d -p 80:80 -p 443:443 --name **genesis**-console-proxy --add-host localnode:$(ifconfig eth0 | grep inet | grep -v inet6 | awk '{print $2}') genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+```
+
+2. In **package.json**, change the API_HOST property to `"API_HOST": "wss://localhost/gwf/"`.
+
+3. Now you can run the front end.
+
+`Test Metadata File (testMetadata.xml)`
+
+```bash
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host
+```
+
+Here is some test metadata you can use:
+
+```xml
+<?xml version="1.0"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+                     entityID="http://localhost:8080/simplesaml/saml2/idp/metadata.php">
+  <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>
+            MIIDXTCCAkWgAwIBAgIJALmVVuDWu4NYMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMTYxMjMxMTQzNDQ3WhcNNDgwNjI1MTQzNDQ3WjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzUCFozgNb1h1M0jzNRSCjhOBnR+uVbVpaWfXYIR+AhWDdEe5ryY+CgavOg8bfLybyzFdehlYdDRgkedEB/GjG8aJw06l0qF4jDOAw0kEygWCu2mcH7XOxRt+YAH3TVHa/Hu1W3WjzkobqqqLQ8gkKWWM27fOgAZ6GieaJBN6VBSMMcPey3HWLBmc+TYJmv1dbaO2jHhKh8pfKw0W12VM8P1PIO8gv4Phu/uuJYieBWKixBEyy0lHjyixYFCR12xdh4CA47q958ZRGnnDUGFVE1QhgRacJCOZ9bd5t9mr8KLaVBYTCJo5ERE8jymab5dPqe5qKfJsCZiqWglbjUo9twIDAQABo1AwTjAdBgNVHQ4EFgQUxpuwcs/CYQOyui+r1G+3KxBNhxkwHwYDVR0jBBgwFoAUxpuwcs/CYQOyui+r1G+3KxBNhxkwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAAiWUKs/2x/viNCKi3Y6blEuCtAGhzOOZ9EjrvJ8+COH3Rag3tVBWrcBZ3/uhhPq5gy9lqw4OkvEws99/5jFsX1FJ6MKBgqfuy7yh5s1YfM0ANHYczMmYpZeAcQf2CGAaVfwTTfSlzNLsF2lW/ly7yapFzlYSJLGoVE+OHEu8g5SlNACUEfkXw+5Eghh+KzlIN7R6Q7r2ixWNFBC/jWf7NKUfJyX8qIG5md1YUeT6GBW9Bm2/1/RiO24JTaYlfLdKK9TYb8sG5B+OLab2DImG99CJ25RkAcSobWNF5zD0O6lgOo3cEdB/ksCq3hmtlC/DlLZ/D8CJ+7VuZnS1rR2naQ==
+          </ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:KeyDescriptor use="encryption">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>
+            MIIDXTCCAkWgAwIBAgIJALmVVuDWu4NYMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMTYxMjMxMTQzNDQ3WhcNNDgwNjI1MTQzNDQ3WjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzUCFozgNb1h1M0jzNRSCjhOBnR+uVbVpaWfXYIR+AhWDdEe5ryY+CgavOg8bfLybyzFdehlYdDRgkedEB/GjG8aJw06l0qF4jDOAw0kEygWCu2mcH7XOxRt+YAH3TVHa/Hu1W3WjzkobqqqLQ8gkKWWM27fOgAZ6GieaJBN6VBSMMcPey3HWLBmc+TYJmv1dbaO2jHhKh8pfKw0W12VM8P1PIO8gv4Phu/uuJYieBWKixBEyy0lHjyixYFCR12xdh4CA47q958ZRGnnDUGFVE1QhgRacJCOZ9bd5t9mr8KLaVBYTCJo5ERE8jymab5dPqe5qKfJsCZiqWglbjUo9twIDAQABo1AwTjAdBgNVHQ4EFgQUxpuwcs/CYQOyui+r1G+3KxBNhxkwHwYDVR0jBBgwFoAUxpuwcs/CYQOyui+r1G+3KxBNhxkwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAAiWUKs/2x/viNCKi3Y6blEuCtAGhzOOZ9EjrvJ8+COH3Rag3tVBWrcBZ3/uhhPq5gy9lqw4OkvEws99/5jFsX1FJ6MKBgqfuy7yh5s1YfM0ANHYczMmYpZeAcQf2CGAaVfwTTfSlzNLsF2lW/ly7yapFzlYSJLGoVE+OHEu8g5SlNACUEfkXw+5Eghh+KzlIN7R6Q7r2ixWNFBC/jWf7NKUfJyX8qIG5md1YUeT6GBW9Bm2/1/RiO24JTaYlfLdKK9TYb8sG5B+OLab2DImG99CJ25RkAcSobWNF5zD0O6lgOo3cEdB/ksCq3hmtlC/DlLZ/D8CJ+7VuZnS1rR2naQ==
+          </ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                            Location="http://localhost:8080/simplesaml/saml2/idp/SingleLogoutService.php"/>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                            Location="http://localhost:8080/simplesaml/saml2/idp/SSOService.php"/>
+  </md:IDPSSODescriptor>
+</md:EntityDescriptor>
+```
+
+### OIDC
+
+
+[OpenID Connect](https://openid.net/connect/) (OIDC) is a simple identity layer on top of the [OAuth 2.0 protocol](https://oauth.net/2/). It enables applications to:
+
+- verify the identity of the end user based on the authentication performed by an Authorisation Server
+- obtain basic profile information about the end user in an interoperable and REST-like manner 
+
+#### Message flow
+When OIDC is configured and enabled, a user can click on an SSO button in the GUI. This starts the OIDC authentication flow:
+
+1. The user is re-directed to the OpenID provider authentication window.
+2. The user identifies him or herself to the OIDC provider.
+3. After successful authentication,the OIDC provider sends an authentication code to the Genesis application.
+4. Using the sent code, the Genesis application retrieves the user information and validates it.
+5. Upon successful validation, the user is redirected back to the Genesis login endpoint with a token.
+6. The front end starts the login process into Genesis using this token.
+
+#### Prerequisites
+
+
+OIDC works by connecting the Genesis application and the OpenID Connect (OIDC) provider. Therefore: 
+
+- The Genesis application must be able to connect to the OIDC provider.
+- The OIDC provider needs to be aware of the application(s) that can connect to it. 
+
+#### Configuring OIDC
+Once you have checked the prerequisites, there are two things you need to do:
+
+1. Enable OIDC support in the Router.
+2. Configure OIDC.
+
+We shall now look at these in detail.
+
+##### Enabling OIDC in the Genesis Router
+
+To enable OIDC on the Genesis Router process, change the Router's config in your _application-name-_**processes.xml** file. The process name is `GENESIS_ROUTER`.
+
+Specifically, you have to add:
+- `global.genesis.auth.oidc` and `global.genesis.auth.sso.endpoint` to the `<package .../>` tag
+- `auth-oidc-*.jar` and `auth-sso-endpoint-*.jar` to the `<classpath .../>` tag
+- the GPAL configuration to the `<script ../>` tag
+
+Finally, make sure that the `<language ../>` tag says `pal`
+
+:::note
+Adding `global.genesis.auth.oidc` to the `packages` and `auth-oidc-*.jar` to the `classpath` enables the OIDC integration. And adding `global.genesis.auth.sso.endpoint` and `auth-sso-endpoint-*.jar` enables the endpoints required by the front end.
+:::
+
+You can see these additions in the example below:
+```xml title='enabling OIDC integration' {6,10}
+<process name="GENESIS_ROUTER">
+    <start>true</start>
+    <groupId>GENESIS</groupId>
+    <options>-Xmx512m -DXSD_VALIDATE=false</options>
+    <module>router</module>
+    <package>global.genesis.router,global.genesis.console,global.genesis.auth.oidc,global.genesis.auth.sso.endpoint</package>
+    <config>router-process-config.kts</config>
+    <script>genesis-router.kts,position-oidc-config.kts</script>
+    <language>pal</language>
+    <classpath>genesis-console-*.jar,auth-oidc-*.jar,auth-sso-endpoint-*.jar</classpath>
+    <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
+</process>
+```
+
+If you require JWT validation, you need the following jars on the `classpath` as well - `jjwt-impl-*.jar,jjwt-jackson-*.jar`
+
+You can see that in the example below. 
+
+```xml title='enabling JWT validation' {10}
+<process name="GENESIS_ROUTER">
+    <start>true</start>
+    <groupId>GENESIS</groupId>
+    <options>-Xmx512m -DXSD_VALIDATE=false</options>
+    <module>router</module>
+    <package>global.genesis.router,global.genesis.console,global.genesis.auth.oidc,global.genesis.auth.sso.endpoint</package>
+    <config>router-process-config.kts</config>
+    <script>genesis-router.kts,position-oidc-config.kts</script>
+    <language>pal</language>
+    <classpath>genesis-console-*.jar,auth-oidc-*.jar,auth-sso-endpoint-*.jar,jjwt-impl-*.jar,jjwt-jackson-*.jar</classpath>
+    <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
+</process>
+```
+
+##### Configuration in GPAL
+You need to provide the logic that controls how your application interacts with OIDC in order to login your users. You can do this in the file `<app-name>-oidc-config.kts` file. 
+
+Within the configuration file, each OIDC configuration has the following properties:
+
+| Property name | Description | Mandatory | Default value | Type |
+| --- | ------ | --- | --- | --- |
+| loginEndpoint | The login URI of your application; this is used to initiate the OIDC login | Yes | No default value | String |
+| identityProvider | Configuration for each OIDC Provider. Can be repeated if multiple providers have to be configured | Yes | No default value | Object |
+
+Each `identityProvider` configuration has the following properties:
+
+| Property name | Description | Mandatory | Default value | Type |
+| --- | ------ | --- | --- | --- |
+| client | The client id and secret | Yes | No default value | Object |
+| config | Holds the endpoint and verification configuration for the OIDC provider | Yes if `remoteConfig` is not present | No default value | Object |
+| remoteConfig | If the OIDC provider has the configuration endpoint `remoteConfig`, this can be used to point to that endpoint for automatic `endpoint` and `verification` configuration | Yes if `config` is not present | No default value | Object |
+| [scopes](https://auth0.com/docs/get-started/apis/scopes/openid-connect-scopes) | Requested scopes on authorisation | No | `openid profile email` | Set |
+| onNewUser | Predefined action when a new user logs in. **This property is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess` | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
+| usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
+| tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | Yes | No default value | Int |
+| redirectUri | The URI that handles the code authorisation; in normal OIDC workflow, this is the login URL of your application | Yes | No default value | String |
+| onFirstLogin | Configuration for creating `User` and its `UserAttributes`. It's called on first successful login when the user doesn't exist in the database. | No | No default value | Object |
+| onLoginSuccess | Callback that is invoked every time after successful authentication. It has access to the database and the `DecodedIdToken` returned by the OIDC Provider | No | No default value | Object |
+
+Each `config` configuration has the following properties:
+
+| Property name | Description | Mandatory | Default value | Type |
+| --- | ------ | --- | --- | --- |
+| endpoints | Holds the token and authorisation endpoints | Yes | No default value | Object |
+| verification | Holds configuration for the public key of the JWT issuer, the allowed clock skew, and whether validation is enabled | No | No JWT verification | Object |
+
+Each `remoteConfig` configuration has the following properties:
+
+| Property name | Description | Mandatory | Default value | Type |
+| --- | ------ | --- | --- | --- |
+| url | The OIDC provider configuration endpoint. | Yes | No default value | String |
+| verification | Holds configuration for the allowed clock skew and whether validation is enabled | No | No JWT verification | Object |
+| logout | Configuration for OIDC logout | No | OIDC logout is disabled by default | Object |
+
+Each `client` configuration has the following properties:
+
+| Property name | Description | Mandatory | Default value | Type |
+| --- | ------ | --- | --- | --- |
+| id | The client id provided by the OIDC Provider when application was registered | Yes | No default value | String |
+| secret | The client secret provided by the OIDC Provider when application was registered | Yes | No default value | String |
+
+Each `onFirstLogin` has the following properties:
+
+| Property name | Description | Mandatory | Default value | Type |
+| --- | ------ | --- | --- | --- |
+| createUser | Returns `User` and `UserAttributes` from the `DecodedIdToken` returned by the OIDC provider | No | No default value | Object |
+| createUserPermissions | Configuration for user permissions | No | No default value | Object |
+
+Each `endpoints` configuration has the following properties:
+
+| Property name | Description | Mandatory | Default value | Type |
+| --- | ------ | --- | --- | --- |
+| token | The OIDC provider `token` endpoint | Yes | No default value | String |
+| authorization | The OIDC provider `authorization` endpoint | Yes | No default value | String |
+| logout | Configuration for OIDC logout | No | OIDC logout is disabled by default | Object |
+
+Each `verification` configuration has the following properties:
+
+| Property name | Description | Mandatory | Default value | Type |
+| --- | ------ | --- | --- | --- |
+| publicKey  | The public key to be used to validate the JWT | No | No default value | String |
+| publicKeyUrl | URL to the public key to be used to validate the JWT | No | No default value | String |
+| enabled | Enables/disables the validation of the JWT | No | True | Boolean |
+| allowedClockSkewSeconds | The amount of clock skew in seconds to tolerate when verifying the local time against the `nbf` claim  | No | 0 | Long |
+
+:::note
+If `verification` is defined, either `publicKey` or `publicKeyUrl` must also be defined.
+:::
+
+###### Sample configurations
+
+###### Minimal configuration
+
+```kotlin
+oidc{
+  loginEndpoint = "http://uat-host/login"
+  identityProvider("uatOidc"){
+    client{
+      id = "appplication-id"
+      secret = "application-secret"
+    }
+
+    config {
+      endpoints{
+        token = "uat-oidc:1337/token"
+        authorization = "uat-odic:1337/auth"
+      }
+    }
+
+    tokenLifeInSeconds = 5000
+
+    redirectUri = "http://genesis-uat-host/gwf/logon"
+  }
+}
+```
+
+###### Minimal remote configuration
+
+```kotlin
+oidc{
+  loginEndpoint = "http://uat-host/login"
+  identityProvider("uatOidc"){
+    client{
+      id = "appplication-id"
+      secret = "application-secret"
+    }
+
+    remoteConfig {
+      url = "http://uat-oidc/.well-known/openid-configuration"
+    }
+
+    tokenLifeInSeconds = 5000
+
+    redirectUri = "http://genesis-uat-host/gwf/logon"
+  }
+}
+```
+
+###### Full configuration
+
+```kotlin
+oidc{
+  loginEndpoint = "http://uat-host/login"
+  identityProvider("uatOidc"){
+    client{
+      id = "appplication-id"
+      secret = "application-secret"
+    }
+
+    config {
+      endpoints{
+        token = "uat-oidc:1337/token"
+        authorization = "uat-odic:1337/auth"
+      }
+    
+      verification {
+        publicKeyUrl = "http://uat-oidc:1377/.well_known/certs.jwks"
+      }
+    }
+    
+    scopes("openid", "profile")
+
+    usernameClaim = "name"
+
+    tokenLifeInSeconds = 5000
+
+    redirectUri = "http://genesis-uat-host/gwf/logon"
+
+    onFirstLogin {
+        createUser {
+            User{
+              userName = idToken.subject
+            } to userAttributes
+        }
+
+        createUserPermissions {
+            userProfiles("emp", "genesis")
+        }
+    }
+
+    onLoginSuccess { 
+
+    }
+  }
+}
+
+#### OIDC logout
+
+Sometimes, applications require functionality where the user logs out of the OIDC provider. By default, this is disabled.
+
+:::note
+If a user logs out of the OIDC provider, she or he will also be logged out of all other applications that work with that provider.
+:::
+
+There are several steps required to enable OIDC logout. 
+
+##### Enable OIDC support in GENESIS_AUTH_MANAGER
+
+First `GENESIS_AUTH_MANAGER` needs to know about the OIDC configuration. In **auth-processes.xml**, add:
+
+- the oidc jars to the `classpath`
+- the oidc package to `package`
+- the OIDC configuration to `script`
+
+See this in the example below.
+
+```xml title='auth-processes.xml' {6,8,9}
+<process name="GENESIS_AUTH_MANAGER">
+    <groupId>AUTH</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DXSD_VALIDATE=false</options>
+    <module>auth-manager</module>
+    <package>global.genesis.eventhandler,global.genesis.eventhandler.pal,global.genesis.auth.manager,global.genesis.auth.oidc</package>
+    <description>Controls the authentication/authorisation setup for users</description>
+    <script>auth-preferences.kts,auth-user-eventhandler.kts,auth-profile-eventhandler.kts,auth-mfa-eventhandler.kts,auth-password-eventhandler.kts,position-oidc-config.kts</script>
+    <classpath>auth-script-config*,auth-oidc-*.jar</classpath>
+    <language>pal</language>
+</process>
+```
+
+In the example above:
+ - the package `global.genesis.auth.oidc` is added to the `package` element
+ - the script `position-oidc-config.kts` is added to the `script` element
+ - the `auth-oidc-*.jar` files are added to the `classpath` element
+
+##### Enable OIDC logout in GPAL
+
+The easiest way to enable OIDC logout in GPAL is by specifying the logout endpoint, as shown in the sample below:
+
+```kotlin title='specifying logout endpoint'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        config {
+           ...
+
+            endpoints {
+              ...
+              logout(path = "https://oidc-provider.com/logout")
+            }
+        }
+        ...
+    }
+}
+```
+
+However, there are providers that have a custom logout mechanism. If the provider is supported by the platform, the `mode` property can be specified, along with the logout endpoint:
+
+```kotlin title='specifying logout endpoint for vendor specific logout'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        config {
+           ...
+
+            endpoints {
+              ...
+              logout(mode = LogoutMode.AUTH0, path = "https://oidc-provider.com/logout")
+            }
+        }
+        ...
+    }
+}
+```
+
+If the provider is not supported by the platform (and in all other cases where a provider has a custom logout mechanism), you can specify a custom `logout` configuration, as shown below:
+
+```kotlin title='specifying custom logout URL'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        config {
+           ...
+
+            endpoints {
+              ...
+              logout{ 
+                path = "https://oidc-provider.com/logout"
+                addParameter("my-app", "positions")
+              }
+            }
+        }
+        ...
+    }
+}
+```
+
+For OIDC configuration that uses a configuration endpoint, you can enable the logout functionality by calling `logout()`:
+
+```kotlin title='using the logout endpoint from the remote configuration'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        remoteConfig {
+            ...
+            logout()
+        }
+        ...
+    }
+}
+```
+
+In this case, the logout endpoint specified for the `end_session_endpoint` property will be used. 
+
+If the OIDC provider doesn't expose a logout endpoint through the configuration endpoint, then it can be specified as shown below:
+
+```kotlin title='specifying logout endpoint'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        remoteConfig {
+            ...
+            logout(path = "https://oidc-provider.com/logout")
+        }
+        ...
+    }
+}
+```
+
+And for OIDC providers with a custom logout mechanism, the sample below can be used:
+
+```kotlin title='specifying logout endpoint for vendor specific logout'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        remoteConfig {
+            ...
+            logout(mode = LogoutMode.AUTH0, path = "https://oidc-provider.com/logout")
+        }
+        ...
+    }
+}
+```
+
+As a last resort, when a provider has a custom logout mechanism that is not supported by the platform, you can specify a custom `logout` configuration, as shown below:
+
+```kotlin title='specifying custom logout URL'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        remoteConfig {
+            ...
+            logout{ 
+              path = "https://oidc-provider.com/logout")
+              addParameter("my-app", "positions")
+            }
+        }
+        ...
+    }
+}
+```
+
+### Configuring the front end
+
+In the front end of your application, there are two files that need to be checked and amended to ensure that the SSO workflow works correctly.
+
+#### config.ts
+Add the `sso` configuration block to your **config.ts** file. Note particularly that `ssoToggle` is set to true. This ensures that the **Enable SSO** checkbox is displayed on the application's login page. The user can then check **Enable SSO** manually in the UI. You can use the code below:
+
+```typescript
+configure(this.container, {
+.....
+	authAuth:true,
+	sso: {
+		toggled: true,
+		identityProvidersPath: 'gwf/sso/list'
+	}
+......
+});
+```
+Alternatively, you can set `ssoEnable` to true in the **config.ts** file. This eliminates the need for the user to set it manually.
+
+#### main.ts
+Update the **main.ts** file so that it fetches the `SSO_TOKEN` from the query parameter and adds it to the session storage:
+
+```typescript
+async connectedCallback(){
+	.....
+	this.checkForSSOToken();
+	.....
+}
+
+checkForSSOToken(){
+	const queryParams = new  URLSearchParams(window.location.search);
+    const ssoToken = queryParams.get('SSO_TOKEN');
+    if(ssoToken) {
+      if (window.opener){
+        window.opener.sessionStorage.setItem('ssoToken', ssoToken);
+        window.opener.location.reload();
+        window.close();
+      } else {
+        sessionStorage.setItem('ssoToken', ssoToken);
+      }
+    }
+}
+```
