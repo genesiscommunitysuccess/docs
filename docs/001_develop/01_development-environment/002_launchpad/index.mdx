@@ -417,17 +417,62 @@ In VSCode, go to `File → Open Recent →` and select your project.
 
 ![Open your recent projects](/img/genesis-launchpad/open-recent.png) 
  
+## Genesis commands in VSCode
 
-_______
-Create 
+All the Genesis commands in VSCode are prefixed with `Genesis:`.
 
- - General 
- - Excel to Genesis 
- - AI  
-    Full stack app 
-    Model 
-    View 
+| Command               | Description                                                                           |
+| --------------------- | ------------------------------------------------------------------------------------- |
+| `Build project`       | Builds (compiles) all components and triggers `Generate Configs` (see below)          |
+| `Create project zip`  | Writes the workspace contents to project-zips.  See below. |
+| `Delete database`     | Clears the local H2 database (all applications). This erases the data and schema; **use with caution - these cannot be recovered. Use this only to exit from an unrecoverable state |
+| `Generate configs`    | Creates a configuration under the `.vscode/settings.json in the `.vscode/launch.json` folder. The content there is auto-generated and must not be modified, as it will be overwritten if the command is re-run. |
+| `Generate tasks`      | Generates all the required build tasks. This command is automatically triggered when you unpack the project. Leter on, it is used by `Build project`. It creates a list of build tasks that are required to compile and build the application. Use this when you need to regenerate `.vscode/tasks.json`. |
+| Stop processes`       | Kills all running Genesis processes on the JVM or server and the WebUi. Use this command when processes are unresponsive. |
+| Unpack project`       | Unpacks an available project generated in Genesis Create, and makes it active in the workspace. |
 
-Workspace 
- - Tasks 
- - Configs 
+### Building a project
+Running `Genesis: Build project `builds (compiles) all components for the app and triggers `Generate Configs` (see above).
+
+You can right-click on the file generated and download it to your local machine to open and run the project there. 
+
+The folder created by the command is a temporary store. Running the command again will delete and recreate all its files.
+
+Mostly, you will download the zip file created directly under `project-zip`, which includes the Gradle wrapper (and its respective scripts to run on Unix/Windows 
+-based systems). If your enterprise restricts the downloads of such file types, we provide the project without the Gradle wrapper under the `no-gradle-wrapper `subfolder. **You must have the currently supported Gradle version installed in your workspace to use this.**
+
+## Launch configurations
+The exact list of configurations for your application is dependent on the components that you have chosen. For example, if you have included the Reporting component, then your application will have a configuration for running it. 
+
+However, there is a set of launch configurations that will always be available. These are listed below.
+
+| Command                 | Description                                                                           |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+| `DBMon`                 | Starts the [`DbMon`](/build-deploy-operate/operate/commands/dbmon/) command.                                                           |
+| `Bootstrap + Start App` | Runs all the required dependencies, such as creating the database and applying app's permissions. It then starts Web UI and all Server processes.|
+| `ResourceDaemon`        | Starts the Genesis Resource Daemon, allowing tracking which processes are running under the Genesis Processes view. |
+| `Start App`             | Starts the App's Web UI process.                                                      |
+| `Start Server`          | Starts all the App's Server processes.                                                |
+| `Start UI System Design Configurator`| Starts the Design Configurator. You must be on Foundation-UI 14.213.0 or later to use this. |
+
+## Genesis tasks
+The tasks described below are used by the various commands above to launch a configuration manually. You can call them individually, when required.
+
+| Task                    | Description                                                                           |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+| `Genesis Bootstrap web` | Installs web-ui dependencies.                                                         |
+| `Genesis build`         | Performs a full build of the applications.                                            |
+| `Genesis clean`         | Cleans built artifacts.                                                               |
+| `Genesis ConsolidateRights` | Runs script to update access permissions.                                         |
+| `Genesis Create project zip` | Generates a zip file containing the project contents for download.               |
+| `Genesis Remap`         | Runs a script to update the database schema and load data. |
+| `Genesis Sync`          | Synchronises configuration between the folder and the deployment of the application, this task runs before launching any java server app. |
+| `Genesis Unit tests`    | Runs server-side unit test.                                                           |
+
+## Code snippets
+The plugin provides basic code Kotlin snippets that can used to speed up development of the various Kotlin scripts, such as `eventHandlers` or `requestReply` codeblocks. 
+
+To insert a snippet into one of your `.kts` files, there are two easy methods:
+
+- Go to the command bar and use `Insert snippet`. 
+- While editing a `.kts` file, type the prefix `gg` to find the snippet to insert. 
