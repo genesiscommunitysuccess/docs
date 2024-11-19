@@ -1,0 +1,54 @@
+{
+  "/develop/server-capabilities": {
+    "items": [
+      {
+        "href": "/develop/server-capabilities/data-model/",
+        "description": "Data Model description"
+      },
+      {
+        "href": "/develop/server-capabilities/data-access-apis/",
+        "description": "Data Access APIs description"
+      },
+      {
+        "href": "/develop/server-capabilities/real-time-queries-data-server/",
+        "description": "Real Time Queries Data Server description"
+      },
+      {
+        "href": "/develop/server-capabilities/snapshot-queries-request-server/",
+        "description": "Snapshot Queries Request Server description"
+      },
+      {
+        "href": "/develop/server-capabilities/core-business-logic-event-handler/",
+        "description": "Core Business Logic Event Handler description"
+      },
+      {
+        "href": "/develop/server-capabilities/access-control/",
+        "description": "Access Control description"
+      },
+      {
+        "href": "/develop/server-capabilities/workflow-state-machine/",
+        "description": "Workflow State Machine description"
+      },
+      {
+        "href": "/develop/server-capabilities/real-time-aggregation-consolidator/",
+        "description": "Real Time Aggregation Consolidator description"
+      },
+      {
+        "href": "/develop/server-capabilities/real-time-triggers-evaluator/",
+        "description": "Real Time Triggers Evaluator description"
+      },
+      {
+        "href": "/develop/server-capabilities/integrations-data-pipelines/",
+        "description": "Integrations Data Pipelines description"
+      },
+      {
+        "href": "/develop/server-capabilities/integrations-streamer-apis/",
+        "description": "Integrations Streamer APIs description"
+      },
+      {
+        "href": "/develop/server-capabilities/runtime-configuration/",
+        "description": "Runtime Configuration description"
+      }
+    ]
+  }
+}
