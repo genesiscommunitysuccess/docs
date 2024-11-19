@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 
 # FDC3 Channel Context Listener
 
-This is a utility element that listens to an FDC3 app channel for the specified context.
+This is a utility element that listens to an FDC3 [app channel](https://fdc3.finos.org/docs/api/ref/Channel) for the specified context.
 
 Use cases:
 * Listen to and handle events for a specified context on an FDC3 app channel.
@@ -37,6 +37,7 @@ This will listen to the specified app channels for changes in the specified cont
         <fdc3-context-channel-listener></fdc3-context-channel-listener>
         ```
         Usage
+
         ```typescript
         @customElement({
             name: 'my-element',
@@ -186,9 +187,38 @@ This component has no attributes
 
 ### Properties
 
-| Property | Type | Use | Example |
-|---|---|---|---|
-|config|`AppChannelListenerConfig`|An array of objects which configure which channel, context type and a handler for channel context event payloads|`<fdc3-channel-event :mappingFunction="${() => ({TICKER}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}"`|
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>config</td>
+            <td><code>AppChannelListenerConfig</code></td> <!-- TODO link API docs -->
+            <td>An array of objects which configure which context type and a handler for channel event payloads</td>
+<td>
+
+```typescript
+<fdc3-context-channel-listener :config=${() =>
+  [
+    {
+      channelName: 'anotherCustomChannel',
+      channelType: 'fdc3.contact',
+      callback: (msg) => this.setContactMessage(JSON.stringify(msg)),
+    },
+  ]
+}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Slots
 

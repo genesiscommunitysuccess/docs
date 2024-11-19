@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 
 # FDC3 Channel System Listener
 
-This is a utility element that listens to the FDC3 system channel for the specified context.
+This is a utility element that listens to the FDC3 [system channel (also known as a user or color channel)](https://fdc3.finos.org/docs/api/ref/Channel) for the specified context.
 
 Use cases:
 * Listen to and handle events for a specified context system on an FDC3 system channel.
@@ -180,9 +180,33 @@ This component has no attributes
 
 ### Properties
 
-| Property | Type | Use | Example |
-|---|---|---|---|
-|config|`SystemChannelListenerConfig`|An array of objects which configure which context type and a handler for channel event payloads|`<fdc3-system-channel-listener :config="${() => [ { contextType: 'fdc.instrument', callback: (message) => console.log(JSON.stringify(message)} ]"`|
+
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>config</td>
+            <td><code>SystemChannelListenerConfig</code></td> <!-- TODO link API docs -->
+            <td>An array of objects which configure which context type and a handler for channel event payloads</td>
+<td>
+
+```typescript
+<fdc3-system-channel-listener :config=${() =>
+  [{ channelType: 'fdc.instrument', callback: (msg) => console.log(JSON.stringify(msg)}]
+}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Slots
 
