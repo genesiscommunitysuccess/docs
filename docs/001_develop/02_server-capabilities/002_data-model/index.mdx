@@ -8,8 +8,949 @@ tags:
 - data model
 - database
 - tables
+- views
+- dictionary
 sidebar_position: 2
 ---
 
-Coming soon...
+## Overview
+
+The data model is a fundamental part of any Genesis Application. Within the data model we define the [entities (tables)](#tables) relevant to the application which will store the application's data. We also define [views](#views) which join related entities together to provide wholistic views onto the applications dataset. The application's tables and views power most Genesis Server and Client services and components by making them aware of the application's data structure, and by notifying them of relevant changes to the data.
+
+The data model of a Genesis Application is defined in `*-dictionary.kts` files.
+
+## Example configuration
+
+### Tables
+
+Each table is defined with a set of fields (entity attributes) which make up a record representing the entity. 
+
+Each table requires:
+
+- a unique name and unique id
+- one or more fields (attributes)
+- one primary key
+
+Below shows an example configuration of three tables: `TRADE`, `COUNTERPARTY` and `INSTRUMENT`
+
+###### Example Data Model
+
+```kotlin
+tables {
+
+  table(name = "TRADE", id = 11_000, audit = details(id = 11_500, sequence = "TA")) {
+    field("TRADE_ID", LONG).autoIncrement()
+    field("COUNTERPARTY_ID", LONG).notNull()
+    field("DATE", DATE).notNull()
+    field("DIRECTION", ENUM("SELL","SHORT_SELL","BUY")).default("BUY").notNull()
+    field("INSTRUMENT_ID", LONG).notNull()
+    field("QUANTITY", INT).notNull()
+    field("TRADE_PRICE", DOUBLE).notNull()
+
+    primaryKey("TRADE_ID")
+
+    indices {
+      nonUnique("COUNTERPARTY_ID").name("TRADE_BY_COUNTERPARTY_ID")
+      nonUnique("INSTRUMENT_ID").name("TRADE_BY_INSTRUMENT_ID")
+      nonUnique("DATE").name("TRADE_BY_DATE")
+      nonUnique("COUNTERPARTY_ID, DATE").name("TRADE_BY_COUNTERPARTY_ID_DATE")
+    }
+  }
+
+  table(name = "INSTRUMENT", id = 11_001) {
+    field("INSTRUMENT_ID", LONG).autoIncrement()
+    field("NAME", STRING(100)).notNull().metadata {
+      maxLength = 100
+    }
+
+    primaryKey("INSTRUMENT_ID")
+
+  }
+
+  table(name = "COUNTERPARTY", id = 11_002) {
+    field("COUNTERPARTY_ID", LONG).autoIncrement()
+    field("COUNTERPARTY_CODE", STRING(100)).notNull().metadata {
+      maxLength = 100
+    }
+    field("NAME", STRING(100)).notNull().metadata {
+      maxLength = 100
+    }
+
+    primaryKey("COUNTERPARTY_ID")
+
+  }
+
+}
+```
+
+### Views
+
+Every view defines a "root" table, the main table powering the view. It then defines tables which join to it in order to make up the view.
+
+Taking the example table configuration above, we can create a `TRADE_VIEW` as follows, which joins onto `INSTRUMENT` and `COUNTERPARTY` tables to include their fields in the view
+
+![](/img/views-basics.png)
+
+Views can also contain derived fields, which are fields with values derived from one or more fields in the view. In the above example we see `NOTIONAL` which is the product of `QUANTITY` and `TRADE_PRICE`.
+
+The above example can be configured as follows:
+```kotlin
+views {
+    view("TRADE_VIEW", TRADE) {
+        joins {
+            joining(INSTRUMENT, backwardsJoin = true) {
+              on(TRADE { INSTRUMENT_ID } to INSTRUMENT { INSTRUMENT_ID })
+            }
+            joining(COUNTERPARTY) {
+              on(TRADE { COUNTERPARTY_ID } to INSTRUMENT { COUNTERPARTY_ID })
+            }
+        }
+        fields {
+            TRADE.allFields()
+
+            INSTRUMENT.NAME withPrefix INSTRUMENT 
+
+            COUNTERPARTY.COUNTERPARTY_ID
+            COUNTERPARTY.COUNTERPARTY_CODE withAlias CTPTY_CODE
+            COUNTERPARTY.NAME withAlias CTPTY_NAME
+            
+            derivedField("NOTIONAL", DOUBLE) {
+                withInput(TRADE.QUANTITY, TRADE.PRICE) { quantity, price -> 
+                    quantity * price
+                }
+            }
+
+        }
+  }
+}
+```
+
+### Summary
+
+Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and other data visualization web client components. 
+
+Tables and views are also be used to power server server capabilities such as [real-time aggregation](/develop/server-capabilities/real-time-aggregation-consolidator/), [real-time triggers](/develop/server-capabilities/real-time-triggers-evaluator/) and outbound integrations. 
+
+## Configuration options
+
+### `table`
+
+Tables and their fields are defined in  `*-tables-dictionary.kts` files, these files are placed in the `cfg` folder in your application's server codebase.
+
+| Parameter name | Type     | Description                                                                 |
+|----------------|----------|-----------------------------------------------------------------------------|
+| `name`         | `String` | name of the table, must be unique across the application                    |
+| `sequence`     | `String` | **Unique** characters for the [`sequence`](#sequence) ID on the audit table |
+| `audit`        | details  | See below                                                                   |
+
+#### audited tables
+
+`audit` can optionally be defined to make the table auditable
+
+Auditing changes to system records is a common requirement in compliant financial systems.
+        
+The following details can be added when you use the `audit = details()` parameter:
+
+| Parameter name | Type    | Description                                                                 |
+|----------------|---------|-----------------------------------------------------------------------------|
+| `id`           | Integer | **Unique** `id` for the audit table                                         |
+| `sequence`     | STRING  | **Unique** characters for the [`sequence`](#sequence) ID on the audit table |
+| `tskey`        | boolean | Set a timestamp index (defaulted to false where not specified)              |
+
+
+The audit table that is created has the same name as the source table, plus the suffix **_AUDIT**. Here is an example table definition, for a table `TRADE` which will have a `TRADE_AUDIT` table automatically generated to store audit records.
+
+```kotlin {1}
+  table(name = "TRADE", id = 11_000, audit = details(id = 11_500, sequence = "TA")) {
+    field("TRADE_ID", LONG).autoIncrement()
+    ...
+  }
+```
+
+###### Structure of audit tables
+
+When you create an audit table, it has all the same fields as the source table, plus the following fields:
+
+| Field name             | Data Type | Description                                               |
+|------------------------|-----------|-----------------------------------------------------------|
+| `AUDIT_EVENT_DATETIME` | DATETIME  | Autogenerated date and time of the event                  |
+| `AUDIT_EVENT_TEXT`     | STRING    | Optional “REASON” value sent as part of the event message |
+| `AUDIT_EVENT_TYPE`     | STRING    | The event that wrote on the source table                      |
+| `AUDIT_EVENT_USER`     | STRING    | User on the event message                                 |
+
+Every `eventHandler` that interacts with the audited table and is set up correctly, will automatically record audit.
+
+#### `field`
+
+Each table requires one or more fields to be defined.
+
+Each field must have a unique name (unique within the table definition) and a data type defined. The following data types are available
+
+###### `String`
+String fields can contain any set of characters up to the maximum length of characters specified for the field. 
+The value in the parenthesis in the second example below is the maximum number of characters that can be stored in this field for a given record. Where not specified the default length will be 64 characters.
+`dbMaxSize` can be used to set the field length to be the maximum allowed for the database technology used by the application.  It is helpful as different database technologies have different limits.
+
+###### Example Definitions:
+`field("MY_STRING", STRING)`  
+`field("MY_STRING", STRING(256))`  
+`field("MY_STRING", STRING(dbMaxSize))`
+
+###### `Enum`
+Enum (aka enumerated) fields specify the exact set of values which the field can be set to. They are helpful when you have a definitive set of values and want to present users with a pick-list.
+Each value of the enum can also be have an "alias" which is typically a human readable representation of the value.
+Enums must have a default value. The third example below shows how to set this. Where no default is specified the first value in the list is set as the default.
+
+###### Example Definitions:
+`field("MY_ENUM", ENUM("B", "S", "SS"))`  
+`field("MY_ENUM", ENUM("B" to "Buy", "S" to "Sell", "SS" to "Short Sell"))`  
+`field("MY_ENUM", ENUM("B", "S", "SS")).default("S")`  
+
+###### `Boolean`
+Boolean fields must contain a value of either true or false.
+
+###### Example Definition:
+`field("MY_BOOLEAN", BOOLEAN)`
+
+###### `Date`
+Date fields must contain a value representing a date. Dates represent a day in time, they do not include time precision. 
+
+###### Example Definition:
+`field("MY_DATE", DATE)`
+
+###### `Datetime`
+Datetime fields must contain a value representing a point in date and time
+
+###### Example Definition:
+`field("MY_DATETIME", DATETIME)`
+
+###### `Integer`
+Integer (aka Int) fields represent whole numbers, with no decimal places.
+Integers can only hold 32 bits, and the maximum value is just over 2.14 billion. If you need larger numbers use the type Long
+
+###### Example Definition:
+`field("MY_INT", INT)` 
+
+###### `Long`
+Long fields are similar to integer, but represented in 64 bits. 
+This means it has a much larger maximum value. Long's are used a lot for auto-generated primary keys so that we can theoretically store many more records. 
+
+###### Example Definition:
+`field("MY_LONG", LONG)` 
+
+###### `Short`
+Short fields can store whole numbers from -32,768 to 32,767. 
+They are very rarely used, but are a choice if the data needs to be stored in memory more efficiently.
+
+###### Example Definition:
+`field("MY_SHORT", SHORT)` 
+
+###### `Double`
+Double fields are used to store numerical values with decimal places.
+
+###### Example Definition:
+`field("MY_DOUBLE", DOUBLE)`
+
+###### `BigDecimal`
+Big Decimal fields are similar to Double's and also store numerical values with decimal places. 
+Double values can lose precision for large numbers, or numbers with many numbers to the right of the decimal place. 
+Big Decimals allow the user to define the `precision` and `scale` (the 2 inputs shown in the second example below) to better ensure values are accurate for their use case. 
+- Precision is the number of digits in the number (default where not specified is 20)
+- Scale is the number of digits to the right of the decimal point (default where not specified is 5)
+
+###### Example Definitions:
+`field("MY_BIGDECIMAL", BIGDECIMAL)`   
+`field("MY_BIGDECIMAL", BIGDECIMAL(10, 3)`
+
+###### `Nano Timestamp`
+A nano timestamp is a precise way to record a timestamp to the closest nano seconds.
+
+###### Example Definition:
+`field("MY_NANO_TIMESTAMP", NANO_TIMESTAMP)`
+
+###### `Raw`
+Raw fields are intended to store large values, they will often contain large structured payloads, else binary data and other non human readable data.
+
+###### Example Definition:
+`field("MY_RAW", RAW)`
+
+Fields can also have metadata defined to give them additional characteristics
+
+##### `autoIncrement`
+Only valid for fields of type `LONG`
+This setting will ensure a long number, starting from 1, will be auto-generated. It will increment for each record added.
+
+`field("ID", LONG).autoIncrement()`
+
+##### `sequence` 
+Syntax is `sequence(<2 character ref>)`
+
+Only valid for fields of type `STRING` fields, either  or `uuid` can be set.  
+Sequence takes a  2 character reference as a value, similar to autoIncrement the numerical part of the value will be incremented for each record added, however this value is padded as follows: `SEQUENTIAL_VALUE` (padded by paddingSize) + `SEQUENCE` + `LOCATION` + `1`.
+
+`field("TRADE_ID", STRING).sequence("TR")`
+
+In this example, in an application which has system definition `Location` set to `NY`, will generated values 000000000000001TRNY1, then 000000000000002TRNY1, and so on...
+
+:::info
+If your application is set to use an SQL database then sequence will generate a uuid by default. To have it generate a sequence as defined here set the following system definition items in your application:   
+`item(name = "SqlSequencePaddingSize", value = 15)`   
+`item(name = "SqlEnableSequenceGeneration", value = true)`
+:::
+
+##### `uuid`
+A `uuid` is a [Universally Unique Identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier) and is a randomly generated string, is not sequenced, but will guarantee generation of a unique value.
+
+`field("TRADE_ID", STRING).uuid()`
+
+##### `default`
+Define a default value for the field. This value will be set on the record where no value has been set for this field before writing the record to the database.
+Add `.default(<value>)` to your field definition to set a default. The value must be valid for the data type of the field.
+
+###### Valid for types:
+_any_
+
+###### Example Definitions:
+`field("IS_CORRECT", BOOLEAN).default(true)`
+
+##### `notNull`
+To define a field as mandatory. A value MUST be set for this field on every record. Where the field value is not set for a given record, the database API will reject the record.  
+Add `.notNull()` to your field definition to set as not nullable.  
+Where this is not set for a field, it's values can be left as null except if it is part of the primary key or any index on the table, else if they have a `default` value defined.
+
+###### Valid for types:
+_any_
+###### Example Definitions:
+`field("MY_BOOLEAN", BOOLEAN).default(false)`
+
+##### `sensitive`
+String fields can be marked as `sensitive()`. Values will be masked when printed to console or logs, else when `toString()` is used in conjunction with the field on a database API. It is typically set when the value needs to store keys, passwords or other sensitive data.
+
+###### Valid for types:
+`STRING`
+
+###### Example Definitions:
+`field("KEY", STRING).sensitive()`
+
+
+##### `min`
+`min` can be specified to validate that values for the given field are greater than or equal to this value
+
+###### Valid for types:
+Any numeric types except BigDecimal
+
+###### Example Definitions:
+```kotlin
+field("RATING", INT).metadata {
+    min = 0
+}
+```
+
+##### `max`
+`max` can be specified to validate that values for the given field are less than or equal to this value
+
+###### Valid for types:
+Any numeric types except BigDecimal
+
+###### Example Definitions:
+```kotlin
+field("RATING", INT).metadata {
+    max = 10
+}
+```
+
+##### `minLength` 
+
+Sets the minimum number of characters allowed
+
+###### Valid for types:
+`STRING`
+
+###### Example Definitions:
+```kotlin
+field("ISIN").metadata {
+    minLength = 12
+}
+```
+
+##### `maxLength` 
+
+Sets the maximum number of characters allowed
+
+###### Valid for types:
+`STRING`
+
+###### Example Definitions:
+```kotlin
+field("ISIN").metadata {
+    maxLength = 14
+}
+```
+
+##### `pattern`
+
+Sets a [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions) pattern that values must adhere to.  
+
+###### Valid for types:
+`STRING`
+
+###### Example Definitions:
+```kotlin
+field("ISIN").metadata {
+    pattern = "^[A-Z]{2}[-]{0,1}[A-Z0-9]{9}[-]{0,1}[0-9]{1}$"
+}
+```
+
+##### `title`
+Title gives the field a name, typically more descriptive and for use when displaying the field in the front end of the application.
+Every field has a default title (derived from the field name converted to title case, e.g. `MY_STRING_FIELD` becomes "My String Field"), but `title(<title value>)` can be specified to override this.
+
+###### Valid for types:
+_any_
+
+###### Example Definitions:
+`field("KEY", STRING).title("Access key")`
+
+
+##### Event field modifiers
+The following modifiers can be set against fields of eligible type in scenarios such as:
+- They are derived and shouldn't be entered by the end user but rather the system itself
+- They are should only be set on insert, and never changed on modifications
+
+This table shows the modifiers available to set:
+| Modifier                 | Valid Field Type | Effect                                                                                     |
+|--------------------------|------------------|--------------------------------------------------------------------------------------------|
+| `.username()`            | STRING           | The field value gets set to the username of the user submitting the event.                 |
+| `.timestamp()`           | DATE             | The field value is set to the current date.                                                |
+| `.timestamp()`           | DATETIME         | The field value gets set to the current date and time.                                     |
+| `.readonly()`            | _any_            | The field is available during insertion but not modification.                              |
+| `.applicationProvided()` | _any_            | The field must be provided programmatically in the event, no user input from the front end |
+
+They are of benefit as no special logic is needed in the events which write to the table entity to enforce the same validation.
+
+```kotlin {4-7}
+table(name = "TRADE", id = 11002) {
+    field("ID", INT).primaryKey().autoIncrement()
+    ...
+    field("ENTERED_BY").username().readonly()
+    field("LAST_UPDATED_BY").username()
+    field("ENTERED_AT", DATETIME).timestamp().readonly()
+    field("LAST_UPDATED_AT", DATETIME).timestamp()
+    ...
+}
+```
+
+#### `primaryKey`
+
+Every table must have a single Primary Key defined. A primary key needs setting to be one or more fields from the table, and the values for the primary key fields must uniquely identify a record in the table.
+
+There are two different ways to define a primary key:
+
+- Set `.primaryKey()` against a field defined in the table. e.g. `field("ID", LONG).autoIncrement().primaryKey()`
+- Define `primaryKey(<field 1>, <field 2>, ...)` within a table definition with one or more fields as inputs, for example `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID")`
+
+When defining a multi-field primary key the order in which the fields are specified should be considered. There precedence sets more efficient ways to look up ranges of records in the API, for example in the definition above we could efficiently get a list of the entity for a given BOOK_ID, else for a given combination of BOOK_ID and INSTRUMENT_ID. 
+
+Fields marked as part of a primary key may not be null.
+
+Primary Key names are auto-generated in the following format: [TABLE_NAME]_BY_[FIELD_1](_[FIELD_N]). If you wish to give your primary key a specific name you can apply `.name(<pk name>)` against it. Examples below:
+- `field("ID", LONG).autoIncrement().primaryKey().name("POSITION_BY_IDENTIFIER")`
+- `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID").name("POSITION_BY_BOOK_INST_CPTY)`
+
+#### `indices`
+
+Indices are typically specified for one or two reasons:
+
+1. To add unique value constraints on records in the table, in addition to the primary key
+2. To add a more efficient way to look up ranges of records for the table
+
+Fields marked as part of any index may not be null.
+
+As with primary keys, index names are auto-generated but if you wish to give your index a specific name you can apply `.name(<pk name>)` against it.
+
+There are two types of index:
+
+##### `unique`
+
+Unique indices are the same as a primary key, in that any combination of values for fields defined in the index must uniquely identify a record.
+
+A unique index can be defined by:
+- adding `.uniqueIndex()` to a field (single field unique indices only)
+- adding `unique(<field 1>, <field 2>, ...)` to the `indices` block of a table.
+
+As with multi-field primary keys, the order in which the fields are specified should be considered.
+
+##### `nonUnique`
+Non-unique indices are used to ensure efficient ranged lookup of records, and there are no constraints around record value uniqueness as seen with primary keys and unique indices.
+
+An example usage would be if you had a `POSITION` table which had a non-unique index set on `COUNTERPARTY_ID`, it allows for efficient lookups of all `POSITION` records for a given `COUNTERPARTY_ID`
+
+A non-unique index can be defined by:
+- adding `.nonUniqueIndex()` to a field definition (single field non-unique indices only)
+- adding `nonUnique(<field 1>, <field 2>, ...)` to the `indices` block of a table.
+
+As with multi-field primary keys, the order in which the fields are specified should be considered.
+
+###### Example using field level index definition vs indices block level definition, each are valid:
+
+```kotlin {4}
+    //Field level
+    table(name = "POSITION", id = 11003) {
+        ...
+        field("COUNTERPARTY_ID", LONG).nonUniqueIndex()
+        ...
+    }
+```
+```kotlin {6-8}
+    //Indices block
+    table(name = "POSITION", id = 11003) {
+        ...
+        field("COUNTERPARTY_ID", LONG)
+        ...
+        indices {
+            nonUnique("COUNTERPARTY_ID")
+        }
+    }
+```
+
+#### `subTables`
+
+Within the body of the table definition, you can use `subtables` to define one or more subtables. A subtable provides is a related table to the parent, in that it will share any fields defined in the parent's key.
+
+For example, you might have an `EXECUTION_VENUE` table to provide details of different exchanges and trading venues. There may be alternative codes used to identify this exchange, and we need a table to represent a set of codes for each venue ID. So, you could add a subtable called `ALT_VENUE_CODE`, in which the relationship is one-to-many from the parent.
+
+The example below shows this. After the fields and the primary key have been defined, you can see the subtable `ALT_VENUE_CODE`.
+
+- The `EXECUTION_VENUE_ID` field is used to generate the join operation. This field is inherited automatically.
+- Then the additional fields `ALT_VENUE_CODE` and `ALT_VENUE_CODE_TYPE` are defined.
+- Then the key for the subtable is defined, and includes the `EXECUTION_VENUE_ID`
+
+```kotlin {9-17}
+    table(name = "EXECUTION_VENUE", id = 5043) {
+        field(COUNTRY_CODE)
+        field(OPERATING_MIC)
+        field(DESCRIPTION)
+        field(EXECUTION_VENUE_ID)
+
+        primaryKey("EXECUTION_VENUE_ID")
+
+        subTables {
+            fields("EXECUTION_VENUE_ID")
+                .joiningNewTable(name = "ALT_VENUE_CODE", id = 5044) {
+                    field("ALT_VENUE_CODE")
+                    field("ALT_VENUE_CODE_TYPE")
+
+                    primaryKey("EXECUTION_VENUE_ID", "ALT_VENUE_CODE_TYPE")
+                }
+        }
+    }
+```
+
+Some tables provided as standard in the Genesis Server Framework use this method. The example below shows the `GENESIS_PROCESS` monitoring table which holds a record per application process. This then has a subtable called `GENESIS_PROCESS_MONITOR` defined, which records the state of the process on each given host in the application cluster.
+
+```kotlin {8-17}
+table(name = "GENESIS_PROCESS", id = 12) {
+    field(PROCESS_NAME)
+    field(PROCESS_HOSTNAME)
+    ...
+
+    primaryKey("PROCESS_NAME", "PROCESS_HOSTNAME")
+
+    subTables {
+        fields("PROCESS_HOSTNAME", "PROCESS_NAME")
+            .joiningNewTable(name = "GENESIS_PROCESS_MONITOR", id = 20) {
+                field("MONITOR_NAME")
+                field("MONITOR_MESSAGE", STRING(4_000))
+                field("MONITOR_STATE", ENUM("GOOD", "BAD"))
+
+                primaryKey("PROCESS_HOSTNAME", "PROCESS_NAME", "MONITOR_NAME")
+            }
+    }
+}
+```
+
+## `view`
+
+Views are defined in  `*-views-dictionary.kts` files, they need to be defined in the `cfg` folder in your application's server codebase.
+
+| Parameter name | Type     | Description                                                                 |
+|----------------|----------|-----------------------------------------------------------------------------|
+| `name`         | `String` | Name of the view, must be unique across the application                     |
+| `table`        | `String` | Root table of the view                                                      |
+
+Updates to the `table`, referred to as the root table of the view will always trigger updates for any subscribing clients.
+
+### `joins`
+
+Joins are defined in the `joins` block.
+
+Each join is started with `joining(<table to join to>)` and includes in braces the sets of fields to use to join. 
+
+```kotlin {5-9}
+views {
+
+  view("TRADE_VIEW", TRADE) {
+
+    joins {
+      joining(INSTRUMENT) {
+        on(TRADE.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+      }
+    }
+
+    ...
+  }
+}
+```
+
+If multiple fields are needed in the join, add a `.and()` to the `on()`, for example:
+
+```kotlin
+    joining(POSITION) {
+        on(TRADE.BOOK_ID to POSITION { BOOK_ID })
+        .and(TRADE.INSTRUMENT_ID to POSITION { INSTRUMENT_ID }))
+    }
+```
+
+You can also add nested joins, joining to joined tables, recursively as needed by adding an inner `.joining` statement:
+
+```kotlin
+      joining(INSTRUMENT) {
+        on(TRADE.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+
+        .joining(ALT_INSTRUMENT_ID) {
+            on(INSTRUMENT_ID.INSTRUMENT_ID to ALT_INSTRUMENT_ID { INSTRUMENT_ID })
+            .and(ALT_INSTRUMENT_ID { ALTERNATE_TYPE } to "REFINITIV")        
+        }
+      }
+    }
+```
+
+The above example also demonstrates how to use a hardcoded value to join, see the `ALTERNATE_TYPE` being set to "REFINITIV".
+
+Joins can be one-to-one (key field match) or one-to-many (part-key-field match), however *Views with one-to-many joins cannot be used to power [real-time queries](/develop/server-capabilities/real-time-queries-data-server/) as they would be very inefficient and potentially use up a lot of the cache.
+
+#### `backwardsJoin`
+
+Joins can be set as backwards joins, using `backwardsJoin = true` in the joining definition.
+
+A join defined as a backwards join will make sure that any client listening to real-time updates of this view are published updates which happen to the joined table, as well as the root table.  
+So for example if our root `TRADE` table joins to `INSTRUMENT`, and it's a backwards join, an update to an `INSTRUMENT` record will trigger real-time updates to connected clients for all rows which join to the updated `INSTRUMENT` record.
+ 
+```kotlin {5-9}
+views {
+
+  view("TRADE_VIEW", TRADE) {
+
+    joins {
+      joining(INSTRUMENT, backwardsJoin = true) {
+        on(TRADE.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+      }
+    }
+
+    ...
+  }
+}
+```
+
+:::caution Do not use backwards joins unnecessarily.
+There is a memory storage and processing overhead when a join is defined as a backwards join. In very large datasets, this can be significant.
+
+Only specify a backwards join where it is essential to publish updates to the joined table in real-time.
+:::
+
+#### `joinType`
+
+Available join types are `JoinType.INNER` and `JoinType.OUTER`. 
+
+- `INNER` joins require all joins to match exactly; if one single join fails to match, the row will be discarded.
+- `OUTER` joins provide null references for failed joins and will still allow the row to be built.
+
+If you do not specify the `joinType`, it defaults to `JoinType.OUTER`.
+
+```kotlin
+joining(INSTRUMENT, JoinType.INNER) {
+    on(TRADE { INSTRUMENT_ID } to INSTRUMENT { INSTRUMENT_ID })
+```
+
+#### Parameterized joins
+Some join operations require external parameters that are not available in the context of the table-join definition, but will be available when the view repository is accessed (e.g. client-enriched definitions), so an option exists to create parameterized joins.
+
+These are typically used in Request Server queries:
+
+```kotlin
+view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
+    joins {
+        joining(ALT_INSTRUMENT_ID, JoinType.INNER) {
+            on(INSTRUMENT.ID to ALT_INSTRUMENT_ID.INSTRUMENT_ID)
+                .and(ALT_INSTRUMENT_ID.ALTERNATE_TYPE.asParameter())
+        }
+    }
+    fields {
+        ALT_INSTRUMENT_ID {
+            ALTERNATE_CODE withAlias "INSTRUMENT_CODE"
+        }
+        INSTRUMENT {
+            NAME withPrefix INSTRUMENT
+        }
+    }
+}
+```
+
+So for the above, if we had a Request Server using the view, it would make `ALTERNATE_TYPE` available as a field input parameter.
+
+#### Dynamic joins
+These have a shared syntax with derived fields. However, rather than specifying a field name and type, it should always return an entity index type of the table you’re joining on.
+
+:::warning
+When using dynamic joins on aliased tables, the alias name should match the alias variable name. E.g.: ```val fixCal = TRADE_CALENDAR withAlias "fixCal"```, here it is ```fixCal``` in both cases.
+:::
+
+As with derived fields, you can use the `withEntity` and the `withInput` syntax. However, the lambda should always return an entity index object or null. Also, it should always return the same type. It is not possible to switch dynamically between indices, so it should always return the same type or null. It is possible to add further `and` clauses afterwards.
+
+Syntax:
+
+```kotlin
+joining({usual join syntax}) {
+   on {  
+      // either
+      withEntity({table name}) {
+        // build index entity here
+      }
+      // or
+      withInput({field 1}, {field 2}, .., {field 9}) { a, b, .. ->
+        // build index entity here
+      }
+   }
+}
+```
+
+###### Example usage
+
+Before:
+```kotlin
+joining(fix, backwardsJoin = true) {
+   on(TRADE_TO_SIDE { FIX_ID } to fix { SIDE_ID })
+      .and(fix { SIDE_TYPE } to SideType.FIX)
+      .joining(fixCal, JoinType.INNER, backwardsJoin = true) {
+        on(fix { CALENDAR_ID } to fixCal { CALENDAR_ID })
+      }
+}
+```
+After:
+```kotlin
+joining(fix, backwardsJoin = true) {
+   on {
+      withEntity(TRADE_TO_SIDE) { tradeToSide ->
+        TradeSide.BySideId(tradeToSide.fixId)
+      }
+   }
+   .and(fix { SIDE_TYPE } to SideType.FIX)
+   .joining(fixCal, JoinType.INNER, backwardsJoin = true)
+}
+```
+
+
+Before:
+```kotlin
+joining(fixCal, JoinType.INNER, backwardsJoin = true) {
+    on(fix { CALENDAR_ID } to fixCal { CALENDAR_ID })
+}
+```
+After:
+```kotlin
+.joining(fixCal, JoinType.INNER, backwardsJoin = true) {
+   on {
+      withInput(fix { CALENDAR_ID }) { calendarId ->
+         when (calendarId) {
+            null -> null
+            else -> TradeCalendar.ByCalendarId(calendarId)
+         }
+      }
+   }
+}
+```
+
+
+#### Multiple joins on the same table
+
+To be able to perform multiple joins on the same table, you need to use one or more aliases:
+
+```kotlin
+    val firm = BID_OFFER withAlias "firm"
+    val draft = BID_OFFER withAlias "draft"
+
+    joins {
+        joining(firm, backwardsJoin = true) {
+            on(firm { BID_STATE } to BidState.FIRM)
+        }
+        joining(draft, backwardsJoin = true) {
+            on(draft { BID_STATE } to BidState.DRAFT)
+        }
+    }
+    fields {
+        firm {
+            BID_PRC withAlias "FIRM_BID_PRC
+        }
+        draft {
+            BID_PRC withAlias "DRAFT_BID_PRC"
+        }
+    }
+
+```
+
+### `fields`
+
+The `fields` block allows you to define which fields you would like to include in your view. You can reference fields from any of the tables that have been joined inside your view.
+
+Adding a field is as simple as typing it in the `fields` section of the view.
+
+```kotlin
+    fields {
+      INSTRUMENT.CURRENCY_ID 
+    }
+```
+
+You can add all the fields from a given table to a view using the `allFields` accessor.
+
+```kotlin
+    fields {
+      TRADE.allFields()
+    }
+```
+
+You can override the name of a table's field in a view using various operators, this is necessary in the case a field name is the same as another table's field name.
+
+- `withAlias` gives the field an alternative name on the view
+- `withPrefix` adds a prefix to the standard field name; this is useful if you have a clash (e.g. if COUNTERPARTY and INSTRUMENT both have a NAME field)
+
+```kotlin
+      COUNTERPARTY.NAME withPrefix COUNTERPARTY
+      INSTRUMENT.NAME withPrefix INSTRUMENT
+      INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
+```
+
+#### `derivedField`
+
+Derived fields are used to serve up data that is constructed from one or more fields; this is modified programmatically before progressing.
+
+For example, if a `TRADE` table has a `PRICE` and a `QUANTITY` field, a derived field `NOTIONAL` can be defined as the product of them both.
+
+There are two ways of defining a derived field:
+
+- Using `withInput` enables you to specify one more more fields as the basis for calculating the value of the new derived field.
+- Using `withEntity` enables you to specify a table entity as the input and refer to any of it's fields.
+
+###### Using withInput
+
+```kotlin
+derivedField("NOTIONAL", DOUBLE) {
+  withInput(TRADE.PRICE, TRADE.QUANTITY) { price, quantity ->
+    price * quantity
+  }
+}
+```
+
+:::info
+The maximum number of fields that can be used as input of a derived field is 10.
+:::
+
+###### Using withEntity
+```kotlin
+derivedField("NOTIONAL", DOUBLE) {
+  withInput(TRADE) { trade ->
+    trade.price * trade.quantity
+  }
+}
+```
+
+By default, all fields in the entity are returned. So there could be a performance impact if you are using large tables; it is likely that your calculations won't need many of the fields are loaded in your calculation or in the final view. 
+
+There two options which could mitigate this.
+
+The first way is to return only non-null fields. Here is an example:
+
+```kotlin
+derivedField("SPREAD", DOUBLE) {
+    withEntity(INSTRUMENT_PRICES, onlyNonNullFields = true) { price ->
+        price.askPrice - price.bidPrice
+    }
+}
+```
+
+The second way is to specify the fields to be returned. Other fields in the table are not returned. Here is an example:
+
+```kotlin
+derivedField("SPREAD", DOUBLE) {
+    withEntity(INSTRUMENT_PRICES, fields = listOf(INSTRUMENT_PRICES.ASK_PRICE, INSTRUMENT_PRICES.BID_PRICE)) { price ->
+        price.askPrice - price.bidPrice
+    }
+}
+```
+
+###### Example view with more complex derived fields
+
+```kotlin {24-58}
+  view("POSITION_VIEW", POSITION) {
+
+    joins {
+      joining(ALT_INSTRUMENT_ID, backwardsJoin = true) {
+        on(POSITION.INSTRUMENT_ID to ALT_INSTRUMENT_ID { INSTRUMENT_ID })
+          .and(ALT_INSTRUMENT_ID { ALTERNATE_TYPE } to "REFINITIV")
+
+          .joining(INSTRUMENT_L1_PRICE, backwardsJoin = true) {
+            on(ALT_INSTRUMENT_ID.INSTRUMENT_CODE to INSTRUMENT_L1_PRICE { INSTRUMENT_CODE })
+          }
+      }
+
+      joining(INSTRUMENT) {
+        on(POSITION.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+      }
+    }
+
+    fields {
+      POSITION.allFields()
+
+      INSTRUMENT.NAME withPrefix INSTRUMENT
+      INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
+
+      derivedField("VALUE", DOUBLE) {
+        withInput(
+          POSITION.QUANTITY,
+          INSTRUMENT_L1_PRICE.EMS_BID_PRICE,
+          INSTRUMENT_L1_PRICE.EMS_ASK_PRICE
+        ) { quantity, bid, ask ->
+          val quant = quantity ?: 0
+          //Use BID if positive position, else ask if negative
+          val price = when {
+              quant > 0 -> bid ?: 0.0
+              quant < 0 -> ask ?: 0.0
+              else -> 0.0
+          }
+          price * 1000 * quant
+        }
+      }
+
+      derivedField("PNL", DOUBLE) {
+        withInput(
+          POSITION.QUANTITY,
+          POSITION.NOTIONAL,
+          INSTRUMENT_L1_PRICE.EMS_BID_PRICE,
+          INSTRUMENT_L1_PRICE.EMS_ASK_PRICE
+        ) { quantity, notional, bid, ask ->
+          val quant = quantity ?: 0
+          //Use BID if positive position, else ask if negative
+          val price = when {
+            quant > 0 -> bid ?: 0.0
+            quant < 0 -> ask ?: 0.0
+            else -> 0.0
+          }
+          val marketVal = price * 1000 * quant
+          marketVal - notional
+        }
+      }
+    }
+  }
+}
+
+```
 

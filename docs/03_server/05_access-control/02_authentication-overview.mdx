@@ -11,7 +11,7 @@ tags:
 ---
 
 
-There are many different ways for your application to perform authentication. Each method requires the implementation of an 'Authenticator'. The authenticators offered by the Genesis low-code platform are:
+There are many different ways for your application to perform authentication. Each method requires the implementation of an 'Authenticator'. The authenticators offered by the Genesis Application Platform are:
 
 * INTERNAL
 * LDAP
@@ -22,7 +22,7 @@ SSO Token authentication covers both [SAML](https://en.wikipedia.org/wiki/Securi
 
 Some of these techniques support [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication) to bring additional security.
 
-Each of these requires its own configuration settings in the application's **auth-preferences.kts** file. To change the default **auth-preferences.kts** you need to create a new **auth-preferences.kts** under this path: &#123;application-name-script}**-config/src/main/resources/scripts/**.
+Each of these requires its own configuration settings in the application's `auth-preferences.kts` file. To change copy it to the `scripts` folder of your application.
 
 ## Authentication workflow
 Regardless of which authentication method is used, the process for logging in remains the same. The client (either a Genesis UI or an API client) sends a request to the EVENT_LOGIN_AUTH endpoint.
@@ -130,7 +130,7 @@ security {
 
 ## SSO authentication
 
-SSO authentication enables users to use a single set of credentials to access a range of applications, including those built on the Genesis low-code platform. For more information on SSO technology, see the [Single-sign on Wikipedia page](https://en.wikipedia.org/wiki/Single_sign-on).
+SSO authentication enables users to use a single set of credentials to access a range of applications, including those built on the Genesis application platform. For more information on SSO technology, see the [Single-sign on Wikipedia page](https://en.wikipedia.org/wiki/Single_sign-on).
 
 SSO authentication is a more involved process to enable; it requires additional file changes, which are detailed in the following pages:
 

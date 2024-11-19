@@ -1,0 +1,237 @@
+---
+title: 'FDC3 Context Channel Listener'
+sidebar_label: 'FDC3 Context Channel Listener'
+id: fdc3-context-channel-listener
+keywords: [interaction, interactive, interoperability, openfin, interop.io, fdc3, fdc3 channel, fdc3 context, data]
+tags:
+- interaction
+- interactive
+- interoperability
+- openfin
+- interop.io
+- fdc3
+- fdc3 channel
+- fdc3 context
+- data
+sidebar_position: 3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# FDC3 Channel Context Listener
+
+This is a utility element that listens to an FDC3 [app channel](https://fdc3.finos.org/docs/api/ref/Channel) for the specified context.
+
+Use cases:
+* Listen to and handle events for a specified context on an FDC3 app channel.
+
+## Examples
+
+This will listen to the specified app channels for changes in the specified context.
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+    <TabItem value="genesis">
+        Declaration
+        ```html
+        <fdc3-context-channel-listener></fdc3-context-channel-listener>
+        ```
+        Usage
+
+        ```typescript
+        @customElement({
+            name: 'my-element',
+            template: html`
+                <div>Instrument message:<i>${x => x.instrumentMessage}</i></div>
+                <div>Contact message:<i>${x => x.contactMessage}</i></div>
+                <fdc3-context-channel-listener
+                    :config="${(x) => [
+                        {
+                            channelName: 'customChannel',
+                            channelType: 'fdc3.instrument',
+                            callback: (message) => x.handleInstrumentMessage(message),
+                        },
+                        {
+                            channelName: 'anotherCustomChannel',
+                            channelType: 'fdc3.contact',
+                            callback: (message) => x.handleContactMessage(message),
+                        },
+                    ]}"
+                >
+                </fdc3-context-channel-listener>
+            `,
+        })
+        export class MyElement extends GenesisElement {
+
+            @observable contactMessage: any = {};
+
+            @observable instrumentMessage: any = {};
+
+            handleContactMessage(message) {
+                this.contactMessage = JSON.stringify(message);
+            }
+
+            handleInstrumentMessage(message) {
+                this.instrumentMessage = JSON.stringify(message)
+            }
+        }
+        ```
+    </TabItem>
+
+    <TabItem value="react">
+        Declaration
+        ```html
+        <fdc3-context-channel-listener></fdc3-context-channel-listener>
+        ```
+
+        Usage
+        ```typescript
+        export function MyComponent() {
+            useEffect(() => {
+
+                const [instrumentMessage, setInstrumentMessage] = useState('');
+                const [contactMessage, setContactMessage] = useState('');
+
+
+                if (contextChannelListenerRef.current) {
+                    contextChannelListenerRef.current.config = [
+                        {
+                            channelName: 'customChannel',
+                            channelType: 'fdc3.instrument',
+                            callback: (message) => setInstrumentMessage(JSON.stringify(message)),
+                        },
+                        {
+                            channelName: 'anotherCustomChannel',
+                            channelType: 'fdc3.contact',
+                            callback: (message) => setContactMessage(JSON.stringify(message)),
+                        },
+                    ]
+                }
+            })
+            return (
+                <div>Instrument message:<i>{instrumentMessage}</i></div>
+                <div>Contact message:<i>{contactMessage}</i></div>
+                <fdc3-context-channel-listener ref={contextChannelListenerRef}>
+                </fdc3-context-channel-listener>
+            );
+        }
+        ```
+    </TabItem>
+
+    <TabItem value="angular">
+        Declaration
+        ```html
+        <fdc3-context-channel-listener></fdc3-context-channel-listener>
+        ```
+
+        Usage
+        ```typescript
+        import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+        import { FormsModule } from '@angular/forms';
+        @Component({
+            selector: 'my-root',
+            templateUrl: './my.component.html',
+            template: `
+                <div>Instrument message:<i>{{ instrumentMessage }}</i></div>
+                <div>Contact message:<i>{{ contactMessage }}</i></div>
+                <fdc3-context-channel-listener #contextChannelListenerRef>
+                </fdc3-context-channel-listener>
+            `,
+            standalone: true,
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+            imports: [FormsModule],
+        })
+        export class AppComponent {
+            @ViewChild('contextChannelListenerRef') contextChannelListener!: ElementRef;
+
+            instrumentMessage: any;
+
+            contactMessage: any;
+
+            ngAfterViewInit() {
+                if (this.contextChannelListener.nativeElement) {
+                    this.contextChannelListener.nativeElement.config = [
+                        {
+                            channelName: 'customChannel',
+                            channelType: 'fdc3.instrument',
+                            callback: (message) => this.setInstrumentMessage(JSON.stringify(message)),
+                        },
+                        {
+                            channelName: 'anotherCustomChannel',
+                            channelType: 'fdc3.contact',
+                            callback: (message) => this.setContactMessage(JSON.stringify(message)),
+                        },
+                    ]
+                }
+            }
+
+            setInstrumentMessage(message) {
+                this.instrumentMessage = JSON.stringify(message);
+            }
+
+            setContactMessage(message) {
+                this.contactMessage = JSON.stringify(message);
+            }
+        }
+        ```
+    </TabItem>
+</Tabs>
+
+## DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+This component has no attributes
+
+### Properties
+
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>config</td>
+            <td><code>AppChannelListenerConfig</code></td> <!-- TODO link API docs -->
+            <td>An array of objects which configure which context type and a handler for channel event payloads</td>
+<td>
+
+```typescript
+<fdc3-context-channel-listener :config=${() =>
+  [
+    {
+      channelName: 'anotherCustomChannel',
+      channelType: 'fdc3.contact',
+      callback: (msg) => this.setContactMessage(JSON.stringify(msg)),
+    },
+  ]
+}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Slots
+
+This component has no slots.
+
+### Parts
+
+This component has no parts.
+
+### Fired Events
+
+This component doesn't fire any events.
+
+### Listened Events
+
+This component doesn't listen to any events.

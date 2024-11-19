@@ -15,14 +15,14 @@ Combining this with the use of an MQTT broker gives you a dynamically scalable G
 
 ## Prerequisites
 ### Services
-To operate the Genesis low-code platform within an HA setup using Hashicorp's Consul for Clustering, the following services must be available:
+To operate the Genesis Application Platform within an HA setup using Hashicorp's Consul for Clustering, the following services must be available:
 
  - **A Database** - A database needs to be hosted independently from the platform
  - **A Consul Cluster** - A Consul cluster with an agent on each of the hosts running a Genesis app
  - **An MQTT Broker** - Any message queue broker that supports MQTT, such as Mosquitto or RabbitMQ
 
 :::important
-The Genesis low-code platform can run with Consul without MQTT using ZeroMQ.
+The Genesis Application Platform can run with Consul without MQTT using ZeroMQ.
 
 However, this is not recommended as **MQTT is required for dynamic scaling**.
 :::

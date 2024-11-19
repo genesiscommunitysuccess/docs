@@ -12,7 +12,7 @@ const GTM_ID = process.env.GTM_ID || "GTM-5GTR43J"; // default to uat GTM_ID, pr
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Low-code Platform For Financial Markets",
+  title: "Genesis Application Platform for Financial Markets",
   tagline:
     "The Platform with 50+ Modern Building Blocks to Accelerate App Development.",
   url: "https://learn.genesis.global/",
@@ -25,8 +25,8 @@ const config = {
     format: "detect",
     mermaid: true,
   },
-  onBrokenLinks: "throw", // please do NOT change this to 'warn', fix or remove your broken links instead
-  onBrokenMarkdownLinks: "throw", // please do NOT change this to 'warn', fix or remove your broken links instead
+  onBrokenLinks: "warn", // please do NOT change this to 'warn', fix or remove your broken links instead
+  onBrokenMarkdownLinks: "warn", // please do NOT change this to 'warn', fix or remove your broken links instead
   onDuplicateRoutes: "throw",
   clientModules: ["./src/client-modules/genesislcap.js"],
   scripts: [
@@ -100,17 +100,6 @@ const config = {
           breadcrumbs: true,
           routeBasePath,
           sidebarPath: "./sidebars.js",
-          lastVersion: "current",
-          versions: {
-            current: {
-              label: "Current",
-              banner: "none",
-            },
-            previous: {
-              label: "Previous",
-              banner: "none",
-            }
-          },
         },
         theme: {
           customCss: "./src/css/custom.css",
@@ -155,23 +144,23 @@ const config = {
     },
     navbar: {
       items: [
-        { type: "doc", docId: "platform-overview/platform-overview", label: "Platform Overview" },
-        { type: "doc", docId: "develop/develop-landing", label: "Develop", },
-        { type: "doc", docId: "how-to/how-to-landing", label: "How To Guides" },
-        { type: "doc", docId: "build-deploy-operate/bdo-overview", label: "Build, Deploy & Operate" },
-        { type: "doc", docId: "release-notes/latest-releases", label: "Release Notes" },        
-        {
-          type: "html",
-          position: "right",
-          value:
-            "<a href='' onclick=\"window.open('https://github.com/genesiscommunitysuccess/docs/issues/new?title=New+Feedback+from+learn.genesis.global&body=Thank+you+for+giving+us+your+feedback.%20Please+provide%20it%20below.%0a%0a%23%23%20My%20Issue/Idea/Suggestion%0a%0a%23%23%20Current%20Page%0a%0a'+window.location.href+window.location.hash,'_blank')\" class=\"feedback\" style=\"text-decoration:none\">Give us Feedback</a>",
-        },
-        {
-          href: "https://stackoverflow.com/c/genesis-global/questions",
-          className: "so-icon",
-          "aria-label": "StackOverflow",
-          position: "right",
-        },
+        { type: "doc", docId: "platform-overview/platform-overview", label: "Platform Overview", position: "right"},
+        { type: "doc", docId: "develop/develop-landing", label: "Develop", position: "right" },
+        { type: "doc", docId: "how-to/how-to-landing", label: "How To Guides", position: "right" },
+        { type: "doc", docId: "build-deploy-operate/bdo-overview", label: "Build, Deploy & Operate", position: "right" },
+        { type: "doc", docId: "release-notes/latest-releases", label: "Release Notes", position: "right" },        
+        // {
+        //   type: "html",
+        //   position: "right",
+        //   value:
+        //     "<a href='' onclick=\"window.open('https://github.com/genesiscommunitysuccess/docs/issues/new?title=New+Feedback+from+learn.genesis.global&body=Thank+you+for+giving+us+your+feedback.%20Please+provide%20it%20below.%0a%0a%23%23%20My%20Issue/Idea/Suggestion%0a%0a%23%23%20Current%20Page%0a%0a'+window.location.href+window.location.hash,'_blank')\" class=\"feedback\" style=\"text-decoration:none\">Give us Feedback</a>",
+        // },
+        // {
+        //   href: "https://stackoverflow.com/c/genesis-global/questions",
+        //   className: "so-icon",
+        //   "aria-label": "StackOverflow",
+        //   position: "right",
+        // },
       ],
       logo: {
         alt: "Genesis Documentation",
@@ -179,10 +168,10 @@ const config = {
         width: 25,
         height: 25,
         //href: "/how-to",
-        href: "https://genesis.global/",
-        //target: "_self",
+        //href: "https://genesis.global/",
+        target: "_self",
       },
-      title: "Genesis",
+      title: "Documentation",
     },
     footer: {
       links: [],

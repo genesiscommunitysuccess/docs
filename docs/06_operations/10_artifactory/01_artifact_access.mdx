@@ -28,7 +28,7 @@ Normally, these credentials will give access to four categories of artifact:
 ## Server-side code
 
 There is one principal repository for server-side artifacts, which includes:
- * Genesis low-code platform frameworks (supplied as zip files)
+ * Genesis Application Platform frameworks (supplied as zip files)
  * Gradle plugins to aid development
 
 This repository is called 'libs-release-client' and is available
@@ -41,7 +41,7 @@ URLs as gradle dependencies.
 ## Web artifacts
 
 Web server artifacts from Genesis are packaged as [NPMs](https://docs.npmjs.com/about-npm) and 
-[scoped](https://docs.npmjs.com/about-scopes) as @genesislcap/&#123;package&#125;. The Genesis Artifactory is the primary
+[scoped](https://docs.npmjs.com/about-scopes) as `@genesislcap/{package}`. The Genesis Artifactory is the primary
 source of that scope.
 
 We offer both our scoped packages and a remote to the npmjs.org repository via a single repository, available

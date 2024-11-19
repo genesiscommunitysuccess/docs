@@ -15,9 +15,9 @@ tags:
 import CodeBlock from '@theme/CodeBlock';
 
 
-SSO is a mechanism that enables a user to be authenticated against a single system, and use that authenticated id across multiple applications - including those built on the Genesis low-code platform. This has the advantage that a user is required to log in only once, rather than once per system.
+SSO is a mechanism that enables a user to be authenticated against a single system, and use that authenticated id across multiple applications - including those built on the Genesis application platform. This has the advantage that a user is required to log in only once, rather than once per system.
 
-SAML is an SSO protocol that can be used to authenticate users on the Genesis low-code platform. It works by connecting a Service Provider (SP) - the Genesis application in this case - and an Identity Provider (IDP), which would be an external party.
+SAML is an SSO protocol that can be used to authenticate users on the Genesis application platform. It works by connecting a Service Provider (SP) - the Genesis application in this case - and an Identity Provider (IDP), which would be an external party.
 
 The SP and the IDP communicate using the user's web browser, and do not need to be accessible to each other.
 
@@ -34,7 +34,7 @@ When SAML is enabled, a user can click on an SSO button in the GUI. This starts 
 
 For more information, see [wikipedia](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language).
 
-This workflow is described in more detail in the section on [Front-to-back flow](../../../server/access-control/sso-saml/#front-to-back-flow).
+This workflow is described in more detail in the section on [Front-to-back flow](#front-to-back-flow).
 
 ## Prerequisites
 
@@ -177,7 +177,7 @@ Once this is configured, a service provider metadata endpoint will be available 
 Other endpoints provided are:
 
 - the `ssoLoginUrl`
-  - The format of this is: `https://&#123;appHost}{ssoLoginRoute}?idp={id}` where:
+  - The format of this is: `https://{appHost}{ssoLoginRoute}?idp={id}` where:
     - `appHost` is hostname of the app, e.g. dev-position2
     - `ssoLoginRoute` is `/gwf/saml/login` by default (this is configurable)
     - `id` is the ID of the selected identity provider
@@ -256,7 +256,7 @@ Then, make sure that auth saml has been added to the Genesis Router configuratio
 </process>
 ```
 
-Next, in your application's **jvm/&#123;application-name}-site-specific** directory, create an _application-name-_**saml-config.kts** file with the following SAML details:
+Next, in your application's `scripts` directory, create an _application-name-_**saml-config.kts** file with the following SAML details:
 
 ```kotlin
     saml {
