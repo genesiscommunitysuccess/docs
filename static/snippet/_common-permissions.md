@@ -38,6 +38,7 @@ The `customPermissions` block also has access to `entityDb` so that you can quer
 
 Where utilizing `customPermissions` you should also consider configuring a [`customLoginAck`](/develop/server-capabilities/access-control/authentication/#customloginack) so that the front end of the application can also permission it's components in a similar way.
 
+
 ##### `auth`
 
 `auth` is used to restrict rows (queries) or events with a particular entity based on a user's entity access, also known as row-level permissions.
@@ -88,3 +89,12 @@ permissioning {
     }
 }
 ```
+
+##### `userHasRight`
+
+`userHasRight` is a helpful function which can be called within the auth block, or anywhere else in client facing server components which have a user accessing them, to determine if a user has a given right.
+
+```kotlin
+if (!userHasRight(userName, "TradeViewFull")) { ... }
+```
+

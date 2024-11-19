@@ -20,6 +20,7 @@ sidebar_position: 7
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CommonPermissions from '/snippet/_common-permissions.md'
+import CommonPermissionsQuery from '/snippet/_common-permissions-query.md'
 
 ## Overview
 
@@ -192,6 +193,8 @@ The `permissioning` block allows application developers to set all the described
 
 <CommonPermissions />
 
+<CommonPermissionsQuery />
+
 #### `RightSummaryCache`
 
 GPAL server components have the [`permissionCodes`](#permissioncodes) block mentioned above for convenience. If you are writing custom code, or event need more complex boolean logic to determine access within a GPAL server component, the `RightSummaryCache` is injectable into any java or kotlin code and can be used for efficient lookups base on user and permission codes.
@@ -231,6 +234,42 @@ public EventTrade(RightSummaryCache rightSummaryCache) {
 ```
 </TabItem>
 </Tabs>
+
+
+#### `AuthCacheFactory`
+
+GPAL server components have the [`auth`](#auth) block mentioned above for convenience. If you are writing custom code, or event need more complex boolean logic to determine entity access within a GPAL server component, the `AuthCacheFactory` is injectable into any java or kotlin code and can be used for efficient lookups base on user and an [`entity`](/develop/server-capabilities/access-control/authorization/#entity).
+
+See the example below for creating a `ReadOnlyAuthCache` from the `AuthCacheFactory` onto a particular permissioned [`entity`](/develop/server-capabilities/access-control/authorization/#entity), and example boolean logic to see if the user has access
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+```kotlin
+import global.genesis.session.AuthCacheFactory
+...
+val authFactory = inject<AuthCacheFactory>()
+val myMap = authFactory.newReader("ENTITY_VISIBILITY")
+...
+  myMap.isAuthorised(companyId, userName)
+```
+</TabItem>
+<TabItem value="java">
+```java
+import global.genesis.session.AuthCacheFactory
+
+private final ReadOnlyAuthCache authCacheMap;
+...
+@Inject
+public EventTrade(AuthCacheFactory authFactory) {
+  this.authCacheMap = authFactory.newReader("ENTITY_VISIBILITY");
+}
+...
+  myMap.isAuthorised(companyId, userName)
+```
+</TabItem>
+</Tabs>
+
+
 
 ### Client component configuration
 
