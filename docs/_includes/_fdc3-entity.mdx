@@ -1,0 +1,41 @@
+:::tip FDC3 Position Server Model
+
+The following example is based on the following kotlin code snippets.
+
+It creates and serves an entity that matches the [`fdc3.position` schema](https://fdc3.finos.org/docs/context/ref/Position)
+
+In your **app-name**-tables-dictionary.kts add:
+
+```kts
+tables {
+    table(name = "INSTRUMENT_REF", id = 11_000) {
+        field("INSTRUMENT_ID", LONG).autoIncrement()
+        field("INSTRUMENT_TYPE", STRING(100))
+        field("TICKER", STRING(100)).notNull()
+        field("ISIN", STRING(100))
+        field("CUSIP", STRING(100))
+        field("SEDOL", STRING(100))
+        field("FIGI_ID", STRING(100))
+        field("INSTRUMENT_NAME", STRING(100))
+        field("BASE_BID_PRICE", DOUBLE).notNull()
+        field("BASE_ASK_PRICE", DOUBLE).notNull()
+        field("BBG_ID", STRING(100))
+        field("FDS_ID", STRING(100))
+        field("PERMID", STRING(100))
+        field("RIC", STRING(100))
+        field("EXCHANGE", STRING(100))
+        field("CURRENCY", STRING(100))
+        field("COUNTRY", STRING(100))
+        primaryKey("INSTRUMENT_ID")
+    }
+}
+```
+
+In your **app-name**-dataserver.kts add:
+
+```kts
+dataServer {
+    query("ALL_INSTRUMENT_REF", INSTRUMENT_REF)
+}
+```
+:::

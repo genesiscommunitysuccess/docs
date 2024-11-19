@@ -394,5 +394,27 @@ export default {
         ],
       },
     },
+    {
+      name: "@genesislcap/foundation-fdc3",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/021_desktop-interoperability",
+        api_docs: "docs/api",
+        readme: "01_foundation-fdc3.mdx",
+        keywords: ["genesis", "foundation", "ui", "fdc3"],
+        tags: ["genesis", "foundation", "ui", "fdc3"],
+        pages: [
+          {
+            title: "Foundation FDC3",
+            sidebar_label: "Foundation FDC3",
+            id: "foundation-fdc3",
+          },
+        ],
+      },
+    },
   ],
 };
