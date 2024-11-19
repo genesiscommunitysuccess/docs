@@ -170,7 +170,7 @@ GenesisSet(fields: MutableMap\<String, Any?\>) | Creates a GenesisSet object usi
 
 ## Type-safe messages
 
-The Genesis application platform uses type-safe messages to perform message serialization and deserialization. In addition, it automatically extracts relevant metadata to expose this to the front end in the form of a [Json Schema](https://json-schema.org/) definition that is compliant with the 2019-09 specification. These messages will be validated automatically in the back end, based on their definition.
+The Genesis Application Platform uses type-safe messages to perform message serialization and deserialization. In addition, it automatically extracts relevant metadata to expose this to the front end in the form of a [Json Schema](https://json-schema.org/) definition that is compliant with the 2019-09 specification. These messages will be validated automatically in the back end, based on their definition.
 
 These type-safe messages are most commonly used in Request Servers, GPAL Event Handlers and Event Handlers that have been [implemented as a set of classes](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api).
 
@@ -285,7 +285,7 @@ If your message has nested arrays or objects, the `deserializedFields` property 
 
 ### Output messages
 
-The output message type `O` can be defined as a single Kotlin data class or sealed class with multiple Kotlin data classes defined as subtypes. For multiple subtypes, the Genesis application platform is able to extract information for all the possible messages and expose it as metadata.
+The output message type `O` can be defined as a single Kotlin data class or sealed class with multiple Kotlin data classes defined as subtypes. For multiple subtypes, the Genesis Application Platform is able to extract information for all the possible messages and expose it as metadata.
 
 As an example, we shall look at `EventReply` and how Event Handlers work with output types in real life.
 

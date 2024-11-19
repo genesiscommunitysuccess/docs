@@ -34,7 +34,7 @@ There are three different update queue technologies to choose from, depending on
 
 ## ZeroMQ
 
-The Genesis application platform uses ZeroMQ out of the box to provide a zero-configuration decentralized peer-to-peer update queue.
+The Genesis Application Platform uses ZeroMQ out of the box to provide a zero-configuration decentralized peer-to-peer update queue.
 
 It works because the GENESIS_CLUSTER process knows (via [clustering](/build-deploy-operate/deploy/hosting-infrastructure/virtual-machines#clustering)) all the nodes within the cluster - so it can broadcast and consume appropriately.
 
@@ -96,7 +96,7 @@ Never use this setting in a production environment.
 
 ## MQTT
 
-The Genesis application platform provides the option to use an external MQTT broker such as [Mosquitto](https://mosquitto.org/) or [RabbitMQ](https://www.rabbitmq.com/) as the transport mechanism for the Genesis update queue.
+The Genesis Application Platform provides the option to use an external MQTT broker such as [Mosquitto](https://mosquitto.org/) or [RabbitMQ](https://www.rabbitmq.com/) as the transport mechanism for the Genesis update queue.
 
 Using a centralized external broker is highly recommended for complex, large or dynamically scaled clusters, as it reduces the complexity and overhead of peer-to-peer connectivity.
 
