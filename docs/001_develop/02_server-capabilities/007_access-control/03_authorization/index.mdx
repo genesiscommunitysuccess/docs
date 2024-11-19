@@ -17,12 +17,58 @@ tags:
 sidebar_position: 7
 ---
 
+## Overview
 
+Authorization, sometimes referred to as permissions or rights, is the concept of ensuring users can only access features and data from the application for which they are authorized to access, for example ensure only permitted users may **view** and **update (create, edit, delete)** data in an application.
+
+The Genesis Application Platform makes it simple to set up powerful authorization models based on business requirements.
+
+There are three levels that can be configured:
+
+1. Feature access : Accessing a UI component (for example a grid, chart, form, ...) or server component (for example a query or event)
+1. Entity access : Accessing particular entities which make up the application data. For example users being permitted to submit events or read data for a particular counterparty, book, or some other application entity.
+1. Field / Attribute access : Accessing fields / column values. For example not having access to view or update a particular field in a table based on your role.
+
+All levels can be configured at the server level to ensure complete security, but also at the front end to remove views and commands that would otherwise not work or be empty for a given user (i.e. where authorization has not been granted).
+
+This model enables full control of data within an application at the most granular level.
+
+Typically levels 1 and 3 are controlled by [permission codes](#permission-codes), and level 2 is controlled by entity permissioning, however you can set up the application as per your business needs. The following sections give an overview of the 2 layers and example use-cases.
 
 ## Permission codes
 
+TODO Overview of users, permissions and codes
 
-TODO: Rights codes etc...
+TODO Configuring in an application
+  - Inserting rights
+  - Profile management
+
+  - back end components (overview + link)
+  - front end components (overview + link)
+
+## Entity access
+
+TODO Overview of auth permission
+
+TODO Configuration options for auth-perms.kts 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TODO Rights codes etc...
 TODO explain users and profiles 
 
 

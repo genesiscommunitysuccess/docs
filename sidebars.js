@@ -187,7 +187,6 @@ module.exports = {
       ],
     },
   ],
-
   releaseNotesSidebar: [
     "release-notes/latest-releases",
     {
@@ -284,7 +283,5 @@ module.exports = {
         },
       ],
     }
-
   ],
-
 };

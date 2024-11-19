@@ -93,7 +93,7 @@ genesis-db-6.7.*.jar
 
 So, if you upgrade the host to a patch version, for example, 6.7.1, then **genesis-db-6.7.1.jar** will still match the pattern and it will be added to the classpath. In this way, apps built using the framework can take framework bug fixes without having to recompile.
 
-The Genesis application platform has a strict policy on changes to dependencies or breaking API changes within the same minor version. Any maintenance version within the same minor version always has the same dependency tree to ensure that there are no breaking changes.
+The Genesis Application Platform has a strict policy on changes to dependencies or breaking API changes within the same minor version. Any maintenance version within the same minor version always has the same dependency tree to ensure that there are no breaking changes.
 
 ## Generated jars
 The final thing to mention regarding classpaths is the way that we handle generated code. Each Genesis app has a dictionary-cache module that produces several generated jars:

@@ -12,7 +12,7 @@ With the exception of the inner `auth` block which relies on inbound data, the `
 
 ##### `customPermissions`
 
-`customPermissions` block takes boolean logic. If this function returns true, the user will be able to access the resource; otherwise, the request will be rejected.  
+The `customPermissions` block takes boolean logic. If this function returns true, the user will be able to access the resource; otherwise, the request will be rejected.  
 It is useful, for example, in the case you have an external API to check against. In this example an `entitlementUtils` object wraps an external API we can call to check the user's name has access.
 
 ```kotlin
@@ -29,6 +29,8 @@ The `customPermissions` block also has access to `entityDb` so that you can quer
     userAttributes?.accessType == AccessType.ALL
   }
 ```
+
+Where utilizing `customPermissions` you should also consider configuring a [`customLoginAck`](/develop/server-capabilities/access-control/authentication/#customloginack) so that the front end of the application can also permission it's components in a similar way.
 
 ##### `auth`
 

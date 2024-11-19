@@ -18,6 +18,8 @@ import CommonPermissions from '/snippet/_common-permissions.md'
 import CommonFieldOverrides from '/snippet/_common-field-overrides.md'
 import CommonQueryFields from '/snippet/_common-query-fields.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
+import CommonAuthenticateFirst from '/snippet/_common-authenticate-first.md'
+import CommonOpenAPI from '/snippet/_common-open-api.md'
 
 ## Overview
 
@@ -492,9 +494,9 @@ Find details around [how request servers work with optimistic concurrency](/deve
 
 ## Client API
 
-:::tip
-Request servers are also accessible via [Open API](/develop/server-capabilities/integrations-open-api/)
-:::
+<CommonAuthenticateFirst />
+
+<CommonOpenAPI />
 
 ### `REQ_<REQUEST_SERVER_NAME>`
 
