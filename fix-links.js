@@ -55,7 +55,6 @@ const replaceString = (data, depth) => {
 const runMain = () => {
     const paths = [].concat(
         walkDirectory("./docs"),
-        walkDirectory("./versioned_docs/version-2022.3")
     )
 
     for (const {path, depth} of paths) {
