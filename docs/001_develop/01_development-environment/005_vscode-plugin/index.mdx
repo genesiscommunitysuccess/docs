@@ -17,7 +17,7 @@ sidebar_position: 5
 
 The Genesis UI Generator is a Visual Studio Code plugin designed to enhance the development experience on the Genesis Platform.
 
-Starting with an image of the desired UI, it creates the code for a working UI, along with the files that enable you to add it to a new or existing application. This can be a major boost to productivity.
+You provide an image of the UI you want to create, and the Genesis UI Generator creates the code for a working UI, along with the files that enable you to add it to a new or existing application. This can be a major boost to productivity.
 
 ## Requirements
 
@@ -26,39 +26,39 @@ Starting with an image of the desired UI, it creates the code for a working UI, 
 
 ## Installation
 
-1. To install, visit [Genesis UI Generator on Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=GenesisGlobal.genesis-ui-generator). Click on **Install** or search for **Genesis UI Generator** in the extensions panel in VS Code.
+1. To install the Genesis UI Generator, visit [Genesis UI Generator on Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=GenesisGlobal.genesis-ui-generator). Click on **Install** or search for `Genesis UI Generator` in the extensions panel in VS Code.
 
-2. After installing the extension, the Genesis icon will be visible in your VS Code left side panel.
+2. After installing the extension, the Genesis icon will be visible in the VS Code side menu on the left.
 
 ![Genesis UI Generator Icon](/img/vscode-extension/icon-extension.png)
 
 ## Configuration
 
 - Open your Genesis project (root folder) in VS Code before starting to use the extension features.
-- Ensure that the source folder path (**src**) is correctly configured in the VS Code extension's settings.
+- Ensure that the source folder path (`src`) is correctly configured in the VS Code extension's settings.
 
-If the folder path is not found, the **Setup Genesis View** button will be displayed:
+If the folder path is not found, the `Setup Genesis View` button will be displayed:
 
 ![Settings Button](/img/vscode-extension/settings-button.png)
 
-Click on the button to open the extension settings screen. Configure the OpenAI key and folder path in the VS Code extension's settings to use **Genesis View**.
+Click on the button to open the extension settings screen. Configure the OpenAI key and folder path in the VS Code extension's settings to use `Genesis View`.
 
 ![Settings](/img/vscode-extension/settings.png)
 
 ## Features
 
-- **Genesis View** uses generative AI to generate code from a screenshot/mockup UI. It can also generate all the files necessary to deploy the new code into an existing application, taking into consideration the design-system coloors, fonts, and other visual elements identified from the screenshot.
+- `Genesis View` uses generative AI to generate code from a screenshot/mockup UI. It can also generate all the files necessary to deploy the new code into an existing application, taking into consideration the design-system colors, fonts, and other visual elements identified from the screenshot.
 
-- **File Management** simplifies the creation of new `routes`, `components`, `grid components`, and other **Genesis** features. You can create files quickly and easily, following the **Genesis** Platform guidelines.
+- `File Management` simplifies the creation of new `routes`, `components`, `grid components`, and other **Genesis** features. You can create files quickly and easily, following the **Genesis** Platform guidelines.
 
-- **HTML Catalog** provides an extensive catalogue of Genesis web components. You can simply click on a component in the catalogue to insert it directly into the VS Code editor, speeding up the development process.
+- `HTML Catalog` provides an extensive catalogue of Genesis web components. You can simply click on a component in the catalogue to insert it directly into the VS Code editor, speeding up the development process.
 
-- **Design System Management** makes it easy to define colours, fonts, sizes, margins, paddings, and other visual definitions of a UI implementation, using the Genesis design system. You can change a setting and see the effect immediately. This streamlines the process of creating a consistent and cohesive visual style throughout the application.
+- `Design System Management` makes it easy to define colours, fonts, sizes, margins, paddings, and other visual definitions of a UI implementation, using the Genesis design system. You can change a setting and see the effect immediately. This streamlines the process of creating a consistent and cohesive visual style throughout the application.
 
-- **Code Snippets** provides an extensive catalogue of typeScript and HTML code snippets for the most-used Genesis web components and boilerplate code.
+- `Code Snippets` provides an extensive catalogue of typeScript and HTML code snippets for the most-used Genesis web components and boilerplate code.
 
 :::tip
-Ensure you install **literally-html** to enable the proper functionality of snippets and items from the HTML catalogue.
+Ensure you install `literally-html` to enable the proper functionality of snippets and items from the HTML catalogue.
 :::
 
 ## Using Genesis UI Generator
@@ -77,16 +77,16 @@ This displays the image in a new UI dedicated to Genesis View:
 
 ![Genesis View 2](/img/vscode-extension/genesis-view-2.png)
 
-2. Click on **Advanced Config** to configure your generation:
+2. Click on `Advanced Config` to configure your generation:
 
 ![Genesis View Filled](/img/vscode-extension/genesis-view-filled.png)
 
-- **Route** creates a new route component with all the files (ts, template, styles) for the new custom UI.
-- **Custom Navigation Bar/Header** generates HTML components for a header or navigation bar.
-- **Custom Grid Styles** generates a file that provides custom colours and style for grids in your Genesis application.
-- **Design Tokens** generates or replaces the **design-tokens.json** file, managing the colours and theme of your entire application.
+- `Route` creates a new route component with all the files (ts, template, styles) for the new custom UI.
+- `Custom Navigation Bar/Header` generates HTML components for a header or navigation bar.
+- `Custom Grid Styles` generates a file that provides custom colours and style for grids in your Genesis application.
+- `Design Tokens` generates or replaces the **design-tokens.json** file, managing the colours and theme of your entire application.
 
-3. When you have completed the configuration, click on **Start**.
+3. When you have completed the configuration, click on `Start`.
 
 ![Genesis View Started](/img/vscode-extension/genesis-view-started.png)
 
