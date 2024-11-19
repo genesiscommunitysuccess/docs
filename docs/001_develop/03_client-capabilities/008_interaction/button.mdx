@@ -42,14 +42,44 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-      <rapid-button @click=${x => x.buttonClicked()}>
-        Button
-      </rapid-button>
-    `,
+        <rapid-button
+            @click="${x => x.handleButtonClicked()}">
+              Default Button
+        </rapid-button>
+        <rapid-button
+              appearance="primary"
+              @click="${x => x.handleButtonClicked()}">
+          Primary Color Button
+        </rapid-button>
+        <rapid-button
+              appearance="secondary"
+              @click="${x => x.handleButtonClicked()}">
+          Secondary Color Button
+        </rapid-button>
+        <rapid-button
+            @click="${x => x.handleButtonClicked()}">
+          <rapid-icon
+            name="plus"
+            slot="start">
+          </rapid-icon>
+          Button with start slot
+        </rapid-button>
+        <rapid-button
+            @click="${x => x.handleButtonClicked()}">
+          Button with end slot
+          <rapid-icon
+            name="warning"
+            slot="end">
+          </rapid-icon>
+        </rapid-button>
+        <rapid-button disabled>
+          Disabled Button
+        </rapid-button>
+        `,
     })
     export class MyElement extends GenesisElement {
-      buttonClicked() {
-        console.log('Button Clicked')
+      handleButtonClicked() {
+          alert('button clicked')
       }
     }
     ```
@@ -69,7 +99,38 @@ Use cases:
       };
 
       return (
-        <rapid-button onClick={handleButtonClicked}></rapid-button>
+        <rapid-button
+            onClick={handleButtonClicked}>
+            Default Button
+        </rapid-button>
+        <rapid-button
+            onClick={handleButtonClicked}
+            appearance="primary">
+            Primary Color Button
+        </rapid-button>
+        <rapid-button
+            onClick={handleButtonClicked}
+            appearance="secondary">
+            Secondary Color Button
+        </rapid-button>
+        <rapid-button>
+            <rapid-icon
+                onClick={handleButtonClicked}
+                name="plus"
+                slot="start">
+            </rapid-icon>
+            Button with start slot
+        </rapid-button>
+        <rapid-button>
+            Button with end slot
+            <rapid-icon
+                name="warning"
+                slot="end">
+            </rapid-icon>
+        </rapid-button>
+        <rapid-button disabled>
+            Disabled Button
+        </rapid-button>
       );
     }
     ```
@@ -88,17 +149,37 @@ Use cases:
     @Component({
       selector: 'my-root',
       template: `
+        <rapid-button (click)="handleButtonClicked()">
+              Default Button
+        </rapid-button>
         <rapid-button
-          (click)="onButtonClicked($event)"
-        ></rapid-button>
+              appearance="primary"
+              (click)="handleButtonClicked()">
+          Primary Color Button
+        </rapid-button>
+        <rapid-button
+              appearance="secondary"
+              (click)="handleButtonClicked()">
+          Secondary Color Button
+        </rapid-button>
+        <rapid-button (click)="handleButtonClicked()">
+          <rapid-icon name="plus" slot="start"></rapid-icon>
+          Button with start slot
+        </rapid-button>
+        <rapid-button (click)="handleButtonClicked()">
+              Button with end slot
+          <rapid-icon name="warning" slot="end"></rapid-icon>
+        </rapid-button>
+        <rapid-button disabled>
+          Disabled Button
+        </rapid-button>
       `,
       standalone: true,
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule],
     })
     export class AppComponent {
-      onButtonClicked(event: Event) {
-        console.log('Button clicked');
+      handleButtonClicked() {
+        alert('button clicked')
       }
     }
     ```
