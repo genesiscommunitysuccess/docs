@@ -35,13 +35,15 @@ You provide an image of the UI you want to create, and the Genesis UI Generator 
 ## Configuration
 
 - Open your Genesis project (root folder) in VS Code before starting to use the extension features.
-- Ensure that the source folder path (`src`) is correctly configured in the VS Code extension's settings.
 
-If the folder path is not found, the `Setup Genesis View` button will be displayed:
+If the source folder path (`src`) is not found or is not correct, the `Setup Genesis View` button will be displayed:
 
-![Settings Button](/img/vscode-extension/settings-button.png)
+![Settings Button](/img/vscode-extension/setup-genesis-view-correct.png)
 
-Click on the button to open the extension settings screen. Configure the OpenAI key and folder path in the VS Code extension's settings to use `Genesis View`.
+- You can edit the source folder path by clicking on `Setup Genesis View` or clicking on left panel `settings button > Settings` and searching for "genesis ui".
+
+Clicking on the button will open the extension settings screen.
+You can configure the source folder path and also OpenAI key in the extension's settings to use `Genesis View`.
 
 ![Settings](/img/vscode-extension/settings.png)
 
@@ -133,7 +135,7 @@ When you click on `Create`, all necessary files will be created automatically in
 
 To start the Genesis [Design System Configurator](../../../web/design-systems/preview/), click on the `Genesis Design System Config` button.
 
-![Genesis DSC](/img/vscode-extension/design-system-1.png)
+![Genesis DSC](/img/vscode-extension/new-documentation-image.png)
 
 This starts a terminal process that runs the Genesis Design System Configurator. A new VS Code file opens with the Design System Configurator inside it. If this doesn't appear the first time, click on `Reload DSConfig`.
 
