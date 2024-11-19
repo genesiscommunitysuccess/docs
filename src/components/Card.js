@@ -1,7 +1,7 @@
 import React from "react";
 import { Card as CardMaterial } from '@mui/material'
 
-export default function Card({ heading, link, text, icon }) {
+export default function Card({ heading, link, text }) {
   return (
     <a href={link} title={heading} className="card">
       <CardMaterial 
