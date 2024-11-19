@@ -453,7 +453,7 @@ As with `onValidate` the block must finish with an [`ack`](#ack). If the event i
 
 ##### `trigger`
 
-The `trigger` method can be used to call on another event within the same event handler script and takes the event metadata as a parameter.
+The `trigger` method can be used to call on another event within the same Event Handler script file. It takes the event metadata as a parameter.
 
 ```kotlin
     eventHandler<TriggerTrade>(name = "TRIGGER_TRADE_INSERT") {
@@ -472,7 +472,8 @@ The `trigger` method can be used to call on another event within the same event 
 
 ##### `triggerRemote`
 
-The `triggerRemote` method can be used to call on an event from another microservice and takes the following parameters:
+The `triggerRemote` method can be used to call on an event from another microservice. It takes the following parameters:
+
 - event metadata
 - timeout on the remote event call in milliseconds (optional)
 
