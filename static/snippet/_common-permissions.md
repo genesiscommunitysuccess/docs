@@ -8,7 +8,13 @@ With the exception of the inner `auth` block which relies on inbound data, the `
 
 ##### `permissionCodes`
 
-`permissionCodes` takes a list of permission codes. The client user accessing the query must have access to at least one of the permission codes in the list to be able to access any query data.
+`permissionCodes` takes a list of permission codes. The client user accessing the query must have access to **at least one** of the permission codes in the list to be able to access any query data.
+
+```kotlin
+    permissioning {
+      permissionCodes = listOf("TradeView", "TradeUpdate")
+    }
+```
 
 ##### `customPermissions`
 
@@ -34,7 +40,7 @@ Where utilizing `customPermissions` you should also consider configuring a [`cus
 
 ##### `auth`
 
-`auth` is used to restrict rows based on a user's entity access, also known as row-level permissions.
+`auth` is used to restrict rows (queries) or events with a particular entity based on a user's entity access, also known as row-level permissions.
 
 ```kotlin
 permissioning {
@@ -45,7 +51,7 @@ permissioning {
   }
 ```
 
-Details on [restricting query entity access here](/develop/server-capabilities/access-control/authorization/#query-entity-access)
+Details on [restricting query entity access here](/develop/server-capabilities/access-control/authorization/#entity-access)
 
 Auth definitions can be grouped with “and” or “or” operators.
 - You could have two simple permission maps, for example: one by counterparty and another one for forbidden symbols. If the user wants to see a specific row, they need to have both permissions at once.

@@ -17,78 +17,311 @@ tags:
 sidebar_position: 7
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CommonPermissions from '/snippet/_common-permissions.md'
+
 ## Overview
 
-Authorization, sometimes referred to as permissions or rights, is the concept of ensuring users can only access features and data from the application for which they are authorized to access, for example ensure only permitted users may **view** and **update (create, edit, delete)** data in an application.
+Authorization, sometimes referred to as permissions or rights, is the concept of ensuring users can only access features and data from the application that they are authorized to access, for example ensure only permitted users may **view** and **update (create, edit, delete)** data in an application.
 
 The Genesis Application Platform makes it simple to set up powerful authorization models based on business requirements.
 
 There are three levels that can be configured:
 
-1. Feature access : Accessing a UI component (for example a grid, chart, form, ...) or server component (for example a query or event)
-1. Entity access : Accessing particular entities which make up the application data. For example users being permitted to submit events or read data for a particular counterparty, book, or some other application entity.
-1. Field / Attribute access : Accessing fields / column values. For example not having access to view or update a particular field in a table based on your role.
+1. **Feature access** : Accessing a UI component (for example a grid, chart, form, ...) or server component (for example a query or event)
+1. **Entity access** : Accessing particular entities which make up the application data. For example users being permitted to submit events or read data for a particular counterparty, book, or some other application entity.
+1. **Attribute access** : Accessing specific fields / column values. For example restricting access to view or update a particular field in a table.
 
-All levels can be configured at the server level to ensure complete security, but also at the front end to remove views and commands that would otherwise not work or be empty for a given user (i.e. where authorization has not been granted).
+All levels can be configured in applications to ensure complete security.
 
 This model enables full control of data within an application at the most granular level.
 
-Typically levels 1 and 3 are controlled by [permission codes](#permission-codes), and level 2 is controlled by entity permissioning, however you can set up the application as per your business needs. The following sections give an overview of the 2 layers and example use-cases.
+Typically levels 1 and 3 are controlled by [permission codes](#permission-codes), and level 2 is controlled by [entity access](#entity-access), however you can set up the application as per your business requirements. The following sections give an overview of the 2 layers and example use-cases.
 
-## Permission codes
+Beyond this page, there is a [how to guide on authorization](/how-to/ht-auth/) available with a project with code examples you can clone and run, which explains further the practical implementation of authorization.
 
-TODO Overview of users, permissions and codes
+## Configuration options
 
-TODO Configuring in an application
-  - Inserting rights
-  - Profile management
+### Permission (Right) codes
 
-  - back end components (overview + link)
-  - front end components (overview + link)
+Permission (right) codes need to be inserted into the `RIGHT` table in the server. Each entry has:
 
-## Entity access
+* A `CODE` : The code which will be set in various components ([server](#server-component-configuration), [client](#client-component-configuration))
+* A `DESCRIPTION` : A description of the type of application access the code will enable for the user.
 
-TODO Overview of auth permission
+See [assigning users permissions](#assigning-users-permissions) for details on assigning them to users.
 
-TODO Configuration options for auth-perms.kts 
+### Entity access
 
+There are two methods for configuring entity access. The first is simple and quite a common use case, the second allows full configuration to meet more complex requirements. Both methods look to achieve the same thing, which is "is a given user authorized to access this entity"
 
+A services called `GENESIS_AUTH_PERMS` is responsible for building maps around this data, which are in turn accessed by any other [components](#component-configuration-options).
 
+#### Simple configuration
 
+A common requirement is to restrict access to rows of data based on a given entity contained within them. For example if we had a `COUNTERPARTY` table, which represents a client, it is common in financial applications that only certain sets of users see rows of data relating to a given set of clients.
 
+In this pattern, it is most common to have a simple `USER_<ENTITY>_MAP` table, in this example `USER_COUNTERPARTY_MAP`, in which presence of a `USER_NAME` + `COUNTERPARTY` combination in a row means that user has access to that counterparty, and should be able to view and update data. If no such row exists, they should not be able to.
 
-
-
-
-
-
-
-
-
-
-
-
-TODO Rights codes etc...
-TODO explain users and profiles 
-
-
-## Entity Access
-
-TODO: Mention row level permissions
-
-### Query entity access
-
-For example, in the sample definition below we have a dataserver query for our COUNTERPARTY table, and we know that both the auth map and the rows themselves are uniquely identified by COUNTERPARTY_ID, so the `rowLevelPermissions` flag can be applied.
+To set this up, you can configure the following [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) items in your application's `genesis-system-definition.kts`. 
 
 ```kotlin
-query("ALL_COUNTERPARTIES", COUNTERPARTY) {
-    permissioning {
-        auth("COUNTERPARTY"){
-            rowLevelPermissions = true
-            authKey {
-                key(data.counterpartyId)
-            }
-        }
-    }
+systemDefinition {
+  ...
+  global {
+    ...
+    item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
+    item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
+    ...
+  }
+  ...
 }
 ```
+
+In this example we use `COUNTERPARTY` table and it's ID field `COUNTERPARTY_ID`, however you can set any entity in your [data model](/develop/server-capabilities/data-model/) and it's common ID field as required.
+
+Setting these items and installing your application will create the `USER_COUNTERPARTY_MAP` table which can be populated. You can then set `"ENTITY_VISIBILITY"` in [`auth`](#auth) blocks to restrict entity access according to that table in any client facing components as required. 
+
+#### Full configuration
+
+In addition to the simple entity mapping configuration, you can create your own entity `mapName` values to use in [`auth`](#auth) per the examples listed in that section.
+
+To do this, we need to add configuration to a `*-permissions.kts` file which should be located in your application's `scripts` folder.
+
+##### Examples
+
+In this example, user authorization is based on an `ACCOUNT` entity. 
+
+A table called `TAG` which stores `USER_NAME` and a `PERSON_TYPE` in rows is read to see the type of user.
+
+The user will only have access to an `ACCOUNT` if:
+1. The user has a `PERSON_TYPE` of `SALES_OFFICE` and the `ACCOUNT` `OFFICE_ID` is set to the user's username.
+1. The user has a `PERSON_TYPE` of `ASSET_MANAGER` and the `ACCOUNT` `ASSET_MANAGER_ID` is set to the user's username.
+
+If neither of those things are true for a given `USER` + `ACCOUNT`, then the user cannot access the `ACCOUNT` entity.
+
+```kotlin
+dynamicPermissions {
+  entity(ACCOUNT) {
+    maxEntries = 10000
+    batchingPeriod = 15
+    expression {
+      var allowed = false
+      val username = user.userName
+
+      val tagRec = entityDb.get(Tag.byCodeEntityId("PERSON_TYPE", username))
+      val entityType = tagRec?.tagValue
+
+      if (entityType == "SALES_OFFICE" && entity.officeId == username) {
+          allowed = true
+      }
+
+      if (entityType == "ASSET_MANAGER" && entity.assetManagerId == username) {
+          allowed = true
+      }
+
+      allowed
+    }
+  }
+}
+```
+
+Further examples
+
+```kotlin
+dynamicPermissions {
+  entity(POSITION_VIEW) {
+    averageEntityChars = 15
+    averageUserNameChars = 10
+    averageUsers = 10000
+    maxEntries = 10000
+    batchingPeriod = 15
+    idField = idField = listOf(POSITION_VIEW.INSTRUMENT_ID) //Specifying custom field to be used as cache key instead of using the fields from the primary key
+    backwardsJoin = true
+    expression {
+      entity.companyId == user.companyId
+    }
+  }
+  entity(TRADE) {
+    name = "INNER_TRADES" //Specifying custom entity name instead of using the name of the TRADE_TABLE
+    averageEntityChars = 150
+    averageUserNameChars = 100
+    averageUsers = 100000
+    maxEntries = 100000
+    batchingPeriod = 150
+    expression {
+      entity.allowedTraders.contains(user.userName) // User's name is in a list of allowedTraders defined on the TRADE
+    }
+  }
+}
+```
+
+##### `entity`
+
+The `entity` block will need an entity, which can be a [table](/develop/server-capabilities/data-model/#table) or a [view](/develop/server-capabilities/data-model/#table) from your application's data model.
+
+An entity can have the following attributes:
+
+| Name | Description | Mandatory |
+| --- | --- | --- |
+| `name` | The name of the entity you want to authorize, which you will refer to in [`auth`](#auth) blocks | No. Default value is the name of the Table or the View |
+| `maxEntries` | The maximum number of entries that the authorization map will contain. | Yes |
+| `batchingPeriod` | Period in seconds to batch records before processing | Yes  |
+| `idField` | Field(s) to use for keying internal collection (should be unique) | No. Default value is the primary key for the entity |
+| `averageUserNameChars` | Average number of characters in each username. This setting defines backing data structure for the authorization map. | No. Default = 7 |
+| `averageEntityChars`   | Average number of characters of each entity. This setting defines the backing data structure for the authorization map. | No. Default = 20 |
+| `averageUsers` | Average number of users on the system. This setting defines the backing data structure for the authorization map. | No. Default = 1,000 |
+| `expression` | Function that calculates whether an entity can be accessed by a user. The result is either `true` (user has access) or `false` (user has no access) | Yes |
+
+Each `expression` has the following properties and should return either `true` or `false` based on whether the `user` can access the `entity`:
+
+| Name | Description |
+| --- | --- |
+| `entityDb` | Read only access to the database if additional data query is required. **Note:** The expression is called on each data update, and querying the database each time will result in performance hit. A better approach would be to define a `view` that joins all the necessary tables |
+| `entity` | The entity to be evaluated for access |
+| `user` | The user to be evaluated for access to the `entity`  |
+| `entityId` | The value of the `idField` for this `entity |
+
+
+## Component configuration options
+
+### Server component configuration
+
+The `permissioning` block allows application developers to set all the described levels of authorization, an overview of setting them up is included below:
+
+<CommonPermissions />
+
+#### `RightSummaryCache`
+
+GPAL server components have the [`permissionCodes`](#permissioncodes) block mentioned above for convenience. If you are writing custom code, or event need more complex boolean logic to determine access within a GPAL server component, the `RightSummaryCache` is injectable into any java or kotlin code and can be used for efficient lookups base on user and permission codes.
+
+See the example below where we first want to check a trade is not on a restricted stock, and where it is not ensure the user has a `TRADE_INSERT` permission.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+```kotlin
+import global.genesis.session.RightSummaryCache
+...
+val rightSummaryCache = inject<RightSummaryCache>()
+...
+  if (stockInRestrictedList != null) {
+    false
+  } else {
+    rightSummaryCache.userHasRight(userName, "TRADE_INSERT")
+  }
+```
+</TabItem>
+<TabItem value="java">
+```java
+import global.genesis.session.RightSummaryCache
+...
+private final RightSummaryCache rightSummaryCache;
+...
+@Inject
+public EventTrade(RightSummaryCache rightSummaryCache) {
+  this.rightSummaryCache = rightSummaryCache;
+}
+...
+  if (stockInRestrictedList != null) {
+    return false
+  } else {
+    return rightSummaryCache.userHasRight(userName, "TRADE_INSERT")
+  }
+```
+</TabItem>
+</Tabs>
+
+### Client component configuration
+
+You can apply authorization at the front end to remove grids and buttons where there is no appropriate permission. If you don't want to do this, the system is still protected by the permissioning you have set on the back end. Users will receive error messages explaining their lack of permissions.
+
+Here is an example of restricting tab visibility (based on the Right Code **TradeView** that provides access to the tab/route):
+
+```jsx
+    navItems: [
+      {
+        title: 'Trades',
+        permission: 'TradeView',
+      },
+    ],
+```
+
+Here is an example of restricting button visibility (based on the Right Code **TradeUpdate**, which provides access to the button):
+
+```jsx
+      createEvent="${(x) => getViewUpdateRightComponent(x.user, 'TradeUpdate', 'EVENT_TRADE_INSERT')}"
+```
+
+See the relevant [client capabilities pages](/develop/client-capabilities/client-capabilities-overview/) for more details on how to secure them with permissions.
+
+## Assigning users permissions
+
+Most applications will include the [User management](/develop/business-components/user-management/user-management-introduction/) component for easily assigning rights and users to profiles. Users gain the superset of permissions that are assigned to the profiles they are a part of.
+
+The following section provides details as to how user permissions assignment works, and the table records which make it work.
+
+### How it works
+
+Genesis has the concept of users, profiles and right codes. For each one, there is a table to store the related entity data:
+
+* `USER`
+* `PROFILE`
+* `RIGHT`
+
+Users gain rights via profiles. So we have tables to determine which users and rights belong to each given profile. Note that you cannot allocate right codes directly to a specific user. However, a user can have multiple profiles.
+
+A profile can have zero or more rights and zero or more users.
+
+These relationships are held in the following tables:
+
+* `PROFILE_RIGHT`
+* `PROFILE_USER`
+
+Related to these tables, we have the`RIGHT_SUMMARY` table, which contains the superset of rights any given user has. These are based on the profiles assigned to them. This is the key table used when checking rights, and it exists to allow the efficient checking of a user's rights.
+
+![](/img/user-profile-rights-setup.png)
+
+###### Using `GENESIS_AUTH_MANAGER`
+You can use the `GENESIS_AUTH_MANAGER` process to add users and maintain their rights. As long as you use this process, then the entries in the `RIGHT_SUMMARY` table are maintained automatically by the system in real time, so the rights are easily accessible at speed. 
+
+For example, if you add a new user or you update a profile with new rights, the `RIGHT_SUMMARY` table is updated immediately and all the users in that profile receive the new right automatically.
+
+###### Updating directly in the database
+Note that you can also maintain the following tables manually using `DbMon` or `SendIt`:
+
+- `USER`
+- `PROFILE`
+- `RIGHT`
+- `PROFILE_USER`
+- `PROFILE_RIGHT`
+
+This is an easy way to bulk-load permissions data in a brand new environment, for example.
+
+However, when you change any of the permissions tables in this way, the `RIGHT_SUMMARY` table **will not be maintained automatically**. To update the the `RIGHT_SUMMARY` so that the changes take effect, run `ConsolidateRights`.
+
+:::warning
+If you update any of the permission tables manually, the changes won't take effect until you run `ConsolidateRights`.
+:::
+
+### Sample explanation
+
+See the following simple system set-up. We have a set of entities (our user, rights and profiles), a set of profile mappings (to users and rights) and, finally, the resultant set of right entries we would see in `RIGHT_SUMMARY`:
+
+![](/img/user-profile-rights-example-simple.png)
+
+The above image shows:
+* 3 profiles, each with particular rights assigned
+* 4 users, three of which have one profile assigned and one of which, Jenny.Super, is assigned to have all rights.
+
+Another way of achieving this set-up would be to have a fourth profile, say **SUPER**, as per below, and to have all rights assigned to it, and Jenny.Super assigned just to the one profile:
+
+![](/img/user-profile-rights-example-super.png)
+
+Note how we now have an extra profile, and edits to the `PROFILE_USER` and `PROFILE_RIGHT` entries, but the resulting rights are the same.
+
+As you can tell, this enables you to build powerful combinations, and since **Users**, **Profiles**, **Profile_Users** and **Profile_Rights** are all editable by system administrators, they can build their own set-up that makes sense for their organization.
+
+### Good practices
+
+Having profiles as an intermediary between users and rights enables admin users of the system to create complex permission models with no code change. Rights codes generally need to be added to the code.  Although this is simple to do, it requires a code change. Our advice is to design applications with enough granularity in the rights to ensure that code changes aren't required.
