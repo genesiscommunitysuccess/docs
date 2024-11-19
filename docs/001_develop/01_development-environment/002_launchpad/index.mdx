@@ -59,8 +59,8 @@ To define an entity, click on the `New Entity` button at the top right. In the s
 
 1.	Type a name for the entity and click on `Save`. All characters are converted to caps and all spaces are converted to underscore.
 2.	Optionally, you can click to set two things:
-    •	Generate Audit Trail sets automatic auditing of every change to the table.
-    •	Enable right codes creates codes that control view and update access to this table. You can edit the default codes, if required. 
+    •	`Generate Audit Trail` sets automatic auditing of every change to the table.
+    •	`Enable right codes` creates codes that control view and update access to this table. You can edit the default codes, if required. 
 3.	To add the attributes for the entity, make sure that the `New Attributes` panel is displayed on the right (select the `Attributes` tab in the main area if necessary).
 
 #### Adding attributes to an entity
@@ -181,8 +181,8 @@ Queries make real-time information available to the front end.
  ![Right codes](/img/genesis-launchpad/right-codes.png)
 At various points, this link enables you to insert TO DO statements and comments that will appear in the generated code.
 Take time to use this feature; it will save you time later on.
-
 :::
+
 To add a query:
 1.	Click on the `New Query` button at the top right.
 2.	Click at the end of the `Entity or View` field and select an entity from the dropdown list. This displays a default name for the view in the Query Name field, which you can change if necessary.
@@ -236,7 +236,7 @@ To add a component to a page:
 
 1.	Click on `Add Tile`. This displays a panel where you can select your components.
 2.	Type a name for the tile. This is used in the code, so keep it short and practical.
-3.	Scroll through the components in the panel and select the radio button for the one you want, for example, `Real-Time Data Grid+Modifications`. Then click on `Submit`.
+3.	Scroll through the components in the panel and select the radio button for the one you want, for example, `Real-Time Data Grid + Modifications`. Then click on `Submit`.
 
 ![Adding a new tile and component](/img/genesis-launchpad/new tile.png)
 
@@ -271,9 +271,14 @@ When you reach the Summary page, you have completed the configuration of your pr
 
 The next step is to generate the code so that you can build and deploy.
 
-1.	Go back to the Genesis Launchpad tab in your browser and click on Start  Cloud Workspace. Wait for three minutes to ensure this is running.
-2.	Click on Open Cloud Workspace. This generates your code and opens a workspace where you can build and run your application without needing  to download any other software or IDE.  
-Alternatively, you can click on Download Project Locally to download your project and build locally using your own IDE. This does involve some extra set-up.
+1.	Go back to the Genesis Launchpad tab in your browser and click on `Start Cloud Workspace`. Wait for three minutes to ensure that the workspace is running.
+2.	Click on `Open in Genesis Cloud Workspace`. This generates your code and opens a workspace where you can build and run your application without needing to download any other software or IDE.  
+
+:::info Building locally
+Alternatively, you can click on `Download Project Locally` to download your project and build locally using your IntelliJ. 
+
+This does involve some extra set-up, however.
+:::
 
 ## Genesis Cloud Workspace
 
@@ -283,48 +288,63 @@ VSCode opens in the Cloud Workspace.
 ### Unpacking and building the project
 1.	Go to the menu icon at the top left of VSCode and select `File -> View -> Command Palette`. 
  
-This displays a dropdown of commands in the top bar of VSCode.
-2.	Select the command Genesis:Unpack Project. 
- 
-After a moment, this displays a list of projects, and yours should be on top. The filename is the app name you specified at the beginning, plus a date and time stamp.
-3.	Click on the project to open it.
-4.	When the project is open, select Show and Run Commands from the drop-down again and run Genesis Build Project. This builds the entire project and downloads all the dependencies. The first time you build, the process can take up to five minutes.
-When the build has finished, the message BUILD SUCCESSFUL is displayed in the Terminal area. 
-Viewing the code
-To view the code for your project, click on the Explorer button on the extreme left of your VSCode window. 
+     ![Displaying the command palette](/img/genesis-launchpad/command-palette.png)
 
-This displays the directory structure and the files for your back end and front end. 
+This displays a dropdown of commands in the top bar of VSCode.
+
+2.	Select the command `Genesis:Unpack Project`. 
+
+     ![Unpacking the project](/img/genesis-launchpad/unpack-project.png)
+
+After a moment, this displays a list of projects, and yours should be on top. The filename is the app name you specified at the beginning, plus a date and time stamp.
+
+3.	Click on the project to open it.
+
+4.	When the project is open, click on the top bar of VSCode again. Select `Show and Run Commands` from the drop-down again. 
+
+    ![Show and Run commands](/img/genesis-launchpad/show-run-commands.png)
+
+ 5. Type `Gen` in the top bar to display a list of genesis commands. Select `Genesis Build Project`.
+ 
+    ![SGenesis Build Project](/img/genesis-launchpad/genesis-build-project.png)
+    
+    This builds the entire project and downloads all the dependencies. The first time you build, the process can take up to five minutes.
+
+When the build has finished, the message `BUILD SUCCESSFUL` is displayed in the Terminal area. 
+
+### Viewing the code
+To view the code for your project, click on the `Explorer` button on the extreme left of your VSCode window. 
+
+![Explorer button](/img/genesis-launchpad/explorer-button.png) This displays the directory structure and the files for your back end and front end. 
 
 ### Where your files are
 Your entities and views files are in the `/server/{appname}/ src/main/genesis/cfg` folder.
-•	The entities are in `{appname}-tables-dictionary.kts`.
-•	The views are in `[appname]-view-dictionary.kts`.
+
+- The entities are in `{appname}-tables-dictionary.kts`.
+- The views are in `[appname]-view-dictionary.kts`.
+
 Your queries and event handlers are in the `/server/{appname}/src/main/genesis/scripts` folder.
-•	The queries you have created are in appname -dataserver.kts.
-•	Events enable you to interact with the database. These are autogenerated by Create and they are 
-in appname -eventhandler.kts.
-Front-end files are in the client/src/main folder. You can see the three pages for your home (main) page, an index page (which makes the files visible to the front end) and a css (stylesheet):
-•	index.ts
-•	main.ts 
-•	main.styles.ts 
-•	main.template.ts
-•	main.css
-•	The queries you have created are in `{appname}-dataserver.kts`.
-•	Events enable you to interact with the database. These are autogenerated by Create and they are in `{appname}-eventhandler.kts`.
+- The queries you have created are in `{appname}-dataserver.kts`.
+- Events enable you to interact with the database. These are autogenerated by Create and they are in `{appname}-eventhandler.kts`.
 
 Front-end files are in the client/src/main folder. You can see the three pages for your home (main) page, an index page (which makes the files visible to the front end) and a css (stylesheet):
-•	`index.ts`
-•	`main.ts`
-•	`main.styles.ts` 
-•	`main.template.ts`
-•	`main.css`
+- `index.ts`
+- `main.ts`
+- `main.styles.ts` 
+- `main.template.ts`
+- `main.css`
 
 #### Starting the app 
 1.	To start your app, go to the side toolbar of your VSCode window. 
-Click on the `Run and Debug` icon.
 
-2.	Near the top left of the window, click on the `Run and Debug` dropdown and select `Bootstrap + Start App`.
+    ![Run and Debug button](/img/genesis-launchpad/run-and-debug.png)   
+
+2.	Click on the `Run and Debug` button.
+
+3. Near the top left of the window, click on the `RUN AND DEBUG` dropdown and select `Bootstrap + Start App`.
  
+ ![Bootstrap and Start App](/img/genesis-launchpad/bootstrap.png) 
+
 3.	Then click on the `Start` button to the left of the field.
 
 :::tip Wait a few minutes! 
@@ -332,14 +352,21 @@ Click on the `Run and Debug` icon.
 Upon completion, it starts all required processes.
 :::
 
-Click on the Genesis button in the side toolbar to view the Genesis Process Monitor. Wait for all processes to be `UP` before moving on.
+4. Click on the `Genesis` button in the side toolbar to view the Genesis Process Monitor. 
 
-![Genesis Process Monitor](/img/genesis-launchpad/genesis-process-monitor.png)
+    ![Genesis button](/img/genesis-launchpad/genesis-button.png) 
+    
+5. Wait for all processes to be `UP` before moving on.
+
+    ![Genesis Process Monitor](/img/genesis-launchpad/genesis-process-monitor.png)
 
 #### Opening your app
 When all the services are `UP`, you are ready to start the front end and view your app.
+
 1.	Go to the `Ports` tab at the bottom of your screen, then select the `Globe` icon.
  
+     ![The glove icon in the Ports tab](/img/genesis-launchpad/ports-tab.png)
+
 2.	If you are prompted, make sure that pop-ups are not blocked on your browser.
 3.	To log in, you need the user name admin and the password genesis.
  
@@ -347,8 +374,15 @@ Then you can look through your app and interact with the different displays you 
 
 ![Interact with your app](/img/genesis-launchpad/interact.png)
  
+### Looking at and changing the code
+When you are ready to look deep into the code and make the refinements and extensions you need, go back to VSCode.
+
+It is good practice to stop the processes before you make any changes. Click on the top bar of VSCode and look for the `Genesis Stop Processes` command.
+
 #### Find your ToDos
-In the panel on the extreme left of your VSCode window, there is also a button that displays the ToDo Tree. 
+In the panel on the extreme left of your VSCode window, there is a button that displays the ToDo Tree. 
+
+ ![TO DOs Tree button](/img/genesis-launchpad/todos-tree-button.png) 
 
 You were able to add your own `To Do` comments during the Create process. 
 
@@ -356,11 +390,33 @@ When the code is generated, Genesis adds more of these `To Do` comments at key p
 
 Click on the `ToDo Tree` button to view these directly. This displays the top of the tree.
  
-Expand the tree to see where your To Dos are located.
+ ![The To Do tree](/img/genesis-launchpad/topof-todos-tree.png) 
  
-#### Looking at the code
-Go back to VSCode to look at the code.
+ Expand the tree to see where your To Dos are located.
+ 
+  ![Expanded To Do tree](/img/genesis-launchpad/todos-tree.png) 
 
+### Changing the code – and restarting
+Once you have a changed a file in VSCode, you need to restart the processes for your app to include the changes.
+
+To restart a process after making changes:
+
+1.  Go to the Process Control toolbar under the quick search panel in VSCode. (This is only displayed when there are processes running.)
+2.	Select `{app-name}_COMPACT_PROCESS` from the list.
+3.	Click on the `Refresh` button.
+    ![Refresh button on the process control bar](/img/genesis-launchpad/compact-process.png) 
+ 
+:::tip Saving resources
+The COMPACT_PROCESSES option runs a number of tasks as a single process. This saves you a lot of memory – which you could find useful if you are building and running locally.
+:::
+
+### Finding your project in VSCode
+Once you have closed your project in VSCode, you can easily find it again the next time you want to work on it. 
+
+In VSCode, go to `File → Open Recent →` and select your project.
+
+![Open your recent projects](/img/genesis-launchpad/open-recent.png) 
+ 
 
 _______
 Create 
