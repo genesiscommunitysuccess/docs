@@ -44,21 +44,55 @@ Use cases:
 
     Usage
     ```typescript
+    const thumbStyles = `
+      height: 30px;
+      width: 30px;
+      border-radius: 50%;
+      background: red;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: -6px 0px 0px -6px;
+    `;
+
     @customElement({
       name: 'my-element',
       template: html`
-            <rapid-slider @change="${(x) => x.handleChange()}"
-                          value="${sync((x) => x.sliderValue, 'number')}">
+        <div>
+            <label>Simple slider</label>
+            <rapid-slider @change="${(x, ctx) => x.handleSliderChanged(ctx.event)}"></rapid-slider>
+        </div>
+        <div style="height: 200px">
+            <label>Vertical slider</label>
+            <rapid-slider @change="${(x, ctx) => x.handleSliderChanged(ctx.event)}" orientation="vertical">
+            </rapid-slider>
+        </div>
+        <div>
+            <label>Simple Slider with slotted thumb</label>
+            <rapid-slider @change="${(x, ctx) => x.handleSliderChanged(ctx.event)}">
+              <div slot="thumb" style="${thumbStyles}">bps</div>
+            </rapid-slider>
+        </div>
+        <div>
+            <label>Slider with labels and step value of 1</label>
+            <rapid-slider
+              @change="${(x, ctx) => x.handleSliderChanged(ctx.event)}"
+              min="0"
+              max="100"
+              step="1"
+              value="50"
+            >
               <rapid-slider-label position="0"> Low </rapid-slider-label>
               <rapid-slider-label position="50"> Mid </rapid-slider-label>
               <rapid-slider-label position="100"> High </rapid-slider-label>
             </rapid-slider>
-          `,
+        </div>
+      `,
     })
     export class MyElement extends GenesisElement {
-      @observable sliderValue: number;
-      handleChange() {
-        console.log(this.sliderValue);
+      handleSliderChanged(event: Event): void {
+          console.log((event.target as HTMLInputElement).value);
       }
     }
     ```
@@ -78,15 +112,52 @@ Use cases:
     Usage
     ```typescript
     export function MyComponent() {
-      const handleChange = (event) => {
-        console.log({ event.target.value })
-      };
+      const handleSliderChanged = (event) => {
+          console.log(event.target.value)
+      }
+
+      const thumbStyles = {
+          height: '30px',
+          width: '30px',
+          borderRadius: '50%',
+          background: 'red',
+          fontSize: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          margin: '-6px 0 0 -6px'
+      }
+
       return (
-        <rapid-slider onChange={handleChange}>
-          <rapid-slider-label position="0"> Low </rapid-slider-label>
-          <rapid-slider-label position="50"> Mid </rapid-slider-label>
-          <rapid-slider-label position="100"> High </rapid-slider-label>
-        </rapid-slider>
+        <div>
+            <label>Simple slider</label>
+            <rapid-slider onChange={handleSliderChanged}></rapid-slider>
+        </div>
+        <div style={{ height: '200px' }}>
+            <label>Vertical slider</label>
+            <rapid-slider onChange={handleSliderChanged} orientation="vertical">
+            </rapid-slider>
+        </div>
+        <div>
+            <label>Simple Slider with slotted thumb</label>
+            <rapid-slider onChange={handleSliderChanged}>
+                <div slot="thumb" style={thumbStyles}>bps</div>
+            </rapid-slider>
+        </div>
+        <div>
+            <label>Slider with labels and step value of 1</label>
+            <rapid-slider
+                onChange={handleSliderChanged}
+                min="0"
+                max="100"
+                step="1"
+                value="50"
+            >
+                <rapid-slider-label position="0"> Low </rapid-slider-label>
+                <rapid-slider-label position="50"> Mid </rapid-slider-label>
+                <rapid-slider-label position="100"> High </rapid-slider-label>
+            </rapid-slider>
+        </div>
       );
     }
   ```
@@ -104,26 +175,63 @@ Use cases:
 
   Usage
   ```typescript
-  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-  import { FormsModule } from '@angular/forms';
-  @Component({
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    import { NgStyle } from '@angular/common';
+
+    @Component({
     selector: 'my-root',
-    template: `
-              <rapid-slider (change)="handleChange($event)">
-                <rapid-slider-label position="0"> Low </rapid-slider-label>
-                <rapid-slider-label position="50"> Mid </rapid-slider-label>
-                <rapid-slider-label position="100"> High </rapid-slider-label>
+        template: `
+          <div>
+              <label>Simple slider</label>
+              <rapid-slider (change)="handleSliderChanged($event)"></rapid-slider>
+          </div>
+          <div style="height: 200px">
+              <label>Vertical slider</label>
+              <rapid-slider (change)="handleSliderChanged($event)" orientation="vertical">
               </rapid-slider>
-              `,
-    standalone: true,
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [FormsModule],
-  })
+          </div>
+          <div>
+              <label>Simple slider with slotted thumb</label>
+              <rapid-slider (change)="handleSliderChanged($event)">
+                  <div slot="thumb" [ngStyle]="thumbStyles">bps</div>
+              </rapid-slider>
+          </div>
+          <div>
+              <label>Slider with labels and step value of 1</label>
+              <rapid-slider
+                      (change)="handleSliderChanged($event)"
+                      min="0"
+                      max="100"
+                      step="1"
+                      value="50"
+              >
+                  <rapid-slider-label position="0"> Low </rapid-slider-label>
+                  <rapid-slider-label position="50"> Mid </rapid-slider-label>
+                  <rapid-slider-label position="100"> High </rapid-slider-label>
+              </rapid-slider>
+          </div>
+        `,
+        standalone: true,
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        imports: [NgStyle],
+    })
   export class AppComponent {
-    handleChange(event: Event) {
-      const target = event.target as HTMLInputElement;
-      console.log(target.value);
-    }
+
+      thumbStyles = {
+        height: '30px',
+        width: '30px',
+        borderRadius: '50%',
+        background: 'red',
+        fontSize: '10px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '-6px 0 0 -6px'
+      };
+
+      handleSliderChanged(event: Event): void {
+        console.log((event.target as HTMLInputElement).value);
+      }
   }
   ```
 </TabItem>
