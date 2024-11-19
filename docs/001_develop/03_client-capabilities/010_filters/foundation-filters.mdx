@@ -54,56 +54,6 @@ Here is a list of available filters in Genesis's `foundation-filters` package:
 * [userAgent](./docs/api/foundation-filters.useragentfilter.md): It filters content based on user's browser, OS, devices or specified user agent string.It allows customized expereince according to specific environments, such as targetting mobile devices audience or restricting access on a particular browser.
 * [userTargeting](./docs/api/foundation-filters.usertargetingfilter.md): This filters content on basis of user related attributes like usernames, permissions and profiles. It aids in showing personalized content or restricting access to specific content depending on the soecified user conditions.
 
-## Example
-lets do an example to test the `timeWindow` filter. In below example you need to select a start period and end period. When you click on check button it executes the timeWindow method with start and end period as input parameters.
-
-<FiltersDemo />
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
-
-  <TabItem value="genesis">
-
-    Usage
-    ```typescript
-    @customElement({
-      name: 'my-element',
-      styles: css`
-        .container {
-          display: flex;
-          flex-direction: column;
-          gap: calc(var(--design-unit) * 3px);
-          padding: calc(var(--design-unit) * 4px);
-        }
-      `,
-      template: html`
-        <div class="container">
-          <rapid-text-field type="datetime-local" :value=${sync((x) => x.startDate)}>
-            Start Period
-          </rapid-text-field>
-          <rapid-text-field type="datetime-local" :value=${sync((x) => x.endDate)}>
-            End Period
-          </rapid-text-field>
-          <rapid-button @click=${(x) => x.checkWindow()}>Check</rapid-button>
-          <span>${(x) => x.resultString}</span>
-        </div>
-      `,
-    })
-    export class MyElement extends GenesisElement {
-      @observable startDate: string;
-      @observable endDate: string;
-      @observable resultString: string;
-      checkWindow() {
-        this.resultString = timeWindowFilter(this.startDate, this.endDate)
-          ? 'Exists within the start and end period'
-          : 'Doesnot fall between start and end period';
-      }
-    }
-
-    ```
-
-  </TabItem>
-  
-  
-</Tabs>
 
 ## Usage
 
@@ -356,6 +306,27 @@ The percentage filter allows you to display certain features or messages to a se
 
 ** Example **
 
+As Function:
+```ts
+import { percentageFilter } from '@genesislcap/foundation-filters';
+...
+const probability = 0.5; // define percentage between 0 & 1
+const randomNumber = Math.random(); // provide a random number optionally
+const outcome = percentageFilter(probability, randomNumber);
+console.log(outcome); // true or false based on probability
+```
+As DI:
+```ts
+import { Percentage } from '@genesislcap/foundation-filters';
+...
+@Percentage percentageFilter: Percentage;
+...
+const probability = 0.5; // define percentage between 0 & 1
+const randomNumber = Math.random(); // provide a random number optionally
+const outcome = this.percentageFilter.filter({percent: probability, random: randomNumber});
+console.log(outcome); // true or false based on probability
+```
+
 ### timeWindow
 This filter is used to check whether the current date and time fall between the specified start and end period.The filter returns true if the current date and time is within the specified range. `timeWindow` filter can be helpful when you want to manipulate data within a specific time frame.
 
@@ -466,15 +437,30 @@ console.log(outcome); // returns true if any one of the above parameters matches
 ### userTargeting
 This filter is used to filter content on the basis of user-specific attributes. It uses the following criteria for filtering:
 
-Usernames: filters on the basis of usernames.
-Profiles: filters on the basis of assigned user profiles.
-Permissions: Applies filtering on the basis of assigned permissions on user profile.
+**Usernames**: filters on the basis of usernames.
+
+**Profiles**: filters on the basis of assigned user profiles.
+
+**Permissions**: Applies filtering on the basis of assigned permissions on user profile.
 
 It will return true when the current user matches on ANY of the parameters mentioned above. If you wish to match on multipleparameters, consider chaining an array of userTargeting filters together using [ClientFilterRunner](./docs/api/foundation-filters.clientfilterrunner.md).
 
 **Example**
 
 As Function:
+```ts
+import { userTargetingFilter } from '@genesislcap/foundation-filters';
+import { DefaultUser } from '@genesislcap/foundation-user';
+...
+const adminUser = new DefaultUser(); // create a mock admin user
+adminUser.set({
+  userName: 'JohnDoe',
+  profile: ['ADMIN'],
+  permission: ['ExportClientDashboard'],
+});
+const outcome =  userTargetingFilter(adminUser, ['JohnDoe', 'JaneDoe'], ['ADMIN', 'SUPERUSER']);
+console.log(outcome); // returns true if any one of the above parameters matches with the passed admin user
+```
 
 As DI:
 
