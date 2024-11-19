@@ -81,8 +81,10 @@ export function MyComponent() {
     console.log({ checkboxValue })
   };
 
+  const [disabled, setDisabled] = useState(false);
+
   return (
-    <rapid-checkbox onChange={handleCheckboxChange}>Checkbox</rapid-checkbox>
+    <rapid-checkbox disabled={disabled} onChange={handleCheckboxChange}>Checkbox</rapid-checkbox>
   );
 }
 ```

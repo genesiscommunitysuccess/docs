@@ -40,8 +40,7 @@ Usage
   name: 'my-element',
   template: html`
     <rapid-switch
-      ?checked="${x => x.isSelected}"
-      @change=${x => x.switchChanged()}>
+      @change=${(x, ctx) => x.switchChanged(ctx.event)}>
       Theme
       <span slot="checked-message">Dark</span>
       <span slot="unchecked-message">Light</span>
@@ -49,10 +48,9 @@ Usage
   `,
 })
 export class MyElement extends GenesisElement {
-  @observable isSelected: boolean = false;
-  switchChanged() {
-    console.log("Switch changed ${this.isSelected}")
-  }
+    switchChanged(e: Event) {
+        console.log('switch changed', (e.target as HTMLInputElement).checked)
+    }
 }
 ```
 
@@ -67,12 +65,14 @@ Usage
 ```typescript
 export function MyComponent() {
   const handleSwitchChange = (event) => {
-    setSwitchState(!!event.target.checked);
-    console.log({ switchValue })
+    console.log(event.target.checked)
   };
 
   return (
-    <rapid-switch onChange={handleSwitchChange}></rapid-switch>
+    <rapid-switch onChange={handleSwitchChange}>
+        <span slot="checked-message">Dark</span>
+        <span slot="unchecked-message">Light</span>
+    </rapid-switch>
   );
 }
 ```
@@ -87,26 +87,24 @@ Declaration
 Usage
 ```typescript
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'my-root',
   template: `
     <rapid-switch
-      [checked]="isSelected"
-      (change)="onSwitchChange($event)"
-    ></rapid-switch>
+      (change)="handleSwitchChanged($event)"
+    >
+        <span slot="checked-message">Dark</span>
+        <span slot="unchecked-message">Light</span>
+    </rapid-switch>
   `,
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [FormsModule],
 })
 export class AppComponent {
-  isSelected: boolean = false;
-  onSwitchChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-    this.isSelected = target.checked;
-    console.log(this.isSelected);
-  }
+    handleSwitchChanged(event: Event) {
+        const target = event.target as HTMLInputElement;
+        console.log('switch changed', target.checked);
+    }
 }
 ```
 </TabItem>

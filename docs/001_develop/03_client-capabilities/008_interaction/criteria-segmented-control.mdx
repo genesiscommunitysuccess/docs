@@ -40,6 +40,8 @@ Use cases:
 
     Usage
     ```typescript
+      import { CriteriaSegmentedControlOption, Serialisers } from '@genesislcap/foundation-criteria';
+
       @customElement({
         name: 'my-element',
         template: html`
@@ -51,12 +53,8 @@ Use cases:
             </criteria-segmented-control>
           `,
       })
-
-      import { CriteriaSegmentedControlOption, Serialisers } from '@genesislcap/foundation-criteria';
-
       export class MyElement extends GenesisElement {
-        const criteriaFilter: string;
-        const toolbarOptions: CriteriaSegmentedControlOption[] = [
+        toolbarOptions: CriteriaSegmentedControlOption[] = [
           { label: 'A', field: 'CHOSEN_OPTION', value: 'option-A', serialiser: Serialisers.EQ },
           { label: 'B', field: 'CHOSEN_OPTION', value: 'option-B', serialiser: Serialisers.EQ },
           { label: 'C', field: 'CHOSEN_OPTION', value: 'option-C', serialiser: Serialisers.EQ },
@@ -96,7 +94,6 @@ Use cases:
           <criteria-segmented-control criteriaOptions={{criteriaOptions}} onClick={handleCriteriaChange}>
             <label slot="label">Select option</label>
           </criteria-segmented-control>
-
         );
       }
     ```
@@ -111,7 +108,6 @@ Use cases:
     Usage
     ```typescript
       import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-      import { FormsModule } from '@angular/forms';
       import { CriteriaSegmentedControlOption, Serialisers } from '@genesislcap/foundation-criteria';
       @Component({
         selector: 'my-root',
@@ -124,7 +120,6 @@ Use cases:
             `,
         standalone: true,
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
-        imports: [FormsModule],
       })
       export class AppComponent {
 

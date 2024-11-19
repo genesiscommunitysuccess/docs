@@ -78,13 +78,13 @@ Declaration
 Usage
 ```typescript
 export function MyComponent() {
-  const selectionChanged = (event) => {
+  const handleRadioGroupChanged = (event) => {
     const target = event.target as HTMLInputElement;
     console.log(target.value);
   };
 
   return (
-    <rapid-radio-group onChange={handleCheckboxChange}>
+    <rapid-radio-group onChange={handleRadioGroupChanged}>
       <rapid-radio value="one">One</rapid-radio>
       <rapid-radio value="two">Two</rapid-radio>
       <rapid-radio value="three">Three</rapid-radio>
@@ -107,12 +107,11 @@ Declaration
 Usage
 ```typescript
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'my-root',
   template: `
     <rapid-radio-group
-      (change)="selectionChanged($event)"
+      (change)="radioGroupChanged($event)"
     >
       <rapid-radio value="one">One</rapid-radio>
       <rapid-radio value="two">Two</rapid-radio>
@@ -121,13 +120,12 @@ import { FormsModule } from '@angular/forms';
   `,
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [FormsModule],
 })
 export class AppComponent {
-  selectionChanged(event: Event) {
-    const target = event.target as HTMLInputElement;
-    console.log(target.value);
-  }
+    radioGroupChanged(event: Event) {
+        const target = event.target as HTMLInputElement;
+        console.log(target.value);
+    }
 }
 ```
 </TabItem>

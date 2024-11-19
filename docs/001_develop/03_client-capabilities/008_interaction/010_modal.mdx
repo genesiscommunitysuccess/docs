@@ -117,7 +117,6 @@ Use cases:
     Usage
     ```typescript
     import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild } from '@angular/core';
-    import { FormsModule } from '@angular/forms';
 
     @Component({
     selector: 'modal-example',
@@ -134,7 +133,6 @@ Use cases:
       `,
       standalone: true,
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule],
     })
     export class ModalExampleComponent implements AfterViewInit {
       @ViewChild('modal') modalRef!: ElementRef;

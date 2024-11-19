@@ -105,7 +105,6 @@ Declaration
 Usage
 ```typescript
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'my-root',
     templateUrl: './my.component.html',
@@ -120,7 +119,6 @@ import { FormsModule } from '@angular/forms';
     `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [FormsModule],
 })
 export class AppComponent {}
 ```
@@ -196,7 +194,6 @@ Declaration
 Usage
 ```typescript
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'my-root',
     templateUrl: './my.component.html',
@@ -214,7 +211,6 @@ import { FormsModule } from '@angular/forms';
     `
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [FormsModule],
 })
 export class AppComponent {}
 ```
@@ -293,7 +289,6 @@ Declaration
 Usage
 ```typescript
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'my-root',
     templateUrl: `
@@ -310,7 +305,6 @@ import { FormsModule } from '@angular/forms';
     `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [FormsModule],
 })
 export class AppComponent {
   mappingFunction(params: any) {
