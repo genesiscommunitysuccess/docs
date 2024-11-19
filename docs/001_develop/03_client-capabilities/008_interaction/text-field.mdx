@@ -13,7 +13,7 @@ tags:
 sidebar_position: 8
 ---
 
-import TextFieldDemo, { TextFieldWithSlot } from '../../../../examples/ui/client-capabilities/interaction/text-field.js';
+import { TextFieldWithSlot } from '../../../../examples/ui/client-capabilities/interaction/text-field.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -28,7 +28,7 @@ Use cases:
 
 ## Example
 
-<TextFieldDemo />
+<TextFieldWithSlot />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 
@@ -44,9 +44,42 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-text-field :value=${sync((x) => x.fieldValue)}>
-          Sample Text Field
-        </rapid-text-field>
+        <div>
+            <label>Simple text field</label>
+            <rapid-text-field
+                @change="${(x, ctx) => x.fieldValueChanged(ctx.event)}"
+                type="text">
+            </rapid-text-field>
+        </div>
+        <div>
+            <label>Number field with start slot</label>
+            <rapid-text-field
+                @change="${(x, ctx) => x.fieldValueChanged(ctx.event)}"
+                type="number">
+                <div slot="start">$</div>
+            </rapid-text-field>
+        </div>
+        <div>
+            <label>Text field with end slot</label>
+            <rapid-text-field
+                @change="${(x, ctx) => x.fieldValueChanged(ctx.event)}"
+                type="text">
+                <div slot="end">%</div>
+            </rapid-text-field>
+        </div>
+        <div>
+            <label>Text field with placeholder</label>
+            <rapid-text-field
+                @change="${(x, ctx) => x.fieldValueChanged(ctx.event)}"
+                type="text"
+                placeholder="Enter text here">
+            </rapid-text-field>
+        </div>
+        <div>
+            <label>Disabled text field</label>
+            <rapid-text-field type="text" disabled>
+            </rapid-text-field>
+        </div>
       `,
     })
     export class MyElement extends GenesisElement {
@@ -71,7 +104,33 @@ Use cases:
         console.log(event.target.value)
       };
       return (
-        <rapid-text-field onChange={handleTextFieldChanged}></rapid-text-field>
+        <div>
+          <label>Simple text field</label>
+          <rapid-text-field type="text">
+          </rapid-text-field>
+        </div>
+        <div>
+            <label>Number field with start slot</label>
+            <rapid-text-field onChange={handleTextFieldChanged} type="number">
+                <div slot="start">$</div>
+            </rapid-text-field>
+        </div>
+        <div>
+            <label>Text field with end slot</label>
+            <rapid-text-field onChange={handleTextFieldChanged} type="text">
+                <div slot="end">%</div>
+            </rapid-text-field>
+        </div>
+        <div>
+            <label>Text field with placeholder</label>
+            <rapid-text-field onChange={handleTextFieldChanged} type="text" placeholder="Enter text here">
+            </rapid-text-field>
+        </div>
+        <div>
+            <label>Disabled text field</label>
+            <rapid-text-field type="text" disabled>
+            </rapid-text-field>
+        </div>
       );
     }
     ```
@@ -90,9 +149,38 @@ Use cases:
     @Component({
       selector: 'my-root',
       template: `
-        <rapid-text-field
-          (change)="onTextFieldChange($event)"
-        ></rapid-text-field>
+          <div>
+              <label>Simple text field</label>
+              <rapid-text-field (change)="fieldValueChanged($event)" type="text">
+              </rapid-text-field>
+          </div>
+          <div>
+              <label>Number field with start slot</label>
+              <rapid-text-field
+                      (change)="fieldValueChanged($event)"
+                      type="number">
+                  <div slot="start">$</div>
+              </rapid-text-field>
+          </div>
+          <div>
+              <label>Text field with end slot</label>
+              <rapid-text-field
+                      (change)="fieldValueChanged($event)"
+                      type="text"
+              >
+                  <div slot="end">%</div>
+              </rapid-text-field>
+          </div>
+          <div>
+              <label>Text field with placeholder</label>
+              <rapid-text-field (change)="fieldValueChanged($event)" type="text" placeholder="Enter text here">
+              </rapid-text-field>
+          </div>
+          <div>
+              <label>Disabled text field</label>
+              <rapid-text-field type="text" disabled>
+              </rapid-text-field>
+          </div>
       `,
       styleUrls: ['./my.component.css'],
       standalone: true,
@@ -100,9 +188,8 @@ Use cases:
       imports: [FormsModule],
     })
     export class AppComponent {
-      onTextFieldChange(event: Event) {
-        const target = event.target as HTMLInputElement;
-        console.log(target.value);
+      fieldValueChanged(event: Event): void {
+        console.log((event.target as HTMLInputElement).value);
       }
     }
     ```
