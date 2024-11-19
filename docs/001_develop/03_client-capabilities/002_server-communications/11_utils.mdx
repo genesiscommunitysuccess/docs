@@ -1,0 +1,50 @@
+---
+title: 'Utilities'
+sidebar_label: 'Utilities'
+id: comms-utils
+keywords: [genesis, foundation, comms, utils]
+tags:
+  - comms
+  - utils
+  - utilities
+---
+
+# Utilities
+
+The Genesis Framework includes various utility functions to facilitate common operations within web applications. These utilities are designed to enhance the development process, making it more efficient and streamlined.
+
+## Regular Expression for WebSocket Host Validation
+
+**`isWebSocketExpression`**: Validates WebSocket (wss and ws) host URLs to ensure they conform to the expected format. This regular expression checks for valid protocol prefixes (ws or wss) followed by a host address.
+
+### `isWebSocketExpression` Example
+
+```typescript
+import { isWebSocketExpression } from '@genesislcap/foundation-comms';
+
+const isValid = isWebSocketExpression.test('wss://example.com');
+console.log(isValid); // Output: true or false based on URL validity
+```
+
+## Condition-Based Execution
+
+**`until` Function**: Executes a condition function repeatedly until it returns true or a specified timeout period is reached. This is useful for waiting on certain conditions to be met before proceeding with execution in an asynchronous environment.
+
+### `until` Example
+
+```typescript
+import { until } from '@genesislcap/foundation-comms';
+
+const conditionFunc = () => {
+  // Your condition check here
+  return document.readyState === 'complete';
+};
+
+until(conditionFunc, 500)
+  .then(() => console.log('Condition met or timeout reached'))
+  .catch((error) => console.error('An error occurred', error));
+```
+
+## Considerations
+
+The utility functions provided in the Genesis Framework, such as `isWebSocketExpression` for URL validation and `until` for condition-based execution, offer developers convenient tools for addressing common programming scenarios. These utilities aim to reduce boilerplate code and facilitate more readable and maintainable application codebases.
