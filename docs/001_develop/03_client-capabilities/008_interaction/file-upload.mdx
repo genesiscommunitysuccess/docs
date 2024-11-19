@@ -31,16 +31,7 @@ The file-upload component can be used to select single or multiple files from th
 
 Declaration
 ```html
-  <rapid-file-upload
-    label="File Upload (JSON files only)"
-    accept="application/json"
-    file-size-limit-bytes="104857600"
-    uploaded-files-resource-name="ALL_FILE_ATTACHMENTS"
-    entity-id="Demo"
-    field-name="ENTITY_ID"
-    upload-key="series"
-  >
-  </rapid-file-upload>
+  <rapid-file-upload></rapid-file-upload>
 ```
 
 Usage
@@ -69,16 +60,7 @@ export class MyElement extends GenesisElement {
 
 Declaration
 ```html
-  <rapid-file-upload
-    label="File Upload (JSON files only)"
-    accept="application/json"
-    file-size-limit-bytes="104857600"
-    uploaded-files-resource-name="ALL_FILE_ATTACHMENTS"
-    entity-id="Demo"
-    field-name="ENTITY_ID"
-    upload-key="series"
-  >
-  </rapid-file-upload>
+  <rapid-file-upload></rapid-file-upload>
 ```
 Usage
 ```typescript
@@ -104,16 +86,7 @@ export function MyComponent() {
 
 Declaration
 ```html
-  <rapid-file-upload
-    label="File Upload (JSON files only)"
-    accept="application/json"
-    file-size-limit-bytes="104857600"
-    uploaded-files-resource-name="ALL_FILE_ATTACHMENTS"
-    entity-id="Demo"
-    field-name="ENTITY_ID"
-    upload-key="series"
-  >
-  </rapid-file-upload>
+  <rapid-file-upload></rapid-file-upload>
 ```
 
 Usage
@@ -271,18 +244,6 @@ Property and attribute binding examples for Genesis Component syntax.
 
 </td>
     </tr>
-    <tr>
-      <td>downloadEventName</td>
-      <td><code>string</code></td>
-      <td>This attribute is an `observable` of type `function`. When you click the `download` button from a row in `data-grid`, it sends the `rowData` object as a parameter to the **downloadEventName** function. It should return the name of the endpoint that will be used to download the file. This is required in order to enable the download functionality.</td>
-<td>
-
-```typescript
-<rapid-file-upload downloadEventName="DOWNLOAD_EVENT">
-```
-
-</td>
-    </tr>
   </tbody>
 </table>
 
@@ -292,13 +253,25 @@ Property and attribute binding examples for Genesis Component syntax.
   <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
 <tbody>
 <tr>
+  <td>downloadEventName</td>
+  <td><code>(rowData: any) =&gt; string</code></td>
+  <td>This property is an `observable` of type `function`. When you click the `download` button from a row in `data-grid`, it sends the `rowData` object as a parameter to the **downloadEventName** function. It should return the name of the endpoint that will be used to download the file. This is required in order to enable the download functionality.</td>
+  <td>
+
+```typescript
+<rapid-file-upload downloadEventName="DOWNLOAD_EVENT">
+```
+
+  </td>
+</tr>
+<tr>
   <td>filesGridColumnDefinitions</td>
-  <td><code>string</code></td>
+  <td><code>Array&lt;ColumnDefinition&gt;</code></td>
   <td>This property is used to override the colum definitions used in the attached grid</td>
 <td>
 
 ```typescript
-<rapid-file-upload label="Upload file">
+<rapid-file-upload :filesGridColumnDefinitions=${() => definitions}>
 ```
 
 </td>
@@ -320,9 +293,24 @@ Property and attribute binding examples for Genesis Component syntax.
 | uploaded-files-grid | The uploaded files grid. |
 
 ### Events fired
-This component doesnt fire any events.
+<table>
+  <thead><tr><th>Event</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+    <td>errorOut</td>
+    <td><code>Event</code></td>
+    <td>Emits when there is an error in the file upload.</td>
+<td>
+
+```typescript
+<rapid-file-upload @errorOut=${(x, ctx) => x.handleError(ctx.event)}
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Events listened to
-| Event | Use |
-|---|---|
-| errorOut | Emits when there is an error in the file upload. |
+
+This component doesn't listen to any events.
