@@ -1,0 +1,86 @@
+---
+title: 'Metadata Management'
+sidebar_label: 'Metadata Management'
+id: comms-metadata
+keywords: [genesis, foundation, comms, metadata]
+tags:
+  - comms
+  - metadata
+---
+
+# Metadata and JSON Schema Management
+
+This provides a robust system for handling metadata and JSON schemas associated with resources, facilitating the interpretation, validation, and utilization of resource definitions across applications. It includes a caching mechanism to optimize performance by reducing the need to fetch metadata and schemas repetitively.
+
+## Key Components
+
+- **`MetadataCache` and `JsonSchemaCache` Interfaces:** Define contracts for caching metadata and JSON schemas, respectively, with methods for retrieval, validation, and storage.
+- **`DefaultMetaCache` Implementation:** Offers a concrete implementation of both `MetadataCache` and `JsonSchemaCache`, utilizing internal maps for efficient caching.
+- **Metadata and Schema Definitions:** Types and utilities for working with resource metadata, field definitions, and JSON schemas, ensuring structured and type-safe handling of resource descriptors.
+- **Utility Functions:** Includes functions for converting field definitions to metadata, extracting field definitions from metadata, and other operations to ease working with resource metadata.
+
+## Usage Examples
+
+### Caching Metadata and JSON Schemas
+
+```typescript
+import { MetaCache, Metadata, SchemaResponse } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @MetaCache metaCache: MetaCache,
+
+  async fetchResourceMetadata(resourceName: string): Promise<Metadata> {
+    const cachedMetadata = this.metaCache.getMetadataFor(resourceName);
+    if (cachedMetadata) {
+      return cachedMetadata;
+    }
+
+    const metadata = await this.fetchMetadataFromAPI(resourceName);
+    this.metaCache.setMetadataFor(resourceName, metadata);
+    return metadata;
+  }
+
+  async fetchResourceSchema(resourceName: string): Promise<SchemaResponse> {
+    const cachedSchema = this.metaCache.getJsonSchemaFor(resourceName);
+    if (cachedSchema) {
+      return cachedSchema;
+    }
+
+    const schemaResponse = await this.fetchSchemaFromAPI(resourceName);
+    this.metaCache.setJsonSchemaFor(resourceName, schemaResponse);
+    return schemaResponse;
+  }
+
+  private async fetchMetadataFromAPI(resourceName: string): Promise<Metadata> {
+    // This could be a JSON object representing the metadata or from @Connect.getMetadata
+    return { /* ... */ };
+  }
+
+  private async fetchSchemaFromAPI(resourceName: string): Promise<SchemaResponse> {
+    // This could be a JSON object representing the metadata or from @Connect.getJSONSchema
+    return { /* ... */ };
+  }
+}
+```
+
+### Retrieving Cached Metadata
+
+```typescript
+const cachedMetadata = metaCache.getMetadataFor(resourceName);
+
+if (cachedMetadata) {
+  console.log('Retrieved Metadata:', cachedMetadata);
+}
+
+const cachedSchema = metaCache.getJsonSchemaFor(resourceName);
+
+if (cachedSchema) {
+  console.log('Retrieved JSON Schema:', cachedSchema);
+}
+```
+
+## Considerations
+
+- **Consistent Resource Naming:** Use consistent and meaningful names for resources when setting and retrieving metadata and schemas to avoid conflicts and ensure clarity.
+- **Error Handling:** Implement error handling for metadata and schema operations, especially when dealing with dynamic resource definitions or external fetch operations.
+- **Cache Management:** Monitor and manage the cache size, especially in long-running applications, to prevent memory leaks or excessive memory usage.

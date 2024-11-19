@@ -1,0 +1,197 @@
+---
+title: 'Datasource'
+sidebar_label: 'Datasource'
+id: comms-datasource
+keywords: [genesis, foundation, comms, datasource]
+tags:
+  - comms
+  - datasource
+---
+
+# Datasource
+
+This provides an interface for interacting with different types of data sources within the application. It abstracts the complexities of fetching, streaming, and manipulating data from various back-end services.
+
+## Features
+
+- **Support for Multiple Resource Types:** Handles different resource types, including `DATASERVER`, `EVENT_HANDLER`, and `REQUEST_SERVER`.
+- **Criteria Filtering:** Converts grid-based filtering criteria into a format that can be used to query `REQUEST_SERVER` resources.
+- **Snapshot and Streaming Data:** Capable of taking snapshots of data or streaming data in real-time, depending on the resource type and configuration.
+- **Data Transformation:** Includes utilities for normalizing criteria and filtering results from a data server.
+- **Mock Testing Support:** Accompanied by testing utilities to facilitate unit and integration testing of components that depend on data sources.
+
+## Key Components
+
+### `DefaultDatasource`
+
+The default implementation of the `Datasource` interface, providing the core functionality required to interact with various data sources. It includes methods for initialization, deinitialization, metadata fetching, snapshot taking, and data streaming.
+
+### `EntityDatasource`
+
+An extension of `DefaultDatasource`, tailored for use cases that involve entity-specific data operations. It supports DTO (Data Transfer Object) mapping, enabling seamless translation between raw data objects and entity models.
+
+### Utility Functions
+
+- `criteriaFiltersToFields`: Transforms filtering criteria into a structured query object.
+- `dataServerResultFilter`: Processes raw data server results, segregating them into inserts, updates, and deletes.
+- `normaliseCriteria`: Normalizes filtering criteria for consistency and comparability.
+
+## Examples
+
+### Initializing a Datasource
+
+Initialization of a `DefaultDatasource` is crucial for setting up the resource name, criteria, and other options that define how data should be fetched and presented.
+
+```typescript
+import { Datasource, DatasourceOptions } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Datasource datasource: DefaultDatasource;
+
+  async initDatasource() {
+    const datasourceOptions: DatasourceOptions = {
+      resourceName: 'ALL_POSITIONS',
+      criteria: 'status == "active"',
+      fields: 'id,name,status',
+      maxRows: 250,
+      isSnapshot: true,
+    };
+
+    await this.datasource.init(datasourceOptions, true);
+    if (this.datasource.initialized) {
+      console.log('Datasource initialized successfully');
+    }
+  }
+}
+```
+
+### Taking a Snapshot
+
+After initializing the datasource, you can take a snapshot of the current data. This is particularly useful for fetching data at a specific point in time without setting up a real-time stream.
+
+```typescript
+import { Datasource } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Datasource datasource: DefaultDatasource;
+
+  async fetchSnapshot() {
+    const snapshot = await this.datasource.snapshot();
+    console.log('Snapshot data:', snapshot);
+  }
+}
+```
+
+### Streaming Data
+
+For scenarios where you need real-time data updates, after initializing the datasource, subscribe to the datasource's stream. This example demonstrates how to handle real-time data updates:
+
+```typescript
+import { Datasource } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Datasource datasource: DefaultDatasource;
+
+  async streamData() {
+    this.datasource.stream.subscribe({
+      next: (result) => {
+        console.log('Real-time update:', result);
+        // Handle the real-time data update here
+      },
+      error: (err) => console.error('Streaming error:', err),
+      complete: () => console.log('Stream completed'),
+    });
+  }
+}
+```
+
+### Updating Datasource Criteria
+
+Changing the criteria of an already initialized datasource allows you to filter the data dynamically. This can be useful for implementing user-driven filters:
+
+```typescript
+import { Datasource } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Datasource datasource: DefaultDatasource;
+
+  async updateCriteria() {
+    this.datasource.options.criteria = 'status == "inactive"';
+    await this.datasource.snapshot(); // Take a new snapshot with updated criteria
+    // or if using streaming:
+    this.datasource.init(this.datasource.options, false); // Re-initialize to apply the new criteria to the stream
+  }
+}
+```
+
+### Cleaning Up
+
+When the datasource is no longer needed, or before re-initializing it with new parameters, it's important to properly deinitialize it to clean up resources:
+
+```typescript
+import { Datasource } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Datasource datasource: DefaultDatasource;
+
+  cleanupDatasource() {
+    this.datasource.deinit();
+    console.log('Datasource deinitialized');
+  }
+
+}
+```
+
+### Filtering Criteria Transformation
+
+Transforming a complex filtering criteria string into a structured query object:
+
+```typescript
+const criteria = "foo == 'bar' && Expr.dateIsToday(DATE)";
+const queryObject = criteriaFiltersToFields(criteria);
+// Outputs: { foo: 'bar', DATE_FROM: '20231110-00:00', DATE_TO: '20231111-00:00' }
+```
+
+### Data Server Result Processing
+
+Filtering and categorizing data server results based on operation type:
+
+```typescript
+import { dataServerResultFilter } from '@genesislcap/foundation-comms';
+
+const rawResult = {
+  MESSAGE_TYPE: "QUERY_UPDATE",
+  ROW: [
+    { DETAILS: { OPERATION: 'INSERT', ROW_REF: '1' } },
+    { DETAILS: { OPERATION: 'DELETE', ROW_REF: '2' } },
+  ],
+  SOURCE_REF: "exampleSourceRef",
+  MORE_ROWS: false,
+  ROWS_COUNT: 2,
+  SEQUENCE_ID: 123,
+};
+const filteredResult = dataServerResultFilter(rawResult);
+// Outputs: { inserts: [{ ROW_REF: '1' }], deletes: [{ ROW_REF: '2' }], updates: [], SOURCE_REF: "exampleSourceRef" }
+```
+
+### Normalizing Criteria
+
+Normalizing filtering criteria for a consistent query format:
+
+```typescript
+import { normaliseCriteria } from '@genesislcap/foundation-comms';
+
+const criteria = "status == 'active'; name == 'John Doe'";
+const normalizedCriteria = normaliseCriteria(criteria);
+// Outputs: "name == 'John Doe'; status == 'active'"
+```
+
+## Testing
+
+The module includes a set of mocks and testing utilities to facilitate the testing of components and services that rely on `Datasource`. Refer to the provided test cases for examples of how to use these utilities effectively.
+
+## Considerations
+
+- **Resource Type Compatibility:** Ensure that the resource type you are interacting with is compatible with the methods and options provided by the datasource.
+- **Data Consistency:** Be mindful of the data consistency requirements when using snapshot or streaming modes, as they may affect the behavior of your application.
+- **Error Handling:** Implement appropriate error handling mechanisms to manage exceptions and errors that may occur during data fetching or streaming operations.

@@ -3,6 +3,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     packages: [
         {
+            name: "@genesislcap/foundation-comms",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/002_server-communications/01_server-communications-docs",
+                api_docs: "docs/api",
+                readme: "index.mdx",
+                keywords: ["genesis", "foundation", "comms", "connect", "server-communications", "services"],
+                tags: [
+                    "connected",
+                    "comms",
+                    "connect",
+                    "services",
+                    "server-communications",
+                ],
+            },
+        },
+        {
             name: "@genesislcap/grid-pro",
             enabled: true,
             src: {

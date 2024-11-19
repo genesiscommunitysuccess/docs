@@ -1,0 +1,53 @@
+---
+title: 'User Management'
+sidebar_label: 'User Management'
+id: comms-user
+keywords: [genesis, foundation, comms, user, management]
+tags:
+  - comms
+  - user
+  - management
+---
+
+# User Management 
+
+The Genesis Framework includes a structured approach to managing user data, permissions, and profiles. This is implemented through the `User` interface and `CurrentUser` class, providing a system to manage user roles and access within applications effectively.
+
+## Key Components
+
+### User Interface and Classes
+
+- **UserOptions**: Defines core user options including permissions, profiles, and username.
+- **User**: Enhances `UserOptions` with methods for checking specific permissions or profiles.
+- **CurrentUser**: Represents the active user session, with observable properties for permissions, profiles, and username. It includes methods for checking the user's roles and permissions.
+
+Used in `Auth` and `Session` services, the `CurrentUser` class provides a central point for managing user roles and permissions, ensuring consistent access control across the application.
+
+### User Types
+
+The framework specifies types for permissions and profiles to support both predefined system values and custom values defined by applications.
+
+- **CoreUserPermissions & UnknownUserPermissions**: Represents specific user permissions.
+- **CoreUserProfiles & UnknownUserProfiles**: Represents user profiles that can be assigned.
+
+## Usage Example
+
+Below is an example demonstrating how to use the `CurrentUser` class to manage and check the current user's permissions and profiles.
+
+```typescript
+import { CurrentUser } from '@genesislcap/foundation-comms';
+
+const currentUser = new CurrentUser({
+  permissions: ['somePermission'],
+  profiles: ['ADMIN'],
+  username: 'john.doe',
+});
+
+console.log(currentUser.hasAdminProfile()); // true
+console.log(currentUser.hasPermission('somePermission')); // true
+console.log(currentUser.hasProfile('ADMIN')); // true
+```
+
+## Considerations
+
+The Genesis Framework's user management capabilities provide a solid foundation for implementing role-based access control in web applications. With support for observable properties and the flexibility to extend user permissions and profiles, it offers a robust solution for managing user access and roles.
