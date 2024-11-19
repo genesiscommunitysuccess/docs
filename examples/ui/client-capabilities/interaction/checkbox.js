@@ -1,7 +1,6 @@
 import { CodeLabel, CodeSection } from '../../documentationBase';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 
-
 export default function CheckboxDemo({ children, color }) {
 
 	const isBrowser = useIsBrowser();

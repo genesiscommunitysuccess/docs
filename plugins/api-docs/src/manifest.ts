@@ -286,6 +286,28 @@ export default {
     //   },
     // },
     {
+      name: "@genesislcap/foundation-comms",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/002_server-communications/01_server-communications-docs",
+        api_docs: "docs/api",
+        readme: "index.mdx",
+        keywords: ["genesis", "foundation", "comms", "connect", "server-communications", "services"],
+        tags: [
+          "connected",
+          "comms",
+          "connect",
+          "services",
+          "server-communications",
+        ],
+      },
+    },
+    {
       name: "@genesislcap/grid-pro",
       enabled: true,
       src: {
@@ -294,7 +316,7 @@ export default {
         readme: "./README.md",
       },
       output: {
-        directory: "./docs/001_develop/03_client-capabilities/005_grids/001_grid-pro",
+        directory: "./docs/001_develop/03_client-capabilities/005_grids/01_grid-pro-docs",
         api_docs: "docs/api",
         readme: "01_grid-pro.mdx",
         keywords: ["genesis", "foundation", "ui", "grid", "grid-pro", "ag"],
@@ -323,7 +345,7 @@ export default {
         readme: "./README.md",
       },
       output: {
-        directory: "./docs/001_develop/03_client-capabilities/005_grids/002_grid-tabulator",
+        directory: "./docs/001_develop/03_client-capabilities/005_grids/02_grid-tabulator-docs",
         api_docs: "docs/api",
         readme: "01_grid-tabulator.mdx",
         keywords: ["genesis", "foundation", "ui", "grid", "grid-tabulator", "tabulator"],
@@ -352,7 +374,7 @@ export default {
         readme: "./README.md",
       },
       output: {
-        directory: "./docs/001_develop/03_client-capabilities/006_charts/001_g2plot-chart",
+        directory: "./docs/001_develop/03_client-capabilities/006_charts/01_g2plot-chart-docs",
         api_docs: "docs/api",
         readme: "01_g2plot-chart.mdx",
         keywords: ["genesis", "foundation", "ui", "chart", "g2plot-chart", "g2plot"],
@@ -390,6 +412,28 @@ export default {
             title: "Smart forms",
             sidebar_label: "Smart Forms",
             id: "smart-forms",
+          },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-fdc3",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/021_desktop-interoperability",
+        api_docs: "docs/api",
+        readme: "01_foundation-fdc3.mdx",
+        keywords: ["genesis", "foundation", "ui", "fdc3"],
+        tags: ["genesis", "foundation", "ui", "fdc3"],
+        pages: [
+          {
+            title: "Foundation FDC3",
+            sidebar_label: "Foundation FDC3",
+            id: "foundation-fdc3",
           },
         ],
       },

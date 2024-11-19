@@ -18,11 +18,14 @@ import TabItem from '@theme/TabItem';
 import Log from '/snippet/_LOG.md'
 import CommonPermissions from '/snippet/_common-permissions.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
-
+import CommonAuthenticateFirst from '/snippet/_common-authenticate-first.md'
+import CommonOpenAPI from '/snippet/_common-open-api.md'
 
 ## Overview
 
-The Genesis application platform has a real-time event-driven architecture. The Event Handler is a microservice responsible for providing these events, which can apply business logic and affect the application's data set. Developers configure events, including optional and mandatory input fields, which client can trigger via APIs. 
+<p align="center"><iframe src="https://player.vimeo.com/video/810993453?h=7cca391a5c&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></p>
+
+The Genesis Application Platform has a real-time event-driven architecture. The Event Handler is a microservice responsible for providing these events, which can apply business logic and affect the application's data set. Developers configure events, including optional and mandatory input fields, which client can trigger via APIs. 
 
 ```mermaid
 graph TD
@@ -104,7 +107,7 @@ eventHandler {
       //Validate the price is not negative
       require(price >= 0.0) { "Price cannot be negative" }
       
-      //Warn if the price is far from market price utilising pricing library function
+      //Warn if the price is far from market price utilizing pricing library function
       if(pricingLibrary.priceFarFromCurrentMarketPrice(trade.price, trade.direction)) {
         return@onValidate warningNack("Price out of bounds from market price")
       }
@@ -127,7 +130,7 @@ eventHandler {
 
 It is important to understand the concepts of validation vs commit, and ack vs nack.
 
-There are two main blocks to an eventHandler, [`onValidate`](#onvalidate) and [`onCommit`](#oncommit). The following images show the execution workflow where validate is set by the client to true vs false, and how nack (unsuccesful event) terminates the event unsuccesfully and can will stop further execution of the event:
+There are two main blocks to an eventHandler, [`onValidate`](#onvalidate) and [`onCommit`](#oncommit). The following images show the execution workflow where validate is set by the client to true vs false, and how nack (unsuccessful event) terminates the event unsuccessfully and can will stop further execution of the event:
 
 ![](/img/eh-validate-true.png)
 
@@ -204,7 +207,7 @@ Where a nack is triggered, `MESSAGE_TYPE` returned to the client is an `EVENT_NA
 
 In the parenthesis you can define:
 
-- `name` : the name of the event. `name` will automatically be prefixed with `EVENT_`. so `name = "TRADE_INSERT"` will be targetted by the client as `EVENT_TRADE_INSERT`. Where left unspecified the name will default to the eventHandler Type class name.
+- `name` : the name of the event. `name` will automatically be prefixed with `EVENT_`. so `name = "TRADE_INSERT"` will be targeted by the client as `EVENT_TRADE_INSERT`. Where left unspecified the name will default to the eventHandler Type class name.
 - `transactional` : takes a boolean. Set to `true` where you want your `eventHandler` to comply with [ACID](/develop/glossary/glossary/#acid). Any exception returned will result in a complete rollback of any database write's. While an exception will trigger a rollback, the transaction will commit if a `nack` or `ack` is returned. This setting also enables auto-auditing for writes to any [audited tables](/develop/server-capabilities/data-model/#audited-tables).
 
 ```kotlin
@@ -276,18 +279,17 @@ In this example `DATE` defined on `Trade` will not be part of the meta for this 
 By default `excludeMetadataFields` has 2 fields, `RECORD_ID` and `TIMESTAMP`, 2 fields which are part of every database object but will always be set by the database and thus client shouldn't send
 
 :::warning
-Typically when using a table entity as the eventHandler Type, you don't need to use `excludeMetadataFields`, but if you do be sure to keep the 2 default fields `RECORD_ID` and `TIMESTAPE` listed in your set except when you are using [optimistic concurrency](#optimistic-concurrency) mode, in which case the `TIMESTAMP` field is critical to **include** in the event meta, so do not define in this list.
+Typically when using a table entity as the eventHandler Type, you don't need to use `excludeMetadataFields`, but if you do be sure to keep the 2 default fields `RECORD_ID` and `TIMESTAMP` listed in your set except when you are using [optimistic concurrency](#optimistic-concurrency) mode, in which case the `TIMESTAMP` field is critical to **include** in the event meta, so do not define in this list.
 :::
 
 #### `overrideMetadataFields`
 
-`overrideMetadataFields` is used to override the metadata field properties of the eventHandler type, this isn't to change the type of a field, more to override fields being optional vs mandatory or default valuees.
+`overrideMetadataFields` is used to override the metadata field properties of the eventHandler type, this isn't to change the type of a field, more to override fields being optional and default values.
 
 ```kotlin
-  eventHandler<TriggerReport>(name = "TRADE_INSERT", transactional = true) {
+  eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
     overrideMetadataFields = listOf(
-      //Make Counterparty ID optional for this insert and we can default where not specified.
-      OverrideMetaField(name = "COUNTERPARTY_ID", optional = true)
+      OverrideMetaField(name = "QUANTITY", optional = true, default = 1)
     )
   }
 ```
@@ -304,7 +306,7 @@ Where setting mandatory fields to be optional, you must have a default supplied 
 
 This is used where particular system events require a second system user to approve them before they take effect in the application. 
 
-Per the example below, you can **optionally** set the approval message, this is the message that will be set on the approval record which an authorised approver will see during their review. 
+Per the example below, you can **optionally** set the approval message, this is the message that will be set on the approval record which an authorized approver will see during their review. 
 The function must return boolean logic, where it evaluates to false the event will be subject to approval. 
 
 ```kotlin
@@ -320,11 +322,11 @@ In this example only a user with username "system.user" will be able to trigger 
 
 Note the client may also send `APPROVAL_MESSAGE` and where specific, `approvalMessage` will take precedence over it.
 
-See [approval workflow](#appoval-workflow) for more details.
+See [approval workflow](#approval-workflow) for more details.
 
 #### `onValidate`
 
-The onValidate block is used for validation. The event handler workflow allows clients to set boolean flag `VALIDATE`, which where set to `true` will run the codd in the `onValidate` block and return before executing the `onCommit` block, which will commit the action (e.g. write to database, or perhaps generate a file or some other permanent action). The entityDb handle used in this block is for read operations only because of this.
+The onValidate block is used for validation. The event handler workflow allows clients to set boolean flag `VALIDATE`, which where set to `true` will run the code in the `onValidate` block and return before executing the `onCommit` block, which will commit the action (e.g. write to database, or perhaps generate a file or some other permanent action). The entityDb handle used in this block is for read operations only because of this.
 
 As well as returning an [`ack`](#ack) (success) or a [`nack`](#nack), the onValidate block allows users to send soft warnings back as part of the validation, warnings which the client can then ignore, for example if the client is a user interface.
 
@@ -353,7 +355,7 @@ In this example we verify that the instrument and counterparty IDs that were sup
 
 If the boolean logic fails, a [nack](#nack) will be returned and validation of the event has failed.
 
-TOOD can't we override the text returned to client?
+TODO can't we override the text returned to client?
 
 ##### `require`
 
@@ -394,7 +396,7 @@ Clients using the API are expected to set `IGNORE_WARNINGS` to `true` on the inb
 
 ##### `approvableAck`
 
-An `approvableAck` should be returned in an onValdate block where [`requiresApproval`](#requiresapproval) has been set on the event. 
+An `approvableAck` should be returned in an onValidate block where [`requiresApproval`](#requiresapproval) has been set on the event. 
 
 There are useful properties you can set as part of the `approvableAck` definition. They are all optional and are detailed below:
 
@@ -430,11 +432,11 @@ There are useful properties you can set as part of the `approvableAck` definitio
 }
 ``` 
 
-See [approval workflow](#appoval-workflow) for more details.
+See [approval workflow](#approval-workflow) for more details.
 
 #### `onCommit`
 
-The `onCommmit` block runs post successful validation in the `onValidate` block. The code here will typically affect the data in the system (for example writing to the database, generating a file, triggering some other event). This block may also perform further validations not possible in the previous block (e.g. relying on database updates in an event which writes multiple records). To reach the `onCommit` block, `VALIDATE` must have been set to `false`.
+The `onCommit` block runs post successful validation in the `onValidate` block. The code here will typically affect the data in the system (for example writing to the database, generating a file, triggering some other event). This block may also perform further validations not possible in the previous block (e.g. relying on database updates in an event which writes multiple records). To reach the `onCommit` block, `VALIDATE` must have been set to `false`.
 
 The `entityDb` handle in this block can be used to read and write.
 
@@ -503,9 +505,9 @@ Find details around [how event handlers work with optimistic concurrency](/devel
 
 ## Client API
 
-:::tip
-Event handlers are also accessible via [Open API](/develop/server-capabilities/integrations-open-api/)
-:::
+<CommonAuthenticateFirst />
+
+<CommonOpenAPI />
 
 ### `EVENT_<EVENT_HANDLER_NAME>`
 
@@ -518,7 +520,7 @@ There are several options that can be optionally specified in the message header
 | `VALIDATE`          | `false` | Where `true`, events will return after the [`onValidate`](#onvalidate) block ack and not trigger the [`onCommit`](#oncommit) block |
 | `IGNORE_WARNINGS`   | `false` | Where `true`, any [`warningNack`](#warningnack) in the code will be ignored and not cause the event to fail validation |
 | `REQUIRES_APPROVAL` | `false` | A client can force the [approval workflow](#approval-workflow) for the event by setting this to true | 
-| `APPROVAL_MESSAGE`  | | Where [approval workflow](#approval-workflow) is triggered, this is the approval message the approver will see. This may be overridden in the event ['requirespendingapproval`](#requirespendingapproval) which takes precedence | 
+| `APPROVAL_MESSAGE`  | | Where [approval workflow](#approval-workflow) is triggered, this is the approval message the approver will see. This may be overridden in the event ['requiresPendingApproval`](#requiresPendingApproval) which takes precedence | 
 | `REASON`            | | Where the event is set as `transactional` and the tables written by the event are enabled for [`audit`](/develop/server-capabilities/data-model/#audited-tables) this String will be set in the audit record's `AUDIT_EVENT_TEXT` | 
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
@@ -600,9 +602,9 @@ connection: keep-alive
 </Tabs>
 
 
-## Appoval workflow
+## Approval workflow
 
-The Genesis application platform has an in-built pending approval mechanism that can be used with Event Handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check".
+The Genesis Application Platform has an in-built pending approval mechanism that can be used with Event Handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check".
 
 Event's are essentially queued, until a time they are approved, at which case they are re-triggered to take affect.
 
@@ -728,7 +730,6 @@ The platform provides two Data Server queries that contain Pending approval info
 
 
 **Example APPROVAL DB record**
-
 
 ```
 -------------------------------------------------------------------------------------------
@@ -863,7 +864,7 @@ pendingApproval {
 
 ###### Advanced allowed approvers
 
-You might have noticed that the original type-safe event message types are lost inside the **-approval.kts** file, as the content of `eventMessage` inside `APPROVAL` table (and also inside `PendingApprovalInsert`) is a serialised JSON string. You can deserialise the original type-safe objects using the `selectPredicate` method combined with multiple `onEvent` predicates. These methods are available in all the `pendingApproval` code blocks: `insert`, `accept`, `cancel` and `reject`.
+You might have noticed that the original type-safe event message types are lost inside the **-approval.kts** file, as the content of `eventMessage` inside `APPROVAL` table (and also inside `PendingApprovalInsert`) is a serialized JSON string. You can deserialize the original type-safe objects using the `selectPredicate` method combined with multiple `onEvent` predicates. These methods are available in all the `pendingApproval` code blocks: `insert`, `accept`, `cancel` and `reject`.
 
 - `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function  provides a [GenesisSet](/develop/server-capabilities/communications-metadata/#genesisset) object with the contents of the original message payload.
 - `onEvent` works very similarly to any other GPAL [Event Handler definition](#defining-an-event-handler-in-gpal). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
@@ -924,7 +925,7 @@ An approval process deliberately delays events. So it is possible that by the ti
 The platform provides an event designed to help you to reject events directly from the back end without human intervention. "EVENT_PENDING_APPROVAL_SYSTEM_REJECT" is an event that can be used to satisfy any specific requirements that fall outside the functionality of the pending approval system. The event is only accessible by back-end services. It takes two parameters:
 
 - `approvalMessage` is the text of the message to be sent when the message is rejected.
-- `approvalKey` is a unique identifier for each pending approval record. This identifier is never exposed to the front end, so only back-end services have access to it. That makes it impossible to trigger this event unless you have access to the database system. You need to obtain the `approvalKey` programatically so that you can supply it as a parameter value.
+- `approvalKey` is a unique identifier for each pending approval record. This identifier is never exposed to the front end, so only back-end services have access to it. That makes it impossible to trigger this event unless you have access to the database system. You need to obtain the `approvalKey` programmatically so that you can supply it as a parameter value.
 
 Let us look at an example. Consider a solution that needs to submit trades to an external system every day at midnight for confirmation purposes. Once the trades have been submitted, their content cannot be changed anymore, unless a separate amendment process is started outside the Genesis application. The system has a pending approval system that enables users to amend the content of each "Trade" database record to provide extra security.
 
@@ -1058,7 +1059,7 @@ If you are testing against a previous version of the framework, go to the [legac
 
 This section covers the basics of testing Event Handlers. We shall use a very simple example, and work through the communication between our test and the Event Handler. 
 
-This includes how to test dynamic authorisation. 
+This includes how to test dynamic authorization. 
 
 This testing relies on [**GenesisJunit**](/develop/server-capabilities/testing/#integration-testing), which is designed to make testing easy.
 
@@ -1236,12 +1237,12 @@ There are three versions of the Event Handler client available during testing:
 In most instances, **EventClientSync** will suffice. 
 Use the other clients if your tests use other asynchronous operations.
 
-#### Dynamic authorisation
+#### Dynamic authorization
 
-To test dynamic authorisation, add the `@EnableInMemoryTestAuthCache` to your class or method. 
+To test dynamic authorization, add the `@EnableInMemoryTestAuthCache` to your class or method. 
 This makes `InMemoryTestAuthCache` available for injection into your test class. 
 
-Amend the Event Handler to enable authorisation:
+Amend the Event Handler to enable authorization:
 
 ```kotlin 
 data class Hello(
@@ -1373,7 +1374,7 @@ public class EventHandlerJavaTest {
 </Tabs>
 
 The revoke calls are not needed in this case; they have been included here to show the syntax. 
-These calls can be used to revoke previous authorisations in your tests.
+These calls can be used to revoke previous authorizations in your tests.
 
 #### Conclusion
 
@@ -1384,7 +1385,7 @@ We have covered:
 * sending details to our event
 * overwriting the default message type
 * setting the user on the event
-* handling dynamic authorisation
+* handling dynamic authorization
 
 For more details about testing with Genesis, take a look at our [integration test documentation](/develop/server-capabilities/testing/#integration-testing).
 
@@ -1395,7 +1396,7 @@ For more details about testing with Genesis, take a look at our [integration tes
 This section covers testing your Event Handler if you are using any version of the Genesis Server Framework before GSF v8.
 :::
 
-The Genesis Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Event Handler configuration is used to create our Event Handler. We also need to add the required packages, genesis home and separately set the "IS_SCRIPT" System Definition property to true (This is required as part of the Event Handler initialisation).
+The Genesis Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Event Handler configuration is used to create our Event Handler. We also need to add the required packages, genesis home and separately set the "IS_SCRIPT" System Definition property to true (This is required as part of the Event Handler initialization).
 
 ```kotlin
 class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
@@ -1514,15 +1515,15 @@ In the example below, we expect the response to be of type `EventNack`, which ha
     }
 ```
 
-###### Testing with authorisation
+###### Testing with authorization
 
-To test that the Event Handler authorisation works correctly, you need to do some setting up.
+To test that the Event Handler authorization works correctly, you need to do some setting up.
 
-First, make sure that your authorisation set-up is designed to behave as follows:
+First, make sure that your authorization set-up is designed to behave as follows:
 - A user who enters a trade must have an entry in the "ENTITY_VISIBILITY" auth map; the entity code for this user must match the `counterpartyId` of the trade.
 - The user must have an entry in the "RIGHT_SUMMARY" table with "RIGHT_CODE" as "TRADER".
 
-Second, you need to modify the previous example Event Handler so that only authorised users can insert trades.
+Second, you need to modify the previous example Event Handler so that only authorized users can insert trades.
 
 ```kotlin
 eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -1567,7 +1568,7 @@ class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
-Fourth, in your test set-up, let's authorise one user to be able to insert trades and another who is not.
+Fourth, in your test set-up, let's authorize one user to be able to insert trades and another who is not.
 
 ```kotlin
     @Before
@@ -1708,7 +1709,7 @@ When you have this in place, click on **Send** to make the call. You can see tha
 
 ### Testing java event handlers
 
-The Genesis application platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application.
+The Genesis Application Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application.
 
 In this case, build `GenesisTestConfig` with the following information:
 
@@ -1834,18 +1835,18 @@ In the example below, we expect the response to be of type `EventNack` when we t
     }
 ```
 
-##### Testing with authorisation
+##### Testing with authorization
 
 ##### Set-up
 
-To test that the Event Handler authorisation works correctly, you need to do some setting up.
+To test that the Event Handler authorization works correctly, you need to do some setting up.
 
-First, make sure that your authorisation set-up is designed to behave as follows:
+First, make sure that your authorization set-up is designed to behave as follows:
 
 - A user who enters a trade must have an entry in the "ENTITY_VISIBILITY" auth map; the entity code for this user must match the `counterpartyId` of the trade.
 - The user must have an entry in the "RIGHT_SUMMARY" table with "RIGHT_CODE" as "TRADER".
 
-Second, you need to modify the previous example Event Handler so that only authorised users can insert trades.
+Second, you need to modify the previous example Event Handler so that only authorized users can insert trades.
 
 ```java
     @Module
@@ -1886,7 +1887,7 @@ Second, you need to modify the previous example Event Handler so that only autho
                     return ack(this, List.of(Map.of("TRADE_ID", result.getTradeId())));
                 }).map(result -> result.getFirst());
             }
-            return Single.just(new StandardError("NOT_AUTHORISED", "User " + userName + " lacks sufficient permissions").toEventNackError());
+            return Single.just(new StandardError("NOT_AUTHORIZED", "User " + userName + " lacks sufficient permissions").toEventNackError());
         }
     }
 ```
@@ -1963,7 +1964,7 @@ Following that, we have a test to verify that a trade cannot be entered if the u
         Event event = new Event(trade, "EVENT_TRADE_INSERT_JAVA", "SupportUser");
         EventReply reply = getMessageClient().request(event, EventReply.class).blockingGet();
 
-        GenesisError genesisError = new StandardError("NOT_AUTHORISED", "User SupportUser lacks sufficient permissions");
+        GenesisError genesisError = new StandardError("NOT_AUTHORIZED", "User SupportUser lacks sufficient permissions");
         assertEquals(reply, new EventReply.EventNack(List.of(), List.of(genesisError)));
     }
 ```
@@ -2019,7 +2020,7 @@ The Event Handler interface is the common supertype of AsyncEventHandler, Rx3Eve
 | includeMetadataFields | `fun includeMetadataFields(): Set<String>` | emptySet() | Contains a list of metadata fields that need to be included in the event metadata; this must be available in input `I`. A non-empty list will exclude the other fields.                                                                                                                                  |
 | messageType | `fun messageType(): String?` | null | Contains the name of the Event Handler. If undefined, the Event Handler name will become `EVENT_*INPUT_CLASS_NAME*`. So, for an Event Handler using an input type called `TradeInsert`, the message type will become `EVENT_TRADE_INSERT`.                                                               |
 | overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I`                                                                                        |
-| requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them ([pending approval](#appoval-workflow) in order to take effect) |
+| requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them ([pending approval](#approval-workflow) in order to take effect) |
 | schemaValidation | `fun schemaValidation(): Boolean` | true | This option enables you to disable the automatic Json Schema validation enforced by the back end. See [type-safe messages](/develop/server-capabilities/communications-metadata/#type-safe-messages) for more information.
 
 Each custom Event Handler must define an input message type `I` and an output message type `O` (these need to be data classes), as GPAL Event Handlers do). In the examples below, `Company` is the input message and `EventReply` is the output message. The `message` object contains event message and has the following properties :
@@ -2030,8 +2031,8 @@ Each custom Event Handler must define an input message type `I` and an output me
 | messageType |  | Name of the Event Handler                                                                                                                                                                                                                                                             |
 | userName |  | Name of logged-in user                                                                                                                                                                                                                                                                |
 | ignoreWarnings | false | If set to false, events will not be processed if there are any warnings; you will get EventNack with warning message. If set to true, warning messages will be ignored; processing of events will be stopped only if there are any errors                                             |
-| requiresApproval | false | This particular event needs approval from a second user if set to true. For more details, check [Pending Approval](/develop/server-capabilities/core-business-logic-event-handler/#appoval-workflow) |
-| approvalKey | null | Auto-generated key ID for particular approval request. For more details, check [Pending Approval](/develop/server-capabilities/core-business-logic-event-handler/#appoval-workflow)                  |
+| requiresApproval | false | This particular event needs approval from a second user if set to true. For more details, check [Pending Approval](/develop/server-capabilities/core-business-logic-event-handler/#approval-workflow) |
+| approvalKey | null | Auto-generated key ID for particular approval request. For more details, check [Pending Approval](/develop/server-capabilities/core-business-logic-event-handler/#approval-workflow)                  |
 | approvalMessage | null | Optional message for approval request. For more details, check [Pending Approval](/develop/server-capabilities/core-business-logic-event-handler/#appoval-workflow)                                  |
 | reason | null | Optional reason sent as part of event message                                                        
 
@@ -2060,7 +2061,8 @@ import global.genesis.gen.dao.Company
 import global.genesis.message.core.event.Event
 import global.genesis.message.core.event.EventReply
 
-@Moduleclass EventCompanyHandlerAsync @Inject constructor(        
+@Module
+class EventCompanyHandlerAsync @Inject constructor(        
     private val entityDb: AsyncEntityDb,        
     private val companyService: CompanyService
 ) : AsyncEventHandler<Company, EventReply> {   
@@ -2689,7 +2691,7 @@ To work with a Java Event Handler:
 ![](/img/java-eventhandler.png)
 
 3. You can then create the file for the Java Event Handler in this folder.
-4. Update your-application_**processes.xml** file to include the details of the new module. For example:
+4. Update your `processes.xml` file to include the details of the new module. For example:
 
 ```xml
 <process name="JAVA_EVENT_HANDLER">
@@ -2697,7 +2699,7 @@ To work with a Java Event Handler:
     <start>true</start>
     <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
     <module>myapp-eventhandler</module>
-    <package>global.genesis.eventhandler,genesis.global.trades</package>
+    <package>global.genesis.eventhandler,genesis.global.myapp.trades</package>
     <description>Handles events</description>
 </process>
 ```
@@ -2712,13 +2714,13 @@ Make sure that both types of Event Handler are included in your application's **
 - The jar files for the Java Event Handler are registered in the `<classpath>`.
 
 ```xml
-<process name="JAVA_KOTLIN_EVENT_HANLDERS">
+<process name="JAVA_KOTLIN_EVENT_HANDLERS">
     <groupId>MYAPP</groupId>
     <start>true</start>
     <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
     <module>genesis-pal-eventhandler</module>
     <package>global.genesis.eventhandler.pal,genesis.global.trades</package>
-    <script>Myapp-eventhandler.kts</script>
+    <script>myapp-eventhandler.kts</script>
     <language>pal</language>
     <classpath>myapp-eventhandler*.jar</classpath>
     <description>Handles events</description>
@@ -2885,7 +2887,7 @@ If you want your  `eventHandler` to comply with ACID, you need to use the RxEnti
 
 ### Context Event Handlers
 
-In order to optimise database look-up operations, you might want to use data obtained by the `onValidate` method inside your `onCommit` method. To do this, implement the Rx3ContextValidatingEventHandler interface, as shown below:
+In order to optimize database look-up operations, you might want to use data obtained by the `onValidate` method inside your `onCommit` method. To do this, implement the Rx3ContextValidatingEventHandler interface, as shown below:
 
 ```java
 

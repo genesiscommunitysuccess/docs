@@ -2,14 +2,14 @@
 title: 'IntelliJ Plugin'
 sidebar_label: 'IntelliJ Plugin'
 id: development-environment-intellij-plugin
-keywords: [intellij, plugin]
+keywords: [intelliJ, plugin]
 tags:
-- intellij
+- intelliJ
 - plugin
 sidebar_position: 4
 ---
 
-The Genesis Intellij Plugin enables you to run the full stack of a Genesis application locally within IntelliJ, so you can check and test your development work as you progress.
+The Genesis IntelliJ Plugin enables you to run the full stack of a Genesis application locally within IntelliJ, so you can check and test your development work as you progress.
 
 ## Installation
 
@@ -150,7 +150,7 @@ There is no need to install anything, as H2 uses a local file to store the datab
 
 ### Run remap
 
-The Genesis `remap` command manages the database schema. Whenever tables are added, modified or removed, you need to run `remap` to synchronise these changes.
+The Genesis `remap` command manages the database schema. Whenever tables are added, modified or removed, you need to run `remap` to synchronize these changes.
 This includes when you run your project for the first time.
 
 ![Remap in the tool window](/img/intellij-plugin/tool-window-remap.png)
@@ -201,7 +201,7 @@ To run your Genesis application locally, you can use these two buttons:
 :::tip
 Starting all processes at once in large projects can take some time. By default, a separate window is opened for each process.
 
-To clean up the UI, use the `Services` window for better organisation (only available in IntelliJ Ultimate Edition).
+To clean up the UI, use the `Services` window for better organization (only available in IntelliJ Ultimate Edition).
 :::
 
 ![Services Window](/img/plugin-services.png)
@@ -209,7 +209,7 @@ To clean up the UI, use the `Services` window for better organisation (only avai
 ### Starting the back end
 
 To start all services, click on `Start All Services`.
-You can start specific services from the `mon` Window, and from the Intellij `Run Config` list:
+You can start specific services from the `mon` Window, and from the IntelliJ `Run Config` list:
 
 ![Genesis Runconfig](/img/intellij-plugin/genesis-runconfig.png)
 
@@ -223,17 +223,17 @@ By default, `Start All Genesis Services` starts all the Genesis processes when y
 
 To do this:
 1. Open the Settings window.
-2. Untick `Enable All Processes`:
+2. Un-tick `Enable All Processes`:
 
 ![Enable All Processes](/img/intellij-plugin/enable-all-processes.png)
 
-3. You can now click on the ticks to select which processes you want to be started and which ones you don't. Ticked processes will be started when you click on `Start All Genesis Services`; unticked processes will not:
+3. You can now click on the ticks to select which processes you want to be started and which ones you don't. Ticked processes will be started when you click on `Start All Genesis Services`; un-ticked processes will not:
 
 ![Filter Processes](/img/intellij-plugin/filtered-processes.png)
 
-Unticked processes will not be started by any `start server` command, either from the terminal or the `start server` button. You can still start these processes manually.
+Un-ticked processes will not be started by any `start server` command, either from the terminal or the `start server` button. You can still start these processes manually.
 
-Note that `Start All Procesess` does not attempt to start any processes that are already running, so you can safely re-enable processes and click on `start server` again.
+Note that `Start All Processes` does not attempt to start any processes that are already running, so you can safely re-enable processes and click on `start server` again.
 
 #### Compact processes
 
@@ -400,7 +400,7 @@ Or:
 
 If the commands are not highlighted and you are not able to run them, check your settings:
 
-1. In Intellij, select `File -> Settings` to open the settings.
+1. In IntelliJ, select `File -> Settings` to open the settings.
 
 2. In the menu on the left of the settings, drill down to `Tools -> Terminal`.
 
@@ -425,7 +425,7 @@ The resource daemon provides information about the processes running locally. Th
 
 The plugin can automatically start the daemon when needed.
 
-If you find the daemon starting too often, you can disable it by unticking `Enable Resource Daemon Auto Start` in the menu.
+If you find the daemon starting too often, you can disable it by un-ticking `Enable Resource Daemon Auto Start` in the menu.
 
 ![Enable Daemon Auto Start](/img/intellij-plugin/menu-settings-daemon.png)
 
@@ -435,7 +435,7 @@ If process information is not showing in the `mon` window, you can start the dae
 
 However, regardless of this setting, the resource daemon will be started whenever you start any back-end service.
 
-## Keeping your local Genesis Home synchronised
+## Keeping your local Genesis Home synchronized
 
 Every Genesis application, whether deployed to a server or running locally, needs a `home` folder. This folder is the installation location; it includes all dependencies and configuration needed to run the application.
 
@@ -450,7 +450,7 @@ To check which mode the plugin is running in, click on the `Get Help` section of
 
 ### Gradle mode
 
-In Gradle mode, the plugin ensures that the Genesis Home folder is synchronised. Before running any other task, the `genesisSync` gradle task is triggered:
+In Gradle mode, the plugin ensures that the Genesis Home folder is synchronized. Before running any other task, the `genesisSync` gradle task is triggered:
 
 ![genesisSync gradle task](/img/intellij-plugin/genesis-sync.png)
 
@@ -458,7 +458,7 @@ This task builds local modules, copies the configuration of any dependencies, an
 
 The benefits of Gradle mode over Deploy mode are:
 
-* automatic synchronisation of the genesis home folder
+* automatic synchronization of the genesis home folder
 * dependencies are loaded from the gradle cache, rather than installed in the home folder - speeding things up
 * integration into gradle task avoidance system means that this task will do no more than necessary.
 * easier management of genesis dependencies for your project

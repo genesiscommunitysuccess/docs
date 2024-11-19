@@ -1,0 +1,62 @@
+---
+title: 'Analytics'
+sidebar_label: 'Analytics'
+id: comms-analytics
+keywords: [genesis, foundation, analytics]
+tags:
+  - comms
+  - analytics
+pagination_next: develop/client-capabilities/server-communications/comms-authentication
+---
+
+# Analytics
+
+This introduces a comprehensive system for tracking analytics events throughout the `foundation-comms` package. It leverages a typed event system and a configurable analytics instance to provide detailed insights into user interactions and navigation within the application.
+
+## Key Components
+
+- **Event Types Enumeration (`FoundationAnalyticsEventType`):** Defines a list of supported analytics event types, such as `controlClicked` and `routeChanged`, ensuring type safety and consistency in event tracking.
+- **Event Interfaces (`FoundationAnalyticsEvent` Namespace):** Describes the payload structure for each event type, facilitating the capture of relevant event data.
+- **Analytics Interface and Implementation (`FoundationAnalytics` and `DefaultFoundationAnalytics`):** Specifies the contract for an analytics tracking system and provides a default implementation that integrates with the `analytics` library.
+
+## Usage Examples
+
+### Tracking a Control Click Event
+
+```typescript
+import { FoundationAnalytics, FoundationAnalyticsEventType } from '@genesislcap/foundation-comms';
+import { FASTElement } from '@microsoft/fast-element';
+
+export class MyExampleClass extends FASTElement {
+  @FoundationAnalytics analyticsService: FoundationAnalytics;
+
+  onClick() {
+    this.analyticsService.trackEvent(FoundationAnalyticsEventType.controlClicked, {
+      name: 'settings-button',
+    });
+  }
+}
+```
+
+### Tracking a Route Change Event
+
+```typescript
+import { FoundationAnalytics, FoundationAnalyticsEventType } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @FoundationAnalytics analyticsService: FoundationAnalytics;
+
+  navigateToSettings() {
+    this.analyticsService.trackEvent(FoundationAnalyticsEventType.routeChanged, {
+      path: '/settings',
+      referrer: '/home',
+    });
+  }
+}
+```
+
+## Considerations
+
+- **Consistent Event Naming:** Adhere to a consistent naming convention for event names and payloads to ensure data integrity and ease of analysis.
+- **Selective Tracking:** Track meaningful interactions and transitions that offer insights into user behavior, avoiding excessive event logging.
+- **Configuration and Extension:** Utilize the DI system to configure or replace the analytics tracking implementation as needed to accommodate specific requirements or integrate with different analytics providers.
