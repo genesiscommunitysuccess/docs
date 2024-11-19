@@ -1,0 +1,103 @@
+---
+title: 'Anchor'
+sidebar_label: 'Anchor'
+id: client-interaction-anchor
+keywords: [ interaction, interactive, anchor, link, href, email, mailto, http, hyperlink, target ]
+tags:
+- interaction
+- interactive
+- anchor
+- link
+- href
+- email
+- mailto
+- http
+- hyperlink
+- target
+sidebar_position: 8
+---
+
+import AnchorDemo from '/examples/ui/client-capabilities/interaction/anchor.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Anchors add different types of links to your page.
+
+Use cases:
+* Creating a hyperlink to a different page
+* Linking to a specific region of the current page
+* An email link which pre-populates the recipient field
+
+## Example
+<AnchorDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-anchor></rapid-anchor>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-anchor href="https://genesis.global/">External link</rapid-anchor>
+        <rapid-anchor href="#api">Internal link</rapid-anchor>
+        <rapid-anchor href="mailto:hello@genesis.global">Mail link</rapid-anchor>
+    `,
+    })
+    export class MyElement extends GenesisElement { }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-anchor></rapid-anchor>
+    ```
+
+    Usage
+    ```typescript
+    export function MyComponent() {
+      return (
+        <rapid-anchor href="https://genesis.global/">External link</rapid-anchor>
+        <rapid-anchor href="#api">Internal link</rapid-anchor>
+        <rapid-anchor href="mailto:hello@genesis.global">Mail link</rapid-anchor>
+      );
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-anchor></rapid-anchor>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+    @Component({
+      selector: 'my-root',
+      template: `
+        <rapid-anchor href="https://genesis.global/">External link</rapid-anchor>
+        <rapid-anchor href="#api">Internal link</rapid-anchor>
+        <rapid-anchor href="mailto:hello@genesis.global">Mail link</rapid-anchor>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [FormsModule],
+    })
+    export class AppComponent { }
+    ```
+  </TabItem>
+</Tabs>
+
+
+## API
