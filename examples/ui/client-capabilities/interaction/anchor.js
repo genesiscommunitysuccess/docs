@@ -19,6 +19,6 @@ export default function AnchorDemo({ children, color }) {
 		<CodeSection>
 			<rapid-anchor style={style} href="https://genesis.global/">External link</rapid-anchor>
 			<rapid-anchor style={style} href="#api">Internal link</rapid-anchor>
-			<rapid-anchor style={style} href="mailto:hello@genesis.global">Mail link</rapid-anchor>
+			<rapid-anchor style={style} href="mailto:info@genesis.global">Mail link</rapid-anchor>
 		</CodeSection>)
 }
