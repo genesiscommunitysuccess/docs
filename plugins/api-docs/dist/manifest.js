@@ -33,7 +33,7 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/005_grids/001_grid-pro",
+                directory: "./docs/001_develop/03_client-capabilities/005_grids/01_grid-pro-docs",
                 api_docs: "docs/api",
                 readme: "01_grid-pro.mdx",
                 keywords: ["genesis", "foundation", "ui", "grid", "grid-pro", "ag"],
@@ -62,7 +62,7 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/005_grids/002_grid-tabulator",
+                directory: "./docs/001_develop/03_client-capabilities/005_grids/02_grid-tabulator-docs",
                 api_docs: "docs/api",
                 readme: "01_grid-tabulator.mdx",
                 keywords: ["genesis", "foundation", "ui", "grid", "grid-tabulator", "tabulator"],
@@ -129,6 +129,47 @@ exports.default = {
                         title: "Smart forms",
                         sidebar_label: "Smart Forms",
                         id: "smart-forms",
+                    },
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/foundation-i18n",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/020_internationalization/01_internationalization-docs",
+                api_docs: "docs/api",
+                readme: "index.mdx",
+                keywords: ["genesis", "foundation", "i18n", "internationalization"],
+                tags: [
+                    "i18n",
+                    "internationalization",
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/foundation-fdc3",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/021_desktop-interoperability",
+                api_docs: "docs/api",
+                readme: "01_foundation-fdc3.mdx",
+                keywords: ["genesis", "foundation", "ui", "fdc3"],
+                tags: ["genesis", "foundation", "ui", "fdc3"],
+                pages: [
+                    {
+                        title: "Foundation FDC3",
+                        sidebar_label: "Foundation FDC3",
+                        id: "foundation-fdc3",
                     },
                 ],
             },
