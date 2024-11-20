@@ -28,6 +28,7 @@ export default function DialogDemo({ children, color }) {
 				class="example-dialog"
 				aria-label="Simple modal dialog"
 				modal="true"
+				style={{zIndex: 50}}
 				hidden
 			>
 				<h2>Dialog</h2>
