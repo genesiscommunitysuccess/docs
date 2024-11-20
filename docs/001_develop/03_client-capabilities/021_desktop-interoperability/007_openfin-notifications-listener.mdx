@@ -1,0 +1,260 @@
+---
+title: 'FDC3 Openfin Notifications Listener'
+sidebar_label: 'FDC3 Openfin Notifications Listener'
+id: fdc3-openfin-notification-listener
+keywords: [interaction, interactive, interoperability, openfin, fdc3, notifications]
+tags:
+- interaction
+- interactive
+- interoperability
+- openfin
+- notifications
+- fdc3
+- data
+sidebar_position: 2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# FDC3 Openfin notifications listener
+
+This is a utility element that pipes notifications to [Openfin notifications](https://developers.openfin.co/of-docs/docs/overview-notifications)
+
+Use cases:
+* Display notifications in the Openfin Notifications panel
+
+## Examples
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+    <TabItem value="genesis">
+        Declaration
+        ```html
+        <rapid-openfin-notification-listener></rapid-openfin-notification-listener>
+        ```
+
+        Usage
+        ```typescript
+        @customElement({
+            name: 'my-element',
+            template: html`
+              <rapid-openfin-notification-listener
+                resource-name="ALL_NOTIFY_ALERT_RECORDS",
+                :notificationsPlatform="${() => ({
+                    id: 'your-platform-id',
+                    icon: 'http://url-to-your-icon.png',
+                    title: 'your platform title'
+                })}"
+                :toastButtons="${(): OpenfinToastButton[] => [
+                    {
+                        task: 'warning-button',
+                        condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
+                        action: ({details, buttonElement, toastElement}) => {
+                            console.log({details, buttonElement, toastElement});
+                            toastElement.close();
+                        },
+                        appearance: 'secondary-orange',
+                        placeholder: 'Dismiss',
+                    },
+                ]}"
+                ></rapid-openfin-notification-listener>
+              `,
+        })
+        export class MyElement extends GenesisElement {}
+        ```
+    </TabItem>
+
+    <TabItem value="react">
+        Declaration
+        ```html
+        <rapid-openfin-notification-listener></rapid-openfin-notification-listener>
+        ```
+
+        Usage
+        ```typescript
+        export function MyComponent() {
+
+            if (interopNotificationListenerRef.current) {
+                interopNotificationListenerRef.current.toastButtons = [
+                    {
+                        task: 'warning-button',
+                        condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
+                        action: ({details, buttonElement, toastElement}) => {
+                            console.log({details, buttonElement, toastElement});
+                            toastElement.close();
+                        },
+                        appearance: 'secondary-orange',
+                        placeholder: 'Dismiss',
+                    },
+                ]
+
+                interopNotificationListenerRef.current.notificationsPlatform = {
+                    id: 'your-platform-id',
+                    icon: 'http://url-to-your-icon.png',
+                    title: 'your platform title'
+                }
+            }
+            return (
+                <rapid-openfin-notification-listener
+                    ref={interopNotificationListenerRef}
+                     resource-name="ALL_NOTIFY_ALERT_RECORDS"
+                >
+                </rapid-openfin-notification-listener>
+            );
+        }
+    ```
+</TabItem>
+
+<TabItem value="angular">
+    Declaration
+    ```html
+    <rapid-openfin-notification-listener></rapid-openfin-notification-listener>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    @Component({
+        selector: 'my-root',
+        templateUrl: './my.component.html',
+        template: `
+            <rapid-openfin-notification-listener
+                #interopNotificationListenerRef
+                resource-name="ALL_NOTIFY_ALERT_RECORDS"
+            >
+            </rapid-openfin-notification-listener>
+        `,
+        standalone: true,
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class AppComponent {
+        @ViewChild('interopNotificationListenerRef') interopNotificationListener!: ElementRef;
+
+        ngAfterViewInit() {
+            if (this.interopNotificationListener.nativeElement) {
+                this.interopNotificationListener.nativeElement.buttons = [
+                    {
+                        task: 'warning-button',
+                        condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
+                        action: ({details, buttonElement, toastElement}) => {
+                            console.log({details, buttonElement, toastElement});
+                            toastElement.close();
+                        },
+                        appearance: 'secondary-orange',
+                        placeholder: 'Dismiss',
+                    },
+                ]
+
+                this.interopNotificationListener.nativeElement.notificationsPlatform = {
+                    id: 'your-platform-id',
+                    icon: 'http://url-to-your-icon.png',
+                    title: 'your platform title'
+                }
+            }
+        }
+    }
+    ```
+
+</TabItem>
+</Tabs>
+
+## DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+<table>
+    <thead>
+    <tr>
+        <th>Attribute</th>
+        <th>Type</th>
+        <th>Use</th>
+        <th>Example</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>resource-name</td>
+        <td><code>string</code></td>
+        <td>The name of the server resource that pushes notifications to the client, normally 'ALL_NOTIFY_ALERT_RECORDS'</td>
+        <td>
+            ```typescript
+            <rapid-openfin-notification-listener resource-name="ALL_NOTIFY_ALERT_RECORDS">
+            ```
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+### Properties
+
+<table>
+    <thead>
+    <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Use</th>
+        <th>Example</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>toastButtons</td>
+        <td>
+            NotificationsPlatform <!-- To Do add link-->
+        </td>
+        <td>An array of configs for showing buttons. Buttons appear in notifications when the <code>condition</code> callback returns <code>true</code>. The action callback is called when the corresponding button is clicked</td>
+        <td>
+            ```typescript
+            <rapid-openfin-notification-listener :toastButtons=${)_ => [
+                {
+                    condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
+                    action: ({details, buttonElement, toastElement}) => {
+                    console.log({details, buttonElement, toastElement});
+                    toastElement.close();
+                },
+                    appearance: 'secondary-orange',
+                    placeholder: 'Dismiss',
+                },
+            ]}>
+            ```
+        </td>
+    </tr>
+    <tr>
+        <td>notificationsPlatform</td>
+        <td><a href="https://cdn.openfin.co/workspace/docs/api/latest/interfaces/notifications.NotificationsPlatform.html">NotificationsPlatform</a></td>
+        <td>A config object containing: <code>id</code> - a string, the id of your openfin application, <code>icon</code> - a string, the url for the icon to be displayed in the Openfin notifications panel, and <code>title</code> - a string, the title for of the application that is creating notifications</td>
+        <td>
+            ```typescript
+            <rapid-openfin-notification-listener :notificationsPlatform="${() => ({
+                id: 'your-platform-id',
+                icon: 'http://url-to-your-icon.png',
+                title: 'your platform title'
+            })}">
+            ```
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+:::warning
+This API is in beta and is likely to change in the future.
+:::
+
+### Slots
+
+This component has no slots.
+
+### Parts
+
+This component has no parts.
+
+### Fired Events
+
+This component doesn't fire any events.
+
+### Listened Events
+
+This component doesn't listen to any events.
