@@ -42,7 +42,7 @@ Use cases:
       @customElement({
         name: 'my-element',
         template: html`
-            <rapid-segmented-control :value=${sync((x) => x.controlValue)}>
+            <rapid-segmented-control value=${sync((x) => x.controlValue)}>
               <rapid-segmented-item>Item 1</rapid-segmented-item>
               <rapid-segmented-item>Item 2</rapid-segmented-item>
               <rapid-segmented-item>Item 3</rapid-segmented-item>
@@ -68,11 +68,19 @@ Use cases:
     Usage
     ```typescript
       export function MyComponent() {
+
+        const [outputValue, setOutputValue] = useState('');
+
         const onChange = (event) => {
-          console.log(event.target.value)
+          setOutputValue(event.target.value);
         }
+
         return (
-          <rapid-segmented-control onChange={onChange}></rapid-segmented-control>
+          <rapid-segmented-control onChange={onChange}>
+            <rapid-segmented-item>Item 1</rapid-segmented-item>
+            <rapid-segmented-item>Item 2</rapid-segmented-item>
+            <rapid-segmented-item>Item 3</rapid-segmented-item>
+          </rapid-segmented-control>
         );
       }
     ```
@@ -93,7 +101,11 @@ Use cases:
         template: `
               <rapid-segmented-control
                 (change)="onChange($event)"
-              ></rapid-segmented-control>
+              >
+                <rapid-segmented-item>Item 1</rapid-segmented-item>
+                <rapid-segmented-item>Item 2</rapid-segmented-item>
+                <rapid-segmented-item>Item 3</rapid-segmented-item>
+              </rapid-segmented-control>
             `,
         standalone: true,
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -165,7 +177,7 @@ Use cases:
     </tr>
     <tr>
       <td>orientation</td>
-      <td><code>string</code></td>
+      <td><code>"horizontal" | "vertical"</code></td>
       <td>Sets the orientation of the group of components. **Default: `horizontal`**</td>
 <td>
 
@@ -186,6 +198,7 @@ This component doesn't have any properties which are not also controlled via att
 
 | Slot | Description |
 |---|---|
+|  | The default slot where rapid-segmented-items go |
 | label | The label |
 
 ### Parts
@@ -198,12 +211,12 @@ There are no parts.
   <tbody>
   <tr>
     <td>change</td>
-    <td><code>event</code></td>
+    <td><code>void</code></td>
     <td>Emits a custom change event when the component state changes.</td>
 <td>
 
 ```typescript
-<rapid-segmented-control @change="${(x) => x.myChangeHandler(event)}">
+<rapid-segmented-control @change="${(x) => x.myChangeHandler()}">
 ```
 
 </td>
