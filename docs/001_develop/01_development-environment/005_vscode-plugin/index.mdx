@@ -26,7 +26,7 @@ You provide an image of the UI you want to create, and the Genesis UI Generator 
 
 ## Installation
 
-1. To install the Genesis UI Generator, visit [Genesis UI Generator on Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=GenesisGlobal.genesis-ui-generator). Click on **Install** or search for `Genesis UI Generator` in the extensions panel in VS Code.
+1. To install the Genesis UI Generator, visit [Genesis UI Generator on Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=GenesisGlobal.genesis-ui-generator). Click on `Install` or search for `Genesis UI Generator` in the extensions panel in VS Code.
 
 2. After installing the extension, the Genesis icon will be visible in the VS Code side menu on the left.
 
@@ -34,18 +34,21 @@ You provide an image of the UI you want to create, and the Genesis UI Generator 
 
 ## Configuration
 
-- Open your Genesis project (root folder) in VS Code before starting to use the extension features.
+Open your Genesis project (root folder) in VS Code before starting to use the extension features.
 
 If the source folder path (`src`) is not found or is not correct, the `Setup Genesis View` button will be displayed:
 
 ![Settings Button](/img/vscode-extension/setup-genesis-view-correct.png)
 
-- You can edit the source folder path by clicking on `Setup Genesis View` or clicking on left panel `settings button > Settings` and searching for "genesis ui".
-
-Clicking on the button will open the extension settings screen.
-You can configure the source folder path and also OpenAI key in the extension's settings to use `Genesis View`.
+- Click on this button to open the extension settings screen. Here, you can configure the source folder path (Client Src Path`). You can also set the `OpenAI key` in the extension's settings to use `Genesis View`.
 
 ![Settings](/img/vscode-extension/settings.png)
+
+:::tip
+If you want to change these values at some other point, click on the `Manage` icon at the bottom left of the VSCode window and select `Settings`.
+![Settings](/img/vscode-extension/manage-icon.png)
+Then search for `genesis ui`.
+:::
 
 ## Features
 
@@ -60,12 +63,12 @@ You can configure the source folder path and also OpenAI key in the extension's 
 - `Code Snippets` provides an extensive catalogue of typeScript and HTML code snippets for the most-used Genesis web components and boilerplate code.
 
 :::tip
-Ensure you install `literally-html` to enable the full functionality of snippets and items from the HTML catalogue.
+To use the full functionality of snippets and items from the HTML catalogue, install `literally-html`.
 :::
 
 ## Using Genesis UI Generator
 
-Once you have completed the configuration, you are ready to start using the Genesis UI Generator features.
+Once you have completed the configuration, you are ready to start using the Genesis UI Generator.
 
 ### Genesis View
 
@@ -88,7 +91,9 @@ This displays the image in a new UI dedicated to Genesis View:
 - `Custom Grid Styles` generates a file that provides custom colours and style for grids in your Genesis application.
 - `Design Tokens` generates or replaces the **design-tokens.json** file, managing the colours and theme of your entire application.
 
-PS: Genesis View doesn't support React or Angular generation yet.
+::: 
+At present, Genesis View does not support React or Angular generation.
+:::
 
 3. When you have completed the configuration, click on `Start`.
 
