@@ -340,26 +340,66 @@ The live example includes css styling to ensure the components fit into the exam
 
 ### Properties
 
-This component doesn't have any properties which are not also controlled via attributes.
+You should only be reading these properties via the code, rather than setting them on the template.
+
+|Property|Type|Description|
+|--|--|--|
+|initialLayoutComplete|`boolean`|Indicates that an initial positioning pass on layout has completed|
+|verticalPosition|`"start" \| "insetStart" \| "insetEnd" \| "end" \| "center"`|Indicates the current vertical position of the region. Depending on the axis start = left/top, end = right/bottom|
+|horizontalPosition|`"start" \| "insetStart" \| "insetEnd" \| "end" \| "center"`|Indicates the current horizontal position of the region. Depending on the axis start = left/top, end = right/bottom|
 
 ### Slots
 
 |Slot|Description|
 |---|---|
-|Default|This elements which are contained in the anchor region, and will trigger the `href` when clicked.|
-|start|Content which can be provided before the anchor content.|
-|end|Content which can be provided after the anchor content.|
+|Default|This elements which are contained in the anchored region.|
 
 ### Parts
 
-| Part | Description |
-| --- | --- |
-| control | The anchor element |
-| content | The element wrapping anchor content
+This component doesn't have any css parts. Style the content in the default slot directly.
 
 ### Events fired
 
-This component doesn't emit any events.
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>loaded</td>
+            <td><code>this</code></td>
+            <td>Fires when the region is loaded and visible</td>
+<td>
+
+```typescript
+<rapid-anchored-region @loaded=${(x,ctx) => x.handleLoaded(ctx.event)}>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>positionchange</td>
+            <td><code>this</code></td>
+            <td>Fires when the position has changed</td>
+<td>
+
+```typescript
+<rapid-anchored-region @positionchange=${(x,ctx) => x.handlePositionChange(ctx.event)}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+:::tip
+Event type `this` means the event detail is a reference to the element itself.
+:::
 
 ### Events listened to
 
