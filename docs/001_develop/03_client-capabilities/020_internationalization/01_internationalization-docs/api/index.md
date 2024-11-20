@@ -21,5 +21,5 @@ Welcome to the API documentation for this package.
 
 |  Package | Description |
 |  --- | --- |
-|  [@genesislcap/foundation-comms](./foundation-comms.md) |  |
+|  [@genesislcap/foundation-i18n](./foundation-i18n.md) |  |
 
