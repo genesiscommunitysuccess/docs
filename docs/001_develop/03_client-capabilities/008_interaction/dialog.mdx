@@ -70,26 +70,24 @@ Use cases:
       const dialogRef = useRef(null);
 
       return (
-        <CodeSection>
-          <rapid-button onClick={() => {
-            dialogRef.current?.removeAttribute('hidden');
-            dialogRef.current?.show();
-          }}>
-            Open Dialog
-          </rapid-button>
+        <rapid-button onClick={() => {
+          dialogRef.current?.removeAttribute('hidden');
+          dialogRef.current?.show();
+        }}>
+          Open Dialog
+        </rapid-button>
 
-          <rapid-dialog
-            ref={dialogRef}
-            id="example1"
-            class="example-dialog"
-            aria-label="Simple modal dialog"
-            modal="true"
-            hidden
-          >
-            <h2>Dialog</h2>
-            <p>This is an example dialog.</p>
-          </rapid-dialog>
-        </CodeSection>
+        <rapid-dialog
+          ref={dialogRef}
+          id="example1"
+          class="example-dialog"
+          aria-label="Simple modal dialog"
+          modal="true"
+          hidden
+        >
+          <h2>Dialog</h2>
+          <p>This is an example dialog.</p>
+        </rapid-dialog>
       )
     }
     ```
@@ -109,23 +107,21 @@ Use cases:
     @Component({
       selector: 'my-component',
       template: `
-        <code-section>
-          <rapid-button (click)="openDialog()">
-            Open Dialog
-          </rapid-button>
+        <rapid-button (click)="openDialog()">
+          Open Dialog
+        </rapid-button>
 
-          <rapid-dialog
-            #dialogRef
-            id="example1"
-            class="example-dialog"
-            aria-label="Simple modal dialog"
-            modal="true"
-            hidden
-          >
-            <h2>Dialog</h2>
-            <p>This is an example dialog.</p>
-          </rapid-dialog>
-        </code-section>
+        <rapid-dialog
+          #dialogRef
+          id="example1"
+          class="example-dialog"
+          aria-label="Simple modal dialog"
+          modal="true"
+          hidden
+        >
+          <h2>Dialog</h2>
+          <p>This is an example dialog.</p>
+        </rapid-dialog>
       `,
       standalone: true,
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -148,112 +144,6 @@ Use cases:
 
 ### Attributes
 
-<table>
-    <tr>
-        <th>Attribute</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Example</th>
-    </tr>
-    <tr>
-        <td>download</td>
-        <td><code>string | boolean</code></td>
-        <td>Causes the browser to treat the linked URL as a download. This attributes only works for same-origin URLs, or when using the <code>blob:</code> and <code>data:</code> schemes. Different browsers will behave slightly differently for downloads, such as asking the user where to save the file or automatically saving to a downloads directory.</td>
-<td>
-
-```typescript
-<rapid-anchor href="files/genesis.pdf" download>
-```
-
-</td>
-    </tr>
-    <tr>
-        <td>href</td>
-        <td><code>string</code></td>
-        <td>The URL that the hyperlink points to. This is commonly to another page, but it could be to a region of the current page. You can also use schemes such as <code>mailto:</code>, <code>javascript:</code>, <code>tel:</code>, and <code>sms:</code></td>
-<td>
-
-```typescript
-<rapid-anchor href="https://genesis.global/">
-```
-
-</td>
-    </tr>
-    <tr>
-        <td>hreflang</td>
-        <td><code>string</code></td>
-        <td>A hint to the language of the linked document. Doesn't add any functionality itself.</td>
-<td>
-
-```typescript
-<rapid-anchor href="https://genesis.global/" hreflang="en">
-```
-
-</td>
-    </tr>
-    <tr>
-        <td>ping</td>
-        <td><code>string</code></td>
-        <td>A space separated list of URLs to which to send a <code>PING</code> message. This is commonly used for tracking.</td>
-<td>
-
-```typescript
-<rapid-anchor ping="https://genesis.global/">
-```
-
-</td>
-    </tr>
-    <tr>
-        <td>referrer</td>
-        <td><code>string</code></td>
-        <td>How much of <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer">the referrer</a> to send when the user clicks the link.</td>
-<td>
-
-```typescript
-<rapid-anchor href="https://genesis.global/" referrer="no-referrer">
-```
-
-</td>
-    </tr>
-    <tr>
-        <td>rel</td>
-        <td><code>string</code></td>
-        <td>The relationship of the linked URL to the current page. Examples are the next or previous page, the author's page, or to help documentation.</td>
-<td>
-
-```typescript
-<rapid-anchor href="https://genesis.global/author" rel="author">
-  Author's page
-</rapid-anchor>
-```
-
-</td>
-    </tr>
-    <tr>
-        <td>target</td>
-        <td><code>"_blank" | "_self" | "_parent"</code></td>
-        <td>Where to display the linked URL. Most common use is to set <code>_blank</code> for making the link open in a new tab or window.</td>
-<td>
-
-```typescript
-<rapid-anchor href="https://genesis.global/" target="_blank">
-```
-
-</td>
-    </tr>
-    <tr>
-        <td>type</td>
-        <td><code>string</code></td>
-        <td>A hint to the <a href="https://developer.mozilla.org/en-US/docs/Glossary/MIME_type">media type</a> of the linked document. Doesn't add any functionality itself.</td>
-<td>
-
-```typescript
-<rapid-anchor href="https://genesis.global/" type="application/pdf">
-```
-
-</td>
-    </tr>
-</table>
 
 ### Properties
 
