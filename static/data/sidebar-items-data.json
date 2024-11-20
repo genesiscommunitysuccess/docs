@@ -1,4 +1,36 @@
 {
+  "/develop/development-environments": {
+    "items": [
+      {
+        "href": "/develop/development-environment/launchpad/",
+        "description": "Launchpad description"
+      },
+      {
+        "href": "/develop/development-environment/genesis-start/",
+        "description": "Genesis Start description"
+      },
+      {
+        "href": "/develop/development-environment/intellij-plugin/",
+        "description": "IntelliJ Plugin description"
+      },
+      {
+        "href": "/develop/development-environment/vscode-plugin/",
+        "description": "VSCode Plugin description"
+      },
+      {
+        "href": "/develop/development-environment/custom-elements-lsp/",
+        "description": "Custom Elements LSP description"
+      },
+      {
+        "href": "/develop/development-environment/ai/",
+        "description": "AI description"
+      },
+      {
+        "href": "/develop/development-environment/genx/",
+        "description": "genx description"
+      }
+    ]
+  },
   "/develop/server-capabilities": {
     "items": [
       {
@@ -48,6 +80,126 @@
       {
         "href": "/develop/server-capabilities/runtime-configuration/",
         "description": "Runtime Configuration description"
+      }
+    ]
+  },
+  "/develop/client-capabilities": {
+    "items": [
+      {
+        "href": "/develop/client-capabilities/server-communications/",
+        "description": "Server Communications description"
+      },
+      {
+        "href": "/develop/client-capabilities/login/",
+        "description": "Login description"
+      },
+      {
+        "href": "/develop/client-capabilities/header/",
+        "description": "Header description"
+      },
+      {
+        "href": "/develop/client-capabilities/grids/",
+        "description": "Grids description"
+      },
+      {
+        "href": "/develop/client-capabilities/charts/",
+        "description": "Charts description"
+      },
+      {
+        "href": "/develop/client-capabilities/forms/",
+        "description": "Forms description"
+      },
+      {
+        "href": "/develop/client-capabilities/interaction/",
+        "description": "Interaction description"
+      },
+      {
+        "href": "/develop/client-capabilities/presentation/",
+        "description": "Presentation description"
+      },
+      {
+        "href": "/develop/client-capabilities/filters/",
+        "description": "Filters description"
+      },
+      {
+        "href": "/develop/client-capabilities/criteria/",
+        "description": "Criteria description"
+      },
+      {
+        "href": "/develop/client-capabilities/toast-notifications/",
+        "description": "Toast Notifications description"
+      },
+      {
+        "href": "/develop/client-capabilities/utility-methods/",
+        "description": "Utility methods description"
+      },
+      {
+        "href": "/develop/client-capabilities/layout-management/",
+        "description": "Layout Management description"
+      },
+      {
+        "href": "/develop/client-capabilities/storage/",
+        "description": "Storage description"
+      },
+      {
+        "href": "/develop/client-capabilities/state-management/",
+        "description": "State Management description"
+      },
+      {
+        "href": "/develop/client-capabilities/state-machine/",
+        "description": "State Machine description"
+      },
+      {
+        "href": "/develop/client-capabilities/styling/",
+        "description": "Styling description"
+      },
+      {
+        "href": "/develop/client-capabilities/internationalization/",
+        "description": "Internationalization description"
+      },
+      {
+        "href": "/develop/client-capabilities/framework-integration/",
+        "description": "Framework Integration description"
+      },
+      {
+        "href": "/develop/client-capabilities/desktop-interoperability/",
+        "description": "Desktop Interoperability description"
+      },
+      {
+        "href": "/develop/client-capabilities/custom-components/",
+        "description": "Custom Components description"
+      }
+    ]
+  },
+  "/develop/business-components": {
+    "items": [
+      {
+        "href": "",
+        "descirption": ""
+      },
+      {
+        "href": "",
+        "descirption": ""
+      },
+      {
+        "href": "",
+        "descirption": ""
+      },
+      {
+        "href": "",
+        "descirption": ""
+      },
+      {
+        "href": "",
+        "descirption": ""
+      },
+      {
+        "href": "",
+        "descirption": ""
+      },
+      {
+        "href": "",
+        "descirption": ""
       }
     ]
   }

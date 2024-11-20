@@ -3,13 +3,13 @@ import { Grid } from '@mui/material';
 import Card from './Card';
 
 const generateClassNameFromHref = (href) => {
-  return href.replace(/^\/+|\/+$/g, '').toLowerCase().replace(/\//g, '-').replace(/[^a-z0-9-]/g, ''); 
+  return href?.replace(/^\/+|\/+$/g, '').toLowerCase().replace(/\//g, '-').replace(/[^a-z0-9-]/g, ''); 
 };
 
 export default function CardList({ inRow = 1, xs = 12, sm = 6, md = 4, items }) {
   return (
     <Grid container spacing={2}>
-      {items.map((item, index) => (
+      {items.map((item, index) => item.link && (
         <Grid 
           item 
           xs={xs !== 12 ? xs : 12 / inRow} 
