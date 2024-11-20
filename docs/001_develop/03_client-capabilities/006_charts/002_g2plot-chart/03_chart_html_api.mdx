@@ -2,13 +2,24 @@
 title: 'Chart Declerative HTML API'
 sidebar_label: 'Chart Declerative HTML'
 id: chart-html-api
-keywords: [genesis, foundation, ui, chart, g2plot-chart, g2plot]
+keywords: [genesis, foundation, ui, chart, g2plot-chart, g2plot, Attribute, Property, Template, Declerative HTML, Events, DOM API, datasource]
 tags:
   - connected
   - datasource
   - chart
+  - chart datasource
   - g2plot-chart
   - g2plot
+  - Declerative HTML
+  - Attribute
+  - Property
+  - Events
+  - Template
+  - API
+  - DOM
+  - DOM API
+  - slot
+  - parts
 pagination_next: develop/client-capabilities/forms/client-forms
 ---
 
@@ -387,11 +398,14 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
     <tr>
       <td>request</td>
       <td><code>any</code></td>
-      <td>This optional parameter enables you to specify request fields, which can include wildcards..</td>
+      <td>This optional parameter enables you to specify request fields, which can include wildcards.</td>
 <td>
 
 ```typescript
-<chart-datasource :request=${(x) => x.datasourceRequest}>
+<chart-datasource :request=${(x) => ({
+    "TRADE_NAME": `VOD*`,
+  })}
+>
 ```
 
 </td>
