@@ -40,7 +40,7 @@ The live example includes css styling to ensure the components fit into the exam
 
     Declaration
     ```html
-    <rapid-anchor></rapid-anchor>
+    <rapid-anchored-region></rapid-anchored-region>
     ```
 
     Usage
@@ -48,10 +48,18 @@ The live example includes css styling to ensure the components fit into the exam
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-anchor href="https://genesis.global/">External link</rapid-anchor>
-        <rapid-anchor href="#api">Internal link</rapid-anchor>
-        <rapid-anchor href="mailto:info@genesis.global">Mail link</rapid-anchor>
-    `,
+        <div id="viewport">
+          <button id="anchor">
+            Button is an anchor, defined first in the DOM
+          </button>
+          <rapid-anchored-region
+            anchor="anchor"
+            vertical-positioning-mode="locktodefault"
+            vertical-default-position="top">
+            This shows up above the button, even though it's after it in the DOM
+          </rapid-anchored-region>
+        </div>
+      `,
     })
     export class MyElement extends GenesisElement { }
     ```
@@ -61,16 +69,24 @@ The live example includes css styling to ensure the components fit into the exam
 
     Declaration
     ```html
-    <rapid-anchor></rapid-anchor>
+    <rapid-anchored-region></rapid-anchored-region>
     ```
 
     Usage
     ```typescript
     export function MyComponent() {
       return (
-        <rapid-anchor href="https://genesis.global/">External link</rapid-anchor>
-        <rapid-anchor href="#api">Internal link</rapid-anchor>
-        <rapid-anchor href="mailto:info@genesis.global">Mail link</rapid-anchor>
+        <div id="viewport">
+          <button id="anchor">
+            Button is an anchor, defined first in the DOM
+          </button>
+          <rapid-anchored-region
+            anchor="anchor"
+            vertical-positioning-mode="locktodefault"
+            vertical-default-position="top">
+            This shows up above the button, even though it's after it in the DOM
+          </rapid-anchored-region>
+        </div>
       );
     }
     ```
@@ -79,7 +95,7 @@ The live example includes css styling to ensure the components fit into the exam
 
     Declaration
     ```html
-    <rapid-anchor></rapid-anchor>
+    <rapid-anchored-region></rapid-anchored-region>
     ```
 
     Usage
@@ -89,9 +105,17 @@ The live example includes css styling to ensure the components fit into the exam
     @Component({
       selector: 'my-root',
       template: `
-        <rapid-anchor href="https://genesis.global/">External link</rapid-anchor>
-        <rapid-anchor href="#api">Internal link</rapid-anchor>
-        <rapid-anchor href="mailto:info@genesis.global">Mail link</rapid-anchor>
+        <div id="viewport">
+          <button id="anchor">
+            Button is an anchor, defined first in the DOM
+          </button>
+          <rapid-anchored-region
+            anchor="anchor"
+            vertical-positioning-mode="locktodefault"
+            vertical-default-position="top">
+            This shows up above the button, even though it's after it in the DOM
+          </rapid-anchored-region>
+        </div>
       `,
       standalone: true,
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

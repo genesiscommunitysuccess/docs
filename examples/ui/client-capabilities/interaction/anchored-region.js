@@ -20,7 +20,7 @@ export default function AnchoredRegionDemo({ children, color }) {
 					anchor="anchor"
 					vertical-positioning-mode="locktodefault"
 					vertical-default-position="top">
-					This shows up above the button, even though it's after it in the DOM
+					This content in the anchored region shows up above the button, even though it's after it in the DOM
 				</rapid-anchored-region>
 			</div>
 		</CodeSection>)
