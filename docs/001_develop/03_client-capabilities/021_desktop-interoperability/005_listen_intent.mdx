@@ -1,0 +1,208 @@
+---
+title: 'FDC3 Listen Intent'
+sidebar_label: 'FDC3 Listen Intent'
+id: fdc3-listen-intent
+keywords: [interaction, interactive, interoperability, openfin, interop.io, fdc3, fdc3 intent, fdc3 context, data]
+tags:
+- interaction
+- interactive
+- interoperability
+- openfin
+- interop.io
+- fdc3
+- fdc3 intent
+- fdc3 system
+- data
+sidebar_position: 3
+---
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# FDC3 channel system listener
+
+This is a utility element that listens to an raised [intents](https://fdc3.finos.org/docs/intents/spec) in FDC3 and handled by the application .
+
+Use cases:
+* Listen to and handle intents for a specified context system in an FDC workspace.
+
+## Examples
+
+This will listen to the system channel for changes in the specified context.
+
+:::warning
+Where an app is intended to be launched in order to resolve a raised intent, the element must be present in the DOM within 15 seconds of the application launch (the minimum timeout Desktop Agents are required to provide) in order to be widely compatible with Desktop Agent implementations
+:::
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+    <TabItem value="genesis">
+        Declaration
+        ```html
+        <fdc3-intent-listener></fdc3-intent-listener>
+        ```
+        Usage
+        ```typescript
+        @customElement({
+        name: 'my-element',
+        template: html`
+            <div>Instrument message:<i>${x => x.instrumentMessage}</i></div>
+            <div>Quote message:<i>${x => x.quoteMessage}</i></div>
+            <fdc3-intent-listener
+                :config="${(x) => [
+                    {
+                        intent: 'ViewInstrument',
+                        callback: (message) => x.handleInstrumentMessage(message),
+                    },
+                    {
+                        channelType: 'ViewQuote',
+                        callback: (message) => x.handleQuote(message),
+                    },
+                ]}"
+            >
+            </fdc3-intent-listener>
+        `,
+        })
+        export class MyElement extends GenesisElement {
+
+            @observable quoteMessage: any = {};
+    
+            @observable instrumentMessage: any = {};
+    
+            handleQuoteMessage(message) {
+                this.quoteMessage = JSON.stringify(message);
+            }
+
+            handleInstrumentMessage(message) {
+                this.instrumentMessage = JSON.stringify(message)
+            }
+        }
+        ```
+    </TabItem>
+
+    <TabItem value="react">
+        Declaration
+        ```html
+        <fdc3-intent-listener></fdc3-intent-listener>
+        ```
+
+        Usage
+        ```typescript
+        export function MyComponent() {
+            useEffect(() => {
+
+                const [instrumentMessage, setInstrumentMessage] = useState('');
+                const [quoteMessage, setQuoteMessage] = useState('');
+
+                if (intentListenerRef.current) {
+                    intentListenerRef.current.config = [
+                        {
+                            intent: 'ViewInstrument',
+                            callback: (message) => setInstrumentMessage(JSON.stringify(message)),
+                        },
+                        {
+                            channelType: 'ViewQuote',
+                            callback: (message) => setQuoteMessage(JSON.stringify(message)),
+                        },
+                    ]
+                }
+            });
+            return (
+                <div>Instrument message:<i>{instrumentMessage}</i></div>
+                <div>Quote message:<i>{quoteMessage}</i></div>
+                <fdc3-intent-listener ref={intentListenerRef}>
+                </fdc3-intent-listener>
+            );
+        }
+        ```
+</TabItem>
+
+<TabItem value="angular">
+    Declaration
+    ```html
+    <fdc3-intent-listener></fdc3-intent-listener>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    @Component({
+        selector: 'my-root',
+        templateUrl: './my.component.html',
+        template: `
+            <div>Instrument message:<i>{{ instrumentMessage }}</i></div>
+            <div>Quote message:<i>{{ quoteMessage }}</i></div>
+            <fdc3-intent-listener #intentListenerRef>
+            </fdc3-intent-listener>
+        `,
+        standalone: true,
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class AppComponent {
+        @ViewChild('intentListenerRef') intentListener!: ElementRef;
+
+        instrumentMessage: any;
+
+        quoteMessage: any;
+
+        ngAfterViewInit() {
+            if (this.intentListener.nativeElement) {
+                this.intentListener.nativeElement.config = [
+                    {
+                        intent: 'ViewInstrument',
+                        callback: (message) => this.setInstrumentMessage(JSON.stringify(message)),
+                    },
+                    {
+                        channelType: 'ViewQuote',
+                        callback: (message) => this.setQuoteMessage(JSON.stringify(message)),
+                    },
+                ];
+            }
+        }
+
+        setInstrumentMessage(message) {
+            this.instrumentMessage = JSON.stringify(message);
+        }
+
+        setQuoteMessage(message) {
+            this.quoteMessage = JSON.stringify(message);
+        }
+    }
+    ```
+</TabItem>
+</Tabs>
+
+## DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+This component has no attributes
+
+### Properties
+
+<table>
+    <thead>
+    <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Use</th>
+        <th>Example</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>config</td>
+        <td><code>IntentConfig</code></td> <!-- TODO link API docs -->
+        <td>An array of objects which configure the intent name and a handler for intent payloads</td>
+        <td>
+            ```typescript
+            <fdc3-system-channel-listener :config=${() =>
+                [{ intent: 'ViewInstrument', callback: (msg) => console.log(JSON.stringify(msg)}]
+            }>
+            ```
+        </td>
+    </tr>
+    </tbody>
+</table>
