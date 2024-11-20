@@ -2,7 +2,7 @@
 title: 'FDC3 Listen Intent'
 sidebar_label: 'FDC3 Listen Intent'
 id: fdc3-listen-intent
-keywords: [interaction, interactive, interoperability, openfin, interop.io, fdc3, fdc3 intent, fdc3 context, data]
+keywords: [interaction, interactive, interoperability, openfin, interop.io, fdc3, fdc3 intent, data]
 tags:
 - interaction
 - interactive
@@ -20,16 +20,16 @@ sidebar_position: 3
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# FDC3 channel system listener
+# FDC3 intent listener
 
 This is a utility element that listens to an raised [intents](https://fdc3.finos.org/docs/intents/spec) in FDC3 and handled by the application .
 
 Use cases:
-* Listen to and handle intents for a specified context system in an FDC workspace.
+* Handle intents raised against an application in an FDC3 workspace.
 
 ## Examples
 
-This will listen to the system channel for changes in the specified context.
+This will handle intents raised against this application.
 
 :::warning
 Where an app is intended to be launched in order to resolve a raised intent, the element must be present in the DOM within 15 seconds of the application launch (the minimum timeout Desktop Agents are required to provide) in order to be widely compatible with Desktop Agent implementations
@@ -55,7 +55,7 @@ Where an app is intended to be launched in order to resolve a raised intent, the
                         callback: (message) => x.handleInstrumentMessage(message),
                     },
                     {
-                        channelType: 'ViewQuote',
+                        intent: 'ViewQuote',
                         callback: (message) => x.handleQuote(message),
                     },
                 ]}"
@@ -101,7 +101,7 @@ Where an app is intended to be launched in order to resolve a raised intent, the
                             callback: (message) => setInstrumentMessage(JSON.stringify(message)),
                         },
                         {
-                            channelType: 'ViewQuote',
+                            intent: 'ViewQuote',
                             callback: (message) => setQuoteMessage(JSON.stringify(message)),
                         },
                     ]
@@ -153,7 +153,7 @@ Where an app is intended to be launched in order to resolve a raised intent, the
                         callback: (message) => this.setInstrumentMessage(JSON.stringify(message)),
                     },
                     {
-                        channelType: 'ViewQuote',
+                        intent: 'ViewQuote',
                         callback: (message) => this.setQuoteMessage(JSON.stringify(message)),
                     },
                 ];
@@ -198,7 +198,7 @@ This component has no attributes
         <td>An array of objects which configure the intent name and a handler for intent payloads</td>
         <td>
             ```typescript
-            <fdc3-system-channel-listener :config=${() =>
+            <fdc3-intent-listener :config=${() =>
                 [{ intent: 'ViewInstrument', callback: (msg) => console.log(JSON.stringify(msg)}]
             }>
             ```
