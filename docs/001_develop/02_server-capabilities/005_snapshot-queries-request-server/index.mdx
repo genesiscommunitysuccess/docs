@@ -14,18 +14,23 @@ sidebar_position: 5
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Log from '/snippet/_LOG.md'
-import QueryPermissions from '/snippet/_query-permissions.md'
+import CommonPermissions from '/snippet/_common-permissions.md'
+import CommonPermissionsQuery from '/snippet/_common-permissions-query.md'
 import CommonFieldOverrides from '/snippet/_common-field-overrides.md'
 import CommonQueryFields from '/snippet/_common-query-fields.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
+import CommonAuthenticateFirst from '/snippet/_common-authenticate-first.md'
+import CommonOpenAPI from '/snippet/_common-open-api.md'
 
 ## Overview
+
+<p align="center"><iframe src="https://player.vimeo.com/video/792592165?h=18cdb5adf0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></p>
 
 The Request Server is a microservice responsible for providing APIs to request snapshots of an application's data. Developers configure specific data sets as named requests, which can be queried by clients via APIs. Request Servers may sometimes be referred to as a "Request Reply" or "ReqRep" for short.
 ≤
 ```mermaid
 graph TD
-A[UI] --> |1. Connection| B(REQUEST_SERVER)
+A[UI] --> |1. Request| B(REQUEST_SERVER)
 B -->|3. Set Response| A
 B <-->|2. Read|C[Database] 
 ```
@@ -156,7 +161,7 @@ Requests would be looked up using that table index.
 
 ###### Picking an index
 
-Request servers will attempt to use the most efficient mechanism to retrieve data from the data base. Given the `REQUEST` fields which are input, and not wildcarded, it will cycle through the indices of the table or view used and score accordingly. If it is a full match we give max score to that index, any partial matches are scored and that with the highest score is used.
+Request servers will attempt to use the most efficient mechanism to retrieve data from the data base. Given the `REQUEST` fields which are input, and not wild carded, it will cycle through the indices of the table or view used and score accordingly. If it is a full match we give max score to that index, any partial matches are scored and that with the highest score is used.
 
 ###### Audit table recommendations
 
@@ -254,8 +259,9 @@ Similar to `filterWithParameters` but the `genesisSet` context property contains
 ```
 
 
-<QueryPermissions />
+<CommonPermissions />
 
+<CommonPermissionsQuery />
 
 #### `rowReturnLimit`
 
@@ -420,7 +426,7 @@ requestReply<InstrumentDetails.ByInstrumentId, InstrumentDetails> {
 
 Next is a more complex example. 
 
-- The first block checks that the user is authorised to view the instrument.
+- The first block checks that the user is authorized to view the instrument.
 - The second block uses the ALT_INSTRUMENT_ID table. The index is used as the input, but we return either a `getBulk`, a `getRange` or a `get`, depending on the input.
 
 ```kotlin
@@ -484,17 +490,21 @@ Helpers assist you to interact with the Kotlin Flow type, which is the return ty
 
 <Log />
 
+## Optimistic concurrency
+
+Find details around [how request servers work with optimistic concurrency](/develop/server-capabilities/data-access-apis/#request-server)
+
 ## Client API
 
-:::tip
-Request servers are also accessible via [Open API](/develop/server-capabilities/integrations-open-api/)
-:::
+<CommonAuthenticateFirst />
+
+<CommonOpenAPI />
 
 ### `REQ_<REQUEST_SERVER_NAME>`
 
-To query a Request Server, the client sends a `REQ_` message.
+To query a Request Server, the client sends a `MESSAGE_TYPE` of `REQ_<request server name>`.
 
-There are several options that can be optionally specified:
+There are several options that can be optionally specified in the message header:
 
 | Option         | Default                                                  | Description                                                         |
 | -------------- |----------------------------------------------------------|---------------------------------------------------------------------|
@@ -569,8 +579,11 @@ Response
 </TabItem>
 <TabItem value="rest">
 Request
+
+Input parameters are encoded into the URL per REST and GET convention
 ```
-GET http://localhost:9064/req-trade?REQUEST.COUNTERPARTY_ID=1&REQUEST.DATE_FROM=1731369600000&DATE_TO=1730419200000&DETAILS.MAX_ROWS=5&DETAILS.CRITERIA_MATCH=DIRECTION%20%3D%3D%20%27BUY%27 HTTP/1.1
+GET /req-trade?REQUEST.COUNTERPARTY_ID=1&REQUEST.DATE_FROM=1731369600000&DATE_TO=1730419200000&DETAILS.MAX_ROWS=5&DETAILS.CRITERIA_MATCH=DIRECTION%20%3D%3D%20%27BUY%27 HTTP/1.1
+Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
 SOURCE_REF: 123
@@ -651,7 +664,7 @@ You must specify both `_FROM` and `_TO` to get a result. Specifying only one end
 
 :::note
 1. Ranges must be based on indexes. Post-fixing the request parameter targeting records without an index, will process the request ignoring the range.
-2. It is not possible to get a range using unix timestamps when targeting a GenesisFlake field. The epoch time (millis) is in the most significant bits of the raw GenesisFlake value, so you need to shift once right to decode into epoch millis (GenesisFlake to Timestamp) and once left to do the same thing for encoding (Timestamp to GenesisFlake). This is described in opur page on [timestamps](/database/fields-tables-views/timestamps/). 
+2. It is not possible to get a range using unix timestamps when targeting a GenesisFlake field. The epoch time (milliseconds) is in the most significant bits of the raw GenesisFlake value, so you need to shift once right to decode into epoch milliseconds (GenesisFlake to Timestamp) and once left to do the same thing for encoding (Timestamp to GenesisFlake). This is described in detail [here](/develop/server-capabilities/data-access-apis/#timestamps). 
 :::
 
 ## Metrics
@@ -699,7 +712,7 @@ If you wish to run a dedicated process for a request server, the following gives
 
 **GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
 
-If you are testing against a previous version of the framework, go to the [legacy](./#integration-testing-legacy) section.
+If you are testing against a previous version of the framework, go to the [legacy](/develop/server-capabilities/testing/#integration-testing) section.
 
 :::
 
@@ -766,7 +779,7 @@ This test class does three things:
 * It enables **GenesisJunit**.
 * It identifies the Request Server script that we want to test, using the `ScriptFile` annotation.
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/operations/testing/integration-testing/).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing/#integration-testing).
 
 ###### 3. Inject references
 
@@ -897,9 +910,9 @@ fun testHelloWorldRequestServerWithUser() {
 </TabItem>
 </Tabs>
 
-### Dynamic authorisation
+### Dynamic authorization
 
-To test dynamic authorisation, you need to amend your Request Server definition:
+To test dynamic authorization, you need to amend your Request Server definition:
 
 ```kotlin
 data class Hello(
@@ -934,12 +947,12 @@ requestReplies {
 }
 ```
 
-You then need to create your new test cases. Note that the authorisation for Request Servers is on the outgoing message. The Request Server filters out values to which the requesting user has no access. 
+You then need to create your new test cases. Note that the authorization for Request Servers is on the outgoing message. The Request Server filters out values to which the requesting user has no access. 
 
-In the code below, there are two tests, which both check the result of the authorisation process:
+In the code below, there are two tests, which both check the result of the authorization process:
 
-- In the first test, if the result is 1 (authorised), then the Hello message is sent (as in the earlier example).
-- In the second test, if the result is 0 (unauthorised), then an empty message is returned.
+- In the first test, if the result is 1 (authorized), then the Hello message is sent (as in the earlier example).
+- In the second test, if the result is 0 (unauthorized), then an empty message is returned.
 
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -1056,7 +1069,7 @@ We have covered:
 * defining a request flows
 * sending our request and receiving the response
 * setting the username on the request
-* handling dynamic authorisation
+* handling dynamic authorization
 
 ## Integration testing (legacy)
 
@@ -1081,9 +1094,9 @@ class ReqRepTests : AbstractGenesisTestSupport<Reply<*>>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing-previous/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing/#abstractgenesistestsupport).
 
-Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](../../../server/request-server/advanced/#custom-request-servers).
+Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](#custom-request-servers).
 
 ### Standard Request Servers
 
@@ -1153,59 +1166,3 @@ fun `can get hello world`() = runBlocking {
     assert(reply.message == "HELLO PETER")
 }
 ```
-
-## Manual testing
-
-### Testing with Console
-
-If you use Genesis Console, this gives you a simple way of testing components.
-
-1. In your browser, go to http://genesislcap.com/console/console-next2/.
-2. Enter the IP address of your server. If you get a blank page without any response, then this is probably because you don't have [NGINX configured](../../../operations/server-setup/config-management/#nginx-configuration).
-3. Log in with your user name and password. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
-4. Click on the **RESOURCES** tab.
-5. Filter the **Resource type** to show only Request Servers. Once you click into your Request Server, you will see the current response from the Request Server and any input fields that you have defined. You can change the inputs and verify that the correct behaviour is being seen. Make sure that your database has some data for you to search through.
-
-![](/img/test-console-rs-success.png)
-
-For more detailed information about using Genesis Console for manual testing, go to our [testing documentation](../../../server/request-server/testing).
-
-### Testing with an API client
-
-An API client is a useful way of testing components. As a client, it is effectively a front end seeking information from the server.
-
-The API client enables you to create calls to the resources in your server - Data Servers, Request Servers and Event Handlers. Then you can just click to run a call and see what response you get.
-
-Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](../../../operations/testing/component-testing/#using-an-api-client) page.
-
-Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
-
-In the example below, we are using Postman as the client API.
-
-![](/img/test-rs-postman.png)
-
-There is no need for any information in the body, as this is a **GET** request.
-
-In the header, you need to supply:
-
-- a SOURCE_REF (always), which identifies you; you can use any string value that suits you
-- the SESSION_AUTH_TOKEN that permissions you to access the server
-
-In front of the url, this has been set to a **GET** call.
-
-The url consists of:
-
-- the address or hostname of the server
-- if necessary, some extra routing;
-- the name of the request server, preceded by **REQ_**
-
-A Request Server requires additional parameters as part of the request. Here we provide the query parameters: `REQUEST.{NAME_OF_THE_FIELD}`. So your URL would be like this:
-
-```postman
-.../REQ_{NAME_OF_THE_REQUEST}?REQUEST.{NAME_OF_THE_FIELD1}=1&REQUEST.{NAME_OF_THE_FIELD2}=2
-```
-
-When you have this in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
-
-import { getTableHeadUtilityClass } from "@mui/material"
-

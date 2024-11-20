@@ -11,13 +11,26 @@ tags:
 sidebar_position: 3
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 Genesis Start enables you to run and preview an application on your local desktop. This is useful when you are developing locally.
 
 From the command line, go to your project's `server` directory and run:
 
+
+<Tabs defaultValue="windows" values={[{ label: 'Windows', value: 'windows', }, { label: 'Mac OSX / Linux', value: 'mac', }]}>
+<TabItem value="windows">
 ```shell
+.\gradlew.bat genesisStart
+```
+</TabItem>
+<TabItem value="mac">
+```bash
 ./gradlew genesisStart
 ```
+</TabItem>
+</Tabs>
 
 If the command fails, you probably need to [enable Genesis Start](#enabling-genesis-start)
 

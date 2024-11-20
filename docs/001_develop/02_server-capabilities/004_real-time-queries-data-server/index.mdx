@@ -14,24 +14,33 @@ sidebar_position: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Log from '/snippet/_LOG.md'
-import QueryPermissions from '/snippet/_query-permissions.md'
+import CommonPermissions from '/snippet/_common-permissions.md'
+import CommonPermissionsQuery from '/snippet/_common-permissions-query.md'
 import CommonFieldOverrides from '/snippet/_common-field-overrides.md'
 import CommonQueryFields from '/snippet/_common-query-fields.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
+import CommonAuthenticateFirst from '/snippet/_common-authenticate-first.md'
 
 ## Overview
 
-The Data Server is a microservice responsible for providing APIs to request real-time views of an application's data.  Developers configure specific data sets as named queries, which are then preloaded by the Data Server and kept up to date as the underlying data is changed by the application. The Data Server utilises the push mechanism of web sockets to update subscribed clients with real time updates the data they are subscribed to and filtering on, and also offers a REST API.
+<p align="center"><iframe src="https://player.vimeo.com/video/792592108?h=ccbf47bf29&amp" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></p>
+
+A Data Server supplies real-time (streaming) data to the front end of your application.
+
+Data Servers preload and monitor specific tables or views in the database. When a change in data occurs, the Data Server sends the changed data to all users who have subscribed to the table or view.
+
+The first time the user subscribes, all the data for the table or view is sent. The connection between the user and the Data Server remains open; so from then on, the Data Server automatically sends changes.
+
+DThe Data Server utilizes the push mechanism of web sockets to update subscribed clients with real time updates the data they are subscribed to and filtering on, and also offers a REST API.
 
 ```mermaid
 graph TD
-A[UI] --> |1. Connection| B(DATA_SERVER)
+A[UI] --> |1. Data logon| B(DATA_SERVER)
 B -->|3. Initial data| A
 B --> |5. Updates| A
-B <-->|2. Connection & Initial Read| C[Database]
+B <-->|2. Initial read| C[Database]
 C --> |4. Changes in table/view trigger a read|B
 ```
-
 
 When the client first requests to subscribe to a query in a Data Server, the initial data is returned, and the subscription between the client and the query remains active. The data server will continue to push data updates to the client, for example newer entries or modifications to data rows already sent to the client. The client can also make changes for example to request more rows.
 
@@ -175,7 +184,7 @@ dataServer {
 
 <CommonFieldOverrides />
 
-`withSize <NUMBER OF CHARACTERS>` can also be specified at a field level on the rare occassion you are seeing issues with LMDB truncating a String value you can specify the maximum number of characters by specifying this.
+`withSize <NUMBER OF CHARACTERS>` can also be specified at a field level on the rare occasion you are seeing issues with LMDB truncating a String value you can specify the maximum number of characters by specifying this.
 
 <CommonQueryFields />
 
@@ -183,7 +192,7 @@ dataServer {
 
 A query can optionally include an `indices` block to define additional indexing at the query level. When an index is specified in the query, all rows returned by the query are ordered by the fields specified, in ascending order. 
 
-The definition and the behaviour of an index in a query are exactly the same as when you [define an index in a table](/develop/server-capabilities/data-model/#indices).
+The definition and the behavior of an index in a query are exactly the same as when you [define an index in a table](/develop/server-capabilities/data-model/#indices).
 
 Example:
 
@@ -202,14 +211,31 @@ dataServer {
 
 There are two scenarios where an index is useful:
 
-* **Optimising query criteria search**. in the example above, if the front-end request specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, then the Data Server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means that the platform doesn't need to scan all the query rows stored in the Data Server memory-mapped file cache; instead, it performs a very efficient indexed search.
-* **Where the front-end request specifies an index**. You can specify one or more indices in your Data Server query. And the [front end can specify which index to use](../../../server/data-server/advanced/#incoming-data_logon-messages) by supplying `ORDER_BY` as part of the `DATA_LOGON` process. The Data Server will use that index to query the data. The data will be returned to the client in ascending order, based on the index field definition.  
+* **Optimizing query criteria search**. in the example above, if the front-end request specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, then the Data Server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means that the platform doesn't need to scan all the query rows stored in the Data Server memory-mapped file cache; instead, it performs a very efficient indexed search.
+* **Where the front-end request specifies an index**. You can specify one or more indices in your Data Server query. And the front end can specify which index to use by supplying `ORDER_BY` as part of the `DATA_LOGON` process. The Data Server will use that index to query the data. The data will be returned to the client in ascending order, based on the index field definition.  
 
 *Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add `SIMPLE_ID` to the index definition to ensure we maintain uniqueness.
 
 Note that table indexes are NOT available in dataserver queries.
 
-<QueryPermissions />
+<CommonPermissions />
+
+<CommonPermissionsQuery />
+
+In most cases, a single auth entity id is associated to one or more rows in a Data Server query, but in some rare scenarios there might be a one-to-one relationship. In the latter case, there is a configuration option named `rowLevelPermissions` which can be set to `true` to optimize the internal data structure that holds the cache information.
+
+```kotlin{4}
+query("ALL_COUNTERPARTYS", COUNTERPARTY) {
+    permissioning {
+        auth("COUNTERPARTY"){
+            rowLevelPermissions = true
+            authKey {
+                key(data.counterpartyId)
+            }
+        }
+    }
+}
+```
 
 #### `enrich`
 
@@ -250,7 +276,7 @@ query("ALL_BUYER_SELLER_TRADES", BUYER_SELLER_TRADE_VIEW){
         }
         // Hide buyer counterparty id to users associated to counterparty seller if "isHiddenToSeller" is true.
         hideFields { userName, row, userData ->
-            if(userData?.counterpartyId == queryRow.sellerConterPartyId && queryRow.isHiddenToSeller == true){
+            if(userData?.counterpartyId == queryRow.sellerCounterPartyId && queryRow.isHiddenToSeller == true){
                 listOf(BUYER_SELLER_TRADE_VIEW.BUYER_COUNTERPARTY_ID)
             } else{
                 emptyList()
@@ -307,7 +333,7 @@ query("ALL_ONLY_FAVOURITE_COUNTERPARTIES" , COUNTERPARTY_VIEW) {
     }
 }
 
-// Example: using "enrichedAuth" to combine fields from enrichment with authorisation mechanism
+// Example: using "enrichedAuth" to combine fields from enrichment with authorization mechanism
 query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
     permissioning {
         enrichedAuth("COUNTERPARTY_FAVOURITE_VISIBILITY", USER_COUNTERPARTY_FAVOURITE) {
@@ -373,7 +399,7 @@ table(name = "FAVOURITE_TRADE", id = 1601) {
 
 #### Index driven
 
-You can specify "index-based" Data Server queries which will only read a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](../../../database/database-interface/entity-db/#getrange).
+You can specify "index-based" Data Server queries which will only read a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. It uses the database range search operation [getRange](/develop/server-capabilities/data-access-apis/#getrange).
 
 You can use the following options when you create index-based queries:
 
@@ -401,7 +427,7 @@ The example below shows how advanced `where` queries differ from basic `filter` 
 The scenario is this: you want to get trade records where the `currencyId` is `USD`. You can write a Data Server query in two ways, which affects how much data is cached:
 
 - Method 1 uses basic `filter`. It initially reads all the table/view data (which could be very large) and then applies the `filter` clause to confine the range to USD, so it can take a long time to get the Data Server query up and running.
-- Method 2 uses advanced `where`. It uses a database range search operation [getRange](../../../database/database-interface/entity-db/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
+- Method 2 uses advanced `where`. It uses a database range search operation [getRange](/develop/server-capabilities/data-access-apis/#getrange), so it is able to read just the data we need from database using indices. This means the data that we need to process is much smaller - much more efficient.
   The `where` clause is applied at database level, the data returned by the database operation already contains the correct rows.
 
 ```kotlin
@@ -422,7 +448,7 @@ query("TRADE_RANGED_USD", TRADE) {
 
 Use the `ranged` keyword to create a query that provides a range of data. You need to provide the index and the number of key fields:
 
-- The `index` property must be a unique [index](../../../database/data-types/index-entities/#types). However, you can have what is effectively a non-unique index by adding a field that is not unique (such as QUANTITY) and a field that is unique (such as TRADE_ID) to create a compound unique index:
+- The `index` property must be a [unique index](/develop/server-capabilities/data-model/#unique). However, you can have what is effectively a non-unique index by adding a field that is not unique (such as QUANTITY) and a field that is unique (such as TRADE_ID) to create a compound unique index:
 
 ```
 unique {
@@ -597,7 +623,7 @@ remote_host,process_a,monitor_a
 
 ### Global `config`
 
-Outside of the `query` blocks, you can make configuration settings that apply to all queries defined. These control the overall behaviour of the Data Server. Some can optionally be overriden at the query level
+Outside of the `query` blocks, you can make configuration settings that apply to all queries defined. These control the overall behaviour of the Data Server. Some can optionally be overridden at the query level
 
 Here is an example of some configuration settings: 
 
@@ -605,7 +631,7 @@ Here is an example of some configuration settings:
 dataServer {
     config {
         lmdbAllocateSize = 512.MEGA_BYTE() // top level only setting
-        // Items below can be overriden in individual query definitions
+        // Items below can be overridden in individual query definitions
         compression = true 
         chunkLargeMessages = true
         defaultStringSize = 40
@@ -641,7 +667,7 @@ dataServer {
 |`linearScan`|Enables/disables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes|`true`|Yes|
 |`excludedEmitters`|Enables/Disables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored.|Empty list|Yes|
 |`onStringOverflow`|Controls how the system responds to a string overflow. A string overflow happens when the value of a String field in an index is larger than `defaultStringSize`, or the size set on the field.Two options are `IGNORE_ROW` rows with string overflows will be ignored, this can lead to data missing from the Data Server, or `TRUNCATE_FIELD` indices with string overflows will be truncated. The data with the overflow will still be returned in full, and will be searchable. However, if multiple rows are truncated to the same value, any subsequent rows will lead to duplicate index exceptions during the insert, so these rows will not be available to the Data Server.|TRUNCATE_FIELD |Yes|
-|`enableTypeAwareCriteriaEvaluator`|This enables the type-aware criteria evaluator. The type-aware criteria evaluator can automatically convert criteria comparisons that don't match the original type of the Data Server field; these can still be useful to end users. For example, you might want a front-end client to perform a criteria search on a `TRADE_DATE` field like this: `TRADE_DATE > '2015-03-01' && TRADE_DATE < '2015-03-02'`. This search can be translated automatically to the right field types internally (even though `TRADE_DATE` is a field of type `DateTime`). The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimised experience. The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`). As a side note, this type-aware evaluator is also available in `DbMon` for operations like `search` and `qsearch`. By contrast, the traditional criteria evaluator needs the field types to match the query fields in the Data Server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our common date expressions (more at Advanced technical details) to handle date searches.|`false`|Yes|
+|`enableTypeAwareCriteriaEvaluator`|This enables the type-aware criteria evaluator. The type-aware criteria evaluator can automatically convert criteria comparisons that don't match the original type of the Data Server field; these can still be useful to end users. For example, you might want a front-end client to perform a criteria search on a `TRADE_DATE` field like this: `TRADE_DATE > '2015-03-01' && TRADE_DATE < '2015-03-02'`. This search can be translated automatically to the right field types internally (even though `TRADE_DATE` is a field of type `DateTime`). The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimized experience. The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`). As a side note, this type-aware evaluator is also available in `DbMon` for operations like `search` and `qsearch`. By contrast, the traditional criteria evaluator needs the field types to match the query fields in the Data Server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our common date expressions (more at Advanced technical details) to handle date searches.|`false`|Yes|
 
 ### Backward joins
 
@@ -649,7 +675,7 @@ Each query in a Data Server creates what is effectively an open connection betwe
 
 By default, only updates to the root table are sent. So if you need to see updates to fields from a joined table, then you must specifically declare a backwards join. For queries with backwards joins enabled, the primary table and all joined tables and views are actively monitored. Any changes to these tables and views are sent automatically.
 
-Monitoring of backwards joins can come at a cost, as it can cause significant extra processing. Do not use backwards joins unless there is a need for the data in question to be updated in real time. For example, counterparty data, if changed, can wait until overnight. The rule of thumb is that you should only use backwards joins where the underlying data is being updated intraday.
+Monitoring of backwards joins can come at a cost, as it can cause significant extra processing. Do not use backwards joins unless there is a need for the data in question to be updated in real time. For example, counterparty data, if changed, can wait until overnight. The rule of thumb is that you should only use backwards joins where the underlying data is being updated intra-day.
 
 The backwards join flag is true by default. You must explicitly set `backwardsJoins = false` if you wish to turn backwards joins off for your query.
 
@@ -657,9 +683,15 @@ The backwards join flag is true by default. You must explicitly set `backwardsJo
 
 <Log />
 
+## Optimistic concurrency
+
+Find details around [how data servers work with optimistic concurrency](/develop/server-capabilities/data-access-apis/#data-server)
+
 ## Client API
 
 Client's can connect and query via Websocket or REST HTTP calls. Websockets are required for real-time updates to be pushed. 
+
+<CommonAuthenticateFirst />
 
 ### `DATA_LOGON`
 
@@ -897,7 +929,7 @@ connection: keep-alive
 
 #### Rows & view concepts
 ###### MAX_ROWS
-MAX_ROWS determines how many rows will be sent when the front end requests data. It also determines how many rows are sent when the front end makes a [MORE_ROWS request](/server/integration/rest-endpoints/basics/#more_rows). 
+MAX_ROWS determines how many rows will be sent when the front end requests data. It also determines how many rows are sent when the front end makes a [MORE_ROWS request](#more_rows). 
 
 The rows are queried based on the REVERSE setting (which only applies to non-real-time updates). So it is important to note the following behaviour. 
 
@@ -926,7 +958,7 @@ For both options that we describe below, we assume that the front end wants to r
 On successful DATA_LOGON and on any subsequent MORE_ROWS messages, the server sends a field called ROWS_COUNT, which contains an estimated number of rows in the server. You can divide this number by your MAX_ROWS setting to know how many pages can be queried on the server.
 
 :::info
-Let's summarise all that.
+Let's summarize all that.
 - Where the front end only wants to receive a subset of rows, or is using pagination, **DATA_LOGON** has MAX_ROWS = MAX_VIEW and MOVING_VIEW = false.
 - If you always want to send new updates to the front end automatically once they occur in the server,  the DATA_LOGONs from the front end do not have MAX_ROWS = MAX_VIEW or MOVING_VIEW set to false. The value of REVERSE is ignored. 
 :::
@@ -1180,7 +1212,7 @@ If you wish to run a dedicated process as a dataserver, the following gives an e
 
 **GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
 
-If you are testing against an earlier version of the framework, go to the [legacy](./#integration-testing-legacy) section.
+If you are testing against an earlier version of the framework, go to the [legacy](/develop/server-capabilities/testing/#integration-testing) section.
 
 :::
 
@@ -1188,7 +1220,7 @@ If you are testing against an earlier version of the framework, go to the [legac
 
 This document looks at the basics of testing Data Servers. 
 
-We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/operations/testing/integration-testing/), which is designed to make testing easy.
+We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/develop/server-capabilities/testing/#integration-testing), which is designed to make testing easy.
 
 #### Preparation
 There are some simple steps to follow in order to set up yor test.
@@ -1230,7 +1262,7 @@ This test class does three things:
 * It identifies the Data Server script that we want to test, using the `ScriptFile` annotation.
 * It identifies the source data for our test, using the `CsvData` annotation.
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/operations/testing/integration-testing/).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing/#integration-testing).
 
 ###### 2. Load test data
 
@@ -1326,7 +1358,7 @@ As you can see here, to connect to our Data Server, you need to provide the data
 For Java developers, we provide a fluent interface. In Kotlin, you can use named parameters.
 The test is the same regardless.
 
-Once you connect, the client will provide a `QueryView`, which connects to the resource in the Data Server and recieves updates.
+Once you connect, the client will provide a `QueryView`, which connects to the resource in the Data Server and receives updates.
 
 At this point, we are just making sure we have received 3 records.
 
@@ -1370,9 +1402,9 @@ public void buildCollections() {
 </TabItem>
 </Tabs>
 
-#### Dynamic authorisation
+#### Dynamic authorization
 
-For this test, we have amended our Data Server to enable authorisation:
+For this test, we have amended our Data Server to enable authorization:
 
 ```kotlin 
 dataServer {
@@ -1390,7 +1422,7 @@ dataServer {
 
 Once you add the `auth` block to the code, you need to amend the test.
 
-To test dynamic authorisation, add `@EnableInMemoryTestAuthCache` to your class or method. This makes `InMemoryTestAuthCache` available for injection in your test class. 
+To test dynamic authorization, add `@EnableInMemoryTestAuthCache` to your class or method. This makes `InMemoryTestAuthCache` available for injection in your test class. 
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -1597,7 +1629,7 @@ class DataServerTests : AbstractGenesisTestSupport<Reply<*>>(
     }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing-previous/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing/#abstractgenesistestsupport).
 
 Let's load some test data into the `seed-data.csv` in the root of the resources folder for your tests.
 
