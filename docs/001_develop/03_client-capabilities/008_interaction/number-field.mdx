@@ -21,6 +21,7 @@ import TabItem from '@theme/TabItem';
 
 Use cases:
 * Numeric entry
+* Not for cases where a field only contains numbers but should be a string e.g. credit card numbers or a phone number.
 
 ## Example
 
@@ -40,7 +41,7 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-text-field :value=${sync((x) => x.fieldValue)}>
+        <rapid-text-field value=${sync((x) => x.fieldValue, 'number')}>
         </rapid-text-field>
       `,
     })
@@ -62,11 +63,16 @@ Use cases:
     Usage
     ```typescript
     export function MyComponent() {
-      const handleChange = (event) => {
-        console.log(event.target.value)
-      };
+
+      const [outputValue, setOutputValue] = useState('');
+
+      const onChange = (event) => {
+        setOutputValue(event.target.value);
+        console.log(this.outputValue);
+      }
+
       return (
-        <rapid-number-field onChange={handleChange}></rapid-number-field>
+        <rapid-number-field onChange={onChange}></rapid-number-field>
       );
     }
     ```
@@ -163,7 +169,7 @@ Property and attribute binding examples for Genesis Component syntax.
 <td>
 
 ```typescript
-<rapid-number-field locale="en-GB">
+<rapid-number-field withFormatting locale="en-GB">
 ```
 
 </td>
@@ -243,11 +249,11 @@ Property and attribute binding examples for Genesis Component syntax.
     <tr>
       <td>withFormatting</td>
       <td><code>boolean</code></td>
-      <td>Enables you to format the number, use <code>maximumFractionDigits</code> to set the number of decimal places.</td>
+      <td>Enables you to format the number</td>
 <td>
 
 ```typescript
-<rapid-number-field withFormatting :options=${() => ({maximumFractionDigits: 2})}>
+<rapid-number-field withFormatting>
 ```
 
 </td>
@@ -319,7 +325,7 @@ Property and attribute binding examples for Genesis Component syntax.
 <td>
 
 ```typescript
-<rapid-number-field value="${sync((x) => x.fieldValue)}">
+<rapid-number-field value="${sync((x) => x.fieldValue, 'number')}">
 ```
 
 </td>
@@ -329,7 +335,30 @@ Property and attribute binding examples for Genesis Component syntax.
 
 ### Properties
 
-This component doesn't have any properties which are not also controlled via attributes.
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Example</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>options</td>
+      <td><code>json</code></td>
+      <td>The options to be used when withFormatting is true, e.g. , use <code>maximumFractionDigits</code> to set the number of decimal places.</td>
+<td>
+
+```typescript
+<rapid-number-field withFormatting :options=${() => ({maximumFractionDigits: 2})}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Slots
 
