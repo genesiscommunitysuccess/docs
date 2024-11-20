@@ -20,12 +20,15 @@ import AnchoredRegion from '/examples/ui/client-capabilities/interaction/anchore
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Anchors add different types of links to your page.
+Anchored regions are containers which position content relative to the anchor element. The anchored region can react to the available space between the anchor and a parent "viewport" element such that the region is placed on the side of the anchor with the most available space, or even resize itself based on that space.
 
 Use cases:
-* Creating a hyperlink to a different page
-* Linking to a specific region of the current page
-* An email link which pre-populates the recipient field
+* Creating a layout which is reactive to layout changes
+* Creating a layout where elements are not viewed in DOM order (1)
+
+:::warning
+(1) Elements which are viewed differently to the DOM order may cause accessibility issues with screen readers.
+:::
 
 ## Example
 <AnchoredRegion />
