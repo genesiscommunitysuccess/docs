@@ -40,8 +40,8 @@ export default function DocCardList(props: Props): JSX.Element {
     <section className={clsx('row', className)}>
       <CardList
         xs="12"
-        sm="6"
-        md="6"
+        sm="4"
+        md="4"
         items={filteredItems}
       />
     </section>

@@ -288,7 +288,7 @@ div.aa-DetachedSearchButtonIcon:hover {
 
 .navbar__title {
   color: var(--ifm-navbar-link-color);
-  font-weight: normal;
+  font-weight: 700;
 }
 
 .navbar__brand + .navbar__item {
@@ -297,7 +297,7 @@ div.aa-DetachedSearchButtonIcon:hover {
 
 a.navbar__item.navbar__link {
   color: var(--ifm-navbar-link-color);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 24px;
   font-size: 16px;
   padding: 0;
@@ -307,7 +307,7 @@ a.navbar__item.navbar__link {
 a.navbar__item.navbar__link:hover,
 a.navbar__item.navbar__link.navbar__link--active {
   border-bottom: 2px solid;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .navbar__toggle > svg {
@@ -820,6 +820,10 @@ a.table-of-contents__link--active {
 }
 
 /** Card **/
+.card .MuiCard-root {
+ margin: 0;
+} 
+
 .card h4 {
   position: relative;
   padding-left: 30px;
@@ -854,10 +858,23 @@ a.table-of-contents__link--active {
   top: 0;
   left:0;
   width: 100%;
-  height: 3px;
+  height: 10px;
   background: linear-gradient(83deg, #00F 0%, #D71CA6 65%, #fab15d 100%);
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+}
+
+.MuiPaper-root::after {
+  content: "";
+  display:block;
+  position: absolute;
+  top: 2px;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  background: #FFFFFF;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
 }
 /**********************************************/
 
