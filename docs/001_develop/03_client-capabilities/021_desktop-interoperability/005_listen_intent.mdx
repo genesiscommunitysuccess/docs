@@ -22,17 +22,19 @@ import TabItem from '@theme/TabItem';
 
 # FDC3 intent listener
 
-This is a utility element that listens to an raised [intents](https://fdc3.finos.org/docs/intents/spec) in FDC3 and handled by the application .
+This is a utility element that listens to any raised [intents](https://fdc3.finos.org/docs/intents/spec) in FDC3 that are handled by the application.
 
 Use cases:
 * Handle intents raised against an application in an FDC3 workspace.
 
 ## Examples
 
-This will handle intents raised against this application.
+This handles intents raised against the application.
 
-:::warning
-Where an app is intended to be launched in order to resolve a raised intent, the element must be present in the DOM within 15 seconds of the application launch (the minimum timeout Desktop Agents are required to provide) in order to be widely compatible with Desktop Agent implementations
+:::warning Compatibilty with Desktop Agent implementations
+Where an app is intended to be launched in order to resolve a raised intent, the element must be present in the DOM *within 15 seconds of the application launch*.
+
+This is the minimum timeout that Desktop Agents are required to provide in order to be widely compatible with Desktop Agent implementations
 :::
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
