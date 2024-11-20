@@ -288,7 +288,7 @@ div.aa-DetachedSearchButtonIcon:hover {
 
 .navbar__title {
   color: var(--ifm-navbar-link-color);
-  font-weight: normal;
+  font-weight: 700;
 }
 
 .navbar__brand + .navbar__item {
@@ -297,7 +297,7 @@ div.aa-DetachedSearchButtonIcon:hover {
 
 a.navbar__item.navbar__link {
   color: var(--ifm-navbar-link-color);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 24px;
   font-size: 16px;
   padding: 0;
@@ -307,7 +307,7 @@ a.navbar__item.navbar__link {
 a.navbar__item.navbar__link:hover,
 a.navbar__item.navbar__link.navbar__link--active {
   border-bottom: 2px solid;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .navbar__toggle > svg {
