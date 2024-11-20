@@ -90,6 +90,10 @@ export class MyElement extends GenesisElement {
 ```
 As you toggle the first checkbox, the second one will change to match. This is an overly simple example - but instead imagine that the first component is configuring a string which contains a filter, and the second component is a grid which binds the filter to change what rows are displayed.
 
+:::info
+Notice the second checkbox doesn't have a `sync` directive, this is because we're only making the first checkbox drive the state of the second. This is analogous to a filter driving a property on a grid. You may have a different use case where both components communicate to each other both ways.
+:::
+
 ### Adding a layout
 
 Now imagine that we want to add those two elements into a layout.
@@ -155,7 +159,7 @@ WrapperTwo;
 export class MyElement extends GenesisElement { }
 ```
 
-There's still got a big issue here though - `isSelected` isn't linked between them anymore! Here is adding in some formal state management is required.
+There's still got a big issue here though - the `isSelected` variable isn't linked between the two components anymore. Handling this case requires the use of a state management library, such as the `foundation-store` module included in the platform.
 
 ### State Management
 
@@ -227,4 +231,4 @@ WrapperTwo;
 export class MyElement extends GenesisElement { }
 ```
 
-We've covered the pitfalls that occur when trying to add the layout to a group of elements that share state and bindings, and a way to solve that via the foundation store.
+We've covered the pitfalls that occur when trying to add the layout to a group of elements that share state and bindings, and a way to solve that via the foundation store. <!-- TODO add link again to store -->
