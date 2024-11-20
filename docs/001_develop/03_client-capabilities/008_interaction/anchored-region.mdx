@@ -1,0 +1,242 @@
+---
+title: 'Anchored region'
+sidebar_label: 'Anchored region'
+id: client-interaction-anchored-region
+keywords: [ interaction, interactive, anchor, region, layout, space, react, viewport, resize ]
+tags:
+- interaction
+- interactive
+- anchor
+- region
+- layout
+- space
+- react
+- viewport
+- resize
+sidebar_position: 8
+---
+
+import AnchoredRegion from '/examples/ui/client-capabilities/interaction/anchored-region.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Anchors add different types of links to your page.
+
+Use cases:
+* Creating a hyperlink to a different page
+* Linking to a specific region of the current page
+* An email link which pre-populates the recipient field
+
+## Example
+<AnchoredRegion />
+
+:::info
+The live example includes css styling to ensure the components fit into the example container.
+:::
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-anchor></rapid-anchor>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-anchor href="https://genesis.global/">External link</rapid-anchor>
+        <rapid-anchor href="#api">Internal link</rapid-anchor>
+        <rapid-anchor href="mailto:info@genesis.global">Mail link</rapid-anchor>
+    `,
+    })
+    export class MyElement extends GenesisElement { }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-anchor></rapid-anchor>
+    ```
+
+    Usage
+    ```typescript
+    export function MyComponent() {
+      return (
+        <rapid-anchor href="https://genesis.global/">External link</rapid-anchor>
+        <rapid-anchor href="#api">Internal link</rapid-anchor>
+        <rapid-anchor href="mailto:info@genesis.global">Mail link</rapid-anchor>
+      );
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-anchor></rapid-anchor>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+    @Component({
+      selector: 'my-root',
+      template: `
+        <rapid-anchor href="https://genesis.global/">External link</rapid-anchor>
+        <rapid-anchor href="#api">Internal link</rapid-anchor>
+        <rapid-anchor href="mailto:info@genesis.global">Mail link</rapid-anchor>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [FormsModule],
+    })
+    export class AppComponent { }
+    ```
+  </TabItem>
+</Tabs>
+
+
+## API
+
+### Attributes
+
+<table>
+    <tr>
+        <th>Attribute</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Example</th>
+    </tr>
+    <tr>
+        <td>download</td>
+        <td><code>string | boolean</code></td>
+        <td>Causes the browser to treat the linked URL as a download. This attributes only works for same-origin URLs, or when using the <code>blob:</code> and <code>data:</code> schemes. Different browsers will behave slightly differently for downloads, such as asking the user where to save the file or automatically saving to a downloads directory.</td>
+<td>
+
+```typescript
+<rapid-anchor href="files/genesis.pdf" download>
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>href</td>
+        <td><code>string</code></td>
+        <td>The URL that the hyperlink points to. This is commonly to another page, but it could be to a region of the current page. You can also use schemes such as <code>mailto:</code>, <code>javascript:</code>, <code>tel:</code>, and <code>sms:</code></td>
+<td>
+
+```typescript
+<rapid-anchor href="https://genesis.global/">
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>hreflang</td>
+        <td><code>string</code></td>
+        <td>A hint to the language of the linked document. Doesn't add any functionality itself.</td>
+<td>
+
+```typescript
+<rapid-anchor href="https://genesis.global/" hreflang="en">
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>ping</td>
+        <td><code>string</code></td>
+        <td>A space separated list of URLs to which to send a <code>PING</code> message. This is commonly used for tracking.</td>
+<td>
+
+```typescript
+<rapid-anchor ping="https://genesis.global/">
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>referrer</td>
+        <td><code>string</code></td>
+        <td>How much of <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer">the referrer</a> to send when the user clicks the link.</td>
+<td>
+
+```typescript
+<rapid-anchor href="https://genesis.global/" referrer="no-referrer">
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>rel</td>
+        <td><code>string</code></td>
+        <td>The relationship of the linked URL to the current page. Examples are the next or previous page, the author's page, or to help documentation.</td>
+<td>
+
+```typescript
+<rapid-anchor href="https://genesis.global/author" rel="author">
+  Author's page
+</rapid-anchor>
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>target</td>
+        <td><code>"_blank" | "_self" | "_parent"</code></td>
+        <td>Where to display the linked URL. Most common use is to set <code>_blank</code> for making the link open in a new tab or window.</td>
+<td>
+
+```typescript
+<rapid-anchor href="https://genesis.global/" target="_blank">
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>type</td>
+        <td><code>string</code></td>
+        <td>A hint to the <a href="https://developer.mozilla.org/en-US/docs/Glossary/MIME_type">media type</a> of the linked document. Doesn't add any functionality itself.</td>
+<td>
+
+```typescript
+<rapid-anchor href="https://genesis.global/" type="application/pdf">
+```
+
+</td>
+    </tr>
+</table>
+
+### Properties
+
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|This elements which are contained in the anchor region, and will trigger the `href` when clicked.|
+|start|Content which can be provided before the anchor content.|
+|end|Content which can be provided after the anchor content.|
+
+### Parts
+
+| Part | Description |
+| --- | --- |
+| control | The anchor element |
+| content | The element wrapping anchor content
+
+### Events fired
+
+This component doesn't emit any events.
+
+### Events listened to
+
+This component doesn't listen to any events.
