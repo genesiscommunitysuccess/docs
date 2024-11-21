@@ -16,13 +16,13 @@ The system definition, fields, tables, hfts and views you define generate [DAO](
 
 There are five hierarchical levels:
 
-1. System Definition : System definition items
-2. Table numKeyFields
+1. System Definition
+2. Fields
 3. Tables
 4. HFT
 5. Views
 
-Each layer uses the layers above in the hierarchy, so `fields` can use `system definitions` and `views` can use all the other four.
+Each layer uses the layers above in the hierarchy, so `fields` can use `system definitions` and `views` can use all four.
 
 These objects must be built with your project, they are generated into application jars and can then be used by the other parts of your code. Whenever you edit any of these definitions you should rebuild the DAOs to start using them in your code.
 
