@@ -17,12 +17,11 @@ import DialogDemo from '/examples/ui/client-capabilities/interaction/dialog.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Anchors add different types of links to your page.
+Dialogs are popup menus which take focus and prohibit the user interacting with the content behind.
 
 Use cases:
-* Creating a hyperlink to a different page
-* Linking to a specific region of the current page
-* An email link which pre-populates the recipient field
+* Popup notification
+* Configuration box
 
 ## Example
 <DialogDemo />
@@ -144,18 +143,93 @@ Use cases:
 
 ### Attributes
 
-|Attribute|Type|Description|Example|
-|--|--|--|--|
-|type|`'default' \| 'error' \| 'success'`|The general style of dialog type to show. `default` type adds no extra styling, `error` shows a red highlight and `success` shows a green.| `<rapid-dialog type="success">`|
-|position|`'center' \| 'left' \| 'right'`|The position of the dialog. `center` is the default. | `<rapid-dialog position="right">`|
-|show-close-icon|`boolean`|Enables the close icon in the top right corner of the dialog. `true` is the default.| `<rapid-dialog show-close-icon="false">`|
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>type</td>
+      <td><code>'default' | 'error' | 'success'</code></td>
+      <td>The general style of dialog type to show. <code>default</code> type adds no extra styling, <code>error</code> shows a red highlight and <code>success</code> shows a green.</td>
+<td>
+
+```typescript
+<rapid-dialog type="success">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>position</td>
+      <td><code>'center' | 'left' | 'right'</code></td>
+      <td>The position of the dialog. <code>center</code> is the default.</td>
+<td>
+
+```typescript
+<rapid-dialog position="right">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>show-close-icon</td>
+      <td><code>boolean</code></td>
+      <td>Enables the close icon in the top right corner of the dialog. <code>true</code> is the default.</td>
+<td>
+
+```typescript
+<rapid-dialog show-close-icon="false">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Properties
 
-|Property|Type|Description|Example|
-|--|--|--|--|
-|onShowCallback|`() => void`|Function that runs before dialog is opened.|`<rapid-dialog :onShowCallback="${(x) => () => x.beforeDialogShown()}">`|
-|onCloseCallback|`() => void`|Function that is called after the dialog is closed.|`<rapid-dialog :onCloseCallback="${(x) => () => x.afterDialogHide()}">`|
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>onShowCallback</td>
+            <td><code>() => void</code></td>
+            <td>Function that runs before dialog is opened.</td>
+<td>
+
+```typescript
+<rapid-dialog :onShowCallback="${(x) => () => x.beforeDialogShown()}">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>onCloseCallback</td>
+            <td><code>() => void</code></td>
+            <td>Function that is called after the dialog is closed.</td>
+<td>
+
+```typescript
+<rapid-dialog :onCloseCallback="${(x) => () => x.afterDialogHide()}">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Methods
 
