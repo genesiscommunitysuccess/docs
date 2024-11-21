@@ -1,0 +1,75 @@
+---
+title: 'FDC3 Service'
+sidebar_label: 'FDC3 Service'
+id: fdc3-service
+keywords: [interaction, interactive, interoperability, openfin, interop.io, fdc3, fdc3 channel, fdc3 context, data]
+tags:
+- interaction
+- interactive
+- interoperability
+- openfin
+- interop.io
+- fdc3
+- fdc3 channel
+- fdc3 system
+- fdc3 intent
+- data
+sidebar_position: 3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Genesis FDC3
+
+This encapsulates the functionality for working with the FDC3 api. This includes methods for listening for
+- Handling fdc3 ready events
+- Finding, raising and listening to intents
+- Discovering and joining channels
+- Broadcasting on and listening to channels
+
+## Overview of `@FDC3`
+
+`@FDC3` is designed to abstract away complexity of working with the fdc3 api.
+
+## Methods
+
+<table>
+    <thead>
+        <tr>
+            <td>Method</td>
+            <td>Params</td>
+            <td>Return type</td>
+            <td>Use</td>
+            <td>Example</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>addIntentListeners</td>
+            <td>`Map<FDC3Intents, FDC3ContextHandler>`</td>
+            <td>void</td>
+            <td>Add intent listeners</td>
+            <td>
+                ```ts
+                    const intentMap = {
+                        ViewInstrument: (context: Context) => {
+                            console.log('View Instrument intent handled', context);
+                        },
+                        GetQuote: (context: Context) => {
+                            console.log('View Instrument intent handled', context);
+                            return {
+                                id: {
+
+                                }
+                            }
+                        },
+                    }
+
+                    fdc3.addIntentListeners(intentMap);
+                ```
+            </td>
+        </tr>
+    </tbody>
+</table>
+
