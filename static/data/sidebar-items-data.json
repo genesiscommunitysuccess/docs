@@ -1,5 +1,6 @@
 {
   "/develop/development-environments": {
+    "description": "Development environment description",
     "items": [
       {
         "href": "/develop/development-environment/launchpad/",
@@ -32,6 +33,7 @@
     ]
   },
   "/develop/server-capabilities": {
+    "description": "This section provides all the details around the Genesis application platform's server capabilities. Each section details how the capability works along with examples, and includes full documentation on configuration and interaction.",
     "items": [
       {
         "href": "/develop/server-capabilities/data-model/",
@@ -80,6 +82,7 @@
     ]
   },
   "/develop/client-capabilities": {
+    "description": "Client capabilities (Web UI) description",
     "items": [
       {
         "href": "/develop/client-capabilities/server-communications/",
@@ -168,34 +171,35 @@
     ]
   },
   "/develop/business-components": {
+    "description": "Genesis Platform Business Components are designed to give you working business solutions for the most common requirements of financial applications. You can incorporate them into your application in very little time. They are easy to install, run and customise to meet your exact requirements. Each one comes with a combination of pre-built micro-services, APIs and UI components that can be integrated in to your application with minimal configuration.",
     "items": [
       {
-        "href": "",
-        "descirption": ""
+        "href": "/develop/business-components/notifications/",
+        "description": "Notifications and Alerts description"
       },
       {
-        "href": "",
-        "descirption": ""
+        "href": "/develop/business-components/reporting/",
+        "description": "Reporting description"
       },
       {
-        "href": "",
-        "descirption": ""
+        "href": "/develop/business-components/doc-management/",
+        "description": "Document Management description"
       },
       {
-        "href": "",
-        "descirption": ""
+        "href": "/develop/business-components/generated-docs/",
+        "description": "Template Generated Documents description"
       },
       {
-        "href": "",
-        "descirption": ""
+        "href": "/develop/business-components/reconciliation/",
+        "description": "Reconciliation description"
       },
       {
-        "href": "",
-        "descirption": ""
+        "href": "/develop/business-components/user-management/",
+        "description": "User Management description"
       },
       {
-        "href": "",
-        "descirption": ""
+        "href": "/develop/business-components/fix/",
+        "description": "FIX description"
       }
     ]
   }

@@ -1,17 +1,14 @@
-const bussinesComponentsCategoryDescription = `
-Genesis Platform Business Components are designed to give you working business solutions for the most common requirements of financial applications.\nYou can incorporate them into your application in very little time. They are easy to install, run and customise to meet your exact requirements.\n
-Each one comes with a combination of pre-built microservices, APIs and UI components that can be integrated into your application with minimal configuration.
-`;
+import sidebarItemsData from './static/data/sidebar-items-data.json';
 
 module.exports = {
   platformOverviewSidebar: [
-    "platform-overview/platform-overview",
+    'platform-overview/platform-overview',
   ],
   howtoSidebar: [
-    "how-to/how-to-landing",
+    'how-to/how-to-landing',
     {
-      type: "category",
-      label: "Master the basics",
+      type: 'category',
+      label: 'Master the basics',
       collapsed: true,
       items: [
         {
@@ -19,16 +16,16 @@ module.exports = {
           id: 'how-to/ht-front-end-example'
         },
         {
-          type: "doc",
-          id: "how-to/ht-front-end-simple",
+          type: 'doc',
+          id: 'how-to/ht-front-end-simple',
         },
         {
-          type: "doc",
-          id: "how-to/ht-join-expose",
+          type: 'doc',
+          id: 'how-to/ht-join-expose',
         },
         {
-          type: "doc",
-          id: "how-to/ht-shareable-enums",
+          type: 'doc',
+          id: 'how-to/ht-shareable-enums',
         },
         {
           type: 'doc',
@@ -42,61 +39,61 @@ module.exports = {
       collapsed: true,
       items: [
         {
-          type: "doc",
-          id: "how-to/ht-auth",
+          type: 'doc',
+          id: 'how-to/ht-auth',
         },
         {
-          type: "doc",
-          id: "how-to/ht-audit",
+          type: 'doc',
+          id: 'how-to/ht-audit',
         },
         {
           type: 'doc',
           id: 'how-to/ht-ingest-csv'
         },
         {
-          type: "doc",
-          id: "how-to/ht-rest",
+          type: 'doc',
+          id: 'how-to/ht-rest',
         },
         {
-          type: "doc",
-          id: "how-to/ht-consume-kafka",
+          type: 'doc',
+          id: 'how-to/ht-consume-kafka',
         },
         {
-          type: "doc",
-          id: "how-to/ht-fdc3",
+          type: 'doc',
+          id: 'how-to/ht-fdc3',
         }
       ],
     },
     {
-      type: "category",
-      label: "Test your application",
+      type: 'category',
+      label: 'Test your application',
       collapsed: true,
       items: [
         {
-          type: "doc",
-          id: "how-to/ht-prepare-test",
+          type: 'doc',
+          id: 'how-to/ht-prepare-test',
         },
         {
-          type: "doc",
-          id: "how-to/ht-web-unit-test",
+          type: 'doc',
+          id: 'how-to/ht-web-unit-test',
         },
         {
-          type: "doc",
-          id: "how-to/ht-web-e2e-test",
+          type: 'doc',
+          id: 'how-to/ht-web-e2e-test',
         },
       ],
     }
   ],
   developSidebar: [
-    "develop/develop-landing",
+    'develop/develop-landing',
     {
-      type: "category",
-      label: "Development environment",
+      type: 'category',
+      label: 'Development environment',
       collapsed: true,
       link: {
         type: 'generated-index',
         title: 'Development environment',
-        description: 'Development environment description',
+        description: sidebarItemsData['/develop/development-environments'].description,
         slug: '/develop/development-environments',
         keywords: ['Development environment', 'environment'],
       },
@@ -108,13 +105,13 @@ module.exports = {
       ],
     },
     {
-      type: "category",
-      label: "Server capabilities",
+      type: 'category',
+      label: 'Server capabilities',
       collapsed: true,
       link: {
         type: 'generated-index',
         title: 'Server capabilities',
-        description: "This section provides all the details around the Genesis application platform's server capabilities. Each section details how the capability works along with examples, and includes full documentation on configuration and interaction.",
+        description: sidebarItemsData['/develop/server-capabilities'].description,
         slug: '/develop/server-capabilities',
         keywords: ['server capabilities', 'server', 'capabilities'],
       },
@@ -126,14 +123,13 @@ module.exports = {
       ],
     },
     {
-      type: "category",
-      label: "Client capabilities (Web UI)",
-      description: 'Client capabilities (Web UI)',
+      type: 'category',
+      label: 'Client capabilities (Web UI)',
       collapsed: true,
       link: {
         type: 'generated-index',
         title: 'Client capabilities (Web UI)',
-        description: 'Client capabilities (Web UI) description',
+        description: sidebarItemsData['/develop/client-capabilities'].description,
         slug: '/develop/client-capabilities',
         keywords: ['client capabilities', 'client', 'capabilities'],
       },
@@ -145,9 +141,16 @@ module.exports = {
       ],
     },
     {
-      type: "category",
-      label: "Business components",
+      type: 'category',
+      label: 'Business components',
       collapsed: true,
+      link: {
+        type: 'generated-index',
+        title: 'Business components',
+        description: sidebarItemsData['/develop/business-components'].description,
+        slug: '/develop/business-components',
+        keywords: ['business components', 'components'],
+      },
       items: [
         {
           type: 'autogenerated',
@@ -155,23 +158,13 @@ module.exports = {
         },
       ],
     },
-    {
-      type: "category",
-      label: "Glossary",
-      collapsed: true,
-      items: [
-        {
-          type: 'autogenerated',
-          dirName: '001_develop/05_glossary'
-        },
-      ],
-    }
+    'develop/glossary',
   ],
   buildDeployOperateSidebar: [
-    "build-deploy-operate/bdo-overview",
+    'build-deploy-operate/bdo-overview',
     {
-      type: "category",
-      label: "Build",
+      type: 'category',
+      label: 'Build',
       collapsed: true,
       items: [
         {
@@ -181,8 +174,8 @@ module.exports = {
       ],
     },
     {
-      type: "category",
-      label: "Deploy",
+      type: 'category',
+      label: 'Deploy',
       collapsed: true,
       items: [
         {
@@ -192,8 +185,8 @@ module.exports = {
       ],
     },
     {
-      type: "category",
-      label: "Operate",
+      type: 'category',
+      label: 'Operate',
       collapsed: true,
       items: [
         {
@@ -204,27 +197,27 @@ module.exports = {
     },
   ],
   releaseNotesSidebar: [
-    "release-notes/latest-releases",
+    'release-notes/latest-releases',
     {
-      type: "category",
-      label: "Platform",
+      type: 'category',
+      label: 'Platform',
       collapsed: true,
       items: [
         {
-          type: "category",
-          label: "8",
-          items: [{ type: "autogenerated", dirName: "004_release-notes/001_platform/8" }],
+          type: 'category',
+          label: '8',
+          items: [{ type: 'autogenerated', dirName: '004_release-notes/001_platform/8' }],
         },
         {
-          type: "category",
-          label: "7",
-          items: [{ type: "autogenerated", dirName: "004_release-notes/001_platform/7" }],
+          type: 'category',
+          label: '7',
+          items: [{ type: 'autogenerated', dirName: '004_release-notes/001_platform/7' }],
         },
       ],
     },
     {
-      type: "category",
-      label: "Create",
+      type: 'category',
+      label: 'Create',
       collapsed: true,
       items: [
         {
@@ -234,8 +227,8 @@ module.exports = {
       ],
     },
     {
-      type: "category",
-      label: "Launchpad Workspace",
+      type: 'category',
+      label: 'Launchpad Workspace',
       collapsed: true,
       items: [
         {
@@ -245,8 +238,8 @@ module.exports = {
       ],
     },
     {
-      type: "category",
-      label: "Launcher",
+      type: 'category',
+      label: 'Launcher',
       collapsed: true,
       items: [
         {
@@ -256,8 +249,8 @@ module.exports = {
       ],
     },
     {
-      type: "category",
-      label: "IntelliJ Plugin",
+      type: 'category',
+      label: 'IntelliJ Plugin',
       collapsed: true,
       items: [
         {
@@ -267,8 +260,8 @@ module.exports = {
       ],
     },
     {
-      type: "category",
-      label: "VS Code Plugin",
+      type: 'category',
+      label: 'VS Code Plugin',
       collapsed: true,
       items: [
         {
@@ -278,8 +271,8 @@ module.exports = {
       ],
     },
     {
-      type: "category",
-      label: "Custom Elements LSP",
+      type: 'category',
+      label: 'Custom Elements LSP',
       collapsed: true,
       items: [
         {
@@ -289,8 +282,8 @@ module.exports = {
       ],
     },
     {
-      type: "category",
-      label: "Academy",
+      type: 'category',
+      label: 'Academy',
       collapsed: true,
       items: [
         {
