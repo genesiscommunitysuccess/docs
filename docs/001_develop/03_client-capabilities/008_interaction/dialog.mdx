@@ -144,154 +144,45 @@ Use cases:
 
 ### Attributes
 
-<table>
-    <thead>
-        <tr>
-            <th>Attribute</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Example</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>modal</td>
-            <td><code>boolean</code></td>
-            <td>Indicates the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal overlay. Clicks on the overlay will cause the dialog to emit a "dismiss" event. Default value is true.</td>
-<td>
-
-```typescript
-<rapid-dialog modal>
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>hidden</td>
-            <td><code>boolean</code></td>
-            <td>The hidden state of the element. Default value is false.</td>
-<td>
-
-```typescript
-<rapid-dialog hidden>
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>trap-focus</td>
-            <td><code>boolean</code></td>
-            <td>Indicates that the dialog should trap focus. Default value is true.</td>
-<td>
-
-```typescript
-<rapid-dialog trap-focus>
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>aria-describedby</td>
-            <td><code>string</code></td>
-            <td>The id of the element describing the dialog.</td>
-<td>
-
-```typescript
-<rapid-dialog aria-describedby="description-id">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>aria-labelledby</td>
-            <td><code>string</code></td>
-            <td>The id of the element labeling the dialog.</td>
-<td>
-
-```typescript
-<rapid-dialog aria-labelledby="label-id">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>aria-label</td>
-            <td><code>string</code></td>
-            <td>The label surfaced to assistive technologies.</td>
-<td>
-
-```typescript
-<rapid-dialog aria-label="Dialog title">
-```
-
-</td>
-        </tr>
-    </tbody>
-</table>
+|Attribute|Type|Description|Example|
+|--|--|--|--|
+|type|`'default' \| 'error' \| 'success'`|The general style of dialog type to show. `default` type adds no extra styling, `error` shows a red highlight and `success` shows a green.| `<rapid-dialog type="success">`|
+|position|`'center' \| 'left' \| 'right'`|The position of the dialog. `center` is the default. | `<rapid-dialog position="right">`|
+|show-close-icon|`boolean`|Enables the close icon in the top right corner of the dialog. `true` is the default.| `<rapid-dialog show-close-icon="false">`|
 
 ### Properties
 
-This component doesn't have any properties which are not also controlled via attributes.
+|Property|Type|Description|Example|
+|--|--|--|--|
+|onShowCallback|`() => void`|Function that runs before dialog is opened.|`<rapid-dialog :onShowCallback="${(x) => () => x.beforeDialogShown()}">`|
+|onCloseCallback|`() => void`|Function that is called after the dialog is closed.|`<rapid-dialog :onCloseCallback="${(x) => () => x.afterDialogHide()}">`|
 
 ### Methods
 
 |Method|Description|Example|
 |--|--|--|
 |show|Show the dialog|`dialogRef.show()`|
-|hide|Hides the dialog|`dialogRef.hide()`|
+|close|Hides the dialog|`dialogRef.close()`|
 
 ### Slots
 
 |Slot|Description|
 |---|---|
 |Default|All the content which you want to display on the dialog box when shown.|
+|top|Can be used to set a title section for the dialog.|
+|bottom|Can be used to set a footer section for the dialog.|
 
 ### Parts
 
 | Part | Description |
 | --- | --- |
-| positioning-region | A wrapping element used to center the dialog and position the modal overlay |
-| overlay | The modal dialog overlay |
-| control | The dialog element |
+|dialog|the base html `dialog` tag|
+|top|The top part of the dialog which contains the dialog header|
+|bottom|The bottom part of the dialog which contains the dialog footer|
 
 ### Events fired
 
-<table>
-    <thead>
-        <tr>
-            <th>Event</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Example</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>cancel</td>
-            <td><code>void</code></td>
-            <td>Fired when the user clicks outside the dialog, while it's open.</td>
-<td>
-
-```typescript
-<rapid-dialog @cancel="${(x) => x.closeDialog()}">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>close</td>
-            <td><code>void</code></td>
-            <td>Fired when the dialog is hidden.</td>
-<td>
-
-```typescript
-<rapid-dialog @close="${(x) => x.dialogClosed()}">
-```
-
-</td>
-        </tr>
-    </tbody>
-</table>
+This component doesn't fire any events.
 
 ### Events listened to
 
