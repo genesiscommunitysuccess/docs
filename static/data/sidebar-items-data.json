@@ -38,12 +38,8 @@
         "description": "Real Time Triggers Evaluator description"
       },
       {
-        "href": "/develop/server-capabilities/integrations-data-pipelines/",
-        "description": "Integrations Data Pipelines description"
-      },
-      {
-        "href": "/develop/server-capabilities/integrations-streamer-apis/",
-        "description": "Integrations Streamer APIs description"
+        "href": "/develop/server-capabilities/integrations/",
+        "description": "Integrations description"
       },
       {
         "href": "/develop/server-capabilities/runtime-configuration/",
