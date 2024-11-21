@@ -18,11 +18,12 @@ import TabItem from '@theme/TabItem';
 import Log from '/snippet/_LOG.md'
 import CommonPermissions from '/snippet/_common-permissions.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
-
+import CommonAuthenticateFirst from '/snippet/_common-authenticate-first.md'
+import CommonOpenAPI from '/snippet/_common-open-api.md'
 
 ## Overview
 
-The Genesis application platform has a real-time event-driven architecture. The Event Handler is a microservice responsible for providing these events, which can apply business logic and affect the application's data set. Developers configure events, including optional and mandatory input fields, which client can trigger via APIs. 
+The Genesis Application Platform has a real-time event-driven architecture. The Event Handler is a microservice responsible for providing these events, which can apply business logic and affect the application's data set. Developers configure events, including optional and mandatory input fields, which client can trigger via APIs. 
 
 ```mermaid
 graph TD
@@ -502,9 +503,9 @@ Find details around [how event handlers work with optimistic concurrency](/devel
 
 ## Client API
 
-:::tip
-Event handlers are also accessible via [Open API](/develop/server-capabilities/integrations-open-api/)
-:::
+<CommonAuthenticateFirst />
+
+<CommonOpenAPI />
 
 ### `EVENT_<EVENT_HANDLER_NAME>`
 
@@ -601,7 +602,7 @@ connection: keep-alive
 
 ## Approval workflow
 
-The Genesis application platform has an in-built pending approval mechanism that can be used with Event Handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check".
+The Genesis Application Platform has an in-built pending approval mechanism that can be used with Event Handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check".
 
 Event's are essentially queued, until a time they are approved, at which case they are re-triggered to take affect.
 
@@ -1706,7 +1707,7 @@ When you have this in place, click on **Send** to make the call. You can see tha
 
 ### Testing java event handlers
 
-The Genesis application platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application.
+The Genesis Application Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application.
 
 In this case, build `GenesisTestConfig` with the following information:
 

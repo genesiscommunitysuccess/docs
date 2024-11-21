@@ -8,4 +8,357 @@ tags:
 sidebar_position: 8
 ---
 
-Coming soon...
+<!-- Genx  -->
+
+Genx CLI is a tool that simplifies and speeds up local development. Among other useful functions, it enables you to:
+
+- scaffold Genesis applications from scratch based on existing seeds
+- start local development server
+- build artifacts for production
+- execute unit and end-to-end tests and collect coverage data
+- perform code linting
+
+The `genx` command has several options available to create, configure or modify a project. These are the available parameters:
+
+|Command | Argument      | Description|
+|--------|---------------|-------------|
+| [init](#init)   |`<app_Name>`          | create a new project |
+| [add](#add)     |`<seed_Name>`         | add a seed to an existing project project |
+| [analyze](#analyze) |[folder]       | analyse the production bundle |
+| [clean](#clean)   |[...paths]     | delete specified paths (defaults to dist folder) |
+| [build](#build)  |[folder]       | build a production bundle |
+| [dev](#dev)    |[folder]       |   start a development server |
+| [run](#run)    |`<task>` [module]|  run monorepo task|
+| [serve](#serve)  |[folder]       | start a static file server (defaults to dist folder)|
+| [test](#test)   |[folder]       | run tests|
+| [lint](#lint)   |[folder]       | Lint TypesScript and style files |
+| [upgrade](#upgrade) | [folder]      | upgrade Foundation UI dependencies |
+
+## How to use genx
+
+There are two main ways to run the Genx CLI:
+
+- standalone - outside of an existing project, such as when scaffolding a new project
+- local - within an existing project, such as when executing builds within a project
+
+### Standalone
+
+```terminal
+npx -y @genesislcap/genx@latest <command> [args]
+```
+
+For example, to scaffold a new project:
+
+```terminal
+npx -y @genesislcap/genx@latest init myApp
+```
+
+This uses the latest available version of the CLI and creates a new application called **myApp**, using the default seed **blank-app-seed**.
+
+### Local
+
+Once you have a project, you can add Genx CLI as a local dependency to your **package.json**:
+
+``` javascript
+"devDependencies": {
+    ...
+    "@genesislcap/genx": "...",
+    ...
+},
+```
+
+You can check for the latest available version by running `npm info @genesislcap/genx` at any point.
+
+Once you have bootstrapped NPM dependencies, you can call the Genx CLI in the **package.json** scripts section in this way:
+
+``` javascript
+"scripts":{
+    ...
+    "build": "genx <command> [args]"
+    ...
+}
+```
+
+For example:
+
+``` javascript
+"scripts":{
+    ...
+    "build": "genx build -e ENABLE_SSO",
+    "dev": "genx dev -e API_HOST,ENABLE_SSO"
+    "serve": "genx serve",
+    "test": "genx test"
+    ...
+}
+```
+
+Once this is in place, you can execute `npm run build` or `npm run dev`to launch the Genx CLI installed in your project locally.
+
+## Init
+
+The `init` command creates a new project in the selected directory. The basic structure of this command is:
+
+```terminal
+npx -y @genesislcap/genx@latest init <app_Name>
+```
+
+The `init` command creates a new project called `<app_Name>`. When the command runs, the user is prompted to answer a set of questions to cover the basic configuration of the project.
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description |
+|----------|-----------|-------------|
+|`-s` or `--seed`|`<location>` | provide a seed where the project will be created |
+| `--ref`| [ref] | provide a branch, tag or commit for creating the project |
+|`-x` or `--skip-optional-prompts` | | omit the prompts and applies default values |
+|`--insecure` | omit SSL certificate verification |
+|`--remote` | | remote seed only; any local seed is ignored |
+|`-l` or `--log-level` |**info** or **verbose** | info (default) or verbose |
+|`-h` or `--help` | | display help information |
+
+<h3>--seed</h3>
+
+To use the `-s` or `--seed` parameter to specify the local seed directory, a remote seed or one of the pre-defined seeds provided by genesis.
+
+The pre-defined seeds available are:
+
+- blank-app-seed: a seed with a basic structure of a genesis project
+- positions-app-seed: a seed with a positions app created
+- devtraining-seed: a seed with the starting dev training project
+- servertraining-seed: a seed with the starting server training project
+- webtraining-seed: a seed with the starting web training project
+
+Here is an example of creating a new project named **myApp** based on the pre-defined positions-app-seed:
+
+```terminal
+npx -y @genesislcap/genx@latest init myApp -s positions-app-seed
+```
+
+You can use a local seed, to do that follow the example below:
+
+```terminal
+npx -y @genesislcap/genx@latest init myApp -s ./path/to/local-seed
+```
+
+Or you can use a custom remote seed for your app:
+
+```terminal
+npx -y @genesislcap/genx@latest init myApp -s githubuser/repo
+```
+
+<h3>--ref</h3>
+
+If you do not want to use the master branch, use the `--ref` parameter to specify the **branch**, **tag** or **commit** within the seed.
+
+Here is an example of creating a new project named **myApp** based on positions-app-seed on the **develop** branch:
+
+```terminal
+npx -y @genesislcap/genx@latest init myApp -s positions-app-seed --ref develop
+```
+
+<h3> --skip-optional-prompts </h3>
+
+Use the `-x` or `--skip-optional-prompts` parameter to skip all the optional questions when creating a new project.
+
+Here is an example of creating a new project named **myApp** skipping all questions.
+
+```terminal
+npx -y @genesislcap/genx@latest init myApp -x
+```
+
+or
+
+```terminal
+npx -y @genesislcap/genx@latest init myApp --skip-optional-prompts
+```
+
+:::caution
+Creating a project using `-x` creates a project using only using the default configuration.
+:::
+
+<h3> --insecure </h3>
+
+Use the `--insecure` parameter to skip all the SSL certification validation when creating a new project.
+
+Here is an example of creating a new project named **myApp** skipping the SSL certification validation.
+
+```terminal
+npx -y @genesislcap/genx@latest init myApp --insecure
+```
+
+<h3> --remote </h3>
+
+Use the `--remote` parameter to use a remote-only seed. It will ignore any local seed.
+
+Here is an example of creating a new project named **myApp** with a seed called blank-app-seed. Any local blank-app-seed is ignored.
+
+```terminal
+npx -y @genesislcap/genx@latest init myApp -s blank-app-seed --remote
+```
+
+<h3> --log-level </h3>
+
+Use the `log-level` to choose between **info** (default) or **verbose** log level.
+
+Here is an example of creating a new project named **myApp** changing the log level to verbose:
+
+```terminal
+npx -y @genesislcap/genx@latest init myApp --log-level verbose
+```
+
+## Add
+
+The `add` command copies the blank seed and places it in an existing project. The basic structure of this command is:
+
+```terminal
+npx -y @genesislcap/genx@latest init <seed_Name>
+```
+
+To use this command:
+
+- You must have an existing project open.
+- You must specify the seed that you want to copy.
+
+This command has the same properties as the `init` command, with one important difference; the `-s` argument specifies the seed that you want to add. It is mandatory to do this.
+
+The following example adds the Reporting seed to the existing open project:
+
+```
+npx @genesislcap/genx add -s genesislcap/pbc-reporting-seed
+
+```
+
+## Analyze
+
+The `analyze` command helps to optimise the size of the production bundle - it identifies the modules contributing to the overall filesize the most.
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description | Local signature |
+|----------|-----------|-------------|-----------|
+|`-b` or `--builder`|`<builder>` | override default builder| `genx analyze --builder <builder>`|
+| `-n` or `--no-open`| | don't launch browser window (default: true) | `genx analyze --no-open`|
+| `-e` or `--env` | `<VAR1, VAR2>` | set environment variables | `genx build --env VAR1=VAL1,VAR2=VAL2`|
+|`-h` or `--help` | | display information about the command| `genx serve --help` |
+
+## Clean
+
+The `clean` command clears out the **dist** folder as well as temporary TypeScript compilation files. You can customise the exact files and folders to delete.
+
+This command is more useful locally in your project. To do that, simply add the following to the list of scripts in your **package.json**
+
+```javascript title="package.json"
+"clean": "genx clean <Path>",
+```
+
+Below is an example of creating a `clean` script to clear the **dist** folder (containing previously built artifact) and the **node_modules** folder.
+
+```javascript title="Client/package.json"
+"clean": "genx clean dist node_modules"
+```
+
+Now you can run `npm run clear` in the **client** folder.
+
+## Build
+
+The `build` command produces a production bundle for deployment.
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description | Local signature |
+|----------|-----------|-------------|-----------|
+|`-b` or `--builder`|`<builder>` | override default builder| `genx build --builder <builder>`|
+| `-e` or `--env` | `<VAR1, VAR2>` | set environment variables | `genx build --env VAR1=VAL1,VAR2=VAL2`|
+|`-h` or `--help` | | display information about the command| `genx serve --help` |
+
+## Dev
+
+The `dev` command starts an incremental development build server. It will watch for source file changes on disk and refresh the application.
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description | Local signature |
+|----------|-----------|-------------|-----------|
+|`-b` or `--builder`|`<builder>` | Override default builder| `genx dev --builder <builder>`|
+| `--https` | | Use HTTPS| `genx dev --https` |
+| `-n` or `--no-open`| | don't launch browser window (default: true) | `genx dev --no-open` |
+| `-e` or `--env` | `<VAR1, VAR2>` | set environment variables | `genx dev --env VAR1=VAL1,VAR2=VAL2`|
+|`-h` or `--help` | | display information about the command| `genx serve --help` |
+
+## Run
+
+The `run` command provides a short cut for executing NPM tasks in a monorepo managed by [Nx](https://nx.dev/) / [Lerna](https://lerna.js.org/).
+
+``` terminal
+npx -y @genesislcap/genx@latest run <task>
+```
+
+or locally:
+
+``` javascript
+genx run <task>
+```
+
+for example:
+
+```javascript
+"scripts": {
+  "dev:app1": "genx run dev app1-name"
+}
+```
+
+## Serve
+
+The `serve` command enables you to preview a production bundle locally. It starts a static HTTP server in `dist` folder.
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description | Local signature |
+|----------|-----------|-------------|-----------|
+|`-p` or `--port`| `<port>` |set a port number (override the **package.json** definition) | `genx serve --port 6060` |
+|`-h` or `--help` | | display information about the command| `genx serve --help` |
+
+If there is no `-p` defined, then it will use the port defined in the **package.json**.
+
+## Test
+
+The `test` command executes unit and end-to-end tests. Node.js and browsers (Chrome, Firefox etc.) are supported as execution targets. Test coverage reports can be produced in a number of formats, such as LCOV.
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description | Local signature|
+|----------|-----------|-------------|-----------|
+|`-c` or `--coverage`| | produce coverage report | `genx test --coverage` |
+| `-w` or `--watch` | | watch files for changes | `genx test --watch` |
+| `-d` or `--debug`| | debug test execution | `genx test --debug`|
+| `--e2e` | | run e2e tests; defaults to unit test | `genx test --e2e`|
+| `-i` or `--interactive` | | run e2e tests in interactive UI mode| `genx test --interactive`|
+| `-b` or `--browser` | | execute unit test in a browser; defaults to Node.js | `genx test --browser`|
+| `-e` or `--env` | `<VAR1, VAR2>` | set environment variables | `genx test --env VAR1=VAL1,VAR2=VAL2`|
+| `-h` or `--help` | | | `genx test --help` |
+
+## Lint
+
+The `lint` command verifies compliance with ESLint/Prettier/Stylelint rules and formatting conventions. Default configurations are provided, which can be tailored for a specific project.
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description | Local signature |
+|----------|-----------|-------------|-----------|
+|`-l` or `--linter`| `<linter>` | eslint / stylelint / all (default) | `genx lint -l <linter>`|
+| `-f` or `--fix` | | fix issues | `genx lint --fix`|
+| `-p` or `--profile`| | output profiling information | `genx lint --profile` |
+|`-b` or `--builder`|`<builder>` | override default builder| `genx lint --builder <builder>`|
+| `-h` or `--help` | | | `genx lint -h`|
+
+## Upgrade
+
+The `upgrade` command updates Foundation UI NPM module dependency versions, regardless of the range defined in your **package.json**. It can be plugged into CI jobs for automated upgrade workflows.
+
+This command can be used with the following parameters:
+
+|Parameter | Argument  | Description | Local signature |
+|----------|-----------|-------------|-----------|
+|`-r` or `--respect-version-ranges`| | update within package.json version ranges (defaults to latest otherwise) | `genx upgrade --respect-version-ranges` |
+| `-x` or `--exclude` | `<list>` | comma-separated list of packages to exclude | `genx upgrade --exclude tslib` |
+|`-h` or `--help` | | display information about the command| `genx upgrade --help` |

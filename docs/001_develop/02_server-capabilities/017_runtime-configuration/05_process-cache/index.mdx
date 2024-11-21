@@ -43,66 +43,66 @@ Choosing the right index definition is paramount to improving view query perform
 
 ### XML example
 ```xml
-        <cacheConfig>
-    		<cache>
-    			<expireAfterWrite timeUnit="SECONDS">600</expireAfterWrite>
-    			<expireAfterAccess timeUnit="SECONDS">300</expireAfterAccess>
-    			<initialCapacity>10000</initialCapacity>
-    			<maximumEntries>10000</maximumEntries>
-    			<update>false</update>
-    			<insertNewEntries>false</insertNewEntries>
-                <loadOnStart>true</loadOnStart>
-    			<tables>
-    				<table name="TRADE" />
-    				<table name="CLIENT" loadOnStart="false"/>
-                    <table name="COUNTERPARTY" update="true" indices="COUNTERPARTY_BY_ID|COUNTERPARTY_BY_LONG_NAME" insertNewEntries="true"/>
-    			</tables>
-    		</cache>
-    	</cacheConfig>
+<cacheConfig>
+  <cache>
+    <expireAfterWrite timeUnit="SECONDS">600</expireAfterWrite>
+    <expireAfterAccess timeUnit="SECONDS">300</expireAfterAccess>
+    <initialCapacity>10000</initialCapacity>
+    <maximumEntries>10000</maximumEntries>
+    <update>false</update>
+    <insertNewEntries>false</insertNewEntries>
+    <loadOnStart>true</loadOnStart>
+    <tables>
+      <table name="TRADE" />
+      <table name="CLIENT" loadOnStart="false"/>
+      <table name="COUNTERPARTY" update="true" indices="COUNTERPARTY_BY_ID|COUNTERPARTY_BY_LONG_NAME" insertNewEntries="true"/>
+    </tables>
+  </cache>
+</cacheConfig>
 ```
 ### GPAL example
 As well as making specific cache settings, the example below shows the GPAL **process-config** being used to override system-definition values on a per microservice basis. Any process that uses this config is given a bigger Db connection pool size (50).
 
 ```kotlin
-    import java.util.concurrent.TimeUnit
-    
-    process {
-    
-        systemDefinition {
-            item(name = "DbSqlConnectionPoolSize", value = 50)
-        }
-    
-        cacheConfig {
-            expireAfterAccess(1, TimeUnit.DAYS)
-            expireAfterWrite(1, TimeUnit.DAYS)
-            update = false
-            initialCapacity = 20_000
-            maximumEntries = 30_000
-            insertNewEntries = false
-            loadOnStart = true
-    
-            tables {
-                table(TRADE)
-                table(CLIENT, loadOnStart = false)
-                table(COUNTERPARTY, update = true, indices = listOf(COUNTERPARTY.BY_ID, COUNTERPARTY.BY_LONG_NAME), insertNewEntries = true)
-            }
-        }
+  import java.util.concurrent.TimeUnit
+  
+  process {
+  
+    systemDefinition {
+      item(name = "DbSqlConnectionPoolSize", value = 50)
     }
+
+    cacheConfig {
+      expireAfterAccess(1, TimeUnit.DAYS)
+      expireAfterWrite(1, TimeUnit.DAYS)
+      update = false
+      initialCapacity = 20_000
+      maximumEntries = 30_000
+      insertNewEntries = false
+      loadOnStart = true
+
+      tables {
+        table(TRADE)
+        table(CLIENT, loadOnStart = false)
+        table(COUNTERPARTY, update = true, indices = listOf(COUNTERPARTY.BY_ID, COUNTERPARTY.BY_LONG_NAME), insertNewEntries = true)
+      }
+    }
+  }
 ```
 
 ### GPAL processes.xml example
 ```xml
-    <process name="GENESIS_AUTH_DATASERVER">
-        <groupId>AUTH</groupId>
-        <start>true</start>
-        <options>-Xmx128m -DXSD_VALIDATE=false</options>
-        <module>pal-dataserver</module>
-        <package>global.genesis.dataserver.pal</package>
-        <config>auth-process-config.kts</config>
-        <script>auth-dataserver.kts</script>
-        <description>Displays real-time authentication/authorisation details</description>
-        <language>pal</language>
-    </process>
+  <process name="GENESIS_AUTH_DATASERVER">
+    <groupId>AUTH</groupId>
+    <start>true</start>
+    <options>-Xmx128m -DXSD_VALIDATE=false</options>
+    <module>pal-dataserver</module>
+    <package>global.genesis.dataserver.pal</package>
+    <config>auth-process-config.kts</config>
+    <script>auth-dataserver.kts</script>
+    <description>Displays real-time authentication/authorisation details</description>
+    <language>pal</language>
+  </process>
 ```
 
 Note: If no configuration is found at all for a process, or if some fields are missing, the internal cache configuration will be filled with default values for every missing parameter. You can still use the database cache programmatically by adding tables manually in the code base using ```db.getCache().addTable("TABLE")```.

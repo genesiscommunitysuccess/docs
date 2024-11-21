@@ -3,6 +3,68 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     packages: [
         {
+            name: "@genesislcap/foundation-comms",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/002_server-communications/01_server-communications-docs",
+                api_docs: "docs/api",
+                readme: "index.mdx",
+                keywords: ["genesis", "foundation", "comms", "connect", "server-communications", "services"],
+                tags: [
+                    "connected",
+                    "comms",
+                    "connect",
+                    "services",
+                    "server-communications",
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/foundation-entity-management",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/005_grids/002_entity-manager",
+                api_docs: "docs/api",
+                img_dir: "docs/img",
+                readme: "index.mdx",
+                keywords: [
+                    "entity management",
+                    "frontend",
+                    "micro-front-ends",
+                    "profile management",
+                    "ui",
+                    "user management",
+                    "web",
+                ],
+                tags: [
+                    "entity management",
+                    "frontend",
+                    "micro-front-ends",
+                    "profile management",
+                    "ui",
+                    "user management",
+                    "web",
+                ],
+                pages: [
+                    {
+                        title: "Real Time Data Grid (Entity Manager)",
+                        sidebar_label: "Real Time Data Grid (Entity Manager)",
+                        id: "entity-manager",
+                    },
+                ],
+            },
+        },
+        {
             name: "@genesislcap/grid-pro",
             enabled: true,
             src: {
@@ -11,9 +73,9 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/005_grids/001_grid-pro",
+                directory: "./docs/001_develop/03_client-capabilities/005_grids/003_grid-pro",
                 api_docs: "docs/api",
-                readme: "01_grid-pro.mdx",
+                readme: "index.mdx",
                 keywords: ["genesis", "foundation", "ui", "grid", "grid-pro", "ag"],
                 tags: [
                     "connected",
@@ -24,8 +86,8 @@ exports.default = {
                 ],
                 pages: [
                     {
-                        title: "Grid Pro",
-                        sidebar_label: "Overview",
+                        title: "Enterprise Data Grid (Grid Pro)",
+                        sidebar_label: "Enterprise Data Grid (Grid Pro)",
                         id: "grid-pro",
                     },
                 ],
@@ -40,9 +102,9 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/005_grids/002_grid-tabulator",
+                directory: "./docs/001_develop/03_client-capabilities/005_grids/004_grid-tabulator",
                 api_docs: "docs/api",
-                readme: "01_grid-tabulator.mdx",
+                readme: "index.mdx",
                 keywords: ["genesis", "foundation", "ui", "grid", "grid-tabulator", "tabulator"],
                 tags: [
                     "connected",
@@ -53,8 +115,8 @@ exports.default = {
                 ],
                 pages: [
                     {
-                        title: "Grid Tabulator",
-                        sidebar_label: "Overview",
+                        title: "Connected Data Grid (Tabulator)",
+                        sidebar_label: "Connected Data Grid (Tabulator)",
                         id: "grid-tabulator",
                     },
                 ],
@@ -69,9 +131,9 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/006_charts/001_g2plot-chart",
+                directory: "./docs/001_develop/03_client-capabilities/006_charts/002_g2plot-chart",
                 api_docs: "docs/api",
-                readme: "01_g2plot-chart.mdx",
+                readme: "index.mdx",
                 keywords: ["genesis", "foundation", "ui", "chart", "g2plot-chart", "g2plot"],
                 tags: [
                     "connected",

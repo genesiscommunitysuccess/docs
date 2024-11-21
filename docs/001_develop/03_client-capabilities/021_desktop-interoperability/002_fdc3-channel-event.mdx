@@ -1,0 +1,427 @@
+---
+title: 'FDC3 Channel Event'
+sidebar_label: 'FDC3 Channel Event'
+id: fdc3-channel-event
+keywords: [interaction, interactive, interoperability, openfin, interop.io, fdc3, fdc3 channel, fdc3 context, data]
+tags:
+- interaction
+- interactive
+- interoperability
+- openfin
+- interop.io
+- fdc3
+- fdc3 channel
+- fdc3 context
+- data
+sidebar_position: 2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# FDC3 Channel Event
+
+This is a utility element that listens to an event on its parent element and broadcasts the event detail payload on an FDC3 Channel.
+
+Use cases:
+* Send event on system color channel
+* Send event on app channel
+* Map the event payload before broadcasting on a channel
+
+import FDCBrowsers from '../../../_includes/_fdc3-browsers.mdx'
+
+<FDCBrowsers />
+
+## Examples
+
+import FDC3Entity from '../../../_includes/_fdc3-entity.mdx'
+
+<FDC3Entity />
+
+### Example 1 - Send event on system channel
+
+This will listen to the `rowClicked` event that is fired by the `rapid-grid-pro` element whenever a row is clicked.
+
+It will broadcast on the current system color channel.
+
+It will broadcast with the context type `fdc3.position`.
+
+The context payload will contain the `event.detail.data` payload in the `id` property of the Context object.
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+
+Usage
+```typescript
+@customElement({
+    name: 'my-element',
+    template: html`
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    `,
+})
+export class MyElement extends GenesisElement {}
+```
+</TabItem>
+
+<TabItem value="react">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+
+Usage
+```typescript
+export function MyComponent() {
+    return (
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    );
+}
+```
+</TabItem>
+
+<TabItem value="angular">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+@Component({
+    selector: 'my-root',
+    templateUrl: './my.component.html',
+    template: `
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event event-name="rowClicked" channel-type="fdc3.position">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule],
+})
+export class AppComponent {}
+```
+
+</TabItem>
+</Tabs>
+
+### Example 2 - Send event on app channel
+
+This will listen to the `rowClicked` event that is fired by the `rapid-grid-pro` element whenever a row is clicked.
+
+It will broadcast on the specified app channel, in this case `appChannel`.
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+Usage
+```typescript
+@customElement({
+    name: 'my-element',
+    template: html`
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event
+                event-name="rowClicked"
+                channel-type="fdc3.position"
+                channel-name="appChannel">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    `,
+})
+export class MyElement extends GenesisElement {}
+```
+</TabItem>
+
+<TabItem value="react">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+
+Usage
+```typescript
+export function MyComponent() {
+    return (
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event
+                event-name="rowClicked"
+                channel-type="fdc3.position"
+                channel-name="appChannel">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    );
+}
+```
+</TabItem>
+
+<TabItem value="angular">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+@Component({
+    selector: 'my-root',
+    templateUrl: './my.component.html',
+    template: `
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event
+                event-name="rowClicked"
+                channel-type="fdc3.position"
+                channel-name="appChannel">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    `
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule],
+})
+export class AppComponent {}
+```
+</TabItem>
+</Tabs>
+
+
+### Example 3 - Send mapped event on system channel
+
+This will listen to the `rowClicked` event that is fired by the `rapid-grid-pro` element whenever a row is clicked.
+
+It will broadcast on the current system color channel.
+
+It will broadcast with the context type `fdc3.position`.
+
+The mapping function will map the `event.detail.data` payload and create a new object.
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+Usage
+```typescript
+@customElement({
+    name: 'my-element',
+    template: html`
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event
+                :mappingFunction="${() => ({TICKER, CUSIP}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}"
+                event-name="rowClicked"
+                channel-type="fdc3.position">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    `,
+})
+export class MyElement extends GenesisElement {}
+```
+</TabItem>
+
+<TabItem value="react">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+Usage
+```typescript
+export function MyComponent() {
+    const mappingFunction = (params: any) => ({ id: { ticker: params.TICKER, cusip: params.CUSIP } })
+
+    return (
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event
+                mappingFunction={mappingFunction}
+                event-name="rowClicked"
+                channel-type="fdc3.position">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    );
+}
+```
+</TabItem>
+<TabItem value="angular">
+Declaration
+```html
+<fdc3-channel-event></fdc3-channel-event>
+```
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+@Component({
+    selector: 'my-root',
+    templateUrl: `
+        <rapid-grid-pro>
+            <grid-pro-genesis-datasource
+                resource-name="ALL_INSTRUMENT_REF">
+            </grid-pro-genesis-datasource>
+            <fdc3-channel-event
+                [mappingFunction]="mappingFunction"
+                event-name="rowClicked"
+                channel-type="fdc3.position">
+            </fdc3-channel-event>
+        </rapid-grid-pro>
+    `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule],
+})
+export class AppComponent {
+  mappingFunction(params: any) {
+    return { id: { ticker: params.TICKER, cusip: params.CUSIP } };
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>event-name</td>
+            <td><code>string</code></td>
+            <td>The name of the javascript event to listen to on the parent</td>
+<td>
+
+```typescript
+<fdc3-channel-event event-name="click">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>channel-type</td>
+            <td><code>string</code></td>
+            <td>The name of the channel context type that will be broadcast</td>
+<td>
+
+```typescript
+<fdc3-channel-event channel-type="fdc3.position">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>channel-name</td>
+            <td><code>string</code></td>
+            <td>If specified, the element will broadcast on a named app channel</td>
+<td>
+
+```typescript
+<fdc3-channel-event channel-type="exampleChannel">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Properties
+
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>mappingFunction</td>
+<td>
+
+```typescript
+(e: Event.detail.data | Event.detail) => any
+```
+
+</td>
+            <td>An optional function to override the channel broadcast payload. It should be a function which returns a value, corresponding to the fdc3 type. It will receive the custom event <code>detail.data</code> property value (or <code>detail</code> if data is not present) as a parameter. The returned value will be broadcast on the channel</td>
+<td>
+
+```typescript
+<fdc3-channel-event :mappingFunction=${() => ({TICKER}) => ({ id: { ticker: TICKER, cusip: CUSIP } })}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Slots
+
+This component has no slots.
+
+### Parts
+
+This component has no parts.
+
+### Fired Events
+
+This component doesn't fire any events.
+
+### Listened Events
+
+This component listens to the event on its parent element that you specify in the `event-name` attribute.

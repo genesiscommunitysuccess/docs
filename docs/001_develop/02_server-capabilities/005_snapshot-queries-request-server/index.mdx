@@ -15,9 +15,12 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Log from '/snippet/_LOG.md'
 import CommonPermissions from '/snippet/_common-permissions.md'
+import CommonPermissionsQuery from '/snippet/_common-permissions-query.md'
 import CommonFieldOverrides from '/snippet/_common-field-overrides.md'
 import CommonQueryFields from '/snippet/_common-query-fields.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
+import CommonAuthenticateFirst from '/snippet/_common-authenticate-first.md'
+import CommonOpenAPI from '/snippet/_common-open-api.md'
 
 ## Overview
 
@@ -156,7 +159,7 @@ Requests would be looked up using that table index.
 
 ###### Picking an index
 
-Request servers will attempt to use the most efficient mechanism to retrieve data from the data base. Given the `REQUEST` fields which are input, and not wildcarded, it will cycle through the indices of the table or view used and score accordingly. If it is a full match we give max score to that index, any partial matches are scored and that with the highest score is used.
+Request servers will attempt to use the most efficient mechanism to retrieve data from the data base. Given the `REQUEST` fields which are input, and not wild carded, it will cycle through the indices of the table or view used and score accordingly. If it is a full match we give max score to that index, any partial matches are scored and that with the highest score is used.
 
 ###### Audit table recommendations
 
@@ -256,6 +259,7 @@ Similar to `filterWithParameters` but the `genesisSet` context property contains
 
 <CommonPermissions />
 
+<CommonPermissionsQuery />
 
 #### `rowReturnLimit`
 
@@ -420,7 +424,7 @@ requestReply<InstrumentDetails.ByInstrumentId, InstrumentDetails> {
 
 Next is a more complex example. 
 
-- The first block checks that the user is authorised to view the instrument.
+- The first block checks that the user is authorized to view the instrument.
 - The second block uses the ALT_INSTRUMENT_ID table. The index is used as the input, but we return either a `getBulk`, a `getRange` or a `get`, depending on the input.
 
 ```kotlin
@@ -490,9 +494,9 @@ Find details around [how request servers work with optimistic concurrency](/deve
 
 ## Client API
 
-:::tip
-Request servers are also accessible via [Open API](/develop/server-capabilities/integrations-open-api/)
-:::
+<CommonAuthenticateFirst />
+
+<CommonOpenAPI />
 
 ### `REQ_<REQUEST_SERVER_NAME>`
 
@@ -658,7 +662,7 @@ You must specify both `_FROM` and `_TO` to get a result. Specifying only one end
 
 :::note
 1. Ranges must be based on indexes. Post-fixing the request parameter targeting records without an index, will process the request ignoring the range.
-2. It is not possible to get a range using unix timestamps when targeting a GenesisFlake field. The epoch time (millis) is in the most significant bits of the raw GenesisFlake value, so you need to shift once right to decode into epoch millis (GenesisFlake to Timestamp) and once left to do the same thing for encoding (Timestamp to GenesisFlake). This is described in opur page on [timestamps](/database/fields-tables-views/timestamps/). 
+2. It is not possible to get a range using unix timestamps when targeting a GenesisFlake field. The epoch time (milliseconds) is in the most significant bits of the raw GenesisFlake value, so you need to shift once right to decode into epoch milliseconds (GenesisFlake to Timestamp) and once left to do the same thing for encoding (Timestamp to GenesisFlake). This is described in detail [here](/develop/server-capabilities/data-access-apis/#timestamps). 
 :::
 
 ## Metrics
@@ -904,9 +908,9 @@ fun testHelloWorldRequestServerWithUser() {
 </TabItem>
 </Tabs>
 
-### Dynamic authorisation
+### Dynamic authorization
 
-To test dynamic authorisation, you need to amend your Request Server definition:
+To test dynamic authorization, you need to amend your Request Server definition:
 
 ```kotlin
 data class Hello(
@@ -941,12 +945,12 @@ requestReplies {
 }
 ```
 
-You then need to create your new test cases. Note that the authorisation for Request Servers is on the outgoing message. The Request Server filters out values to which the requesting user has no access. 
+You then need to create your new test cases. Note that the authorization for Request Servers is on the outgoing message. The Request Server filters out values to which the requesting user has no access. 
 
-In the code below, there are two tests, which both check the result of the authorisation process:
+In the code below, there are two tests, which both check the result of the authorization process:
 
-- In the first test, if the result is 1 (authorised), then the Hello message is sent (as in the earlier example).
-- In the second test, if the result is 0 (unauthorised), then an empty message is returned.
+- In the first test, if the result is 1 (authorized), then the Hello message is sent (as in the earlier example).
+- In the second test, if the result is 0 (unauthorized), then an empty message is returned.
 
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -1063,7 +1067,7 @@ We have covered:
 * defining a request flows
 * sending our request and receiving the response
 * setting the username on the request
-* handling dynamic authorisation
+* handling dynamic authorization
 
 ## Integration testing (legacy)
 

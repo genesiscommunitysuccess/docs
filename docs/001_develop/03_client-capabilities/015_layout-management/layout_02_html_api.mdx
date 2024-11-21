@@ -1,0 +1,414 @@
+---
+title: 'Layout Declerative HTML API'
+sidebar_label: 'Layout Declerative HTML'
+id: client-layout-management-html
+keywords: [ layout, layout management, Drag and drop, Resizable panels, Tabbed , Responsive , Customizable, Splitting, Stacking, Popouts, Nested , State persistence, Flexible, Container, Item, Component, Content item, Stack, Row, Column, Header, Tabs, Lifecycle methods, API, Resize events, Drag , Close events Declerative HTML, Attribute, Property, Template]
+tags:
+- layout
+- layout management
+- Drag and drop
+- Resizable panels
+- Tabbed
+- Responsive
+- Customizable
+- Splitting
+- Stacking
+- Popouts
+- Nested
+- State persistence
+- Flexible
+- Container
+- Item
+- Component
+- Content item
+- Stack
+- Row
+- Column
+- Header
+- Tabs
+- Lifecycle methods
+- API
+- Resize events
+- Drag
+- Close events
+- Declerative HTML
+- Attribute
+- Property
+- Template
+sidebar_position: 15
+---
+
+All layouts can be specified with a mixture of just three Genesis elements using just HTML templates.
+
+## Rapid layout
+
+Top level web component, which is used to initialise a custom layout.
+```html
+<rapid-layout></rapid-layout>
+```
+
+### DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+#### Attributes
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>auto-save-key</td>
+      <td><code>string</code></td>
+      <td>Optional string which if set, will enable autosaving the layout under this key in local storage. See here for more<!-- todo --></td>
+<td>
+
+```typescript
+<rapid-layout auto-save-key=${(x) => x.autoSaveKey || 'default'}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>reload-buffer (1)</td>
+      <td><code>number</code></td>
+      <td>Numerical attribute that controls the buffer between how long the layout is reloaded. The default is 500ms. In this case, the layout is only reloaded if the child elements of the layout region are manipulated once every 500ms. This is to stop the layout being reloaded over and over for every single item during initialisation. The higher the value is, the more performant the component is, but the first load will appear to take longer.</td>
+<td>
+
+```typescript
+<rapid-layout reload-buffer=${(x) => x.reloadBuffer || '2000'}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+:::tip
+(1) This only applies for usage with the declarative HTML API. When the layout first loads after this amount of time, it emits an event <!-- TODO link -->.
+:::
+
+#### Properties
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>missingItemPlaceholder</td>
+      <td><code>(x: string) => string</code></td>
+      <td>Function which receives the name of a pane with a missing registration. Returns the placeholder text to be shown in the pane.</td>
+<td>
+
+```typescript
+<rapid-layout :missingItemPlaceholder=${() => (n: string) => n + ' not registered.'}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>dimensionsConfig</td>
+      <td><code>LayoutcConfig.Dimensions</code></td>
+      <td>Object which configures certain size items on the layout such as the size of the drag handles or the title bar sizes.</td>
+<td>
+
+```typescript
+<rapid-layout :dimensionsConfig=${(_) => ({ borderWidth: 50, })}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>customButtons</td>
+      <td><code>CustomButton[]</code></td>
+      <td>An array that contains configurations to add custom buttons to the header.</td>
+<td>
+
+```typescript
+<rapid-layout :customButtons=${(_) => [{ /* config */ }]}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Slots
+
+| Slot | Use |
+|---|---|
+|Default|The default slot is where a combination of `<rapid-layout-item>` and `<rapid-layout-region>` elements are placed. No other element may be placed into this slot, to put general components into the layout you must wrap them in `<rapid-layout-item>`|
+
+#### Parts
+
+This component doesn't have any css parts.
+
+#### Fired Events
+
+Events can be received by the emitting `<rapid-layout>`, or any parent element.
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>first-loaded</td>
+      <td><code>void</code></td>
+      <td>emitted when the layout has finished loading the first time</td>
+<td>
+
+```typescript
+<my-component @first-loaded="${(x) => x.layoutFirstLoaded()}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>item-added</td>
+      <td><code>void</code></td>
+      <td>emitted when an item is added to the layout</td>
+<td>
+
+```typescript
+<my-component @item-added="${(x) => x.layoutItemAdded()}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>item-removed</td>
+      <td><code>void</code></td>
+      <td>emitted when an item is removed from the layout</td>
+<td>
+
+```typescript
+<my-component @item-removed="${(x) => x.layoutItemRemoved()}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>item-resized</td>
+      <td><code>void</code></td>
+      <td>emitted when the user drags the divider to resize elements</td>
+<td>
+
+```typescript
+<my-component @item-resized="${(x) => x.layoutItemResized()}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Listened Events
+
+This component doesn't listen to any public API events.
+<!-- TODO: is there an event for renaming a pane ? -->
+
+
+## Rapid layout region
+
+An element for declaratively setting the layout structure.
+```html
+<rapid-layout-region>
+  <rapid-layout-item></rapid-layout-item>
+  <rapid-layout-region type="tabs">
+    <!-- more nested regions/items ... -->
+  </rapid-layout-region>
+  <!-- more nested regions/items ... -->
+</rapid-layout-region>
+```
+
+#### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>size</td>
+            <td><code>string</code></td>
+            <td>Controls the size of the region. See <a href="#sizing">here</a>.</td>
+<td>
+
+```typescript
+<rapid-layout-region size="50%">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td><code>"vertical" | "horizontal" | "tabs"</code></td>
+            <td>Union type which configures the grouping type. See below. Defaults to <code>horizontal</code>.</td>
+<td>
+
+```typescript
+<rapid-layout-region type="tabs">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+Layout region types:
+* `vertical` - Indicates to the layout system that all immediate children are (by default) to be split equally within the available space of this component using n-1 column split(s). Can be nested within other horizontal and vertical regions.
+* `horizontal` - Indicates to the layout system that all immediate children are (by default) to be split equally among the available space of this component using n-1 row split(s). Can be nested within other horizontal and vertical regions.
+* `tabs` - Indicates to the layout system that all immediate children are to be added as tabs in the available space of this component, with a tab for each child. The tabs are ordered according to which child the layout item is (e.g. the second `<rapid-layout-item>` of the tab split is the second tab). The first child will be the one that is open by default. Can be nested within horizontal and vertical regions, but cannot have more layout sections inside it.
+
+#### Properties
+
+There are no properties in addition to the properties controlled via attributes.
+
+#### Slots
+
+| Slot | Use |
+|---|---|
+|Default|The default slot is where a combination of `<rapid-layout-item>` and `<rapid-layout-region>` elements are placed. No other element may be placed into this slot, to put general components into the layout you must wrap them in `<rapid-layout-item>`|
+
+#### Parts
+
+This component doesn't have any css parts.
+
+#### Fired Events
+
+This component doesn't fire any events.
+
+### Listened Events
+
+This component doesn't listen to any events.
+
+## Rapid layout item
+
+A wrapper element that is required to enclose elements to be put inside of the layout. All content must be inside a layout item; otherwise, a runtime error will be thrown when the layout attempts to render itself on screen.
+```html
+<rapid-layout-item title="My checkbox">
+    <rapid-checkbox>Rapid Checkbox</rapid-checkbox>
+    <!-- more elements... --->
+</rapid-layout-item>
+```
+
+### DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+#### Attributes
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>title</td>
+      <td><code>string</code></td>
+      <td>Set the title of the pane that contains the content. Defaults to <code>Item x</code>, where <code>x</code> is the pane number.</td>
+<td>
+
+```typescript
+<rapid-layout-item title="My title">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>closable</td>
+      <td><code>boolean</code></td>
+      <td>Controls whether the user can close the pane. Default is <code>false</code>.</td>
+<td>
+
+```typescript
+<rapid-layout closable>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td><code>string</code></td>
+      <td>Controls the size of the pane. See <a href="#sizing">here</a>.</td>
+<td>
+
+```typescript
+<rapid-layout-item size="50%">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>registration</td>
+      <td><code>string</code></td>
+      <td>Sets the registered name of the component. Not required to be set unless you're also using the javascript API. See here. <!-- TODO -->. By default each item that doesn't have a registration is registered sequentially starting at <code>"1"</code>.</td>
+<td>
+
+```typescript
+<rapid-layout-item registration="checkbox">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Properties
+
+There are no properties in addition to the properties controlled via attributes.
+
+#### Slots
+
+| Slot | Use |
+|---|---|
+|Default|The default slot is the contents of the layout pane. You may put one or more elements into the default slot, and they'll all be added into the element set for this item's registration|
+
+#### Parts
+
+This component doesn't have any css parts.
+
+#### Fired Events
+
+This component doesn't fire any events.
+
+### Listened Events
+
+This component doesn't listen to any events.
+
+## Sizing
+
+`size`: optional string attribute which can be configured on both `<rapid-layout-item>` and `<rapid-layout-region>`. For rows, it specifies height. For columns, it specifies width. Has format `<number><size-unit>`.
+
+Currently only supports units `fr` and `%`. Space is first proportionally allocated to items with `sizeUnit` `%`. If there is any space left over (less than 100% allocated), then the remainder is allocated to the items with unit `fr` according to the fractional size.
+
+If more than 100% is allocated, then an extra 50% is allocated to items with unit `fr` and is allocated to each item according to its fractional size. All item sizes are then adjusted to bring the total back to 100%.
+
