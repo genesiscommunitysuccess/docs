@@ -186,9 +186,25 @@ Use cases:
 
 ## API
 
+### Configuration Type
+
+The configuration of the dropdown menu is described by this typescript type.
+```typescript
+export type DropdownMenuItem = {
+  name: string;
+  icon?: {
+    variant?: IconStyle;
+    name: string;
+    size?: FaSize;
+  };
+  color?: string;
+  submenu?: DropdownMenuItem[];
+  callback?: (params?: any) => void | any;
+  isDisabled?: (params?: any) => boolean;
+};
+```
+
 ### Attributes
-
-
 
 <table>
     <thead>
@@ -201,193 +217,61 @@ Use cases:
     </thead>
     <tbody>
         <tr>
-            <td>anchor</td>
+            <td>auto-close</td>
+            <td><code>boolean</code></td>
+            <td>Controls if the dropdown automatically closes (Default: true)</td>
+<td>
+
+```typescript
+<rapid-dropdown-menu auto-close>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>disable-button</td>
+            <td><code>boolean</code></td>
+            <td>Disables the dropdown button (Default: false)</td>
+<td>
+
+```typescript
+<rapid-dropdown-menu disable-button>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>name</td>
             <td><code>string</code></td>
-            <td>The HTML ID of the anchor element this region is positioned relative to. Default: ""</td>
+            <td>The name of the dropdown menu (Default: 'Dropdown Menu')</td>
 <td>
 
 ```typescript
-<rapid-anchored-layout anchor="header-id">
+<rapid-dropdown-menu name="Dropdown Menu">
 ```
 
 </td>
         </tr>
         <tr>
-            <td>viewport</td>
+            <td>open</td>
+            <td><code>boolean</code></td>
+            <td>Controls if the dropdown is open (Default: false)</td>
+<td>
+
+```typescript
+<rapid-dropdown-menu open>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>buttonAppearance</td>
             <td><code>string</code></td>
-            <td>The HTML ID of the viewport element this region is positioned relative to. Default: ""</td>
+            <td>Sets the appearance style of the button (Default: none)</td>
 <td>
 
 ```typescript
-<rapid-anchored-layout viewport="main-content">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>horizontal-positioning-mode</td>
-            <td><code>"uncontrolled" | "locktodefault" | "dynamic"</code></td>
-            <td>Sets logic for horizontal placement. Default: "uncontrolled". <code>locktodefault</code> forces the default position, <code>dynamic</code> decides placement based on available space, and <code>uncontrolled</code> does not control placement on the horizontal axis</td>
-<td>
-
-```typescript
-<rapid-anchored-layout horizontal-positioning-mode="dynamic">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>horizontal-default-position</td>
-            <td><code>"start" | "end" | "left" | "right" | "center" | "unset"</code></td>
-            <td>Default horizontal position relative to anchor. Default: "unset"</td>
-<td>
-
-```typescript
-<rapid-anchored-layout horizontal-default-position="center">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>horizontal-viewport-lock</td>
-            <td><code>boolean</code></td>
-            <td>Whether region remains in viewport on horizontal axis. Default: false</td>
-<td>
-
-```typescript
-<rapid-anchored-layout horizontal-viewport-lock>
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>horizontal-inset</td>
-            <td><code>boolean</code></td>
-            <td>Whether region overlaps anchor on horizontal axis. Default: false</td>
-<td>
-
-```typescript
-<rapid-anchored-layout horizontal-inset>
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>horizontal-threshold</td>
-            <td><code>number</code></td>
-            <td>How narrow the space allocated to the default position has to be before the widest area is selected for the layout.</td>
-<td>
-
-```typescript
-<rapid-anchored-layout horizontal-threshold="10">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>horizontal-scaling</td>
-            <td><code>"anchor" | "fill" | "content"</code></td>
-            <td>How width is calculated. Default: "content"</td>
-<td>
-
-```typescript
-<rapid-anchored-layout horizontal-scaling="content">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>vertical-positioning-mode</td>
-            <td><code>"uncontrolled" | "locktodefault" | "dynamic"</code></td>
-            <td>Sets logic for vertical placement. Default: "uncontrolled". <code>locktodefault</code> forces the default position, <code>dynamic</code> decides placement based on available space, and <code>uncontrolled</code> does not control placement on the horizontal axis</td>
-<td>
-
-```typescript
-<rapid-anchored-layout vertical-positioning-mode="dynamic">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>vertical-default-position</td>
-            <td><code>"top" | "bottom" | "center" | "unset"</code></td>
-            <td>Default vertical position relative to anchor. Default: "unset"</td>
-<td>
-
-```typescript
-<rapid-anchored-layout vertical-default-position="top">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>vertical-viewport-lock</td>
-            <td><code>boolean</code></td>
-            <td>Whether region remains in viewport on vertical axis (i.e. detatches from the anchor). Default: false</td>
-<td>
-
-```typescript
-<rapid-anchored-layout vertical-viewport-lock>
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>vertical-inset</td>
-            <td><code>boolean</code></td>
-            <td>Whether the region overlaps the anchor on the vertical axis</td>
-<td>
-
-```typescript
-<rapid-anchored-layout vertical-inset>
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>vertical-threshold</td>
-            <td><code>number</code></td>
-            <td>Space threshold before tallest area is selected for layout</td>
-<td>
-
-```typescript
-<rapid-anchored-layout vertical-threshold="15">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>vertical-scaling</td>
-            <td><code>"anchor" | "fill" | "content"</code></td>
-            <td>How height is calculated. Default: "content"</td>
-<td>
-
-```typescript
-<rapid-anchored-layout vertical-scaling="fill">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>fixed-placement</td>
-            <td><code>boolean</code></td>
-            <td>Whether region uses fixed positioning instead of absolute. Default: false</td>
-<td>
-
-```typescript
-<rapid-anchored-layout fixed-placement>
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>auto-update-mode</td>
-            <td><code>"anchor" | "auto"</code></td>
-            <td>Defines what triggers position reevaluation. Default: "anchor". <code>anchor</code> the component only updates its position when the anchor resizes, <code>auto</code> the component updates its position when: the anchor, window, or viewport resizes, any scroll in the document. Both update when <code>update()</code> is called.</td>
-<td>
-
-```typescript
-<rapid-anchored-layout auto-update-mode="auto">
+<rapid-dropdown-menu buttonAppearance="primary">
 ```
 
 </td>
