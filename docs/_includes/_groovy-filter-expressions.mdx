@@ -2,9 +2,9 @@ import { CollapsibleSlot } from '../../examples/ui/documentationBase';
 
 
 :::info
-<CollapsibleSlot title="Criteria Matching" description="Criteria use groovy expressions to filter responses from the backend">
+<CollapsibleSlot title="Criteria Matching" description="Criteria use groovy expressions to filter responses from the back end.">
 
-To filter a request from a datasource with a string that matches conditions in a groovy or common expression.
+You can use a groovy or common expression to filter a request from a datasource. Only strings that match the conditions in the expression will be returned.
 
 For example, to filter a resource with `QUANTITY`, a number value, your criteria value could be:
 - `'QUANTITY > 1000'` for greater than 1000
@@ -18,7 +18,8 @@ To filter a resource with `TRADE_ID`, a string value, your criteria value could 
 - `'TRADE_ID == "TR_123" || TRADE_ID == "TR_124"'` for equals TR_123 or TR_123
 
 To specify more than one condition, separate the criteria with `&&`:
-`'TRADE_ID == "TR_123" && QUANTITY > 1000'` for equals TR_123 and greater than 1000
+
+`TRADE_ID == "TR_123" && QUANTITY > 1000'` for equals TR_123 and greater than 1000
 
 Go to our page on [criteria matching](docs/001_develop/03_client-capabilities/002_server-communications/02_criteria-matching.mdx) for more details.
 
