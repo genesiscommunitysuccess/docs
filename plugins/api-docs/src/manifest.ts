@@ -478,5 +478,25 @@ export default {
     //     ],
     //   },
     // },
+    {
+      name: "@genesislcap/foundation-notifications",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/013_toast-notifications",
+        api_docs: "docs/api",
+        readme: "index.mdx",
+        keywords: ["genesis", "foundation", "notifications", "toast","snackbar"],
+        tags: [
+          "notifications",
+          "toasts",
+          "snackbar"
+        ],
+      },
+    },
   ],
 };
