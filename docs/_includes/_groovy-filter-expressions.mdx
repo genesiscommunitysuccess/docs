@@ -6,21 +6,21 @@ import { CollapsibleSlot } from '../../examples/ui/documentationBase';
 
 To filter a request from a datasource with a string that matches conditions in a groovy or common expression.
 
-For example, to filter a resource with `QUANTITY`, a number value, your criteria value could be
+For example, to filter a resource with `QUANTITY`, a number value, your criteria value could be:
 - `'QUANTITY > 1000'` for greater than 1000
 - `'QUANTITY < 1000'` for less than 1000
 - `'QUANTITY == 1000'` for equals 1000
 - `'QUANTITY != 1000'` for not equals 1000
 
-To filter a resource with `TRADE_ID`, a string value, your criteria value could be
+To filter a resource with `TRADE_ID`, a string value, your criteria value could be:
 - `'TRADE_ID == "TR_123"'` for equals TR_123
 - `'TRADE_ID != "TR_123"'` for not equals TR_123
 - `'TRADE_ID == "TR_123" || TRADE_ID == "TR_124"'` for equals TR_123 or TR_123
 
-You can also have more than one condition by separating criteria with `&&`
+To specify more than one condition, separate the criteria with `&&`:
 `'TRADE_ID == "TR_123" && QUANTITY > 1000'` for equals TR_123 and greater than 1000
 
-You can read more about criteria matching [here](docs/001_develop/03_client-capabilities/002_server-communications/02_criteria-matching.mdx)
+Go to our page on [criteria matching](docs/001_develop/03_client-capabilities/002_server-communications/02_criteria-matching.mdx) for more details.
 
 </CollapsibleSlot>
 
