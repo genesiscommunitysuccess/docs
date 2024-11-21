@@ -1,8 +1,25 @@
 ---
-title: 'quickstart'
-sidebar_label: 'Quick Start'
+title: "Quickstart"
+sidebar_label: "Quick Start"
 id: quick-start
 
+keywords: [
+  quickstart, 
+  Custom Element Basics, 
+  GenesisElement Introduction, 
+  Creating Components, 
+  Component Templates, 
+  First Custom Element, 
+  Getting Started, 
+  Component Initialization]
+tags:
+  - quickstart
+  - @GenesisElement
+  - @customElement
+  - @template
+  - shadowRoot
+  - Hello World
+  - My Button
 sidebar_position: 3
 ---
 
@@ -15,7 +32,12 @@ Let's create a simple web component using Genesis. There are three parts that ma
 Start by importing all necessary parts:
 
 ```typescript
-import { css, customElement, GenesisElement, html } from '@genesislcap/web-core';
+import {
+  css,
+  customElement,
+  GenesisElement,
+  html,
+} from "@genesislcap/web-core";
 ```
 
 ```typescript
@@ -29,7 +51,7 @@ const styles = css`
       color: grey;
     }
 `;
-// The @customElement decorator is a function that helps define and register a custom HTML element. It associates a class with a specific custom tag name in the DOM.
+ The @customElement decorator is a function that helps define and register a custom HTML element. It associates a class with a specific custom tag name in the DOM.
 
 @customElement({
   name: 'my-button',
@@ -75,22 +97,20 @@ export class MyButton extends GenesisElement {
 Now let's update the template to display the value:
 
 ```typescript
-
-const template = html`<button>${x => x.label}</button>`
+const template = html`<button>${(x) => x.label}</button>`;
 ```
 
 ## Add it to your project
 
 :::note
-After defining your custom component, you need to import it somewhere in your application's code to ensure it gets registered. 
+After defining your custom component, you need to import it somewhere in your application's code to ensure it gets registered.
 :::
 
 By importing the file, `MyButton` will be registered with the browser, allowing you to use the `<my-button>` element in your HTML.
 
 ```typescript
-import './MyButton'; 
+import "./MyButton";
 ```
-
 
 Now it can be added in your HTML this way:
 
@@ -99,4 +119,14 @@ Now it can be added in your HTML this way:
 <my-button label="Cancel"></my-button>
 ```
 
->In this example, we created a custom web component using `GenesisElement`. We defined a button template and added a label attribute using the `@attr` decorator, allowing the button text to be customized via HTML. We implemented the `labelChanged` method, which is automatically called whenever the label value changes. The template dynamically updates with the new value, ensuring the button remains responsive to changes in its attributes.
+> In this example, we created a custom web component using `GenesisElement`. We defined a button template and added a label attribute using the `@attr` decorator, allowing the button text to be customized via HTML. We implemented the `labelChanged` method, which is automatically called whenever the label value changes. The template dynamically updates with the new value, ensuring the button remains responsive to changes in its attributes.
+
+##Typed Templates
+
+Templates can be strongly typed to ensure they align with the data model they are rendering. In TypeScript, you specify the type directly within the template declaration using the syntax `html<MyButton>`. This approach provides better type safety and ensures that the data passed into the template matches the expected structure of the associated component or model.
+
+```typescript
+import { html } from "@genesislcap/web-core";
+
+const template = html<MyButton>`<button>Click Me</button>`;
+```

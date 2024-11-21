@@ -1,11 +1,24 @@
 ---
-title: 'Event Handling'
-sidebar_label: 'Event Handling'
+title: "Event Handling"
+sidebar_label: "Event Handling"
 id: event-handling
-
+keywords:
+  [
+    DOM Events,
+    Custom Events,
+    Event Listeners,
+    Emitting Events,
+    Event Binding,
+    $emit Helper,
+  ]
+  tags:
+  - @emit
+  - @customEvent
+  - Event Lifecycle
+  - Event Listeners
+  - Event Data
 sidebar_position: 3
 ---
-
 
 ### Event Handling
 
@@ -20,33 +33,38 @@ In this section we will be covering the core aspects of event handling:
 See implementation in the example below:
 
 ```typescript
-import { GenesisElement, customElement, html, observable } from "@genesislcap/web-core";
+import {
+  GenesisElement,
+  customElement,
+  html,
+  observable,
+} from "@genesislcap/web-core";
 
 @customElement({
-    name: "my-button",
-    template: html<MyButton>`
-        <button @click="${(x, c) => x.handleClick(c.event)}">
-            ${x => `${x.label}: ${x.count}`}
-        </button>
-    `,
-    styles,
+  name: "my-button",
+  template: html<MyButton>`
+    <button @click="${(x, c) => x.handleClick(c.event)}">
+      ${(x) => `${x.label}: ${x.count}`}
+    </button>
+  `,
+  styles,
 })
 export class MyButton extends GenesisElement {
-    @observable label = "Clicks"; // Label text for the button
-    @observable count = 0;        // Tracks the number of clicks
+  @observable label = "Clicks"; // Label text for the button
+  @observable count = 0; // Tracks the number of clicks
 
-    handleClick(event: Event) {
-        this.count++; // Increment the click count
+  handleClick(event: Event) {
+    this.count += 1; // Increment the click count
 
-        console.log("Event Target:", event.target); // Log the event target element
-        console.log("Component Label:", this.label); // Log the current label
+    console.log("Event Target:", event.target); // Log the event target element
+    console.log("Component Label:", this.label); // Log the current label
 
-        # Emit a custom "button-clicked" event with the current label and count
-        this.$emit("button-clicked", {
-            label: this.label,
-            count: this.count
-        });
-    }
+    // Emit a custom "button-clicked" event with the current label and count
+    this.$emit("button-clicked", {
+      label: this.label,
+      count: this.count,
+    });
+  }
 }
 ```
 
@@ -54,32 +72,95 @@ Now let's show how we can listen in another component providing for component co
 
 ```typescript
 import { GenesisElement, customElement, html } from "@genesislcap/web-core";
-import "./my-button"; # Import the my-button component
+import MyButton from "./my-button"; // Import my-button component
+
+MyButton;
 
 @customElement({
-    name: "parent-component",
-    template: html`
-        <button @button-clicked="${(x, c) => x.handleButtonClicked(c.event)}"></button>
-    `,
+  name: "parent-component",
+  template: html<ParentComponent>`
+    <button
+      @button-clicked="${(x, c) => x.handleButtonClicked(c.event)}"
+    ></button>
+  `,
 })
 export class ParentComponent extends GenesisElement {
-    handleButtonClicked(event: CustomEvent) {
-        console.log("Custom event received in ParentComponent:", event.detail);
-        // Output: { label: "Clicks", count: X }
-    }
+  handleButtonClicked(event: CustomEvent) {
+    console.log("Custom event received in ParentComponent:", event.detail);
+    // Output: { label: "Clicks", count: X }
+  }
 }
 ```
 
 Explanation of key elements in the above example:
 
-Component Communication: 
+Component Communication:
+
 - This allows `<my-button>` to communicate with its parent or other parts of the application by notifying them whenever it’s clicked.
 - Using the `$emit` helper method, `<my-button>` emits a button-clicked event that any parent component or listener can handle.
 
 Custom Events:
+
 - `button-clicked` is a custom event that’s unique to `<my-button>`. It’s created to indicate that the button has been clicked, providing a specific trigger for listeners.
 - The `$emit` method simplifies the creation and dispatch of the button-clicked event with bubbles: true and composed: true, making it available to parent components and global listeners.
 
 Event Data Passing:
+
 - The custom event includes data (the label and count properties) to provide context on the button’s state when the event was emitted.
 - Implementation: The `$emit` method’s second parameter passes `{ label: this.label, count: this.count }` as event.detail, enabling any listener to access this information for further processing.
+
+### Event Bubbling
+
+Event bubbling lets an event travel up the DOM from the component that triggered it, allowing parent components to handle it.
+
+- It allows components higher up in the DOM tree to listen for and react to events emitted by child components.
+- Reduces the need for tightly coupling child and parent components.
+
+When a custom event is emitted with `$emit`, it bubbles up the DOM by default unless bubbles is explicitly set to false.
+
+```typescript
+import {
+  GenesisElement,
+  customElement,
+  html,
+  observable,
+} from "@genesislcap/web-core";
+
+@customElement({
+  name: "my-button",
+  template: html<MyButton>`
+    <button @click="${(x) => x.emitCustomEvent()}">${(x) => x.label}</button>
+  `,
+})
+export class MyButton extends GenesisElement {
+  @observable label: string = "Click Me";
+  @observable count: number = 0;
+
+  emitCustomEvent() {
+    this.count += 1;
+    this.$emit("button-clicked", {
+      label: this.label,
+      count: this.count,
+    }); // By default, this event bubbles up the DOM.
+  }
+}
+```
+
+Listening for events on a parent component:
+
+```typescript
+@customElement({
+  name: "parent-container",
+  template: html<ParentContainer>`
+    <div @button-clicked="${(x, c) => x.handleButtonClick(c.event)}">
+      <my-button></my-button>
+    </div>
+  `,
+})
+export class ParentContainer extends GenesisElement {
+  handleButtonClick(event: CustomEvent) {
+    console.log("Button clicked event bubbled to parent:", event.detail);
+    // Logs: { label: "Click Me", count: <number> }
+  }
+}
+```

@@ -2,14 +2,34 @@
 title: "statemanagement"
 sidebar_label: "State Management"
 id: state-management
-
+keywords:
+  [
+    Attributes,
+    Dynamic Attributes,
+    Boolean Attributes,
+    Attribute Binding,
+    Properties,
+    Observables,
+    Reactive State,
+    State Updates,
+    Template Bindings,
+    Property Observables,
+  ]
+  tags:
+  - @attr
+  - @observable
+  - Attribute Binding
+  - Dynamic Attributes
+  - Boolean States
+  - Property Change
+  - Reactive Data
 sidebar_position: 3
 ---
 
 # State Management
 
 Components manage state through several key concepts: attributes, properties, and observables.
-Attributes are defined on the HTML markup of the element, whereas properties can be accessed via the DOM object in Javascript (or via a special property binding syntax on the markup). 
+Attributes are defined on the HTML markup of the element, whereas properties can be accessed via the DOM object in Javascript (or via a special property binding syntax on the markup).
 Observable properties and attributes configure the component to watch for changes, allowing the associated html templte to update as they are updated.
 
 ## Attributes
@@ -19,7 +39,7 @@ As seen in the earlier examples, in order to create an attribute you simply use 
 ```typescript
 @customElement({
   name: "my-button",
-  template: html`<button>Click Me</button>`,
+  template: html<MyButton>`<button>Click Me</button>`,
   styles,
 })
 export class MyButton extends GenesisElement {
@@ -65,7 +85,7 @@ The label attribute controls the text shown on the button. To bind label to a dy
 
 @customElement({
   name: 'my-button',
-  template: html`<button>${x => x.label}</button>`,
+  template: html<MyButton>`<button>${(x) => x.label}</button>`,
   styles,
 })
 
@@ -81,7 +101,7 @@ export class MyButton extends GenesisElement {
 <my-button label="Cancel"></my-button>
 ```
 
-- Here, the label attribute binds directly to the button's text via `${x => x.label}`.
+- Here, the label attribute binds directly to the button's text via `${(x) => x.label}`.
 - If label is set to "Cancel" in HTML `(<my-button label="Cancel">)`, the button will display "Cancel".
 - When the label value is changed dynamically, the button text will automatically update.
 
@@ -94,7 +114,7 @@ Suppose we want to add a counter to the button label that shows the number of ti
 ```typescript
 @customElement({
   name: "my-button",
-  template: html` <button
+  template: html<MyButton>`<button
     aria-label="${(x) => `Perform action: ${x.action}`}"
     class="button"
   >
@@ -119,7 +139,7 @@ If the attribute is absent (e.g., `<my-button></my-button>`), it is interpreted 
 
 We can use a ? prefix to handle boolean attributes so they’re added or removed from the DOM based on a condition.
 
-> The disabled attribute controls whether the button is clickable. Using `?disabled=${x => x.isDisabled}`, we can bind it to the component’s `isDisabled` property and dynamically control whether the button is enabled or disabled.
+> The disabled attribute controls whether the button is clickable. Using `?disabled=${(x) => x.isDisabled}`, we can bind it to the component’s `isDisabled` property and dynamically control whether the button is enabled or disabled.
 
 ```typescript
 @customElement({
@@ -133,7 +153,7 @@ We can use a ? prefix to handle boolean attributes so they’re added or removed
 })
 export class MyButton extends GenesisElement {
   @attr label = "Click Me";
-  @attr({ mode: "boolean" }) isDisabled = false;
+  @attr({ mode: "boolean", attribute: "disabled" }) isDisabled = false; // Use "disabled" in HTML
 
   handleClick() {
     if (!this.isDisabled) {
@@ -149,16 +169,21 @@ export class MyButton extends GenesisElement {
 <my-button label="Submit" disabled></my-button>
 ```
 
-- The `?disabled="${x => x.isDisabled}"` syntax lets the templating engine handle boolean attributes automatically.
+- The `?disabled="${(x) => x.isDisabled}"` syntax lets the templating engine handle boolean attributes automatically.
   - If `isDisabled` is true, the disabled attribute is added to the button (`<button disabled>`).
   - If `isDisabled` is false, the disabled attribute is removed from the button.
-- The `@attr({ mode: 'boolean' })` decorator ensures that changes to isDisabled in JavaScript reflect in the DOM as a disabled attribute, and vice versa.
+- The `@attr({ mode: 'boolean' })` decorator ensures that changes to `isDisabled` in JavaScript reflect in the DOM as a disabled attribute, and vice versa.
+- The `attribute` key in the `@attr` decorator allows you to explicitly define the attribute name used in HTML. In this example:
+  - `isDisabled` is a property and it and follows camelCase convention in JavaScript which help distinguish from the HTML attribute `disabled`.
+  - `disabled` is an attribute and it's used in HTML to represent state declaratively and reflect it in the DOM.
 
 ## Properties (@attr)
 
-It's important to distinguish between attributes and properties. Attributes are part of the HTML markup. They provide initial configuration and are typically static values of type string. Properties on the other hand are JavaScript-based, representing the internal state and can be any data type (boolean, number, object, etc).
+It's important to distinguish between attributes and properties.
 
-Attributes can be linked to properties via reflection, so updates to one (e.g., setting a property) can update the other (e.g., the attribute in HTML) and vice versa.
+- Attributes are part of the HTML markup. They provide initial configuration and are typically static values of type string.
+- Properties on the other hand are JavaScript-based, representing the internal state and can be any data type (boolean, number, object, etc).
+- Attributes can be linked to properties via reflection, so updates to one (e.g. setting a property) can update the other (e.g. the attribute in HTML) and vice versa.
 
 We can manage reflection using the `@attr` decorator, making attributes and properties automatically sync to reflect the latest state.
 
@@ -183,7 +208,7 @@ export class MyButton extends GenesisElement {
   clickCount = 0; // Internal property, not linked to an attribute
 
   handleClick() {
-    this.clickCount++; // Update internal state
+    this.clickCount += 1; // Update internal state
     console.log(`Button clicked ${this.clickCount} times`);
   }
 }
@@ -205,8 +230,8 @@ See `clickCount`
 
 @customElement({
   name: 'my-button',
-  template: html`
-    <button> :clickCount="${x => x.clickCount}"></button>
+  template: html<MyButton>`
+    <button> :clickCount="${(x) => x.clickCount}"></button>
 `;,
   styles,
 })
@@ -216,7 +241,7 @@ export class MyButton extends GenesisElement {
     clickCount = 0; // Internal property, not linked to an attribute
 
     handleClick() {
-        this.clickCount++; // Update internal state
+        this.clickCount += 1; // Update internal state
         console.log(`Button clicked ${this.clickCount} times`);
     }
 }
@@ -225,38 +250,12 @@ export class MyButton extends GenesisElement {
 
 ## Observables
 
-Observables are a powerful tool for creating reactive components. They allow properties to trigger reactivity within a component whenever the data changes, which is essential for dynamic and interactive elements. Observables are declared with the `@observable`.
+Observables are a powerful tool for creating reactive components. They allow properties to automatically update the associated view (html template) within a component whenever the data changes, which is essential for dynamic and interactive elements. Observables are declared with the `@observable`.
 
 - Observable properties automatically trigger updates to any part of the template or component that depends on them. Whenever an observable property changes, the UI or other bound elements update without additional code.
 - Use `@observable` to mark a property as observable. This ensures that changes to the property automatically trigger any relevant updates in the component.
 
-```typescript
-
-@customElement({
-  name: 'my-button',
-  template: html`
-    <button :clickCount="${x => x.clickCount}"></button>
-`;,
-  styles,
-})
-
-export class MyButton extends GenesisElement {
-   @observable value = "Initial Value";
-}
-
-```
-
 - For each observable property, we have a built-in mechanism to execute code whenever the property’s value changes. This callback method is named after the observable property, with the suffix Changed.
-
-```typescript
-export class MyButton extends GenesisElement {
-  @observable value = "Initial Value";
-
-  valueChanged(oldValue, newValue) {
-    console.log(`Value changed from ${oldValue} to ${newValue}`);
-  }
-}
-```
 
 Let’s look at an example where we create a `<my-button>` component with an observable count property that updates dynamically every time a button is clicked. We’ll use the `@observable` decorator and a `countChanged` callback to log each change.
 
@@ -265,20 +264,20 @@ import { observable, customElement, GenesisElement, html } from '@genesislcap/we
 
 @customElement({
   name: 'my-button',
-  template: html`
-    <button @click="${x => x.increment()}">
-        ${x => `Clicked: ${x.count} times`}
+  template: html<MyButton>`
+    <button @click="${(x) => x.increment()}">
+        ${(x) => `Clicked: ${x.count} times`}
     </button>
 `;,
   styles,
 })
 
 export class MyButton extends GenesisElement {
-    @observable count = 0; # Observable count property
+    @observable count = 0; // Observable count property
 
     // Method to increment the count
     increment() {
-        this.count++; // Increases the count by 1
+        this.count+= 1; // Increases the count by 1
     }
 
     // Callback triggered whenever `count` changes
@@ -291,8 +290,8 @@ export class MyButton extends GenesisElement {
 
 - The `@observable` decorator makes count reactive, meaning any change in count automatically updates the bound elements in the template.
 - The template displays the current count as part of the button text. Whenever count changes, this binding is re-rendered, showing the latest value without extra code.
-  -The countChanged method is automatically called whenever count changes.
-- This callback receives the oldValue and newValue, allowing you to track and log each change in the console.
+  - The `countChanged` method is automatically called whenever count changes.
+- This callback receives the `oldValue` and `newValue`, allowing you to track and log each change in the console.
 
 #### Usage in HTML
 
@@ -311,7 +310,7 @@ After Clicks:
     - And so on, incrementing with each click.
     - The button displays "Clicked: 0 times".
 
-Each time count updates, `countChanged` logs the old and new values to the console:
+Each time `count` updates, `countChanged` logs the old and new values to the console:
 
 ```typescript
 Count changed from 0 to 1
