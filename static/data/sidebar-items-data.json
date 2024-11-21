@@ -35,27 +35,27 @@
     "items": [
       {
         "href": "/develop/server-capabilities/data-model/",
-        "description": "Data Model description"
+        "description": "Assembling the application data model"
       },
       {
         "href": "/develop/server-capabilities/data-access-apis/",
-        "description": "Data Access APIs description"
+        "description": "Accessing the application data model directly via API"
       },
       {
         "href": "/develop/server-capabilities/real-time-queries-data-server/",
-        "description": "Real Time Queries Data Server description"
+        "description": "Defining low-latency real-time data queries for clients to subscribe"
       },
       {
         "href": "/develop/server-capabilities/snapshot-queries-request-server/",
-        "description": "Snapshot Queries Request Server description"
+        "description": "Configuring on-demand data queries accessible to authorized clients"
       },
       {
         "href": "/develop/server-capabilities/core-business-logic-event-handler/",
-        "description": "Core Business Logic Event Handler description"
+        "description": "Composing business events which update the applications data"
       },
       {
         "href": "/develop/server-capabilities/access-control/",
-        "description": "Access Control description"
+        "description": "Configuring human and system user application access privileges"
       },
       {
         "href": "/develop/server-capabilities/workflow-state-machine/",
@@ -70,12 +70,8 @@
         "description": "Real Time Triggers Evaluator description"
       },
       {
-        "href": "/develop/server-capabilities/integrations-data-pipelines/",
-        "description": "Integrations Data Pipelines description"
-      },
-      {
-        "href": "/develop/server-capabilities/integrations-streamer-apis/",
-        "description": "Integrations Streamer APIs description"
+        "href": "/develop/server-capabilities/integrations/",
+        "description": "Integrations description"
       },
       {
         "href": "/develop/server-capabilities/runtime-configuration/",

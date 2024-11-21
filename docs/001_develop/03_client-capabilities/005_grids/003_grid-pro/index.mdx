@@ -1,0 +1,277 @@
+---
+title: 'Enterprise Data Grid (Grid Pro)'
+sidebar_label: 'Enterprise Data Grid (Grid Pro)'
+id: grid-pro
+keywords: [genesis, foundation, ui, grid, grid-pro, ag]
+tags:
+  - connected
+  - datasource
+  - grid
+  - grid-pro
+  - ag
+---
+
+# Genesis Foundation Grids
+
+The `@genesislcap/grid-pro` package provides a collection of grid-related components and utilities for Genesis applications.
+
+## API Documentation
+
+For more detailed information on API and configurations, please refer to the [API documentation](docs/api/index.md) in the `docs/api` directory.
+
+## Features
+
+- **Easy integration**: Quick setup with modern JavaScript frameworks and libraries.
+- **Customizable**: support for custom headers, mapping values, text formatting, custom cell-renderers and more (more on grid options later).
+- **Flexible**: when it comes to **working with data** grid-pro makes it easy by supporting filtering, editing, sorting, pagination (depending on configuration).
+- **Events** and **callbacks**: There is a large number of events and callbacks provided by the grid, you can find details [here](https://www.ag-grid.com/javascript-data-grid/grid-events/).
+- **Simple Data** or **Connected Data**: There are two main use cases for our Grid Pro component
+  - **Simple Data**: when you have your own data model and flow (JSON, external/custom REST APIs, etc) but still want to use a rich data grid component with all its features (filtering, sorting, custom cell renderers, etc).
+  - **Connected Data**: when you have a Data Server or Request Server available and ready to use, and you don't want to worry about handling data transformations, updates, deletes and cell renderers in the grid.
+- **State persistence**: ability to save and restore grid state.
+- **Row models**: support for both client-side and server-side [row models](https://www.ag-grid.com/javascript-data-grid/row-models/).
+
+## Project Structure
+
+- **`src/`**: Source code for the package, including cell-editors, cell-renderers, datasources and utility functions.
+  - **`cell/`**: The Grid Pro Cell element and template
+  - **`cell-editors/`**: predefined custom cell-editors for common data types including `date`, `number`, `string`, `select`, `multiselect`
+  - **`cell-renderers/`**: predefined custom cell-renderers.
+  - **`column/` for a given column.
+  - **[`datasource/`](#genesis-datasource)**: Genesis Datasource elements, responsible for fetching data for the Grid Pro element (multiple implementations available, for both client-side and server-side [row models](https://www.ag-grid.com/javascript-data-grid/row-models/)).
+  - **`external/`**: External assets such as fonts and styles for themes.
+  - **`state-persistence/`**: Classes related to saving and restoring grid state.
+  - **`tooltips/`**: Tooltip for errors that happen while syncing data with server after inline editing.
+  - **`utils/`**: Utility functions.
+
+## Getting Started
+
+### Installation
+
+To enable this module in your application, follow the steps below.
+
+1. Add `@genesislcap/grid-pro` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../../../web/basics/package-json-basics/) page.
+
+```json
+{
+  "dependencies": {
+    "@genesislcap/grid-pro": "latest"
+  },
+}
+```
+
+### Setup
+
+Make sure the required grid components are registered with your design system.
+Depending on how the app was created this might have been setup for you automatically (genx cli / create).
+The design system name might vary (you can create a custom one for your app), using rapid in this example.
+
+```typescript
+import { provideDesignSystem, baseComponents } from '@genesislcap/rapid-design-system';
+import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
+
+provideDesignSystem().register(baseComponents, rapidGridComponents);
+```
+
+### Attributes
+
+There are many attributes that can be set on a datasource component.
+
+#### Resource Attributes
+
+Some  **resource** related attributes are `DATASERVER` or `REQUEST_SERVER` specific while others can be used with both.
+
+##### Attributes that are common between DATASERVER and REQUEST_SERVER
+
+|Name|Type|Default|Description|
+|----|----|-------|-----------|
+| `resource-name` | `string` | - | The name of the target [Data Server](https://learn.genesis.global/docs/server/data-server/introduction/) `query` or [Request Server](https://learn.genesis.global/docs/server/request-server/introduction/) `requestReply`. |
+| `is-snapshot` | `boolean` | `false` | Request a snapshot from the server. |
+| `criteria` |`string`| - |Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription.|
+| `max-rows` | `number` | - | Maximum number of rows to be returned as part of the initial message, and as part of any additional MORE_ROWS messages. **This will not affect the number of rows displayed**|
+| `view-number` | `number` | - | The desired view/page you want data from. |
+
+##### DATASERVER only attributes
+
+|Name|Type|Default|Description|
+|----|----|-------|-----------|
+| `fields` | `string` | - | This optional parameter allows you to select a subset of fields from the query if the client is not interested in receiving all of them. |
+| `max-view` | `number` | - | Maximum number of rows to track as part of a client "view" |
+| `moving-view` | `boolean` | `false` | If true, when the maximum number of rows defined in `max-view` is reached, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows. If false, the updates in the server will be sent to the front end regardless of order. Note that this will only update the UI; no changes will be performed in the database.|
+| `order-by` | `string` | - | This option can be used to select a [Data Server index](https://learn.genesis.global/docs/database/data-types/index-entities/) (defined in the Data Server `query`), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows are returned in order of creation (from oldest database record to newest).|
+| `reverse` | `boolean` | `false` | This option changes the [Data Server index](https://learn.genesis.global/docs/database/data-types/index-entities/) iteration. For example, if you are using the default index, the query will return rows in order from the newest database records to the oldest.|
+
+##### REQUEST_SERVER only attributes
+
+|Name|Type|Default|Description|
+|----|----|-------|-----------|
+| `disable-polling` | `boolean` | `false` | This option disables polling if set to true (data updates for the grid will not be fetched automatically).|
+| `polling-interval` | `number` | - | This option enables you to set a custom polling frequency (in milliseconds) for a [Request Server](https://learn.genesis.global/docs/server/request-server/introduction/) resource. Note that this option only works with Request Server resources; if your resource is a Data Server `query`, your grid is updated in real time. |
+|`request`| `string` | - | Similar to `fields` but for [Request Server](https://learn.genesis.global/docs/server/request-server/introduction/) scenarios. This optional parameter enables you to specify request fields, which can include wildcards.|
+|`request-auto-setup`| `boolean` | `false` | This option, if set to true, will automatically set up the `request` based on the datasources's metadata.|
+
+#### Component Attributes
+
+There are additional attributes that can affect the behavior of a datasource component.
+
+##### `<grid-pro-client-side-datasource>`
+
+|Name|Type|Default|Description|
+|----|----|-------|-----------|
+| `restart-on-reconnection` | `boolean` | `false` | This option, if set to true, will force the resource data to be reloaded upon a reconnection event.|
+| `keep-col-defs-on-clear-row-data` | `boolean` | `false` | This option, if set to true, will retain column definitions upon a `restart` or `clearRowData` event. |
+
+##### `<grid-pro-server-side-datasource>`
+
+|Name|Type|Default|Description|
+|----|----|-------|-----------|
+| `pagination` | `boolean` | `false` | This option enables pagination if set to true, otherwise the behavior will be infinite-scroll.|
+| `zero-based-view-number` | `boolean` | `false` | This option, if set to true, will make the starting VIEW_NUMBER zero-based (starting from 0 instead of 1).|
+| `live-updates` | `boolean` | `false` | This option enables live updates for the grid if set to true.|
+
+More details about our datasource implementations [here](#genesis-datasource).
+
+### Usage - Simple Data example
+
+```typescript
+import { ColDef, GridOptions } from '@ag-grid-community/core';
+import { GridPro } from '@genesislcap/grid-pro';
+import { customElement, DOM, GenesisElement, html, observable, ref } from '@genesislcap/web-core';
+
+@customElement({
+  name: 'simple-grid-example',
+  template: html`
+    <rapid-grid-pro ${ref('grid')}></rapid-grid-pro>
+  `,
+})
+export class SimpleGridExample extends GenesisElement {
+  @observable
+  public grid: GridPro;
+
+  private columnDefs: ColDef[] = [
+    { headerName: '#', colId: 'rowNum', valueGetter: 'node.id', width: 80, pinned: 'left' },
+    { headerName: 'Athlete', field: 'athlete', width: 150, pinned: 'left' },
+    { headerName: 'Age', field: 'age', width: 90, pinned: 'left' },
+    { headerName: 'Country', field: 'country', width: 150 },
+    { headerName: 'Year', field: 'year', width: 90 },
+    {
+      headerName: 'Date',
+      field: 'date',
+      width: 110,
+      filter: 'agDateColumnFilter',
+      filterParams: {
+        buttons: ['apply', 'reset'],
+        browserDatePicker: true,
+        comparator: (filterLocalDateAtMidnight, cellValue) => {
+          // Handling '29/08/2004' date format - adjust as need to match your date format
+          // https://www.ag-grid.com/javascript-data-grid/filter-date/
+          const dateAsString = cellValue;
+          if (dateAsString == null) return -1;
+          const dateParts = dateAsString.split('/');
+          const cellDate = new Date(
+            Number(dateParts[2]),
+            Number(dateParts[1]) - 1,
+            Number(dateParts[0]),
+          );
+          if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+            return 0;
+          }
+          if (cellDate < filterLocalDateAtMidnight) {
+            return -1;
+          }
+          if (cellDate > filterLocalDateAtMidnight) {
+            return 1;
+          }
+          return 0;
+        },
+      },
+    },
+    { headerName: 'Sport', field: 'sport', width: 150, editable: true },
+    { headerName: 'Gold', field: 'gold', width: 100 },
+    { headerName: 'Silver', field: 'silver', width: 100 },
+    { headerName: 'Bronze', field: 'bronze', width: 100 },
+    { headerName: 'Total', field: 'total', width: 100, pinned: 'right' },
+  ];
+
+  private rowData = [
+    {
+      athlete: 'Michael Phelps',
+      age: 27,
+      country: 'United States',
+      year: 2012,
+      date: '12/08/2012',
+      sport: 'Swimming',
+      gold: 4,
+      silver: 2,
+      bronze: 0,
+      total: 6,
+    },
+    {
+      athlete: 'Natalie Coughlin',
+      age: 25,
+      country: 'United States',
+      year: 2008,
+      date: '24/08/2008',
+      sport: 'Swimming',
+      gold: 1,
+      silver: 2,
+      bronze: 3,
+      total: 6,
+      isActionDisabled: true,
+    },
+    // ...
+  ];
+
+  private gridOptions: GridOptions = {
+    defaultColDef: {
+      resizable: true,
+      filter: true,
+    },
+    columnDefs: this.columnDefs,
+    rowData: this.rowData,
+  };
+
+  connectedCallback() {
+    super.connectedCallback();
+    DOM.queueUpdate(() => {
+      this.grid.gridOptions = this.gridOptions;
+    });
+  }
+}
+```
+
+### Usage - Connected Data example (client-side datasource)
+
+```typescript
+@customElement({
+  name: 'connected-grid-client-side-example',
+  template: html`
+    <rapid-grid-pro enable-row-flashing enable-cell-flashing>
+      <grid-pro-client-side-datasource
+        resource-name="ALL_TRADES"
+        criteria="INSTRUMENT_ID == 'TSLA'"
+      ></grid-pro-client-side-datasource>
+    </rapid-grid-pro>
+  `,
+})
+export class ConnectedGridClientSideExample extends GenesisElement {}
+```
+
+### Usage - connected data example (server-side datasource)
+
+Note: if pagination is set to false the grid will be in infinite scroll mode.
+
+```typescript
+@customElement({
+  name: 'connected-grid-server-side-example',
+  template: html`
+    <rapid-grid-pro enable-row-flashing enable-cell-flashing>
+      <grid-pro-server-side-datasource
+        resource-name="ALL_TRADES"
+        criteria="INSTRUMENT_ID == 'TSLA'"
+      ></grid-pro-server-side-datasource>
+    </rapid-grid-pro>
+  `,
+})
+export class ConnectedGridServerSideExample extends GenesisElement {}
+```

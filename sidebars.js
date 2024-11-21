@@ -114,7 +114,7 @@ module.exports = {
       link: {
         type: 'generated-index',
         title: 'Server capabilities',
-        description: 'Server capabilities description',
+        description: "This section provides all the details around the Genesis application platform's server capabilities. Each section details how the capability works along with examples, and includes full documentation on configuration and interaction.",
         slug: '/develop/server-capabilities',
         keywords: ['server capabilities', 'server', 'capabilities'],
       },

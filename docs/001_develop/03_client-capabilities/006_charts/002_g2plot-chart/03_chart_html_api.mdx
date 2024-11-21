@@ -1,0 +1,444 @@
+---
+title: 'Chart Declerative HTML API'
+sidebar_label: 'Chart Declerative HTML'
+id: chart-html-api
+keywords: [genesis, foundation, ui, chart, g2plot-chart, g2plot, Attribute, Property, Template, Declerative HTML, Events, DOM API, datasource]
+tags:
+  - connected
+  - datasource
+  - chart
+  - chart datasource
+  - g2plot-chart
+  - g2plot
+  - Declerative HTML
+  - Attribute
+  - Property
+  - Events
+  - Template
+  - API
+  - DOM
+  - DOM API
+  - slot
+  - parts
+pagination_next: develop/client-capabilities/forms/client-forms
+---
+
+Declarative HTML API enables developers to create and configure charts directly in HTML using simple, semantic tags. It streamlines the charting process by embedding data and configuration options within HTML elements, avoiding complex JavaScript code. 
+
+## G2Plot Chart
+
+Top level web component, which is used to initialise a chart.
+```html
+<rapid-g2plot-chart></rapid-g2plot-chart>
+```
+
+### DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+#### Attributes
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>type</td>
+      <td><code>[ChartTypes](./docs/api/g2plot-chart.charttypes.md)</code></td>
+      <td>The type to use for the chart. If not set, the default bar type will be used.</td>
+<td>
+
+```typescript
+<rapid-g2plot-chart type="line">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Properties
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>config</td>
+      <td><code>[ChartConfig](./docs/api/g2plot-chart.chartconfig.md)</code></td>
+      <td>The configuration to use for the chart.</td>
+<td>
+
+```typescript
+<rapid-g2plot-chart :config=${(x) => x.chartConfig}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>data</td>
+      <td><code>any[]</code></td>
+      <td>The data to display in the chart.</td>
+<td>
+
+```typescript
+<rapid-g2plot-chart :data=${(x) => x.chartData}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Slots
+
+| Slot | Use |
+|---|---|
+|chart-datasource-error|The `chart-datasource-error` slot is displayed when the data source encounters errors, such as connection issues or invalid data. This slot allows developers to define custom fallback content or error messages for a better user experience.|
+
+#### Parts
+
+
+| Part | Use |
+|---|---|
+|chart-container|Using this part enables you to change the styles for the main chart container.|
+
+#### Fired Events
+
+Events can be received by the emitting `<rapid-g2plot-chart>`, or any parent element.
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>plot:click</td>
+      <td><code>Custom Event</code></td>
+      <td>Adds click events to the entire chart area.</td>
+<td>
+
+```typescript
+<rapid-g2plot-chart @plot:click="${(x) => x.onChartClick()}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>element:click</td>
+      <td><code>Custom Event</code></td>
+      <td>Adds click events to the element of the chart.</td>
+<td>
+
+```typescript
+<rapid-g2plot-chart @element:click="${(x) => x.onElementClick()}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>legend-item:click</td>
+      <td><code>Custom Event</code></td>
+      <td>Adds click events to the legened element.</td>
+<td>
+
+```typescript
+<rapid-g2plot-chart @legend-item:click="${(x) => x.onLegendClick()}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+For a complete list of available events, please visit the [G2Plot Events Documentation](https://g2plot.antv.antgroup.com/en/api/options/events).
+
+### Listened Events
+
+This component doesn't listen to any public API events.
+
+## Chart Datasource
+
+The `chart-datasource` element is used to declaratively set the data source for a `rapid-g2plot-chart`.
+
+```html
+<rapid-g2plot-chart>
+  <chart-datasource></chart-datasource>
+</rapid-g2plot-chart>
+```
+
+### DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+#### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>chart-fields</td>
+            <td><code>string</code></td>
+            <td>Defines the fields for chart configuration.<ol><li>First is always the xField/colorField (**Mandatory**)</li><li>Second is always the yField/angleField (**Mandatory**)</li><li>Third is always the seriesField (**Optional**)</li></ol>Default value is 'groupBy value'. Can be customized but order matters.</td>
+<td>
+
+```typescript
+<chart-datasource chart-fields="groupBy value">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>server-fields</td>
+            <td><code>string</code></td>
+            <td>Defines the fields of data to be charted.<ol><li>First will be associated to the first value in 'chartFields' (xField/colorField) (**Mandatory**)</li><li>Second will be associated to the second value in 'chartFields' (yField/angleField) (**Mandatory**)</li><li>Third will be associated to the third value in 'chartFields' (**Optional**)</li></ol>Can be customized but order matters.</td>
+<td>
+
+```typescript
+<chart-datasource server-fields="TRADE_ID QUANTITY">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>resourceName</td>
+            <td><code>string</code></td>
+            <td>Name of the backend resource which contain the data.</td>
+<td>
+
+```typescript
+<chart-datasource resourceName="ALL_TRADES">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>criteria</td>
+            <td><code>string</code></td>
+            <td>Clients can send a Groovy expression to perform filters on the query server, these remain active for the life of the subscription.</td>
+<td>
+
+```typescript
+<chart-datasource criteria="TRADE_ID == 'TRADE_ID_123'">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>isSnapshot</td>
+            <td><code>boolean</code></td>
+            <td>Request a snapshot from the server.</td>
+<td>
+
+```typescript
+<chart-datasource isSnapshot>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>maxRows</td>
+            <td><code>number</code></td>
+            <td>Maximum number of rows to be returned as part of the initial message, and as part of any additional MORE_ROWS messages. This will not affect the number of rows displayed.</td>
+<td>
+
+```typescript
+<chart-datasource maxRows="500">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>maxView</td>
+            <td><code>number</code></td>
+            <td>Maximum number of rows to track as part of a client "view".</td>
+<td>
+
+```typescript
+<chart-datasource maxView="500">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>orderBy</td>
+            <td><code>string</code></td>
+            <td>This option can be used to select a Data Server index (defined in the Data Server query), which is especially useful if you want the data to be sorted in a specific way.</td>
+<td>
+
+```typescript
+<chart-datasource orderBy="TRADE_DATETIME">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>reverse</td>
+            <td><code>boolean</code></td>
+            <td>This option changes the Data Server index iteration.</td>
+<td>
+
+```typescript
+<chart-datasource reverse>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>rowId</td>
+            <td><code>string</code></td>
+            <td>Attribute to set an unique identifier for the row.</td>
+<td>
+
+```typescript
+<chart-datasource rowId="ROW_REF">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>is-stack</td>
+            <td><code>boolean</code></td>
+            <td>If true, will enable stacked chart to effectively portray comparisons of total values across several categories</td>
+<td>
+
+```typescript
+<chart-datasource is-stack>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>is-group</td>
+            <td><code>boolean</code></td>
+            <td>If true, will enable grouped chart plotting numeric values for levels of two categorical variables instead of one.</td>
+<td>
+
+```typescript
+<chart-datasource is-group>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>reduced</td>
+            <td><code>boolean</code></td>
+            <td>Enabled by default, will not work if a custom charts-fields is used (requires [type, value])</td>
+<td>
+
+```typescript
+<chart-datasource reduced>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>with-timestamp-formatting</td>
+            <td><code>boolean</code></td>
+            <td>Enabled by default, will format UNIX timestamp fields to readable `DATE|DATETIME` values</td>
+<td>
+
+```typescript
+<chart-datasource with-timestamp-formatting>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>show-formatted-time</td>
+            <td><code>boolean</code></td>
+            <td>Disabled by default, will ignore the TIME portion in the Chart labels. Only works if `withTimestampFormatting` is true. Only affects `DATETIME` fields.</td>
+<td>
+
+```typescript
+<chart-datasource show-formatted-time>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+#### Properties
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>request</td>
+      <td><code>any</code></td>
+      <td>This optional parameter enables you to specify request fields, which can include wildcards.</td>
+<td>
+
+```typescript
+<chart-datasource :request=${(x) => ({
+    "TRADE_NAME": `VOD*`,
+  })}
+>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>data</td>
+      <td><code>any[]</code></td>
+      <td>Optional attribute that can be used to pass the data that will be used in the component.</td>
+<td>
+
+```typescript
+<chart-datasource :data=${(x) => x.chartData}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Slots
+
+This component doesn't have any slots.
+
+#### Parts
+
+This component doesn't have any css parts.
+
+#### Fired Events
+
+This component doesn't fire any events.
+
+### Listened Events
+
+This component doesn't listen to any events.
+
+

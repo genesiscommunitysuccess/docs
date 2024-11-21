@@ -1,0 +1,263 @@
+---
+title: 'Dialog'
+sidebar_label: 'Dialog'
+id: client-interaction-dialog
+keywords: [ interaction, interactive, active, window, overlay, popup]
+tags:
+- interaction
+- interactive
+- active
+- window
+- overlay
+- popup
+sidebar_position: 8
+---
+
+import DialogDemo from '/examples/ui/client-capabilities/interaction/dialog.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Dialogs are popup menus which take focus and prohibit the user interacting with the content behind.
+
+Use cases:
+* Popup notification
+* Configuration box
+
+## Example
+<DialogDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-dialog></rapid-dialog>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html<MyElement>`
+        <rapid-dialog ${ref('dialog')}>
+          <h2>Dialog</h2>
+          <p>This is an example dialog.</p>
+        </rapid-dialog>
+        <rapid-button @click="${(x) => x.showDialog()}"></rapid-button>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      dialog: Dialog;
+      showDialog() {
+        this.dialog.show();
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-dialog></rapid-dialog>
+    ```
+
+    Usage
+    ```typescript
+    export function MyComponent() {
+      const dialogRef = useRef(null);
+
+      return (
+        <rapid-button onClick={() => {
+          dialogRef.current?.removeAttribute('hidden');
+          dialogRef.current?.show();
+        }}>
+          Open Dialog
+        </rapid-button>
+
+        <rapid-dialog
+          ref={dialogRef}
+          id="example1"
+          class="example-dialog"
+          aria-label="Simple modal dialog"
+          modal="true"
+          hidden
+        >
+          <h2>Dialog</h2>
+          <p>This is an example dialog.</p>
+        </rapid-dialog>
+      )
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-dialog></rapid-dialog>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ElementRef } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+
+    @Component({
+      selector: 'my-component',
+      template: `
+        <rapid-button (click)="openDialog()">
+          Open Dialog
+        </rapid-button>
+
+        <rapid-dialog
+          #dialogRef
+          id="example1"
+          class="example-dialog"
+          aria-label="Simple modal dialog"
+          modal="true"
+          hidden
+        >
+          <h2>Dialog</h2>
+          <p>This is an example dialog.</p>
+        </rapid-dialog>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [FormsModule],
+    })
+    export class MyComponent {
+      @ViewChild('dialogRef') dialogRef!: ElementRef;
+
+      openDialog() {
+        this.dialogRef.nativeElement?.removeAttribute('hidden');
+        this.dialogRef.nativeElement?.show();
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+
+## API
+
+### Attributes
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>type</td>
+      <td><code>'default' | 'error' | 'success'</code></td>
+      <td>The general style of dialog type to show. <code>default</code> type adds no extra styling, <code>error</code> shows a red highlight and <code>success</code> shows a green.</td>
+<td>
+
+```typescript
+<rapid-dialog type="success">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>position</td>
+      <td><code>'center' | 'left' | 'right'</code></td>
+      <td>The position of the dialog. <code>center</code> is the default.</td>
+<td>
+
+```typescript
+<rapid-dialog position="right">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>show-close-icon</td>
+      <td><code>boolean</code></td>
+      <td>Enables the close icon in the top right corner of the dialog. <code>true</code> is the default.</td>
+<td>
+
+```typescript
+<rapid-dialog show-close-icon="false">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>onShowCallback</td>
+            <td><code>() => void</code></td>
+            <td>Function that runs before dialog is opened.</td>
+<td>
+
+```typescript
+<rapid-dialog :onShowCallback="${(x) => () => x.beforeDialogShown()}">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>onCloseCallback</td>
+            <td><code>() => void</code></td>
+            <td>Function that is called after the dialog is closed.</td>
+<td>
+
+```typescript
+<rapid-dialog :onCloseCallback="${(x) => () => x.afterDialogHide()}">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Methods
+
+|Method|Description|Example|
+|--|--|--|
+|show|Show the dialog|`dialogRef.show()`|
+|close|Hides the dialog|`dialogRef.close()`|
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|All the content which you want to display on the dialog box when shown.|
+|top|Can be used to set a title section for the dialog.|
+|bottom|Can be used to set a footer section for the dialog.|
+
+### Parts
+
+| Part | Description |
+| --- | --- |
+|dialog|the base html `dialog` tag|
+|top|The top part of the dialog which contains the dialog header|
+|bottom|The bottom part of the dialog which contains the dialog footer|
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.
