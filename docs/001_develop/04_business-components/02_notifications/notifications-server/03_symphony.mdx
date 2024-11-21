@@ -177,7 +177,7 @@ notify {
 
 ## Genesis Notify operations for Symphony
 
-The Notify service currently provides additional Symphony operations; these are exposed as [Event Handlers](../../../../server/event-handler/introduction/).
+The Notify service currently provides additional Symphony operations; these are exposed as [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/).
 
 * `GATEWAY_CREATE_CHANNEL` creates a channel (to allow external users to be added to a channel; a channel should be created with `external` set to `true` and `public` to `false`)
 * `GATEWAY_ADD_MEMBER_TO_CHANNEL` adds a user to a channel (if the user is not a member of the host POD, then a connection request will be sent to that user)
@@ -200,7 +200,7 @@ data class AddUserToChannel(val channelName: String, val userId: String)
 data class RemoveUserFromChannel(val channelName: String, val userId: String)
 data class ActionOnChannel(val roomId: String, val activate: Boolean)
 ```
-The Notify service also offers the [Request Server](../../../../server/request-server/introduction/) resource `LIST_MEMBERS_OF_CHANNEL`, which, unsurprisingly, lists members of a channel.
+The Notify service also offers the [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) resource `LIST_MEMBERS_OF_CHANNEL`, which, unsurprisingly, lists members of a channel.
 
 * Inputs (Request)
 

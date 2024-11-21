@@ -90,7 +90,7 @@ const config = {
            */
           editUrl:
             "https://github.com/genesiscommunitysuccess/docs/edit/master/",
-          showLastUpdateTime: true,
+          showLastUpdateTime: false,
           /**
            * editCurrentVersion: false allows people to make changes to any version of the docs they find an issue with.
            * Alternatively, we could direct all edits to the current version. However, with our infrequent docs releases,

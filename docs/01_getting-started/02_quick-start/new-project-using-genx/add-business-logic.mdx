@@ -15,7 +15,7 @@ tags:
 So far, you have a table; now we want to be able to see its content and create new entries.
 
 ## Data Server
-A [Data Server](../../../../server/data-server/introduction/) provides real-time data to the front end. It also creates an HTTP endpoint that can be accessed by any client. You must define the Data Server in the file **alpha-dataserver.kts**. This file is under **server/alpha-app/src/main/genesis/scripts**.
+A [Data Server](../../../../develop/server-capabilities/real-time-queries-data-server/) provides real-time data to the front end. It also creates an HTTP endpoint that can be accessed by any client. You must define the Data Server in the file **alpha-dataserver.kts**. This file is under **server/alpha-app/src/main/genesis/scripts**.
 
 ```kotlin
 dataServer {
@@ -24,7 +24,7 @@ dataServer {
 ```
 
 ## Event Handler
-Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](../../../../server/event-handler/introduction/) in the file **alpha-eventhandler.kts**. This file is under **server/alpha-app/src/main/genesis/scripts**.
+Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) in the file **alpha-eventhandler.kts**. This file is under **server/alpha-app/src/main/genesis/scripts**.
 
 ```kotlin
 eventHandler {
