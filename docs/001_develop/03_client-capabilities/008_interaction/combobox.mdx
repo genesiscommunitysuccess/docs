@@ -145,7 +145,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
   <tbody>
     <tr>
       <td>autocomplete</td>
-      <td><code>"inline" | "list" | "both" | "none"</code></td>
+      <td><code><a href="#autocomplete">"inline" | "list" | "both" | "none"</a></code></td>
       <td>Defines how autocompletion works in the component. **Default:** `none`</td>
 <td>
 
@@ -278,14 +278,16 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
   </tbody>
 </table>
 
-:::note
-`autocomplete` has the following settings:
+<div id="autocomplete">
+  :::note
+  `autocomplete` has the following settings:
 
-- `inline`: as the user types in the combo-box, the component displays valid options for completing the entry within the combo-box.
-- `list`: as the user types in the combo-box, the component displays and filters the combolist above or below the combo-box.
-- `both`: the component behaves as both `inline` and `list`.
-- `none`: the component does not provide autocomplete.
-:::
+  - `inline`: as the user types in the combo-box, the component displays valid options for completing the entry within the combo-box.
+  - `list`: as the user types in the combo-box, the component displays and filters the combolist above or below the combo-box.
+  - `both`: the component behaves as both `inline` and `list`.
+  - `none`: the component does not provide autocomplete.
+  :::
+</div>
 
 :::warning
 The native behaviour of a `combobox` component is to accept whatever entry the user inserts, even if it is not one of the options available.
