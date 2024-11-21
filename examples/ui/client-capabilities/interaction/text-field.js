@@ -44,19 +44,9 @@ export function TextFieldWithSlot({ children, color }) {
 				</div>
 				<div>
 					<label>Number field with start slot</label>
-					<rapid-text-field type="number">
+					<rapid-text-field type="number" placeholder="Enter amount here">
 						<div slot="start">$</div>
-					</rapid-text-field>
-				</div>
-				<div>
-					<label>Text field with end slot</label>
-					<rapid-text-field type="text">
 						<div slot="end">%</div>
-					</rapid-text-field>
-				</div>
-				<div>
-					<label>Text field with placeholder</label>
-					<rapid-text-field type="text" placeholder="Enter text here">
 					</rapid-text-field>
 				</div>
 				<div>

@@ -50,6 +50,7 @@ Usage
   template: html`
     <rapid-checkbox
       ?disabled="${(x) => x.disabled}"
+      ?checked="${sync((x) => x.isSelected, 'boolean')}"
       @change="${(x, ctx) => x.checkChanged(ctx.event)}"
     >Checkbox
     </rapid-checkbox>
@@ -60,7 +61,8 @@ export class MyElement extends GenesisElement {
   @observable isSelected = false;
   checkChanged(e: Event) {
     this.isSelected = e.event.checked;
-    console.log(this.isSelected);
+    console.log(this.isSelected); // sync value updated
+    console.log(e.event.checked); // equivalent to sync value
   }
 }
 ```

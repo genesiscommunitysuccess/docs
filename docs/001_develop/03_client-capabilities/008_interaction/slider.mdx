@@ -44,40 +44,18 @@ Use cases:
 
     Usage
     ```typescript
-    const thumbStyles = `
-      height: 30px;
-      width: 30px;
-      border-radius: 50%;
-      background: red;
-      font-size: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: -6px 0px 0px -6px;
-    `;
-
     @customElement({
       name: 'my-element',
       template: html`
         <div>
             <label>Simple slider</label>
-            <rapid-slider @change="${(x, ctx) => x.handleSliderChanged(ctx.event)}"></rapid-slider>
-        </div>
-        <div style="height: 200px">
-            <label>Vertical slider</label>
-            <rapid-slider @change="${(x, ctx) => x.handleSliderChanged(ctx.event)}" orientation="vertical">
-            </rapid-slider>
-        </div>
-        <div>
-            <label>Simple Slider with slotted thumb</label>
-            <rapid-slider @change="${(x, ctx) => x.handleSliderChanged(ctx.event)}">
-              <div slot="thumb" style="${thumbStyles}">bps</div>
-            </rapid-slider>
+            <rapid-slider @change="${(x, ctx) => x.handleSliderChanged(ctx.event)}" value="${sync((x) => x.sliderValue, 'number')}"></rapid-slider>
         </div>
         <div>
             <label>Slider with labels and step value of 1</label>
             <rapid-slider
-              @change="${(x, ctx) => x.handleSliderChanged(ctx.event)}"
+              value="${sync((x) => x.sliderValue, 'number')}"
+              @change="${(x, ctx) => x.handleLabelSliderChanged(ctx.event)}"
               min="0"
               max="100"
               step="1"
@@ -91,8 +69,15 @@ Use cases:
       `,
     })
     export class MyElement extends GenesisElement {
+        @observable sliderValue: number;
       handleSliderChanged(event: Event): void {
           console.log((event.target as HTMLInputElement).value);
+      }
+
+      handleLabelSliderChanged(e: Event): void {
+        // both sync values and event values will be the same
+        console.log(this.sliderValue)
+        console.log((event.target as HTMLInputElement).value);
       }
     }
     ```
@@ -112,42 +97,26 @@ Use cases:
     Usage
     ```typescript
     export function MyComponent() {
-      const handleSliderChanged = (event) => {
-          console.log(event.target.value)
-      }
 
-      const thumbStyles = {
-          height: '30px',
-          width: '30px',
-          borderRadius: '50%',
-          background: 'red',
-          fontSize: '10px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          margin: '-6px 0 0 -6px'
-      }
+        const handleSliderChanged = (event) => {
+          console.log(event.target.value)
+        }
+        const [labelSliderValue, setLabelSliderValue] = useState(false);
+
+        const handleLabelSliderChanged = (event) => {
+            console.log(event.target.value)
+            setLabelSliderValue(event.target.value);
+        }
 
       return (
         <div>
             <label>Simple slider</label>
             <rapid-slider onChange={handleSliderChanged}></rapid-slider>
         </div>
-        <div style={{ height: '200px' }}>
-            <label>Vertical slider</label>
-            <rapid-slider onChange={handleSliderChanged} orientation="vertical">
-            </rapid-slider>
-        </div>
-        <div>
-            <label>Simple Slider with slotted thumb</label>
-            <rapid-slider onChange={handleSliderChanged}>
-                <div slot="thumb" style={thumbStyles}>bps</div>
-            </rapid-slider>
-        </div>
         <div>
             <label>Slider with labels and step value of 1</label>
             <rapid-slider
-                onChange={handleSliderChanged}
+                onChange={handleLabelSliderChanged}
                 min="0"
                 max="100"
                 step="1"
@@ -176,7 +145,6 @@ Use cases:
   Usage
   ```typescript
     import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-    import { NgStyle } from '@angular/common';
 
     @Component({
     selector: 'my-root',
@@ -185,21 +153,10 @@ Use cases:
               <label>Simple slider</label>
               <rapid-slider (change)="handleSliderChanged($event)"></rapid-slider>
           </div>
-          <div style="height: 200px">
-              <label>Vertical slider</label>
-              <rapid-slider (change)="handleSliderChanged($event)" orientation="vertical">
-              </rapid-slider>
-          </div>
-          <div>
-              <label>Simple slider with slotted thumb</label>
-              <rapid-slider (change)="handleSliderChanged($event)">
-                  <div slot="thumb" [ngStyle]="thumbStyles">bps</div>
-              </rapid-slider>
-          </div>
           <div>
               <label>Slider with labels and step value of 1</label>
               <rapid-slider
-                      (change)="handleSliderChanged($event)"
+                      (change)="handleLabelSliderChanged($event)"
                       min="0"
                       max="100"
                       step="1"
@@ -213,24 +170,18 @@ Use cases:
         `,
         standalone: true,
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
-        imports: [NgStyle],
     })
   export class AppComponent {
 
-      thumbStyles = {
-        height: '30px',
-        width: '30px',
-        borderRadius: '50%',
-        background: 'red',
-        fontSize: '10px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: '-6px 0 0 -6px'
-      };
+      labelSliderValue;
+
+      handleLabelSliderChangd(event: Event): void {
+        console.log((event.target as HTMLInputElement).value);
+      }
 
       handleSliderChanged(event: Event): void {
         console.log((event.target as HTMLInputElement).value);
+        this.labelSliderValue = (event.target as HTMLInputElement).value;
       }
   }
   ```
