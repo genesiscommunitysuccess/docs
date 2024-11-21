@@ -362,22 +362,64 @@ Property and attribute binding examples for Genesis Component syntax.
 
 ### Slots
 
-| Slot | Use |
-|---|---|
-| start | Start slot. |
-| end | End slot. |
+| Slot            | Use                                    |
+|-----------------|----------------------------------------|
+| start           | Start slot.                            |
+| end             | End slot.                              |
+| step-up-glyph   | The glyph for the step up control.     |
+| step-down-glyph | The glyph for the step down control.   |
 
 ### Parts
 
-| Part |
-|---|
-| label |
-| start |
-| controls |
-| end |
+| Part      | Use                                                              |
+|-----------|------------------------------------------------------------------|
+| label     | The label.                                                       |
+| start     | Before the input.                                                |
+| controls  | The step up and step down controls.                              |
+| end       | After the input.                                                 |
+| root      | The element wrapping the control, including start and end slots. |
+| control   | The element representing the input.                              |
+| step-up   | The step up control.                                             |
+| step-down | The step down control.                                           |
 
 ### Events Fired
-This component doesn't emit any events.
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Example</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>@input</td>
+    <td><code>void</code></td>
+    <td>Fires a custom 'input' event when the value has changed.</td>
+<td>
+
+```typescript
+<rapid-number-field @input="${(x) => x.inputHandler()}">
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>@change</td>
+    <td><code>void</code></td>
+    <td>Fires a custom 'change' event when the value has changed.</td>
+<td>
+
+```typescript
+<rapid-number-field @change="${(x) => x.changeHandler()}">
+```
+
+</td>
+  </tr>
+  </tbody>
+</table>
+
 
 ### Events Listened To
 This component doesn't listen to any events.
