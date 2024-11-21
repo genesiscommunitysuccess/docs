@@ -190,6 +190,8 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 #### Attributes
 
+import GrovyFilterExpressions from '../../../../_includes/_groovy-filter-expressions.mdx'
+
 <table>
     <thead>
         <tr>
@@ -239,7 +241,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
         <tr>
             <td>criteria</td>
             <td><code>string</code></td>
-            <td>Clients can send a Groovy expression to perform filters on the query server, these remain active for the life of the subscription.</td>
+            <td>Clients can send a Groovy expression to perform filters on the query server, these remain active for the life of the subscription. <a href="#criteria">More examples</a></td>
 <td>
 
 ```typescript
@@ -382,6 +384,11 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
         </tr>
     </tbody>
 </table>
+
+<div id="criteria">
+    <div>*1</div>
+    <GrovyFilterExpressions />
+</div>
 
 #### Properties
 
