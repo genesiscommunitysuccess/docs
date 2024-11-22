@@ -2,14 +2,18 @@
 title: 'Flipper'
 sidebar_label: 'Flipper'
 id: client-interaction-flipper
-keywords: [ interaction, interactive, active, window, overlay, popup]
+keywords: [interaction, interactive, flipper, keyboard, event, pager, next, previous, accessibility, direction]
 tags:
 - interaction
 - interactive
-- active
-- window
-- overlay
-- popup
+- flipper
+- keyboard
+- event
+- pager
+- next
+- previous
+- accessibility
+- direction
 sidebar_position: 8
 ---
 
@@ -17,11 +21,13 @@ import FlipperDemo from '/examples/ui/client-capabilities/interaction/flipper.js
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Dialogs are popup menus which take focus and prohibit the user interacting with the content behind.
+Flippers are styled buttons which can be used to indicate moving through blocks of content.
+
+As flippers are often a supplemental form of navigation, the flippers are hidden by default to avoid duplicate keyboard interaction. Passing an attribute of `aria-hidden="false"` will expose the flippers to assistive technology.
 
 Use cases:
-* Popup notification
-* Configuration box
+* Create a UI to page through collections of ui elements
+* Create buttons to move through different pages
 
 ## Example
 <FlipperDemo />
@@ -124,60 +130,9 @@ Use cases:
 ### Attributes
 
 <table>
-  <thead>
-    <tr>
-      <th>Attribute</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Example</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>type</td>
-      <td><code>'default' | 'error' | 'success'</code></td>
-      <td>The general style of dialog type to show. <code>default</code> type adds no extra styling, <code>error</code> shows a red highlight and <code>success</code> shows a green.</td>
-<td>
-
-```typescript
-<rapid-dialog type="success">
-```
-
-</td>
-    </tr>
-    <tr>
-      <td>position</td>
-      <td><code>'center' | 'left' | 'right'</code></td>
-      <td>The position of the dialog. <code>center</code> is the default.</td>
-<td>
-
-```typescript
-<rapid-dialog position="right">
-```
-
-</td>
-    </tr>
-    <tr>
-      <td>show-close-icon</td>
-      <td><code>boolean</code></td>
-      <td>Enables the close icon in the top right corner of the dialog. <code>true</code> is the default.</td>
-<td>
-
-```typescript
-<rapid-dialog show-close-icon="false">
-```
-
-</td>
-    </tr>
-  </tbody>
-</table>
-
-### Properties
-
-<table>
     <thead>
         <tr>
-            <th>Property</th>
+            <th>Attribute</th>
             <th>Type</th>
             <th>Description</th>
             <th>Example</th>
@@ -185,25 +140,37 @@ Use cases:
     </thead>
     <tbody>
         <tr>
-            <td>onShowCallback</td>
-            <td><code>() => void</code></td>
-            <td>Function that runs before dialog is opened.</td>
+            <td>disabled</td>
+            <td><code>boolean</code></td>
+            <td>Disable the flipper, if disabled it will not respond to click.</td>
 <td>
 
 ```typescript
-<rapid-dialog :onShowCallback="${(x) => () => x.beforeDialogShown()}">
+<rapid-flipper disabled>
 ```
 
 </td>
         </tr>
         <tr>
-            <td>onCloseCallback</td>
-            <td><code>() => void</code></td>
-            <td>Function that is called after the dialog is closed.</td>
+            <td>aria-hidden</td>
+            <td><code>boolean</code></td>
+            <td>Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology. <em>Default: <code>true</code></em></td>
 <td>
 
 ```typescript
-<rapid-dialog :onCloseCallback="${(x) => () => x.afterDialogHide()}">
+<rapid-flipper aria-hidden="false">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>direction</td>
+            <td><code>"previous" | "next"</code></td>
+            <td>The direction that the flipper implies navigating. <em>Default: <code>next</code></em></td>
+<td>
+
+```typescript
+<rapid-flipper direction="previous">
 ```
 
 </td>
@@ -211,32 +178,50 @@ Use cases:
     </tbody>
 </table>
 
-### Methods
+### Properties
 
-|Method|Description|Example|
-|--|--|--|
-|show|Show the dialog|`dialogRef.show()`|
-|close|Hides the dialog|`dialogRef.close()`|
+This component doesn't have any properties that are not also controlled via attributes.
 
 ### Slots
 
 |Slot|Description|
 |---|---|
-|Default|All the content which you want to display on the dialog box when shown.|
-|top|Can be used to set a title section for the dialog.|
-|bottom|Can be used to set a footer section for the dialog.|
+|next|The `next` flipper content.|
+|previous|The `previous` flipper content.|
 
 ### Parts
 
 | Part | Description |
 | --- | --- |
-|dialog|the base html `dialog` tag|
-|top|The top part of the dialog which contains the dialog header|
-|bottom|The bottom part of the dialog which contains the dialog footer|
+|next|Wraps the `next` flipper content|
+|previous|Wraps the `previous` flipper content|
 
 ### Events fired
 
-This component doesn't fire any events.
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>click</td>
+            <td><code><a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent">Event & KeyboardEvent</a></code></td>
+            <td>Fired when Enter or Space is invoked via keyboard and the flipper is exposed to assistive technologies.</td>
+<td>
+
+```typescript
+<rapid-flipper @click="${(x,ctx) => x.onFlipperClick(ctx.event)}">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Events listened to
 
