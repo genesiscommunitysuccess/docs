@@ -15,59 +15,17 @@ import TabItem from '@theme/TabItem';
 
 Here, we shall look into the back-end code and make some useful changes to increase the usability and range of the app.
 
-## Changing table definitions
-Go to the file **OTE\server\OTE-app\src\main\genesis\cfg\OTE-tables-dictionary.kts**. Here we shall change the definitions of the following tables:
+## Adding additional folders and files
 
-- `CLOSING_PRICE`
-- `CASH_BALANCE`
-- `INSTRUMENT_TO_UNDERLYING`
-- `PARTICPANT_POSITION`
-
-1. Find the `primaryKey` line for the CLOSING_PRICE table definition. Update it as follows:
-
-```
-primaryKey("INSTRUMENT_ID", "CLOSING_DATE")
-```
-This ensures that the appropriate closing price will be used, based on the closing date.
-
-2. Find the `primaryKey` line for the CASH_BALANCE table definition. Update it as follows:
-
-```
-primaryKey("PARTICIPANT_NAME", "CURRENCY")
-```
-This allows the the application to determine a Participant's Cash Balance for a particular currency.
-
-3. Find the `primaryKey` line for the INSTRUMENT_TO_UNDERLYING table definition. Update it as follows:
-
-```
-primaryKey("INSTRUMENT_ID", "TYPE", "UNDERLYING_ID")
-```
-
-4. Find the `primaryKey` line for the PARTICIPANT_POSITION table definition. Update it as follows:
-
-```
-primaryKey("INSTRUMENT_ID", "PARTICIPANT_NAME")
-```
-
-This allows the application to determine a Participant's Position for a particular instrument.
-
-### Adding a default value
-
-Check that the following default is present on the `PASSIVE_ORDER_BOOK` table:
-
-```kotlin
-field("VERSION", INT).notNull().default(1)
-```
-
-## Adding additional folders and files 
+The addition of this file will enable us to call bespoke events from the front end - this is simply declaring a blank "message" to send in
 
 Go to the folder **OTE\server\OTE-app\src\main\Kotlin**. Here we will add an additional folder and file.
 
 ### Using IntelliJ
 
-1. Right-click on **add new package** and call this package genesis.global.message.event
+1. Right-click on **add new package** and call this package **genesis.global.message.event**
 
-2. Right-click on the genesis.global.message.event package and add a new "Kotlin class" called **BlankMessage.kt**.
+2. Right-click on the genesis.global.message.event package and add a new **Kotlin class** called **BlankMessage.kt**.
 
 ### Using Launchpad
 
@@ -89,9 +47,10 @@ class BlankMessage {
 ## Adding a query
 Now add a new query to your Data Server to make this information available to the front end.
 
-1. Go to the folder **OTE\server\OTE-app\src\main\genesis\scripts**. 
+1. Go to the folder **OTE\server\OTE-app\src\main\genesis\scripts**.
 
 2. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-dataserver.kts** and add the following code [Need to specify where] to define the new query.
+This will also be found in a TODO block
 
 ```
 query("ALL_USER_NAMES", USER) {
@@ -102,65 +61,17 @@ query("ALL_USER_NAMES", USER) {
 ```
 
 ## Updating the consolidators.
-As the primary keys have changed, you need to edit the consolidators so that they can include the new aggregations.
+The code changes listed will also be found in TODO blocks
 
 1. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-consolidator.kts**.
 
-2. In the `PARTICIPANT_POSITION_AGG consolidator`, find `ParticipantPosition.ByInstrumentId(instrumentId)`. Update it as follows:
+2. In the `SELL_PARTICIPANT_POSITION_AGG consolidator`, find `sum { quantity } into QUANTITY`. Update it as follows:
 
 ```kotlin
-ParticipantPosition.ByInstrumentIdParticipantName(instrumentId, buyParticipantName)
+sum { quantity * -1 } into QUANTITY
 ```
-
-3. In the PARTICIPANT_POSITION_AGG consolidator, find `participantName = ""`. Update it as follows:
-
-```kotlin
-participantName = groupId.participantName
-```
-
-### Creating new consolidators
-Using the existing `PARTICIPANT_POSITION_AGG` Consolidator code, create separate Consolidators for the Buy and Sell Participant Positions. 
-
-1. Find `PARTICIPANT_POSITION_AGG` in the PARTICIPANT_POSITION_AGG consolidator. Update it as follows:
-
-```kotlin
-BUY_PARTICIPANT_POSITION_AGG
-```
-2. Select all of the `BUY_PARTICIPANT_POSITION_AGG` code. Copy this and paste it after the code for the `BUY_PARTICIPANT_POSITION_AGG`.
-
-3. In the copied code, find `BUY_PARTICIPANT_POSITION_AGG`. Update it as follows:
-
-```kotlin
-SELL_PARTICIPANT_POSITION_AGG
-```
-
-4. In the copied code, find `ParticipantPosition.ByInstrumentIdParticipantName(instrumentId, buyParticipantName)`. Update it as follows:
-
-```kotlin
-ParticipantPosition.ByInstrumentIdParticipantName(instrumentId, sellParticipantName)
-```
-
-5. In the copied code, find `sum { quantity * -1 }`. Update it as follows:
-
-```kotlin
-QUANTITY
-```
-
-### Modify existing consolidators
 
 Modify the CASH_BALANCE_AGG consolidator so that the new aggregations are included as a result of the primary key changes that were made.
-
-1. In the `CASH_BALANCE_AGG`, find `CashBalance.ByParticipantName(participantName)`. Update it as follows:
-
-```kotlin
-CashBalance.ByParticipantNameCurrency(participantName, currency)
-```
-
-2. In the `CASH_BALANCE_AGG`, find [field name required]. Update it as follows:
-
-```kotlin
-currency = groupId.currency
-```
 
 ### Aggregate buy and sell in the consolidators
 To ensure that Buy and Sell data is aggregated and captured for the correct side in the `OPEN_POSITION_AGG` consolidator:
@@ -185,254 +96,12 @@ where {
       status == Status.Active
     }
 ```
-## Updating eventHandlers
 
-To ensure that the primaryKey changes can be handled by the relevant `eventHandler` codeblocks, make the following changes:
-
-1.  Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-eventhandler.kts**. <br></br>
-Edit the following `eventHandler` codeblocks:
-
-- `ClosingPrice.ByInstrumentId`
-- `PassiveOrderBook`
-
-2. Find `eventHandler<ClosingPrice.ByInstrumentId>("CLOSING_PRICE_DELETE", transactional = true) {`. <br></br> Update this as follows:
-
-```
-eventHandler<ClosingPrice.ByInstrumentIdClosingDate>("CLOSING_PRICE_DELETE", transactional = true) {
-```
-
-3. Find ` eventHandler<InstrumentToUnderlying.ByInstrumentId>("INSTRUMENT_TO_UNDERLYING_DELETE", transactional = true) {`. <br></br> Update this as follows:
-
-```
-eventHandler<InstrumentToUnderlying.ByInstrumentIdTypeUnderlyingId>("INSTRUMENT_TO_UNDERLYING_DELETE", transactional = true) {
-```
-
-4. To make orders Active or Withdrawn, update as follows:
-
-```
-eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_MODIFY", transactional = true) {
-```
-
-### Remove redundant eventHandlers
-All the `eventHandler` codeblocks set out below need to be removed. These requirements are handled by the code changes and consolidator updates that you have made.
-
-1. To remove the following Trade and Trade.ById eventHandlers, find:
-
-`eventHandler<Trade>("TRADE_INSERT", transactional = true) {`
-`eventHandler<Trade>("TRADE_MODIFY", transactional = true) {`
-`eventHandler<Trade.ById>("TRADE_DELETE", transactional = true) {`
-
-Remove the following code:
-
-```
-eventHandler<Trade>("TRADE_INSERT", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("TradeUpdate")
-    }
-    onCommit { event ->
-      val details = event.details
-      val insertedRow = entityDb.insert(details)
-      // return an ack response which contains a list of record IDs
-      ack(listOf(mapOf(
-        "TRADE_ID" to insertedRow.record.tradeId,
-      )))
-    }
-  }
-  eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("TradeUpdate")
-    }
-    onCommit { event ->
-      val details = event.details
-      entityDb.modify(details)
-      ack()
-    }
-  }
-  eventHandler<Trade.ById>("TRADE_DELETE", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("TradeUpdate")
-    }
-    onCommit { event ->
-      val details = event.details
-      entityDb.delete(details)
-      ack()
-    }
-  }
-  ```
-
-2. To remove the following CashBalance and CashBalance.ByParticipantName eventHandlers, find:
-
-`eventHandler<CashBalance>("CASH_BALANCE_INSERT", transactional = true) {`
-`eventHandler<CashBalance>("CASH_BALANCE_MODIFY", transactional = true) {`
-`eventHandler<CashBalance.ByParticipantName>("CASH_BALANCE_DELETE", transactional = true) {`
-
-Remove the following code:
-
-```
-eventHandler<CashBalance>("CASH_BALANCE_INSERT", transactional = true) {
-	    permissioning {
-	      permissionCodes = listOf("CashBalanceUpdate")
-	    }
-	    onCommit { event ->
-	      val details = event.details
-	      entityDb.insert(details)
-	      ack()
-	    }
-	  }
-	  eventHandler<CashBalance>("CASH_BALANCE_MODIFY", transactional = true) {
-	    permissioning {
-	      permissionCodes = listOf("CashBalanceUpdate")
-	    }
-        onCommit { event ->
-	      val details = event.details
-	      entityDb.modify(details)
-	      ack()
-	    }
-	  }
-	  eventHandler<CashBalance.ByParticipantName>("CASH_BALANCE_DELETE", transactional = true) {
-	    permissioning {
-	      permissionCodes = listOf("CashBalanceUpdate")
-	    }
-	    onCommit { event ->
-	      val details = event.details
-	      entityDb.delete(details)
-	      ack()
-	    }
-	  }
-```
-
-3. To remove the following  OpenPosition and OpenPosition.ByInstrumentId eventHandlers, find:
-
-`eventHandler<OpenPosition>("OPEN_POSITION_INSERT", transactional = true) {`
-`eventHandler<OpenPosition>("OPEN_POSITION_MODIFY", transactional = true) {`
-`eventHandler<OpenPosition.ByInstrumentId>("OPEN_POSITION_DELETE", transactional = true) {`
-
-Remove the following code:
-
-```
-eventHandler<OpenPosition>("OPEN_POSITION_INSERT", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("OpenPositionUpdate")
-    }
-    onCommit { event ->
-      val details = event.details
-      entityDb.insert(details)
-      ack()
-    }
-  }
-  eventHandler<OpenPosition>("OPEN_POSITION_MODIFY", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("OpenPositionUpdate")
-    }
-    onCommit { event ->
-      val details = event.details
-      entityDb.modify(details)
-      ack()
-    }
-  }
-  eventHandler<OpenPosition.ByInstrumentId>("OPEN_POSITION_DELETE", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("OpenPositionUpdate")
-    }
-    onCommit { event ->
-      val details = event.details
-      entityDb.delete(details)
-      ack()
-    }
-  }
-  
-  ```
-  
-4. To remove the following ParticipantPosition and ParticipantPosition.ByInstrumentId eventHandlers, find:
-
-`eventHandler<ParticipantPosition>("PARTICIPANT_POSITION_INSERT", transactional = true) {`
-`eventHandler<ParticipantPosition>("PARTICIPANT_POSITION_MODIFY", transactional = true) {`
-`eventHandler<ParticipantPosition.ByInstrumentId>("PARTICIPANT_POSITION_DELETE", transactional = true) {`
-
-Remove the following code:
-
-```
-eventHandler<ParticipantPosition>("PARTICIPANT_POSITION_INSERT", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("ParticipantPositionUpdate")
-    }
-    onCommit { event ->
-      val details = event.details
-      entityDb.insert(details)
-      ack()
-    }
-  }
-  eventHandler<ParticipantPosition>("PARTICIPANT_POSITION_MODIFY", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("ParticipantPositionUpdate")
-    }
-    onCommit { event ->
-      val details = event.details
-      entityDb.modify(details)
-      ack()
-    }
-  }
-  eventHandler<ParticipantPosition.ByInstrumentId>("PARTICIPANT_POSITION_DELETE", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("ParticipantPositionUpdate")
-    }
-    onCommit { event ->
-      val details = event.details
-      entityDb.delete(details)
-      ack()
-    }
-  }
-  ```
-
-5. To remove the following ClosingPosition and ClosingPosition.ByClosngPositionIeventHandlers, find:
-
-`eventHandler<ClosingPosition>("CLOSING_POSITION_INSERT", transactional = true) {`
-`eventHandler<ClosingPosition>("CLOSING_POSITION_MODIFY", transactional = true) {`
-`eventHandler<ClosingPosition.ByClosngPositionId>("CLOSING_POSITION_DELETE", transactional = true) {`
-
-Remove the following code:
-
-```
-eventHandler<ClosingPosition>("CLOSING_POSITION_INSERT", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("ClosingPositionUpdate")
-    }
-    onCommit { event ->
-      val details = event.details
-      val insertedRow = entityDb.insert(details)
-      // return an ack response which contains a list of record IDs
-      ack(listOf(mapOf(
-        "CLOSING_POSITION_ID" to insertedRow.record.closingPositionId,
-      )))
-    }
-  }
-  eventHandler<ClosingPosition>("CLOSING_POSITION_MODIFY", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("ClosingPositionUpdate")
-    }
-    onCommit { event ->
-      val details = event.details
-      entityDb.modify(details)
-      ack()
-    }
-  }
-  eventHandler<ClosingPosition.ById>("CLOSING_POSITION_DELETE", transactional = true) {
-    permissioning {
-      permissionCodes = listOf("ClosingPositionUpdate")
-    }
-    onCommit { event ->
-      val details = event.details
-      entityDb.delete(details)
-      ack()
-    }
-  }
-```
-  
 ## Create a new passive order book eventHandler
 To handle the Passive Order Book correctly, we are going to do two things:
 
 - create a new **-eventhandler.kts**file with the relevant logic for the Passive Order Book; we provide a large code snippet here that contains the logic
-- this makes the `PASSIVE_ORDER_BOOK_INSERT` and `PASSIVE_ORDER_BOOK_DELETE` events in the **OTE-eventhandler.kts** file unnecessary, so you need to remove them.
+- this makes the `PASSIVE_ORDER_BOOK_INSERT`, `PASSIVE_ORDER_BOOK_MODIFY` and `PASSIVE_ORDER_BOOK_DELETE` events in the **OTE-eventhandler.kts** file unnecessary, so you need to remove them.
 
 To do this:
 
@@ -460,6 +129,16 @@ eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_INSERT", transactional = true
       ack(listOf(mapOf(
         "ORDER_ID" to insertedRow.record.orderId,
       )))
+    }
+  }
+  eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_MODIFY", transactional = true) {
+    permissioning {
+      permissionCodes = listOf("PassiveOrderBookUpdate")
+    }
+    onCommit { event ->
+      val details = event.details
+      entityDb.modify(details)
+      ack()
     }
   }
   eventHandler<PassiveOrderBook.ByOrderId>("PASSIVE_ORDER_BOOK_DELETE", transactional = true) {

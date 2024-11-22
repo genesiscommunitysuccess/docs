@@ -23,34 +23,33 @@ The majority of this section is for changes made in the front-end folder, which 
 In this section you will change the existing 2x2 grid layout to a more sophisticated layout where:
 
 - orders are displayed at the top of the screen in the Passive Order Book section
-- three sections (Particpant Positions, Trades and Open Positions) are displayed beneath the Orders grid
+- three sections (Participant Positions, Trades and Open Positions) are displayed beneath the Orders grid
 
 ### 1. Update the template.ts
-Go to **OTE\client\src\routes\orders\orders.template.ts**. Replace the existing code with the code below:
+Go to **OTE\client\src\routes\orders\orders.template.ts**. Replace the code **inside** the **rapid-layout** tags with the code below:
 
 ```
- <rapid-layout-region type="horizontal">
-             <rapid-layout-item title="Passive Order Book">
-                 <orders-passive-order-book-manager></orders-passive-order-book-manager>
-             </rapid-layout-item>
-        <rapid-layout-region type="vertical">
-             <rapid-layout-item title="Participant Positions">
-                 <orders-participant-positions-grid></orders-participant-positions-grid>
-             </rapid-layout-item>
-                <rapid-layout-item title="Trades">
-                 <orders-trades-grid></orders-trades-grid>
-             </rapid-layout-item>
-             <rapid-layout-item title="Open Positions">
-                 <orders-open-positions-grid></orders-open-positions-grid>
-             </rapid-layout-item>
-         </rapid-layout-region>
-     </rapid-layout-region>
-  </rapid-layout>
+    <rapid-layout-region type="horizontal">
+      <rapid-layout-item title="Passive Order Book">
+        <orders-passive-order-book-manager></orders-passive-order-book-manager>
+      </rapid-layout-item>
+      <rapid-layout-region type="vertical">
+        <rapid-layout-item title="Participant Positions">
+          <orders-participant-positions-grid></orders-participant-positions-grid>
+        </rapid-layout-item>
+        <rapid-layout-item title="Trades">
+          <orders-trades-grid></orders-trades-grid>
+        </rapid-layout-item>
+        <rapid-layout-item title="Open Positions">
+          <orders-open-positions-grid></orders-open-positions-grid>
+        </rapid-layout-item>
+      </rapid-layout-region>
+    </rapid-layout-region>
 ```
 
 With the next set of steps you will be making a change to allow user names to appear in a drop down list in the GUI
 
-### 2. Update the form for creating a new record
+### 2. Update the form for creating and editing new records
 
 Go to the file **OTE\client\src\routes\balances\cash-movements-manager\cash-movement.create.form.schema.ts**.<br></br>
 
@@ -80,39 +79,8 @@ Replace the code below:
   }
 },
 ```
+Repeat the above in the file **OTE\client\src\routes\balances\cash-movements-manager\cash-movement.update.form.schema.ts**.
 
-### 3. Update the form for creating a new record
-
-As the schema for creating a new record has been changed, you also need to change the schema for updating an existing record.
-
-Go to the file **OTE\client\src\routes\balances\cash-movements-manager\cash-movement.update.form.schema.ts**.
-
-Replace the code below:
-
-```
-{
-  "type": "Control",
-  "label": "Participant Name",
-  "scope": "#/properties/PARTICIPANT_NAME",
-  "options": {
-  }
-},
-```
-
-... with the following:
-
-```
-{
-  "type": "Control",
-  "label": "Participant Name",
-  "scope": "#/properties/PARTICIPANT_NAME",
-  "options": {
-    "allOptionsResourceName": "ALL_USER_NAMES",
-    "valueField": "USER_NAME",
-    "labelField": "USER_NAME"
-  }
-},
-```
 
 ## Simulating intraday and End Of Day processing
 
@@ -205,7 +173,7 @@ Remove the following two lines:
 createEvent="${(x) => getViewUpdateRightComponent(x.user, 'ProcessLogUpdate', 'EVENT_PROCESS_LOG_INSERT')}"
 :createFormUiSchema=${() => createFormSchema }
 ```
-4. Now you can add the action buttons that enable the user to trigger the processes. Find the line `></entity-management>` and update it so that is split as follows:
+4. Now you can add the action buttons that enable the user to trigger the processes. Find the line `></entity-management>` and replace the line with the below:
 
 ```ts
   crud-menu-position="top"
@@ -218,7 +186,7 @@ createEvent="${(x) => getViewUpdateRightComponent(x.user, 'ProcessLogUpdate', 'E
 
 Your code should now look like this:
 
-```
+```ts
 import { html, whenElse, repeat } from '@genesislcap/web-core';
 import { getViewUpdateRightComponent } from '../../../utils';
 import type { ProcessesProcessHistoryManager } from './process-history';
