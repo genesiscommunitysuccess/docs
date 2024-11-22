@@ -15,13 +15,13 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Log from '/snippet/_LOG.md'
 import CommonPermissions from '/snippet/_common-permissions.md'
+import CommonPermissionsQuery from '/snippet/_common-permissions-query.md'
 import CommonFieldOverrides from '/snippet/_common-field-overrides.md'
 import CommonQueryFields from '/snippet/_common-query-fields.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
+import CommonAuthenticateFirst from '/snippet/_common-authenticate-first.md'
 
 ## Overview
-
-<p align="center"><iframe src="https://player.vimeo.com/video/792592108?h=ccbf47bf29&amp" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></p>
 
 A Data Server supplies real-time (streaming) data to the front end of your application.
 
@@ -217,6 +217,23 @@ There are two scenarios where an index is useful:
 Note that table indexes are NOT available in dataserver queries.
 
 <CommonPermissions />
+
+<CommonPermissionsQuery />
+
+In most cases, a single auth entity id is associated to one or more rows in a Data Server query, but in some rare scenarios there might be a one-to-one relationship. In the latter case, there is a configuration option named `rowLevelPermissions` which can be set to `true` to optimize the internal data structure that holds the cache information.
+
+```kotlin{4}
+query("ALL_COUNTERPARTYS", COUNTERPARTY) {
+    permissioning {
+        auth("COUNTERPARTY"){
+            rowLevelPermissions = true
+            authKey {
+                key(data.counterpartyId)
+            }
+        }
+    }
+}
+```
 
 #### `enrich`
 
@@ -671,6 +688,8 @@ Find details around [how data servers work with optimistic concurrency](/develop
 ## Client API
 
 Client's can connect and query via Websocket or REST HTTP calls. Websockets are required for real-time updates to be pushed. 
+
+<CommonAuthenticateFirst />
 
 ### `DATA_LOGON`
 

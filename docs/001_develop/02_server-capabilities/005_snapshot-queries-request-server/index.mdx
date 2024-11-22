@@ -15,13 +15,14 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Log from '/snippet/_LOG.md'
 import CommonPermissions from '/snippet/_common-permissions.md'
+import CommonPermissionsQuery from '/snippet/_common-permissions-query.md'
 import CommonFieldOverrides from '/snippet/_common-field-overrides.md'
 import CommonQueryFields from '/snippet/_common-query-fields.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
+import CommonAuthenticateFirst from '/snippet/_common-authenticate-first.md'
+import CommonOpenAPI from '/snippet/_common-open-api.md'
 
 ## Overview
-
-<p align="center"><iframe src="https://player.vimeo.com/video/792592165?h=18cdb5adf0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></p>
 
 The Request Server is a microservice responsible for providing APIs to request snapshots of an application's data. Developers configure specific data sets as named requests, which can be queried by clients via APIs. Request Servers may sometimes be referred to as a "Request Reply" or "ReqRep" for short.
 ≤
@@ -258,6 +259,7 @@ Similar to `filterWithParameters` but the `genesisSet` context property contains
 
 <CommonPermissions />
 
+<CommonPermissionsQuery />
 
 #### `rowReturnLimit`
 
@@ -492,9 +494,9 @@ Find details around [how request servers work with optimistic concurrency](/deve
 
 ## Client API
 
-:::tip
-Request servers are also accessible via [Open API](/develop/server-capabilities/integrations-open-api/)
-:::
+<CommonAuthenticateFirst />
+
+<CommonOpenAPI />
 
 ### `REQ_<REQUEST_SERVER_NAME>`
 

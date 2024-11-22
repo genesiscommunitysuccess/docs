@@ -1,0 +1,235 @@
+---
+title: 'Session Management'
+sidebar_label: 'Session Management'
+id: comms-session
+keywords: [genesis, foundation, comms, session]
+tags:
+  - comms
+  - session
+---
+
+# Session Management
+
+This introduces a comprehensive approach to managing user session data, leveraging browser storage mechanisms to persist user authentication states, preferences, and other session-specific information. It provides a unified interface to interact with both local storage and session storage, facilitating easy storage and retrieval of session data.
+
+## Key Components
+
+- **Session Interface (`Session`):** Defines the contract for session management operations, including setting, getting, and removing items from storage, as well as managing user authentication results and session return URLs.
+- **Default Implementation (`DefaultSession`):** Offers a concrete implementation of the `Session` interface, encapsulating logic for prefixing storage keys, handling authentication results, and managing return URLs.
+
+## Usage Examples
+
+### Setting the Storage Key Prefix
+
+To avoid key collisions in storage, it's recommended to set a unique prefix for your application's storage keys.
+
+```typescript
+import { Sesssion } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Session session: Session;
+
+  constructor() {
+    this.session.setStorageKeyPrefix('myApp_');
+  }
+}
+```
+
+### Managing Authentication Data
+
+Store and manage authentication results to maintain user session state.
+
+```typescript
+import { Session } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Session session: Session;
+
+  // Store authentication result
+  storeAuthResult() {
+    this.session.setAuthResult({
+      SESSION_AUTH_TOKEN: 'token123',
+      REFRESH_AUTH_TOKEN: 'refreshToken456',
+      USER_NAME: 'john.doe@example.com',
+      SESSION_ID: 'session789',
+      DETAILS: { MFA_CODE: 'mfa123' }
+    });
+  }
+
+  // Delete user session data
+  deleteUserSessionData() {
+    this.session.deleteUserFromSessionStorage();
+  }
+}
+```
+
+This utilizes `setSessionStorageItem` for storing each piece of data and `removeSessionStorageItem` for cleanup.
+
+### Capturing and Managing Return URLs
+
+Automatically capture and store the return URL for post-authentication redirection.
+
+```typescript
+import { Session } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Session session: Session;
+
+  // Capture and store the return URL
+  captureAndStoreReturnUrl() {
+    this.session.captureReturnUrl();
+  }
+
+  // Redirect to the captured return URL
+  redirectToReturnUrl() {
+    window.location.href = this.session.returnUrl;
+  }
+}
+```
+
+This internally uses `setSessionStorageItem` to store the return URL and initializes `this.returnUrl` by retrieving it with `getSessionStorageItem`.
+
+### Direct Storage Access: Setting, Getting, and Removing Items
+
+#### Setting Items
+
+Store data in local or session storage directly. This demonstrates the versatility in storage options.
+
+```typescript
+import { Session } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Session session: Session;
+
+  // Set in local storage
+  setTheme() {
+    this.session.setLocalStorageItem('theme', 'dark');
+  }
+
+  // Set in session storage
+  setSessionActive() {
+    this.session.setSessionStorageItem('sessionActive', true);
+  }
+```
+
+These methods internally call `setItem`, specifying the storage type.
+
+#### Getting Items
+
+Retrieve data from storage, showcasing both local and session storage retrieval.
+
+```typescript
+import { Session } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Session session: Session;
+
+  // Get from local storage
+  getTheme() {
+    return this.session.getLocalStorageItem('theme');
+  }
+
+  // Get from session storage
+  getSessionActive() {
+    return this.session.getSessionStorageItem('sessionActive');
+  }
+}
+```
+
+These methods internally use `getItem`, specifying the appropriate storage type.
+
+#### Removing Items
+
+Remove items from storage, illustrating how to clear specific data.
+
+```typescript
+import { Session } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Session session: Session;
+
+  // Remove from local storage
+  removeTheme() {
+    this.session.removeLocalStorageItem('theme');
+  }
+
+  // Remove from session storage
+  removeSessionActive() {
+    this.session.removeSessionStorageItem('sessionActive');
+  }
+}
+```
+
+These methods make internal calls to `removeItem` with the specified storage type.
+
+### Generic Storage Management
+
+For situations where the storage type might vary, or when creating more generic functions that can work with either storage type, `setItem`, `getItem`, and `removeItem` are used directly.
+
+#### `setItem`
+
+```typescript
+import { Session } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Session session: Session;
+
+  // Set item in local storage
+  setLocalUserSettings() {
+    this.session.setItem('userSettings', JSON.stringify({ notifications: true }), 'local');
+  }
+
+  // Set item in session storage
+  setSessionUserSettings() {
+    this.session.setItem('userSettings', JSON.stringify({ notifications: true }), 'session');
+  }
+}
+```
+
+#### `getItem`
+
+```typescript
+import { Session } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Session session: Session;
+
+  // Get item from local storage
+  getLocalUserSettings() {
+    return JSON.parse(this.session.getItem('userSettings', 'local'));
+  }
+
+  // Get item from session storage
+  getSessionUserSettings() {
+    return JSON.parse(this.session.getItem('userSettings', 'session'));
+  }
+}
+```
+
+#### `removeItem`
+
+```typescript
+import { Session } from '@genesislcap/foundation-comms';
+
+export class MyExampleClass {
+  @Session session: Session;
+
+  // Remove item from local storage
+  removeLocalUserSettings() {
+    this.session.removeItem('userSettings', 'local');
+  }
+
+  // Remove item from session storage
+  removeSessionUserSettings() {
+    this.session.removeItem('userSettings', 'session');
+  }
+}
+```
+
+These examples showcase the flexibility of `@Session` in managing both session and local storage. Functions like `setItem`, `getItem`, and `removeItem` offer a unified interface for storage operations, internally leveraging the storage-specific methods (`setLocalStorageItem`, `getLocalStorageItem`, `removeLocalStorageItem`, `setSessionStorageItem`, `getSessionStorageItem`, `removeSessionStorageItem`) to provide a cohesive and comprehensive session management strategy.
+
+## Considerations
+
+- **Sensitive Data Handling:** Be mindful of the sensitivity of data being stored in the browser storage. Avoid storing sensitive information like passwords or personal identification numbers (PINs) in local or session storage.
+- **Storage Key Management:** Use the `setStorageKeyPrefix` method to namespace your application's storage keys, reducing the likelihood of key collisions with other applications or libraries.
+- **Session Clean-up:** Ensure to clear session-related data upon user logout or session expiration to prevent unauthorized access or data leakage.

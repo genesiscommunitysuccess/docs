@@ -14,62 +14,74 @@ First, we have provided a set of simple focused items that are easy to pick up.
 Separately, we have provided a collection of example applications that demonstrate key use cases. You can clone these, build and run, and dive into the code to see what's happening.
 
 
-We hope you find this useful.
-
-
-## Everyday basics
+## Master the basics
 These are the things that every application has to have.
 
 <Grid container>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Set up authorisation" link="../how-to/ht-auth/" text="Understand the principles of authorising your users at every level.">
+        <QuickCard heading="Create a simple front end" link="/how-to/ht-front-end-example/" text="See how to create a simple front end using Genesis components.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Join tables and expose them" link="../how-to/ht-join-expose/" text="Join tables to create views - useful ways of looking at data. Then create queries so that these can be displayed at the front end.">
+        <QuickCard heading="Display joined data" link="/how-to/ht-join-expose/" text="Join tables to create views - useful ways of looking at data. Then create queries so that these can be displayed at the front end.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Create a new page" link="../how-to/ht-front-end-simple/" text="See how to create new pages and insert simple components.">
+        <QuickCard heading="Create a new page" link="/how-to/ht-front-end-simple/" text="See how to create new pages and insert simple components.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Use one field in many tables" link="../how-to/ht-shareable-enums/" text="You don't want to declare the same field multiple times. You can declare it once and use it any table you like. See our example of an enum.">
+        <QuickCard heading="Get to grips with Kotlin" link="/how-to/ht-front-end-simple/" text="Simple practical examples to help you mater Kotlin concepts.">
         </QuickCard>
     </Grid>
 </Grid>
 
-## Example applications
+## Enhance your application
 
 Run, build, and dive into the code to see what's happening. Comments are included at key points in the files to show you what is controlling what.
 
 <Grid container>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Running an example app" link="../how-to/ht-run-examples/" text="Find out how to clone, build and run our example apps.">
+        <QuickCard heading="Authorize your data" link="/how-to/ht-auth/" text="Understand the principles of authorizing your users at every level.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Set up audited tables" link="../how-to/ht-audit/" text="Make any table in your database an audited table.">
+        <QuickCard heading="Audit changes to a table" link="/how-to/ht-audit/" text="Make any table in your database an audited table.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Ingesting CSV files" link="../how-to/ht-ingest-csv/" text="Receive CSV files from an external source and update your database in the relevant way.">
+        <QuickCard heading="Consume CSV files" link="/how-to/ht-ingest-csv/" text="Receive CSV files from an external source and update your database in the relevant way.">
+        </QuickCard>
+    </Grid>
+     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Consume a REST API" link="/how-to/ht-rest/" text="See an application with multiple pages and a useful set of displays and interactivity.">
+        </QuickCard>
+    </Grid>   
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Consume and publish Kafka" link="/how-to/ht-consume-kafka/" text="Find out how to prepare your system for automated testing. ">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Interoperate with other front ends" link="../how-to/ht-fdc3/" text="Use the FDC3 standard for front-end interoperability; enable your users to click between your Genesis app and other front-end applications. ">
-        </QuickCard>
-    </Grid>
-    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Create a simple front end" link="../how-to/ht-front-end-example/" text="See an application with multiple pages and a useful set of displays and interactivity.">
-        </QuickCard>
-    </Grid>
-    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Testing" link="../how-to/ht-prepare-test/" text="Find out how to prepare your system for automated testing. ">
+        <QuickCard heading="Add Desktop Interoperability" link="/how-to/ht-fdc3/" text="Use the FDC3 standard for front-end interoperability; enable your users to click between your Genesis app and other front-end applications. ">
         </QuickCard>
     </Grid>
 </Grid>
 
+## Test your application
 
+Learn how to test your application performs as you need it to.
 
-
+<Grid container>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Prepare automated tests" link="/how-to/ht-prepare-test/" text="This page looks at the tools and the dependencies you can set up for testing.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Unit test the front end" link="/how-to/ht-web-unit-test/" text="Learn how to create unit tests for the front end of your applications.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Add end-to-end tests" link="/how-to/ht-web-e2e-test/" text="Write end-to-end tests to test a full-stack application.">
+        </QuickCard>
+    </Grid>
+</Grid>
