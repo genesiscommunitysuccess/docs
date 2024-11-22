@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+
 export function CodeSection({ children, color }) {
 	return (
 		<div
@@ -25,4 +27,30 @@ export function CodeLabel({ children }) {
       {children}
     </label>
   );
+}
+
+export function CollapsibleSlot({ title, description, children }) {
+	const [isOpen, setIsOpen] = useState(false);
+
+	const toggleOpen = () => setIsOpen(!isOpen);
+
+	return (
+		<div>
+			{ description && <p style={{ marginBottom: '10px' }}>{description}</p>}
+			<button
+				onClick={toggleOpen}
+				style={{
+					background: "#0078d4",
+					color: "#fff",
+					border: "none",
+					padding: "8px 12px",
+					borderRadius: "4px",
+					cursor: "pointer",
+				}}
+			>
+				{isOpen ? "Hide" : "Show"} {title}
+			</button>
+			{isOpen && <div style={{ marginTop: "10px" }}>{children}</div>}
+		</div>
+	);
 }

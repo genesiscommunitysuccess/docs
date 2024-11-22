@@ -456,6 +456,25 @@ export default {
         ],
       },
     },
+    {
+      name: "@genesislcap/foundation-i18n",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/020_internationalization/01_internationalization-docs",
+        api_docs: "docs/api",
+        readme: "index.mdx",
+        keywords: ["genesis", "foundation", "i18n", "internationalization"],
+        tags: [
+          "i18n",
+          "internationalization",
+        ],
+      },
+    },
     // {
     //   name: "@genesislcap/foundation-fdc3",
     //   enabled: true,
