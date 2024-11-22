@@ -12,19 +12,14 @@ export default function FileUploadDemo({ children, color }) {
 		RapidImports.registerComponents();
 	}
 
-	const rapidFileUpload = useRef(null);
-
-	useEffect(() => {
-		rapidFileUpload.current.filesGridColumnDefinitions = ["col1"];
-	}, []);
-
 	return (
 		<CodeSection>
-			<rapid-file-upload
+			{ isBrowser && <rapid-file-upload
 				label="File Upload (JSON files only)"
-				ref={rapidFileUpload}
+				filesGridColumnDefinitions={["col1"]}
 				accept="application/json">
 			</rapid-file-upload>
+			}
 		</CodeSection >
 	)
 }

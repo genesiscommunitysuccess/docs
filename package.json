@@ -40,6 +40,7 @@
     "@genesislcap/design-system-configurator": "14.217.6",
     "@genesislcap/documentation-components": "14.217.6",
     "@genesislcap/foundation-comms": "14.217.6",
+    "@genesislcap/foundation-criteria": "14.217.6",
     "@genesislcap/foundation-entity-management": "14.217.6",
     "@genesislcap/foundation-filters": "14.217.6",
     "@genesislcap/foundation-forms": "14.217.6",
@@ -50,7 +51,6 @@
     "@genesislcap/foundation-reporting": "14.217.6",
     "@genesislcap/foundation-testing": "14.217.6",
     "@genesislcap/foundation-zero": "14.217.6",
-    "@genesislcap/foundation-criteria": "14.217.6",
     "@genesislcap/g2plot-chart": "14.217.6",
     "@genesislcap/grid-pro": "14.217.6",
     "@genesislcap/grid-tabulator": "14.217.6",
@@ -62,8 +62,8 @@
     "docusaurus-gtm-plugin": "0.0.2",
     "prism-react-renderer": "2.3.1",
     "raw-loader": "4.0.2",
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react": "^19.0.0-rc.1",
+    "react-dom": "^19.0.0-rc.1"
   },
   "browserslist": {
     "production": [
@@ -91,7 +91,9 @@
   },
   "overrides": {
     "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-typescript": "^8.3.0"
+    "@rollup/plugin-typescript": "^8.3.0",
+    "react": "^19.0.0-rc.1",
+    "react-dom": "^19.0.0-rc.1"
   },
   "genx": {
     "entry": "iife.ts"
