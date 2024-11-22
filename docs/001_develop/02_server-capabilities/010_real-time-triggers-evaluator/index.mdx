@@ -2,14 +2,116 @@
 title: 'Real-Time Triggers (Evaluator)'
 sidebar_label: 'Real-Time Triggers (Evaluator)'
 id: server-real-time-triggers-evaluator
-keywords: [real-time, real time, evalutor, scheduler, trigger]
+keywords: [real-time, real time, evaluator, scheduler, trigger]
 tags:
 - real-time
 - real time
-- evalutor
+- evaluator
 - scheduler
 - trigger
 sidebar_position: 10
 ---
 
-Coming soon...
+## Overview
+
+The Genesis Evaluator is a platform provided microservice used for triggering events.
+
+It can be configured with two types of triggers:
+
+- Time scheduled events (Cron rules)
+- Data driven events (Dynamic rules)
+
+When a trigger happens, an event handler event message is sent, and it's business logic is run. This business logic can be configured in the event as required. For example it could update the data model, it could trigger the generation and publishing of a file, or event trigger another event. Evaluator and event handler configurations can be combined as needed per your business requirements.
+
+Unlike most server capabilities in the Genesis Application Platform, Evaluator doesn't have any configuration file to code. It is entirely database record driven, and those records are contained within two tables:
+
+* `CRON_RULE` : For time based scheduled events
+* `DYNAMIC_RULE` : For data update driven events
+
+## Example Configuration
+
+### Time scheduled events
+
+Example `CRON_RULE` table entry:
+
+| CRON_EXPRESSION | DESCRIPTION | TIME_ZONE | RULE_STATUS | NAME | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 0 45 6 ? * MON-FRI * | Send position report to US desk | America/New_York | ENABLED | US desk position report | admin | POSITION_EVENTHANDLER | EVENT_POSITION_REPORT | (DESK == 'US') |
+
+In this example the `EVENT_POSITION_REPORT` event will be triggered with DETAILS parameter `DESK == 'US'` at 06:45 AM (EST/EDT) each week day.
+
+Given it's name we can expect this event would generate and distribution of a report for a particular desk's positions.
+
+### Data driven events
+
+
+| RULE_TABLE | RULE_EXPRESSION | DESCRIPTION | RULE_STATUS | NAME | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| TRADE_VIEW | NOTIONAL > 1000000 | | ENABLED | US desk position report | admin | POSITION_EVENTHANDLER | EVENT_POSITION_REPORT | (DESK == 'US') |
+
+         |                  |IS_TEMPLATE|MESSAGE_TYPE|NAME|PROCESS_NAME|RESULT_EXPRESSION|||||||||||||||
+|--
+|Assign large trades to |000000000000001DRLO1|false|EVENT_TRADE_WARNING||TRADE_ID = TRADE_ID||||||||||||||||||
+
+
+|ID                  |NAME            |DESCRIPTION                                            |USER_NAME|RULE_TABLE|RULE_STATUS|RULE_EXPRESSION     |PROCESS_NAME|MESSAGE_TYPE             |RESULT_EXPRESSION    ||||||||||||||||||||||||||
+|000000000000001DRLO1|Warn large trade|Trigger warning event on notional traded over 1,000,000|admin    |TRADE_VIEW|ENABLED    |(NOTIONAL > 1000000)|            |EVENT_LARGE_TRADE_WARNING|(TRADE_ID = TRADE_ID)|||||||||||||||||||||||
+The Genesis Evaluators `DYNAMIC_RULE` data driven events are used to power the [notifications and alert component]() 
+
+TODO fijnish exaple, question around context avaiable in result expresion
+
+## Configuration Options
+
+For this section we'll given an overview of the two tabls and the expected values in their records.
+
+### `CRON_RULE`
+
+
+### `DYNAMIC_RULE`
+
+| Field Name | Description | Example Value | Mandatory |
+| --- | --- |
+| ID | ID for the rule. Auto-generated where left unspecified on insert | 000000000000001DRLO1 | true |
+| NAME | Name of the rule | Large trade | true |
+| DESCRIPTION | Description of the rule | A large trade has been received | false |
+| USER_NAME | The username that will be sent on the triggered event. User must have permission to the event for it to be successfully triggered. | admin | false |
+| RULE_TABLE | The [`table`](/develop/server-capabilities/data-model/#tables) or [`view`](/develop/server-capabilities/data-model/#views) the rule will listen to for updates | `TRADE_VIEW` | true |
+| RULE_STATUS | The status of the rule. If anything other than `ENABLED` the rule will not listen/trigger. | `ENABLED` | true |
+| RULE_EXPRESSION | Boolean expression referenced upon the configured RULE_TABLE receiving an update. The expression can reference any of the fields on the updated table/view.  | ((NOTIONAL > 1000000)) | false |
+| PROCESS_NAME | The name of the process to send the resulting event. As of v8 this is optional and service discovery will be used to find the process to send the event. It is recommended to leave blank to work in all environments including those running compact processes, or for consul environments. | POSITION_EVENT_HANDLER | false |
+| MESSAGE_TYPE | The name of the event the rule should send when triggered | EVENT_LARGE_TRADE_WARNING  | true |
+| RESULT_EXPRESSION | The details to send on the event message.</br>The syntax is that event details should be in brackets and separate | (TRADE_ID = TRADE_ID) && () | false |
+| TABLE_OPERATION | The table operations to trigger the rule on. Valid operations are `INSERT`, `MODIFY` and `DELETE`. Where more than one should trigger the rule they should be pipe delimited  Where left blank only `INSERT` table operations will trigger the rule. |  | true |
+
+
+      
+      
+        
+        IS_TEMPLATE
+        RULE_EXECUTION_STRATEGY
+        RULE_TYPE
+
+
+
+
+TODO
+
+TODO how do we say about managing the rules
+
+This section should be a complete list of all the configuration options for the component.  This should be organized similar to typical API documentation with each feature (of the DSL for example) that allows the component to be configured with a detailed description of what each is responsible for.
+
+## APIs Exposed
+
+TODO
+
+For server components, we should provide details of the APIs exposed by this component.  It would be acceptable for this to be provided in the form of Open API docs, however it is important to have a plain text description of each of the APIs.
+
+## Runtime configuration
+
+The Evaluator process is not enabled by default. [Override the `genesis-processes.xml` file in your application](/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files) and set `<start>` to have a value of true. During your next build / `genesisInstall` the process will show up in your list of processes.
+
+:::important
+
+Evaluator should be left set to `<primaryOnly>true</primaryOnly>`; otherwise if deployed into a multi-node environment events will be triggered multiple times. 
+
+:::
