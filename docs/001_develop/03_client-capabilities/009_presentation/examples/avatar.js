@@ -15,7 +15,7 @@ export default function AvatarDemo({ children, color }) {
 	return (
 		<CodeSection>
 			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
-				<div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', flexDirection: 'column', }}>
+				<div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', width: '50x', flexDirection: 'column', }}>
 					<rapid-avatar shape="circle" fill="green" color="black">JD</rapid-avatar>
 				</div>
 			</div>
