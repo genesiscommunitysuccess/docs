@@ -281,30 +281,10 @@ export type DropdownMenuItem = {
 
 ### Properties
 
-You should only be reading these properties via the code, rather than setting them on the template.
-
-|Property|Type|Description|
-|--|--|--|
-|initialLayoutComplete|`boolean`|Indicates that an initial positioning pass on layout has completed|
-|verticalPosition|`"start" \| "insetStart" \| "insetEnd" \| "end" \| "center"`|Indicates the current vertical position of the region. Depending on the axis start = left/top, end = right/bottom|
-|horizontalPosition|`"start" \| "insetStart" \| "insetEnd" \| "end" \| "center"`|Indicates the current horizontal position of the region. Depending on the axis start = left/top, end = right/bottom|
-
-### Slots
-
-|Slot|Description|
-|---|---|
-|Default|This elements which are contained in the anchored region.|
-
-### Parts
-
-This component doesn't have any css parts. Style the content in the default slot directly.
-
-### Events fired
-
 <table>
     <thead>
         <tr>
-            <th>Event</th>
+            <th>Property</th>
             <th>Type</th>
             <th>Description</th>
             <th>Example</th>
@@ -312,25 +292,13 @@ This component doesn't have any css parts. Style the content in the default slot
     </thead>
     <tbody>
         <tr>
-            <td>loaded</td>
-            <td><code>this</code></td>
-            <td>Fires when the region is loaded and visible</td>
+            <td>items</td>
+            <td><code>DropdownMenuItem[]</code></td>
+            <td>Configure the items to be in the dropdown menu.</td>
 <td>
 
 ```typescript
-<rapid-anchored-region @loaded=${(x,ctx) => x.handleLoaded(ctx.event)}>
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>positionchange</td>
-            <td><code>this</code></td>
-            <td>Fires when the position has changed</td>
-<td>
-
-```typescript
-<rapid-anchored-region @positionchange=${(x,ctx) => x.handlePositionChange(ctx.event)}>
+<rapid-dropdown-menu :items=${x => x.menuItems}>
 ```
 
 </td>
@@ -338,9 +306,23 @@ This component doesn't have any css parts. Style the content in the default slot
     </tbody>
 </table>
 
-:::tip
-Event type `this` means the event detail is a reference to the element itself.
-:::
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|The text which appears on the root dropdown menu button.|
+
+### Parts
+
+|Part|Description|
+|---|---|
+|`actions-container`|The main container element which wraps up the button and the dropdown menu.|
+|`actions-opener`|The button which opens the dropdown.|
+|`actions-menu`|The dropdown menu.|
+
+### Events fired
+
+This component doesn't fire any events.
 
 ### Events listened to
 
