@@ -1,5 +1,5 @@
 import { CodeSection } from '../../documentationBase';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 
 export default function FiltersDemo({ children, color }) {
