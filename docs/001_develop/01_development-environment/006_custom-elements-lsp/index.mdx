@@ -12,47 +12,20 @@ sidebar_position: 6
 
 The Custom Elements LSP plugin enables you to use your LSP-enabled editor with IntelliSense handling for web-component custom elements. This gives you warnings and errors, autocompletion, diagnostics, and jump-to definition as you work on your Genesis project.
 
-## Installing the base configuration in VSCode
+For example, attribute completion:
+
+![Attribute completion](/img/lsp-plugin/base-attr-completion.gif)
+
+and completion of a custom element:
+
+![Completion of a custom element](/img/lsp-plugin/base-ce-completion.gif)
+
+## Installing in VSCode
+If you created your project using genx or Genesis Create, your dependencies and the initial configuration are done for you automatically. If you created your project from scratch, you must do this as a [manual installation](#manual-installation).
+
 To start, you need a Genesis project and a local npm project in a `lib` directory.
 
-1. Add the dependencies
-In your project's `src` folder, save the custom elements LSP and the Genesis plugin as dev dependencies.
-
-:::
-npm i --save-dev @genesiscommunitysuccess/custom-elements-lsp @genesiscommunitysuccess/cep/fast-plugin
-:::
-
-2. Configure your `tsconfig.json` file
-
-	- Open VSCode and navigate to the `tsconfig.json` file.
-	- Copy the `plugins` block shown below.
-
-```
-{
-  "compilerOptions": {
-    "plugins": [
-      {
-        "name": "@genesiscommunitysuccess/custom-elements-lsp",
-        "srcRouteFromTSServer": "../../..",
-        "designSystemPrefix": "example",
-        "parser": {
-          "fastEnable": true,
-          "timeout": 2000,
-          "dependencies": [
-            "node_modules/example-lib/**/custom-elements.json",
-            "!**/@custom-elements-manifest/**/*"
-          ]
-        },
-        "plugins": ["@genesiscommunitysuccess/cep-fast-plugin"]
-      }
-    ]
-  }
-}
-```
-
-	- Edit the `node modules` so it points to the local file that you installed? 
-
-3. Configure your VSCode to use your local typescript install (by default it uses the version of typescript it is bundled with. **You do not need to do this if you are using a different IDE.**
+1. Configure your VSCode to use your local typescript install (by default it uses the version of typescript it is bundled with). **You do not need to do this if you are using a different IDE.**
 
 	- Create a new directory called `vscode`. 
 	- In this directory, create a new file called `settings.json` and paste in the block below:
@@ -64,9 +37,9 @@ npm i --save-dev @genesiscommunitysuccess/custom-elements-lsp @genesiscommunitys
 ```
 	- To pick up this configuration. Close and restart VSCode. You must run it from `.vscode` directory that you have just created.
 
-4.	Check that the plugin is working.
+2.	Check that the plugin is working.
 
-	- Open a typeScript file and call it `root.ts`.
+	- Open any typeScript file.
 	- Open the command palette: SHIFT+CTRL+P (or SHIFT+COMMAND+P on a Mac).
 	- Click in the top bar of VSCode and select `TypeScript Version`. 
 
@@ -79,4 +52,93 @@ npm i --save-dev @genesiscommunitysuccess/custom-elements-lsp @genesiscommunitys
 
 
 From now on, when you make any changes to the file, you can see all the features of the plugin: errors, warnings and completions on the components that are local to the project.
+
+## Installing in IntelliJ
+If you created your project using genx or Genesis Create, your dependencies and the initial configuration are done for you automatically. If you created your project from scratch, you must do this as a [manual installation](#manual-installation).
+
+To start, you need a Genesis project and a local npm project in a `lib` directory.
+
+1. Launch the IDE with the project at the root of the monorepo.
+
+2. Go to `Settings -> Preferences` 
+
+3. Navigate to the `Typescript` settings in the `Languages & Frameworks` settings. 
+
+    - Check that the `TypeScript` option is set to the `node_modules/typescript` of your local project (as shown below). If it is not set correctly, change it. 
+    - Enable the `TypeScript Language Service` settings, as shown below.
+
+   ![IntelliJ typescript settings](/img/lsp-plugin/intellij-typescript-settings.png)
+
+## Manual installation
+If your project was not created using either Genesis Create or Genx, there are two extra steps you need to make before you configure your IDE.
+
+To start, you need your Genesis project open in your IDE and a local npm project in a `lib` directory.
+
+1. Add the dependencies
+In your project's `src` folder, save the custom elements LSP and the Genesis plugin as dev dependencies.
+
+```
+npm i --save-dev @genesiscommunitysuccess/custom-elements-lsp @genesiscommunitysuccess/cep/fast-plugin
+```
+
+2. Configure your `tsconfig.json` file
+
+	- Open VSCode and navigate to the `tsconfig.json` file.
+	- Copy the `plugins` block shown below.
+
+```
+{
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "@genesiscommunitysuccess/custom-elements-lsp",
+        "srcRouteFromTSServer": "configure this to set the relative path between your project route and your `tsserver.js`",
+        "designSystemPrefix": "configure this to handle a library of components with a prefix",
+        "parser": {
+          "timeout": 2000,
+          "src": "configure this to define the source code to parse",
+          "dependencies": [
+            "configure these globs to find manifest files from your dependencies",
+            "and use the ! pattern to ignore manifests"
+          ]
+        },
+        "plugins": ["set plugins here!"]
+      }
+    ]
+  }
+}
+```
+
+	- Edit the codeblock above to match your requirements.
+
+    The four main options in the codeblock are: 
+ 
+| Option                 | Description                                                                                                  |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `name`                 | **Mandatory**. Set this as `@genesiscommunitysuccess/custom-elements-lsp`                                    |
+| `srcRootFromTSServer`  | **Optional**.  Set the relative path from the `tsserver.js` executable in your node modules to your directory with the `package.json` where the project web root is located. This is likely to be `node_modules/typescript/lib/tsserver.js`. Default is `"../../.."`.  See the note below on . |
+| `designSystemPrefix`   | **Optional**.  Used to work with `%%prefix%%` to handle components registered as part of a design system. See here. |
+| `plugins`              | **Optional**.  Use this to set any optional plugins you can add. Specified plugins are applied in order.     |
+ 
+:::caution
+If you use a monorepo pattern with workspaces, you must account for potential hoisting of the TypeScript library in the node_modules to a parent directory.contents to project-zips. If npm has hoisted your typescript install, make the account for this when you set `srcRootFromTSServer`.  
+
+ `typescript.tdsk` must point to the lib directory of the project typescript install.
+:::
+
+The parser options are:
+
+| Option                 | Description                                                                                                                    |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `src`                  | **Optional**. Set to the glob of the source files in the current project to analyse live. Default is `("src/**/*.{js,ts})`     |
+| `timeout`              | **Optional**. Time in milliseconds to debounce calls between running the analyser on the source files. The lower the time, the more responsive the LSP will be to changes in the source code - but the more resources it uses. Default is `2000`.|
+| `dependencies`         | **Optional**. An array of strings of globs that find `custom-elements.json` from library dependencies to use with the LSP. Libraries will ship production code that the analyser will not be able to parse, so the libraries need to ship the manifest generated from the analyser. An example default you could use to load all files would be `["node_modules/**/custom-elements.json","!**/@custom-elements-manifest/**/*"]` which finds all the manifests in your dependencies, but ignores the test manifests from the analyser dependency itself. |
+| `fastEnable`           | **Optional**.  Enables Microsoft FAST parsing of local components. You need to enable the plugin too for full functionality.   |
+ 
+:::info
+The `parser` options control the analysis of the source code to understand semantics, such as whether a custom element has a property or not. 
+
+This does not control how the LSP works with the html in the templates to understand whether there are diagnostic issues, or to aid with completion suggestions.
+:::
+
 
