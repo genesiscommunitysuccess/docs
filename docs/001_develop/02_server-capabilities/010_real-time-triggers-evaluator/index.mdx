@@ -12,6 +12,9 @@ tags:
 sidebar_position: 10
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Overview
 
 The Genesis Evaluator is a platform provided microservice used for triggering [events](/develop/server-capabilities/core-business-logic-event-handler/).
@@ -56,7 +59,7 @@ The Genesis Evaluator's `DYNAMIC_RULE` data driven events are used to power the 
 
 ## Configuration options
 
-For this section we'll given an overview of the two tabls and the expected values in their records.
+For this section we'll given an overview of the two tables and the expected values in their records.
 
 ### `CRON_RULE`
 
@@ -65,7 +68,7 @@ For this section we'll given an overview of the two tabls and the expected value
 | NAME | Name of the rule. This is a key and so each entry must have a unique value | US desk position report | true |
 | CRON_EXPRESSION | [Quartz Cron Expressions](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html) defining when the rule triggers | `0 45 6 ? * MON-FRI *` | true |
 | DESCRIPTION | Description of the rule | Send position report to US desk | true |
-| TIME_ZONE | | | |
+| TIME_ZONE | The [Time Zone](https://docs.oracle.com/cd/E84527_01/wcs/tag-ref/MISC/TimeZones.html) the schedule cron expression should adhere to. Be careful selecting time zones which don't shift with daylight savings, such as `EST`, which may or may not be desirable. Defaults to system time where left blank | America/New_York  | false |
 | RULE_STATUS | The status of the rule. If anything other than `ENABLED` the rule will not listen/trigger. | `ENABLED` | true |
 | USER_NAME | The username that will be sent on the triggered event. User must have permission to the event for it to be successfully triggered. | admin | false |
 | PROCESS_NAME | The name of the process to send the resulting event. | `POSITION_EVENT_HANDLER` | true |
@@ -96,9 +99,427 @@ Rules are managed via the API, which exposes CRUD operations for maintaining the
       
 Rules are managed via the API, which exposes CRUD operations for maintaining the table. Components such as [notifications and alert component](/develop/business-components/notifications/notifications-introduction/) include a user interface which manages dynamic rule setup and reads application metadata to help users populate table/view selection and expressions.
 
-## APIs Exposed
+## Client API
 
-Rules are managed via the API, which exposes CRUD operations for maintaining the table. The tables in [Configuration Options](#configuration-options) specifies the specification of the event and query fields.
+Rules can be managed via the API. Responses are omitted for brevity, they are standard event handler [acks/nacks](/develop/server-capabilities/core-business-logic-event-handler/#ack)
+
+### `CRON_RULE` API
+ 
+#### `EVENT_CRON_RULE_INSERT`
+
+Insert a new Cron Rule.
+
+All parameters, descriptions and defaults are listed under [`CRON_RULE` configuration options](#cron_rule)
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "USER_NAME": "admin",
+  "SOURCE_REF": "001",
+  "MESSAGE_TYPE": "EVENT_CRON_RULE_INSERT",
+  "DETAILS": {
+    "NAME" : "US desk position report",
+    "CRON_EXPRESSION" : "0 45 6 ? * MON-FRI *",
+    "DESCRIPTION" : "Send position report to US desk",
+    "TIME_ZONE" : "America/New_York",
+    "RULE_STATUS" : "ENABLED",
+    "PROCESS_NAME" : "POSITION_EVENT_HANDLER",
+    "MESSAGE_TYPE" : "EVENT_POSITION_REPORT",
+    "RESULT_EXPRESSION" : "(DESK == 'US')",
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-cron-rule-insert HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 001
+{
+  "DETAILS": {
+    "NAME" : "US desk position report",
+    "CRON_EXPRESSION" : "0 45 6 ? * MON-FRI *",
+    "DESCRIPTION" : "Send position report to US desk",
+    "TIME_ZONE" : "America/New_York",
+    "RULE_STATUS" : "ENABLED",
+    "PROCESS_NAME" : "POSITION_EVENT_HANDLER",
+    "MESSAGE_TYPE" : "EVENT_POSITION_REPORT",
+    "RESULT_EXPRESSION" : "(DESK == 'US')",
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+#### `EVENT_CRON_RULE_AMEND`
+
+Amend an existing rule.
+
+Changing the time to 7am from example above. 
+
+All parameters, descriptions and defaults are listed under [`CRON_RULE` configuration options](#cron_rule)
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "USER_NAME": "admin",
+  "SOURCE_REF": "002",
+  "MESSAGE_TYPE": "EVENT_CRON_RULE_AMEND",
+  "DETAILS": {
+    "NAME" : "US desk position report",
+    "CRON_EXPRESSION" : "0 45 6 ? * MON-FRI *",
+    "DESCRIPTION" : "Send position report to US desk",
+    "TIME_ZONE" : "America/New_York",
+    "RULE_STATUS" : "ENABLED",
+    "PROCESS_NAME" : "POSITION_EVENT_HANDLER",
+    "MESSAGE_TYPE" : "EVENT_POSITION_REPORT",
+    "RESULT_EXPRESSION" : "(DESK == 'US')",
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-cron-rule-amend HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 002
+{
+  "DETAILS": {
+    "NAME" : "US desk position report",
+    "CRON_EXPRESSION" : "0 0 7 ? * MON-FRI *",
+    "NAME" : "US desk position report",
+    "TIME_ZONE" : "America/New_York",
+    "RULE_STATUS" : "ENABLED",
+    "PROCESS_NAME" : "POSITION_EVENT_HANDLER",
+    "MESSAGE_TYPE" : "EVENT_POSITION_REPORT",
+    "RESULT_EXPRESSION" : "(DESK == 'US')",
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+#### `EVENT_CRON_RULE_DELETE`
+
+Delete an existing rule.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "USER_NAME": "admin",
+  "SOURCE_REF": "003",
+  "MESSAGE_TYPE": "EVENT_CRON_RULE_DELETE",
+  "DETAILS": {
+    "NAME" : "US desk position report",
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-cron-rule-delete HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 003
+{
+  "DETAILS": {
+    "NAME" : "US desk position report",
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+#### `EVENT_CRON_RULE_ENABLE`
+
+Enable an existing rule.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "USER_NAME": "admin",
+  "SOURCE_REF": "004",
+  "MESSAGE_TYPE": "EVENT_CRON_RULE_ENABLE",
+  "DETAILS": {
+    "NAME" : "US desk position report",
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-cron-rule-amend HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 004
+{
+  "DETAILS": {
+    "NAME" : "US desk position report",
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+#### `EVENT_CRON_RULE_DISABLE`
+
+Disable an existing rule.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "USER_NAME": "admin",
+  "SOURCE_REF": "005",
+  "MESSAGE_TYPE": "EVENT_CRON_RULE_DISABLE",
+  "DETAILS": {
+    "NAME" : "US desk position report",
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-cron-rule-disable HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 005
+{
+  "DETAILS": {
+    "NAME" : "US desk position report",
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+### `DYNAMIC_RULE`
+
+#### `EVENT_DYNAMIC_RULE_INSERT`
+
+Insert a new dynamic rule.
+
+All parameters, descriptions and defaults are listed under [`DYNAMIC_RULE` configuration options](#dynamic_rule)
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "USER_NAME": "admin",
+  "SOURCE_REF": "006",
+  "MESSAGE_TYPE": "EVENT_DYNAMIC_RULE_INSERT",
+  "DETAILS": {
+    "NAME" : "Warn large trade",
+    "DESCRIPTION" : "Trigger warning event on notional traded over 1,000,000",
+    "USER_NAME" : "admin",
+    "RULE_TABLE" : "TRADE_VIEW",
+    "RULE_STATUS" : "ENABLED",
+    "RULE_EXPRESSION" : "(NOTIONAL > 1000000)",
+    "MESSAGE_TYPE" : "EVENT_LARGE_TRADE_WARNING",
+    "RESULT_EXPRESSION" : "(TRADE_ID = TRADE_ID)",
+    "TABLE_OPERATION" : "INSERT",
+    "IS_TEMPLATE" : "true",
+    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD",
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-dynamic-rule-insert HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 006
+{
+  "DETAILS": {
+    "NAME" : "Warn large trade",
+    "DESCRIPTION" : "Trigger warning event on notional traded over 1,000,000",
+    "USER_NAME" : "admin",
+    "RULE_TABLE" : "TRADE_VIEW",
+    "RULE_STATUS" : "ENABLED",
+    "RULE_EXPRESSION" : "(NOTIONAL > 1000000)",
+    "MESSAGE_TYPE" : "EVENT_LARGE_TRADE_WARNING",
+    "RESULT_EXPRESSION" : "(TRADE_ID = TRADE_ID)",
+    "TABLE_OPERATION" : "INSERT",
+    "IS_TEMPLATE" : "true",
+    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD",
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+
+#### `EVENT_DYNAMIC_RULE_AMEND`
+
+Amend an existing rule.
+
+Changing to also trigger on modifications to the record.
+
+All parameters, descriptions and defaults are listed under [`DYNAMIC_RULE` configuration options](#dynamic_rule)
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "USER_NAME": "admin",
+  "SOURCE_REF": "007",
+  "MESSAGE_TYPE": "EVENT_DYNAMIC_RULE_AMEND",
+  "DETAILS": {
+    "ID" : "000000000000001DRLO1",
+    "NAME" : "Warn large trade",
+    "DESCRIPTION" : "Trigger warning event on notional traded over 1,000,000",
+    "USER_NAME" : "admin",
+    "RULE_TABLE" : "TRADE_VIEW",
+    "RULE_STATUS" : "ENABLED",
+    "RULE_EXPRESSION" : "(NOTIONAL > 1000000)",
+    "MESSAGE_TYPE" : "EVENT_LARGE_TRADE_WARNING",
+    "RESULT_EXPRESSION" : "(TRADE_ID = TRADE_ID)",
+    "TABLE_OPERATION" : "INSERT|MODIFY",
+    "IS_TEMPLATE" : "true",
+    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD",
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-dynamic-rule-amend HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 007
+{
+  "DETAILS": {
+    "ID" : "000000000000001DRLO1",
+    "NAME" : "Warn large trade",
+    "DESCRIPTION" : "Trigger warning event on notional traded over 1,000,000",
+    "USER_NAME" : "admin",
+    "RULE_TABLE" : "TRADE_VIEW",
+    "RULE_STATUS" : "ENABLED",
+    "RULE_EXPRESSION" : "(NOTIONAL > 1000000)",
+    "MESSAGE_TYPE" : "EVENT_LARGE_TRADE_WARNING",
+    "RESULT_EXPRESSION" : "(TRADE_ID = TRADE_ID)",
+    "TABLE_OPERATION" : "INSERT|MODIFY",
+    "IS_TEMPLATE" : "true",
+    "RULE_EXECUTION_STRATEGY" : "ONCE_PER_RECORD",
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+
+#### `EVENT_DYNAMIC_RULE_DELETE`
+
+Delete an existing rule.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "USER_NAME": "admin",
+  "SOURCE_REF": "008",
+  "MESSAGE_TYPE": "EVENT_DYNAMIC_RULE_DELETE",
+  "DETAILS": {
+    "ID" : "000000000000001DRLO1",
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-dynamic-rule-delete HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 008
+{
+  "DETAILS": {
+    "ID" : "000000000000001DRLO1",
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+#### `EVENT_DYNAMIC_RULE_ENABLE`
+
+Enable an existing rule.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "USER_NAME": "admin",
+  "SOURCE_REF": "009",
+  "MESSAGE_TYPE": "EVENT_DYNAMIC_RULE_ENABLE",
+  "DETAILS": {
+    "ID" : "000000000000001DRLO1",
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-dynamic-rule-enable HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 009
+{
+  "DETAILS": {
+    "ID" : "000000000000001DRLO1",
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+#### `EVENT_DYNAMIC_RULE_DISABLE`
+
+Disable an existing rule.
+
+<Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
+<TabItem value="websocket">
+```
+{
+  "USER_NAME": "admin",
+  "SOURCE_REF": "010",
+  "MESSAGE_TYPE": "EVENT_DYNAMIC_RULE_DISABLE",
+  "DETAILS": {
+    "ID" : "000000000000001DRLO1",
+  }
+}
+```
+</TabItem>
+<TabItem value="rest">
+```
+POST /event-dynamic-rule-disable HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: RSOo9rm3Y2PAopTKd1aW8E8Wu4Kkg97i
+SOURCE_REF: 010
+{
+  "DETAILS": {
+    "ID" : "000000000000001DRLO1",
+  }
+}
+```
+</TabItem>
+</Tabs>
 
 ## Runtime configuration
 
