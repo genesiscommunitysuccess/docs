@@ -1,0 +1,243 @@
+---
+title: 'Flipper'
+sidebar_label: 'Flipper'
+id: client-interaction-flipper
+keywords: [ interaction, interactive, active, window, overlay, popup]
+tags:
+- interaction
+- interactive
+- active
+- window
+- overlay
+- popup
+sidebar_position: 8
+---
+
+import FlipperDemo from '/examples/ui/client-capabilities/interaction/flipper.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Dialogs are popup menus which take focus and prohibit the user interacting with the content behind.
+
+Use cases:
+* Popup notification
+* Configuration box
+
+## Example
+<FlipperDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-flipper></rapid-flipper>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html<MyElement>`
+        <rapid-flipper @click="${(x) => x.onPreviousClick()}" direction="previous"></rapid-flipper>
+        <rapid-flipper @click="${(x) => x.onNextClick()}" direction="next"></rapid-flipper>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      onPreviousClick() {
+        console.log('previous');
+      }
+
+      onNextClick() {
+        console.log('next');
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-flipper></rapid-flipper>
+    ```
+
+    Usage
+    ```typescript
+    export function MyComponent() {
+      const dialogRef = useRef(null);
+
+      return (
+        <CodeSection>
+          <rapid-flipper onClick={() => console.log('previous')} direction="previous"></rapid-flipper>
+          <rapid-flipper onClick={() => console.log('next')} direction="next"></rapid-flipper>
+        </CodeSection >
+      )
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-flipper></rapid-flipper>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+    @Component({
+      selector: 'my-component',
+      template: `
+        <code-section>
+          <rapid-flipper
+            direction="previous"
+            (click)="onPreviousClick()"
+          ></rapid-flipper>
+          <rapid-flipper
+            direction="next"
+            (click)="onNextClick()"
+          ></rapid-flipper>
+        </code-section>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class MyComponent {
+      onPreviousClick() {
+        console.log('previous');
+      }
+
+      onNextClick() {
+        console.log('next');
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+
+## API
+
+### Attributes
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>type</td>
+      <td><code>'default' | 'error' | 'success'</code></td>
+      <td>The general style of dialog type to show. <code>default</code> type adds no extra styling, <code>error</code> shows a red highlight and <code>success</code> shows a green.</td>
+<td>
+
+```typescript
+<rapid-dialog type="success">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>position</td>
+      <td><code>'center' | 'left' | 'right'</code></td>
+      <td>The position of the dialog. <code>center</code> is the default.</td>
+<td>
+
+```typescript
+<rapid-dialog position="right">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>show-close-icon</td>
+      <td><code>boolean</code></td>
+      <td>Enables the close icon in the top right corner of the dialog. <code>true</code> is the default.</td>
+<td>
+
+```typescript
+<rapid-dialog show-close-icon="false">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>onShowCallback</td>
+            <td><code>() => void</code></td>
+            <td>Function that runs before dialog is opened.</td>
+<td>
+
+```typescript
+<rapid-dialog :onShowCallback="${(x) => () => x.beforeDialogShown()}">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>onCloseCallback</td>
+            <td><code>() => void</code></td>
+            <td>Function that is called after the dialog is closed.</td>
+<td>
+
+```typescript
+<rapid-dialog :onCloseCallback="${(x) => () => x.afterDialogHide()}">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Methods
+
+|Method|Description|Example|
+|--|--|--|
+|show|Show the dialog|`dialogRef.show()`|
+|close|Hides the dialog|`dialogRef.close()`|
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|All the content which you want to display on the dialog box when shown.|
+|top|Can be used to set a title section for the dialog.|
+|bottom|Can be used to set a footer section for the dialog.|
+
+### Parts
+
+| Part | Description |
+| --- | --- |
+|dialog|the base html `dialog` tag|
+|top|The top part of the dialog which contains the dialog header|
+|bottom|The bottom part of the dialog which contains the dialog footer|
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.
