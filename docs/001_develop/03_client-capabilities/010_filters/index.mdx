@@ -26,10 +26,6 @@ Client-side filters in Genesis allow users to filter and process data locally wi
 
 Client-side filters generally take primitive input parameters, and return `true` or `false` based on these values. They can be combined using the ClientFilterRunner<!-- TODO:(./docs/api/foundation-filters.runner.md)--> utility provided in the `foundation-filters` package to create layered filtering conditions for complex data scenarios. When a filter is used without all the input parameters needed, Genesis logs a warning and returns `true` by convention so that the chain can continue.
 
-:::important
-It's important to highlight that filters are purposefully decoupled from any `effect`, like pairing with a `when()` directive or custom-effect logic. This flexibility allows these filters to be reused for numerous purposes.
-:::
-
 ## Installation
 
 To enable this module in your application, follow the steps below.
@@ -65,21 +61,13 @@ Each filter is provided in two flavours:
 These flavours are explained in detail below with help of code examples
 <FiltersDemo />
 
-<Tabs defaultValue="function" values={[{ label: 'Function', value: 'function', }, { label: 'Dependency Injection (DI)', value: 'DI', }]}>
+<Tabs defaultValue="DI" values={[ { label: 'Dependency Injection (DI)', value: 'DI', },{ label: 'Function', value: 'function', }]}>
   <TabItem value="function">
       ```typescript
       import { timeWindowFilter } from '@genesislcap/foundation-filters';
 
       @customElement({
         name: 'my-element',
-        styles: css`
-          .container {
-            display: flex;
-            flex-direction: column;
-            gap: calc(var(--design-unit) * 3px);
-            padding: calc(var(--design-unit) * 4px);
-          }
-        `,
         template: html`
           <div class="container">
             <rapid-text-field type="datetime-local" value=${sync((x) => x.startDate)}>
@@ -114,14 +102,6 @@ These flavours are explained in detail below with help of code examples
 
     @customElement({
       name: 'my-element',
-      styles: css`
-        .container {
-          display: flex;
-          flex-direction: column;
-          gap: calc(var(--design-unit) * 3px);
-          padding: calc(var(--design-unit) * 4px);
-        }
-      `,
       template: html`
         <div class="container">
           <rapid-text-field type="datetime-local" value=${sync((x) => x.startDate)}>
@@ -195,7 +175,7 @@ The nodeEnv filter in Genesis’s foundation filters checks the current applic
 
 Lets look at the usage examples as function and when used with DI:
 
-<Tabs defaultValue="function" values={[{ label: 'Function', value: 'function', }, { label: 'Dependency Injection (DI)', value: 'DI', }]}>
+<Tabs defaultValue="DI" values={[ { label: 'Dependency Injection (DI)', value: 'DI', },{ label: 'Function', value: 'function', }]}>
   <TabItem value="function">
     ```typescript
     import { nodeEnvFilter } from '@genesislcap/foundation-filters';
@@ -229,7 +209,7 @@ The percentage filter in Genesis foundation filters checks if a randomly generat
 
 The percentage filter allows you to display certain features or messages to a set percentage of users. For example, if you set the filter to 20%, each time it runs, it has a 20% chance of passing, meaning only about 20% of users will see the feature or content. This is useful for controlled feature rollouts or A/B testing without requiring complex setups.
 
-<Tabs defaultValue="function" values={[{ label: 'Function', value: 'function', }, { label: 'Dependency Injection (DI)', value: 'DI', }]}>
+<Tabs defaultValue="DI" values={[ { label: 'Dependency Injection (DI)', value: 'DI', },{ label: 'Function', value: 'function', }]}>
   <TabItem value="function">
     ```ts
     import { percentageFilter } from '@genesislcap/foundation-filters';
@@ -259,7 +239,7 @@ This filter is used to check whether the current date and time fall between the 
 
 Lets look at the usage examples as function and with DI:
 
-<Tabs defaultValue="function" values={[{ label: 'Function', value: 'function', }, { label: 'Dependency Injection (DI)', value: 'DI', }]}>
+<Tabs defaultValue="DI" values={[ { label: 'Dependency Injection (DI)', value: 'DI', },{ label: 'Function', value: 'function', }]}>
   <TabItem value="function">
     ```ts
     import { timeWindowFilter } from '@genesislcap/foundation-filters';
@@ -304,7 +284,7 @@ This filter helps in targeting specific URLs based on these parameters, which ca
 For example, you could use the filter to only allow access to certain content when the URL matches a secure HTTPS connection on specific hosts, like `https://test.genesislab.global`.
 
 Lets look at the usage examples as function and with DI:
-<Tabs defaultValue="function" values={[{ label: 'Function', value: 'function', }, { label: 'Dependency Injection (DI)', value: 'DI', }]}>
+<Tabs defaultValue="DI" values={[ { label: 'Dependency Injection (DI)', value: 'DI', },{ label: 'Function', value: 'function', }]}>
   <TabItem value="function">
     ```ts
     import { urlTargetingFilter } from '@genesislcap/foundation-filters';
@@ -339,7 +319,7 @@ Lets look at the usage examples as function and with DI:
 The `userAgent` filters content on the basis of user’s browser, device, operating system (OS), or specific user agent string parameters. It allows user to specify which browsers(e.g. Chrome, Firefox), devices (e.g., mobile or desktop), or OS (e.g., IOS, Windows) have access to certain features. You can use this filter for providing tailored experience on the basis of user's environment for instance customizing content for a specic browser or device.
 
 Lets look at the usage examples as function and with DI:
-<Tabs defaultValue="function" values={[{ label: 'Function', value: 'function', }, { label: 'Dependency Injection (DI)', value: 'DI', }]}>
+<Tabs defaultValue="DI" values={[ { label: 'Dependency Injection (DI)', value: 'DI', },{ label: 'Function', value: 'function', }]}>
   <TabItem value="function">
     ```ts
     import { userAgentFilter } from '@genesislcap/foundation-filters';
@@ -381,7 +361,7 @@ This filter is used to filter content on the basis of user-specific attributes. 
 
 It will return true when the current user matches on ANY of the parameters mentioned above. If you wish to match on multipleparameters, consider chaining an array of userTargeting filters together using ClientFilterRunner<!--TODO:(./docs/api/foundation-filters.clientfilterrunner.md) --> .
 
-<Tabs defaultValue="function" values={[{ label: 'Function', value: 'function', }, { label: 'Dependency Injection (DI)', value: 'DI', }]}>
+<Tabs defaultValue="DI" values={[ { label: 'Dependency Injection (DI)', value: 'DI', },{ label: 'Function', value: 'function', }]}>
   <TabItem value="function">
     ```ts
     import { userTargetingFilter } from '@genesislcap/foundation-filters';
