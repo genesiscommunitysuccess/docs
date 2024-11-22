@@ -65,7 +65,7 @@
   --ifm-pre-background: #2b2b2b;
 
   --ifm-container-width-xl: 100%;
-  
+
   --doc-sidebar-width: 325px !important;
 
   --toc-sidebar-width: 325px;
@@ -440,14 +440,14 @@ nav.menu {
   article {
     max-width: 100rem;
   }
-  
+
   .container .row {
     .col:first-child {
       @media (min-width: 997px) {
         max-width: calc(100% - var(--toc-sidebar-width)) !important;
       }
     }
-  
+
     .col:first-child + .col--3 {
       @media (min-width: 997px) {
         --ifm-col-width: var(--toc-sidebar-width);
@@ -572,8 +572,10 @@ img[alt^="masthead-cut"] {
   );
 }
 
-alpha-avatar {
-  --avatar-fill-accent-primary: #0eafe2;
+rapid-avatar {
+  --avatar-fill-blue: #0eafe2;
+  --avatar-fill-green: green;
+  --avatar-color-black: black;
 }
 
 alpha-horizontal-scroll {
@@ -822,7 +824,7 @@ a.table-of-contents__link--active {
 /** Card **/
 .card .MuiCard-root {
  margin: 0;
-} 
+}
 
 .card h4 {
   position: relative;
