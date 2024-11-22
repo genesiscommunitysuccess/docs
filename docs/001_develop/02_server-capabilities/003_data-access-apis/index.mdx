@@ -1321,6 +1321,13 @@ For example, on the database, `get` returns a `Maybe`, with the following pos
 
 In the RxJava API, a `Flowable` represents an asynchronous operation that has an undefined number of outputs.
 
+
+### Frequently asked questions
+
+###### Write operations not updating in database
+
+When using the [RxJava](../../../database/types-of-api/rxjava/) api, it is paramount that you end the call chain with a `subscribe...` call. The underlying database operation will not commence until it is subscribed to.
+
 ## Type Unsafe DB API
 
 The following APIs for DbEntity and DbRecord are used rarely, when needing to operate outside the type-safety entities
@@ -1335,7 +1342,6 @@ The `DbEntity` methods are described below:
 | toGenesisSetFormatted | `fun toGenesisSetFormatted(entity: E, configs: Collection<ColumnConfig>? = null): GenesisSet` | Converts a view to [GenesisSet](../../../server/network-messages/genesisSet/) and applies any formatter/aliases assigned to the fields |
 | toGenesisSet | `fun toGenesisSet(entity: E, columns: Collection<String>): GenesisSet` | Converts a view to [GenesisSet](../../../server/network-messages/genesisSet/). This is the plain representation of view fields |
 | get | `operator fun get(field: String): Any?` | Gets the provided field value |
-
 
 ### DbRecord
 :::warning
