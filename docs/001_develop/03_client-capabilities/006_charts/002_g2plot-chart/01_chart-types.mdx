@@ -1,0 +1,936 @@
+---
+title: 'G2Plot chart types'
+sidebar_label: 'Chart types'
+id: g2plot-chart-types
+keywords: [genesis, foundation, ui, chart, g2plot-chart, g2plot]
+tags:
+  - connected
+  - datasource
+  - chart
+  - g2plot-chart
+  - g2plot
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import SimpleChartExample from './examples/simple_chart_example';
+import AreaChartExample from './examples/area_chart_example';
+import ColumnChartExample from './examples/column_chart_example';
+import DonutChartExample from './examples/donut_chart_example';
+import DualaxesChartExample from './examples/dualaxes_chart_example';
+import LineChartExample from './examples/line_chart_example';
+import MixChartExample from './examples/mix_chart_example';
+import PieChartExample from './examples/pie_chart_example';
+import RoseChartExample from './examples/rose_chart_example';
+import StockChartExample from './examples/stock_chart_example';
+import ScatterChartExample from './examples/scatter_chart_example';
+
+
+G2Plot charts enable you to select from a variety of chart types to suit your needs. The `Type` parameter specifies the type of chart to be rendered:
+
+Available [Chart types](./docs/api/g2plot-chart.charttypes.md) include:
+
+- **Line** - for continuous data trends
+- **Area** - ideal for visualizing cumulative values
+- **Column** and **Bar** - for category comparisons
+- **Pie** and **Donut** - representing parts of a whole
+- **Dualaxes** - for layered, multi-metric displays
+- **Rose** - useful for categorical distribution
+- **Scatter** - showing relationships between variables
+- **Stock** - tracking stock performance over time
+- **Mix** - combining multiple chart types for complex data
+
+By choosing an appropriate chart type, you can effectively highlight patterns, comparisons, or distributions, enabling viewers to gain clear insights from the data.
+
+## Examples
+
+### Line
+
+Shows trends over time or continuous data, ideal for tracking changes.
+
+<Tabs defaultValue="declaration" values={[{ label: 'Declaration', value: 'declaration', }, { label: 'Configuration', value: 'config', }, { label: 'Sample data', value: 'data', }]}>
+
+<TabItem value="declaration">
+```html
+<rapid-g2plot-chart 
+  type="line"
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
+></rapid-g2plot-chart>
+```
+
+</TabItem>
+<TabItem value="config">
+```typescript
+const chartConfiguration = {
+  width: 700,
+  padding: "auto",
+  xField: "groupBy",
+  yField: "value",
+  xAxis: {
+    tickCount: 5,
+  },
+};
+```
+</TabItem>
+<TabItem value="data">
+```typescript
+const chartData = [
+  {
+    groupBy: "2010-01",
+    value: 1998,
+  },
+  {
+    groupBy: "2010-02",
+    value: 1850,
+  },
+  {
+    groupBy: "2010-03",
+    value: 1720,
+  },
+  {
+    groupBy: "2010-04",
+    value: 1818,
+  },
+  {
+    groupBy: "2010-05",
+    value: 1920,
+  },
+  {
+    groupBy: "2010-06",
+    value: 1802,
+  },
+  {
+    groupBy: "2010-07",
+    value: 1945,
+  },
+  {
+    groupBy: "2010-08",
+    value: 1856,
+  },
+  {
+    type: "2010-09",
+    value: 2107,
+  },
+  {
+    groupBy: "2010-10",
+    value: 2140,
+  },
+  {
+    groupBy: "2010-11",
+    value: 2311,
+  },
+  {
+    groupBy: "2010-12",
+    value: 1972,
+  },
+  {
+    groupBy: "2011-01",
+    value: 1760,
+  },
+  {
+    groupBy: "2011-02",
+    value: 1824,
+  },
+  {
+    groupBy: "2011-03",
+    value: 1801,
+  },
+];
+```
+</TabItem>
+</Tabs>
+
+<LineChartExample/>
+
+### Area
+
+Highlights cumulative data over time, useful for displaying totals or progress.
+
+<Tabs defaultValue="declaration" values={[{ label: 'Declaration', value: 'declaration', }, { label: 'Configuration', value: 'config', }, { label: 'Sample data', value: 'data', }]}>
+
+<TabItem value="declaration">
+```html
+<rapid-g2plot-chart 
+  type="area"
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
+></rapid-g2plot-chart>
+```
+
+</TabItem>
+<TabItem value="config">
+```typescript
+const chartConfiguration = {
+  xField: "groupBy",
+  yField: "value",
+  xAxis: {
+    range: [0, 1],
+    tickCount: 5,
+  },
+};
+```
+</TabItem>
+<TabItem value="data">
+```typescript
+const chartData = [
+  {
+    groupBy: "2006 Q3",
+    value: 1,
+  },
+  {
+    groupBy: "2006 Q4",
+    value: 1.08,
+  },
+  {
+    groupBy: "2007 Q1",
+    value: 1.17,
+  },
+  {
+    groupBy: "2007 Q2",
+    value: 1.26,
+  },
+  {
+    groupBy: "2007 Q3",
+    value: 1.34,
+  },
+  {
+    groupBy: "2007 Q4",
+    value: 1.41,
+  },
+  {
+    groupBy: "2008 Q1",
+    value: 1.52,
+  },
+  {
+    groupBy: "2008 Q2",
+    value: 1.67,
+  },
+  {
+    groupBy: "2008 Q3",
+    value: 1.84,
+  },
+  {
+    groupBy: "2008 Q4",
+    value: 2.07,
+  },
+  {
+    groupBy: "2009 Q1",
+    value: 2.39,
+  },
+];
+```
+</TabItem>
+</Tabs>
+
+<AreaChartExample/>
+
+### Column
+
+Compares values across categories with vertical bars, making group differences clear.
+
+<Tabs defaultValue="declaration" values={[{ label: 'Declaration', value: 'declaration', }, { label: 'Configuration', value: 'config', }, { label: 'Sample data', value: 'data', }]}>
+
+<TabItem value="declaration">
+```html
+<rapid-g2plot-chart 
+  type="column"
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
+></rapid-g2plot-chart>
+```
+
+</TabItem>
+<TabItem value="config">
+```typescript
+const chartConfiguration = {
+  width: 700,
+  xField: "groupBy",
+  yField: "value",
+  label: {
+    position: "middle",
+    style: {
+      fill: "#FFFFFF",
+      opacity: 0.6,
+    },
+  },
+  xAxis: {
+    label: {
+      autoHide: true,
+      autoRotate: false,
+    },
+  },
+};
+```
+</TabItem>
+<TabItem value="data">
+```typescript
+const chartData = [
+  {
+    groupBy: "Exam 1",
+    value: 38,
+  },
+  {
+    groupBy: "Exam 2",
+    value: 52,
+  },
+  {
+    groupBy: "Exam 3",
+    value: 61,
+  },
+  {
+    groupBy: "Exam 4",
+    value: 145,
+  },
+  {
+    groupBy: "Exam 5",
+    value: 48,
+  },
+  {
+    groupBy: "Exam 6",
+    value: 38,
+  },
+];
+```
+</TabItem>
+</Tabs>
+
+<ColumnChartExample/>
+
+### Bar
+
+Similar to column charts but uses horizontal bars, great for categorical comparisons.
+
+<Tabs defaultValue="declaration" values={[{ label: 'Declaration', value: 'declaration', }, { label: 'Configuration', value: 'config', }, { label: 'Sample data', value: 'data', }]}>
+
+<TabItem value="declaration">
+```html
+<rapid-g2plot-chart 
+  type="bar"
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
+></rapid-g2plot-chart>
+```
+
+</TabItem>
+<TabItem value="config">
+```typescript
+const chartConfiguration = {
+  width: 700,
+  xField: "value",
+  yField: "groupBy",
+  seriesField: "series",
+  legend: {
+    position: "top-left",
+  },
+};
+```
+</TabItem>
+<TabItem value="data">
+```typescript
+const chartData = [
+  { groupBy: "1951", value: 38, series: "3" },
+  { groupBy: "1952", value: 52, series: "5" },
+  { groupBy: "1956", value: 61, series: "1" },
+  { groupBy: "1957", value: 145, series: "2" },
+  { groupBy: "1958", value: 48, series: "4" },
+  { groupBy: "1996", value: 38, series: "6" },
+  { groupBy: "1997", value: 52, series: "7" },
+  { groupBy: "1999", value: 61, series: "8" },
+  { groupBy: "1995", value: 145, series: "9" },
+  { groupBy: "1994", value: 48, series: "10" },
+];
+```
+</TabItem>
+</Tabs>
+
+<SimpleChartExample/>
+
+### Pie
+
+Visualizes parts of a whole, effective for showing percentage distributions.
+
+<Tabs defaultValue="declaration" values={[{ label: 'Declaration', value: 'declaration', }, { label: 'Configuration', value: 'config', }, { label: 'Sample data', value: 'data', }]}>
+
+<TabItem value="declaration">
+```html
+<rapid-g2plot-chart 
+  type="pie"
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
+></rapid-g2plot-chart>
+```
+
+</TabItem>
+<TabItem value="config">
+```typescript
+const chartConfiguration = {
+  width: 600,
+  angleField: 'value',
+  colorField: 'groupBy',
+  radius: 0.75,
+  label: {
+    type: 'spider',
+    labelHeight: 28,
+    content: '{name}\n{percentage}',
+    style: {
+      fill: 'white',
+    },
+  },
+  interactions: [{ type: 'element-selected' }, { type: 'element-active' }],
+  statistic: {
+    title: false,
+    content: {
+      content: '',
+    },
+  },
+};
+```
+</TabItem>
+<TabItem value="data">
+```typescript
+const chartData = [
+  { groupBy: 'Exam 1', value: 27 },
+  { groupBy: 'Exam 2', value: 25 },
+  { groupBy: 'Exam 3', value: 18 },
+  { groupBy: 'Exam 4', value: 15 },
+  { groupBy: 'Exam 5', value: 10 },
+  { groupBy: 'Exam 6', value: 5 },
+];
+```
+</TabItem>
+</Tabs>
+
+<PieChartExample/>
+
+### Donut
+
+Similar to pie charts, with a hollow center, suitable for data composition.
+
+<Tabs defaultValue="declaration" values={[{ label: 'Declaration', value: 'declaration', }, { label: 'Configuration', value: 'config', }, { label: 'Sample data', value: 'data', }]}>
+
+<TabItem value="declaration">
+```html
+<rapid-g2plot-chart 
+  type="donut"
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
+></rapid-g2plot-chart>
+```
+
+</TabItem>
+<TabItem value="config">
+```typescript
+const chartConfiguration = {
+  width: 600,
+  angleField: 'value',
+  colorField: 'groupBy',
+  radius: 0.75,
+  label: {
+    type: 'spider',
+    labelHeight: 28,
+    content: '{name}\n{percentage}',
+    style: {
+      fill: 'white',
+    },
+  },
+  interactions: [{ type: 'element-selected' }, { type: 'element-active' }],
+  statistic: {
+    title: false,
+    content: {
+      content: '',
+    },
+  },
+};
+```
+</TabItem>
+<TabItem value="data">
+```typescript
+const chartData = [
+  { groupBy: 'Exam 1', value: 27 },
+  { groupBy: 'Exam 2', value: 25 },
+  { groupBy: 'Exam 3', value: 18 },
+  { groupBy: 'Exam 4', value: 15 },
+  { groupBy: 'Exam 5', value: 10 },
+  { groupBy: 'Exam 6', value: 5 },
+];
+```
+</TabItem>
+</Tabs>
+
+<DonutChartExample/>
+
+### Dualaxes
+
+Combines two data sets with different scales on a single chart, ideal for multi-metric comparisons
+
+<Tabs defaultValue="declaration" values={[{ label: 'Declaration', value: 'declaration', }, { label: 'Configuration', value: 'config', }, { label: 'Sample data', value: 'data', }]}>
+
+<TabItem value="declaration">
+```html
+<rapid-g2plot-chart 
+  type="dualaxes"
+  :config=${() => chartConfiguration}
+  :data=${() => [chartData, chartData]}
+></rapid-g2plot-chart>
+```
+
+</TabItem>
+<TabItem value="config">
+```typescript
+const chartConfiguration = {
+  width: 700,
+  xField: "type",
+  yField: ["value", "count"],
+  geometryOptions: [
+    {
+      geometry: "line",
+      color: "#5B8FF9",
+    },
+    {
+      geometry: "line",
+      color: "#5AD8A6",
+    },
+  ],
+};
+```
+</TabItem>
+<TabItem value="data">
+```typescript
+const chartData = [
+  { type: "1991", value: 3, count: 10 },
+  { type: "1992", value: 4, count: 4 },
+  { type: "1993", value: 3.5, count: 5 },
+  { type: "1994", value: 5, count: 5 },
+  { type: "1995", value: 4.9, count: 4.9 },
+  { type: "1996", value: 6, count: 35 },
+  { type: "1997", value: 7, count: 7 },
+  { type: "1998", value: 9, count: 1 },
+  { type: "1999", value: 13, count: 20 },
+];
+```
+</TabItem>
+</Tabs>
+
+<DualaxesChartExample/>
+
+### Rose
+
+Displays categorical data with radial segments, highlighting distribution across categories.
+
+<Tabs defaultValue="declaration" values={[{ label: 'Declaration', value: 'declaration', }, { label: 'Configuration', value: 'config', }, { label: 'Sample data', value: 'data', }]}>
+
+<TabItem value="declaration">
+```html
+<rapid-g2plot-chart 
+  type="rose"
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
+></rapid-g2plot-chart>
+```
+
+</TabItem>
+<TabItem value="config">
+```typescript
+const chartConfiguration = {
+  width: 700,
+  xField: 'groupBy',
+  yField: 'value',
+  seriesField: 'series',
+  radius: 0.9,
+  legend: {
+    position: 'bottom',
+  },
+};
+```
+</TabItem>
+<TabItem value="data">
+```typescript
+const chartData = [
+  { groupBy: '1951', value: 38, series: '3' },
+  { groupBy: '1952', value: 52, series: '7' },
+  { groupBy: '1956', value: 61, series: '1' },
+  { groupBy: '1957', value: 145, series: '2' },
+  { groupBy: '1958', value: 48, series: '4' },
+];
+```
+</TabItem>
+</Tabs>
+
+<RoseChartExample/>
+
+### Scatter
+
+Plots individual data points to show relationships or correlations between variables.
+
+<Tabs defaultValue="declaration" values={[{ label: 'Declaration', value: 'declaration', }, { label: 'Configuration', value: 'config', }, { label: 'Sample data', value: 'data', }]}>
+
+<TabItem value="declaration">
+```html
+<rapid-g2plot-chart 
+  type="scatter"
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
+></rapid-g2plot-chart>
+```
+
+</TabItem>
+<TabItem value="config">
+```typescript
+const chartConfiguration = {
+  width: 700,
+  xField: "x",
+  yField: "y",
+  size: 5,
+  pointStyle: {
+    stroke: "#777777",
+    lineWidth: 1,
+    fill: "#5B8FF9",
+  },
+  regressionLine: {
+    type: "quad", // linear, exp, loess, log, poly, pow, quad
+  },
+};
+```
+</TabItem>
+<TabItem value="data">
+```typescript
+const chartData = [
+  { x: 1, y: 4.181 },
+  { x: 2, y: 4.665 },
+  { x: 3, y: 5.296 },
+  { x: 4, y: 5.365 },
+  { x: 5, y: 5.448 },
+  { x: 6, y: 5.744 },
+  { x: 7, y: 5.653 },
+  { x: 8, y: 5.844 },
+  { x: 9, y: 6.362 },
+  { x: 10, y: 6.38 },
+  { x: 11, y: 6.311 },
+  { x: 12, y: 6.457 },
+  { x: 13, y: 6.479 },
+  { x: 14, y: 6.59 },
+  { x: 15, y: 6.74 },
+  { x: 16, y: 6.58 },
+  { x: 17, y: 6.852 },
+  { x: 18, y: 6.531 },
+  { x: 19, y: 6.682 },
+  { x: 20, y: 7.013 },
+  { x: 21, y: 6.82 },
+  { x: 22, y: 6.647 },
+  { x: 23, y: 6.951 },
+  { x: 24, y: 7.121 },
+  { x: 25, y: 7.143 },
+  { x: 26, y: 6.914 },
+  { x: 27, y: 6.941 },
+  { x: 28, y: 7.226 },
+  { x: 29, y: 6.898 },
+  { x: 30, y: 7.392 },
+  { x: 31, y: 6.938 },
+];
+```
+</TabItem>
+</Tabs>
+
+<ScatterChartExample/>
+
+### Stock
+
+Used for financial data, showing stock price changes over time with high, low, and close values.
+
+<Tabs defaultValue="declaration" values={[{ label: 'Declaration', value: 'declaration', }, { label: 'Configuration', value: 'config', }, { label: 'Sample data', value: 'data', }]}>
+
+<TabItem value="declaration">
+```html
+<rapid-g2plot-chart 
+  type="stock"
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
+></rapid-g2plot-chart>
+```
+
+</TabItem>
+<TabItem value="config">
+```typescript
+const chartConfiguration = {
+  width: 700,
+  xField: "trade_date",
+  yField: ["open", "close", "high", "low"],
+};
+```
+</TabItem>
+<TabItem value="data">
+```typescript
+const chartData = [
+  {
+    ts_code: "000001.SH",
+    trade_date: "2020-03-13",
+    close: 2887.4265,
+    open: 2804.2322,
+    high: 2910.8812,
+    low: 2799.9841,
+    vol: 366450436,
+    amount: 393019665.2,
+  },
+  {
+    ts_code: "000001.SH",
+    trade_date: "2020-03-12",
+    close: 2923.4856,
+    open: 2936.0163,
+    high: 2944.4651,
+    low: 2906.2838,
+    vol: 307778457,
+    amount: 328209202.4,
+  },
+  {
+    ts_code: "000001.SH",
+    trade_date: "2020-03-11",
+    close: 2968.5174,
+    open: 3001.7616,
+    high: 3010.0286,
+    low: 2968.5174,
+    vol: 352470970,
+    amount: 378766619,
+  },
+  {
+    ts_code: "000001.SH",
+    trade_date: "2020-03-10",
+    close: 2996.7618,
+    open: 2918.9347,
+    high: 3000.2963,
+    low: 2904.7989,
+    vol: 393296648,
+    amount: 425017184.8,
+  },
+  {
+    ts_code: "000001.SH",
+    trade_date: "2020-03-09",
+    close: 2943.2907,
+    open: 2987.1805,
+    high: 2989.2051,
+    low: 2940.7138,
+    vol: 414560736,
+    amount: 438143854.6,
+  },
+  {
+    ts_code: "000001.SH",
+    trade_date: "2020-03-06",
+    close: 3034.5113,
+    open: 3039.9395,
+    high: 3052.4439,
+    low: 3029.4632,
+    vol: 362061533,
+    amount: 377388542.7,
+  },
+  {
+    ts_code: "000001.SH",
+    trade_date: "2020-03-05",
+    close: 3071.6771,
+    open: 3036.1545,
+    high: 3074.2571,
+    low: 3022.9262,
+    vol: 445425806,
+    amount: 482770471.4,
+  },
+  {
+    ts_code: "000001.SH",
+    trade_date: "2020-03-04",
+    close: 3011.6657,
+    open: 2981.806,
+    high: 3012.0035,
+    low: 2974.3583,
+    vol: 353338278,
+    amount: 389893917.5,
+  },
+  {
+    ts_code: "000001.SH",
+    trade_date: "2020-03-03",
+    close: 2992.8968,
+    open: 3006.8888,
+    high: 3026.842,
+    low: 2976.623,
+    vol: 410108047,
+    amount: 447053681.5,
+  },
+  {
+    ts_code: "000001.SH",
+    trade_date: "2020-03-02",
+    close: 2970.9312,
+    open: 2899.31,
+    high: 2982.5068,
+    low: 2899.31,
+    vol: 367333369,
+    amount: 397244201.2,
+  },
+];
+```
+</TabItem>
+</Tabs>
+
+<StockChartExample/>
+
+### Mix
+
+Combines multiple chart types for complex data representation, allowing deeper insights.
+
+<Tabs defaultValue="declaration" values={[{ label: 'Declaration', value: 'declaration', }, { label: 'Configuration', value: 'config', }, { label: 'Sample data', value: 'data', }]}>
+
+<TabItem value="declaration">
+```html
+<rapid-g2plot-chart 
+  type="mix"
+  :config=${() => chartConfiguration}
+  :data=${() => chartData}
+></rapid-g2plot-chart>
+```
+
+</TabItem>
+<TabItem value="config">
+```typescript
+const chartConfiguration = {
+  appendPadding: 8,
+  tooltip: { shared: true },
+  syncViewPadding: true,
+  plots: [
+    {
+      type: "column",
+      options: {
+        data: [
+          { date: "2015-02", value: 160 },
+          { date: "2015-08", value: 245 },
+          { date: "2016-01", value: 487 },
+          { date: "2017-02", value: 500 },
+          { date: "2018-01", value: 503 },
+          { date: "2018-08", value: 514 },
+        ],
+        xField: "date",
+        yField: "value",
+        yAxis: {
+          type: "log",
+          max: 100000,
+        },
+        meta: {
+          date: {
+            sync: true,
+          },
+          value: {
+            alias: "Example",
+          },
+        },
+        label: {
+          position: "middle",
+        },
+      },
+    },
+    {
+      type: "line",
+      options: {
+        data: averageData,
+        xField: "date",
+        yField: "value",
+        xAxis: false,
+        yAxis: {
+          type: "log",
+          max: 100000,
+        },
+        label: {
+          offsetY: -8,
+        },
+        meta: {
+          value: {
+            alias: "Test",
+          },
+        },
+      },
+    },
+    {
+      type: "line",
+      options: {
+        data: [
+          { date: "2015-02", value: null },
+          { date: "2015-08", value: 0.029 },
+          { date: "2016-01", value: 0.094 },
+          { date: "2017-02", value: 0.148 },
+          { date: "2018-01", value: 0.055 },
+          { date: "2018-08", value: 0.045 },
+        ],
+        xField: "date",
+        yField: "value",
+        xAxis: false,
+        yAxis: {
+          line: null,
+          grid: null,
+          position: "right",
+          max: 0.16,
+          tickCount: 8,
+        },
+        meta: {
+          date: {
+            sync: "date",
+          },
+          value: {
+            alias: "Percent",
+            formatter: (v) => `${(v * 100).toFixed(1)}%`,
+          },
+        },
+        smooth: true,
+        label: {
+          callback: (value) => {
+            return {
+              offsetY:
+                value === offSetValues.value1
+                  ? offSetValues.value2
+                  : value === offSetValues.value3
+                  ? 0
+                  : offSetValues.value4,
+              style: {
+                fill: "#1AAF8B",
+                fontWeight: 700,
+                stroke: "#fff",
+                lineWidth: 1,
+              },
+            };
+          },
+        },
+      },
+    },
+  ],
+};
+```
+</TabItem>
+<TabItem value="data">
+```typescript
+const averageData = [
+  { date: "2015-02", value: 21168 },
+  { date: "2015-08", value: 21781 },
+  { date: "2016-01", value: 23818 },
+  { date: "2017-02", value: 25316 },
+  { date: "2018-01", value: 26698 },
+  { date: "2018-08", value: 27890 },
+];
+
+const offSetValues = {
+  value1: 0.148,
+  value2: 36,
+  value3: 0.055,
+  value4: 20,
+};
+```
+</TabItem>
+</Tabs>
+
+<MixChartExample/>
+
+##
+
+:::info
+After you have looked at the basics here, you can find more details in our [API Docs](./docs/api/index.md)
+:::
+
+## License
+
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+
+Genesis Platform

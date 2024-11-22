@@ -1,0 +1,291 @@
+---
+title: 'Slider'
+sidebar_label: 'Slider'
+id: client-interaction-slider
+keywords: [interaction, interactive, input, slider, form, data]
+tags:
+- interaction
+- interactive
+- input
+- slider
+- form
+- data
+sidebar_position: 8
+---
+
+import SliderDemo from '../../../../../examples/ui/client-capabilities/interaction/slider.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Slider
+
+Use cases:
+* Interact with data visualization
+* Input for numeric values
+* Dynamic filters
+* Have a visually labelled scale for the user to choose a value from
+
+## Example
+
+<SliderDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-slider>
+      <rapid-slider-label position="0"> Low </rapid-slider-label>
+      <rapid-slider-label position="50"> Mid </rapid-slider-label>
+      <rapid-slider-label position="100"> High </rapid-slider-label>
+    </rapid-slider>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+            <rapid-slider @change="${(x) => x.handleChange()}"
+                          value="${sync((x) => x.sliderValue, 'number')}">
+              <rapid-slider-label position="0"> Low </rapid-slider-label>
+              <rapid-slider-label position="50"> Mid </rapid-slider-label>
+              <rapid-slider-label position="100"> High </rapid-slider-label>
+            </rapid-slider>
+          `,
+    })
+    export class MyElement extends GenesisElement {
+      @observable sliderValue: number;
+      handleChange() {
+        console.log(this.sliderValue);
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-slider>
+      <rapid-slider-label position="0"> Low </rapid-slider-label>
+      <rapid-slider-label position="50"> Mid </rapid-slider-label>
+      <rapid-slider-label position="100"> High </rapid-slider-label>
+    </rapid-slider>
+    ```
+
+    Usage
+    ```typescript
+    export function MyComponent() {
+      const handleChange = (event) => {
+        console.log({ event.target.value })
+      };
+      return (
+        <rapid-slider onChange={handleChange}>
+          <rapid-slider-label position="0"> Low </rapid-slider-label>
+          <rapid-slider-label position="50"> Mid </rapid-slider-label>
+          <rapid-slider-label position="100"> High </rapid-slider-label>
+        </rapid-slider>
+      );
+    }
+  ```
+</TabItem>
+<TabItem value="angular">
+
+  Declaration
+  ```html
+  <rapid-slider>
+    <rapid-slider-label position="0"> Low </rapid-slider-label>
+    <rapid-slider-label position="50"> Mid </rapid-slider-label>
+    <rapid-slider-label position="100"> High </rapid-slider-label>
+  </rapid-slider>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  import { FormsModule } from '@angular/forms';
+  @Component({
+    selector: 'my-root',
+    template: `
+              <rapid-slider (change)="handleChange($event)">
+                <rapid-slider-label position="0"> Low </rapid-slider-label>
+                <rapid-slider-label position="50"> Mid </rapid-slider-label>
+                <rapid-slider-label position="100"> High </rapid-slider-label>
+              </rapid-slider>
+              `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule],
+  })
+  export class AppComponent {
+    handleChange(event: Event) {
+      const target = event.target as HTMLInputElement;
+      console.log(target.value);
+    }
+  }
+  ```
+</TabItem>
+</Tabs>
+
+Use of the `<rapid-slider-label>` is optional.
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax.
+
+### Attributes
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>readonly</td>
+      <td><code>boolean</code></td>
+      <td>The slider is for display only, and cannot be changed by the user.</td>
+<td>
+
+```typescript
+<rapid-slider readonly>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Similar to `readonly`, but component is also greyed out.</td>
+<td>
+
+```typescript
+<rapid-slider disabled>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>form</td>
+      <td><code>string</code></td>
+      <td>Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form.</td>
+<td>
+
+```typescript
+<rapid-slider form="myForm">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>max</td>
+      <td><code>number</code></td>
+      <td>Defines maximum number of the slider.</td>
+<td>
+
+```typescript
+<rapid-slider max=50>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>min</td>
+      <td><code>number</code></td>
+      <td>Defines minimum number of the slider.</td>
+<td>
+
+```typescript
+<rapid-slider min=10>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>step</td>
+      <td><code>number</code></td>
+      <td>Defines the value of each step of the slider.</td>
+<td>
+
+```typescript
+<rapid-slider step=5>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>number</code></td>
+      <td>Defines a value for the component when it is created. If omitted the default is halfway between the min and max values.</td>
+<td>
+
+```typescript
+<rapid-slider value=20>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>orientation</td>
+      <td><code>string</code></td>
+      <td>Defines the orientation: `vertical` or `horizontal`.</td>
+<td>
+
+```typescript
+<rapid-slider orientation="horizontal">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+
+| Slot | Use |
+|---|---|
+| checked-indicator	| The checked indicator. |
+| track |	The track of the slider. |
+| track-start	| The track-start visual indicator. |
+| thumb	| The slider thumb. |
+
+### Parts
+
+| Part | Description |
+|---|---|
+| control |	The element representing the visual radio control. |
+| label |	The label. |
+| positioning-region | The region used to position the elements of the slider. |
+| track | The region containing the track elements. |
+| track-start | The element wrapping the track start slot. |
+| thumb-container | The thumb container element which is programmatically positioned. |
+| thumb	| The thumb element. |
+
+### Events fired
+
+<table>
+  <thead><tr><th>Event</th><th>Type</th><th>Use</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>change</td>
+      <td><code>event</code></td>
+      <td>Emits a custom change event when the checked state changes. Access the value on the event via <code>.target.value</code>.</td>
+<td>
+
+```typescript
+<rapid-slider @change="${(x) => x.myChangeHandler(event)}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+
+### Events listened to
+This component doesn't listen to any events.
+
+### Further details
+This component is an implementation of an HTML [range slider](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/range) element.
