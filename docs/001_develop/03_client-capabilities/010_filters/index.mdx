@@ -169,7 +169,7 @@ const outcome = this.userTargeting.filter({
 });
 ```
 
-Here we've used the `UserTargeting` filter without the need to provide the current user or other data points to the underlying function directly. If we source the current user from changes over time, the author of the filter can refactor centrally.
+Here we've used the `UserTargeting` filter without the need to provide the current user or other data points to the underlying function directly. If where we source the current user from changes over time, the author of the filter can refactor centrally.
 
 All DI-based filters implement the ClientFilter<!-- TODO:(./docs/api/foundation-filters.clientfilter.md)--> interface; however, they may provide other APIs for convenience to abstract underlying implementation details. For example, `UserTargeting` provides a `hasAdminProfile` API, so the previous example can be re-written as:
 
@@ -190,7 +190,7 @@ filters is also transient.
 
 Let's take a closer look at each filter, understanding their usage with the help of examples.
 
-### nodeEnv
+### `nodeEnv`
 The nodeEnv filter in Genesis’s foundation filters checks the current application environment (such as "development," "production," etc.) and returns true if the filter’s specified environment matches the current one. This filter ensures that certain features or configurations are available only in intended environments by managing environment-specific conditions.
 
 Lets look at the usage examples as function and when used with DI:
@@ -224,7 +224,7 @@ const outcome = this.nodeEnv.isDevelopment;
 
 you can find other available API for nodeEnv in the API Docs <!-- TODO:enter link here from docs -->
 
-### percentage
+### `percentage`
 The percentage filter in Genesis foundation filters checks if a randomly generated number between 0 and 100 is within a specified percentage threshold. This allows for setting probabilistic conditions, enabling features or elements to be displayed to a proportion of users based on the given percentage. This filter is useful for scenarios like A/B testing or gradually rolling out new features.
 
 The percentage filter allows you to display certain features or messages to a set percentage of users. For example, if you set the filter to 20%, each time it runs, it has a 20% chance of passing, meaning only about 20% of users will see the feature or content. This is useful for controlled feature rollouts or A/B testing without requiring complex setups.
@@ -254,7 +254,7 @@ The percentage filter allows you to display certain features or messages to a se
   </TabItem>
 </Tabs>
 
-### timeWindow
+### `timeWindow`
 This filter is used to check whether the current date and time fall between the specified start and end period.The filter returns true if the current date and time is within the specified range. `timeWindow` filter can be helpful when you want to manipulate data within a specific time frame.
 
 Lets look at the usage examples as function and with DI:
@@ -285,14 +285,14 @@ Lets look at the usage examples as function and with DI:
 Both params start and end can be provided in any format recognized by the Date.parse() method.
 
 
-### urlTargeting
+### `urlTargeting`
 The `urlTargeting` is used to filter content on the basis of URL structure, allowing you to use specific criteria to target matching URLs or patterns. Following parameters are used to configure this filter:
 
 **url**: A full URL.
 
 **pattern**: A regex for matching URLs.
 
-**schemes**: An array of schemes or protocols to target (e.g., "http").
+**schemes**: An array of schemes or protocols to target (e.g. "http").
 
 **hosts**: An array of host names or domain names.
 
@@ -335,7 +335,7 @@ Lets look at the usage examples as function and with DI:
   </TabItem>
 </Tabs>
 
-### userAgent
+### `userAgent`
 The `userAgent` filters content on the basis of user’s browser, device, operating system (OS), or specific user agent string parameters. It allows user to specify which browsers(e.g. Chrome, Firefox), devices (e.g., mobile or desktop), or OS (e.g., IOS, Windows) have access to certain features. You can use this filter for providing tailored experience on the basis of user's environment for instance customizing content for a specic browser or device.
 
 Lets look at the usage examples as function and with DI:
@@ -370,7 +370,7 @@ Lets look at the usage examples as function and with DI:
   </TabItem>
 </Tabs>
 
-### userTargeting
+### `userTargeting`
 This filter is used to filter content on the basis of user-specific attributes. It uses the following criteria for filtering:
 
 **Usernames**: filters on the basis of usernames.
