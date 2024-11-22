@@ -1,0 +1,402 @@
+---
+title: 'Containers'
+sidebar_label: 'Containers'
+id: bdo-deploy-virtual-machines
+keywords: [hosts, container, containers, docker, image, registry]
+tags:
+- hosts
+- container
+- containers
+- docker
+- image
+- registry
+sidebar_position: 6
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## Overview
+
+You can run a full Genesis application in a self-contained Docker container. There are two simple ways:
+
+- using our helpful plugin
+- by creating the Dockerfile and image yourself
+
+### Prerequisites
+
+- **GSF Version ≥ 6.3.0 -** You need to use at least the 6.3.0 version of the Genesis application platform.
+
+- **Genesis Deploy plugin ≥ 6.3.0 -** The version of the deploy plugin is defined separately from the Genesis Framework version, and should also be at least version 6.3.0.
+
+- `genesis-system-definition.kts` values - To deploy a Genesis App in a Docker container, you need to ensure the item `DEPLOYED_PRODUCT` is present in your `genesis-system-definition.kts`](/develop/server-capabilities/runtime-configuration/system-definition/), with the value set to the name of your app.
+
+### Limitations
+
+Our current Docker solution is still in early development, and therefore there are a number of limitations that should be understood before deciding to use it.
+
+**The key limitation is that Genesis currently only supports a single container deployment.**
+
+This means that you will **not** be able to achieve the following:
+
+- horizontal scaling
+- zero-downtime High Availability
+- multi-container applications
+
+## Building
+
+The Genesis Application Platform provides two different options for building a Docker image.
+
+- The first option, which is covered in this section, is using the Gradle plugin. This is the easiest and quickest way to get up and running with a Docker image, but it comes with the cost of reduced flexibility. This option is highly recommended for new developers to try Genesis out.
+
+- The second option is to [create your own Dockerfile](#dockerfile) and build your own image. This provides the most flexibility, but it means you need to manage the Genesis dependencies yourself.
+
+### Gradle plugin overview
+
+The Gradle plugin provides the easiest and quickest way to get Genesis running in a Docker container. We provide a Gradle task that generates a Dockerfile for you, with all the necessary dependencies, and then builds it.
+
+**There are 3 Gradle tasks that are provided to help you build your Docker image:**
+
+- `createDockerfile` - generates the Dockerfile dynamically based on user-defined settings and dependencies. It also copies all the files needed for the context into the same folder.
+- `buildImage` - runs **createDockerfile** as a sub-task, and then runs `docker build` on the generated Dockerfile.
+- `pushImage` - pushes the generated image to a repository defined in **gradle.properties** (see [section on pushing](#pushing)).
+
+### Using the plugin
+
+1. Create or use an existing Genesis project.
+
+2. Make the necessary changes to the **genesis-system-definitions.kts** for your dependencies, such as [the location of the database](/build-deploy-operate/deploy/supporting-infrastructure/#databases).
+
+3. Add your dependencies to the Deploy plugin in `server/build.gradle.kts`:
+
+```kotlin
+    genesisServer(
+        group = "global.genesis",
+        name = "genesis-distribution",
+        version = properties["genesisVersion"].toString(),
+        classifier = "bin",
+        ext = "zip"
+    )
+    genesisServer(
+        group = "global.genesis",
+        name = "auth-distribution",
+        version = properties["authVersion"].toString(),
+        classifier = "bin",
+        ext = "zip"
+    )
+```
+
+4. Run the `buildImage` Gradle task from the root of the **server/jvm/** project. You can also run this task from your IDE if you prefer:
+
+<Tabs defaultValue="linux" values={[{ label: 'Linux/Unix', value: 'linux', }, { label: 'Windows', value: 'windows', }]}>
+<TabItem value="linux">
+
+```bash
+./gradlew buildImage
+```
+
+</TabItem>
+<TabItem value="windows">
+
+```powershell
+./gradlew.bat buildImage
+```
+
+</TabItem>
+</Tabs>
+
+Once the image has been built, the output should display the name of the image:
+
+```bash
+Successfully built eaa290495637
+Successfully tagged genesis/appname:1.0.0-SNAPSHOT
+Created image with ID 'eaa290495637'.
+```
+
+
+## Running
+
+If you haven’t already initialised the database, you can run the Docker container passing the environment variable `GENESIS_DB_INSTALL=true`. This triggers a `remap` to create all the tables and will exit on completion.
+
+```bash
+docker run -e GENESIS_DB_INSTALL=true genesis/appname:1.0.0-SNAPSHOT
+```
+
+You can then start the Docker container with whichever system you choose to use (e.g. docker-compose / Kubernetes etc.) Or simply run the container on its own:
+
+```bash
+docker run -it -p 443:443 genesis/appname:1.0.0-SNAPSHOT
+```
+
+Note: The `-p` flag is used in this example, as nginx is bundled in with our image and presents the Genesis app on port 443.
+
+
+## Dockerfile
+
+If you want more control over the image, you can create your own Dockerfile. This gives you complete control over the base image and the versions of the underlying dependencies.
+
+There are quite a few configuration steps and dependencies that are required as part of the image build. Below is an example Dockerfile that is generated by our Gradle task:
+
+**Note**: This is just an example. You will need to manage the locations of the dependencies for copying to the container. If the dependencies are remote, you might need to use `wget` or a similar tool.
+
+```docker
+FROM rockylinux:8
+RUN yum install -y unzip ncurses python3 java-17-openjdk-devel lmdb-libs openssl nginx procps
+RUN ln -s /usr/lib64/liblmdb.so.0.0.0  /usr/lib64/liblmdb.so
+RUN update-alternatives --set python /usr/bin/python3
+RUN mkdir -p /app/run/site-specific/cfg /app/web/console /etc/ssl/certs
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout /etc/ssl/certs/certs.key -out /etc/ssl/certs/certs.pem -subj "/C=GB/L=London/O=Genesis Global/CN=localhost"
+WORKDIR /app
+COPY nginx.conf /etc/nginx/nginx.conf
+RUN echo "export GENESIS_HOME=/app/run/" >> ~/.bashrc
+RUN echo "source \$GENESIS_HOME/genesis/util/setup.sh" >> ~/.bashrc
+COPY genesis-distribution-6.2.0-SNAPSHOT-bin.zip /app
+RUN unzip genesis-distribution-6.2.0-SNAPSHOT-bin.zip -d run/
+RUN rm -f genesis-distribution-6.2.0-SNAPSHOT-bin.zip
+COPY auth-distribution-6.2.0-SNAPSHOT-bin.zip /app
+RUN unzip auth-distribution-6.2.0-SNAPSHOT-bin.zip -d run/
+RUN rm -f auth-distribution-6.2.0-SNAPSHOT-bin.zip
+COPY log4j2-default.xml /app/run/site-specific/cfg/
+COPY web-distribution.zip /app
+RUN unzip web-distribution.zip -d web/
+RUN rm -f web-distribution.zip
+COPY position-site-specific-1.0.0-SNAPSHOT-bin.zip /app
+RUN unzip position-site-specific-1.0.0-SNAPSHOT-bin.zip -d run/
+RUN rm -f position-site-specific-1.0.0-SNAPSHOT-bin.zip
+COPY genesisproduct-position-1.0.0-SNAPSHOT-bin.zip /app
+RUN unzip genesisproduct-position-1.0.0-SNAPSHOT-bin.zip -d run/
+RUN rm -f genesisproduct-position-1.0.0-SNAPSHOT-bin.zip
+RUN source ~/.bashrc && genesisInstall --ignoreHooks
+RUN source ~/.bashrc && preCompileScripts
+SHELL ["bash", "-c"]
+EXPOSE 8080
+EXPOSE 443
+CMD ["/app/run/genesis/util/dockerStartup.sh", "-p"]
+```
+
+## Pushing
+
+If you choose to use the Gradle plugin to build the image, the Genesis Application Platform provides a Gradle task that pushes your built image to your chosen repository.
+
+To configure this task, add the following settings to your **gradle.properties**:
+
+| Name | Description |
+| --- | --- |
+| `dockerUrl` | The URL to the repository you wish to push to |
+| `dockerUsername` | Username |
+| `dockerPassword` | Password |
+| `dockerEmail` | Email address |
+
+## healthchecks
+
+
+The Genesis Application Platform Docker image provides a health check endpoint, which reports the status of the container.
+
+This endpoint can be used for your liveliness/readiness checks if you are using container orchestration, or you can use it in your own checks if you are managing your containers yourself.
+
+| Path | Port | Response |
+| --- | --- | --- |
+| /health/status | This is set in the [System Definition](/develop/server-capabilities/runtime-configuration/system-definition/) with the item `DaemonHealthPort` and an integer value for the port chosen to serve the health status<br/><br/>Example: `item(name = "DaemonHealthPort", value = "4569")`| Either `200` for HEALTHY or `503` for UNHEALTHY if ANY of the underlying services are not in a healthy state.<br/><br/>The payload of the response is in JSON format and provides details for each underlying service configured in the container, including their individual health status |
+
+Note: You need to ensure the port is accessible with the Docker `--port` option; alternatively, check the documentation for whichever container orchestration system you use.
+
+## Sample response 
+```
+[
+    {
+        "PROCESS_NAME":"GENESIS_AUTH_MANAGER",
+        "STATUS":"UP",
+        "MESSAGE":"",
+        "PORT":8001
+    },
+    {
+        "PROCESS_NAME":"GENESIS_AUTH_DATASERVER",
+        "STATUS":"UP",
+        "MESSAGE":";Lmdb currently uses 1% of available space (total size 2GB)",
+        "PORT":8002
+    },
+    {
+        "PROCESS_NAME":"GENESIS_AUTH_PERMS",
+        "STATUS":"UP",
+        "MESSAGE":"",
+        "PORT":8003
+    },
+    {
+        "PROCESS_NAME":"GENESIS_AUTH_REQUEST_SERVER",
+        "STATUS":"UP",
+        "MESSAGE":"",
+        "PORT":8004
+    },
+    {
+        "PROCESS_NAME":"GENESIS_AUTH_CONSOLIDATOR",
+        "STATUS":"UP",
+        "MESSAGE":"",
+        "PORT":8005
+    },
+    {
+        "PROCESS_NAME":"GENESIS_CLUSTER",
+        "STATUS":"UP",
+        "MESSAGE":";Lmdb currently uses 1% of available space (total size 2GB)",
+        "PORT":9000
+    },
+    {
+        "PROCESS_NAME":"GENESIS_ROUTER",
+        "STATUS":"UP",
+        "MESSAGE":"",
+        "PORT":9017
+    },
+    {
+        "PROCESS_NAME":"GENESIS_NOTIFY",
+        "STATUS":"UP",
+        "MESSAGE":";Lmdb currently uses 1% of available space (total size 2GB)",
+        "PORT":9018
+    }
+]
+```
+
+
+## Configuration options
+
+### Docker plugin extension
+
+To customize how the Docker plugin behaves, the Genesis Application Platform provides a Gradle plugin extension.
+
+The table below describes the values that can be changed:
+
+| Name | Description | Default |
+| --- | --- | --- |
+| `compactProcesses` | When set to `true`, combines compatible services into a single process, which reduces the number of services running within the container  | false |
+| `debugEnvVars` | Allows you to provide a map of the environment variables that will be passed to the containers created by the extra tasks enabled with debugMode<br/>This has no effect, unless `debugMode` is set to `true` | null |
+| `debugMode` | When set to `true`, this changes the Dockerfile to create an image that has extra tools in it to help debugging.<br/>Extra yum packages include: vim, net-tools | false |
+| `networkName` | When using the extra debug tasks, this setting allows you to specify a custom Docker network for the containers to use.<br/>This has no effect unless `debugMode` is set to `true` | null |
+| `useGenesisContainerLogConfig` | Defines whether the container should use a specific log4j configuration file that is designed for our containers.<br/>When set to `true`, logs are effectively output by the container PID1, allowing most container orchestration systems to capture all the logs with default settings. | true |
+| `preCompileScripts` | When set to `true`, the build process must include a step that compiles all the .kts scripts and caches the results.<br/>This results in a slower build process, but dramatically decreases the start-up time of the container. | true |
+
+These settings should be set in the `server/build.gradle.kts` file:
+
+```kotlin
+dockerImage {
+  compactProcesses.set(true)
+  debugMode.set(true)
+  debugEnvVars.putAll(
+    mapOf(
+      "DB_HOST" to "172.17.0.2"
+    )
+  )
+}
+```
+
+### Local plugin configuration
+
+The Genesis Application Platform also supports overrides of the Docker extension configuration, allowing for different values for different environments. This means that you can set your own values without changing any files that are tracked in SCM.
+
+This is done by adding `server/gradle.properties` and ensuring that the file is ignored by SCM.
+
+
+| Extension Config | Gradle Properties Equivalent | Notes |
+| --- | --- | --- |
+| `compactProcesses` | `dockerCompactProcesses` | N/A |
+| `debugEnvVars` | `dockerDebugEnvVars` | This should be a comma-separated list.<br/>e.g DB_HOST=genesis_db,DB_PORT=5432 |
+| `debugMode` | `dockerDebugMode` | N/A |
+| `networkName` | `dockerNetworkName` | N/A |
+| `useGenesisContainerLogConfig` | `dockerUseGenesisContainerLogConfig` | N/A |
+| `preCompileScripts` | `dockerPreCompileScripts` | N/A |
+
+### Environment variables
+
+Below is a list of environment variables that can be passed to the Docker container at runtime.
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `GENESIS_DB_DRY_RUN` | Allows you to see the output of a remap without committing it.<br/>This option only has an effect if it’s used with `GENESIS_DB_INSTALL` or `GENESIS_DB_UPGRADE`  | false |
+| `GENESIS_DB_INSTALL` | Runs a remap and then a `genesisInstallHooks --init` to mark the migration hooks so they do not run again.<br/>This should only be used during the initial DB setup, as it will ignore the migration hooks.<br/>GENESIS_DB_UPGRADE should be used for any further DB schema changes.<br/>The container will exit on completion and will not run any Genesis processes. | false |
+| `GENESIS_DB_UPGRADE` | Runs `genesisInstallHooks` to run any migration hooks, then runs a `remap`<br/>The container will exit on completion and will not run any Genesis processes | false |
+
+You can also [set System Definitions values from environment variables](/develop/server-capabilities/runtime-configuration/system-definition/#setting-system-definition-values-from-environment-variables), which allows you to change the location of external dependencies (such as the database) between your production and non-production environments.
+
+## Clustering
+
+The Genesis Application Platform is highly resilient and easy to cluster for a High Availability (HA) setup.
+
+The Genesis platform uses [Akka](https://akka.io/) to help manage the communication between clusters: specifically for identifying members of the cluster, joins and leaves etc.
+
+This area takes you through how to configure the platform with our clustering options.
+
+### Consul
+The Consul cluster mode uses Hashicorp's Consul for service discovery.
+
+Combining this with the use of an MQTT broker gives you a dynamically scalable Genesis app with automatic failover.
+
+### Prerequisites
+#### Services
+To operate the Genesis Application Platform within an HA setup using Hashicorp's Consul for Clustering, the following services must be available:
+
+ - **A Database** - A database needs to be hosted independently from the platform
+ - **A Consul Cluster** - A Consul cluster with an agent on each of the hosts running a Genesis app
+ - **An MQTT Broker** - Any message queue broker that supports MQTT, such as Mosquitto or RabbitMQ
+
+:::important
+The Genesis Application Platform can run with Consul without MQTT using ZeroMQ.
+
+However, this is not recommended as **MQTT is required for dynamic scaling**.
+:::
+
+### Automatic failover
+When Consul is used, processes that are set to `primaryOnly` failover automatically to the secondary node when the primary node becomes unresponsive. (Failover must be performed manually if you are using the standard Genesis Clustering service.)
+
+### Networking
+When using Consul mode, all Genesis services within an app need to be able to access all the other Genesis services in the cluster on their defined ports.
+
+The default Genesis services and their ports are:
+
+| Service | Port |
+| --- | --- |
+| `GENESIS_AUTH_CONSOLIDATOR` | `8005` |
+| `GENESIS_AUTH_MANAGER` | `8001` |
+| `GENESIS_AUTH_PERMS` | `8003` |
+| `GENESIS_CLUSTER` | `9000` |
+| `GENESIS_EVALUATOR` | `9015` |
+| `GENESIS_ROUTER` | `9017` |
+
+See [service definitions](/develop/server-capabilities/runtime-configuration/service-definition/) for information on how to set the ports for user-defined services, and how to override the ports dynamically.
+
+The Consul Agents must also be able to access all the services on their defined ports.
+
+### Configuring the app
+
+#### Basic configuration
+If a Consul agent is running locally to the app on the default port of 8500, then the only config required is:
+```kotlin {title="genesis-system-definition.kts"}
+systemDefinition {
+    global {
+        ...
+        item(name = "ClusterMode", value = "CONSUL")
+        ...
+    }
+}
+```
+
+#### Extended configuration
+| Item | Description | Default |
+| --- | --- | --- |
+| `ConsulHostAddress` | IP or hostname of the Consul Agent | `localhost` |
+| `ConsulHostPort` | HTTP Port for the Consul Agent | `8500` |
+| `ConsulConnectionTimeoutSeconds` | Set the timeout for connecting to the Consul Agent in seconds | `10` |
+| `ConsulReadTimeoutSeconds` | Set the timeout for reading from the Consul Agent in seconds | `10` |
+| `ConsulWriteTimeoutSeconds` | Set the timeout for writing to the Consul Agent in seconds | `10` |
+| `ConsulWatchSeconds` | How long to tell the Consul server to wait for new key/value cache values | `8` |
+| `ConsulTtlSeconds` | Timeout for the TTL Consul checks | `15` |
+| `ttlPingSeconds` | How often to run the TTL checks and update Consul with the state | `ConsulTtlSeconds` / `2` |
+| `deregisterCriticalServiceAfterMins` | Time to wait after a TTL check goes critical before it deregisters the service in minutes | `30` |
+| `clusterServiceAffinityGroup` | Group apps for preferred routing. Useful for multi-region set-ups | "" |
+| `ConsulServiceNamePattern` | Allows you to template your Consul service names with `{{PROCESS_NAME}}` eg. `my_app_{{PROCESS_NAME}}` | `null` |
+| `ConsulNamespaceFormat` | Sets Consul namespace (only used in Consul Enterprise) | `null` |
+
+### Troubleshooting
+
+#### Request fails with 5xx when trying to reach a process that no longer exists
+
+Scenario: This might happen when a resource is moved from one process to another. For example, a `requestReply` originally served from `REQ_REP_SERVICE_A` is now moved to `REQ_REP_SERVICE_B`, but consul still holds a reference that is being served by the former.
+
+Solution: Check the consul console (or cli) to see if there is still a resourceMap (under KeyValues) for the process that no longer exists. If there is, [delete it](https://developer.hashicorp.com/consul/docs/dynamic-app-config/kv/store#delete-data). Then restart the Genesis services. 
+
