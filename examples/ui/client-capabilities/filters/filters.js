@@ -1,5 +1,5 @@
 import { CodeSection } from '../../documentationBase';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import { timeWindowFilter } from '@genesislcap/foundation-filters';
 export default function FiltersDemo({ children, color }) {
@@ -20,6 +20,16 @@ export default function FiltersDemo({ children, color }) {
 			setOutputValue(timeWindowFilter(startDateRef.current.value, endDateRef.current.value)? 'Current Date/Time exists within the start and end period': "Current Date/Time doesn't fall between start and end period");
 		}
     }
+	
+	useEffect(() => {
+		if (startDateRef.current) {
+		  startDateRef.current.value = "2024-11-21T09:00";
+		}
+
+		if(endDateRef.current) {
+			endDateRef.current.value = "2024-11-21T18:00"
+		}
+	  }, []);
 
 	return (
 		<CodeSection>
