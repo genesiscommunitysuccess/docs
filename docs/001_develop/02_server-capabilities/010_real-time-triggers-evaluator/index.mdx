@@ -14,7 +14,7 @@ sidebar_position: 10
 
 ## Overview
 
-The Genesis Evaluator is a platform provided microservice used for triggering events.
+The Genesis Evaluator is a platform provided microservice used for triggering [events](/develop/server-capabilities/core-business-logic-event-handler/).
 
 It can be configured with two types of triggers:
 
@@ -34,77 +34,71 @@ Unlike most server capabilities in the Genesis Application Platform, Evaluator d
 
 Example `CRON_RULE` table entry:
 
-| CRON_EXPRESSION | DESCRIPTION | TIME_ZONE | RULE_STATUS | NAME | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
+| NAME | CRON_EXPRESSION | DESCRIPTION | TIME_ZONE | RULE_STATUS | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0 45 6 ? * MON-FRI * | Send position report to US desk | America/New_York | ENABLED | US desk position report | admin | POSITION_EVENTHANDLER | EVENT_POSITION_REPORT | (DESK == 'US') |
+| US desk position report | `0 45 6 ? * MON-FRI *` | Send position report to US desk | America/New_York | `ENABLED`| admin | `POSITION_EVENT_HANDLER` | `EVENT_POSITION_REPORT` | `(DESK == 'US')` |
 
-In this example the `EVENT_POSITION_REPORT` event will be triggered with DETAILS parameter `DESK == 'US'` at 06:45 AM (EST/EDT) each week day.
+In this example the `EVENT_POSITION_REPORT` event will be triggered with `DETAILS` parameter `DESK == 'US'` at 06:45 AM (EST/EDT) each week day.
 
 Given it's name we can expect this event would generate and distribution of a report for a particular desk's positions.
 
 ### Data driven events
 
+|ID                    |NAME            |DESCRIPTION                                            |USER_NAME|RULE_TABLE  |RULE_STATUS  |RULE_EXPRESSION       |PROCESS_NAME|MESSAGE_TYPE               |RESULT_EXPRESSION      |TABLE_OPERATION  |IS_TEMPLATE  |RULE_EXECUTION_STRATEGY  |RULE_TYPE|
+|----------------------|----------------|-------------------------------------------------------|---------|------------|-------------|----------------------|------------|---------------------------|-----------------------|-----------------|-------------|-------------------------|---------|
+|`000000000000001DRLO1`|Warn large trade|Trigger warning event on notional traded over 1,000,000|admin    |`TRADE_VIEW`|`ENABLED`    |`(NOTIONAL > 1000000)`|            |`EVENT_LARGE_TRADE_WARNING`|`(TRADE_ID = TRADE_ID)`|`INSERT`         |`false`      |`ONCE_PER_RECORD`        |         |
 
-| RULE_TABLE | RULE_EXPRESSION | DESCRIPTION | RULE_STATUS | NAME | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| TRADE_VIEW | NOTIONAL > 1000000 | | ENABLED | US desk position report | admin | POSITION_EVENTHANDLER | EVENT_POSITION_REPORT | (DESK == 'US') |
+In this example the `EVENT_LARGE_TRADE_WARNING` will be triggered with `DETAILS` parameter of `TRADE_ID == <the record's trade id>` when the `TRADE` table ([the root table of the `TRADE_VIEW` in our example data model](/develop/server-capabilities/data-model/#views)) has a new record inserted where the `NOTIONAL` is greater than 1,000,000.
 
-         |                  |IS_TEMPLATE|MESSAGE_TYPE|NAME|PROCESS_NAME|RESULT_EXPRESSION|||||||||||||||
-|--
-|Assign large trades to |000000000000001DRLO1|false|EVENT_TRADE_WARNING||TRADE_ID = TRADE_ID||||||||||||||||||
+Given it's name we can expect this event to trigger some business workflow for large trades with the desk.
 
+The Genesis Evaluator's `DYNAMIC_RULE` data driven events are used to power the [notifications and alert component](develop/business-components/notifications/notifications-introduction/) 
 
-|ID                  |NAME            |DESCRIPTION                                            |USER_NAME|RULE_TABLE|RULE_STATUS|RULE_EXPRESSION     |PROCESS_NAME|MESSAGE_TYPE             |RESULT_EXPRESSION    ||||||||||||||||||||||||||
-|000000000000001DRLO1|Warn large trade|Trigger warning event on notional traded over 1,000,000|admin    |TRADE_VIEW|ENABLED    |(NOTIONAL > 1000000)|            |EVENT_LARGE_TRADE_WARNING|(TRADE_ID = TRADE_ID)|||||||||||||||||||||||
-The Genesis Evaluators `DYNAMIC_RULE` data driven events are used to power the [notifications and alert component]() 
-
-TODO fijnish exaple, question around context avaiable in result expresion
-
-## Configuration Options
+## Configuration options
 
 For this section we'll given an overview of the two tabls and the expected values in their records.
 
 ### `CRON_RULE`
 
+| Field Name | Description | Example Value | Mandatory |
+| --- | --- | --- | --- |
+| NAME | Name of the rule. This is a key and so each entry must have a unique value | US desk position report | true |
+| CRON_EXPRESSION | [Quartz Cron Expressions](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html) defining when the rule triggers | `0 45 6 ? * MON-FRI *` | true |
+| DESCRIPTION | Description of the rule | Send position report to US desk | true |
+| TIME_ZONE | | | |
+| RULE_STATUS | The status of the rule. If anything other than `ENABLED` the rule will not listen/trigger. | `ENABLED` | true |
+| USER_NAME | The username that will be sent on the triggered event. User must have permission to the event for it to be successfully triggered. | admin | false |
+| PROCESS_NAME | The name of the process to send the resulting event. | `POSITION_EVENT_HANDLER` | true |
+| MESSAGE_TYPE | The name of the event the rule should send when triggered | `EVENT_POSITION_REPORT`  | true |
+| RESULT_EXPRESSION | The details to send on the event message. The syntax is that event fields should be left of the `=` and you can use literal values to the right. Multiple event fields are separated by `&&`| `(DESK == 'US') && (TRIGGER == 'RULE')` | false |
+
+Rules are managed via the API, which exposes CRUD operations for maintaining the table.
 
 ### `DYNAMIC_RULE`
 
 | Field Name | Description | Example Value | Mandatory |
-| --- | --- |
-| ID | ID for the rule. Auto-generated where left unspecified on insert | 000000000000001DRLO1 | true |
+| --- | --- | --- | --- |
+| ID | ID for the rule. Auto-generated where left unspecified on insert | `000000000000001DRLO1` | true |
 | NAME | Name of the rule | Large trade | true |
-| DESCRIPTION | Description of the rule | A large trade has been received | false |
+| DESCRIPTION | Description of the rule | A large trade has been received | true |
 | USER_NAME | The username that will be sent on the triggered event. User must have permission to the event for it to be successfully triggered. | admin | false |
 | RULE_TABLE | The [`table`](/develop/server-capabilities/data-model/#tables) or [`view`](/develop/server-capabilities/data-model/#views) the rule will listen to for updates | `TRADE_VIEW` | true |
 | RULE_STATUS | The status of the rule. If anything other than `ENABLED` the rule will not listen/trigger. | `ENABLED` | true |
-| RULE_EXPRESSION | Boolean expression referenced upon the configured RULE_TABLE receiving an update. The expression can reference any of the fields on the updated table/view.  | ((NOTIONAL > 1000000)) | false |
-| PROCESS_NAME | The name of the process to send the resulting event. As of v8 this is optional and service discovery will be used to find the process to send the event. It is recommended to leave blank to work in all environments including those running compact processes, or for consul environments. | POSITION_EVENT_HANDLER | false |
-| MESSAGE_TYPE | The name of the event the rule should send when triggered | EVENT_LARGE_TRADE_WARNING  | true |
-| RESULT_EXPRESSION | The details to send on the event message.</br>The syntax is that event details should be in brackets and separate | (TRADE_ID = TRADE_ID) && () | false |
-| TABLE_OPERATION | The table operations to trigger the rule on. Valid operations are `INSERT`, `MODIFY` and `DELETE`. Where more than one should trigger the rule they should be pipe delimited  Where left blank only `INSERT` table operations will trigger the rule. |  | true |
-
-
+| RULE_EXPRESSION | Boolean expression referenced upon the configured RULE_TABLE receiving an update. The expression can reference any of the fields on the updated table/view. The expression must be wrapped in brackets.  | `((NOTIONAL > 1000000))` | false |
+| PROCESS_NAME | The name of the process to send the resulting event. As of v8 this is optional and service discovery will be used to find the process to send the event. It is recommended to leave blank to work in all environments including those running compact processes, or for consul environments. | `POSITION_EVENT_HANDLER` | false |
+| MESSAGE_TYPE | The name of the event the rule should send when triggered | `EVENT_LARGE_TRADE_WARNING`  | true |
+| RESULT_EXPRESSION | The details to send on the event message. The syntax is that event fields should be left of the `=` and you can use literal values or field values from the `RULE_TABLE` to the right. Multiple event fields are separated by `&&`| `(TRADE_ID = TRADE_ID) && (TRIGGER = 'RULE')` | false |
+| TABLE_OPERATION | The table operations to trigger the rule on. Valid operations are `INSERT`, `MODIFY` and `DELETE`. Where more than one operation should trigger the rule, they should be pipe delimited. Where this value is left blank only `INSERT` table operations will trigger the rule. | `INSERT\|MODIFY\|DELETE` | true |
+| IS_TEMPLATE |Relevant when using [notifications and alert component](/develop/business-components/notifications/notifications-introduction/) where users can define rule templates users subscribe to, and will never trigger||false|
+| RULE_EXECUTION_STRATEGY |Defines how many time the rule should trigger for a given record (record of root table where `RULE_TABLE` is a view). Valid values are `UNLIMITED`, `ONCE_ONLY`, `ONCE_PER_RECORD`. Default is `UNLIMITED`. This is helpful if `TABLE_OPERATION` must include `MODIFY` and the records may have many modifications to stop repeated alerts|`ONCE_ONLY`|false|
+| RULE_TYPE |Used to say if this rule belongs to a group. For example the [notifications and alert component](/develop/business-components/notifications/notifications-introduction/) will set as `NOTIFY`|`NOTIFY`|false|
       
       
-        
-        IS_TEMPLATE
-        RULE_EXECUTION_STRATEGY
-        RULE_TYPE
-
-
-
-
-TODO
-
-TODO how do we say about managing the rules
-
-This section should be a complete list of all the configuration options for the component.  This should be organized similar to typical API documentation with each feature (of the DSL for example) that allows the component to be configured with a detailed description of what each is responsible for.
+Rules are managed via the API, which exposes CRUD operations for maintaining the table. Components such as [notifications and alert component](/develop/business-components/notifications/notifications-introduction/) include a user interface which manages dynamic rule setup and reads application metadata to help users populate table/view selection and expressions.
 
 ## APIs Exposed
 
-TODO
-
-For server components, we should provide details of the APIs exposed by this component.  It would be acceptable for this to be provided in the form of Open API docs, however it is important to have a plain text description of each of the APIs.
+Rules are managed via the API, which exposes CRUD operations for maintaining the table. The tables in [Configuration Options](#configuration-options) specifies the specification of the event and query fields.
 
 ## Runtime configuration
 
