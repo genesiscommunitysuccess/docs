@@ -10,4 +10,73 @@ tags:
 sidebar_position: 6
 ---
 
-Coming soon...
+The Custom Elements LSP plugin enables you to use your LSP-enabled editor with IntelliSense handling for web-component custom elements. This gives you warnings and errors, autocompletion, diagnostics, and jump-to definition as you work on your Genesis project.
+
+## Installing the base configuration in VSCode
+To start, you need a Genesis project and a local npm project in a `lib` directory.
+
+1. Add the dependencies
+In your project's `src` folder, save the custom elements LSP and the Genesis plugin as dev dependencies.
+
+:::
+npm i --save-dev @genesiscommunitysuccess/custom-elements-lsp @genesiscommunitysuccess/cep/fast-plugin
+:::
+
+2. Configure your `tsconfig.json` file
+
+	- Open VSCode and navigate to the `tsconfig.json` file.
+	- Copy the `plugins` block shown below.
+
+```
+{
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "@genesiscommunitysuccess/custom-elements-lsp",
+        "srcRouteFromTSServer": "../../..",
+        "designSystemPrefix": "example",
+        "parser": {
+          "fastEnable": true,
+          "timeout": 2000,
+          "dependencies": [
+            "node_modules/example-lib/**/custom-elements.json",
+            "!**/@custom-elements-manifest/**/*"
+          ]
+        },
+        "plugins": ["@genesiscommunitysuccess/cep-fast-plugin"]
+      }
+    ]
+  }
+}
+```
+
+	- Edit the `node modules` so it points to the local file that you installed? 
+
+3. Configure your VSCode to use your local typescript install (by default it uses the version of typescript it is bundled with. **You do not need to do this if you are using a different IDE.**
+
+	- Create a new directory called `vscode`. 
+	- In this directory, create a new file called `settings.json` and paste in the block below:
+
+```
+{
+  "typescript.tsdk": "node_modules/typescript/lib"
+}
+```
+	- To pick up this configuration. Close and restart VSCode. You must run it from `.vscode` directory that you have just created.
+
+4.	Check that the plugin is working.
+
+	- Open a typeScript file and call it `root.ts`.
+	- Open the command palette: SHIFT+CTRL+P (or SHIFT+COMMAND+P on a Mac).
+	- Click in the top bar of VSCode and select `TypeScript Version`. 
+
+    ![TypeScript version](/img/lsp-plugin/lsp-typescript-one.png)
+
+    - Then select `Use Workspace Version`.
+
+
+    ![Use local TypeScript version](/img/lsp-plugin/lsp-typescript-two.png)
+
+
+From now on, when you make any changes to the file, you can see all the features of the plugin: errors, warnings and completions on the components that are local to the project.
+
