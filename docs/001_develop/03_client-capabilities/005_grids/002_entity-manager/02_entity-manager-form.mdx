@@ -1,0 +1,120 @@
+---
+title: 'Form configuration'
+sidebar_label: 'Form configuration'
+id: entity-manager-form
+keywords: [entity management, frontend, micro-front-ends, profile management, ui, user management, web]
+tags:
+  - entity management
+  - frontend
+  - micro-front-ends
+  - profile management
+  - ui
+  - user management
+  - web
+  - entity manager
+  - data entry
+  - form layout
+  - validation
+  - user interface
+  - form customization
+  - input fields
+  - micro-front-ends
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The Form component in the **Entity Management** allows users to create new entities or edit existing ones. It is automatically generated based on the metadata of the back-end resource, making it easy to manage data without extensive configuration. This section covers how to configure the form, including defining which fields to display and linking it to the corresponding events such as **Create** and **Edit**.
+
+:::tip
+For more detailed guidance on defining and customizing forms, refer to our section on [Forms](../../007_forms/002_smart-forms/index.mdx) where you'll find useful tips and working examples. 
+:::
+
+## Examples 
+
+### Adding Default Values to the Form
+
+To set default values when the form is displayed, use the `defaultEntityValues` property and provide an object containing the desired default values. This allows you to pre-fill the form with specific data, making it more convenient for users and ensuring consistency across form submissions. Here's an example:
+
+```typescript
+const defaultData = {
+  COUNTERPARTY_ID: 'DEFAULT_ID',
+  ENABLED: true,
+};
+
+@customElement({
+  name: 'entity-management-example',
+  template: html`
+    <entity-management
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      :defaultEntityValues="${() => defaultData}"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
+    ></entity-management>
+  `,
+})
+export class EntityManagementForm extends GenesisElement {}
+```
+
+And here we can see that default value in the form:
+
+![](/img/default-value-form.png)
+
+### Controlling form with UISchema
+
+When you need to control the content and behavior of a form, especially if you want to use different forms for creating new records versus modifying existing ones, you can utilize the `createFormUiSchema` and `updateFormUiSchema` properties. These properties allow you to define specific UI schemas that tailor the form's layout and fields for each action.
+
+- **`createFormUiSchema`** - Use this attribute when you need a custom form schema for creating a new record. It allows you to specify the fields, validation rules, and layout for the form when a user is adding a new entity. By providing a tailored UI schema, you can control the user experience and ensure that the form is optimized for new record creation.
+
+- **`updateFormUiSchema`** - Similarly, the `updateFormUiSchema` attribute is used when modifying an existing record. This allows you to define a schema specifically for editing an entity, which may differ from the creation form in terms of field visibility, default values, or validation rules. For example, you may want to disable certain fields or pre-populate them with existing data when updating an entity.
+
+If you're building a system where users can either add new entries or edit existing ones, using these attributes ensures that the forms are displayed and behave as required for each scenario. For instance, a "Create" form may have all fields enabled for user input, while an "Update" form may pre-fill certain fields and only allow modifications to specific attributes.
+
+```typescript
+const counterpartyCreateUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_ID', label: 'Id' },
+    {
+      type: 'Control',
+      label: 'Counterparty Lei',
+      scope: '#/properties/COUNTERPARTY_LEI',
+    },
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Counterparty Name' },
+  ],
+};
+
+const counterpartyUpdateUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Counterparty Name' },
+  ],
+};
+
+@customElement({
+  name: 'entity-management-example',
+  template: html`
+   <entity-management
+        enable-search-bar
+        design-system-prefix="rapid"
+        resourceName="ALL_COUNTERPARTYS"
+        title="Counterparty Management"
+        :createFormUiSchema=${(x) => counterpartyCreateUIschema}
+        :updateFormUiSchema=${(x) => counterpartyUpdateUIschema}
+        updateEvent="EVENT_COUNTERPARTY_MODIFY"
+        deleteEvent="EVENT_COUNTERPARTY_DELETE"
+        createEvent="EVENT_COUNTERPARTY_INSERT"
+    ></entity-management>
+  `,
+})
+export class EntityManagementExample extends GenesisElement {}
+```
+
+## License
+
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform

@@ -1,0 +1,169 @@
+---
+title: 'Grid configuration'
+sidebar_label: 'Grid configuration'
+id: entity-manager-grid
+keywords: [grid configuration, entity-management, entity manager, table setup, customization, data grid, UI, frontend, grid options, user interface, data display, micro-front-ends]
+tags:
+  - entity management
+  - frontend
+  - micro-front-ends
+  - profile management
+  - ui
+  - user management
+  - web
+  - grid configuration
+  - entity manager
+  - table setup
+  - customization
+  - data grid
+  - grid options
+  - user interface
+  - data display
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+The Grid is a key component of the **Entity Management**, enabling you to display and manage data from back-end resources. It offers a flexible, structured layout where each row represents an entity, and each column represents an attribute of that entity. The grid can be easily configured to pull data from specified back-end resources and is automatically populated with relevant information.
+
+This section explains how to configure and customize the grid to suit your application's needs.
+
+## Examples 
+
+### Grid columns
+If you want to control the appearance of the grid, use the `columns` attribute. This enables you to supply an array of `ColDef[]` properties to configure the columns that are displayed, their width and many other properties; these are the same properties that are used by the [Grid Pro](../003_grid-pro/index.mdx) component.
+
+The example array below creates six columns, specifying the width of each one. 
+- The `field` is the field in the data source.
+- The `headerName` is the text displayed in the column heading.
+- Three of the fields use `cellStyle` to control the alignment of the values displayed. 
+- One field (whose column heading is "Status") also uses `cellStyle` to control the colour of the values displayed. 
+
+```typescript
+const columnDefs: ColDef[] = [
+  { field: 'REQUEST_VERSION', headerName: 'Version', width: 90 },
+  {
+    field: 'REQUEST_STATUS',
+    headerName: 'Status',
+    width: 80,
+    cellStyle: { 'text-align': 'right', color: 'red' },
+  },
+  { field: 'SALES_PERSON', headerName: 'Sales', width: 100 },
+  { field: 'PRODUCT', headerName: 'Product', width: 100, cellStyle: { 'text-align': 'center' } },
+  { field: 'CLIENT_NAME', headerName: 'Client', width: 100 },
+  { field: 'NOTIONAL', headerName: 'Notional', width: 100, cellStyle: { 'text-align': 'left' } },
+];
+
+@customElement({
+  name: 'entity-management-example',
+  template: html`
+   <entity-management
+      ...
+      :columns=${() => columnDefs}
+      ...
+    ></entity-management>
+  `,
+})
+export class EntityManagementColumns extends GenesisElement {}
+```
+
+As a result of these column definitions, the following grid is displayed:
+
+![](/img/entity-man-coldef-02.png)
+
+### CRUD menu
+
+By default, the grid displays **Add**, **Edit** and **Delete** buttons to match the settings you have made for `createEvent` (insert), `updateEvent` (edit) and `deleteEvent`. These are placed above the grid to the right. **Edit** and **Delete** buttons are greyed out until the user selects a row in the grid.
+
+You can set the location of the buttons using the setting `crud-menu-position`. 
+
+- To position the **Edit** and **Delete** buttons in a column for every row in the grid, set `crud-menu-position = column`.
+![](/img/column-buttons.png)
+- If you don't want to display the buttons at all, set `crud-menu-position = none`.
+
+You can set the style of the buttons using the `crud-menu-style` setting. This hides the buttons and displays a small button with three vertical dots. When the user clicks on the three dots, the available buttons are then displayed for the user to select.
+
+- With `crud-menu-style = actions-horizontal`, when the user clicks on the dots, the buttons are displayed horizontally (side-by-side).
+- With `crud-menu-style = actions-vertical`, when the user clicks on the dots, the buttons are displayed vertically.
+![](/img/style-vertical.png)
+
+### CRUD slots
+
+A slot is essentially a placeholder where you can define content and actions for a component - such as menu buttons. The slots are generated dynamically, based on the value of the `crud-menu-position` attribute.
+
+#### Static slots
+
+| Name    | Description                                                         |
+|---------|---------------------------------------------------------------------|
+| `header`| The content to be displayed in the header section. If `crud-menu-position` is set to `top`, this slot content will overwrite the `crud-top` content. |
+| `footer`| The content to be displayed in the footer section. If `crud-menu-position` is set to `bottom`, this slot content will overwrite the `crud-bottom` content. |
+
+#### Dynamic slots
+
+You can set the `crud-menu-position` attribute to one of the following values: `column`, `top`, `bottom`, `action`. 
+
+Based on this value, the following slots will be available:
+
+| Name                        | Description                                                         |
+|-----------------------------|---------------------------------------------------------------------|
+| `crud-{position}-before`    | The content to be displayed before the specified position           |
+| `crud-{position}`           | The main content for the specified position                         |
+| `crud-{position}-after`     | The content to be displayed after the specified position            |
+
+
+In this example, we demonstrate how to customize the position of the CRUD action menu within the Entity Manager by setting the crud-menu-position attribute to top.
+
+```html
+<entity-management
+  design-system-prefix="rapid"
+  crud-menu-position="top"
+  resourceName="ALL_COUNTERPARTYS"
+  title="Custom buttons"
+  updateEvent="EVENT_COUNTERPARTY_MODIFY"
+  deleteEvent="EVENT_COUNTERPARTY_DELETE"
+  createEvent="EVENT_COUNTERPARTY_INSERT"
+>
+  <rapid-button slot="crud-top-before">Custom before</rapid-button>
+  <rapid-button slot="crud-top-after">Custom after</rapid-button>
+</entity-management>
+```
+
+![](/img/foundation-entity-management/crud-top-example.png)
+
+In this example, we demonstrate how to customize the position of the CRUD action menu within the Entity Manager by setting the crud-menu-position attribute to bottom.
+
+```html
+<entity-management
+  design-system-prefix="rapid"
+  crud-menu-position="bottom"
+  resourceName="ALL_COUNTERPARTYS"
+  title="Custom buttons"
+  updateEvent="EVENT_COUNTERPARTY_MODIFY"
+  deleteEvent="EVENT_COUNTERPARTY_DELETE"
+  createEvent="EVENT_COUNTERPARTY_INSERT"
+>
+  <rapid-button slot="crud-bottom-before">Custom before</rapid-button>
+  <rapid-button slot="crud-bottom-after">Custom after</rapid-button>
+</entity-management>
+```
+![](/img/foundation-entity-management/crud-bottom-example.png)
+
+:::tip
+- If you create multiple slots of content or actions, the slots will be placed side by side.
+- Ensure that the `crud-menu-position` is set appropriately to avoid conflicts with the `header` and `footer` slots.
+- The dynamic slots (`crud-{position}-before`, `crud-{position}`, `crud-{position}-after`) are generated inside the `header` and `footer` slots. Therefore, if the `header` or `footer` slots contain content, they will overwrite the dynamic slots.
+:::
+
+#### Default behaviour
+
+- The default value for `crud-menu-position` is `column`.
+- If `crud-menu-position` is set to `bottom` and the `footer` slot is also set in `entity-management`, the `footer` slot content will overwrite the `crud-bottom` content.
+- Similarly, if `crud-menu-position` is set to `top` and the `header` slot is also set in `entity-management`, the `header` slot content will overwrite the `crud-top` content.
+
+## License
+
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform
