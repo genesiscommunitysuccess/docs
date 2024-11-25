@@ -334,42 +334,83 @@ This is a real-time acknowledgement source that uses Camel to poll a location pe
 The next element is only emitted once acknowledgement is given that the previous one has been successfully processed.
 
 There are two ways to create a camel source. One is by setting the location URL, the second is by using Route Builder.
+ - The location URL is a simple string that defines the location. 
+ - The routeHandler function exposes the full Camel Route Builder. 
 
-###### Setting the location URL
+The Route Builder is Apache Camel's API for defining how to read messages, and where from. Using the `routeHandler` function gives you the most flexibility and control over your routes logic, allowing for more advanced configurations, such as specifying processors and idempotency logic.
+Within the routeHandler block you can access the `dataPipelineProcessor` variable, this is a custom processor that is always created that will emit the messages from the source into the pipeline. Using location is shorthand, the following examples are functionally equivalent:
 
-GPAL Example:
+Simple example with `location`:
 ```kotlin
-pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
-  source(
-    camelFileSource {
-      location = "file://src/test/resources/camel-source-test?noop=true"
-    }
-  ).sink(filesSink)
+camelFileSource {
+  location = "file://src/test/resources/camel-source-test?noop=true"
+} 
+```
+
+Equivalent example with `routeHandler`:
+```kotlin
+camelFileSource {
+  routeHandler {
+    from("file://src/test/resources/camel-source-test?noop=true")
+      .process(dataPipelineProcessor)
+  }
 }
 ```
 
-###### Using the Camel Route Builder
-The Route Builder is Apache Camel's API for defining how to read messages, and where from.
-If you are already familiar with Camel APIs, you should feel right at home here. If not, [you can read more about them here.](https://camel.apache.org/manual/routes.html)
+##### Reading from a Local Directory
 
-Passing in a route builder gives you the most flexibility and control over your routes logic, allowing for more advanced configurations, such as specifying processors and idempotency logic.
-Within the routeHandler block you can access the `dataPipelineProcessor` variable, this is a custom processor that is always created that will emit the messages from the source into the pipeline.
+##### Reading from an SFTP server
+
+The example below defines an [SFTP component](https://camel.apache.org/components/4.8.x/sftp-component.html), and shows how you can use properties set in the allowing you to have site-specific variables for each instance.
+
+This is particularly useful when integrating with external services where connection details are likely to vary between environments.
+
 ```kotlin
 pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
   source(
     camelFileSource {
       routeHandler {
-        from("file://src/test/resources/camel-source-test?noop=true&idempotent=true")
-          .idempotentConsumer(
-            header("CamelFileName"),
-            FileIdempotentRepository.fileIdempotentRepository(File("factInPathStrConsumerRepo"), 300000, 15000000)
-          ).process(dataPipelineProcessor)
+          val sftpEndPointPath = systemDefinition.getItem("SFTP_SERVER_SFTP")
+          val sftpUserName = systemDefinition.getItem("SFTP_SERVER_USERNAME")
+          val sftpPassword = systemDefinition.getItem("SFTP_SERVER_PASSWORD")
+          val sftpFileName = systemDefinition.getItem("SFTP_SERVER_FILENAME")
+          val pathStr = "${GenesisPaths.genesisHome()}/runtime/inbound"
+          val sftpConsumerRepo = "${pathStr}/IDEMPOTENT_CONSUMER.DATA"
+
+          from("sftp:${sftpEndPointPath}?username=${sftpUserName}&password=${sftpPassword}&include=$${sftpFileName}" +
+              "&delay=1000&sortBy=file:modified&delete=false&bridgeErrorHandler=true" +
+              "&knownHostsFile=/home/myapp/.ssh/known_hosts&throwExceptionOnConnectFailed=true&stepwise=false")
+              .idempotentConsumer(header("CamelFileName"),
+                  FileIdempotentRepository.fileIdempotentRepository(File(sftpConsumerRepo), 300000, 15000000))
+              .process(dataPipelineProcessor)
       }
     }
-  )
-  .sink(filesSink)
+  ).sink(filesSink)
 }
 ```
+
+###### Writing to an SFTP server
+
+We can easily invert the above example and instead write files from a local directory to a remote SFTP server.
+While the paths and properties below would need to be replaced with appropriate values (be they hardcoded or derived from system definition items) the example below shows how simple the basic routing can be:
+
+```kotlin
+pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
+  source(
+    camelFileSource {
+      routeHandler {
+          val sftpUserName = systemDefinition.getItem("SFTP_SERVER_USERNAME")
+          val sftpPassword = systemDefinition.getItem("SFTP_SERVER_PASSWORD")
+          
+          from("file:/directory/to/watch")
+            .to("sftp://remote-host:22/remote-path?username=${sftpUserName}&password={sftpPassword}")
+      }
+    }
+  ).sink(filesSink)
+}
+```
+
+For further details and configuration options see, the Apache Camel [SFTP component](https://camel.apache.org/components/sftp-component.html) documentation.
 
 #### `dbBatchQuery`
 
