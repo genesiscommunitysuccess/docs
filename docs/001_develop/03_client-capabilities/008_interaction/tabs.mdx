@@ -175,66 +175,138 @@ You will use `rapid-tabs`, `rapid-tab`, `rapid-tab-item` to create your tabs.
 </Tabs>
 
 
-## Menu API
+## Tabs API
 
 API examples shown with Genesis component syntax, and closing tag omitted.
 
 ### Attributes
 
-This component doesn't have any attributes.
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>orientation</td>
+            <td><code>"horizontal" | "vertical"</code></td>
+            <td>The orientation of the tabs menu. <em>Default: "horizontal"</em>.</td>
+<td>
+
+```typescript
+<rapid-tabs orientation="vertical">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>activeid</td>
+            <td><code>string</code></td>
+            <td>The id of the active tab. Setting this allows you to configure the default opened tab, else the first tab is shown.</td>
+<td>
+
+```typescript
+<rapid-tabs activeid="apps">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>activeindicator</td>
+            <td><code>boolean</code></td>
+            <td>Whether or not to show the active indicator on the active tab. <em>Default: <code>true</code></em></td>
+<td>
+
+```typescript
+<rapid-tabs ?activeindicator=${() => false}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Properties
 
-This component doesn't have any properties.
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>activetab</td>
+            <td><code>HTMLElement</code></td>
+            <td>The active tab element. You should only read this value, and not set it on the HTML.</td>
+<td>
 
-### Methods
+```typescript
+const value = tabRef.activetab;
+```
 
-|Method|Type|Description|
-|---|---|---|
-|focus|`() => void`|Focuses the first item in the menu.|
-|collapseExapndedItem|`() => void`|Collapses any expanded menu items.|
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Slots
 
 |Slot|Description|
 |---|---|
-|Default|The default slot where [`<rapid-menu-item>`](#menu-item-api) are placed.|
-
-#### Looped example
-
-You could construct an array of menu items to perform specific actions. Here is an example shown with the Genesis component syntax.
-```typescript
-const menuItems = [
-  { title: 'console log', action: () => console.log('console log') },
-  { title: 'alert', action: () => alert('alert') },
-]
-@customElement({
-  name: 'my-element',
-  template: html<MyElement>`
-    <rapid-menu>
-      ${repeat(
-        (_) => menuItems,
-        html`<rapid-menu-item @click=${x => x.action()}>${x => x.title}</rapid-menu-item>`
-      )}
-    </rapid-menu>
-  `,
-})
-export class MyElement extends GenesisElement { }
-```
+|start|Content which can be provided before the tablist element|
+|end|Content which can be provided after the tablist element|
+|tab|The slot for tabs ([`<rapid-tab>`](#tab-api))|
+|tabpanel|The slot for tabpanels ([`<rapid-tab-panel>`](#tab-panel-api))|
 
 ### Parts
 
-This component doesn't have any parts.
+|Part|Description|
+|---|---|
+|tablist|The element wrapping for the tabs|
+|tab|The tab slot|
+|activeIndicator|The visual indicator|
+|tabpanel|The tabpanel slot|
 
 ### Events fired
 
-This component doesn't fire any events.
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>change</td>
+            <td><code>HTMLElement</code></td>
+            <td>Fired when a tab is selected, or during keyboard navigation. The event data is active tab.</td>
+<td>
+
+```typescript
+<rapid-tabs @change=${(x,ctx) => x.handleTabChange(ctx.event)}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Events listened to
 
 This component doesn't listen to any events.
 
-## Menu Item API
+## Tab API
 
 API examples shown with Genesis component syntax, and closing tag omitted.
 
@@ -253,53 +325,46 @@ API examples shown with Genesis component syntax, and closing tag omitted.
         <tr>
             <td>disabled</td>
             <td><code>boolean</code></td>
-            <td>Disable the menu item, if disabled it will not respond to click.</td>
+            <td>Disable the tab, if disabled it will not respond to user interaction.</td>
 <td>
 
 ```typescript
-<rapid-menu-item disabled>
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>expanded</td>
-            <td><code>boolean</code></td>
-            <td>The expanded state of the menu item, especially if it's a submenu.</td>
-<td>
-
-```typescript
-<rapid-menu-item expanded>
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>role</td>
-            <td><code>"menuitem" | "menuitemcheckbox" | "menuitemradio"</code></td>
-            <td>The role of the menu item, altering its behaviour in the menu according to the corresponding html element. <strong>Default</strong>: <code>menuitem</code>.</td>
-<td>
-
-```typescript
-<rapid-menu-item role="menuitemradio">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>checked</td>
-            <td><code>boolean</code></td>
-            <td>The checked state of the menu item, only if it's a role of radio or checkbox.</td>
-<td>
-
-```typescript
-<rapid-menu-item role="menuitemcheckbox" ?checked=${sync(x => x.checkedItem, 'boolean')}>
+<rapid-tab disabled>
 ```
 
 </td>
         </tr>
     </tbody>
 </table>
+
+### Properties
+
+This component doesn't have any properties that are not also controlled via attributes.
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|The default slot for the tab content.|
+
+
+### Parts
+
+This component doesn't have any parts.
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.
+
+## Tab panel API
+
+API examples shown with Genesis component syntax, and closing tag omitted.
+
+### Attributes
 
 ### Properties
 
@@ -317,34 +382,6 @@ This component doesn't have any properties that are not also controlled via attr
 |expand-collapse-indicator|The expand/collapse indicator.|
 |submenu|Used to nest menu's within menu items.|
 
-#### Nested example
-
-You may nest multiple levels of menu items to create sub menus.
-```html
-<rapid-menu>
-    <rapid-menu-item>
-        Menu item 1
-        <rapid-menu>
-            <rapid-menu-item>Menu item 1.1</rapid-menu-item>
-            <rapid-menu-item>Menu item 1.2</rapid-menu-item>
-        </rapid-menu>
-    </rapid-menu-item>
-    <rapid-menu-item>
-        Menu item 2
-        <rapid-menu>
-            <rapid-menu-item>Menu item 2.1</rapid-menu-item>
-            <rapid-menu-item>Menu item 2.2</rapid-menu-item>
-        </rapid-menu>
-    </rapid-menu-item>
-    <rapid-menu-item>
-        Menu item 3
-        <rapid-menu>
-            <rapid-menu-item>Menu item 3.1</rapid-menu-item>
-            <rapid-menu-item>Menu item 3.2</rapid-menu-item>
-        </rapid-menu>
-    </rapid-menu-item>
-</rapid-menu>
-```
 
 ### Parts
 
@@ -360,42 +397,6 @@ You may nest multiple levels of menu items to create sub menus.
 
 ### Events fired
 
-<table>
-    <thead>
-        <tr>
-            <th>Event</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Example</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>change</td>
-            <td><code>void</code></td>
-            <td>Fired when a menu item with a role of <code>menuitemcheckbox</code>, <code>menuitemradio</code>, or <code>menuitem</code> is invoked. The event doesn't contain data, but you can use the event target to get a reference to the emitting menu item. You'll likely want to add this onto the containing menu item.</td>
-<td>
-
-```typescript
-<rapid-menu @change=${(x,ctx) => x.menuChange(<Event & {target: MenuItem}>ctx.event)}>
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>expanded-change</td>
-            <td><code>this</code></td>
-            <td>When the expanded state of a menu or submenu changes. Event data is a reference to the emitting menu.</td>
-<td>
-
-```typescript
-<rapid-menu-item @expanded-change=${(x,ctx) => x.menuExpandedChanged(ctx.event)}>
-```
-
-</td>
-        </tr>
-    </tbody>
-</table>
 
 ### Events listened to
 
