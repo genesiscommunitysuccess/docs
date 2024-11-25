@@ -102,13 +102,112 @@ Use cases:
 </Tabs>
 
 
-## Menu API
+## API
 
 API examples shown with Genesis component syntax, and closing tag omitted.
 
 ### Attributes
 
-This component doesn't have any attributes.
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>visible</td>
+            <td><code>boolean</code></td>
+            <td>Whether the tooltip is visible or not. If undefined tooltip is shown when anchor element is hovered</td>
+<td>
+
+```typescript
+<rapid-tooltip>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>anchor</td>
+            <td><code>string</code></td>
+            <td>The id of the element the tooltip is anchored to</td>
+<td>
+
+```typescript
+<rapid-tooltip anchor="button-id">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>delay</td>
+            <td><code>number</code></td>
+            <td>The delay in milliseconds before a tooltip is shown after a hover event</td>
+<td>
+
+```typescript
+<rapid-tooltip delay="300">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>position</td>
+            <td><code>TooltipPosition</code></td>
+            <td>Controls the placement of the tooltip relative to the anchor. When the position is undefined the tooltip is placed above or below the anchor based on available space</td>
+<td>
+
+```typescript
+<rapid-tooltip position="top">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>auto-update-mode</td>
+            <td><code>"anchor" | "auto"</code></td>
+            <td>Controls when the tooltip updates its position. 'anchor' only updates when the anchor is resized, 'auto' updates on scroll/resize events. <em>Default</em>: 'anchor'</td>
+<td>
+
+```typescript
+<rapid-tooltip auto-update-mode="anchor">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>horizontal-viewport-lock</td>
+            <td><code>boolean</code></td>
+            <td>Controls if the tooltip will always remain fully in the viewport on the horizontal axis</td>
+<td>
+
+```typescript
+<rapid-tooltip horizontal-viewport-lock>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>vertical-viewport-lock</td>
+            <td><code>boolean</code></td>
+            <td>Controls if the tooltip will always remain fully in the viewport on the vertical axis</td>
+<td>
+
+```typescript
+<rapid-tooltip vertical-viewport-lock>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+:::info
+`TooltipPosition = "top" | "right" | "bottom" | "left" | "start" | "end" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "top-start" | "top-end" | "bottom-start" | "bottom-end";`
+:::
 
 ### Properties
 
