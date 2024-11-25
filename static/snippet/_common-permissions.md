@@ -1,9 +1,9 @@
 #### `permissioning`
 
-The `permissioning` block is used to implement [access control](/develop/server-capabilities/access-control/) measures on the sata being returned to a user.
+The `permissioning` block is used to implement [access control](/develop/server-capabilities/access-control/) measures on the data being returned to a user.
 
 :::tip
-With the exception of the inner `auth` block which relies on inbound data, the `permissioning` block and it's contents can also be placed in the outer block and apply to all `query`/`requestServer`/`eventHandler` blocks named in the file.
+With the exception of the inner `auth` block which relies on inbound data, the `permissioning` block and its contents can also be placed in the outer block and apply to all `query`/`requestServer`/`eventHandler` blocks named in the file.
 :::
 
 ##### `permissionCodes`
@@ -36,7 +36,7 @@ The `customPermissions` block also has access to `entityDb` so that you can quer
   }
 ```
 
-Where utilizing `customPermissions` you should also consider configuring a [`customLoginAck`](/develop/server-capabilities/access-control/authentication/#customloginack) so that the front end of the application can also permission it's components in a similar way.
+Where utilizing `customPermissions` you should also consider configuring a [`customLoginAck`](/develop/server-capabilities/access-control/authentication/#customloginack) so that the front end of the application can also permission its components in a similar way.
 
 
 ##### `auth`

@@ -1,0 +1,229 @@
+---
+title: 'Segmented Control'
+sidebar_label: 'Segmented Control'
+id: client-interaction-segmented-control
+keywords: [interaction, interactive, segmented control, form]
+tags:
+- interaction
+- interactive
+- segmented control
+- form
+sidebar_position: 8
+---
+
+import SegmentedControlDemo from '../../../../../examples/ui/client-capabilities/interaction/segmented-control.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Segmented Control
+
+A segmented control is a set of checkable buttons. No more than one button can be checked at a time. When a user checks an unchecked button, the previously checked button is automatically unchecked.
+
+It is possible to initialise the set with all buttons in the unchecked state. This forces the user to check one of the buttons before moving past a certain point in the workflow.
+
+Use cases:
+* Used anywhere someone may want to visually and structurally group related interactive controls.
+
+## Examples
+
+<SegmentedControlDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+      <rapid-segmented-control></rapid-segmented-control>
+    ```
+
+    Usage
+    ```typescript
+      @customElement({
+        name: 'my-element',
+        template: html`
+            <rapid-segmented-control value=${sync((x) => x.controlValue)}>
+              <rapid-segmented-item>Item 1</rapid-segmented-item>
+              <rapid-segmented-item>Item 2</rapid-segmented-item>
+              <rapid-segmented-item>Item 3</rapid-segmented-item>
+            </rapid-segmented-control>
+          `,
+      })
+
+      export class MyElement extends GenesisElement {
+        @observable controlValue = '';
+        controlValueChanged() {
+          console.log(this.controlValue);
+        }
+      }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+      <rapid-segmented-control></rapid-segmented-control>
+    ```
+    Usage
+    ```typescript
+      export function MyComponent() {
+
+        const [outputValue, setOutputValue] = useState('');
+
+        const onChange = (event) => {
+          setOutputValue(event.target.value);
+        }
+
+        return (
+          <rapid-segmented-control onChange={onChange}>
+            <rapid-segmented-item>Item 1</rapid-segmented-item>
+            <rapid-segmented-item>Item 2</rapid-segmented-item>
+            <rapid-segmented-item>Item 3</rapid-segmented-item>
+          </rapid-segmented-control>
+        );
+      }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+      <rapid-segmented-control></rapid-segmented-control>
+    ```
+
+    Usage
+    ```typescript
+      import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+      import { FormsModule } from '@angular/forms';
+      @Component({
+        selector: 'my-root',
+        template: `
+              <rapid-segmented-control
+                (change)="onChange($event)"
+              >
+                <rapid-segmented-item>Item 1</rapid-segmented-item>
+                <rapid-segmented-item>Item 2</rapid-segmented-item>
+                <rapid-segmented-item>Item 3</rapid-segmented-item>
+              </rapid-segmented-control>
+            `,
+        standalone: true,
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        imports: [FormsModule],
+      })
+      export class AppComponent {
+        onChange(event: Event) {
+          const target = event.target as HTMLInputElement;
+          console.log(target.value);
+        }
+      }
+      ```
+    </TabItem>
+  </Tabs>
+
+## API
+
+### Attributes
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>readonly</td>
+      <td><code>boolean</code></td>
+      <td>Configures the component so the user cannot alter the state via the web browser.</td>
+<td>
+
+```typescript
+<rapid-segmented-control readonly>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Similar to `readonly`, but with a blur on the component</td>
+<td>
+
+```typescript
+<rapid-segmented-control disabled>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>Defines the name of the element</td>
+<td>
+
+```typescript
+<rapid-segmented-control name="componentName">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>string</code></td>
+      <td>Defines the value associated with this element.</td>
+<td>
+
+```typescript
+<rapid-segmented-control value=${sync((x) => x.controlValue)}>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>orientation</td>
+      <td><code>"horizontal" | "vertical"</code></td>
+      <td>Sets the orientation of the group of components. **Default: `horizontal`**</td>
+<td>
+
+```typescript
+<rapid-segmented-control orientation="vertical">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties:
+
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+
+| Slot | Description |
+|---|---|
+| Default | The default slot where rapid-segmented-items go |
+| label | The label |
+
+### Parts
+There are no parts.
+
+### Events fired
+
+<table>
+  <thead><tr><th>Event</th><th>Type</th><th>Use</th><th>Example</th></tr></thead>
+  <tbody>
+  <tr>
+    <td>change</td>
+    <td><code>void</code></td>
+    <td>Emits a custom change event when the component state changes.</td>
+<td>
+
+```typescript
+<rapid-segmented-control @change="${(x) => x.myChangeHandler()}">
+```
+
+</td>
+  </tr>
+  </tbody>
+</table>
+
+
+### Events listened to
+This component doesn't listen to any events.

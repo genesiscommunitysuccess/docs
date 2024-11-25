@@ -25,7 +25,7 @@ import CommonOpenAPI from '/snippet/_common-open-api.md'
 ## Overview
 
 The Request Server is a microservice responsible for providing APIs to request snapshots of an application's data. Developers configure specific data sets as named requests, which can be queried by clients via APIs. Request Servers may sometimes be referred to as a "Request Reply" or "ReqRep" for short.
-≤
+
 ```mermaid
 graph TD
 A[UI] --> |1. Request| B(REQUEST_SERVER)
@@ -39,7 +39,7 @@ All Request Server queries are available via REST automatically, including Open 
 
 ## Example configuration
 
-Keeping with the [data model examples](/develop/server-capabilities/data-model/#example-configuration) the following show example request configurations.
+Keeping with the [data model examples](/develop/server-capabilities/data-model/#example-configuration) the following shows example request configurations.
 
 
 ```kotlin
@@ -99,7 +99,7 @@ The request server name is defaulted as no name is specified.
 ###### TRADE_VIEW
 A request server name is specified.
 
-This query is for a view, where as the previous two were onto tables. This query brings in all the fields defined in the view, which span multiple tables.  
+This query is for a view, whereas the previous two were onto tables. This query brings in all the fields defined in the view, which span multiple tables.  
 
 We have specified the fields of the view we want to show explicitly, if there are fields in a view/table we don't need we can leave them out of this configuration. Where `fields` block is not specified all are implicitly included.  
 
@@ -109,7 +109,7 @@ The `auth` block in `permissioning` utilizes [access control](/develop/server-ca
 
 ### Summary
 
-A Data Server file consists of a number of queries onto a table or view. All the details of the table or view are inherited from the definition, so you don’t need to supply any further details should you not need filter, apply [access control](/develop/server-capabilities/access-control/), else limit or extend the set of fields on the view or query.
+A Request Server file consists of a number of queries onto a table or view. All the details of the table or view are inherited from the definition, so you don’t need to supply any further details should you not need filter, apply [access control](/develop/server-capabilities/access-control/), else limit or extend the set of fields on the view or query.
 
 
 ## Configuration options
@@ -122,7 +122,7 @@ A Data Server file consists of a number of queries onto a table or view. All the
 
 ```kotlin
   // Name of the request server: REQ_INSTRUMENT
-  requestReply("INSTRUMENT")
+  requestReply(INSTRUMENT)
 
   // Name of the request server: REQ_TRADE
   requestReply("TRADE", TRADE_VIEW)
@@ -130,7 +130,7 @@ A Data Server file consists of a number of queries onto a table or view. All the
 
 #### `request`
 
-`request` lists the fields that a client can request data using
+`request` lists the fields that a client can request data using.
 
 `request` is optional. Left unspecified the request fields will be those which make up the primary key of the table (primary key of the root table if the entity is a view)
 
@@ -155,15 +155,16 @@ You can also use an index as the request input, this will ensure all the fields 
 In this example, with reference to [data model examples](/develop/server-capabilities/data-model/#example-configuration), we would have the following `REQUEST` inputs available to the client:
 - `COUNTERPARTY_ID`
 - `DATE`
+
 Requests would be looked up using that table index.
 
 ###### Picking an index
 
-Request servers will attempt to use the most efficient mechanism to retrieve data from the data base. Given the `REQUEST` fields which are input, and not wild carded, it will cycle through the indices of the table or view used and score accordingly. If it is a full match we give max score to that index, any partial matches are scored and that with the highest score is used.
+Request servers will attempt to use the most efficient mechanism to retrieve data from the database. Given the `REQUEST` fields which are input, and not wild carded, it will cycle through the indices of the table or view used and score accordingly. If it is a full match we give max score to that index, any partial matches are scored and that with the highest score is used.
 
 ###### Audit table recommendations
 
-Audit table request servers are very helpful for requesting all the audit records for a given record, or set of records. Audits can get very large, so having real-time data server can come with a large overhead due to it's caching nature. It is encouraged to instead use request servers for requesting audit rows for of a particular record ID.
+Audit table request servers are very helpful for requesting all the audit records for a given record, or set of records. Audits can get very large, so having a real-time data server can come with a large overhead due to its caching nature. It is encouraged to instead use request servers for requesting audit rows for of a particular record ID.
 
 All audit tables come with a key `*_BY_UNDERLYING_ID` which utilizes the primary key of the parent table. It is recommended to use this as the `request` configuration option for all audit tables. For example:
 
@@ -862,12 +863,12 @@ fun testHelloWorldRequestServer() {
 
 ```java
 @Test
-fun testHelloWorldRequestServer() {
-    val hello = Hello("John")
-    val result = client.sendRequest(helloWorldFlow, hello)
-    assertEquals(1, result.size)
-    val world = result[0]
-    assertEquals("Hello, John!", world.message)
+public void testHelloWorldRequestServer() {
+    var hello = new Hello("John");
+    var result = client.sendRequest(helloWorldFlow, hello);
+    assertEquals(1, result.size());
+    var world = result.get(0);
+    assertEquals("Hello, John!", world.getMessage());
 }
 ```
 </TabItem>
@@ -883,12 +884,12 @@ You can optionally provide a username as well:
 
 ```kotlin
 @Test
-public void testHelloWorldRequestServerWithUser() {
-    var hello = new Hello("John");
-    var result = client.sendRequest(helloWorldFlow, hello, "JohnDoe");
-    assertEquals(1, result.size());
-    var world = result.get(0);
-    assertEquals("Hello, John!", world.getMessage());
+fun testHelloWorldRequestServerWithUser() {
+    val hello = Hello("John")
+    val result = client.sendRequest(helloWorldFlow, hello, "JohnDoe")
+    assertEquals(1, result.size)
+    val world = result[0]
+    assertEquals("Hello, John!", world.message)
 }
 ```
 
@@ -897,12 +898,12 @@ public void testHelloWorldRequestServerWithUser() {
 
 ```java
 @Test
-fun testHelloWorldRequestServerWithUser() {
-    val hello = Hello("John")
-    val result = client.sendRequest(helloWorldFlow, hello, "JohnDoe")
-    assertEquals(1, result.size)
-    val world = result[0]
-    assertEquals("Hello, John!", world.message)
+public void testHelloWorldRequestServerWithUser() {
+    var hello = new Hello("John");
+    var result = client.sendRequest(helloWorldFlow, hello, "JohnDoe");
+    assertEquals(1, result.size());
+    var world = result.get(0);
+    assertEquals("Hello, John!", world.getMessage());
 }
 ```
 </TabItem>
@@ -1064,7 +1065,7 @@ In most cases, the **RequestClientSync** client will suffice.
 At this point we have tested our very simple Request Server. We haven't even had to use the database! However, we have covered the basics of communication between tests and Request Servers.
 
 We have covered:
-* defining a request flows
+* defining request flows
 * sending our request and receiving the response
 * setting the username on the request
 * handling dynamic authorization
@@ -1135,7 +1136,7 @@ class ReqrepTest : AbstractGenesisTestSupport<GenesisSet>(
 
 ```
 
-In the above example, we are asserting that there are five rows within the response from our Request Server. This is based on the two rows of data that we have in `seed-data.csv` declared earlier.
+In the above example, we are asserting that there are two rows within the response from our Request Server. This is based on the two rows of data that we have in `seed-data.csv` declared earlier.
 
 ### Custom Request Servers
 
