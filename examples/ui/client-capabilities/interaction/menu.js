@@ -11,18 +11,13 @@ export default function MenuDemo({ children, color }) {
 		RapidImports.registerComponents();
 	}
 
-	const style = {
-		marginRight: '4px',
-		marginLeft: '4px',
-	};
-
 	const handleChange = (e) => {
 		console.log(e.target)
 	}
 
 	return (
 		<CodeSection>
-			<rapid-menu onChange={(e) => console.log(e)}>
+			<rapid-menu onChange={(e) => handleChange(e)}>
 				<rapid-menu-item>Menu item 1</rapid-menu-item>
 				<rapid-menu-item>Menu item 2</rapid-menu-item>
 				<rapid-menu-item>Menu item 3</rapid-menu-item>
