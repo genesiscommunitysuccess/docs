@@ -1,5 +1,6 @@
 import { CodeLabel, CodeSection } from '../../documentationBase';
 import useIsBrowser from '@docusaurus/useIsBrowser';
+import { useState } from 'react';
 
 export default function ListboxDemo({ children, color }) {
 	const isBrowser = useIsBrowser();
@@ -9,11 +10,14 @@ export default function ListboxDemo({ children, color }) {
 		RapidImports.registerComponents();
 	}
 
+	const [selected, setSelected] = useState('');
+
 	return (<CodeSection>
-		<rapid-listbox>
-			<rapid-option>Apple</rapid-option>
-			<rapid-option>Banana</rapid-option>
-			<rapid-option>Strawberry</rapid-option>
+		<rapid-listbox onClick={(e) => setSelected(e.target.value)}>
+			<rapid-option value="apple">Apple</rapid-option>
+			<rapid-option value="banana">Banana</rapid-option>
+			<rapid-option value="strawberry">Strawberry</rapid-option>
 		</rapid-listbox>
+		<p>Selected: {selected}</p>
 	</CodeSection >)
 }

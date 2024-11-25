@@ -20,12 +20,14 @@ import ListboxDemo from '/examples/ui/client-capabilities/interaction/listbox.js
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Accordions allow users to expand or collapse sections of content on a page.
+Listboxes are menus that display options and allow the user to select one. Listboxes are  the menu which displays when clicking a [`<rapid-select></rapid-select>`](../../forms/form-inputs/client-interaction-select).
 
 Use cases:
-* Presenting multiple sections of content
-* Allow the users to show or hide different sections of related information
+* Constructing menus as part of form items
 
+:::tip
+The primary use of this component is to be used as part of other custom form components you wish to construct. If you simply want to use a form item which allows the user to select one value we recommend you use a [`<rapid-radio-group></rapid-radio-group>`](../../forms/form-inputs/client-interaction-radio-group) or [`<rapid-segmented-control></rapid-segmented-control>`](../../forms/form-layout/client-interaction-segmented-control/) instead.
+:::
 
 ## Example
 <ListboxDemo />
@@ -36,10 +38,11 @@ Use cases:
 
     Declaration
     ```html
-    <rapid-accordion>
-      <rapid-accordion-item></rapid-accordion-item>
-      <rapid-accordion-item></rapid-accordion-item>
-    </rapid-accordion>
+    <rapid-listbox>
+      <rapid-option></rapid-option>
+      <rapid-option></rapid-option>
+      <rapid-option></rapid-option>
+    </rapid-listbox>
     ```
 
     Usage
@@ -47,55 +50,53 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-accordion>
-          <rapid-accordion-item expanded>
-            <span slot="heading">Panel one</span>
-            Panel one content
-          </rapid-accordion-item>
-          <rapid-accordion-item>
-            <span slot="heading">Panel two</span>
-            Panel two content
-          </rapid-accordion-item>
-          <rapid-accordion-item expanded>
-            <span slot="heading">Panel three</span>
-            Panel three content
-          </rapid-accordion-item>
-        </rapid-accordion>
-    `,
+        <rapid-listbox @click=${(x, ctx) => x.setSelected(ctx.event)}>
+          <rapid-option value="apple">Apple</rapid-option>
+          <rapid-option value="banana">Banana</rapid-option>
+          <rapid-option value="strawberry">Strawberry</rapid-option>
+        </rapid-listbox>
+        Listbox value: ${x => x.listboxValue}
+      `,
     })
-    export class MyElement extends GenesisElement { }
+    export class MyElement extends GenesisElement {
+      @observable listboxValue: string;
+      setSelected(event: Event & { target: { value: string } }) {
+        this.listboxValue = event.target.value;
+      }
+    }
     ```
+
+    <!-- TODO add link to sync -->
+    :::warning
+    Unlike most other Genesis components you cannot use the `sync` directive here. This is because the listbox doesn't fire events, that is intended to be controlled by the parent form element.
+    :::
 
   </TabItem>
   <TabItem value="react">
 
     Declaration
     ```html
-    <rapid-accordion>
-      <rapid-accordion-item></rapid-accordion-item>
-      <rapid-accordion-item></rapid-accordion-item>
-    </rapid-accordion>
+    <rapid-listbox>
+      <rapid-option></rapid-option>
+      <rapid-option></rapid-option>
+      <rapid-option></rapid-option>
+    </rapid-listbox>
     ```
 
     Usage
     ```typescript
     export function MyComponent() {
-      return (
-        <rapid-accordion>
-          <rapid-accordion-item expanded>
-            <span slot="heading">Panel one</span>
-            Panel one content
-          </rapid-accordion-item>
-          <rapid-accordion-item>
-            <span slot="heading">Panel two</span>
-            Panel two content
-          </rapid-accordion-item>
-          <rapid-accordion-item expanded>
-            <span slot="heading">Panel three</span>
-            Panel three content
-          </rapid-accordion-item>
-        </rapid-accordion>
-      );
+    const [selected, setSelected] = useState('');
+
+    return (
+      <div>
+        <rapid-listbox onClick={(e) => setSelected(e.target.value)}>
+          <rapid-option value="apple">Apple</rapid-option>
+          <rapid-option value="banana">Banana</rapid-option>
+          <rapid-option value="strawberry">Strawberry</rapid-option>
+        </rapid-listbox>
+        <p>Selected: {selected}</p>
+      </div>)
     }
     ```
   </TabItem>
@@ -103,10 +104,11 @@ Use cases:
 
     Declaration
     ```html
-    <rapid-accordion>
-      <rapid-accordion-item></rapid-accordion-item>
-      <rapid-accordion-item></rapid-accordion-item>
-    </rapid-accordion>
+    <rapid-listbox>
+      <rapid-option></rapid-option>
+      <rapid-option></rapid-option>
+      <rapid-option></rapid-option>
+    </rapid-listbox>
     ```
 
     Usage
@@ -114,28 +116,25 @@ Use cases:
     import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     import { FormsModule } from '@angular/forms';
     @Component({
-      selector: 'my-root',
+      selector: 'my-component',
       template: `
-        <rapid-accordion>
-          <rapid-accordion-item expanded>
-            <span slot="heading">Panel one</span>
-            Panel one content
-          </rapid-accordion-item>
-          <rapid-accordion-item>
-            <span slot="heading">Panel two</span>
-            Panel two content
-          </rapid-accordion-item>
-          <rapid-accordion-item expanded>
-            <span slot="heading">Panel three</span>
-            Panel three content
-          </rapid-accordion-item>
-        </rapid-accordion>
+        <rapid-listbox (click)="setSelected($event)">
+          <rapid-option value="apple">Apple</rapid-option>
+          <rapid-option value="banana">Banana</rapid-option>
+          <rapid-option value="strawberry">Strawberry</rapid-option>
+        </rapid-listbox>
+        <p>Selected: {{ selected }}</p>
       `,
       standalone: true,
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [FormsModule],
     })
-    export class AppComponent { }
+    export class MyComponent {
+      selected: string = '';
+      setSelected(event: any) {
+        this.selected = event.target.value;
+      }
+    }
     ```
   </TabItem>
 </Tabs>
