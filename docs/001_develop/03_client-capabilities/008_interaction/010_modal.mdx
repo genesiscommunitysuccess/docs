@@ -50,8 +50,8 @@ Use cases:
                 <rapid-button @click=${x => x.modal.show()}>Open Modal</rapid-button>
                 <rapid-modal
                     ${ref('modal')}
-                    :onShowCallback=${x => x.showCallback()}
-                    :onCloseCallback=${x => x.closeCallback()}
+                    :onShowCallback=${x => x.showCallback}
+                    :onCloseCallback=${x => x.closeCallback}
                 >
                     <h3 slot="top">Top slot</h3>
                     Main content in the modal
@@ -64,9 +64,9 @@ Use cases:
         export class MyElement extends GenesisElement {
             modal: Modal
             showCallback() {
-                console.log('modal shown')';
+                console.log('modal shown');
             }
-            hideCallback() {
+            closeCallback() {
                 console.log('modal closed');
             }
         }
