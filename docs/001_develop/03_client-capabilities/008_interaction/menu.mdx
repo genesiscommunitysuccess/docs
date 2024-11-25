@@ -1,0 +1,252 @@
+---
+title: 'Menu'
+sidebar_label: 'Menu'
+id: client-interaction-menu
+keywords: [ interaction, interactive, menu, desktop, item, choice, nested, start menu, menu bar, action ]
+tags:
+- interaction
+- interactive
+- menu
+- desktop
+- item
+- choice
+- nested
+- start menu
+- menu bar
+- action
+sidebar_position: 8
+---
+
+import MenuDemo from '/examples/ui/client-capabilities/interaction/menu.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The menu is a component which lists choices for a user, such as allowing them to select actions.
+
+The menu behaves like native operating system menus, such as the menus that pull down from the menubars commonly found at the top of many desktop application window. When a user activates a choice in a menu, the menu usually closes unless the choice opened a submenu.
+
+Use cases:
+* Create a menu bar to emulate the feeling of a desktop application
+* Create a menu for interacting with a component
+
+While any DOM content is permissible as a child of the menu, only `<rapid-menu-item>`s and slotted content with a role of `menuitem`, `menuitemcheckbox`, or `menuitemradio` will receive keyboard support.
+
+## Example
+<MenuDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-menu>
+      <rapid-menu-item></rapid-menu-item>
+      <rapid-menu-item></rapid-menu-item>
+    </rapid-menu>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html<MyElement>`
+        <rapid-menu @change=${(x,ctx) => x.menuChange(<Event & {target: MenuItem}>ctx.event)}>
+          <rapid-menu-item @click=${(x) => itemOneAction()}>Menu item 1</rapid-menu-item>
+          <rapid-menu-item>Menu item 2</rapid-menu-item>
+          <rapid-menu-item>Menu item 3</rapid-menu-item>
+          <rapid-divider></rapid-divider>
+          <rapid-menu-item role="menuitemradio">Menu item 4</rapid-menu-item>
+          <rapid-menu-item role="menuitemradio">Menu item 5</rapid-menu-item>
+        </rapid-menu>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      menuChange(e: Event & {target: MenuItem}) {
+        // do something with the selected menu item, e.g.
+        console.log(e.target.getAttribute('role'))
+      }
+      itemOneAction() {
+        // alternatively, just add event listners to perform actions on click
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-menu>
+      <rapid-menu-item></rapid-menu-item>
+      <rapid-menu-item></rapid-menu-item>
+    </rapid-menu>
+    ```
+
+    Usage
+    ```typescript
+    export function MyComponent() {
+      const handleMenuChange = (e: Event & {target: MenuItem}) => {
+        // do something with the selected menu item, e.g.
+        console.log(e.target.getAttribute('role'))
+      }
+      const itemOneAction = () => {
+        // alternatively, just add event listeners to perform actions on click
+      }
+      return (
+        <rapid-menu onChange={(e) => handleMenuChange(<Event & {target: MenuItem}>e)}>
+          <rapid-menu-item onClick={itemOneAction}>Menu item 1</rapid-menu-item>
+          <rapid-menu-item>Menu item 2</rapid-menu-item>
+          <rapid-menu-item>Menu item 3</rapid-menu-item>
+          <rapid-divider></rapid-divider>
+          <rapid-menu-item role="menuitemradio">Menu item 4</rapid-menu-item>
+          <rapid-menu-item role="menuitemradio">Menu item 5</rapid-menu-item>
+        </rapid-menu>
+      )
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-menu>
+      <rapid-menu-item></rapid-menu-item>
+      <rapid-menu-item></rapid-menu-item>
+    </rapid-menu>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    @Component({
+      selector: 'my-component',
+      template: `
+        <rapid-menu (change)="handleMenuChange($event)">
+          <rapid-menu-item (click)="itemOneAction()">Menu item 1</rapid-menu-item>
+          <rapid-menu-item>Menu item 2</rapid-menu-item>
+          <rapid-menu-item>Menu item 3</rapid-menu-item>
+          <rapid-divider></rapid-divider>
+          <rapid-menu-item role="menuitemradio">Menu item 4</rapid-menu-item>
+          <rapid-menu-item role="menuitemradio">Menu item 5</rapid-menu-item>
+        </rapid-menu>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class MyComponent {
+      handleMenuChange(e: Event) {
+        // do something with the selected menu item, e.g.
+        const target = e.target as MenuItem;
+        console.log(target.getAttribute('role'));
+      }
+      itemOneAction() {
+        // alternatively, just add event listeners to perform actions on click
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+
+## API
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>disabled</td>
+            <td><code>boolean</code></td>
+            <td>Disable the flipper, if disabled it will not respond to click.</td>
+<td>
+
+```typescript
+<rapid-flipper disabled>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>aria-hidden</td>
+            <td><code>boolean</code></td>
+            <td>Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology. <em>Default: <code>true</code></em></td>
+<td>
+
+```typescript
+<rapid-flipper aria-hidden="false">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>direction</td>
+            <td><code>"previous" | "next"</code></td>
+            <td>The direction that the flipper implies navigating. <em>Default: <code>next</code></em></td>
+<td>
+
+```typescript
+<rapid-flipper direction="previous">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Properties
+
+This component doesn't have any properties that are not also controlled via attributes.
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|next|The `next` flipper content.|
+|previous|The `previous` flipper content.|
+
+### Parts
+
+| Part | Description |
+| --- | --- |
+|next|Wraps the `next` flipper content|
+|previous|Wraps the `previous` flipper content|
+
+### Events fired
+
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>click</td>
+            <td><code><a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent">Event & KeyboardEvent</a></code></td>
+            <td>Fired when Enter or Space is invoked via keyboard and the flipper is exposed to assistive technologies.</td>
+<td>
+
+```typescript
+<rapid-flipper @click="${(x,ctx) => x.onFlipperClick(ctx.event)}">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Events listened to
+
+This component doesn't listen to any events.
