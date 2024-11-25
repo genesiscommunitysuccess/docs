@@ -126,6 +126,8 @@ eventHandler {
 
 ## Configuration options
 
+All `eventHandler` blocks should be placed under a single outer `eventHandler` block per the example configuration above.
+
 It is important to understand the concepts of validation vs commit, and ack vs nack.
 
 There are two main blocks to an eventHandler, [`onValidate`](#onvalidate) and [`onCommit`](#oncommit). The following images show the execution workflow where validate is set by the client to true vs false, and how nack (unsuccessful event) terminates the event unsuccessfully and can will stop further execution of the event:
