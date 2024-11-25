@@ -149,69 +149,114 @@ While any DOM content is permissible as a child of the menu, only `<rapid-menu-i
 </Tabs>
 
 
-## API
+## Menu API
 
 ### Attributes
 
-<table>
-    <thead>
-        <tr>
-            <th>Attribute</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Example</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>disabled</td>
-            <td><code>boolean</code></td>
-            <td>Disable the flipper, if disabled it will not respond to click.</td>
-<td>
-
-```typescript
-<rapid-flipper disabled>
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>aria-hidden</td>
-            <td><code>boolean</code></td>
-            <td>Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology. <em>Default: <code>true</code></em></td>
-<td>
-
-```typescript
-<rapid-flipper aria-hidden="false">
-```
-
-</td>
-        </tr>
-        <tr>
-            <td>direction</td>
-            <td><code>"previous" | "next"</code></td>
-            <td>The direction that the flipper implies navigating. <em>Default: <code>next</code></em></td>
-<td>
-
-```typescript
-<rapid-flipper direction="previous">
-```
-
-</td>
-        </tr>
-    </tbody>
-</table>
+This component doesn't have any attributes.
 
 ### Properties
 
-This component doesn't have any properties that are not also controlled via attributes.
+This component doesn't have any properties.
+
+### Methods
+
+|Method|Type|Description|
+|---|---|---|
+|focus|`() => void`|Focuses the first item in the menu.|
+|collapseExapndedItem|`() => void`|Collapses any expanded menu items.|
 
 ### Slots
 
 |Slot|Description|
 |---|---|
-|next|The `next` flipper content.|
-|previous|The `previous` flipper content.|
+|Default|The default slot where [`<rapid-menu-item>`](#menu-item-api) are placed.|
+
+#### Looped example
+
+You could construct an array of menu items to perform specific actions. Here is an example shown with the Genesis component syntax.
+```typescript
+const menuItems = [
+  { title: 'console log', action: () => console.log('console log') },
+  { title: 'alert', action: () => alert('alert') },
+]
+@customElement({
+  name: 'my-element',
+  template: html<MyElement>`
+    <rapid-menu>
+      ${repeat(
+        (_) => menuItems,
+        html`<rapid-menu-item @click=${x => x.action()}>${x => x.title}</rapid-menu-item>`
+      )}
+    </rapid-menu>
+  `,
+})
+export class MyElement extends GenesisElement { }
+```
+
+### Parts
+
+This component doesn't have any parts.
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.
+
+## Menu Item API
+
+### Attributes
+
+This component doesn't have any attributes.
+
+### Properties
+
+This component doesn't have any properties.
+
+### Methods
+
+|Method|Type|Description|
+|---|---|---|
+|focus|`() => void`|Focuses the first item in the menu.|
+|collapseExapndedItem|`() => void`|Collapses any expanded menu items.|
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|The `next` flipper content.|
+
+#### Nested example
+
+You may nest multiple levels of menu items to create sub menus.
+```html
+<rapid-menu>
+    <rapid-menu-item>
+        Menu item 1
+        <rapid-menu>
+            <rapid-menu-item>Menu item 1.1</rapid-menu-item>
+            <rapid-menu-item>Menu item 1.2</rapid-menu-item>
+        </rapid-menu>
+    </rapid-menu-item>
+    <rapid-menu-item>
+        Menu item 2
+        <rapid-menu>
+            <rapid-menu-item>Menu item 2.1</rapid-menu-item>
+            <rapid-menu-item>Menu item 2.2</rapid-menu-item>
+        </rapid-menu>
+    </rapid-menu-item>
+    <rapid-menu-item>
+        Menu item 3
+        <rapid-menu>
+            <rapid-menu-item>Menu item 3.1</rapid-menu-item>
+            <rapid-menu-item>Menu item 3.2</rapid-menu-item>
+        </rapid-menu>
+    </rapid-menu-item>
+</rapid-menu>
+```
 
 ### Parts
 
