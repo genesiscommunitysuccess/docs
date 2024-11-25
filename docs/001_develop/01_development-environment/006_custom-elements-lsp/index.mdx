@@ -56,7 +56,7 @@ From now on, when you make any changes to the file, you can see all the features
 ## Installing in IntelliJ
 
 :::info
-JetBrains' IDEs such as IntelliJ only have partial support for the LSP. The data files generated for the LSP enhance completion functionality, and the LSP will provide diagnostics. However, Quickinfo functionality (such as jumping to definition) is not supported.
+JetBrains IDEs, such as IntelliJ, only have partial support for the LSP. The data files generated for the LSP enhance completion functionality, and the LSP will provide diagnostics. However, Quickinfo functionality (such as jumping to definition) is not supported.
 :::
 
 If you created your project using genx or Genesis Create, your dependencies and the initial configuration are done for you automatically. If you created your project from scratch, you must do this as a [manual installation](#manual-installation).
@@ -114,9 +114,8 @@ npm i --save-dev @genesiscommunitysuccess/custom-elements-lsp @genesiscommunitys
 }
 ```
 
-
-	- The above codeblock is the default settings which are enabled for a new Genesis project. Unless you have restructured the project manually the above config will be all you need.
-	- Edit the codeblock above to match your requirements if required.
+	- The above codeblock provides the default settings that are enabled for a new Genesis project. Unless you have restructured the project manually, this is all you need.
+	- Edit the codeblock above to match your requirements.
 
     The four main options in the codeblock are:
 
@@ -128,7 +127,7 @@ npm i --save-dev @genesiscommunitysuccess/custom-elements-lsp @genesiscommunitys
 | `plugins`              | **Optional**.  Use this to set any optional plugins you can add. Specified plugins are applied in order. By default `@genesiscommunitysuccess/cep-fast-plugin` is enabled to enhance Genesis syntax capabilities.     |
 
 :::caution
-If you use a monorepo pattern with workspaces, you must account for potential hoisting of the TypeScript library in the `node_modules` to a parent directory. If npm has hoisted your typescript install, make the account for this when you set `srcRootFromTSServer`.
+If you use a monorepo pattern with workspaces, you must account for potential hoisting of the TypeScript library in the `node_modules` to a parent directory. If npm has hoisted your typescript install, make sure that you account for this when you set `srcRootFromTSServer`.
 
  `typescript.tdsk` must point to the lib directory of the project's typescript install.
 :::
@@ -139,8 +138,8 @@ The parser options are:
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | `src`                  | **Optional**. Set to the glob of the source files in the current project to analyse live. Default is `("src/**/*.{js,ts})`     |
 | `timeout`              | **Optional**. Time in milliseconds to debounce calls between running the analyser on the source files. The lower the time, the more responsive the LSP will be to changes in the source code - but the more resources it uses. Default is `2000`.|
-| `dependencies`         | **Optional**. An array of strings of globs that find `custom-elements.json` from library dependencies to use with the LSP. Libraries will ship production code that the analyser will not be able to parse, so the libraries need to ship the manifest generated from the analyser. An example default you could use to load all files would be `["node_modules/**/custom-elements.json","!**/@custom-elements-manifest/**/*"]` which finds all the manifests in your dependencies, but ignores the test manifests from the analyser dependency itself. The default configuration is to enable reading the files supplied from the Genesis UI library. |
-| `fastEnable`           | **Optional**.  Enables Microsoft FAST parsing of local components, which is the dialect of the Genesis components. You need to enable the plugin too for full functionality (enabled by default in the above configuration).  |
+| `dependencies`         | **Optional**. An array of strings of globs that find `custom-elements.json` from library dependencies to use with the LSP. Libraries will ship production code that the analyser will not be able to parse, so the libraries need to ship the manifest generated from the analyser. An example default you could use to load all files would be `["node_modules/**/custom-elements.json","!**/@custom-elements-manifest/**/*"]`, which finds all the manifests in your dependencies, but ignores the test manifests from the analyser dependency itself. The default configuration is to enable reading the files supplied from the Genesis UI library. |
+| `fastEnable`           | **Optional**.  Enables Microsoft FAST parsing of local components, which is the dialect of the Genesis components. You need to enable the plugin for full functionality (enabled by default in the above configuration).  |
 
 :::info
 The `parser` options control the analysis of the source code to understand semantics, such as whether a custom element has a property or not.
@@ -150,5 +149,5 @@ This does not control how the LSP works with the html in the templates to unders
 
 ## More information
 
-For more information about the plugin, how to set it up, and troubleshooting steps, see the published package on npm [here](https://www.npmjs.com/package/@genesiscommunitysuccess/custom-elements-lsp).
+For more information about the plugin, how to set it up, and troubleshooting steps, see the [published package on npm](https://www.npmjs.com/package/@genesiscommunitysuccess/custom-elements-lsp).
 
