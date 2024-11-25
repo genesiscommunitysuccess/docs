@@ -10,19 +10,18 @@ sidebar_position: 4
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import PrimitiveHeaderExample from './examples/primitive_header_example.js';
 
 # Foundation Header
 
 `foundation-header` is a micro front-end and a semi-batteries-included component.
 It consists of a navigation bar and a flyout menu, with routing, account-logout capabilities, and the ability to change the current language.
 
-![Header with the standard genesis logo](/img/001_develop/03_client-capabilities/004_header/foundation-header-standard.png)
-
 ## Examples
 
 ### Adding a header component to the template
 
-Here is an example of the navigation bar with three navigation items, and all three control buttons shown.
+Here is an example of a simple navigation bar with two navigation items. This header does not show additional control buttons but displays the default ones, allowing for showing submenus, the logged-in user's name, and the connection status.
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 
@@ -30,12 +29,7 @@ Here is an example of the navigation bar with three navigation items, and all th
 
 Declaration:
 ```html
-  <foundation-header
-    show-luminance-toggle-button
-    show-misc-toggle-button
-    show-language-selector
-    :routeNavItems=${x => x.navItems}
-  ></foundation-header>
+  <foundation-header></foundation-header>
 ```
 
 Usage:
@@ -44,20 +38,17 @@ Usage:
   name: 'header-example',
   template: html`
     <foundation-header
-      show-luminance-toggle-button
-      show-misc-toggle-button
-      show-language-selector
       :routeNavItems=${(x) => x.navItems}
     ></foundation-header>
   `,
 })
 export class HeaderExample extends GenesisElement {
   const navItems = [{
-  title: "Home",
-  icon: {
-    name: "home",
-    variant: "solid",
-  },
+    title: "Home",
+    icon: {
+      name: "home",
+      variant: "solid",
+    },
     navId: "header",
     placementIndex: 0,
     routePath: "home",
@@ -70,7 +61,7 @@ export class HeaderExample extends GenesisElement {
         variant: "solid",
       },
     navId: "header",
-    placementIndex: 10,
+    placementIndex: 1,
     routePath: "grids",
     routeName: "grids",
   }];
@@ -82,12 +73,7 @@ export class HeaderExample extends GenesisElement {
 
 Declaration:
 ```html
-  <foundation-header
-    show-luminance-toggle-button
-    show-misc-toggle-button
-    show-language-selector
-    routeNavItems={navItems}
-  ></foundation-header>
+  <foundation-header></foundation-header>
 ```
 
 Usage:
@@ -111,16 +97,13 @@ export default function HeaderExample({}) {
         variant: "solid",
       },
     navId: "header",
-    placementIndex: 10,
+    placementIndex: 1,
     routePath: "grids",
     routeName: "grids",
   }];
 
   return (
     <foundation-header
-      show-luminance-toggle-button
-      show-misc-toggle-button
-      show-language-selector
       routeNavItems={navItems}
     ></foundation-header>
   );
@@ -130,624 +113,57 @@ export default function HeaderExample({}) {
 </TabItem>
 <TabItem value="angular">
 
-Declaration
+Declaration:
 ```html
-  <foundation-header
-    show-luminance-toggle-button
-    show-misc-toggle-button
-    show-language-selector
-    [routeNavItems]="navItems"
-  ></foundation-header>
+  <foundation-header></foundation-header>
 ```
 
 Usage
 ```typescript
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'my-root',
+  selector: 'header-example',
   template: `
     <foundation-header
-      design-system-prefix="rapid"
-      resourceName="EVENT_INSERT_USER"
+      [routeNavItems]="navItems"
     ></foundation-header>
   `,
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [FormsModule],
 })
-export class AppComponent {}
+export class HeaderExampleComponent {
+  navItems = [{
+    title: "Home",
+    icon: {
+      name: "home",
+      variant: "solid",
+    },
+    navId: "header",
+    placementIndex: 0,
+    routePath: "home",
+    routeName: "home",
+  },
+  {
+    title: "Grids",
+    icon: {
+        name: "table",
+        variant: "solid",
+      },
+    navId: "header",
+    placementIndex: 1,
+    routePath: "grids",
+    routeName: "grids",
+  }];
+}
 ```
 </TabItem>
 </Tabs>
 
-PrimitiveHeaderExample
+<PrimitiveHeaderExample />
 
 ### Configuring a form using the UI schema
 
-You can configure the appearance of the form using the UI schema (see below).
-
-Here is an example UI schema for configuring a form:
-
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
-
-<TabItem value="genesis">
-
-Declaration:
-```html
-<foundation-header
-  design-system-prefix="rapid"
-  resourceName="EVENT_INSERT_USER"
-  :uischema=${(x) => x.uiSchema}
-></foundation-header>
-```
-
-Usage:
-```typescript
-const uiSchemaExample = {
-  type: "VerticalLayout",
-  elements: [
-    {
-      type: "Control",
-      label: "Username",
-      scope: "#/properties/USER_NAME",
-    },
-    {
-      type: "Control",
-      label: "Email",
-      scope: "#/properties/EMAIL",
-    },
-    {
-      type: "Control",
-      label: "Password",
-      scope: "#/properties/PASSWORD",
-      options: {
-        isPassword: true,
-      },
-    },
-    {
-      type: "Control",
-      label: "Password confirmation",
-      scope: "#/properties/PASSWORD_CONFIRMATION",
-      options: {
-        isPassword: true,
-      },
-    },
-  ],
-};
-
-@customElement({
-  name: 'form-example',
-  template: html`
-    <foundation-header
-      design-system-prefix="rapid"
-      resourceName="EVENT_INSERT_USER"
-      :uischema=${x => uiSchema}
-    ></foundation-header>
-  `,
-})
-export class HeaderExample extends GenesisElement {
-  uiSchema: UiSchema = uiSchemaExample;
-}
-```
-
-</TabItem>
-<TabItem value="react">
-
-Declaration:
-```html
-<foundation-header
-  design-system-prefix="rapid"
-  resourceName="EVENT_INSERT_USER"
-  uischema={uiSchema}
-></foundation-header>
-```
-
-Usage:
-```typescript
-const uiSchemaExample = {
-  type: "VerticalLayout",
-  elements: [
-    {
-      type: "Control",
-      label: "Username",
-      scope: "#/properties/USER_NAME",
-    },
-    {
-      type: "Control",
-      label: "Email",
-      scope: "#/properties/EMAIL",
-    },
-    {
-      type: "Control",
-      label: "Password",
-      scope: "#/properties/PASSWORD",
-      options: {
-        isPassword: true,
-      },
-    },
-    {
-      type: "Control",
-      label: "Password confirmation",
-      scope: "#/properties/PASSWORD_CONFIRMATION",
-      options: {
-        isPassword: true,
-      },
-    },
-  ],
-};
-
-export default function HeaderExample({}) {
-  const uiSchema: UiSchema = uiSchemaExample;
-
-  return (
-    <foundation-header
-      design-system-prefix="rapid"
-      resourceName="EVENT_INSERT_USER"
-      uischema={uiSchema}
-    ></foundation-header>
-  );
-}
-```
-
-</TabItem>
-<TabItem value="angular">
-
-Declaration
-```html
-<foundation-header
-  design-system-prefix="rapid"
-  resourceName="EVENT_INSERT_USER"
-  [uischema]="uiSchema"
-></foundation-header>
-```
-
-Usage
-```typescript
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-
-const uiSchemaExample = {
-  type: "VerticalLayout",
-  elements: [
-    {
-      type: "Control",
-      label: "Username",
-      scope: "#/properties/USER_NAME",
-    },
-    {
-      type: "Control",
-      label: "Email",
-      scope: "#/properties/EMAIL",
-    },
-    {
-      type: "Control",
-      label: "Password",
-      scope: "#/properties/PASSWORD",
-      options: {
-        isPassword: true,
-      },
-    },
-    {
-      type: "Control",
-      label: "Password confirmation",
-      scope: "#/properties/PASSWORD_CONFIRMATION",
-      options: {
-        isPassword: true,
-      },
-    },
-  ],
-};
-
-@Component({
-  selector: 'my-root',
-  template: `
-    <foundation-header
-      design-system-prefix="rapid"
-      resourceName="EVENT_INSERT_USER"
-      [uischema]="uiSchema"
-    ></foundation-header>
-  `,
-  standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [FormsModule],
-})
-export class AppComponent {
-  uiSchema = uiSchemaExample
-}
-```
-</TabItem>
-</Tabs>
-
-PrimitiveFormUISchemaExample
-
-### Configuring a form using a JSON schema (client-side)
-
-Instead of providing resourceName, you can hard-code the JSON schema on the client.
-
-:::info
-Use this when you want to avoid fetching metadata from the server, but be aware that it could get out of sync if metadata changes on the server.
-:::
-
-Here is an example of a JSON schema:
-
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
-
-<TabItem value="genesis">
-
-Declaration:
-```html
-<foundation-header
-  design-system-prefix="rapid"
-  resourceName="EVENT_INSERT_USER"
-  :uischema=${(x) => x.uiSchema}
-  :jsonSchema=${(x) => x.jsonSchema}
-></foundation-header>
-```
-
-Usage:
-```typescript
-const uiSchemaExample = {
-  type: "VerticalLayout",
-  elements: [
-    {
-      type: "Control",
-      label: "Username",
-      scope: "#/properties/USER_NAME",
-    },
-    {
-      type: "Control",
-      label: "Email",
-      scope: "#/properties/EMAIL",
-    },
-    {
-      type: "Control",
-      label: "Password",
-      scope: "#/properties/PASSWORD",
-      options: {
-        isPassword: true,
-      },
-    },
-    {
-      type: "Control",
-      label: "Password confirmation",
-      scope: "#/properties/PASSWORD_CONFIRMATION",
-      options: {
-        isPassword: true,
-      },
-    },
-  ],
-};
-
-export const jsonSchemaExample = {
-  type: 'object',
-  properties: {
-    SIDE: {
-      type: 'string',
-      description: 'kotlin.String',
-    },
-    QUANTITY: {
-      type: 'number',
-      description: 'kotlin.Double',
-    },
-    SIMPLE_TRADE_ID: {
-      type: 'string',
-      description: 'kotlin.String',
-    }
-  }
-};
-
-@customElement({
-  name: 'form-example',
-  template: html`
-    <foundation-header
-      design-system-prefix="rapid"
-      resourceName="EVENT_INSERT_USER"
-      :uischema=${(x) => uiSchema}
-      :jsonSchema=${(x) => jsonSchema}
-    ></foundation-header>
-  `,
-})
-export class HeaderExample extends GenesisElement {
-  uiSchema: UiSchema = uiSchemaExample;
-  jsonSchema: JSONSchema7 = jsonSchemaExample;
-}
-```
-
-</TabItem>
-<TabItem value="react">
-
-Declaration:
-```html
-<foundation-header
-  design-system-prefix="rapid"
-  resourceName="EVENT_INSERT_USER"
-  uischema={uiSchema}
-  jsonSchema={jsonSchema}
-></foundation-header>
-```
-
-Usage:
-```typescript
-const uiSchemaExample = {
-  type: "VerticalLayout",
-  elements: [
-    {
-      type: "Control",
-      label: "Username",
-      scope: "#/properties/USER_NAME",
-    },
-    {
-      type: "Control",
-      label: "Email",
-      scope: "#/properties/EMAIL",
-    },
-    {
-      type: "Control",
-      label: "Password",
-      scope: "#/properties/PASSWORD",
-      options: {
-        isPassword: true,
-      },
-    },
-    {
-      type: "Control",
-      label: "Password confirmation",
-      scope: "#/properties/PASSWORD_CONFIRMATION",
-      options: {
-        isPassword: true,
-      },
-    },
-  ],
-};
-
-export const jsonSchemaExample = {
-  type: 'object',
-  properties: {
-    SIDE: {
-      type: 'string',
-      description: 'kotlin.String',
-    },
-    QUANTITY: {
-      type: 'number',
-      description: 'kotlin.Double',
-    },
-    SIMPLE_TRADE_ID: {
-      type: 'string',
-      description: 'kotlin.String',
-    }
-  }
-};
-
-export default function HeaderExample({}) {
-  const uiSchema: UiSchema = uiSchemaExample;
-  const jsonSchema: JSONSchema7 = jsonSchemaExample;
-
-  return (
-    <foundation-header
-      design-system-prefix="rapid"
-      resourceName="EVENT_INSERT_USER"
-      uischema={uiSchema}
-      jsonSchema={jsonSchema}
-    ></foundation-header>
-  );
-}
-```
-
-</TabItem>
-<TabItem value="angular">
-
-Declaration
-```html
-<foundation-header
-  design-system-prefix="rapid"
-  resourceName="EVENT_INSERT_USER"
-  [uischema]="uiSchema"
-  [jsonSchema]="jsonSchema"
-></foundation-header>
-```
-
-Usage
-```typescript
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-
-const uiSchemaExample = {
-  type: "VerticalLayout",
-  elements: [
-    {
-      type: "Control",
-      label: "Username",
-      scope: "#/properties/USER_NAME",
-    },
-    {
-      type: "Control",
-      label: "Email",
-      scope: "#/properties/EMAIL",
-    },
-    {
-      type: "Control",
-      label: "Password",
-      scope: "#/properties/PASSWORD",
-      options: {
-        isPassword: true,
-      },
-    },
-    {
-      type: "Control",
-      label: "Password confirmation",
-      scope: "#/properties/PASSWORD_CONFIRMATION",
-      options: {
-        isPassword: true,
-      },
-    },
-  ],
-};
-
-export const jsonSchemaExample = {
-  type: 'object',
-  properties: {
-    SIDE: {
-      type: 'string',
-      description: 'kotlin.String',
-    },
-    QUANTITY: {
-      type: 'number',
-      description: 'kotlin.Double',
-    },
-    SIMPLE_TRADE_ID: {
-      type: 'string',
-      description: 'kotlin.String',
-    }
-  }
-};
-
-@Component({
-  selector: 'my-root',
-  template: `
-    <foundation-header
-      design-system-prefix="rapid"
-      resourceName="EVENT_INSERT_USER"
-      [uischema]="uiSchema"
-      [jsonSchema]="jsonSchema"
-    ></foundation-header>
-  `,
-  standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [FormsModule],
-})
-export class AppComponent {
-  uiSchema = uiSchemaExample;
-  jsonSchema = jsonSchemaExample;
-}
-```
-</TabItem>
-</Tabs>
-
-PrimitiveFormUISchemaExample
-
-### Pre-filling a form with data (optional)
-
-The data attribute allows you to pre-fill the form with information. A common use case for this is when editing an existing record.
-
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
-
-<TabItem value="genesis">
-
-Declaration:
-```html
-<foundation-header
-  design-system-prefix="rapid"
-  resourceName="EVENT_INSERT_USER"
-  :data=${(x) => x.data}
-></foundation-header>
-```
-
-Usage:
-```typescript
-const existingData = {
-  USER_NAME: "Genesis",
-  EMAIL: "example@genesis.global",
-  PASSWORD: "secret_password",
-  PASSWORD_CONFIRMATION: "secret_password",
-};
-
-@customElement({
-  name: 'form-example',
-  template: html`
-    <foundation-header
-      design-system-prefix="rapid"
-      resourceName="EVENT_INSERT_USER"
-      :data=${(x) => x.data}
-    ></foundation-header>
-  `,
-})
-export class HeaderExample extends GenesisElement {
-  data = existingData;
-}
-```
-
-</TabItem>
-<TabItem value="react">
-
-Declaration:
-```html
-<foundation-header
-  design-system-prefix="rapid"
-  resourceName="EVENT_INSERT_USER"
-  data={data}
-></foundation-header>
-```
-
-Usage:
-```typescript
-const existingData = {
-  USER_NAME: "Genesis",
-  EMAIL: "example@genesis.global",
-  PASSWORD: "secret_password",
-  PASSWORD_CONFIRMATION: "secret_password",
-};
-
-export default function HeaderExample({}) {
-  const data = existingData;
-  return (
-    <foundation-header
-      design-system-prefix="rapid"
-      resourceName="EVENT_INSERT_USER"
-      data={data}
-    ></foundation-header>
-  );
-}
-```
-
-</TabItem>
-<TabItem value="angular">
-
-Declaration
-```html
-<foundation-header
-  design-system-prefix="rapid"
-  resourceName="EVENT_INSERT_USER"
-  [data]="data"
-></foundation-header>
-```
-
-Usage
-```typescript
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-
-const existingData = {
-  USER_NAME: "Genesis",
-  EMAIL: "example@genesis.global",
-  PASSWORD: "secret_password",
-  PASSWORD_CONFIRMATION: "secret_password",
-};
-
-@Component({
-  selector: 'my-root',
-  template: `
-    <foundation-header
-      design-system-prefix="rapid"
-      resourceName="EVENT_INSERT_USER"
-      [data]="data"
-    ></foundation-header>
-  `,
-  standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [FormsModule],
-})
-export class AppComponent {
-  data = existingData
-}
-```
-</TabItem>
-</Tabs>
-
-PrimitiveFormDataExample
-
-##
 
 :::info
 After you have looked at the basics here, you can find more details in our [API Docs](./docs/api/index.md)
