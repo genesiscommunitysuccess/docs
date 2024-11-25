@@ -15,15 +15,6 @@ export default function MenuDemo({ children, color }) {
 		RapidImports.registerComponents();
 	}
 
-	const style = {
-		marginRight: '4px',
-		marginLeft: '4px',
-	};
-
-	const handleChange = (e) => {
-		console.log(e.target)
-	}
-
 	return (
 		<CodeSection>
 			<rapid-tabs activeid="entrees">
@@ -45,7 +36,7 @@ export default function MenuDemo({ children, color }) {
 				<rapid-tab-panel id="dessertsPanel">
 					<ol>
 						<ListItem>Tiramisu</ListItem>
-						<ListItem>ListItemmoncello and Ice Cream with Biscotti</ListItem>
+						<ListItem>limoncello and Ice Cream with Biscotti</ListItem>
 					</ol>
 				</rapid-tab-panel>
 			</rapid-tabs>

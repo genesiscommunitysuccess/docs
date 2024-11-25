@@ -40,10 +40,12 @@ You will use `rapid-tabs`, `rapid-tab`, `rapid-tab-item` to create your tabs.
 
     Declaration
     ```html
-    <rapid-menu>
-      <rapid-menu-item></rapid-menu-item>
-      <rapid-menu-item></rapid-menu-item>
-    </rapid-menu>
+    <rapid-tabs>
+      <rapid-tab></rapid-tab>
+      <rapid-tab-panel>
+        <!-- content -->
+      </rapid-tab-panel>
+    </rapid-tabs>
     ```
 
     Usage
@@ -51,25 +53,32 @@ You will use `rapid-tabs`, `rapid-tab`, `rapid-tab-item` to create your tabs.
     @customElement({
       name: 'my-element',
       template: html<MyElement>`
-        <rapid-menu @change=${(x,ctx) => x.menuChange(<Event & {target: MenuItem}>ctx.event)}>
-          <rapid-menu-item @click=${(x) => itemOneAction()}>Menu item 1</rapid-menu-item>
-          <rapid-menu-item>Menu item 2</rapid-menu-item>
-          <rapid-menu-item>Menu item 3</rapid-menu-item>
-          <rapid-divider></rapid-divider>
-          <rapid-menu-item role="menuitemradio">Menu item 4</rapid-menu-item>
-          <rapid-menu-item role="menuitemradio">Menu item 5</rapid-menu-item>
-        </rapid-menu>
+        <rapid-tabs activeid="entrees">
+          <rapid-tab id="apps">Appetizers</rapid-tab>
+          <rapid-tab id="entrees">Entrees</rapid-tab>
+          <rapid-tab id="desserts">Desserts</rapid-tab>
+          <rapid-tab-panel id="appsPanel">
+            <ol>
+              <li>Stuffed artichokes</li>
+              <li>Bruschetta</li>
+            </ol>
+          </rapid-tab-panel>
+          <rapid-tab-panel id="entreesPanel">
+            <ol>
+              <li>Tomato Bread Soup with Steamed Mussels</li>
+              <li>Grilled Fish with Artichoke Caponata</li>
+            </ol>
+          </rapid-tab-panel>
+          <rapid-tab-panel id="dessertsPanel">
+            <ol>
+              <li>Tiramisu</li>
+              <li>limoncello and Ice Cream with Biscotti</li>
+            </ol>
+          </rapid-tab-panel>
+        </rapid-tabs>
       `,
     })
-    export class MyElement extends GenesisElement {
-      menuChange(e: Event & {target: MenuItem}) {
-        // do something with the selected menu item, e.g.
-        console.log(e.target.getAttribute('role'))
-      }
-      itemOneAction() {
-        // alternatively, just add event listners to perform actions on click
-      }
-    }
+    export class MyElement extends GenesisElement { }
     ```
 
   </TabItem>
@@ -77,32 +86,41 @@ You will use `rapid-tabs`, `rapid-tab`, `rapid-tab-item` to create your tabs.
 
     Declaration
     ```html
-    <rapid-menu>
-      <rapid-menu-item></rapid-menu-item>
-      <rapid-menu-item></rapid-menu-item>
-    </rapid-menu>
+    <rapid-tabs>
+      <rapid-tab></rapid-tab>
+      <rapid-tab-panel>
+        <!-- content -->
+      </rapid-tab-panel>
+    </rapid-tabs>
     ```
 
     Usage
     ```typescript
     export function MyComponent() {
-      const handleMenuChange = (e: Event & {target: MenuItem}) => {
-        // do something with the selected menu item, e.g.
-        console.log(e.target.getAttribute('role'))
-      }
-      const itemOneAction = () => {
-        // alternatively, just add event listeners to perform actions on click
-      }
       return (
-        <rapid-menu onChange={(e) => handleMenuChange(<Event & {target: MenuItem}>e)}>
-          <rapid-menu-item onClick={itemOneAction}>Menu item 1</rapid-menu-item>
-          <rapid-menu-item>Menu item 2</rapid-menu-item>
-          <rapid-menu-item>Menu item 3</rapid-menu-item>
-          <rapid-divider></rapid-divider>
-          <rapid-menu-item role="menuitemradio">Menu item 4</rapid-menu-item>
-          <rapid-menu-item role="menuitemradio">Menu item 5</rapid-menu-item>
-        </rapid-menu>
-      )
+        <rapid-tabs activeid="entrees">
+          <rapid-tab id="apps">Appetizers</rapid-tab>
+          <rapid-tab id="entrees">Entrees</rapid-tab>
+          <rapid-tab id="desserts">Desserts</rapid-tab>
+          <rapid-tab-panel id="appsPanel">
+            <ol>
+              <li>Stuffed artichokes</li>
+              <li>Bruschetta</li>
+            </ol>
+          </rapid-tab-panel>
+          <rapid-tab-panel id="entreesPanel">
+            <ol>
+              <li>Tomato Bread Soup with Steamed Mussels</li>
+              <li>Grilled Fish with Artichoke Caponata</li>
+            </ol>
+          </rapid-tab-panel>
+          <rapid-tab-panel id="dessertsPanel">
+            <ol>
+              <li>Tiramisu</li>
+              <li>limoncello and Ice Cream with Biscotti</li>
+            </ol>
+          </rapid-tab-panel>
+        </rapid-tabs>
     }
     ```
   </TabItem>
@@ -110,10 +128,12 @@ You will use `rapid-tabs`, `rapid-tab`, `rapid-tab-item` to create your tabs.
 
     Declaration
     ```html
-    <rapid-menu>
-      <rapid-menu-item></rapid-menu-item>
-      <rapid-menu-item></rapid-menu-item>
-    </rapid-menu>
+    <rapid-tabs>
+      <rapid-tab></rapid-tab>
+      <rapid-tab-panel>
+        <!-- content -->
+      </rapid-tab-panel>
+    </rapid-tabs>
     ```
 
     Usage
@@ -122,28 +142,34 @@ You will use `rapid-tabs`, `rapid-tab`, `rapid-tab-item` to create your tabs.
     @Component({
       selector: 'my-component',
       template: `
-        <rapid-menu (change)="handleMenuChange($event)">
-          <rapid-menu-item (click)="itemOneAction()">Menu item 1</rapid-menu-item>
-          <rapid-menu-item>Menu item 2</rapid-menu-item>
-          <rapid-menu-item>Menu item 3</rapid-menu-item>
-          <rapid-divider></rapid-divider>
-          <rapid-menu-item role="menuitemradio">Menu item 4</rapid-menu-item>
-          <rapid-menu-item role="menuitemradio">Menu item 5</rapid-menu-item>
-        </rapid-menu>
+        <rapid-tabs activeid="entrees">
+          <rapid-tab id="apps">Appetizers</rapid-tab>
+          <rapid-tab id="entrees">Entrees</rapid-tab>
+          <rapid-tab id="desserts">Desserts</rapid-tab>
+          <rapid-tab-panel id="appsPanel">
+            <ol>
+              <li>Stuffed artichokes</li>
+              <li>Bruschetta</li>
+            </ol>
+          </rapid-tab-panel>
+          <rapid-tab-panel id="entreesPanel">
+            <ol>
+              <li>Tomato Bread Soup with Steamed Mussels</li>
+              <li>Grilled Fish with Artichoke Caponata</li>
+            </ol>
+          </rapid-tab-panel>
+          <rapid-tab-panel id="dessertsPanel">
+            <ol>
+              <li>Tiramisu</li>
+              <li>limoncello and Ice Cream with Biscotti</li>
+            </ol>
+          </rapid-tab-panel>
+        </rapid-tabs>
       `,
       standalone: true,
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
-    export class MyComponent {
-      handleMenuChange(e: Event) {
-        // do something with the selected menu item, e.g.
-        const target = e.target as MenuItem;
-        console.log(target.getAttribute('role'));
-      }
-      itemOneAction() {
-        // alternatively, just add event listeners to perform actions on click
-      }
-    }
+    export class MyComponent { }
     ```
   </TabItem>
 </Tabs>
