@@ -151,6 +151,8 @@ While any DOM content is permissible as a child of the menu, only `<rapid-menu-i
 
 ## Menu API
 
+API examples shown with Genesis component syntax, and closing tag omitted.
+
 ### Attributes
 
 This component doesn't have any attributes.
@@ -208,26 +210,86 @@ This component doesn't listen to any events.
 
 ## Menu Item API
 
+API examples shown with Genesis component syntax, and closing tag omitted.
+
 ### Attributes
 
-This component doesn't have any attributes.
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>disabled</td>
+            <td><code>boolean</code></td>
+            <td>Disable the menu item, if disabled it will not respond to click.</td>
+<td>
+
+```typescript
+<rapid-menu-item disabled>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>expanded</td>
+            <td><code>boolean</code></td>
+            <td>The expanded state of the menu item, especially if it's a submenu.</td>
+<td>
+
+```typescript
+<rapid-menu-item expanded>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>role</td>
+            <td><code>"menuitem" | "menuitemcheckbox" | "menuitemradio"</code></td>
+            <td>The role of the menu item, altering its behaviour in the menu according to the corresponding html element. <strong>Default</strong>: <code>menuitem</code>.</td>
+<td>
+
+```typescript
+<rapid-menu-item role="menuitemradio">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>checked</td>
+            <td><code>boolean</code></td>
+            <td>The checked state of the menu item, only if it's a role of radio or checkbox.</td>
+<td>
+
+```typescript
+<rapid-menu-item role="menuitemcheckbox" ?checked=${sync(x => x.checkedItem, 'boolean')}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Properties
 
-This component doesn't have any properties.
-
-### Methods
-
-|Method|Type|Description|
-|---|---|---|
-|focus|`() => void`|Focuses the first item in the menu.|
-|collapseExapndedItem|`() => void`|Collapses any expanded menu items.|
+This component doesn't have any properties that are not also controlled via attributes.
 
 ### Slots
 
 |Slot|Description|
 |---|---|
-|Default|The `next` flipper content.|
+|Default|The default slot which can be populated by menu items, or other menus to created nested menus.|
+|checked-indicator|The checked indicator.|
+|radio-indicator|The radio indicator.|
+|start|Content which can be provided before the menu item content.|
+|end|Content which can be provided after the menu item content.|
+|expand-collapse-indicator|The expand/collapse indicator.|
+|submenu|Used to nest menu's within menu items.|
 
 #### Nested example
 
@@ -262,8 +324,13 @@ You may nest multiple levels of menu items to create sub menus.
 
 | Part | Description |
 | --- | --- |
-|next|Wraps the `next` flipper content|
-|previous|Wraps the `previous` flipper content|
+|input-container|The element representing the visual checked or radio indicator.|
+|checkbox|The element wrapping the `menuitemcheckbox` indicator.|
+|radio|The element wrapping the `menuitemradio` indicator.|
+|content|The element wrapping the menu item content.|
+|expand-collapse-glyph-container|The element wrapping the expand collapse element.|
+|expand-collapse|The expand/collapse element.|
+|submenu-region|The container for the submenu, used for positioning.|
 
 ### Events fired
 
@@ -278,13 +345,25 @@ You may nest multiple levels of menu items to create sub menus.
     </thead>
     <tbody>
         <tr>
-            <td>click</td>
-            <td><code><a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent">Event & KeyboardEvent</a></code></td>
-            <td>Fired when Enter or Space is invoked via keyboard and the flipper is exposed to assistive technologies.</td>
+            <td>change</td>
+            <td><code>void</code></td>
+            <td>Fired when a menu item with a role of <code>menuitemcheckbox</code>, <code>menuitemradio</code>, or <code>menuitem</code> is invoked. The event doesn't contain data, but you can use the event target to get a reference to the emitting menu item. You'll likely want to add this onto the containing menu item.</td>
 <td>
 
 ```typescript
-<rapid-flipper @click="${(x,ctx) => x.onFlipperClick(ctx.event)}">
+<rapid-menu @change=${(x,ctx) => x.menuChange(<Event & {target: MenuItem}>ctx.event)}>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>expanded-change</td>
+            <td><code>this</code></td>
+            <td>When the expanded state of a menu or submenu changes. Event data is a reference to the emitting menu.</td>
+<td>
+
+```typescript
+<rapid-menu-item @expanded-change=${(x,ctx) => x.menuExpandedChanged(ctx.event)}>
 ```
 
 </td>
