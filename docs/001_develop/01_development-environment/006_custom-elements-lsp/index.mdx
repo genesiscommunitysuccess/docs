@@ -123,7 +123,7 @@ npm i --save-dev @genesiscommunitysuccess/custom-elements-lsp @genesiscommunitys
 | ---------------------- | ------------------------------------------------------------------------------------------------------------ |
 | `name`                 | **Mandatory**. Set this as `@genesiscommunitysuccess/custom-elements-lsp`                                    |
 | `srcRootFromTSServer`  | **Mandatory**.  Set the relative path from the `tsserver.js` executable in your node modules to your directory with the `package.json` where the project web root is located. This is likely to be `node_modules/typescript/lib/tsserver.js`. Default is `"../../.."`. |
-| `designSystemPrefix`   | **Mandatory**.  Used to work with `%%prefix%%` to handle components registered as part of a design system. New Genesis projects will likely just want to use `rapid` as the design system. |
+| `designSystemPrefix`   | **Mandatory**.  Used to work with `%%prefix%%` to handle components registered as part of a design system. In most cases, new Genesis projects use `rapid` as the design system. |
 | `plugins`              | **Optional**.  Use this to set any optional plugins you can add. Specified plugins are applied in order. By default `@genesiscommunitysuccess/cep-fast-plugin` is enabled to enhance Genesis syntax capabilities.     |
 
 :::caution
