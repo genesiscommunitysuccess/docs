@@ -223,17 +223,49 @@ If you set `position` to be `left` or `right`, the modal will assume `height: 10
 
 ### Properties
 
-| Property | Type | Use | Example |
-|---|---|---|---|
-|onShowCallback|() => void|Function that runs before modal is opened.|`<rapid-modal :onShowCallback="${() => console.log('shown')}">`|
-|onCloseCallback|() => void|Function that is called after the modal is closed.|`<rapid-modal :onCloseCallback="${() => console.log('hide')}">`|
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>onShowCallback</td>
+      <td><code>() => void</code></td>
+      <td>Function that runs <em>before</em> modal is opened.</td>
+<td>
+
+```typescript
+<rapid-modal :onShowCallback="${() => () => console.log('shown')}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>onCloseCallback</td>
+      <td><code>() => void</code></td>
+      <td>Function that is called <em>after</em> the modal is closed.</td>
+<td>
+
+```typescript
+<rapid-modal :onCloseCallback="${() => () => console.log('hide')}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Component Methods
 
-| Method | Params | Returns | Use | Example |
-|---|---|---|---|---|
-|show|none|void|When called will show the modal.|`modal.show()`|
-|close|none|void|When called will close the modal.|`modal.close()`|
+| Method | Type | Use | Example |
+|---|---|---|---|
+|show|`() => void`|When called will show the modal.|`modal.show()`|
+|close|`() => void`|When called will close the modal.|`modal.close()`|
 
 ### Slots
 
