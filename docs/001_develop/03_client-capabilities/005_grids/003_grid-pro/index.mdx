@@ -1,6 +1,6 @@
 ---
-title: 'Enterprise Data Grid (Grid Pro)'
-sidebar_label: 'Enterprise Data Grid (Grid Pro)'
+title: 'Grid Pro'
+sidebar_label: 'Grid Pro'
 id: grid-pro
 keywords: [genesis, foundation, ui, grid, grid-pro, ag]
 tags:
@@ -9,15 +9,17 @@ tags:
   - grid
   - grid-pro
   - ag
+pagination_prev: develop/client-capabilities/grids/entity-manager/entity-manager
+pagination_next: develop/client-capabilities/grids/grid-tabulator/grid-tabulator
 ---
 
-# Genesis Foundation Grids
+# Grid Pro
 
 The `@genesislcap/grid-pro` package provides a collection of grid-related components and utilities for Genesis applications.
 
 ## API Documentation
 
-For more detailed information on API and configurations, please refer to the [API documentation](docs/api/index.md) in the `docs/api` directory.
+For more detailed information on API and configurations, please refer to the [API documentation](./docs/api/index.md).
 
 ## Features
 
@@ -31,26 +33,13 @@ For more detailed information on API and configurations, please refer to the [AP
 - **State persistence**: ability to save and restore grid state.
 - **Row models**: support for both client-side and server-side [row models](https://www.ag-grid.com/javascript-data-grid/row-models/).
 
-## Project Structure
-
-- **`src/`**: Source code for the package, including cell-editors, cell-renderers, datasources and utility functions.
-  - **`cell/`**: The Grid Pro Cell element and template
-  - **`cell-editors/`**: predefined custom cell-editors for common data types including `date`, `number`, `string`, `select`, `multiselect`
-  - **`cell-renderers/`**: predefined custom cell-renderers.
-  - **`column/` for a given column.
-  - **[`datasource/`](#genesis-datasource)**: Genesis Datasource elements, responsible for fetching data for the Grid Pro element (multiple implementations available, for both client-side and server-side [row models](https://www.ag-grid.com/javascript-data-grid/row-models/)).
-  - **`external/`**: External assets such as fonts and styles for themes.
-  - **`state-persistence/`**: Classes related to saving and restoring grid state.
-  - **`tooltips/`**: Tooltip for errors that happen while syncing data with server after inline editing.
-  - **`utils/`**: Utility functions.
-
 ## Getting Started
 
 ### Installation
 
 To enable this module in your application, follow the steps below.
 
-1. Add `@genesislcap/grid-pro` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/grid-pro` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](https://learn.genesis.global/secure/web/basics/package-json-basics/) page.
 
 ```json
 {
@@ -275,3 +264,173 @@ Note: if pagination is set to false the grid will be in infinite scroll mode.
 })
 export class ConnectedGridServerSideExample extends GenesisElement {}
 ```
+
+## Genesis Datasource
+
+This folder contains implementations of Genesis `datasource` components, responsible for fetching data for Genesis [Grid Pro](../../README.md) components.
+
+This document outlines the available features of our two “Grid Pro” datasources: `<grid-pro-client-side-datasource>` and `<grid-pro-server-side-datasource>`.
+
+## \<grid-pro-client-side-datasource\>
+
+### Client-Side Features
+
+- **Sorting**: Order by any column, ASC or DESC.
+- **Filtering**:
+  - Filtering options are automatically generated, based on the resource’s metadata.
+  - String Filters:
+    - contains
+    - not contains
+    - equals
+    - not equals
+    - starts with
+    - ends with
+    - blank
+    - not blank
+  - Number/Date Filters:
+    - equals
+    - less than
+    - less than or equal
+    - greater than
+    - greater than or equal
+    - in range
+- **Filter Combinations** (Max 2 filters can be combined):
+  - filter1 AND filter2
+  - filter1 OR filter2
+
+### Client-Side Notes
+
+- Works with both `DATASERVER` and `REQUEST_SERVER` resources.
+- Operations like sorting and filtering are performed on the client-side.
+- Suitable for datasets that are small to medium in size and can be entirely loaded into the client.
+
+## \<grid-pro-server-side-datasource\>
+
+### Server-Side Features
+
+- **Sorting**: Order by any INDEX column/field, ASC or DESC.
+  - This is a server limitation. For each column that needs to have “sorting” the developer will need to have an INDEX for it. See more about indexes [here](https://learn.genesis.global/docs/database/data-types/index-entities/).
+  - By default, sorting is disabled on ALL columns… BUT if we detect valid ‘` indexes” from the metadata those column/fields will be setup to have sorting.
+  - If the user attempts to force `sortable` we’ll check if it’s really ok to do that + warn in the logs about it + try to mention other available indexes.. if any at all.
+- **Filtering**:
+  - Filtering options are automatically generated, based on the resource’s metadata.
+  - String filters
+    - blank
+    - contains
+    - equals
+    - notBlank
+    - notEqual
+    - wordStartsWith
+  - Number filters
+    - equals
+    - notEqual
+    - greaterThan
+    - greaterThanOrEqual
+    - lessThan
+    - lessThanOrEqual
+    - inRange
+    - blank
+    - notBlank
+  - Date filters
+    - equals
+    - lessThan
+    - greaterThan
+    - inRange
+    - isToday
+    - blank
+    - notBlank
+
+### Server-Side Notes
+
+- Operations like sorting and filtering are pushed to the backend.
+  - Filtering uses `CRITERIA_MATCH` param
+  - Sorting uses `ORDERY_BY` param
+  - Both work the same way, once filtering/sorting is applied the datasource component “resets itself”, basically starting a new stream with the updated params.
+- **LIMITATIONS**
+  - Sorting can only be applied to “index” fields/columns. Also mentioned [here](https://www.notion.so/Grid-Pro-Datasource-Inventory-d11ca7570ee94847bbcb3e7362025b0a?pvs=21). More details [here](https://genesisglobal.atlassian.net/jira/polaris/projects/GPR/ideas/view/4721227?selectedIssue=GPR-171&focusedCommentId=143757) and [here](https://genesis-global-talk.slack.com/archives/C0416MFG360/p1696456988606789).
+  - ROWS_COUNT doesn’t reflect the correct amount when a CRITERIA_MATCH (filtering) is applied. Example: X resource has 100 records. A criteria is specified so it returns only 50 records… the rows count sent from the server is still 100. Because of that we have to manually/locally calculate that.
+- Suitable for large datasets where only a subset of data is loaded into the client based on user interactions.
+
+---
+
+## Supported Row Models
+
+We support all of the AG’s Row Models.  More on [JavaScript Grid: Row Models | AG Grid (ag-grid.com)](https://www.ag-grid.com/javascript-data-grid/row-models/).
+
+In the table below you can find a complete “feature list” of all the possibilities of client/server-side row models (and others too.. that can be manually enabled/integrated but we don’t expose any components for those yet).
+
+It’s important to note that any client app can implement the other Row Models to their own needs. Our Grid Pro component is not tied to the datasource, it’s the opossite.. so datasources can be as specialized/customized as possible.
+
+`Infinite` and `Viewport` row models are also supported but not offered "out of the box" (devs will have to create their own component).
+
+| Feature | Client-Side | Server-Side | Notes |
+| --- | --- |--- | --- |
+| All Data in Client | ✓ | ✗ | Free |
+| Fetch Data as User Scrolls | ✗ | ✓ | Free |
+| Row Sorting | (client) | (client OR server) our component is server-only | Free |
+| Row Filtering | (client) | (client OR server) our component is server-only | Free |
+| Quick Filter | ✓ | ✓ | Free |
+| Floating Filters | ✓ | ✓ | Free |
+| Dynamic Row Height | ✓ | ✓ | Free |
+| Row Grouping | (client) | (server) | Paid (Enterprise) |
+| Row Pivoting | (client) | (server) | Paid (Enterprise) |
+| Lazy Loading Row Groups | ✗ | ✓ | Paid (Enterprise) |
+| Value Aggregation | (client) | (server) | Paid (Enterprise) |
+| Row Selection | ✓ | ✓ | Free |
+| Specify Selectable Rows | ✓ | ✓ | Free |
+| Header Checkbox Selection | ✓ | ✓ | Free |
+| Range Selection | ✓ | ✓ | Free |
+| Column Spanning | ✓ | ✓ | Free |
+| Column Pinning | ✓ | ✓ | Free |
+| Row Pinning | ✓ | ✓ | Free |
+| Pagination | ✓ | ✓ | Free |
+| Custom Filters | ✓ | ✓ | Free |
+| Cell Editors | ✓ | ✓ | Free |
+| Cell Renderers | ✓ | ✓ | Free |
+| Value Getter | ✓ | ✓ | Free |
+| Value Setter | ✓ | ✓ | Free |
+| Value Formatter | ✓ | ✓ | Free |
+| Value Parser | ✓ | ✓ | Free |
+| Full Width Rows | ✓ | ✓ | Free |
+| CSV Export | ✓ | (data on screen) | Free |
+| Excel Export | ✓ | (data on screen) | Paid (Enterprise) |
+| Clipboard Copy & Paste | ✓ | ✓ | Free |
+| Update via Transaction | ✓ | ✓ | Free |
+| Update via Async Transactions | ✓ | ✓ | Free |
+
+### Summary
+
+- **Client-Side Datasource**: Suitable for smaller datasets where all data can be loaded into the client. Operations like sorting and filtering are performed on the client-side.
+- **Server-Side Datasource**: Ideal for large datasets, where operations are pushed to the backend to ensure performance and consistency. Data is fetched as needed based on user interactions.
+
+## Performance
+
+### DOM Virtualisation
+
+DOM Virtualisation is a powerful technique that enhances the performance of grid components by only rendering the rows and columns that are currently visible in the viewport. This approach significantly reduces the memory footprint and improves the rendering speed, enabling all of our “grid components” to handle larger datasets more efficiently.
+
+- **How It Works**: Instead of rendering all rows and columns, the grid dynamically generates the DOM elements for only the visible part of the dataset. As the user scrolls, rows and columns are created or destroyed on the fly, ensuring a smooth scrolling experience.
+- **Benefits**:
+  - Reduced memory usage since only a subset of rows and columns are in the DOM at any given time.
+  - Faster initial rendering and improved responsiveness, even with large datasets.
+  - Enhanced user experience with seamless scrolling and interaction.
+
+For more details, visit the [AG Grid DOM Virtualisation documentation](https://www.ag-grid.com/javascript-data-grid/dom-virtualisation/) (also available in [Tabulator Virtual DOM](https://tabulator.info/docs/6.2/virtual-dom))
+
+### Pagination
+
+Pagination is another effective technique to improve performance in AG Grid by breaking down large datasets into smaller, manageable chunks or pages. This allows the grid to load and render only a subset of data at a time, significantly reducing the load on the client.
+
+- **How It Works**: Data is divided into pages, and only the data for the current page is loaded and rendered. Users can navigate through pages using pagination controls.
+- **Benefits**:
+  - Minimizes the amount of data loaded into the client at any given time, enhancing performance.
+  - Provides a structured way to navigate large datasets, improving usability.
+  - Reduces the risk of browser crashes and memory overflow issues.
+
+### Combined Approach
+
+By leveraging both DOM Virtualisation and Pagination, our “grid components” can efficiently manage and display larger datasets on the client-side. Here’s how these techniques work together:
+
+- **Initial Load**: Only the data for the first page is loaded, minimizing the initial load time.
+- **Scrolling**: As users scroll, DOM Virtualisation ensures only the visible rows and columns are rendered, maintaining performance.
+- **Page Navigation**: Users can navigate through pages to access the full dataset without overwhelming the client.

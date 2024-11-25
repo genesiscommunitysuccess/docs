@@ -1,6 +1,6 @@
 ---
-title: 'Real Time Data Grid (Entity Manager)'
-sidebar_label: 'Real Time Data Grid (Entity Manager)'
+title: 'Entity Manager'
+sidebar_label: 'Entity Manager'
 id: entity-manager
 keywords: [entity management, frontend, micro-front-ends, profile management, ui, user management, web]
 tags:
@@ -11,13 +11,14 @@ tags:
   - ui
   - user management
   - web
+pagination_next: develop/client-capabilities/grids/grid-pro/grid-pro
 ---
 
-## Foundation Entity Management
+# Entity Management
 
-[API](./docs/api/index.md)
+## API Documentation
 
-## Entity Management
+For more detailed information on API and configurations, please refer to the [API documentation](./docs/api/index.md).
 
 ### Introduction
 
@@ -37,25 +38,25 @@ The other component is the form. This is used to update an existing entity or to
 
 ![Example entity management form](./docs/img/foundation-entity-management-form.png)
 
-### Set-up
+## Getting Started
 
-To enable this micro-front-end in your application, follow the steps below.
+### Installation
 
-1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, run the `$ npm run bootstrap` command again. For more information, see the [package.json basics](../../../../../web/basics/package-json-basics/) page.
+To enable this module in your application, follow the steps below.
 
-```javascript
+1. Add** **`@genesislcap/foundation-entity-management` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](https://learn.genesis.global/secure/web/basics/package-json-basics/) page.
+
+```json
 {
-  ...
   "dependencies": {
     "@genesislcap/foundation-entity-management": "latest"
   },
-  ...
 }
 ```
 
 2. Import and declare the class in the page of the class where you wish to use the Entity Manager. Then add the entity management into the template html where required:
 
-```javascript
+```typescript
 // Import
 import { EntityManagement, } from '@genesislcap/foundation-entity-management';
 
@@ -304,12 +305,3 @@ To enable this module in your application, follow the steps below.
   ...
 }
 ```
-
-## [API Docs](./docs/api/index.md)
-
-## License
-
-Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
-
-### Licensed components
-Genesis low-code platform
