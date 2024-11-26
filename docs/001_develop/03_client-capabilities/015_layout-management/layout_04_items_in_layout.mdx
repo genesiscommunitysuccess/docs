@@ -77,7 +77,7 @@ Items inside the layout can save and restore the state using various methods, bu
 
 You can implement the [LayoutComponentWithState interface](../docs/api/foundation-layout.layoutcomponentwithstate/) which enables you to save and load the state *per instance* of your components. See the linked interface and the associated functions API documentation for examples and explanations of usage.
 
-Usage of this interface is optional; if you do not need to manage the state for your components in this way, then simply do not implement the interface.
+<em>Usage of this interface is optional; if you do not need to manage the state for your components in this way, then simply do not implement the interface. <i>It is unlikely you'll need to use this functionality, and you can use other systems such as the <!-- TODO statemet management --> instead</i> </em>.
 
 :::warning
 The layout system only interacts with the immediately contained items - so if you have components that contain other components, each top-level component must interact with the contained components to manage their states.
