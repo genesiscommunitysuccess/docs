@@ -256,5 +256,41 @@ exports.default = {
                 ],
             },
         },
+        {
+            name: "@genesislcap/foundation-layout",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/015_layout-management/",
+                api_docs: "docs/api",
+                img_dir: "docs/img",
+                keywords: [
+                    "web",
+                    "layout",
+                    "foundation layout",
+                    "frontend",
+                    "ui",
+                    "golden layout",
+                ],
+                tags: [
+                    "web",
+                    "layout",
+                    "foundation layout",
+                    "frontend",
+                    "ui",
+                    "golden layout",
+                ],
+                pages: [
+                    {
+                        title: "Foundation Layout",
+                        sidebar_label: "Foundation Layout",
+                        id: "foundation-layout",
+                    },
+                ],
+            },
+        },
     ],
 };
