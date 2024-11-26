@@ -21,19 +21,19 @@ The Genesis Evaluator is a microservice used for triggering [events](/develop/se
 
 You can configure two types of trigger:
 
-- time-scheduled events (Cron rules)
-- data-driven events (Dynamic rules)
+- scheduled events (Cron rules) are run automatically at the specified dates and times
+- data-driven events (Dynamic rules) are run when data in a table meets the rules you have specified 
 
 When a trigger happens, an event handler event message is sent, and its business logic is run. You must configure the required logic in the event. For example, it could update the data model, it could trigger the generation and publishing of a file, or it could trigger another event. By configuring the Evaluator and Event Handler, you can meet your exact business requirements.
 
 Unlike most server capabilities in the Genesis Application Platform, you don't have to configure a .kts file to set up Evaluator; it is entirely driven by records in these two tables:
 
-* `CRON_RULE` for time-based scheduled events
-* `DYNAMIC_RULE` for data-update-driven events
+* `CRON_RULE` for time-based (scheduled) events; you specify the schedule as a [Quartz Cron Expression](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html)
+* `DYNAMIC_RULE` for data-update-driven events; you specify which value is to be monitored in a table or view, the boolean logic for triggering the vent, and the event tp be triggered
 
 ## Example configuration
 
-### Time-scheduled events
+### Scheduled events
 
 Example `CRON_RULE` table entry:
 
@@ -66,7 +66,7 @@ Here, we look look more closely at the two tables and values that we can expect 
 | Field Name | Description | Example Value | Mandatory |
 | --- | --- | --- | --- |
 | NAME | Name of the rule. This is a key, and so each entry must have a unique value | US desk position report | true |
-| CRON_EXPRESSION | [Quartz Cron Expressions](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html) defining when the rule triggers | `0 45 6 ? * MON-FRI *` | true |
+| CRON_EXPRESSION | [Quartz Cron Expression](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html) defining when the rule triggers | `0 45 6 ? * MON-FRI *` | true |
 | DESCRIPTION | Description of the rule | Send position report to US desk | true |
 | TIME_ZONE | The [Time Zone](https://docs.oracle.com/cd/E84527_01/wcs/tag-ref/MISC/TimeZones.html) of the cron expression. **Be careful selecting time zones that don't shift with daylight savings**, such as `EST`, which may or may not be desirable. Defaults to the system time where left blank | America/New_York  | false |
 | RULE_STATUS | The status of the rule. If anything other than `ENABLED`, the rule will not listen or trigger any event. | `ENABLED` | true |
@@ -87,20 +87,22 @@ Rules are managed via the API, which exposes CRUD operations for maintaining the
 | USER_NAME | The username that will be sent on the triggered event. User must have permission to use this event for it to be triggered successfully | admin | false |
 | RULE_TABLE | The [`table`](/develop/server-capabilities/data-model/#tables) or [`view`](/develop/server-capabilities/data-model/#views) the rule listens to for updates | `TRADE_VIEW` | true |
 | RULE_STATUS | The status of the rule. If anything other than `ENABLED`, the rule will not listen or trigger any event | `ENABLED` | true |
-| RULE_EXPRESSION | Boolean expression referenced upon the configured RULE_TABLE receiving an update. The expression can reference any of the fields on the updated table or view. The expression must be wrapped in brackets  | `((NOTIONAL > 1000000))` | false |
+| RULE_EXPRESSION | Boolean logic for trigger. The expression can reference any of the fields on the updated table or view. The expression must be wrapped in brackets  | `((NOTIONAL > 1000000))` | false |
 | PROCESS_NAME | The name of the process to send the resulting event. As of v8, this is optional; service discovery will be used to find the process to send the event. We recommend that you leave this blank to work in all environments, including those running compact processes, or for consul environments | `POSITION_EVENT_HANDLER` | false |
 | MESSAGE_TYPE | The name of the event the rule should send when triggered | `EVENT_LARGE_TRADE_WARNING`  | true |
 | RESULT_EXPRESSION | The details to send on the event message. The syntax is that event fields should be left of the `=` and you can use literal values or field values from the `RULE_TABLE` to the right. Multiple event fields are separated by `&&`| `(TRADE_ID = TRADE_ID) && (TRIGGER = 'RULE')` | false |
-| TABLE_OPERATION | The table operations to trigger the rule on. Valid operations are `INSERT`, `MODIFY` and `DELETE`. Where more than one operation should trigger the rule, these must be pipe-delimited. Where this value is left blank, only `INSERT` table operations will trigger the rule | `INSERT\|MODIFY\|DELETE` | true |
-| IS_TEMPLATE |Relevant when using [notifications and alert component](/develop/business-components/notifications/notifications-introduction/) where users can define rule templates to which users subscribe, and will never trigger||false|
+| TABLE_OPERATION | The table operations to trigger the rule on. Valid operations are `INSERT`, `MODIFY` and `DELETE`. You can configure more than one operation to trigger the rule; where you do this, these must be pipe-delimited. If this value is left blank, only `INSERT` table operations will trigger the rule | `INSERT\|MODIFY\|DELETE` | true |
+| IS_TEMPLATE |Relevant when using [notifications and alert component](/develop/business-components/notifications/notifications-introduction/) where users can define rule templates to which users subscribe. Rules marked as `true` are templates, are never triggered (a subscription to a template creates a new dynamic rule) ||false|
 | RULE_EXECUTION_STRATEGY |Defines how many times the rule should trigger for a given record (record of root table where `RULE_TABLE` is a view). Valid values are `UNLIMITED`, `ONCE_ONLY`, `ONCE_PER_RECORD`. Default is `UNLIMITED`. This is helpful if `TABLE_OPERATION` must include `MODIFY` and the records may have many modifications to stop repeated alerts|`ONCE_ONLY`|false|
-| RULE_TYPE |Used to specify that this rule belongs to a group. For example, the [notifications and alert component](/develop/business-components/notifications/notifications-introduction/) will set as `NOTIFY`|`NOTIFY`|false|
+| RULE_TYPE |Used to specify that this rule belongs to a group. For example, the [notifications and alert component](/develop/business-components/notifications/notifications-introduction/) will set this value to `NOTIFY`|`NOTIFY`|false|
 
 Rules are managed via the API, which exposes CRUD operations for maintaining the table. Components such as [notifications and alert component](/develop/business-components/notifications/notifications-introduction/) include a user interface that manages dynamic rule set-up and reads application metadata to help users populate table/view selection and expressions.
 
 ## Client API
 
-Rules can be managed via the API. Responses are omitted for brevity; they are standard event handler [acks/nacks](/develop/server-capabilities/core-business-logic-event-handler/#ack)
+Rules can be managed via the API. 
+
+In the examples below, responses are omitted for brevity; they are standard `eventHandler` [acks/nacks](/develop/server-capabilities/core-business-logic-event-handler/#ack).
 
 ### `CRON_RULE` API
  
@@ -303,7 +305,7 @@ SOURCE_REF: 005
 </TabItem>
 </Tabs>
 
-### `DYNAMIC_RULE`
+### `DYNAMIC_RULE` API
 
 #### `EVENT_DYNAMIC_RULE_INSERT`
 
