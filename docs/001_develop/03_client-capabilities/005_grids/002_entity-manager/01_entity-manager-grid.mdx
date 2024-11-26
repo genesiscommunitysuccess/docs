@@ -42,26 +42,23 @@ The example array below creates six columns, specifying the width of each one.
 
 ```typescript
 const columnDefs: ColDef[] = [
-  { field: 'REQUEST_VERSION', headerName: 'Version', width: 90 },
-  {
-    field: 'REQUEST_STATUS',
-    headerName: 'Status',
-    width: 80,
-    cellStyle: { 'text-align': 'right', color: 'red' },
-  },
-  { field: 'SALES_PERSON', headerName: 'Sales', width: 100 },
-  { field: 'PRODUCT', headerName: 'Product', width: 100, cellStyle: { 'text-align': 'center' } },
-  { field: 'CLIENT_NAME', headerName: 'Client', width: 100 },
-  { field: 'NOTIONAL', headerName: 'Notional', width: 100, cellStyle: { 'text-align': 'left' } },
+  { field: 'COUNTERPARTY_ID', headerName: 'Counterparty ID' },
+  { field: 'NAME', headerName: 'Name', cellStyle: { 'text-align': 'right', color: 'red' } },
+  { field: 'ENABLED', headerName: 'Enabled', width: 100 },
+  { field: 'COUNTERPARTY_LEI', headerName: 'LEI' },
 ];
 
 @customElement({
   name: 'entity-management-example',
   template: html`
    <entity-management
-      ...
+      design-system-prefix="rapid"
+      resourceName="ALL_COUNTERPARTYS"
+      title="Counterparty Management"
+      updateEvent="EVENT_COUNTERPARTY_MODIFY"
+      deleteEvent="EVENT_COUNTERPARTY_DELETE"
+      createEvent="EVENT_COUNTERPARTY_INSERT"
       :columns=${() => columnDefs}
-      ...
     ></entity-management>
   `,
 })
@@ -70,7 +67,7 @@ export class EntityManagementColumns extends GenesisElement {}
 
 As a result of these column definitions, the following grid is displayed:
 
-![](/img/entity-man-coldef-02.png)
+![](/img/foundation-entity-management/entity-counterparty-columns.png)
 
 ### CRUD menu
 
