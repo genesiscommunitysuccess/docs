@@ -15,7 +15,8 @@ Welcome to the API documentation for this package.
 
 ## Packages
 
-|  Package | Description |
-|  --- | --- |
-|  [@genesislcap/foundation-fdc3](./foundation-fdc3.md) |  |
+| Package                                                    | Description |
+|------------------------------------------------------------| --- |
+| [@genesislcap/foundation-fdc3](./foundation-fdc3.md)       |  |
+| [@genesislcap/foundation-openfin](./foundation-openfin.md) |  |
 

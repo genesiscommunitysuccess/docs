@@ -498,6 +498,37 @@ export default {
       },
     },
     {
+      name: "@genesislcap/foundation-openfin",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        // Note, you will need to manually update the index.md to include the link to foundation-fdc3 and foundation-openfin packages after doing the auto generate
+        /*
+        ## Packages
+
+        | Package                                                    | Description |
+        |------------------------------------------------------------| --- |
+        | [@genesislcap/foundation-fdc3](./foundation-fdc3.md)       |  |
+        | [@genesislcap/foundation-openfin](./foundation-openfin.md) |  |
+         */
+        directory: "./docs/001_develop/03_client-capabilities/021_desktop-interoperability",
+        api_docs: "docs/api",
+        readme: "01_foundation-openfin.mdx",
+        keywords: ["genesis", "foundation", "ui", "fdc3", "openfin"],
+        tags: ["genesis", "foundation", "ui", "fdc3", "openfin"],
+        pages: [
+          {
+            title: "Foundation Openfin",
+            sidebar_label: "Foundation Openfin",
+            id: "foundation-openfin",
+          },
+        ],
+      },
+    },
+    {
       name: "@genesislcap/foundation-notifications",
       enabled: true,
       src: {

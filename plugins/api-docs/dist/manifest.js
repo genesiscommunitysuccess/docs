@@ -215,6 +215,28 @@ exports.default = {
             },
         },
         {
+            name: "@genesislcap/foundation-openfin",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/021_desktop-interoperability",
+                api_docs: "docs/api",
+                readme: "01_foundation-openfin.mdx",
+                keywords: ["genesis", "foundation", "ui", "fdc3", "openfin"],
+                tags: ["genesis", "foundation", "ui", "fdc3", "openfin"],
+                pages: [
+                    {
+                        title: "Foundation Openfin",
+                        sidebar_label: "Foundation Openfin",
+                        id: "foundation-openfin",
+                    },
+                ],
+            },
+        },
+        {
             name: "@genesislcap/foundation-notifications",
             enabled: true,
             src: {
