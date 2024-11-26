@@ -29,7 +29,7 @@ When a trigger happens, an event handler event message is sent, and its business
 Unlike most server capabilities in the Genesis Application Platform, you don't have to configure a .kts file to set up Evaluator; it is entirely driven by records in these two tables:
 
 * `CRON_RULE` for time-based (scheduled) events; you specify the schedule as a [Quartz Cron Expression](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html)
-* `DYNAMIC_RULE` for data-update-driven events; you specify which value is to be monitored in a table or view, the boolean logic for triggering the vent, and the event tp be triggered
+* `DYNAMIC_RULE` for data-update-driven events; you specify which value is to be monitored in a table or view, the boolean logic for triggering the event, and the event to be triggered
 
 ## Example configuration
 
