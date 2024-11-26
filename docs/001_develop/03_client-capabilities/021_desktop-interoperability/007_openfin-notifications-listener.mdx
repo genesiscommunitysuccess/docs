@@ -75,6 +75,8 @@ Use cases:
         ```typescript
         export function MyComponent() {
 
+            const interopNotificationListenerRef = useRef(null);
+
             if (interopNotificationListenerRef.current) {
                 interopNotificationListenerRef.current.toastButtons = [
                     {
@@ -117,7 +119,6 @@ Use cases:
     import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     @Component({
         selector: 'my-root',
-        templateUrl: './my.component.html',
         template: `
             <rapid-openfin-notification-listener
                 #interopNotificationListenerRef
@@ -208,7 +209,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
         <td>An array of configs for showing buttons. Buttons appear in notifications when the <code>condition</code> callback returns <code>true</code>. The action callback is called when the corresponding button is clicked</td>
         <td>
             ```typescript
-            <rapid-openfin-notification-listener :toastButtons=${)_ => [
+            <rapid-openfin-notification-listener :toastButtons=${() => [
                 {
                     condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
                     action: ({details, buttonElement, toastElement}) => {
