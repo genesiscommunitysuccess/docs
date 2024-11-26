@@ -23,7 +23,7 @@ import CommonOpenAPI from '/snippet/_common-open-api.md'
 
 ## Overview
 
-The Genesis Application Platform has a real-time event-driven architecture. The Event Handler is a microservice responsible for providing these events, which can apply business logic and affect the application's data set. Developers configure events, including optional and mandatory input fields, which client can trigger via APIs. 
+The Genesis Application Platform has a real-time event-driven architecture. The Event Handler is a microservice responsible for providing these events, which can apply business logic and affect the application's data set. You can configure events, including optional and mandatory input fields, which the client can trigger via APIs. 
 
 ```mermaid
 graph TD
@@ -32,11 +32,11 @@ B -->|3. Ack/Nack| A
 B <-->|2. Read/Write|C[Database] 
 ```
 
-Many of the tables in an app will need **Insert**, **Modify** and **Delete** events, so that you can specify the processing that these events require. You can create any events as needed by the application's business logic. For example, most applications built on the platform include typical **business entities** for the financial market, such as orders, trades, bids, allocations and positions. These business entities have a lifecycle where they go through various **states**. The transition from one state to another is an event that needs to be handled. The paths through those states are workflows, and to assist the workflows, we use [state machines](/develop/server-capabilities/workflow-state-machine/).
+Nearly every table defined in your application's data model in an app will need events to affect the data. The standard events for most tables are **Insert**, **Modify** and **Delete** (but not every table will need all these events); depending on your application workflow, you could need many more.
 
-Genesis Event handlers are defined in the `*-eventhandler.kts` files.
+You have to specify the business logic to process each of these events. You do this in the `*-eventhandler.kts` files.
 
-All Event Handler events are available via REST automatically, including Open API conforming spec.
+All the events that you specify are available via REST automatically, including Open API.
 
 ## Example configuration
 
@@ -128,7 +128,7 @@ eventHandler {
 
 It is important to understand the concepts of validation vs commit, and ack vs nack.
 
-There are two main blocks to an eventHandler, [`onValidate`](#onvalidate) and [`onCommit`](#oncommit). The following images show the execution workflow where validate is set by the client to true vs false, and how nack (unsuccessful event) terminates the event unsuccessfully and can will stop further execution of the event:
+There are two main blocks to an eventHandler, [`onValidate`](#onvalidate) and [`onCommit`](#oncommit). The following images show the execution workflow where validate is set by the client to true vs false, and how nack (unsuccessful event) terminates the event unsuccessfully and will stop further execution of the event:
 
 ![](/img/eh-validate-true.png)
 
@@ -136,9 +136,9 @@ There are two main blocks to an eventHandler, [`onValidate`](#onvalidate) and [`
 
 ### `ack`
 
-An `ack` needs to be supplied at the end of any `onValidate` and `onCommit` blocks and signifies the event was successful.
+An `ack` needs to be supplied at the end of any `onValidate` and `onCommit` blocks; It signifies that the event was successful.
 
-```kotlin{4}
+```kotlin {4}
 eventHandler<Trade>(name = "TRADE_INSERT") {
   onValidate { event ->
     ...
@@ -151,13 +151,13 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 }
 ```
 
-If `VALIDATE` was set to true on the inbound event message, and an `ack` is reached in the `onValidate` block, a `MESSAGE_TYPE` of `EVENT_ACK` will be returned to the client and the event will stop execution.
+If `VALIDATE` is set to true on the inbound event message, and an `ack` is reached in the `onValidate` block, a `MESSAGE_TYPE` of `EVENT_ACK` will be returned to the client and the event will stop execution.
 
 A `MESSAGE_TYPE` of `EVENT_ACK` will be returned to the client.
 
-A successful event may also send data back to the client as part of an `ack`. A very common use case is to return the ID(s) of newly inserted records so that the client is aware and can handle appropriately (show the user where the client is a UI, else if the client is a system it may want to store the ID in it's own records.)
+A successful event can also send data back to the client as part of an `ack`. A very common use case is to return the ID(s) of newly inserted records so that the client is aware and can handle these appropriately (show the user where the client is a UI, else if the client is a system it may want to store the ID in its own records.)
 
-```kotlin{5}
+```kotlin {5}
   eventHandler<Trade>("TRADE_INSERT") {
     onCommit { event ->
       val trade = event.details
@@ -165,18 +165,20 @@ A successful event may also send data back to the client as part of an `ack`. A 
       ack(listOf(mapOf("TRADE_ID" to result.record.tradeId)))
     }
   }
-}
+
 ``` 
 
 ### `nack`
 
-A nack statement will signify an event failed, typically sent during `onValidate` and sometimes during `onEvent`. 
+A nack statement signifies an event failed, typically sent during `onValidate` and sometimes during `onEvent`. 
 
 It can take a string argument, which is the error message passed back to the client. 
 
-Where triggering within an `onValidate` block, we prefix with `return@onValidate` to terminate validation at this point. You may need to trigger a nack within an onCommit block, in which case we prefix with `return @onCommit`.
+Where triggering within an `onValidate` block, prefix the `nack` with `return@onValidate` to terminate validation at this point. 
 
-```kotlin{5}
+To trigger a nack within an `onCommit` block, prefix the `nack` with `return @onCommit`.
+
+```kotlin {5}
 eventHandler<Trade>(name = "TRADE_INSERT") {
   onValidate { event ->
     val price = event.details.price
@@ -195,7 +197,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 }
 ```
 
-A `nack` may also take an object of type [`Throwable`](https://docs.oracle.com/javase/6/docs/api/java/lang/Throwable.html), in which case the `message` of the Throwable will be sent back to the client.
+A `nack` can also take an object of type [`Throwable`](https://docs.oracle.com/javase/6/docs/api/java/lang/Throwable.html), in which case the `message` of the Throwable will be sent back to the client.
 
 Where a nack is triggered, `MESSAGE_TYPE` returned to the client is an `EVENT_NACK`
 
@@ -218,9 +220,9 @@ In the parenthesis you can define:
   }
 ```
 
-The "Type" (aka Generic) parameter is used to set the event metadata. This metadata defines the event inputs the client can send in, and a certain amount of pre-validation will be performed on any inbound event messages based on this metadata (unless [`schemaValidation`](#schemavalidation) is turned off).
+The `<Type>` (aka Generic) parameter is used to set the event metadata. This metadata defines the event inputs the client can send in, and a certain amount of pre-validation will be performed on any inbound event messages based on this metadata (unless [`schemaValidation`](#schemavalidation) is turned off).
 
-You can use your table entity [DAO](/build-deploy-operate/build/bdo-build-overview/#dao) as the event meta, in this case the even will inherit the table's fields, their types and their nullability will determine whether the field is optional or mandatory.
+You can use your table entity [DAO](/build-deploy-operate/build/bdo-build-overview/#dao) as the `<Type>`. In this case, the event will inherit the table's fields, their types and their nullability (which determines whether the field is optional or mandatory).
 
 ```kotlin
 eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -233,7 +235,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 }
 ```
 
-Otherwise you can create a [kotlin `data class` to define your metadata](/develop/server-capabilities/communications-metadata/#input-messages) and use it.
+Otherwise, you can create a [kotlin `data class` to define your metadata](/develop/server-capabilities/communications-metadata/#input-messages) and use it.
 
 You can also use an index for an event type, this is very common for DELETE events, where the client simply needs to send the ID of the record to delete:
 
@@ -250,7 +252,7 @@ eventHandler<Trade.ById>(name = "TRADE_DELETE") {
 
 #### `schemaValidation`
 
-`schemaValidation` takes a boolean, where set to false it disables JSON Schema validation enforced for type-safe messages for this event.
+`schemaValidation` takes a boolean. Where set to false, it disables JSON Schema validation enforced for type-safe messages for this event.
 
 `schemaValidation` defaults to `true` when undefined.
 
@@ -263,7 +265,7 @@ eventHandler<Trade.ById>(name = "TRADE_DELETE") {
 
 #### `excludeMetadataFields`
 
-`excludeMetadataFields` takes a set of field names which are defined as part of the event meta (e.g `Trade` in our example below), to exclude them from event metadata.
+`excludeMetadataFields` takes a set of field names, which are defined as part of the event meta (e.g `Trade` in our example below), to exclude them from event metadata.
 
 ```kotlin
   eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
@@ -274,10 +276,12 @@ eventHandler<Trade.ById>(name = "TRADE_DELETE") {
 
 In this example `DATE` defined on `Trade` will not be part of the meta for this event.
 
-By default `excludeMetadataFields` has 2 fields, `RECORD_ID` and `TIMESTAMP`, 2 fields which are part of every database object but will always be set by the database and thus client shouldn't send
+By default `excludeMetadataFields` includes two fields, `RECORD_ID` and `TIMESTAMP`. These fields are part of every database object; their values are always set by the database layer, so the client typically does not send them.
 
 :::warning
-Typically when using a table entity as the eventHandler Type, you don't need to use `excludeMetadataFields`, but if you do be sure to keep the 2 default fields `RECORD_ID` and `TIMESTAMP` listed in your set except when you are using [optimistic concurrency](#optimistic-concurrency) mode, in which case the `TIMESTAMP` field is critical to **include** in the event meta, so do not define in this list.
+Typically when using a table entity as the eventHandler `<Type>`, you don't need to use `excludeMetadataFields`. If you do, be sure to keep the 2 default fields `RECORD_ID` and `TIMESTAMP` listed in your set.
+
+An exception is when you are using [optimistic concurrency](#optimistic-concurrency) mode. In this case, it is essential to include the `TIMESTAMP` field in the event meta. This happens automatically where `excludeMetadataFields` has not been set.
 :::
 
 #### `overrideMetadataFields`
@@ -340,7 +344,7 @@ Within the onvalidate block a `verify` block is helpful for common relational ch
 
 In this example we verify that the instrument and counterparty IDs that were supplied on the event exist in the database.
 
-```kotlin{3-6}
+```kotlin {3-6}
   onValidate {
     ...
     verify {
@@ -352,8 +356,6 @@ In this example we verify that the instrument and counterparty IDs that were sup
 ```
 
 If the boolean logic fails, a [nack](#nack) will be returned and validation of the event has failed.
-
-TODO can't we override the text returned to client?
 
 ##### `require`
 
@@ -401,7 +403,7 @@ There are useful properties you can set as part of the `approvableAck` definitio
 * `entityDetails` is a list of `ApprovalEntityDetails` with their corresponding `entityTable`, `entityId` and `approvalType` properties (see previous paragraph). By default, this list is empty.
 * `approvalMessage` contains the text that is sent back to the client, assuming the event is successfully submitted for approval. The default is "Your request was successful and has been submitted for approval".
 * `additionalDetails` can provide context information that is only available from a server-side perspective. This information complements the `APPROVAL_MESSAGE` content provided by the front end.
-* `approvalType` is used to state the action that happens when this event is approved: NEW for insertions, UPDATE for amends, REMOVE for removals. If undefined, this defaults to UNKNOWN). Most events will be simple, but of course some could affect multiple entities in different ways, which is why the `entityDetails` parameter can contain many entities, each with their own `approvalType`.
+* `approvalType` is used to state the action that happens when this event is approved: NEW for insertions, UPDATE for amends, REMOVE for removals. If undefined, this defaults to UNKNOWN. Most events will be simple, but of course some could affect multiple entities in different ways, which is why the `entityDetails` parameter can contain many entities, each with their own `approvalType`.
 
 ```kotlin
   eventHandler<Trade>("TRADE_MODIFY") {

@@ -25,9 +25,9 @@ The options for configuring access to this are discussed below.
 
 In most cases, you have your own artifactory/nexus/similar store for storing libraries. Your developers point to this location to pull in libraries and develop applications.
 
-The ideal approach is to point your own instance to the Genesis Jfrog Artifactory’s local-release-client repo to find Genesis artifacts, syncing them to your own artifactory as and when developers pull them them.
+The ideal approach is to point your own instance to the Genesis Jfrog URL: `https://genesisglobal.jfrog.io/genesisglobal/dev-repo`. With this configured Genesis platform artifacts will sync to your enterprise artifactory as and when developers pull them them.
 
-The Genesis client-level user credentials should be configured in this local repo, and should not shared with developers.
+The Genesis artifactory client-level user credentials should be configured in this local repo, and should not be shared with developers.
 
 :::tip
 Within certain enterprise infrastructure this setup will require the whitelisting of the following URLs:

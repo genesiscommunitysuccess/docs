@@ -1,0 +1,153 @@
+---
+title: 'Banner'
+sidebar_label: 'Banner'
+id: client-presentation-banner
+keywords: [presentation, banner, personalisation, user, image]
+tags:
+- presentation
+- banner
+- personalisation
+- user
+- image
+sidebar_position: 9
+---
+
+import BannerDemo from './examples/banner.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Banner
+
+Use cases:
+* Highlighting an item.
+* Flagging an item as part of a category.
+* Representing a value of unread messages.
+
+## Example
+
+<BannerDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-banner></rapid-banner>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-banner
+          ${ref('bannerRef')}
+          @click=${x => x.handleClick()}>
+          <div slot="content">
+            A banner for displaying information... Click to dismiss!
+          </div>
+        </rapid-banner>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      @observable bannerRef: Banner;
+      handleClick() {
+        this.bannerRef.dismiss()
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+    <rapid-banner></rapid-banner>
+  ```
+  Usage
+  ```typescript
+  export function MyComponent() {
+    const bannerRef = useRef(null);
+    const handleClick = (e) => {
+      bannerRef.current?.dismiss();
+    }
+    return (
+      <rapid-banner onClick={handleClick}>
+        <div slot="content">
+          A banner for displaying information... Click to dismiss!
+        </div>
+      </rapid-banner>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+    <rapid-banner></rapid-banner>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  @Component({
+    selector: 'my-root',
+    template: `
+        <rapid-banner #bannerRef (click)="handleClick()">
+          <div slot="content">
+            A banner for displaying information... Click to dismiss!
+          </div>
+        </rapid-banner>
+        `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  })
+  export class AppComponent {
+    @ViewChild('bannerRef') bannerRef!: ElementRef;
+    handleClick() {
+      this.dialogRef.nativeElement?.dismiss();
+    }
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+# Attributes
+
+This component doesn't have any attributes.
+
+# Properties
+
+This component doesn't have any properties.
+
+### Methods
+
+|Method|Description|
+|--|--|
+| dismiss | Dismisses the banner. |
+
+### Slots
+
+| Name | Description |
+|---|---|
+| Default |The default slot for banner text, commonly a name or initials. |
+
+### Parts
+
+| Name | Description |
+|---|---|
+| control | The element representing the banner, which wraps the default slot. |
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.

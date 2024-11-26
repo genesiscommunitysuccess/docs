@@ -118,11 +118,11 @@ h5 {
 }
 
 .markdown h2 {
-  font-size: 50px;
+  font-size: 47px;
 }
 
 .markdown h3 {
-  font-size: 40px;
+  font-size: 38px;
 }
 
 .markdown h4 {
@@ -783,10 +783,6 @@ a.table-of-contents__link--active {
   color: var(--ifm-navbar-link-color);
 }
 
-.askai-frame-widget iframe {
-  height: 400px !important;
-}
-
 #__docusaurus
   > nav
   > div.navbar__inner
@@ -889,3 +885,10 @@ a.table-of-contents__link--active {
   font-size: 18px;
 }
 /** Category page */
+
+rapid-badge {
+  --badge-fill-primary: #86bf86;
+  --badge-fill-danger: #ff0000;
+  --badge-color-light: #ffffff;
+  --badge-color-dark: #000000;
+}

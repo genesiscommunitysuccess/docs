@@ -414,7 +414,7 @@ export default {
         readme: "./README.md",
       },
       output: {
-        directory: "./docs/001_develop/03_client-capabilities/006_charts/002_g2plot-chart",
+        directory: "./docs/001_develop/03_client-capabilities/006_g2plot-chart",
         api_docs: "docs/api",
         readme: "index.mdx",
         keywords: ["genesis", "foundation", "ui", "chart", "g2plot-chart", "g2plot"],
@@ -494,6 +494,57 @@ export default {
             sidebar_label: "Foundation FDC3",
             id: "foundation-fdc3",
           },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-openfin",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        // Note, you will need to manually update the index.md to include the link to foundation-fdc3 and foundation-openfin packages after doing the auto generate
+        /*
+        ## Packages
+
+        | Package                                                    | Description |
+        |------------------------------------------------------------| --- |
+        | [@genesislcap/foundation-fdc3](./foundation-fdc3.md)       |  |
+        | [@genesislcap/foundation-openfin](./foundation-openfin.md) |  |
+         */
+        directory: "./docs/001_develop/03_client-capabilities/021_desktop-interoperability",
+        api_docs: "docs/api",
+        readme: "01_foundation-openfin.mdx",
+        keywords: ["genesis", "foundation", "ui", "fdc3", "openfin"],
+        tags: ["genesis", "foundation", "ui", "fdc3", "openfin"],
+        pages: [
+          {
+            title: "Foundation Openfin",
+            sidebar_label: "Foundation Openfin",
+            id: "foundation-openfin",
+          },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-notifications",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/013_toast-notifications",
+        api_docs: "docs/api",
+        readme: "index.mdx",
+        keywords: ["genesis", "foundation", "notifications", "toast","snackbar"],
+        tags: [
+          "notifications",
+          "toasts",
+          "snackbar"
         ],
       },
     },
