@@ -267,7 +267,7 @@ export class ConnectedGridServerSideExample extends GenesisElement {}
 
 ## Genesis Datasource
 
-This folder contains implementations of Genesis `datasource` components, responsible for fetching data for Genesis [Grid Pro](../../README.md) components.
+This folder contains implementations of Genesis `datasource` components, responsible for fetching data for Genesis Grid Pro component.
 
 This document outlines the available features of our two “Grid Pro” datasources: `<grid-pro-client-side-datasource>` and `<grid-pro-server-side-datasource>`.
 
@@ -347,7 +347,7 @@ This document outlines the available features of our two “Grid Pro” datasour
   - Sorting uses `ORDERY_BY` param
   - Both work the same way, once filtering/sorting is applied the datasource component “resets itself”, basically starting a new stream with the updated params.
 - **LIMITATIONS**
-  - Sorting can only be applied to “index” fields/columns. Also mentioned [here](https://www.notion.so/Grid-Pro-Datasource-Inventory-d11ca7570ee94847bbcb3e7362025b0a?pvs=21). More details [here](https://genesisglobal.atlassian.net/jira/polaris/projects/GPR/ideas/view/4721227?selectedIssue=GPR-171&focusedCommentId=143757) and [here](https://genesis-global-talk.slack.com/archives/C0416MFG360/p1696456988606789).
+  - Sorting can only be applied to “index” fields/columns.
   - ROWS_COUNT doesn’t reflect the correct amount when a CRITERIA_MATCH (filtering) is applied. Example: X resource has 100 records. A criteria is specified so it returns only 50 records… the rows count sent from the server is still 100. Because of that we have to manually/locally calculate that.
 - Suitable for large datasets where only a subset of data is loaded into the client based on user interactions.
 
