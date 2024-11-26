@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { CodeSection } from "../../../../../../examples/ui/documentationBase";
+import { CodeSection } from "../../../../../examples/ui/documentationBase";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 
 export const chartConfiguration = {
@@ -33,12 +33,13 @@ export const chartConfiguration = {
     { groupBy: 'Exam 6', value: 5 },
   ];
   
-export default function DonutChartExample() {
+
+export default function PieChartExample() {
   const isBrowser = useIsBrowser();
   const chart = useRef(null);
 
   if (isBrowser) {
-    const RapidImports = require("../../../../../../examples/ui/rapidImports");
+    const RapidImports = require("../../../../../examples/ui/rapidImports");
     RapidImports.registerComponents();
   }
 
@@ -49,7 +50,7 @@ export default function DonutChartExample() {
 
   return (
     <CodeSection>
-      <rapid-g2plot-chart type="donut" ref={chart}></rapid-g2plot-chart>
+      <rapid-g2plot-chart type="pie" ref={chart}></rapid-g2plot-chart>
     </CodeSection>
   );
 }

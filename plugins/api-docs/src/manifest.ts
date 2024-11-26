@@ -414,7 +414,7 @@ export default {
         readme: "./README.md",
       },
       output: {
-        directory: "./docs/001_develop/03_client-capabilities/006_charts/002_g2plot-chart",
+        directory: "./docs/001_develop/03_client-capabilities/006_g2plot-chart",
         api_docs: "docs/api",
         readme: "index.mdx",
         keywords: ["genesis", "foundation", "ui", "chart", "g2plot-chart", "g2plot"],
