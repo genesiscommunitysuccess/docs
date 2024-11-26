@@ -308,6 +308,46 @@ export default {
       },
     },
     {
+      name: "@genesislcap/foundation-entity-management",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/005_grids/002_entity-manager",
+        api_docs: "docs/api",
+        img_dir: "docs/img",
+        readme: "index.mdx",
+        keywords: [
+          "entity management",
+          "frontend",
+          "micro-front-ends",
+          "profile management",
+          "ui",
+          "user management",
+          "web",
+        ],
+        tags: [
+          "entity management",
+          "frontend",
+          "micro-front-ends",
+          "profile management",
+          "ui",
+          "user management",
+          "web",
+        ],
+        pages: [
+          {
+            title: "Real Time Data Grid (Entity Manager)",
+            sidebar_label: "Real Time Data Grid (Entity Manager)",
+            id: "entity-manager",
+          },
+        ],
+      },
+    },
+    {
       name: "@genesislcap/grid-pro",
       enabled: true,
       src: {
@@ -316,9 +356,9 @@ export default {
         readme: "./README.md",
       },
       output: {
-        directory: "./docs/001_develop/03_client-capabilities/005_grids/01_grid-pro-docs",
+        directory: "./docs/001_develop/03_client-capabilities/005_grids/003_grid-pro",
         api_docs: "docs/api",
-        readme: "01_grid-pro.mdx",
+        readme: "index.mdx",
         keywords: ["genesis", "foundation", "ui", "grid", "grid-pro", "ag"],
         tags: [
           "connected",
@@ -329,8 +369,8 @@ export default {
         ],
         pages: [
           {
-            title: "Grid Pro",
-            sidebar_label: "Overview",
+            title: "Enterprise Data Grid (Grid Pro)",
+            sidebar_label: "Enterprise Data Grid (Grid Pro)",
             id: "grid-pro",
           },
         ],
@@ -345,9 +385,9 @@ export default {
         readme: "./README.md",
       },
       output: {
-        directory: "./docs/001_develop/03_client-capabilities/005_grids/02_grid-tabulator-docs",
+        directory: "./docs/001_develop/03_client-capabilities/005_grids/004_grid-tabulator",
         api_docs: "docs/api",
-        readme: "01_grid-tabulator.mdx",
+        readme: "index.mdx",
         keywords: ["genesis", "foundation", "ui", "grid", "grid-tabulator", "tabulator"],
         tags: [
           "connected",
@@ -358,8 +398,8 @@ export default {
         ],
         pages: [
           {
-            title: "Grid Tabulator",
-            sidebar_label: "Overview",
+            title: "Connected Data Grid (Tabulator)",
+            sidebar_label: "Connected Data Grid (Tabulator)",
             id: "grid-tabulator",
           },
         ],
@@ -413,6 +453,25 @@ export default {
             sidebar_label: "Smart Forms",
             id: "smart-forms",
           },
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-i18n",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/020_internationalization/01_internationalization-docs",
+        api_docs: "docs/api",
+        readme: "index.mdx",
+        keywords: ["genesis", "foundation", "i18n", "internationalization"],
+        tags: [
+          "i18n",
+          "internationalization",
         ],
       },
     },

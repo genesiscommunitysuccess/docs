@@ -2,12 +2,184 @@
 title: 'Internationalization'
 sidebar_label: 'Internationalization'
 id: client-internationalization
-keywords: [internationalization]
+keywords: [i18n, internationalization]
 tags:
+- i18n
 - internationalization
 sidebar_position: 20
+pagination_next: develop/client-capabilities/desktop-interoperability/foundation-fdc3
 ---
 
-Coming soon...
+# Foundation i18n
 
-I18n (internationalization and localization) 
+The `@genesislcap/foundation-i18n` package provides a collection of i18n services and utilities for Genesis applications. It leverages the power of [i18next](https://www.i18next.com/) to enable seamless internationalization and localization.
+
+## API Documentation
+
+For more detailed information on API and configurations, please refer to the [API documentation](./01_internationalization-docs/api/index.md) in the `docs/api` directory.
+
+## Features
+
+- **Easy integration**: Quick setup with modern JavaScript frameworks and libraries.
+- **Dynamic language switching**: Change languages on the fly without reloading the application.
+- **Module federation support**: Share and load translations across different micro-frontends or modules dynamically.
+- **Dependency injection**: Integrate i18n services into your components using dependency injection.
+
+## Getting Started
+
+### Installation
+
+To enable this module in your application, follow the steps below.
+
+1. Add `@genesislcap/foundation-i18n` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](https://learn.genesis.global/secure/web/basics/package-json-basics/) page.
+
+```json
+{
+  "dependencies": {
+    "@genesislcap/foundation-i18n": "latest"
+  },
+}
+```
+
+### I18n Setup
+
+Import the necessary modules from `@genesislcap/foundation-i18n` and configure your internationalization settings.
+
+```typescript
+import { defaultI18nextConfig, I18nextConfig } from '@genesislcap/foundation-i18n';
+
+// Tip: Extend or modify the defaultI18nextConfig as needed.
+Registration.instance<I18nextConfig>(I18nextConfig, {
+  ...defaultI18nextConfig,
+  lng: 'pt', // en is the default language but you can change it here or by tweaking the defaultI18nextConfig
+  resources: {
+    en: {
+      translation: {
+        Home: 'Home',
+        Admin: 'Admin',
+        Reporting: 'Reporting',
+        Notifications: 'Notifications',
+        ['Features Lab']: 'Features Lab',
+      },
+    },
+    pt: {
+      translation: {
+        Home: 'Início',
+        Admin: 'Administração',
+        Reporting: 'Relatórios',
+        Notifications: 'Notificações',
+        ['Features Lab']: 'Laboratório de Funcionalidades',
+      },
+    },
+  },
+});
+```
+
+This could live in your application’s entry point, such as `main.ts` or a similar file.
+
+### I18n Setup (JSON)
+
+You can also use a JSON file to store your translations and load them dynamically:
+
+```json
+{
+  "en": {
+    "translation": {
+      "Home": "Home",
+      "Admin": "Admin",
+      "Reporting": "Reporting",
+      "Notifications": "Notifications",
+      "Features Lab": "Features Lab"
+    }
+  },
+  "pt": {
+    "translation": {
+      "Home": "Início",
+      "Admin": "Administração",
+      "Reporting": "Relatórios",
+      "Notifications": "Notificações",
+      "Features Lab": "Laboratório de Funcionalidades"
+    }
+  }
+}
+```
+
+Then, import the JSON file and use it in your configuration:
+
+```typescript
+import { defaultI18nextConfig, I18nextConfig } from '@genesislcap/foundation-i18n';
+import translations from './translations.json';
+
+Registration.instance<I18nextConfig>(I18nextConfig, {
+  ...defaultI18nextConfig,
+  lng: 'en',
+  resources: translations,
+});
+```
+
+### `addResources` 
+
+> :warning: **This will overwrite previously set resources.**
+
+You can also add resources dynamically and when necessary. 
+
+This is useful when you have a large number of translations or when you need to load translations from a different source or at a different time from the initial setup.
+
+```typescript
+import { I18next } from '@genesislcap/foundation-i18n';
+import translations from './translations.json';
+
+export class MyExampleClass {
+  @I18next i18next!: I18next;
+
+  addResources() {
+    this.i18next.addResources(translations);
+  }
+}
+```
+
+### Usage
+
+`foundation-i18n` also supports changing languages dynamically, allowing your application to switch languages without needing to reload:
+
+```typescript
+import { I18next } from '@genesislcap/foundation-i18n';
+import { customElement, FASTElement, html } from '@microsoft/fast-element';
+import translations from './translations.json';
+
+@customElement({
+  name: 'my-example-component',
+  template: html`
+    <zero-button @click=${() => addResources()}>Add Translation Resources</zero-button>
+    <zero-button @click=${() => switchLanguage()}>Switch between PT and EN</zero-button>
+    <zero-button @click=${() => translateWords()}>Translate i18n Resource Words</zero-button>
+  `,
+})
+export class MyExampleComponent extends FASTElement {
+  @I18next i18next!: I18next;
+
+  addResources() {
+    this.i18next.addResources(translations);
+  }
+
+  switchLanguage() {
+    if (this.i18next.language === 'pt') {
+      this.i18next.changeLanguage('en');
+    } else {
+      this.i18next.changeLanguage('pt');
+    }
+  }
+
+  translateWords() {
+    console.log(this.i18next.t('Home')); // if pt, it will log Início, if en, it will log Home
+    console.log(this.i18next.t('Admin')); // if pt, it will log Administração, if en, it will log Admin
+    console.log(this.i18next.t('Reporting')); // if pt, it will log Relatórios, if en, it will log Reporting
+    console.log(this.i18next.t('Notifications')); // if pt, it will log Notificações, if en, it will log Notifications
+    console.log(this.i18next.t('Features Lab')); // if pt, it will log Laboratório de Funcionalidades, if en, it will log Features Lab
+  }
+}
+```
+
+### Integrating with Other Libraries
+
+Coming soon.

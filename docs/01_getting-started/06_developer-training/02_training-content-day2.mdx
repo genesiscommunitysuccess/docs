@@ -362,7 +362,7 @@ export const tradeFormCreateSchema = tradeFormSchema(false);
 export const tradeFormUpdateSchema = tradeFormSchema(true);
 ```
 
-Note that the `tradeFormSchema` variable, declared above, pretty much describes the JSON schema for the endpoints defined including the fields and definitions. It is also possible to add filling using [Request Server](../../../server/request-server/introduction/) or [Data Server](../../../server/data-server/introduction/) queries (like Instrument and Counterparty ones), and further validation by way of annotation or custom validations on data classes.
+Note that the `tradeFormSchema` variable, declared above, pretty much describes the JSON schema for the endpoints defined including the fields and definitions. It is also possible to add filling using [Request Server](../../../develop/server-capabilities/snapshot-queries-request-server/) or [Data Server](../../../develop/server-capabilities/real-time-queries-data-server/) queries (like Instrument and Counterparty ones), and further validation by way of annotation or custom validations on data classes.
 
 Go back to the **home.template.ts** file to import the variables schema and add the properties  `createFormUiSchema` `updateFormUiSchema`.
 ```jsx {3,14,15}

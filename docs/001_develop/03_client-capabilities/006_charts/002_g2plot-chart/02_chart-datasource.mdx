@@ -1,5 +1,5 @@
 ---
-title: 'G2Plot Chart Datasource'
+title: 'G2Plot Chart datasource'
 sidebar_label: 'Chart datasource'
 id: g2plot-chart-datasource
 keywords: [genesis, foundation, ui, chart, g2plot-chart, g2plot]
@@ -9,29 +9,27 @@ tags:
   - chart
   - g2plot-chart
   - g2plot
-pagination_next: develop/client-capabilities/forms/client-forms
 ---
 
-# Chart datasource
 
 The `chart-datasource` component serves as the data provider for G2Plot charts, allowing for dynamic, server-driven data integration. 
 
-It is designed to fetch, filter, and structure data in real-time from a backend server, ensuring that the chart remains updated with the most recent data available. 
+It is designed to fetch, filter, and structure data in real time from a back-end server, ensuring that the chart remains updated with the most recent data available. 
 This flexibility makes it a powerful tool for interactive and data-intensive applications, where live data updates are essential.
 
-The `chart-datasource` component offers several key features that provide flexibility in managing and displaying data for G2Plot charts. These features enable you to control how data is fetched, filtered, structured, and visualized, ensuring that your charts are both dynamic and efficient.
+You can control how data is fetched, filtered, structured, and visualized, ensuring that your charts are both dynamic and efficient.
 
-- **Configurable Data Fields** - The `chartFields` and `serverFields` properties allow precise mapping of data to chart axes and categories, making it easy to define which data should be represented as x/y fields or series values.
+- **Configurable Data Fields**. The `chartFields` and `serverFields` properties enable you to map data to chart axes and categories, making it easy to define which data should be represented as x/y fields or series values.
   
-- **Real-time Filtering** - The `criteria` property lets clients send expressions to filter data directly on the server, enabling efficient data handling without needing to re-fetch unnecessary information.
+- **Real-time Filtering**. The `criteria` property enables the client to send expressions to filter data directly on the server, enabling efficient data handling without needing to re-fetch unnecessary information.
   
-- **Grouping and Stacking Options** - With properties like `isGroup` and `isStack`, users can define whether data should be grouped by categories or stacked, enhancing flexibility in data representation.
+- **Grouping and Stacking Options**. Properties such as `isGroup` and `isStack`, enable you to define whether data should be grouped by categories or stacked.
   
-- **Sorting and Ordering** - The `orderBy` and `reverse` options provide control over data order, ensuring that charts can display information in a logical and user-friendly sequence.
+- **Sorting and Ordering**. The `orderBy` and `reverse` options provide control over data order, ensuring that charts can display information in a logical and user-friendly sequence.
   
-- **Snapshot** - By setting `isSnapshot`, users can specify whether the data is retrieved as a one-time snapshot or continually updated, depending on application needs.
+- **Snapshot**. By setting `isSnapshot`, you can specify whether the data is retrieved as a single snapshot or it is continually updated.
   
-- **Row Limits and Data Management** - `maxRows` helps manage the volume of data fetched, and `rowId` allows for unique row identification, making the data flow organized and manageable for high-volume datasets.
+- **Row Limits and Data Management**.  `maxRows` manages the volume of data fetched, and `rowId` allows for unique row identification, so you can organise data flow for high-volume datasets.
 
 ## Examples 
 
@@ -66,7 +64,7 @@ chartConfiguration = {
     isStack: true,
 };
 ```
-- You can then declare the bar chart in the **.ts** file for the page. This example displays data for three fields in the EXAMPLE_RESOURCE in the database - which could be a table or a view.
+- You can then declare the bar chart in the `.ts` file for the page. This example displays data for three fields in the EXAMPLE_RESOURCE in the database - which could be a table or a view.
 
 ```javascript title="chart declaration in .ts page"
 <rapid-g2plot-chart type="bar" :config=${(x) => x.chartConfiguration}>
@@ -96,4 +94,4 @@ Note: this project provides front-end dependencies and uses licensed components 
 
 ### Licensed components
 
-Genesis low-code platform
+Genesis Platform
