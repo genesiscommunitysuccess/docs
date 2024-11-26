@@ -2,6 +2,7 @@
 title: 'styling components'
 sidebar_label: 'Styling Components'
 id: styling-components
+
 keywords: [
     Custom element styles,
     Dynamic CSS,
@@ -15,21 +16,21 @@ keywords: [
     Normalize CSS,
     Reusable styles,
     Encapsulation,
-    Content containment (contain: content),
     Styling Templates,
     css helper,
     cssPartial utility
 ]
-tags: 
-- @CSS
-- Shadow DOM
-- Dynamic Styles
-- Custom Elements
-- :host
-- Styles and Lifecycle
-- Encapsulation
-- Performance
-- FOUC
+
+tags:
+  - CSS
+  - Shadow DOM
+  - Dynamic Styles
+  - Custom Elements
+  - host
+  - Styles and Lifecycle
+  - Encapsulation
+  - Performance
+  - FOUC
 
 sidebar_position: 3
 ---
@@ -109,8 +110,8 @@ export class MyButton extends GenesisElement {
 ### Usage in HTML
 
 ```typescript
-<my-button label="Click Me" primary></my-button>
-<my-button label="Disabled" disabled></my-button>
+<my-button> label="Click Me" primary></my-button>
+<my-button> label="Disabled" disabled></my-button>
 ```
 
 - The first button will have a blue background (primary attribute applied).
@@ -394,7 +395,7 @@ const styles = css`
 export class MyButton extends GenesisElement {}
 ```
 
-- :host ensures that styles like display and contain apply only to the <my-button> element.
+- :host ensures that styles like display and contain apply only to the `<my-button>` element.
   - This prevents global CSS rules from interfering with the component and vice versa.
 - When `<my-button hidden>` is used, the component is visually removed using `display: none`.
   - This is a common convention for enabling/disabling components.
@@ -446,7 +447,7 @@ Styles applied to `button` and `::slotted(span)` are scoped to `my-button` Shado
 
 ### Key Limitations
 
-`::slotted()` can only style the immediate children of the <slot>. If the content inside the slot has nested elements, those cannot be styled directly:
+`::slotted()` can only style the immediate children of the `<slot>`. If the content inside the slot has nested elements, those cannot be styled directly:
 
 Styles defined in the Shadow DOM (like button {}) do not affect the slotted content directly. Slotted content is styled using the ::slotted() selector.
 
@@ -558,7 +559,7 @@ The type attribute determines the button's style:
 
 ## Hiding Undefined Elements
 
-When using custom elements (like <my-button>), the browser may render them before they are fully defined or styled.
+When using custom elements (like `<my-button>`), the browser may render them before they are fully defined or styled.
 This can cause a "flash of unstyled content" (FOUC), where the element appears in its default, unstyled form for a brief moment.
 
 To prevent the FOUC issue, we can hide custom elements that haven’t been upgraded yet by using the CSS `:not(:defined)` pseudo-class.

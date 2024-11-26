@@ -1,7 +1,8 @@
 ---
 title: "Lifecycle"
 sidebar_label: "Lifecycle"
-id: lifecycle
+id: "lifecycle"
+
 keywords:
   [
     connectedCallback,
@@ -13,12 +14,14 @@ keywords:
     Initialization and Cleanup,
     Lifecycle Methods,
   ]
-  tags:
+  
+tags:
   - connectedCallback
   - disconnectedCallback
   - attributeChangedCallback
   - Reactive Lifecycle
   - Lifecycle Events
+
 sidebar_position: 3
 ---
 
@@ -30,14 +33,13 @@ Here are some lifecycle methods that we have access to through `GenesisElement`:
 
 ### Connected & Disconnected
 
-`connectedCallback` lifecycle runs when component is added to DOM - perfect time for setup.
+`connectedCallback` lifecycle runs when a component is added to the DOM - perfect time for setup.
 
-`disconnectedCallback` lifecycle runs when component is removed from DOM - perfect time for cleanup.
+`disconnectedCallback` lifecycle runs when a component is removed from the DOM - perfect time for cleanup.
 
 ```typescript
 import {
   attr,
-  css,
   customElement,
   GenesisElement,
   html,
@@ -68,7 +70,7 @@ export class MyButton extends GenesisElement {
 
 ### Changed Callbacks
 
-Changed Callback lifecycle runs when attributes/properties update - handle state changes. The name varies depending on the name of the attribute.
+Changed Callback lifecycle runs when **attributes/properties** update - handle state changes. The name varies depending on the name of the attribute.
 
 :::note
 
@@ -79,7 +81,6 @@ In the following example you'll notice we have not included the `connectedCallba
 ```typescript
 import {
   attr,
-  css,
   customElement,
   GenesisElement,
   html,

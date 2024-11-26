@@ -1,17 +1,19 @@
 ---
-title: "Quickstart"
+title: "quickstart"
 sidebar_label: "Quick Start"
 id: quick-start
 
-keywords: [
-  quickstart, 
-  Custom Element Basics, 
-  GenesisElement Introduction, 
-  Creating Components, 
-  Component Templates, 
-  First Custom Element, 
-  Getting Started, 
-  Component Initialization]
+keywords:
+  [
+    quickstart,
+    Custom Element Basics,
+    GenesisElement Introduction,
+    Creating Components,
+    Component Templates,
+    First Custom Element,
+    Getting Started,
+    Component Initialization,
+  ]
 tags:
   - quickstart
   - GenesisElement
@@ -25,7 +27,7 @@ sidebar_position: 3
 
 # Quick Start
 
-Let's create a simple web component using Genesis. There are three parts that make up a component: the HTML template, the CSS styles and the component logic. Web components can vary in complexity, from a simple button to a very detailed interactive experience.
+Let's create a simple web component using Genesis. There are three parts that make up a component: the _HTML template_, the _CSS styles_ and the _component logic_. Web components can vary in complexity, from a simple button to a very detailed interactive experience.
 
 ## Create Custom Element
 
@@ -67,7 +69,7 @@ We’ve created a custom component called `<my-button>`, which currently display
 
 :::important
 
-Like web Components, Genesis Elements are required to include a hyphen (-) in their name in order to avoid conflicts with native HTML elements and to provide a way to namespace components from various libraries.
+Like web Components, Genesis Elements are required to include a hyphen (-) in their name in order to avoid conflicts with native HTML elements.
 
 :::
 
@@ -77,7 +79,7 @@ We can add an `attr` decorator which allows us to link a class property to an HT
 
 You can define a default value for an attribute directly within the class definition. This ensures that if no value is provided, the attribute will fall back to the specified default.
 
-Let's declare an attribute called **_name_** and then change that value to see it reflected:
+Let's declare an attribute called **_label_** and then change that value to see it reflected:
 
 ```typescript
 import { attr, css, customElement, GenesisElement, html } from '@genesislcap/web-core';
@@ -106,7 +108,7 @@ const template = html`<button>${(x) => x.label}</button>`;
 After defining your custom component, you need to import it somewhere in your application's code to ensure it gets registered.
 :::
 
-By importing the file, `MyButton` will be registered with the browser, allowing you to use the `<my-button>` element in your HTML.
+Let's say we import `MyButton` into a `hello-world.js` file. This ensures `MyButton` will be registered with the browser, allowing you to use the `<my-button>` element in your HTML.
 
 ```typescript
 import "./MyButton";
@@ -119,11 +121,13 @@ Now it can be added in your HTML this way:
 <my-button label="Cancel"></my-button>
 ```
 
-> In this example, we created a custom web component using `GenesisElement`. We defined a button template and added a label attribute using the `@attr` decorator, allowing the button text to be customized via HTML. We implemented the `labelChanged` method, which is automatically called whenever the label value changes. The template dynamically updates with the new value, ensuring the button remains responsive to changes in its attributes.
+> In this example, we created a custom web component using `GenesisElement`. We defined a button template and added a `label` attribute using the `@attr` decorator, allowing the button text to be customized via HTML. We implemented the `labelChanged` method, which is automatically called whenever the `label` value changes. The template dynamically updates with the new value, ensuring the button remains responsive to changes in its attributes.
 
-##Typed Templates
+## Typed Templates
 
-Templates can be strongly typed to ensure they align with the data model they are rendering. In TypeScript, you specify the type directly within the template declaration using the syntax `html<MyButton>`. This approach provides better type safety and ensures that the data passed into the template matches the expected structure of the associated component or model.
+Templates can be strongly typed to ensure they align with the data model they are rendering. In TypeScript, you specify the type directly within the template declaration using the syntax `html<Type>`. This approach provides better type safety and ensures that the data passed into the template matches the expected structure of the associated component or model.
+
+For instance, if you have a `MyButton` component, you can type its template like this:
 
 ```typescript
 import { html } from "@genesislcap/web-core";
