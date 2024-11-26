@@ -17,8 +17,6 @@ import ModalDemo from '../../../../examples/ui/client-capabilities/interaction/m
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-
 # Modal
 
 A modal is a type of dialog that prevents the user from interacting with other content on the page. Usually, when an active modal is displayed, all other content on the screen is dimmed. The user is unable to move focus to other windows or dialogs. This forces the user to deal with the modal before moving to other work on the application.
@@ -52,8 +50,8 @@ Use cases:
                 <rapid-button @click=${x => x.modal.show()}>Open Modal</rapid-button>
                 <rapid-modal
                     ${ref('modal')}
-                    :onShowCallback=${x => x.showCallback()}
-                    :onCloseCallback=${x => x.closeCallback()}
+                    :onShowCallback=${x => x.showCallback}
+                    :onCloseCallback=${x => x.closeCallback}
                 >
                     <h3 slot="top">Top slot</h3>
                     Main content in the modal
@@ -66,9 +64,9 @@ Use cases:
         export class MyElement extends GenesisElement {
             modal: Modal
             showCallback() {
-                console.log('modal shown')';
+                console.log('modal shown');
             }
-            hideCallback() {
+            closeCallback() {
                 console.log('modal closed');
             }
         }
@@ -170,11 +168,54 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 ### Attributes
 
-| Attribute | Type | Use | Example |
-|---|---|---|---|
-|type|`string`|The type of dialog on of 'default', 'alert' or 'success'. Defaults to 'default'. This changes the styling depending on value.|`<rapid-modal type="success">`|
-|position|`string`|Determines the position of the modal. Possible options 'right', 'left', 'center' or 'left'.|`<rapid-modal position="right">`|
-|show-close-icon|`boolean`|Enables the close icon in the top right corner of the modal. Defaults to 'true'.|`<rapid-modal show-close-icon="false">`|
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>type</td>
+            <td><code>string</code></td>
+            <td>The type of dialog on of <code>default</code>, <code>alert</code> or <code>success</code>. <strong>Defaults to <code>default</code></strong>. This changes the styling depending on value.</td>
+<td>
+
+```typescript
+<rapid-modal type="success">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>position</td>
+            <td><code>string</code></td>
+            <td>Determines the position of the modal. Possible options 'right', 'left', 'center' or 'left'.</td>
+<td>
+
+```typescript
+<rapid-modal position="right">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>show-close-icon</td>
+            <td><code>boolean</code></td>
+            <td>Enables the close icon in the top right corner of the modal. Defaults to 'true'.</td>
+<td>
+
+```typescript
+<rapid-modal show-close-icon="false">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 :::note
 If you set `position` to be `left` or `right`, the modal will assume `height: 100%` by default. To change this, make the appropriate css modifications.
@@ -182,17 +223,49 @@ If you set `position` to be `left` or `right`, the modal will assume `height: 10
 
 ### Properties
 
-| Property | Type | Use | Example |
-|---|---|---|---|
-|onShowCallback|() => void|Function that runs before modal is opened.|`<rapid-modal :onShowCallback="${() => console.log('shown')}">`|
-|onCloseCallback|() => void|Function that is called after the modal is closed.|`<rapid-modal :onCloseCallback="${() => console.log('hide')}">`|
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>onShowCallback</td>
+      <td><code>() => void</code></td>
+      <td>Function that runs <em>before</em> modal is opened.</td>
+<td>
+
+```typescript
+<rapid-modal :onShowCallback="${() => () => console.log('shown')}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>onCloseCallback</td>
+      <td><code>() => void</code></td>
+      <td>Function that is called <em>after</em> the modal is closed.</td>
+<td>
+
+```typescript
+<rapid-modal :onCloseCallback="${() => () => console.log('hide')}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Component Methods
 
-| Method | Params | Returns | Use | Example |
-|---|---|---|---|---|
-|show|none|void|When called will show the modal.|`modal.show()`|
-|close|none|void|When called will close the modal.|`modal.close()`|
+| Method | Type | Use | Example |
+|---|---|---|---|
+|show|`() => void`|When called will show the modal.|`modal.show()`|
+|close|`() => void`|When called will close the modal.|`modal.close()`|
 
 ### Slots
 
@@ -212,10 +285,10 @@ If you set `position` to be `left` or `right`, the modal will assume `height: 10
 | close-icon | The close icon in the top right hand corner of the modal dialog. |
 | bottom | The footer section of the modal dialog. |
 
-### Fired Events
+### Events fired
 
 This component doesn't fire any events.
 
-### Listened Events
+### Events listened to
 
 This component doesn't listen to any events.
