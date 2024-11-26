@@ -27,6 +27,8 @@ As Foundation UI is based on web components the first step is registering the co
 
 First thing you need to add the Foundation UI npm packages you require. Update your package.json to include the following (note this is not an exhaustive list of all the Foundation UI packages).
 
+**package.json**
+
 ```json
 {
   ...
@@ -46,9 +48,10 @@ First thing you need to add the Foundation UI npm packages you require. Update y
 }
 ```
 
-Next, you need to create a file that imports and registers the Foundation UI framework.
+Next, you need to create a file that imports and registers the Foundation UI framework and the Foundation UI header..
 
-It also configures the Foundation UI header.
+**genesis-components.ts**
+
 ```ts
 import { configure as configureHeader }from '@genesislcap/foundation-header/config';
 import { foundationLayoutComponents } from '@genesislcap/foundation-layout';
