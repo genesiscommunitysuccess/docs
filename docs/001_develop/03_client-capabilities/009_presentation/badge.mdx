@@ -1,0 +1,174 @@
+---
+title: 'Badge'
+sidebar_label: 'Badge'
+id: client-presentation-badge
+keywords: [presentation, badge, personalisation, user, image]
+tags:
+- presentation
+- badge
+- personalisation
+- user
+- image
+sidebar_position: 9
+---
+
+import BadgeDemo from './examples/badge.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Badge
+
+Use cases:
+* Highlighting an item.
+* Flagging an item as part of a category.
+* Representing a value of unread messages.
+
+## Example
+
+<BadgeDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-badge></rapid-badge>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-badge></rapid-badge>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+    <rapid-badge></rapid-badge>
+  ```
+  Usage
+  ```typescript
+  export function MyComponent() {
+    return (
+      <rapid-badge></rapid-badge>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+    <rapid-badge></rapid-badge>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  @Component({
+    selector: 'my-root',
+    template: `
+          <rapid-badge></rapid-badge>
+        `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  })
+  export class AppComponent {
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## API
+
+ Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>fill</td>
+      <td><code>string</code></td>
+      <td>Background fill colour of the badge</td>
+<td>
+
+```typescript
+<rapid-badge fill="primary">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>color</td>
+      <td><code>string</code></td>
+      <td>The text color of the badge.</td>
+<td>
+
+```typescript
+<rapid-badge color="dark">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>circular</td>
+      <td><code>boolean</code></td>
+      <td>If the badge should be circular.</td>
+<td>
+
+```typescript
+<rapid-badge circular>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+:::note
+  The `fill` and `color` attributes of the `badge` create CSS custom properties, which can be used to style the control.
+  Pass in the css name minus the "badge-fill-" string for fill.
+  Pass in the css name minus the "badge-color-" string for color.
+
+```css
+rapid-badge {
+  --badge-fill-primary: #86bf86;
+  --badge-fill-danger: #ff0000;
+  --badge-color-light: #ffffff;
+  --badge-color-dark: #000000;
+}
+```
+:::
+
+# Properties
+
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+
+| Name | Description |
+|---|---|
+| Default |The default slot for badge text, commonly a name or initials. |
+
+### Parts
+
+| Name | Description |
+|---|---|
+| control | The element representing the badge, which wraps the default slot. |
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.

@@ -15,7 +15,7 @@ const config = {
   title: "Genesis Application Platform for Financial Markets",
   tagline:
     "The Platform with 50+ Modern Building Blocks to Accelerate App Development.",
-  url: "https://learn.genesis.global/",
+  url: "https://docs.genesis.global/",
   baseUrl,
   favicon: "img/favicon.ico",
   organizationName: "genesis",
@@ -144,8 +144,7 @@ const config = {
     },
     navbar: {
       items: [
-        { type: "doc", docId: "platform-overview/platform-overview", label: "Platform Overview", position: "right"},
-        { type: "doc", docId: "develop/develop-landing", label: "Develop", position: "right" },
+        { type: "doc", docId: "develop/platform-overview", label: "Develop", position: "right" },
         { type: "doc", docId: "how-to/how-to-landing", label: "How To Guides", position: "right" },
         { type: "doc", docId: "build-deploy-operate/bdo-overview", label: "Build, Deploy & Operate", position: "right" },
         { type: "doc", docId: "release-notes/latest-releases", label: "Release Notes", position: "right" },        
