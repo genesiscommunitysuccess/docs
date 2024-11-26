@@ -517,5 +517,31 @@ export default {
         ],
       },
     },
+    {
+      name: "@genesislcap/foundation-header",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/004_header",
+        api_docs: "docs/api",
+        img_dir: "docs/img",
+        readme: "readme.mdx",
+        keywords: ["genesis", "foundation", "header"],
+        tags: [
+          "header",
+        ],
+        pages: [
+          {
+            title: "Foundation Header readme",
+            sidebar_label: "Foundation Header",
+            id: "foundation-header-readme",
+          },
+        ],
+      },
+    },
   ],
 };
