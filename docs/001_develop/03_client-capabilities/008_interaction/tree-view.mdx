@@ -228,7 +228,7 @@ API examples shown with Genesis component syntax, and closing tag omitted.
         <tr>
             <td>expanded</td>
             <td><code>boolean</code></td>
-            <td>When true, the control will appear expanded by user interaction. Emits <code>expanded-change</code> event when changed.</td>
+            <td>When true, the control will appear expanded by user interaction. Emits <code>expanded-change</code> event when changed. Note: is not set when the user interacts with the item, so only use this attribute to pre-expand the item open rather than read the state.</td>
 <td>
 
 ```typescript
@@ -240,7 +240,7 @@ API examples shown with Genesis component syntax, and closing tag omitted.
         <tr>
             <td>selected</td>
             <td><code>boolean</code></td>
-            <td>When true, the control will appear selected by user interaction. Emits <code>selected-change</code> event when changed.</td>
+            <td>When true, the control will appear selected by user interaction. Emits <code>selected-change</code> event when changed. Note: is not set when the user interacts with the item, so only use this attribute to pre-select the item open rather than read the state.</td>
 <td>
 
 ```typescript
