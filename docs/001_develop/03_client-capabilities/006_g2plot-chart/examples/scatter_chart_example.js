@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { CodeSection } from "../../../../../../examples/ui/documentationBase";
+import { CodeSection } from "../../../../../examples/ui/documentationBase";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 
 const chartConfiguration = {
@@ -56,7 +56,7 @@ export default function ScatterChartExample() {
   const chart = useRef(null);
 
   if (isBrowser) {
-    const RapidImports = require("../../../../../../examples/ui/rapidImports");
+    const RapidImports = require("../../../../../examples/ui/rapidImports");
     RapidImports.registerComponents();
   }
 
