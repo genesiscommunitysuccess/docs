@@ -1,0 +1,140 @@
+---
+title: 'Divider'
+sidebar_label: 'Divider'
+id: client-presentation-divider
+keywords: [presentation, divider]
+tags:
+- presentation
+- divider
+sidebar_position: 9
+---
+
+import DividerDemo from './examples/divider';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Divider
+
+Use cases:
+* Used anywhere a horizontal rule might be used.
+
+## Example
+
+<DividerDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-divider></rapid-divider>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-divider></rapid-divider>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+    <rapid-divider></rapid-divider>
+  ```
+  Usage
+  ```typescript
+  export function MyComponent() {
+    return (
+      <rapid-divider></rapid-divider>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+    <rapid-divider></rapid-divider>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  @Component({
+    selector: 'my-root',
+    template: `
+      <rapid-divider></rapid-divider>
+    `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  })
+  export class AppComponent {
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>orientation</td>
+      <td><code>"horizontal | vertical"</code></td>
+      <td>The orientation of the divider. **Default: `horizontal`**</td>
+<td>
+
+```typescript
+<rapid-divider orientation="vertical">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>role</td>
+      <td><code>"separator | presentation"</code></td>
+      <td>Separator - The divider semantically separates content, Presentation - The divider has no semantic value and is for visual presentation only. **Default: `separator`**</td>
+<td>
+
+```typescript
+<rapid-divider orientation="vertical">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+
+This component doesn't have any properties.
+
+### Slots
+
+This component doesn't have any slots.
+
+### Parts
+
+This component doesn't have any parts.
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.
