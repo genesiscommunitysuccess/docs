@@ -56,7 +56,7 @@ In the `@genesislcap/foundation-utils` package, there is a mix-in class `Lifecyc
 
 These can be used to gate specific functionality.
 
-For example, if there are parts of `disconnectedCallback` that you don't want to run when the item is being dragged around the layout, you can gate it behind a `(!this.shouldRunDisconnect) return;` early return. <!-- TODO link --> and <!-- TODO link -->.
+For example, if there are parts of `disconnectedCallback` that you don't want to run when the item is being dragged around the layout, you can gate it behind a `(!this.shouldRunDisconnect) return;` early return. See example [here](../client-layout-management-ptifalls/#resource-intensive-component-resetting-in-layout).
 
 :::warning
 At the very least, you must run `super` calls to the lifecycle methods, or else your custom element will not work correctly.
@@ -75,7 +75,7 @@ See more info [here](../client-layout-management-ptifalls/#resource-intensive-co
 
 Items inside the layout can save and restore the state using various methods, but it can become difficult to manage the state if you're adding the same item to the layout multiple times (multiple instances of the same web component).
 
-You can implement the LayoutComponentWithState interface <!-- TODO link -->, which enables you to save and load the state *per instance* of your components. See the linked interface and the associated functions API documentation for examples and explanations of usage.
+You can implement the [LayoutComponentWithState interface](../docs/api/foundation-layout.layoutcomponentwithstate/) which enables you to save and load the state *per instance* of your components. See the linked interface and the associated functions API documentation for examples and explanations of usage.
 
 Usage of this interface is optional; if you do not need to manage the state for your components in this way, then simply do not implement the interface.
 
@@ -91,7 +91,7 @@ Each layout item can contain multiple components, and most of the time there are
 
 To enable you to add multiple items from the same `registration`, the layout system clones elements to add to the layout.
 This is the case both when items are added with `.addItem()`, and when they are added using the declarative API. Under the hood, this uses the Node [cloneNode](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) api.
-There are certain limitations to this function, especially when using custom elements with the shadow DOM. <!-- TODO link -->.
+There are certain limitations to this function, especially when using custom elements with the shadow DOM. See [here](../client-layout-management-binding/).
 
 :::tip
 As a general rule, if you need to have elements with Genesis bindings inside the layout, wrap them in custom elements.
