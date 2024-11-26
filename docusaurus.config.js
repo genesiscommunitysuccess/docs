@@ -70,6 +70,11 @@ const config = {
           },
         ]
       : null,
+    [
+      'docusaurus-pushfeedback',{
+        project: 'a2fl84010t'
+      }
+    ]
   ],
   presets: [
     [
