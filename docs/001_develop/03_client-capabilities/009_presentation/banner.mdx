@@ -44,6 +44,9 @@ Use cases:
         <rapid-banner
           ${ref('bannerRef')}
           @click=${x => x.handleClick()}>
+          <div slot="content">
+            A banner for displaying information... Click to dismiss!
+          </div>
         </rapid-banner>
       `,
     })
@@ -121,7 +124,9 @@ This component doesn't have any attributes.
 
 # Properties
 
-This component doesn't have any properties which are not also controlled via attributes.
+This component doesn't have any properties.
+
+### Methods
 
 |Method|Description|
 |--|--|
