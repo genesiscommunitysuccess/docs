@@ -13,7 +13,7 @@ export default function TooltipMenu({ children, color }) {
 
 	return (
 		<CodeSection>
-			<div>
+			<div style={{height: '50px'}}>
 				<rapid-button id="anchor">Hover me</rapid-button>
 				<rapid-tooltip anchor="anchor">
 					<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
@@ -21,7 +21,7 @@ export default function TooltipMenu({ children, color }) {
 							<rapid-avatar shape="circle" fill="green" color="black">JD</rapid-avatar>
 						</div>
 					</div>
-					<p style={{color: 'white'}}>Tooltip text</p>
+					<p style={{color: 'white',width: '200px'}}>Tooltip text</p>
 				</rapid-tooltip>
 			</div>
 		</CodeSection >
