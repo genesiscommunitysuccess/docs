@@ -68,6 +68,8 @@ Usage
 ```typescript
 export function MyComponent() {
 
+    const interopNotificationListenerRef = useRef(null);
+
     if (interopNotificationListenerRef.current) {
         interopNotificationListenerRef.current.toastButtons = [
             {
@@ -104,7 +106,6 @@ Usage
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 @Component({
     selector: 'my-root',
-    templateUrl: './my.component.html',
     template: `
         <rapid-interop-notification-listener
             #interopNotificationListenerRef
@@ -189,16 +190,16 @@ ToastButton[] <!-- To Do add link-->
 <td>
 
 ```typescript
-    <rapid-interop-notification-listener :toastButtons=${)_ => [
-{
-    condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
-    action: ({details, buttonElement, toastElement}) => {
-    console.log({details, buttonElement, toastElement});
-    toastElement.close();
-},
-    appearance: 'secondary-orange',
-    placeholder: 'Dismiss',
-},
+    <rapid-interop-notification-listener :toastButtons=${() => [
+        {
+            condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
+            action: ({details, buttonElement, toastElement}) => {
+            console.log({details, buttonElement, toastElement});
+            toastElement.close();
+        },
+            appearance: 'secondary-orange',
+            placeholder: 'Dismiss',
+        },
     ]}>
 ```
 
