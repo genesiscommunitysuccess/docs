@@ -222,8 +222,30 @@ Events can be received by the emitting `<rapid-layout>`, or any parent element.
 
 ### Listened Events
 
-This component doesn't listen to any public API events.
-<!-- TODO: is there an event for renaming a pane ? -->
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>autosave</td>
+            <td>[LayoutReceiveEventsDetail.autosave](../docs/api/foundation-layout.layoutreceiveeventsdetail/)</td>
+            <td>Hint to the layout system that it should autosave. Used if you are using the [state management](../client-layout-management-items/#managing-the-state) included, and your component has changed its state.</td>
+<td>
+
+```typescript
+this.dispatchEvent(new CustomEvent(LayoutReceiveEvents.autosave, { bubbles: true }),);
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 
 ## Rapid layout region
@@ -402,7 +424,36 @@ This component doesn't fire any events.
 
 ### Listened Events
 
-This component doesn't listen to any events.
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>change-title</td>
+            <td>[LayoutReceiveEventsDetail.changeTitle](../docs/api/foundation-layout.layoutreceiveeventsdetail/)</td>
+            <td>Emit from an layout item to change the name of the title of the layout container. See example context [here](../client-layout-management-examples/#renaming-example).</td>
+<td>
+
+```typescript
+const event: LayoutReceiveEventsDetail['changeTitle'] = {
+    title,
+    mode: 'replace',
+};
+elem.dispatchEvent(
+    new CustomEvent(LayoutReceiveEvents.changeTitle, { detail: event, bubbles: true }),
+);
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ## Sizing
 
