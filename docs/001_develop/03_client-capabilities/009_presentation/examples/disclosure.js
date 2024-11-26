@@ -24,7 +24,7 @@ export default function DisclosureDemo({ children, color }) {
 		<CodeSection>
 			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
 				<div style={{ display: 'flex', flexWrap: 'wrap', height: '175px', width: '100%', flexDirection: 'column', }}>
-					<rapid-disclosure appearance="lightweight">
+					<rapid-disclosure>
 						<strong slot="title">Read about Foundation UI</strong>
 						<div>
 							Foundation UI is a collection of technologies built on Web Components and modern Web Standards, designed to help you

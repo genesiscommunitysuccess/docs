@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 
 # Disclosure
 
-A `disclosure` component is the implementation of native `details` and `summary` controls, which toggles the visibility of the extra content. Visually, it would look like a button or hyperlink beneath extra content. As defined by the W3C:
+A `disclosure` component is the implementation of native `details` and `summary` controls, which toggles the visibility of the extra content. Visually, it would look like a button or hyperlink beneath extra content.
 
 Use cases:
 * A button that controls the visibility of a section of content.
@@ -40,13 +40,7 @@ the arrow or triangle typically points down.
 
     Declaration
     ```html
-    <rapid-disclosure appearance="lightweight">
-      <strong slot="title">Read about Foundation UI</strong>
-      <div>
-        Foundation UI is a collection of technologies built on Web Components and modern Web Standards, designed to help you
-        efficiently tackle some of the most common challenges in website and application design and development.
-      </div>
-    </rapid-disclosure>
+    <rapid-disclosure></rapid-disclosure>
     ```
 
     Usage
@@ -72,13 +66,7 @@ the arrow or triangle typically points down.
 
   Declaration
   ```html
-  <rapid-disclosure appearance="lightweight">
-    <strong slot="title">Read about Foundation UI</strong>
-    <div>
-      Foundation UI is a collection of technologies built on Web Components and modern Web Standards, designed to help you
-      efficiently tackle some of the most common challenges in website and application design and development.
-    </div>
-  </rapid-disclosure>
+  <rapid-disclosure></rapid-disclosure>
   ```
   Usage
   ```typescript
@@ -99,13 +87,7 @@ the arrow or triangle typically points down.
 
   Declaration
   ```html
-  <rapid-disclosure appearance="lightweight">
-    <strong slot="title">Read about Foundation UI</strong>
-    <div>
-      Foundation UI is a collection of technologies built on Web Components and modern Web Standards, designed to help you
-      efficiently tackle some of the most common challenges in website and application design and development.
-    </div>
-  </rapid-disclosure>
+  <rapid-disclosure></rapid-disclosure>
   ```
 
   Usage
@@ -114,7 +96,7 @@ the arrow or triangle typically points down.
   @Component({
     selector: 'my-root',
     template: `
-      <rapid-disclosure appearance="lightweight">
+      <rapid-disclosure>
         <strong slot="title">Read about Foundation UI</strong>
         <div>
           Foundation UI is a collection of technologies built on Web Components and modern Web Standards, designed to help you
@@ -137,7 +119,24 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 ### Attributes
 
-This component doesn't have any attributes.
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>expanded</td>
+      <td><code>boolean</code></td>
+      <td>If the disclosure is expanded.</td>
+<td>
+
+```typescript
+<rapid-disclosure expanded>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Properties
 
