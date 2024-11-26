@@ -44,8 +44,6 @@ Below are some of its standout capabilities that streamline entity interaction a
   - Combines the grid and form seamlessly to allow quick navigation between viewing, creating, and editing entities.  
   - Reduces development time by leveraging pre-built components.  
 
-## Examples
-
 ### Adding the Entity Management component to the template
 
 Below is a simple example of how to configure the `Entity Management` component. This example demonstrates not only the basic setup but also how the component interacts with back-end resources, showing the grid and the form for creating new records. The configuration is straightforward, allowing for quick integration into your template.
@@ -128,6 +126,10 @@ export class AppComponent {}
 ```
 </TabItem>
 </Tabs>
+
+import CounterpartyEntity from '../../../../_includes/_counterparty_table.mdx'
+
+<CounterpartyEntity />
 
 In this example, we configure the **entity-management** using three key attributes:  
 
@@ -244,7 +246,7 @@ Usage
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-const counterpartyUIschema = {
+const counterpartyUIschema: UiSchema = {
   type: 'VerticalLayout',
   elements: [
     { type: 'Control', scope: '#/properties/COUNTERPARTY_ID', label: 'Id' },
@@ -339,7 +341,7 @@ If you set multiple `entity-management` components in your application, **you mu
 | `updateFormUiSchema`       | enables you to supply a schema to configure an update form. | No  |
 
 :::info
-For a full list of attributes and properties, see the [Entity Manager declarative HTML](./03_entity-manager-api.mdx) or [API documents](./docs/api/foundation-entity-management.md).
+For a full list of attributes and properties with examples, see the [Entity Manager declarative HTML](./03_entity-manager-api.mdx) or [API documents](./docs/api/foundation-entity-management.md).
 :::
 
 ## License
