@@ -15,13 +15,14 @@ The file is found in the server `cfg` directory.
 
 This section explains all the different items that can be contained in the file.
 
-Here is an example of a `genesis-system-definition.kts` file for an application:
+Here is an example of a `genesis-system-definition.kts` file for an application named 'position':
 
 ```kotlin
 package genesis.cfg
 
 systemDefinition {
   global {
+    item(name = "DEPLOYED_PRODUCT", value = "position")
     item(name = "MqLayer", value = "ZeroMQ")
     item(name = "DbLayer", value = "H2")
     item(name = "DictionarySource", value = "DB")
