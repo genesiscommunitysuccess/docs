@@ -1,0 +1,79 @@
+---
+title: 'Manual Header Setup'
+sidebar_label: 'Manual Setup'
+id: client-header-manual-header-setup
+keywords: [header, setup]
+tags:
+- header
+- header setup
+sidebar_position: 1
+---
+
+If the foundation-header component has not been implemented in your project, follow the steps below to add this micro front-end to your application.
+
+1. Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [package.json basics](https://learn.genesis.global/secure/web/basics/package-json-basics/) page.
+
+```json
+{
+  ...
+  "dependencies": {
+    "@genesislcap/foundation-header": "latest"
+  },
+  ...
+}
+```
+
+:::note
+This page assumes you're already using the Login and Routing systems that are part of `foundation-ui` for the logout and routing functionality.
+
+It is possible for you to set up routing manually, but that won't be covered in this tutorial.
+:::
+
+2. In the top-level class of your application, import the Navigation class and inject it as a dependency.
+
+```javascript {1,6}
+import { GenesisElement, customElement, inject } from '@genesislcap/web-core';
+import { Navigation } from '@genesislcap/foundation-header';
+
+@customElement({ name, template, styles })
+export class MainApplication extends GenesisElement {
+  @inject(MainRouterConfig) config!: MainRouterConfig;
+  @inject(Navigation) navigation!: Navigation;
+
+  //...
+
+}
+```
+
+:::tip
+If you haven't used the `inject` annotation in your application yet, you'll need to get it from the `@genesislcap/web-core` package.
+:::
+
+3. Set a reference to the `navigation` object on the foundation-router when you instantiate it; this enables you to set up navigation functionality from the navigation bar in the [navigation items step](#navigation-items).
+
+```javascript
+const MainTemplate: ViewTemplate<MainApplication> = html`
+  <foundation-router :navigation=${(x) => x.navigation}></foundation-router>
+`;
+```
+
+4. Add the `foundation-header` tag as part of the html that you set as the markup for the `defaultLayout` in your router configuration.
+
+```javascript {3}
+export const defaultLayout = new GenesisElementLayout(html`
+<div class="container">
+  <!-- show-luminance-toggle-button boolean attribute added to show that button on the navigation bar -->
+  <foundation-header show-luminance-toggle-button></foundation-header>
+  <!-- Other markup -->
+</div>`);
+
+export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
+  //...
+
+  public configure() {
+    this.title = 'Example app';
+    this.defaultLayout = defaultLayout;
+    //...
+  }
+}
+```

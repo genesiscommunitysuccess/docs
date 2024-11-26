@@ -162,13 +162,60 @@ export class HeaderExampleComponent {
 
 <PrimitiveHeaderExample />
 
-### Configuring a form using the UI schema
+### Attributes
 
+| Attribute | Type | Use | Example |
+|---|---|---|---|
+| logo-src | `any` | Optional attribute which sets the source of the image in the navigation bar and flyout menu. The Genesis logo will be shown if this attribute is not provided. | `<foundation-header logo-src="path/to/logo.png">` |
+| logo-alt-text | `string` | Optional attribute which controls the alt text of the logo. If this attribute is not set then the alt text is set to 'Corporate Logo'. | `<foundation-header logo-alt-text="My Logo">` |
+| show-luminance-toggle-button | `boolean` | Boolean attribute which controls whether the navigation bar will display the luminance toggle icon. | `<foundation-header show-luminance-toggle-button>` |
+| show-misc-toggle-button | `boolean` | Boolean attribute which controls whether the navigation bar will display the miscellaneous behaviour icon. | `<foundation-header show-misc-toggle-button>` |
+| show-notification-button | `boolean` | Boolean attribute which controls whether the navigation bar will display the show notification icon. | `<foundation-header show-notification-button>` |
+| show-connection-indicator | `boolean` | Boolean attribute which controls whether the navigation bar will display the connection indicator. | `<foundation-header show-connection-indicator>` |
+| show-language-selector | `boolean` | Boolean attribute which controls whether the navigation bar will display the language selector. | `<foundation-header show-language-selector>` |
+| hide-side-bar | `boolean` | Boolean attribute which controls whether the navigation bar will display the side bar. | `<foundation-header hide-side-bar>` |
+
+### Properties
+
+| Property | Type | Use | Example |
+|---|---|---|---|
+| userName | `string` | Username of the logged in user. | `<foundation-header ?userName="${(x) => x.userName}">` |
+| languageOptions | `LanguageOptions` | Object which defines the language options to be displayed in the language selector. | `<foundation-header :languageOptions="${(x) => x.languageOptions}">` |
+| routeButtons | `Array` | Array of objects which define the route buttons to be displayed in the navigation bar. | `<foundation-header :routeButtons="${(x) => x.routeButtons}">` |
+| routeNavItems | `FoundationRouteNavItem[]` | Array of FoundationRouteNavItems which define the route buttons to be displayed in the navigation bar. | `<foundation-header :routeNavItems="${(x) => x.routeNavItems}">` |
+
+### Slots
+
+| Slot Name       | Description                                                                 |
+|-----------------|-----------------------------------------------------------------------------|
+| `menu-contents` | Slot for adding custom content to the flyout menu (side navigation).        |
+| `routes`        | Slot for adding custom route buttons to the navigation bar.                 |
+| `routes-end`    | Slot for adding custom route buttons to the end of the navigation bar.      |
+
+### Parts
+
+| Part Name       | Description                                                                 |
+|-----------------|-----------------------------------------------------------------------------|
+| `dynamic-template` | The element representing the dynamic template content.                    |
+
+### Methods
+
+| Method | Description |
+|---|---|
+| `logout` | Logs the user out of their session. |
+| `navigateTo` | Changes the route of the current page. |
+
+### Fired Events
+
+| Event | Type | Description | Example |
+|---|---|---|---|
+| luminance-icon-clicked | `void` | Dispatched when the user clicks on the luminance toggle icon in the navigation bar. | `<foundation-header @luminance-icon-clicked="${(x) => x.handleLuminanceIconClick}">` |
+| misc-icon-clicked | `void` | Dispatched when the user clicks on the miscellaneous behaviour icon in the navigation bar. | `<foundation-header @misc-icon-clicked="${(x) => x.handleMiscIconClick}">` |
+| notification-icon-clicked | `void` | Dispatched when the user clicks on the notification icon in the navigation bar. | `<foundation-header @notification-icon-clicked="${(x) => x.handleNotificationIconClick}">` |
+| language-changed | `void` | Dispatched when the user changes the language in the language selector. | `<foundation-header @language-changed="${(x) => x.handleLanguageChange}">` |
 
 :::info
-After you have looked at the basics here, you can find more details in our [API Docs](./docs/api/index.md)
-
-Full source code at [Forms introduction](https://github.com/genesiscommunitysuccess/form-examples/tree/main/client/src/routes/forms-introduction)
+For a full list of attributes and properties, see [API documents](./docs/api/foundation-header.md).
 :::
 
 ## License
