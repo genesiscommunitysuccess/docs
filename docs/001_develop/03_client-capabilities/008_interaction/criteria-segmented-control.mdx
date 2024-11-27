@@ -40,11 +40,14 @@ Use cases:
 
     Usage
     ```typescript
+
+      import { CriteriaSegmentedControlOption, Serialisers } from '@genesislcap/foundation-criteria';
+
       @customElement({
         name: 'my-element',
         template: html`
             <criteria-segmented-control
-              :criteriaOptions=${() => toolbarOptions}
+              :criteriaOptions=${(x) => x.toolbarOptions}
               :value=${sync((x) => x.criteriaFilter)}
               @change=${(x) => x.onChange()}
               >
@@ -52,11 +55,9 @@ Use cases:
           `,
       })
 
-      import { CriteriaSegmentedControlOption, Serialisers } from '@genesislcap/foundation-criteria';
-
       export class MyElement extends GenesisElement {
-        const criteriaFilter: string;
-        const toolbarOptions: CriteriaSegmentedControlOption[] = [
+        var criteriaFilter: string;
+        var toolbarOptions: CriteriaSegmentedControlOption[] = [
           { label: 'A', field: 'CHOSEN_OPTION', value: 'option-A', serialiser: Serialisers.EQ },
           { label: 'B', field: 'CHOSEN_OPTION', value: 'option-B', serialiser: Serialisers.EQ },
           { label: 'C', field: 'CHOSEN_OPTION', value: 'option-C', serialiser: Serialisers.EQ },
