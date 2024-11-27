@@ -1,0 +1,626 @@
+---
+title: 'Entity Manager declarative HTML'
+sidebar_label: 'Entity Manager declarative HTML'
+id: entity-manager-api
+keywords: [declarative HTML, entity management, entity manager, HTML attributes, frontend, UI customization, user interface, HTML configuration, micro-front-ends, data management, user management]
+tags:
+  - entity management
+  - entity manager
+  - frontend
+  - micro-front-ends
+  - profile management
+  - ui
+  - user management
+  - web
+  - declarative HTML
+  - HTML attributes
+
+pagination_next: develop/client-capabilities/grids/grid-pro/grid-pro
+---
+
+
+The Declarative HTML API enables you to create and configure the **entity-management** component directly within your HTML using simple, semantic tags. This approach allows for quick integration and easy customization of the component without needing to write complex JavaScript code. 
+By leveraging HTML attributes, you can define key settings such as the data source, event handlers, UI schema, and actions like create, update, and delete, all within the markup itself.
+
+## Entity Management
+
+Top-level web component, which is used to initialise the entity-management.
+
+```html
+<entity-management></entity-management>
+```
+
+### DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+#### Attributes
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>design-system-prefix</td>
+      <td><code>string</code></td>
+      <td>Name of the design system prefix that will be used in renderers.</td>
+      <td>
+        ```typescript
+        <entity-management design-system-prefix="rapid">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>resourceName</td>
+      <td><code>string</code></td>
+      <td>Name of the backend resource which contains the entities to manage.</td>
+      <td>
+        ```typescript
+        <entity-management resourceName="ALL_COUNTERPARTYS">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>updateEvent</td>
+      <td><code>string</code></td>
+      <td>Name of the event handler on the Genesis server for updating the entity.</td>
+      <td>
+        ```typescript
+        <entity-management updateEvent="EVENT_COUNTERPARTY_MODIFY">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>deleteEvent</td>
+      <td><code>string</code></td>
+      <td>Name of the event handler on the Genesis server for deleting the entity.</td>
+      <td>
+        ```typescript
+        <entity-management deleteEvent="EVENT_COUNTERPARTY_DELETE">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>createEvent</td>
+      <td><code>string</code></td>
+      <td>Name of the event handler on the Genesis server for creating a new entity.</td>
+      <td>
+        ```typescript
+        <entity-management createEvent="EVENT_COUNTERPARTY_INSERT">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>title</td>
+      <td><code>string</code></td>
+      <td>Title of the grid.</td>
+      <td>
+        ```typescript
+        <entity-management title="Counterparty Management">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>entityLabel</td>
+      <td><code>string</code></td>
+      <td>Label for the entity, used in modal titles, buttons, and notifications.</td>
+      <td>
+        ```typescript
+        <entity-management entityLabel="Counterparty">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>readEvent</td>
+      <td><code>string</code></td>
+      <td>Name of the request on the Genesis server to fetch data for the form.</td>
+      <td>
+        ```typescript
+        <entity-management readEvent="PROFILE_USER">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>row-selection</td>
+      <td><code>string</code></td>
+      <td>Allows single or multiple row selection; values: 'single' or 'multiple'.</td>
+      <td>
+        ```typescript
+        <entity-management row-selection="multiple">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>enable-cell-flashing</td>
+      <td><code>boolean</code></td>
+      <td>Enables or disables cell flashing for updates; defaults to `true`.</td>
+      <td>
+        ```typescript
+        <entity-management enable-cell-flashing>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>enable-row-flashing</td>
+      <td><code>boolean</code></td>
+      <td>Enables or disables row flashing for add transactions; defaults to `false`.</td>
+      <td>
+        ```typescript
+        <entity-management enable-row-flashing>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>datasource-type</td>
+      <td><code>DatasourceType</code></td>
+      <td>Sets the datasource type: 'server' or 'client'.</td>
+      <td>
+        ```typescript
+        <entity-management datasource-type="server">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>persist-column-state-key</td>
+      <td><code>string</code></td>
+      <td>Unique key for storing column state persistently; omit to disable.</td>
+      <td>
+        ```typescript
+        <entity-management persist-column-state-key="counterparty-grid-state">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>size-columns-to-fit</td>
+      <td><code>boolean</code></td>
+      <td>Automatically resizes columns to fit the available space.</td>
+      <td>
+        ```typescript
+        <entity-management size-columns-to-fit>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>enable-filter-bar</td>
+      <td><code>boolean</code></td>
+      <td>Enables or disables the filter bar component.</td>
+      <td>
+        ```typescript
+        <entity-management enable-filter-bar>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>hide-edit</td>
+      <td><code>boolean</code></td>
+      <td>Hides the edit button; defaults to `false`.</td>
+      <td>
+        ```typescript
+        <entity-management hide-edit>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>hide-delete</td>
+      <td><code>boolean</code></td>
+      <td>Hides the delete button; defaults to `false`.</td>
+      <td>
+        ```typescript
+        <entity-management hide-delete>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>enable-search-bar</td>
+      <td><code>boolean</code></td>
+      <td>Enables or disables the search bar component.</td>
+      <td>
+        ```typescript
+        <entity-management enable-search-bar>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>header-case-type</td>
+      <td><code>GridProCaseType</code></td>
+      <td>Sets the header case type; defaults to 'CONSTANT_CASE'.</td>
+      <td>
+        ```typescript
+        <entity-management header-case-type="camelCase">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>modal-position</td>
+      <td><code>'centre' \| 'left' \| 'right'</code></td>
+      <td>Specifies where the modal dialog will appear.</td>
+      <td>
+        ```typescript
+        <entity-management modal-position="centre">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>crud-menu-position</td>
+      <td><code>[CrudMenuPosition](./docs/api/foundation-entity-management.entitymanagement.crudmenuposition.md)</code></td>
+      <td>Determines where CRUD menu buttons appear.</td>
+      <td>
+        ```typescript
+        <entity-management crud-menu-position="top">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>crud-menu-style</td>
+      <td><code>[ActionsMenuStyle](./docs/api/foundation-entity-management.entitymanagement.crudmenustyle.md)</code></td>
+      <td>Sets the style of the CRUD menu buttons.</td>
+      <td>
+        ```typescript
+        <entity-management crud-menu-style="actions-vertical">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>crud-action-menu-name</td>
+      <td><code>string</code></td>
+      <td>Sets the label of the CRUD action menu.</td>
+      <td>
+        ```typescript
+        <entity-management crud-action-menu-name="Actions">
+        ```
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+#### Properties
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>readEventFn</td>
+      <td><code>(entity) => any</code></td>
+      <td>Function triggered when an event is read from the entity management.</td>
+<td>
+```typescript
+public async readRightCodesData(profile) {
+  const selectedRightsReq = await this.connect.request('PROFILE_RIGHT', {
+    REQUEST: {
+    PROFILE_NAME: profile.PROFILE_NAME,
+    RIGHT_CODE: '*',
+    },
+  });
+
+  return {
+    RIGHT_CODES: selectedRightsReq.REPLY.map((v) => v.RIGHT_CODE),
+  };
+}
+
+<entity-management :readEventFn=${(x) => (profile) => x.readRightCodesData(profile)}>
+```
+</td>
+    </tr>
+    <tr>
+      <td>gridOptions</td>
+      <td><code>GridOptions</code></td>
+      <td>Additional configuration options for the grid, such as pagination or sorting.</td>
+<td>
+```typescript
+const gridOptions: GridOptions = {
+    rowSelection: 'single',
+};
+
+<entity-management :gridOptions=${() => gridOptions}>
+```
+</td>
+    </tr>
+    <tr>
+      <td>columns</td>
+      <td><code>ColDef[]</code></td>
+      <td>Defines the column configuration, including headers and field mappings.</td>
+<td>
+```typescript
+const gridColumns = [
+  {
+    field: 'TRADE_NAME',
+    headerName: 'Trade name',
+  },
+  {
+    field: 'QUANTITY',
+    headerName: 'Quantity',
+  },
+];
+
+<entity-management :columns=${() => gridColumns}>
+```
+</td>
+    </tr>
+    <tr>
+      <td>datasourceConfig</td>
+      <td><code>[DatasourceConfiguration](./docs/api/foundation-entity-management.datasourceconfiguration.md)</code></td>
+      <td>Specifies the configuration for the data source, including API endpoints.</td>
+<td>
+```typescript
+<entity-management :datasourceConfig=${() => ({pollingInterval: 5000 })}>
+```
+</td>
+    </tr>
+    <tr>
+      <td>createFormUiSchema</td>
+      <td><code>UiSchema</code></td>
+      <td>Defines the UI schema for the create entity form.</td>
+<td>
+```typescript
+const counterpartyUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_ID', label: 'Id' },
+    {
+      type: 'Control',
+      label: 'Counterparty Lei',
+      scope: '#/properties/COUNTERPARTY_LEI',
+    },
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Counterparty Name' },
+  ],
+};
+
+<entity-management :createFormUiSchema=${() => counterpartyUIschema}>
+```
+</td>
+    </tr>
+    <tr>
+      <td>updateFormUiSchema</td>
+      <td><code>UiSchema</code></td>
+      <td>Defines the UI schema for the update entity form.</td>
+<td>
+```typescript
+const counterpartyUIschema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    { type: 'Control', scope: '#/properties/COUNTERPARTY_ID', label: 'Id' },
+    {
+      type: 'Control',
+      label: 'Counterparty Lei',
+      scope: '#/properties/COUNTERPARTY_LEI',
+    },
+    { type: 'Control', scope: '#/properties/ENABLED', label: 'Enabled' },
+    { type: 'Control', scope: '#/properties/NAME', label: 'Counterparty Name' },
+  ],
+};
+
+<entity-management :updateFormUiSchema=${() => counterpartyUIschema}>
+```
+</td>
+    </tr>
+    <tr>
+      <td>formRenderers</td>
+      <td><code>RendererEntry[]</code></td>
+      <td>Custom renderers for specific form fields.</td>
+<td>
+```typescript
+
+const renderers = [
+  stringEntry,
+  BooleanControlEntry,
+  StringArrayEntry,
+];
+
+<entity-management :formRenderers=${() => renderers}>
+```
+</td>
+    </tr>
+    <tr>
+      <td>defaultEntityValues</td>
+      <td>`Record<string, unknown>`</td>
+      <td>Default values to populate in forms when creating a new entity.</td>
+<td>
+```typescript
+<entity-management :defaultEntityValues=${() => ({ COUNTERPARTY_ID: '1', ENABLED: true })}>
+```
+</td>
+    </tr>
+    <tr>
+      <td>searchBarConfig</td>
+      <td><code>AvailableOption[]</code></td>
+      <td>Configuration for the search bar, such as placeholder text and debounce time.</td>
+<td>
+```typescript
+const searchConfig = [
+  {
+    field: 'COUNTERPARTY_ID',
+    label: (searchTerm) => `${searchTerm} as Counterparty ID`,
+    createCriteria: getCriteriaBuilder,
+    isEnabled: (searchTerm, selectedOption) => {
+      return (
+        searchTerm.length >= INPUT_MIN_LENGTH &&
+        !selectedOption.some((e) => e.field === 'COUNTERPARTY_ID')
+      );
+    },
+  },
+  {
+    field: 'NAME',
+    label: (searchTerm) => `${searchTerm} as Name`,
+    createCriteria: getCriteriaBuilder,
+    isEnabled: (searchTerm, selectedOption) => {
+      return (
+        searchTerm.length >= INPUT_MIN_LENGTH && !selectedOption.some((e) => e.field === 'NAME')
+      );
+    },
+  },
+];
+
+<entity-management :searchBarConfig=${() => searchConfig}>
+```
+</td>
+    </tr>
+  </tbody>
+</table>
+
+
+#### Slots
+
+| Slot | Use |
+|---|---|
+| `header`| The content to be displayed in the header section. If `crud-menu-position` is set to `top`, this slot content will overwrite the `crud-top` content. |
+| `footer`| The content to be displayed in the footer section. If `crud-menu-position` is set to `bottom`, this slot content will overwrite the `crud-bottom` content. |
+| `edit`| Using this slot enables you to override the default form component. |
+| `crud-{position}-before` |  Based on value from `crud-menu-position` the content will be displayed before the specified position. |
+| `crud-{position}` |  Based on value from `crud-menu-position` will be displayed in the specified position. |
+| `crud-{position}-after` |  Based on value from `crud-menu-position` the content will be displayed after the specified position. |
+
+#### Parts
+
+<table>
+  <thead>
+    <tr>
+      <th>Part</th>
+      <th>Use</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>`header`</td>
+      <td>Using this part allows you to customize the styles for the header section of the entity management component, which can include the title, search-bar, or other header-related elements.</td>
+    </tr>
+    <tr>
+      <td>`form`</td>
+      <td>Using this part enables you to modify the `foundation-form` styling.</td>
+    </tr>
+    <tr>
+      <td>`crud-buttons-wrapper`<br/>`crud-buttons-wrapper-column`<br/>`crud-buttons-wrapper-${position}`</td>
+      <td>These parts allow you to style the wrapper container of the CRUD buttons. The `${position}` part can be dynamically replaced to target the position-specific button wrappers.</td>
+    </tr>
+    <tr>
+      <td>`crud-buttons`<br/>`crud-buttons-${position}`</td>
+      <td>Using these parts allows you to style the individual CRUD buttons. The `${position}` part targets specific button groups to customize the placement and appearance.</td>
+    </tr>
+  </tbody>
+</table>
+
+
+#### Fired events
+
+Events can be received by the emitting `<entity-management>`, or any parent element.
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>rowSelected</td>
+      <td>`CustomEvent`</td>
+      <td>Triggered when a row is selected.</td>
+<td>
+```typescript
+<entity-management @rowSelected="${(x, ctx) => console.log('entity management row selected', ctx.event)}">
+```
+</td>
+    </tr>
+    <tr>
+      <td>selectionChanged</td>
+      <td>`CustomEvent`</td>
+      <td>Triggered when the selection in the grid changes.</td>
+<td>
+```typescript
+<entity-management @selectionChanged="${(x, ctx) => console.log('entity management selection changed', ctx.event)}">
+```
+</td>
+    </tr>
+    <tr>
+      <td>rowClick</td>
+      <td>`CustomEvent`</td>
+      <td>Triggered when a row is clicked.</td>
+<td>
+```typescript
+<entity-management @rowClick="${(x, ctx) => console.log('entity management row double click', ctx.event)}">
+```
+</td>
+    </tr>
+    <tr>
+      <td>rowDblClick</td>
+      <td>`CustomEvent`</td>
+      <td>Triggered when a row is double-clicked.</td>
+<td>
+```typescript
+<entity-management @rowDblClick="${(x, ctx) => console.log('entity management row double click', ctx.event)}">
+```
+</td>
+    </tr>
+    <tr>
+      <td>contextMenu</td>
+      <td>`CustomEvent`</td>
+      <td>Triggered when a context menu is opened on a row.</td>
+<td>
+```typescript
+<entity-management @contextMenu="${(x, ctx) => console.log('entity management right click', ctx.event)}">
+```
+</td>
+    </tr>
+    <tr>
+      <td>submit-success</td>
+      <td>`CustomEvent<{ payload: any }`</td>
+      <td>Triggered when the form submission is successful.</td>
+<td>
+```typescript
+<entity-management @submit-success="${(x, ctx) => console.log('entity management submit success', ctx.event)}">
+```
+</td>
+    </tr>
+    <tr>
+      <td>submit-failure</td>
+      <td>`CustomEvent<{ payload: any; errors: MessageError[] }>`</td>
+      <td>Triggered when the form submission fails.</td>
+<td>
+```typescript
+<entity-management @submit-failure="${(x, ctx) => console.log('entity management submit failure', ctx.event)}">
+```
+</td>
+    </tr>
+        <tr>
+      <td>request-changed</td>
+      <td>`CustomEvent`</td>
+      <td>Triggered when the request is changed.</td>
+<td>
+```typescript
+<entity-management @request-changed="${(x, ctx) => console.log('entity management request changed', ctx.event)}">
+```
+</td>
+    </tr>
+    <tr>
+      <td>criteria-changed</td>
+      <td>`CustomEvent`</td>
+      <td>Triggered when the form criteria is changed.</td>
+<td>
+```typescript
+<entity-management @criteria-changed="${(x, ctx) => console.log('entity management criteria changed', ctx.event)}">
+```
+</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Listened events
+
+This component doesn't listen to any public API events.

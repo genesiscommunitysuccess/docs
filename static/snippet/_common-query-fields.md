@@ -16,7 +16,7 @@ Derived fields cannot be used within a `filter` block.
 
 #### `derivedFieldWithUserName`
 
-Thbis is the same as `derivedField` but also has a context property `userName` with the username who requested the data.
+This is the same as `derivedField` but also has a context property `userName` with the username who requested the data.
 
 In the example below, the TRADE_DESCRIPTION will be prefixed with "My Trade " if it was traded by the user querying the data.
 

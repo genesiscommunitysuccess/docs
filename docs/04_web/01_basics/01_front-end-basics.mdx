@@ -150,11 +150,11 @@ You can then add components to your pages so that your users can view data and i
 - micro front-ends, which are pre-built groups of components; the [entity management](/web/micro-front-ends/foundation-entity-management/) micro front-end gives you a grid and a submit form, for example
 
 ### Connecting to the back end
-**To stream data** from the relevant tables and views in the database, you need to connect to specific queries in the [Data Server](/server/data-server/introduction/). So, for example, a grid displaying orders could connect to a query that streams ALL_ORDERS.
+**To stream data** from the relevant tables and views in the database, you need to connect to specific queries in the [Data Server](/develop/server-capabilities/real-time-queries-data-server/). So, for example, a grid displaying orders could connect to a query that streams ALL_ORDERS.
 
-**To retrieve snapshot data** from a table or view in the database, you need to connect to the relevant `requestReply` in the [Request Server](/server/request-server/introduction/). For example, a combobox that presents a list of counterparties could connect to a `requestReply` called ALL_COUNTERPARTIES.
+**To retrieve snapshot data** from a table or view in the database, you need to connect to the relevant `requestReply` in the [Request Server](/develop/server-capabilities/snapshot-queries-request-server/). For example, a combobox that presents a list of counterparties could connect to a `requestReply` called ALL_COUNTERPARTIES.
 
-**To interact with the database**, you need to connect to events in the [Event Handler](/server/event-handler/introduction/). For example, a form for entering countparty details could have a **Submit** button that connects to an `eventHandler` called INSERT_COUNTERPARTY.
+**To interact with the database**, you need to connect to events in the [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/). For example, a form for entering countparty details could have a **Submit** button that connects to an `eventHandler` called INSERT_COUNTERPARTY.
 
 ## Try it out
 Take a look at our How To... page on [creating a simple front end](/how-to/ht-front-end-simple/), where you will find examples of adding components to a page. This also gives you access to an example application, where you can examine the code and run it to see the results.

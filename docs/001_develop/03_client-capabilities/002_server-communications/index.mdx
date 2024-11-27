@@ -5,9 +5,40 @@ id: client-server-communications
 sidebar_position: 2
 ---
 
-Coming soon...
+# Server communications
 
-Should give an overview of how we interact with server:
-- Default is websockets
-- HTTP where it makes sense (e.g. file uploads/downloads)
-- HTTP polling possible (but pitfalls)
+With the `@genesislcap/foundation-comms` package, you can streamline and enhance communication capabilities between web apps and Genesis servers. It provides a robust set of modules aimed at facilitating effective data exchange, authentication, and session management, among other utilities. With a focus on integration and ease of use, this library supports developers in building sophisticated, real-time communication features in their applications.
+
+## API Documentation
+
+For more detailed information on API and configurations, please refer to the [API documentation](./01_server-communications-docs/api/index.md).
+
+## Features
+
+The library encompasses a broad range of features, including:
+
+- **[Analytics](./01_analytics.mdx)** - Facilitates the collection and management of analytics data, enabling insights into application usage and user interactions.
+- **[Authentication](./02_authentication.mdx)** - Provides mechanisms for user authentication and authorization, ensuring secure access control.
+- **[Genesis Connect](./03_connect.mdx)** - Offers utilities for managing connections, including real-time communications and data exchange.
+- **[Credential Management](./04_credential-manager.mdx)** - Aids in the secure storage and retrieval of user credentials, enhancing security and user experience.
+- **[Datasource](./05_datasource.mdx)** - Simplifies the integration with various data sources, ensuring efficient data retrieval and management.
+- **[Metadata Management](./06_metadata.mdx)** - Allows for the handling and manipulation of metadata, facilitating dynamic content generation and customization.
+- **[Session Management](./07_session.mdx)** - Ensures robust session management capabilities, crucial for maintaining user state and session continuity.
+- **[Storage (Key-Value)](./08_storage.mdx)** - Provides versatile storage options, including both persistent (Key-Value) and session-based storage mechanisms.
+- **[Testing Utilities](./09_testing.mdx)** - Includes tools and utilities for testing, ensuring reliability and performance of the communication features.
+- **[User Management](./10_user.mdx)** - Offers comprehensive tools for managing user information, preferences, and settings.
+- **[Utilities](./11_utils.mdx)** - A collection of utility functions to aid in common tasks and streamline development processes.
+
+## Getting Started
+
+### Installation
+
+To include `@genesislcap/foundation-comms` in your project, add it as a dependency in your `package.json` file and follow your project's routine for dependency installation.
+
+```json
+{
+  "dependencies": {
+    "@genesislcap/foundation-comms": "latest"
+  }
+}
+```

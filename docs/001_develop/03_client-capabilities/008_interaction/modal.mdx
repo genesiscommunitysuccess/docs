@@ -1,0 +1,294 @@
+---
+title: 'Modal'
+sidebar_label: 'Modal'
+id: client-interaction-modal
+keywords: [interaction, interactive, modal, click, toggle]
+tags:
+- interaction
+- interactive
+- modal
+- click
+- toggle
+sidebar_position: 8
+---
+
+import ModalDemo from '../../../../examples/ui/client-capabilities/interaction/modal.js';
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Modal
+
+A modal is a type of dialog that prevents the user from interacting with other content on the page. Usually, when an active modal is displayed, all other content on the screen is dimmed. The user is unable to move focus to other windows or dialogs. This forces the user to deal with the modal before moving to other work on the application.
+
+By default, the modal starts in a closed state.
+
+Use cases:
+* Display content in a window over other main page content
+* Control user interactions
+* Submission confirmations
+* Alert users
+* Require some action before closing
+* Prevent interacting with content outside the modal
+
+## Example
+
+<ModalDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+    <TabItem value="genesis">
+        Declaration
+        ```html
+        <rapid-modal></rapid-modal>
+        ```
+
+        Usage
+        ```typescript
+        @customElement({
+            name: 'my-element',
+            template: html`
+                <rapid-button @click=${x => x.modal.show()}>Open Modal</rapid-button>
+                <rapid-modal
+                    ${ref('modal')}
+                    :onShowCallback=${x => x.showCallback}
+                    :onCloseCallback=${x => x.closeCallback}
+                >
+                    <h3 slot="top">Top slot</h3>
+                    Main content in the modal
+                    <div slot="bottom">
+                        <i>Slotted content in the bottom</i>
+                    </div>
+                </rapid-modal>
+            `,
+        })
+        export class MyElement extends GenesisElement {
+            modal: Modal
+            showCallback() {
+                console.log('modal shown');
+            }
+            closeCallback() {
+                console.log('modal closed');
+            }
+        }
+        ```
+    </TabItem>
+    <TabItem value="react">
+        Declaration
+        ```html
+        <rapid-modal></rapid-modal>
+        ```
+
+        Usage
+        ```typescript
+        export function MyComponent() {
+            const modalRef = useRef(null);
+
+            useEffect(() => {
+                if (modalRef.current) {
+                    modalRef.current.onShowCallback = () => console.log('modal shown')
+                    modalRef.current.onCloseCallback = () => console.log('modal closed')
+                }
+            })
+
+            const handleClick = (ref) => {
+                if (modalRef.current) {
+                    modalRef.current.show();
+                }
+            };
+
+            return (
+                <rapid-button onClick={() => handleClick()}>Open Modal</rapid-button>
+                <rapid-modal
+                    ref={modalRef}
+                >
+                    <h3 slot="top">Top slot</h3>
+                    Main content in the modal
+                    <div slot="bottom">
+                        <i>Slotted content in the bottom</i>
+                    </div>
+                </rapid-modal>
+            );
+        }
+        ```
+    </TabItem>
+    <TabItem value="angular">
+    Usage
+    ```typescript
+    import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+
+    @Component({
+    selector: 'modal-example',
+    template: `
+      <rapid-button (click)="showModal()">Show modal</rapid-button>
+      <rapid-modal #modal
+      >
+          <h3 slot="top">Top slot</h3>
+          Main content in the modal
+          <div slot="bottom">
+              <i>Slotted content in the bottom</i>
+          </div>
+      </rapid-modal>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [FormsModule],
+    })
+    export class ModalExampleComponent implements AfterViewInit {
+      @ViewChild('modal') modalRef!: ElementRef;
+
+        ngAfterViewInit() {
+            if (this.modalRef.nativeElement) {
+                this.modalRef.nativeElement.onShowCallback = this.showCallback.bind(this);
+                this.modalRef.nativeElement.onCloseCallback = this.closeCallback.bind(this);
+            }
+        }
+
+        showModal() {
+            if (this.modalRef.nativeElement) {
+                this.modalRef.nativeElement.show()
+            }
+        }
+
+        showCallback() {
+            console.log('modal shown')
+        }
+
+        closeCallback() {
+            console.log('modal close')
+        }
+    }
+    ```
+    </TabItem>
+</Tabs>
+
+## DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>type</td>
+            <td><code>string</code></td>
+            <td>The type of dialog on of <code>default</code>, <code>alert</code> or <code>success</code>. <strong>Defaults to <code>default</code></strong>. This changes the styling depending on value.</td>
+<td>
+
+```typescript
+<rapid-modal type="success">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>position</td>
+            <td><code>string</code></td>
+            <td>Determines the position of the modal. Possible options 'right', 'left', 'center' or 'left'.</td>
+<td>
+
+```typescript
+<rapid-modal position="right">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>show-close-icon</td>
+            <td><code>boolean</code></td>
+            <td>Enables the close icon in the top right corner of the modal. Defaults to 'true'.</td>
+<td>
+
+```typescript
+<rapid-modal show-close-icon="false">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+:::note
+If you set `position` to be `left` or `right`, the modal will assume `height: 100%` by default. To change this, make the appropriate css modifications.
+:::
+
+### Properties
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>onShowCallback</td>
+      <td><code>() => void</code></td>
+      <td>Function that runs <em>before</em> modal is opened.</td>
+<td>
+
+```typescript
+<rapid-modal :onShowCallback="${() => () => console.log('shown')}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>onCloseCallback</td>
+      <td><code>() => void</code></td>
+      <td>Function that is called <em>after</em> the modal is closed.</td>
+<td>
+
+```typescript
+<rapid-modal :onCloseCallback="${() => () => console.log('hide')}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Component Methods
+
+| Method | Type | Use | Example |
+|---|---|---|---|
+|show|`() => void`|When called will show the modal.|`modal.show()`|
+|close|`() => void`|When called will close the modal.|`modal.close()`|
+
+### Slots
+
+| Slot | Use |
+|---|---|
+| Default | The default slot for the main content of the modal. |
+| top | The header section at the top of the modal. |
+| bottom | The footer section at the bottom of the modal. |
+
+### Parts
+
+| Part | Use |
+|---|---|
+| dialog | The container element containing the modal dialog. |
+| content | The content container element |
+| top | The top part of the modal which contains the modal dialog header. |
+| close-icon | The close icon in the top right hand corner of the modal dialog. |
+| bottom | The footer section of the modal dialog. |
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.

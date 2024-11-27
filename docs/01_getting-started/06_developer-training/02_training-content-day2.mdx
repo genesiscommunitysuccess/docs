@@ -9,7 +9,7 @@ sidebar_position: 4
   <summary>Day one recap</summary>
   <div>
     <div>Here are the main takeaways from <a href="/getting-started/developer-training/training-content-day1/">Day one</a>.</div>
-    <li>Genesis application platform is the only application platform for the financial markets.</li>
+    <li>Genesis Application Platform is the only application platform for the financial markets.</li>
     <li>Genesis platform is based on event-driven and microservice architecture.</li>
     <li>Genesis platform resources are powered by GPAL, which plugs into IntelliJ.</li>
     <li>We created a project from scratch using <a href="/getting-started/developer-training/training-content-day1/#1-create-a-new-project">GenX CLI</a>.</li>
@@ -33,7 +33,7 @@ Genesis components (also known as custom elements) provide essential elements th
 
 ### Micro front-ends
 
-On a higher level, the Genesis application platform also offers a number of re-usable micro front-ends for common functions, such as user management, entity management ([CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)), reporting and so on.
+On a higher level, the Genesis Application Platform also offers a number of re-usable micro front-ends for common functions, such as user management, entity management ([CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)), reporting and so on.
 
 This architecture is a design approach in which a front-end app is decomposed into individual, semi-independent micro applications working loosely together. The micro-front-end concept is vaguely inspired by, and named after, microservices. Independent development teams can collaborate on a front-end app more easily using this approach, and can each have their own release cadence.
 
@@ -362,7 +362,7 @@ export const tradeFormCreateSchema = tradeFormSchema(false);
 export const tradeFormUpdateSchema = tradeFormSchema(true);
 ```
 
-Note that the `tradeFormSchema` variable, declared above, pretty much describes the JSON schema for the endpoints defined including the fields and definitions. It is also possible to add filling using [Request Server](../../../server/request-server/introduction/) or [Data Server](../../../server/data-server/introduction/) queries (like Instrument and Counterparty ones), and further validation by way of annotation or custom validations on data classes.
+Note that the `tradeFormSchema` variable, declared above, pretty much describes the JSON schema for the endpoints defined including the fields and definitions. It is also possible to add filling using [Request Server](../../../develop/server-capabilities/snapshot-queries-request-server/) or [Data Server](../../../develop/server-capabilities/real-time-queries-data-server/) queries (like Instrument and Counterparty ones), and further validation by way of annotation or custom validations on data classes.
 
 Go back to the **home.template.ts** file to import the variables schema and add the properties  `createFormUiSchema` `updateFormUiSchema`.
 ```jsx {3,14,15}
