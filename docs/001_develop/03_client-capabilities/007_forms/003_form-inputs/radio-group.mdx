@@ -46,7 +46,7 @@ Usage
   name: 'my-element',
   template: html`
     <rapid-radio-group
-      @change="${(x) => x.selectionChanged()}"
+      @change="${(x,ctx) => x.selectionChanged(ctx.event)}
       value="${sync((x) => x.radioGroupValue)}"
     >
       <rapid-radio value="one">One</rapid-radio>
