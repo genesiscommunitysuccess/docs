@@ -5,7 +5,7 @@ import {
   filterDocCardListItems,
 } from '@docusaurus/plugin-content-docs/client';
 import type { Props } from '@theme/DocCardList';
-import NewCardList from '@site/src/components/NewCard/NewCardList';
+import CardList from '@site/src/components/Card/CardList';
 import sidebarItemsData from '@site/static/data/sidebar-items-data.json';
 
 function DocCardListForCurrentSidebarCategory({className}: Props) {
@@ -38,7 +38,7 @@ export default function DocCardList(props: Props): JSX.Element {
 
   return (
     <section className={clsx('row', className)}>
-      <NewCardList
+      <CardList
         xs="12"
         sm="4"
         md="4"
