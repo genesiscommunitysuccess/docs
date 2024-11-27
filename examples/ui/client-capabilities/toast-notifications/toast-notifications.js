@@ -130,6 +130,18 @@ export function BannerDemo({children, color}) {
 export function ToastDemo({children, color}) {
   let NotificationsModule = null;
 
+  function getNotificationContainer() {
+    let container = null;
+    container = document.createElement('div');
+    container.style.zIndex = '1000';
+    container.setAttribute('id', 'toast-container');
+    const dsProvider = document.createElement(`rapid-design-system-provider`);
+    dsProvider.appendChild(container);
+    document.body.appendChild(dsProvider);
+
+    return container;
+  }
+
   setup();
   const showToast = () => {
     NotificationsModule = require('@genesislcap/foundation-notifications');
@@ -138,11 +150,13 @@ export function ToastDemo({children, color}) {
         title: 'Important message',
         body: 'Lorem ipsum',
         toast: {
-
           type: 'success',
+          autoClose: true,
+          closeTimeout: '2000'
         },
       },
       'rapid',
+      getNotificationContainer()
     );
   }
   return (
