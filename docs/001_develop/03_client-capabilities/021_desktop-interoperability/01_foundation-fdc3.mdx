@@ -1,0 +1,102 @@
+---
+title: 'Foundation FDC3'
+sidebar_label: 'Foundation FDC3'
+id: foundation-fdc3
+keywords: [genesis, foundation, ui, fdc3]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - fdc3
+---
+
+# Genesis Foundation FDC3
+
+This provides a robust implementation of the FDC3 standard, facilitating interoperability between desktop financial applications. It leverages the `@finos/fdc3` library to implement an API that covers intents, context sharing, and channels, enhancing the communication and interaction capabilities of applications within the financial domain.
+
+## API Documentation
+
+For more detailed information on API and configurations, please refer to the [API documentation](docs/api/index.md) in the `docs/api` directory.
+
+## Installation
+
+To include `@genesislcap/foundation-fdc3` in your project, add it as a dependency in your `package.json` file and follow your project's routine for dependency installation.
+
+```json
+{
+  "dependencies": {
+    "@genesislcap/foundation-fdc3": "latest"
+  }
+}
+```
+
+## Key Features
+
+- **FDC3 Standard Compliance:** Implements FDC3 API standards, ensuring compatibility and interoperability across financial desktop applications.
+- **Event and Context Management:** Supports handling and broadcasting of various event types and contexts, enabling rich interaction patterns between applications.
+- **Channel Support:** Offers utilities for channel management, allowing applications to join, create, or broadcast over specific channels for targeted communication.
+- **Intent Handling:** Provides mechanisms to raise, listen for, and handle intents, facilitating action-driven communication between applications.
+
+## Usage Examples
+
+### Adding Intent Listeners
+
+```typescript
+import { FDC3, FDC3Intents, FDC3ContextHandler } from '@genesislcap/foundation-fdc3';
+import { FASTElement } from '@microsoft/fast-element';
+
+export class MyComponent extends FASTElement {
+  @FDC3 fdc3Service: FDC3;
+
+  connectedCallback() {
+    const listeners = new Map<FDC3Intents, FDC3ContextHandler>([
+      [FDC3Intents.controlClicked, (context) => console.log('Control clicked', context)],
+      [FDC3Intents.routeChanged, (context) => console.log('Route changed', context)],
+    ]);
+
+    this.fdc3Service.addIntentListeners(listeners);
+  }
+}
+```
+
+### Raising an Intent
+
+```typescript
+import { FDC3, FDC3Intents } from '@genesislcap/foundation-fdc3';
+import { FASTElement } from '@microsoft/fast-element';
+
+export class MyComponent extends FASTElement{
+  @FDC3 fdc3Service: FDC3;
+
+  onClick() {
+    this.fdc3Service.raiseIntent({ type: 'ViewChart', symbol: 'AAPL' }, FDC3Intents.controlClicked);
+  }
+}
+```
+
+### Joining a Channel
+
+```typescript
+import { FDC3 } from '@genesislcap/foundation-fdc3';
+import { FASTElement } from '@microsoft/fast-element';
+
+export class MyComponent extends FASTElement {
+  @FDC3 fdc3Service: FDC3;
+
+  connectedCallback() {
+    this.fdc3Service.joinChannel('blue');
+  }
+}
+```
+
+## Best Practices
+
+- **Intent and Context Definition:** Clearly define the intents and contexts your application will use or listen for, ensuring they align with FDC3 standards and facilitate meaningful interactions between applications.
+- **Error Handling:** Implement robust error handling for intent raising and context sharing operations, especially when dealing with asynchronous actions.
+- **Channel Usage:** When using channels for communication, ensure proper management of channel membership and context broadcasting to avoid unintended interactions.
+
+## Dependency Injection and Service Configuration
+
+The FDC3 service is designed to be easily integrated and configured within your application using dependency injection. This approach allows for flexible instantiation and usage of the FDC3 API, ensuring that financial desktop applications can leverage standard communication protocols for enhanced interoperability.
+
+

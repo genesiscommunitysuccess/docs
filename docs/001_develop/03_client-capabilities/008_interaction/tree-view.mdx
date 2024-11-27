@@ -1,0 +1,333 @@
+---
+title: 'Tree view'
+sidebar_label: 'Tree view'
+id: client-interaction-tree-view
+keywords: [ interaction, interactive, menu, desktop, item, choice, nested, start menu, menu bar, action ]
+tags:
+- interaction
+- interactive
+- tree
+- tree view
+- directories
+- directory
+- heirarchy
+- heirarchical
+sidebar_position: 8
+---
+
+import TreeViewDemo from '/examples/ui/client-capabilities/interaction/tree-view.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+A tree view widget presents a hierarchical list. Any item in the hierarchy may have child items, and items that have children may be expanded or collapsed to show or hide the children.
+
+Use cases:
+* Creating a file system navigator that uses a tree view to display folders and files. An item representing a folder can be expanded to reveal the contents of the folder, which may be files, folders, or both.
+* Creating a hierarchical diagram of profiles
+
+## Example
+<TreeViewDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-tree-view>
+      <rapid-tree-item></rapid-tree-item>
+    </rapid-tree-view>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html<MyElement>`
+        <rapid-tree-view>
+          Root
+          <rapid-tree-item>
+            Item 1
+            <rapid-tree-item>Sub-item 1-1</rapid-tree-item>
+            <rapid-tree-item>Sub-item 1-2</rapid-tree-item>
+            <rapid-tree-item>
+              Item 2
+              <rapid-tree-item>Sub-item 2-1</rapid-tree-item>
+              <rapid-tree-item>Sub-item 2-2</rapid-tree-item>
+            </rapid-tree-item>
+          </rapid-tree-item>
+          <rapid-tree-item>Item 3</rapid-tree-item>
+        </rapid-tree-view>
+      `,
+    })
+    export class MyElement extends GenesisElement { }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-tree-view>
+      <rapid-tree-item></rapid-tree-item>
+    </rapid-tree-view>
+    ```
+
+    Usage
+    ```typescript
+    export function MyComponent() {
+      return (
+        <rapid-tree-view>
+          Root
+          <rapid-tree-item>
+            Item 1
+            <rapid-tree-item>Sub-item 1-1</rapid-tree-item>
+            <rapid-tree-item>Sub-item 1-2</rapid-tree-item>
+            <rapid-tree-item>
+              Item 2
+              <rapid-tree-item>Sub-item 2-1</rapid-tree-item>
+              <rapid-tree-item>Sub-item 2-2</rapid-tree-item>
+            </rapid-tree-item>
+          </rapid-tree-item>
+          <rapid-tree-item>Item 3</rapid-tree-item>
+        </rapid-tree-view>)
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-tree-view>
+      <rapid-tree-item></rapid-tree-item>
+    </rapid-tree-view>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    @Component({
+      selector: 'my-component',
+      template: `
+        <rapid-tree-view>
+          Root
+          <rapid-tree-item>
+            Item 1
+            <rapid-tree-item>Sub-item 1-1</rapid-tree-item>
+            <rapid-tree-item>Sub-item 1-2</rapid-tree-item>
+            <rapid-tree-item>
+              Item 2
+              <rapid-tree-item>Sub-item 2-1</rapid-tree-item>
+              <rapid-tree-item>Sub-item 2-2</rapid-tree-item>
+            </rapid-tree-item>
+          </rapid-tree-item>
+          <rapid-tree-item>Item 3</rapid-tree-item>
+        </rapid-tree-view>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class MyComponent { }
+    ```
+  </TabItem>
+</Tabs>
+
+
+## Tree View API
+
+API examples shown with Genesis component syntax, and closing tag omitted.
+
+### Attributes
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>render-collapsed-nodes</td>
+      <td><code>boolean</code></td>
+      <td>If set true the tree view will appear expanded as if by being expanded by the user</td>
+<td>
+
+```typescript
+<rapid-tree-view ?render-collapsed-nodes=${x => x.showTree}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>currentSelected</td>
+            <td><code>HTMLElement | TreeItem | null</code></td>
+            <td>The currently selected tree item. It is likely you'll want to read this value instead of writing to it.</td>
+<td>
+
+```typescript
+const value = treeRef.currentSelected;
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|The default slot for content or ([`<rapid-tree-item>`](#tree-item-api))|
+
+### Parts
+
+This component doesn't have any parts.
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.
+
+## Tree item API
+
+API examples shown with Genesis component syntax, and closing tag omitted.
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>expanded</td>
+            <td><code>boolean</code></td>
+            <td>When true, the control will appear expanded by user interaction. Emits <code>expanded-change</code> event when changed. Note: is not set when the user interacts with the item, so only use this attribute to pre-expand the item open rather than read the state.</td>
+<td>
+
+```typescript
+<rapid-tab expanded>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>selected</td>
+            <td><code>boolean</code></td>
+            <td>When true, the control will appear selected by user interaction. Emits <code>selected-change</code> event when changed. Note: is not set when the user interacts with the item, so only use this attribute to pre-select the item open rather than read the state.</td>
+<td>
+
+```typescript
+<rapid-tab selected>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>disabled</td>
+            <td><code>boolean</code></td>
+            <td>When true, the control will be immutable by user interaction.</td>
+<td>
+
+```typescript
+<rapid-tab disabled>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+
+### Properties
+
+This component doesn't have any properties that are not also controlled via attributes.
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|The default slot for tree item text content|
+|start|Content which can be provided before the tree item content|
+|end|Content which can be provided after the tree item content|
+|item|The slot for tree items (`<rapid-tree-item>` manage this assignment themselves)|
+|expand-collapse-button|The expand/collapse button|
+
+### Parts
+
+|Part|Description|
+|---|---|
+|positioning-region|The element used to position the tree item content with exception of any child nodes|
+|content-region|The element containing the expand/collapse, start, and end slots|
+|items|The element wrapping any child items|
+|expand-collapse-button|The expand/collapse button|
+
+### Events fired
+
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>expanded-change</td>
+            <td><code>boolean</code></td>
+            <td>Emitted when the <code>expanded</code> attribute is changed</td>
+<td>
+
+```typescript
+<rapid-tree-item @expanded-change="${(x) => x.myChangeHandler()}">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>selected-change</td>
+            <td><code>boolean</code></td>
+            <td>Emitted when the <code>selected</code> attribute is changed</td>
+<td>
+
+```typescript
+<rapid-tree-item @selected-change="${(x) => x.myChangeHandler()}">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Events listened to
+
+This component doesn't listen to any events.
+

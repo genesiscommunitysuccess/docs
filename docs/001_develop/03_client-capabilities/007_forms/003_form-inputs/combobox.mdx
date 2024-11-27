@@ -1,0 +1,379 @@
+---
+title: 'Combobox'
+sidebar_label: 'Combobox'
+id: client-interaction-combobox
+keywords: [interaction, interactive, combobox, form, submit, data]
+tags:
+- interaction
+- interactive
+- combobox
+- form
+- submit
+- data
+sidebar_position: 8
+---
+
+import ComboboxDemo from '../../../../../examples/ui/client-capabilities/interaction/combobox.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Options from '../../../../_includes/_options.mdx'
+
+# Combobox
+
+A combo-box is an input with an associated pop-up that enables users to select one value from a collection of possible values.
+
+Use cases:
+* Selecting pre-defined values
+* Sorting
+* Filtering
+
+## Example
+
+<ComboboxDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-combobox>
+      <rapid-option value="s">Small</rapid-option>
+      <rapid-option value="m">Medium</rapid-option>
+      <rapid-option value="l">Large</rapid-option>
+    </rapid-combobox>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-combobox
+          @change=${x => x.selectChanged()}
+          value=${sync((x) => x.comboboxValue)}>
+          <rapid-option value="s">Small</rapid-option>
+          <rapid-option value="m">Medium</rapid-option>
+          <rapid-option value="l">Large</rapid-option>
+        </rapid-combobox>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      @observable comboboxValue = '';
+      selectChanged() {
+        console.log('Combobox selection changed ' + this.comboboxValue)
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+  <rapid-combobox>
+    <rapid-option value="s">Small</rapid-option>
+    <rapid-option value="m">Medium</rapid-option>
+    <rapid-option value="l">Large</rapid-option>
+  </rapid-combobox>
+  ```
+  Usage
+  ```typescript
+  export function MyComponent() {
+
+    const [outputValue, setOutputValue] = useState('');
+
+    const onChange = (event) => {
+      setOutputValue(event.target.value);
+      console.log(this.outputValue);
+    }
+
+    return (
+      <rapid-combobox onChange={onChange}>
+        <rapid-option value="s">Small</rapid-option>
+        <rapid-option value="m">Medium</rapid-option>
+        <rapid-option value="l">Large</rapid-option>
+      </rapid-combobox>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+  <rapid-combobox>
+    <rapid-option value="s">Small</rapid-option>
+    <rapid-option value="m">Medium</rapid-option>
+    <rapid-option value="l">Large</rapid-option>
+  </rapid-combobox>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  import { FormsModule } from '@angular/forms';
+  @Component({
+    selector: 'my-root',
+    template: `
+          <rapid-combobox (change)="onChange($event)">
+            <rapid-option value="s">Small</rapid-option>
+            <rapid-option value="m">Medium</rapid-option>
+            <rapid-option value="l">Large</rapid-option>
+          </rapid-combobox>
+        `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule],
+  })
+  export class AppComponent {
+    onChange(event: Event) {
+      const target = event.target as HTMLInputElement;
+      console.log(target.value);
+    }
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>autocomplete</td>
+      <td><code><a href="#autocomplete">"inline" | "list" | "both" | "none"</a></code></td>
+      <td>Defines how autocompletion works in the component. **Default:** `none`</td>
+<td>
+
+```typescript
+<rapid-combobox autocomplete="inline">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>case-sensitive</td>
+      <td><code>boolean</code></td>
+      <td>Sets whether to treat values in a case-sensitive matter. **Default:** `false`</td>
+<td>
+
+```typescript
+<rapid-combobox case-sensitive>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Similar to `readonly`, but with a blur on the component.</td>
+<td>
+
+```typescript
+<rapid-combobox disabled>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>form</td>
+      <td><code>string</code></td>
+      <td>Associates this component to a form. Form `id` needs to be passed. If no Id informed, then it will be associated with the ancestor form.</td>
+<td>
+
+```typescript
+<rapid-combobox form="myForm">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>ignore-input-click</td>
+      <td><code>boolean</code></td>
+      <td>Sets whether to keep the dropdown closed when the input field is clicked. **Default:** `false`</td>
+<td>
+
+```typescript
+<rapid-combobox ignore-input-click>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>open</td>
+      <td><code>boolean</code></td>
+      <td>Defines whether the combolist starts opened or not. **Default:** `false`</td>
+<td>
+
+```typescript
+<rapid-combobox open>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>position</td>
+      <td><code>"above" | "below"</code></td>
+      <td>Places the combolist **above** or **below** the combo-box. **Default:** it will try to fit with the page</td>
+<td>
+
+```typescript
+<rapid-combobox position="below">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>placeholder</td>
+      <td><code>string</code></td>
+      <td>Sets placeholder text for the element (which disappears when the user starts typing)</td>
+<td>
+
+```typescript
+<rapid-combobox placeholder="Sample text">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>string</code></td>
+      <td>Sets an initial value for this component</td>
+<td>
+
+```typescript
+<rapid-combobox value="InitialValue">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>scroll-to-selected-when-opening</td>
+      <td><code>boolean</code></td>
+      <td>Scrolls to selected option when opening</td>
+<td>
+
+```typescript
+<rapid-combobox scroll-to-selected-when-opening>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>scroll-when-selection-changes</td>
+      <td><code>boolean</code></td>
+      <td>Scrolls when the selection changes</td>
+<td>
+
+```typescript
+<rapid-combobox scroll-when-selection-changes>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+<div id="autocomplete">
+  :::note
+  `autocomplete` has the following settings:
+
+  - `inline`: as the user types in the combo-box, the component displays valid options for completing the entry within the combo-box.
+  - `list`: as the user types in the combo-box, the component displays and filters the combolist above or below the combo-box.
+  - `both`: the component behaves as both `inline` and `list`.
+  - `none`: the component does not provide autocomplete.
+  :::
+</div>
+
+:::warning
+The native behaviour of a `combobox` component is to accept whatever entry the user inserts, even if it is not one of the options available.
+
+In order to avoid this, implement some protection manually.
+:::
+
+<Options />
+
+:::note
+- If you specify a `selected` or `value` to more than one `option` then the component selects only the first in the `rapid-option` list
+:::
+
+You can also use the repeat directive to create options dynamically in the code:
+
+```typescript
+  const sampleSelectOptions = [
+    {label: 'Large', value: 'l'},
+    {label: 'Medium', value: 'm'},
+    {label: 'Small', value: 's'},
+  ]
+```
+
+```typescript
+import {html, repeat} from '@genesislcap/web-core';
+html`
+  <rapid-combobox>
+    ${repeat(
+      (x) => x.sampleSelectOptions,
+      html`
+            <rapid-option value="${(x) => x.value}">${(x) => x.label}</rapid-option>
+          `,
+      )}
+    </rapid-combobox>
+`
+```
+
+# Properties
+
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+
+| Name | Description |
+|---|---|
+| start | Content which can be provided before the button content. |
+| end | Content which can be provided after the button content. |
+| control | Used to replace the input element representing the combobox. |
+| indicator | The visual indicator for the expand/collapse state of the button. |
+
+### Parts
+
+| Name | Description |
+|---|---|
+| control| The element representing the select invoking element. |
+| selected-value | The element wrapping the selected value. |
+| indicator | The element wrapping the visual indicator. |
+| listbox | The listbox element. |
+
+### Events fired
+
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Example</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>@change</td>
+      <td><code>void</code></td>
+      <td>Fires a custom 'change' event when the value has changed.</td>
+<td>
+
+```typescript
+<rapid-combobox @change="${(x) => x.changeHandler()}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Events listened to
+
+This component doesn't listen to any events.

@@ -1,0 +1,146 @@
+---
+title: 'Storage (Key-Value)'
+sidebar_label: 'Storage (Key-Value)'
+id: comms-storage
+keywords: [genesis, foundation, comms, storage, key-value, kv]
+tags:
+  - comms
+  - storage
+  - key-value
+  - kv
+---
+
+# Key-Value Storage
+
+Provides a versatile Key-Value (KV) storage system for managing data within the application, abstracting over the specifics of the underlying storage technology to offer a unified API for data operations. This feature enables developers to interact with the KV storage seamlessly, performing CRUD operations such as inserting, updating, retrieving, and deleting data items.
+
+## Key Components
+
+- **KVStorage Interface:** Outlines the contract for KV storage operations, including methods to delete, get, list, and put items in the KV storage.
+- **DefaultKVStorage Implementation:** Implements the `KVStorage` interface, providing concrete logic to interact with the KV storage, checking for availability, and performing CRUD operations.
+- **KVStorageConfig Interface and Default Configuration:** Facilitates configuration of the KV storage, allowing for the specification of account, namespace, auth key, and auth email.
+
+### Usage Examples
+
+#### Coonfiguring KV Storage
+
+Set up the KV storage **with** custom configuration options if necessary. By default, `defaultKVStorageConfig` provides a starting point.
+
+First, we define a custom `KVStorageConfig` that suits our application's needs, different from the default configuration. This might involve specifying a unique account, namespace, auth key, and auth email to tailor the KV Storage behavior.
+
+```typescript
+import { KVStorageConfig, defaultKVStorageConfig } from '@genesislcap/foundation-comms';
+
+const customKVStorageConfig: KVStorageConfig = {
+  ...defaultKVStorageConfig,
+  account: 'customAccount',
+  namespace: 'customNamespace',
+  authKey: 'customAuthKey',
+  authEmail: 'customAuthEmail@example.com',
+};
+```
+
+#### Register KVStorageConfig with DI Container
+
+Within the `MainApplication`'s `registerDIDependencies` method, we register the custom `KVStorageConfig` with the DI container. This step ensures that any instance of `KVStorage` created within the application uses this configuration.
+
+```typescript
+import { KVStorageConfig } from '@genesislcap/foundation-comms';
+import { Container, Registration } from '@microsoft/fast-foundation';
+
+export class MyExampleClass {
+  @Container container!: Container;
+
+  private registerDIDependencies() {
+    this.container.register(
+      Registration.instance(KVStorageConfig, customKVStorageConfig),
+      // Other registrations...
+    );
+  }
+}
+```
+
+#### Performing CRUD Operations
+
+##### Put (Insert or Update)
+
+```typescript
+import { KVStorage } from '@genesislcap/foundation-comms';
+import { FASTElement } from '@microsoft/fast-element';
+
+export class MyExampleComponent extends FASTElement {
+  @KVStorage kvStorage: KVStorage;
+
+  async putData() {
+    await this.kvStorage.put([
+      { key: 'user:123', value: 'John Doe' },
+      { key: 'user:456', value: 'Jane Doe' }
+    ]);
+  }
+}
+```
+
+This example demonstrates how to insert or update key-value pairs in the KV storage.
+
+##### Get
+
+```typescript
+import { KVStorage } from '@genesislcap/foundation-comms';
+import { FASTElement } from '@microsoft/fast-element';
+
+export class MyExampleComponent extends FASTElement {
+  @KVStorage kvStorage: KVStorage;
+
+  async getData() {
+    const userData = await this.kvStorage.get('user:123');
+    console.log(userData):
+  }
+}
+```
+
+Retrieves the value for a specified key from the KV storage.
+
+##### List
+
+```typescript
+import { KVStorage } from '@genesislcap/foundation-comms';
+import { FASTElement } from '@microsoft/fast-element';
+
+export class MyExampleComponent extends FASTElement {
+  @KVStorage kvStorage: KVStorage;
+
+  async listKeys() {
+    const keys = await this.kvStorage.list();
+    console.log(keys);
+  }
+}
+```
+
+Lists all keys stored in the KV storage for the user.
+
+##### Delete
+
+```typescript
+import { KVStorage } from '@genesislcap/foundation-comms';
+import { FASTElement } from '@microsoft/fast-element';
+
+export class MyExampleComponent extends FASTElement {
+  @KVStorage kvStorage: KVStorage;
+
+  async deleteData() {
+    await kvStorage.delete(['user:123', 'user:456']);
+  }
+}
+```
+
+Removes specified keys and their associated values from the KV storage.
+
+### Consideration
+
+- **Sensitive Data Handling:** Exercise caution when storing sensitive information, ensuring that access controls and encryption are properly configured.
+- **Error Handling:** Implement robust error handling, especially for network-related operations that might fail or return unexpected results.
+- **Configuration Management:** Securely manage the configuration details such as the `authKey` and `authEmail` to prevent unauthorized access to the KV storage.
+
+### Future Expansion
+
+While KV storage is currently the primary focus, the architecture is designed with extensibility in mind, allowing for the potential inclusion of additional storage options. This foresight ensures that the storage solution can evolve to meet future needs without requiring significant rearchitecture.

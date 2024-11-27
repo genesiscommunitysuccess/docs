@@ -59,7 +59,7 @@ To include your `*-consolidator.kts` file definitions in a runtime process, you 
 1. Ensure your consolidator.kts file(s) are defined in `script`
 1. Ensure `pal` is set in `language`
 
-If you wish to run a dedicated process for a request server, the following gives an example full process definition:
+If you wish to run a dedicated process for a consolidator, the following gives an example full process definition:
 
 ```kotlin
 <process name="POSITION_CONSOLIDATOR">
@@ -91,7 +91,7 @@ It is helpful for consolidators where you wish your consolidator process to [`co
 
 For example:
 
-```kotlin{13}
+```kotlin {13}
 <process name="POSITION_CONSOLIDATOR">
         <groupId>POSITION</groupId>
         <description>Consolidates trades to calculate positions</description>
@@ -119,7 +119,7 @@ For example:
 For the latest information on testing, go to our page on [Integration testing](/operations/testing/integration-testing/).
 :::
 
-The Genesis application platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Consolidator configuration is used to create our Consolidator. 
+The Genesis Application Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Consolidator configuration is used to create our Consolidator. 
 
 First, we need to add the required packages and genesis home. Then we need to set the "IS_SCRIPT" System Definition property to true (this is required as part of the Consolidator initialisation).
 

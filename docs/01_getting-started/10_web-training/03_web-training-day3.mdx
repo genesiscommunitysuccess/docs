@@ -280,7 +280,7 @@ The way we have been using grid-pro so far is encapsulating a Genesis datasource
 
 - **`order-by: string`**: This option can be used to select a [Data Server index](../../../database/data-types/index-entities/) (defined in tables-dictionary.kts), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest).
 
-- **`resource-name: string`**: The target [Data Server](../../../server/data-server/introduction/) or [Request Server](../../../server/request-server/introduction/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
+- **`resource-name: string`**: The target [Data Server](../../../develop/server-capabilities/real-time-queries-data-server/) or [Request Server](../../../develop/server-capabilities/snapshot-queries-request-server/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
 
 As you may have noticed, we've already used `resource-name` and `order-by` when we used the grid-pro-genesis-datasource for the first time.
 

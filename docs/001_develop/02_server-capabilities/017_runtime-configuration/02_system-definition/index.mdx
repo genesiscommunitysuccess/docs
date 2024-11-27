@@ -15,50 +15,51 @@ The file is found in the server `cfg` directory.
 
 This section explains all the different items that can be contained in the file.
 
-Here is an example of a `genesis-system-definition.kts` file for an application:
+Here is an example of a `genesis-system-definition.kts` file for an application named 'position':
 
 ```kotlin
 package genesis.cfg
 
 systemDefinition {
-    global {
-        item(name = "MqLayer", value = "ZeroMQ")
-        item(name = "DbLayer", value = "H2")
-        item(name = "DictionarySource", value = "DB")
-        item(name = "AliasSource", value = "DB")
-        item(name = "MetricsEnabled", value = "false")
+  global {
+    item(name = "DEPLOYED_PRODUCT", value = "position")
+    item(name = "MqLayer", value = "ZeroMQ")
+    item(name = "DbLayer", value = "H2")
+    item(name = "DictionarySource", value = "DB")
+    item(name = "AliasSource", value = "DB")
+    item(name = "MetricsEnabled", value = "false")
 
-        item(name = "ZeroMQProxyInboundPort", value = "5001")
-        item(name = "ZeroMQProxyOutboundPort", value = "5000")
+    item(name = "ZeroMQProxyInboundPort", value = "5001")
+    item(name = "ZeroMQProxyOutboundPort", value = "5000")
 
-        item(name = "DbHost", value = "localhost")
-        item(name = "DbMode", value = "POSTGRESQL")
-        item(name = "GenesisNetProtocol", value = "V2")
-        item(name = "ResourcePollerTimeout", value = "5")
-        item(name = "ReqRepTimeout", value = "60")
-        item(name = "MetadataChronicleMapAverageKeySizeBytes", value = "128")
-        item(name = "MetadataChronicleMapAverageValueSizeBytes", value = "1024")
-        item(name = "MetadataChronicleMapEntriesCount", value = "512")
-        item(name = "DaemonServerPort", value = "4568")
-        item(
-            name = "JVM_OPTIONS",
-            value = "-XX:MaxHeapFreeRatio=70 -XX:MinHeapFreeRatio=30 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:OnOutOfMemoryError=\"handleOutOfMemoryError.sh %p\""
-        )
+    item(name = "DbHost", value = "localhost")
+    item(name = "DbMode", value = "POSTGRESQL")
+    item(name = "GenesisNetProtocol", value = "V2")
+    item(name = "ResourcePollerTimeout", value = "5")
+    item(name = "ReqRepTimeout", value = "60")
+    item(name = "MetadataChronicleMapAverageKeySizeBytes", value = "128")
+    item(name = "MetadataChronicleMapAverageValueSizeBytes", value = "1024")
+    item(name = "MetadataChronicleMapEntriesCount", value = "512")
+    item(name = "DaemonServerPort", value = "4568")
+    item(
+      name = "JVM_OPTIONS",
+      value = "-XX:MaxHeapFreeRatio=70 -XX:MinHeapFreeRatio=30 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:OnOutOfMemoryError=\"handleOutOfMemoryError.sh %p\""
+    )
+  }
+
+  systems {
+    system(name = "DEV") {
+      hosts {
+        host(name = "genesis-serv")
+      }
+
+      item(name = "DbNamespace", value = "genesis")
+      item(name = "ClusterPort", value = "6000")
+      item(name = "Location", value = "LO")
+      item(name = "LogFramework", value = "LOG4J2")
+      item(name = "LogFrameworkConfig", value = "log4j2-default.xml")
     }
-
-    systems {
-        system(name = "DEV") {
-            hosts {
-                host(name = "genesis-serv")
-            }
-
-            item(name = "DbNamespace", value = "genesis")
-            item(name = "ClusterPort", value = "6000")
-            item(name = "Location", value = "LO")
-            item(name = "LogFramework", value = "LOG4J2")
-            item(name = "LogFrameworkConfig", value = "log4j2-default.xml")
-        }
-    }
+  }
 }
 ```
 
@@ -173,7 +174,7 @@ This is then decrypted by the platform into memory.
 To reduce the risk of a malicious attacker being able to run a memory scan on a running instance and acquire the decrypted value, the platform enables you to:
 
 - delay decrypting of the value by using a Provider wrapper, and
-- obfuscate the scanning of the value by using a ByteArray instead of a String; this approach requires you to deserialise back to a String at the point of use.
+- obfuscate the scanning of the value by using a ByteArray instead of a String; this approach requires you to deserialize back to a String at the point of use.
 
 The Provider `ByteArray` provides the best protection against memory scanning for passwords from a malicious agent, because the password is not decrypted until the point of use and doesn’t present itself as an ordinary string.
 
@@ -189,19 +190,18 @@ There are various ways you can pull an encrypted value into a Kotlin class.
 class TestModule
 @Inject
 constructor(
-
-    @Named("DBUSERNAME") val passwordString: String,
-    @Named("DBUSERNAME") val passwordByteArray: ByteArray,
-    @Named("DBUSERNAME") val passwordByteArrayProvider: Provider<ByteArray>,
-    @Named("DBUSERNAME") val passwordStringProvider: Provider<String>
+  @Named("DBUSERNAME") val passwordString: String,
+  @Named("DBUSERNAME") val passwordByteArray: ByteArray,
+  @Named("DBUSERNAME") val passwordByteArrayProvider: Provider<ByteArray>,
+  @Named("DBUSERNAME") val passwordStringProvider: Provider<String>
 ) {
-    init {
-        assertThat(passwordStringProvider.get()).isEqualTo("johndoe")
-        assertThat(passwordString).isEqualTo("johndoe")
+  init {
+    assertThat(passwordStringProvider.get()).isEqualTo("johndoe")
+    assertThat(passwordString).isEqualTo("johndoe")
 
-        assertThat(passwordByteArrayProvider.get().toString(Charsets.UTF_8)).isEqualTo("johndoe")
-        assertThat(passwordByteArray.toString(Charsets.UTF_8)).isEqualTo("johndoe")
-    }
+    assertThat(passwordByteArrayProvider.get().toString(Charsets.UTF_8)).isEqualTo("johndoe")
+    assertThat(passwordByteArray.toString(Charsets.UTF_8)).isEqualTo("johndoe")
+  }
 }
 ```
 
@@ -242,10 +242,10 @@ This part of the configuration tells the service where to read secrets from:
 
 ```kotlin
 config {
-    address("http://localhost:8200")     // Defaults to "VAULT_ADDR" environment variable
-    token("s.NSxyuF4ClXxd4YoSFvKwil0i")  // Defaults to "VAULT_TOKEN" environment variable
-    openTimeout(5)                       // Defaults to "VAULT_OPEN_TIMEOUT" environment variable
-    readTimeout(30)                      // Defaults to "VAULT_READ_TIMEOUT" environment variable
+  address("http://localhost:8200")     // Defaults to "VAULT_ADDR" environment variable
+  token("s.NSxyuF4ClXxd4YoSFvKwil0i")  // Defaults to "VAULT_TOKEN" environment variable
+  openTimeout(5)                       // Defaults to "VAULT_OPEN_TIMEOUT" environment variable
+  readTimeout(30)                      // Defaults to "VAULT_READ_TIMEOUT" environment variable
 }
 ```
 

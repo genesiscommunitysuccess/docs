@@ -1,0 +1,206 @@
+{
+  "/develop/development-environments": {
+    "description": "Development environment description",
+    "items": [
+      {
+        "href": "/develop/development-environment/launchpad/",
+        "description": "Launchpad description"
+      },
+      {
+        "href": "/develop/development-environment/genesis-start/",
+        "description": "Genesis Start description"
+      },
+      {
+        "href": "/develop/development-environment/intellij-plugin/",
+        "description": "IntelliJ Plugin description"
+      },
+      {
+        "href": "/develop/development-environment/vscode-plugin/",
+        "description": "VSCode Plugin description"
+      },
+      {
+        "href": "/develop/development-environment/custom-elements-lsp/",
+        "description": "Custom Elements LSP description"
+      },
+      {
+        "href": "/develop/development-environment/ai/",
+        "description": "AI description"
+      },
+      {
+        "href": "/develop/development-environment/genx/",
+        "description": "genx description"
+      }
+    ]
+  },
+  "/develop/server-capabilities": {
+    "description": "This section provides all the details around the Genesis application platform's server capabilities. Each section details how the capability works along with examples, and includes full documentation on configuration and interaction.",
+    "items": [
+      {
+        "href": "/develop/server-capabilities/data-model/",
+        "description": "Assembling the application data model"
+      },
+      {
+        "href": "/develop/server-capabilities/data-access-apis/",
+        "description": "Accessing the application data model directly via API"
+      },
+      {
+        "href": "/develop/server-capabilities/real-time-queries-data-server/",
+        "description": "Defining low-latency real-time data queries for clients to subscribe"
+      },
+      {
+        "href": "/develop/server-capabilities/snapshot-queries-request-server/",
+        "description": "Configuring on-demand data queries accessible to authorized clients"
+      },
+      {
+        "href": "/develop/server-capabilities/core-business-logic-event-handler/",
+        "description": "Composing business events which update the applications data"
+      },
+      {
+        "href": "/develop/server-capabilities/access-control/",
+        "description": "Configuring human and system user application access privileges"
+      },
+      {
+        "href": "/develop/server-capabilities/workflow-state-machine/",
+        "description": "Workflow State Machine description"
+      },
+      {
+        "href": "/develop/server-capabilities/real-time-aggregation-consolidator/",
+        "description": "Real Time Aggregation Consolidator description"
+      },
+      {
+        "href": "/develop/server-capabilities/real-time-triggers-evaluator/",
+        "description": "Real Time Triggers Evaluator description"
+      },
+      {
+        "href": "/develop/server-capabilities/integrations/",
+        "description": "Integrations description"
+      },
+      {
+        "href": "/develop/server-capabilities/runtime-configuration/",
+        "description": "Runtime Configuration description"
+      }
+    ]
+  },
+  "/develop/client-capabilities": {
+    "description": "Client capabilities (Web UI) description",
+    "items": [
+      {
+        "href": "/develop/client-capabilities/server-communications/",
+        "description": "Server Communications description"
+      },
+      {
+        "href": "/develop/client-capabilities/login/",
+        "description": "Login description"
+      },
+      {
+        "href": "/develop/client-capabilities/header/",
+        "description": "Header description"
+      },
+      {
+        "href": "/develop/client-capabilities/grids/",
+        "description": "Grids description"
+      },
+      {
+        "href": "/develop/client-capabilities/charts/",
+        "description": "Charts description"
+      },
+      {
+        "href": "/develop/client-capabilities/forms/",
+        "description": "Forms description"
+      },
+      {
+        "href": "/develop/client-capabilities/interaction/",
+        "description": "Interaction description"
+      },
+      {
+        "href": "/develop/client-capabilities/presentation/",
+        "description": "Presentation description"
+      },
+      {
+        "href": "/develop/client-capabilities/filters/",
+        "description": "Filters description"
+      },
+      {
+        "href": "/develop/client-capabilities/criteria/",
+        "description": "Criteria description"
+      },
+      {
+        "href": "/develop/client-capabilities/toast-notifications/",
+        "description": "Toast Notifications description"
+      },
+      {
+        "href": "/develop/client-capabilities/utility-methods/",
+        "description": "Utility methods description"
+      },
+      {
+        "href": "/develop/client-capabilities/layout-management/",
+        "description": "Layout Management description"
+      },
+      {
+        "href": "/develop/client-capabilities/storage/",
+        "description": "Storage description"
+      },
+      {
+        "href": "/develop/client-capabilities/state-management/",
+        "description": "State Management description"
+      },
+      {
+        "href": "/develop/client-capabilities/state-machine/",
+        "description": "State Machine description"
+      },
+      {
+        "href": "/develop/client-capabilities/styling/",
+        "description": "Styling description"
+      },
+      {
+        "href": "/develop/client-capabilities/internationalization/",
+        "description": "Internationalization description"
+      },
+      {
+        "href": "/develop/client-capabilities/framework-integration/",
+        "description": "Framework Integration description"
+      },
+      {
+        "href": "/develop/client-capabilities/desktop-interoperability/",
+        "description": "Desktop Interoperability description"
+      },
+      {
+        "href": "/develop/client-capabilities/custom-components/",
+        "description": "Custom Components description"
+      }
+    ]
+  },
+  "/develop/business-components": {
+    "description": "Genesis Platform Business Components are designed to give you working business solutions for the most common requirements of financial applications. You can incorporate them into your application in very little time. They are easy to install, run and customise to meet your exact requirements. Each one comes with a combination of pre-built micro-services, APIs and UI components that can be integrated in to your application with minimal configuration.",
+    "items": [
+      {
+        "href": "/develop/business-components/notifications/",
+        "description": "Notifications and Alerts description"
+      },
+      {
+        "href": "/develop/business-components/reporting/",
+        "description": "Reporting description"
+      },
+      {
+        "href": "/develop/business-components/doc-management/",
+        "description": "Document Management description"
+      },
+      {
+        "href": "/develop/business-components/generated-docs/",
+        "description": "Template Generated Documents description"
+      },
+      {
+        "href": "/develop/business-components/reconciliation/",
+        "description": "Reconciliation description"
+      },
+      {
+        "href": "/develop/business-components/user-management/",
+        "description": "User Management description"
+      },
+      {
+        "href": "/develop/business-components/fix/",
+        "description": "FIX description"
+      }
+    ]
+  }
+}

@@ -1,0 +1,243 @@
+---
+title: 'Checkbox'
+sidebar_label: 'Checkbox'
+id: client-interaction-checkbox
+keywords: [interaction, interactive, checkbox, box, boolean, form, click, change, checked, toggle, submit, data]
+tags:
+- interaction
+- interactive
+- checkbox
+- box
+- boolean
+- form
+- click
+- change
+- checked
+- toggle
+- submit
+- data
+sidebar_position: 8
+---
+import CheckboxDemo from '/examples/ui/client-capabilities/interaction/checkbox.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Use cases:
+* Multi-selection forms
+* Filtering
+* Sorting
+* To-Do lists
+* Privacy and consent
+
+Any use where the user is to give a boolean type input choice.
+
+## Example
+<CheckboxDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration
+```html
+<rapid-checkbox></rapid-checkbox>
+```
+
+Usage
+```typescript
+@customElement({
+  name: 'my-element',
+  template: html`
+    <rapid-checkbox
+      ?disabled="${(x) => x.disabled}"
+      ?checked="${sync((x) => x.isSelected, 'boolean')}"
+      @change="${(x) => x.checkChanged()}"
+    >Checkbox
+    </rapid-checkbox>
+  `,
+})
+export class MyElement extends GenesisElement {
+  @observable disabled = false;
+  @observable isSelected = false;
+  checkChanged() {
+    console.log(this.isSelected);
+  }
+}
+```
+
+</TabItem>
+<TabItem value="react">
+
+Declaration
+```html
+<rapid-checkbox></rapid-checkbox>
+```
+Usage
+```typescript
+export function MyComponent() {
+  const [checkboxValue, setCheckboxState] = useState(false);
+  const handleCheckboxChange = (event) => {
+    setCheckboxState(!!event.target.checked);
+    console.log({ checkboxValue })
+  };
+
+  return (
+    <rapid-checkbox onChange={handleCheckboxChange}></rapid-checkbox>
+  );
+}
+```
+</TabItem>
+<TabItem value="angular">
+
+Declaration
+```html
+<rapid-checkbox></rapid-checkbox>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+@Component({
+  selector: 'my-root',
+  template: `
+    <rapid-checkbox
+      name="isSelected"
+      [checked]="isSelected"
+      (change)="onCheckboxChange($event)"
+    ></rapid-checkbox>
+  `,
+  styleUrls: ['./my.component.css'],
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [FormsModule],
+})
+export class AppComponent {
+  isSelected: boolean = false;
+  onCheckboxChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.isSelected = target.checked;
+    console.log(this.isSelected);
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+## DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+<table>
+  <tr>
+    <th>Attribute</th>
+    <th>Type</th>
+    <th>Use</th>
+    <th>Example</th>
+  </tr>
+  <tr>
+    <td>checked</td>
+    <td><code>boolean</code></td>
+    <td>The boolean value of whether the checkbox is checked. Use the `sync` utility to allow for data from from the template back to the model.</td>
+<td>
+
+```typescript
+<rapid-checkbox ?checked="${sync((x) => x.isSelected, 'boolean')}">
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>readonly</td>
+    <td><code>boolean</code></td>
+    <td>Configures the component so the user cannot alter the state via the web browser.</td>
+<td>
+
+```typescript
+<rapid-checkbox readonly>
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>disabled</td>
+    <td><code>boolean</code></td>
+    <td>Same functionality as <code>readonly</code>, and additionally adds visual opacity to the component.</td>
+<td>
+
+```typescript
+<rapid-checkbox disabled>
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>form</td>
+    <td><code>string</code></td>
+    <td>Associates this component to a form. Form id needs to be passed. If no Id informed, then it will be associated with the ancestor form.</td>
+<td>
+
+```typescript
+<rapid-checkbox form="myForm">
+```
+
+</td>
+  </tr>
+</table>
+
+### Properties
+
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+
+| Slot | Use |
+|---|---|
+| Default | The default slot for the label. |
+| checked-indicator | The checked-state indicator. |
+| indicator-indicator | The indeterminate (non-checked) indicator. |
+
+### Parts
+
+| Part | Use |
+|---|---|
+| control | The element representing the visual checkbox control.|
+| label | The label text.|
+
+### Fired Events
+
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>change</td>
+            <td><code>boolean</code></td>
+            <td>Emits a custom change event when the checked state changes. Access the value on the event via <code>.target.checked</code>.</td>
+<td>
+
+```typescript
+<rapid-checkbox @change="${(x) => x.myChangeHandler(event)}">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Listened Events
+
+This component doesn't listen to any events.
+
+## Info
+
+### Further details
+This component is an implementation of an HTML [checkbox](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) element.
