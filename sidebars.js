@@ -90,7 +90,7 @@ module.exports = {
         },
         {
           type: 'doc',
-          id: 'how-to/ht-front-end-simple',
+          id: 'how-to/ht-create-simple-page',
         },
         {
           type: 'doc',
