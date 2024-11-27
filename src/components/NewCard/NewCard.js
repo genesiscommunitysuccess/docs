@@ -1,9 +1,9 @@
 import React from "react";
 import './NewCard.css'
 
-export default function NewCard({ heading, text, linkDocs, linkStorybook, imageUrl }) {
+export default function NewCard({ heading, text, link, imageUrl = '/svg/categories-icons/document-svgrepo-com.svg' }) {
   return (
-     <div className="new-card-outer">
+     <a href={link} title={heading} className="new-card-outer">
         <div className="new-card-inner">
           <div className="new-card-main-image-wrapper">
             { imageUrl && (
@@ -20,27 +20,7 @@ export default function NewCard({ heading, text, linkDocs, linkStorybook, imageU
               { text }
             </p>
           </div>
-          <div className="new-card-footer">
-            {linkStorybook && (
-              <a
-                className="new-card-button new-card-button-storybook"
-                href={linkStorybook}
-                title="Test it"
-              >
-                test it
-              </a>
-            )}
-            {linkDocs && (
-              <a
-                className="new-card-button new-card-button-read-docs"
-                href={linkDocs}
-                title="Read docs"
-              >
-                read docs
-              </a>
-            )}
-          </div>
         </div>
-      </div>
+      </a>
   )
 }
