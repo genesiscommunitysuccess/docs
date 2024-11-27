@@ -84,44 +84,6 @@ export default {
     //   },
     // },
     // {
-    //   name: "@genesislcap/foundation-login",
-    //   enabled: true,
-    //   src: {
-    //     api_docs: "./docs/api",
-    //     img_dir: "docs/img",
-    //     readme: "./README.md",
-    //   },
-    //   output: {
-    //     directory: "./docs/04_web/05_micro-front-ends/04_foundation-login",
-    //     api_docs: "docs/api",
-    //     img_dir: "docs/img",
-    //     readme: "05_foundation-login.mdx",
-    //     keywords: [
-    //       "web",
-    //       "login",
-    //       "foundation login",
-    //       "frontend",
-    //       "ui",
-    //       "micro-front-ends",
-    //     ],
-    //     tags: [
-    //       "web",
-    //       "login",
-    //       "foundation login",
-    //       "frontend",
-    //       "ui",
-    //       "micro-front-ends",
-    //     ],
-    //     pages: [
-    //       {
-    //         title: "Foundation Login",
-    //         sidebar_label: "Foundation Login",
-    //         id: "foundation-login",
-    //       },
-    //     ],
-    //   },
-    // },
-    // {
     //   name: "@genesislcap/foundation-filters",
     //   enabled: true,
     //   src: {
@@ -247,6 +209,44 @@ export default {
     //     ],
     //   },
     // },
+    {
+      name: "@genesislcap/foundation-login",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/003_login",
+        api_docs: "docs/api",
+        img_dir: "docs/img",
+        readme: "index.mdx",
+        keywords: [
+          "web",
+          "login",
+          "foundation login",
+          "frontend",
+          "ui",
+          "micro-front-ends",
+        ],
+        tags: [
+          "web",
+          "login",
+          "foundation login",
+          "frontend",
+          "ui",
+          "micro-front-ends",
+        ],
+        pages: [
+          {
+            title: "Login",
+            sidebar_label: "Login",
+            id: "client-login",
+          },
+        ],
+      },
+    },
     {
       name: "@genesislcap/foundation-comms",
       enabled: true,
