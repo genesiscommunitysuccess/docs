@@ -371,9 +371,9 @@ systemDefinition {
 | `ConsulWriteTimeoutSeconds` | Set the timeout for writing to the Consul Agent in seconds | `10` |
 | `ConsulWatchSeconds` | How long to tell the Consul server to wait for new key/value cache values | `8` |
 | `ConsulTtlSeconds` | Timeout for the TTL Consul checks | `15` |
-| `ttlPingSeconds` | How often to run the TTL checks and update Consul with the state | `ConsulTtlSeconds` / `2` |
-| `deregisterCriticalServiceAfterMins` | Time to wait after a TTL check goes critical before it deregisters the service in minutes | `30` |
-| `clusterServiceAffinityGroup` | Group apps for preferred routing. Useful for multi-region set-ups | "" |
+| `ConsulTtlPingSeconds` | How often to run the TTL checks and update Consul with the state | `ConsulTtlSeconds` / `2` |
+| `ConsulDeregisterTimeoutMins` | Time to wait after a TTL check goes critical before it deregisters the service in minutes | `30` |
+| `ClusterServiceAffinityGroup` | Group services for preferred routing based on this value. Useful for multi-region set-ups | "" |
 | `ConsulServiceNamePattern` | Allows you to template your Consul service names with `{{PROCESS_NAME}}` eg. `my_app_{{PROCESS_NAME}}` | `null` |
 | `ConsulNamespaceFormat` | Sets Consul namespace (only used in Consul Enterprise) | `null` |
 

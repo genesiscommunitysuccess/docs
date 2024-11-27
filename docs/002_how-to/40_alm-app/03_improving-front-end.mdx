@@ -45,7 +45,7 @@ OK, we are actually going to change the back-end code here - but don't tell anyo
 
 2. Replace the `POSITION` request reply with the `where` clause, as below:
 
-```jsx
+```kotlin
 requestReply(POSITION) {
 	where { row, parameters ->
 		row.amount != 0.0

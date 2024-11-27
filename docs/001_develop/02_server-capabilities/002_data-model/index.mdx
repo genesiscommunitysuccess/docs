@@ -198,7 +198,7 @@ The value in the parenthesis in the second example below is the maximum number o
 
 ###### `Enum`
 Enum (aka enumerated) fields specify the exact set of values which the field can be set to. They are helpful when you have a definitive set of values and want to present users with a pick-list.
-Each value of the enum can also be have an "alias" which is typically a human readable representation of the value.
+Each value of the enum can also be have an "alias" which is typically a human readable representation of the value. Use the `to` keyword to separate value and alias See this in the second example below.  
 Enums must have a default value. The third example below shows how to set this. Where no default is specified the first value in the list is set as the default.
 
 ###### Example Definitions:
@@ -260,7 +260,7 @@ Big Decimals allow the user to define the `precision` and `scale` (the 2 inputs 
 
 ###### Example Definitions:
 `field("MY_BIGDECIMAL", BIGDECIMAL)`   
-`field("MY_BIGDECIMAL", BIGDECIMAL(10, 3)`
+`field("MY_BIGDECIMAL", BIGDECIMAL(10, 3))`
 
 ###### `Nano Timestamp`
 A nano timestamp is a precise way to record a timestamp to the closest nano seconds.
