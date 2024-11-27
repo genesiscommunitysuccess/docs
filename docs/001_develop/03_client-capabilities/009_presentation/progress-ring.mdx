@@ -15,6 +15,15 @@ import TabItem from '@theme/TabItem';
 
 # Progress Ring
 
+The [`Progress`](../../../../web/web-components/presentation/progress/) and `Progress Ring` components are used to display one of the following:
+
+- the length of time a process will take
+- a visual percentage value (referred to as a **determinate** state)
+- a visual representation of an unspecified wait time (referred to as an **indeterminate** state)
+
+`Progress` components are typically visually represented by a circular or linear animation.
+When the `value` attribute is passed, the state is **determinate**; otherwise, it is **indeterminate**.
+
 Use cases:
 - Progress indicators
 - Metric visualisation
@@ -91,15 +100,63 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 ### Attributes
 
 This component doesn't have any attributes.
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>value</td>
+      <td><code>number</code></td>
+      <td>The value of progress to be shown.</td>
+<td>
+
+```typescript
+<rapid-progress-ring value="75">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>min</td>
+      <td><code>number</code></td>
+      <td>The minimum value of progress.</td>
+<td>
+
+```typescript
+<rapid-progress-ring value="0">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>max</td>
+      <td><code>number</code></td>
+      <td>The maximum value of progress.</td>
+<td>
+
+```typescript
+<rapid-progress-ring max="100">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+
 
 ### Properties
-This component doesn't have any properties.
+This component doesn't have any properties which are not also controlled via attributes.
 
 ### Slots
-This component doesn't have any slots.
+| Name | Description |
+|---|---|
+| indeterminate | The content shown when no value is set (no progress is made). |
+| determinate   | The content shown when a value is set (some progress is made). |
 
 ### Parts
-This component doesn't have any parts,
+| Name | Description |
+|---|---|
+| progress | Available for the determinate progress slot. |
 
 ### Events fired
 
