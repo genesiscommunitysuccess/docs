@@ -28,8 +28,7 @@ The key features and benefits are:
 - **Error Handling**. Built-in support for retries and error callbacks.
 - **Paginated Support**. Pagination support for Request Servers.
 
-## Versions and compatibility
-The Genesis HTTP Client was introduced in version 8.1 of the Genesis Platform. It is compatible with all Genesis applications running on version 8.1 or higher.
+
 
 :::important
 Ensure your Genesis Platform is updated to at least version 8.1 to use the Genesis HTTP Client.
@@ -45,16 +44,15 @@ requestReply<Unit, HelloWorld>("HELLO_WORLD") {
 
     replySingle {
         client.get<HelloWorld> {
-            url = "http://api.example.com/hello"
+            url = "https://my-external-api/hello",
             query("name", "John")
         }.data
     }
 }
 ```
 
-This example demonstrates how to make a GET request within a Genesis Request Server, showcasing the client's seamless integration with Genesis components.
+This example demonstrates how to make a GET request to an external REST API within a Genesis Request Server, showcasing the client's seamless integration with Genesis components.
 In the following sections, we'll explore the core concepts, different usage approaches, and advanced features of the Genesis HTTP Client.
-
 
 ## Example configuration
 
@@ -95,20 +93,21 @@ requestReplies {
 
 ### Example 2: Event Handler with external POST
 
-This example demonstrates how to use the Genesis HTTP Client in an Event Handler to send a post to an external service:
+This example demonstrates how to use the Genesis HTTP Client in an Event Handler to send a post to an external service as part of a TradeInsert event
 
 ```kotlin
 eventHandler {
-  eventHandler<TradeEvent> {
+  data class TradeNotification(
+    val tradeId: Long,
+    val status: String,
+    val timestamp: Long
+  )
+
+  eventHandler<TradeInsert> {
     val client = GenesisHttpClient()
 
-    data class TradeNotification(
-      val tradeId: Long,
-      val status: String,
-      val timestamp: Long
-    )
-
     onCommit { event ->
+      ...
       val notification = TradeNotification(
         tradeId = event.tradeId,
         status = event.status,
@@ -117,16 +116,17 @@ eventHandler {
 
       try {
         client.post<Unit>(
-          path = "https://my-external-api/endpoint",
+          path = "https://my-external-api/trade-notification",
           request = notification,
           builder = {
             header("Authorization ", "Bearer 123")
           }
         )
-        ack()
       } catch (e: Exception) {
         nack("Failed to send notification", e)
       }
+      ...
+      ack()
     }
   }
 }
@@ -138,7 +138,7 @@ This example demonstrates how to use the OpenAPI-generated client service in a R
 
 ```kotlin
 
-val tradeApiService = TradeApiService("http://localhost:8080")
+val tradeApiService = TradeApiService("https://my-external-api")
 tradeApiService.registerApiToken("Authorization", "Basic ABC123=")
 
 requestReplies {
@@ -157,7 +157,7 @@ This example demonstrates how to use the OpenAPI-generated client service in an 
 
 ```kotlin
 
-val tradeApiService = TradeApiService("http://localhost:8080")
+val tradeApiService = TradeApiService("https://my-external-api")
 
 eventHandler {
   eventHandler<TradeUpdateEvent> {
@@ -185,7 +185,7 @@ This example demonstrates how to integrate a Request Server which  a pagination 
 
 ```kotlin
 
-val accountsApi = AccountControllerApi("http://localhost:8080")
+val accountsApi = AccountControllerApi("https://my-external-api")
 accountsApi.registerApiToken("Authorization", "Basic ABC123=")
 
 requestReplies {
@@ -215,13 +215,92 @@ requestReplies {
 
 ## Configuration options
 
-TODO
+### `GenesisHttpClient`
 
+The `GenesisHttpClient` is the main class you interact with. It provides methods for making HTTP requests.
+
+```kotlin
+val client = GenesisHttpClient()
+```
+
+You can configure the client as a constructor parameter, passing a [Ktor HttpClient object if needed](https://ktor.io/docs/client-create-and-configure.html#engine-config). 
+
+```kotlin
+val client = GenesisHttpClient(Apache5) {
+    engine {
+        sslContext = SslSettings.getSslContext()
+    }
+}
+```
+
+You can follow the documented [examples on adding SSL](https://ktor.io/docs/client-ssl.html#configure-ssl) if required in your setup.
+
+Each method below returns a `TypedHttpResponse<T>` object, where `T` is the expected response body type.
+
+### Request methods
+The client supports all standard HTTP methods:
+
+- GET: `client.get<T>()`
+- POST: `client.post<T>()`
+- PUT: `client.put<T>()`
+- DELETE: `client.delete<T>()`
+
+Each method returns a `TypedHttpResponse<T>` object, where `T` is the expected response body type.
+
+### Configuring requests
+You can configure requests using a DSL within a lambda function. Common configuration options include:
+
+- `url`: the endpoint URL
+- `header`: HTTP headers
+- `query`: query parameters
+- `body`: request body (for POST, PUT)
+
+Example:
+```kotlin
+    eventHandler<Account>("API_TRADE_INSERT") {
+        onCommit {
+            httpClient
+                .post<Account> {
+                    url = "http://my-external-api/account"
+                    header("Authorization", "Basic ABCDEFG")
+                }
+        }
+    }
+```
+
+## Response handling
+
+The `HttpResponse<T>` object contains:
+
+- statusCode: the HTTP status code
+- headers: response headers
+- data: the response body, deserialized to type T
+
+Example:
+
+```kotlin
+  eventHandler("API_TRADE_INSERT") {
+    onCommit { event ->
+      client.get<String>(
+        path = "https://my-external-api/trades",
+        request = event.details) {
+        header("Authorization", "Basic ABCDEFG")
+        query("tradeId", event.details)
+      }.data
+      ack()
+  }
+}
+```
 ## Client API
 
-TODO
+There is no specific Client API for the Genesis HTTP Client as it is a client itself. Links are provided below for the common services which use the Genesis HTTP Client:
+
+- [Request Server Client API](/develop/server-capabilities/snapshot-queries-request-server/#client-api)
+- [Event Handler Client API](/develop/server-capabilities/core-business-logic-event-handler/#client-api)
 
 ## Runtime configuration
+
+The Genesis HTTP Client was introduced in version 8.1 of the Genesis Platform. It is compatible with all Genesis applications running on version 8.1 or higher.
 
 The Genesis HTTP Client is available to use in Genesis applications running platform **version 8.1+**. 
 
