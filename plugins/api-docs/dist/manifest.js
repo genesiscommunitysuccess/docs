@@ -131,7 +131,7 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/006_charts/002_g2plot-chart",
+                directory: "./docs/001_develop/03_client-capabilities/006_g2plot-chart",
                 api_docs: "docs/api",
                 readme: "index.mdx",
                 keywords: ["genesis", "foundation", "ui", "chart", "g2plot-chart", "g2plot"],
@@ -253,6 +253,44 @@ exports.default = {
                     "notifications",
                     "toasts",
                     "snackbar"
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/foundation-layout",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/015_layout-management/",
+                api_docs: "docs/api",
+                img_dir: "docs/img",
+                readme: "10_foundation-layout.mdx",
+                keywords: [
+                    "web",
+                    "layout",
+                    "foundation layout",
+                    "frontend",
+                    "ui",
+                    "golden layout",
+                ],
+                tags: [
+                    "web",
+                    "layout",
+                    "foundation layout",
+                    "frontend",
+                    "ui",
+                    "golden layout",
+                ],
+                pages: [
+                    {
+                        title: "Foundation Layout",
+                        sidebar_label: "Foundation Layout",
+                        id: "foundation-layout",
+                    },
                 ],
             },
         },
