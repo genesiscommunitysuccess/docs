@@ -1,12 +1,13 @@
 ---
-title: 'G2Plot Chart'
-sidebar_label: 'G2Plot Chart'
+title: 'Charts'
+sidebar_label: 'Charts'
 id: g2plot-chart
 keywords: [genesis, foundation, ui, chart, g2plot-chart, g2plot]
 tags:
   - connected
   - datasource
   - chart
+  - charts
   - g2plot-chart
   - g2plot
 ---
@@ -73,7 +74,7 @@ const chartConfiguration = {
 @customElement({
   name: 'g2plot-chart-example',
   template: html`
-    <rapid-g2plot-chart 
+    <rapid-g2plot-chart
       type="bar"
       :config=${() => chartConfiguration}
       :data=${() => chartData}
@@ -118,7 +119,7 @@ const chartConfiguration = {
 
 export default function G2PlotChartExample({}) {
   return (
-    <rapid-g2plot-chart 
+    <rapid-g2plot-chart
       type="bar"
       config={chartConfiguration}
       data={chartData}
@@ -166,7 +167,7 @@ const sampleChartConfiguration = {
 @Component({
   selector: 'my-root',
   template: `
-    <rapid-g2plot-chart 
+    <rapid-g2plot-chart
       type="bar"
       [config]="chartConfiguration"
       [data]="chartData"
@@ -191,4 +192,3 @@ export class AppComponent {
 :::info
 After you have looked at the basics here, you can find more details in our [API Docs](./docs/api/index.md)
 :::
-
