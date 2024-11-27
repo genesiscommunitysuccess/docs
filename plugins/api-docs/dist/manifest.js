@@ -3,6 +3,44 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     packages: [
         {
+            name: "@genesislcap/foundation-login",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/003_login",
+                api_docs: "docs/api",
+                img_dir: "docs/img",
+                readme: "index.mdx",
+                keywords: [
+                    "web",
+                    "login",
+                    "foundation login",
+                    "frontend",
+                    "ui",
+                    "micro-front-ends",
+                ],
+                tags: [
+                    "web",
+                    "login",
+                    "foundation login",
+                    "frontend",
+                    "ui",
+                    "micro-front-ends",
+                ],
+                pages: [
+                    {
+                        title: "Login",
+                        sidebar_label: "Login",
+                        id: "client-login",
+                    },
+                ],
+            },
+        },
+        {
             name: "@genesislcap/foundation-comms",
             enabled: true,
             src: {
@@ -57,8 +95,8 @@ exports.default = {
                 ],
                 pages: [
                     {
-                        title: "Real Time Data Grid (Entity Manager)",
-                        sidebar_label: "Real Time Data Grid (Entity Manager)",
+                        title: "Entity Manager",
+                        sidebar_label: "Entity Manager",
                         id: "entity-manager",
                     },
                 ],

@@ -5,8 +5,9 @@ id: ht-kotlin
 keywords: [kotlin]
 tags:
     - kotlin
-  
 ---
+
+
 
 
 
@@ -209,10 +210,10 @@ It filters the list to include only those that need review.
 requestReply<Counterparty.ById, Trade>("COUNTERPARTY_TRADES_NEED_REVIEW") {
 
   replyList { request: Counterparty.ById ->
-  
+
     // Read all trades from the database that have particular counterparty Id
      val counterpartyTrades: List<Trade> = db.getRange(Trade.ByCounterpartyId(request.counterpartyId)).toList()
-     
+
     // Filter the list of trades to only those that have `needsReview` as true
     // The collection `filter` function takes a condition that evaluates to a boolean value; true or false
     // For more details see https://kotlinlang.org/docs/collection-filtering.html
@@ -273,6 +274,72 @@ eventHandler<Trade>("TRADE_INSERT", transactional = true) {
         ack(listOf(mapOf(
             "TRADE_ID" to insertedRow.record.tradeId,
         )))
+    }
+}
+```
+
+## Custom class
+Most of the time, you can use the fields from your application's **-tables-dictionary.kts** file to handle events. But if you need an event that contains different fields from the Genesis generated classes, you can create your own custom class.
+
+This example creates a new class and a new `eventHandler` codeblock so that users can mark trades for review (or not).
+
+1. Create your custom class. This could be in your main module, a different module, or even in your GPAL script. 
+
+Below we have created a new class called `EventTradeReview` in our main module "position-app".
+
+![](/img/eventtradereview.png)
+
+The new class has two properties: a `counterpartyId` and a boolean called `needsReview`.
+
+```kotlin
+package global.genesis
+
+data class EventTradeReview(
+    val counterpartyId: String,
+    val needsReview: Boolean,
+)
+```
+
+2. Add an import of the class to the GPAL script you want to use it in. This goes at the top of the file. In this example, we have added it to the application's **-eventhandler.kts** file.
+
+```kotlin
+import global.genesis.EventTradeReview
+```
+
+3. To use this new class, create a new `eventHandler` in the the application's **-eventhandler.kts** file. In response to an event, this codeblock:
+
+- gets all the trades for the counterpartyId
+- for all these trades, it sets the value of the `needsReview` field to the value of the `needsReview` property in the event
+- upserts all these trades to the database
+
+Here is the `eventHandler` codeblock:
+
+```kotlin
+// Event handler for setting the review status of trades for a particular counterparty
+eventHandler<EventTradeReview>("TRADE_REVIEW", transactional = true) {
+
+    onCommit { event ->
+        // Get event details
+        val eventTradeReview: EventTradeReview = event.details
+
+        // Get all trades for a particular counterparty
+        val counterpartyTrades: List<Trade> = entityDb.getRange(Trade.ByCounterpartyId(eventTradeReview.counterpartyId)).toList()
+
+        // For each counterparty trade, set needsReview to the value from the event
+        counterpartyTrades.forEach { trade: Trade ->
+            trade.needsReview = eventTradeReview.needsReview
+        }
+
+        // Transform each counterparty trade to an EntityModifyDetails object so we can use the upsert database operation
+        val modifyDetails: List<EntityModifyDetails<Trade>> = counterpartyTrades.map { trade: Trade ->
+            EntityModifyDetails(trade, Trade.ById)
+        }
+
+        // Upsert all counterparty trades into the database
+        entityDb.upsertAll(modifyDetails)
+
+        // Return an ack response
+        ack()
     }
 }
 ```
