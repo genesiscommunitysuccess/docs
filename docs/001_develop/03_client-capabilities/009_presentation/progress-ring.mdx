@@ -1,0 +1,110 @@
+---
+title: 'Progress Ring'
+sidebar_label: 'Progress Ring'
+id: client-presentation-progress-ring
+keywords: [presentation, progress, ring]
+tags:
+- presentation
+- progress ring
+sidebar_position: 9
+---
+
+import ProgressRingDemo from './examples/progress-ring.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Progress Ring
+
+Use cases:
+- Progress indicators
+- Metric visualisation
+
+## Example
+
+<ProgressRingDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-progress-ring></rapid-progress-ring>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-progress-ring></rapid-progress-ring>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+    <rapid-progress-ring></rapid-progress-ring>
+  ```
+  Usage
+  ```typescript
+  export function MyComponent() {
+    return (
+      <rapid-progress-ring></rapid-progress-ring>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+    <rapid-progress-ring></rapid-progress-ring>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  @Component({
+    selector: 'my-root',
+    template: `
+        <rapid-progress-ring></rapid-progress-ring>
+        `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  })
+  export class AppComponent {
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+This component doesn't have any attributes.
+
+### Properties
+This component doesn't have any properties.
+
+### Slots
+This component doesn't have any slots.
+
+### Parts
+This component doesn't have any parts,
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.
