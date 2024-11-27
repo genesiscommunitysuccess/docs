@@ -302,8 +302,8 @@ export default {
         ],
         pages: [
           {
-            title: "Real Time Data Grid (Entity Manager)",
-            sidebar_label: "Real Time Data Grid (Entity Manager)",
+            title: "Entity Manager",
+            sidebar_label: "Entity Manager",
             id: "entity-manager",
           },
         ],
