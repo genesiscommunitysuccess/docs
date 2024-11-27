@@ -18,6 +18,8 @@ sidebar_position: 17
 ---
 
 import { CollapsibleSlot } from '../../../../examples/ui/documentationBase'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 This page will guide you through setting up a simple example of two components communicating via a store shared value.
 
@@ -48,6 +50,9 @@ class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> impleme
 }
 
 export const Store = registerStore(DefaultStore, 'Store');
+
+// If you are using the react or angular store you will have extra code at the end of the file
+// to handle the store's dependency injection.
 ```
 
 ### Test components
@@ -109,51 +114,123 @@ We're going to be linking two components together using a variable in the store.
     ```
 </CollapsibleSlot>
 
-```typescript
-@customElement({
-    name: 'example-grid',
-    template: html`<rapid-grid-pro ${ref('grid')}></rapid-grid-pro>`,
-})
-export class ExampleGrid extends GenesisElement {
-    grid: GridPro;
-    connectedCallback() {
-    super.connectedCallback();
-    DOM.queueUpdate(() => this.grid.gridOptions = {
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+  ```typescript
+  @customElement({
+      name: 'example-grid',
+      template: html`<rapid-grid-pro ${ref('grid')}></rapid-grid-pro>`,
+  })
+  export class ExampleGrid extends GenesisElement {
+      grid: GridPro;
+      connectedCallback() {
+      super.connectedCallback();
+      DOM.queueUpdate(() => this.grid.gridOptions = {
+          defaultColDef: {
+              resizable: true,
+              filter: true,
+          },
+          columnDefs: columnDefs, // defined in collapsible section above
+          rowData: rowData, // defined in collapsible section above
+          })
+      }
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="react">
+
+
+    Usage
+    ```typescript
+    const ExampleGrid = () => {
+      const baseGridOptions = {
         defaultColDef: {
-            resizable: true,
-            filter: true,
+          resizable: true,
+          filter: true,
         },
         columnDefs: columnDefs, // defined in collapsible section above
         rowData: rowData, // defined in collapsible section above
-        })
-    }
-}
-```
+      };
+
+      return (
+        <rapid-grid-pro
+          gridOptions={baseGridOptions}
+        ></rapid-grid-pro>
+      );
+    };
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Usage
+    ```typescript
+    TODO
+    ```
+  </TabItem>
+</Tabs>
+
 
 Pasting the above example into your codebase and adding it to the HTML should allow you to see the data on the grid pro. Next, we are going to use a simple component to allow you to filter out certain rows of data.
 
-```typescript
-@customElement({
-    name: 'set-filter',
-    template: html`
-    <rapid-radio-group
-        @change="${(x,ctx) => x.selectionChanged(ctx.event)}"
-        value="${sync((x) => x.radioGroupValue)}"
-    >
-        <rapid-radio value="income">Income</rapid-radio>
-        <rapid-radio value="expense">Expense</rapid-radio>
-        <rapid-radio value="both">Both</rapid-radio>
-    </rapid-radio-group>
-    `,
-})
-export class SetFilter extends GenesisElement {
-    @observable radioGroupValue: string;
-    selectionChanged(event: Event) {
-        const target = event.target as HTMLInputElement;
-        console.log(target.value);
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+  ```typescript
+  @customElement({
+      name: 'set-filter',
+      template: html`
+      <rapid-radio-group
+          @change="${(x,ctx) => x.selectionChanged(ctx.event)}"
+          value="${sync((x) => x.radioGroupValue)}"
+      >
+          <rapid-radio value="income">Income</rapid-radio>
+          <rapid-radio value="expense">Expense</rapid-radio>
+          <rapid-radio value="both">Both</rapid-radio>
+      </rapid-radio-group>
+      `,
+  })
+  export class SetFilter extends GenesisElement {
+      @observable radioGroupValue: string;
+      selectionChanged(event: Event) {
+          const target = event.target as HTMLInputElement;
+          console.log(target.value);
+      }
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    ```typescript
+    const SetFilter = () => {
+      const [radioValue, setRadioValue] = useState('both');
+
+      const handleRadioChange = (e: Event) => {
+        setRadioValue(e.target.value);
+      }
+
+      return (
+        <rapid-radio-group onChange={handleRadioChange}>
+          <rapid-radio value="both">Both</rapid-radio>
+          <rapid-radio value="income">Income</rapid-radio>
+          <rapid-radio value="expense">Expense</rapid-radio>
+        </rapid-radio-group>
+      )
     }
-}
-```
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    ```typescript
+    TODO
+    ```
+  </TabItem>
+</Tabs>
+
 
 You can add this second component to your HTML and see the radio input component. However, clicking any of the radio buttons doesn't affect the grid. Next, we are going to use the store to link these components together.
 
@@ -213,57 +290,157 @@ The final steps are to interact with the store from the two components. Configur
 
 In Genesis syntax you can dispatch an event from a standard component, but it's good practise to use the `EventEmitter` mixin to strongly type the component.
 
-```typescript {14,18}
-@customElement({
-  name: 'set-filter',
-  template: html`
-    <rapid-radio-group
-      @change="${(x, ctx) => x.selectionChanged(ctx.event)}"
-      value="${sync((x) => x.radioGroupValue)}"
-    >
-      <rapid-radio value="both">Both</rapid-radio>
-      <rapid-radio value="income">Income</rapid-radio>
-      <rapid-radio value="expense">Expense</rapid-radio>
-    </rapid-radio-group>
-  `,
-})
-export class SetFilter extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
-  @observable radioGroupValue: string;
-  selectionChanged(event: Event) {
-    const target = event.target as HTMLInputElement;
-    this.$emit(StoreEvents.SetFilter, target.value as StoreEventDetailMap[StoreEvents.SetFilter]);
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+  ```typescript {14,18}
+  @customElement({
+    name: 'set-filter',
+    template: html`
+      <rapid-radio-group
+        @change="${(x, ctx) => x.selectionChanged(ctx.event)}"
+        value="${sync((x) => x.radioGroupValue)}"
+      >
+        <rapid-radio value="both">Both</rapid-radio>
+        <rapid-radio value="income">Income</rapid-radio>
+        <rapid-radio value="expense">Expense</rapid-radio>
+      </rapid-radio-group>
+    `,
+  })
+  export class SetFilter extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
+    @observable radioGroupValue: string;
+    selectionChanged(event: Event) {
+      const target = event.target as HTMLInputElement;
+      this.$emit(StoreEvents.SetFilter, target.value as StoreEventDetailMap[StoreEvents.SetFilter]);
+    }
   }
-}
-```
+  ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  ```typescript {2,6,9}
+  const SetFilter = () => {
+    const ref = useRef();
+    const [radioValue, setRadioValue] = useState('both');
+    const handleRadioChange = (e: Event) => {
+      setRadioValue(e.target.value);
+      ref.current.dispatchEvent(customEventFactory(StoreEvents.SetFilter, e.target.value));
+    }
+    return (
+      <rapid-radio-group ref={ref} onChange={handleRadioChange}>
+        <rapid-radio value="both">Both</rapid-radio>
+        <rapid-radio value="income">Income</rapid-radio>
+        <rapid-radio value="expense">Expense</rapid-radio>
+      </rapid-radio-group>
+    )
+  }
+  ```
+
+  ```typescript
+  export function customEventFactory(type: string, detail?: any) {
+      return new CustomEvent(type, {
+          bubbles: true,
+          cancelable: true,
+          composed: true,
+          detail,
+      });
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="angular">
+
+    Usage
+    ```typescript
+    TODO
+    ```
+  </TabItem>
+</Tabs>
+
+
 At this stage you should be able to activate the `console.log` statement in the store handler added in step 4 by running the app and interacting with the radio buttons. As the selected radio is changed an event is dispatched and should be picked up and set in the store handler.
 
 The very final step is to use the configured value to filter the grid rows. There are many ways that this can be accomplished. As the property on the store is `@observable` if it could be used directly in a html binding, as the store updates the data in the binding would update too. However, in this contrived case where we're filtering grid data manually without using the `<grid-pro-client-side-datasource>` which means the filtering cannot be done via a binding on the html. Instead the `binding` property on a reference to the store is used.
 
-```typescript {6,18-22}
-@customElement({
-  name: 'example-grid',
-  template: html`<rapid-grid-pro ${ref('grid')}></rapid-grid-pro>`,
-})
-export class ExampleGrid extends GenesisElement {
-  @Store store: Store;
-  grid: GridPro;
-  connectedCallback() {
-    super.connectedCallback();
-    DOM.queueUpdate(() => this.grid.gridOptions = {
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+  ```typescript {6,18-22}
+  @customElement({
+    name: 'example-grid',
+    template: html`<rapid-grid-pro ${ref('grid')}></rapid-grid-pro>`,
+  })
+  export class ExampleGrid extends GenesisElement {
+    @Store store: Store;
+    grid: GridPro;
+    connectedCallback() {
+      super.connectedCallback();
+      DOM.queueUpdate(() => this.grid.gridOptions = {
+        defaultColDef: {
+          resizable: true,
+          filter: true,
+        },
+        columnDefs: columnDefs,
+        rowData: rowData,
+      })
+      this.store.binding(
+        (s) => s.transactionTypeFilter,
+        (detail) => (this.grid.rowData = rowData.filter((row) => detail === 'both' || row.type === detail))
+      )
+    }
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  ```typescript {2,13-22,26}
+  const ExampleGrid = () => {
+    const gridRef = useRef();
+
+    const baseGridOptions = {
       defaultColDef: {
         resizable: true,
         filter: true,
       },
       columnDefs: columnDefs,
-      rowData: rowData,
-    })
-    this.store.binding(
-      (s) => s.transactionTypeFilter,
-      (detail) => (this.grid.rowData = rowData.filter((row) => detail === 'both' || row.type === detail))
-    )
-  }
-}
-```
+      rowData: rowData
+    };
+
+    const [gridOptions, setGridOptions] = useState(baseGridOptions);
+    useEffect(() => {
+      storeService.getStore().binding(
+        (s) => s.transactionTypeFilter,
+        (detail) => setGridOptions({
+          ...baseGridOptions,
+          rowData: rowData.filter((row) => detail === 'both' || row.type === detail)
+        })
+      );
+    }, []);
+
+    return (
+      <rapid-grid-pro
+        ref={gridRef}
+        gridOptions={gridOptions}
+      ></rapid-grid-pro>
+    );
+  };
+  ```
+
+  </TabItem>
+  <TabItem value="angular">
+
+    Usage
+    ```typescript
+    TODO
+    ```
+  </TabItem>
+</Tabs>
+
+
 
 The [binding](../docs/api/foundation-store.store.binding/) function binds the required `@observable` property in the first argument, and takes a callback function with the updated data as the second. In the above case when `transactionTypeFilter` is updated the `rowData` is filtered in the callback.
 
@@ -320,10 +497,18 @@ As well as reacting to the `@observable` directly on the html, there are additio
     }
 
     export const Store = registerStore(DefaultStore, 'Store');
+
+    // If you are using the react or angular store you will have extra code at the end of the file
+    // to handle the store's dependency injection.
     ```
 </CollapsibleSlot>
 
 <CollapsibleSlot title="components.ts" description="Full example code for the two components">
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
     ```typescript
     import { GridPro } from '@genesislcap/rapid-grid-pro';
     import { customElement, DOM, GenesisElement, html, observable, ref, sync } from '@genesislcap/web-core';
@@ -428,4 +613,117 @@ As well as reacting to the `@observable` directly on the html, there are additio
       }
     }
     ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  ```typescript
+  import { ColDef } from '@ag-grid-community/core';
+  import { useRef, useState, useEffect } from 'react';
+  import { customEventFactory } from '@/pbc/utils';
+  import { StoreEvents, storeService } from '../../services/store.service.ts'
+
+  const columnDefs: ColDef[] = [
+    { headerName: 'ID', field: 'id' },
+    { headerName: 'Transaction Date', field: 'transactionDate' },
+    { headerName: 'Description', field: 'description' },
+    {
+      headerName: 'Amount',
+      field: 'amount',
+      valueFormatter: params => params.value.toFixed(2)
+    },
+    { headerName: 'Type', field: 'type' },
+    { headerName: 'Currency', field: 'currency' },
+    {
+      headerName: 'Balance After',
+      field: 'balanceAfter',
+      valueFormatter: params => params.value.toFixed(2)
+    }
+  ];
+
+  const rowData = [
+    {
+      id: 1,
+      transactionDate: "2023-05-15",
+      description: "Quarterly Revenue Payment",
+      amount: 157892.45,
+      type: "income",
+      currency: "USD",
+      balanceAfter: 203567.89,
+    },
+    {
+      id: 2,
+      transactionDate: "2023-05-14",
+      description: "Equipment Purchase",
+      amount: -12567.00,
+      type: "expense",
+      currency: "USD",
+      balanceAfter: 191000.89,
+    },
+    {
+      id: 3,
+      transactionDate: "2023-05-13",
+      description: "Consulting Services Fee",
+      amount: 45000.00,
+      type: "income",
+      currency: "USD",
+      balanceAfter: 236000.89,
+    }
+  ];
+
+  const ExampleGrid = () => {
+    const gridRef = useRef();
+
+    const baseGridOptions = {
+      defaultColDef: {
+        resizable: true,
+        filter: true,
+      },
+      columnDefs: columnDefs,
+      rowData: rowData
+    };
+
+    const [gridOptions, setGridOptions] = useState(baseGridOptions);
+    useEffect(() => {
+      storeService.getStore().binding(
+        (s) => s.transactionTypeFilter,
+        (detail) => setGridOptions({...baseGridOptions, rowData: rowData.filter((row) => detail === 'both' || row.type === detail)})
+      );
+    }, []);
+
+    return (
+      <rapid-grid-pro
+        ref={gridRef}
+        gridOptions={gridOptions}
+      ></rapid-grid-pro>
+    );
+  };
+
+  const SetFilter = () => {
+    const ref = useRef();
+    const [radioValue, setRadioValue] = useState('both');
+    const handleRadioChange = (e: Event) => {
+      setRadioValue(e.target.value);
+      ref.current.dispatchEvent(customEventFactory(StoreEvents.SetFilter, e.target.value));
+    }
+    return (
+      <rapid-radio-group ref={ref} onChange={handleRadioChange}>
+        <rapid-radio value="both">Both</rapid-radio>
+        <rapid-radio value="income">Income</rapid-radio>
+        <rapid-radio value="expense">Expense</rapid-radio>
+      </rapid-radio-group>
+    )
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="angular">
+
+    Usage
+    ```typescript
+    TODO
+    ```
+  </TabItem>
+</Tabs>
+
 </CollapsibleSlot>
