@@ -76,6 +76,14 @@
         "description": "Integrations description"
       },
       {
+        "href": "/develop/server-capabilities/communications-meta/",
+        "description": "Communications description"
+      },
+      {
+        "href": "/develop/server-capabilities/testing-api/",
+        "description": "Testing API description"
+      },
+      {
         "href": "/develop/server-capabilities/runtime-configuration/",
         "description": "Runtime Configuration description"
       }
