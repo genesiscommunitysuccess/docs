@@ -40,7 +40,417 @@ graph TD
 
 ## Example configuration
 
-TODO Find a way to explain everything contained in introduction for ondemand consolidators here or in next section.
+### Consolidator as a service
+Here is an example Consolidator file that defines two Consolidators used as a service:
+
+* CON_ORDER_FROM_TRADES.
+This Consolidator builds the ORDER table records using the CONSOLIDATOR_TRADE table. It assumes the ORDER records do not exist in the system and are created automatically by the consolidator based on the ```ORDER.ORDER_ID``` and ```ORDER.ORDER_DATE``` fields (using `groupBy` and `build`). It uses max, min, sum and count functions, and the table has been marked as transient, so it can be cleared and recalculated with a consolidator `coldStart`.
+
+* CON_ORDER_SUMMARY_FROM_ORDER. This Consolidator builds the ORDER_SUMMARY table using the ORDER table and groups by the field ```ORDER.ORDER_DATE``` from the ```ORDER``` table. You can give multiple `groupBy` conditions based on your requirement.
+In this second Consolidator, we store all the consolidations grouped by ORDER_DATE year and ORDER_DATE year and month in database, (which are defined right at the end of the Consolidator). This avoids duplication of Consolidator code if you need to group the same consolidation based on different `groupBy` conditions.
+
+```kotlin
+consolidators {
+
+    consolidator("CON_ORDER_FROM_TRADES", CONSOLIDATOR_TRADE, ORDER) {
+        config {
+            tableTransient = true
+        }
+
+        select {
+            ORDER {
+                first { symbol } into SYMBOL // All trades for same order ID will have the same symbol, pick the first we find.
+                first { side } into SIDE // All trades for same order ID will have the same side, pick the first we find.
+                first { counterpartyId } into COUNTERPARTY_ID // All trades for same order ID will have the same counterpartyId, pick the first we find.
+                max { price } into MAX_PRICE
+                min { price } into MIN_PRICE
+                avg { price } into AVG_PRICE
+                sum { price * quantity } into TOTAL_NOTIONAL
+                sum { quantity } into TOTAL_QUANTITY
+                count() into TRADE_COUNT
+            }
+        }
+
+        groupBy { Order.ByIdDate(orderId, tradeDate) } into {
+            build {
+                Order {
+                    orderId = groupId.orderId
+                    orderDate = groupId.tradeDate
+                }
+            }
+            indexScan { ConsolidatorTrade.byOrderId(groupId.orderId) } // Need to recalculate certain functions
+        }
+    }
+
+    consolidator("CON_ORDER_SUMMARY_FROM_ORDER", ORDER, ORDER_SUMMARY) {
+        select {
+            ORDER_SUMMARY {
+                sum { totalNotional } into TOTAL_NOTIONAL
+                sum { totalQuantity } into TOTAL_QUANTITY
+                sum { tradeCount } into TRADE_COUNT
+            }
+        }
+
+        groupBy { OrderSummary.byGroupId("${orderDate.year}") }
+        groupBy { OrderSummary.byGroupId("${orderDate.year}-${orderDate.monthOfYear}") }
+    }
+}
+```
+
+#### Table definitions used in above examples:
+
+```kotlin
+val sideEnum = sharedField("SIDE", ENUM("BUY", "SELL"))
+
+  table("ORDER", 1001) {
+    field(name = "ORDER_ID", type = INT)
+    field(name = "ORDER_DATE", type = DATE).notNull()
+    field(name = "TRADE_COUNT", type = INT)
+    field(name = "TOTAL_QUANTITY", type = LONG)
+    field(name = "TOTAL_NOTIONAL", type = DOUBLE)
+    field(name = "MAX_PRICE", type = DOUBLE)
+    field(name = "MIN_PRICE", type = DOUBLE)
+    field(name = "AVG_PRICE", type = DOUBLE)
+    field(name = "COUNTERPARTY_ID", type = STRING)
+    field(name = "SYMBOL", type = STRING)
+    field(sideEnum)
+
+    primaryKey("ID", "ORDER_DATE") // Unique identifier is composed of ID + ORDER_DATE
+  }
+
+  table("ORDER_SUMMARY", 1003) {
+    field(name = "GROUP_ID", type = STRING)
+    field(name = "TRADE_COUNT", type = INT)
+    field(name = "TOTAL_QUANTITY", type = LONG)
+    field(name = "TOTAL_NOTIONAL", type = DOUBLE)
+
+    primaryKey("GROUP_ID")
+  }
+
+  table("CONSOLIDATOR_TRADE", 1004) {
+    field(name = "TRADE_ID", type = INT)
+    field(name = "ORDER_ID", type = INT).notNull()
+    field(name = "TRADE_DATE", type = DATE)
+    field(name = "QUANTITY", type = INT)
+    field(name = "COUNTERPARTY_ID", type = STRING).notNull()
+    field(name = "SYMBOL", type = STRING).notNull()
+    field(sideEnum)
+
+    primaryKey("TRADE_ID")
+    indices {
+      nonUnique("ORDER_ID")
+    }
+  }
+```
+
+#### More advanced examples
+
+The example below has a single consolidator, called `CONSOLIDATE_POSITIONS`.
+
+To give you some basic pointers to the content, the main code blocks in this Consolidator are:
+
+- The `config` block contains Consolidator level configuration
+- The `select` block to specify some calculations and assign to output fields
+- The `onCommit` block to amend the output row
+- The `groupBy` block groups by `INSTRUMENT_ID`
+
+```kotlin
+consolidator("CONSOLIDATE_POSITIONS", TRADE_PRICE_VIEW, POSITION) {
+    config {
+        logLevel = DEBUG
+        logFunctions = true
+    }
+    select {
+        sum {
+            when(side) {
+                "BUY" -> when(tradeStatus) { // Ensure "BUY" trades are considered negative quantity in the position record.
+                    TradeStatus.NEW -> quantity
+                    TradeStatus.ALLOCATED -> quantity
+                    TradeStatus.CANCELLED -> 0
+                }
+                "SELL" -> when(tradeStatus) { // Ensure "SELL" trades are considered negative quantity in the position record.
+                    TradeStatus.NEW -> -quantity
+                    TradeStatus.ALLOCATED -> -quantity
+                    TradeStatus.CANCELLED -> 0
+                }
+                else -> null
+            }
+        } into QUANTITY
+        sum {
+            val quantity = when(side) {
+                "BUY" -> quantity
+                "SELL" -> -quantity
+                else -> 0
+            }
+            quantity * price
+        } into VALUE
+    }
+    onCommit {
+        val quantity = output.quantity ?: 0
+        val marketPrice = when { // Calculate market price based on bid or ask price depending on current position quantity.
+            quantity > 0 -> input.emsBidPrice ?: 0.0
+            quantity < 0 -> input.emsAskPrice ?: 0.0
+            else -> 0.0
+        }
+        output.notional = marketPrice * quantity // Calculate notional based on current market price.
+        output.pnl = output.value - output.notional
+    }
+    groupBy {
+        instrumentId
+    } into {
+        lookup {
+            Position.ByInstrumentId(groupId)
+        }
+        build {
+            Position {
+                instrumentId = groupId
+                quantity = 0
+                value = 0.0
+                pnl = 0.0
+                notional = 0.0
+            }
+        }
+    }
+}
+```
+
+### Consolidator on demand
+
+As an alternative to running a Consolidator as a service, you can create Consolidator objects as classes that can be used in code elsewhere in your application. They can be used in custom services, as well as in Request Servers and Event Handlers.
+
+These Consolidators perform on-demand consolidations where the input can be:
+
+- read directly from the database
+- provided at runtime
+- a combination of both of these
+
+Effectively, that gives you three types of Consolidator object, which we shall introduce after the following simple example:
+
+```kotlin
+// consolidate database records:
+val order: Order? = tradeConsolidator.get(Trade.ById("A"))
+val orders: List<Order> = tradeConsolidator.getRange(Trade.ByOrderId("A"), 1).toList()
+// consolidate runtime instances:
+val order: Order? = tradeConsolidator.consolidate(trade)
+val orders: List<Order> = tradeConsolidator.consolidate(trade1, trade2, trade3)
+// what-if analysis, combine both database records and runtime instances:
+val result = tradeConsolidator.whatIf(Trade.ByOrderId("2"), trade1, trade2)
+```
+### Three types of Consolidator object
+In practice, you can create three types of Consolidator object to cover different use cases:
+
+- **input-output**
+- **read input table**
+- **read output table**
+
+To showcase each of these, we shall use simple examples based on the following simplified data models:
+
+**Trade**
+
+| ID | InstrumentID | Quantity | Price |
+|----|--------------|----------|-------|
+
+**TradeDetails**
+
+| ID | InstrumentID | TotalQuantity | Notional |
+|----|--------------|---------------|----------|
+
+### Input - Output Consolidator
+
+This type of Consolidator is not limited to tables. It can take any input and produce any output; that output can be used elsewhere in your application.
+
+For example, your Consolidator object can read a table of trades and create the sum of all trade values.
+
+````mermaid
+graph LR
+    B[Input] --> C[Consolidator on Demand]
+    C --> D[Output]
+
+````
+
+The consolidator can receive either a Trade or a List of Trades; it returns a List of TradeDetail. The consolidation process is:
+
+<table>
+    <tr><th>Trade List (Runtime) </th><th></th><th>TradeDetail List (Runtime)</th></tr>
+    <tr><td>
+
+        | ID | InstrumentID | Quantity | Price |
+        |----|--------------|----------|-------|
+        | 1  | VOD          | 1        | 5     |
+        | 3  | BARC         | 2        | 2     |
+        | 4  | BARC         | 1        | 4     |
+
+    </td><td>
+        &rarr;
+    </td><td>
+
+        | ID | InstrumentID | totalQuantity | Notional |
+        |----|--------------|---------------|----------|
+        | 1  | VOD          | 1             | 5        |
+        | 2  | BARC         | 3             | 8        |
+
+    </td></tr> </table>
+
+Here is a simple example input-output Consolidator that handles this use case:
+
+```kotlin
+val trades:List<Trade> = createTrades()
+val tradeConsolidator = consolidator<Trade, TradeDetails> {
+    select {
+        sum { price * quantity } into TradeDetails::totalNotional
+        sum { quantity } into TradeDetails::totalQuantity
+    }
+
+    groupBy { TradeDetails.byInstrumentId(currencyId) } into {
+        TradeDetails {
+            tradeDetailsId = groupId.tradeDetailsId
+        }
+    }
+}
+var tradeDetails:List<TradeDetails> = tradeConsolidator.consolidate(trades)
+```
+
+### Read Input Table Consolidator
+
+This type of Consolidator reads a table where data is changed and then creates an output; the output can be anything.
+
+For example, the Consolidator could read updates to a table of orders and check the table of trades to find other trades that match that order (by order number or by counterparty, for example).
+````mermaid
+graph LR
+    N[Consolidator On Demand]
+    M[Input Data] -->  N
+    L[Input Table - from DB] --> N
+    N -->O[Output Runtime Entity]
+````
+
+The consolidation process for this is:
+
+<table>
+    <tr><th>Trade List (Runtime + DB) </th><th></th><th>TradeDetails List (Runtime)</th></tr>
+    <tr><td>
+
+        | ID | InstrumentID | Quantity | Price |
+        |----|--------------|----------|-------|
+        | 1  | VOD          | 1        | 5     |
+        | 3  | BARC         | 2        | 2     |
+        | 4  | BARC         | 1        | 4     |
+
+        | ID | InstrumentID | Quantity | Price |
+        |----|--------------|----------|-------|
+        | 8  | VOD          | 5        | 2     |
+        | 9  | BARC         | 5        | 3     |
+
+    </td><td>
+        &rarr;
+    </td><td>
+
+        | ID | InstrumentID | TotalQuantity | Notional |
+        |----|--------------|---------------|----------|
+        | 1  | VOD          | 6             | 15       |
+        | 2  | BARC         | 8             | 23       |
+
+    </td></tr> </table>
+
+Here is a simple example read-input-table Consolidator that handles this use case:
+
+````kotlin
+val runtimeTrades:List<Trade> = createTrades()
+val dbTrades:List<Trade> = createDbTrades()
+
+val db by lazy { asyncEntityDb }
+
+val tradeConsolidator by lazy {
+    db.dualConsolidator<TRADE, POSITION_DETAILS> {
+        select {
+            POSITION_DETAILS {
+                sum { price * quantity } into NOTIONAL
+                sum { quantity } into TOTAL_QUANTITY
+            }
+        }
+
+        groupBy { TradeDetails.byInstrumentId(currencyId) }
+        into {
+            TradeDetails {
+                tradeDetailsId = groupId.tradeDetailsId
+            }
+        }
+    }
+}
+db.insertAll(dbTrades)
+
+var tradeDetails:List<TradeDetails> = tradeConsolidator.consolidate(runtimeTrades)
+````
+
+### Read Output Table Consolidator
+
+This type of Consolidator can read any type of input, but the output must be a table.
+
+For example, the Consolidator could read the output from a trade table (a new trade), and compare this to an order in the order table. It can then calculate the effect of the change in terms of how much of the order is outstanding and fulfilled.
+
+````mermaid
+graph LR
+M[Input Data] -->  N[Consolidator On Demand]
+L[Input Data] --> N[Consolidator On Demand]
+N -->O[Output Table]
+````
+
+The consolidation process for this is:
+
+<table>
+    <tr><th>Trade List (Runtime) + TradeDetails(DB) </th><th></th><th>TradeDetails List (Runtime)</th></tr>
+    <tr><td>
+
+        | ID | InstrumentID | Quantity | Price |
+        |----|--------------|----------|-------|
+        | 1  | VOD          | 1        | 5     |
+        | 3  | BARC         | 2        | 2     |
+        | 4  | BARC         | 1        | 4     |
+
+        | ID | InstrumentID | TotalQuantity | Notional |
+        |----|--------------|---------------|----------|
+        | 8  | VOD          | 100           | 1000     |
+
+    </td><td>
+        &rarr;
+    </td><td>
+
+        | ID | InstrumentID | TotalQuantity | Notional |
+        |----|--------------|---------------|----------|
+        | 1  | VOD          | 101           | 1005     |
+        | 2  | BARC         | 3             | 8        |
+
+    </td></tr> </table>
+
+
+Here is a simple example read-output-table Consolidator that handles this use case:
+
+````kotlin
+val runtimeTrades:List<Trade> = createTrades()
+
+val db by lazy { asyncEntityDb }
+val dbTradeDetails:List<TradeDetails> = createDbTradeDetails()
+
+val tradeConsolidator by lazy {
+    db.simulatingConsolidator<TRADE, TRADE_DETAILS> {
+        select {
+            TRADE_DETAILS {
+                sum { price * quantity } into NOTIONAL
+                sum { quantity } into TOTAL_QUANTITY
+            }
+        }
+
+        groupBy { TradeDetails.byInstrumentId(instrumentId) } into {
+            TradeDetails {
+                tradeDetailsId = groupId.tradeDetailsId
+            }
+        }
+    }
+}
+db.insertAll(dbTradeDetails)
+
+var tradeDetails:List<TradeDetails> = consolidator.whatIf(runtimeTrades)
+
+````
 
 ## Configuration options
 
@@ -126,7 +536,7 @@ groupName = "_name_"
 
 If you include this statement in your `consolidator` block, then the Consolidator will belong to the named group.
 
-In a non-transaction database, a group is designed to offer consistent consolidation in the absence of ACID guarantees at the database level. Consolidators in the same group will not interfere with each other's calculations as they update - particularly where they output to the same table.
+In a non-transactional database, a group is designed to offer consistent consolidation in the absence of ACID guarantees at the database level. Consolidators in the same group will not interfere with each other's calculations as they update - particularly where they output to the same table.
 
 :::note
 This is limited to Consolidator updates within a group in a single process. Updates in other groups, other processes or other nodes could still interfere. You must plan this carefully.
