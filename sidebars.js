@@ -118,14 +118,22 @@ module.exports = {
         {
           type: 'doc',
           id: 'how-to/ht-audit',
-        },
+        },        
         {
           type: 'doc',
           id: 'how-to/ht-ingest-csv'
         },
         {
           type: 'doc',
+          id: 'how-to/ht-notify-email',
+        },
+        {
+          type: 'doc',
           id: 'how-to/ht-rest',
+        },
+        {
+          type: 'doc',
+          id: 'how-to/ht-jms',
         },
         {
           type: 'doc',

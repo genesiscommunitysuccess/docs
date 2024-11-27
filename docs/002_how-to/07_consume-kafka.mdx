@@ -34,7 +34,7 @@ The README file for the application provides set-up instructions for creating a 
 In the example application, a pipeline is set up to respond to an event, such as when the user inserts a new price. The pipeline publishes this data to the specified Kafka topic.
 
 ## Consuming from Kafka
-The example contains a second pipeline that runs in the background and polls a Kafka topic. Whenever new records are detected on the topic, it retries them and inserts them to the database.
+The example contains a second pipeline that runs in the background and polls a Kafka topic. Whenever new records are detected on the topic, it retrieves them and inserts them to the database.
 
 The pipeline only retrieves the next record (or batch of records) once the previous record (or batch) has been added to the database.
 

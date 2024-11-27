@@ -44,53 +44,6 @@ Avoid using a network drive or a drive that synchronises with a cloud back-up sy
 
 ## Running the app locally
 
-### Prerequisites
-You need to install the following software to be able to run Genesis projects on your local machine. There are links below to install each of the dependencies:
-
-|Software               |	Download info and link                     |
-| --------------------- | --------------------------------------------- |
-| IntelliJ - Community Edition | **[Windows (.exe)](https://download-cdn.jetbrains.com/idea/ideaIC-2024.1.1.exe)** --- **[Mac (.dmg)](https://download.jetbrains.com/idea/ideaIC-2024.1.1.dmg?_ga=2.225006931.831021149.1715028846-1909765304.1715028846)** --- **[Other Platforms](https://www.jetbrains.com/idea/download/other.html)**  |
-|JDK 17	                | **[Windows (.msi)](https://download.oracle.com/java/17/archive/jdk-17.0.10_windows-x64_bin.msi)** --- **[Other Platforms](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)** |
-|Node.js	            | **[Windows (.msi)](https://nodejs.org/dist/v20.12.2/node-v20.12.2-x64.msi)** --- **[Other Platforms](https://nodejs.org/en/download)** |
-|Genesis Server Framework (GSF) Artifact Access	| Contact your technical representative for access. |
-|Genesis Front End (FUI) Artifact Access	| Contact your technical representative for access. |
-|LMDB  (Mac Users Only)	| With **[Homebrew](https://brew.sh/)** installed, follow the instructions [below](#homebrew-mac-users) |
-|Gradle	               | Bundled with IntelliJ. Configure Gradle properties to point to the GSF artifactory.
-
-### Homebrew (Mac users)
-If you are using a Mac, you need to download and install LMDB. Using homebrew, you can install this dependency easily by following this [short guide](https://learn.genesis.global/docs/server/tooling/intellij-plugin/?_highlight=lm#installing-lmdb-for-macos)
-
-### Opening the project
-
-1. Open IntelliJ, click **Open**, and navigate to your project folder.
-
-:::tip
-Take care not to open the parent or any of the child directories
-:::
-
-2. Go to **File** → **Project Structure** and make sure that **SDK** and **Language level** are set to 17.
-
-:::info
-Intellij will pick up the Java version from the project default, set above. However, if you've inadvertently started a build on a newer JVM, you may need to update your gradle build settings. To do this, go to **Settings** → **Build, Execution, Deployment** → **Build Tools** → **Gradle** and set your **Gradle JVM** to 17.
-:::
-
-3. If you are prompted (bottom right of the IntelliJ window) to **Load Gradle Project**, click to allow this to proceed.
-
-### Building and running the project
-
-1. Open the Genesis IntelliJ plugin at the top right of the IntelliJ window.
-
-2. Click **remap**. Agree to all options to ensure your data model is created and all necessary data is imported.
-
-3. Click on the **Tasks** tab in the plugin and run **ConsolidateRights**.
-
-4. Click on the **Start Processes** button. This starts the back end.
-
-5. Click on the **Start UI** button. This starts the front end.
-After a short while, you should see all processes running. Your browser will open automatically, pointing to the URL http://localhost:6060.
-
-7. Login with the credentials:
-   - User: admin
-   - Password: genesis
+See our guides on 
 
 
