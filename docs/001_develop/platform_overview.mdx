@@ -1,0 +1,204 @@
+---
+title: 'Platform overview'
+sidebar_label: 'Platform overview'
+id: 'platform-overview'
+---
+
+The Genesis Platform empowers junior developers to build fast, secure, scalable, real-time, compliant financial markets-grade applications up to 10x faster while ensuring applications reach production quickly.  The platform can deliver this via three distinct pillars, the Development Suite, Runtime and a Market Place of solutions, templates, components and integrations. 
+
+## Development suite
+
+The first pillar is the acceleration delivered by the Development Suite.  This acceleration is achieved by leveraging pre-built suite of microservices which enables a developer to assemble a complete, robust and rich financial markets-grade application architecture quickly, simply by selecting and configuring the appropriate set of microservices to fit the required business requirements.  These microservices are configured and customized to fit the specific business use case through a high-level domain specific language (DSL) called GPAL.    
+
+GPAL abstracts away complex algorithms behind simple to understand syntax, exposing the extension points required to enable any developer to build very rich applications quickly.  While accelerating the most complex use cases, GPAL also allows the full power of Java and Kotlin at any point to ensure unlimited flexibility to meet the complex requirements for any financial application. 
+
+The Genesis Platform delivers a large inventory of these microservices and components which have been built to deliver common patterns required in most financial markets grade applications including support for live, real-time queries, real-time aggregation, rich access control features, strong audit and security to name a few.  The following are some examples of the types of microservices available and how easily they can be configured for a given application. 
+
+There are two components to the configuration of any microservice.  First, common to all microservices, is the model and views for the data the application will be managing.  Below is a simple GPAL example outlining a few entities (or tables) a sample application might be managing.   This model forms the foundation of the meta-data leveraged by many components of the platform to provide out of the box functionality without any extra code required. 
+
+In the example below, we can see an instrument and a trade being modeled with strongly typed attributes which will automatically drive lots of the behavior in the platform. 
+
+```kotlin
+ table(name = "INSTRUMENT", id = 11_000) { 
+
+    field("INSTRUMENT_ID", LONG).autoIncrement() 
+    field("CURRENCY", STRING).notNull() 
+    field("INSTRUMENT_NAME", STRING).notNull() 
+    field("SYMBOL", STRING).notNull().uniqueIndex() 
+
+
+    primaryKey("INSTRUMENT_ID") 
+ 
+  } 
+
+ 
+  table(name = "TRADE", id = 11_001) { 
+
+    field("TRADE_ID", LONG).autoIncrement() 
+    field("INSTRUMENT_ID", LONG).notNull() 
+    field("PRICE", DOUBLE).notNull() 
+    field("SIDE", ENUM("SELL","BUY")).default("BUY").notNull() 
+    field("TRADE_QUANTITY", INT).notNull() 
+
+
+    primaryKey("TRADE_ID") 
+
+  } 
+```
+
+These entities can also be combined to form views required for display to the end-user or to use as the payload for upstream and downstream systems.  Below is an example of a view in which the trade entity is joined with the instrument to create the most optimized payload for that specific use case.  Views also allow for the definition of derived fields (columns) calculated on the fly to augment the data being returned by the system. 
+
+```kotlin
+  view("TRADE_VIEW", TRADE) { 
+
+    joins { 
+      joining(INSTRUMENT, backwardsJoin = true) { 
+        on(TRADE { INSTRUMENT_ID } to INSTRUMENT { INSTRUMENT_ID }) 
+      } 
+    } 
+
+    fields { 
+
+      INSTRUMENT.CURRENCY 
+
+      // ... 
+
+      TRADE.SIDE 
+
+      derivedField("NOTIONAL", DOUBLE) { 
+        withInput(POSITION.NET_QUANTITY, MARKET_DATA.LAST_PRICE) { 
+            netQty, price -> netQty * price 
+        } 
+      } 
+    } 
+```
+
+Derived fields are one example where the flexibility of the framework can be observed, in the example above, the logic to calculate the notional field is implemented using simple math, however, could just as easily be invoking arbitrary logic including calls to complex logic in existing Java libraries as one example. 
+
+Now with the model in place, a developer can simply begin selecting the set of microservices and configure the logic required by the application.  Below we will take a sample Genesis Application and describe the Genesis microservices that make up this application. 
+
+## Core Logic and Data Manipulation Microservice (Event Handler)
+
+Applications will typically start with APIs required to contain the logic the user will need to create or modify the underlying data for the application.  Within a Genesis application, this is covered by the Event Handler Microservice.   It is responsible for handling data manipulation requests called “events” and forms the command service of a Command Query Responsibility Segregation (CQRS) Architecture.   Each event (or command) corresponds to a specific request to create, update, delete or otherwise perform an operation on a record in the database.  Each command can be configured to modify the data in the database and execute any arbitrary logic required as part of the event processing.  
+
+Below is a simple example of the GPAL required to configure the Event Handler to handle a simple request to add a trade record to the database using GPAL: 
+
+```kotlin
+  eventHandler<Trade>("TRADE_INSERT") { 
+
+    onCommit { event -> 
+
+      // incoming trade 
+      val trade = event.details 
+
+      // persistence api call 
+      entityDb.insert(trade) 
+
+      // return an ack 
+      ack() 
+    } 
+  } 
+```
+
+These few lines, along with the model definition from before are sufficient to start the Event Handler microservice.  This microservice will automatically expose the APIs required to start receiving trade events and persisting them into the database and executing the logic configured.  And through the addition of a few additional lines, the developer can quickly enable validation, authorization and more. 
+
+As a part of its function, the Event Handler will also expose meta data APIs that will be leveraged by the rest of the platform including UI components which can then dynamically generate a full interactive user interface to manage the underlying data with minimal configuration.   
+
+Pre-built business components can also leverage the same model to provide full set of functionalities such as notifications without any extra logic required by the developer. 
+
+As data is flowing through the Event Handler, events are published to the rest of the platform allowing additional microservices to react and provide more capabilities. 
+
+## Real Time Query Microservice (Data Server) 
+
+Most financial applications also have the need to provide real time views that are live and refreshing in real-time for their end users.   For this, Genesis provides the Data Server Microservice.  It is able to listen to the events from the Event Handler, maintain a cache of the data in the application based on its configuration, maintain this cache up to date and expose APIs which allow the UI to display live, real-time views against the data set.   
+
+To configure the Data Server, the developer defines a few simple lines of GPAL to define the set of named queries which should be exposed.  The Data Server preloads the data defined for each query, maintains meta-data for users requesting views into that data and exposes web sockets to provide a real time stream of updates to keep those views live and ticking for the end user. 
+
+Below is a simple example of the GPAL used to configure on of the named queries exposed by the Data Server: 
+
+```kotlin
+dataServer { 
+
+  query("ALL_TRADES", TRADE_VIEW) { 
+
+    fields { 
+      CURRENCY 
+
+      // ... 
+    } 
+
+    permissioning { 
+      permissionCodes = listOf("TRADER", "OPERATIONS") 
+      auth("ENTITY_VISIBILITY"){ 
+            TRADE_VIEW.COUNTERPARTY_ID 
+      } 
+    }
+  } 
+```
+
+In this example we can see a query named “ALL_TRADES” being defined against a specific view of the underlying data-model, the specific fields selected to be exposed as a part of this query.  We can also see a simple permission block configuring which users should be allowed to view this data.  It’s important to note that this access permission block can limit access to the entire dataset, specific rows or columns as needed and the logic to calculate these rights can be as complex as required by the business requirements. 
+
+## Real-Time Aggregation Microservice (Consolidator)
+
+Another common financial services application requirement is the ability to take data and aggregate it into different aggregation keys.  This may be risk results, trade aggregation into positions or orders and so on.  Genesis provides the Consolidator Microservice for this use case.   
+
+This microservice is capable of tracking the stream of events flowing through the platform and aggregating a configured input entity such as Trade into an output entity such as Position.  Similar to the other microservices, it can be configured through a few simple lines of GPAL, abstracting away all the complexities of managing the aggregation including understanding when the values are added or removed from an aggregation key as well as the ability to rebuild an entire aggregated view if the logic is modified. 
+
+Below is a simple example of a consolidator configured to aggregate simple Trade definitions into a Position object with two attributes. 
+
+```kotlin
+  consolidator("POSITION_CONSOLIDATOR", TRADE, POSITION) { 
+
+    select { 
+      POSITION { 
+        sum { tradeQuantity } into NET_QUANTITY 
+        sum { tradeQuantity * price } into STARTING_VALUE 
+      } 
+    } 
+
+    groupBy { 
+      Position.ByInstrumentId(instrumentId) 
+    }  
+  } 
+```
+
+Aggregation outputs are application entities just like any other and flow through the event system as well as kept live by the Data Server as required. 
+
+These are just a few examples of the microservices that are available to developers.  And with just these three microservices and the few lines of GPAL, a developer can build a very rich, real-time application in minutes.   
+
+Additional microservices and components allow developers to quickly add more capabilities to their application including microservices like the Evaluator which can be configured to react to the stream of data and detect patterns using a complex expression builder in order to detect and react using custom logic.
+
+## Genesis Web User Interface Components 
+
+Of course, every application will require a rich, responsive, real-time user interface.  Genesis offers a complete suite of Web UI components that are easily connected to the APIs exposed by the Genesis Microservices and provide the user with rich, responsive, real-time user experiences tailored to the financial services end-user’s requirements.  These components can be quickly composed into fully functional web application using any of the major Web UI frameworks including Angular, React or raw Web Components.   
+
+The suite of Web UI components offered by Genesis encompass everything from rich, interactive micro front-ends encapsulating a complete set of user interactions such as Grids allowing complete data management user experience on top of real-time updating grid of data, dynamically generated Smart Forms, suite of charts, dynamic layout managers allowing end-user configured workspaces to lower level building blocks such as Dialogs, Menus, Banners, Breadcrumbs and so on. 
+
+The full list of components available can be found in the [Genesis Client capabilities](/develop/client-capabilities/client-capabilties-overview/)
+
+Similar to the microservices, these web components can be just as easily injected into a page and configured to point to the appropriate Genesis back-end resources. 
+
+Below is a simple example showing one of these types of components and how easily they can be configured to point to the events and queries configured in the Event Handler and Data Server: 
+
+```typescript
+   <entity-management 
+        enable-row-flashing 
+        enable-cell-flashing 
+        resourceName="ALL_TRADES" 
+        createEvent="EVENT_TRADE_INSERT" 
+        :createFormUiSchema=${() => createFormSchema } 
+        updateEvent="EVENT_TRADE_MODIFY"
+        :updateFormUiSchema=${() => updateFormSchema }
+        entityLabel="Trade Blotter"
+        :columns=${() => columnDefs }
+        modal-position="centre"
+        size-columns-to-fit
+    ></entity-management>
+```
+
+In the example above, the developer is requesting the entity manager web component.  This component provides all the interaction for a given data set, dynamically generates the grid, forms and actions to search, find, modify and create a given record type.  The full tile can be placed on the screen in a dynamic layout component allowing the end-user to dynamically configure their desired layout. 
+
+The output of the above element results in the following tile in the web application: 
+
+![Entity Manager Example](/img/000_platform-overview/trade-blotter-entity-manager-example.png)
+
