@@ -20,6 +20,8 @@ sidebar_position: 17
 import { CollapsibleSlot } from '../../../../examples/ui/documentationBase'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import BaseStore from '../../../_includes/_base_store_setup.mdx'
+import EventWrapper from '../../../_includes/_store_event_wrapper.mdx'
 
 This page will guide you through setting up a simple example of two components communicating via a store shared value.
 
@@ -29,31 +31,7 @@ Please note that this document assumes that the store is already set up for you,
 
 In your project you should have a blank store setup that looks like the following:
 
-```typescript store.ts
-export interface Store extends StoreRoot {}
-
-export type StoreEventDetailMap = StoreRootEventDetailMap & {};
-
-declare global {
-  interface HTMLElementEventMap extends CustomEventMap<StoreEventDetailMap> {}
-}
-
-class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> implements Store {
-  constructor() {
-    super();
-
-    /**
-     * Register the store root
-     */
-    getApp().registerStoreRoot(this);
-  }
-}
-
-export const Store = registerStore(DefaultStore, 'Store');
-
-// If you are using the react or angular store you will have extra code at the end of the file
-// to handle the store's dependency injection. You won't need to alter any of that section.
-```
+<BaseStore />
 
 ### Test components
 
@@ -375,17 +353,7 @@ In Genesis syntax you can dispatch an event from a standard component, but it's 
   }
   ```
 
-  Here you can use this function to wrap up the event in a format the store expects.
-  ```typescript
-  export function customEventFactory(type: string, detail?: any) {
-      return new CustomEvent(type, {
-          bubbles: true,
-          cancelable: true,
-          composed: true,
-          detail,
-      });
-  }
-  ```
+    <EventWrapper />
 
   </TabItem>
   <TabItem value="angular">
@@ -414,17 +382,7 @@ In Genesis syntax you can dispatch an event from a standard component, but it's 
     }
     ```
 
-  Here you can use this function to wrap up the event in a format the store expects.
-  ```typescript
-  export function customEventFactory(type: string, detail?: any) {
-      return new CustomEvent(type, {
-          bubbles: true,
-          cancelable: true,
-          composed: true,
-          detail,
-      });
-  }
-  ```
+    <EventWrapper />
   </TabItem>
 </Tabs>
 
