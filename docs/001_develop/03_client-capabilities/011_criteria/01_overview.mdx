@@ -39,11 +39,10 @@ Some elements in FoundationUI communicate directly with the backend to retrieve 
 
 ### Chart and chart datasource
 
-The `rapid-g2plot-chart` component can be populated with data use the `chart-datasource` component.
+The `rapid-g2plot-chart` component can be populated with data using the `chart-datasource` component.
 
-This example is a simple line chart which retrieves data from a **Price history**
 
-<CollapsibleSlot title="Price history data" description="The price history table and dataserver would look like this">
+<CollapsibleSlot title="Price history resources" description="The price history table and dataserver would look like this">
 
     **tables-dictionary.kts**
     ```kts
@@ -65,6 +64,8 @@ This example is a simple line chart which retrieves data from a **Price history*
     ```
 </CollapsibleSlot>
 
+This example is a simple line chart which retrieves data from a **Price history**
+
 ```ts
 import { FoundationElement, html, customElement  } from '@genesislcap/web-core';
 import {
@@ -82,6 +83,7 @@ const tradeIdEqualsExpression = new ExpressionBuilder()
 const filterCriteria = new CriteriaBuilder()
   .withExpression(tradeIdEqualsExpression)
   .build();
+// filterCriteria is equal to '((TICKER == "GNYS"))'
 
 @customElement({
   name: 'my-component',
@@ -166,6 +168,8 @@ const filterCriteria = new CriteriaBuilder()
   .withExpression(tradeStatusExpression)
   .build();
 
+// filterCriteria is equal to '((TICKER == "GNYS" && STATUS ! "Cancelled")'
+
 @customElement({
   name: 'my-component',
   template: html`
@@ -186,45 +190,47 @@ export class MyComponent extends FoundationElement {
 The `entity-management` component can use filter criteria via the `criteria` value in its `datasourceConfig` object.
 
 ```ts
-    import { FoundationElement, html, customElement  } from '@genesislcap/web-core';
-    import {
-      CriteriaBuilder,
-      ExpressionBuilder,
-      Serialisers
-    } from '@genesislcap/foundation-criteria';
+import { FoundationElement, html, customElement  } from '@genesislcap/web-core';
+import {
+  CriteriaBuilder,
+  ExpressionBuilder,
+  Serialisers
+} from '@genesislcap/foundation-criteria';
 
-    const tradeIdExpression = new ExpressionBuilder()
-      .withField('TICKER')
-      .withValue('GNYS')
-      .withSerialiser(Serialisers.EQ)
-      .build()
+const tradeIdExpression = new ExpressionBuilder()
+  .withField('TICKER')
+  .withValue('GNYS')
+  .withSerialiser(Serialisers.EQ)
+  .build()
 
-    const notionalExpression = new ExpressionBuilder()
-      .withField('NOTIONAL')
-      .withValue(1000)
-      .withSerialiser(Serialisers.GT)
-      .build()
+const notionalExpression = new ExpressionBuilder()
+  .withField('NOTIONAL')
+  .withValue(1000)
+  .withSerialiser(Serialisers.GT)
+  .build()
 
-    const filterCriteria = new CriteriaBuilder()
-      .withExpression(tradeIdExpression)
-      .withExpression(notionalExpression)
-      .build();
+const filterCriteria = new CriteriaBuilder()
+  .withExpression(tradeIdExpression)
+  .withExpression(notionalExpression)
+  .build();
 
-    @customElement({
-      name: 'my-component',
-      template: html`
-        <entity-management
-          design-system-prefix="rapid"
-          :datasourceConfig=${() => ({
-            resourceName: 'ALL_TRADES',
-            criteria: filterCriteria
-          })}
-        >
-        </entity-management>
-      `
-    })
-    export class MyComponent extends FoundationElement {
-    }
+// filterCriteria is equal to '((TICKER == "GNYS" && NOTIONAL > 1000))'
+
+@customElement({
+  name: 'my-component',
+  template: html`
+    <entity-management
+      design-system-prefix="rapid"
+      :datasourceConfig=${() => ({
+        resourceName: 'ALL_TRADES',
+        criteria: filterCriteria
+      })}
+    >
+    </entity-management>
+  `
+})
+export class MyComponent extends FoundationElement {
+}
 ```
 
 These examples are just scratching the surface of the `foundation-criteria` module. The following pages in this section go into more depth on the different Serialisers, Expressions and Criteria you can construct.
