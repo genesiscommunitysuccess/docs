@@ -11,19 +11,31 @@ tags:
 - server
 ---
 
-Site-specific is an area of the run directory where you can override the standard definitions found elsewhere in your application. By default, its location is:
+Site specific is an area of the run directory, on a deployed application instance, where you can override the standard definitions found elsewhere in your application.
 
-<strong><em>application-name</em>\server\jvm\\<em>application-name</em>-site-specific</strong>
+Any *platform provided files* placed in your application's `cfg` or `script` will supersede those provided by the platform. Where we say |*platform provided files*, we mean any files which are genesis, auth, or any business component or module which is not your application. 
+
+## Overriding platform provided files
+
+Once you have built a project for the first time locally, you can find all the platform provided module artifacts, including those in `cfg` and `scripts`, to copy into your application's respective `cfg` and `scripts` directory as required.
+
+As shown in the image below they'll be found in your project's `server/<app_name>/build/genesis-home/` directory.  
+![](/img/001_develop/genesis-platform-provided-files-overview.png)
+
+A common requirement may be to turn on/off processes which are disabled/enabled by default. If it is not already available in our project's `cfg` directory we would find `genesis-processes.xml` (per screenshot below) and copy it there.
+![](/img/001_develop/genesis-platform-provided-files-overview.png)
+
+We can then edit the file, and after our next build the changes will take effect, whether the project is being built and run locally or pushed to CICD for build and deployment. 
+
+:::tip
+These files may change from over time with new platform releases. Any Genesis platform provided files placed in this location may need to be updated with any new platform features your application needs to take advantage of.
+:::
 
 
 ## Changing system definitions
-The [**genesis-system-definition.kts** file](../../../server/configuring-runtime/system-definitions/) is always found in the **site-specific** folder. 
+The [`genesis-system-definition.kts` file](/develop/server-capabilities/runtime-configuration/system-definition/) is always found in the `cfg` directory of your application.
 
-Within that folder, it is located at:
-
- **\src\main\resources\cfg**
-
-You can change the settings in the **genesis-system-definition.kts** file to make fundamental changes to your application. For example, if you want to change to a different database technology, you can change the `DbLayer` and `DbHost` settings.
+You can change the settings in the `genesis-system-definition.kts` file to make fundamental changes to your application. For example, if you want to change to a different database technology, you can change the `DbLayer` and `DbHost` settings.
 
 Here is an example where we have changed the underlying technology to Postgres.
 
@@ -54,16 +66,3 @@ systemDefinition {
     }
 }
 ```
-
-## Overriding scripts
-
-If you want to override any scripts in your application such as `<app-name>-dataserver.kts`, `<app-name>-eventhandler.kts`, etc, you need to go to **site-specific/main/src/main/resources/scripts** folder and create the new script file with the same name as the script you want to override.
-
-To see the changes, you need to deploy your application, and if you are using intellij plugin, you shall see these files under your **.genesis-home/site-specific**
-
-This is essential where you use standard modules, such as Auth; you should never change these modules. 
-
-:::danger
-Never change the standard modules, such as Auth. You can copy their script files to **site-specific** and change them there.
-:::
-

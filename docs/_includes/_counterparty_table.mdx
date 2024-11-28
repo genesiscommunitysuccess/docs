@@ -1,0 +1,37 @@
+:::tip Entity Management Counterparty Server Model
+
+The following example is based on the following kotlin code snippets.
+
+In your **app-name**-tables-dictionary.kts add:
+
+```kts
+tables {
+  table(name = "COUNTERPARTY", id = 11_001) {
+    field("COUNTERPARTY_ID", STRING).sequence("CP")
+    field("COUNTERPARTY_LEI", STRING(100)).metadata {
+      maxLength = 100
+      minLength = 0
+    }
+    field("ENABLED", BOOLEAN).default(false).notNull()
+    field("NAME", STRING(100)).notNull().metadata {
+      maxLength = 100
+      minLength = 0
+    }
+    primaryKey("COUNTERPARTY_ID")
+  }
+}
+```
+
+In your **app-name**-dataserver.kts add:
+
+```kts
+  query("ALL_COUNTERPARTYS", COUNTERPARTY) {
+    fields {
+      COUNTERPARTY_ID
+      COUNTERPARTY_LEI
+      ENABLED
+      NAME
+    }
+  }
+```
+:::

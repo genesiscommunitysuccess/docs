@@ -1,0 +1,281 @@
+---
+title: 'Tooltip'
+sidebar_label: 'Toolip'
+id: client-interaction-tooltip
+keywords: [ interaction, interactive, tooltip, associated, hover, information, content, info ]
+tags:
+- interaction
+- interactive
+- tooltip
+- associated
+- hover
+- information
+- content
+- info
+sidebar_position: 8
+---
+
+import TooltipDemo from '/examples/ui/client-capabilities/interaction/tooltip.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Links to another html element and displays popup information when the user hovers.
+
+Use cases:
+* Provide extra information about another element when it's hovered
+
+## Example
+<TooltipDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-tooltip></rapid-tooltip>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html<MyElement>`
+        <rapid-button id="anchor">Hover me</rapid-button>
+        <rapid-tooltip anchor="anchor">
+          <rapid-avatar shape="circle" fill="green" color="black">JD</rapid-avatar>
+          <p>Tooltip text</p>
+        </rapid-tooltip>
+      `,
+    })
+    export class MyElement extends GenesisElement { }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-tooltip></rapid-tooltip>
+    ```
+
+    Usage
+    ```typescript
+    export function MyComponent() {
+      return (
+        <div>
+          <rapid-button id="anchor">Hover me</rapid-button>
+          <rapid-tooltip anchor="anchor">
+            <rapid-avatar shape="circle" fill="green" color="black">JD</rapid-avatar>
+            <p>Tooltip text</p>
+          </rapid-tooltip>
+        </div>
+      )
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-tooltip></rapid-tooltip>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    @Component({
+      selector: 'my-component',
+      template: `
+        <rapid-button id="anchor">Hover me</rapid-button>
+        <rapid-tooltip anchor="anchor">
+          <rapid-avatar shape="circle" fill="green" color="black">JD</rapid-avatar>
+          <p>Tooltip text</p>
+        </rapid-tooltip>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class MyComponent { }
+    ```
+  </TabItem>
+</Tabs>
+
+
+## API
+
+API examples shown with Genesis component syntax, and closing tag omitted.
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>visible</td>
+            <td><code>boolean</code></td>
+            <td>Whether the tooltip is visible or not. If undefined tooltip is shown when anchor element is hovered</td>
+<td>
+
+```typescript
+<rapid-tooltip visibile>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>anchor</td>
+            <td><code>string</code></td>
+            <td>The id of the element the tooltip is anchored to</td>
+<td>
+
+```typescript
+<rapid-tooltip anchor="button-id">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>delay</td>
+            <td><code>number</code></td>
+            <td>The delay in milliseconds before a tooltip is shown after a hover event</td>
+<td>
+
+```typescript
+<rapid-tooltip delay="300">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>position</td>
+            <td><code>TooltipPosition</code></td>
+            <td>Controls the placement of the tooltip relative to the anchor. When the position is undefined the tooltip is placed above or below the anchor based on available space</td>
+<td>
+
+```typescript
+<rapid-tooltip position="top">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>auto-update-mode</td>
+            <td><code>"anchor" | "auto"</code></td>
+            <td>Controls when the tooltip updates its position. 'anchor' only updates when the anchor is resized, 'auto' updates on scroll/resize events. <em>Default</em>: 'anchor'</td>
+<td>
+
+```typescript
+<rapid-tooltip auto-update-mode="anchor">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>horizontal-viewport-lock</td>
+            <td><code>boolean</code></td>
+            <td>Controls if the tooltip will always remain fully in the viewport on the horizontal axis</td>
+<td>
+
+```typescript
+<rapid-tooltip horizontal-viewport-lock>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>vertical-viewport-lock</td>
+            <td><code>boolean</code></td>
+            <td>Controls if the tooltip will always remain fully in the viewport on the vertical axis</td>
+<td>
+
+```typescript
+<rapid-tooltip vertical-viewport-lock>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+:::info
+`TooltipPosition = "top" | "right" | "bottom" | "left" | "start" | "end" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "top-start" | "top-end" | "bottom-start" | "bottom-end";`
+:::
+
+### Properties
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>anchorElement</td>
+      <td><code>HTMLElement</code></td>
+      <td>The html element currently being used as an anchor. Manually setting this overrides the anchor attribute</td>
+<td>
+
+```typescript
+<rapid-tooltip :anchorElement=${(x) => x.tooltipElementRef}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|The default slot where the tooltip content is placed.|
+
+### Parts
+
+|Part|Description|
+|---|---|
+|tooltip|The tooltip element itself.|
+
+### Events fired
+
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>dismiss</td>
+            <td><code>void</code></td>
+            <td>Fired when the tooltip is visible and escape key is pressed.</td>
+<td>
+
+```typescript
+<rapid-tooltip @dismiss=${(x) => x.handleDismiss()}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Events listened to
+
+This component doesn't listen to any events.
+

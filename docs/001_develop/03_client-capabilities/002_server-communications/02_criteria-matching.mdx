@@ -1,6 +1,6 @@
 ---
-title: 'Criteria matching'
-sidebar_label: 'Criteria matching'
+title: 'Criteria Matching'
+sidebar_label: 'Criteria Matching'
 id: criteria-matching
 keywords: [web, data server, resources, criteria matching]
 tags:
@@ -9,6 +9,8 @@ tags:
     - resources
     - criteria matching
 ---
+
+# Criteria Matching
 
 This page looks at how you can apply criteria matching when you connect to [Real-time queries (Data Server)](/develop/server-capabilities/real-time-queries-data-server/) and [Snapshot queries (Request Server)](/develop/server-capabilities/snapshot-queries-request-server/) resources.
 
@@ -41,7 +43,7 @@ The platform provides common expressions that are especially helpful for `Date` 
     This returns `true` when our field contains the string. Casing is ignored.
 
     For example:
-```
+```groovy
 Expr.containsIgnoreCase(EXCHANGE_NAME, 'oves')`
 ```
 
@@ -51,13 +53,13 @@ Expr.containsIgnoreCase(EXCHANGE_NAME, 'oves')`
 
     For example, if the DESCRIPTION field contains the value "This is a description", the following `containsWordStartingWithIgnoreCase` expression will return true:
 
-```
+```groovy
 Expr.containsWordsStartingWithIgnoreCase(DESCRIPTION, 'desc')
 ```
 
     And in this next example, if the ORDER_TYPE field contains the value "GTC,OCO", the following expression will return true:
 
-```
+```groovy
 Expr.containsWordsStartingWithIgnoreCase(ORDER_TYPE, 'OCO', ',')`
 ```
 
@@ -76,7 +78,7 @@ The following operations are available:
     This returns `true` when the date in the given field is before the date specified.
 
     For example:
-```
+```groovy
 Expr.dateIsBefore(TRADE_DATE,'20150518')`
 ```
 
@@ -86,7 +88,7 @@ Expr.dateIsBefore(TRADE_DATE,'20150518')`
 
     For example:
 
-```
+```groovy
 Expr.dateIsAfter(TRADE_DATE,'20150518')`
 ```
 
@@ -95,7 +97,7 @@ Expr.dateIsAfter(TRADE_DATE,'20150518')`
     This returns `true` when the date in the given field is greater or equal to the date specified.
 
     For example:
-```
+```groovy
 Expr.dateIsGreaterEqual(TRADE_DATE,'20150518')
 ```
 
@@ -105,7 +107,7 @@ Expr.dateIsGreaterEqual(TRADE_DATE,'20150518')
 
     For example:
 
-```
+```groovy
 Expr.dateIsLessEqual(TRADE_DATE,'20150518')
 ```
 
@@ -115,7 +117,7 @@ Expr.dateIsLessEqual(TRADE_DATE,'20150518')
 
     For example:
 
-```
+```groovy
 `Expr.dateIsEqual(TRADE_DATE,'20150518')`
 ```
 
@@ -124,7 +126,7 @@ Expr.dateIsLessEqual(TRADE_DATE,'20150518')
     This returns `true` when the data in the given field is equal to today's date (using system local time).
 
     For example:
-```
+```groovy
 Expr.dateIsToday(TRADE_DATE)`
 ```
 
@@ -136,7 +138,7 @@ Expr.dateIsToday(TRADE_DATE)`
 
   For example:
 
-```
+```groovy
 Expr.dateTimeIsBefore(TRADE_DATETIME,'20150518-10:50:24')`
 ```
 
@@ -146,7 +148,7 @@ Expr.dateTimeIsBefore(TRADE_DATETIME,'20150518-10:50:24')`
 
   For example:
 
-```
+```groovy
 Expr.dateTimeIsAfter(TRADE_DATETIME,'20150518-10:50:24')
 ```
 
@@ -155,7 +157,7 @@ Expr.dateTimeIsAfter(TRADE_DATETIME,'20150518-10:50:24')
   This returns `true` when the datetime in the given field is greater or equal to the datetime specified.
 
   For example:
-```
+```groovy
 Expr.dateTimeIsGreaterEqual(TRADE_DATETIME,'20150518-10:50:24')`
 ```
 
@@ -164,7 +166,7 @@ Expr.dateTimeIsGreaterEqual(TRADE_DATETIME,'20150518-10:50:24')`
   This returns `true` when the datetime in the given field is less or equal to the datetime specified.
 
   For example:
-```
+```groovy
 Expr.dateTimeIsLessEqual(TRADE_DATETIME,'20150518-10:50:24')
 ```
 
@@ -176,7 +178,7 @@ Note - You can not filter over derived fields.
 
 Below are a few examples of valid Groovy expressions.
 
-```
+```groovy
 // Quantity is more than 10000
 QUANTITY > 10000
 
@@ -198,7 +200,7 @@ QUANTITY != 10000
 
 You can also join multiple expressions together. These expressions can even be the common expressions mentioned above.
 
-```
+```groovy
 // Quantity is more than 100 AND less than 500
 QUANTITY > 100 && QUANTITY < 500
 
@@ -216,7 +218,7 @@ The following complex example defines:
 - If the date is today, the QUANTITY must be over 100
 - If the date is 1st of April 2022, the QUANTITY must be between 250 and 350
 
-```
+```groovy
 (Expr.dateIsToday(TRADE_DATE) && QUANTITY > 100) || (Expr.dateIsEqual(TRADE_DATE, "20220401") && (QUANTITY > 250 || QUANTITY < 350))
 ```
 
@@ -226,7 +228,7 @@ In Java's operator precedence, logical AND is evaluated before logical OR. For t
 You can also use the Java methods that correspond to each field type to build criteria.
 For example, if you are using a DESCRIPTION field with type STRING, you can write the following expression to check if the content starts with the string 'This':
 
-```
+```groovy
 DESCRIPTION.startsWith('This')
 ```
 
@@ -241,7 +243,7 @@ The methods available for each of the field types can be found in their Javadoc 
 * [DateTime](https://www.joda.org/joda-time/apidocs/org/joda/time/DateTime.html)
 
 ## Streaming data
-The [Data Server](/server/data-server/introduction/) is your source of streaming data. It provides a set of queries, each of which serves some or all fields from a specific table or view. These are your resources (along with the resources in the Request Server and the Event Handler). You need to know which queries are available to you, and more importantly, exactly what is available in each query.
+The [Data Server](/develop/server-capabilities/real-time-queries-data-server/) is your source of streaming data. It provides a set of queries, each of which serves some or all fields from a specific table or view. These are your resources (along with the resources in the Request Server and the Event Handler). You need to know which queries are available to you, and more importantly, exactly what is available in each query.
 
 When you request streaming data for an element, such as a [Grid Pro](/web/web-components/grids/grid-pro/grid-pro-connected/#grid-pro-genesis-datasource), the platform sends a **DATA_LOGON** message that includes any attributes you have defined for the element (such as `max-rows` and `max-view`). These attributes enable you to limit the number of rows returned, for example. 
 

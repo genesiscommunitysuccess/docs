@@ -3,6 +3,106 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     packages: [
         {
+            name: "@genesislcap/foundation-login",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/003_login",
+                api_docs: "docs/api",
+                img_dir: "docs/img",
+                readme: "index.mdx",
+                keywords: [
+                    "web",
+                    "login",
+                    "foundation login",
+                    "frontend",
+                    "ui",
+                    "micro-front-ends",
+                ],
+                tags: [
+                    "web",
+                    "login",
+                    "foundation login",
+                    "frontend",
+                    "ui",
+                    "micro-front-ends",
+                ],
+                pages: [
+                    {
+                        title: "Login",
+                        sidebar_label: "Login",
+                        id: "client-login",
+                    },
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/foundation-comms",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/002_server-communications/01_server-communications-docs",
+                api_docs: "docs/api",
+                readme: "index.mdx",
+                keywords: ["genesis", "foundation", "comms", "connect", "server-communications", "services"],
+                tags: [
+                    "connected",
+                    "comms",
+                    "connect",
+                    "services",
+                    "server-communications",
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/foundation-entity-management",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/005_grids/002_entity-manager",
+                api_docs: "docs/api",
+                img_dir: "docs/img",
+                readme: "index.mdx",
+                keywords: [
+                    "entity management",
+                    "frontend",
+                    "micro-front-ends",
+                    "profile management",
+                    "ui",
+                    "user management",
+                    "web",
+                ],
+                tags: [
+                    "entity management",
+                    "frontend",
+                    "micro-front-ends",
+                    "profile management",
+                    "ui",
+                    "user management",
+                    "web",
+                ],
+                pages: [
+                    {
+                        title: "Entity Manager",
+                        sidebar_label: "Entity Manager",
+                        id: "entity-manager",
+                    },
+                ],
+            },
+        },
+        {
             name: "@genesislcap/grid-pro",
             enabled: true,
             src: {
@@ -11,9 +111,9 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/005_grids/001_grid-pro",
+                directory: "./docs/001_develop/03_client-capabilities/005_grids/003_grid-pro",
                 api_docs: "docs/api",
-                readme: "01_grid-pro.mdx",
+                readme: "index.mdx",
                 keywords: ["genesis", "foundation", "ui", "grid", "grid-pro", "ag"],
                 tags: [
                     "connected",
@@ -24,8 +124,8 @@ exports.default = {
                 ],
                 pages: [
                     {
-                        title: "Grid Pro",
-                        sidebar_label: "Overview",
+                        title: "Enterprise Data Grid (Grid Pro)",
+                        sidebar_label: "Enterprise Data Grid (Grid Pro)",
                         id: "grid-pro",
                     },
                 ],
@@ -40,9 +140,9 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/005_grids/002_grid-tabulator",
+                directory: "./docs/001_develop/03_client-capabilities/005_grids/004_grid-tabulator",
                 api_docs: "docs/api",
-                readme: "01_grid-tabulator.mdx",
+                readme: "index.mdx",
                 keywords: ["genesis", "foundation", "ui", "grid", "grid-tabulator", "tabulator"],
                 tags: [
                     "connected",
@@ -53,8 +153,8 @@ exports.default = {
                 ],
                 pages: [
                     {
-                        title: "Grid Tabulator",
-                        sidebar_label: "Overview",
+                        title: "Connected Data Grid (Tabulator)",
+                        sidebar_label: "Connected Data Grid (Tabulator)",
                         id: "grid-tabulator",
                     },
                 ],
@@ -69,9 +169,9 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/006_charts/001_g2plot-chart",
+                directory: "./docs/001_develop/03_client-capabilities/006_g2plot-chart",
                 api_docs: "docs/api",
-                readme: "01_g2plot-chart.mdx",
+                readme: "index.mdx",
                 keywords: ["genesis", "foundation", "ui", "chart", "g2plot-chart", "g2plot"],
                 tags: [
                     "connected",
@@ -107,6 +207,127 @@ exports.default = {
                         title: "Smart forms",
                         sidebar_label: "Smart Forms",
                         id: "smart-forms",
+                    },
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/foundation-i18n",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/020_internationalization/01_internationalization-docs",
+                api_docs: "docs/api",
+                readme: "index.mdx",
+                keywords: ["genesis", "foundation", "i18n", "internationalization"],
+                tags: [
+                    "i18n",
+                    "internationalization",
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/foundation-fdc3",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/021_desktop-interoperability",
+                api_docs: "docs/api",
+                readme: "01_foundation-fdc3.mdx",
+                keywords: ["genesis", "foundation", "ui", "fdc3"],
+                tags: ["genesis", "foundation", "ui", "fdc3"],
+                pages: [
+                    {
+                        title: "Foundation FDC3",
+                        sidebar_label: "Foundation FDC3",
+                        id: "foundation-fdc3",
+                    },
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/foundation-openfin",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/021_desktop-interoperability",
+                api_docs: "docs/api",
+                readme: "01_foundation-openfin.mdx",
+                keywords: ["genesis", "foundation", "ui", "fdc3", "openfin"],
+                tags: ["genesis", "foundation", "ui", "fdc3", "openfin"],
+                pages: [
+                    {
+                        title: "Foundation Openfin",
+                        sidebar_label: "Foundation Openfin",
+                        id: "foundation-openfin",
+                    },
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/foundation-notifications",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/013_toast-notifications",
+                api_docs: "docs/api",
+                readme: "index.mdx",
+                keywords: ["genesis", "foundation", "notifications", "toast", "snackbar"],
+                tags: [
+                    "notifications",
+                    "toasts",
+                    "snackbar"
+                ],
+            },
+        },
+        {
+            name: "@genesislcap/foundation-layout",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/015_layout-management/",
+                api_docs: "docs/api",
+                img_dir: "docs/img",
+                readme: "10_foundation-layout.mdx",
+                keywords: [
+                    "web",
+                    "layout",
+                    "foundation layout",
+                    "frontend",
+                    "ui",
+                    "golden layout",
+                ],
+                tags: [
+                    "web",
+                    "layout",
+                    "foundation layout",
+                    "frontend",
+                    "ui",
+                    "golden layout",
+                ],
+                pages: [
+                    {
+                        title: "Foundation Layout",
+                        sidebar_label: "Foundation Layout",
+                        id: "foundation-layout",
                     },
                 ],
             },

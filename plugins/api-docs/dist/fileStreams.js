@@ -21,6 +21,8 @@ exports.createUrlTransformerSteam = createUrlTransformerSteam;
 const createFrontMatterTransformerStream = (manifestSettings, pageIndex) => new stream_1.Transform({
     transform(chunk, _, callback) {
         let page = manifestSettings.pages[pageIndex];
+        if (!page)
+            return;
         const allTags = []
             .concat(manifestSettings.tags || [])
             .concat(page?.tags || []);

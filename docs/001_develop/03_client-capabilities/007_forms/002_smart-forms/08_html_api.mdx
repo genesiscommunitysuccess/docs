@@ -1,6 +1,6 @@
 ---
-title: 'DOM API'
-sidebar_label: 'DOM API'
+title: 'Forms Declerative HTML API'
+sidebar_label: 'Forms Declerative HTML'
 id: foundation-forms-html-api
 keywords: [genesis, foundation, ui, forms, smart forms]
 tags:
@@ -11,9 +11,13 @@ tags:
   - smart forms
 ---
 
+The Forms Declarative HTML API allows developers to design and manage forms directly in HTML using intuitive, structured tags. It simplifies form creation by embedding validation rules, data bindings, and interactivity within HTML elements, minimizing the need for custom JavaScript. 
+
+## DOM API
+
 Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
 
-## Attributes
+### Attributes
 
 | Attribute | Type | Use | Example |
 |---|---|---|---|
@@ -22,7 +26,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 |hide-submit-button|`boolean`|Controls the visibility of the **Submit** button.|`<foundation-form hide-submit-button>`|
 |design-system-prefix|`string`|Name of the design system prefix that will be used in renderers.|`<foundation-form design-system-prefix="rapid">`|
 
-## Properties
+### Properties
 
 | Property | Type | Use | Example |
 |---|---|---|---|
@@ -32,20 +36,20 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 |renderers|`RendererEntry[]`|Allows you to provide the main set of renderers used by the form. If not provided, the built-in renderers are used by default.|`<foundation-form :renderers=${(x) => x.renderers}>`|
 |uischema	|`UiSchema`|UI schema used to define configuration of the layout and elements in the form. Check [UiSchema](./docs/api/foundation-forms.uischema.md) for possible options.|`<foundation-form :uischema=${(x) => x.uischema}>`|
 
-## Slots
+### Slots
 
 | Slot | Use |
 |---|---|
 |userActions|Using this slot enables you to override the default submit-button component.|
 
-## Parts
+### Parts
 
 | Part | Use |
 |---|---|
 |userActions|Using this part enables you to change the styles for the items in the userActions slot.|
 
 
-## Events fired 
+### Events fired 
 
 Events can be received by the emitting `<rapid-layout>`, or any parent element.
 
@@ -55,13 +59,8 @@ Events can be received by the emitting `<rapid-layout>`, or any parent element.
  | submit-success | `{ payload }` | Emitted when the form has no errors and the form has been submitted successfully. | `<foundation-form @submit-success="${() => ...}">`|
  | submit-failure | `{ payload, errors }` | Emitted when the form has errors after being submitted. | `<foundation-form @submit-failure="${() => ...}">`|
 
-## Events listened to
+### Events listened to
 
 This component doesn't listen to any public API events.
 
-## License
 
-Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
-
-### Licensed components
-Genesis low-code platform
