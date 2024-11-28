@@ -19,10 +19,7 @@ sidebar_position: 17
 
 # Genesis Foundation Store
 
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
-[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
-
-`foundation-store` leverages the DI container to provide a preformat, decoupled and testable way to manage application
+The `foundation-store` provides a decoupled and testable way to manage application
 state that adheres to our best practices. Using `foundation-store` is completely optional, as you may decide that your
 application doesn't warrant a store, or that you would prefer to use a store you are more familiar with. The system is
 flexible, so you can use whatever you like to handle application level state management, but you should be mindful of
@@ -31,20 +28,22 @@ degrading performance.
 ## Background
 
 Client apps today manage application state in different ways. These apps might leverage common third party stores likes
-Redux, or use none at all, peppering @attr and @observable properties in different classes, and at various levels of DOM
-hierarchy. With the latter business logic might start creeping into our components, every component becomes smart
-instead of being dumb, providing shared access to data becomes difficult, tests require lots of mocks, things get hard
-to refactor etc. We should aim to lift state where possible, and it makes sense to do so.
+Redux, or use none at all, peppering `@attr` and `@observable` properties (or equivalent state management in different frameworks)
+in different components, and at various levels of DOM hierarchy. With the latter business logic might start creeping into  components,
+every component becomes smart instead of being dumb, providing shared access to data becomes difficult, tests require lots of mocks,
+and things get hard to refactor etc. Large applications should aim to lift state where possible to bring all the benefits mentioned above.
 
-_We need to remember that although our components will be used in Genesis applications, they may also be used in
-isolation in third party client applications._
+## Quick start
 
-## Migration
+If you're familiar with state management libraries such as React's Redux you may find reading through the quick start guide to be all you require.
+It introduces a glossary of terms used in `foundation-store` as compared to Redux, and provides a quick look at a complete store setup.
 
-Hopefully you're keen to try `foundation-store`, and have used solutions like Redux in the past. If so you may find the
-following "Solution X" to `foundation-store` terminology migration guide beneficial.
+:::tip
+If you are new to the store concept, or are unsure of the integration points from your components to the store, see the more thorough example which guides you
+step-by-step [here](./client-state-management-examples).
+:::
 
-### Redux
+### Equivalent Redux terms
 
 - **Action**. Translates to a standard [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent).
 These event types are defined in a store's EventDetailMap. Here's the [StoreRootEventDetailMap](./docs/api/foundation-store.storerooteventdetailmap.md) for example.
@@ -62,15 +61,14 @@ Similar to the Reducer context above, however you should _NOT_ commit values to 
 - **Slice**. A store fragment. A part of the store with a specific purpose, domain model.
 - **Selector**. A simple getter on a store fragment.
 
-## Setup
+### Setup
 
+<!-- TODO link to fragments -->
 Create a root store.ts file somewhere, for example `./store/store.ts`. This will be the root store for the application,
 which may consist for other store fragments. Each fragment could be considered as a domain, with a single purpose. This
 setup allows us to isolate data and provide the component trees access to only the data they really need to function.
 
-Example root store: (insert see examples link)
-
-```typescript
+```typescript store.ts
 import {CustomEventMap, EventListenerMap, registerEmitter} from '@genesislcap/foundation-events';
 import {
   AbstractStoreRoot,
@@ -214,6 +212,8 @@ class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap, Interna
  * 10: Register the store which defines the DI key using the interface
  */
 export const Store = registerStore<Store>(DefaultStore, 'RootStore');
+
+// React and angular stores require a layer to work with the dependency injection. See later code snippet in this file
 ```
 
 Your root store is now ready to be injected into your application. Hopefully the above gives you a good idea of general
@@ -242,7 +242,66 @@ class DefaultTradeEntryUI extends AbstractStore<TradeEntryUI, TradeEntryUIEventD
 }
 
 export const TradeEntryUI = registerStore<TradeEntryUI>(DefaultTradeEntryUI, 'TradeEntryUI');
+
+// React and angular stores require a layer to work with the dependency injection. See later code snippet in this file
 ```
+
+### Angular injection layer
+
+To be able to access the store from your Angular component you need a class to wrap up the store dependency.
+You can add this to the bottom of the `store.ts` file.
+
+```typescript
+import { DI } from '@genesislcap/web-core';
+
+export function getStore(): Store {
+  return DI.getOrCreateDOMContainer().get(Store) as Store;
+}
+```
+
+You can then access the store via the `getStore` function.
+
+```typescript
+import { getStore } from './path/to/store';
+
+getStore(); // access the store
+```
+
+### React injection layer
+
+To be able to access the store from your React component you need a class to wrap up the store dependency.
+You can add this to the bottom of the `store.ts` file.
+
+```typescript
+import { DI } from '@genesislcap/web-core';
+
+class StoreService {
+  private store: any;
+
+  constructor() {
+    this.store = DI.getOrCreateDOMContainer().get(Store) as Store;
+  }
+
+  getStore() {
+    return this.store;
+  }
+
+  onConnected(event?: CustomEvent) {
+    this.store.onConnected(event);
+  }
+}
+
+export const storeService = new StoreService();
+```
+
+You can then access the store via the `storeService` import and using the getter function.
+
+```typescript
+import { storeService } from './path/to/store';
+
+storeService.getStore(); // access the store
+```
+
 
 ## Store events
 
