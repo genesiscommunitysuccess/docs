@@ -185,7 +185,7 @@ In the example below, `withTransformation` is used twice.
 * If the `ALTERNATE_TYPE` parameter value is null, then the Request Server will use `"UNKNOWN"` by default.
 * If the `ALTERNATE_TYPE` parameter has the value "RIC", then the transformation block will use the value of `INSTRUMENT_CODE` from the request. Otherwise, it will assign it the value "NOT_RIC" before making the database lookup. 
 
-```kotlin{5-16}
+```kotlin {5-16}
 requestReplies {
     requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
 

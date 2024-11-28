@@ -29,13 +29,6 @@ const config = {
   onBrokenMarkdownLinks: "warn", // please do NOT change this to 'warn', fix or remove your broken links instead
   onDuplicateRoutes: "throw",
   clientModules: ["./src/client-modules/genesislcap.js"],
-  scripts: [
-    {
-      src: "https://myaskai.com/ev-embed-chat-js-min?id=IxBBJkH6SbnXxwP5IBMjEVZX7alEdk",
-      id: "IxBBJkH6SbnXxwP5IBMjEVZX7alEdk",
-      defer: true,
-    },
-  ],
   plugins: [
     [
       "@docusaurus/plugin-client-redirects",

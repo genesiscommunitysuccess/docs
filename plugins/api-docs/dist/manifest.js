@@ -3,6 +3,44 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     packages: [
         {
+            name: "@genesislcap/foundation-login",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                img_dir: "docs/img",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/003_login",
+                api_docs: "docs/api",
+                img_dir: "docs/img",
+                readme: "index.mdx",
+                keywords: [
+                    "web",
+                    "login",
+                    "foundation login",
+                    "frontend",
+                    "ui",
+                    "micro-front-ends",
+                ],
+                tags: [
+                    "web",
+                    "login",
+                    "foundation login",
+                    "frontend",
+                    "ui",
+                    "micro-front-ends",
+                ],
+                pages: [
+                    {
+                        title: "Login",
+                        sidebar_label: "Login",
+                        id: "client-login",
+                    },
+                ],
+            },
+        },
+        {
             name: "@genesislcap/foundation-comms",
             enabled: true,
             src: {
@@ -57,8 +95,8 @@ exports.default = {
                 ],
                 pages: [
                     {
-                        title: "Real Time Data Grid (Entity Manager)",
-                        sidebar_label: "Real Time Data Grid (Entity Manager)",
+                        title: "Entity Manager",
+                        sidebar_label: "Entity Manager",
                         id: "entity-manager",
                     },
                 ],
@@ -131,7 +169,7 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/006_charts/002_g2plot-chart",
+                directory: "./docs/001_develop/03_client-capabilities/006_g2plot-chart",
                 api_docs: "docs/api",
                 readme: "index.mdx",
                 keywords: ["genesis", "foundation", "ui", "chart", "g2plot-chart", "g2plot"],
@@ -215,6 +253,28 @@ exports.default = {
             },
         },
         {
+            name: "@genesislcap/foundation-openfin",
+            enabled: true,
+            src: {
+                api_docs: "./docs/api",
+                readme: "./README.md",
+            },
+            output: {
+                directory: "./docs/001_develop/03_client-capabilities/021_desktop-interoperability/openfin",
+                api_docs: "docs/api",
+                readme: "01_foundation-openfin.mdx",
+                keywords: ["genesis", "foundation", "ui", "fdc3", "openfin"],
+                tags: ["genesis", "foundation", "ui", "fdc3", "openfin"],
+                pages: [
+                    {
+                        title: "Foundation Openfin",
+                        sidebar_label: "Foundation Openfin",
+                        id: "foundation-openfin",
+                    },
+                ],
+            },
+        },
+        {
             name: "@genesislcap/foundation-notifications",
             enabled: true,
             src: {
@@ -235,7 +295,7 @@ exports.default = {
             },
         },
         {
-            name: "@genesislcap/foundation-header",
+            name: "@genesislcap/foundation-layout",
             enabled: true,
             src: {
                 api_docs: "./docs/api",
@@ -243,19 +303,31 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/004_header",
+                directory: "./docs/001_develop/03_client-capabilities/015_layout-management/",
                 api_docs: "docs/api",
                 img_dir: "docs/img",
-                readme: "readme2.mdx",
-                keywords: ["genesis", "foundation", "header"],
+                readme: "10_foundation-layout.mdx",
+                keywords: [
+                    "web",
+                    "layout",
+                    "foundation layout",
+                    "frontend",
+                    "ui",
+                    "golden layout",
+                ],
                 tags: [
-                    "header",
+                    "web",
+                    "layout",
+                    "foundation layout",
+                    "frontend",
+                    "ui",
+                    "golden layout",
                 ],
                 pages: [
                     {
-                        title: "Foundation Header readme",
-                        sidebar_label: "Foundation Header",
-                        id: "foundation-header-readme",
+                        title: "Foundation Layout",
+                        sidebar_label: "Foundation Layout",
+                        id: "foundation-layout",
                     },
                 ],
             },

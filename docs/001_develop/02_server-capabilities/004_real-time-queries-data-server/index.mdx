@@ -222,7 +222,7 @@ Note that table indexes are NOT available in dataserver queries.
 
 In most cases, a single auth entity id is associated to one or more rows in a Data Server query, but in some rare scenarios there might be a one-to-one relationship. In the latter case, there is a configuration option named `rowLevelPermissions` which can be set to `true` to optimize the internal data structure that holds the cache information.
 
-```kotlin{4}
+```kotlin {4}
 query("ALL_COUNTERPARTYS", COUNTERPARTY) {
     permissioning {
         auth("COUNTERPARTY"){
@@ -281,21 +281,21 @@ query("ALL_BUYER_SELLER_TRADES", BUYER_SELLER_TRADE_VIEW){
             }
         }
         fields {
-            // If a user belows to the buyer counterparty, "COUNTERPARTY" value will be the seller name
+            // If a user belongs to the buyer counterparty, "COUNTERPARTY" value will be the seller name
             // in the reverse scenario it will be the buyer name
-            derivedField("COUNTERPARTY", STRING) { row, userData ->
+            derivedField("COUNTERPARTY", STRING) {
                 when {
-                    userData?.counterpartyId == row.buyerId -> row.sellerName
-                    userData?.counterpartyId == row.sellerId -> row.buyerName
+                    enriched?.counterpartyId == data.buyerId -> data.sellerName
+                    enriched?.counterpartyId == data.sellerId -> data.buyerName
                     else -> ""
                 }
             }
             // If a user belongs to the buyer counterparty, "DIRECTION" will be "BUY"
             // in the reverse scenario it will be "SELL"
-            derivedField("DIRECTION", STRING) { row, userData ->
+            derivedField("DIRECTION", STRING) {
                 when {
-                    userData?.counterpartyId == row.buyerId -> "BUY"
-                    userData?.counterpartyId == row.sellerId -> "SELL"
+                    enriched?.counterpartyId == data.buyerId -> "BUY"
+                    enriched?.counterpartyId == data.sellerId -> "SELL"
                     else -> ""
                 }
             }
@@ -359,7 +359,7 @@ query(POSITION) {
         join { userName, row -> FavouriteTrade.byUserName(userName) }
         fields {
             derivedField("IS_FAVOURITE", BOOLEAN) { row, favourite ->
-                row.code == favourite?.code
+                data.code == enriched?.code
             }
         }
     }
