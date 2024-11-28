@@ -31,7 +31,7 @@ Use cases:
     <TabItem value="genesis">
         Declaration
         ```html
-        <rapid-openfin-notification-listener></rapid-openfin-notification-listener>
+        <openfin-notification-listener></openfin-notification-listener>
         ```
 
         Usage
@@ -39,7 +39,7 @@ Use cases:
         @customElement({
             name: 'my-element',
             template: html`
-              <rapid-openfin-notification-listener
+              <openfin-notification-listener
                 resource-name="ALL_NOTIFY_ALERT_RECORDS",
                 :notificationsPlatform="${() => ({
                     id: 'your-platform-id',
@@ -58,7 +58,7 @@ Use cases:
                         placeholder: 'Dismiss',
                     },
                 ]}"
-                ></rapid-openfin-notification-listener>
+                ></openfin-notification-listener>
               `,
         })
         export class MyElement extends GenesisElement {}
@@ -68,7 +68,7 @@ Use cases:
     <TabItem value="react">
         Declaration
         ```html
-        <rapid-openfin-notification-listener></rapid-openfin-notification-listener>
+        <openfin-notification-listener></openfin-notification-listener>
         ```
 
         Usage
@@ -98,11 +98,11 @@ Use cases:
                 }
             }
             return (
-                <rapid-openfin-notification-listener
+                <openfin-notification-listener
                     ref={interopNotificationListenerRef}
                      resource-name="ALL_NOTIFY_ALERT_RECORDS"
                 >
-                </rapid-openfin-notification-listener>
+                </openfin-notification-listener>
             );
         }
     ```
@@ -111,7 +111,7 @@ Use cases:
 <TabItem value="angular">
     Declaration
     ```html
-    <rapid-openfin-notification-listener></rapid-openfin-notification-listener>
+    <openfin-notification-listener></openfin-notification-listener>
     ```
 
     Usage
@@ -120,11 +120,11 @@ Use cases:
     @Component({
         selector: 'my-root',
         template: `
-            <rapid-openfin-notification-listener
+            <openfin-notification-listener
                 #interopNotificationListenerRef
                 resource-name="ALL_NOTIFY_ALERT_RECORDS"
             >
-            </rapid-openfin-notification-listener>
+            </openfin-notification-listener>
         `,
         standalone: true,
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -182,7 +182,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
         <td>The name of the server resource that pushes notifications to the client, normally 'ALL_NOTIFY_ALERT_RECORDS'</td>
         <td>
             ```typescript
-            <rapid-openfin-notification-listener resource-name="ALL_NOTIFY_ALERT_RECORDS">
+            <openfin-notification-listener resource-name="ALL_NOTIFY_ALERT_RECORDS">
             ```
         </td>
     </tr>
@@ -209,7 +209,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
         <td>An array of configs for showing buttons. Buttons appear in notifications when the <code>condition</code> callback returns <code>true</code>. The action callback is called when the corresponding button is clicked</td>
         <td>
             ```typescript
-            <rapid-openfin-notification-listener :toastButtons=${() => [
+            <openfin-notification-listener :toastButtons=${() => [
                 {
                     condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
                     action: ({details, buttonElement, toastElement}) => {
@@ -229,7 +229,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
         <td>A config object containing: <code>id</code> - a string, the id of your openfin application, <code>icon</code> - a string, the url for the icon to be displayed in the Openfin notifications panel, and <code>title</code> - a string, the title for of the application that is creating notifications</td>
         <td>
             ```typescript
-            <rapid-openfin-notification-listener :notificationsPlatform="${() => ({
+            <openfin-notification-listener :notificationsPlatform="${() => ({
                 id: 'your-platform-id',
                 icon: 'http://url-to-your-icon.png',
                 title: 'your platform title'
