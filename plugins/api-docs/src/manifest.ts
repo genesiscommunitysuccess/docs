@@ -539,5 +539,37 @@ export default {
         ],
       },
     },
+    {
+      name: "@genesislcap/foundation-testing",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/024_testing/",
+        api_docs: "docs/api",
+        readme: "index.mdx",
+        keywords: ["genesis", "foundation", "ui", "testing"],
+        tags: [
+          "test",
+          "testing",
+          "frontend",
+          "ui",
+          "unit",
+          "end-to-end",
+          "e2e",
+          "uvu",
+          "playwright",
+        ],
+        pages: [
+          {
+            title: "Testing",
+            id: "client-testing",
+            sidebar_label: "Testing",
+          },
+        ],
+      },
+    },
   ],
 };
