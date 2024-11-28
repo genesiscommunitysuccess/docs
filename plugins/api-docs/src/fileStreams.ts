@@ -42,6 +42,8 @@ const createFrontMatterTransformerStream = (
     transform(chunk, _, callback) {
       let page = manifestSettings.pages[pageIndex];
 
+      if (!page) return;
+
       const allTags = (<string[]>[])
         .concat(manifestSettings.tags || [])
         .concat(page?.tags || []);

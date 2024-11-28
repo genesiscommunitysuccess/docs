@@ -1,3 +1,7 @@
+---
+pagination_prev: null
+---
+
 <!-- This file is prepended to any index.md api docs as part of the `api-docs` plugin to explain to users how to navigate the api docs -->
 # API documentation
 

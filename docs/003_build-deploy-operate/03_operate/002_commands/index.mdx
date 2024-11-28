@@ -18,6 +18,78 @@ Once an application has been built and zipped, you can install it in any another
 
 To ensure a correct installation, you must follow the product installation procedure.
 
+## Logging level for commands
+
+The logging level for Genesis commands is set to "WARN" by default. 
+
+To change the level for a command, set the environment variable `GENESIS_LOGGING_LEVEL` to any valid level ("ERROR", "WARN", "INFO", "DEBUG", "TRACE").
+
+If you set `GENESIS_LOGGING_LEVEL` to a non-valid level, it is automatically reset to the default.
+
+## `AppGen`
+
+<!-- The AppGen command has a list of possible arguments: -d, -t, -p, -pn  -->
+
+AppGen can be used to generate a fully working application from a dictionary file.
+
+Usually when creating a application, you would start with a schema; you then build Data Servers, Request Servers and Event Handlers on top to create your application. AppGen automates all this, and will generate the following new files:
+
+- Data Server: _application_**-dataserver.kts**
+- Request Server: _application_**-reqrep.kts**
+- Event Handler: _application_**-eventhandler.kts**
+- System processes: _application_**-processes.xml**
+- Service definitions: _application_**-service-definitions.xml
+
+###### Data Server and Request Server
+
+One block will be generated for each table in the database, complete with metadata (all fields on the table) and a field block that returns all fields on the table. For Request Servers, the inbound metadata will be based on the primary key.
+
+###### Event Handler
+
+The file for the Event Handler contains insert, amend and delete transactions for every table in the database.  All transactions support validation and meta data. If a field is marked as a sequence in the dictionary (i.e. generated ID) then the field is not specified on the metadata for inserts, but it will be specified on modifies and deletes.
+
+Deletes will have reduced metadata, as it is only necessary for the columns to satisfy the primary key to perform the delete.
+
+###### Parameters
+
+| Argument | Argument long name | Mandatory | Description | Restricted Values |
+| -- | -- | -- | -- | -- |
+| -d <!-- AppGen -d --> | dictionary file name | true | the name of the dictionary to read at startup |No |
+| -t <!-- AppGen -t --> | table name(s) | false | the table name(s) within the dictionary to read at startup. Multiple tables must be separated by spaces |No |
+| -p <!-- AppGen -p --> | port offset | true | the port range to use when generating the services file |No |
+| -pn <!-- AppGen -pn --> | product name | true | the name of the product to create |No |
+
+###### Examples
+
+This example has no `-t` option.
+
+```bash
+AppGen -d tas-dictionary.xml -p 4000 -pn tas
+```
+
+In this case, the dictionary to read is `tas-dictionary.xml`, the port offset is `4000` and the product name to generate is `tas`. Running this command results in the following structure being created:
+
+```bash
+tas/
+    /bin
+    /cfg/tas-dataserver2.xml
+        /tas-fields-dictionary.kts
+        /tas-processes.xml
+        /tas-reqrep.xml
+        /tas-service-definitions.xml
+        /tas-system-definition.kts
+        /tas-tables-dictionary.kts
+    /scripts/tas-tnHandler.gy
+```
+
+This example has a `-t` option, which specifies that only the table ORDER USER should be read from the source dictionary.
+
+```bash
+AppGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
+```
+
+The ORDER USER table will be appended to the files that were created in the tas folder.
+
 ## `CountRecords`
 
 This counts the number of records in the database, grouped by table; the results are printed to screen.
@@ -45,6 +117,32 @@ The example below gives a record count for two specific tables:
 CountRecords CHF_ORDERS CHF_TRADES
 ```
 
+## `CreateMissingSqlSequences`
+
+:::warning
+Stop all your application's processes before using this command.
+:::
+
+This command creates sequences in the database for ID fields that rely on auto-generated sequence values.
+
+The command checks to see which sequences exist already, and only creates new sequences where they do not exist. Consequently, if you run the command more than once, you will get the same result each time.
+
+This command is applicable only for SQL databases and should only be executed when you are [enabling Sequences for SQL databases](/develop/server-capabilities/data-model/#sequence).
+
+###### Syntax
+
+The `CreateMissingSqlSequences` command has no parameters.
+
+### Working with different databases
+The behavior of this command depends on which database implementation your application uses.
+
+- **If you are using a NOSQL database**, such as Foundation DB, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
+
+- **If you are using Oracle**, you can **not** set a sequence value directly. This command increments the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values that are already assigned in the cache, as the increment is also applied to these values.
+
+And remember, only use this command when all your applications have been stopped. After running `SetAutoIncrement`, you need to restart the server.
+
+
 ## `DbMon`
 
 DbMon is the Genesis database client, which provides its own command line. From here, you can navigate through the database tables in your application.
@@ -54,6 +152,58 @@ DbMon is the Genesis database client, which provides its own command line. From 
 `DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
 
 For full details, see our page on [DbMon](/build-deploy-operate/operate/commands/dbmon/).
+
+## `DictionaryBuilder`
+
+`DictionaryBuilder` connects to an RDBMS, parses schemas and uses this information to generate a Genesis tables dictionary. It supports SQLServer and PostgreSQL databases.
+
+The script accepts a series of arguments to establish a connection to the database and to control the behaviour of the script:
+
+| Arg | Long argument              | Mandatory | Description                                                                                                  |
+|-----|----------------------------|-----------|--------------------------------------------------------------------------------------------------------------|
+| -j  | --jdbcUrl \<jdbcUrl\>      | Yes       | JDBC URL of the database.                                                                                    |
+| -p  | --product \<productName\>  | Yes       | represents the product name and affects the output files                                                   |
+| -c  | --createFormat             |           | generates JSON ready for use with Genesis Create, instead of the standard tables dictionary                 |
+| -e  | --export                   |           | exports table data to CSV                                                                                    |
+<!-- | -g  | --genesisTables       |           | reads from existing Genesis database                                                                          | -->he
+| -t  | --tables \<table1,table2>  |           | table list to include, default is all tables                                                                 |
+| -o  | --output \<outputDir\>     |           | output directory for files; if the directory does not exist, it will be created. Defaults to project root.   |
+| -s  | --schema \<schemaId\>      |           | Schema name / System ID                                                                                      |
+|     | --tableid \<tableIdStart\> |           | Table ID start number, default = 2000; ignored if reading from Genesis DB.                                   |
+
+###### Example
+
+Generates a Genesis tables dictionary from a PostgreSQL database and exports data to a TABLE_NAME.csv file in the root of the project:
+```shell
+DictionaryBuilder --jdbcUrl jdbc:postgresql://localhost:5432/?user=postgres&password=docker --product my-app --export
+```
+
+The example below generates JSON for use with Genesis Create from an SqlServer database:
+```shell
+DictionaryBuilder --jdbcUrl jdbc:sqlserver://localhost:1433;trustServerCertificate=true;username=SA;password=VerySecure123 --product my-app --createFormat
+```
+
+The example below generates a Genesis tables dictionary from a PostgreSQL database called `myDatabase` 
+```shell
+DictionaryBuilder --jdbcUrl jdbc:postgresql://localhost:5432/myDatabase?user=postgres&password=docker --product my-app --export --tables user_trades
+```
+
+###### How the script behaves
+
+The script connects to the specified JDBC Url and retrieves the information it requires to build a Genesis tables dictionary.
+
+There are a few considerations you should be aware of:
+
+* Table and column names parsed in lowerCamelCase format will be transformed to UPPER_SNAKE_CASE
+* If there is no mapping available for the `java.sql.Type` the column will be ignored and the name logged in the output.
+* Exporting extremely large datasets with the `--export` flag is not supported.
+
+###### Keys and indexes
+Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based.
+
+Only unique indexes will be parsed as secondary keys.
+
+There is no concept of foreign keys in Genesis, so these are ignored.
 
 ## `DropTable`
 
@@ -607,7 +757,7 @@ By default, the command shows the following columns of information:
 | Memory       | The percentage of RAM being used by the process                                                                                             |
 | Message      | Displays any relevant message generated by the process                                                                                      |
 
-### Status of processes
+### Process statuses
 The key column in the display is **Status**, which can have the following values:
 
 - **RUNNING** the process has just started and is still initializing.
@@ -699,7 +849,7 @@ This enables you to define the data-retention policy. Data will be removed from 
 
 Example: For the TRADE table, you could decide to keep allocated trades for 60 days, and 30 days for the rest.
 
-To use this tool, you must have an _application_**-purger.kts* file in the application's config folder. Invoking the **PurgeTables** command will pick up all files that are found in the **$GENESIS_HOME/generated/cfg/** directory.
+To use this tool, you must have a `*-purger.kts` file in the application's `cfg`` folder. Invoking the **PurgeTables** command will pick up all files that are found in the `$GENESIS_HOME/generated/cfg/` directory.
 
 In order to enable syntax highlighting and autocompletion for purger files, you must add **genesis-environment** as a dependency of your application's **-config** module. See simple examples below for purger definitions:
 
@@ -707,7 +857,7 @@ A log file called `purge_<time_of_run>` will be created under the `$GENESIS_HOME
 
 The functions and filters below give you different ways of purging data.
 
-### Inject repository
+###### Inject repository
 You can inject any repository into the purger script; for example:
 
 ```kotlin
@@ -816,6 +966,63 @@ You need to provide:
 - and optional LONG or DATETIME field of table you want to purge and if not specified TIMESTAMP field of table is used
 
 `finally` clause: It is run for every record that is purged and used to add some extra functionality if needed
+
+## `ReconcileDatabaseSync`
+
+<!-- The ReconcileDatabaseSync command has a list of possible arguments: -d, -f, -H, -P, -u, -p, -s, -n, -i, -h -->
+
+This is used to check if there are differences between a local DB and a remote DB with common dictionary tables.
+
+Typically, this would be used to reconcile tables that are being kept in sync by the GENESIS_SYNC process.
+
+The local DB's details (host, port, user, etc) are read from the system definition file in the local environment. The remote DB's details are specified as options to the command.
+
+The tables to check are specified in the **genesis-sync-definition.xml** file. Here is a simple example that specifies two tables:
+
+```xml
+<sync>
+    <tables>
+        <table name="TRADE"/>
+        <table name="ORDER"/>
+    </tables>
+</sync>
+```
+
+If there are any differences found between the local and remote tables, then the result will be output to a text file. The location of this text file will be displayed on screen.
+There are 3 categories in the output: "Records Missing From Local", "Records Missing From Remote" and "Records Which Differ Between Remote and Local".
+
+Records are compared using the primary key field. The TIMESTAMP and RECORD_ID fields are extremely likely to differ,
+because the tables being compared are in separate databases. Therefore, these fields are not compared.
+
+###### Arguments
+
+| Argument | Argument long name | Mandatory | Description | Restricted Values |
+| -- | -- | -- | -- | -- |
+| -d <!-- ReconcileDatabaseSync -d --> | --dblayer <!-- ReconcileDatabaseSync --dblayer --> | true | Database Layer type | Yes: FDB, FDB2, SQL, SIMPLE |
+| -f <!-- ReconcileDatabaseSync -f --> | --fdb <!-- ReconcileDatabaseSync --fdb --> | false | FDB cluster file name |No |
+| -H <!-- ReconcileDatabaseSync -H --> | --host <!-- ReconcileDatabaseSync --host --> | false | Remote DB hostname |No |
+| -P <!-- ReconcileDatabaseSync -P --> | --port <!-- ReconcileDatabaseSync --port --> | false | Remote DB port |Yes: Number > 0 |
+| -u <!-- ReconcileDatabaseSync -u --> | --username <!-- ReconcileDatabaseSync --username --> | false | DB user username |No |
+| -p <!-- ReconcileDatabaseSync -p --> | --password <!-- ReconcileDatabaseSync --password --> | false | DB user password |No |
+| -s <!-- ReconcileDatabaseSync -s --> | --nullstring <!-- ReconcileDatabaseSync --nullstring --> | false | Evaluate null and empty strings as equal |No value required |
+| -n <!-- ReconcileDatabaseSync -n --> | --numdays <!-- ReconcileDatabaseSync --numdays --> | false | Only compare records with timestamps between now and the number of days specified. If either DB has matching records outside this timestamp range, this will not be flagged as a reconciliation difference |Yes: Number > 0 |
+| -i <!-- ReconcileDatabaseSync -i --> | --ignorefields <!-- ReconcileDatabaseSync --ignorefields --> | false | Comma-separated list of additional fields to ignore ("RECORD_ID" and "TIMESTAMP" are always ignored) |No |
+| -h <!-- ReconcileDatabaseSync -h --> | --help <!-- ReconcileDatabaseSync --help --> | false | Show usage information |No |
+
+###### Examples
+
+This is a simple run with a remote Postgres DB:
+
+```bash
+ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass
+```
+
+This example runs with a remote Postgres DB. it evaluates null and empty strings as equal; it compares records up to 2 days ago, and it ignores the field STATUS.
+
+```bash
+ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass -s -n 2 -i STATUS
+```
+
 
 ## `remap`
 
@@ -1183,221 +1390,3 @@ The `dependency` tag defines the processes that the current process is dependent
 The `loggingLevel` tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to declare explicitly that you would like to log all the received/sent network messages.
 
 The `classpath` tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a lib folder for one of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
-
-
-## `CreateMissingSqlSequences`
-
-:::warning
-Stop all your application's processes before using this command.
-:::
-
-This command creates sequences in the database for ID fields that rely on auto-generated sequence values.
-
-The command checks to see which sequences exist already, and only creates new sequences where they do not exist. Consequently, if you run the command more than once, you will get the same result each time.
-
-This command is applicable only for SQL databases and should only be executed when you are [enabling Sequences for SQL databases](/develop/server-capabilities/data-model/#sequence).
-
-###### Syntax
-
-The `CreateMissingSqlSequences` command has no parameters.
-
-### Working with different databases
-The behavior of this command depends on which database implementation your application uses.
-
-- **If you are using a NOSQL database**, such as Foundation DB, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command sets the value in the database, which corresponds to the first value in the next range to be allocated.
-
-- **If you are using Oracle**, you can **not** set a sequence value directly. This command increments the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values that are already assigned in the cache, as the increment is also applied to these values.
-
-And remember, only use this command when all your applications have been stopped. After running `SetAutoIncrement`, you need to restart the server.
-
-## `DictionaryBuilder`
-
-`DictionaryBuilder` connects to an RDBMS, parses schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
-
-The script accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behavior (e.g. product name, single dictionary file or composed, etc).
-
-<!-- The DictionaryBuilder command has a list of possible arguments: -c, -d, -h, -H, -i, -l, -o, -p, -P, -R, -s, -t, -U, -V -->
-
-###### Syntax
-
-| Short | Long Argument                          | Mandatory | Description                                                                                                               |
-|----|----------------------------------------|----|--------------------------------------------------------------------------------------------------------------------------|
-| -c <!-- DictionaryBuilder -c  -->  | --comments  <!-- DictionaryBuilder -c  -->                                      |     | Include original SQL in Comments defaults to true                                                                         |
-| -d <!-- DictionaryBuilder -d  -->  | --databaseName=\<databaseName\>  <!-- DictionaryBuilder --databaseName=\  -->   | Yes | Database name                                                                                                             |
-| -h <!-- DictionaryBuilder -h  -->  | --help  <!-- DictionaryBuilder --help  -->                                      |     | Show this help message and exit.                                                                                          |
-| -H <!-- DictionaryBuilder -H  -->  | --host=\<hostname\>   <!-- DictionaryBuilder --host=[HOST]  -->                 | Yes | The database hostname.                                                                                                    |
-| -i <!-- DictionaryBuilder -i  -->  | --tableid=\<tableIdStart\>  <!-- DictionaryBuilder --tableid=[TABLE ID]  -->    |     | Table Id start number, defaults = 0                                                                                       |
-| -l <!-- DictionaryBuilder -l  -->  | --tables=\<tables\>\[,\<tables\>...\] <!-- DictionaryBuilder --tables=\  -->    |     | table list to include, default is all tables                                                                              |
-| -o <!-- DictionaryBuilder -o  -->  | --output=\<outputDirectory\>  <!-- DictionaryBuilder --output=[DIRECTORY]  -->  |     | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created             |
-| -p <!-- DictionaryBuilder -p  -->  | --port=\<port\>  <!-- DictionaryBuilder --port=[PORT]  -->                      | Yes | The database port                                                                                                        |
-| -P <!-- DictionaryBuilder -P  -->  | --password\[=\<password\>\]  <!-- DictionaryBuilder --password=[PASSWORD]  -->  | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively |
-| -R <!-- DictionaryBuilder -R  -->  | --product=\<productName\>   <!-- DictionaryBuilder --productName=[NAME]  -->    | Yes | Represents the product name and affects the output file                                                                 |
-| -s <!-- DictionaryBuilder -s  -->  | --sid=\<oracleSidId\>  <!-- DictionaryBuilder --sid=[ID]  -->                   |     | The Oracle System ID if using oracle, or the schema ID if using MSSQL                                                    |
-| -t <!-- DictionaryBuilder -t  -->  | --type=\<databaseType\>  <!-- DictionaryBuilder --type=[DB TYPE]  -->           | Yes | Database type, valid values: MSSQL, Oracle, Postgres                                                                      |
-| -U <!-- DictionaryBuilder -U  -->  | --username=\<username\>  <!-- DictionaryBuilder --username=[USERNAME]  -->      | Yes | Username                                                                                                                  |
-| -V <!-- DictionaryBuilder -V  -->  | --version   <!-- DictionaryBuilder --version=[VERSION]  -->                     |     | Print version information and exit                                                                                       |
-
-You can use double-dash notation for any argument.
-
-### Example
-
-```bash
-DictionaryBuilder -u TAS -p my_password -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
-```
-
-### How the script behaves
-
-The script tries to connect to the RDBMS currently specified in the arguments. It generates Genesis dictionary fields for column names and their types, and it creates tables with their fields and keys.
-
-There are a few considerations you should be aware of:
-
-* If a column name (e.g. DATE) is found in several tables, and it always has the same type, only one field will be specified in the dictionary. However, if the same column name is found in different tables with different types, a new field will be created for each type, keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so you can fix the name and/or type it manually later on.
-* The types are mapped from [http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html "http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html") to Genesis dictionary types. Each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate; you must check the results for correctness.
-* If there is no mapping available for the `java.sql.Type` retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type `STRING`. This event will be shown on standard output too, so you can know that there is an uncommon type that you should take care of.
-* Every time a table is successfully parsed, the script will give feedback: `TABLE USERS complete`.
-* Views are not parsed.
-
-#### Keys and indexes
-Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based.
-
-Only unique indexes will be parsed as secondary keys.
-
-There is no concept of foreign keys in Genesis, so these are ignored.
-
-Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE).
-
-### Type mapping
-
-| Genesis Type | JDBC Types |   |   |   |   |   |   |
-| -- | -- | -- | -- | -- |
-| STRING | CHAR | LONGNVARCHAR | LONGVARCHAR | NCHAR | NVARCHAR | VARCHAR | CLOB |
-| LONG | BIGINT |   |   |   |   |   |   |
-| RAW | BINARY | LONGVARBINARY | VARBINARY | BLOB |   |   |   |
-| INT | INTEGER | SMALLINT | TINYINT |   |   |   |   |
-| DOUBLE | FLOAT | DOUBLE |   |   |   |   |   |
-| BIGDECIMAL | DECIMAL |   |   |   |   |   |   |
-| DATETIME | TIMESTAMP |   |   |   |   |   |   |
-| BOOLEAN | BOOLEAN |   |   |   |   |   |   |
-| DATE | DATE |   |   |   |   |   |   |
-| TIME | TIME |   |   |   |   |   |   |
-
-## `ReconcileDatabaseSync`
-
-<!-- The ReconcileDatabaseSync command has a list of possible arguments: -d, -f, -H, -P, -u, -p, -s, -n, -i, -h -->
-
-This is used to check if there are differences between a local DB and a remote DB with common dictionary tables.
-
-Typically, this would be used to reconcile tables that are being kept in sync by the GENESIS_SYNC process.
-
-The local DB's details (host, port, user, etc) are read from the system definition file in the local environment. The remote DB's details are specified as options to the command.
-
-The tables to check are specified in the **genesis-sync-definition.xml** file. Here is a simple example that specifies two tables:
-
-```xml
-<sync>
-    <tables>
-        <table name="TRADE"/>
-        <table name="ORDER"/>
-    </tables>
-</sync>
-```
-
-If there are any differences found between the local and remote tables, then the result will be output to a text file. The location of this text file will be displayed on screen.
-There are 3 categories in the output: "Records Missing From Local", "Records Missing From Remote" and "Records Which Differ Between Remote and Local".
-
-Records are compared using the primary key field. The TIMESTAMP and RECORD_ID fields are extremely likely to differ,
-because the tables being compared are in separate databases. Therefore, these fields are not compared.
-
-### Options
-
-| Argument | Argument long name | Mandatory | Description | Restricted Values |
-| -- | -- | -- | -- | -- |
-| -d <!-- ReconcileDatabaseSync -d --> | --dblayer <!-- ReconcileDatabaseSync --dblayer --> | true | Database Layer type | Yes: FDB, FDB2, SQL, SIMPLE |
-| -f <!-- ReconcileDatabaseSync -f --> | --fdb <!-- ReconcileDatabaseSync --fdb --> | false | FDB cluster file name |No |
-| -H <!-- ReconcileDatabaseSync -H --> | --host <!-- ReconcileDatabaseSync --host --> | false | Remote DB hostname |No |
-| -P <!-- ReconcileDatabaseSync -P --> | --port <!-- ReconcileDatabaseSync --port --> | false | Remote DB port |Yes: Number > 0 |
-| -u <!-- ReconcileDatabaseSync -u --> | --username <!-- ReconcileDatabaseSync --username --> | false | DB user username |No |
-| -p <!-- ReconcileDatabaseSync -p --> | --password <!-- ReconcileDatabaseSync --password --> | false | DB user password |No |
-| -s <!-- ReconcileDatabaseSync -s --> | --nullstring <!-- ReconcileDatabaseSync --nullstring --> | false | Evaluate null and empty strings as equal |No value required |
-| -n <!-- ReconcileDatabaseSync -n --> | --numdays <!-- ReconcileDatabaseSync --numdays --> | false | Only compare records with timestamps between now and the number of days specified. If either DB has matching records outside this timestamp range, this will not be flagged as a reconciliation difference |Yes: Number > 0 |
-| -i <!-- ReconcileDatabaseSync -i --> | --ignorefields <!-- ReconcileDatabaseSync --ignorefields --> | false | Comma-separated list of additional fields to ignore ("RECORD_ID" and "TIMESTAMP" are always ignored) |No |
-| -h <!-- ReconcileDatabaseSync -h --> | --help <!-- ReconcileDatabaseSync --help --> | false | Show usage information |No |
-
-### Examples
-
-This is a simple run with a remote Postgres DB:
-
-```bash
-ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass
-```
-
-This example runs with a remote Postgres DB. it evaluates null and empty strings as equal; it compares records up to 2 days ago, and it ignores the field STATUS.
-
-```bash
-ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass -s -n 2 -i STATUS
-```
-
-
-## `AppGen`
-
-<!-- The AppGen command has a list of possible arguments: -d, -t, -p, -pn  -->
-
-AppGen can be used to generate a fully working application from a dictionary file.
-
-Usually when creating a application, you would start with a schema; you then build Data Servers, Request Servers and Event Handlers on top to create your application. AppGen automates all this, and will generate the following new files:
-
-- Data Server: _application_**-dataserver.kts**
-- Request Server: _application_**-reqrep.kts**
-- Event Handler: _application_**-eventhandler.kts**
-- System processes: _application_**-processes.xml**
-- Service definitions: _application_**-service-definitions.xml
-
-### Data Server and Request Server
-
-One block will be generated for each table in the database, complete with metadata (all fields on the table) and a field block that returns all fields on the table. For Request Servers, the inbound metadata will be based on the primary key.
-
-### Event Handler
-
-The file for the Event Handler contains insert, amend and delete transactions for every table in the database.  All transactions support validation and meta data. If a field is marked as a sequence in the dictionary (i.e. generated ID) then the field is not specified on the metadata for inserts, but it will be specified on modifies and deletes.
-
-Deletes will have reduced metadata, as it is only necessary for the columns to satisfy the primary key to perform the delete.
-
-### Parameters
-
-| Argument | Argument long name | Mandatory | Description | Restricted Values |
-| -- | -- | -- | -- | -- |
-| -d <!-- AppGen -d --> | dictionary file name | true | the name of the dictionary to read at startup |No |
-| -t <!-- AppGen -t --> | table name(s) | false | the table name(s) within the dictionary to read at startup. Multiple tables must be separated by spaces |No |
-| -p <!-- AppGen -p --> | port offset | true | the port range to use when generating the services file |No |
-| -pn <!-- AppGen -pn --> | product name | true | the name of the product to create |No |
-
-### Examples
-
-This example has no `-t` option.
-
-```bash
-AppGen -d tas-dictionary.xml -p 4000 -pn tas
-```
-
-In this case, the dictionary to read is `tas-dictionary.xml`, the port offset is `4000` and the product name to generate is `tas`. Running this command results in the following structure being created:
-
-```bash
-tas/
-    /bin
-    /cfg/tas-dataserver2.xml
-        /tas-fields-dictionary.kts
-        /tas-processes.xml
-        /tas-reqrep.xml
-        /tas-service-definitions.xml
-        /tas-system-definition.kts
-        /tas-tables-dictionary.kts
-    /scripts/tas-tnHandler.gy
-```
-
-This example has a `-t` option, which specifies that only the table ORDER USER should be read from the source dictionary.
-
-```bash
-AppGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
-```
-
-The ORDER USER table will be appended to the files that were created in the tas folder.

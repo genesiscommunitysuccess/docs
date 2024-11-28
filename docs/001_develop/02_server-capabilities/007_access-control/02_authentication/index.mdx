@@ -235,7 +235,7 @@ The following variables are used to configure an LDAP `connection`, details for 
 
 Example ldap connection:
 
-```kotlin{3-5}
+```kotlin {3-5}
 security {
   authentication {
     ldap {
@@ -322,7 +322,7 @@ Default value: 5
 
 ### `retry`
 
-```kotlin{5-8}
+```kotlin {5-8}
 security {
   authentication {
     ...
@@ -468,7 +468,7 @@ This can be helpful in combination with `customPermissions` blocks being set in 
 The `user` record is provided as a parameter, and there are three properties to set:
 * permissions - a mutable list containing all the right codes associated with the user. Given its mutability, codes can be added or removed.
 * profiles - a mutable list containing all the profiles associated with the user.  Given its mutability, profiles can be added or removed.
-* userPreferences - a [GenesisSet](../../03_server/10_network-messages/02_genesisset.mdx) object containing additional fields provided as part of the [loginAck](#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
+* userPreferences - a GenesisSet object containing additional fields provided as part of the [loginAck](#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
 
 In this example an `entitlementUtils` object wraps an external API we can call to check the user's name has access.
 
