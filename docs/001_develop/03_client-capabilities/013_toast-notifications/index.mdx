@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 
-`foundation-notifications` package is used for creating and displaying various types of notifications including alert, toast, banner, snackbar and dialog. These notifications are configurable and can be used in different scenarios ranging from status update to interactive user alerts.
+`foundation-notifications` package is used for creating and displaying various types of notifications including `alert`, `toast`, `banner`, `snackbar` and `dialog`. These notifications are configurable and can be used in different scenarios ranging from status update to interactive user alerts.
 
 Notifications can be centrally managed within an application using `notification-listener` component, ensuring consistent user experience. With the help of different notification components and configurations, this package allows users to create a variety of notifications effortlessly.
 
@@ -71,10 +71,10 @@ Lets look at an example of one of the many notification components in this modul
 ## Notification Components
 Here is a list of available notification components in Genesis's `foundation-notifications` package:
 * **Alert**: `Alerts` are quick messages that share important information without interrupting the user.
-* **Toast**: These are short, auto-closing notifications that ar displayed at edge of screen and are ideal for transient messages like success confirmations or error notifications.
+* **Toast**: These are short, auto-closing notifications that are displayed at edge of screen and are ideal for transient messages like success confirmations or error notifications.
 * **Banner**: `banner` is used to show important notifications such as messages for system update. It appears on `top` of screen.
 * **Snackbar**: These are interactive notifications that appear at bottom of screen. `snackbar` are persistent until dismissed.
-* **Dialog**: `dialog` is used for displaying critical notifications as they block the underlying interface until dismissed by user action. one example will be confirmation dialog shown on deleting a user.
+* **Dialog**: `dialog` is used for displaying critical notifications as they block the underlying interface until dismissed by user action. One example will be confirmation dialog shown on deleting a user.
 
 ## Installation
 
@@ -91,24 +91,14 @@ To enable this module in your application, follow the steps below.
 ```
 
 
-### Notification event listener
-
-* The App need to create notification-listener at top of the component tree.
-
-* Any child under notification-listener component can dispatch custom NotificationEvent event
-
-* The custom event is handled by notification-listener component and based on event payload
-  it displays notification component according to payload
-
-
-## Notification components explanation with examples:
+## Understanding notification components with examples:
 The notifications component implemented by `foundation-notifications` package are designed to serve specific use cases. These components aids users in providing timely feedback, warning or interactive prompts.
 
 ### Alert
 
-`alerts` are simple. non-intrusive notifications that are used for giving information to user without interrupting their workflow. They are great for showing messages that don't require user interaction such as updates, confirmations or warnings. It functions similarly to the built-in JavaScript alert() method
+`alerts` are simple, non-intrusive notifications that are used for giving information to user without interrupting their workflow. They are great for showing messages that don't require user interaction such as updates, confirmations or warnings. It functions similarly to the built-in JavaScript **alert()** method
 
-Let's look at an example of using alerts.
+Here's an example of using `alerts` with the [showNotificationAlert](./docs/api/foundation-notifications.shownotificationalert) method from the package.For the parameters, refer to [AlertStructure](./docs/api/foundation-notifications.alertstructure) in the package API documentation.
 
 <AlertDemo />
 <br/>
@@ -131,10 +121,9 @@ Let's look at an example of using alerts.
 ```
 
 ### Toast
-`Toast` notifications are short, auto-closing notifications that ar displayed at edge of screen. They are used for transient messages like success confirmations, error notifications or updates that don't require user acknowledgement.
+`Toast` notifications are short, auto-closing notifications that are displayed at edge of the screen. They are used for transient messages like success confirmations, error notifications or updates that don't require user acknowledgement.
 
-As mentioned before, they automatically close after a specific duration by using `autoClose` and `closeTimeout` options. Like `snackbar`, they can be styled using the `type` option that supports `error, success, warning and info` styles.
-
+Here's an example of using `toast` with the [showNotificationToast](./docs/api/foundation-notifications.shownotificationtoast) method from the package.For the parameters, refer to [ToastStructure](./docs/api/foundation-notifications.toaststructure) in the package API documentation.
 <ToastDemo />
 <br/>
 
@@ -166,10 +155,11 @@ As mentioned before, they automatically close after a specific duration by using
     }
   }
 ```
+As mentioned before, they automatically close after a specific duration by using `autoClose` and `closeTimeout` options. Like `snackbar`, they can be styled using the `type` option that supports `error, success, warning and info` styles.
 
 ### Banner
 `Banner` notifications are used for delivering key messages and appears at `top` of the screen. It supports `confirming` and `dismissing` actions with callbacks.
-Lets look at an example of `banner` component:
+Here's an example of using `banner` with the [showNotificationBanner](./docs/api/foundation-notifications.shownotificationbanner) method from the package. For the parameters, refer to [BannerStructure](./docs/api/foundation-notifications.bannerstructure) in the package API documentation.
 <BannerDemo />
 <br/>
 
@@ -208,7 +198,7 @@ Lets look at an example of `banner` component:
  
  `type` property in snackbar config can be used to set the notification style. Supported types are `error`,`success`, `info` or `warning`.
 
-Lets look an example of snackbar with an action.
+Here's an example of using `snackbar` with the [showNotificationSnackbar](./docs/api/foundation-notifications.shownotificationSnackbar) method from the package.For the parameters, refer to [SnackbarStructure](./docs/api/foundation-notifications.snackbarstructure) in the package API documentation.
 
 <SnackbarDemo />
 <br/>
@@ -263,7 +253,7 @@ This notification component uses a modal-like window to display notification. `D
 
 One of the most common use case for dialog is `confirming before deleting`.
 
-An example for using `dialog` component is shown in [Example](TODO: add link here) section. 
+An example for using `dialog` component is shown in the Example section above. 
 Multiple action buttons can be shown in a dialog by using `confirmingActions` property as shown in below snippet:
 
 ```typescript
@@ -286,6 +276,85 @@ showNotificationDialog(
 );
 ```
 
+
+## Notification listener Component
+
+`rapid-notification-listener` component is a key utility in Genesis that listens for notifications event dispatched form any part of your application. It processes the event payload and dynamically displays the appropriate notification component (e.g., `Alert`, `Toast`, `Dialog`, etc.).
+
+By centralizing notification management, the `notification-listener` makes it easy to handle different types of notification in a consistent and modular way.
+
+The client app need to create `notification-listener` at top of the component tree. Any child under `notification-listener` component can dispatch custom **NotificationEvent** event
+
+### Example: Usage of Notification listener
+Lets look at code example to setup and use the `notification-listener` component. You will need to follow the following steps to achieve this:
+
+**1. Wrap your application with the notification-listener**
+
+As discussed earlier `notification-listener` component needs to be placed at the top of component tree to ensure it can capture events from any child component. 
+```typescript
+  <rapid-notification-listener>
+    <AppContent/>
+  </rapid-notification-listener>
+```
+
+**2. Dispatching notification using NOTIFICATION_EVENT**
+
+To dispatch notification, you can use [NotificationEvent.NOTIFICATION_EVENT](./docs/api/foundation-notifications.notificationevent.md). You can specify the type of notification component you want to display in the `config` object. For this example we are displaying snackbar.
+
+```typescript
+this.$emit( NotificationEvent.NOTIFICATION_EVENT,
+  {
+    title: 'Important message',
+    body: 'Lorem ipsum',
+    config: {
+      snackbar: {
+        confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+        type: 'error',
+        autoClose: true
+      },
+    },
+  } as NotificationStructure,)
+```
+
+**3. Provide a UI element to trigger notification**
+
+Now you can trigger your notification on clicking on a UI element like button.
+
+
+Lets complete the above example and add a button in there to trigger the notification event.
+```typescript
+
+  import {NotificationEvent, NotificationStructure} from '@genesislcap/foundation-notifications'
+  ...
+  @customElement({
+    name: 'my-element',
+    template: html`
+    <rapid-notification-listener>
+      <div class="container">
+        <rapid-button @click=${(x) => x.triggerNotification()}>Show Notification</rapid-button>
+      </div>
+    </rapid-notification-listener>
+    `,
+  })
+  export class MyElement extends GenesisElement {
+    triggerNotification() {
+      this.$emit( NotificationEvent.NOTIFICATION_EVENT,
+        {
+          title: 'Important message',
+          body: 'Lorem ipsum',
+          config: {
+            snackbar: {
+              confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+              type: 'error',
+              autoClose: true
+            },
+          },
+        } as NotificationStructure,)
+    }
+  }
+```
+
+Additionally we can also provide `resource-name` attribute to `notification-listener` component. This attribute allows the component to connect to a datasource and listen to the notifications on actions like `insert`, `update` or `delete` performed on the specified `resource-name`.
 
 
 ## License
