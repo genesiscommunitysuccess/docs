@@ -17,6 +17,8 @@ tags:
 sidebar_position: 18
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import BaseStore from '../../../_includes/_base_store_setup.mdx'
 
 This page guides you through installing the `foundation-store` in your legacy project. This isn't recommended - all new applications
@@ -42,7 +44,80 @@ Next you need to add in the base store configuration. Once you've followed this 
 
 <BaseStore />
 
-## Store events
+## Genesis router wiring
+
+If you are using a Genesis syntax project then you need to wire in the store into your application router. Components that interact with the store will individually require access, but there are steps required at the top level to create the store service. You need to inject the store into the class where you use the router in the template. This is very likely to be your `MainApplication` class.
+
+`main.ts`
+```typescript {10}
+@customElement({
+  name,
+  template,
+  styles,
+})
+export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
+  @App app: App;
+  @Connect connect!: Connect;
+  @Container container!: Container;
+  @Store store: Store;
+}
+```
+
+`main.template.ts`
+```typescript {4}
+export const MainTemplate: ViewTemplate<MainApplication> = html`
+  <foundation-router
+    :config=${(x) => x.config}
+    :store=${(x) => x.store}
+  ></foundation-router>
+`;
+```
+
+## Store initialisation events
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+  You need to inject the store into the class where you use the router in the template. This is very likely to be your `MainApplication` class.
+
+`main.ts`
+```typescript {10}
+@customElement({
+  name,
+  template,
+  styles,
+})
+export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
+  @App app: App;
+  @Connect connect!: Connect;
+  @Container container!: Container;
+  @Store store: Store;
+}
+```
+
+`main.template.ts`
+```typescript {4}
+export const MainTemplate: ViewTemplate<MainApplication> = html`
+  <foundation-router
+    :config=${(x) => x.config}
+    :store=${(x) => x.store}
+  ></foundation-router>
+`;
+```
+
+
+  </TabItem>
+  <TabItem value="react">
+
+
+  </TabItem>
+  <TabItem value="angular">
+
+
+  </TabItem>
+</Tabs>
+
 
 ### `'store-connected'`
 
