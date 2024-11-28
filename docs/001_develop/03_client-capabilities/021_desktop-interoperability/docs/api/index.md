@@ -17,5 +17,5 @@ Welcome to the API documentation for this package.
 
 |  Package | Description |
 |  --- | --- |
-|  [@genesislcap/foundation-openfin](./foundation-openfin.md) |  |
+|  [@genesislcap/foundation-fdc3](./foundation-fdc3.md) |  |
 

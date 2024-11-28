@@ -1,3 +1,4 @@
+// @todo: Remove after updating the documentation where this component is used as QuickCard.
 import React from "react";
 import { Card as CardMaterial } from '@mui/material'
 

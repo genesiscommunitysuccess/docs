@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid } from '@mui/material';
+import './CardList.css';
 import Card from './Card';
 
 const generateClassNameFromHref = (href) => {
@@ -8,14 +9,14 @@ const generateClassNameFromHref = (href) => {
 
 export default function CardList({ inRow = 1, xs = 12, sm = 6, md = 4, items }) {
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} className="card-list">
       {items.map((item, index) => item.link && (
         <Grid 
           item 
           xs={xs !== 12 ? xs : 12 / inRow} 
           sm={sm !== 6 ? sm : 12 / inRow} 
           md={md !== 4 ? md : 12 / inRow} 
-          key={index} 
+          key={index}
           sx={{ padding: '1%' }}
           className={generateClassNameFromHref(item.link)}
         >
@@ -23,7 +24,7 @@ export default function CardList({ inRow = 1, xs = 12, sm = 6, md = 4, items }) 
             heading={item.heading}
             link={item.link}
             text={item.text}
-            icon={item.icon}
+            imageUrl={item.imageUrl}
           />
         </Grid>
       ))}
