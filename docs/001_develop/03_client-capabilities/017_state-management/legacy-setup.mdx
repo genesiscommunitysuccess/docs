@@ -14,7 +14,140 @@ tags:
   - injection
   - state
   - reducer
-sidebar_position: 17
+sidebar_position: 18
 ---
 
-Setup
+## Installation
+
+To enable this module in your application, follow the steps below.
+
+1. Add `@genesislcap/foundation-store` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../../../web/basics/package-json-basics/) page.
+
+```json
+{
+  ...
+  "dependencies": {
+    ...
+    "@genesislcap/foundation-store": "latest"
+    ...
+  },
+  ...
+}
+```
+
+
+## Store events
+
+### `'store-connected'`
+
+In your main application class, likely `./src/main/main.ts`, you need to fire a `'store-connected'` event in-order to
+fully initialise the store.
+
+```typescript
+// ./main/main.ts
+
+type EventMap = StoreEventDetailMap & {...}; // < whatever other events you allow your custom element to emit
+
+/**
+ * MainApplication
+ *
+ * @fires store-connected - Fires a custom 'store-connected' event after connection to connect the store.
+ * @fires store-ready - Fires a custom 'store-ready' event after connection to ready the store.
+ * @fires store-disconnected - Fires a custom 'store-disconnected' event after disconnection to unbind the store.
+ *
+ * @public
+ */
+@customElement({ name, template, styles })
+export class MainApplication extends EventEmitter<EventMap>(FASTElement) {
+  /**
+   * @public
+   */
+  @Store store: Store; // < injected root store
+
+  /**
+   * @public
+   */
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListeners();
+    this.readyStore();
+  }
+
+  /**
+   * @public
+   */
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListeners();
+    this.disconnectStore();
+  }
+
+  /**
+   * @internal
+   */
+  protected addEventListeners() {
+    this.addEventListener('store-connected', this.store.onConnected);
+  }
+
+  /**
+   * @internal
+   */
+  protected removeEventListeners() {
+    this.removeEventListener('store-connected', this.store.onConnected);
+  }
+
+  /**
+   * @internal
+   */
+  protected readyStore() {
+    this.$emit('store-connected', this);
+    /**
+     * Do some other work if needed.
+     */
+    this.$emit('store-ready', true);
+  }
+
+  /**
+   * @internal
+   */
+  protected disconnectStore() {
+    this.$emit('store-disconnected');
+  }
+}
+```
+
+The `'store-connected'` event handler needs to be explicitly bound. When the root store handles `'store-connected'`,
+it auto binds all the store event listeners to the rootElement.
+
+At this point you can start emitting strongly typed store events, and they will be handled by their corresponding store.
+See [EventEmitter](src/.foundation/events/eventEmitter/README.md) for more information.
+
+### `'store-ready'`
+
+We've created an explicit store ready event to indicate when the store is ready to use, as you may wish to do some
+additional work upfront. It's not a hard requirement to emit this, but is considered best practice. If you've no work to
+do, you can just emit this right after `'store-connected'`.
+
+```typescript
+// ./main/main.ts
+
+this.$emit('store-connected', this);
+/**
+ * Do some other work if needed.
+ */
+this.$emit('store-ready', true);
+```
+
+### `'store-disconnected'`
+
+Emitting `'store-disconnected'` will remove all the previously bound event listeners.
+
+```typescript
+// ./main/main.ts
+
+disconnectedCallback() {
+  super.disconnectedCallback();
+  this.$emit('store-disconnected');
+}
+```
+
