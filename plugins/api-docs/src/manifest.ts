@@ -505,16 +505,7 @@ export default {
         readme: "./README.md",
       },
       output: {
-        // Note, you will need to manually update the index.md to include the link to foundation-fdc3 and foundation-openfin packages after doing the auto generate
-        /*
-        ## Packages
-
-        | Package                                                    | Description |
-        |------------------------------------------------------------| --- |
-        | [@genesislcap/foundation-fdc3](./foundation-fdc3.md)       |  |
-        | [@genesislcap/foundation-openfin](./foundation-openfin.md) |  |
-         */
-        directory: "./docs/001_develop/03_client-capabilities/021_desktop-interoperability",
+        directory: "./docs/001_develop/03_client-capabilities/021_desktop-interoperability/openfin",
         api_docs: "docs/api",
         readme: "01_foundation-openfin.mdx",
         keywords: ["genesis", "foundation", "ui", "fdc3", "openfin"],

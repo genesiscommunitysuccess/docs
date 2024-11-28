@@ -222,7 +222,7 @@ exports.default = {
                 readme: "./README.md",
             },
             output: {
-                directory: "./docs/001_develop/03_client-capabilities/021_desktop-interoperability",
+                directory: "./docs/001_develop/03_client-capabilities/021_desktop-interoperability/openfin",
                 api_docs: "docs/api",
                 readme: "01_foundation-openfin.mdx",
                 keywords: ["genesis", "foundation", "ui", "fdc3", "openfin"],
