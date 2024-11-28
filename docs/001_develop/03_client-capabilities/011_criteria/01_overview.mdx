@@ -1,0 +1,230 @@
+---
+title: 'Criteria Overview'
+sidebar_label: 'Criteria Overview'
+id: form-criteria-overview
+keywords: [foundation, ui, comms, criteria, filtering]
+tags:
+  - connected
+  - ui
+  - comms
+  - criteria
+  - filtering
+---
+
+import { CollapsibleSlot } from '../../../../examples/ui/documentationBase';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The FoundationUI framework has several components that communicate directly with the backend. The Grids, Charts components take a `resourceName` parameter which specifies the service. The `Connect` class snapshot and stream methods can also be used to get data from the backend.
+
+You can filter the responses by creating Groovy expressions to only see rows that match your use case.
+
+You can use `foundation-criteria` module to create expressions using the suite of helper functions.
+
+To add the package to your application, update your **package.json**
+
+```json
+{
+  "dependencies": {
+    "@genesislcap/foundation-criteria": "latest"
+  }
+}
+```
+
+You can then import and make use of its helper classes and functions to construct simple or complex queries.
+
+## Elements using criteria
+
+Some elements in FoundationUI communicate directly with the backend to retrieve and display data. The data retrieved can be filtered using valid criteria Groovy expressions.
+
+### Chart and chart datasource
+
+The `rapid-g2plot-chart` component can be populated with data use the `chart-datasource` component.
+
+This example is a simple line chart which retrieves data from a **Price history**
+
+<CollapsibleSlot title="Price history data" description="The price history table and dataserver would look like this">
+
+    **tables-dictionary.kts**
+    ```kts
+    tables {
+        table(name = "PRICE_HISTORY", id = 11_000) {
+            field("TICKER", STRING)
+            field("DATE", DATE)
+            field("PRICE", LONG)
+        }
+        ...
+    }
+    ```
+
+    **data-server.kts**
+    ```kts
+    dataServer {
+        query("PRICE_HISTORY", TRADE)
+        ...
+    ```
+</CollapsibleSlot>
+
+```ts
+import { FoundationElement, html, customElement  } from '@genesislcap/web-core';
+import {
+  CriteriaBuilder,
+  ExpressionBuilder,
+  Serialisers
+} from '@genesislcap/foundation-criteria';
+
+const tradeIdEqualsExpression = new ExpressionBuilder()
+  .withField('TICKER')
+  .withValue('GNYS')
+  .withSerialiser(Serialisers.EQ)
+  .build()
+
+const filterCriteria = new CriteriaBuilder()
+  .withExpression(tradeIdEqualsExpression)
+  .build();
+
+@customElement({
+  name: 'my-component',
+  template: html`
+    <rapid-g2plot-chart
+      type="line"
+      :config=${(x) => x.lineChartConfiguration}
+    >
+      <chart-datasource
+        resourceName="ALL_PRICE_HISTORY"
+        server-fields="DATE VALUE TICKER"
+        chart-fields="date value ticker"
+        criteria="${() => filterCriteria}"
+      >
+      </chart-datasource>
+    </rapid-g2plot-chart>
+  `
+})
+export class MyComponent extends FoundationElement {
+  lineChartConfiguration = {
+    xField: 'date',
+    yField: 'value',
+    seriesField: 'ticker'
+  }
+}
+```
+
+The next two examples are based on the same backend resources. Click to the button to show.
+
+<CollapsibleSlot title="Trade Resources" description="The trade table could look something like this">
+
+**tables-dictionary.kts**
+```kts
+tables {
+    table(name = "TRADE", id = 11_000) {
+        field("TICKER", STRING)
+        field("NOTIONAL", LONG)
+        field("STATUS", ENUM("Pending", "Approved", "Cancelled", "FurtherApproval"))
+        ...
+    }
+    ...
+}
+```
+
+**data-server.kts**
+```kts
+dataServer {
+    query("ALL_TRADES", TRADE)
+    ...
+}
+```
+</CollapsibleSlot>
+
+### Grid Pro and Grid datasource
+
+The `rapid-grid-pro` can be populated with data using the `grid-pro-datasource` component. In addition to `resourceName` attribute you can also set a `criteria` attribute.
+
+In this example we only want to see trades made against 'GNYS' ticker and with a status not equals to 'Cancelled'
+
+```ts
+import { FoundationElement, html, customElement  } from '@genesislcap/web-core';
+import {
+  CriteriaBuilder,
+  ExpressionBuilder,
+  Serialisers
+} from '@genesislcap/foundation-criteria';
+
+const tradeIdExpression = new ExpressionBuilder()
+  .withField('TICKER')
+  .withValue('GNYS')
+  .withSerialiser(Serialisers.EQ)
+  .build()
+
+const tradeStatusExpression = new ExpressionBuilder()
+  .withField('STATUS')
+  .withValue('Cancelled')
+  .withSerialiser(Serialisers.NOT)
+  .build()
+
+const filterCriteria = new CriteriaBuilder()
+  .withExpression(tradeIdExpression)
+  .withExpression(tradeStatusExpression)
+  .build();
+
+@customElement({
+  name: 'my-component',
+  template: html`
+    <rapid-grid-pro>
+        <grid-pro-genesis-datasource
+            resource-name="ALL_TRADES"
+            criteria=${() => filterCriteria}
+        ></grid-pro-genesis-datasource>
+    </rapid-grid-pro>
+  `
+})
+export class MyComponent extends FoundationElement {
+}
+```
+
+### Entity management
+
+The `entity-management` component can use filter criteria via the `criteria` value in its `datasourceConfig` object.
+
+```ts
+    import { FoundationElement, html, customElement  } from '@genesislcap/web-core';
+    import {
+      CriteriaBuilder,
+      ExpressionBuilder,
+      Serialisers
+    } from '@genesislcap/foundation-criteria';
+
+    const tradeIdExpression = new ExpressionBuilder()
+      .withField('TICKER')
+      .withValue('GNYS')
+      .withSerialiser(Serialisers.EQ)
+      .build()
+
+    const notionalExpression = new ExpressionBuilder()
+      .withField('NOTIONAL')
+      .withValue(1000)
+      .withSerialiser(Serialisers.GT)
+      .build()
+
+    const filterCriteria = new CriteriaBuilder()
+      .withExpression(tradeIdExpression)
+      .withExpression(notionalExpression)
+      .build();
+
+    @customElement({
+      name: 'my-component',
+      template: html`
+        <entity-management
+          design-system-prefix="rapid"
+          :datasourceConfig=${() => ({
+            resourceName: 'ALL_TRADES',
+            criteria: filterCriteria
+          })}
+        >
+        </entity-management>
+      `
+    })
+    export class MyComponent extends FoundationElement {
+    }
+```
+
+These examples are just scratching the surface of the `foundation-criteria` module. The following pages in this section go into more depth on the different Serialisers, Expressions and Criteria you can construct.
