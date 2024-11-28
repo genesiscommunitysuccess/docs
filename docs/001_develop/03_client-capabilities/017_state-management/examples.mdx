@@ -203,24 +203,22 @@ Pasting the above example into your codebase and adding it to the HTML should al
 
   ```typescript
   @customElement({
-      name: 'set-filter',
-      template: html`
+    name: 'set-filter',
+    template: html`
       <rapid-radio-group
-          @change="${(x,ctx) => x.selectionChanged(ctx.event)}"
-          value="${sync((x) => x.radioGroupValue)}"
+        value="${sync((x) => x.radioGroupValue)}"
       >
-          <rapid-radio value="income">Income</rapid-radio>
-          <rapid-radio value="expense">Expense</rapid-radio>
-          <rapid-radio value="both">Both</rapid-radio>
+        <rapid-radio value="both">Both</rapid-radio>
+        <rapid-radio value="income">Income</rapid-radio>
+        <rapid-radio value="expense">Expense</rapid-radio>
       </rapid-radio-group>
-      `,
+    `,
   })
   export class SetFilter extends GenesisElement {
-      @observable radioGroupValue: string;
-      selectionChanged(event: Event) {
-          const target = event.target as HTMLInputElement;
-          console.log(target.value);
-      }
+    @observable radioGroupValue: string;
+    radioGroupValueChanged(_, newValue: string) {
+      console.log(newValue);
+    }
   }
   ```
 
@@ -335,12 +333,11 @@ In Genesis syntax you can dispatch an event from a standard component, but it's 
 
   <TabItem value="genesis">
 
-  ```typescript {14,18}
+  ```typescript {13-16}
   @customElement({
     name: 'set-filter',
     template: html`
       <rapid-radio-group
-        @change="${(x, ctx) => x.selectionChanged(ctx.event)}"
         value="${sync((x) => x.radioGroupValue)}"
       >
         <rapid-radio value="both">Both</rapid-radio>
@@ -350,10 +347,9 @@ In Genesis syntax you can dispatch an event from a standard component, but it's 
     `,
   })
   export class SetFilter extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
-    @observable radioGroupValue: string;
-    selectionChanged(event: Event) {
-      const target = event.target as HTMLInputElement;
-      this.$emit(StoreEvents.SetFilter, target.value as StoreEventDetailMap[StoreEvents.SetFilter]);
+    @observable radioGroupValue: StoreEventDetailMap[StoreEvents.SetFilter];
+    radioGroupValueChanged(_, newValue: StoreEventDetailMap[StoreEvents.SetFilter]) {
+      this.$emit(StoreEvents.SetFilter, newValue);
     }
   }
   ```
@@ -704,7 +700,6 @@ As well as reacting to the `@observable` directly on the html, there are additio
       name: 'set-filter',
       template: html`
         <rapid-radio-group
-          @change="${(x, ctx) => x.selectionChanged(ctx.event)}"
           value="${sync((x) => x.radioGroupValue)}"
         >
           <rapid-radio value="both">Both</rapid-radio>
@@ -714,11 +709,10 @@ As well as reacting to the `@observable` directly on the html, there are additio
       `,
     })
     export class SetFilter extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
-      @observable radioGroupValue: string;
-      selectionChanged(event: Event) {
-        const target = event.target as HTMLInputElement;
-        console.log(target.value);
-        this.$emit(StoreEvents.SetFilter, target.value as StoreEventDetailMap[StoreEvents.SetFilter]);
+      @observable radioGroupValue: StoreEventDetailMap[StoreEvents.SetFilter];
+      radioGroupValueChanged(_, newValue: StoreEventDetailMap[StoreEvents.SetFilter]) {
+        console.log(newValue);
+        this.$emit(StoreEvents.SetFilter, newValue);
       }
     }
     ```
