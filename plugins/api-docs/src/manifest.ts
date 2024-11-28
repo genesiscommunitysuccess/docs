@@ -84,44 +84,6 @@ export default {
     //   },
     // },
     // {
-    //   name: "@genesislcap/foundation-login",
-    //   enabled: true,
-    //   src: {
-    //     api_docs: "./docs/api",
-    //     img_dir: "docs/img",
-    //     readme: "./README.md",
-    //   },
-    //   output: {
-    //     directory: "./docs/04_web/05_micro-front-ends/04_foundation-login",
-    //     api_docs: "docs/api",
-    //     img_dir: "docs/img",
-    //     readme: "05_foundation-login.mdx",
-    //     keywords: [
-    //       "web",
-    //       "login",
-    //       "foundation login",
-    //       "frontend",
-    //       "ui",
-    //       "micro-front-ends",
-    //     ],
-    //     tags: [
-    //       "web",
-    //       "login",
-    //       "foundation login",
-    //       "frontend",
-    //       "ui",
-    //       "micro-front-ends",
-    //     ],
-    //     pages: [
-    //       {
-    //         title: "Foundation Login",
-    //         sidebar_label: "Foundation Login",
-    //         id: "foundation-login",
-    //       },
-    //     ],
-    //   },
-    // },
-    // {
     //   name: "@genesislcap/foundation-filters",
     //   enabled: true,
     //   src: {
@@ -139,44 +101,6 @@ export default {
     //         title: "Foundation Filters",
     //         sidebar_label: "Foundation Filters",
     //         id: "foundation-filters",
-    //       },
-    //     ],
-    //   },
-    // },
-    // {
-    //   name: "@genesislcap/foundation-layout",
-    //   enabled: true,
-    //   src: {
-    //     api_docs: "./docs/api",
-    //     img_dir: "docs/img",
-    //     readme: "./README.md",
-    //   },
-    //   output: {
-    //     directory: "./docs/04_web/10_dynamic-layout",
-    //     api_docs: "docs/api",
-    //     img_dir: "docs/img",
-    //     readme: "10_foundation-layout.mdx",
-    //     keywords: [
-    //       "web",
-    //       "layout",
-    //       "foundation layout",
-    //       "frontend",
-    //       "ui",
-    //       "golden layout",
-    //     ],
-    //     tags: [
-    //       "web",
-    //       "layout",
-    //       "foundation layout",
-    //       "frontend",
-    //       "ui",
-    //       "golden layout",
-    //     ],
-    //     pages: [
-    //       {
-    //         title: "Foundation Layout",
-    //         sidebar_label: "Foundation Layout",
-    //         id: "foundation-layout",
     //       },
     //     ],
     //   },
@@ -286,6 +210,44 @@ export default {
     //   },
     // },
     {
+      name: "@genesislcap/foundation-login",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/003_login",
+        api_docs: "docs/api",
+        img_dir: "docs/img",
+        readme: "index.mdx",
+        keywords: [
+          "web",
+          "login",
+          "foundation login",
+          "frontend",
+          "ui",
+          "micro-front-ends",
+        ],
+        tags: [
+          "web",
+          "login",
+          "foundation login",
+          "frontend",
+          "ui",
+          "micro-front-ends",
+        ],
+        pages: [
+          {
+            title: "Login",
+            sidebar_label: "Login",
+            id: "client-login",
+          },
+        ],
+      },
+    },
+    {
       name: "@genesislcap/foundation-comms",
       enabled: true,
       src: {
@@ -340,8 +302,8 @@ export default {
         ],
         pages: [
           {
-            title: "Real Time Data Grid (Entity Manager)",
-            sidebar_label: "Real Time Data Grid (Entity Manager)",
+            title: "Entity Manager",
+            sidebar_label: "Entity Manager",
             id: "entity-manager",
           },
         ],
@@ -414,7 +376,7 @@ export default {
         readme: "./README.md",
       },
       output: {
-        directory: "./docs/001_develop/03_client-capabilities/006_charts/002_g2plot-chart",
+        directory: "./docs/001_develop/03_client-capabilities/006_g2plot-chart",
         api_docs: "docs/api",
         readme: "index.mdx",
         keywords: ["genesis", "foundation", "ui", "chart", "g2plot-chart", "g2plot"],
@@ -536,6 +498,44 @@ export default {
           "notifications",
           "toasts",
           "snackbar"
+        ],
+      },
+    },
+    {
+      name: "@genesislcap/foundation-layout",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        img_dir: "docs/img",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/015_layout-management/",
+        api_docs: "docs/api",
+        img_dir: "docs/img",
+        readme: "10_foundation-layout.mdx",
+        keywords: [
+          "web",
+          "layout",
+          "foundation layout",
+          "frontend",
+          "ui",
+          "golden layout",
+        ],
+        tags: [
+          "web",
+          "layout",
+          "foundation layout",
+          "frontend",
+          "ui",
+          "golden layout",
+        ],
+        pages: [
+          {
+            title: "Foundation Layout",
+            sidebar_label: "Foundation Layout",
+            id: "foundation-layout",
+          },
         ],
       },
     },
