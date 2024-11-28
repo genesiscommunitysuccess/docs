@@ -12,8 +12,6 @@ tags:
 sidebar_position: 9
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 import Log from '/snippet/_LOG.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
 
@@ -44,10 +42,10 @@ graph TD
 Here is an example Consolidator file that defines two Consolidators used as a service:
 
 * CON_ORDER_FROM_TRADES.
-This Consolidator builds the ORDER table records using the CONSOLIDATOR_TRADE table. It assumes the ORDER records do not exist in the system and are created automatically by the consolidator based on the ```ORDER.ORDER_ID``` and ```ORDER.ORDER_DATE``` fields (using `groupBy` and `build`). It uses max, min, sum and count functions, and the table has been marked as transient, so it can be cleared and recalculated with a consolidator `coldStart`.
+This Consolidator builds the ORDER table records using the CONSOLIDATOR_TRADE table. It assumes the ORDER records do not exist in the system and are created automatically by the consolidator based on the ```ORDER.ORDER_ID``` and ```ORDER.ORDER_DATE``` fields (using [`groupBy`](#groupby) and [`build`](#build)). It uses max, min, sum and count functions, and the table has been marked as transient, so it can be cleared and recalculated with a consolidator [`coldStart`](#coldstart).
 
-* CON_ORDER_SUMMARY_FROM_ORDER. This Consolidator builds the ORDER_SUMMARY table using the ORDER table and groups by the field ```ORDER.ORDER_DATE``` from the ```ORDER``` table. You can give multiple `groupBy` conditions based on your requirement.
-In this second Consolidator, we store all the consolidations grouped by ORDER_DATE year and ORDER_DATE year and month in database, (which are defined right at the end of the Consolidator). This avoids duplication of Consolidator code if you need to group the same consolidation based on different `groupBy` conditions.
+* CON_ORDER_SUMMARY_FROM_ORDER. This Consolidator builds the ORDER_SUMMARY table using the ORDER table and groups by the field ```ORDER.ORDER_DATE``` from the ```ORDER``` table. You can give multiple [`groupBy`](#groupby) conditions based on your requirement.
+In this second Consolidator, we store all the consolidations grouped by ORDER_DATE year and ORDER_DATE year and month in database, (which are defined right at the end of the Consolidator). This avoids duplication of Consolidator code if you need to group the same consolidation based on different [`groupBy`](#groupby) conditions.
 
 ```kotlin
 consolidators {
@@ -149,10 +147,10 @@ The example below has a single consolidator, called `CONSOLIDATE_POSITIONS`.
 
 To give you some basic pointers to the content, the main code blocks in this Consolidator are:
 
-- The `config` block contains Consolidator level configuration
-- The `select` block to specify some calculations and assign to output fields
-- The `onCommit` block to amend the output row
-- The `groupBy` block groups by `INSTRUMENT_ID`
+- The [`config`](#config) block contains Consolidator level configuration
+- The [`select`](#select) block to specify some calculations and assign to output fields
+- The [`onCommit`](#oncommit) block to amend the output row
+- The [`groupBy`](#groupby) block groups by `INSTRUMENT_ID`
 
 ```kotlin
 consolidator("CONSOLIDATE_POSITIONS", TRADE_PRICE_VIEW, POSITION) {
@@ -214,7 +212,7 @@ consolidator("CONSOLIDATE_POSITIONS", TRADE_PRICE_VIEW, POSITION) {
 }
 ```
 
-### Consolidator on demand
+### Consolidator on-demand
 
 As an alternative to running a Consolidator as a service, you can create Consolidator objects as classes that can be used in code elsewhere in your application. They can be used in custom services, as well as in Request Servers and Event Handlers.
 
@@ -236,7 +234,7 @@ val orders: List<Order> = tradeConsolidator.consolidate(trade1, trade2, trade3)
 // what-if analysis, combine both database records and runtime instances:
 val result = tradeConsolidator.whatIf(Trade.ByOrderId("2"), trade1, trade2)
 ```
-### Three types of Consolidator object
+#### Three types of Consolidator object
 In practice, you can create three types of Consolidator object to cover different use cases:
 
 - **input-output**
@@ -255,7 +253,7 @@ To showcase each of these, we shall use simple examples based on the following s
 | ID | InstrumentID | TotalQuantity | Notional |
 |----|--------------|---------------|----------|
 
-### Input - Output Consolidator
+#### Input - Output Consolidator
 
 This type of Consolidator is not limited to tables. It can take any input and produce any output; that output can be used elsewhere in your application.
 
@@ -310,7 +308,7 @@ val tradeConsolidator = consolidator<Trade, TradeDetails> {
 var tradeDetails:List<TradeDetails> = tradeConsolidator.consolidate(trades)
 ```
 
-### Read Input Table Consolidator
+#### Read Input Table Consolidator
 
 This type of Consolidator reads a table where data is changed and then creates an output; the output can be anything.
 
@@ -381,7 +379,7 @@ db.insertAll(dbTrades)
 var tradeDetails:List<TradeDetails> = tradeConsolidator.consolidate(runtimeTrades)
 ````
 
-### Read Output Table Consolidator
+#### Read Output Table Consolidator
 
 This type of Consolidator can read any type of input, but the output must be a table.
 
@@ -467,7 +465,6 @@ In the example below:
 - The first consolidator is called `TRADE_TO_POSITION_CONSOLIDATOR` as the name has not been specified.
 - The second consolidator is called `POSITION_CONSOLIDATOR` as the name has been specified.
 
-TODO Add Position table to data model?
 ```
 consolidators {
   consolidator(TRADE, POSITION) {
@@ -509,22 +506,21 @@ consolidators {
 }
 ```
 
-| Property             | Description                                                                                                                                                                                                                                                                                                                                                                        | Supports Values                                                                                                                                                             | Default Value          |
-|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
-| logLevel             | the default log level used when logging inside the Consolidator                                                                                                                                                                                                                                                                                                                    | TRACE, DEBUG, INFO, WARN, ERROR                                                                                                                                             | DEBUG                  |
-| onNotFound           | determines what to do if an output record is not found (see build) TODO add link                                                                                                                                                                                                                                                                                                   | BUILD, WARN, LOG, FAIL                                                                                                                                                      | BUILD                  |
-| batchingPeriod       | the time in ms accumulating updates before writing to the database                                                                                                                                                                                                                                                                                                                                      | Integer values                                                                                                                                                              | 500                    |
-| ignoreIndexScan      | disables index scans (see indexScan)  TODO add link                                                                                                                                                                                                                                                                                                                                | true, false                                                                                                                                                                 | false                  |
-| defaultErrorHandling | what to do if an exception is thrown during any calculation                                                                                                                                                                                                                                                                                                                        | LOG, WARN (produces a warning log), FAIL (crashes the process)                                                                                                              | FAIL                   |
-| backPressure         | number of records to be modified per database transaction during a consolidator write operation                                                                                                                                                                                                                                                                                    | Integer values                                                                                                                                                              | 100                    |
-| logFunctions         | used to enable/disable logging within consolidator functions                                                                                                                                                                                                                                                                                                                       | true, false                                                                                                                                                                 | false                  |
-| transactionType      | determines the consolidation approach when writing to database.                                                                                                                                                                                                                                                                                                                    | DEFAULT (currently DATABASE), DATABASE (will use database transactions to handle delta changes), LOCAL (will use in-memory copies of consolidated records to apply changes) | DEFAULT                |
-| groupName            | used to group multiple consolidations targetting the same `output` table to avoid potential aggregation race conditions (see more info below)                                                                                                                                                                      | Free text.                                                                                                                                                                  | No grouping by default |
-| tableTransient       | Marks the output table as transient. This means the table can be cleared on consolidator restart and all records can be recalculated without any other implications. used to group multiple consolidations targetting the same `output` table to avoid potential aggregation race conditions. Consolidations with the same group will synchronize calculations between each other. | true, false                                                                                                                                                                 | false                  |
-| backwardsJoin        | enables backward join support for `input` views (see backwarsJoin) TODO add link                                                                                                                                                                                                                                                                                                   | true, false                                                                                                                                                                 | true                   |
+| Property             | Description                                                                                                                                                                               | Supports Values                                                                                                                                                             | Default Value          |
+|----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
+| logLevel             | the default log level used when logging inside the Consolidator                                                                                                                           | TRACE, DEBUG, INFO, WARN, ERROR                                                                                                                                             | DEBUG                  |
+| onNotFound           | determines what to do if an output record is not found (see [build](#build))                                                                                                              | BUILD, WARN, LOG, FAIL                                                                                                                                                      | BUILD                  |
+| batchingPeriod       | the time in ms accumulating updates before writing to the database                                                                                                                        | Integer values                                                                                                                                                              | 500                    |
+| ignoreIndexScan      | disables index scans (see [indexScan](#indexscan))                                                                                                                                        | true, false                                                                                                                                                                 | false                  |
+| defaultErrorHandling | what to do if an exception is thrown during any calculation                                                                                                                               | LOG, WARN (produces a warning log), FAIL (crashes the process)                                                                                                              | FAIL                   |
+| backPressure         | number of records to be modified per database transaction during a consolidator write operation                                                                                           | Integer values                                                                                                                                                              | 100                    |
+| logFunctions         | used to enable/disable logging within consolidator functions                                                                                                                              | true, false                                                                                                                                                                 | false                  |
+| transactionType      | determines the consolidation approach when writing to database.                                                                                                                           | DEFAULT (currently DATABASE), DATABASE (will use database transactions to handle delta changes), LOCAL (will use in-memory copies of consolidated records to apply changes) | DEFAULT                |
+| groupName            | used to group multiple consolidations targetting the same `output` table to avoid potential aggregation race conditions (see more info below)                                             | Free text.                                                                                                                                                                  | No grouping by default |
+| tableTransient       | Marks the output table as transient. This means the table will be cleared on consolidator [`--coldStart`](#coldstart) and all records can be recalculated without any other implications. | true, false                                                                                                                                                                 | false                  |
+| backwardsJoin        | enables backward join support for `input` views (see [backwardsJoin](/develop/server-capabilities/data-model/#backwardsjoin))                                                             | true, false                                                                                                                                                                 | true                   |
 
 #### `groupName`
-// TODO All our databases are transactional now that Aerospike is gone. Do we still need this?
 
 Consolidator groups are essential if you are using a non-transactional database.
 
@@ -542,7 +538,7 @@ In a non-transactional database, a group is designed to offer consistent consoli
 This is limited to Consolidator updates within a group in a single process. Updates in other groups, other processes or other nodes could still interfere. You must plan this carefully.
 :::
 
-Below is an example where we have declared two `consolidator` blocks. Each has `groupName = "ORDER"`, so they are in the same group. The two `consolidator`blocks handle different types of order - but they are aggregated into the same three output tables: `TOTAL_NOTIONAL`, `TOTAL_QUANTITY` and `TRADE_COUNT`.
+Below is an example where we have declared two `consolidator` blocks. Each has `groupName = "ORDER"`, so they are in the same group. The two `consolidator` blocks handle different types of order - but they are aggregated into the same three output tables: `TOTAL_NOTIONAL`, `TOTAL_QUANTITY` and `TRADE_COUNT`.
 
 
 ```kotlin
@@ -606,13 +602,11 @@ Or a less concise syntax using `output` table references:
 
 Functions are the building blocks of the `select` block.
 
-With one exception, all functions require input.
-
-The exception is `count`, which can either have an input or no input.
-
-The syntax for an input to a GPAL function is sum `{ feeAmount }`.
-
+The syntax for an input to a GPAL function is best described with an example. In the case of summing all values, the function to use would be `sum`.
+A sample syntax could be `sum { feeAmount }`, where `sum` is the function and `feeAmount` is the input value provided by the input record currently being consolidated.
 Within the curly brackets of the function, you can access all the fields on a row, and you can use any Kotlin operation on the row. The function will be applied over the result, unless the result is null, in which case it will be ignored.
+
+With one exception, all functions require input. The exception is `count`, which can either have an input or no input.
 
 | Function      | Description                                                            | Input      | Output        | Index Scan    |
 |:--------------|------------------------------------------------------------------------|------------|---------------|---------------|
@@ -649,8 +643,8 @@ count { fractionalQuantity }       // counts the records with a FRACTIONAL_QUANT
 // etc.
 ```
 
-Functions can sometimes trigger an index scan. This is when a Consolidator needs to re-read previously consolidated rows
-in order to calculate the correct value. TODO Add link to index scan explained in group by
+Functions can sometimes trigger an [index scan](#indexscan). This is when a Consolidator needs to re-read previously consolidated rows
+in order to calculate the correct value.
 - For some functions, this is never required: for example, `sum` and `count`.
 - For some functions, it is required sometimes: for example, `min` and `max`.
 - For some functions, it is always required: for example, `stDev`.
@@ -665,15 +659,15 @@ feeSum onlyIf { feeGroup == FeeGroup.COMMISSION } into TOTAL_COMMISSION
 #### Custom functions
 
 Consolidators also support custom functions that allow you to specify behaviour for join, leave and noop
-operations based on the consolidation group TODO add groupby link.
+operations based on the consolidation [group](#groupby---into-overview).
 
 There are two parts to defining a custom function:
 
 - Select an input with `using` or `usingRow`
 - Define the consolidation with `withOperations` or `withAggregation`
 
-After the custom function has been defined, it supports the same syntax as other functions, including `into`, `pivotBy`,
-etc. TODO add link to transformations.
+After the custom function has been defined, it supports the same type of [transformation functions](#transformations-functions) as the pre-defined functions, including `into`, `pivotBy`,
+etc.
 
 ##### `using` and `usingRow`
 
@@ -720,7 +714,7 @@ This shows the benefit of `using`, as it handles `null` values. The `orZero()` c
 
 ##### `withOperations` and `withAggregation`
 
-The `withOperations` block enables you to specify the behaviour of the different consolidation operations based on grouping logic TODO add link to groupby.
+The `withOperations` block enables you to specify the behaviour of the different consolidation operations based on [grouping logic](#groupby---into-overview)
 
 In the previous example:
 
@@ -805,7 +799,6 @@ sum { quantity } onlyIf { direction == Direction.BUY } into TOTAL_BUY_QUANTITY
 
 Some functions support an initial value. Within this context, you can access the first input row, as well as the output
 object, for example:
-TODO find better example?
 
 ```kotlin
 sum { -feeAmount } withInitialValue { output.expectedFees } into OUTSTANDING_FEES
@@ -828,19 +821,6 @@ sum { quantity } pivotBy { direction } into {
 
 The values within this `when` statement **must** be exhaustive. If this is not ideal then we would recommend using `onlyIf`.
 
-
-#### `logJoin`, `logLeave` and `logNoop`
-For debugging purposes, the `select` block also supports logging. By default, the Consolidator logs all events with default level **TRACE**, but this can be overwritten with custom messages. To do this, use the `logJoin`, `logLeave` and `logNoop` blocks:
-
-```kotlin
-select {
-    // ...
-    logJoin { LOG.info("row joined", input) }
-    logLeave { LOG.info("row left", input) }
-    logNoop { LOG.info("new row: {}, old row: {}", newInput, oldInput) }
-}
-```
-
 ### `onCommit`
 
 This block is optional. In the `onCommit` block, you can amend the output row, after all the functions have been
@@ -850,7 +830,6 @@ so this should be handled with care.
 
 This block can be useful to do further calculations based on the consolidated values, for example:
 
-TODO Review example code, make it better.
 ```kotlin
 onCommit {
     val accruedInterest = if (input.isDirtyPrice) input.accruedInterest else 0.0
@@ -862,16 +841,14 @@ onCommit {
 }
 ```
 
-### `groupBy` - `into` explanation
-
-// TODO sort out examples to be relevant to data model in this whole section.
+### `groupBy` - `into` overview
 
 `groupBy` allows us to define the relevant consolidations group to aggregate our input table into our output table.
 
 For example, one common use case would be to aggregate all `Trade` entities based on their INSTRUMENT_ID and COUNTERPARTY_ID values into the `Position` table. This would reveal how much an instrument has been traded for each specific counterparty in the database.
 
 The syntax of `groupBy` can be significantly different between service Consolidators and on-demand Consolidators.
-For service Consolidators, table syntax can add complexity, as records might need to be loaded, created or re-scanned (see TODO indexScan link)
+For service Consolidators, table syntax can add complexity, as records might need to be loaded, created or re-scanned (see [indexScan](#indexscan))
 
 In service consolidators the `groupBy`-`into` syntax determines:
 - how records are grouped `groupBy { ... } `
@@ -1081,45 +1058,7 @@ where(ignore = true) {
 }
 ```
 
-
-
-```kotlin
-consolidators {
-    config {
-        // optional file-level configuration
-    }
-    // define a consolidation
-    consolidator("NAME", INPUT_TABLE_OR_VIEW, OUTPUT_TABLE) {
-        config {
-            // optional consolidation configuration
-        }
-        select {
-            // select block
-        }
-        onCommit {
-            // optional onCommit block
-        }
-        groupBy {
-            // groupBy block
-        } into {
-            //
-        }
-        where {
-            // predicate
-        }
-        indexScanOn {
-            // on demand index scan
-        }
-        reprocessSchedule {
-            //
-        }
-    }
-}
-```
-
 ### Logging
-
-TODO Should the other consolidator relevant logging docs go here instead? Some are done in config
 
 You can set the default logging level for all the Consolidators in your _application_**-consolidator.kts** file using a config statement at the beginning.
 However, within any individual Consolidator, you can also set a logging level that overrides this setting.
@@ -1143,12 +1082,19 @@ consolidators {
 }
 ```
 
+#### `logJoin`, `logLeave` and `logNoop`
+For debugging purposes, the `select` block also supports logging. By default, the Consolidator logs all events with default level **TRACE**, but this can be overwritten with custom messages. To do this, use the `logJoin`, `logLeave` and `logNoop` blocks:
+
+```kotlin
+select {
+    // ...
+    logJoin { LOG.info("row joined", input) }
+    logLeave { LOG.info("row left", input) }
+    logNoop { LOG.info("new row: {}, old row: {}", newInput, oldInput) }
+}
+```
 
 #### Custom Log messages
-
-TODO add custom log messages from existing snippet.
-
-import Log from '/snippet/_LOG.md'
 
 <Log />
 
@@ -1174,14 +1120,14 @@ A high latency indicates that the consolidator is struggling to keep up.
 To include your `*-consolidator.kts` file definitions in a runtime process, you will need to ensure the process definition:
 
 1. Ensure `genesis-pal-consolidator` is included in `module`
-1. Ensure `global.genesis.pal.consolidator` is included in `package`
-1. Ensure your consolidator.kts file(s) are defined in `script`
-1. Ensure `pal` is set in `language`
+2. Ensure `global.genesis.pal.consolidator` is included in `package`
+3. Ensure your consolidator.kts file(s) are defined in `script`
+4. Ensure `pal` is set in `language`
 
 If you wish to run a dedicated process for a consolidator, the following gives an example full process definition:
 If you wish to run a dedicated process for a consolidator, the following gives an example full process definition:
 
-```kotlin
+```xml{13}
 <process name="POSITION_CONSOLIDATOR">
   <groupId>POSITION</groupId>
   <description>Consolidates trades to calculate positions</description>
@@ -1211,29 +1157,36 @@ It is helpful for consolidators where you wish your consolidator process to [`co
 
 For example:
 
-```kotlin
+```xml{13}
 <process name="POSITION_CONSOLIDATOR">
-        <groupId>POSITION</groupId>
-        <description>Consolidates trades to calculate positions</description>
-        <start>true</start>
-        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false -XX:MaxHeapFreeRatio=70 -XX:MinHeapFreeRatio=30 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:OnOutOfMemoryError="handleOutOfMemoryError.sh %p"</options>
-        <module>genesis-pal-consolidator</module>
-        <package>global.genesis.pal.consolidator</package>
-        <primaryOnly>false</primaryOnly>
-        <script>position-consolidator.kts</script>
-        <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
-        <language>pal</language>
-        <arguments>--coldStart</arguments>
-    </process>
+  <groupId>POSITION</groupId>
+  <description>Consolidates trades to calculate positions</description>
+  <start>true</start>
+  <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false -XX:MaxHeapFreeRatio=70 -XX:MinHeapFreeRatio=30 -XX:+UseG1GC -XX:+UseStringDeduplication -XX:OnOutOfMemoryError="handleOutOfMemoryError.sh %p"</options>
+  <module>genesis-pal-consolidator</module>
+  <package>global.genesis.pal.consolidator</package>
+  <primaryOnly>true</primaryOnly>
+  <script>position-consolidator.kts</script>
+  <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
+  <language>pal</language>
+  <arguments>--coldStart</arguments>
 </process>
 ```
+
+#### `coldStart`
+
+A cold start will recalculate the all consolidations from scratch on consolidator restart to ensure all values are correct before starting the real-time event-driven consolidations. To make a cold start, you can run the command:
+
+`startProcess GENESIS_CONSOLIDATOR --coldStart`
+
+It is important to note that at the beginning of a cold start, all fields affected by the `select` configuration of the consolidation table are zeroed (or the records will be deleted, if transient) before initiating the re-consolidation of all the records in the database.
 
 <CommonProcesses/>
 
 ## Testing
 
 
-### Integration testing
+### Integration testing (legacy)
 
 :::info
 For the latest information on testing, go to our page on [Integration testing](/operations/testing/integration-testing/).
