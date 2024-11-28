@@ -48,12 +48,11 @@ step-by-step [here](./client-state-management-examples).
 ### Equivalent Redux terms
 
 - **Action**. Translates to a standard [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent).
-These event types are defined in a store's EventDetailMap. Here's the [StoreRootEventDetailMap](./docs/api/foundation-store.storerooteventdetailmap.md) for example.
-- **Dispatch**. Use the component's [$emit](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-element/docs/guide/working-with-shadow-dom.md#custom-events)
-method in conjunction with the [EventEmitter](../foundation-events/src/eventEmitter/README.md) mixin to strongly type it with store event maps.
+These event types are defined in a store's EventDetailMap. Here's the StoreRootEventDetailMap for example.
+- **Dispatch**. Use the component's $emit method in conjunction with the [EventEmitter](../foundation-events/src/eventEmitter/README.md) mixin to strongly type it with store event maps.
 - **Action Creator**. Create the CustomEvent.[detail](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail)
 however and whenever you like. When you're ready, emit the event and detail pairing as per an EventDetailMap via the component's
-[$emit](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-element/docs/guide/working-with-shadow-dom.md#custom-events) api, which in turn creates and sends the CustomEvent.
+$emit api, which in turn creates and sends the CustomEvent.
 - **Reducer**. Use the store's [createListener](./docs/api/foundation-store.abstractstore.createlistener.md) method to
 create a synchronous event listener which you can [commit values to the store](./docs/api/foundation-store.abstractstore.commit.md) from.
 These listeners only receive events, so new values may come from `CustomEvent.detail` payloads, and / or reading from the store itself which these handlers are members of.
@@ -65,9 +64,8 @@ Similar to the Reducer context above, however you should _NOT_ commit values to 
 
 ### Setup
 
-<!-- TODO link to fragments -->
 Create a root store.ts file somewhere, for example `./store/store.ts`. This will be the root store for the application,
-which may consist for other store fragments. Each fragment could be considered as a domain, with a single purpose. This
+which may consist for other [store fragments](./client-state-management-usage#using-store-fragments). Each fragment could be considered as a domain, with a single purpose. This
 setup allows us to isolate data and provide the component trees access to only the data they really need to function.
 
 ```typescript store.ts
@@ -78,7 +76,7 @@ import {
   StoreRootEventDetailMap,
   registerStore,
 } from '@genesislcap/foundation-store';
-import {observable, volatile} from '@microsoft/fast-element';
+import {observable, volatile} from '@genesislcap/web-core';
 import {DesignSystem} from './designSystem';
 import {Position} from './position';
 import {Trades} from './trades';
