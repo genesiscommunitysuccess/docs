@@ -52,7 +52,7 @@ class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> impleme
 export const Store = registerStore(DefaultStore, 'Store');
 
 // If you are using the react or angular store you will have extra code at the end of the file
-// to handle the store's dependency injection.
+// to handle the store's dependency injection. You won't need to alter any of that section.
 ```
 
 ### Test components
@@ -143,7 +143,6 @@ We're going to be linking two components together using a variable in the store.
   <TabItem value="react">
 
 
-    Usage
     ```typescript
     const ExampleGrid = () => {
       const baseGridOptions = {
@@ -165,9 +164,32 @@ We're going to be linking two components together using a variable in the store.
   </TabItem>
   <TabItem value="angular">
 
-    Usage
     ```typescript
-    TODO
+    @Component({
+      selector: 'example-grid',
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      template: `
+        <rapid-grid-pro
+          #gridRef
+          [gridOptions]="baseGridOptions"
+        ></rapid-grid-pro>
+      `
+    })
+    export class ExampleGridComponent implements OnInit {
+      @ViewChild('gridRef') gridRef: any;
+
+      baseGridOptions = {
+        defaultColDef: {
+          resizable: true,
+          filter: true,
+        },
+        columnDefs: columnDefs, // defined in collapsible section above
+        rowData: rowData, // defined in collapsible section above
+      };
+
+      ngOnInit() { }
+    }
     ```
   </TabItem>
 </Tabs>
@@ -226,7 +248,26 @@ Pasting the above example into your codebase and adding it to the HTML should al
   <TabItem value="angular">
 
     ```typescript
-    TODO
+    @Component({
+      selector: 'set-filter',
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      template: `
+        <rapid-radio-group (change)="handleRadioChange($event)">
+          <rapid-radio value="both">Both</rapid-radio>
+          <rapid-radio value="income">Income</rapid-radio>
+          <rapid-radio value="expense">Expense</rapid-radio>
+        </rapid-radio-group>
+      `
+    })
+    export class SetFilterComponent {
+      radioValue: string = 'both';
+
+      handleRadioChange(event: Event) {
+        const target = event.target as HTMLInputElement;
+        this.radioValue = target.value;
+      }
+    }
     ```
   </TabItem>
 </Tabs>
@@ -338,6 +379,7 @@ In Genesis syntax you can dispatch an event from a standard component, but it's 
   }
   ```
 
+  Here you can use this function to wrap up the event in a format the store expects.
   ```typescript
   export function customEventFactory(type: string, detail?: any) {
       return new CustomEvent(type, {
@@ -352,10 +394,41 @@ In Genesis syntax you can dispatch an event from a standard component, but it's 
   </TabItem>
   <TabItem value="angular">
 
-    Usage
-    ```typescript
-    TODO
+    ```typescript {14,15,19}
+    @Component({
+      selector: 'set-filter',
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      template: `
+        <rapid-radio-group (change)="handleRadioChange($event)">
+          <rapid-radio value="both">Both</rapid-radio>
+          <rapid-radio value="income">Income</rapid-radio>
+          <rapid-radio value="expense">Expense</rapid-radio>
+        </rapid-radio-group>
+      `
+    })
+    export class SetFilterComponent {
+      radioValue: StoreEventDetailMap[StoreEvents.SetFilter] = 'both';
+      constructor(private el: ElementRef) {}
+      handleRadioChange(event: Event) {
+        const target = event.target as HTMLInputElement;
+        this.radioValue = target.value as StoreEventDetailMap[StoreEvents.SetFilter];
+        this.el.nativeElement.dispatchEvent(customEventFactory(StoreEvents.SetFilter, this.radioValue));
+      }
+    }
     ```
+
+  Here you can use this function to wrap up the event in a format the store expects.
+  ```typescript
+  export function customEventFactory(type: string, detail?: any) {
+      return new CustomEvent(type, {
+          bubbles: true,
+          cancelable: true,
+          composed: true,
+          detail,
+      });
+  }
+  ```
   </TabItem>
 </Tabs>
 
@@ -433,9 +506,45 @@ The very final step is to use the configured value to filter the grid rows. Ther
   </TabItem>
   <TabItem value="angular">
 
-    Usage
-    ```typescript
-    TODO
+    ```typescript {8,24,27-35}
+    @Component({
+      selector: 'example-grid',
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      template: `
+        <rapid-grid-pro
+          #gridRef
+          [gridOptions]="gridOptions"
+        ></rapid-grid-pro>
+      `
+    })
+    export class ExampleGridComponent implements OnInit {
+      @ViewChild('gridRef') gridRef: any;
+
+      baseGridOptions = {
+        defaultColDef: {
+          resizable: true,
+          filter: true,
+        },
+        columnDefs: columnDefs,
+        rowData: rowData
+      };
+
+      gridOptions = this.baseGridOptions;
+
+      ngOnInit() {
+        getStore().binding(
+          (s: any) => s.transactionTypeFilter,
+          (detail: string) => {
+            this.gridOptions = {
+              ...this.baseGridOptions,
+              rowData: this.rowData.filter((row) => detail === 'both' || row.type === detail)
+            };
+          }
+        );
+      }
+    }
+
     ```
   </TabItem>
 </Tabs>
@@ -499,7 +608,7 @@ As well as reacting to the `@observable` directly on the html, there are additio
     export const Store = registerStore(DefaultStore, 'Store');
 
     // If you are using the react or angular store you will have extra code at the end of the file
-    // to handle the store's dependency injection.
+    // to handle the store's dependency injection. You won't need to alter any of that section.
     ```
 </CollapsibleSlot>
 
@@ -704,6 +813,7 @@ As well as reacting to the `@observable` directly on the html, there are additio
     const [radioValue, setRadioValue] = useState('both');
     const handleRadioChange = (e: Event) => {
       setRadioValue(e.target.value);
+      // customEventFactory implementation defined in earlier example
       ref.current.dispatchEvent(customEventFactory(StoreEvents.SetFilter, e.target.value));
     }
     return (
@@ -719,9 +829,122 @@ As well as reacting to the `@observable` directly on the html, there are additio
   </TabItem>
   <TabItem value="angular">
 
-    Usage
     ```typescript
-    TODO
+    import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, OnInit, ViewChild  } from '@angular/core';
+    import { ColDef } from '@ag-grid-community/core';
+    import { CommonModule } from '@angular/common';
+    import { environment } from '../../../environments/environment';
+    import { getStore, StoreEventDetailMap, StoreEvents } from '../../store';
+    import { customEventFactory } from '../../../pbc/utils';
+
+    @Component({
+      selector: 'example-grid',
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      template: `
+        <rapid-grid-pro
+          #gridRef
+          [gridOptions]="gridOptions"
+        ></rapid-grid-pro>
+      `
+    })
+    export class ExampleGridComponent implements OnInit {
+      @ViewChild('gridRef') gridRef: any;
+
+      columnDefs: ColDef[] = [
+        { headerName: 'ID', field: 'id' },
+        { headerName: 'Transaction Date', field: 'transactionDate' },
+        { headerName: 'Description', field: 'description' },
+        {
+          headerName: 'Amount',
+          field: 'amount',
+          valueFormatter: params => params.value.toFixed(2)
+        },
+        { headerName: 'Type', field: 'type' },
+        { headerName: 'Currency', field: 'currency' },
+        {
+          headerName: 'Balance After',
+          field: 'balanceAfter',
+          valueFormatter: params => params.value.toFixed(2)
+        }
+      ];
+
+      rowData = [
+        {
+          id: 1,
+          transactionDate: "2023-05-15",
+          description: "Quarterly Revenue Payment",
+          amount: 157892.45,
+          type: "income",
+          currency: "USD",
+          balanceAfter: 203567.89,
+        },
+        {
+          id: 2,
+          transactionDate: "2023-05-14",
+          description: "Equipment Purchase",
+          amount: -12567.00,
+          type: "expense",
+          currency: "USD",
+          balanceAfter: 191000.89,
+        },
+        {
+          id: 3,
+          transactionDate: "2023-05-13",
+          description: "Consulting Services Fee",
+          amount: 45000.00,
+          type: "income",
+          currency: "USD",
+          balanceAfter: 236000.89,
+        }
+      ];
+
+      baseGridOptions = {
+        defaultColDef: {
+          resizable: true,
+          filter: true,
+        },
+        columnDefs: this.columnDefs,
+        rowData: this.rowData
+      };
+
+      gridOptions = this.baseGridOptions;
+
+      ngOnInit() {
+        getStore().binding(
+          (s: any) => s.transactionTypeFilter,
+          (detail: string) => {
+            this.gridOptions = {
+              ...this.baseGridOptions,
+              rowData: this.rowData.filter((row) => detail === 'both' || row.type === detail)
+            };
+          }
+        );
+      }
+    }
+
+    @Component({
+      selector: 'set-filter',
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      template: `
+        <rapid-radio-group (change)="handleRadioChange($event)">
+          <rapid-radio value="both">Both</rapid-radio>
+          <rapid-radio value="income">Income</rapid-radio>
+          <rapid-radio value="expense">Expense</rapid-radio>
+        </rapid-radio-group>
+      `
+    })
+    export class SetFilterComponent {
+      radioValue: StoreEventDetailMap[StoreEvents.SetFilter] = 'both';
+      constructor(private el: ElementRef) {}
+      handleRadioChange(event: Event) {
+        const target = event.target as HTMLInputElement;
+        this.radioValue = target.value as StoreEventDetailMap[StoreEvents.SetFilter];
+        // customEventFactory implementation defined in earlier example
+        this.el.nativeElement.dispatchEvent(customEventFactory(StoreEvents.SetFilter, this.radioValue));
+      }
+    }
     ```
   </TabItem>
 </Tabs>
