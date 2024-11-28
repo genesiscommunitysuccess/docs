@@ -1,0 +1,91 @@
+---
+title: 'Foundation Openfin'
+sidebar_label: 'Foundation Openfin'
+id: foundation-openfin
+keywords: [genesis, foundation, ui, fdc3, openfin]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - fdc3
+  - openfin
+---
+
+# Genesis Foundation Openfin
+
+This provides a robust implementation of the Openfin workspace container
+
+## API Documentation
+
+For more detailed information on API and configurations, please refer to the [API documentation](docs/api/index.md) in the `docs/api` directory.
+
+## Installation
+
+To include `@genesislcap/foundation-openfin` in your project, add it as a dependency in your `package.json` file and follow your project's routine for dependency installation. 
+
+This package depends on a newer version of typescript which you will also need to add to your package json
+
+```json
+{
+  "dependencies": {
+    ...
+    "@genesislcap/foundation-openfin": "latest",
+    "typescript": "^5.6.3",
+    ...
+  }
+}
+```
+
+## Key Features
+
+- **Openfin Notifications:** Implements a component to create openfin notifications
+
+## Usage Examples
+
+### Adding Intent Listeners
+
+```html
+<openfin-notifications
+  resource-name="ALL_NOTIFY_ALERT_RECORDS"
+  data-pbc-asset-id="interop-notification-listener"
+  :notificationsPlatform="${() => ({
+  id: PLATFORM_ID,
+    icon: PLATFORM_ICON,
+    title: PLATFORM_TITLE
+  })}"
+  :toastButtons="${x => [
+      {
+        condition: ({details}) => details.HEADER === 'Trade added',
+          action: ({details, buttonElement }) => {
+        Route.path.push('/some-route')
+        if (buttonElement) {
+          buttonElement.$emit('some-event', details.TABLE_ENTITY_ID);
+        }
+      },
+      {
+      condition: ({details}) => details.HEADER === 'Trade added',
+      action: async ({details, buttonElement }) => {
+        const connect = getConnect();
+        const response = await connect.commitEvent('EVENT_APPROVE_TRADE', {
+          DETAILS: {
+            TRADE_ID: details.TABLE_ENTITY_ID
+          }
+        })
+
+        if (response.ERROR?.length) {
+          debugger;
+        }
+      },
+      placeholder: 'Approve Trade',
+      task: 'approve-trade'
+    },
+  ]}"
+></openfin-notifications>
+```
+
+## License
+
+Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+
+### Licensed components
+Genesis low-code platform
