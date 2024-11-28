@@ -4,7 +4,6 @@
 
 .card-outer {
   --app-background: #191919;
-  --brand-gradient: linear-gradient(83deg, #00F 0%, #D71CA6 65%, #fab15d 100%);
 
   display: flex;
   position: relative;
@@ -22,7 +21,7 @@
 
 .card-outer:hover {
   box-shadow: 0 0 1px 0 rgba(0, 0, 0, .35), 0 20px 40px 0 rgba(10, 0, 74, .1);
-  background: var(--brand-gradient);
+  background: linear-gradient(83deg, #00F 0%, #D71CA6 65%, #fab15d 100%);
 }
 
 .card-outer .card-inner {
