@@ -11,3 +11,311 @@ tags:
 pagination_prev: develop/client-capabilities/grids/grid-pro/grid-pro-cell-and-column
 pagination_next: develop/client-capabilities/grids/grid-tabulator/grid-tabulator
 ---
+
+# Renderers
+
+## Overview
+
+All of our custom cell rendering components enabled by default in Grid Pro. These renderers provide flexible and extensible ways to customize cell content and interactions in grid columns.
+
+## Renderer Types (Built-in)
+
+### 1. Action Renderer (`ActionRenderer`)
+
+#### Purpose
+
+Renders a single action button within a grid cell, allowing for row-specific interactions.
+
+#### Key Features
+- Customizable button name and appearance
+- Supports disabled state based on row data
+- Handles click events with optional async actions
+- Supports E2E testing with data-test-id attributes
+
+#### Usage Example
+
+```typescript
+const columnDef = {
+  cellRenderer: 'actionRenderer',
+  cellRendererParams: {
+    actionName: 'Edit',
+    actionClick: (rowData) => handleEdit(rowData),
+    isDisabled: (rowData) => !rowData.editable,
+    appearance: 'primary'
+  }
+}
+```
+
+### 2. Actions Menu Renderer (`ActionsMenuRenderer`)
+
+#### Purpose
+
+Renders a dropdown menu of multiple actions for a grid row.
+
+#### Key Features
+
+- Supports multiple actions per row
+- Customizable menu opener text and appearance
+- Flexible action definition
+
+#### Usage Example
+
+```typescript
+const actionsColumn = getActionsMenuDef([
+  {
+    name: 'View',
+    callback: (rowData) => viewDetails(rowData)
+  },
+  {
+    name: 'Delete',
+    callback: (rowData) => deleteRow(rowData)
+  }
+]);
+```
+
+### 3. Boolean Renderer (`BooleanRenderer`)
+
+#### Purpose
+
+Renders a checkbox within a grid cell, allowing direct boolean value editing.
+
+#### Key Features
+
+- Supports disabled state
+- Automatically handles grid editing events
+- Integrates with AG Grid's editing mechanism
+
+#### Usage Example
+
+```typescript
+const columnDef = {
+  cellRenderer: 'booleanRenderer',
+  cellRendererParams: {
+    isDisabled: (rowData) => !rowData.canEdit
+  }
+}
+```
+
+### 4. Editable Renderer (`EditableRenderer`)
+
+#### Purpose
+Renders a cell with a formatted value and an optional progress indicator.
+
+#### Key Features
+
+- Formats cell values
+- Displays a progress ring for pending edits
+- Lightweight and simple
+
+#### Usage Example
+
+```typescript
+const columnDef = {
+  cellRenderer: 'editableRenderer',
+  valueFormatter: (params) => formatCurrency(params.value)
+}
+```
+
+### 5. Select Renderer (`SelectRenderer`)
+
+#### Purpose
+
+Renders a dropdown select within a grid cell.
+
+#### Key Features
+
+- Dynamic option generation
+- Custom selection handling
+- Supports disabled state
+- Accessor-based value setting
+
+#### Usage Example
+
+```typescript
+const columnDef = {
+  cellRenderer: 'selectRenderer',
+  cellRendererParams: {
+    options: (rowData) => [
+      { name: 'option1', displayName: 'Option 1' },
+      { name: 'option2', displayName: 'Option 2' }
+    ],
+    onSelect: (value, params) => updateRowData(value, params),
+    accessor: 'status'
+  }
+}
+```
+
+### 6. Text Field Renderer (`AgTextFieldRenderer`)
+
+#### Purpose
+
+Renders a text input within a grid cell.
+
+#### Key Features
+
+- Direct text editing
+- Max length support
+- Change event handling
+- Disabled state control
+
+#### Usage Example
+
+```typescript
+const columnDef = {
+  cellRenderer: 'textFieldRenderer',
+  cellRendererParams: {
+    maxLength: 50,
+    onChange: (value, params) => updateText(value, params),
+    isDisabled: (rowData) => !rowData.editable
+  }
+}
+```
+
+## Creating a Custom Renderer Component
+
+To create a custom renderer component, you need to implement the `ICellRendererComp` interface from AG Grid. This interface defines the required methods for a renderer component.
+
+There are other ways to create custom renderers, but the following example demonstrates a more complex approach, allowing for more flexibility and customization.
+
+### Step-by-Step Implementation
+
+#### 1. Basic Renderer Structure
+
+```typescript
+import { 
+  ICellRendererComp, 
+  ICellRendererParams 
+} from '@ag-grid-community/core';
+import { html, observable } from '@microsoft/fast-element';
+import { FoundationElement } from '@microsoft/fast-foundation';
+import { logger } from '../utils';
+
+// Define custom params interface
+interface CustomRendererParams extends ICellRendererParams {
+  onChange?: (value: any, params: CustomRendererParams) => void;
+  isDisabled?: (rowData: any) => boolean;
+}
+
+export class CustomRenderer extends FoundationElement implements ICellRendererComp {
+  @observable
+  public params: CustomRendererParams;
+
+  @observable
+  public value: any;
+
+  // Initialize renderer
+  public init(params: CustomRendererParams) {
+    if (!params) return;
+    this.params = params;
+    this.value = params.value;
+  }
+
+  // Required method to return GUI element
+  public getGui(): HTMLElement {
+    return this;
+  }
+
+  // Refresh method
+  public refresh(params: CustomRendererParams): boolean {
+    this.params = params;
+    this.value = params.value;
+    return true;
+  }
+
+  // Optional disable logic
+  public isDisabled(data: any): boolean {
+    if (typeof this.params?.isDisabled === 'function') {
+      try {
+        return this.params.isDisabled(data);
+      } catch (error) {
+        logger.error('Error in isDisabled callback:', error);
+      }
+    }
+    return false;
+  }
+
+  // Handle value changes
+  public changeHandler = (newValue: any) => {
+    this.value = newValue;
+    
+    if (typeof this.params?.onChange === 'function') {
+      this.params.onChange(newValue, this.params);
+    }
+  };
+}
+```
+
+#### 2. Create Renderer Template
+
+```typescript
+export const getCustomRendererTemplate = (designSystem = 'foundation') => {
+  const customComponent = `${designSystem}-text-field`;
+  
+  return html`
+    <${customComponent}
+      ?disabled=${(x) => x.isDisabled(x.params?.data)}
+      :value="${(x) => x.value}"
+      @change=${(x, c) => x.changeHandler(c.event.target.value)}
+    ></${customComponent}>
+  `;
+};
+```
+
+#### 3. Compose Renderer
+
+```typescript
+export const foundationCustomRenderer = CustomRenderer.compose({
+  baseName: 'custom-renderer',
+  template: getCustomRendererTemplate(),
+});
+```
+
+#### 4. Register in Grid Options
+
+```typescript
+const gridOptions = {
+  components: {
+    myCustomRenderer: CustomRenderer
+  },
+  columnDefs: [
+    {
+      cellRenderer: 'myCustomRenderer',
+      cellRendererParams: {
+        onChange: (value, params) => {
+          // Custom change handling logic
+          console.log('Value changed:', value);
+        },
+        isDisabled: (rowData) => !rowData.editable
+      }
+    }
+  ]
+};
+```
+
+## Key Considerations
+
+- Always implement `ICellRendererComp`
+- Use `@observable` for reactive properties
+- Provide flexible configuration options
+- Handle potential errors
+- Integrate with design system components
+
+## Common Patterns to Follow
+
+- All renderers implement `ICellRendererComp` interface
+- Utilize `@observable` decorators for reactive properties
+- Support for custom disable logic
+- Integrated with Foundation UI design system
+- Flexible configuration through `cellRendererParams`
+
+When creating custom renderers for Grid Pro, follow these key steps:
+
+- Initialize with `init()` method
+- Implement `getGui()` to return root element
+- Use `refresh()` to update renderer state
+- Provide optional disable logic
+- Support custom change handling
+- Provide meaningful `isDisabled` functions
+- Handle potential errors in callbacks
+- Use appropriate value accessors
+- Consider performance when generating dynamic options

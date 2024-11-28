@@ -12,6 +12,10 @@ pagination_prev: develop/client-capabilities/grids/entity-manager/entity-manager
 pagination_next: develop/client-capabilities/grids/grid-pro/grid-pro-datasources
 ---
 
+import GridProExample from './grid-pro_example.js'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Grid Pro
 
 The `@genesislcap/grid-pro` package provides a collection of grid-related components and utilities for Genesis applications.
@@ -61,7 +65,21 @@ import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
 provideDesignSystem().register(baseComponents, rapidGridComponents);
 ```
 
-### Usage - Simple Data example
+## Usage - Simple Data
+
+<GridProExample />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration:
+
+```html
+<simple-grid-pro-example></simple-grid-pro-example>
+```
+
+Definition:
 
 ```typescript
 import { ColDef, GridOptions } from '@ag-grid-community/core';
@@ -69,7 +87,7 @@ import { GridPro } from '@genesislcap/grid-pro';
 import { customElement, DOM, GenesisElement, html, observable, ref } from '@genesislcap/web-core';
 
 @customElement({
-  name: 'simple-grid-example',
+  name: 'simple-grid-pro-example',
   template: html`
     <rapid-grid-pro ${ref('grid')}></rapid-grid-pro>
   `,
@@ -79,76 +97,15 @@ export class SimpleGridExample extends GenesisElement {
   public grid: GridPro;
 
   private columnDefs: ColDef[] = [
-    { headerName: '#', colId: 'rowNum', valueGetter: 'node.id', width: 80, pinned: 'left' },
-    { headerName: 'Athlete', field: 'athlete', width: 150, pinned: 'left' },
-    { headerName: 'Age', field: 'age', width: 90, pinned: 'left' },
-    { headerName: 'Country', field: 'country', width: 150 },
-    { headerName: 'Year', field: 'year', width: 90 },
-    {
-      headerName: 'Date',
-      field: 'date',
-      width: 110,
-      filter: 'agDateColumnFilter',
-      filterParams: {
-        buttons: ['apply', 'reset'],
-        browserDatePicker: true,
-        comparator: (filterLocalDateAtMidnight, cellValue) => {
-          // Handling '29/08/2004' date format - adjust as need to match your date format
-          // https://www.ag-grid.com/javascript-data-grid/filter-date/
-          const dateAsString = cellValue;
-          if (dateAsString == null) return -1;
-          const dateParts = dateAsString.split('/');
-          const cellDate = new Date(
-            Number(dateParts[2]),
-            Number(dateParts[1]) - 1,
-            Number(dateParts[0]),
-          );
-          if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
-            return 0;
-          }
-          if (cellDate < filterLocalDateAtMidnight) {
-            return -1;
-          }
-          if (cellDate > filterLocalDateAtMidnight) {
-            return 1;
-          }
-          return 0;
-        },
-      },
-    },
-    { headerName: 'Sport', field: 'sport', width: 150, editable: true },
-    { headerName: 'Gold', field: 'gold', width: 100 },
-    { headerName: 'Silver', field: 'silver', width: 100 },
-    { headerName: 'Bronze', field: 'bronze', width: 100 },
-    { headerName: 'Total', field: 'total', width: 100, pinned: 'right' },
+    { headerName: 'Make', field: 'make', sortable: true, filter: true },
+    { headerName: 'Model', field: 'model', sortable: true, filter: true },
+    { headerName: 'Price', field: 'price', sortable: true, filter: true },
   ];
 
   private rowData = [
-    {
-      athlete: 'Michael Phelps',
-      age: 27,
-      country: 'United States',
-      year: 2012,
-      date: '12/08/2012',
-      sport: 'Swimming',
-      gold: 4,
-      silver: 2,
-      bronze: 0,
-      total: 6,
-    },
-    {
-      athlete: 'Natalie Coughlin',
-      age: 25,
-      country: 'United States',
-      year: 2008,
-      date: '24/08/2008',
-      sport: 'Swimming',
-      gold: 1,
-      silver: 2,
-      bronze: 3,
-      total: 6,
-      isActionDisabled: true,
-    },
+    { make: 'Toyota', model: 'Celica', price: 35000 },
+    { make: 'Ford', model: 'Mondeo', price: 32000 },
+    { make: 'Porsche', model: 'Boxster', price: 72000 },
     // ...
   ];
 
@@ -169,6 +126,19 @@ export class SimpleGridExample extends GenesisElement {
   }
 }
 ```
+
+</TabItem>
+<TabItem value="react">
+
+TBD
+
+</TabItem>
+<TabItem value="angular">
+
+TBD
+
+</TabItem>
+</Tabs>
 
 ## Supported Row Models
 
