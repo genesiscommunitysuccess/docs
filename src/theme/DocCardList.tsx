@@ -5,7 +5,7 @@ import {
   filterDocCardListItems,
 } from '@docusaurus/plugin-content-docs/client';
 import type { Props } from '@theme/DocCardList';
-import CardList from '@site/src/components/CardList';
+import CardList from '@site/src/components/Card/CardList';
 import sidebarItemsData from '@site/static/data/sidebar-items-data.json';
 
 function DocCardListForCurrentSidebarCategory({className}: Props) {
@@ -33,8 +33,8 @@ export default function DocCardList(props: Props): JSX.Element {
   } 
 
   const filteredItems = enrichedItems.map((
-    { label: heading, href: link, description: text, icon  },
-  ) => ({ heading, link, text, icon }));
+    { label: heading, href: link, description: text, imageUrl  },
+  ) => ({ heading, link, text, imageUrl }));
 
   return (
     <section className={clsx('row', className)}>
