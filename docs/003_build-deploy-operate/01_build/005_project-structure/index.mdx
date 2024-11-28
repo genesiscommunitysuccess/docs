@@ -1,0 +1,111 @@
+---
+title: 'Project structure'
+sidebar_label: 'Project structure'
+id: bdo-build-tools
+keywords: [project, structure]
+tags:
+- project
+- structure
+sidebar_position: 5
+---
+
+The standard Genesis application project structure allows for a full-stack application to be contained in a "mono repo".
+
+In the project root there are two important directories, `client` and `server`. They contain all the files required for the client web (front end), and server (back end) codebases.
+
+![](/img/003_build-deploy-operate/project-structure/full-project.png)
+
+## `client`
+
+TODO
+
+## `server`
+
+The server directory contains all files and directories required to build and maintain the server side of an application.
+
+![](/img/003_build-deploy-operate/project-structure/server.png)
+
+The default single main app module, named `<application_name>-app` by standard, and contains application code. All the project’s server files can be put in this single module, including configuration files, GPAL scripts and other Java/Kotlin code. 
+
+It is not mandatory to put everything in this one module; you can add as many as you like, but there is no longer a requirement to have more than one.
+
+Under it's `src/main/` directory there are two directories included as standard which are maintained by developers and contain the application's server logic:
+
+- `genesis` : contains application specific configuration and DSL code. 
+- `kotlin` : contains kotlin code required by the application. This may be left empty where an application only needs to use the DSL.
+
+
+
+### `genesis`
+This directory contains 3 main directories:
+
+#### `cfg` 
+
+Contains all `.xml` configuration files, and any `.kts` Genesis DSL files which generate DAOs, which are as follows:
+
+- `*-system-definition.kts`
+- `*-tables-dictionary.kts`
+- `*-view-dictionary.kts`
+
+Any platform module provided `cfg` files which are placed in here will take precedence over that platform module provided file.
+
+#### `data` 
+
+Contains data files for the application. The typical use case is `.csv` files in [SendIt](/build-deploy-operate/operate/commands/#sendit) format that can be loaded into the application's database. This data directory will be part of the built application and thus is intended to be data which would be loaded into a production instance. Test data should be confined to the [`testData`](#testdata) directory.
+
+It **will** be bundled in the application's distribution zip.
+
+When [remap](/build-deploy-operate/operate/commands/remap/) is run with `--dataLoad` (which happens as standard when remapping using Genesis Start and IntelliJ plugin), it will attempt to load in data from this directory into the application database.
+
+
+#### `scripts`
+
+Contains Genesis DSL files used to configure most of the server capabilities. Any which do not generate DAOs (as they refer to DAOs) should live in this directory.
+
+Any platform module provided `cfg` files which are placed in here will take precedence over that platform module provided file.
+
+## `testData`
+
+The `testData` directory which can be included in the project root, is intended to contain any data which might be helpful when developing the application but should not go into a production system.
+
+It **will not** be bundled in the application's distribution zip.
+
+Data required in all environments including production should be placed in the [data](#data) directory.
+
+When [remap](/build-deploy-operate/operate/commands/remap/) is run with `--dataLoad` (which happens as standard when remapping using Genesis Start and IntelliJ plugin), it will attempt to load in data from this directory into the application database.
+
+## Gradle
+
+Gradle files and directories can be seen throughout the project structure, all have `gradle` included in the name. They are required to execute gradle commands, which, for example, build the entire application and execute commands such as launching [Genesis Start](/develop/development-environment/genesis-start/) and powering much of its functionality.
+
+### Gradle wrapper
+Fundamental to running gradle commands is the gradle wrapper directory. The gradle version properties and jar live here. 
+
+TODO point to create and add a note around when excluding gradle jar + update create to point here in docs.
+
+## Build
+
+There are various build directories which are generated at build time when building, or running the app locally. These files and directories are excluded from source control for this reason.
+
+The most important to be aware of is genesis-home which, after a build, will include all the application provided server module files. They are needed to run the application locally and when needing to [override platform provided files](/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files)
+
+
+
+## Settings plugin
+
+
+
+TODO - what is its importance, assume we ignore legacy structure? Speak to Jose and Peter today on this + gradle plugin and what we need to document
+
+
+
+The Genesis Gradle Settings plugin now enables you to create a much simpler project structure. With this new structure, only one module is required as a minimum in the project’s `server` directory, which is referred to as the "main module". 
+
+
+TODO port settings plugin somewhere
+
+
+By default, the main module will be detected by a module ending with `-app`. There is a property in the Settings plugin to specify a custom name which you can read about [here](../settings-plugin/#main-module-name).
+
+
+
