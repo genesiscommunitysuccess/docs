@@ -485,7 +485,7 @@ As with `onValidate` the block must finish with an [`ack`](#ack). If the event i
 
 1. The definition takes two `<Type>` (aka Generic) parameters instead of one. The first is the context object, which will be passed to the `onCommit` block. The second is the same as a regular [`eventHandler`](#eventHandler): the event metadata.
 1. The [`onValidate`](#onvalidate) block needs to return a [`validationAck`](#validationAck) instead of a regular [`ack`](#ack).
-1. The [`onCommit`](#oncommit) block has rwo lambda parameters, the standard event + a second, which is a reference to the context object returned in the `validationAck`.
+1. The [`onCommit`](#oncommit) block has two lambda parameters, the standard event + a second, which is a reference to the context object returned in the `validationAck`.
 
 #### `validationAck`
 
