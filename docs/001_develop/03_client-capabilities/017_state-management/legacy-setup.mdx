@@ -191,6 +191,74 @@ export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisEl
   </TabItem>
   <TabItem value="react">
 
+In our App class in React we'll need the DOM reference to the root DOM element. This is likely an
+element with the id `'root'`. Here is a code snippet you can use to get the reference and pass it
+as a prop.
+
+```typescript
+function bootstrapApp() {
+  const rootEelement = document.getElementById('root');
+  if (rootEelement) {
+    ReactDOM.createRoot(rootEelement!).render(
+      <React.StrictMode>
+        <App rootElement={rootEelement} />
+      </React.StrictMode>,
+    )
+  }
+}
+```
+
+Example Main class in React. Highlighted lines are directly related to initialising the store - other configuration may be different in
+your application. Other functionality that the main class may be required to perform is omitted from this example.
+
+```typescript tsx {1-3,5-12,20-25,28-31,33}
+interface AppProps {
+  rootElement: HTMLElement;
+}
+
+const App: React.FC<AppProps> = ({ rootElement }) => {
+  const [isStoreConnected, setIsStoreConnected] = useState(false);
+  const dispatchCustomEvent = (type: string, detail?: any) => {
+    rootElement.dispatchEvent(customEventFactory(type, detail));
+  };
+  const handleStoreConnected = (event: CustomEvent) => {
+    storeService.onConnected(event);
+  };
+
+  setApiHost();
+  genesisRegisterComponents();
+  configureFoundationLogin({ router: history });
+
+  useEffect(() => {
+    registerStylesTarget(document.body, 'main');
+    if (!isStoreConnected) {
+      rootElement.addEventListener('store-connected', handleStoreConnected);
+      dispatchCustomEvent('store-connected', rootElement);
+      dispatchCustomEvent('store-ready', true);
+      setIsStoreConnected(true);
+    }
+
+    return () => {
+      if (isStoreConnected) {
+        rootElement.removeEventListener('store-connected', handleStoreConnected);
+        dispatchCustomEvent('store-disconnected');
+      }
+    };
+  }, [isStoreConnected]);
+
+  return (
+    <AuthProvider>
+      <RoutesProvider>
+        <HistoryRouter history={history as any}>
+          <Routes>
+            <Route path="*" element={<DynamicLayout />} />
+          </Routes>
+        </HistoryRouter>
+      </RoutesProvider>
+    </AuthProvider>
+  );
+};
+```
 
   </TabItem>
   <TabItem value="angular">
