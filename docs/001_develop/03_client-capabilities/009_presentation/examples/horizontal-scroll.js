@@ -67,9 +67,6 @@ export default function HorizontalScrollDemo({ children, color }) {
 							<rapid-button>A button</rapid-button>
 						</rapid-card>
 					</rapid-horizontal-scroll>
-
-
-
 				</div>
 			</div>
 		</CodeSection>

@@ -13,12 +13,11 @@ import HorizontalScrollDemo from './examples/horizontal-scroll';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Progress
-
-An implementation of a content scroller as a Web Component.
+# Horizontal scroller
 
 Use cases:
--
+- Presenting many sections of data to the user that they can scroll through.
+- Alternative to typical dragging of a scrollbar to navigate through content. Uses buttons (fliipers) instead.
 
 ## Example
 
@@ -112,13 +111,15 @@ Use cases:
 </TabItem>
 </Tabs>
 
+:::tip
+You can use any html content inside of the scroll component, you don't have to use `<rapid-card>`s.
+:::
+
 ## API
 
 Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
 
 ### Attributes
-
-
 
 <table>
   <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
@@ -192,6 +193,7 @@ This component doesn't have any properties which are not also controlled via att
 ### Slots
 | Name | Description |
 |---|---|
+| Default | Where the content to be scrolled is placed |
 | start | Content which can be provided before the scroll area |
 | end | Content which can be provided after the scroll area |
 
