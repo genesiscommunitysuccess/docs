@@ -18,15 +18,16 @@ pagination_next: develop/client-capabilities/grids/grid-tabulator/grid-tabulator
 
 All of our custom cell rendering components enabled by default in Grid Pro. These renderers provide flexible and extensible ways to customize cell content and interactions in grid columns.
 
-## Renderer Types (Built-in)
+## Genesis Default Renderers
 
-### 1. Action Renderer (`ActionRenderer`)
+### Action Renderer (`ActionRenderer`)
 
 #### Purpose
 
 Renders a single action button within a grid cell, allowing for row-specific interactions.
 
 #### Key Features
+
 - Customizable button name and appearance
 - Supports disabled state based on row data
 - Handles click events with optional async actions
@@ -46,7 +47,7 @@ const columnDef = {
 }
 ```
 
-### 2. Actions Menu Renderer (`ActionsMenuRenderer`)
+### Actions Menu Renderer (`ActionsMenuRenderer`)
 
 #### Purpose
 
@@ -73,7 +74,7 @@ const actionsColumn = getActionsMenuDef([
 ]);
 ```
 
-### 3. Boolean Renderer (`BooleanRenderer`)
+### Boolean Renderer (`BooleanRenderer`)
 
 #### Purpose
 
@@ -96,9 +97,10 @@ const columnDef = {
 }
 ```
 
-### 4. Editable Renderer (`EditableRenderer`)
+### Editable Renderer (`EditableRenderer`)
 
 #### Purpose
+
 Renders a cell with a formatted value and an optional progress indicator.
 
 #### Key Features
@@ -116,7 +118,7 @@ const columnDef = {
 }
 ```
 
-### 5. Select Renderer (`SelectRenderer`)
+### Select Renderer (`SelectRenderer`)
 
 #### Purpose
 
@@ -145,7 +147,7 @@ const columnDef = {
 }
 ```
 
-### 6. Text Field Renderer (`AgTextFieldRenderer`)
+### Text Field Renderer (`AgTextFieldRenderer`)
 
 #### Purpose
 
@@ -174,8 +176,6 @@ const columnDef = {
 ## Creating a Custom Renderer Component
 
 To create a custom renderer component, you need to implement the `ICellRendererComp` interface from AG Grid. This interface defines the required methods for a renderer component.
-
-There are other ways to create custom renderers, but the following example demonstrates a more complex approach, allowing for more flexibility and customization.
 
 ### Step-by-Step Implementation
 
@@ -294,28 +294,28 @@ const gridOptions = {
 
 ## Key Considerations
 
-- Always implement `ICellRendererComp`
-- Use `@observable` for reactive properties
-- Provide flexible configuration options
-- Handle potential errors
-- Integrate with design system components
+- Always implement `ICellRendererComp`.
+- Use `@observable` for reactive properties.
+- Provide flexible configuration options.
+- Handle potential errors.
+- Integrate with design system components.
 
 ## Common Patterns to Follow
 
-- All renderers implement `ICellRendererComp` interface
-- Utilize `@observable` decorators for reactive properties
-- Support for custom disable logic
-- Integrated with Foundation UI design system
-- Flexible configuration through `cellRendererParams`
+- All renderers implement the `ICellRendererComp` interface.
+- Utilize `@observable` decorators for reactive properties.
+- Support custom disable logic.
+- Integrate with the Foundation UI design system.
+- Provide flexible configuration through `cellRendererParams`.
 
 When creating custom renderers for Grid Pro, follow these key steps:
 
-- Initialize with `init()` method
-- Implement `getGui()` to return root element
-- Use `refresh()` to update renderer state
-- Provide optional disable logic
-- Support custom change handling
-- Provide meaningful `isDisabled` functions
-- Handle potential errors in callbacks
-- Use appropriate value accessors
-- Consider performance when generating dynamic options
+- Initialize with `init()` method.
+- Implement `getGui()` to return the root element.
+- Use `refresh()` to update renderer state.
+- Provide optional disable logic.
+- Support custom change handling.
+- Provide meaningful `isDisabled` functions.
+- Handle potential errors in callbacks.
+- Use appropriate value accessors.
+- Consider performance when generating dynamic options.

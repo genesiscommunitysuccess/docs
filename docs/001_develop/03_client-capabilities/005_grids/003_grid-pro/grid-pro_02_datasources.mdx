@@ -17,16 +17,18 @@ pagination_next: develop/client-capabilities/grids/grid-pro/grid-pro-cell-and-co
 
 # Datasources
 
+## Overview
+
 The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource components. These components are responsible for fetching data for the Genesis Grid Pro component.
 
-## \<grid-pro-client-side-datasource\>
+## `<grid-pro-client-side-datasource>`
 
 ### Client-Side Features
 
 - **Sorting**: Order by any column, ASC or DESC.
 - **Filtering**:
-  - Filtering options are automatically generated, based on the resource’s metadata.
-  - String Filters:
+  - Filtering options are automatically generated based on the resource’s metadata.
+  - **String Filters**:
     - contains
     - not contains
     - equals
@@ -35,7 +37,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
     - ends with
     - blank
     - not blank
-  - Number/Date Filters:
+  - **Number/Date Filters**:
     - equals
     - less than
     - less than or equal
@@ -52,112 +54,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
 - Operations like sorting and filtering are performed on the client-side.
 - Suitable for datasets that are small to medium in size and can be entirely loaded into the client.
 
-## \<grid-pro-server-side-datasource\>
-
-### Server-Side Features
-
-- **Sorting**: Order by any INDEX column/field, ASC or DESC.
-  - This is a server limitation. For each column that needs to have “sorting” the developer will need to have an INDEX for it. See more about indexes [here](https://learn.genesis.global/docs/database/data-types/index-entities/).
-  - By default, sorting is disabled on ALL columns… BUT if we detect valid ‘` indexes” from the metadata those column/fields will be setup to have sorting.
-  - If the user attempts to force `sortable` we’ll check if it’s really ok to do that + warn in the logs about it + try to mention other available indexes.. if any at all.
-- **Filtering**:
-  - Filtering options are automatically generated, based on the resource’s metadata.
-  - String filters
-    - blank
-    - contains
-    - equals
-    - notBlank
-    - notEqual
-    - wordStartsWith
-  - Number filters
-    - equals
-    - notEqual
-    - greaterThan
-    - greaterThanOrEqual
-    - lessThan
-    - lessThanOrEqual
-    - inRange
-    - blank
-    - notBlank
-  - Date filters
-    - equals
-    - lessThan
-    - greaterThan
-    - inRange
-    - isToday
-    - blank
-    - notBlank
-
-### Server-Side Notes
-
-- Operations like sorting and filtering are pushed to the backend.
-  - Filtering uses `CRITERIA_MATCH` param
-  - Sorting uses `ORDERY_BY` param
-  - Both work the same way, once filtering/sorting is applied the datasource component “resets itself”, basically starting a new stream with the updated params.
-- **LIMITATIONS**
-  - Sorting can only be applied to “index” fields/columns.
-  - ROWS_COUNT doesn’t reflect the correct amount when a CRITERIA_MATCH (filtering) is applied. Example: X resource has 100 records. A criteria is specified so it returns only 50 records… the rows count sent from the server is still 100. Because of that we have to manually/locally calculate that.
-- Suitable for large datasets where only a subset of data is loaded into the client based on user interactions.
-
-## Attributes
-
-There are many attributes that can be set on a datasource component. These attributes can be used to customize the behavior of the datasource and the grid component. Below is a list of some of the most commonly used attributes.
-
-#### Resource Attributes
-
-Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific while others can be used with both.
-
-##### Attributes that are common between DATASERVER and REQUEST_SERVER
-
-|Name|Type|Default|Description|
-|----|----|-------|-----------|
-| `resource-name` | `string` | - | The name of the target [Data Server](https://learn.genesis.global/docs/server/data-server/introduction/) `query` or [Request Server](https://learn.genesis.global/docs/server/request-server/introduction/) `requestReply`. |
-| `is-snapshot` | `boolean` | `false` | Request a snapshot from the server. |
-| `criteria` |`string`| - |Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription.|
-| `max-rows` | `number` | - | Maximum number of rows to be returned as part of the initial message, and as part of any additional MORE_ROWS messages. **This will not affect the number of rows displayed**|
-| `view-number` | `number` | - | The desired view/page you want data from. |
-
-##### DATASERVER only attributes
-
-|Name|Type|Default|Description|
-|----|----|-------|-----------|
-| `fields` | `string` | - | This optional parameter allows you to select a subset of fields from the query if the client is not interested in receiving all of them. |
-| `max-view` | `number` | - | Maximum number of rows to track as part of a client "view" |
-| `moving-view` | `boolean` | `false` | If true, when the maximum number of rows defined in `max-view` is reached, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows. If false, the updates in the server will be sent to the front end regardless of order. Note that this will only update the UI; no changes will be performed in the database.|
-| `order-by` | `string` | - | This option can be used to select a [Data Server index](https://learn.genesis.global/docs/database/data-types/index-entities/) (defined in the Data Server `query`), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows are returned in order of creation (from oldest database record to newest).|
-| `reverse` | `boolean` | `false` | This option changes the [Data Server index](https://learn.genesis.global/docs/database/data-types/index-entities/) iteration. For example, if you are using the default index, the query will return rows in order from the newest database records to the oldest.|
-
-##### REQUEST_SERVER only attributes
-
-|Name|Type|Default|Description|
-|----|----|-------|-----------|
-| `disable-polling` | `boolean` | `false` | This option disables polling if set to true (data updates for the grid will not be fetched automatically).|
-| `polling-interval` | `number` | - | This option enables you to set a custom polling frequency (in milliseconds) for a [Request Server](https://learn.genesis.global/docs/server/request-server/introduction/) resource. Note that this option only works with Request Server resources; if your resource is a Data Server `query`, your grid is updated in real time. |
-| `request`| `string` | - | Similar to `fields` but for [Request Server](https://learn.genesis.global/docs/server/request-server/introduction/) scenarios. This optional parameter enables you to specify request fields, which can include wildcards.|
-| `request-auto-setup`| `boolean` | `false` | This option, if set to true, will automatically set up the `request` based on the datasources's metadata.|
-
-#### Component Attributes
-
-There are additional attributes that can affect the behavior of a datasource component.
-
-##### `<grid-pro-client-side-datasource>`
-
-|Name|Type|Default|Description|
-|----|----|-------|-----------|
-| `restart-on-reconnection` | `boolean` | `false` | This option, if set to true, will force the resource data to be reloaded upon a reconnection event.|
-| `keep-col-defs-on-clear-row-data` | `boolean` | `false` | This option, if set to true, will retain column definitions upon a `restart` or `clearRowData` event. |
-
-##### `<grid-pro-server-side-datasource>`
-
-|Name|Type|Default|Description|
-|----|----|-------|-----------|
-| `pagination` | `boolean` | `false` | This option enables pagination if set to true, otherwise the behavior will be infinite-scroll.|
-| `zero-based-view-number` | `boolean` | `false` | This option, if set to true, will make the starting VIEW_NUMBER zero-based (starting from 0 instead of 1).|
-| `live-updates` | `boolean` | `false` | This option enables live updates for the grid if set to true.|
-
-More details about our datasource implementations [here](#genesis-datasource).
-
-### Client-Side Datasource Usage
+### Usage Example
 
 ```typescript
 @customElement({
@@ -174,9 +71,54 @@ More details about our datasource implementations [here](#genesis-datasource).
 export class ConnectedGridClientSideExample extends GenesisElement {}
 ```
 
-### Server-Side Datasource Usage
+## `<grid-pro-server-side-datasource>`
 
-Note: if pagination is set to false the grid will be in infinite scroll mode.
+### Server-Side Features
+
+- **Sorting**: Order by any INDEX column/field, ASC or DESC.
+  - This is a server limitation. For each column that needs sorting, an INDEX must be defined. See more about indexes [here](https://learn.genesis.global/docs/database/data-types/index-entities/).
+  - By default, sorting is disabled on all columns, but if valid indexes are detected from the metadata, those columns/fields will have sorting enabled.
+  - If the user attempts to force `sortable`, we'll check its validity, warn in the logs if not, and mention other available indexes if any.
+- **Filtering**:
+  - Filtering options are automatically generated based on the resource’s metadata.
+  - **String Filters**:
+    - blank
+    - contains
+    - equals
+    - notBlank
+    - notEqual
+    - wordStartsWith
+  - **Number Filters**:
+    - equals
+    - notEqual
+    - greaterThan
+    - greaterThanOrEqual
+    - lessThan
+    - lessThanOrEqual
+    - inRange
+    - blank
+    - notBlank
+  - **Date Filters**:
+    - equals
+    - lessThan
+    - greaterThan
+    - inRange
+    - isToday
+    - blank
+    - notBlank
+
+### Server-Side Notes
+
+- Operations like sorting and filtering are pushed to the backend.
+  - Filtering uses `CRITERIA_MATCH` param.
+  - Sorting uses `ORDER_BY` param.
+  - Once filtering/sorting is applied, the datasource component resets itself, starting a new stream with the updated params.
+- **Limitations**:
+  - Sorting can only be applied to index fields/columns.
+  - `ROWS_COUNT` doesn’t reflect the correct amount when a `CRITERIA_MATCH` (filtering) is applied. For example, if a resource has 100 records and a criteria returns only 50, the server still reports 100. We have to calculate this manually.
+- Suitable for large datasets where only a subset of data is loaded into the client based on user interactions.
+
+### Usage Example
 
 ```typescript
 @customElement({
@@ -193,7 +135,63 @@ Note: if pagination is set to false the grid will be in infinite scroll mode.
 export class ConnectedGridServerSideExample extends GenesisElement {}
 ```
 
-### Summary
+## Common Attributes
+
+There are many attributes that can be set on a datasource component. These attributes can be used to customize the behavior of the datasource and the grid component. Below is a list of some of the most commonly used attributes.
+
+### Resource Attributes
+
+Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, while others can be used with both.
+
+#### Attributes Common to DATASERVER and REQUEST_SERVER
+
+| Name            | Type      | Default | Description                                                                                                                                                                                                                               |
+|-----------------|-----------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `resource-name` | `string`  | -       | The name of the target [Data Server](https://learn.genesis.global/docs/server/data-server/introduction/) `query` or [Request Server](https://learn.genesis.global/docs/server/request-server/introduction/) `requestReply`.                 |
+| `is-snapshot`   | `boolean` | `false` | Request a snapshot from the server.                                                                                                                                                                                                       |
+| `criteria`      | `string`  | -       | Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription.                                                                                                        |
+| `max-rows`      | `number`  | -       | Maximum number of rows to be returned as part of the initial message and any additional MORE_ROWS messages. **This will not affect the number of rows displayed.**                                                                         |
+| `view-number`   | `number`  | -       | The desired view/page you want data from.                                                                                                                                                                                                 |
+
+#### DATASERVER Only Attributes
+
+| Name                 | Type      | Default | Description                                                                                                                                                                                                                                                                                                                                                                      |
+|----------------------|-----------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `fields`             | `string`  | -       | This optional parameter allows you to select a subset of fields from the query if the client is not interested in receiving all of them.                                                                                                                                                                                                                                          |
+| `max-view`           | `number`  | -       | Maximum number of rows to track as part of a client "view".                                                                                                                                                                                                                                                                                                                      |
+| `moving-view`        | `boolean` | `false` | If true, when the maximum number of rows defined in `max-view` is reached, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows. If false, updates in the server will be sent to the front end regardless of order. Note that this will only update the UI; no changes will be performed in the database.                            |
+| `order-by`           | `string`  | -       | This option can be used to select a [Data Server index](https://learn.genesis.global/docs/database/data-types/index-entities/) (defined in the Data Server `query`), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows are returned in order of creation (from oldest database record to newest).                            |
+| `reverse`            | `boolean` | `false` | This option changes the [Data Server index](https://learn.genesis.global/docs/database/data-types/index-entities/) iteration. For example, if you are using the default index, the query will return rows in order from the newest database records to the oldest.                                                                                                                |
+
+#### REQUEST_SERVER Only Attributes
+
+| Name                  | Type      | Default | Description                                                                                                                                                                                                                                                                                  |
+|-----------------------|-----------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `disable-polling`     | `boolean` | `false` | This option disables polling if set to true (data updates for the grid will not be fetched automatically).                                                                                                                                                                                   |
+| `polling-interval`    | `number`  | -       | This option enables you to set a custom polling frequency (in milliseconds) for a [Request Server](https://learn.genesis.global/docs/server/request-server/introduction/) resource. Note that this option only works with Request Server resources; if your resource is a Data Server `query`, your grid is updated in real time. |
+| `request`             | `string`  | -       | Similar to `fields` but for [Request Server](https://learn.genesis.global/docs/server/request-server/introduction/) scenarios. This optional parameter enables you to specify request fields, which can include wildcards.                                                                     |
+| `request-auto-setup`  | `boolean` | `false` | This option, if set to true, will automatically set up the `request` based on the datasource's metadata.                                                                                                                                                                                     |
+
+### Exclusive Attributes
+
+Additional attributes that can affect the behavior of a datasource component.
+
+#### `<grid-pro-client-side-datasource>`
+
+| Name                              | Type      | Default | Description                                                                                                                      |
+|-----------------------------------|-----------|---------|----------------------------------------------------------------------------------------------------------------------------------|
+| `restart-on-reconnection`         | `boolean` | `false` | If set to true, the resource data will be reloaded upon a reconnection event.                                                    |
+| `keep-col-defs-on-clear-row-data` | `boolean` | `false` | If set to true, column definitions will be retained upon a `restart` or `clearRowData` event.                                    |
+
+#### `<grid-pro-server-side-datasource>`
+
+| Name                     | Type      | Default | Description                                                                                                            |
+|--------------------------|-----------|---------|------------------------------------------------------------------------------------------------------------------------|
+| `pagination`             | `boolean` | `false` | Enables pagination if set to true; otherwise, the behavior will be infinite-scroll.                                     |
+| `zero-based-view-number` | `boolean` | `false` | If set to true, the starting `VIEW_NUMBER` will be zero-based (starting from 0 instead of 1).                          |
+| `live-updates`           | `boolean` | `false` | Enables live updates for the grid if set to true.                                                                      |
+
+## Summary
 
 - **Client-Side Datasource**: Suitable for smaller datasets where all data can be loaded into the client. Operations like sorting and filtering are performed on the client-side.
 - **Server-Side Datasource**: Ideal for large datasets, where operations are pushed to the backend to ensure performance and consistency. Data is fetched as needed based on user interactions.
