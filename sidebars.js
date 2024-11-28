@@ -199,6 +199,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Build',
+      link: {type: 'doc', id: 'build-deploy-operate/build/bdo-build-overview'},
       collapsed: true,
       items: [
         {
@@ -210,6 +211,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Deploy',
+      link: {type: 'doc', id: 'build-deploy-operate/deploy/bdo-deploy-overview'},
       collapsed: true,
       items: [
         {
@@ -221,6 +223,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Operate',
+      link: {type: 'doc', id: 'build-deploy-operate/operate/bdo-operate-overview'},
       collapsed: true,
       items: [
         {
