@@ -75,127 +75,13 @@ export const MainTemplate: ViewTemplate<MainApplication> = html`
 
 ## Store initialisation events
 
-<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
-
-  <TabItem value="genesis">
-
-  You need to inject the store into the class where you use the router in the template. This is very likely to be your `MainApplication` class.
-
-`main.ts`
-```typescript {10}
-@customElement({
-  name,
-  template,
-  styles,
-})
-export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
-  @App app: App;
-  @Connect connect!: Connect;
-  @Container container!: Container;
-  @Store store: Store;
-}
-```
-
-`main.template.ts`
-```typescript {4}
-export const MainTemplate: ViewTemplate<MainApplication> = html`
-  <foundation-router
-    :config=${(x) => x.config}
-    :store=${(x) => x.store}
-  ></foundation-router>
-`;
-```
-
-
-  </TabItem>
-  <TabItem value="react">
-
-
-  </TabItem>
-  <TabItem value="angular">
-
-
-  </TabItem>
-</Tabs>
-
+In addition to the events that you create to handle your business logic, you'll also need to emit events to setup and control
+the state of the store itself.
 
 ### `'store-connected'`
 
-In your main application class, likely `./src/main/main.ts`, you need to fire a `'store-connected'` event in-order to
+In your main application class you need to fire a `'store-connected'` event in-order to
 fully initialise the store.
-
-```typescript
-// ./main/main.ts
-
-type EventMap = StoreEventDetailMap & {...}; // < whatever other events you allow your custom element to emit
-
-/**
- * MainApplication
- *
- * @fires store-connected - Fires a custom 'store-connected' event after connection to connect the store.
- * @fires store-ready - Fires a custom 'store-ready' event after connection to ready the store.
- * @fires store-disconnected - Fires a custom 'store-disconnected' event after disconnection to unbind the store.
- *
- * @public
- */
-@customElement({ name, template, styles })
-export class MainApplication extends EventEmitter<EventMap>(FASTElement) {
-  /**
-   * @public
-   */
-  @Store store: Store; // < injected root store
-
-  /**
-   * @public
-   */
-  connectedCallback() {
-    super.connectedCallback();
-    this.addEventListeners();
-    this.readyStore();
-  }
-
-  /**
-   * @public
-   */
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.removeEventListeners();
-    this.disconnectStore();
-  }
-
-  /**
-   * @internal
-   */
-  protected addEventListeners() {
-    this.addEventListener('store-connected', this.store.onConnected);
-  }
-
-  /**
-   * @internal
-   */
-  protected removeEventListeners() {
-    this.removeEventListener('store-connected', this.store.onConnected);
-  }
-
-  /**
-   * @internal
-   */
-  protected readyStore() {
-    this.$emit('store-connected', this);
-    /**
-     * Do some other work if needed.
-     */
-    this.$emit('store-ready', true);
-  }
-
-  /**
-   * @internal
-   */
-  protected disconnectStore() {
-    this.$emit('store-disconnected');
-  }
-}
-```
 
 The `'store-connected'` event handler needs to be explicitly bound. When the root store handles `'store-connected'`,
 it auto binds all the store event listeners to the rootElement.
@@ -205,13 +91,11 @@ See [EventEmitter](src/.foundation/events/eventEmitter/README.md) for more infor
 
 ### `'store-ready'`
 
-We've created an explicit store ready event to indicate when the store is ready to use, as you may wish to do some
-additional work upfront. It's not a hard requirement to emit this, but is considered best practice. If you've no work to
+As you may be required to do some additional work between the initialisation of the store and the application use, there is
+an additional `store-ready` event to dispatch. It's not a hard requirement to emit this, but is considered best practice. If you've no work to
 do, you can just emit this right after `'store-connected'`.
 
 ```typescript
-// ./main/main.ts
-
 this.$emit('store-connected', this);
 /**
  * Do some other work if needed.
@@ -231,4 +115,157 @@ disconnectedCallback() {
   this.$emit('store-disconnected');
 }
 ```
+### Configuration example
+
+The following snippets are examples of your main application class dispatching the required events
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+Example Main class in Genesis. Highlighted lines are directly related to initialising the store - other configuration may be different in
+your application. Other functionality that the main class may be required to perform is omitted from this example.
+
+```typescript {2-3,14,25-26,34-35,42-58}
+/**
+ * @fires store-connected - Fired when the store is connected.
+ * @fires store-ready - Fired when the store is ready.
+ */
+@customElement({
+  name,
+  template,
+  styles,
+})
+export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
+  @App app: App;
+  @Connect connect!: Connect;
+  @Container container!: Container;
+  @Store store: Store;
+
+  @inject(MainRouterConfig) config!: MainRouterConfig;
+
+  @observable provider!: any;
+  @observable ready: boolean = false;
+  @observable data: any = null;
+
+  async connectedCallback() {
+    this.registerDIDependencies();
+    super.connectedCallback();
+    this.addEventListeners();
+    this.readyStore();
+    DOM.queueUpdate(() => {
+      configureDesignSystem(this.provider, designTokens);
+    });
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListeners();
+    this.disconnectStore();
+  }
+
+  selectTemplate() {
+    return this.ready ? MainTemplate : LoadingTemplate;
+  }
+
+  protected addEventListeners() {
+    this.addEventListener('store-connected', this.store.onConnected);
+  }
+
+  protected removeEventListeners() {
+    this.removeEventListener('store-connected', this.store.onConnected);
+  }
+
+  protected readyStore() {
+    // @ts-ignore
+    this.$emit('store-connected', this);
+    this.$emit('store-ready', true);
+  }
+
+  protected disconnectStore() {
+    this.$emit('store-disconnected');
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="react">
+
+
+  </TabItem>
+  <TabItem value="angular">
+
+Example Main class in Angular. Highlighted lines are directly related to initialising the store - other configuration may be different in
+your application. Other functionality that the main class may be required to perform is omitted from this example.
+
+```typescript {9,26-27,33-34,41-60}
+@Component({
+  selector: 'fixedincome-root',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css',
+})
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+  layoutName?: LayoutComponentName;
+  title = 'Fixed Income';
+  store = getStore();
+
+  constructor(
+    private el: ElementRef,
+    router: Router,
+  ) {
+      configureFoundationLogin({ router });
+
+    // Set layout componet based on route
+    router.events.subscribe((event: any) => {
+      if (event instanceof NavigationEnd) {
+        this.layoutName = getLayoutNameByRoute(event.urlAfterRedirects);
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.addEventListeners();
+    this.readyStore();
+    registerStylesTarget(this.el.nativeElement, 'main');
+    this.loadRemotes();
+  }
+
+  ngOnDestroy() {
+    this.removeEventListeners();
+    this.disconnectStore();
+  }
+
+  async loadRemotes() {
+    await registerComponents();
+  }
+
+  addEventListeners() {
+    this.el.nativeElement.addEventListener('store-connected', this.store.onConnected);
+  }
+
+  removeEventListeners() {
+    this.el.nativeElement.removeEventListener('store-connected', this.store.onConnected);
+  }
+
+  readyStore() {
+    this.dispatchCustomEvent('store-connected', this.el.nativeElement);
+    this.dispatchCustomEvent('store-ready', true);
+  }
+
+  disconnectStore() {
+    this.dispatchCustomEvent('store-disconnected');
+  }
+
+  dispatchCustomEvent(type: string, detail?: any) {
+    this.el.nativeElement.dispatchEvent(customEventFactory(type, detail));
+  }
+
+  ngAfterViewInit() {
+  }
+
+}
+```
+
+  </TabItem>
+</Tabs>
 
