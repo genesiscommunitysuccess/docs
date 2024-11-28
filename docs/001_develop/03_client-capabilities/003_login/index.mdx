@@ -28,9 +28,13 @@ Below are examples showcasing the key screens and functionalities of the **Found
 |-------------------|------------------|-------------------|------------------|------------------|
 |![Main login screen example](./docs/img/foundation-login_login-standard.png)|![Main login screen example](./docs/img/foundation-login_login-sso.png)|![Main login screen example](./docs/img/foundation-login_forgotten-password.png)|![Main login screen example](./docs/img/foundation-login_change-password.png)|![Main login screen example](./docs/img/foundation-login_request-account.png)
 
+:::info
+See complete set of API documentation [here](./docs/api/index.md)
+:::
+
 ## Authentication Methods
 
-Authentication is primarily configured on the back end. It's essential to familiarize yourself with the authentication section of the back-end configuration to ensure proper integration.
+Authentication is primarily configured on the back end. It's essential to familiarize yourself with the [authentication](../../02_server-capabilities/007_access-control/02_authentication/index.mdx) section of the back-end configuration to ensure proper integration.
 
 ### Username & Password
 
@@ -396,7 +400,7 @@ background: css`
 <tr>
   <td>[localizationResources](./docs/api/foundation-login.loginconfig.localizationresources.md)</td>
   <td><code>I18nextConfig['resources']</code></td>
-  <td>_(Optional)_ Internationalization (i18n) resources for localization.</td>
+  <td>_(Optional)_ [Internationalization](../020_internationalization/index.mdx) (i18n) resources for localization.</td>
   <td>
 ```typescript
 localizationResources: {
@@ -535,14 +539,3 @@ sso: {
 </tr>
   </tbody>
 </table>
-
-:::info
-See complete set of API documentation [here](./docs/api/index.md)
-:::
-
-## License
-
-Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
-
-### Licensed components
-Genesis low-code platform
