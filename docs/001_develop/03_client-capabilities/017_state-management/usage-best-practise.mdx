@@ -17,102 +17,179 @@ tags:
 sidebar_position: 17
 ---
 
-## Using store fragments
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-To use a store fragment in your custom element simply inject it using its `interface` as the DI key.
+## Store bindings
+
+To use the values in the store you'll need to bind the properties of the getter inside of your components. There are various ways which are covered in this section.
+
+You will need to inject a reference to the store in your component whenever you want to use it.
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+  ```typescript
+  @customElement({
+      name: 'using-store',
+  })
+  export class UsingStore extends GenesisElement {
+      @Store store: Store;
+      connectedCallback() {
+        super.connectedCallback();
+        // access the store
+        this.store.myStoreVariable;
+        this.store.binding();
+      }
+  }
+  ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  ```typescript
+  const UsingStore = () => {
+
+    useEffect(() => {
+      // access the store
+      storeService.getStore().myStoreVariable;
+      storeService.getStore().binding();
+    }, []);
+
+    return (<p>Example</p>);
+  };
+  ```
+
+
+  </TabItem>
+  <TabItem value="angular">
+
+    ```typescript
+    @Component({
+      selector: 'using-store',
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class WithStore implements OnInit {
+
+      ngOnInit() {
+        // access the store
+        getStore().myStoreVariable;
+        getStore().binding();
+      }
+    }
+
+    ```
+
+  </TabItem>
+</Tabs>
+
+### Template store bindings
+
+:::tip
+You can only bind directly in the template when using Genesis syntax components. However, you can still apply these concepts
+such as setting properties or choosing different HTML fragments in any framework you're using.
+:::
+
+You may wish to monitor the value of `this.store.ready` via template bindings to conditional render a
+loading phase in your template.
 
 ```typescript
-export type EventMap = TradeEntryEventDetailMap;
+// ./main/main.template.ts
 
-export class TradeEntryForm extends EventEmitter<EventMap>(FASTElement) {
-  @TradeEntry tradeEntry: TradeEntry;
+${when(x => !x.store.ready, html<Loading>`Loading...`)}
+```
+
+...or monitor the value indirectly, to swap out the entire template.
+
+```typescript
+// ./main/main.ts
+
+selectTemplate() {
+  return this.store.ready ? MainTemplate : LoadingTemplate;
 }
+
+// ./main/main.template.ts
+
+<template ...>
+  ${x => x.selectTemplate()}
+</template>
 ```
 
-Now in your template you can use the values from the store fragment and raise typed events.
-
-````typescript jsx
-import type {TradeEntryForm, EventMap} from './home';
-
-const inputEmit = createInputEmitter<EventMap>();
-
-<zero-text-field
-  type="number"
-  :value=${x => x.tradeEntry.price}
-  @change="${inputEmit('trade-entry-price-changed')}"
->
-````
-
-`createEmitChangeAs` is a utility from `@genesislcap/foundation-events` to allow components with string change inputs
-to emit their string values as typed event detail payloads. It will warn you if you try to use it with a component that
-doesn't have a string target.value type. It's a convenience method only and is the same as writing:
-
-```typescript jsx
-<zero-text-field
-  type="number"
-  :value=${x => x.tradeEntry.price}
-  @change="${(x, c) => x.$emit('trade-entry-price-changed', targetValue(c))}"
->
-````
-
-We will be adding a number of these for Selects and other primitives. You can of course call to a class method and have
-that emit the typed event to the store, but the idea with the helpers are to remove some boilerplate and misdirection.
-
-```typescript jsx
-<zero-select @change=${((x, c) => x.instrumentIdChange(c.event.target as Select))}>
+You may also set properties and attributes of components in the template directly from values in the store.
+```typescript
+<rapid-grid-pro>
+  <grid-pro-client-side-datasource
+    resource-name="ALL_TRADES"
+    criteria=${(x) => x.store.tradesFilterCriteria}
+  ></grid-pro-client-side-datasource>
+</rapid-grid-pro>
 ```
+
+### Direct store bindings
+
+:::tip
+Remember in the following examples you might access the store in a subtly different way depending on which framework you're using. [See here](#store-bindings).
+:::
+
+To bind to the store outside the template engine, you use the store's `binding()` api. The store's `binding()` api is
+strongly typed, so you will be unable to bind to a non-existent property or getter. You also don't need to think about
+if the data point is a property or a getter, perhaps returning derived data, as the api works the same for both cases.
 
 ```typescript
-instrumentIdChange(target: Select) {
-  this.$emit('trade-entry-instrumentID-changed', target.selectedOptions[0]?.value);
-}
+// TS knows the returned type of value
+this.store.binding(x => x.ready, value => {...});
+this.store.binding(x => x.someNumericProp, value => {...});
+
+// TS needs some help to type the returned value, so you need to provide that (we hope to fix this).
+this.store.binding<boolean>('ready', value => {...});
+this.store.binding<number>('someNumericProp', value => {...});
+
+// You can even create your own derived binding that are not already defined as getters in the store
+this.store.binding(x => x.prop1 * x.prop2, value => {...});
+
+// These can even be volatile providing you pass true for isVolatileBinding
+this.store.binding(x => x.someToggle ? x.prop1 : x.prop2, value => {...}, true);
 ```
 
-If the component in question is perhaps a library asset or simply needs to remain unaware of the DI, you can map store
-properties to the custom element via its attributes.
+Here is an example of using the underlying
+[bindingObserver](https://www.fast.design/docs/fast-element/observables-and-state#bindings) as per docs.
 
-```typescript jsx
-// ./some-parent/some-parent.template.ts
-
-<trade-entry-form price="${x => x.tradeEntry.price}" />
-```
-
-If the components are specific to your application and won't be shared, and you've split up your store into appropriate
-domain specific fragments, injecting the store fragment directly into where it's needed will greatly reduce mapping
-boilerplate. Remember components should only have access to the data they need. If the injected store fragment provides
-them more than that, consider splitting that store fragment up further, or reworking your store structure.
-
-### Accessing values from one store fragment to another
-
-If you need to read values from another part of the store in your store you may be able to simple inject it, but you
-won't need to pass it to the super class for processing if that's done elsewhere. If you would rather not inject it, you
-can use `this.root.fragmentX.fragmentY.value`. You should provide root store type information when creating your store
-fragment that will be reading root, for example:
 ```typescript
-import type {Store as StoreRoot} from '../store';
-...
-class DefaultPositions extends AbstractStore<Positions, PositionsEventDetailMap, InternalEventDetailMap, StoreRoot> implements Positions {
-  onPositionSelected = this.createListener<PositionEntity>('position-selected', (position) => {
-    const lastTradeId = this.root.trades.selectedTrade.id;
+this.store.binding(x => x.prop1).subscribe({
+  handleChange(source) { // < note that the source is the bindingObserver itself, x => x.prop1, and not the value of the change
     ...
-  });
-}
+  }
+})
 ```
 
-### Testing with the injected dependency in place
+Updates are batch processed, so if a bunch of properties are updated in the store that any of the stores getters or
+derived bindings you've passed in via the `binding()` api use, they will by design tick only once to avoid
+any unnecessary updates and potential re-renders.
 
-Using a DI based store is very powerful as it allows us to swap out our store fragments when needed, ie. a unit test:
+### Direct store bindings as RxJS
 
-```typescript jsx
-const mock = new TradeEntryMock();
-const Suite = createComponentSuite<TradeEntryForm>('TradeEntryForm Test', () => tradeEntryForm(), null, [
-  Registration.instance(TradeEntry, mock),
-]);
+Stores also offer a `bindingAsRx()` api which returns a Rxjs Observable to allow you to observe a value using Rxjs which
+may be useful depending on the needs of your application.
+
+```typescript
+const entireStore$ = this.store.bindingAsRx().subscribe(value => {...});
+
+const ready$ = this.store.bindingAsRx('ready').subscribe(value => {...});
+
+const prop1$ = this.store.bindingAsRx(x => x.prop1).subscribe(value => {...});
 ```
 
-The code in your component remains as is.
+### Binding API
 
-## Committing value mutations
+See the API docs for the different binding methods [here](../docs/api/foundation-store.store/#methods).
+
+
+
+## Best practises
+
+### Committing value mutations
 
 Stores are read only, so if you try to set a property directly TS will flag this. To commit a value to the store you
 must emit a known store event. In these event handlers, you call `this.commit` prepended with the value you want to
@@ -138,7 +215,7 @@ tracked overtime.
 onTradeSelected = this.createListener<TradeEntity>('trade-selected', trade => this.selectedTrade = trade);
 ```
 
-## Side effects
+### Side effects
 
 When you need to reach out to another part of the system or generally do some async work, you should ensure the initial
 event handler is async. We recommend that you don't commit values in this handler, as it may become difficult to track
@@ -197,97 +274,10 @@ Please note that `store.errors` is not a true `Map` so doesn't have all the nati
 most of what you need. You also operate on the errors map directly without raising events. This is like this for
 simplicity, and because errors are transient in nature.
 
-## Store bindings
-
-You can easily bind to the properties and getters of a store inside the internal template engine, or outside of the
-template engine via the store's `binding()` api.
-
-### Template store bindings
-
-For example, you may wish to monitor the value of `this.store.ready` via template bindings to conditional render a
-loading phase in your template.
-
-```typescript jsx
-// ./main/main.template.ts
-
-${when(x => !x.store.ready, html<Loading>`Loading...`)}
-```
-
-...or monitor the value indirectly, to swap out the entire template.
-
-```typescript
-// ./main/main.ts
-
-selectTemplate() {
-  return this.store.ready ? MainTemplate : LoadingTemplate;
-}
-
-// ./main/main.template.ts
-
-<template ...>
-  ${x => x.selectTemplate()}
-</template>
-```
-
-### Direct store bindings
-
-To bind to the store outside the template engine, you use the store's `binding()` api. The store's `binding()` api is
-strongly typed, so you will be unable to bind to a non-existent property or getter. You also don't need to think about
-if the data point is a property or a getter, perhaps returning derived data, as the api works the same for both cases.
-
-Some examples:
-
-```typescript
-// TS knows the returned type of value
-this.store.binding(x => x.ready, value => {...});
-this.store.binding(x => x.someNumericProp, value => {...});
-
-// TS needs some help to type the returned value, so you need to provide that (we hope to fix this).
-this.store.binding<boolean>('ready', value => {...});
-this.store.binding<number>('someNumericProp', value => {...});
-
-// You can even create your own derived binding that are not already defined as getters in the store
-this.store.binding(x => x.prop1 * x.prop2, value => {...});
-
-// These can even be volatile providing you pass true for isVolatileBinding
-this.store.binding(x => x.someToggle ? x.prop1 : x.prop2, value => {...}, true);
-```
-
-Here is an example of using the underlying
-[bindingObserver](https://www.fast.design/docs/fast-element/observables-and-state#bindings) as per docs.
-
-```typescript
-this.store.binding(x => x.prop1).subscribe({
-  handleChange(source) { // < note that the source is the bindingObserver itself, x => x.prop1, and not the value of the change
-    ...
-  }
-})
-```
-
-Updates are batch processed, so if a bunch of properties are updated in the store that any of the stores getters or
-derived bindings you've passed in via the `binding()` api use, they will by design tick only once to avoid
-any unnecessary updates and potential re-renders.
-See [Reactivity](https://www.fast.design/docs/fast-element/observables-and-state#reactivity) for more information.
-
-### Direct store bindings as RxJS
-
-Stores also offer a `bindingAsRx()` api which returns a Rxjs Observable to allow you to observe a value using Rxjs which
-may be useful depending on the needs of your application.
-
-```typescript
-const entireStore$ = this.store.bindingAsRx().subscribe(value => {...});
-
-const ready$ = this.store.bindingAsRx('ready').subscribe(value => {...});
-
-const prop1$ = this.store.bindingAsRx(x => x.prop1).subscribe(value => {...});
-```
-
-**_We may need to do some additional work here to finish this feature._**
-
-## UI state in stores
+### UI state in stores
 
 You may want to keep your UI state in your stores alongside the application data. If so consider splitting these up into
-separate fragments, for example:
+separate [fragments](#using-store-fragments), for example:
 
 - TradeEntry: Trade entry field values (Data).
 - TradeEntryUI: Trade entry presentation status, isOpen, isLoading etc. (UI State).
@@ -313,10 +303,106 @@ lines between the data and the UI state in our store fragments.
 
 For example a UI conditional could map to a UI sub fragment, whereas a datapoint could map to the parent fragment. The
 component would only need tradeEntry injected to have access to both, depending on how we structure fragments.
+
 ```typescript jsx
 ${when(x => x.tradeEntry.ui.isOpen, html<TradeEntryForm>`
-    <zero-card>
-        <zero-text-field :value=${x => x.tradeEntry.quantity}>
-    </zero-card>
+    <rapid-card>
+        <rapid-text-field :value=${x => x.tradeEntry.quantity}>
+    </rapid-card>
 `}
 ```
+
+## Using store fragments
+
+As your application grows, it's possible that the `store.ts` definition becomes extremely large - especially as your handlers (reducers) grow in complexity, mutating nested objects. Instead of having all properties and handlers defined on the root store you can split up different domains into different sub-stores (referred to here as store fragments). To use a store fragment in your custom element simply inject it using its `interface` as the DI key.
+
+```typescript
+export type EventMap = TradeEntryEventDetailMap;
+
+export class TradeEntryForm extends EventEmitter<EventMap>(GenesisElement) {
+  @TradeEntry tradeEntry: TradeEntry;
+}
+```
+
+Now in your template you can use the values from the store fragment and raise typed events.
+
+````typescript jsx
+import type {TradeEntryForm, EventMap} from './home';
+
+const inputEmit = createInputEmitter<EventMap>();
+
+<rapid-text-field
+  type="number"
+  :value=${x => x.tradeEntry.price}
+  @change="${inputEmit('trade-entry-price-changed')}"
+>
+````
+
+`createEmitChangeAs` is a utility from `@genesislcap/foundation-events` to allow components with string change inputs
+to emit their string values as typed event detail payloads. It will warn you if you try to use it with a component that
+doesn't have a string target.value type. It's a convenience method only and is the same as writing:
+
+```typescript jsx
+<rapid-text-field
+  type="number"
+  :value=${x => x.tradeEntry.price}
+  @change="${(x, c) => x.$emit('trade-entry-price-changed', targetValue(c))}"
+>
+````
+
+We will be adding a number of these for Selects and other primitives. You can of course call to a class method and have
+that emit the typed event to the store, but the idea with the helpers are to remove some boilerplate and misdirection.
+
+```typescript jsx
+<rapid-select @change=${((x, c) => x.instrumentIdChange(c.event.target as Select))}>
+```
+
+```typescript
+instrumentIdChange(target: Select) {
+  this.$emit('trade-entry-instrumentID-changed', target.selectedOptions[0]?.value);
+}
+```
+
+If the component in question is perhaps a library asset or simply needs to remain unaware of the DI, you can map store
+properties to the custom element via its attributes.
+
+```typescript jsx
+// ./some-parent/some-parent.template.ts
+
+<trade-entry-form price="${x => x.tradeEntry.price}" />
+```
+
+If the components are specific to your application and won't be shared, and you've split up your store into appropriate
+domain specific fragments, injecting the store fragment directly into where it's needed will greatly reduce mapping
+boilerplate. Remember components should only have access to the data they need. If the injected store fragment provides
+them more than that, consider splitting that store fragment up further, or reworking your store structure.
+
+### Accessing values from one store fragment to another
+
+If you need to read values from another part of the store in your store you may be able to simple inject it, but you
+won't need to pass it to the super class for processing if that's done elsewhere. If you would rather not inject it, you
+can use `this.root.fragmentX.fragmentY.value`. You should provide root store type information when creating your store
+fragment that will be reading root, for example:
+```typescript
+import type {Store as StoreRoot} from '../store';
+...
+class DefaultPositions extends AbstractStore<Positions, PositionsEventDetailMap, InternalEventDetailMap, StoreRoot> implements Positions {
+  onPositionSelected = this.createListener<PositionEntity>('position-selected', (position) => {
+    const lastTradeId = this.root.trades.selectedTrade.id;
+    ...
+  });
+}
+```
+
+### Testing with the injected dependency in place
+
+Using a DI based store is very powerful as it allows us to swap out our store fragments when needed, ie. a unit test:
+
+```typescript jsx
+const mock = new TradeEntryMock();
+const Suite = createComponentSuite<TradeEntryForm>('TradeEntryForm Test', () => tradeEntryForm(), null, [
+  Registration.instance(TradeEntry, mock),
+]);
+```
+
+The code in your component remains as is.

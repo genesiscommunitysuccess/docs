@@ -431,7 +431,7 @@ In Genesis syntax you can dispatch an event from a standard component, but it's 
 
 At this stage you should be able to activate the `console.log` statement in the store handler added in step 4 by running the app and interacting with the radio buttons. As the selected radio is changed an event is dispatched and should be picked up and set in the store handler.
 
-The very final step is to use the configured value to filter the grid rows. There are many ways that this can be accomplished. As the property on the store is `@observable` if it could be used directly in a html binding, as the store updates the data in the binding would update too. However, in this contrived case where we're filtering grid data manually without using the `<grid-pro-client-side-datasource>` which means the filtering cannot be done via a binding on the html. Instead the `binding` property on a reference to the store is used.
+The very final step is to use the configured value to filter the grid rows. There are many ways that this can be accomplished. As the property on the store is `@observable`, it could be used directly in a template binding (in a Genesis syntax component), as the store updates the data in the binding would update too. However, in this contrived case where we're filtering grid data manually without using the `<grid-pro-client-side-datasource>` which means the filtering cannot be done via a template binding directly. Instead the `binding` property on a reference to the store is used.
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 
