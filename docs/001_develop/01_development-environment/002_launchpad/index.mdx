@@ -280,6 +280,21 @@ Alternatively, you can click on `Download Project Locally` to download your proj
 This does involve some extra set-up, however.
 :::
 
+## Genesis Templates
+
+Genesis Templates are Genesis Create Projects pre-configured so that you can immediately create a project and test a Genesis Application.
+
+You can access the templates from the launchpad and clicking on 'New Project from Template'.
+You will be able to find templates like ALM and OTE which can be opened in create.
+
+![Current template projects](/img/genesis-launchpad/current-projects.png)
+
+Opening in create will prompt to overwrite with the template.
+
+From there you can inspect, make changes or use only the pre-configured changes.
+
+![Template overwrite prompt](/img/genesis-launchpad/template-overwrite-prompt.png)
+
 ## Genesis Cloud Workspace
 
 When you click on `Save to Genesis Workspace` and `View in Launchpad` in GenesisCreate, your code is generated automatically and stored as a project.
@@ -288,7 +303,7 @@ Current Projects in Launchpad then opens.
 ### Building the project
 1.	Click on the code icon for the project you created.
 
-     ![Displaying the command palette](/img/genesis-launchpad/current-projects.png)
+     ![Current user projects](/img/genesis-launchpad/current-projects.png)
 
 This will open the project in VSCode.
 
@@ -365,6 +380,20 @@ When all the services are `UP`, you are ready to start the front end and view yo
 Then you can look through your app and interact with the different displays you have created.
 
 ![Interact with your app](/img/genesis-launchpad/interact.png)
+
+### Deleting the project
+If you ever want to delete your project you can go to your current projects and press on the delete icon.
+
+![Deleting Project](/img/genesis-launchpad/delete-project.png)
+
+### Syncing a project
+if you have created a genesis project not from genesis create, it will not automatically appear in your current projects in the launchpad.
+
+1. Open the command palette.
+
+2. Run `Genesis: Sync projects to launchpad`.
+
+    You will see your project now in your current projects.
  
 ### Looking at and changing the code
 When you are ready to look deep into the code and make the refinements and extensions you need, go back to VSCode.
