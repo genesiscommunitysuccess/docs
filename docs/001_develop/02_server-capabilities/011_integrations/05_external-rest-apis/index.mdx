@@ -60,7 +60,7 @@ This section demonstrates practical examples of using the Genesis HTTP Client in
 
 ### Example 1: Request Server with external API call
 
-This example shows how to use the Genesis HTTP Client in a Request Server to fetch data from an external API:
+This example shows how to use the Genesis HTTP Client in a Request Server to fetch data from an external API, ensuring errors are handled:
 
 ```kotlin
 requestReplies {
@@ -69,17 +69,9 @@ requestReplies {
 
     replySingle { request: TradeRequest ->
       try {
-        val response = client.get<TradeApiResponse> {
-          url = "/trades/${request.tradeId}"
-          query("currency", request.currency)
-        }.data
-
-        TradeDetails(
-          id = response.data.id,
-          amount = response.data.amount,
-          currency = response.data.currency,
-          status = response.data.status
-        )
+        client.get<TradeDetails> {
+          path = "https://my-external-api/trades/${request.tradeId}",
+        }
       } catch (e: UnexpectedResponseException) {
         when (e.statusCode) {
           HttpStatusCode.NotFound -> throw NotFoundException("Trade not found")
@@ -134,7 +126,7 @@ eventHandler {
 
 ### Example 3: Request Server with OpenAPI client
 
-This example demonstrates how to use the OpenAPI-generated client service in a Request Server to get an account by id:
+This example demonstrates how to use the [OpenAPI-generated client](#openapi-code-generation) service in a Request Server to get an account by id:
 
 ```kotlin
 
@@ -153,7 +145,7 @@ requestReplies {
 
 ### Example 4 - Request Server with OpenAPI client inside an Event Handler
 
-This example demonstrates how to use the OpenAPI-generated client service in an Event Handler to update a trade in an external system via an external call. 
+This example demonstrates how to use the [OpenAPI-generated client](#openapi-code-generation) service in an Event Handler to update a trade in an external system via an external call. 
 
 ```kotlin
 
@@ -223,17 +215,19 @@ The `GenesisHttpClient` is the main class you interact with. It provides methods
 val client = GenesisHttpClient()
 ```
 
-You can configure the client as a constructor parameter, passing a [Ktor HttpClient object if needed](https://ktor.io/docs/client-create-and-configure.html#engine-config). 
+You can optionally configure a [Ktor HttpClient object if needed](https://ktor.io/docs/client-create-and-configure.html#engine-config). An example is provided below:
 
 ```kotlin
-val client = GenesisHttpClient(Apache5) {
+val apacheClient = HttpClient(Apache5) {
     engine {
         sslContext = SslSettings.getSslContext()
     }
 }
+
+val client = GenesisHttpClient(apacheClient) 
 ```
 
-You can follow the documented [examples on adding SSL](https://ktor.io/docs/client-ssl.html#configure-ssl) if required in your setup.
+You can follow the documented examples on the ktor documentation site as needed, for example [configuring SSL](https://ktor.io/docs/client-ssl.html#configure-ssl) if required in your setup.
 
 Each method below returns a `TypedHttpResponse<T>` object, where `T` is the expected response body type.
 
@@ -267,6 +261,62 @@ Example:
         }
     }
 ```
+
+### OpenAPI code generation
+
+This approach uses code generated from an OpenAPI/Swagger specification, providing the simplest and most type-safe way to make API calls.
+
+To use this approach, you need to generate the code from the OpenAPI specification file using the `genesis-openapi-codegen` tool. The generated code will include API interfaces and data classes that map to the API endpoints and request/response bodies.
+
+You must also include the following set-up in your module's `build.gradle.kts` file:
+
+```kotlin
+
+plugins {
+    id("global.genesis.openapi") version "8.2.0" // Genesis Version
+}
+
+tasks {
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+    genesisOpenApi {
+        packageName = "global.genesis.api.trades"
+        specification = project.layout.projectDirectory.file("src/main/resources/trades.json")
+    }
+}
+```
+
+In the example above, we are generating the code from the `trades.json`, which is an open-api specification file. The generated code will be placed in the `global.genesis.api.trades` package.
+
+You can generate the code either by running the `genesis-openapi-codegen` task or by building the project. You can then use the generated code to make API calls, for example:
+
+```kotlin
+val tradeApi = TradeServiceApi("https://my-external-api")
+tradeApi.registerApiToken("Authorization", "Basic YWRtaW46YWRtaW4=")
+```
+
+```kotlin
+val accountsApi = AccountsControllerApi("https://my-external-api")
+accountsApi.registerRetryCallback(HttpStatusCode.Unauthorized) {
+    registerApiToken("Authorization", "Basic YWRtaW46YWRtaW4=")
+}
+```
+
+The example below can be used inside a Genesis Request Server or Event Handler, for example:
+
+```kotlin
+eventHandler<Account>("API_ACCOUNT_EH_INSERT") {
+    onCommit {
+        val createdAccount = accountsApi.createAccount(it.details)
+        ack(listOf(mapOf("ACCOUNT_NUMBER" to createdAccount.accountNumber)))
+    }
+}
+```
+
 
 ## Response handling
 
