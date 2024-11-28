@@ -17,6 +17,8 @@ tags:
 sidebar_position: 17
 ---
 
+import BaseStore from '../../../_includes/_base_store_setup.mdx'
+
 # Genesis Foundation Store
 
 The `foundation-store` provides a decoupled and testable way to manage application
@@ -220,87 +222,7 @@ Your root store is now ready to be injected into your application. Hopefully the
 store setup. The example might look a bit verbose, but in reality you can write a small store fragment in 20+ lines of
 code. For example:
 
-```typescript
-import {CustomEventMap} from '@genesislcap/foundation-events';
-import {AbstractStore, Store, registerStore} from '@genesislcap/foundation-store';
-import {observable} from '@microsoft/fast-element';
-
-export type TradeEntryUIEventDetailMap = { 'trade-entry-ui-open': boolean }
-
-declare global {
-  interface HTMLElementEventMap extends CustomEventMap<TradeEntryUIEventDetailMap> {}
-}
-
-export interface TradeEntryUI extends Store {
-  readonly isOpen: boolean;
-  onOpen(event: CustomEvent<boolean>): void;
-}
-
-class DefaultTradeEntryUI extends AbstractStore<TradeEntryUI, TradeEntryUIEventDetailMap> implements TradeEntryUI {
-  @observable isOpen: boolean;
-  onOpen = this.createListener<boolean>('trade-entry-ui-open', detail => this.commit.isOpen = detail);
-}
-
-export const TradeEntryUI = registerStore<TradeEntryUI>(DefaultTradeEntryUI, 'TradeEntryUI');
-
-// React and angular stores require a layer to work with the dependency injection. See later code snippet in this file
-```
-
-### Angular injection layer
-
-To be able to access the store from your Angular component you need a class to wrap up the store dependency.
-You can add this to the bottom of the `store.ts` file.
-
-```typescript
-import { DI } from '@genesislcap/web-core';
-
-export function getStore(): Store {
-  return DI.getOrCreateDOMContainer().get(Store) as Store;
-}
-```
-
-You can then access the store via the `getStore` function.
-
-```typescript
-import { getStore } from './path/to/store';
-
-getStore(); // access the store
-```
-
-### React injection layer
-
-To be able to access the store from your React component you need a class to wrap up the store dependency.
-You can add this to the bottom of the `store.ts` file.
-
-```typescript
-import { DI } from '@genesislcap/web-core';
-
-class StoreService {
-  private store: any;
-
-  constructor() {
-    this.store = DI.getOrCreateDOMContainer().get(Store) as Store;
-  }
-
-  getStore() {
-    return this.store;
-  }
-
-  onConnected(event?: CustomEvent) {
-    this.store.onConnected(event);
-  }
-}
-
-export const storeService = new StoreService();
-```
-
-You can then access the store via the `storeService` import and using the getter function.
-
-```typescript
-import { storeService } from './path/to/store';
-
-storeService.getStore(); // access the store
-```
+<BaseStore />
 
 ## [API Docs](./docs/api/index.md)
 

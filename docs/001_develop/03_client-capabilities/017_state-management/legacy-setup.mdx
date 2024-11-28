@@ -17,11 +17,14 @@ tags:
 sidebar_position: 18
 ---
 
+import BaseStore from '../../../_includes/_base_store_setup.mdx'
+
+This page guides you through installing the `foundation-store` in your legacy project. This isn't recommended - all new applications
+created via Genesis Create or `genx` will install the store for you, and then you can just follow the [example tutorial](../client-state-management-examples). However, if you're adding Genesis into an existing project (or you're using an old Genesis project from before the store was a default component) you can follow this guide.
+
 ## Installation
 
-To enable this module in your application, follow the steps below.
-
-1. Add `@genesislcap/foundation-store` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-store` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` (or `npm install` for React and Angular) command again.
 
 ```json
 {
@@ -35,6 +38,9 @@ To enable this module in your application, follow the steps below.
 }
 ```
 
+Next you need to add in the base store configuration. Once you've followed this page and the store is setup, you can then configure the store for your use.
+
+<BaseStore />
 
 ## Store events
 
