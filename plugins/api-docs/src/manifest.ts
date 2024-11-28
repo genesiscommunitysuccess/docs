@@ -539,5 +539,39 @@ export default {
         ],
       },
     },
+    {
+      name: "@genesislcap/foundation-criteria",
+      enabled: true,
+      src: {
+        api_docs: "./docs/api",
+        readme: "./README.md",
+      },
+      output: {
+        directory: "./docs/001_develop/03_client-capabilities/011_criteria/",
+        api_docs: "docs/api",
+        readme: "11_foundation-criteria.mdx",
+        keywords: [
+          "web",
+          "criteria",
+          "foundation criteria",
+          "frontend",
+          "ui",
+        ],
+        tags: [
+          "web",
+          "criteria",
+          "foundation criteria",
+          "frontend",
+          "ui",
+        ],
+        pages: [
+          {
+            title: "Foundation Criteria",
+            sidebar_label: "Foundation Criteria",
+            id: "foundation-criteria",
+          },
+        ],
+      },
+    },
   ],
 };
