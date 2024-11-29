@@ -17,6 +17,7 @@ sidebar_position: 13
 import ToastNotificationDemo, {AlertDemo, SnackbarDemo, BannerDemo, ToastDemo} from '../../../../examples/ui/client-capabilities/toast-notifications/toast-notifications.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import EventWrapper from '../../../_includes/_store_event_wrapper.mdx'
 
 # Genesis Foundation Notifications
 
@@ -287,7 +288,7 @@ Lets look at code example to setup and use the `notification-listener` component
 
 **1. Wrap your application with the notification-listener**
 
-As discussed earlier `notification-listener` component needs to be placed at the top of component tree to ensure it can capture events from any child component. You can find the `rapid-design-system-provider` tag in your application and place the `notification-listener` tag inside it, whether yu're using React, Angular, or Genesis framework.
+As discussed earlier `notification-listener` component needs to be placed at the top of component tree to ensure it can capture events from any child component. You can find the `rapid-design-system-provider` tag in your application and place the `notification-listener` tag inside it, whether you're using React, Angular, or Genesis framework.
 
 ```typescript
 <rapid-design-system-provider>
@@ -382,6 +383,7 @@ export function MyComponent() {
   );
 }
 ```
+<EventWrapper/>
 </TabItem>
 <TabItem value="angular">
 ```typescript
@@ -418,21 +420,11 @@ export class AppComponent {
   }
 }
 ```
+<EventWrapper />
 </TabItem>
 </Tabs>
 
-`customEventFactory` is a helper function to create events in the format the notification event expects. You can either import it from the PBC module if you're using it, or copy this function into your codebase.
 
-```typescript
-export function customEventFactory(type: string, detail?: any) {
-  return new CustomEvent(type, {
-      bubbles: true,
-      cancelable: true,
-      composed: true,
-      detail,
-  });
-}
-```
 
 Additionally we can also provide `resource-name` attribute to `notification-listener` component. This attribute allows the component to connect to a datasource and listen to the notifications on actions like `insert`, `update` or `delete` performed on the specified `resource-name`.
 
