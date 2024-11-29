@@ -454,7 +454,7 @@ When defining a multi-field primary key the order in which the fields are specif
 
 Fields marked as part of a primary key may not be null.
 
-Primary Key names are auto-generated in the following format: [TABLE_NAME]_BY_[FIELD_1](_[FIELD_N]). If you wish to give your primary key a specific name you can apply `.name(<pk name>)` against it. Examples below:
+Primary Key names are auto-generated in the following format: `<TABLE_NAME>_BY_<FIELD_1>(+_<FIELD_N>)`. If you wish to give your primary key a specific name you can apply `.name(<pk name>)` against it. Examples below:
 - `field("ID", LONG).autoIncrement().primaryKey().name("POSITION_BY_IDENTIFIER")`
 - `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID").name("POSITION_BY_BOOK_INST_CPTY)`
 
