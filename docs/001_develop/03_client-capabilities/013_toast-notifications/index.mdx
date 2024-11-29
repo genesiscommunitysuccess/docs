@@ -20,16 +20,13 @@ import TabItem from '@theme/TabItem';
 
 # Genesis Foundation Notifications
 
-[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
-[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
-
 `foundation-notifications` package is used for creating and displaying various types of notifications including `alert`, `toast`, `banner`, `snackbar` and `dialog`. These notifications are configurable and can be used in different scenarios ranging from status update to interactive user alerts.
 
 Notifications can be centrally managed within an application using `notification-listener` component, ensuring consistent user experience. With the help of different notification components and configurations, this package allows users to create a variety of notifications effortlessly.
 
 ## API Documentation
 
-For more detailed information on API and configurations, please refer to the [API documentation](./docs/api/index.md) in the `docs/api` directory.
+For more detailed information on API and configurations, please refer to the [API documentation](./docs/api/index.md).
 
 ## Example
 Lets look at an example of one of the many notification components in this module, the `dialog` notification component. Further examples are shown below.
@@ -76,20 +73,6 @@ Here is a list of available notification components in Genesis's `foundation-not
 * **Snackbar**: These are interactive notifications that appear at bottom of screen. `snackbar` are persistent until dismissed.
 * **Dialog**: `dialog` is used for displaying critical notifications as they block the underlying interface until dismissed by user action. One example will be confirmation dialog shown on deleting a user.
 
-## Installation
-
-To enable this module in your application, follow the steps below.
-
-1. Add `@genesislcap/foundation-notifications` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](https://learn.genesis.global/secure/web/basics/package-json-basics/) page.
-
-```json
-{
-  "dependencies": {
-    "@genesislcap/foundation-notifications": "latest"
-  },
-}
-```
-
 
 ## Understanding notification components with examples:
 The notifications component implemented by `foundation-notifications` package are designed to serve specific use cases. These components aids users in providing timely feedback, warning or interactive prompts.
@@ -103,21 +86,9 @@ Here's an example of using `alerts` with the [showNotificationAlert](./docs/api/
 <AlertDemo />
 <br/>
  ```typescript
-  import { showNotificationAlert } from '@genesislcap/foundation-notifications';
 
-  @customElement({
-    name: 'my-element',
-    template: html`
-      <div class="container">
-        <rapid-button @click=${(x) => x.showAlert()}>Show Alert</rapid-button>
-      </div>
-    `,
-  })
-  export class MyElement extends GenesisElement {
-    showAlert() {
-      showNotificationAlert({ title: 'Important message', body: 'Lorem ipsum' });
-    }
-  }
+  showNotificationAlert({ title: 'Important message', body: 'Lorem ipsum' });
+
 ```
 
 ### Toast
@@ -128,32 +99,18 @@ Here's an example of using `toast` with the [showNotificationToast](./docs/api/f
 <br/>
 
  ```typescript
-  import { showNotificationToast } from '@genesislcap/foundation-notifications';
-
-  @customElement({
-    name: 'my-element',
-    template: html`
-      <div class="container">
-        <rapid-button @click=${(x) => x.showToast()}>Show Toast</rapid-button>
-      </div>
-    `,
-  })
-  export class MyElement extends GenesisElement {
-    showToast() {
-      showNotificationToast(
-        {
-        title: 'Important message',
-        body: 'Lorem ipsum',
-        toast: {
-          autoClose: true,
-          closeTimeout: 3000,
-          type: 'success',
-        },
-      },
-      'rapid',
-      );
-    }
-  }
+  showNotificationToast(
+    {
+    title: 'Important message',
+    body: 'Lorem ipsum',
+    toast: {
+      autoClose: true,
+      closeTimeout: 3000,
+      type: 'success',
+    },
+  },
+  'rapid',
+  );
 ```
 As mentioned before, they automatically close after a specific duration by using `autoClose` and `closeTimeout` options. Like `snackbar`, they can be styled using the `type` option that supports `error, success, warning and info` styles.
 
@@ -164,33 +121,19 @@ Here's an example of using `banner` with the [showNotificationBanner](./docs/api
 <br/>
 
  ```typescript
-  import { showNotificationBanner } from '@genesislcap/foundation-notifications';
-
-  @customElement({
-    name: 'my-element',
-    template: html`
-      <div class="container">
-        <rapid-button @click=${(x) => x.showBanner()}>Show Banner</rapid-button>
-      </div>
-    `,
-  })
-  export class MyElement extends GenesisElement {
-    showBanner() {
-      showNotificationBanner(
-        {
-          body: 'Lorem ipsum',
-          banner: {
-            confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
-            dismissingAction: {
-              label: 'Dismiss',
-              action: () => console.log('Lorem ipsum'),
-            },
-          },
+  showNotificationBanner(
+    {
+      body: 'Lorem ipsum',
+      banner: {
+        confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+        dismissingAction: {
+          label: 'Dismiss',
+          action: () => console.log('Lorem ipsum'),
         },
-        'rapid',
-      );
-    }
-  }
+      },
+    },
+    'rapid',
+  );
 ```
 
 ### Snackbar
@@ -204,36 +147,20 @@ Here's an example of using `snackbar` with the [showNotificationSnackbar](./docs
 <br/>
 
  ```typescript
-  import { showNotificationSnackbar } from '@genesislcap/foundation-notifications';
-
-  @customElement({
-    name: 'my-element',
-    template: html`
-      <div class="container">
-        <rapid-button @click=${(x) => x.showSnackbar()}>Show Snackbar</rapid-button>
-      </div>
-    `,
-  })
-  export class MyElement extends GenesisElement {
-    showSnackbar() {
-      showNotificationSnackbar(
-      {
-        body: 'Lorem ipsum',
-        snackbar: {
-          confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
-          type: 'error', 
-        },
-      },
-      'rapid',
-    );
-    }
-  }
+  showNotificationSnackbar(
+  {
+    body: 'Lorem ipsum',
+    snackbar: {
+      confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+      type: 'error', 
+    },
+  },
+  'rapid',
+);
 ```
  `Snackbar` are persistent until dismissed. They can disappear automatically after a short time by setting the `autoClose` property in the snackbar config. 
 
 ```typescript
-  import { showNotificationSnackbar } from '@genesislcap/foundation-notifications';
-  ...
   showNotificationSnackbar(
     {
       body: 'Lorem ipsum',
@@ -356,10 +283,16 @@ Lets complete the above example and add a button in there to trigger the notific
 
 Additionally we can also provide `resource-name` attribute to `notification-listener` component. This attribute allows the component to connect to a datasource and listen to the notifications on actions like `insert`, `update` or `delete` performed on the specified `resource-name`.
 
+## Installation
 
-## License
+To enable this module in your application, follow the steps below.
 
-Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+1. Add `@genesislcap/foundation-notifications` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](https://learn.genesis.global/secure/web/basics/package-json-basics/) page.
 
-### Licensed components
-Genesis low-code platform
+```json
+{
+  "dependencies": {
+    "@genesislcap/foundation-notifications": "latest"
+  },
+}
+```
