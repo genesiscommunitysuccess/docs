@@ -22,11 +22,7 @@ export default function DynamicRoutesHeaderExample() {
   const foundationHeaderRef = useRef(null);
 
   const navigateTo = (path) => {
-    const foundationHeaderElement = foundationHeaderRef.current;
-    if (foundationHeaderElement && foundationHeaderElement.navigation) {
-      alert(`Navigating to ${path}`);
-      // foundationHeaderElement.navigation.navigateTo(path);
-    }
+    alert(`Navigating to ${path}`);
   };
 
   return (
@@ -38,13 +34,14 @@ export default function DynamicRoutesHeaderExample() {
       >
           {allRoutes.map((route) => (
             <rapid-button
+              slot="routes"
               key={route.index}
               appearance="neutral-grey"
               value={route.index}
               onClick={() => navigateTo(route.path)}
             >
               <rapid-icon variant={route.variant} name={route.icon}></rapid-icon>
-              {route.title} CC
+              {route.title}
             </rapid-button>
           ))}
       </foundation-header>

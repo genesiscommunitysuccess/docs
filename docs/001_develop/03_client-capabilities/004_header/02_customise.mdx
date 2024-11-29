@@ -90,6 +90,7 @@ Usage:
         (x) => x.allRoutes,
         html`
           <rapid-button
+            slot="routes"
             appearance="neutral-grey"
             value="${(x) => x.index}"
             @click=${(x, c) => c.parent.navigation.navigateTo(x.path)}
@@ -120,7 +121,7 @@ Declaration:
 ```
 
 Usage:
-```typescript
+```tsx
 import React, { useRef, useEffect } from 'react';
 
 const allRoutes = [
@@ -143,6 +144,7 @@ const FoundationHeader = () => {
     <foundation-header ref={foundationHeaderRef}>
       {allRoutes.map((route) => (
         <rapid-button
+          slot="routes"
           key={route.index}
           appearance="neutral-grey"
           value={route.index}
@@ -177,6 +179,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ElementRef, AfterViewInit
     <foundation-header #foundationHeader>
       <ng-container *ngFor="let route of allRoutes">
         <rapid-button
+          slot="routes"
           appearance="neutral-grey"
           [value]="route.index"
           (click)="navigateTo(route.path)"
