@@ -20,4 +20,5 @@ module.exports = {
 	"@genesislcap/grid-pro": "14.217.6",
 	"@genesislcap/grid-tabulator": "14.217.6",
 	"@genesislcap/foundation-notifications": "14.217.6",
+	"@genesislcap/foundation-store": "14.217.6",
 };
