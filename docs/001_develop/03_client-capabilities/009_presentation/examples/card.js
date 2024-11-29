@@ -21,7 +21,7 @@ export default function CardDemo({ children, color }) {
 					At purus lectus quis habitant commodo, cras. Aliquam malesuada velit a tortor. Felis orci tellus netus risus et
 					ultricies augue aliquet.
 				</p>
-				<alpha-button>Learn more</alpha-button>
+				<rapid-button>Test button</rapid-button>
 			</rapid-card>
 		</CodeSection>
 	)
