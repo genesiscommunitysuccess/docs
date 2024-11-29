@@ -88,9 +88,7 @@ const cardData = [
   }
 ];
 
-
 export default function InteractionIndex() {
-
   return (
 		<LiveExampleBuilder itemData={cardData} />
   );
