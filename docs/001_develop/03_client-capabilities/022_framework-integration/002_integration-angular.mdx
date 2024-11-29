@@ -113,7 +113,7 @@ Additionally, the `RoutesService` is provided to access the routes within Angula
 
 Attributes are part of the HTML markup of an element and are reflected in the dom.
 
-Attributes can be either hard coded or set using Angular's property event bindings. Note, any automatically maps hyphenated attribute names to camelCase property names so a property called `max-rows` becomes `maxRows`.
+Attributes can be either hard coded or set using the Angular property bindings. Note, Angular automatically maps hyphenated attribute names to camelCase property names so a property called `max-rows` becomes `maxRows`.
 
 ### Text
 
@@ -268,6 +268,47 @@ export class AppComponent {
 You can add global styles by modifying the main stylesheet located at **src/styles/styles.css**. This file contains styles that apply to the entire application.
 
 ---
+
+## Slots
+
+Many components in FoundationUI have slots which act as placeholders to allow you to fill components with your own markup.
+
+This is equivalent to [content projection](https://angular.dev/guide/components/content-projection) in Angular.
+
+This example shows how you can use the slots in the Modal component
+
+```typescript
+import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+selector: 'modal-example',
+template: `
+  <rapid-button (click)="showModal()">Show modal</rapid-button>
+  <rapid-modal #modal
+  >
+      <h3 slot="top">Top slot</h3>
+      Main content in the modal
+      <div slot="bottom">
+          <i>Slotted content in the bottom</i>
+      </div>
+  </rapid-modal>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [FormsModule],
+})
+export class ModalExampleComponent implements AfterViewInit {
+  @ViewChild('modal') modalRef!: ElementRef;
+
+    showModal() {
+        if (this.modalRef.nativeElement) {
+            this.modalRef.nativeElement.show()
+        }
+    }
+
+}
+```
 
 ### Design tokens
 

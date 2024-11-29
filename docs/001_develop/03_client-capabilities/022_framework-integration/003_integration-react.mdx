@@ -241,6 +241,37 @@ For example, if you want to have styling for the page that is displayed when a r
 
 ---
 
+## Slots
+
+Many components in FoundationUI have slots which act as placeholders to allow you to fill components with your own markup.
+
+This example shows how you can use the slots in the Modal component.
+
+```typescript
+export function MyComponent() {
+    const modalRef = useRef(null);
+
+    const handleClick = (ref) => {
+        if (modalRef.current) {
+            modalRef.current.show();
+        }
+    };
+
+    return (
+        <rapid-button onClick={() => handleClick()}>Open Modal</rapid-button>
+        <rapid-modal
+            ref={modalRef}
+        >
+            <h3 slot="top">Top slot</h3>
+            Main content in the modal
+            <div slot="bottom">
+                <i>Slotted content in the bottom</i>
+            </div>
+        </rapid-modal>
+    );
+}
+```
+
 ### Design tokens
 
 Design tokens are declared in the **src/styles/design-tokens.json** file. They offer an effective way to manage and apply styles in your application in a consistent and maintainable manner.
