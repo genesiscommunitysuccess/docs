@@ -2,10 +2,11 @@ import React from "react";
 import './Card.css'
 
 export default function Card({ heading, text, link, imageUrl = '/svg/categories-icons/document-svgrepo-com.svg', children }) {
+	const wrapperStyle = !children ? {} : {display: 'contents'};
   return (
     <a href={link} title={heading} className="card-outer">
       <div className="card-inner">
-        <div className="card-main-image-wrapper">
+        <div className="card-main-image-wrapper" style={wrapperStyle}>
           {children ? (
             children
           ) : (
