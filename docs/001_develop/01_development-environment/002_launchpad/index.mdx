@@ -294,6 +294,10 @@ If you created a project using an earlier version of Launchpad, it will not be l
 Follow the process for [adding a project to Current Projects](#adding-a-project-to-current-projects) to add your project and start work.
 :::
 
+:::info
+You can have up to 100 projects.
+:::
+
 ### Genesis Templates
 
 Genesis Templates are pre-configured Genesis Create Projects. You can immediately turn any of the projects listed into a Genesis Application that you can run and test.
@@ -612,31 +616,13 @@ All processes start in debug mode by default and any breakpoint in java code sha
 
 Kotlin is not fully supported by VS Code and the language server is currently disabled.
 
-### Intellisense (auto-complete/error diagnosis) is not working properly or not working at all! What can I can do?
+### I get a 401 error when I tried to login, what should I do?
 
-The Kotlin support for VSCode is provided by community efforts and it is in its early stages of stability and maturity. The Genesis team continues to contribute and monitor progress on this area in order to keep improving our users’ experience. If you have any of these issues:
+This is due how our partner cloud provider handle domain security as it is likely your password manager might be changing the url (your web-browser will usually have a password manager by default). After login, just refresh the page as normal and you will be immediately redirected to the landing page `(CTRL + R) / (CMD + R)`. 
 
-- no linting/diagnostics being reported at all
-- not finding tables/properties that have been added recently
-- slow/sluggish workspace because of multiple instances of the language server in execution at the same time
+### I'm no longer able to stop my workspace, where did that go?
 
-Try these actions:
-
-- Ensure you have completed a full build of your project using `Genesis: Build project`.
-- Close and reopen the `kts` / `kt` files that are potentially open when your session was started.
-- Use the command `Developer: Reload window`.
-- Use the command `Genesis: Restart all extensions`.
-- Clean the H2 local databases using the action: `Genesis: Delete database`.
-    
-:::caution Using `Genesis: Delete database`
-This action also clears your application’s data.
-:::
-
-If you prefer not to have any intellisense support, you can disable the Language Server by editing `.vscode/settings.json` and changing the value of `kotlin.languageServer.enabled` to `false`. 
-
-:::info
-This property value will change back to true if you then execute `Genesis: Generate configs`.
-:::
+Your workspace stops automatically after inactivity, you can still do it using the [previous experience](https://portal.genesis.global/_previous).
 
 ### Why has `Unpack project` been deprecated?
-This is deprecated is no longer necessary and has disabled by default. It can be enabled via settings, if you need it. Contact Genesis Support.
+This is deprecated is no longer necessary and has disabled by default. It can be enabled via VSCode settings in case you need to manually unpack an old project, notice zip files are deleted on a periodic basis.
