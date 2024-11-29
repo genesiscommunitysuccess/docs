@@ -64,7 +64,7 @@ This works because the bindings and events run _after_ the cloneNode() call, so 
 
 The question you may ask with the above answer is how you access the properties which are represented in `${ ... }`. If they were statically defined functions or `const` values on the class, then you can move them onto the `ContainerElement` class. More likely though they are dynamically generated.
 
-This is where we'll want to use some formal state management. This section will rely on your knowledge of FoundationStore <!-- TODO link -->. The store is already set up out of the box with applications created from Genesis Create or using the Genesis CLI `genx`.
+This is where we'll want to use some formal state management. This section will rely on your knowledge of [`foundation-store`](../../state-management/). The store is already set up out of the box with applications created from Genesis Create or using the Genesis CLI `genx`.
 
 ### Pre-layout example
 
@@ -231,4 +231,4 @@ WrapperTwo;
 export class MyElement extends GenesisElement { }
 ```
 
-We've covered the pitfalls that occur when trying to add the layout to a group of elements that share state and bindings, and a way to solve that via the foundation store. <!-- TODO add link again to store -->
+We've covered the pitfalls that occur when trying to add the layout to a group of elements that share state and bindings, and a way to solve that via the [`foundation-store`](../../state-management/).
