@@ -2,27 +2,28 @@
 title: 'Expression builder'
 sidebar_label: 'Expression builder'
 id: expression-builder
-keywords: [foundation, ui, comms, criteria, expression, filtering]
+keywords: [foundation, ui, comms, criteria, expression, filtering, groovy]
 tags:
   - connected
   - ui
   - comms
   - expression
   - filtering
+  - groovy
 ---
 
-The `ExpressionBuilder` is a utility class to build criteria objects that are used with the `CriteriaBuilder`
+The [ExpressionBuilder](./docs/api/foundation-criteria.expressionbuilder.md) is a utility class to build criteria objects that are used with the `CriteriaBuilder`
 
 ## Methods
 
 <table>
     <thead>
     <tr>
-        <td>Method</td>
-        <td>Description</td>
-        <td>Params</td>
-        <td>Return value</td>
-        <td>Example</td>
+        <th>Method</th>
+        <th>Description</th>
+        <th>Params</th>
+        <th>Return value</th>
+        <th>Example</th>
     </tr>
     </thead>
     <tbody>
@@ -31,61 +32,71 @@ The `ExpressionBuilder` is a utility class to build criteria objects that are us
         <td>Sets the field in the expression object</td>
         <td>string</td>
         <td>ExpressionBuilder</td>
-        <td>
-            ```ts
-            new ExpressionBuilder().withField('TRADE_ID')
-            ```
-        </td>
+<td>
+
+    ```ts
+    new ExpressionBuilder().withField('TRADE_ID')
+    ```
+
+</td>
     </tr>
     <tr>
         <td>withValue</td>
         <td>Sets the value the expression is tested against</td>
         <td>unknown (can be string, boolean or number)</td>
         <td>ExpressionBuilder</td>
-        <td>
-            ```ts
-            new ExpressionBuilder().withValue('TR_1234') //checking a string
-            new ExpressionBuilder().withValue(500) //checking a number
-            new ExpressionBuilder().withValue(boolean) //checking a boolean
-            ```
-        </td>
+<td>
+
+```ts
+new ExpressionBuilder().withValue('TR_1234') //checking a string
+new ExpressionBuilder().withValue(500) //checking a number
+new ExpressionBuilder().withValue(boolean) //checking a boolean
+```
+
+</td>
     </tr>
     <tr>
         <td>withSerialiser</td>
         <td>Sets the serialiser type on the expression</td>
         <td>Serialiser</td>
         <td>ExpressionBuilder</td>
-        <td>
-            ```ts
-            new ExpressionBuilder().withSerialiser(Serialiser.EQ) // testing equals
-            new ExpressionBuilder().withSerialiser(Serialiser.GT) // testing greater than
-            new ExpressionBuilder().withSerialiser(Serialiser.GE) // testing greater
-            new ExpressionBuilder().withSerialiser(Serialiser.LT) // testing less than
-            new ExpressionBuilder().withSerialiser(Serialiser.LE) // testing less
-            ```
-        </td>
+<td>
+
+```ts
+new ExpressionBuilder().withSerialiser(Serialiser.EQ) // testing equals
+new ExpressionBuilder().withSerialiser(Serialiser.GT) // testing greater than
+new ExpressionBuilder().withSerialiser(Serialiser.GE) // testing greater
+new ExpressionBuilder().withSerialiser(Serialiser.LT) // testing less than
+new ExpressionBuilder().withSerialiser(Serialiser.LE) // testing less
+```
+
+</td>
     </tr>
     <tr>
         <td>withGroup</td>
         <td>ToDo What does group do</td>
         <td>string</td>
         <td>ExpressionBuilder</td>
-        <td>
-            ```ts
-            new ExpressionBuilder().withGroup('group')
-            ```
-        </td>
+<td>
+
+```ts
+new ExpressionBuilder().withGroup('group')
+```
+
+</td>
     </tr>
     <tr>
         <td>Build</td>
         <td>Creates an Expression object based on the values sret</td>
         <td>none</td>
         <td>Expression</td>
-        <td>
-            ```ts
-            new ExpressionBuilder().build();
-            ```
-        </td>
+<td>
+
+    ```ts
+    new ExpressionBuilder().build();
+    ```
+
+</td>
     </tr>
     </tbody>
 </table>
