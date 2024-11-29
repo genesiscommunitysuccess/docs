@@ -623,7 +623,7 @@ export default {
         readme: "./README.md",
       },
       output: {
-        directory: "./docs/001_develop/014_utility-methods/",
+        directory: "./docs/001_develop/03_client-capabilities/014_utility-methods/",
         api_docs: "docs/api",
         readme: "index.mdx",
         keywords: [
