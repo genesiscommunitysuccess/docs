@@ -287,11 +287,14 @@ Lets look at code example to setup and use the `notification-listener` component
 
 **1. Wrap your application with the notification-listener**
 
-As discussed earlier `notification-listener` component needs to be placed at the top of component tree to ensure it can capture events from any child component. 
+As discussed earlier `notification-listener` component needs to be placed at the top of component tree to ensure it can capture events from any child component. You can find the `rapid-design-system-provider` tag in your application and place the `notification-listener` tag inside it, whether yu're using React, Angular, or Genesis framework.
+
 ```typescript
+<rapid-design-system-provider>
   <rapid-notification-listener>
-    <AppContent/>
+    // other application components go here
   </rapid-notification-listener>
+</rapid-design-system-provider>
 ```
 
 **2. Dispatching notification using NOTIFICATION_EVENT**
@@ -318,37 +321,117 @@ this.$emit( NotificationEvent.NOTIFICATION_EVENT,
 Now you can trigger your notification on clicking on a UI element like button.
 
 
-Lets complete the above example and add a button in there to trigger the notification event.
+Lets complete the above example and trigger the notification event from a child component.
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
 ```typescript
 
-  import {NotificationEvent, NotificationStructure} from '@genesislcap/foundation-notifications'
-  ...
-  @customElement({
-    name: 'my-element',
-    template: html`
-    <rapid-notification-listener>
-      <div class="container">
-        <rapid-button @click=${(x) => x.triggerNotification()}>Show Notification</rapid-button>
-      </div>
-    </rapid-notification-listener>
-    `,
-  })
-  export class MyElement extends GenesisElement {
-    triggerNotification() {
-      this.$emit( NotificationEvent.NOTIFICATION_EVENT,
-        {
-          title: 'Important message',
-          body: 'Lorem ipsum',
-          config: {
-            snackbar: {
-              confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
-              type: 'error',
-              autoClose: true
-            },
+import {NotificationEvent, NotificationStructure} from '@genesislcap/foundation-notifications'
+...
+@customElement({
+  name: 'my-element',
+  template: html`
+    <div class="container">
+      <rapid-button @click=${(x) => x.triggerNotification()}>Show Notification</rapid-button>
+    </div>
+  `,
+})
+export class MyElement extends GenesisElement {
+  triggerNotification() {
+    this.$emit( NotificationEvent.NOTIFICATION_EVENT,
+      {
+        title: 'Important message',
+        body: 'Lorem ipsum',
+        config: {
+          snackbar: {
+            confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+            type: 'error',
+            autoClose: true
           },
-        } as NotificationStructure,)
-    }
+        },
+      } as NotificationStructure,)
   }
+}
+```
+</TabItem>
+<TabItem value="react">
+```typescript
+import { NotificationEvent, NotificationStructure } from '@genesislcap/foundation-notifications';
+import { useRef } from 'react';
+
+export function MyComponent() {
+  const ref = useRef();
+  const triggerNotification = (event) => {
+    const notificationPayload = {
+      title: 'Important message',
+      body: 'Lorem ipsum',
+      config: {
+        snackbar: {
+          confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+          type: 'error',
+          autoClose: true
+        },
+      },
+    } as NotificationStructure;
+    ref.current.dispatchEvent(customEventFactory(NotificationEvent.NOTIFICATION_EVENT, notificationPayload))
+  };
+
+  return (
+    <rapid-button onClick={triggerNotification} ref={ref}>Show Notification</rapid-button>
+  );
+}
+```
+</TabItem>
+<TabItem value="angular">
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NotificationEvent, NotificationStructure } from '@genesislcap/foundation-notifications';
+
+@Component({
+  selector: 'my-root',
+  template: `
+    <rapid-button
+      (click)="triggerNotification($event)"
+    >Show Notification</rapid-button>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [FormsModule],
+})
+export class AppComponent {
+  constructor(private el: ElementRef) {}
+  triggerNotification(event: Event) {
+    const notificationPayload = {
+      title: 'Important message',
+      body: 'Lorem ipsum',
+      config: {
+        snackbar: {
+          confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+          type: 'error',
+          autoClose: true
+        },
+      },
+    } as NotificationStructure;
+    this.el.nativeElement.dispatchEvent(customEventFactory(NotificationEvent.NOTIFICATION_EVENT, notificationPayload));
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+`customEventFactory` is a helper function to create events in the format the notification event expects. You can either import it from the PBC module if you're using it, or copy this function into your codebase.
+
+```typescript
+export function customEventFactory(type: string, detail?: any) {
+  return new CustomEvent(type, {
+      bubbles: true,
+      cancelable: true,
+      composed: true,
+      detail,
+  });
+}
 ```
 
 Additionally we can also provide `resource-name` attribute to `notification-listener` component. This attribute allows the component to connect to a datasource and listen to the notifications on actions like `insert`, `update` or `delete` performed on the specified `resource-name`.
