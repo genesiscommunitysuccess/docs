@@ -49,7 +49,7 @@ step-by-step [here](./client-state-management-examples).
 
 - **Action**. Translates to a standard [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent).
 These event types are defined in a store's EventDetailMap. Here's the StoreRootEventDetailMap for example.
-- **Dispatch**. Use the component's $emit method in conjunction with the [EventEmitter](../foundation-events/src/eventEmitter/README.md) mixin to strongly type it with store event maps.
+- **Dispatch**. Use the component's $emit method in conjunction with the EventEmitter mixin to strongly type it with store event maps.
 - **Action Creator**. Create the CustomEvent.[detail](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail)
 however and whenever you like. When you're ready, emit the event and detail pairing as per an EventDetailMap via the component's
 $emit api, which in turn creates and sends the CustomEvent.
