@@ -78,14 +78,14 @@ There are various build directories which are generated at build time when build
 The most important to be aware of is genesis-home which, after a build, will include all the application provided server module files. They are needed to run the application locally and when needing to [override platform provided files](/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files)
 
 
-### Adding new modules to a simple project
+### Adding new modules to a project
 
-Although now it is possible to have all your application code in a single module, you might still want to extract parts of the code for easier maintenance.
+Although most of your application code in the single main module, you might still want to extract parts of the code for easier maintenance.
 
 To add a new module: 
 1. Create a sub-directory in the **/server** directory.
-2. Add source directories as required (**/main/java**, **src/main/kotlin**, **/src/main/resources**)
-3. Create a **build.gradle.kts** file:
+2. Create source directories under it as required (`/main/java`, `src/main/kotlin`, `/src/main/resources`)
+3. Create a `build.gradle.kts` file in the root of the new module:
 
 ```kotlin
 dependencies {
@@ -94,17 +94,21 @@ dependencies {
 
 description = "myapp-newmodule"
 ```
+
 4. Add any required dependencies for this module inside the dependencies block in the file above. If you want to depend on the code that is generated from your main app module, add the following: 
 
 ```kotlin
 dependencies {
     genesisGeneratedCode(withTestDependency = true)
 }
+
+description = "myapp-newmodule"
 ```
 
-5. Add an `include` for the new module in **/server/settings.gradle.kts**:
+5. Add an `include` for the new module in `/server/settings.gradle.kts`:
 
 ```kotlin
+...
 include("myapp-newmodule")
 ```
 
