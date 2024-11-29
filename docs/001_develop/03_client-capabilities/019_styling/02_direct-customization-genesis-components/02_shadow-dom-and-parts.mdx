@@ -1,0 +1,36 @@
+::slotted content - card styles
+
+
+- genesis-components
+    - css-custom-properties
+    - utlizing-design-tokens
+    - shadow-dom-and-parts
+    - slotted-content
+- design-system-configurator
+    -design-system-configurator
+design-tokens
+    -color
+    -typography
+    -sizing
+    -miscellanous
+
+
+
+    Focus on advanced styling techniques using shadow DOM, ::part, and ::slotted.
+Scenario Inclusion:
+Scenario 2: Demonstrate styling RapidButton directly with ::part and ::slotted.
+Example:
+css
+Copy code
+```typescript
+rapid-button::part(control) {
+    border: 2px solid #ff0000;
+    background-color: #f4f4f4;
+}
+
+rapid-button::slotted(name=end) {
+    color: #0078d4;
+}
+```
+Add a subsection: "Creating Custom Appearances Without Extending Components."
+Show examples of using withBehaviors to define appearances.
