@@ -279,7 +279,6 @@ This example shows how you can use the slots in the Modal component
 
 ```typescript
 import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 @Component({
 selector: 'modal-example',
@@ -296,7 +295,6 @@ template: `
   `,
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [FormsModule],
 })
 export class ModalExampleComponent implements AfterViewInit {
   @ViewChild('modal') modalRef!: ElementRef;
@@ -309,6 +307,71 @@ export class ModalExampleComponent implements AfterViewInit {
 
 }
 ```
+
+## Dependency Injection
+
+Foundation UI has a suite of services that can be added to your application via dependency injection.
+
+If you want to use the Connect service, the best approach is to create an injection token and register it in your app module.
+
+**connect-service.ts**
+
+```ts
+import { Connect, getConnect } from '@genesislcap/foundation-comms';
+import { InjectionToken } from '@angular/core';
+
+export const connectService = getConnect();
+export const CONNECT_TOKEN = new InjectionToken<Connect>('Logger');
+```
+
+**app.module.ts**
+```ts
+@NgModule({
+  ...
+  providers: [
+    { provide: CONNECT_TOKEN, useValue: connectService },
+    ...
+  ],
+  ...
+})
+```
+
+**your-angular-component.ts**
+
+After adding the connect service to your module providers using an injection token, you can add it to any class using Angular DI.
+
+This component will use the Connect `snapshot` method to retrieve data from a dataserver query `ALL_TRADES` and render it in a list.
+
+```typescript
+import { OnInit, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgForOf } from '@angular/common';
+import { Connect } from '@genesislcap/foundation-comms';
+import { CONNECT_TOKEN } from 'path/to/connect.service';
+
+@Component({
+selector: 'di-example',
+  template: `
+      <ul>
+        <li *ngFor="let item of data">Direction: {{item.TRADE_ID}} Quantity: {{item.QUANTITY}} Ticker: {{item.TICKER}}</li>
+      </ul>`,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [ NgForOf ],
+
+})
+export class DIExampleComponent implements OnInit {
+  constructor(@Inject(CONNECT_TOKEN) private connect: Connect) {}
+
+  async ngOnInit() {
+    const response = await this.connect.snapshot('ALL_TRADES')
+
+    if (response.ROW?.length) {
+      this.data = response.ROW;
+    }
+  }
+}
+```
+
 
 ### Design tokens
 
