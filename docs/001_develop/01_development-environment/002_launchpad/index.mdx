@@ -499,9 +499,70 @@ To run any of these:
 | `Start Server`          | Starts all the App's Server processes.                                                |
 | `Start UI System Design Configurator`| Starts the Design Configurator. You must be on Foundation-UI 14.213.0 or later to use this. |
 
-## Sending api requests
+## Api requests
+### Getting the required data
+You will need to get the the API_HOST from the vscode environment variable and the tokens stored in the cookies for the launchpad portal.
 
-### Using postman
+#### Application url
+To send requests to the application in the VSCode environment, you need the application url which is stored in the API_HOST environment variable.
+
+1. Open terminal in vscode workspace with ctrl+' or going to `flyout menu -> View -> Terminal`.
+
+2. enter `printenv API_HOST`.
+
+    This should give you your API_HOST.
+
+3. replace wss with https and save this for sending requests.
+
+4. use this as the base of your request.
+
+#### Request headers
+There are 2 tokens you will need to extract from launchpad.
+
+These are needed for secure authentication through the launchpad portal to your app so that you can send requests.
+
+##### Getting tokens with interceptor plugin
+You can simplify getting cookies for requests using postman interceptor plugin for your browser.
+
+1. Go to cookies on request edit pane in Postman.
+
+2. go to the 'Sync cookies' tab.
+
+3. click on the hyperlink for interceptor and proxy.
+
+4. follow the text till you find the install interceptor hyperlink which you will click.
+
+5. click on the correct hyperlink to install the plugin for your browser.
+
+6. sync cookies tab will show you are connected and from there you can add the url of the launchpad to then sync cookies.
+
+7. your cookies will then be synced shown 'Manage Cookies' tab.
+
+With this if you use the same url for sync cookies, it will autofill the cookies to your request headers.
+
+##### Getting tokens manually
+
+1. Be logged in to launchpad.
+
+2. either right click and press inspect or do `function key + f12`.
+
+    This should open the developer tools for your browser.
+
+3. Go to the Application tab at the top of the developer tools.
+
+    :::tip
+    if you cannot see the application tab you can add new tabs by pressing `+` on Edge or `>>` on Chrome.
+    Or drag the developer tools pane out to make space for the tabs to appear.
+    :::
+
+4. Go to cookies in the sidebar and open the cookies for the website.
+
+    There should be AWSELBAuthSessionCookie-0, AWSELBAuthSessionCookie-1.
+    You will be putting this in your requests headers.
+
+When setting the header the tokens need to be structured as AWSELBAuthSessionCookie-0=TOKEN;AWSELBAuthSessionCookie-1=TOKEN;
+
+### Sending requests using postman
 Postman can be used to test the API from your project.
 
 For the postman request you will need:
@@ -509,7 +570,7 @@ For the postman request you will need:
 - Tokens stored in 'Cookie' header
 - raw Body in json for details
 
-An example for login would have `https://portal.dev.platform.genesis.global/workspace/<<WORKSPACE_ID>>/proxy/9064/event-login-auth` url.
+An example for login would have `https://portal.platform.genesis.global/workspace/<<WORKSPACE_ID>>/proxy/9064/event-login-auth` url.
 
 The body would be: 
 ```
@@ -531,9 +592,9 @@ The tokens are stored in a cookie header
 
 ![Postman token header](/img/genesis-launchpad/postman-token-header.png)
 
-### Using curl
-Curl can be used to call the API from your project.
-This is for using Curl on the bash terminal in the vscode environment.
+### Sending requests using CLI
+Curl will be used to call the API from your project.
+This was done for using curl with the bash terminal in the VCScode environment but you can do the outside the VScode environment in a windows machine if you have experience using curl on that Operating system.
 
 For Curl you will need:
 - location: your request url.
@@ -555,42 +616,6 @@ curl --location 'https://portal.dev.platform.genesis.global/workspace/<<WORKSPAC
     }
 }'
 ```
-
-#### Proxy url
-To send requests to the application in the VSCode environment, you need the proxy url.
-
-1. Open terminal in vscode workspace with ctrl+' or going to `flyout menu -> View -> Terminal`.
-
-2. enter `printenv API_HOST`.
-
-    This should give you your API_HOST.
-
-3. replace wss with https and save this for sending requests.
-
-4. use this as the base of your request
-
-#### Tokens
-There are 2 tokens you will need to extract from launchpad.
-
-1. Be logged in to launchpad
-
-2. either right click and press inspect or do `function key + f12`
-
-    This should open the developer tools for your browser
-
-3. Go to the Application tab at the top of the developer tools
-
-    :::tip
-    if you cannot see the application tab you can add new tabs by pressing `+` on Edge or `>>` on Chrome.
-    Or drag the developer tools pane out to make space for the tabs to appear.
-    :::
-
-4. Go to cookies in the sidebar and open the cookies for the website
-
-    There should be AWSELBAuthSessionCookie-0, AWSELBAuthSessionCookie-1.
-    You will be putting this in your requests
-
-When setting the header the tokens need to be structured as AWSELBAuthSessionCookie-0=TOKEN;AWSELBAuthSessionCookie-1=TOKEN;
 
 ## Genesis tasks
 The tasks described below are used by the various commands above to launch a configuration manually. You can call them individually, when required.
