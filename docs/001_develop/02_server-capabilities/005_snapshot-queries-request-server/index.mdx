@@ -114,6 +114,15 @@ A Request Server file consists of a number of queries onto a table or view. All 
 
 ## Configuration options
 
+All `requestReply` blocks should be added under the parent block `requestReplies`
+
+```kotlin
+requestReplies {
+
+  requestReply(...
+  
+}
+
 ### `requestReply`
 
 `requestReply` defines a new request server query. It takes a `name` (optional) and an `entity` (table or view)
