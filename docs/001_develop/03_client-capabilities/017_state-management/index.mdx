@@ -2,13 +2,225 @@
 title: 'State management'
 sidebar_label: 'State management'
 id: client-state-management
-keywords: [state, management]
+keywords: [web, store, events, observable, binding, communication, redux, injection, state, reducer]
 tags:
-- state
-- management
+  - web
+  - store
+  - events
+  - observable
+  - binding
+  - communication
+  - redux
+  - injection
+  - state
+  - reducer
 sidebar_position: 17
 ---
 
-Coming soon...
+import BaseStore from '../../../_includes/_base_store_setup.mdx'
 
-Make clear for web client state, separate from Server state machine component 
+# Genesis Foundation Store
+
+The `foundation-store` provides a decoupled and testable way to manage application
+state that adheres to our best practices. Using `foundation-store` is completely optional, as you may decide that your
+application doesn't warrant a store, or that you would prefer to use a store you are more familiar with. The system is
+flexible, so you can use whatever you like to handle application level state management, but you should be mindful of
+degrading performance.
+
+## Background
+
+Client apps today manage application state in different ways. These apps might leverage common third party stores likes
+Redux, or use none at all, peppering `@attr` and `@observable` properties (or equivalent state management in different frameworks)
+in different components, and at various levels of DOM hierarchy. With the latter business logic might start creeping into  components,
+every component becomes smart instead of being dumb, providing shared access to data becomes difficult, tests require lots of mocks,
+and things get hard to refactor etc. Large applications should aim to lift state where possible to bring all the benefits mentioned above.
+
+## Quick start
+
+If you're familiar with state management libraries such as React's Redux you may find reading through the quick start guide to be all you require.
+It introduces a glossary of terms used in `foundation-store` as compared to Redux, and provides a quick look at a complete store setup.
+
+:::tip
+If you are new to the store concept, or are unsure of the integration points from your components to the store, see the more thorough example which guides you
+step-by-step [here](./client-state-management-examples).
+:::
+
+### Equivalent Redux terms
+
+- **Action**. Translates to a standard [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent).
+These event types are defined in a store's EventDetailMap. Here's the StoreRootEventDetailMap for example.
+- **Dispatch**. Use the component's $emit method in conjunction with the [EventEmitter](../foundation-events/src/eventEmitter/README.md) mixin to strongly type it with store event maps.
+- **Action Creator**. Create the CustomEvent.[detail](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail)
+however and whenever you like. When you're ready, emit the event and detail pairing as per an EventDetailMap via the component's
+$emit api, which in turn creates and sends the CustomEvent.
+- **Reducer**. Use the store's [createListener](./docs/api/foundation-store.abstractstore.createlistener.md) method to
+create a synchronous event listener which you can [commit values to the store](./docs/api/foundation-store.abstractstore.commit.md) from.
+These listeners only receive events, so new values may come from `CustomEvent.detail` payloads, and / or reading from the store itself which these handlers are members of.
+- **Effect**. Use the store's [createAsyncListener](./docs/api/foundation-store.abstractstore.createasynclistener.md) method to create an async event listener which can run Side Effects.
+Similar to the Reducer context above, however you should _NOT_ commit values to the store in these, but instead
+[emit](./docs/api/foundation-store.abstractstore.emit.md) outcome events, ie. success / failure, which can be handled by synchronous listeners.
+- **Slice**. A store fragment. A part of the store with a specific purpose, domain model.
+- **Selector**. A simple getter on a store fragment.
+
+### Setup
+
+Create a root store.ts file somewhere, for example `./store/store.ts`. This will be the root store for the application,
+which may consist for other [store fragments](./client-state-management-usage#using-store-fragments). Each fragment could be considered as a domain, with a single purpose. This
+setup allows us to isolate data and provide the component trees access to only the data they really need to function.
+
+```typescript store.ts
+import {CustomEventMap, EventListenerMap, registerEmitter} from '@genesislcap/foundation-events';
+import {
+  AbstractStoreRoot,
+  StoreRoot,
+  StoreRootEventDetailMap,
+  registerStore,
+} from '@genesislcap/foundation-store';
+import {observable, volatile} from '@genesislcap/web-core';
+import {DesignSystem} from './designSystem';
+import {Position} from './position';
+import {Trades} from './trades';
+
+/**
+ * 1: Define any store custom event details for more complex payloads.
+ * See https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail
+ */
+export interface StoreZooEventDetail {
+  zoo: Animal[];
+  location: string;
+}
+
+/**
+ * 2: Define store event to event detail map.
+ * For the root store this should be a union of StoreRootEventDetailMap.
+ */
+export type StoreEventDetailMap = StoreRootEventDetailMap & {
+  'store-foo': void;
+  'store-bar': boolean;
+  'store-zoo': StoreZooEventDetail; // < details with more than one property
+  'store-zoo-animals': Animal[];
+}
+
+/**
+ * 3: Extend built in event maps so that addEventListener/removeEventListener are aware of our events for code completion
+ */
+declare global {
+  interface HTMLElementEventMap extends CustomEventMap<StoreEventDetailMap> {}
+}
+
+/**
+ * 4: Define internal event to event detail map.
+ */
+type InternalEventDetailMap = {
+  'store-zoo-success': SomeResponse;
+  'store-zoo-error': Error;
+}
+
+/**
+ * 5: Define entire readonly store made up of store fragments and or additional properties.
+ */
+export interface Store extends StoreRoot {
+  /**
+   * Store properties
+   */
+  readonly prop1: number;
+  readonly prop2: number;
+  readonly someToggle: boolean;
+  readonly derivedData: number;
+  readonly volatileDerivedData: number;
+  /**
+   * Store fragments
+   */
+  readonly designSystem: DesignSystem;
+  readonly notifications: Notifications;
+  readonly positions: Positions;
+  readonly trades: Trades;
+  /**
+   * Store event handlers
+   */
+  onFooEvent(event: CustomEvent<void>): void;
+  onBarEvent(event: CustomEvent<boolean>): void;
+  onZooEvent(event: CustomEvent<StoreZooEventDetail>): void;
+}
+
+/**
+ * 6: Define the default implementation
+ */
+class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap, InternalEventDetailMap> implements Store {
+  /**
+   * Store properties
+   */
+  @observable prop1: number = 10;
+  @observable prop2: number = 20;
+  @observable someToggle: boolean = true;
+
+  constructor(
+    /**
+     * 7: Inject any store fragments
+     */
+    @DesignSystem readonly designSystem: DesignSystem,
+    @Notifications readonly notifications: Notifications,
+    @Positions readonly positions: Positions,
+    @Trades readonly trades: Trades,
+  ) {
+    super(...arguments);
+
+    /**
+     * 8: Listeners not on the public interface can be created anonymously if you prefer
+     */
+    this.createListener<SomeResponse>('store-zoo-succes', (detail) => {
+      const {prop1, prop2, ...rest} = detail;
+      this.commit.prop1 = prop1;
+      this.commit.prop2 = prop2;
+    });
+    this.createErrorListener('store-zoo');
+  }
+
+  /**
+   * 8: Define your event listeners as per the interface. Please ensure you do so using arrow functions to aid binding.
+   * These handlers can be async if you would like to do some async work in them. We suggest you don't commit store
+   * mutations in async functions, instead raise an event which you can handle synchronously and commit from there so
+   * things are tracked correctly.
+   */
+  onFooEvent = this.createListener('store-foo', detail => {...});
+  onBarEvent = this.createListener<boolean>('store-bar', detail => this.commit.someToggle = detail); // < commit values to the store synchronously
+  onZooEvent = this.createAsyncListener<StoreZooEventDetail>('store-zoo', async (detail) =>
+    this.invokeAsyncAPI(
+      async () => this.someAsyncTask(detail), // < likely an injected service,
+      'store-zoo-error',
+      'store-zoo-success'
+    )
+  );
+
+  /**
+   * 9: Create getters for common derived data needs, similar to selectors in the Redux sense. These however do not
+   * need any special code as they are computing based on properties that are already observable. Derivied data with
+   * branching code paths needs to be marked as volatile.
+   */
+
+  get derivedData(): number {
+    return this.prop1 * this.prop2;
+  }
+
+  @volatile
+  get volatileDerivedData() {
+    return this.someToggle ? this.prop1 * this.prop2 : this.prop1 + this.prop2;
+  }
+}
+
+/**
+ * 10: Register the store which defines the DI key using the interface
+ */
+export const Store = registerStore<Store>(DefaultStore, 'RootStore');
+
+// React and angular stores require a layer to work with the dependency injection. See later code snippet in this file
+```
+
+Your root store is now ready to be injected into your application. Hopefully the above gives you a good idea of general
+store setup. The example might look a bit verbose, but in reality you can write a small store fragment in 20+ lines of
+code. For example:
+
+<BaseStore />
+
+## [API Docs](./docs/api/index.md)
+
