@@ -106,7 +106,7 @@ const booleanInputUiSchema: UiSchema = {
 
 ### Date control
 
-The date control schema creates a date renderer with an input field and a date picker. To invoke this control, set the `description` property in the `JSONSchema` to `org.joda.time.DateTime`. The form only allows numbers to be input. it stores the date value in miliseconds in the underlying form model.
+The date control schema creates a date renderer with an input field and a date picker. To invoke this control, set the `description` property in the `JSONSchema` to `org.joda.time.DateTime`. The form only allows numbers to be input. It stores the date value in milliseconds in the underlying form model.
 
 ```ts
 const dateInputJsonSchema: JSONSchema7 = {
@@ -198,7 +198,7 @@ const textAreaInputUiSchema: UiSchema = {
 
 The select control schema creates a dropdown select box. Users can select only one value from the given list. 
 
-Tp invoke this renderer, include an `options` section in the `UISchemaElement` with an array of data. You can specify which properties of your array objects are used for the underlying option value, `valueField`, and for the display value, `labelField`.
+To invoke this renderer, include an `options` section in the `UISchemaElement` with an array of data. You can specify which properties of your array objects are used for the underlying option value, `valueField`, and for the display value, `labelField`.
 
 ```ts
 // Select Input
@@ -311,9 +311,4 @@ After you have looked at the basics here, you can find more details in our [API 
 Full source code at [Controls](https://github.com/genesiscommunitysuccess/form-examples/tree/main/client/src/routes/form-controls)
 :::
 
-## License
 
-Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
-
-### Licensed components
-Genesis low-code platform

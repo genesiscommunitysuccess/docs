@@ -15,13 +15,14 @@ The file is found in the server `cfg` directory.
 
 This section explains all the different items that can be contained in the file.
 
-Here is an example of a `genesis-system-definition.kts` file for an application:
+Here is an example of a `genesis-system-definition.kts` file for an application named 'position':
 
 ```kotlin
 package genesis.cfg
 
 systemDefinition {
   global {
+    item(name = "DEPLOYED_PRODUCT", value = "position")
     item(name = "MqLayer", value = "ZeroMQ")
     item(name = "DbLayer", value = "H2")
     item(name = "DictionarySource", value = "DB")
@@ -71,6 +72,8 @@ Local values can be specified in this block. **These values override the global 
 
 * **Host**: In this section you can define the properties of the host or hosts (if running in a cluster environment). A Host block can only exist under the system section, as you can see in the above example.
  The host name defines what environment you are running in. By default, only one host will be used and you must set its value to the hostname of the current machine.
+
+This hierarchy enables you to specify multiple environments with a single unchanged built application. You can specify separate `DEV`, `UAT` and `PROD` environments and overrides to system configuration for each, for example.
 
 ## Items defined
 **MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues.
@@ -204,6 +207,30 @@ constructor(
 }
 ```
 
+
+### Specifying multiple environments
+When you need to override any of the config settings for a deployment (for example, if you want to use a different database in a specific environment), create a new `system` block in your application's `*-system-definition.xls` with the required settings for the environment. 
+For example, if you want to use different databases in UAT and DEV environments, specify the settings for each in a separate `system` block:
+```
+systems {
+  ...
+  system(name = "DEV") {
+    hosts {
+      host(LOCAL_HOST)
+    }
+    item(name = "DbHost", value = "dbc:postgresql://devdb:5432/postgres?user=dev&password=dev")
+  }
+  system(name = "UAT") {
+    hosts {
+      host("uat1.myorg.global")
+    }
+    item(name = "DbHost", value = "dbc:postgresql://uatdb:5432/postgres?user=uat&password=uat")
+  }
+}
+```
+
+During runtime the `hosts` block will be read to find configurations applicable to this host.
+
 ## HashiCorp Vault support
 
 :::important
@@ -298,3 +325,77 @@ systemDefinition {
 
 Multiple levels of linking are supported. However, `genesisInstall` will fail if a circular link is detected, or if the `source` of a link is not found.
 
+
+## API
+
+The system-definition file is the basis of all configurations. In this page, we describe the different functions available to get properties specified in the `*-system-definition.kts` files. Default methods have implementations to provide default values for each property.
+
+Most of the functions are to get or set a particular property.
+
+If you add any other property whose getter or setter function is not available, use the functions `get` or `getItem`.
+
+You can access system definition properties in two ways:
+
+-   using existing APIs
+-   using `@Named` Genesis annotation
+
+### Using existing APIs
+
+| name | signature |
+| --- | --- |
+| `availableProperties` | `@NotNull default Set<String> availableProperties()` |
+| `determineEnvironment` | `@NotNull default String determineEnvironment()` |
+| `get` | `@NotNull default Optional<String> get(String key)` |
+| `getAeronArchiveEnabledFlag` | `default Optional<Boolean> getAeronArchiveEnabledFlag()` |
+| `getAeronIpRange` | `default Optional<String> getAeronIpRange()` |
+| `getAeronServicePort` | `default Optional<Integer> getAeronServicePort()` |
+| `getChronicleMapAverageKeySizeBytes` | `default Optional<String> getChronicleMapAverageKeySizeBytes()` |
+| `getChronicleMapAverageValueSizeBytes` | `default Optional<String> getChronicleMapAverageValueSizeBytes()` |
+| `getChronicleMapEntriesCount` | `default Optional<String> getChronicleMapEntriesCount()` |
+| `getDaemonServerPort` | `default Optional<String> getDaemonServerPort()` |
+| `getDatabaseHostname` | `default Optional<String> getDatabaseHostname()` |
+| `getDatabasePort` | `default Optional<String> getDatabasePort()` |
+| `getDbNamespace` | `default Optional<String> getDbNamespace()` |
+| `getDefaultCertificateLocation` | `default Optional<String> getDefaultCertificateLocation()` |
+| `getDefaultKeystoreLocation` | `default Optional<String> getDefaultKeystoreLocation()` |
+| `getDefaultKeystorePassword` | `default Optional<String> getDefaultKeystorePassword()` |
+| `getHost` | `default GenesisHost getHost(String hostName)` |
+| `getHosts` | `List<GenesisHost> getHosts()` |
+| `getItem` | `@Nullable Object getItem(String key)` |
+| `getLogFramework` | `default Optional<String> getLogFramework()` |
+| `getLogFrameworkConfig` | `default Optional<String> getLogFrameworkConfig()` |
+| `getReqRepTimeout` | `default Optional<String> getReqRepTimeout()` |
+| `getValueOrDefault` | `@NotNull default String getValueOrDefault(String key, @NotNull String defaultValue)` |
+| `getZeroMQInboundPort` | `default Integer getZeroMQInboundPort()` |
+| `getZeroMQOutboundPort` | `default Integer getZeroMQOutboundPort()` |
+| `getZeroMQProxyModeEnabled` | `default Boolean getZeroMQProxyModeEnabled()` |
+| `getZeroMQUnicastRelayEnabled` | `default Boolean getZeroMQUnicastRelayEnabled()` |
+| `isAuthDisabled` | `default boolean isAuthDisabled()` |
+| `isClusteringEnabled` | `default boolean isClusteringEnabled()` |
+| `isEncrypted` | `default boolean isEncrypted(String key)` |
+| `isMetricsEnabled` | `boolean isMetricsEnabled()` |
+| `parseProperty` | `static <T, R> Optional<R> parseProperty(Supplier<Optional<T>> property, Predicate<? super T> canBeTransformed, Function<? super T, ? extends R> transformer)` |
+| `parseStringProperty` | `static <R> Optional<R> parseStringProperty(Supplier<Optional<String>> property, Function<? super String, ? extends R> transformer)` |
+
+### Using `@Named` genesis annotation
+
+### Injectable properties from system definition
+Here is an example of a **genesis-system-definition.kts** file:
+
+```kotlin
+systemDefinition {
+    global {
+        item(name = "CONFIG_FILE_NAME", value = "/data/")
+        // other params omitted for simplicity
+    }
+}
+```
+Here is an example of a system definition property being referenced in a Java file:
+
+```java
+@Inject
+public RequestReplyDefinitionReader(RxDb db,
+                                    @Named("CONFIG_FILE_NAME") String configFileName) throws GenesisConfigurationException {
+    this(db.getDictionary(), configFileName);
+}
+```

@@ -57,21 +57,21 @@ Before discussing the API it's useful to understand a number of concepts.
 
 ## Dynamic registration and adding items
 
-To have a pane displayed on the layout system, it must be registered with the layout system. When using the [declarative API](./layout_02_html_api.mdx), the layout system takes care of this for you, but as you start to add items dynamically and then serialise the layout, you need to consider which panes are registered. See this contained example <!-- TODO link -->, which allows the user to add pre-determined items to the layout dynamically.
+To have a pane displayed on the layout system, it must be registered with the layout system. When using the [declarative API](./layout_02_html_api.mdx), the layout system takes care of this for you, but as you start to add items dynamically and then serialise the layout, you need to consider which panes are registered. See [this contained example](../client-layout-management-examples/#contained-example), which allows the user to add pre-determined items to the layout dynamically.
 
 :::tip
 If you are only using the declarative API, and not using any dynamic integrations with JavaScript, then you shouldn't need to set the registration names of any items, as all the same items will be registered when you load a previously saved layout. If you are dynamically adding items as well, it is highly recommended to set the registration names of items manually. This makes it easier to figure out what is and is not registered.
 * When using the declarative API, use the `registration` attribute on the `<foundation-layout-item>` component.
-* When using the JavaScript API, set the `registration` optional parameter on the registered element config <!-- TODO link -->.
+* When using the JavaScript API, set the `registration` optional parameter on the registered element [config](../docs/api/foundation-layout.foundationlayout.registeritem/#parameters).
 :::
 
 ## Saving and loading layout
 
-The JavaScript API can be used to save and load layout states manually. This only describes the state of the dynamic layout itself. It is the responsibility of each component within the layout to serialise its own state, if required. To enable autosaving the layout <!-- TODO link -->.
+The JavaScript API can be used to save and load layout states manually. This only describes the state of the dynamic layout itself. It is the responsibility of each component within the layout to serialise its own state, if required. To enable autosaving the layout [see here](../client-layout-management-examples/#autosaving-layout).
 
 ## Methods
 
-<!-- there are lots of links we can add here when API docs are merged. These links will have more info about the parameters -->
+For more info with these methods see the method section of the API docs [here](../docs/api/foundation-layout.foundationlayout/#methods).
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |

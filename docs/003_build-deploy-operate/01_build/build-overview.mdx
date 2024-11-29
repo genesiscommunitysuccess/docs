@@ -24,6 +24,62 @@ To build the client project, within the project's `client` directory you can run
 
 ![](/img/003_build-deploy-operate/gradle-build-client.png)
 
+import FoundationUi from "/src/versioning/foundationui.mdx"
+
+### `package.json`
+
+The `package.json` file is auto-generated for you by the CLI, based on your answers to the prompts.
+
+At the top you'll find the `name` and `description` of your application.
+
+Following this, there are three key sections you need to be aware of:
+
+- config
+- scripts
+- dependencies
+
+#### Config
+
+When running the app on your local machine, you can adjust a few settings under the `config` section, including which host to connect to and what port to run the dev server on.
+```
+"config": {
+    "API_HOST": "wss://dev-position2/gwf/",
+    "DEFAULT_USER": "admin",
+    "DEFAULT_PASSWORD": "genesis",
+    "PORT": 6060
+  },
+```
+
+#### Scripts
+
+The next section is `scripts`.
+Some have been auto-generated for you; feel free to add your own scripts, as needed.
+
+These are the commands that you invoke with `$ npm run` - when you execute that command from your command line, `node` will look at the scripts listed here to know what to run.
+For example, `$ npm run clean:dist` will run `node ../.build/clean.js dist`.
+
+```javascript
+  "scripts": {
+    "build": "npm run build:webpack",
+    "build:with-host": "cross-env API_HOST=$npm_package_config_API_HOST npm run build:webpack",
+    "build:webpack": "cross-env NODE_ENV=production AUTO_CONNECT=true webpack",
+    "clean": "npm run clean:dist",
+    "clean:dist": "node ../.build/clean.js dist",
+    "copy-files": "copyfiles -u 1 src/**/*.{css,scss,ttf} ./dist/esm",
+    "dev": "npm run dev:webpack",
+    "dev:webpack": "cross-env API_HOST=$npm_package_config_API_HOST AUTO_CONNECT=true DEFAULT_USER=$npm_package_config_DEFAULT_USER DEFAULT_PASSWORD=$npm_package_config_DEFAULT_PASSWORD NODE_ENV=development webpack serve --open",
+    "serve": "serve dist -p $npm_package_config_PORT",
+    "test": "echo \"Error: no test specified\""
+  },
+```
+
+:::info
+Your settings from the `config` block are passed to different scripts as environment variables, using [cross-env](https://www.npmjs.com/package/cross-env). So, for example, if you want to add a new config for a `DEFAULT_VIEW`:
+
+- add the config to the config block as `"DEFAULT_VIEW": "reporting"`
+- in the npm script that requires the variable, add `DEFAULT_VIEW=$npm_package_config_DEFAULT_VIEW`.
+:::
+
 
 ## Server build
 

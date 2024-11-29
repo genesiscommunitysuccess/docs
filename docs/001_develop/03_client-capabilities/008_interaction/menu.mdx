@@ -1,0 +1,376 @@
+---
+title: 'Menu'
+sidebar_label: 'Menu'
+id: client-interaction-menu
+keywords: [ interaction, interactive, menu, desktop, item, choice, nested, start menu, menu bar, action ]
+tags:
+- interaction
+- interactive
+- menu
+- desktop
+- item
+- choice
+- nested
+- start menu
+- menu bar
+- action
+sidebar_position: 8
+---
+
+import MenuDemo from '/examples/ui/client-capabilities/interaction/menu.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The menu is a component which lists choices for a user, such as allowing them to select actions.
+
+The menu behaves like native operating system menus, such as the menus that pull down from the menubars commonly found at the top of many desktop application window. When a user activates a choice in a menu, the menu usually closes unless the choice opened a submenu.
+
+Use cases:
+* Create a menu bar to emulate the feeling of a desktop application
+* Create a menu for interacting with a component
+
+While any DOM content is permissible as a child of the menu, only `<rapid-menu-item>`s and slotted content with a role of `menuitem`, `menuitemcheckbox`, or `menuitemradio` will receive keyboard support.
+
+## Example
+<MenuDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-menu>
+      <rapid-menu-item></rapid-menu-item>
+      <rapid-menu-item></rapid-menu-item>
+    </rapid-menu>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html<MyElement>`
+        <rapid-menu @change=${(x,ctx) => x.menuChange(<Event & {target: MenuItem}>ctx.event)}>
+          <rapid-menu-item @click=${(x) => itemOneAction()}>Menu item 1</rapid-menu-item>
+          <rapid-menu-item>Menu item 2</rapid-menu-item>
+          <rapid-menu-item>Menu item 3</rapid-menu-item>
+          <rapid-divider></rapid-divider>
+          <rapid-menu-item role="menuitemradio">Menu item 4</rapid-menu-item>
+          <rapid-menu-item role="menuitemradio">Menu item 5</rapid-menu-item>
+        </rapid-menu>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      menuChange(e: Event & {target: MenuItem}) {
+        // do something with the selected menu item, e.g.
+        console.log(e.target.getAttribute('role'))
+      }
+      itemOneAction() {
+        // alternatively, just add event listners to perform actions on click
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-menu>
+      <rapid-menu-item></rapid-menu-item>
+      <rapid-menu-item></rapid-menu-item>
+    </rapid-menu>
+    ```
+
+    Usage
+    ```typescript
+    export function MyComponent() {
+      const handleMenuChange = (e: Event & {target: MenuItem}) => {
+        // do something with the selected menu item, e.g.
+        console.log(e.target.getAttribute('role'))
+      }
+      const itemOneAction = () => {
+        // alternatively, just add event listeners to perform actions on click
+      }
+      return (
+        <rapid-menu onChange={(e) => handleMenuChange(<Event & {target: MenuItem}>e)}>
+          <rapid-menu-item onClick={itemOneAction}>Menu item 1</rapid-menu-item>
+          <rapid-menu-item>Menu item 2</rapid-menu-item>
+          <rapid-menu-item>Menu item 3</rapid-menu-item>
+          <rapid-divider></rapid-divider>
+          <rapid-menu-item role="menuitemradio">Menu item 4</rapid-menu-item>
+          <rapid-menu-item role="menuitemradio">Menu item 5</rapid-menu-item>
+        </rapid-menu>
+      )
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-menu>
+      <rapid-menu-item></rapid-menu-item>
+      <rapid-menu-item></rapid-menu-item>
+    </rapid-menu>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    @Component({
+      selector: 'my-component',
+      template: `
+        <rapid-menu (change)="handleMenuChange($event)">
+          <rapid-menu-item (click)="itemOneAction()">Menu item 1</rapid-menu-item>
+          <rapid-menu-item>Menu item 2</rapid-menu-item>
+          <rapid-menu-item>Menu item 3</rapid-menu-item>
+          <rapid-divider></rapid-divider>
+          <rapid-menu-item role="menuitemradio">Menu item 4</rapid-menu-item>
+          <rapid-menu-item role="menuitemradio">Menu item 5</rapid-menu-item>
+        </rapid-menu>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class MyComponent {
+      handleMenuChange(e: Event) {
+        // do something with the selected menu item, e.g.
+        const target = e.target as MenuItem;
+        console.log(target.getAttribute('role'));
+      }
+      itemOneAction() {
+        // alternatively, just add event listeners to perform actions on click
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+
+## Menu API
+
+API examples shown with Genesis component syntax, and closing tag omitted.
+
+### Attributes
+
+This component doesn't have any attributes.
+
+### Properties
+
+This component doesn't have any properties.
+
+### Methods
+
+|Method|Type|Description|
+|---|---|---|
+|focus|`() => void`|Focuses the first item in the menu.|
+|collapseExapndedItem|`() => void`|Collapses any expanded menu items.|
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|The default slot where [`<rapid-menu-item>`](#menu-item-api) are placed.|
+
+#### Looped example
+
+You could construct an array of menu items to perform specific actions. Here is an example shown with the Genesis component syntax.
+```typescript
+const menuItems = [
+  { title: 'console log', action: () => console.log('console log') },
+  { title: 'alert', action: () => alert('alert') },
+]
+@customElement({
+  name: 'my-element',
+  template: html<MyElement>`
+    <rapid-menu>
+      ${repeat(
+        (_) => menuItems,
+        html`<rapid-menu-item @click=${x => x.action()}>${x => x.title}</rapid-menu-item>`
+      )}
+    </rapid-menu>
+  `,
+})
+export class MyElement extends GenesisElement { }
+```
+
+### Parts
+
+This component doesn't have any parts.
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.
+
+## Menu Item API
+
+API examples shown with Genesis component syntax, and closing tag omitted.
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>disabled</td>
+            <td><code>boolean</code></td>
+            <td>Disable the menu item, if disabled it will not respond to click.</td>
+<td>
+
+```typescript
+<rapid-menu-item disabled>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>expanded</td>
+            <td><code>boolean</code></td>
+            <td>The expanded state of the menu item, especially if it's a submenu.</td>
+<td>
+
+```typescript
+<rapid-menu-item expanded>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>role</td>
+            <td><code>"menuitem" | "menuitemcheckbox" | "menuitemradio"</code></td>
+            <td>The role of the menu item, altering its behaviour in the menu according to the corresponding html element. <strong>Default</strong>: <code>menuitem</code>.</td>
+<td>
+
+```typescript
+<rapid-menu-item role="menuitemradio">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>checked</td>
+            <td><code>boolean</code></td>
+            <td>The checked state of the menu item, only if it's a role of radio or checkbox.</td>
+<td>
+
+```typescript
+<rapid-menu-item role="menuitemcheckbox" ?checked=${sync(x => x.checkedItem, 'boolean')}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Properties
+
+This component doesn't have any properties that are not also controlled via attributes.
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|The default slot which can be populated by menu items, or other menus to created nested menus.|
+|checked-indicator|The checked indicator.|
+|radio-indicator|The radio indicator.|
+|start|Content which can be provided before the menu item content.|
+|end|Content which can be provided after the menu item content.|
+|expand-collapse-indicator|The expand/collapse indicator.|
+|submenu|Used to nest menu's within menu items.|
+
+#### Nested example
+
+You may nest multiple levels of menu items to create sub menus.
+```html
+<rapid-menu>
+    <rapid-menu-item>
+        Menu item 1
+        <rapid-menu>
+            <rapid-menu-item>Menu item 1.1</rapid-menu-item>
+            <rapid-menu-item>Menu item 1.2</rapid-menu-item>
+        </rapid-menu>
+    </rapid-menu-item>
+    <rapid-menu-item>
+        Menu item 2
+        <rapid-menu>
+            <rapid-menu-item>Menu item 2.1</rapid-menu-item>
+            <rapid-menu-item>Menu item 2.2</rapid-menu-item>
+        </rapid-menu>
+    </rapid-menu-item>
+    <rapid-menu-item>
+        Menu item 3
+        <rapid-menu>
+            <rapid-menu-item>Menu item 3.1</rapid-menu-item>
+            <rapid-menu-item>Menu item 3.2</rapid-menu-item>
+        </rapid-menu>
+    </rapid-menu-item>
+</rapid-menu>
+```
+
+### Parts
+
+| Part | Description |
+| --- | --- |
+|input-container|The element representing the visual checked or radio indicator.|
+|checkbox|The element wrapping the `menuitemcheckbox` indicator.|
+|radio|The element wrapping the `menuitemradio` indicator.|
+|content|The element wrapping the menu item content.|
+|expand-collapse-glyph-container|The element wrapping the expand collapse element.|
+|expand-collapse|The expand/collapse element.|
+|submenu-region|The container for the submenu, used for positioning.|
+
+### Events fired
+
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>change</td>
+            <td><code>void</code></td>
+            <td>Fired when a menu item with a role of <code>menuitemcheckbox</code>, <code>menuitemradio</code>, or <code>menuitem</code> is invoked. The event doesn't contain data, but you can use the event target to get a reference to the emitting menu item. You'll likely want to add this onto the containing menu item.</td>
+<td>
+
+```typescript
+<rapid-menu @change=${(x,ctx) => x.menuChange(<Event & {target: MenuItem}>ctx.event)}>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>expanded-change</td>
+            <td><code>this</code></td>
+            <td>When the expanded state of a menu or submenu changes. Event data is a reference to the emitting menu.</td>
+<td>
+
+```typescript
+<rapid-menu-item @expanded-change=${(x,ctx) => x.menuExpandedChanged(ctx.event)}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Events listened to
+
+This component doesn't listen to any events.

@@ -61,13 +61,13 @@ To find out how to create an app similar to our example, go to the [readme file]
 When you want to create a Data Pipeline in your own application, there are other things you need to do in addition to creating the pipeline files themselves.
 
 ### Processes.xml
-Every process in your app must be configured in the application's [**-processes.xml**](/server/configuring-runtime/processes/) file. See the [**howto-csv-ingress-processes.xml**](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/server/howto-csv-ingress-app/src/main/genesis/cfg/howto-csv-ingress-processes.xml) file for a simple example. 
+Every process in your app must be configured in the application's [`*-processes.xml`](/develop/server-capabilities/runtime-configuration/processes/) file. See the [`howto-csv-ingress-processes.xml`](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/server/howto-csv-ingress-app/src/main/genesis/cfg/howto-csv-ingress-processes.xml) file for a simple example. 
 
 At minimum, you need to:
 
 - add `genesis-pal-datapipeline` to `<module>`
 - add `global.genesis.pipeline` to `<package>`
-- add the relevant gpal script (e.g. [**howto-csv-ingress-cc-simple-data-pipeline.kts**](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-simple-data-pipelines.kts)) to `<script`>
+- add the relevant gpal script (e.g. [**howto-csv-ingress-cc-simple-data-pipeline.kts**](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/server/howto-csv-ingress-app/src/main/genesis/scripts/howto-csv-ingress-cc-simple-data-pipelines.kts)) to `<script>`)
 
 For example:
 ```jsx
@@ -99,7 +99,7 @@ pipelines {
 ```
 
 ### System definition
-Every application also has a [main configuration file](/server/configuring-runtime/system-definitions/) called **genesis-system-definition.kts**. 
+Every application also has a [main configuration file](/develop/server-capabilities/runtime-configuration/system-definition/) called `genesis-system-definition.kts`. 
 
 Check this file and make sure that the application knows where to source the files from.
 
@@ -110,11 +110,6 @@ Check this file and make sure that the application knows where to source the fil
 :::info
 Go to our [**Testing**](/how-to/ht-prepare-test/) page for details of our testing tools and the dependencies that you need to declare.
 :::
-
-To test your auth set-up on your app:
-
-- *Details to follow shortly. Thank you for your patience.*
-
 
 ## Full technical details
 You can find full technical details of how to use the Data Pipeline in our [reference documentation](/develop/server-capabilities/integrations/data-pipelines/).

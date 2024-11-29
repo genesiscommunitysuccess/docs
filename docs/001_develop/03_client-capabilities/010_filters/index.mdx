@@ -24,7 +24,12 @@ import TabItem from '@theme/TabItem';
 
 Client-side filters in Genesis allow users to filter and process data locally within the web application. They may also access runtime data or state to provide an outcome. These filters, including options like `userTargeting` and `timeWindow`, enable customized data manipulation directly in the browser, enhancing responsiveness by reducing server requests.
 
-Client-side filters generally take primitive input parameters, and return `true` or `false` based on these values. They can be combined using the ClientFilterRunner<!-- TODO:(./docs/api/foundation-filters.runner.md)--> utility provided in the `foundation-filters` package to create layered filtering conditions for complex data scenarios. When a filter is used without all the input parameters needed, Genesis logs a warning and returns `true` by convention so that the chain can continue.
+Client-side filters generally take primitive input parameters, and return `true` or `false` based on these values. They can be combined using the [ClientFilterRunner](./docs/api/foundation-filters.runner.md) utility provided in the `foundation-filters` package to create layered filtering conditions for complex data scenarios. When a filter is used without all the input parameters needed, Genesis logs a warning and returns `true` by convention so that the chain can continue.
+
+## API Documentation
+
+For more detailed information on API and configurations, please refer to the [API documentation](./docs/api/index.md) in the `docs/api` directory.
+
 
 ## Example
 Lets look at an example of one of the many filters in this module, the `timeWindow` filter. Further examples are shown below.
@@ -117,12 +122,12 @@ data or state from the application it needs to provide its outcome. The DI versi
 
 Here is a list of available filters in Genesis's `foundation-filters` package:
 
-* **nodeEnv**<!-- TODO: [nodeEnv](./docs/api/foundation-filters.nodeenvfilter.md) -->: This filter is used to match the current environment (production, development etc.) with the environment specified (passed as function param). It is useful for supporting environment-specific conditions ensuring that certain features are only available for targetted environment.
-* **percentage**<!-- TODO: [percentage](./docs/api/foundation-filters.percentagefilter.md) -->: The percentage filter in Genesis foundation filters checks if a randomly generated number between 0 and 100 is within a specified percentage threshold. This allows for setting probabilistic conditions, enabling features or elements to be displayed to a proportion of users based on the given percentage. This filter is useful for scenarios like A/B testing or gradually rolling out new features.
-* **timeWindow**<!-- TODO: [timeWindow](./docs/api/foundation-filters.timewindowfilter.md) -->: This filter is used to check whether the current date and time come in between the start and end period specified in the parameters. The filter returns true if the current date and time falls between the range, thus making it useful for time-sensitive conditions.
-* **urlTargetting**<!-- TODO: [urlTargeting](./docs/api/foundation-filters.urltargetingfilter.md) -->: It is used to filter content based on URL parts like scheme, path, host, or pattern matching. It allows to target specific URLs based on particular criteria, which can be useful for enabling or restricting features.
-* **userAgent**<!-- TODO: [userAgent](./docs/api/foundation-filters.useragentfilter.md) -->: It filters content based on user's browser, OS, devices or specified user agent string. It allows customized experience according to specific environments, such as targeting mobile devices audience or restricting access on a particular browser.
-* **userTargeting**<!-- TODO: [userTargeting](./docs/api/foundation-filters.usertargetingfilter.md) -->: This filters content on basis of user related attributes like usernames, permissions and profiles. It aids in showing personalized content or restricting access to specific content depending on the soecified user conditions.
+* [nodeEnv](./docs/api/foundation-filters.nodeenvfilter.md): This filter is used to match the current environment (production, development etc.) with the environment specified (passed as function param). It is useful for supporting environment-specific conditions ensuring that certain features are only available for targetted environment.
+* [percentage](./docs/api/foundation-filters.percentagefilter.md): The percentage filter in Genesis foundation filters checks if a randomly generated number between 0 and 100 is within a specified percentage threshold. This allows for setting probabilistic conditions, enabling features or elements to be displayed to a proportion of users based on the given percentage. This filter is useful for scenarios like A/B testing or gradually rolling out new features.
+* [timeWindow](./docs/api/foundation-filters.timewindowfilter.md): This filter is used to check whether the current date and time come in between the start and end period specified in the parameters. The filter returns true if the current date and time falls between the range, thus making it useful for time-sensitive conditions.
+* [urlTargeting](./docs/api/foundation-filters.urltargetingfilter.md): It is used to filter content based on URL parts like scheme, path, host, or pattern matching. It allows to target specific URLs based on particular criteria, which can be useful for enabling or restricting features.
+* [userAgent](./docs/api/foundation-filters.useragentfilter.md): It filters content based on user's browser, OS, devices or specified user agent string. It allows customized experience according to specific environments, such as targeting mobile devices audience or restricting access on a particular browser.
+* [userTargeting](./docs/api/foundation-filters.usertargetingfilter.md): This filters content on basis of user related attributes like usernames, permissions and profiles. It aids in showing personalized content or restricting access to specific content depending on the soecified user conditions.
 
 
 ## Installation
@@ -155,7 +160,7 @@ const outcome = this.userTargeting.filter({
 
 Here we've used the `UserTargeting` filter without the need to provide the current user or other data points to the underlying function directly. If where we source the current user from changes over time, the author of the filter can refactor centrally.
 
-All DI-based filters implement the ClientFilter<!-- TODO:(./docs/api/foundation-filters.clientfilter.md)--> interface; however, they may provide other APIs for convenience to abstract underlying implementation details. For example, `UserTargeting` provides a `hasAdminProfile` API, so the previous example can be re-written as:
+All DI-based filters implement the [ClientFilter](./docs/api/foundation-filters.clientfilter.md) interface; however, they may provide other APIs for convenience to abstract underlying implementation details. For example, `UserTargeting` provides a `hasAdminProfile` API, so the previous example can be re-written as:
 
 ```ts
 import { UserTargeting } from '@genesislcap/foundation-filters';
@@ -206,7 +211,7 @@ import { NodeEnv } from '@genesislcap/foundation-filters';
 const outcome = this.nodeEnv.isDevelopment;
 ```
 
-you can find other available API for nodeEnv in the API Docs <!-- TODO:enter link here from docs -->
+you can find other available API for nodeEnv in the [API Docs](./docs/api/index.md)
 
 ### `percentage`
 The percentage filter in Genesis foundation filters checks if a randomly generated number between 0 and 100 is within a specified percentage threshold. This allows for setting probabilistic conditions, enabling features or elements to be displayed to a proportion of users based on the given percentage. This filter is useful for scenarios like A/B testing or gradually rolling out new features.
@@ -266,7 +271,7 @@ Lets look at the usage examples as function and with DI:
     ```
   </TabItem>
 </Tabs>
-Both params start and end can be provided in any format recognized by the Date.parse() method.
+Both params start and end can be provided in any format recognized by the `Date.parse()` method.
 
 
 ### `urlTargeting`
@@ -282,7 +287,7 @@ The `urlTargeting` is used to filter content on the basis of URL structure, allo
 
 **paths**: A list of  path to target.
 
-This filter  will return true when the current URL matches on **ANY** of the parameters explained. If you wish to match on multiple parameters, consider chaining an array of urlTargeting filters together using ClientFilterRunner<!--TODO:(./docs/api/foundation-filters.clientfilterrunner.md) --> .
+This filter  will return true when the current URL matches on **ANY** of the parameters explained. If you wish to match on multiple parameters, consider chaining an array of urlTargeting filters together using [ClientFilterRunner](./docs/api/foundation-filters.clientfilterrunner.md).
 
 This filter helps in targeting specific URLs based on these parameters, which can be extremely useful for restricting or enabling features based on URL parameters or domains.
 For example, you could use the filter to only allow access to certain content when the URL matches a secure HTTPS connection on specific hosts, like `https://test.genesislab.global`.
@@ -363,7 +368,7 @@ This filter is used to filter content on the basis of user-specific attributes. 
 
 **Permissions**: Applies filtering on the basis of assigned permissions on user profile.
 
-It will return true when the current user matches on ANY of the parameters mentioned above. If you wish to match on multipleparameters, consider chaining an array of userTargeting filters together using ClientFilterRunner<!--TODO:(./docs/api/foundation-filters.clientfilterrunner.md) --> .
+It will return true when the current user matches on ANY of the parameters mentioned above. If you wish to match on multiple parameters, consider chaining an array of userTargeting filters together using [ClientFilterRunner](./docs/api/foundation-filters.clientfilterrunner.md).
 
 <Tabs defaultValue="DI" values={[ { label: 'Dependency Injection (DI)', value: 'DI', },{ label: 'Function', value: 'function', }]}>
   <TabItem value="function">
@@ -405,8 +410,7 @@ This filter is extremely helpful for restricting features or allowing personaliz
 
 ## Combining filters with the runner method
 
-The `clientFilterRunner` method allows you to run a combination of filters sequentially, evaluating conditions like userAgent, timeWindow, or URL patterns matches. If any filter fails(returns `false`), then the entire result is `false`, enabling managing complex filtering logic in one function.
-<!--TODO:(./docs/api/foundation-filters.clientfilterrunner.md) --> 
+The [clientFilterRunner](./docs/api/foundation-filters.clientfilterrunner.md) method allows you to run a combination of filters sequentially, evaluating conditions like userAgent, timeWindow, or URL patterns matches. If any filter fails(returns `false`), then the entire result is `false`, enabling managing complex filtering logic in one function.
 
 ### Example
 ```ts
@@ -433,11 +437,3 @@ console.log(outcome); // true if all the filters pass
 
 ```
 
-## API Docs<!-- TODO: [API Docs](./docs/api/index.md) -->
-
-## License
-
-Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact Genesis Global<!-- TODO: [Genesis Global](https://genesis.global/contact-us/) --> for more details.
-
-### Licensed components
-Genesis application platform
