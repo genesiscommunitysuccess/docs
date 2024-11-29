@@ -1189,7 +1189,7 @@ It is important to note that at the beginning of a cold start, all fields affect
 ### Integration testing (legacy)
 
 :::info
-For the latest information on testing, go to our page on [Integration testing](/operations/testing/integration-testing/).
+For the latest information on testing, go to our page on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
 :::
 
 The Genesis Application Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Consolidator configuration is used to create our Consolidator. 
@@ -1210,7 +1210,7 @@ class ConsolidatorTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing-previous/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing-api/#abstractgenesistestsupport).
 
 Once you have set up your configuration, you can start writing tests against our Consolidators.
 

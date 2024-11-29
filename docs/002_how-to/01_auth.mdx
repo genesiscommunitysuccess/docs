@@ -21,7 +21,7 @@ For any application that has more than minimal complexity, you will want to give
 The Genesis Platform enables you to do this in extremely precise ways to match your business requirements.
 
 ## What you can control, and where
-Until you start to specify any permissions, everything is accessible by any authenticated user. But you can insert permmission statements in the relevant places to control **access to data** and **the ability to change it**.
+Until you start to specify any permissions, everything is accessible by any authenticated user. But you can insert permission statements in the relevant places to control **access to data** and **the ability to change it**.
 
 You can also control how users are able to change data. For example, one user might be allowed to create and edit records in a table, but not delete them. Another user might be allowed to create, edit and delete records in that table.
 
@@ -30,9 +30,9 @@ All you need to do is specify the permissions at each point. The Genesis Platfor
 ### Permissions for the back end
 Broadly speaking, you can insert permission statements on the back end at three levels:
 
-- tables (data entities): control access to an entire table. This is examined in detail in our page on [Introducing authorization](/server/access-control/authorisation-introduction/#permissions-for-tables-data-entities).
-- records within a table (rows): control who has access to specific records based on the contents of each record - for example, view only records for a specific currency. This is examined in detail in our page on [Introducing authorisation](/server/access-control/authorisation-introduction/#permissions-for-records-rows).
-- fields within a table (attributes/columns): control which columns are visible to different users. There is a little more about this in our page on [Introducing authorisation](/server/access-control/authorisation-introduction/#permissions-for-fields-attributescolumns).
+- tables (data entities): control access to an entire table.
+- records within a table (rows): control who has access to specific records based on the contents of each record - for example, view only records for a specific currency.
+- fields within a table (attributes/columns): control which columns are visible to different users.
 
 ### Permissions for the front end
 You can also add authorization at the front end. This reinforces the back-end permissions and creates a seamless experience for users with different permissions.
@@ -171,7 +171,7 @@ Genesis has tested the examples successfully on the H2 and Postgres databases.
 
 Find more details in our in our reference documentation:
 
-- [Authorisation](/develop/server-capabilities/access-control/authorization/) 
+- [Authorization](/develop/server-capabilities/access-control/authorization/) 
 - [Event Handlers]/develop/server-capabilities/core-business-logic-event-handler/) 
 - [`onValidate` codeblocks](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate)
 

@@ -321,7 +321,7 @@ Each layout item can contain multiple components, and most of the time there are
 
 To enable you to add multiple items from the same `registration`, the layout system clones elements to add to the layout.
 This is the case both when items are added with `.addItem()`, and when they are added using the declarative API. Under the hood, this uses the Node [cloneNode](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) api.
-There are certain limitations to this function, especially when using custom elements with the shadow DOM. [See troubleshooting example](#binding-events-inline-in-the-declarative-api).
+There are certain limitations to this function, especially when using custom elements with the shadow DOM. [See troubleshooting example](/develop/client-capabilities/layout-management/foundation-layout/#binding-events-inline-in-the-declarative-api).
 
 :::tip
 As a general rule, if you need to have elements with FAST bindings inside the layout, wrap them in custom elements.
@@ -634,7 +634,7 @@ This is just an example; you could have more than two layouts on a page or style
 
 ### Adding items dynamically
 
-This is an example of using the JavaScript API to add items to the layout at runtime. Before reading this example, you should familiarise yourself with the [API Section](#javascript-api).
+This is an example of using the JavaScript API to add items to the layout at runtime. Before reading this example, you should familiarise yourself with the [API Section](/develop/client-capabilities/layout-management/foundation-layout/#javascript-api).
 
 Say you want the user to be able to choose between three different types of item that can be put onto the layout - a profile-management table, a pie chart, and a column chart.
 
@@ -739,7 +739,7 @@ export class ContainedExample extends FASTElement {
 
 ### Loading serialised layouts
 
-This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example, you should familiarise yourself with the [API Section](#javascript-api):
+This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example, you should familiarise yourself with the [API Section](/develop/client-capabilities/layout-management/foundation-layout/#javascript-api):
 
 ```html
 <foundation-layout>
@@ -1082,7 +1082,7 @@ You can then use the custom component in the layout:
 See [here](#custom-components-to-handle-bindings-and-event-listeners) for a thorough technical explanation.
 
 ### New layout item not displaying
-Say you have the following layout, [the simple example](#simple-example), with autosave enabled.
+Say you have the following layout, [the simple example](/develop/client-capabilities/layout-management/foundation-layout/#simple-example), with autosave enabled.
 ```html
 <foundation-layout auto-save-key="simple-example">
   <foundation-layout-region type="horizontal">
@@ -1114,7 +1114,7 @@ The user of your layout will move things around and this will cache the layout. 
 ```
 
 You and the user will still only see the first two items. This is because the cached layout is being loaded, which does not contain the
-new item. To fix this, you must [invalidate the cache](#invalidating-the-cache).
+new item. To fix this, you must [invalidate the cache](/develop/client-capabilities/layout-management/foundation-layout/#invalidating-the-cache).
 
 ### Resource-intensive component resetting in layout
 
@@ -1138,7 +1138,7 @@ export class MockConnected extends FASTElement {
 }
 ```
 
-As explained in the [lifecycle info section](#element-lifecycle), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initialising a potentially heavy resource.
+As explained in the [lifecycle info section](/develop/client-capabilities/layout-management/foundation-layout/#element-lifecycle-gating), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initialising a potentially heavy resource.
 
 Use `LifecycleMixin` to access properties on the class, which can be used to run lifecycle functionality more thoughtfully. In the following example, the resource-intensive tasks are called conditionally - only when needed.
 
@@ -1245,7 +1245,7 @@ The same limitation applies if you're checking the variable multiple times becau
 ## Supplementary information
 
 ### Custom components to handle bindings and event listeners
-As shown in [this example](#binding-events-inline-in-the-declarative-api), you need to wrap html that uses fast bindings and event listeners into their own custom
+As shown in [this example](/develop/client-capabilities/layout-management/foundation-layout/#binding-events-inline-in-the-declarative-api), you need to wrap html that uses fast bindings and event listeners into their own custom
 components. This section is a technical explanation for why this is necessary. It is required that we make use of `cloneNode` to allow the layout to add multiple instances
 of a registered component.
 
@@ -1270,7 +1270,7 @@ The issue occurs during step four - the clone from `cloneNode` doesn't have the 
 
 To enable this module in your application, follow the steps below.
 
-1. Add `@genesislcap/foundation-layout` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-layout` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
 
 ```json
 {
