@@ -95,7 +95,7 @@ const cardData = [
   },
 ];
 
-export default function InteractionIndex() {
+export default function PresentationIndex() {
   return (
 		<LiveExampleBuilder itemData={cardData} />
   );
