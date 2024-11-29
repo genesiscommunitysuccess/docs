@@ -955,3 +955,42 @@ derivedField("SPREAD", DOUBLE) {
 
 ```
 
+## Migrating from legacy data model structure
+
+Before version 7.2 of the Genesis Platform fields were defined in their own dictionary file, separately from tables.
+
+From version 7.2, Genesis supports the new syntax detailed in this document.
+
+In `*-tables-dictionary.kts` files we went from this...
+```kotlin
+table(name = "RIGHT", id = 1004) {
+    CODE
+    DESCRIPTION
+    primaryKey {
+        CODE
+    }
+}
+```
+
+...to this:
+```kotlin
+table(name = "RIGHT", id = 1004) {
+    field("CODE").primaryKey()
+    field("DESCRIPTION")
+}
+```
+
+Legacy will continue to work, but it is simple to move to the new model using a provided a gradle plugin.
+
+To start, add the following line to the top of the `build.gradle.kts` file for the module which contains your legacy dictionary files:
+
+```kotlin
+plugins {
+    id("global.genesis.dictionary.upgrade")
+}
+```
+
+After adding this and performing a Gradle refresh, a new task: `updateTablesDictionary` is available in the Gradle task list, under **genesis**.
+To migrate the table dictionaries in your config module, run the task.
+
+
