@@ -1,6 +1,6 @@
 ---
-title: 'Customise Header'
-sidebar_label: 'Customise'
+title: 'Customise header'
+sidebar_label: 'Customise header'
 id: client-header-customise
 keywords: [header, customise]
 tags:
@@ -8,6 +8,10 @@ tags:
 - header customise
 sidebar_position: 2
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import DynamicRoutesHeaderExample from './examples/dynamic_routes_header_example.js';
 
 You can customise:
 
@@ -33,7 +37,7 @@ A lot of the Genesis seed apps come with the Header set up by default. To verify
 
 ### Icon
 
-By default, the navigation bar and flyout menu show the Genesis logo. You can override this by setting the `logoSrc` attribute. For example:
+By default, the navigation bar and flyout menu show the Genesis logo. You can override this by setting the [logoSrc](./docs/api/foundation-header.navigation.logosrc.md) attribute. For example:
 
 ```html
 <foundation-header logoSrc="https://icotar.com/avatar/genesis"></foundation-header>
@@ -43,72 +47,203 @@ The `logoSrc` defines the image that you want to display. Adding this attribute 
 
 ### Navigation items
 
-You can add navigation items to the left-hand side of the navigation bar. For each element, you can set `slot="routes"` attribute, so that navigation is controlled via a `@click` event. The following is a really basic example for adding a 'Home' button:
+You can add navigation items to the left-hand side of the navigation bar. For each element, you can set `slot="routes"` attribute, so that navigation is controlled via a `@click` event. The following is a really basic example for adding 'Home' and 'Profiles' buttons:
 
-```javascript
-html`
+```html
 <foundation-header>
   <rapid-button
     slot="routes"
     value="1"
     @click=${(x, c) => c.parent.navigation.navigateTo("home")}
   >Home</rapid-button>
+  <rapid-button
+    slot="routes"
+    value="1"
+    @click=${(x, c) => c.parent.navigation.navigateTo("profiles")}
+  >Profiles</rapid-button>
 </foundation-header>`;
 ```
 
-The `navigation` object referenced via the `parent` object is why the `navigation` object is added as an attribute to the `router` in the [setup step](#header-set-up). From it, the `navigateTo` method can be called, which allows the user to navigate around the finished application from the navigation buttons.
+The `navigation` object referenced via the `parent` object is why the `navigation` object is added as an attribute to the `router` in the [setup step](#header-set-up). From it, the [navigateTo](./docs/api/foundation-header.navigation.navigateto.md) method can be called, which allows the user to navigate around the finished application from the navigation buttons.
 
 Moving on from this basic example, a dynamic set of routes can be configured, using the `repeat` directive from `@genesislcap/web-core`.
 
-1. Add the routes configuration into an array in the router configuration class.
 
-```javascript
-export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
+Here is an example of a simple navigation bar with two navigation items. This header does not show additional control buttons but displays the default ones, allowing for showing submenus, the logged-in user's name, and the connection status.
 
-  // New configuration added to existing MainRouterConfig class
-  public allRoutes = [
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration:
+```html
+<foundation-header></foundation-header>
+```
+
+Usage:
+```typescript
+@customElement({
+  name: 'header-dynamic-routes-example',
+  template: html`
+    <foundation-header>
+      ${repeat(
+        (x) => x.allRoutes,
+        html`
+          <rapid-button
+            appearance="neutral-grey"
+            value="${(x) => x.index}"
+            @click=${(x, c) => c.parent.navigation.navigateTo(x.path)}
+          >
+            <rapid-icon variant="${(x) => x.variant}" name="${(x) => x.icon}"></rapid-icon>
+            ${(x) => x.title}
+          </rapid-button>
+        `
+      )}
+    </foundation-header>
+  `,
+})
+export class HeaderExample extends GenesisElement {
+  const allRoutes = [
     { index: 1, path: 'protected', title: 'Home', icon: 'home', variant: 'solid' },
     { index: 2, path: 'admin', title: 'Admin', icon: 'cog', variant: 'solid' },
     { index: 3, path: 'reporting', title: 'Reporting', variant: 'solid' },
   ];
-
-  ...
 }
 ```
 
-2. When setting the navigation items, use the `repeat` directive to iterate over the defined routes and create a navigation item for each one.
+</TabItem>
+<TabItem value="react">
 
-The following example creates a button with an associated logo for each of the three defined routes:
-
+Declaration:
 ```html
-<foundation-header>
-  <div slot="routes">
-    ${repeat(
-      (x) => x.config.allRoutes,
-      html`
+<foundation-header></foundation-header>
+```
+
+Usage:
+```typescript
+import React, { useRef, useEffect } from 'react';
+
+const allRoutes = [
+  { index: 0, path: '/home', variant: 'home', icon: 'home', title: 'Home' },
+  { index: 1, path: '/profiles', variant: 'profile', icon: 'user', title: 'Profiles' },
+  // Add more routes as needed
+];
+
+const FoundationHeader = () => {
+  const foundationHeaderRef = useRef(null);
+
+  const navigateTo = (path) => {
+    const foundationHeaderElement = foundationHeaderRef.current;
+    if (foundationHeaderElement && foundationHeaderElement.navigation) {
+      foundationHeaderElement.navigation.navigateTo(path);
+    }
+  };
+
+  return (
+    <foundation-header ref={foundationHeaderRef}>
+      {allRoutes.map((route) => (
+        <rapid-button
+          key={route.index}
+          appearance="neutral-grey"
+          value={route.index}
+          onClick={() => navigateTo(route.path)}
+        >
+          <rapid-icon variant={route.variant} name={route.icon}></rapid-icon>
+          {route.title}
+        </rapid-button>
+      ))}
+    </foundation-header>
+  );
+};
+
+export default FoundationHeader;
+```
+
+</TabItem>
+<TabItem value="angular">
+
+Declaration:
+```html
+<foundation-header></foundation-header>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+
+@Component({
+  selector: 'header-dynamic-routes-example',
+  template: `
+    <foundation-header #foundationHeader>
+      <ng-container *ngFor="let route of allRoutes">
         <rapid-button
           appearance="neutral-grey"
-          value="${(x) => x.index}"
-          @click=${(x, c) => c.parent.navigation.navigateTo(x.path)}
+          [value]="route.index"
+          (click)="navigateTo(route.path)"
         >
-          <rapid-icon variant="${(x) => x.variant}" name="${(x) => x.icon}"></rapid-icon>
-          ${(x) => x.title}
+          <rapid-icon [variant]="route.variant" [name]="route.icon"></rapid-icon>
+          {{ route.title }}
         </rapid-button>
-      `
-    )}
-  </div>
-</foundation-header>`;
+      </ng-container>
+    </foundation-header>
+  `,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+export class HeaderDynamicRoutesExampleComponent implements AfterViewInit {
+  @ViewChild('foundationHeader') foundationHeader: ElementRef;
+
+  allRoutes = [
+    { index: 0, path: '/home', variant: 'home', icon: 'home', title: 'Home' },
+    { index: 1, path: '/profiles', variant: 'profile', icon: 'user', title: 'Profiles' },
+    // Add more routes as needed
+  ];
+
+  ngAfterViewInit() {
+    // Access the foundation-header component after the view has been initialized
+  }
+
+  navigateTo(path: string) {
+    const foundationHeaderElement = this.foundationHeader.nativeElement;
+    foundationHeaderElement.navigation.navigateTo(path);
+  }
+}
 ```
+</TabItem>
+</Tabs>
+
+#### Preview:
+<DynamicRoutesHeaderExample />
 
 ### Control buttons
 
 There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (these are hidden by default). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined.
 
-| Logo          | Toggle Attribute             | Dispatched Event          |
-|---------------|------------------------------|---------------------------|
-| Moon          | show-luminance-toggle-button | luminance-icon-clicked    |
-| Misc          | show-misc-toggle-button      | misc-icon-clicked         |
-| Notifications | show-notification-button     | notification-icon-clicked |
+<table>
+  <thead>
+    <tr>
+      <th>Logo</th>
+      <th>Toggle Attribute</th>
+      <th>Dispatched Event</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Moon</td>
+      <td><code>show-luminance-toggle-button</code></td>
+      <td><code>luminance-icon-clicked</code></td>
+    </tr>
+    <tr>
+      <td>Misc</td>
+      <td><code>show-misc-toggle-button</code></td>
+      <td><code>misc-icon-clicked</code></td>
+    </tr>
+    <tr>
+      <td>Notifications</td>
+      <td><code>show-notification-button</code></td>
+      <td><code>notification-icon-clicked</code></td>
+    </tr>
+  </tbody>
+</table>
 
 Implementing the functionality of the buttons is up to the client. For example:
 

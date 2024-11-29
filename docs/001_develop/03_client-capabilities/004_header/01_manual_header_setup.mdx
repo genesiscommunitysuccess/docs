@@ -49,7 +49,7 @@ export class MainApplication extends GenesisElement {
 If you haven't used the `inject` annotation in your application yet, you'll need to get it from the `@genesislcap/web-core` package.
 :::
 
-3. Set a reference to the `navigation` object on the foundation-router when you instantiate it; this enables you to set up navigation functionality from the navigation bar in the [navigation items step](#navigation-items).
+3. Set a reference to the `navigation` object on the foundation-router when you instantiate it. This enables you to set up navigation functionality from the navigation bar in the [navigation items step](#navigation-items).
 
 ```javascript
 const MainTemplate: ViewTemplate<MainApplication> = html`
@@ -59,7 +59,7 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 
 4. Add the `foundation-header` tag as part of the html that you set as the markup for the `defaultLayout` in your router configuration.
 
-```javascript {3}
+```typescript {3}
 export const defaultLayout = new GenesisElementLayout(html`
 <div class="container">
   <!-- show-luminance-toggle-button boolean attribute added to show that button on the navigation bar -->

@@ -84,11 +84,11 @@ export class HeaderExampleComponent {}
 </TabItem>
 </Tabs>
 
-By default, the component uses the languageOptions object, which contains an availableLanguage array and a selectedLanguage property. These default options provide a list of available languages and the currently selected language.
+By default, the component uses the [languageOptions](./docs/api/foundation-header.languageoptions.md) object, which contains an ```availableLanguage``` array and a ```selectedLanguage``` property. These default options provide a list of available languages and the currently selected language.
 
 When the user selects a different language, the component emits a `language-changed` event. This event is triggered whenever the language is changed via the language selector.
 
-You can also pass custom language options by providing an attribute with this data. Here is an example of how to set up the foudnation-header component with the show-language-selector attribute and custom language options:
+You can also pass custom language options by providing an attribute with this data. Here is an example of how to set up the foudnation-header component with the [show-language-selector](./docs/api/foundation-header.navigation.showlanguageselector.md) attribute and custom language options:
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 

@@ -36,7 +36,6 @@ export default function PrimitiveHeaderExample() {
     routeName: "grids",
   }];
 
-
   return (
     <CodeSection>
       <foundation-header
