@@ -22,13 +22,13 @@ We shall also look briefly at:
 - the principles of routing and styling an application
 
 :::tip
-You can find out more by looking into our [**example application**](/web/integrations/React/react-example-application/), where you can look at the code and check the results against the running application.
+You can find out more by looking into our [**example application**](https://github.com/genesiscommunitysuccess/howto-ui-integrations-react/tree/main), where you can look at the code and check the results against the running application.
 :::
 
 ## Setting up the React project
 
 :::info prerequisites
-Before you start, ensure that you have [Node.js](https://nodejs.org/) and [Genx](https://learn.genesis.global/docs/getting-started/prerequisites/genx) installed on your system.
+Before you start, ensure that you have [Node.js](https://nodejs.org/) and [Genx](../../../development-environment/genx/) installed on your system.
 :::
 
 1. reate a new React project. The example below creates a project called **myApp** using Genx with `--framework React`:
@@ -66,12 +66,12 @@ The project is currently based on React 19, which is in the Release Candidate (R
 ## Project folder structure and main elements
 
 ### src/main.tsx
-This is the main entry point for the application. It bootstraps the app by rendering the **App.tsx** component into the DOM. The file also registers [PBCs](../../../../server/packaged-business-capabilities/pbc-intro/) using `registerPBCs`.
+This is the main entry point for the application. It bootstraps the app by rendering the **App.tsx** component into the DOM. The file also registers [PBCs](../../../business-components/) using `registerPBCs`.
 
 ---
 
 ### src/pbc
-This folder contains components that are responsible for enabling the insertion of slots within the application. These slots act as placeholders where content, provided by the registered Project Building Components ([PBCs](../../../../server/packaged-business-capabilities/pbc-intro/)), is dynamically rendered. The [PBCs](../../../../server/packaged-business-capabilities/pbc-intro/) are registered in the application through **main.tsx**, ensuring that specific components can be inserted into the designated slots at runtime.
+This folder contains components that are responsible for enabling the insertion of slots within the application. These slots act as placeholders where content, provided by the registered Project Building Components ([PBCs](../../../business-components/)), is dynamically rendered. The [PBCs](../../../business-components/) are registered in the application through **main.tsx**, ensuring that specific components can be inserted into the designated slots at runtime.
 
 ---
 

@@ -23,13 +23,13 @@ We shall also look briefly at:
 - the principles of routing and styling an application
 
 :::tip
-You can find out more by looking into our [**example application**](/web/integrations/Angular/angular-example-application/), where you can look at the code and check the results against the running application.
+You can find out more by looking into our [**example application**](https://github.com/genesiscommunitysuccess/howto-ui-integrations-angular/tree/main), where you can look at the code and check the results against the running application.
 :::
 
 ## Setting up the Angular project
 
 :::info prerequisites
-Before you start, ensure that you have [Node.js](https://nodejs.org/) and [Genx](https://learn.genesis.global/docs/getting-started/prerequisites/genx) installed on your system.
+Before you start, ensure that you have [Node.js](https://nodejs.org/) and [Genx](../../../development-environment/genx/) installed on your system.
 :::
 
 1. Create a new Angular project. The example below creates a project called **myApp** using Genx with `--framework Angular`:
@@ -67,14 +67,14 @@ The project is currently based on Angular 18.
 ## Project folder structure and main elements
 
 ### src/main.ts
-This is the main entry point for the application. It bootstraps the app by rendering the **app.module.ts** module into the DOM. The file also registers [PBCs](../../../../server/packaged-business-capabilities/pbc-intro/) using `registerPBCs`
+This is the main entry point for the application. It bootstraps the app by rendering the **app.module.ts** module into the DOM. The file also registers [PBCs](../../../business-components/) using `registerPBCs`
 
 ---
 
 ### src/pbc
 This folder contains components that are responsible for enabling the insertion of slots within the application.
 
-These slots act as placeholders where content, provided by the registered Project Building Components ([PBCs](../../../../server/packaged-business-capabilities/pbc-intro/)), is rendered dynamically. The [PBCs](../../../../server/packaged-business-capabilities/pbc-intro/) are registered in the application through **main.ts**, ensuring that specific components can be inserted into the designated slots at runtime.
+These slots act as placeholders where content, provided by the registered Project Building Components ([PBCs](../../../business-components/)), is rendered dynamically. The [PBCs](../../../business-components/) are registered in the application through **main.ts**, ensuring that specific components can be inserted into the designated slots at runtime.
 
 ---
 
