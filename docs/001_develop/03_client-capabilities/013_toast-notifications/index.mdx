@@ -33,6 +33,9 @@ Lets look at an example of one of the many notification components in this modul
 
 <ToastNotificationDemo />
 <br/>
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
  ```typescript
   import { showNotificationDialog } from '@genesislcap/foundation-notifications';
 
@@ -63,6 +66,73 @@ Lets look at an example of one of the many notification components in this modul
     }
   }
 ```
+</TabItem>
+<TabItem value="react">
+```typescript
+import { showNotificationDialog } from '@genesislcap/foundation-notifications';
+
+export function MyComponent() {
+  const showDialog = (event) => {
+    showNotificationDialog(
+      {
+        title: 'Important message',
+        body: 'Lorem ipsum',
+        dialog: {
+          confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+          dismissingAction: {
+            label: 'Dismiss',
+            action: () => console.log('Lorem ipsum'),
+          },
+        },
+      },
+      'rapid',
+    );
+  };
+
+  return (
+    <rapid-button onClick={showDialog}>Show Dialog</rapid-button>
+  );
+}
+```
+</TabItem>
+<TabItem value="angular">
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { showNotificationDialog } from '@genesislcap/foundation-notifications';
+
+@Component({
+  selector: 'my-root',
+  template: `
+    <rapid-button
+      (click)="showDialog($event)"
+    >Show Dialog</rapid-button>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [FormsModule],
+})
+export class AppComponent {
+  showDialog(event: Event) {
+    showNotificationDialog(
+      {
+        title: 'Important message',
+        body: 'Lorem ipsum',
+        dialog: {
+          confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+          dismissingAction: {
+            label: 'Dismiss',
+            action: () => console.log('Lorem ipsum'),
+          },
+        },
+      },
+      'rapid',
+    );
+  }
+}
+```
+</TabItem>
+</Tabs>
 
 
 ## Notification Components
