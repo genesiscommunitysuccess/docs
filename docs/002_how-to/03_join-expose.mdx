@@ -23,8 +23,8 @@ However, when you want to display data and provide it for reports, you want a vi
 
 A record on your trade table might include a client ID, but you would probably want to include the full client name in a display - so you create a *view* that joins one table to another.
 
-:::info Database normalisation
-Genesis follows the principles of [database normalisation](https://www.freecodecamp.org/news/database-normalization-1nf-2nf-3nf-table-examples/) (1nf, 2nf and 3nf) for organising data efficiently. These are designed to avoid unnecessary duplication and complexity. 
+:::info Database normalization
+Genesis follows the principles of [database normalization](https://www.freecodecamp.org/news/database-normalization-1nf-2nf-3nf-table-examples/) (1nf, 2nf and 3nf) for organizing data efficiently. These are designed to avoid unnecessary duplication and complexity. 
 :::
 
 ## Viewing the data
@@ -35,17 +35,17 @@ Now you need to make this view available so that the front end can retrieve and 
 You need to create a *requestReply* (if the information is static) or a *query* (if you want to stream data as it changes). This is a simple statement that makes the view you have created available as a source of data for the front end.
 
 ## In summary
-Databases store information in neat tables. But in many cases, you need to view information that is stored in two or more tables. For this, you create [views](/database/fields-tables-views/views/), which join together information in different tables.
+Databases store information in neat tables. But in many cases, you need to view information that is stored in two or more tables. For this, you create [views](/develop/server-capabilities/data-model/#views), which join together information in different tables.
 
-To make a view available as a data source for the front end, you must create a [request reply](/server/request-server/basics/) or a [query](/server/data-server/basics/) that identifies the view.
+To make a view available as a data source for the front end, you must create a [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) or a [Data Server](/develop/server-capabilities/real-time-queries-data-server/) query that uses the view.
 
 It is worth noting that a view does not itself contain any information - that is only contained in the tables in your database.
 
-You create all your views in your application's _app-name_**-view-dictionary.kts** file.
+You create all your views in your application's `*-view-dictionary.kts` file.
 
-You create all your _requestReplies_ in your application's _app-name_**-reqrep.kts** file.
+You create all your _requestReplies_ in your application's `*-reqrep.kts` file.
 
-You create all your _queries_ in your application's _app-name_**-dataserver.kts** file.
+You create all your _queries_ in your application's `*-dataserver.kts` file.
 
 ## Creating a simple view
 Here is an example of a simple  _app-name_**-view-dictionary.kts** file that defines one view. This view enables the app to present details of client trades, which include the details of the trade itself (from the TRADE table) and the client's details (from the CLIENT_DETAILS table).
@@ -73,7 +73,7 @@ views {
 
 ## Creating a simple Data Server query
 
-Here is an example of an application's application's _app-name_**-dataserver.kts** file. It contains one query that makes the view TRADE_CLIENT available as a data source to the front end. So, the front end can now display details of all the client trades.
+Here is an example of an application's application's `*-dataserver.kts` file. It contains one query that makes the view TRADE_CLIENT available as a data source to the front end. So, the front end can now display details of all the client trades.
 
 - The query has been given the name ALL_TRADE_CLIENTS. This is the name that the front end can call to retrieve the data from the two underlying tables.
 
@@ -87,9 +87,9 @@ This enables the created view to be visible to the front end (or through a Rest 
 
 ## Adding permissions to the Data Server query
 
-As the view is not accessible to the outside world, all authorisation must be done at the dataserver level (not shown here).
+As the view is not accessible to the outside world, all authorization must be done at the Data Server level (not shown here).
 
-You can also add [permissions](/how-to/ht-auth/) to each individual view, _requestReply_ and _query_ so that only authorised users have access to the information.
+You can also add [permissions](/how-to/ht-auth/) to each individual view, _requestReply_ and _query_ so that only authorized users have access to the information.
 
 Code to follow.
 
@@ -98,9 +98,3 @@ Code to follow.
 :::info
 Go to our [**Testing**](/how-to/ht-prepare-test/) page for details of our testing tools and the dependencies that you need to declare.
 :::
-
-To test your auth set-up on your app:
-
-- *Details to follow shortly. Thank you for your patience.*
-
-

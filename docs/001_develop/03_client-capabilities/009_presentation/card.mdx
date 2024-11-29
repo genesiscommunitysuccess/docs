@@ -1,0 +1,116 @@
+---
+title: 'Card'
+sidebar_label: 'Card'
+id: client-presentation-card
+keywords: [presentation, card]
+tags:
+- presentation
+- card
+sidebar_position: 9
+---
+
+import CardDemo from './examples/card.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Card
+
+Use cases:
+* Container for content
+* Present collections of related information
+* Grouping of content
+
+## Example
+
+<CardDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-card></rapid-card>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-card></rapid-card>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+    <rapid-card></rapid-card>
+  ```
+  Usage
+  ```typescript
+  export function MyComponent() {
+    return (
+      <rapid-card></rapid-card>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+    <rapid-card></rapid-card>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  @Component({
+    selector: 'my-root',
+    template: `
+          <rapid-card></rapid-card>
+        `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  })
+  export class AppComponent {
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+This component doesn't have any attributes.
+
+### Properties
+
+This component doesn't have any properties.
+
+### Slots
+
+| Name | Description |
+|---|---|
+| Default |The default slot for the card content |
+
+### Parts
+
+This component doesn't have any parts.
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.

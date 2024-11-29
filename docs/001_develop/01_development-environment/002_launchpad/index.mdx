@@ -280,31 +280,55 @@ Alternatively, you can click on `Download Project Locally` to download your proj
 This does involve some extra set-up, however.
 :::
 
+## Genesis Launchpad projects
+When you start the Launchpad, the main screen is divided into two.
+
+- In the upper area, you can either start a new project from scratch or you can select a pre-configured app from the list of [templates](#genesis-templates).
+- In the lower area, your current projects are listed. You can click on any of these and start working. It is possible to [add a Genesis project that was not set up using Genesis Create](#adding-a-project-to-current-projects).
+
+![genesis Launchpad projects](/img/genesis-launchpad/launchpad-projects.png)
+
+:::tip Migrating existing Genesis projects from the previous version of Launchpad
+If you created a project using an earlier version of Launchpad, it will not be listed in your Current Projects.
+
+Follow the process for [adding a project to Current Projects](#adding-a-project-to-current-projects) to add your project and start work.
+:::
+
+### Genesis Templates
+
+Genesis Templates are pre-configured Genesis Create Projects. You can immediately turn any of the projects listed into a Genesis Application that you can run and test.
+
+To view the list of available templates from Launchpad, click on 'New Project from Template'.
+
+![Current template projects](/img/genesis-launchpad/current-projects.png)
+
+You can click to open one of the templates in Genesis Create. 
+
+:::info
+If you already have a project running in Genesis Create, then you will be prompted to overwrite the current project - so make sure that you have saved any changes that you want to keep.
+
+![Template overwrite prompt](/img/genesis-launchpad/template-overwrite-prompt.png)
+:::
+
+Once the template is open, you can inspect the project, make changes to the pre-configured details, or you can build and run immediately.
+
 ## Genesis Cloud Workspace
 
-When you click on `Open in Genesis Cloud Workspace` in GenesisCreate, your code is generated automatically and placed in a zip file.
-VSCode opens in the Cloud Workspace.
+When you click on `Save to Genesis Workspace` and `View in Launchpad` in Genesis Create, your code is generated automatically and stored as a project.
+The project you are working on then opens in Launchpad.
 
-### Unpacking and building the project
-1.	Go to the menu icon at the top left of VSCode and select `File -> View -> Command Palette`. 
- 
-     ![Displaying the command palette](/img/genesis-launchpad/command-palette.png)
+### Building the project
+1.	Click on the code icon for the project you created.
 
-This displays a dropdown of commands in the top bar of VSCode.
+     ![Current user projects](/img/genesis-launchpad/current-projects.png)
 
-2.	Select the command `Genesis:Unpack Project`. 
+This will open the project in VSCode.
 
-     ![Unpacking the project](/img/genesis-launchpad/unpack-project.png)
-
-After a moment, this displays a list of projects, and yours should be on top. The filename is the app name you specified at the beginning, plus a date and time stamp.
-
-3.	Click on the project to open it.
-
-4.	When the project is open, click on the top bar of VSCode again. Select `Show and Run Commands` from the drop-down again. 
+2.	When the project is open, click on the top bar of VSCode. Select `Show and Run Commands` from the drop-down.
 
     ![Show and Run commands](/img/genesis-launchpad/show-run-commands.png)
 
- 5. Type `Gen` in the top bar to display a list of genesis commands. Select `Genesis Build Project`.
+ 3. Type `Gen` in the top bar to display a list of Genesis commands. Select `Genesis Build Project`.
  
     ![SGenesis Build Project](/img/genesis-launchpad/genesis-build-project.png)
     
@@ -373,6 +397,25 @@ When all the services are `UP`, you are ready to start the front end and view yo
 Then you can look through your app and interact with the different displays you have created.
 
 ![Interact with your app](/img/genesis-launchpad/interact.png)
+
+### Deleting a project
+If you want to delete your project, go to the list of your current projects and click on the delete icon.
+
+![Deleting Project](/img/genesis-launchpad/delete-project.png)
+
+### Adding a project to Current Projects
+
+If you have created a project outside Genesis Create, it does not automatically appear in your current projects in Launchpad. To add a project:
+
+1. Press `F1` to activate the command bar at the top of VSCode.
+
+2. Search for `genesis: sync`.
+
+3. Run `Genesis: Sync projects to launchpad`.
+
+4. Click on 'View on launchpad'.
+
+    This synchronizes your Genesis projects with Launchpad. If prompted, click `Open` to confirm that you want to open on an external website. This displays your project in the Current Projects.
  
 ### Looking at and changing the code
 When you are ready to look deep into the code and make the refinements and extensions you need, go back to VSCode.
@@ -436,12 +479,13 @@ Then as soon as you start to type Genesis, the available commands are displayed 
 | `Create project zip`  | Writes the workspace contents to project-zips.  See below. |
 | `Delete database`     | Clears the local H2 database (all applications). This erases the data and schema; **use with caution - these cannot be recovered. Use this only to exit from an unrecoverable state |
 | `Generate configs`    | Creates a configuration under the `.vscode/settings.json in the `.vscode/launch.json` folder. The content there is auto-generated and must not be modified, as it will be overwritten if the command is re-run. |
-| `Generate tasks`      | Generates all the required build tasks. This command is automatically triggered when you unpack the project. Leter on, it is used by `Build project`. It creates a list of build tasks that are required to compile and build the application. Use this when you need to regenerate `.vscode/tasks.json`. |
-| `Stop processes`      | Kills all running Genesis processes on the JVM or server and the WebUi. Use this command when processes are unresponsive. |
-| `Unpack project`      | Unpacks an available project generated in Genesis Create, and makes it active in the workspace. |
+| `Generate tasks`      | Generates all the required build tasks. This command is automatically triggered when you unpack the project. Later on, it is used by `Build project`. It creates a list of build tasks that are required to compile and build the application. Use this when you need to regenerate `.vscode/tasks.json`. |
+| `Stop processes`      | Kills all running Genesis processes on the JVM or server and the Web UI. Use this command when processes are unresponsive. |
+| `Sync projects to launchpad`| Enables you to add a Genesis Create project that was created outside Genesis Create (or an existing project created on an older version of Genesis Create) to your list of Current Projects. |
+| `Unpack project`      | This command is no longer necessary, and has been deprecated. See the [Troubleshooting](#troubleshooting) section.        |
 
-### Building a project
-Running `Genesis: Build project `builds (compiles) all components for the app and triggers `Generate Configs` (see above).
+### Using Genesis: Build project
+Running `Genesis: Build project` builds (compiles) all components for the app and triggers `Generate Configs` (see above).
 
 You can right-click on the file generated and download it to your local machine to open and run the project there. 
 
@@ -493,7 +537,7 @@ This displays the tasks for you to select.
 | `Genesis ConsolidateRights` | Runs script to update access permissions.                                         |
 | `Genesis Create project zip` | Generates a zip file containing the project contents for download.               |
 | `Genesis Remap`         | Runs a script to update the database schema and load data.                            |
-| `Genesis Sync`          | Synchronises configuration between the folder and the deployment of the application, this task runs before launching any java server app. |
+| `Genesis Sync`          | Synchronizes configuration between the folder and the deployment of the application, this task runs before launching any java server app. |
 | `Genesis Unit tests`    | Runs server-side unit test.                                                           |
 
 ## Code snippets
@@ -503,3 +547,96 @@ To insert a snippet into one of your `.kts` files, there are two easy methods:
 
 - Go to the command bar and use `Insert snippet`. 
 - While editing a `.kts` file, type the prefix `gg` to find the snippet to insert. 
+
+## Troubleshooting
+
+### Help, my processes keep dying!
+
+Processes are killed when VSCode detects that the user has left the workspace. This is native to VSCode. Refreshing the page is considered to be leaving the workspace and all processes will be killed.
+
+### Can I use multiple browser tabs and have multiple projects open at the same time?
+
+**It is highly recommended not to do this**. A single workspace is shared amongst different sessions. Code server supports that, but due the nature of Genesis Applications and their resource usage, you will soon notice that processes will start clashing for resources (for example ports). Additionally, workspaces are sized to be able to run only a single stack of Genesis Applications.
+
+### I want to bring my project from GitHub, how can I do that?
+
+Use the command: `Git: clone`. Follow the prompts for authentication and the repos you have access to will be selected.
+
+:::tip
+If you have multiple projects in a single repo (mono-repo structure), after cloning use the command `File: Open folder` and only open the sub-folder that contains your project.
+:::
+
+### I’ve brought my own project and the web-ui doesn’t seem to connect
+
+For projects using Genesis Web Components:
+
+- You are likely to have set `API_HOST` in the `client/package.json`; unset this value, as it will use the environment variable supplied by the workspace.
+- Remove `-e API_HOST` from the `dev` script.
+
+For Angular-based projects:
+
+- Add the following arguments in the `dev` script in `client/package.json`: `--port 6060 --disable-host-check --serve-path $PUBLIC_PATH`.
+- Set `<base href>` on `index.html` to the same value of the workspace `$PUBLIC_PATH` environment variable.
+- Set `API_HOST` on `environments/environment.ts` to the same value of the workspace `$API_HOST` environment variable.
+
+:::tip
+Use the integrated terminal to obtain the value of environment variables, for example: `echo $PUBLIC_PATH`.
+:::
+
+### Re-Launching your workspace and opening a previous project
+
+- You don’t need to unpack your project.
+- Click on `File → Open Folder: Select the project {timestamp based folder}` and then the subfolder under it (which is the project name).
+
+### What are Ports and which ones must I have?
+
+When you start an application, VSCode should identify at least ports `3000` and `9064` and add it to the `PORTS` tab. This enables you to launch the UI. 
+
+If you have not seen this pop-up or the port has not been added automatically, you can add it manually. Click on the `PORTS` tab, select `Add Port` and then right-click the URL and `Launch in Browser` - or use the launch icon next to the forwarded address.
+
+### My browser claims pop-ups are blocked! What should I do?
+
+Make sure pop-ups are not blocked.
+
+![Unblocking pop-ups](/img/genesis-launchpad/unblock-popup.png) 
+ 
+### I can’t find logs! Where are they?
+
+Logs are streamed per process and available in the standard output. You can find this from the window on the right-hand side. Just find your process from ‘Debug: GenesisProcessBootstrap’. Note you can rename these tasks by right clicking.
+
+Logs are saved in a file under `server/app/genesis-home/runtime/logs`. You can open these directly via the project structure, or using the `Genesis Process View`.
+
+### How do I debug processes?
+
+All processes start in debug mode by default and any breakpoint in java code shall be hit.
+
+Kotlin is not fully supported by VS Code and the language server is currently disabled.
+
+### Intellisense (auto-complete/error diagnosis) is not working properly or not working at all! What can I can do?
+
+The Kotlin support for VSCode is provided by community efforts and it is in its early stages of stability and maturity. The Genesis team continues to contribute and monitor progress on this area in order to keep improving our users’ experience. If you have any of these issues:
+
+- no linting/diagnostics being reported at all
+- not finding tables/properties that have been added recently
+- slow/sluggish workspace because of multiple instances of the language server in execution at the same time
+
+Try these actions:
+
+- Ensure you have completed a full build of your project using `Genesis: Build project`.
+- Close and reopen the `kts` / `kt` files that are potentially open when your session was started.
+- Use the command `Developer: Reload window`.
+- Use the command `Genesis: Restart all extensions`.
+- Clean the H2 local databases using the action: `Genesis: Delete database`.
+    
+:::caution Using `Genesis: Delete database`
+This action also clears your application’s data.
+:::
+
+If you prefer not to have any intellisense support, you can disable the Language Server by editing `.vscode/settings.json` and changing the value of `kotlin.languageServer.enabled` to `false`. 
+
+:::info
+This property value will change back to true if you then execute `Genesis: Generate configs`.
+:::
+
+### Why has `Unpack project` been deprecated?
+This is deprecated is no longer necessary and has disabled by default. It can be enabled via settings, if you need it. Contact Genesis Support.

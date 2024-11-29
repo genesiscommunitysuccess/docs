@@ -1,0 +1,186 @@
+---
+title: 'Plugins'
+sidebar_label: 'Plugins'
+id: bdo-build-tools
+keywords: [project, plugins]
+tags:
+- project
+- plugins
+sidebar_position: 6
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+## Genesis Gradle Settings Plugin
+
+The Genesis Gradle Settings plugin provides the following benefits:
+
+- Centralised Genesis project configuration.
+- Massive reduction in the number of lines of code in your Gradle files.
+- Consistent configuration. For example, you won't need to remember to add a dictionary dependency - the Settings plugin will add it for you.
+- Simplified development experience with the IntelliJ plugin.
+
+This section explores the features of the Settings plugin for both structures.
+
+### How to enable?
+
+All modern projects should have this enabled bty default. 
+
+To manually enable, add the following to your "server" project's `settings.gradle.kts` file.
+
+```kotlin
+pluginManagement {
+    val genesisVersion: String by settings
+
+    plugins {
+        id("global.genesis.settings") version genesisVersion
+    }
+}
+
+plugins {
+    id("global.genesis.settings")
+}
+```
+
+### Common configuration
+
+Once the Settings plugin has been applied, the `genesis` extension will be available in your project's `settings.gradle.kts` file.
+
+```kotlin
+genesis {
+}
+```
+
+There are a few common configuration options, they are listed below:
+
+#### `projectType`
+
+There are two project types: 
+
+- APPLICATION is the default, and should be used at all other times.
+- PBC (Packaged Business Capability). Set this when the project contains reusable code and functionality that will be imported by other projects.
+
+The differences between the two are:
+
+- When the project type is APPLICATION, a site-specific distribution is created in addition to the project's one.
+- When the project type is PBC, by default, the project's dictionary cache sub-modules have publishing tasks disabled. If you want to enable publishing, then disable the `genesisPublicationDisabler` plugin (see [here](#plugins) for details). Projects with type APPLICATION will have publishing enabled for these modules.
+
+```kotlin
+genesis {
+    projectType = APPLICATION
+}
+```
+
+#### `productName`
+
+By default, the product name is taken from the server Gradle project's rootProject name in the **settings.gradle.kts** file. You can use this property to specify a custom project name. 
+
+Example usage:
+```kotlin
+genesis {
+    productName = "position"
+}
+```
+
+#### `mainModuleName`
+
+By default, the main module is identified by a module ending with `-app`
+
+You can also set a custom name for your main module with the property `mainModuleName`. For example, this sets the main module name to "position-core":
+
+```kotlin
+genesis {
+    mainModuleName = "position-core"
+    productName = "position"
+}
+```
+
+When using this property, the [productName](#product-name) property must also be specified.
+
+#### `dependencies`
+
+Here you should declare any dependencies on other Genesis products; this enables the Settings plugin to take care of where they should be added automatically. 
+
+Fo all the dependencies that you declare, the Settings plugin will:
+- import the product's dictionary, so that the tables and views are available within your project
+- capture runtime details of the product's processes, making them available to run through the Intellij plugin
+- register GPAL script definitions, to help Intellij recognize these files correctly
+
+The syntax is similar to Gradle dependencies - but not exactly the same. Specifically, you specify the group id, product name and version: `"{groupId}:{productName}:{version}"`
+
+Here is an example of adding a dependency on Auth and Genesis Notify:
+
+```kotlin
+genesis {
+    dependencies {
+        dependency("global.genesis:auth:${extra.properties["authVersion"]}")
+        dependency("global.genesis:genesis-notify:${extra.properties["notifyVersion"]}")
+    }
+}
+```
+
+#### `plugins`
+
+Other Gradle plugins that are necessary for your project are automatically added by the Settings plugin. Below you can see the plugins that are added. These plugins can also be disabled if needed.
+
+
+| Plugin Name | Plugin ID | Description | Enabled by default |
+| --- | --- | --- | --- |
+| Kotlin | org.jetbrains.kotlin.jvm | Kotlin Gradle plugin | Yes |
+| Genesis Build | global.genesis.build | Core Genesis plugin to enable build tasks, including code generation | Yes |
+| Genesis Distribution | global.genesis.distribution | Creates the project's server distribution zip file. presently, this is based on the default configuration within the plugin. If you want to customize your distribution then you will need to disable this plugin and create your own configuration using the Gradle distribution plugin. In the future we will support customization from this plugin directly. | Yes |
+| Genesis Site Specific Distribution | global.genesis.site-specific.distribution | Creates the site-specific distribution zip file. Presently, this is based on the default configuration within the plugin, the same as the Genesis Distribution plugin. | Yes, if project type is APPLICATION |
+| Genesis Publication Disabler | global.genesis.publication-disabler | Used to disable dictionary-cache sub-module publishing tasks if the project is of type PBC | Yes, if project type is PBC |
+| Genesis Exec | global.genesis.exec | Creates Gradle tasks used by the Genesis IntelliJ plugin | Yes |
+| Genesis Deploy | global.genesis.deploy | Creates deployment gradle tasks (Note: not required if using Genesis IntelliJ plugin for local development) | No |
+
+
+Here is an example of disabling the Genesis Deploy plugin:
+
+```kotlin
+genesis {
+    plugins {
+        genesisDeploy.enabled = false
+    }
+}
+```
+
+#### Other features
+
+The Settings plugin also provides some helper functions to make it simpler to add Genesis dependencies to your project.
+
+##### Dependency on generated code
+
+To add a dependency on your project's generated code in one of your project's modules, include the following in the module's **build.gradle.kts** file:
+
+```kotlin
+dependencies {
+    genesisGeneratedCode(withTestDependency = true)
+}
+```
+
+The parameter `withTestDependency` is an optional parameter; it adds your generated code as a test dependency. It defaults to false.
+
+For example, if your project is named "position", this is equivalent to:
+
+```kotlin
+compileOnly(project(path = ":position-dictionary-cache", configuration = "codeGen"))
+testImplementation(project(path = ":position-dictionary-cache", configuration = "codeGen"))
+```
+
+##### Genesis dependency
+
+The Settings plugin automatically adds a Gradle platform dependency on the Genesis BOM and has some syntax sugar for adding dependencies on other Genesis modules. 
+For example, if you want to add a dependency on genesis-eventhandler in a module’s **build.gradle.kts** file, include the following:
+
+```kotlin
+dependencies {
+    dependency(genesis("eventhandler"))
+}
+```
+
+##### Gradle Configuration Cache
+
+Genesis Gradle plugins are compatible with the [Gradle configuration cache](https://docs.gradle.org/current/userguide/configuration_cache.html), which is enabled by default in the new project seed. This can greatly improve build times.

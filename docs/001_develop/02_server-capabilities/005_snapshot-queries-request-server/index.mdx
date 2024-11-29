@@ -114,6 +114,15 @@ A Request Server file consists of a number of queries onto a table or view. All 
 
 ## Configuration options
 
+All `requestReply` blocks should be added under the parent block `requestReplies`
+
+```kotlin
+requestReplies {
+
+  requestReply(...
+  
+}
+
 ### `requestReply`
 
 `requestReply` defines a new request server query. It takes a `name` (optional) and an `entity` (table or view)
@@ -185,7 +194,7 @@ In the example below, `withTransformation` is used twice.
 * If the `ALTERNATE_TYPE` parameter value is null, then the Request Server will use `"UNKNOWN"` by default.
 * If the `ALTERNATE_TYPE` parameter has the value "RIC", then the transformation block will use the value of `INSTRUMENT_CODE` from the request. Otherwise, it will assign it the value "NOT_RIC" before making the database lookup. 
 
-```kotlin{5-16}
+```kotlin {5-16}
 requestReplies {
     requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
 

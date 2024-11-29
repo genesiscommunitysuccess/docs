@@ -9,7 +9,11 @@ tags:
 ---
 
 ## Manual installation
-> :warning: **This section assumes you have not used GenX to add the Reporting component.** You should only add components manually if your project is on an older framework version that does not support [GenX Add](../reporting-installation).
+:::info
+**This section assumes you have not used Genesis Create or GenX to add the Reporting component.** 
+
+You should only add components manually if your project is on an older framework version that does not support [GenX Add](../reporting-installation).
+:::
 
 To add Reporting to your app manually, follow these steps:
 
@@ -32,29 +36,33 @@ genesis {
 }
 ```
 
-## Enabling Data Server queries for Reporting
+## Enabling resources for Reporting
 
-The Reporting Server uses Data Server queries defined in the system as sources of data for report generation. However, not all sources are available by default - in case they contain sensitive information. In order to make a query available as a source of data for a report, you must make an entry in the `REPORT_DATASOURCES` table.
+The data sources for generating reports are the resources you have specified in your [Data Server](/server/data-server/basics/) and [Request Server](/server/request-server/basics/). However, these resources are not available by default (in case they contain sensitive information). 
 
-In most cases, you will have already set up queries in your [Data Server](../../../server/data-server/basics/) to provide the data, but you can add new sources by creating new queries in your _application_**-dataserver.kts**.
+To make a resource available as a source of data for a report, add the resource name to the `REPORTING_DATASOURCE_LIST` system definition in the file **reporting-system-definition.kts**.
 
-For example, to make two Data Server queries available to the reporting server
+:::info 
+This system definition is added automatically if you created your project in Genesis Create or if the queries were provided when installing via GenX.
+:::
 
-1. Create a csv file called **REPORT_DATASOURCES.csv** with the following content:
-```csv
-DATASOURCE_NAME,DATASOURCE_TYPE
-ALL_TRADES,DATASERVER
-ALL_POSITIONS,DATASERVER
+Here is an example `REPORTING_DATASOURCE_LIST` from a **reporting-system-definition.kts** file. It makes two Data Server queries available to the Reporting Server:
+
+```kotlin
+item("REPORTING_DATASOURCE_LIST", listOf("ALL_TRADES", "ALL_POSITIONS"))
 ```
-
-2. Use `SendIt` to send the file to the database:
-```bash
-SendIt -t REPORT_DATASOURCES.csv
-```
-
-The Report Server adds the following metadata services:
+As well as the resources that you define, the Reporting Server also adds the following metadata services:
 
 - ALL_SAVED_REPORTS (Data Server)
 - SAVED_REPORTS (Request Response)
 - ALL_REPORT_DATASOURCES (Request Response)
 
+`ALL_REPORT_DATASOURCES` will then display the queries described in the `REPORTING_DATASOURCE_LIST` system definition configured above.
+
+:::tip
+In most cases, you will have already set up queries in your [Data Server](/server/data-server/basics/) or [Request Server](/server/request-server/basics/) to provide the data, but you can add new sources by creating new queries in your _application_**-dataserver.kts** or requestReplies in your _application_**-reqrep.kts**.
+:::
+
+:::info
+If the file **reporting-system-definition.kts** does not exist, create it in the **genesis/cfg** directory in the same format as your _application_**-system-definition.kts** and add the system definition using the "REPORTING_DATASOURCE_LIST" format as described.
+:::

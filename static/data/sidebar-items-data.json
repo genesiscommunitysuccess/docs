@@ -76,6 +76,14 @@
         "description": "Integrations description"
       },
       {
+        "href": "/develop/server-capabilities/communications-meta/",
+        "description": "Communications description"
+      },
+      {
+        "href": "/develop/server-capabilities/testing-api/",
+        "description": "Testing API description"
+      },
+      {
         "href": "/develop/server-capabilities/runtime-configuration/",
         "description": "Runtime Configuration description"
       }
@@ -86,11 +94,13 @@
     "items": [
       {
         "href": "/develop/client-capabilities/server-communications/",
-        "description": "Server Communications description"
+        "description": "Server Communications description",
+        "imageUrl": "/svg/categories-icons/set-up-svgrepo-com.svg"
       },
       {
         "href": "/develop/client-capabilities/login/",
-        "description": "Login description"
+        "description": "Login description",
+        "imageUrl": "/svg/categories-icons/user-svgrepo-com.svg"
       },
       {
         "href": "/develop/client-capabilities/header/",
@@ -98,23 +108,29 @@
       },
       {
         "href": "/develop/client-capabilities/grids/",
-        "description": "Grids description"
+        "description": "Grids description",
+        "imageUrl": "/svg/categories-icons/insert-table-svgrepo-com.svg"
       },
       {
         "href": "/develop/client-capabilities/charts/",
-        "description": "Charts description"
+        "description": "Charts description",
+        "imageUrl": "/svg/categories-icons/pie-chart-svgrepo-com.svg"
       },
       {
         "href": "/develop/client-capabilities/forms/",
-        "description": "Forms description"
+        "storyBookHref": "/storybook/forms",
+        "description": "Forms description",
+        "imageUrl": "/svg/categories-icons/copy-svgrepo-com.svg"
       },
       {
         "href": "/develop/client-capabilities/interaction/",
-        "description": "Interaction description"
+        "description": "Interaction description",
+        "imageUrl": "/svg/categories-icons/creativity-svgrepo-com.svg"
       },
       {
         "href": "/develop/client-capabilities/presentation/",
-        "description": "Presentation description"
+        "description": "Presentation description",
+        "imageUrl": "/svg/categories-icons/photo-svgrepo-com.svg"
       },
       {
         "href": "/develop/client-capabilities/filters/",
@@ -122,15 +138,19 @@
       },
       {
         "href": "/develop/client-capabilities/criteria/",
-        "description": "Criteria description"
+        "description": "Criteria description",
+        "imageUrl": "/svg/categories-icons/look-up-svgrepo-com.svg"
       },
       {
         "href": "/develop/client-capabilities/toast-notifications/",
-        "description": "Toast Notifications description"
+        "description": "Toast Notifications description",
+        "imageUrl": "/svg/categories-icons/mail-svgrepo-com.svg"
+        
       },
       {
         "href": "/develop/client-capabilities/utility-methods/",
-        "description": "Utility methods description"
+        "description": "Utility methods description",
+        "imageUrl": "/svg/categories-icons/accelerate-svgrepo-com.svg"
       },
       {
         "href": "/develop/client-capabilities/layout-management/",
@@ -138,7 +158,8 @@
       },
       {
         "href": "/develop/client-capabilities/storage/",
-        "description": "Storage description"
+        "description": "Storage description",
+        "imageUrl": "/svg/categories-icons/upload-svgrepo-com.svg"
       },
       {
         "href": "/develop/client-capabilities/state-management/",
@@ -150,15 +171,18 @@
       },
       {
         "href": "/develop/client-capabilities/styling/",
-        "description": "Styling description"
+        "description": "Styling description",
+        "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg"
       },
       {
         "href": "/develop/client-capabilities/internationalization/",
-        "description": "Internationalization description"
+        "description": "Internationalization description",
+        "imageUrl": "/svg/categories-icons/network-svgrepo-com.svg"
       },
       {
         "href": "/develop/client-capabilities/framework-integration/",
-        "description": "Framework Integration description"
+        "description": "Framework Integration description",
+        "imageUrl": "/svg/categories-icons/thumbs-up-svgrepo-com.svg"
       },
       {
         "href": "/develop/client-capabilities/desktop-interoperability/",
@@ -166,7 +190,8 @@
       },
       {
         "href": "/develop/client-capabilities/custom-components/",
-        "description": "Custom Components description"
+        "description": "Custom Components description",
+        "imageUrl": "/svg/categories-icons/trophy-svgrepo-com.svg"
       }
     ]
   },

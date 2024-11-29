@@ -2,17 +2,19 @@ import React, { useState } from "react";
 
 export function CodeSection({ children, color }) {
 	return (
-		<div
-			style={{
-				backgroundColor: '#292d3e',
-				borderRadius: '6px',
-				padding: '10px',
-				alignItems: 'center',
-				display: 'flex'
-			}}
-		>
-			{children}
-		</div>
+		<rapid-design-system-provider>
+			<div
+				style={{
+					backgroundColor: '#292d3e',
+					borderRadius: '6px',
+					padding: '10px',
+					alignItems: 'center',
+					display: 'flex'
+				}}
+			>
+				{children}
+			</div>
+		</rapid-design-system-provider>
 	);
 }
 
