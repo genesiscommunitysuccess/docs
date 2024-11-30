@@ -14,14 +14,16 @@ export default function Card({ heading, text, link, imageUrl = '/svg/categories-
 
   return (
     <a href={link} title={heading} className="card-outer">
-      <div className="card-inner">
+      <div className="card-inner" style={{overflow: 'hidden'}}>
         <div
           className="card-main-image-wrapper"
           style={wrapperStyle}
           onClick={children ? handleChildClick : undefined}
         >
           {children ? (
-						children
+						<div style={{overflow: 'hidden'}}>
+						{children}
+						</div>
           ) : (
             imageUrl && (
               <img
