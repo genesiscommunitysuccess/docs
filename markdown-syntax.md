@@ -49,7 +49,7 @@ Strikethrough uses two tildes. ~~Scratch this.~~
 
 ## Links
 
-Link to another documentation page: [Platform](/getting-started/platform/)
+Link to another documentation page: [Platform](/develop/platform-overview/)
 
 External link: [Google](https://www.google.com/)
 

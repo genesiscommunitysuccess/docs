@@ -245,9 +245,9 @@ The methods available for each of the field types can be found in their Javadoc 
 ## Streaming data
 The [Data Server](/develop/server-capabilities/real-time-queries-data-server/) is your source of streaming data. It provides a set of queries, each of which serves some or all fields from a specific table or view. These are your resources (along with the resources in the Request Server and the Event Handler). You need to know which queries are available to you, and more importantly, exactly what is available in each query.
 
-When you request streaming data for an element, such as a [Grid Pro](/web/web-components/grids/grid-pro/grid-pro-connected/#grid-pro-genesis-datasource), the platform sends a **DATA_LOGON** message that includes any attributes you have defined for the element (such as `max-rows` and `max-view`). These attributes enable you to limit the number of rows returned, for example. 
+When you request streaming data for an element, such as a [Grid Pro](/develop/client-capabilities/grids/grid-pro/#genesis-datasource), the platform sends a **DATA_LOGON** message that includes any attributes you have defined for the element (such as `max-rows` and `max-view`). These attributes enable you to limit the number of rows returned, for example. 
 
-The platform creates the **DATA_LOGON** message automatically; you can view the details in our section on the [Data Server](/server/data-server/advanced/#incoming-data_logon-messages).
+The platform creates the **DATA_LOGON** message automatically; you can view the details in our section on the [Data Server](/develop/server-capabilities/real-time-queries-data-server/#criteria_match).
  
 You can apply filtering at the front end to control the data returned by the Data Server query. These filters are also automatically included in the **DATA_LOGON** message. 
 

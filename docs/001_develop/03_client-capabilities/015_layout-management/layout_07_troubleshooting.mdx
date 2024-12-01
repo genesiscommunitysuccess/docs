@@ -228,7 +228,7 @@ To work around this, you would use directives inside custom web components insid
 
 
 ### New layout item not displaying
-Say you have the following layout, [the simple example](#simple-example), with autosave enabled.
+Say you have the following layout, [the simple example](/develop/client-capabilities/layout-management/foundation-layout/#simple-example), with autosave enabled.
 ```html
 <rapid-layout auto-save-key="simple-example">
   <rapid-layout-region type="horizontal">
@@ -260,7 +260,7 @@ The user of your layout will move things around and this will cache the layout. 
 ```
 
 You and the user will still only see the first two items. This is because the cached layout is being loaded, which does not contain the
-new item. To fix this, you must [invalidate the cache](#invalidating-the-cache).
+new item. To fix this, you must [invalidate the cache](/develop/client-capabilities/layout-management/foundation-layout/#invalidating-the-cache).
 
 ### Resource-intensive component resetting in layout
 
@@ -391,7 +391,7 @@ The same limitation applies if you're checking the variable multiple times becau
 ## Supplementary information
 
 ### Custom components to handle bindings and event listeners
-As shown in [this example](#binding-events-inline-in-the-declarative-api), you need to wrap html that uses fast bindings and event listeners into their own custom
+As shown in [this example](/develop/client-capabilities/layout-management/foundation-layout/#binding-events-inline-in-the-declarative-api), you need to wrap html that uses fast bindings and event listeners into their own custom
 components. This section is a technical explanation for why this is necessary. It is required that we make use of `cloneNode` to allow the layout to add multiple instances
 of a registered component.
 

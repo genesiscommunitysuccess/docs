@@ -720,7 +720,7 @@ If you wish to run a dedicated process for a request server, the following gives
 
 **GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
 
-If you are testing against a previous version of the framework, go to the [legacy](/develop/server-capabilities/testing/#integration-testing) section.
+If you are testing against a previous version of the framework, go to the [legacy](/develop/server-capabilities/testing-api/#integration-testing) section.
 
 :::
 
@@ -787,7 +787,7 @@ This test class does three things:
 * It enables **GenesisJunit**.
 * It identifies the Request Server script that we want to test, using the `ScriptFile` annotation.
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing/#integration-testing).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
 
 ###### 3. Inject references
 
@@ -1102,7 +1102,7 @@ class ReqRepTests : AbstractGenesisTestSupport<Reply<*>>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing-api/#abstractgenesistestsupport).
 
 Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](#custom-request-servers).
 

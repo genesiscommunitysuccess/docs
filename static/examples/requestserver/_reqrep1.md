@@ -1,4 +1,4 @@
-<!--Below is an example of a **reqrep.kts** file where the single `requestReply` code block includes a `where` clause. You can find out more about `where` clauses on the [Basics](../../../server/request-server/basics/#where-block) page. -->
+<!--Below is an example of a **reqrep.kts** file where the single `requestReply` code block includes a `where` clause. You can find out more about `where` clauses on the [Basics](/develop/server-capabilities/snapshot-queries-request-server/#where-block) page. -->
 
 ```kotlin
 requestReplies {
