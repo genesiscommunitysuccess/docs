@@ -23,11 +23,11 @@ import CommonFieldOverrides from '/snippet/_common-field-overrides.md'
 **Streamers** provide reliable data streams to [streamer clients](/develop/server-capabilities/integrations/streamer-apis/streamer-client) based on a database table or view. These data streams are reliable as they are driven by an underlying unique, sequenced and monotonically increasing field found in the table or view itself.
 
 The core streamer behaviour is the following:
-- Streamer receives a **logon** message from a **streamer client** with or without a specific sequence, for a specific streamer definition.
-- The streamer now will act differently depending on whether it received a sequence or not.
-    - If no sequence has been received, the streamer will mark the streamer client connection as up to date.
-    - If a sequence has been received, the streamer will use it to read a batch of records (see batchSize TODO) from the database using the defined table index. These records will be sent to the streamer client with an additional flag indicating whether there is more data available in the table or not.
-        - If more data is available, the streamer client will request the next batch of data.
+- Streamer receives a **logon** message from a **streamer client** with or without a specific sequence number, for a specific streamer definition.
+- The streamer will act differently depending on whether it received a sequence number or not.
+    - If no sequence number has been received, the streamer will mark the streamer client connection as up to date.
+    - If a sequence number has been received, the streamer will use it to read a batch of records (see [`batchSize`](#batchsize)) from the database using the defined table index. These records will be sent to the streamer client with an additional flag indicating whether there is more data available in the table or not.
+        - If more data is available, the streamer client will request the next batch of data once the message is processed. This repeats the steps explained in the previous point, albeit no sequence number is needed, as the streamer knows how to read the next batch of records based on the previous batch.
         - If no more data is available, the streamer marks the streamer client connection as up to date.
     - Once the connection is marked as up to date, the streamer starts streaming real-time updates for any new **inserted** records belonging to the target table/view. **Important** only insert updates are eligible for streamers, as we assume the underlying table represents a sequence of messages or record changes that work in an "append-only" fashion.
     - The data can be transformed and filtered before being passed on to the **streamer client**.
@@ -36,7 +36,7 @@ The core streamer behaviour is the following:
 Streamers can only work as intended by using a numeric field in the underlying table. This field must represent a numeric sequence (perhaps defined as an auto increment field) and be both unique and monotonically increasing. This field must also be indexed.
 :::
 
-Additionally, streamers may have `xlator` plugins that enhance the available streamer configuration with new configuration blocks and data transformations. See the FIX xlator documentation [here](/develop/business-components/fix/fix-xlator/) for more information.
+Additionally, streamers may use `xlator` plugins that enhance the available streamer configuration with new configuration blocks and data transformations. See the FIX xlator documentation [here](/develop/business-components/fix/fix-xlator/) for more information.
 
 
 ## Example configuration
@@ -79,28 +79,28 @@ And the FIX_IN table is defined as seen below:
     }
 ```
 
-In this case we are defining a stream named "FIX_IN_X", using the FIX_IN table and the BY_RX_SEQUENCE index. The BY_RX_SEQUENCE index contains a single field named RX_SEQUENCE.
+In this case we are defining a stream named "FIX_IN_X", using the `FIX_IN` table and the `BY_RX_SEQUENCE` index. The `BY_RX_SEQUENCE` index contains a single field named `RX_SEQUENCE`.
 
 The `batchSize` configuration has been set to 500, so the streamer will only read 500 records at a time when replaying records.
 
-The `fields` configuration has been defined to only extract the FIX_DATA field from the FIX_IN table, so no other fields will be provided to any **streamer clients** connecting to this streamer.
+The `fields` configuration has been defined to only extract the `FIX_DATA` field from the `FIX_IN` table, so no other fields will be provided to any **streamer clients** connecting to this streamer. In this case, `FIX_DATA` contains a string represenation of the whole FIX message.
 
-The `where` configuration filters all data to ensure we only send records with CONNECTION_NAME equals to "X".
+The `where` configuration filters all data to ensure we only send records with `CONNECTION_NAME` equals to "X".
 
-See sample workflow diagram below interactions between a hypothetical streamerclient connecting to the streamer defined in our example:
+See sample workflow diagram below interactions between a hypothetical streamer client connecting to the streamer defined in our example:
 
 ```mermaid
 sequenceDiagram
 Streamer client->>+Streamer: Requests data for Stream "FIX_IN" with sequence 5000
 Streamer->>+Database: Requests 500 rows from FIX_IN with RX_SEQUENCE > 5000 ordered by RX_SEQUENCE
-Database->>+Streamer: Provides 500 records, last record has RX_SEQUENCE 5500.
-Streamer->>+Streamer client: Sends 500 records, MORE_DATA_AVAILABLE=true
+Database->>+Streamer: Provides 500 rows, last row has RX_SEQUENCE 5500.
+Streamer->>+Streamer client: Sends 500 rows, MORE_DATA_AVAILABLE=true
 Streamer client->>+Streamer: Requests next batch
 Streamer->>+Database: Requests 500 rows from FIX_IN with RX_SEQUENCE > 5500 ordered by RX_SEQUENCE
-Database->>+Streamer: Provides 253 records, last record has RX_SEQUENCE 5753 (reached end of table).
-Streamer->>+Streamer client: Sends 253 records, MORE_DATA_AVAILABLE=false
-Update queue->>+Streamer: New FIX_IN table record
-Streamer->>+Streamer client: Send record
+Database->>+Streamer: Provides 253 rows, last row has RX_SEQUENCE 5753 (reached end of table).
+Streamer->>+Streamer client: Sends 253 rows, MORE_DATA_AVAILABLE=false
+Update queue->>+Streamer: New FIX_IN table row
+Streamer->>+Streamer client: Send row
 ```
 
 ## Configuration options
@@ -111,11 +111,11 @@ You can use the `stream` configuration to declare a reliable stream.
 The simplest Streamer definition is:
 ```kotlin
 streams {
-    stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP)
+    stream("ORDER_OUT", ORDER_OUT.BY_TIMESTAMP)
 }
 ```
 
-This example creates a stream called `ORDERS_OUT`, based on the `ORDER_OUT` table (or view). The data will be streamed, ordered by timestamp.
+This example creates a stream called `ORDER_OUT`, based on the `ORDER_OUT` table (or view). The data will be streamed, ordered by timestamp.
 
 `stream` contains additional configuration items explained below.
 
@@ -128,7 +128,7 @@ The default value is 100.
 Example usage below:
 ```kotlin
 streams {
-    stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP){
+    stream("ORDER_OUT", ORDER_OUT.BY_TIMESTAMP){
         batchSize = 500
     }
 }
@@ -143,7 +143,7 @@ The default value is 5000.
 Example usage below:
 ```kotlin
 streams {
-    stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP){
+    stream("ORDER_OUT", ORDER_OUT.BY_TIMESTAMP){
         logoffTimeout = 60
     }
 }
@@ -158,7 +158,7 @@ The default value is 1.
 Example usage below:
 ```kotlin
 streams {
-    stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP){
+    stream("ORDER_OUT", ORDER_OUT.BY_TIMESTAMP){
         maxLogons = 2
     }
 }
@@ -170,7 +170,7 @@ streams {
 
 ```kotlin
 streams {
-    stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {
+    stream("ORDER_OUT", ORDER_OUT.BY_TIMESTAMP) {
         toGenesisSet { ordersOut ->
             throw RuntimeException()
         }
@@ -188,7 +188,7 @@ The `where` tag enables the stream to be filtered. It is available in two versio
 Here, we only stream orders with a quantity greater than 1,000.
 ```kotlin
 streams {
-    stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {
+    stream("ORDER_OUT", ORDER_OUT.BY_TIMESTAMP) {
         where { ordersOut ->
             ordersOut.quantity > 1_000
         }
@@ -199,7 +199,7 @@ streams {
 In this example, we only stream orders with a quantity greater than 1,000 and where the logon message has provided a secret key.
 ```kotlin
 streams {
-    stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {
+    stream("ORDER_OUT", ORDER_OUT.BY_TIMESTAMP) {
         where { ordersOut, logonMessage ->
             ordersOut.quantity > 1_000 && logonMessage.getString("KEY") == "SECRET"
         }
@@ -209,14 +209,14 @@ streams {
 
 #### `fields`
 
-The `fields` tag enables you to transform the output in a similar way to views, data server and req rep definitions. For example, here we output three fields:
+The `fields` tag enables you to transform the message output in a similar way to views, data server and req rep definitions. For example, here we output three fields:
 ```kotlin
 streams {
-    stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {
+    stream("ORDER_OUT", ORDER_OUT.BY_TIMESTAMP) {
         fields {
-            ORDERS_OUT.CLIENT_ID
-            ORDERS_OUT.QUANTITY withPrefix "ORDER"
-            ORDERS_OUT.CLIENT_ID withAlias "CLIENT"
+            ORDER_OUT.CLIENT_ID
+            ORDER_OUT.QUANTITY withPrefix "ORDER"
+            ORDER_OUT.CLIENT_ID withAlias "CLIENT"
         }
     }
 }
@@ -227,12 +227,12 @@ streams {
 
 #### `toGenesisSet`
 
-The `toGenesisSet` tag enables you to create a custom GenesisSet (TODO add link) from the table/view entity before it is automatically converted and sent to the streamer client.
+The `toGenesisSet` tag enables you to create a custom [`GenesisSet`](/develop/server-capabilities/communications-meta/#genesisset) from the table/view entity before it is automatically converted and sent to the streamer client.
 
 Example below:
 ```kotlin
 streams {
-    stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {
+    stream("ORDER_OUT", ORDER_OUT.BY_TIMESTAMP) {
         toGenesisSet { ordersOut ->
             genesisSet {
                 "ORDER_QUANTITY" with ordersOut.quantity
@@ -245,16 +245,16 @@ streams {
 
 #### `toEntity`
 
-The `toEntity` tag allows you to create a custom `DbEntity` (TODO add link) from the table/view entity before it is automatically converted and sent to the streamer client as a `GenesisSet`.
+The `toEntity` tag allows you to create a custom [`DbEntity`](/develop/server-capabilities/data-access-apis/#database-entities) from the table/view entity before it is automatically converted and sent to the streamer client as a `GenesisSet`.
 
 Example below:
 ```kotlin
 streams {
-    stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {
-        toGenesisSet { ordersOut ->
-            genesisSet {
-                "ORDER_QUANTITY" with ordersOut.quantity
-                "ORDER" with ordersOut.orderId
+    stream("ORDER_OUT", ORDER_OUT.BY_TIMESTAMP) {
+        toEntity { ordersOut ->
+            Order {
+                quantity = ordersOut.quantity
+                orderId = ordersOut.orderId
             }
         }
     }
@@ -271,7 +271,7 @@ streams {
 Ensure you have [enabled metrics](/build-deploy-operate/operate/metrics/#enabling-metrics) in your environment to view them.
 :::
 
-The metrics for Streamer measure how long it takes to replay a single message batch when working in replay mode:
+The metrics for the Streamer measure how long it takes to replay a single message batch when working in recovery mode:
 
 
 | Metric                    | Explanation                               |
