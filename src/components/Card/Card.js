@@ -1,9 +1,12 @@
 import React from "react";
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import './Card.css'
 
 export default function Card({ heading, text, link, imageUrl = '/svg/categories-icons/document-svgrepo-com.svg' }) {
+  const relativeLink = useBaseUrl(link);
+
   return (
-     <a href={link} title={heading} className="card-outer">
+     <a href={relativeLink} title={heading} className="card-outer">
         <div className="card-inner">
           <div className="card-main-image-wrapper">
             { imageUrl && (
