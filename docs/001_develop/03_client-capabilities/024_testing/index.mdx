@@ -1,0 +1,304 @@
+---
+title: 'Testing'
+sidebar_label: 'Testing'
+id: client-testing
+keywords: [genesis, foundation, ui, testing]
+tags:
+  - test
+  - testing
+  - frontend
+  - ui
+  - unit
+  - end-to-end
+  - e2e
+  - uvu
+  - playwright
+---
+
+# Foundation testing
+
+`foundation-testing` provides shared unit and e2e testing functionality.
+
+:::info
+See complete set of API documentation [here](./docs/api/index.md)
+:::
+
+## Unit Testing
+
+The foundation-testing package is a comprehensive framework for implementing Unit Tests. Use it to ensure that your Genesis Web Application provides a seamless user experience by testing components, functions and user interactions across various scenarios.
+
+### **Key Tools and Features:**
+
+- **Customizable Unit Test Suites**: Manage and create detailed test suites in the **tests/unit** folder, focusing on critical components and functions. These test suites are fully customizable by default, so you can cover all different parts of the application.
+- **Sinon integration**: Use Sinon.JS to incorporate test spies, stubs and mocks into your Unit Tests.
+- **Very lightweight**: The test framework provided by foundation-testing is very lightweight and contains [minimal dependencies](https://npm.anvaka.com/#/view/2d/uvu).
+- **Extremely performant**: Much faster than competing test runners, see [benchmarks](https://github.com/lukeed/uvu/tree/master#benchmarks).
+- **Individually executable test files**: You can keep your tests suites organized by splitting them into multiple files (optional). 
+- **Browser-compatible**: You can easily run and debug your tests in a browser environment, which allows you to use browser developer tools.
+
+### **Getting Started with Unit Testing:**
+
+- Define test suites in the **tests/unit** folder, targeting critical components and functions.
+- Use UVU for fast and lightweight Unit Testing.
+- Use Sinon.JS if you need spies, stubs or mocks.
+- Execute tests locally or on your CI pipeline, ensuring reliable and consistent outcomes.
+
+## E2E Testing
+
+The foundation-testing package is a comprehensive framework for implementing End-to-End (E2E) testing. use it to ensure that your Genesis Web Application provides a seamless user experience by testing workflows and user interactions across various scenarios.
+
+### **Key Tools and Features:**
+
+- **Customizable E2E scenarios**: Manage and create detailed test scenarios within the **tests/e2e** folder, focusing on critical user journeys. These scenarios are fully customizable by default, allowing for comprehensive coverage of different user paths and interactions.
+- **Playwright integration**: Use Playwright to automate browser actions, simulate user interactions, and verify that your application behaves as expected across different browsers. Playwright supports cross-browser testing, parallel test execution, and context isolation, allowing for robust and scalable E2E tests. Playwright can capture videos, screenshots, and other artifacts when a test fails, aiding in debugging and issue resolution.
+- **Lighthouse performance testing**: Integrate Lighthouse to measure and improve the performance, accessibility, SEO, and overall quality of your web applications. Use Lighthouse reports to track key performance metrics, such as load time, interactivity, and visual stability, and enforce performance budgets to maintain a high standard for user experience.
+- **Automated testing pipeline**: Integrate your E2E tests into a continuous integration (CI) pipeline, ensuring that every change to the codebase is thoroughly tested before deployment. This automation reduces the risk of bugs and ensures consistent test outcomes across different environments.
+
+### **Getting Started with E2E Testing:**
+
+1. **Creating and running E2E Tests**:
+   - Define test scenarios in the **tests/e2e** folder, targeting critical user journeys and application functionalities.
+   - Use Playwright for browser automation and Lighthouse for performance auditing within the same test suite.
+   - Execute tests via your preferred test runner or CI pipeline, ensuring reliable and consistent outcomes.
+2. **Using Playwright**:
+   - Install and configure Playwright as part of your project dependencies. Follow the set-up guide provided by the foundation-testing package.
+   - Write and run tests using the Playwright API to simulate real-world user interactions. These include clicking buttons, filling in forms, and navigating from page to page.
+3. **Incorporating Lighthouse**:
+   - Integrate Lighthouse into your E2E tests to run performance audits alongside functional tests.
+   - Use the insights from Lighthouse reports to identify and address performance issues, optimizing your application for speed and user experience.
+4. **Advanced features**:
+   - **BDD Testing**: Write behavior-driven tests using `playwright-bdd`, making it easier to define test scenarios and expectations in a human-readable format.
+   - **Cross-Browser Testing**: Use the Playwright cross-browser support to ensure your application works seamlessly across different browsers, including Chrome, Firefox, and WebKit.
+   - **Visual Testing**: Use the Playwrights screenshot and visual comparison features to validate the consistency of your UI across different devices and resolutions.
+   - **Performance Budgets**: Set performance thresholds using Lighthouse to maintain high performance standards, ensuring metrics like Time to Interactive (TTI) and First Contentful Paint (FCP) stay within acceptable limits.
+
+## Test Organisation
+
+You can unit-test specific logic by adding a test file alongside the source file.
+
+```ts
+logic.ts
+logic.test.ts
+```
+
+If your test spans more than one file or is more of an end-to-end test, you may wish to add your test to your package's **/test** directory instead. An example structure might be:
+
+```plaintext
+├── src
+│   └── logic.ts
+│   └── logic.test.ts
+│   └── component.ts
+│   └── component.test.ts
+├── test
+│   └── e2e
+│       └── baseline.e2e.ts
+│   └── unit
+│       └── baseline.test.ts
+├── package.json
+└── playwright.config.ts
+```
+
+The contents of your package's **playwright.config.ts** may include:
+
+```ts
+export { configDefaults as default } from '@genesislcap/foundation-testing/e2e';
+```
+
+If you need to customise configuration, you can do it as follows:
+
+```ts
+import { configDefaults } from '@genesislcap/foundation-testing/e2e';
+
+export default {
+  ...configDefaults,
+  // Any custom configuration here e.g. disabling the web server:
+  webServer: undefined,
+};
+```
+
+If you need to customise JSDOM, you can create a **jsdom.setup.ts** file in your package directory:
+
+```ts
+// custom code
+export * from '@genesislcap/foundation-testing/jsdom';
+```
+
+## Test scripts
+
+The test-related scripts to add to your package's **package.json** file may include:
+
+```json
+"test": "genx test",
+"test:single": "genx test --match connect.test.ts",
+"test:single:browser": "genx test --browser --match connect.test.ts",
+"test:single:browser:raw-match": "genx test --browser --raw-match --match ./**/connect.test.ts",
+"test:select": "genx test --match '(connect|reconnectStrategy|kv).test.ts'",
+"test:select:browser": "genx test --browser --match '(connect|reconnectStrategy|kv).test.ts'",
+"test:glob": "genx test --match reconnectStrategy*.test.ts",
+"test:glob:browser": "genx test --browser --match reconnectStrategy*.test.ts",
+"test:coverage": "genx test --coverage",
+"test:coverage:browser": "genx test --coverage --browser",
+"test:e2e": "genx test --e2e",
+"test:e2e:debug": "genx test --e2e --debug",
+"test:e2e:ui": "genx test --e2e --interactive",
+"test:unit:browser": "genx test --browser",
+"test:unit:browser:watch": "genx test --browser --watch",
+"test:unit:watch": "genx test --watch",
+"test:debug": "genx test --debug"
+```
+
+## Testing logic
+
+The **logic.test.ts** usually uses `createLogicSuite`, which is used to test function output given certain input
+arguments. Based on user feedback, these arguments are now passed as an array by convention:
+
+```ts
+// logic.test.ts
+import { createLogicSuite } from '@genesislcap/foundation-testing';
+import { myFunction } from './logic';
+
+const Suite = createLogicSuite('myFunction');
+Suite('myFunction should provide expected results', ({ runCases }) => {
+  runCases(myFunction, [
+    [['1'], true],
+    [[123], true],
+    [['60%'], true],
+    [['$60'], false],
+    [['1.1'], false],
+    [[''], false],
+    [[true], false],
+    [[null], false],
+    [[undefined], false],
+  ]);
+});
+
+Suite.run();
+```
+
+## Testing components
+
+The **component.test.ts** or any test that directly or indirectly makes use of the DI uses `createComponentSuite`. Apart from setting up and tearing down your element fixture with a wrapping design system and DI container, this util also allows you to provide DI container mocks, which are required for certain testing flows.
+
+```ts
+// component.test.ts
+import { Connect } from '@genesislcap/foundation-comms';
+import { ConnectMock } from '@genesislcap/foundation-comms/testing';
+import { assert, createComponentSuite, Registration } from '@genesislcap/foundation-testing';
+import { MyComponent } from './component';
+
+/**
+ * As we're using tag name in the Suite, we hold a reference to avoid tree shaking.
+ */
+MyComponent;
+
+/**
+ * Create mock
+ */
+const connectMock = new ConnectMock();
+connectMock.nextMetadata = {
+  FIELD: [
+    {
+      NAME: 'foo',
+      TYPE: 'bar',
+    },
+  ],
+};
+
+/**
+ * Resister mock instance
+ */
+const mocks = [Registration.instance(Connect, connectMock)];
+
+const Suite = createComponentSuite<MyComponent>(
+  'MyComponent',
+  'my-component', // < or () => myComponent() if your component is composeable
+  null,
+  mocks,
+);
+
+Suite('Can be created in the DOM', async ({ element }) => {
+  assert.ok(element);
+});
+
+Suite('Connect is mocked in the container', async ({ container }) => {
+  const serviceMock = container.get(Connect);
+  assert.instance(serviceMock, ConnectMock);
+});
+
+Suite('Attr changes update internals as expected', async ({ element }) => {
+  element.setAttribute('resource-name', 'ALL_USERS');
+  assert.match(element.optionsHash, /ALL_USERS/);
+  element.setAttribute('order-by', 'USERNAME');
+  assert.match(element.optionsHash, /USERNAME/);
+});
+
+Suite('Connect.getMetadata returns expected nextMetadata', async ({ container }) => {
+  const serviceMock = container.get(Connect) as ConnectMock;
+  /**
+   * Assert base case
+   */
+  let serviceMeta = await serviceMock.getMetadata('someResource');
+  assert.is(serviceMeta.FIELD[0].NAME, 'foo');
+  /**
+   * Apply next and assert
+   */
+  const metadata = {
+    FIELD: [
+      {
+        NAME: 'hello',
+        TYPE: 'world',
+      },
+    ],
+  };
+  serviceMock.nextMetadata = {
+    ...metadata,
+  };
+  serviceMeta = await serviceMock.getMetadata('someResource');
+  assert.equal(serviceMeta, {
+    ...metadata,
+  });
+  // TODO: Trigger and cross check component reactions to underlying data changes
+});
+
+Suite.run();
+```
+
+## Testing E2E
+
+The **baseline.e2e.ts** uses `playwright`; test cases have access to the fixtures provided during set-up.
+
+```ts
+import { test, expect } from '@genesislcap/foundation-testing/e2e';
+
+test('baseline test', async ({ page }) => {
+    await page.goto('https://playwright.dev/');
+    const name = await page.innerText('.navbar__title');
+    expect(name).toBe('Playwright');
+});
+```
+
+## Installation
+
+To enable this module in your application, follow the steps below.
+
+1. Add `@genesislcap/foundation-testing` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
+
+```json
+{
+  "dependencies": {
+    "@genesislcap/foundation-testing": "latest"
+  },
+}
+```
+
+### **Unit Testing Resources and Further Documentation:**
+
+- [UVU](ttps://github.com/lukeed/uvu)
+- [Sinon.JS](https://sinonjs.org/releases/v18/)
+
+### **E2E Resources and Further Documentation:**
+
+- [foundation-testing](https://github.com/genesislcap/foundation-ui/tree/master/packages/foundation/foundation-testing)
+- [Playwright Documentation](https://playwright.dev/)
+- [playwright-bdd](https://github.com/vitalets/playwright-bdd)
+- [Lighthouse Documentation](https://developers.google.com/web/tools/lighthouse) 

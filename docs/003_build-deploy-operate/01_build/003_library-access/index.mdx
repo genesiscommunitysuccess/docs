@@ -11,4 +11,44 @@ tags:
 sidebar_position: 3
 ---
 
-Coming soon...
+The Genesis Application Platform requires access to Genesis provided libraries. 
+
+## Server artifacts
+
+Genesis provides Genesis Server Framework (GSF) libraries via the Genesis Artifactory.
+
+Genesis supplies client-level user credentials for access to these artifacts.
+
+The options for configuring access to this are discussed below.
+
+### Configure access to the Genesis JFROG Artifcatory (preferred approach)
+
+In most cases, you have your own artifactory/nexus/similar store for storing libraries. Your developers point to this location to pull in libraries and develop applications.
+
+The ideal approach is to point your own instance to the Genesis Jfrog URL: `https://genesisglobal.jfrog.io/genesisglobal/dev-repo`. With this configured Genesis platform artifacts will sync to your enterprise artifactory as and when developers pull them them.
+
+The Genesis artifactory client-level user credentials should be configured in this local repo, and should not be shared with developers.
+
+:::tip
+Within certain enterprise infrastructure this setup will require the whitelisting of the following URLs:
+- `genesisglobal.jfrog.io`
+- `jfrog-prod-euw1-shared-ireland-main.s3.amazonaws.com`
+:::
+
+### Developer instructions to configure access to the Genesis JFROG Artifactory
+
+Alternatively, your developers can point their local Gradle (or Maven) set-up to include the Genesis artifactory.
+
+:::caution
+Artifacts will miss any scanning you may have set up in your artifactory if this approach is adopted.
+:::
+
+If you adopt this approach, you need to share the Genesis client-level user credentials with your developers and will need to configure CI/CD tools to do the same. This may require setting up access via your enterprise proxy. 
+
+## Client artifacts
+
+Genesis provides Foundation UI (the name of the Genesis web framework) libraries via the [global NPM Registry](https://www.npmjs.com/package/@genesislcap/foundation-ui).
+
+This is accessible to virtually all web developers with no changes required, as it contains many open source libraries used in modern web development. 
+
+If you only have access to listed libraries, raise a request to add [@genesislcap/foundation-ui](https://www.npmjs.com/package/@genesislcap/foundation-ui) to this list.

@@ -15,6 +15,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Log from '/snippet/_LOG.md'
 import CommonPermissions from '/snippet/_common-permissions.md'
+import CommonPermissionsQuery from '/snippet/_common-permissions-query.md'
 import CommonFieldOverrides from '/snippet/_common-field-overrides.md'
 import CommonQueryFields from '/snippet/_common-query-fields.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
@@ -22,15 +23,13 @@ import CommonAuthenticateFirst from '/snippet/_common-authenticate-first.md'
 
 ## Overview
 
-<p align="center"><iframe src="https://player.vimeo.com/video/792592108?h=ccbf47bf29&amp" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></p>
-
 A Data Server supplies real-time (streaming) data to the front end of your application.
 
 Data Servers preload and monitor specific tables or views in the database. When a change in data occurs, the Data Server sends the changed data to all users who have subscribed to the table or view.
 
 The first time the user subscribes, all the data for the table or view is sent. The connection between the user and the Data Server remains open; so from then on, the Data Server automatically sends changes.
 
-DThe Data Server utilizes the push mechanism of web sockets to update subscribed clients with real time updates the data they are subscribed to and filtering on, and also offers a REST API.
+The Data Server utilizes the push mechanism of web sockets to update subscribed clients with real time updates the data they are subscribed to and filtering on, and also offers a REST API.
 
 ```mermaid
 graph TD
@@ -155,7 +154,7 @@ dataServer {
 |-------------|-------------|---------|
 |`defaultCriteria`|This represents the default criteria for the query||
 |`disableAuthUpdates`|Disables real-time auth updates in order to improve the overall data responsiveness and performance of the server|`false`|
-`backwardsJoins`|Enables backwards joins on a view query. Read [backwards joins](#backwards-joins) for more details|`true`|
+|`backwardsJoins`|Enables backwards joins on a view query. Read [backwards joins](#backward-joins) for more details|`true`|
 |`backJoins`|(Deprecated) Replaced by `backwardsJoins`. Functionally the same.||
 
 #### `fields`
@@ -219,6 +218,23 @@ Note that table indexes are NOT available in dataserver queries.
 
 <CommonPermissions />
 
+<CommonPermissionsQuery />
+
+In most cases, a single auth entity id is associated to one or more rows in a Data Server query, but in some rare scenarios there might be a one-to-one relationship. In the latter case, there is a configuration option named `rowLevelPermissions` which can be set to `true` to optimize the internal data structure that holds the cache information.
+
+```kotlin {4}
+query("ALL_COUNTERPARTYS", COUNTERPARTY) {
+    permissioning {
+        auth("COUNTERPARTY"){
+            rowLevelPermissions = true
+            authKey {
+                key(data.counterpartyId)
+            }
+        }
+    }
+}
+```
+
 #### `enrich`
 
 In some scenarios, you might want to associate the results of Data Server queries with the user who initiated the queries. This data cannot be cached, as it is derived from the subscribing client's input. You can achieve this using the ```enrich``` feature, which enables an additional table or view join (including backwards joins). With this feature, you can provide user-specific values for each row, or even perform cell-level permissioning (for example, to hide cell values), depending on entitlements.
@@ -265,21 +281,21 @@ query("ALL_BUYER_SELLER_TRADES", BUYER_SELLER_TRADE_VIEW){
             }
         }
         fields {
-            // If a user belows to the buyer counterparty, "COUNTERPARTY" value will be the seller name
+            // If a user belongs to the buyer counterparty, "COUNTERPARTY" value will be the seller name
             // in the reverse scenario it will be the buyer name
-            derivedField("COUNTERPARTY", STRING) { row, userData ->
+            derivedField("COUNTERPARTY", STRING) {
                 when {
-                    userData?.counterpartyId == row.buyerId -> row.sellerName
-                    userData?.counterpartyId == row.sellerId -> row.buyerName
+                    enriched?.counterpartyId == data.buyerId -> data.sellerName
+                    enriched?.counterpartyId == data.sellerId -> data.buyerName
                     else -> ""
                 }
             }
             // If a user belongs to the buyer counterparty, "DIRECTION" will be "BUY"
             // in the reverse scenario it will be "SELL"
-            derivedField("DIRECTION", STRING) { row, userData ->
+            derivedField("DIRECTION", STRING) {
                 when {
-                    userData?.counterpartyId == row.buyerId -> "BUY"
-                    userData?.counterpartyId == row.sellerId -> "SELL"
+                    enriched?.counterpartyId == data.buyerId -> "BUY"
+                    enriched?.counterpartyId == data.sellerId -> "SELL"
                     else -> ""
                 }
             }
@@ -343,7 +359,7 @@ query(POSITION) {
         join { userName, row -> FavouriteTrade.byUserName(userName) }
         fields {
             derivedField("IS_FAVOURITE", BOOLEAN) { row, favourite ->
-                row.code == favourite?.code
+                data.code == enriched?.code
             }
         }
     }
@@ -1194,7 +1210,7 @@ If you wish to run a dedicated process as a dataserver, the following gives an e
 
 **GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
 
-If you are testing against an earlier version of the framework, go to the [legacy](/develop/server-capabilities/testing/#integration-testing) section.
+If you are testing against an earlier version of the framework, go to the [legacy](/develop/server-capabilities/testing-api/#integration-testing-legacy) section.
 
 :::
 
@@ -1202,7 +1218,7 @@ If you are testing against an earlier version of the framework, go to the [legac
 
 This document looks at the basics of testing Data Servers. 
 
-We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/develop/server-capabilities/testing/#integration-testing), which is designed to make testing easy.
+We shall use a very simple example and work through the communication between our tests and the Data Server we are testing. This example relies on [**GenesisJunit**](/develop/server-capabilities/testing-api/#genesisjunit), which is designed to make testing easy.
 
 #### Preparation
 There are some simple steps to follow in order to set up yor test.
@@ -1244,7 +1260,7 @@ This test class does three things:
 * It identifies the Data Server script that we want to test, using the `ScriptFile` annotation.
 * It identifies the source data for our test, using the `CsvData` annotation.
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing/#integration-testing).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
 
 ###### 2. Load test data
 
@@ -1611,7 +1627,7 @@ class DataServerTests : AbstractGenesisTestSupport<Reply<*>>(
     }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing-api/#abstractgenesistestsupport).
 
 Let's load some test data into the `seed-data.csv` in the root of the resources folder for your tests.
 

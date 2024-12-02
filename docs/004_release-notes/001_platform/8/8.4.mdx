@@ -108,9 +108,9 @@ If you are using the http client directly, some methods are now marked as intern
 :::info
 **Medium fix**
 
-Use only the [methods](https://learn.genesis.global/docs/server/integration/web-integration/genesis-http-client-core-concepts/#request-methods) exposed as public in the interface (get, put, post, delete). 
+Use only the [methods](/develop/server-capabilities/integrations/custom-endpoints/#request-methods) exposed as public in the interface (get, put, post, delete). 
 
-Read the pages on [GenesisHTTPClient](https://learn.genesis.global/docs/server/integration/web-integration/genesis-http-client-intro/) for full information.
+Read the pages on [GenesisHTTPClient](/develop/server-capabilities/integrations/custom-endpoints/) for full information.
 :::
 
 ### `DbOperation` updates
@@ -142,7 +142,7 @@ Only applications that use the RxSink interface in the Data Pipeline are affecte
 :::tip
 **Simple fix**
 
-Any new implementations of Data Pipeline must only use the [standard http web calls](/server/integration/web-integration/genesis-http-client-core-concepts/#request-methods). Check the revised [reference documentation for Data Pipeline](/server/data-pipelines/introduction/) for full details.
+Any new implementations of Data Pipeline must only use the [standard http web calls](/develop/server-capabilities/integrations/custom-endpoints/#request-methods). Check the revised [reference documentation for Data Pipeline](/develop/server-capabilities/integrations/data-pipelines/) for full details.
 :::
 
 ### `onOperationError` type safety
@@ -156,7 +156,7 @@ If your application uses Data Pipelines and are using error handlers in them, yo
 
 :::info
 **Medium fix**
-Change your error handling based on the [new handlers](/server/data-pipelines/implementations/#handlers).
+Change your error handling based on the [new handlers](/develop/server-capabilities/integrations/data-pipelines/#operation-error-handler).
 :::
 
 ## Patch Releases

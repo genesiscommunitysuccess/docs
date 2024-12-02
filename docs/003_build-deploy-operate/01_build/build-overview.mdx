@@ -5,32 +5,107 @@ id: 'bdo-build-overview'
 sidebar_position: 1
 ---
 
-Coming soon...
+The following sections give an overview of important build time concepts in Genesis applications.
+
+Genesis applications are built using gradle. The web client commands are wrapped with gradle commands to allow the easy build of a full stack application using a single gradle task.
+
+## Full application build
+
+Genesis provides gradle tasks at the project root level which will trigger a build of the full-stack application.
+
+- `assemble` will build the full project, but not run any tests
+- `build` will build the full project and run any unit tests specified
+
+![](/img/003_build-deploy-operate/gradle-build-full-stack.png)
+
+## Client build
+
+To build the client project, within the project's `client` directory you can run `assemble` (skips tests) or `build` (runs tests) to build the back end of your genesis application. These tasks rap npm build tasks in the `client/package.json` file.
+
+![](/img/003_build-deploy-operate/gradle-build-client.png)
+
+import FoundationUi from "/src/versioning/foundationui.mdx"
+
+### `package.json`
+
+The `package.json` file is auto-generated for you by the CLI, based on your answers to the prompts.
+
+At the top you'll find the `name` and `description` of your application.
+
+Following this, there are three key sections you need to be aware of:
+
+- config
+- scripts
+- dependencies
+
+#### Config
+
+When running the app on your local machine, you can adjust a few settings under the `config` section, including which host to connect to and what port to run the dev server on.
+```
+"config": {
+    "API_HOST": "wss://dev-position2/gwf/",
+    "DEFAULT_USER": "admin",
+    "DEFAULT_PASSWORD": "genesis",
+    "PORT": 6060
+  },
+```
+
+#### Scripts
+
+The next section is `scripts`.
+Some have been auto-generated for you; feel free to add your own scripts, as needed.
+
+These are the commands that you invoke with `$ npm run` - when you execute that command from your command line, `node` will look at the scripts listed here to know what to run.
+For example, `$ npm run clean:dist` will run `node ../.build/clean.js dist`.
+
+```javascript
+  "scripts": {
+    "build": "npm run build:webpack",
+    "build:with-host": "cross-env API_HOST=$npm_package_config_API_HOST npm run build:webpack",
+    "build:webpack": "cross-env NODE_ENV=production AUTO_CONNECT=true webpack",
+    "clean": "npm run clean:dist",
+    "clean:dist": "node ../.build/clean.js dist",
+    "copy-files": "copyfiles -u 1 src/**/*.{css,scss,ttf} ./dist/esm",
+    "dev": "npm run dev:webpack",
+    "dev:webpack": "cross-env API_HOST=$npm_package_config_API_HOST AUTO_CONNECT=true DEFAULT_USER=$npm_package_config_DEFAULT_USER DEFAULT_PASSWORD=$npm_package_config_DEFAULT_PASSWORD NODE_ENV=development webpack serve --open",
+    "serve": "serve dist -p $npm_package_config_PORT",
+    "test": "echo \"Error: no test specified\""
+  },
+```
+
+:::info
+Your settings from the `config` block are passed to different scripts as environment variables, using [cross-env](https://www.npmjs.com/package/cross-env). So, for example, if you want to add a new config for a `DEFAULT_VIEW`:
+
+- add the config to the config block as `"DEFAULT_VIEW": "reporting"`
+- in the npm script that requires the variable, add `DEFAULT_VIEW=$npm_package_config_DEFAULT_VIEW`.
+:::
+
 
 ## Server build
 
-The following sections give an overview of important build time concepts in Genesis applications.
+To build the server project, within the project's `server` directory you can run `assemble` (skips tests) or `build` (runs tests) to build the back end of your genesis application.
+
+![](/img/003_build-deploy-operate/gradle-build-server.png)
 
 ### DAO
-The system definition, fields, tables, hfts and views you define generate [DAO](/develop/glossary/glossary/#dao)s (Database Access Objects).
+The system definition, fields, tables and views you define generate [DAO](/develop/glossary/#dao)s (Database Access Objects).
 
 There are five hierarchical levels:
 
-1. System Definition : System definition items
-2. Table numKeyFields
+1. System Definition
+2. Fields
 3. Tables
-4. HFT
 5. Views
 
-Each layer uses the layers above in the hierarchy, so `fields` can use `system definitions` and `views` can use all the other four.
+Each layer can reference the layers above in the hierarchy, so for example, `tables` can reference `system definition` items, and `views` can use `table` items.
 
-These objects must be built with your project, they are generated into application jars and can then be used by the other parts of your code. Whenever you edit any of these definitions you should rebuild the DAOs to start using them in your code.
+These objects must be built with your project, they are generated into application jars and can then be used by the other parts of your code. Whenever you edit any of these definitions you should rebuild the DAOs to start referencing them in your code.
 
 #### Building
 
 If you use intelliJ's gradle option, you have a project with a _project_name_**-dictionary-cache** submodule. This contains the tasks for generating Genesis DAOs.
 
-![](/img/gradle-intellij-menu.png)
+![](/img/genesis-dao-gradle-tasks.png)
 
 Each of the following has a sub-menu that takes you to the `assemble` build task:
 
@@ -43,7 +118,6 @@ Each of the following has a sub-menu that takes you to the `assemble` build task
 |System Definition|`genesis-generated-sysdef`|
 |Fields|`genesis-generated-fields`|
 |Tables|`genesis-generated-dao`|
-|HFT|`genesis-generated-hft`|
 |Views|`genesis-generated-view`|
 
 #### Bundling generated code with product distribution
@@ -58,7 +132,7 @@ To do this, you must do two things:
 bundleGeneratedClasses=true
 ```
 
-2. Set the "DEPLOYED_PRODUCT" System Definition property. You can read more about that [here](../../../server/configuring-runtime/system-definitions/#items-defined).
+2. Set the `DEPLOYED_PRODUCT` System Definition property. You can read more about that [here](/develop/server-capabilities/runtime-configuration/system-definition/#items-defined).
 
 #### Troubleshooting
 
@@ -66,6 +140,4 @@ bundleGeneratedClasses=true
 
 If you don't see any menu options per the guide above, and you see gradle errors when you try to build or open a project, a common cause is gradle JVM settings.
 
-In IntelliJ. go to **File** -> **Settings** and search for the Build Gradle page. Make sure Gradle JVM is set to the correct JDK version used by Genesis. If you are using Genesis Server version 7+, it will be **17**; otherwise **11**. See example for setting version **11** below:
-
-![](/img/gradle-jvm-version.png)
+In IntelliJ. go to **File** -> **Settings** and search for the Build Gradle page. Make sure Gradle JVM is set to the correct JDK version used by Genesis. You should set this to **17**.

@@ -1,0 +1,428 @@
+---
+title: 'Number Field'
+sidebar_label: 'Number Field'
+id: client-interaction-number-field
+keywords: [interaction, interactive, input, numeric, field, form, data]
+tags:
+- interaction
+- interactive
+- input
+- numeric
+- form
+- data
+sidebar_position: 8
+---
+
+import NumberFieldDemo from '../../../../../examples/ui/client-capabilities/interaction/number-field.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Number Field
+
+Use cases:
+* Numeric entry
+* Not for cases where a field only contains numbers but should be a string e.g. credit card numbers or a phone number.
+
+## Example
+
+<NumberFieldDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-number-field></rapid-number-field>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-text-field value=${sync((x) => x.fieldValue, 'number')}>
+        </rapid-text-field>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      @observable fieldValue = '';
+      fieldValueChanged() {
+        console.log(this.fieldValue);
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-number-field></rapid-number-field>
+    ```
+    Usage
+    ```typescript
+    export function MyComponent() {
+
+      const [outputValue, setOutputValue] = useState('');
+
+      const onChange = (event) => {
+        setOutputValue(event.target.value);
+        console.log(outputValue);
+      }
+
+      return (
+        <rapid-number-field onChange={onChange}></rapid-number-field>
+      );
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-number-field></rapid-number-field>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+    @Component({
+      selector: 'my-root',
+      template: `
+        <rapid-number-field
+          (change)="onChange($event)"
+        ></rapid-number-field>
+      `,
+      styleUrls: ['./my.component.css'],
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [FormsModule],
+    })
+    export class AppComponent {
+      onChange(event: Event) {
+        const target = event.target as HTMLInputElement;
+        console.log(target.value);
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax.
+
+### Attributes
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>autofocus</td>
+      <td><code>boolean</code></td>
+      <td>When true, the component will be focused when the page has finished loading</td>
+<td>
+
+```typescript
+<rapid-number-field ?autofocus="${(x) => x.autoFocus}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>appearance</td>
+      <td><code>string</code></td>
+      <td>Can be <code>outline</code> or <code>filled</code></td>
+<td>
+
+```typescript
+<rapid-number-field appearance="outline">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Similar to <code>readonly</code>, but with a blur on the component</td>
+<td>
+
+```typescript
+<rapid-number-field ?disabled="${(x) => x.isDisabled}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>locale</td>
+      <td><code>string</code></td>
+      <td>Defines a number format based on language and location. **Default: "en-US"**. Must be used with `withFormatting`</td>
+<td>
+
+```typescript
+<rapid-number-field withFormatting locale="en-GB">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>form</td>
+      <td><code>string</code></td>
+      <td>Associates this component with a form. Form <code>id</code> needs to be passed. If no Id is provided, then it will be associated with the ancestor form</td>
+<td>
+
+```typescript
+<rapid-number-field form="myForm">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>hideStep</td>
+      <td><code>boolean</code></td>
+      <td>Hides the step control (up and down arrows) for the element</td>
+<td>
+
+```typescript
+<rapid-number-field hideStep>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>maxlength</td>
+      <td><code>number</code></td>
+      <td>The maximum number of characters allowed</td>
+<td>
+
+```typescript
+<rapid-number-field maxlength="${(x) => x.maxLength}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>minlength</td>
+      <td><code>number</code></td>
+      <td>The minimum number of characters allowed</td>
+<td>
+
+```typescript
+<rapid-number-field minlength="${(x) => x.minLength}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>max</td>
+      <td><code>number</code></td>
+      <td>Defines the maximum value allowed</td>
+<td>
+
+```typescript
+<rapid-number-field max="${(x) => x.max}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>min</td>
+      <td><code>number</code></td>
+      <td>Defines the minimum value allowed</td>
+<td>
+
+```typescript
+<rapid-number-field min="${(x) => x.min}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>withFormatting</td>
+      <td><code>boolean</code></td>
+      <td>Enables you to format the number</td>
+<td>
+
+```typescript
+<rapid-number-field withFormatting>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>Defines the name of the element</td>
+<td>
+
+```typescript
+<rapid-number-field name="username">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>placeholder</td>
+      <td><code>string</code></td>
+      <td>Sets placeholder text for the element (which disappears when the user starts typing)</td>
+<td>
+
+```typescript
+<rapid-number-field placeholder="Enter your name">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>readonly</td>
+      <td><code>boolean</code></td>
+      <td>If true, the user cannot change the value of this field</td>
+<td>
+
+```typescript
+<rapid-number-field ?readonly="${(x) => x.isReadonly}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td><code>number</code></td>
+      <td>Sets the width of the component</td>
+<td>
+
+```typescript
+<rapid-number-field size="${(x) => x.fieldSize}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>step</td>
+      <td><code>number</code></td>
+      <td>Defines the amount the field value changes each time the user clicks to increase or decrease the field value</td>
+<td>
+
+```typescript
+<rapid-number-field type="number" step="${(x) => x.stepValue}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>string</code></td>
+      <td>Sets the value for this component. Use the `sync` utility to bind the data the template back to the model.</td>
+<td>
+
+```typescript
+<rapid-number-field value="${sync((x) => x.fieldValue, 'number')}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Example</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>options</td>
+      <td><code>json</code></td>
+      <td>The options to be used when withFormatting is true, e.g. , use <code>maximumFractionDigits</code> to set the number of decimal places.</td>
+<td>
+
+```typescript
+<rapid-number-field withFormatting :options=${() => ({maximumFractionDigits: 2})}>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Slots
+
+| Slot            | Use                                    |
+|-----------------|----------------------------------------|
+| start           | Start slot.                            |
+| end             | End slot.                              |
+| step-up-glyph   | The glyph for the step up control.     |
+| step-down-glyph | The glyph for the step down control.   |
+
+### Parts
+
+| Part      | Use                                                              |
+|-----------|------------------------------------------------------------------|
+| label     | The label.                                                       |
+| start     | Before the input.                                                |
+| controls  | The step up and step down controls.                              |
+| end       | After the input.                                                 |
+| root      | The element wrapping the control, including start and end slots. |
+| control   | The element representing the input.                              |
+| step-up   | The step up control.                                             |
+| step-down | The step down control.                                           |
+
+### Events Fired
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Example</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>@input</td>
+    <td><code>void</code></td>
+    <td>Fires a custom 'input' event when the value is changed via step-up and step-down functionality, and also on blur.</td>
+<td>
+
+```typescript
+<rapid-number-field @input="${(x) => x.inputHandler()}">
+```
+
+</td>
+  </tr>
+  <tr>
+    <td>@change</td>
+    <td><code>void</code></td>
+    <td>Fires a custom 'change' event when the value has changed.</td>
+<td>
+
+```typescript
+<rapid-number-field @change="${(x) => x.changeHandler()}">
+```
+
+</td>
+  </tr>
+  </tbody>
+</table>
+
+
+### Events Listened To
+This component doesn't listen to any events.
+
+### Further details
+This component is an implementation of an HTML [text-field](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text) element.

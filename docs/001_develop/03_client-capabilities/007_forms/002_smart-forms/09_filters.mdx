@@ -10,7 +10,6 @@ tags:
   - ui
   - forms
   - smart forms
-pagination_next: develop/client-capabilities/forms/client-form-inputs
 ---
 
 import Tabs from '@theme/Tabs';
@@ -361,10 +360,10 @@ import {sync} from '@genesislcap/foundation-utils';
       :value=${sync((x) => x.allTradesfilters)}>
     </foundation-filters>
   ...
-...    
+...
 ```
 
-From this point, the criteria used in the foundation-filter are stored in the `allTradesFilters` variable. You can use this variable with the `<grid-pro-genesis-datasource>` to match the criteria used in the foundation filter. 
+From this point, the criteria used in the foundation-filter are stored in the `allTradesFilters` variable. You can use this variable with the `<grid-pro-genesis-datasource>` to match the criteria used in the foundation filter.
 
 3. Assign the `allTradesFilters` to the `criteria` attribute of the `<grid-pro-genesis-datasource>`.:
 
@@ -387,9 +386,3 @@ It is crucial to manipulate the style of the foundation-filter in order to see t
 After you have looked at the basics here, you can find more details in our [API Docs](./docs/api/index.md)
 :::
 
-## License
-
-Note: this project provides front-end dependencies and uses licensed components listed in the next section; thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
-
-### Licensed components
-Genesis low-code platform

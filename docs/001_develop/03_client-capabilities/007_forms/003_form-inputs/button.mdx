@@ -1,0 +1,297 @@
+---
+title: 'Button'
+sidebar_label: 'Button'
+id: client-interaction-button
+keywords: [interaction, interactive, button, form, click, submit, data]
+tags:
+- interaction
+- interactive
+- button
+- form
+- click
+- change
+- submit
+- data
+sidebar_position: 8
+---
+
+import ButtonDemo from '/examples/ui/client-capabilities/interaction/button.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Use cases:
+* Submit forms
+* Trigger actions
+* Create interactive elements
+* Set options
+
+## Example
+<ButtonDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-button>Button</rapid-button>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-button
+            @click="${x => x.handleButtonClicked()}">
+              Default Button
+        </rapid-button>
+        <rapid-button
+              appearance="primary"
+              @click="${x => x.handleButtonClicked()}">
+          Primary Color Button
+        </rapid-button>
+        <rapid-button
+              appearance="secondary"
+              @click="${x => x.handleButtonClicked()}">
+          Secondary Color Button
+        </rapid-button>
+        <rapid-button
+            @click="${x => x.handleButtonClicked()}">
+          <rapid-icon
+            name="plus"
+            slot="start">
+          </rapid-icon>
+          Button with start slot
+        </rapid-button>
+        <rapid-button
+            @click="${x => x.handleButtonClicked()}">
+          Button with end slot
+          <rapid-icon
+            name="warning"
+            slot="end">
+          </rapid-icon>
+        </rapid-button>
+        <rapid-button disabled>
+          Disabled Button
+        </rapid-button>
+        `,
+    })
+    export class MyElement extends GenesisElement {
+      handleButtonClicked() {
+          alert('button clicked')
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-button>Button</rapid-button>
+    ```
+    Usage
+    ```typescript
+    export function MyComponent() {
+      const handleButtonClicked = (event) => {
+        console.log('Button clicked')
+      };
+
+      return (
+        <rapid-button
+            onClick={handleButtonClicked}>
+            Default Button
+        </rapid-button>
+        <rapid-button
+            onClick={handleButtonClicked}
+            appearance="primary">
+            Primary Color Button
+        </rapid-button>
+        <rapid-button
+            onClick={handleButtonClicked}
+            appearance="secondary">
+            Secondary Color Button
+        </rapid-button>
+        <rapid-button>
+            <rapid-icon
+                onClick={handleButtonClicked}
+                name="plus"
+                slot="start">
+            </rapid-icon>
+            Button with start slot
+        </rapid-button>
+        <rapid-button>
+            Button with end slot
+            <rapid-icon
+                name="warning"
+                slot="end">
+            </rapid-icon>
+        </rapid-button>
+        <rapid-button disabled>
+            Disabled Button
+        </rapid-button>
+      );
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-button>Button</rapid-button>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    @Component({
+      selector: 'my-root',
+      template: `
+        <rapid-button (click)="handleButtonClicked()">
+              Default Button
+        </rapid-button>
+        <rapid-button
+              appearance="primary"
+              (click)="handleButtonClicked()">
+          Primary Color Button
+        </rapid-button>
+        <rapid-button
+              appearance="secondary"
+              (click)="handleButtonClicked()">
+          Secondary Color Button
+        </rapid-button>
+        <rapid-button (click)="handleButtonClicked()">
+          <rapid-icon name="plus" slot="start"></rapid-icon>
+          Button with start slot
+        </rapid-button>
+        <rapid-button (click)="handleButtonClicked()">
+              Button with end slot
+          <rapid-icon name="warning" slot="end"></rapid-icon>
+        </rapid-button>
+        <rapid-button disabled>
+          Disabled Button
+        </rapid-button>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class AppComponent {
+      handleButtonClicked() {
+        alert('button clicked')
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>autofocus</td>
+      <td><code>boolean</code></td>
+      <td>The boolean value of whether the button is checked.</td>
+<td>
+
+```typescript
+<rapid-button autofocus>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Makes the component visually opaque, and configures it so that the user cannot alter the state via the web browser.</td>
+<td>
+
+```typescript
+<rapid-button disabled>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>form</td>
+      <td><code>string</code></td>
+      <td>Associates this component with a form. The Form id must be passed. If no Id is passed, then it will be associated with the ancestor form.</td>
+<td>
+
+```typescript
+<rapid-button form="myForm">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>Defines the name of the element.</td>
+<td>
+
+```typescript
+<rapid-button name="buttonName">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td><code>string</code></td>
+      <td>Defines the mode of the button. button (default) - performs an action when clicked | reset - can influence a group of components associated with the same form)</td>
+<td>
+
+```typescript
+<rapid-button type="button">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>string</code></td>
+      <td>Defines the value associated with this button.</td>
+<td>
+
+```typescript
+<rapid-button value="sample">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+# Properties
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+
+| Slot | Use |
+|------|-----|
+| start | Start slot. |
+| end | End slot. |
+
+### Parts
+| Part    | Description                                       |
+|---------| ------------------------------------------------- |
+| control | The button element. |
+| content | The element wrapping button content. |
+
+### Events fired
+
+| Event | Use |
+|---|---|
+| click | Emits a change event when the button is pressed |
+
+### Events listened to
+
+This component doesn't listen to any events.
+
+### Further details
+This component is an implementation of an HTML [button](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/button) element.

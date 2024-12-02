@@ -7,69 +7,112 @@ id: 'how-to-landing'
 import QuickCard from '@site/src/components/Card';
 import { Grid } from '@mui/material'
 
-Welcome to our *How to...* documentation. Here, we are going to give you practical information on building Genesis applications. 
+Welcome to our *How to...* documentation. Here, we provide a set of simple focused items that are going to give you practical information on building Genesis applications. 
 
-First, we have provided a set of simple focused items that are easy to pick up.
+The *How To...* pages in this section point you to example applications.  You can [clone and run](#run-the-codebases) these applications, and examine the code (which includes helpful comments). Each How To page links you directly to the related repository. The `README` file for each example application provides a good description of the purpose of the app and the key components, and how best to navigate and understand it.
 
-Separately, we have provided a collection of example applications that demonstrate key use cases. You can clone these, build and run, and dive into the code to see what's happening.
+## Overview of how to guides
 
-
-We hope you find this useful.
-
-
-## Everyday basics
-These are the things that every application has to have.
+### Master the basics
+These are the things that every application has to have, and basic skills to help developers building applications on the Genesis application platform.
 
 <Grid container>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Set up authorisation" link="../how-to/ht-auth/" text="Understand the principles of authorising your users at every level.">
+        <QuickCard heading="Create a simple front end" link="/how-to/ht-front-end-example/" text="See how to create a simple front end using Genesis components.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Join tables and expose them" link="../how-to/ht-join-expose/" text="Join tables to create views - useful ways of looking at data. Then create queries so that these can be displayed at the front end.">
+        <QuickCard heading="Display joined data" link="/how-to/ht-join-expose/" text="Join tables to create views - useful ways of looking at data. Then create queries so that these can be displayed at the front end.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Create a new page" link="../how-to/ht-front-end-simple/" text="See how to create new pages and insert simple components.">
+        <QuickCard heading="Create a simple page" link="/how-to/ht-create-simple-page/" text="See how to create new pages and insert simple components.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Use one field in many tables" link="../how-to/ht-shareable-enums/" text="You don't want to declare the same field multiple times. You can declare it once and use it any table you like. See our example of an enum.">
+        <QuickCard heading="Get to grips with Kotlin" link="/how-to/ht-kotlin/" text="Simple practical examples to help you master Kotlin concepts.">
         </QuickCard>
     </Grid>
 </Grid>
 
-## Example applications
-
-Run, build, and dive into the code to see what's happening. Comments are included at key points in the files to show you what is controlling what.
+### Enhance your application
+These are common features required in many applications.
 
 <Grid container>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Running an example app" link="../how-to/ht-run-examples/" text="Find out how to clone, build and run our example apps.">
+        <QuickCard heading="Authorize your data" link="/how-to/ht-auth/" text="Understand the principles of authorizing your users at every level.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Set up audited tables" link="../how-to/ht-audit/" text="Make any table in your database an audited table.">
+        <QuickCard heading="Audit changes to a table" link="/how-to/ht-audit/" text="Make any table in your database fully audited.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Ingesting CSV files" link="../how-to/ht-ingest-csv/" text="Receive CSV files from an external source and update your database in the relevant way.">
+        <QuickCard heading="Consume CSV files" link="/how-to/ht-ingest-csv/" text="Receive CSV files from an external source and update your database in the relevant way.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Interoperate with other front ends" link="../how-to/ht-fdc3/" text="Use the FDC3 standard for front-end interoperability; enable your users to click between your Genesis app and other front-end applications. ">
+        <QuickCard heading="Send emails with attachments" link="/how-to/ht-notify-email/" text="Send emails with attachments easily by utilizing the notify and alerts component.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Create a simple front end" link="../how-to/ht-front-end-example/" text="See an application with multiple pages and a useful set of displays and interactivity.">
+        <QuickCard heading="Consume a REST API" link="/how-to/ht-rest/" text="Consume data from a REST API into your application.">
+        </QuickCard>
+    </Grid>
+     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Consume and publish JMS" link="/how-to/ht-jms/" text="Consume from and publish to JMS queues.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Testing" link="../how-to/ht-prepare-test/" text="Find out how to prepare your system for automated testing. ">
+        <QuickCard heading="Consume and publish Kafka" link="/how-to/ht-consume-kafka/" text="Connect to Kafka to consume from and publish to Kafka topics.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Add Desktop Interoperability" link="/how-to/ht-fdc3/" text="Use the FDC3 standard for front-end interoperability; enable your users to click between your Genesis app and other front-end applications. ">
         </QuickCard>
     </Grid>
 </Grid>
 
+### Test your application
+
+Learn how to test your application performs as you need it to.
+
+<Grid container>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Prepare automated tests" link="/how-to/ht-prepare-test/" text="This page looks at the tools and the dependencies you can set up for testing.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Unit test the front end" link="/how-to/ht-web-unit-test/" text="Learn how to create unit tests for the front end of your applications.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Add end-to-end tests" link="/how-to/ht-web-e2e-test/" text="Write end-to-end tests to test a full-stack application.">
+        </QuickCard>
+    </Grid>
+</Grid>
+
+
+
+## Run the codebases
+
+You can clone an app in the standard way:
+
+1. Follow the relevant link to the repository in the *How To...* page, for example [Ingesting csv files](https://github.com/genesiscommunitysuccess/howto-csv-ingress/tree/main).
+
+2. Copy the url for the repository.
+
+3. Clone the repository to a suitable working directory in your local files. For example:
+
+```
+C:\Users\MarcusAurelius\projects>git clone https://github.com/genesiscommunitysuccess/howto-csv-ingress.git
+```
+
+:::tip
+Avoid using a network drive or a drive that synchronises with a cloud back-up system (such as OneDrive or Sharepoint). This could result in poor performance.
+:::
+
+Once the project is cloned locally, you can run the app using [Genesis Start](/develop/development-environment/genesis-start/) else if you have IntelliJ on your machine, via the [Genesis IntelliJ plugin](/develop/development-environment/intellij-plugin/)
 
 
 

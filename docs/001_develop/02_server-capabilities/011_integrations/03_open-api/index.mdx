@@ -1,0 +1,59 @@
+---
+title: 'Open API'
+sidebar_label: 'Open API'
+id: server-open-api
+keywords: [server, integration, open api]
+tags:
+  - server
+  - integration
+  - open api
+sidebar_position: 3
+---
+
+:::important
+
+Open API support was introduced in version 7.0 of the Genesis platform.
+
+:::
+
+The Genesis Application Platform supports [Open API](https://swagger.io/specification/) for external systems to integrate with any Genesis application.
+
+Genesis makes this easy to configure and set up, and an Open API specification is generated for the following resources:
+
+* [Request Server](/develop/server-capabilities/real-time-queries-data-server/)
+  * The specification is generated for every GPAL requestReply` codeblock`.
+* [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/)
+  * The specification is generated for each GPAL `eventHandler` codeblock.
+* [Custom Endpoints](/develop/server-capabilities/integrations/custom-endpoints/)
+  * The specification is generated for each GPAL Custom Endpoint.
+  * The standard specification can be augmented using the `openapi { ... }` DSL, [Custom Endpoints](/develop/server-capabilities/integrations/custom-endpoints#openapi).
+
+Internally, the framework uses a metadata system to generate JSON schemas for input and return objects in the Open API spec. For more details, see our pages on [Network messages - type-safe messages](/develop/server-capabilities/communications/#type-safe-messages) and [metadata annotations](/develop/server-capabilities/communications/#metadata-annotations).
+
+## Accessing the Open API specification
+
+:::important
+
+Genesis Open API supports Open API version 3.1.
+
+:::
+
+:::important
+
+All requests to the rest endpoints below need to be [authenticated to get a `SESSION_AUTH_TOKEN` for the requests](/develop/server-capabilities/access-control/authentication/#event_login_auth).
+
+:::
+
+The Open API specification is generated at runtime and is available at the following endpoints:
+
+Full specification: 
+`https://{server-host}/gwf/open-api/spec/`
+
+Service specific specification: 
+`https://{server-host}/gwf/open-api/spec/{service-name}`
+
+You can also [generate the Open API specification when running via the IntelliJ plugin](/develop/development-environment/intellij-plugin/#openapi)
+
+You can verify the specification by copying the contents into [Swagger Editor](https://editor-next.swagger.io/)
+
+For an example specification, [see here](pathname:///file/openapi-sample.yaml).

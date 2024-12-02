@@ -11,5 +11,5 @@ LOG.info("This is an info message")
 The `LOG` instance is a Logger from [SLF4J](https://www.slf4j.org/).
 
 :::note
-In order to see these messages, you must set the logging level accordingly. You can do this using the [logLevel](../../../operations/commands/server-commands/#loglevel) command.
+In order to see these messages, you must set the logging level accordingly. You can do this using the [logLevel](/build-deploy-operate/operate/commands/#loglevel) command.
 :::

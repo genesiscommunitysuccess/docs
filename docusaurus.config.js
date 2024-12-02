@@ -15,7 +15,7 @@ const config = {
   title: "Genesis Application Platform for Financial Markets",
   tagline:
     "The Platform with 50+ Modern Building Blocks to Accelerate App Development.",
-  url: "https://learn.genesis.global/",
+  url: "https://docs.genesis.global/",
   baseUrl,
   favicon: "img/favicon.ico",
   organizationName: "genesis",
@@ -29,13 +29,6 @@ const config = {
   onBrokenMarkdownLinks: "warn", // please do NOT change this to 'warn', fix or remove your broken links instead
   onDuplicateRoutes: "throw",
   clientModules: ["./src/client-modules/genesislcap.js"],
-  scripts: [
-    {
-      src: "https://myaskai.com/ev-embed-chat-js-min?id=IxBBJkH6SbnXxwP5IBMjEVZX7alEdk",
-      id: "IxBBJkH6SbnXxwP5IBMjEVZX7alEdk",
-      defer: true,
-    },
-  ],
   plugins: [
     [
       "@docusaurus/plugin-client-redirects",
@@ -90,7 +83,7 @@ const config = {
            */
           editUrl:
             "https://github.com/genesiscommunitysuccess/docs/edit/master/",
-          showLastUpdateTime: true,
+          showLastUpdateTime: false,
           /**
            * editCurrentVersion: false allows people to make changes to any version of the docs they find an issue with.
            * Alternatively, we could direct all edits to the current version. However, with our infrequent docs releases,
@@ -144,11 +137,10 @@ const config = {
     },
     navbar: {
       items: [
-        { type: "doc", docId: "platform-overview/platform-overview", label: "Platform Overview", position: "right"},
-        { type: "doc", docId: "develop/develop-landing", label: "Develop", position: "right" },
+        { type: "doc", docId: "develop/platform-overview", label: "Develop", position: "right" },
         { type: "doc", docId: "how-to/how-to-landing", label: "How To Guides", position: "right" },
         { type: "doc", docId: "build-deploy-operate/bdo-overview", label: "Build, Deploy & Operate", position: "right" },
-        { type: "doc", docId: "release-notes/latest-releases", label: "Release Notes", position: "right" },        
+        { type: "doc", docId: "release-notes/latest-release", label: "Release Notes", position: "right" },        
         // {
         //   type: "html",
         //   position: "right",

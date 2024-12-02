@@ -1,0 +1,385 @@
+---
+title: 'Text Field'
+sidebar_label: 'Text Field'
+id: client-interaction-text-field
+keywords: [interaction, interactive, input, text, field, form, data]
+tags:
+- interaction
+- interactive
+- input
+- text
+- form
+- data
+sidebar_position: 8
+---
+
+import { TextFieldWithSlot } from '../../../../../examples/ui/client-capabilities/interaction/text-field'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Text Field
+
+Use cases:
+* User registration and login
+* Data entry
+* Search boxes
+* Comment sections
+* Search filters
+
+## Example
+
+<TextFieldWithSlot />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-text-field>Sample Text Field</rapid-text-field>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <div>
+            <label>Simple text field</label>
+            <rapid-text-field
+                :value=${sync((x) => x.fieldValue)}
+                @change="${(x, ctx) => x.fieldValueChanged(ctx.event)}"
+                type="text">
+            </rapid-text-field>
+        </div>
+        <div>
+            <label>Number field with start, end slots and placeholder text</label>
+            <rapid-text-field
+                @change="${(x, ctx) => x.fieldValueChanged(ctx.event)}"
+                type="number">
+                <div slot="start">$</div>
+                <div slot="end">$</div>
+            </rapid-text-field>
+        </div>
+        <div>
+            <label>Disabled text field</label>
+            <rapid-text-field type="text" disabled>
+            </rapid-text-field>
+        </div>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      @observable fieldValue = '';
+      fieldValueChanged() {
+        console.log(this.fieldValue);
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-text-field></rapid-text-field>
+    ```
+    Usage
+    ```typescript
+    export function MyComponent() {
+
+      const [textFieldValue, setTextFieldValue] = useState(false);
+
+      const handleTextFieldChanged = (event) => {
+        const target = event.target as HTMLInputElement;
+        console.log(target.value);
+        setTextFieldValue(target.value)
+      };
+      return (
+        <div>
+          <label>Simple text field</label>
+          <rapid-text-field type="text">
+          </rapid-text-field>
+        </div>
+        <div>
+            <label>Number field with start, end slot and placeholder</label>
+            <rapid-text-field onChange={handleTextFieldChanged} type="number" placeholder="Enter text here">
+                <div slot="start">$</div>
+                <div slot="end">%</div>
+            </rapid-text-field>
+        </div>
+        <div>
+            <label>Disabled text field</label>
+            <rapid-text-field type="text" disabled>
+            </rapid-text-field>
+        </div>
+      );
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-text-field></rapid-text-field>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    @Component({
+      selector: 'my-root',
+      template: `
+          <div>
+              <label>Simple text field</label>
+              <rapid-text-field (change)="fieldValueChanged($event)" type="text">
+              </rapid-text-field>
+          </div>
+          <div>
+              <label>Number field with start slot</label>
+              <rapid-text-field
+                      (change)="fieldValueChanged($event)"
+                      placeholder="Enter amount here"
+                      type="number">
+                  <div slot="start">$</div>
+                  <div slot="end">%</div>
+              </rapid-text-field>
+          </div>
+          <div>
+              <label>Disabled text field</label>
+              <rapid-text-field type="text" disabled>
+              </rapid-text-field>
+          </div>
+      `,
+      styleUrls: ['./my.component.css'],
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class AppComponent {
+
+      textFieldValue: string;
+
+      fieldValueChanged(event: Event): void {
+        console.log((event.target as HTMLInputElement).value);
+        this.textFieldValue = (event.target as HTMLInputElement).value
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax.
+
+### Attributes
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>autofocus</td>
+      <td><code>boolean</code></td>
+      <td>When true, the component will be focused when the page has finished loading</td>
+<td>
+
+```typescript
+<rapid-text-field ?autofocus="${(x) => x.autoFocus}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>appearance</td>
+      <td><code>string</code></td>
+      <td>Can be <code>outline</code> or <code>filled</code></td>
+<td>
+
+```typescript
+<rapid-text-field appearance="outline">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>disabled</td>
+      <td><code>boolean</code></td>
+      <td>Similar to <code>readonly</code>, but with a blur on the component</td>
+<td>
+
+```typescript
+<rapid-text-field ?disabled="${(x) => x.isDisabled}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>form</td>
+      <td><code>string</code></td>
+      <td>Associates this component with a form. Form <code>id</code> needs to be passed. If no Id is provided, then it will be associated with the ancestor form</td>
+<td>
+
+```typescript
+<rapid-text-field form="myForm">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>maxlength</td>
+      <td><code>number</code></td>
+      <td>The maximum number of characters allowed</td>
+<td>
+
+```typescript
+<rapid-text-field maxlength="${(x) => x.maxLength}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>minlength</td>
+      <td><code>number</code></td>
+      <td>The minimum number of characters allowed</td>
+<td>
+
+```typescript
+<rapid-text-field minlength="${(x) => x.minLength}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>Defines the name of the element</td>
+<td>
+
+```typescript
+<rapid-text-field name="username">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>placeholder</td>
+      <td><code>string</code></td>
+      <td>Sets placeholder text for the element (which disappears when the user starts typing)</td>
+<td>
+
+```typescript
+<rapid-text-field placeholder="Enter your name">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>readonly</td>
+      <td><code>boolean</code></td>
+      <td>If true, the user cannot change the value of this field</td>
+<td>
+
+```typescript
+<rapid-text-field ?readonly="${(x) => x.isReadonly}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td><code>number</code></td>
+      <td>Sets the width of the component</td>
+<td>
+
+```typescript
+<rapid-text-field size="${(x) => x.fieldSize}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>step</td>
+      <td><code>number</code></td>
+      <td><strong>Only works with</strong> <code>type="number"</code>. Defines the amount the field value changes each time the user clicks to increase or decrease the field value</td>
+<td>
+
+```typescript
+<rapid-text-field type="number" step="${(x) => x.stepValue}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td><code>string</code></td>
+      <td>Sets the type of the text-field. Can be "email" | "password" | "tel" | "number" | "text" | "url".</td>
+<td>
+
+```typescript
+<rapid-text-field type="email">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>value</td>
+      <td><code>string</code></td>
+      <td>Sets the value for this component. Use the `sync` utility to bind the data the template back to the model.</td>
+<td>
+
+```typescript
+<rapid-text-field value="${sync((x) => x.fieldValue)}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+
+| Slot | Use |
+|---|---|
+| start | Start slot. |
+| control | The input element. |
+| end | End slot. |
+
+#### Example
+Numeric amount using `$` symbol in start slot
+<TextFieldWithSlot />
+
+Implementation
+```html
+<rapid-text-field type="text" inputmode="numeric" pattern="\d*">
+    <div slot="start">
+        $
+    </div>
+</rapid-text-field>
+```
+
+### Parts
+
+| Part |
+|---|
+| start |
+| control |
+| end |
+
+### Fired Events
+This component doesn't emit any events.
+
+### Listened Events
+This component doesn't listen to any events.
+
+### Further details
+This component is an implementation of an HTML [text-field](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/text) element.

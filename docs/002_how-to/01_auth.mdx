@@ -21,7 +21,7 @@ For any application that has more than minimal complexity, you will want to give
 The Genesis Platform enables you to do this in extremely precise ways to match your business requirements.
 
 ## What you can control, and where
-Until you start to specify any permissions, everything is accessible by any authenticated user. But you can insert permmission statements in the relevant places to control **access to data** and **the ability to change it**.
+Until you start to specify any permissions, everything is accessible by any authenticated user. But you can insert permission statements in the relevant places to control **access to data** and **the ability to change it**.
 
 You can also control how users are able to change data. For example, one user might be allowed to create and edit records in a table, but not delete them. Another user might be allowed to create, edit and delete records in that table.
 
@@ -30,19 +30,19 @@ All you need to do is specify the permissions at each point. The Genesis Platfor
 ### Permissions for the back end
 Broadly speaking, you can insert permission statements on the back end at three levels:
 
-- tables (data entities): control access to an entire table. This is examined in detail in our page on [Introducing authorisation](/server/access-control/authorisation-introduction/#permissions-for-tables-data-entities).
-- records within a table (rows): control who has access to specific records based on the contents of each record - for example, view only records for a specific currency. This is examined in detail in our page on [Introducing authorisation](/server/access-control/authorisation-introduction/#permissions-for-records-rows).
-- fields within a table (attributes/columns): control which columns are visible to different users. There is a little more about this in our page on [Introducing authorisation](/server/access-control/authorisation-introduction/#permissions-for-fields-attributescolumns).
+- tables (data entities): control access to an entire table.
+- records within a table (rows): control who has access to specific records based on the contents of each record - for example, view only records for a specific currency.
+- fields within a table (attributes/columns): control which columns are visible to different users.
 
 ### Permissions for the front end
-You can also add authorisation at the front end. This reinforces the back-end permissions and creates a seamless experience for users with different permissions.
+You can also add authorization at the front end. This reinforces the back-end permissions and creates a seamless experience for users with different permissions.
 
 For example, if a user does not have permission to insert or update records on a grid of data, you can set the front end so that the user does not see the relevant buttons or commands on that display. 
 
 So, you have full control of data within your application at the most granular level.
 
 ## How does it work?
-Authorisation for data is based on Right Codes that you define for your application.  
+Authorization for data is based on Right Codes that you define for your application.  
 
 All users can have one or more User Profiles. Each User Profile has one or more Right Codes.
 
@@ -59,9 +59,9 @@ For example, you could set up the following user profiles:
 
 You could then give all the traders on the team the User Profile Trader. This includes the head trader in the team, but you then also give that user the User Profile Senior Trader. This gives your head trader a superset of rights.
 
-### Front-end authorisation
+### Front-end authorization
 
-You can apply authorisation at the front end to remove grids and buttons where there is no appropriate permission.  If you don't want to do this, the system is still protected by the premissioning you have set on the back end. Users will receive error messages explaining their lack of permissions.
+You can apply authorization at the front end to remove grids and buttons where there is no appropriate permission.  If you don't want to do this, the system is still protected by the permissioning you have set on the back end. Users will receive error messages explaining their lack of permissions.
 
 ## Example application
 
@@ -73,17 +73,17 @@ Check our [example application](https://github.com/genesiscommunitysuccess/howto
 The example application has a single data table called Trade. After a remap, this will be populated with 10 entries - 5 in each of 2 Countries. Two further tables are added:
 
 - Countries (single column)
-- Mapping (which maps between User and Country to enable row authorisation based upon permitted Countries)
+- Mapping (which maps between User and Country to enable row authorization based upon permitted Countries)
 
-The front-end grid demonstrates different authorisations in each quadrant - these map directly to four different Data Server queries, which you can see in the file **Permissions-dataserver.kts**.
+The front-end grid demonstrates different authorizations in each quadrant - these map directly to four different Data Server queries, which you can see in the file `Permissions-dataserver.kts`.
 
 Only Users assigned to the Profile **Full_Access** can insert or modify trades. Currently, this is the user **AmyAccess**, but more Profiles and Users can be added to the application once it is installed and running.
 
-For example, you can edit the User Country table on the **Static** tab to remove Canada from AmyAccess. Once you have done that, AmyAccess will only be able to enter trades against the UK. You can see the code in the file **Permissions-eventhandler.kts**.
+For example, you can edit the User Country table on the **Static** tab to remove Canada from AmyAccess. Once you have done that, AmyAccess will only be able to enter trades against the UK. You can see the code in the file `Permissions-eventhandler.kts`.
 
 Note that only the user **admin** can modify Profiles and add users. The password for all users who are set up in advance is **genesis**.
 
-The application also demonstrates authorisation at a dataserver and eventhandler level.
+The application also demonstrates authorization at a dataserver and eventhandler level.
 
 :::info
 The [**ReadMe** file](https://github.com/genesiscommunitysuccess/howto-csv-ingress/blob/main/README.md) in the project folder provides further information on the project.
@@ -91,13 +91,13 @@ The [**ReadMe** file](https://github.com/genesiscommunitysuccess/howto-csv-ingre
 
 ## A more complex scenario
 
-Authorisation can manage more complex situations.
+Authorization can manage more complex situations.
 
 For example, consider the lifecycle of a trade. Perhaps you want to ensure that only super users can modify trades that have settled. 
 
 To achieve this, you could modify an existing TRADE_MODIFY event and then create a new modify event for super users only.
 
-The following code modifies the earlier TRADE_MODIFY event to prevent users from changing the transaction if it has a status of `Settled`. This is defined in an [`onValidate`](/server/event-handler/basics/#adding-validation) codeblock:
+The following code modifies the earlier TRADE_MODIFY event to prevent users from changing the transaction if it has a status of `Settled`. This is defined in an [`onValidate`](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate) codeblock:
 
 ```jsx
   eventHandler<Trade>("TRADE_MODIFY", transactional = true) {
@@ -140,7 +140,7 @@ Go to our [**Testing**](/how-to/ht-prepare-test/) page for details of our testin
 
 For testing the auth permissions we have described here, we use common automation frameworks: cucumber and playwright. 
 
-Our example tests are able to test authorisation via both the user interface and the API.
+Our example tests are able to test authorization via both the user interface and the API.
 
 There are three types of file.
 
@@ -171,7 +171,7 @@ Genesis has tested the examples successfully on the H2 and Postgres databases.
 
 Find more details in our in our reference documentation:
 
-- [Authorisation](/server/access-control/authorisation-overview/) 
-- [Event Handlers](/server/event-handler/basics/) 
-- [`onValidate` codeblocks](/server/event-handler/basics/#adding-validation)
+- [Authorization](/develop/server-capabilities/access-control/authorization/) 
+- [Event Handlers]/develop/server-capabilities/core-business-logic-event-handler/) 
+- [`onValidate` codeblocks](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate)
 
