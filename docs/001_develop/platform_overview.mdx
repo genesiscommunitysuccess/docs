@@ -4,12 +4,6 @@ sidebar_label: 'Platform overview'
 id: 'platform-overview'
 ---
 
----
-title: 'Platform overview'
-sidebar_label: 'Platform overview'
-id: 'platform-overview'
----
-
 The Genesis Application Platform enables you to deliver fast, compliant, secure, scalable, real-time financial-markets-grade applications to production 10 times faster than before by leveraging prebuilt microservices and micro front-ends fine tuned for the financial market's needs.
 
 Let's look at the components of the platform that enable this accelerations.
@@ -93,7 +87,7 @@ Check the [Evaluator](/develop/server-capabilities/real-time-triggers-evaluator/
 
 ## Access and authorization
 
-Users must be authenticated before they can use a Genesis application, whether it be via a user interface, or using a client API. There is no need to code this controlled access. Simple set-up enables you to create a password for the application itself, or you can use SSO or an external SSO provider.
+Users must be authenticated before they can use a Genesis application, whether it be via a user interface, or using a client API. There is no need to code this controlled access. Simple set-up enables you to create a password for the application itself, or you can use LDAP or an external SSO provider.
 
 Authorization enables you to control precisely which users have access to specific information and functions. For example, you can specify that User A and User B have access to a specific query or event. You can do this with as little as a single line of code in the relevant query or event. More precisely, you can set them so that so that User A can only view trades settling in one country, while user B can only view this settling in another country.
 
@@ -111,7 +105,13 @@ Every application needs a rich, responsive, real-time user interface. You can bu
 
 These components can be quickly composed into fully functional web application using any of the major Web UI frameworks, such as Angular or React. Or you can simply work with the raw Web Components.   
 
-So you can quickly add grids of data, input forms, charts and more. Micro front-ends, such as the entity manager enable you to set up a grid with an accompanying form for submitting and changing records in a single configuration. At the other end of the scale, there is complete scope for creating pages from lower-level building blocks such as Dialogs, Menus, Banners, Breadcrumbs.
+So you can quickly add grids of data, input forms, charts and more. Micro front-ends, such as the entity manager enable you to set up a grid with an accompanying form for submitting and changing records in a single configuration. At the other end of the scale, there is complete scope for creating pages from lower-level building blocks such as Dialogs, Menus, Banners and Breadcrumbs.
+
+Other tools are provided to give you ways of creating your web UI at speed. For example, the Design System Configurator gives enables you to define a single consistent layout for all your pages -- simply by adjusting some settings, where you can immediately see the effect of your change. When you have the right look, one click saves the code for your design system.
+
+![Design System Configurator](/img/000_platform-overview/design-system-config.png)
+
+There is also the UI Generator, which enables you to generate the code for a screen layout from a static image. To refine and extend the initial UI generated, it includes a handy HTML catalogue, where you can just click to insert the relevant code snippet into your code and complete the configuration.
 
 :::info
 View our reference documentation on [components](/develop/client-capabilities/).
@@ -124,4 +124,19 @@ View [how to create a simple front end](/how-to/ht-front-end-example/).
 The diagram below provides an overview of the typical components in any given application.
 
 ![Entity Manager Example](/img/000_platform-overview/simple-3.png)
+
+- The Event Handler enables the web client (and other clients) to interact with the database.
+
+- The Data Server enables the the web client and other clients to retrieve streaming data that is updated in real time.
+
+- Similarly, the Request Server supplies snapshot data - anything that is not modified during the day,
+
+- Authorization is coded into each of these to ensure that only permissioned users have access to the relevant data and features. This is policed by the Auth component, which is essential to all Genesis applications.
+
+- The Consolidator aggregates data in real time - it is the Data Server that makes this data available to clients.
+
+- The Data Pipeline takes in data from external systems, transforming it into the correct format for the application's database (the database actions are handled by the Event Handler). It is able to transform data into formats that suit the relevant external systems that you are passing data to.
+
+- Other components provide functions that are common requirements to financial applications. In the example above, the Notifications and Alerts component has been added, enabling the application to set up not only internal notifications to users within the application, but also outgoing messages via email, Symphony or Microsoft Teams.
+
 
