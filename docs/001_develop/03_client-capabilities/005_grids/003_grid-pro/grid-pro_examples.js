@@ -1,8 +1,6 @@
 import useIsBrowser from '@docusaurus/useIsBrowser';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { CodeSection } from '../../../../../examples/ui/documentationBase';
-
-const RapidImports = require('../../../../../examples/ui/rapidImports');
 
 const rowData = [
   { make: 'Toyota', model: 'Celica', price: 35000, year: 2021, color: 'red' },
@@ -33,9 +31,13 @@ function GridProExampleBase({
   const isBrowser = useIsBrowser();
   const grid = useRef(null);
 
-  if (isBrowser) {
-    RapidImports.registerComponents();
-  }
+  useEffect(() => {
+    if (isBrowser) {
+      import('../../../../../examples/ui/rapidImports').then((RapidImports) => {
+        RapidImports.registerComponents();
+      });
+    }
+  }, [isBrowser]);
 
   const loadGridOptions = () => {
     if (grid.current) {
