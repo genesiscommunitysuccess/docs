@@ -13,7 +13,7 @@ tags:
 
 # Foundation Forms - custom control renderers
 
-You can create custom control renderers to work alongisde the standard set of foundation form controls.
+You can create custom control renderers to work alongside the standard set of foundation form controls.
 
 This page guides you through the steps. You need to create a renderer class and a control rank. You then register the custom renderer in your template.
 
@@ -21,7 +21,7 @@ This page guides you through the steps. You need to create a renderer class and 
 
 ### Custom renderer template
 
-You need to create a custom renderer template to render your new form control. This example creates a control that renders options using the [Segmented Control](/web/web-components/form/segmented-control/?_highlight=segment) element.
+You need to create a custom renderer template to render your new form control. This example creates a control that renders options using the [Segmented Control](/develop/client-capabilities/forms/form-layout/client-interaction-segmented-control/?_highlight=segment) element.
 
 ```ts
 export const SegmentedControlRendererTemplate= () => html<DispatchRenderer>`
@@ -80,7 +80,7 @@ export const SegmentedControlRenderer: RendererEntry = {
 
 The last step to enable you to use your new custom renderer is to register it with foundation-forms and give the right config so that the form class knows to render it.
 
-In creating your UiScchema, remember that the tester function is checking if `segmented` is set in the options of the `UISchemaElement`.
+In creating your UiSchema, remember that the tester function is checking if `segmented` is set in the options of the `UISchemaElement`.
 
 ```ts
 rankWith(SEGMENTED_CONTROL_RANK, (args) => {

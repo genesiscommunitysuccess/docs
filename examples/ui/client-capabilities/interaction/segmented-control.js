@@ -20,7 +20,7 @@ export default function SegmentedControlDemo({ children, color }) {
 
 	return (
 		<CodeSection>
-			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
+			<div style={{ color: 'var(--neutral-foreground-rest)', width: '100%'}}>
 				<div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', flexDirection: 'column', }}>
 					<rapid-segmented-control ref={segmentedControlRef} onClick={handleChange}>
 						<rapid-segmented-item value="1">Item 1</rapid-segmented-item>

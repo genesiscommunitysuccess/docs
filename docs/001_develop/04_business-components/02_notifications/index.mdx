@@ -1,6 +1,30 @@
 ---
-title: 'Notifications Server'
+title: 'Notifications and Alerts'
+sidebar_label: 'Notifications and Alerts'
+sidebar_position: 1
 id: business-components-notifications-server
+keywords: [notifications, alerts]
+tags:
+  - notifications
+  - alerts
 ---
 
-<!-- This file is used for generate parent category page -->
+The Genesis Notifications module enables you to configure an application to send and receive messages to and from various messaging services.
+You can send messages to:
+
+* The screen of any Genesis application
+* Email (via SMTP)
+* Symphony
+* Microsoft Teams
+
+The Notify module provides two Microservices: GENESIS_NOTIFY_DISPATCHER and GENESIS_NOTIFY_MANAGER. 
+
+The dispatcher service listens to updates on the NOTIFY table in the database and takes care of sending the notifications where they need to go. It is possible to send to multiple destinations, such as Email and Symphony. It runs in a primaryOnly configuration to ensure notifications are not duplicated.
+
+The manager service exposes all the APIs for creating notifications, as well as managing run-time configurations of routes and rules. It runs in an active/active configuration.
+
+Here, we shall give you a high-level view of the configuration items and why they are needed.
+
+There are separate configuration details for each service that you connect to (Email, Teams and Symphony), along with useful examples.
+
+[Here you can find a demonstration of Notifications and Alerts in action](https://genesis.global/marketplace/notifications-alerts/)

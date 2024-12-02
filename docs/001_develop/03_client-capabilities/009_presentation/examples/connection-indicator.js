@@ -15,7 +15,7 @@ export default function ConnectionIndicatorDemo({ children, color }) {
 	setup();
 	return (
 		<CodeSection>
-			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
+			<div style={{ color: 'var(--neutral-foreground-rest)', width: '100%'}}>
 				<div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', width: '200px', flexDirection: 'column', }}>
 					<rapid-connection-indicator show-label>
 					</rapid-connection-indicator>
