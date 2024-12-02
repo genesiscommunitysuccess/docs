@@ -67,7 +67,8 @@ Use cases:
   ```typescript
   export function MyComponent() {
     const handleTextAreaChanged = (event) => {
-      console.log({ event.target.value })
+      const target = event.target as HTMLInputElement;
+      console.log(target.value);
     };
     return (
       <rapid-text-area onChange={handleTextAreaChanged}></rapid-text-area>
@@ -85,7 +86,6 @@ Use cases:
   Usage
   ```typescript
   import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-  import { FormsModule } from '@angular/forms';
   @Component({
     selector: 'my-root',
     template: `
@@ -96,7 +96,6 @@ Use cases:
     styleUrls: ['./my.component.css'],
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [FormsModule],
   })
   export class AppComponent {
     onTextAreaChange(event: Event) {

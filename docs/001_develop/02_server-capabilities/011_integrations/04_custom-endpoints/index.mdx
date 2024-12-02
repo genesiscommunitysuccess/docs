@@ -12,4 +12,1501 @@ tags:
 sidebar_position: 4
 ---
 
- Coming Soon...
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Log from '/snippet/_LOG.md'
+import CommonPermissions from '/snippet/_common-permissions.md'
+import CommonPermissionsQuery from '/snippet/_common-permissions-query.md'
+import CommonAuthenticateFirst from '/snippet/_common-authenticate-first.md'
+import CommonOpenAPI from '/snippet/_common-open-api.md'
+
+## Overview
+
+The resources you create via the Request Server, Data Server and Event Handler are exposed to the front end as a series of REST endpoints.
+You can also create custom endpoints.
+
+Example uses for these custom endpoints include:
+
+* file upload and download
+* integration with external systems
+
+:::info
+
+Custom endpoints are exposed as HTTP endpoints and are not available with Websockets.
+
+:::
+
+Custom endpoints are defined in the `*-web-handler.kts` files.
+
+Once a web-handler.kts is available within your product/script directory, it is immediately available as an endpoint in the router.
+
+## Example configuration
+
+The following shows example web endpoint configurations.
+
+
+```kotlin
+import global.genesis.trade.CreateTradeResponse
+import global.genesis.trade.InstrumentClient
+import global.genesis.trade.TradeInformation
+import global.genesis.trade.TradeInformationClient
+import java.nio.file.Files
+
+webHandlers {
+    val instrumentClient = injector<InstrumentClient>()
+    val tradeInformationClient = injector<TradeInformationClient>()
+
+    endpoint(GET, "instruments") {
+        handleRequest {
+            val instruments = instrumentClient.getInstruments()
+            LOG.debug("Retrieved instruments: {}", instruments)
+            instruments
+        }
+    }
+
+    endpoint<Unit, TradeInformation>(GET, "trades") {
+        permissioning {
+            responseAuth("INSTRUMENTS") {
+                authKey { data.instrument }
+            }
+        }
+
+        val tradeId: String by queryParameter("trade-id")
+        handleRequest {
+            val tradeInformation = tradeInformationClient.getTradeInformation(tradeId)
+            LOG.debug("Retrieved trade information: {}", tradeInformation)
+            tradeInformation
+        }
+    }
+
+    endpoint<Trade, CreateTradeResponse>(POST, "trades") {
+        permissioning {
+            requestAuth("INSTRUMENTS") {
+                authKey { data.instrumentId }
+            }
+        }
+
+        handleRequest {
+            val trade: Trade = body
+            val tradeInformation = TradeInformation(trade)
+            val createTradeResponse = tradeInformationClient.createTrade(tradeInformation)
+            LOG.debug("Create trade response: {}", createTradeResponse)
+            createTradeResponse
+        }
+    }
+
+    val tmp = Files.createTempDirectory("test")
+    multipartEndpoint("test") {
+        handleRequest {
+            body.fileUploads.forEach {
+                it.copyTo(tmp.resolve(it.fileName))
+            }
+        }
+    }
+}
+```
+
+###### GET instruments
+
+GET endpoint with path `instruments`.
+
+Using `InstrumentClient` class which encapsulates the integration with an external service.
+
+On handling a request, uses `InstrumentClient` to get some data which is returned on the endpoint's response.
+
+###### GET trades
+
+GET endpoint with path `trades` and query parameter `trade-id`.
+
+Using `TradeInformationClient` class which encapsulates the integration with an external service.
+
+Includes authorisation so only users with access to the instrument (`instrument` field on `TradeInformation`) will see the data.
+
+On handling a request, uses `TradeInformationClient` to get data about a specific trade using the trade id from the query parameter.
+The trade is then returned on the endpoint's response.
+
+###### POST trades
+
+POST endpoint with path `trades` and request body of `Trade`.
+
+Using `TradeInformationClient` class which encapsulates the integration with an external service.
+
+Includes authorisation so only users with access to the instrument (`instrumentId` field on `Trade`) can create a trade associated with that instrument.
+
+On handling a request, converts the Trade object to a TradeInformation object and uses the `TradeInformationClient` to send the data
+to the external service. The external service's response is returned directly on the endpoint's response also.
+
+###### Upload file
+
+Creates a temporary directory to write the uploaded file to.
+
+On handling a request, reads all file uploads from the request body and writes them to the temporary directory.
+
+## Configuration options
+
+### `webHandlers`
+
+The endpoint by default will take its root from the file name. For example, if the file is called **trade-web-handler.kts**, all endpoints are prefixed with **trade**. 
+
+###### Overriding the base path
+
+You can specify a `basePath` in the `webHandlers` block:
+
+```kotlin {1}
+webHandlers("my-base-path") {
+    endpoint(GET, "all-trades") {
+        handleRequest {
+            tradeClient.getAllTrades()
+        }
+    }
+}
+```
+
+In the example above, the path would be: 
+
+* **my-base-path/all-trades**
+
+### `grouping`
+
+You can add extra path segments using the `grouping` function in this way:
+
+```kotlin {2}
+webHandlers("BASE-PATH") {
+    grouping("trade") {
+        endpoint(GET, "all-trades") {
+            handleRequest {
+                tradeClient.getAllTrades()
+            }
+        }
+        endpoint(GET, "big-trades") {
+            handleRequest {
+                tradeClient.getAllTrades()
+                    .filter { it.quantity > 1_000 }
+            }
+        }
+    }
+}
+```
+
+In the example above, the paths would be:
+
+* **tables/trade/all-trades**
+* **tables/trade/big-trades**
+
+#### `endpoint`
+
+Creating an individual endpoint.
+
+This takes 2 parameters, firstly the type of HTTP request, secondly the unique name of the endpoint.
+
+Valid HTTP request types are:
+- GET
+- POST
+- PUT
+- DELETE
+
+
+```kotlin 
+  endpoint(GET, "test") {
+```
+
+###### Request parameters
+
+In addition to the body, endpoints can also take request parameters. These are defined in the `endpoint` block, and are available in the `handleRequest` block.
+
+The framework supports the following parameter types:
+* query parameter
+* path parameter
+* header parameter
+
+These can be optional or required. If a required parameter is missing, it will not be matched. If no matching endpoint is found, a `404 Not Found` will be returned.
+
+Use the `by` syntax to define parameters. Note that these variables are only available within the `handleRequest` block. If they are accessed outside this block, an exception will be thrown.
+
+###### Query parameters
+
+Here is a simple example of how to define a query parameter: 
+
+```kotlin {2,5}
+endpoint(GET, "test") {
+    val name by queryParameter("name")
+
+    handleRequest {
+        "Hello $name"
+    }
+}
+```
+
+Here is an example of how to define an optional query parameter. Optional parameters are always nullable.
+
+```kotlin {2,5}
+endpoint(GET, "test") {
+    val name by optionalQueryParameter("name")
+    
+    handleRequest {
+        "Hello ${name ?: "Anonymous"}"
+    }
+}
+```
+
+###### Path parameters
+
+Path parameters are always required. Here is an example of how to define one:
+
+```kotlin {2,5}
+endpoint(GET, "test/{name}") {
+    val name by pathParameter("name")
+    
+    handleRequest {
+        "Hello $name"
+    }
+}
+```
+
+###### Header parameters
+
+Here is an example of how to define a header parameter:
+
+```kotlin {2,5}
+endpoint(GET, "test") {
+    val name by header("name")
+    
+    handleRequest {
+        "Hello $name"
+    }
+}
+```
+
+Here is an example of how to define an optional header parameter. Optional parameters are always nullable.
+
+```kotlin {2,5}
+endpoint(GET, "test") {
+    val name by optionalHeader("name")
+
+    handleRequest {
+        "Hello $name"
+    }
+}
+```
+
+###### Required values
+
+Headers can also have a set of required values. If the header is present, but the value does not match, then the endpoint will not be matched. Note that the required values are published as part of the OpenAPI specification, unless they are declared a secret.
+
+The below endpoint will only match if the `Test-Header` header is present with its value set to `test`:
+
+```kotlin {2}
+endpoint(GET, "test") {
+    header("Test-Header", "test")
+ 
+    handleRequest {
+        "Hello World"
+    }
+}
+```
+
+###### Secret values
+
+Here is an example of how to define a secret header: 
+
+```kotlin {2}
+endpoint(GET, "test") {
+    headerSecret("secret-header", "secret-value")
+    
+    handleRequest {
+        "OK"
+    }
+}
+```
+
+###### Override status code
+
+By default, all endpoints return a `200 OK` status code. You can override the default response status by setting the status explicitly:
+
+```kotlin {2}
+webHandlers {
+    endpoint<Trade, Trade>(POST, "insert-trade", status = HttpStatusCode.Created) {
+        handleRequest {
+            tradeClient.createTrade(body)
+        }
+    }
+}
+```
+
+#### `multipartEndpoint`
+
+To support file uploads, use the multipartEndpoint function. This function parses the request body as a multipart request and makes the files available in the fileUploads property of the handleRequest block.
+
+```kotlin
+val tmp = Files.createTempDirectory("test")
+multipartEndpoint("test") {
+    handleRequest {
+        body.fileUploads.forEach {
+            it.copyTo(tmp.resolve(it.fileName))
+        }
+    }
+}
+```
+
+#### `config`
+
+The `config` function can be used to configure endpoints, which are supported on different levels: 
+- `webHandlers` level
+- `grouping` level
+- `endpoint` levels
+
+ `config` calls in nested blocks override those in parent blocks.  
+
+###### Example 
+
+This is an example of a `config` block:
+
+```kotlin
+config {
+    requiresAuth = false
+    maxRecords = 10_000
+    logLevel = DEBUG
+
+    json {
+        prettyPrint = true
+        propertyCase = PropertyCase.CAMEL_CASE
+    }
+
+    multiPart {
+        maxFileSize = 10_000_000
+        useDisk = true
+        baseDir = "runtime/router/fileuploadtemp"
+        minSize = 100_000
+    }
+}
+```
+
+###### Available config options
+
+`config` is available within the `webHandler` block, the `grouping` block, the `endpoint` block, and the
+`multipartEndpoint` block.
+
+| Syntax                                               | Description                                                                |
+|------------------------------------------------------|----------------------------------------------------------------------------|
+| `requiresAuth`                                       | Defines that the endpoint requires authentication                          |
+| `maxRecord`                                          | Defines the maximum number of records returned                             |
+| `logLevel`                                           | Defines the log level                                                      |
+| `json { ... }`                                       | Defines the JSON configuration                                             |
+| `multiPart { ... }`                                  | Defines the multipart configuration                                        |
+| `register(requestParsers)`                           | Registers request parsers                                                  |
+| `register(responseComposers)`                        | Registers response composers                                               |
+| `parseRequest<INPUT, TYPE> { ... }`                  | Defines a request parser from INPUT to TYPE                                |
+| `parseRequest<INPUT, TYPE>(contentType) { ... }`     | Defines a request parser for a specific content type                       |
+| `composeResponse<TYPE, OUTPUT> { ... }`              | Defines a response composer for TYPE to OUTPUT                             |
+| `composeResponse<TYPE, OUTPUT>(contentType) { ... }` | Defines a response composer for TYPE to OUTPUT for a specific content type |
+
+##### `json`
+
+| Syntax         | Description                                                           |
+|----------------|-----------------------------------------------------------------------|
+| `prettyPrint`  | Defines that JSON should be pretty printed                            |
+| `propertyCase` | Defines the case of JSON properties, either camel case, or snake case |
+
+##### `multiPart`
+
+| Syntax        | Description                                          |
+|---------------|------------------------------------------------------|
+| `maxFileSize` | Defines the maximum file size                        |
+| `useDisk`     | Defines that files should be written to disk         |
+| `baseDir`     | Defines the base directory for files written to disk |
+| `minSize`     | Defines the minimum size for files written to disk   |
+
+##### `parseRequest`
+
+When parsing a request, the input type tells the endpoint how to handle the initial parsing of the request. For example, if you want to handle the input as a `String`, you can do this:
+
+```kotlin {3-10}
+endpoint<Trade, Trade>(PUT, "trades") {
+    config {
+        parseRequest<String, Trade> {
+            Trade {
+                tradeId = input
+                tradeType = "SWAP"
+                currencyId = "USD"
+                tradeDate = DateTime.now()
+            }
+        }
+    }
+
+    handleRequest {
+        body
+    }
+}
+```
+
+Here, the input type is `String`, and the output type is `Trade`. The `parseRequest` block takes a lambda that takes the input type, and returns the output type. The output type is then passed to the `handleRequest` block as the `body`.
+
+##### `composeResponse`
+
+When composing a response, the output type tells the endpoint how to handle the final part of the response; this can be any type that the endpoint supports. For example, if you want to produce an endpoint to produce a custom xml, you could do this: 
+
+```kotlin {3-12}
+endpoint<String, String>(GET, "trades") {
+    config {
+        composeResponse<Trade, String>(ContentType.APPLICATION_XML) {
+            """
+                <trade>
+                    <tradeId>${response.tradeId}</tradeId>
+                    <tradeType>${response.tradeType}</tradeType>
+                    <currencyId>${response.currencyId}</currencyId>
+                    <tradeDate>${response.tradeDate}</tradeDate>
+                </trade>
+            """.trimIndent()
+        }
+    }
+    
+    produces(ContentType.APPLICATION_XML)
+    
+    handleRequest {
+        tradeClient.getTrade(body)
+    }
+}
+```
+
+#### `produces`
+
+By default, the `handleRequest` function infers the output of the endpoint from the return value of the block. So, if you are only producing output and not receiving any input, you do not need type parameters. The output value is returned as JSON, using the standard serialisation mechanism. 
+
+This is sufficient for most cases, but you can customise the output.
+
+###### Content type
+
+If you want to override the default behaviour and specify an output type, use the call `produces` with a content type. The following content types are supported out of the box:
+
+| Content type               | Name in code                           | Data   |
+|----------------------------|:---------------------------------------|--------|
+| `application/json`         | `ContentType.APPLICATION_JSON`         | JSON   |
+| `application/octet-stream` | `ContentType.APPLICATION_OCTET_STREAM` | Binary |
+| `text/csv`                 | `ContentType.TEXT_CSV`                 | CSV    |
+| `text/yaml`                | `ContentType.TEXT_YAML`                | YAML   |
+| `text/xml`                 | `ContentType.TEXT_XML`                 | XML    |
+
+You can set multiple content types in the `produces` call; the client can specify which one is returned by setting the `Accept` header. If no `Accept` header is specified, then the first content type will be returned. 
+
+```kotlin
+webHandlers {
+    endpoint(GET, "all-trades") {
+        produces(ContentType.TEXT_CSV)
+        handleRequest {
+            tradeClient.getAllTrades()
+        }
+    }
+
+    endpoint(GET, "all-trades-multi") {
+        produces(ContentType.TEXT_CSV, ContentType.APPLICATION_JSON)
+        handleRequest {
+            tradeClient.getAllTrades()
+        }
+    }
+}
+```
+
+###### Return types
+
+By default, the returned value is serialised using the default serialiser. However, this is overruled if the return type specified is in the table below. 
+
+If you specify a return type, the value returned and the behaviour will be as per the table below, regardless of the `Accept` header. 
+
+However, if the `produces` function is used, then the `Accept` header will always be respected. 
+
+| Return type    | Behaviour                                    | Default Content-Type       |
+|----------------|----------------------------------------------|:---------------------------|
+| `Unit`         | No response is returned                      | n/a                        |
+| `String`       | The string is returned as the response       | n/a                        |
+| `ByteArray`    | The byte array is returned as the response   | n/a                        |
+| `File`, `Path` | The file is streamed as the response         | `application/octet-stream` |
+| `InputStream`  | The input stream is streamed as the response | `application/octet-stream` |
+
+#### `accepts`
+
+Endpoints can also receive input. For this, the http request must include a body. The body can be parsed and will be available in the `body` property of the `handleRequest` block. When endpoints receive input, you must provide type parameters for both the request body and the response type:
+
+```kotlin
+webHandlers {
+    endpoint<Trade, Trade>(POST, "insert-trade") {
+        handleRequest {
+            tradeClient.createTrade(body)
+        }
+    }
+}
+```
+
+###### Content type
+
+As with producing output, you can specify the content type of the request body using the `accepts` function. An endpoint is able to accept multiple content types. If no content type is specified, then the endpoint defaults to accept `application/json`. 
+
+These content types are supported out of the box:
+
+| Content type               | Name in code                           | Data   |
+|----------------------------|:---------------------------------------|--------|
+| `application/json`         | `ContentType.APPLICATION_JSON`         | JSON   |
+| `text/csv`                 | `ContentType.TEXT_CSV`                 | CSV    |
+| `text/yaml`                | `ContentType.TEXT_YAML`                | YAML   |
+| `text/xml`                 | `ContentType.TEXT_XML`                 | XML    |
+
+
+```kotlin
+webHandlers {
+    endpoint<Trade, Trade>(POST, "insert-trade") {
+        accepts(ContentType.APPLICATION_JSON, ContentType.TEXT_XML)
+        handleRequest {
+            tradeClient.createTrade(body)
+        }
+    }
+}
+```
+
+#### `handleRequest`
+
+Within the context of `handleRequest`, the following properties are in scope:
+
+| Property   | Description                                  | Available      |
+|------------|----------------------------------------------|:---------------|
+| `db`       | The database instance                        | Always         |
+| `body`     | The body of the request                      | Always         |
+| `userName` | The user name of the user making the request | When logged in |
+| `request`  | The request object                           | Always         |
+
+Any write call to the `db` will create audit entries for auditable tables, and will be executed in a transaction, if supported by the database layer.
+
+Additionally, the `triggerEvent` function is available to trigger events from the endpoint:
+
+```kotlin {4}
+endpoint<Trade, Trade>(POST, "insert-trade") {
+    handleRequest {
+        val trade = tradeClient.createTrade(body).data
+        triggerEvent("NOTIFY_TRADE_CREATED", trade)
+        trade
+    }
+}
+```
+
+#### `exceptionHandler`
+
+Another way to handle different status codes is to handle exceptions. The `exceptionHandler` block enables you to catch specific exceptions and provide a response, including a specific status code.
+
+In this example, we return status code `406 Not Acceptable` for `IllegalArgumentException`:
+
+```kotlin {2,9-13}
+webHandlers {
+    endpoint<Trade, Trade>(POST, "insert-trade", status = HttpStatusCode.Created) {
+        handleRequest {
+            require(body.date >= DateTime.now()) {
+                "Trade date cannot be in the past"
+            }
+            tradeClient.createTrade(body)
+        }
+        exceptionHandler {
+            exceptionHandler<IllegalArgumentException>(HttpStatusCode.NotAcceptable) {
+                exception.message ?: "Error handling trade"
+            }
+        }
+    }
+}
+```
+
+### `permissioning`
+
+The `permissioning` block is used to implement [access control](/develop/server-capabilities/access-control/) measures on the data being returned to a user.
+
+#### `permissionCodes`
+
+`permissionCodes` takes a list of permission codes. The client user accessing the query must have access to **at least one** of the permission codes in the list to be able to access any query data.
+
+```kotlin
+permissioning {
+    permissionCodes = listOf("TradeView", "TradeUpdate")
+}
+```
+
+#### `customPermissions`
+
+The `customPermissions` block takes boolean logic. If this function returns true, the user will be able to access the resource; otherwise, the request will be rejected.  
+It is useful, for example, in the case you have an external API to check against. In this example an `entitlementUtils` object wraps an external API we can call to check the user's username has access.
+
+```kotlin
+customPermissions {
+    entitlementUtils.userIsEntitled(userName)
+}
+```
+
+The `customPermissions` block also has access to `db` so that you can query any data in the database. You can add complex logic in here as needed, and have access to the full inbound message.
+
+```kotlin
+customPermissions {
+    val userAttributes = db.get(UserAttributes.byUserName(userName))
+    userAttributes?.accessType == AccessType.ALL
+}
+```
+
+Where utilizing `customPermissions` you should also consider configuring a [`customLoginAck`](/develop/server-capabilities/access-control/authentication/#customloginack) so that the front end of the application can also permission its components in a similar way.
+
+
+#### `requestAuth`
+
+`requestAuth` provides entity-level authorisation on the request input similar to Event Handlers. In the below example, the user will only be able to use the endpoint if they have an auth entry for the `instrumentId` of the Trade in the request body.
+
+```kotlin
+permissioning {
+    requestAuth(mapName = "ENTITY_VISIBILITY") {
+        authKey { data.instrumentId }
+    }
+}
+```
+
+Full example:
+
+```kotlin
+endpoint<Trade, Trade>(POST, "trades") {
+    permissioning {
+        requestAuth(mapName = "ENTITY_VISIBILITY") {
+            authKey { data.instrument }
+        }
+    }
+
+    handleRequest {
+        tradeClient.createTrade(body)
+    }
+}
+```
+
+#### `responseAuth`
+
+`responseAuth` provides entity-level filtering on the response similar to Request Servers. In the below example, the user will only see Trades where the user has an auth entry for the `instrumentId` of the Trade.
+
+```kotlin
+permissioning {
+    requestAuth(mapName = "ENTITY_VISIBILITY") {
+        authKey { data.instrumentId }
+    }
+}
+```
+
+Full example:
+
+```kotlin
+endpoint(GET, "trades") {
+    permissioning {
+        responseAuth(mapName = "ENTITY_VISIBILITY", flow<Trade>()) {
+            authKey { data.instrumentId }
+        }
+    }
+
+    handleRequest {
+        tradeClient.getAllTrades()
+    }
+}
+```
+
+#### `userHasRight`
+
+`userHasRight` is a helpful function which can be called within the auth block, or anywhere else in client facing server components which have a user accessing them, to determine if a user has a given right.
+
+```kotlin
+if (!userHasRight(userName, "TradeViewFull")) { ... }
+```
+
+## Http status codes
+
+By default, all endpoints return a `200 OK` status code. 
+
+### `endpoint` override
+
+You can override the http status code for an [endpoint](#override-status-code).
+
+### `HttpResponseCode` annotation
+
+Use the `HttpResponseCode` annotation to set the status code for a specific class. This can be especially useful with Kotlin sealed classes, where different subclasses return different status codes.
+
+In the example below, if our endpoint returns `SealedResponse`, we will return a `200 OK` status code for `AllGood`, and a `404 Not Found` status code for `Missing`:
+
+```kotlin {2,5}
+sealed class SealedResponse {
+    @HttpResponseCode(HttpStatusCode.Ok)
+    data class AllGood(val motivation: String) : SealedResponse()
+
+    @HttpResponseCode(HttpStatusCode.NotFound)
+    data class Missing(val sadMessage: String) : SealedResponse()
+}
+```
+
+## Logging
+
+<Log />
+
+## Client API
+
+<CommonAuthenticateFirst />
+
+<CommonOpenAPI />
+
+### REST API
+
+The example below shows an HTTP request to a custom endpoint and the returned HTTP response underneath.
+
+#### Request
+
+```
+GET /trade-service/trades?trade-id=1 HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
+```
+#### Response
+```
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 556
+connection: keep-alive
+{
+    "TRADE_ID" : 1
+    "TRADE_PRICE" : 224.34
+    "DIRECTION" : "BUY"
+    "QUANTITY" : 1000
+    "DATE" : 1730678400000
+    "COUNTERPARTY_ID" : 1
+    "COUNTERPARTY_CODE" : "GEN"
+    "COUNTERPARTY_NAME" : "Genesis"
+    "INSTRUMENT_NAME" : "AAPL"
+    "NOTIONAL" : 224340
+}
+```
+
+### OpenAPI
+
+By default, the framework generates a basic OpenAPI specification for all endpoints. This includes the path, and the schemas of the request and response type (if supported). To enable this, use the `openapi` block to provide additional information, such as descriptions and examples.
+
+We can provide the following information: 
+
+* `description`
+* `summary`
+* `response` 
+* `requestBody`
+* `parameters`
+
+#### Description and summary
+
+We can provide a description and summary for our endpoint:
+
+```kotlin
+endpoint(GET, "test") {
+    openapi {
+        description = "A test endpoint"
+        summary = "This endpoint is available for testing..."
+    }
+    // removed for brevity
+}
+```
+
+#### Response
+
+A schema for the response type used in the endpoint is generated automatically. This schema includes support for sealed types. However, the schema can be customised if needed. You can also provide:
+
+- examples
+- descriptions 
+- additional responses 
+
+Here is an example:
+
+```kotlin {2-13}
+endpoint<TestData>(GET, "test") {
+    openapi {
+        response {
+            description = "A test response"
+            example(TestData("Hello World", 1))
+        }
+        response(HttpStatusCode.NotAcceptable) {
+            noBody()
+        }
+        response(HttpStatusCode.NotFound) {
+            example("Something went missing")
+        }
+    }
+    // removed for brevity
+}
+```
+
+The example above defines the standard response of type `TestData`. There is also an example and a description. We also define that if the status code is `406 Not Acceptable`, then there will be no body. Further, if the status code is `404 Not Found`, then the body will be a string.
+
+#### Request body
+
+As with responses, the request body schema is generated automatically. However, this can also be customised. 
+
+Similarly, you can provide a description and example. Providing an example for a request body is very useful for testing the endpoint in the OpenAPI UI. The request is ready to go with the example data, which the user can modify to suit their needs.
+
+```kotlin {2-9}
+endpoint<TestData, String>(GET, "test") {
+    openapi {
+        requestBody {
+            description = "A test request"
+            example(TestData("test", 1))
+        }
+    }
+    // removed for brevity
+}
+```
+
+The example above takes `TestData` as the request body and returns a `String`. It also provides a description
+and example for the request body.
+
+#### Parameters
+
+By default, the framework describes parameters in the OpenAPI spec. However, you can provide additional information, for example:
+
+```kotlin
+endpoint<String>(GET, "users") {
+    openapi {
+        parameters {
+            query("userGroup") {
+                description = "The user group to filter by"
+            }
+        }
+    }
+    // removed for brevity
+}
+```
+
+## Runtime configuration
+
+GPAL custom endpoints require no configuration beyond the web-handler.kts file. No modifications to the processes.xml file are required. Files will be picked up automatically by the Genesis Router from the /script folders.
+
+### Script modules
+
+If your custom endpoint requires additional dependencies, then these can use the `ScriptModules` annotation.
+
+For example, to add a dependency on my-module, add this to the top of your file:
+
+```kotlin
+@file:ScriptModules("my-module")
+```
+
+This code tries to find your my-module module and add it to the classpath of the script, including all its dependencies. This has the same effect as adding a `<module>` tag to the processes.xml file, but it works on a script level.
+
+### Configure Genesis Router
+
+If you are going to use custom endpoints, it is essential that you configure the [Genesis Router](/develop/server-capabilities/runtime-configuration/genesis-router).
+
+Here is an example configuration:
+
+```kotlin
+router {
+    webPort = 9064
+    socketPort = 9065
+
+    // rest of file cut for brevity     
+}
+```
+
+## Integration testing
+
+:::info
+
+**GenesisJunit** is only available from version 8 of the Genesis Server Framework (GSF).
+
+If you are testing against a previous version of the framework, go to the [legacy](/develop/server-capabilities/testing-api/#integration-testing-legacy) section.
+
+:::
+
+This document looks at the basics of testing Web Endpoints.
+
+We shall use a simple example and work through the communication between our tests and the Web Endpoint we are testing. This example relies on GenesisJunit, which is designed to make testing easy.
+
+In this example, we shall test the following Web Endpoint. Note, the web handler scripts must exist in your test Genesis Home folder (e.g. `src/test/resources/genesisHome/trade-app/src/main/scripts/trade-web-handler.kts`).
+
+```kotlin 
+import global.genesis.trade.TradeInformation
+import global.genesis.trade.TradeInformationClient
+
+webHandlers {
+    val tradeInformationClient = injector<TradeInformationClient>()
+
+    endpoint<Unit, TradeInformation>(GET, "trades") {
+        val tradeId: String by queryParameter("trade-id")
+
+        handleRequest {
+            val tradeInformation = tradeInformationClient.getTradeInformation(tradeId)
+            LOG.debug("Retrieved trade information: {}", tradeInformation)
+            tradeInformation
+        }
+    }
+}
+```
+
+With the below as our test client which represents an external service.
+
+```kotlin 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+class TradeInformationClient {
+
+    private val trades = mapOf(
+        "TR1" to TradeInformation(
+            tradeId = "TR1",
+            instrument = "VOD",
+            price = 20.4,
+            quantity = 100,
+            side = "BUY",
+        ),
+        "TR2" to TradeInformation(
+            tradeId = "TR2",
+            instrument = "AAPL",
+            price = 36.0,
+            quantity = 200,
+            side = "BUY",
+        ),
+    )
+
+    fun getTradeInformation(tradeId: String) = trades[tradeId]
+}
+
+@Serializable
+data class TradeInformation(
+    @SerialName("TRADE_ID")
+    val tradeId: String,
+    @SerialName("INSTRUMENT")
+    val instrument: String,
+    @SerialName("PRICE")
+    val price: Double,
+    @SerialName("QUANTITY")
+    val quantity: Int,
+    @SerialName("SIDE")
+    val side: String,
+)
+```
+
+#### Preparation
+There are some simple steps to follow in order to set up your test.
+
+###### Create the test class
+Create the test class using the code provided below:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+import global.genesis.db.rx.entity.multi.AsyncEntityDb
+import global.genesis.gen.dao.UserSession
+import global.genesis.testsupport.jupiter.GenesisJunit
+import global.genesis.testsupport.jupiter.PackageNameScan
+import global.genesis.testsupport.jupiter.TestScriptFile
+import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
+import javax.inject.Inject
+
+@ExtendWith(GenesisJunit::class)
+@TestScriptFile("genesis-router.kts")
+@PackageNameScan("global.genesis.router")
+class WebEndpointTest {
+
+    @Inject
+    private lateinit var db: AsyncEntityDb
+
+    // our tests go here ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+import com.google.inject.Inject;
+import global.genesis.db.rx.entity.multi.RxEntityDb;
+import global.genesis.gen.dao.UserSession;
+import global.genesis.testsupport.jupiter.GenesisJunit;
+import global.genesis.testsupport.jupiter.PackageNameScan;
+import global.genesis.testsupport.jupiter.TestScriptFile;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+@ExtendWith(GenesisJunit.class)
+@TestScriptFile("genesis-router.kts")
+@PackageNameScan("global.genesis.router")
+public class WebEndpointTest {
+
+    @Inject
+    private RxEntityDb db;
+
+    // our tests go here ...
+}
+```
+</TabItem>
+</Tabs>
+
+This test class does four things: 
+
+* Adds necessary imports.
+* It enables **GenesisJunit**.
+* It will read the Router script as identified with the `TestScriptFile` annotation, causing all web handler scripts to be read.
+* Scans the `global.genesis.router` package with the `PackageNameScan` annotation to load all relevant Router classes.
+
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
+
+#### A first test
+Here is a simple first test. It does the following:
+
+1. Inserts a new user session to simulate a logged-in user as our endpoint is authenticated by default.
+2. Creates an http client to send a request to our endpoint.
+3. Sends a request to our endpoint with the http client.
+4. Verifies the response contains the correct trade information.
+
+Note, by default the endpoint includes the product name in the path. In this example our product is named "trade-service".
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Test
+fun testTradeEndpoint() = runBlocking {
+    db.insert(
+        UserSession(
+            userName = "JohnDoe",
+            sessionId = "1",
+            sessionAuthToken = "123",
+            refreshToken = "456",
+        )
+    )
+    val httpClient = HttpClient.newHttpClient()
+    val request = HttpRequest.newBuilder(URI("http://localhost:9064/trade-service/trades?trade-id=TR1"))
+        .version(HttpClient.Version.HTTP_1_1)
+        .header("USER_NAME", "JohnDoe")
+        .header("SESSION_AUTH_TOKEN", "123")
+        .GET()
+        .build()
+
+    val response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
+
+    assertEquals(
+        "{\"TRADE_ID\":\"TR1\",\"INSTRUMENT\":\"VOD\",\"PRICE\":20.4,\"QUANTITY\":100,\"SIDE\":\"BUY\"}",
+        response.body()
+    )
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Test
+public void testTradeEndpoint() throws Exception {
+    var userSession = UserSession.builder()
+            .setUserName("JohnDoe")
+            .setSessionId("1")
+            .setSessionAuthToken("123")
+            .setRefreshToken("456")
+            .build();
+    db.insert(userSession).blockingGet();
+    var httpClient = HttpClient.newHttpClient();
+    var request = HttpRequest.newBuilder(new URI("http://localhost:9064/trade-service/trades?trade-id=TR1"))
+            .version(HttpClient.Version.HTTP_1_1)
+            .header("USER_NAME", "JohnDoe")
+            .header("SESSION_AUTH_TOKEN", "123")
+            .GET()
+            .build();
+
+    var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    assertEquals("{\"TRADE_ID\":\"TR1\",\"INSTRUMENT\":\"VOD\",\"PRICE\":20.4,\"QUANTITY\":100,\"SIDE\":\"BUY\"}", response.body());
+}
+```
+</TabItem>
+</Tabs>
+
+#### Dynamic authorization
+
+To test dynamic authorization, you need to amend your Web Endpoint definition. Below we are adding authorisation on the endpoint's response.
+
+```kotlin
+webHandlers {
+    val tradeInformationClient = injector<TradeInformationClient>()
+
+    endpoint<Unit, TradeInformation>(GET, "trades") {
+        permissioning {
+            responseAuth("INSTRUMENTS") {
+                authKey { data.instrument }
+            }
+        }
+
+        val tradeId: String by queryParameter("trade-id")
+        handleRequest {
+            val tradeInformation = tradeInformationClient.getTradeInformation(tradeId)
+            LOG.debug("Retrieved trade information: {}", tradeInformation)
+            tradeInformation
+        }
+    }
+}
+```
+
+You then need to create your new test cases.
+
+In the code below, there are two tests, which both check the result of the authorization process:
+
+- In the first test, an auth entry for JohnDoe is added so a trade in the response is expected.
+- In the second test, there is no auth entry for JohnDoe so an empty response is expected.
+
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@ExtendWith(GenesisJunit::class)
+@TestScriptFile("genesis-router.kts")
+@PackageNameScan("global.genesis.router")
+@EnableInMemoryTestAuthCache
+class WebEndpointTest {
+
+    @Inject
+    private lateinit var authCache: InMemoryTestAuthCache
+
+    @Inject
+    private lateinit var db: AsyncEntityDb
+
+    @Test
+    fun testTradeEndpoint() = runBlocking {
+        authCache.authorise(
+            authMap = "INSTRUMENTS",
+            entityCode = "VOD",
+            userName = "JohnDoe"
+        )
+        db.insert(
+            UserSession(
+                userName = "JohnDoe",
+                sessionId = "1",
+                sessionAuthToken = "123",
+                refreshToken = "456",
+            )
+        )
+        val httpClient = HttpClient.newHttpClient()
+        val request = HttpRequest.newBuilder(URI("http://localhost:9064/trade-service/trades?trade-id=TR1"))
+            .version(HttpClient.Version.HTTP_1_1)
+            .header("USER_NAME", "JohnDoe")
+            .header("SESSION_AUTH_TOKEN", "123")
+            .GET()
+            .build()
+
+        val response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
+
+        assertEquals(
+            "{\"TRADE_ID\":\"TR1\",\"INSTRUMENT\":\"VOD\",\"PRICE\":20.4,\"QUANTITY\":100,\"SIDE\":\"BUY\"}",
+            response.body()
+        )
+    }
+
+    @Test
+    fun testTradeEndpointInvalidAuth() = runBlocking {
+        db.insert(
+            UserSession(
+                userName = "JohnDoe",
+                sessionId = "1",
+                sessionAuthToken = "123",
+                refreshToken = "456",
+            )
+        )
+        val httpClient = HttpClient.newHttpClient()
+        val request = HttpRequest.newBuilder(URI("http://localhost:9064/trade-service/trades?trade-id=TR1"))
+            .version(HttpClient.Version.HTTP_1_1)
+            .header("USER_NAME", "JohnDoe")
+            .header("SESSION_AUTH_TOKEN", "123")
+            .GET()
+            .build()
+
+        val response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
+
+        assertEquals("", response.body())
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@ExtendWith(GenesisJunit.class)
+@TestScriptFile("genesis-router.kts")
+@PackageNameScan("global.genesis.router")
+@EnableInMemoryTestAuthCache
+public class WebEndpointTest {
+
+    @Inject
+    private InMemoryTestAuthCache authCache;
+
+    @Inject
+    private RxEntityDb db;
+
+    @Test
+    public void testTradeEndpoint() throws Exception {
+        authCache.authorise("INSTRUMENTS", "VOD", "JohnDoe");
+        var userSession = UserSession.builder()
+                .setUserName("JohnDoe")
+                .setSessionId("1")
+                .setSessionAuthToken("123")
+                .setRefreshToken("456")
+                .build();
+        db.insert(userSession).blockingGet();
+        var httpClient = HttpClient.newHttpClient();
+        var request = HttpRequest.newBuilder(new URI("http://localhost:9064/trade-service/trades?trade-id=TR1"))
+                .version(HttpClient.Version.HTTP_1_1)
+                .header("USER_NAME", "JohnDoe")
+                .header("SESSION_AUTH_TOKEN", "123")
+                .GET()
+                .build();
+
+        var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals("{\"TRADE_ID\":\"TR1\",\"INSTRUMENT\":\"VOD\",\"PRICE\":20.4,\"QUANTITY\":100,\"SIDE\":\"BUY\"}", response.body());
+    }
+
+    @Test
+    public void testTradeEndpointInvalidAuth() throws Exception {
+        var userSession = UserSession.builder()
+                .setUserName("JohnDoe")
+                .setSessionId("1")
+                .setSessionAuthToken("123")
+                .setRefreshToken("456")
+                .build();
+        db.insert(userSession).blockingGet();
+        var httpClient = HttpClient.newHttpClient();
+        var request = HttpRequest.newBuilder(new URI("http://localhost:9064/trade-service/trades?trade-id=TR1"))
+                .version(HttpClient.Version.HTTP_1_1)
+                .header("USER_NAME", "JohnDoe")
+                .header("SESSION_AUTH_TOKEN", "123")
+                .GET()
+                .build();
+
+        var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals("", response.body());
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+## Integration testing (legacy)
+
+:::info
+This section covers testing your Web Endpoint if you are using any version of the Genesis Server Framework before GSF v8.
+:::
+
+It is good practice to test your Web Endpoints. This is the best way to prevent any unexpected side effects of changes to your application over time.
+
+The Genesis platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. First, we will setup our test class as below.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+import global.genesis.commons.model.GenesisSet
+import global.genesis.gen.dao.UserSession
+import global.genesis.testsupport.AbstractGenesisTestSupport
+import global.genesis.testsupport.GenesisTestConfig
+import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
+
+class WebEndpointTest : AbstractGenesisTestSupport<GenesisSet>(
+    GenesisTestConfig {
+        packageNames = mutableListOf("global.genesis.router")
+        genesisHome = "/genesisHome"
+        scriptFileName = "genesis-router.kts"
+        parser = { it }
+        addAuthCacheOverride("INSTRUMENTS")
+    }
+) {
+
+    // our tests go here ...
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+import global.genesis.commons.model.GenesisSet;
+import global.genesis.gen.dao.UserSession;
+import global.genesis.testsupport.AbstractGenesisTestSupport;
+import global.genesis.testsupport.GenesisTestConfig;
+import org.junit.jupiter.api.Test;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class WebEndpointTest extends AbstractGenesisTestSupport<GenesisSet> {
+
+    public WebEndpointTest() {
+        super(GenesisTestConfig.builder()
+                .setPackageNames(List.of("global.genesis.router"))
+                .setGenesisHome("/genesisHome")
+                .setScriptFileName("genesis-router.kts")
+                .setParser(e -> e)
+                .setAuthCacheOverride(List.of("INSTRUMENTS"))
+                .build());
+    }
+
+    // our tests go here ...
+}
+```
+</TabItem>
+</Tabs>
+
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing-api/#abstractgenesistestsupport).
+
+Once you have set up your configuration, we can start writing tests against our Web Endpoint.
+
+### Tests with dynamic authorization
+
+- In the first test, an auth entry for JohnDoe is added so a trade in the response is expected.
+- In the second test, there is no auth entry for JohnDoe so an empty response is expected.
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+class WebEndpointTest : AbstractGenesisTestSupport<GenesisSet>(
+    GenesisTestConfig {
+        packageNames = mutableListOf("global.genesis.router")
+        genesisHome = "/genesisHome"
+        scriptFileName = "genesis-router.kts"
+        parser = { it }
+        addAuthCacheOverride("INSTRUMENTS")
+    }
+) {
+
+    @Test
+    fun testTradeEndpoint() = runBlocking {
+        inMemoryTestAuthCache.authorise("INSTRUMENTS", "VOD", "JohnDoe")
+        entityDb.insert(
+            UserSession(
+                userName = "JohnDoe",
+                sessionId = "1",
+                sessionAuthToken = "123",
+                refreshToken = "456",
+            )
+        )
+        val httpClient = HttpClient.newHttpClient()
+        val request = HttpRequest.newBuilder(URI("http://localhost:9064/trade-service/trades?trade-id=TR1"))
+            .version(HttpClient.Version.HTTP_1_1)
+            .header("USER_NAME", "JohnDoe")
+            .header("SESSION_AUTH_TOKEN", "123")
+            .GET()
+            .build()
+
+        val response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
+
+        assertEquals(
+            "{\"TRADE_ID\":\"TR1\",\"INSTRUMENT\":\"VOD\",\"PRICE\":20.4,\"QUANTITY\":100,\"SIDE\":\"BUY\"}",
+            response.body()
+        )
+    }
+
+    @Test
+    fun testTradeEndpointNoAuth() = runBlocking {
+        entityDb.insert(
+            UserSession(
+                userName = "JohnDoe",
+                sessionId = "1",
+                sessionAuthToken = "123",
+                refreshToken = "456",
+            )
+        )
+        val httpClient = HttpClient.newHttpClient()
+        val request = HttpRequest.newBuilder(URI("http://localhost:9064/trade-service/trades?trade-id=TR1"))
+            .version(HttpClient.Version.HTTP_1_1)
+            .header("USER_NAME", "JohnDoe")
+            .header("SESSION_AUTH_TOKEN", "123")
+            .GET()
+            .build()
+
+        val response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
+
+        assertEquals("", response.body())
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public class WebEndpointTest extends AbstractGenesisTestSupport<GenesisSet> {
+
+    public WebEndpointTest() {
+        super(GenesisTestConfig.builder()
+                .setPackageNames(List.of("global.genesis.router"))
+                .setGenesisHome("/genesisHome")
+                .setScriptFileName("genesis-router.kts")
+                .setParser(e -> e)
+                .setAuthCacheOverride(List.of("INSTRUMENTS"))
+                .build());
+    }
+
+    @Test
+    public void testTradeEndpoint() throws Exception {
+        getInMemoryTestAuthCache().authorise("INSTRUMENTS", "VOD", "JohnDoe");
+        var userSession = UserSession.builder()
+                .setUserName("JohnDoe")
+                .setSessionId("1")
+                .setSessionAuthToken("123")
+                .setRefreshToken("456")
+                .build();
+        entityDb.rx().insert(userSession).blockingGet();
+        var httpClient = HttpClient.newHttpClient();
+        var request = HttpRequest.newBuilder(new URI("http://localhost:9064/trade-service/trades?trade-id=TR1"))
+                .version(HttpClient.Version.HTTP_1_1)
+                .header("USER_NAME", "JohnDoe")
+                .header("SESSION_AUTH_TOKEN", "123")
+                .GET()
+                .build();
+
+        var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals("{\"TRADE_ID\":\"TR1\",\"INSTRUMENT\":\"VOD\",\"PRICE\":20.4,\"QUANTITY\":100,\"SIDE\":\"BUY\"}", response.body());
+    }
+
+    @Test
+    public void testTradeEndpointInvalidAuth() throws Exception {
+        var userSession = UserSession.builder()
+                .setUserName("JohnDoe")
+                .setSessionId("1")
+                .setSessionAuthToken("123")
+                .setRefreshToken("456")
+                .build();
+        entityDb.rx().insert(userSession).blockingGet();
+        var httpClient = HttpClient.newHttpClient();
+        var request = HttpRequest.newBuilder(new URI("http://localhost:9064/trade-service/trades?trade-id=TR1"))
+                .version(HttpClient.Version.HTTP_1_1)
+                .header("USER_NAME", "JohnDoe")
+                .header("SESSION_AUTH_TOKEN", "123")
+                .GET()
+                .build();
+
+        var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals("", response.body());
+    }
+}
+```
+</TabItem>
+</Tabs>

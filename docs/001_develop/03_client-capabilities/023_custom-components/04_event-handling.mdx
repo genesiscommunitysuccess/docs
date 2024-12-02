@@ -1,85 +1,216 @@
 ---
-title: 'Event Handling'
-sidebar_label: 'Event Handling'
+title: "Event Handling"
+sidebar_label: "Event Handling"
 id: event-handling
-
+keywords:
+  [
+    DOM Events,
+    Custom Events,
+    Event Listeners,
+    Emitting Events,
+    Event Binding,
+    $emit Helper,
+  ]
+tags:
+  - emit
+  - customEvent
+  - Event Lifecycle
+  - Event Listeners
+  - Event Data
 sidebar_position: 3
 ---
-
 
 ### Event Handling
 
 In this section we will be covering the core aspects of event handling:
 
-- Component Communication: Enables a component (like `<my-button>`) to notify or interact with parent components or other parts of the application. Here, we achieve this by emitting a custom event from `<my-button>` when it’s clicked.
+- **Component Communication**: Enables a component (like `<my-button>`) to notify or interact with parent components or other parts of the application. Here, we achieve this by emitting a custom event from `<my-button>` when it’s clicked.
 
-- Custom Events: Custom events are unique, developer-defined events (like button-clicked in this example) that communicate specific actions or states. We use `$emit` helper to create and dispatch a custom event.
+- **Custom Events**: Custom events are unique, developer-defined events (like button-clicked in this example) that communicate specific actions or states. We use `$emit` helper to create and dispatch a custom event.
 
-- Event Data Passing: When emitting custom events, additional data can be sent along with the event. We use `event.detail` to pass contextual information (in this case, label and count) to any listener that handles the event.
+- **Event Data Passing**: When emitting custom events, additional data can be sent along with the event. We use `event.detail` to pass contextual information (in the example below, `label` and `count`) to any listener that handles the event.
 
 See implementation in the example below:
 
 ```typescript
-import { GenesisElement, customElement, html, observable } from "@genesislcap/web-core";
+import {
+  GenesisElement,
+  customElement,
+  html,
+  observable,
+} from "@genesislcap/web-core";
 
 @customElement({
-    name: "my-button",
-    template: html<MyButton>`
-        <button @click="${(x, c) => x.handleClick(c.event)}">
-            ${x => `${x.label}: ${x.count}`}
-        </button>
-    `,
-    styles,
+  name: "my-button",
+  template: html<MyButton>`
+    <button @click="${(x, c) => x.handleClick(c.event)}">
+      ${(x) => `${x.label}: ${x.count}`}
+    </button>
+  `,
+  styles,
 })
 export class MyButton extends GenesisElement {
-    @observable label = "Clicks"; // Label text for the button
-    @observable count = 0;        // Tracks the number of clicks
+  @observable label = "Clicks"; // Label text for the button
+  @observable count = 0; // Tracks the number of clicks
 
-    handleClick(event: Event) {
-        this.count++; // Increment the click count
+  handleClick(event: Event) {
+    this.count += 1; // Increment the click count
 
-        console.log("Event Target:", event.target); // Log the event target element
-        console.log("Component Label:", this.label); // Log the current label
+    console.log("Event Target:", event.target); // Log the event target element
+    console.log("Component Label:", this.label); // Log the current label
 
-        # Emit a custom "button-clicked" event with the current label and count
-        this.$emit("button-clicked", {
-            label: this.label,
-            count: this.count
-        });
-    }
+    // Emit a custom "button-clicked" event with the current label and count
+    this.$emit("button-clicked", {
+      label: this.label,
+      count: this.count,
+    });
+  }
 }
 ```
 
-Now let's show how we can listen in another component providing for component communication:
+Now let's see how we can listen in another component providing for component communication:
 
 ```typescript
 import { GenesisElement, customElement, html } from "@genesislcap/web-core";
-import "./my-button"; # Import the my-button component
+import MyButton from "./my-button"; // Import my-button component
+
+MyButton;
 
 @customElement({
-    name: "parent-component",
-    template: html`
-        <button @button-clicked="${(x, c) => x.handleButtonClicked(c.event)}"></button>
-    `,
+  name: "parent-component",
+  template: html<ParentComponent>`
+    <button
+      @button-clicked="${(x, c) =>
+        x.handleButtonClicked(
+          c.event
+        )}"  // custom button-clicked event from my-button
+    ></button>
+  `,
 })
 export class ParentComponent extends GenesisElement {
-    handleButtonClicked(event: CustomEvent) {
-        console.log("Custom event received in ParentComponent:", event.detail);
-        // Output: { label: "Clicks", count: X }
-    }
+  handleButtonClicked(event: CustomEvent) {
+    console.log("Custom event received in ParentComponent:", event.detail);
+    // Output: { label: "Clicks", count: X }
+  }
 }
 ```
 
-Explanation of key elements in the above example:
+##### Key Points:
 
-Component Communication: 
-- This allows `<my-button>` to communicate with its parent or other parts of the application by notifying them whenever it’s clicked.
-- Using the `$emit` helper method, `<my-button>` emits a button-clicked event that any parent component or listener can handle.
+Component Communication:
+
+> - This allows `<my-button>` to communicate with its parent or other parts of the application by notifying them whenever it’s clicked.
+> - Using the `$emit` helper method, `<my-button>` emits a button-clicked event that any parent component or listener can handle.
 
 Custom Events:
-- `button-clicked` is a custom event that’s unique to `<my-button>`. It’s created to indicate that the button has been clicked, providing a specific trigger for listeners.
-- The `$emit` method simplifies the creation and dispatch of the button-clicked event with bubbles: true and composed: true, making it available to parent components and global listeners.
+
+> - `button-clicked` is a custom event that’s unique to `<my-button>`. It’s created to indicate that the button has been clicked, providing a specific trigger for listeners.
+> - The `$emit` method simplifies the creation and dispatch of the button-clicked event with `{bubbles: true} and {composed: true}`, making it available to parent components and global listeners.
 
 Event Data Passing:
-- The custom event includes data (the label and count properties) to provide context on the button’s state when the event was emitted.
-- Implementation: The `$emit` method’s second parameter passes `{ label: this.label, count: this.count }` as event.detail, enabling any listener to access this information for further processing.
+
+> - The custom event includes data (the `label` and `count` properties) to provide context on the button’s state when the event was emitted.
+> - Implementation: The `$emit` method’s second parameter passes `{ label: this.label, count: this.count }` as `event.detail`, enabling any listener to access this information for further processing.
+
+### Event Bubbling
+
+Event bubbling lets an event travel up the DOM from the component that triggered it, allowing parent components to handle it.
+
+- It allows components higher up in the DOM tree to listen for and react to events emitted by child components.
+- Reduces the need for tightly coupling child and parent components.
+
+:::note
+
+When a custom event is emitted with `$emit`, it bubbles up the DOM by **default** unless bubbles is explicitly set to false.
+
+:::
+
+```typescript
+import {
+  GenesisElement,
+  customElement,
+  html,
+  observable,
+} from "@genesislcap/web-core";
+
+@customElement({
+  name: "my-button",
+  template: html<MyButton>`
+    <button @click="${(x) => x.emitCustomEvent()}">${(x) => x.label}</button>
+  `,
+})
+export class MyButton extends GenesisElement {
+  @observable label: string = "Click Me";
+  @observable count: number = 0;
+
+  emitCustomEvent() {
+    this.count += 1;
+    this.$emit("button-clicked", {
+      label: this.label,
+      count: this.count,
+    }); // By default, this event bubbles up the DOM.
+  }
+}
+```
+
+Listening for events on a parent component:
+
+```typescript
+@customElement({
+  name: "parent-container",
+  template: html<ParentContainer>`
+    <div @button-clicked="${(x, c) => x.handleButtonClick(c.event)}">
+      <my-button></my-button>
+    </div>
+  `,
+})
+export class ParentContainer extends GenesisElement {
+  handleButtonClick(event: CustomEvent) {
+    console.log("Button clicked event bubbled to parent:", event.detail);
+    // Logs: { label: "Click Me", count: <number> }
+  }
+}
+```
+
+In the example above, we didn’t explicitly set `bubbles` and `composed` because they are set to true by default.
+However, if you want to customize this behavior, you can pass an 'options object' as the third parameter to `$emit`.
+
+Here's how you can modify the `emitCustomEvent` method to include bubbles and composed settings:
+
+```typescript
+emitCustomEvent() {
+  this.count += 1;
+
+  this.$emit(
+    "button-clicked",
+    {
+      label: this.label,
+      count: this.count,
+    },
+    {
+      bubbles: true,  // Event will bubble up the DOM.
+      composed: true, // Event will cross the shadow DOM boundary.
+    }
+  );
+}
+
+```
+
+##### Key Points:
+
+`bubbles`:
+
+>- When true, the event propagates upward through the DOM.
+>- When false, the event does not bubble.
+>- Set `bubbles` to false if you want the event to be confined to the component emitting it and not propagate up the DOM tree.
+
+`composed`:
+
+>- When true, the event crosses the shadow DOM boundary and can be listened to outside the shadow DOM.
+>- When false, the event is confined within the shadow DOM.
+>- Set `composed` to false if you want the event to stay within the shadow DOM of the component.
+
+`ParentContainer`:
+
+>- No changes are needed for the parent component if you keep `bubbles: true`. It will still handle the event the same way.
+>- If you set `bubbles: false` or `composed: false`, make sure to attach the event listener directly to the emitting component or adjust the shadow DOM handling as needed.

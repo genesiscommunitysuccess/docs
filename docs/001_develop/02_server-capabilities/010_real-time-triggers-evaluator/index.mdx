@@ -55,7 +55,7 @@ In this example, the `EVENT_LARGE_TRADE_WARNING` will be triggered with `DETAILS
 
 Given its name, we can expect this event to trigger some business workflow for large trades with the desk.
 
-The Genesis Evaluator's `DYNAMIC_RULE` data-driven events are used to power the [notifications and alert component](/develop/business-components/notifications/notifications-introduction/).
+The Genesis Evaluator's `DYNAMIC_RULE` data-driven events are used to power the [notifications and alert component](/develop/business-components/notifications/).
 
 ## Configuration options
 
@@ -92,11 +92,11 @@ Rules are managed via the API, which exposes CRUD operations for maintaining the
 | MESSAGE_TYPE | The name of the event the rule should send when triggered | `EVENT_LARGE_TRADE_WARNING`  | true |
 | RESULT_EXPRESSION | The details to send on the event message. The syntax is that event fields should be left of the `=` and you can use literal values or field values from the `RULE_TABLE` to the right. Multiple event fields are separated by `&&`| `(TRADE_ID = TRADE_ID) && (TRIGGER = 'RULE')` | false |
 | TABLE_OPERATION | The table operations to trigger the rule on. Valid operations are `INSERT`, `MODIFY` and `DELETE`. You can configure more than one operation to trigger the rule; where you do this, these must be pipe-delimited. If this value is left blank, only `INSERT` table operations will trigger the rule | `INSERT\|MODIFY\|DELETE` | true |
-| IS_TEMPLATE |Relevant when using [notifications and alert component](/develop/business-components/notifications/notifications-introduction/) where users can define rule templates to which users subscribe. Rules marked as `true` are templates, are never triggered (a subscription to a template creates a new dynamic rule) ||false|
+| IS_TEMPLATE |Relevant when using [notifications and alert component](/develop/business-components/notifications/) where users can define rule templates to which users subscribe. Rules marked as `true` are templates, are never triggered (a subscription to a template creates a new dynamic rule) ||false|
 | RULE_EXECUTION_STRATEGY |Defines how many times the rule should trigger for a given record (record of root table where `RULE_TABLE` is a view). Valid values are `UNLIMITED`, `ONCE_ONLY`, `ONCE_PER_RECORD`. Default is `UNLIMITED`. This is helpful if `TABLE_OPERATION` must include `MODIFY` and the records may have many modifications to stop repeated alerts|`ONCE_ONLY`|false|
-| RULE_TYPE |Used to specify that this rule belongs to a group. For example, the [notifications and alert component](/develop/business-components/notifications/notifications-introduction/) will set this value to `NOTIFY`|`NOTIFY`|false|
+| RULE_TYPE |Used to specify that this rule belongs to a group. For example, the [notifications and alert component](/develop/business-components/notifications/) will set this value to `NOTIFY`|`NOTIFY`|false|
 
-Rules are managed via the API, which exposes CRUD operations for maintaining the table. Components such as [notifications and alert component](/develop/business-components/notifications/notifications-introduction/) include a user interface that manages dynamic rule set-up and reads application metadata to help users populate table/view selection and expressions.
+Rules are managed via the API, which exposes CRUD operations for maintaining the table. Components such as [notifications and alert component](/develop/business-components/notifications/) include a user interface that manages dynamic rule set-up and reads application metadata to help users populate table/view selection and expressions.
 
 ## Client API
 

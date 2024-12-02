@@ -12,7 +12,7 @@ export default function AccordionDemo({ children, color }) {
 
 	return (
 		<CodeSection>
-			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available', height: '180px'}}>
+			<div style={{ color: 'var(--neutral-foreground-rest)', width: '100%', height: '180px'}}>
 				<rapid-accordion>
 					<rapid-accordion-item expanded>
 							<span slot="heading">Panel one</span>

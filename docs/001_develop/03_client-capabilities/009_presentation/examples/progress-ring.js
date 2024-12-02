@@ -15,7 +15,7 @@ export default function ProgressRingDemo({ children, color }) {
 	setup();
 	return (
 		<CodeSection>
-			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
+			<div style={{ color: 'var(--neutral-foreground-rest)', width: '100%'}}>
 				<div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', flexDirection: 'row', justifyContent: 'space-evenly' }}>
 					<rapid-progress-ring min="0" max="100" value="75"></rapid-progress-ring>
 					<rapid-progress-ring min="0" max="100"></rapid-progress-ring>

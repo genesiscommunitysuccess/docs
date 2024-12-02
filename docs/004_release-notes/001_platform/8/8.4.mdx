@@ -108,7 +108,7 @@ If you are using the http client directly, some methods are now marked as intern
 :::info
 **Medium fix**
 
-Use only the [methods](/develop/server-capabilities/integrations/custom-endpoints/#request-methods) exposed as public in the interface (get, put, post, delete). 
+Use only the [methods](/develop/server-capabilities/integrations/custom-endpoints/#endpoint) exposed as public in the interface (get, put, post, delete). 
 
 Read the pages on [GenesisHTTPClient](/develop/server-capabilities/integrations/custom-endpoints/) for full information.
 :::
@@ -142,7 +142,7 @@ Only applications that use the RxSink interface in the Data Pipeline are affecte
 :::tip
 **Simple fix**
 
-Any new implementations of Data Pipeline must only use the [standard http web calls](/develop/server-capabilities/integrations/custom-endpoints/#request-methods). Check the revised [reference documentation for Data Pipeline](/develop/server-capabilities/integrations/data-pipelines/) for full details.
+Any new implementations of Data Pipeline must only use the [standard http web calls](/develop/server-capabilities/integrations/custom-endpoints/#endpoint). Check the revised [reference documentation for Data Pipeline](/develop/server-capabilities/integrations/data-pipelines/) for full details.
 :::
 
 ### `onOperationError` type safety

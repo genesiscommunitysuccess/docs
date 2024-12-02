@@ -125,6 +125,39 @@ views {
 }
 ```
 
+You can also store and reuse the derived field `withInput` calculations, like so:
+
+```kotlin
+views {
+    view("TRADE_VIEW", TRADE) {
+        joins {
+            joining(INSTRUMENT, backwardsJoin = true) {
+              on(TRADE { INSTRUMENT_ID } to INSTRUMENT { INSTRUMENT_ID })
+            }
+            joining(COUNTERPARTY) {
+              on(TRADE { COUNTERPARTY_ID } to INSTRUMENT { COUNTERPARTY_ID })
+            }
+        }
+        fields {
+            TRADE.allFields()
+
+            INSTRUMENT.NAME withPrefix INSTRUMENT 
+
+            COUNTERPARTY.COUNTERPARTY_ID
+            COUNTERPARTY.COUNTERPARTY_CODE withAlias CTPTY_CODE
+            COUNTERPARTY.NAME withAlias CTPTY_NAME
+
+            val myLambda: DerivedField2<Double, Double, Double> = { quantity, price -> quantity * price }
+            
+            derivedField("NOTIONAL", DOUBLE) {
+                withInput(TRADE.QUANTITY, TRADE.PRICE, myLambda)
+            }
+
+        }
+  }
+}
+```
+
 ### Summary
 
 Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and other data visualization web client components. 
