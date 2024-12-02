@@ -1,36 +1,100 @@
-::slotted content - card styles
+---
+title: 'Parts and slotted'
+sidebar_label: 'Parts and slotted'
+id: styling-direct-parts-slotted
+keywords: [extend component, create component, styling]
+tags:
+- styling
+- extend component
+- create component
+- styling
+sidebar_position: 3
+---
 
+## Parts
 
-- genesis-components
-    - css-custom-properties
-    - utlizing-design-tokens
-    - shadow-dom-and-parts
-    - slotted-content
-- design-system-configurator
-    -design-system-configurator
-design-tokens
-    -color
-    -typography
-    -sizing
-    -miscellanous
+A `part` is a html tag which has been configured as a `part` on the template, and it allows you to target the particular
+part of the component from the outside. For components which have `parts` defined, this allows you to very precisely
+target certain parts of the component rather than the entire component, as might be the case when you set a CSS variable.
 
+:::tip
+A quick way to identify what parts are declared on the component is to use the developer tools in your browser to inspect the element's template.
+:::
 
+Take this example markup
+```html
+<rapid-button>Content</rapid-button>
+```
 
-    Focus on advanced styling techniques using shadow DOM, ::part, and ::slotted.
-Scenario Inclusion:
-Scenario 2: Demonstrate styling RapidButton directly with ::part and ::slotted.
-Example:
-css
-Copy code
-```typescript
+To modify a particular part of the component it can be targeted using the part selector. For example, to set the colour of "control" part:
+```css
 rapid-button::part(control) {
     border: 2px solid #ff0000;
     background-color: #f4f4f4;
 }
+```
+This configures the `control` of the button, which is the button itself and not the context such as the label text. `part(control)` is used because the core button is defined as `<button part="control">` on the template
 
-rapid-button::slotted(name=end) {
-    color: #0078d4;
+If you are using the default design system then the text may now be hard to read because it's white text on a light background. You could set the color of the text using a CSS variable as before.
+
+## Slotted items
+
+You may wish to style slotted items which are added into components. Sometimes this can be done via parts which are defined to target the particular slot - see the API docs for the components for examples.
+
+You can also target components in the slots directly.
+
+### External slot styling
+
+Consider a similar example to the previous markup, where an additional `p` tag has been added in the end slot:
+
+```html
+<rapid-button>
+    <p slot="end" name="end">Test</p>
+    Content
+</rapid-button>
+```
+
+When rendering this markup the button will have "Content" as the main button text, and then the text "Test" will be added to the end slot.
+
+Now applying this styling:
+```css
+rapid-button p[slot="end"] {
+    color: hotpink;
 }
 ```
-Add a subsection: "Creating Custom Appearances Without Extending Components."
-Show examples of using withBehaviors to define appearances.
+
+The `p` tag in the end slot will be now colored pink.
+
+:::info
+Use this approach whenever you're styling the components which you're putting into the slot of an existing component.
+:::
+
+### Internal slot styling
+
+The component itself may supply styles for slotted items. Here are some examples for this.
+
+1. Target any item in the `end` slot
+```css
+::slotted(slot="end") {
+    ...
+}
+```
+
+2. Target any item in a slot
+```css
+::slotted(*) {
+    ...
+}
+```
+
+3. Target any `p` or `span` in a slot.
+```css
+::slotted(p), ::slotted(span) {
+    ...
+}
+```
+
+:::info
+Use this approach whenever you're defining how a component should style slotted items that are added when its used.
+:::
+
