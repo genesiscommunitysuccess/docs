@@ -30,6 +30,12 @@ Example uses for these custom endpoints include:
 * file upload and download
 * integration with external systems
 
+:::info
+
+Custom endpoints are exposed as HTTP endpoints and are not available with Websockets.
+
+:::
+
 Custom endpoints are defined in the `*-web-handler.kts` files.
 
 Once a web-handler.kts is available within your product/script directory, it is immediately available as an endpoint in the router.
@@ -726,7 +732,37 @@ sealed class SealedResponse {
 
 <CommonOpenAPI />
 
-TODO: Websocket and REST API
+### REST API
+
+The example below shows an HTTP request to a custom endpoint and the returned HTTP response underneath.
+
+#### Request
+
+```
+GET /trade-service/trades?trade-id=1 HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
+```
+#### Response
+```
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 556
+connection: keep-alive
+{
+    "TRADE_ID" : 1
+    "TRADE_PRICE" : 224.34
+    "DIRECTION" : "BUY"
+    "QUANTITY" : 1000
+    "DATE" : 1730678400000
+    "COUNTERPARTY_ID" : 1
+    "COUNTERPARTY_CODE" : "GEN"
+    "COUNTERPARTY_NAME" : "Genesis"
+    "INSTRUMENT_NAME" : "AAPL"
+    "NOTIONAL" : 224340
+}
+```
 
 ### OpenAPI
 
@@ -822,7 +858,11 @@ endpoint<String>(GET, "users") {
 }
 ```
 
-### Integration testing
+## Runtime configuration
+
+All web handler scripts are automatically loaded by the GENESIS_ROUTER process.
+
+## Integration testing
 
 :::info
 
