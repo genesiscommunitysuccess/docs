@@ -1,4 +1,5 @@
-import LiveExampleBuilder, {useUpdateCSSVariable} from '@site/src/components/LiveExampleBuilder';
+import LiveExampleBuilder from '@site/src/components/LiveExampleBuilder';
+import {useUpdateCSSVariable} from '@site/src/components/Hooks';
 
 import ButtonDemo from '/examples/ui/client-capabilities/interaction/button.js';
 import CheckboxDemo from '/examples/ui/client-capabilities/interaction/checkbox.js';

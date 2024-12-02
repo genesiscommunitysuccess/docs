@@ -1,4 +1,5 @@
-import LiveExampleBuilder, {useUpdateCSSVariable} from '@site/src/components/LiveExampleBuilder';
+import LiveExampleBuilder from '@site/src/components/LiveExampleBuilder';
+import {useUpdateCSSVariable} from '@site/src/components/Hooks';
 
 import AccordionDemo from '/examples/ui/client-capabilities/interaction/accordion.js';
 import AnchorDemo from '/examples/ui/client-capabilities/interaction/anchor.js';

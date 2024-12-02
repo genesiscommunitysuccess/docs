@@ -1,9 +1,11 @@
 import { CodeSection } from '../../documentationBase';
 import useIsBrowser from '@docusaurus/useIsBrowser';
+import {useWindowSize} from '@site/src/components/Hooks';
 
 export default function AnchoredRegionDemo({}) {
-
   const isBrowser = useIsBrowser();
+	const windowSize = useWindowSize();
+  const isSmall = windowSize.width < 1400;
 
 	if (isBrowser) {
 		const RapidImports = require('../../rapidImports');
@@ -21,7 +23,7 @@ export default function AnchoredRegionDemo({}) {
 					anchor="anchor"
 					vertical-positioning-mode="locktodefault"
 					vertical-default-position="top">
-					<p>Content after button in DOM</p>
+					{!isSmall ? <p>Content after button in DOM</p> : <p>Anchored content</p>}
 				</rapid-anchored-region>
 			</div>
 		</CodeSection>)

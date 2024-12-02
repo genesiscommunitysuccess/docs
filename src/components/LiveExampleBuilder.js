@@ -38,12 +38,3 @@ export default function LiveExampleBuilder({ itemData }) {
   );
 }
 
-export function useUpdateCSSVariable(variable, value) {
-  useEffect(() => {
-    document.documentElement.style.setProperty(variable, value);
-
-    return () => {
-      document.documentElement.style.removeProperty(variable);
-    };
-  }, [variable, value]);
-}

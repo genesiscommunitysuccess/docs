@@ -1,4 +1,5 @@
-import LiveExampleBuilder, {useUpdateCSSVariable} from '@site/src/components/LiveExampleBuilder';
+import LiveExampleBuilder from '@site/src/components/LiveExampleBuilder';
+import {useUpdateCSSVariable} from '@site/src/components/Hooks';
 
 import AvatarDemo from './examples/avatar.js';
 import BadgeDemo from './examples/badge.js';
