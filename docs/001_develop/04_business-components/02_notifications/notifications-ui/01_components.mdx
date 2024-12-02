@@ -10,7 +10,7 @@ tags:
 
 ## Notification Dashboard
 
-This is a page route that contains details about how to build and customise your notification messages. The Notification Dashboard is divided into sections. Each section is protected by a specific permission, so the user must have this permission to see that section. For this, check the [permission](../notify-permissions) section.
+This is a page route that contains details about how to build and customize your notification messages. The Notification Dashboard is divided into sections. Each section is protected by a specific permission, so the user must have this permission to see that section. For this, check the [permission](../notify-permissions) section.
 
 ### Rules
 
@@ -22,7 +22,7 @@ A rule consists of one or more conditions. The condition chain is a set of verif
 
 For example, a user creates a rule for the table `TRADE` that has only the condition `PRICE > 100`. When a record is inserted in that table (from any source: manual, Event Handler, file, etc.) with a `PRICE` value of `250`, then the condition is matched. If the rule is enabled, a notification is sent to the specified destination.
 
-The available destinations are the ones registered in [Routes](#13-routes).
+The available destinations are the ones registered in [Routes](#routes).
 
 ### Templates
 
@@ -32,7 +32,7 @@ The available destinations are the ones registered in [Routes](#13-routes).
 
 A template is the blueprint for a rule. The template must have at least one condition and zero or more parameters. The condition can be either **TEXT** or **USER_ENTRY**.
 
-- **TEXT**: the user who creates or modifies a rule can specify a fixed value for the notification condition, e.g. `PRICE > 100` (*PRICE bigger than 100*). This template will be available for all users on the Inbox [Subscribe](#23-subscribe) section.
+- **TEXT**: the user who creates or modifies a rule can specify a fixed value for the notification condition, e.g. `PRICE > 100` (*PRICE bigger than 100*). This template will be available for all users on the Inbox [Subscribe](#subscribe) section.
 - **USER_ENTRY**: the user who selects this option in the condition section must then create a corresponding parameter, providing a label, name, type, and source. An end user can then select this template and specify an appropriate value for the parameter, e.g. `PRICE > {price}`. In the Inbox [Subscribe](#subscribe) section, USER_ENTRY templates are labelled with curly brackets, for example, `{price}`. 
 Different users can use this to create their own values. For example, user John can subscribe to this template and set the condition `PRICE > 450`; user Thomas can subscribe to the template and set the condition `PRICE > 10`; etc. 
 

@@ -40,7 +40,7 @@
     "@genesislcap/design-system-configurator": "14.217.6",
     "@genesislcap/documentation-components": "14.217.6",
     "@genesislcap/foundation-comms": "14.217.6",
-    "@genesislcap/foundation-criteria": "14.217.6",
+    "@genesislcap/foundation-criteria": "^14.217.6",
     "@genesislcap/foundation-entity-management": "14.217.6",
     "@genesislcap/foundation-fdc3": "14.217.6",
     "@genesislcap/foundation-filters": "14.217.6",

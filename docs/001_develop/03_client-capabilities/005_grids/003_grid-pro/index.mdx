@@ -39,7 +39,7 @@ For more detailed information on API and configurations, please refer to the [AP
 
 To enable this module in your application, follow the steps below.
 
-1. Add `@genesislcap/grid-pro` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](https://learn.genesis.global/secure/web/basics/package-json-basics/) page.
+1. Add `@genesislcap/grid-pro` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
 
 ```json
 {
@@ -74,7 +74,7 @@ Some  **resource** related attributes are `DATASERVER` or `REQUEST_SERVER` speci
 
 |Name|Type|Default|Description|
 |----|----|-------|-----------|
-| `resource-name` | `string` | - | The name of the target [Data Server](https://learn.genesis.global/docs/server/data-server/introduction/) `query` or [Request Server](https://learn.genesis.global/docs/server/request-server/introduction/) `requestReply`. |
+| `resource-name` | `string` | - | The name of the target [Data Server](/develop/server-capabilities/real-time-queries-data-server/) `query` or [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) `requestReply`. |
 | `is-snapshot` | `boolean` | `false` | Request a snapshot from the server. |
 | `criteria` |`string`| - |Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription.|
 | `max-rows` | `number` | - | Maximum number of rows to be returned as part of the initial message, and as part of any additional MORE_ROWS messages. **This will not affect the number of rows displayed**|
@@ -87,16 +87,16 @@ Some  **resource** related attributes are `DATASERVER` or `REQUEST_SERVER` speci
 | `fields` | `string` | - | This optional parameter allows you to select a subset of fields from the query if the client is not interested in receiving all of them. |
 | `max-view` | `number` | - | Maximum number of rows to track as part of a client "view" |
 | `moving-view` | `boolean` | `false` | If true, when the maximum number of rows defined in `max-view` is reached, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows. If false, the updates in the server will be sent to the front end regardless of order. Note that this will only update the UI; no changes will be performed in the database.|
-| `order-by` | `string` | - | This option can be used to select a [Data Server index](https://learn.genesis.global/docs/database/data-types/index-entities/) (defined in the Data Server `query`), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows are returned in order of creation (from oldest database record to newest).|
-| `reverse` | `boolean` | `false` | This option changes the [Data Server index](https://learn.genesis.global/docs/database/data-types/index-entities/) iteration. For example, if you are using the default index, the query will return rows in order from the newest database records to the oldest.|
+| `order-by` | `string` | - | This option can be used to select a [Data Server index](/develop/server-capabilities/real-time-queries-data-server/#indices) (defined in the Data Server `query`), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows are returned in order of creation (from oldest database record to newest).|
+| `reverse` | `boolean` | `false` | This option changes the [Data Server index](/develop/server-capabilities/real-time-queries-data-server/#indices) iteration. For example, if you are using the default index, the query will return rows in order from the newest database records to the oldest.|
 
 ##### REQUEST_SERVER only attributes
 
 |Name|Type|Default|Description|
 |----|----|-------|-----------|
 | `disable-polling` | `boolean` | `false` | This option disables polling if set to true (data updates for the grid will not be fetched automatically).|
-| `polling-interval` | `number` | - | This option enables you to set a custom polling frequency (in milliseconds) for a [Request Server](https://learn.genesis.global/docs/server/request-server/introduction/) resource. Note that this option only works with Request Server resources; if your resource is a Data Server `query`, your grid is updated in real time. |
-|`request`| `string` | - | Similar to `fields` but for [Request Server](https://learn.genesis.global/docs/server/request-server/introduction/) scenarios. This optional parameter enables you to specify request fields, which can include wildcards.|
+| `polling-interval` | `number` | - | This option enables you to set a custom polling frequency (in milliseconds) for a [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) resource. Note that this option only works with Request Server resources; if your resource is a Data Server `query`, your grid is updated in real time. |
+|`request`| `string` | - | Similar to `fields` but for [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) scenarios. This optional parameter enables you to specify request fields, which can include wildcards.|
 |`request-auto-setup`| `boolean` | `false` | This option, if set to true, will automatically set up the `request` based on the datasources's metadata.|
 
 #### Component Attributes
@@ -309,7 +309,7 @@ This document outlines the available features of our two “Grid Pro” datasour
 ### Server-Side Features
 
 - **Sorting**: Order by any INDEX column/field, ASC or DESC.
-  - This is a server limitation. For each column that needs to have “sorting” the developer will need to have an INDEX for it. See more about indexes [here](https://learn.genesis.global/docs/database/data-types/index-entities/).
+  - This is a server limitation. For each column that needs to have “sorting” the developer will need to have an INDEX for it. See more about indexes [here](/develop/server-capabilities/real-time-queries-data-server/#indices).
   - By default, sorting is disabled on ALL columns… BUT if we detect valid ‘` indexes” from the metadata those column/fields will be setup to have sorting.
   - If the user attempts to force `sortable` we’ll check if it’s really ok to do that + warn in the logs about it + try to mention other available indexes.. if any at all.
 - **Filtering**:

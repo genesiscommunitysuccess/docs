@@ -494,7 +494,7 @@ pipelines {
 
 #### `httpSource`
 
-The HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/server/integration/web-integration/genesis-http-client-intro/).
+The HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/develop/server-capabilities/integrations/custom-endpoints/).
 
 When defining this source, you must specify the type of object you expect to receive from the remote endpoint.
 
@@ -539,7 +539,7 @@ eventHandler<Trade>(name = "TEST_PIPELINE_START") {
 
 #### `typedHttpSource`
 
-The Typed HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/server/integration/web-integration/genesis-http-client-intro/).
+The Typed HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/develop/server-capabilities/integrations/custom-endpoints/).
 
 When defining this source, you must specify the type of object you expect to receive from the remote endpoint, as well as the request object being sent (which should be provided in the `execute()` method when triggering this pipeline).
 

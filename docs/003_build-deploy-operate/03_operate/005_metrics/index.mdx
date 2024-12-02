@@ -27,7 +27,7 @@ This helps early detection of problems and gives you invaluable context if an in
 
 ## Enabling metrics
 
-To enable metrics on your application, add the following settings to your [system definition](/server/configuring-runtime/system-definitions/) file:
+To enable metrics on your application, add the following settings to your [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) file:
 
 ```kotlin
 item(name = "MetricsEnabled", value = "true")
@@ -120,7 +120,7 @@ Datadog is a proprietary cloud-based metrics sink that you can use with Genesis.
 
 Datadog supports tags, and these are provided, along with the metric name.
 
-To use Datadog, make the following three settings to your application's [system definition](/server/configuring-runtime/system-definitions/) file:
+To use Datadog, make the following three settings to your application's [system definition](/develop/server-capabilities/runtime-configuration/system-definition/) file:
 
 ```kotlin
 item(name = "MetricsDatadogApiKey", value = "YOUR_API_KEY")

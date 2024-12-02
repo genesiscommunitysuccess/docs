@@ -30,7 +30,7 @@ export default function FiltersDemo({ children, color }) {
 
   return (
     <CodeSection>
-      <div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
+      <div style={{ color: 'var(--neutral-foreground-rest)', width: '100%'}}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', flexDirection: 'column', }}>
           <rapid-text-field
             type="datetime-local"
