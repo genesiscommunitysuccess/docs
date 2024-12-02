@@ -1,0 +1,70 @@
+---
+title: 'Observer utilities'
+sidebar_label: 'Observer utilities'
+id: observer-util
+keywords: [utils, utility, observer, publish, subscribe, custom, events]
+tags:
+  - utils
+  - utility
+  - observer
+  - publish
+  - subscribe
+  - custom
+  - events
+---
+
+This includes utilities for creating event observers and handling element visibility changes, facilitating the subscription to and publication of custom events, and responding to changes in element visibility.
+
+## Key Features
+
+- **`Listener` Type:** Defines a callback function that receives an event of a specific type.
+- **`Subscribe` Type:** Represents a function that subscribes a listener to receive event notifications, returning an unsubscribe function for cleanup.
+- **`Publish` Type:** A function that broadcasts an event to all subscribed listeners.
+- **`Observer` Interface:** Outlines the structure of an event observer, including methods for subscribing to events and publishing events.
+
+## Examples
+
+### Event Observer
+
+The event observer utility provides a pattern for creating a publish-subscribe mechanism, allowing parts of your application to subscribe to and receive notifications for specific events.
+
+#### Creating an Observer
+
+```typescript
+import { createObserver, Listener } from '@genesislcap/foundation-utils';
+
+interface ExampleEvent {
+  message: string;
+}
+
+const exampleObserver = createObserver<ExampleEvent>();
+
+const unsubscribe = exampleObserver.subscribe((ev) => {
+  console.log(ev.message);
+});
+
+// Publishing an event
+exampleObserver.publish({ message: 'Hello Observer Pattern!' });
+```
+
+### Visibility Observer
+
+This utility leverages the `IntersectionObserver` API to monitor the visibility of a specified HTML element, invoking a callback whenever the visibility state changes.
+
+#### respondToVisibility Usage
+
+```typescript
+import { respondToVisibility } from '@genesislcap/foundation-utils';
+
+const targetElement = document.getElementById('target');
+
+respondToVisibility(targetElement, (isVisible) => {
+  console.log(`Element is now ${isVisible ? 'visible' : 'hidden'}`);
+});
+```
+
+## Key Points
+
+- **Promises:** All operations return Promises, allowing for async handling.
+- **Event Listeners:** Use event listeners to react to database changes and perform additional actions.
+- **In-Memory Database:** This module is designed for small-scale applications and prototyping. For larger projects, consider using a dedicated database solution.
