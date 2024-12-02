@@ -1226,7 +1226,9 @@ val inserts: List<InsertResult<Trade>> = db.insertAll(myTrades)
 val trades: List<Trade> = db.getBulk(TRADE)
 ```
 
-Note that this will load the entire table into memory. This is fine for smaller tables and ranges. However, for large tables and ranges, the `stream()` function is provided on the database. This creates a `Stream` that streams the data, rather than loading it all in memory:
+Note that this will load the entire table into memory. This is fine for smaller tables and ranges. 
+
+For large tables and ranges, the `stream()` function is provided on the database. This creates a `Stream` that streams the data, rather than loading it all in memory:
 
 ```kotlin
 val trades: Stream<Trade> = db.stream().getBulk(TRADE)
