@@ -135,6 +135,8 @@ The diagram below provides an overview of the typical components in any given ap
 
 - The Consolidator aggregates data in real time - it is the Data Server that makes this data available to clients.
 
+- The Genesis Router ensures that traffic between users on the front end and the data and features provided by the server is always routed to the correct location. You do not need to add any code; once your permissions have been set up, the Router module handles this automatically.
+
 - The Data Pipeline takes in data from external systems, transforming it into the correct format for the application's database (the database actions are handled by the Event Handler). It is able to transform data into formats that suit the relevant external systems that you are passing data to.
 
 - Other components provide functions that are common requirements to financial applications. In the example above, the Notifications and Alerts component has been added, enabling the application to set up not only internal notifications to users within the application, but also outgoing messages via email, Symphony or Microsoft Teams.
