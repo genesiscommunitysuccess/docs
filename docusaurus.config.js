@@ -30,6 +30,7 @@ const config = {
   onDuplicateRoutes: "throw",
   clientModules: ["./src/client-modules/genesislcap.js"],
   plugins: [
+    "./plugins/webpack-options",
     [
       "@docusaurus/plugin-client-redirects",
       {
@@ -121,6 +122,15 @@ const config = {
   ],
   themeConfig: {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    webpackOptions: {
+      options: {
+        resolve: {
+          alias: {
+            'foundationZero/ZeroDesignSystem': '@genesislcap/foundation-zero',
+          },
+        },
+      },
+    },
     tableOfContents: {
       minHeadingLevel: 2,
       maxHeadingLevel: 5,
