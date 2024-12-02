@@ -157,17 +157,8 @@
         "description": "Layout Management description"
       },
       {
-        "href": "/develop/client-capabilities/storage/",
-        "description": "Storage description",
-        "imageUrl": "/svg/categories-icons/upload-svgrepo-com.svg"
-      },
-      {
         "href": "/develop/client-capabilities/state-management/",
         "description": "State Management description"
-      },
-      {
-        "href": "/develop/client-capabilities/state-machine/",
-        "description": "State Machine description"
       },
       {
         "href": "/develop/client-capabilities/styling/",
