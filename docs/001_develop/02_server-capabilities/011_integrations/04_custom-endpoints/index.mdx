@@ -40,10 +40,10 @@ The following shows example web endpoint configurations.
 
 
 ```kotlin
-import global.genesis.karim.CreateTradeResponse
-import global.genesis.karim.InstrumentClient
-import global.genesis.karim.TradeInformation
-import global.genesis.karim.TradeInformationClient
+import global.genesis.trade.CreateTradeResponse
+import global.genesis.trade.InstrumentClient
+import global.genesis.trade.TradeInformation
+import global.genesis.trade.TradeInformationClient
 import java.nio.file.Files
 
 webHandlers {
@@ -114,18 +114,18 @@ GET endpoint with path `trades` and query parameter `trade-id`.
 
 Using `TradeInformationClient` class which encapsulates the integration with an external service.
 
-Includes authorisation so only users with access to the INSTRUMENT will see the data.
+Includes authorisation so only users with access to the instrument (`instrument` field on `TradeInformation`) will see the data.
 
 On handling a request, uses `TradeInformationClient` to get data about a specific trade using the trade id from the query parameter.
 The trade is then returned on the endpoint's response.
 
 ###### POST trades
 
-POST endpoint with path `trades`.
+POST endpoint with path `trades` and request body of `Trade`.
 
 Using `TradeInformationClient` class which encapsulates the integration with an external service.
 
-Includes authorisation so only users with access to the INSTRUMENT will see the data.
+Includes authorisation so only users with access to the instrument (`instrumentId` field on `Trade`) can create a trade associated with that instrument.
 
 On handling a request, converts the Trade object to a TradeInformation object and uses the `TradeInformationClient` to send the data
 to the external service. The external service's response is returned directly on the endpoint's response also.
@@ -189,6 +189,8 @@ In the example above, the paths would be:
 
 #### `endpoint`
 
+Creating an individual endpoint.
+
 ###### Request parameters
 
 In addition to the body, endpoints can also take request parameters. These are defined in the `endpoint` block, and are available in the `handleRequest` block.
@@ -207,7 +209,7 @@ Use the `by` syntax to define parameters. Note that these variables are only ava
 Here is a simple example of how to define a query parameter: 
 
 ```kotlin {2,5}
-endpoint(RequestType.GET, "test") {
+endpoint(GET, "test") {
     val name by queryParameter("name")
 
     handleRequest {
@@ -219,7 +221,7 @@ endpoint(RequestType.GET, "test") {
 Here is an example of how to define an optional query parameter. Optional parameters are always nullable.
 
 ```kotlin {2,5}
-endpoint(RequestType.GET, "test") {
+endpoint(GET, "test") {
     val name by optionalQueryParameter("name")
     
     handleRequest {
@@ -233,7 +235,7 @@ endpoint(RequestType.GET, "test") {
 Path parameters are always required. Here is an example of how to define one:
 
 ```kotlin {2,5}
-endpoint(RequestType.GET, "test/{name}") {
+endpoint(GET, "test/{name}") {
     val name by pathParameter("name")
     
     handleRequest {
@@ -247,7 +249,7 @@ endpoint(RequestType.GET, "test/{name}") {
 Here is an example of how to define a header parameter:
 
 ```kotlin {2,5}
-endpoint(RequestType.GET, "test") {
+endpoint(GET, "test") {
     val name by header("name")
     
     handleRequest {
@@ -259,7 +261,7 @@ endpoint(RequestType.GET, "test") {
 Here is an example of how to define an optional header parameter. Optional parameters are always nullable.
 
 ```kotlin {2,5}
-endpoint(RequestType.GET, "test") {
+endpoint(GET, "test") {
     val name by optionalHeader("name")
 
     handleRequest {
@@ -275,7 +277,7 @@ Headers can also have a set of required values. If the header is present, but th
 The below endpoint will only match if the `Test-Header` header is present with its value set to `test`:
 
 ```kotlin {2}
-endpoint(RequestType.GET, "test") {
+endpoint(GET, "test") {
     header("Test-Header", "test")
  
     handleRequest {
@@ -289,7 +291,7 @@ endpoint(RequestType.GET, "test") {
 Here is an example of how to define a secret header: 
 
 ```kotlin {2}
-endpoint(RequestType.GET, "test") {
+endpoint(GET, "test") {
     headerSecret("secret-header", "secret-value")
     
     handleRequest {
@@ -317,13 +319,11 @@ webHandlers {
 To support file uploads, use the multipartEndpoint function. This function parses the request body as a multipart request and makes the files available in the fileUploads property of the handleRequest block.
 
 ```kotlin
-webHandlers {
-    val tmp = Files.createTempDirectory("test")
-    multipartEndpoint("test") {
-        handleRequest {
-            body.fileUploads.forEach {
-                it.copyTo(tmp.resolve(it.fileName))
-            }
+val tmp = Files.createTempDirectory("test")
+multipartEndpoint("test") {
+    handleRequest {
+        body.fileUploads.forEach {
+            it.copyTo(tmp.resolve(it.fileName))
         }
     }
 }
@@ -455,7 +455,7 @@ By default, the `handleRequest` function infers the output of the endpoint from 
 
 This is sufficient for most cases, but you can customise the output.
 
-##### Content type
+###### Content type
 
 If you want to override the default behaviour and specify an output type, use the call `produces` with a content type. The following content types are supported out of the box:
 
@@ -487,7 +487,7 @@ webHandlers {
 }
 ```
 
-##### Return types
+###### Return types
 
 By default, the returned value is serialised using the default serialiser. However, this is overruled if the return type specified is in the table below. 
 
@@ -517,7 +517,7 @@ webHandlers {
 }
 ```
 
-##### Content type
+###### Content type
 
 As with producing output, you can specify the content type of the request body using the `accepts` function. An endpoint is able to accept multiple content types. If no content type is specified, then the endpoint defaults to accept `application/json`. 
 
@@ -600,29 +600,29 @@ The `permissioning` block is used to implement [access control](/develop/server-
 `permissionCodes` takes a list of permission codes. The client user accessing the query must have access to **at least one** of the permission codes in the list to be able to access any query data.
 
 ```kotlin
-    permissioning {
-      permissionCodes = listOf("TradeView", "TradeUpdate")
-    }
+permissioning {
+    permissionCodes = listOf("TradeView", "TradeUpdate")
+}
 ```
 
 #### `customPermissions`
 
 The `customPermissions` block takes boolean logic. If this function returns true, the user will be able to access the resource; otherwise, the request will be rejected.  
-It is useful, for example, in the case you have an external API to check against. In this example an `entitlementUtils` object wraps an external API we can call to check the user's name has access.
+It is useful, for example, in the case you have an external API to check against. In this example an `entitlementUtils` object wraps an external API we can call to check the user's username has access.
 
 ```kotlin
-  customPermissions {
+customPermissions {
     entitlementUtils.userIsEntitled(userName)
-  }
+}
 ```
 
 The `customPermissions` block also has access to `db` so that you can query any data in the database. You can add complex logic in here as needed, and have access to the full inbound message.
 
 ```kotlin
-  customPermissions {
+customPermissions {
     val userAttributes = db.get(UserAttributes.byUserName(userName))
     userAttributes?.accessType == AccessType.ALL
-  }
+}
 ```
 
 Where utilizing `customPermissions` you should also consider configuring a [`customLoginAck`](/develop/server-capabilities/access-control/authentication/#customloginack) so that the front end of the application can also permission its components in a similar way.
@@ -630,7 +630,7 @@ Where utilizing `customPermissions` you should also consider configuring a [`cus
 
 #### `requestAuth`
 
-`requestAuth` provides entity-level authorisation on the request input similar to Event Handlers.
+`requestAuth` provides entity-level authorisation on the request input similar to Event Handlers. In the below example, the user will only be able to use the endpoint if they have an auth entry for the `instrumentId` of the Trade in the request body.
 
 ```kotlin
 permissioning {
@@ -658,7 +658,7 @@ endpoint<Trade, Trade>(POST, "trades") {
 
 #### `responseAuth`
 
-`responseAuth` provides entity-level filtering on the response similar to Request Servers.
+`responseAuth` provides entity-level filtering on the response similar to Request Servers. In the below example, the user will only see Trades where the user has an auth entry for the `instrumentId` of the Trade.
 
 ```kotlin
 permissioning {
@@ -695,6 +695,10 @@ if (!userHasRight(userName, "TradeViewFull")) { ... }
 ## Http status codes
 
 By default, all endpoints return a `200 OK` status code. 
+
+### `endpoint` override
+
+You can override the http status code for an [endpoint](#override-status-code).
 
 ### `HttpResponseCode` annotation
 
@@ -741,7 +745,7 @@ We can provide the following information:
 We can provide a description and summary for our endpoint:
 
 ```kotlin
-endpoint(RequestType.GET, "test") {
+endpoint(GET, "test") {
     openapi {
         description = "A test endpoint"
         summary = "This endpoint is available for testing..."
@@ -761,7 +765,7 @@ A schema for the response type used in the endpoint is generated automatically. 
 Here is an example:
 
 ```kotlin {2-13}
-endpoint<TestData>(RequestType.GET, "test") {
+endpoint<TestData>(GET, "test") {
     openapi {
         response {
             description = "A test response"
@@ -787,7 +791,7 @@ As with responses, the request body schema is generated automatically. However, 
 Similarly, you can provide a description and example. Providing an example for a request body is very useful for testing the endpoint in the OpenAPI UI. The request is ready to go with the example data, which the user can modify to suit their needs.
 
 ```kotlin {2-9}
-endpoint<TestData, String>(RequestType.GET, "test") {
+endpoint<TestData, String>(GET, "test") {
     openapi {
         requestBody {
             description = "A test request"
@@ -806,7 +810,7 @@ and example for the request body.
 By default, the framework describes parameters in the OpenAPI spec. However, you can provide additional information, for example:
 
 ```kotlin
-endpoint<String>(RequestType.GET, "users") {
+endpoint<String>(GET, "users") {
     openapi {
         parameters {
             query("userGroup") {
@@ -818,6 +822,7 @@ endpoint<String>(RequestType.GET, "users") {
 }
 ```
 
+### Integration testing
 
 :::info
 
@@ -827,17 +832,15 @@ If you are testing against a previous version of the framework, go to the [legac
 
 :::
 
-### Integration testing
-
 This document looks at the basics of testing Web Endpoints.
 
 We shall use a simple example and work through the communication between our tests and the Web Endpoint we are testing. This example relies on GenesisJunit, which is designed to make testing easy.
 
-In this example, we shall test the following Web Endpoint. Note, the web handler scripts must exist in your test Genesis Home folder.
+In this example, we shall test the following Web Endpoint. Note, the web handler scripts must exist in your test Genesis Home folder (e.g. `src/test/resources/genesisHome/trade-app/src/main/scripts/trade-web-handler.kts`).
 
 ```kotlin 
-import global.genesis.karim.TradeInformation
-import global.genesis.karim.TradeInformationClient
+import global.genesis.trade.TradeInformation
+import global.genesis.trade.TradeInformationClient
 
 webHandlers {
     val tradeInformationClient = injector<TradeInformationClient>()
@@ -972,7 +975,7 @@ This test class does four things:
 * It will read the Router script as identified with the `TestScriptFile` annotation, causing all web handler scripts to be read.
 * Scans the `global.genesis.router` package with the `PackageNameScan` annotation to load all relevant Router classes.
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing/#integration-testing).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
 
 #### A first test
 Here is a simple first test. It does the following:
@@ -1222,7 +1225,7 @@ This section covers testing your Web Endpoint if you are using any version of th
 
 It is good practice to test your Web Endpoints. This is the best way to prevent any unexpected side effects of changes to your application over time.
 
-The Genesis platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Web Endpoint configuration is used to create our Web Endpoint. We also need to add the required packages and genesis home. 
+The Genesis platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. First, we will setup our test class as below.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -1288,7 +1291,7 @@ public class WebEndpointTest extends AbstractGenesisTestSupport<GenesisSet> {
 </TabItem>
 </Tabs>
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing-api/#abstractgenesistestsupport).
 
 Once you have set up your configuration, we can start writing tests against our Web Endpoint.
 
@@ -1369,7 +1372,7 @@ class WebEndpointTest : AbstractGenesisTestSupport<GenesisSet>(
 ```java
 public class WebEndpointTest extends AbstractGenesisTestSupport<GenesisSet> {
 
-    public LegacyWeb2Test() {
+    public WebEndpointTest() {
         super(GenesisTestConfig.builder()
                 .setPackageNames(List.of("global.genesis.router"))
                 .setGenesisHome("/genesisHome")
