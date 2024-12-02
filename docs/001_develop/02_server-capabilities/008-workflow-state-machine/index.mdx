@@ -10,4 +10,291 @@ tags:
 sidebar_position: 8
 ---
 
-Coming soon...
+import Log from '/snippet/_LOG.md'
+import CommonProcesses from '/snippet/_common-see-processes.md'
+
+## Overview
+
+The Genesis server state machine is used to define workflow for application's table entities. State machines work in conjunction with [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/) to ensure records for the entity follow the correct workflow at all times.
+
+To give an example, you may be building an Order Management System, and need to define the lifecycle of your Order's. You may have various states for your order defined in an ENUM:
+
+ORDER_STATE:
+- NEW
+- ASSIGNED
+- PARTIALLY_FILLED
+- FULLY_FILLED
+- COMPLETED
+- CANCELLED
+
+There are typically two aspects of related system logic to define in your state machine:
+
+1. **Transitions** ; Define what the valid transitions between the states are. Building on our example, you may need to configure that order must be `ASSIGNED` before it is moved to `PARTIALLY_FILLED`. Also, `CANCELLED` is an end state and thus has no valid transitions to another state.
+1. **State Validation** ; Validate that all the required fields are set to transition to a given state. For example, an Order must have `ASSIGNED_TO` set to a valid user in the system to transition to `ASSIGNED`.
+
+## Example configuration
+
+State Machines can be written in-line within a GPAL event handler, else written in Kotlin and injected for use. Examples of both are detailed here.
+
+### In-line Event Handler State Machine
+
+The following example of a State Machine defines five events that control the transition of trades from one state to another.
+
+```kotlin
+eventHandler {
+  stateMachine(ORDER.ORDER_STATUS) {
+    insertEvent { //This generates an EVENT called `EVENT_ORDER_INSERT`
+      initialStates(OrderStatus.NEW, ORDER_STATE.ASSIGNED) //Inserted orders 
+
+      excludedFields {
+        ENTERED_BY
+        ENTERED_TIME
+        MODIFIED_BY
+        MODIFIED_TIME
+      }
+
+      onEvent { event ->
+        event.withDetails {
+          enteredBy = event.userName
+          enteredTime = now()
+        }
+      }
+
+      onValidate { order ->
+        verifyOnly { order hasField ORDER.PRICE }
+        verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
+        if(order.orderState == OrderState.ASSIGNED) {
+          if(order.assignedTo == null) {
+            return onValidate@nack("Order must be assigned to set status of ASSIGNED")
+          }
+        }
+      }
+    }
+
+    modifyEvent {
+      mutableStates(OrderStatus.NEW, OrderStatus.ASSIGNED) //You can only modify an order when it is in state NEW or ASSIGNED
+
+      excludedFields {
+        ENTERED_BY
+        ENTERED_TIME
+        MODIFIED_BY
+        MODIFIED_TIME
+      }
+
+      onEvent { event, trade ->
+        trade.modifiedBy = event.userName
+        trade.modifiedTime = now()
+      }
+
+      onValidate { order ->
+        verifyOnly { order hasField ORDER.PRICE }
+        verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
+        if(order.orderState == OrderState.ASSIGNED) {
+          if(order.assignedTo == null) {
+            return onValidate@nack("Order must be assigned to someone to set status of ASSIGNED")
+          }
+        }
+      }
+    }
+
+    //An order can only go to ASSIGNED from NEW
+    transitionEvent(OrderStatus.ASSIGNED) {
+      fromStates(OrderStatus.NEW)
+
+      onEvent { event, trade ->
+        trade.modifiedBy = event.userName
+        trade.modifiedTime = now()
+      }
+
+      onValidate { order ->
+        if(order.orderState == OrderState.ASSIGNED) {
+          if(order.assignedTo == null) {
+            return onValidate@nack("Order must be assigned to someone to set status of ASSIGNED")
+          }
+        }
+      }
+    }
+
+    //An order can only go to PARTIALLY_FILLED from ASSIGNED
+    transitionEvent(OrderStatus.PARTIALLY_FILLED) {
+      fromStates(OrderStatus.ASSIGNED)
+
+      onEvent { event, trade ->
+        trade.modifiedBy = event.userName
+        trade.modifiedTime = now()
+      }
+
+      onValidate { order ->
+        require(order.quantityFilled > 0) { "Order must have some quantity filled to be set as PARTIALLY_FILLED" }
+      }
+    }
+
+    //An order can only go to FULLY_FILLED from PARTIALLY_FILLED
+    transitionEvent(OrderStatus.FULLY_FILLED) {
+      fromStates(OrderStatus.PARTIALLY_FILLED)
+
+      onEvent { event, trade ->
+          trade.modifiedBy = event.userName
+          trade.modifiedTime = now()
+      }
+
+      onValidate { order ->
+        require(order.quantityFilled == order.quantity) { "Order must have quantity filled to the full order quantity to be set as FULLY_FILLED" }
+      }
+    }
+
+    //An order can go to COMPLETED from ASSIGNED, PARTIALLY_FILLED, FULLY_FILLED
+    transitionEvent(OrderStatus.COMPLETED) {
+      fromStates(OrderStatus.ASSIGNED, OrderStatus.PARTIALLY_FILLED, OrderStatus.FULLY_FILLED )
+
+      onEvent { event, trade ->
+        trade.modifiedBy = event.userName
+        trade.modifiedTime = now()
+      }
+    }
+
+    //An order can go to CANCELLED from ASSIGNED, PARTIALLY_FILLED, FULLY_FILLED
+    transitionEvent(OrderStatus.CANCELLED) {
+      fromStates(OrderStatus.ASSIGNED, OrderStatus.PARTIALLY_FILLED, OrderStatus.FULLY_FILLED)
+
+      onEvent { event, trade ->
+        trade.modifiedBy = event.userName
+        trade.modifiedTime = now()
+      }
+    }
+  }
+}
+```
+
+### Injectable State Machine
+
+The following is an example State Machine written in kotlin. This would be injected into your event handler as described in the [configuration options](#configurationoptions) section.
+
+```kotlin
+@Module
+class OrderStateMachine @Inject constructor(
+    db: AsyncEntityDb
+) {
+    private val internalState: StateMachine<Order, OrderState, OrderEffect> = db.stateMachineBuilder {
+      // Read ORDER_STATUS from Order table
+      readState { orderStatus }
+      
+      // Defines how the status NEW is handled
+      state(OrderStatus.NEW) {
+        // Allows the status to change
+        isMutable = true
+
+        // State machine will accept the specified state on creation of trade
+        initialState(OrderEffect.New) {
+          onValidate { order ->
+            verifyOnly { order hasField ORDER.PRICE }
+            verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
+          }
+        }
+
+        onCommit { trade ->
+          event.withDetails {
+            enteredBy = event.userName
+            enteredTime = now()
+          }
+        }
+
+        // Allowed transitions are from NEW to ASSIGNED
+        transition(TradeStatus.ASSIGNED, TradeEffect.Assigned)
+      }
+
+      // Defines how the status NEW is handled
+      state(OrderStatus.ASSIGNED) {
+        // Allows the status to change
+        isMutable = true
+
+        // State machine will accept the specified state on creation of trade
+        initialState(OrderEffect.Assigned) {
+          onValidate { order ->
+            verifyOnly { order hasField ORDER.PRICE }
+            verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
+            if(order.orderState == OrderState.ASSIGNED) {
+              if(order.assignedTo == null) {
+                return onValidate@nack("Order must be assigned to set status of ASSIGNED")
+              }
+            }
+          }
+        }
+
+        onValidate { order ->
+          verifyOnly { order hasField ORDER.PRICE }
+          verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
+          if(order.orderState == OrderState.ASSIGNED) {
+            if(order.assignedTo == null) {
+              return onValidate@nack("Order must be assigned to set status of ASSIGNED")
+            }
+          }
+        }
+
+        onCommit { trade ->
+          event.withDetails {
+            enteredBy = event.userName
+            enteredTime = now()
+          }
+        }
+
+        // Allowed transitions from ASSIGNED
+        transition(TradeStatus.PARTIALLY_FILLED, TradeEffect.PartiallyFilled)
+        transition(TradeStatus.COMPLETED, TradeEffect.Completed)
+        transition(TradeStatus.CANCELLED, TradeEffect.Cancelled)
+      }
+
+TODO add below states
+
+- PARTIALLY_FILLED
+- FULLY_FILLED
+- COMPLETED
+- CANCELLED
+
+
+      state(OrderStatus.PartiallyFilled) {
+        isMutable = true
+
+        onValidate { issuedSecurity ->
+            require(!issuedSecurity.rejectionReason.isNullOrEmpty()) {
+                "Rejection reason must be given"
+            }
+        }
+
+        transition(OrderStatus.ASSIGNED, OrderEffect.Assigned)
+      }
+
+    }
+}
+
+sealed class OrderEffect {
+    object New : OrderEffect()
+    object Assigned : OrderEffect()
+    object PartiallyFilled : OrderEffect()
+    object FullyFilled : OrderEffect()
+    object Completed : OrderEffect()
+    object Cancelled : OrderEffect()
+}
+
+```
+
+## Configuration options
+
+State Machines can be written in-line within a GPAL event handler, else written in Kotlin and injected for use. Configuration options of both are detailed here.
+
+### In-line Event Handler State Machine
+
+TODO
+
+TODO the onValidates can link to the eventHandler onValidates section
+
+### Injectable State Machine
+
+TODO
+
+
+## Runtime configuration
+
+TODO
+
+<CommonProcesses/>
