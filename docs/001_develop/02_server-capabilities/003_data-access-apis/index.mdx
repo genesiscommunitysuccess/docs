@@ -13,48 +13,51 @@ sidebar_position: 3
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
 ## Overview
+Genesis data access APIs provide access to the data in a Genesis application. They are used by most of the server capabilities to to enable an application to write, read and subscribing to data updates. You can use these APIs when you configure server capabilities, such as the [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/), which is used for core business logic. You can also inject these APIs into any application for use in custom modules and processes.
 
-Genesis data access APIs facilitate access to Genesis application data. They are used by most of the server capabilities to power writing, reading and subscribing to data updates. Developers have access to these APIs within the context of some server capabilities, such as [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/), used for core business logic. The APIs can also be injected into any application for use in custom modules and processes.
+There are several versions of EntityDb API, which enable you to write to and query the data in your database. With the exception of RxDb, they are powered by type-safe entities for tables. These are [DAO](/build-deploy-operate/build/bdo-build-overview/#dao)s generated at build time, based on the [data model](/develop/server-capabilities/data-model/) you have defined.
 
-The EntityDb API gives access to write to and query the Genesis Application data that is stored in it's database. With the exception of RxDb, they are powered by type-safe entities for tables, [DAO](/build-deploy-operate/build/bdo-build-overview/#dao)s, generated at build time based on the [data model](/develop/server-capabilities/data-model/) defined in the application.
-
-There are three versions of the entity db:
+The versions of the entity EntityDb are:
 
 | API           | Languages   | Description                                                                                                             | 
 |---------------|-------------|-------------------------------------------------------------------------------------------------------------------------|
 |`SyncEntityDb` |Kotlin + Java|A blocking API, simplest to use and helpful when performance isn't critical                                              |
 |`AsyncEntityDb`|Kotlin only  |An asynchronous API powered by [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html)                 |
 |`RxEntityDb`   |Java only    |An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki)                                        |
-|`RxDb`         |Kotlin + Java|An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki) which does NOT use type-safe entities  |
+|`RxDb`         |Kotlin + Java|An asynchronous API powered by [RxJava](https://github.com/reactivex/RxJava/wiki), which does NOT use type-safe entities |
 
-The difference between blocking (synchronous) and asynchronous is that if the code needs to wait on results to occur before moving on.
+The difference between blocking (synchronous) and asynchronous is that the code needs to wait on results to occur before moving on.
 
-- In blocking code, the thread will block until the database responds. This code is easier to write and think about logically
-- In async code, the thread will not block: instead, it resumes after the database responds. This is more difficult to write and comprehend, but can handle more requests concurrently
+- In blocking code, the thread will block until the database responds. This code is easier to write and think about logically.
+- In async code, the thread will not block: instead, it resumes after the database responds. This is more difficult to write and comprehend, but it can handle more requests concurrently.
 
-All of the APIs implement the same methods for reading and writing, but their [return types](#return-types) differ and need handling differently in code.
+All the APIs implement the same methods for reading and writing, but their [return types](#return-types) differ and need handling differently in code.
 
-###### Access control
-The database APIs are not aware of the user accessing them, as such user access control implementations are not considered in the API. User facing capabilities such as dataservers, request servers and event handlers all apply [access control](/develop/server-capabilities/access-control/) measures over their DB API interactions. When writing custom code which is writing or reading data for a given users, you should apply the same before return read results, or attempting any writes.
+### Access control
+User access control is not implemented in the API, so the database APIs are not aware of the user accessing them. User-facing capabilities such as `query`(Data Server), `requestReply` (Request Server) and `eventHandler` (Event Handler) all apply [access control](/develop/server-capabilities/access-control/) measures over their DB API interactions. When writing custom code that is writing or reading data for given users, you should apply the same before return read results, or attempting any writes.
 
-## Data Types
+## Data types
 
-Data types are essential when using the entityDb APIs. The objects and classes encapsulate the data within your Genesis application and are generated at [DAO](/build-deploy-operate/build/bdo-build-overview/#dao) build time
+Data types are essential when using the EntityDb APIs. The objects and classes encapsulate the data within your Genesis application and are generated at [DAO](/build-deploy-operate/build/bdo-build-overview/#dao) build time.
 
 ### Table entities
 
-Table entities are type-safe classes generated by Genesis that match the applications's [tables](/develop/server-capabilities/data-model#tables). The generated entity name is based on the table name, but will be camel case. 
+Table entities are type-safe classes generated by Genesis, which match the applications's [tables](/develop/server-capabilities/data-model#tables). The generated entity name is based on the table name, but will be camel-case. 
 
 For example, `TABLE_NAME` becomes `TableName`. 
 
-Available for use in all Entity APIs (not RxDb)
+These entities are available for use in all Entity APIs (except RxDb).
 
-All table entities come with builders to help construct these objects. In Kotlin, the builder works as a lambda in which the field values are set, and the object is built after the lambda call is completed. In Java, the builder is a fluent interface, where fields are set and the object is built in a final `build` call.
+All table entities come with builders to help construct these objects. 
+
+- In Kotlin, the builder works as a lambda in which the field values are set, and the object is built after the lambda call is completed. 
+- In Java, the builder is a fluent interface, where fields are set and the object is built in a final `build` call.
 
 Just before the object is built, the object is validated to make sure all the required fields are set.
 
-The following example shows how Trade from [the example data model](/develop/server-capabilities/data-model/#example-data-model) is built:
+The following example shows how the table Trade from the [example data model](/develop/server-capabilities/data-model/#example-data-model) is built:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -112,50 +115,46 @@ TradeAudit = trade.toAuditEntity(
 
 ### View entities
 
-Table entities are type-safe classes generated by Genesis that match your applications's [tables](/develop/server-capabilities/data-model/#tables). The generated entity name is based on the table name, but will be camel case. 
+Table entities are type-safe classes generated by Genesis to match the application's defined [views](/develop/server-capabilities/data-model/#views). The generated entity name is based on the view name, but will be camel-case. 
 
 For example, `VIEW_NAME` becomes `TableName`. 
 
-View entities are type-safe classes generated to match the application's defined [views](/develop/server-capabilities/data-model/#views). The generated entity name is based on the view name, but will be camel case. case to camel case.
-
-For example, `VIEW_NAME` becomes `ViewName`. 
-
-Available for use in all Entity APIs (not RxDb)
+These entities are available for use in all Entity APIs (except RxDb).
 
 There are two types of view entity:
 
--   SingleCardinalityViewEntity : All joins are one-to-one
--   MultiCardinalityViewEntity : Contains one or more joins which are one-to-many
+-   SingleCardinalityViewEntity : all joins are one-to-one
+-   MultiCardinalityViewEntity : contains one or more joins, which are one-to-many
 
 ### Index entities
 
-Index entities are nested in [table](#table-entities) and [view entities](#view-entities). The name will be based on the index name defined. The entity can be constructed by passing in the field values in order. The first field of the index must always be provided, and the others are optional.
+Index entities are nested in [table entities](#table-entities) and [view entities](#view-entities). The name will be based on the index name defined. The entity can be constructed by passing in the field values in order. The first field of the index must always be provided, and the others are optional.
 
 `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call where `...` is the index name.
 
 A unique index entity will only be created when all fields of a unique index are supplied. In all other cases, a non-unique index entity will be created.
 
-View entities inherit the indices of the root table of the view, so with reference to [our example data model](/develop/server-capabilities/data-model#example-data-model), the view will also have an index entity for the trade's Primary Key and indices:
+View entities inherit the indices of the root table of the view, so with reference to [our example data model](/develop/server-capabilities/data-model#example-data-model), the view will also have an index entity for the trade's primary key and indices:
 
 - ById
 - ByCounterpartyId
 - ByInstrumentId
 - ByDate
 
-### Database Entities
+### Database entities
 
 `DbEntity` is the common interface implemented by table entities and view entities.
 
-### Database Records
+### Database records
 
-`DbRecord` is the most raw representation of a table, it enables you to build a record of a specified table using strings for table, field and index names. It is not type-safe, and is not a recommended method.
+`DbRecord` is the most raw representation of a table. It enables you to build a record of a specified table using strings for table, field and index names. It is not type-safe, and is *not* a recommended method.
 
 The objects cannot be used with entity Db APIs.
 
 
 ## Entity Db API
 
-All three entity DB APIs (`SyncEntityDb`, `AsyncEntityDb`, `RxEntityDb`) use the same types and implement the same API methods with the exception of their [return types](#return-types).
+All three entity DB APIs (`SyncEntityDb`, `AsyncEntityDb`, `RxEntityDb`) use the same types and implement the same API methods, with the exception of their [return types](#return-types).
 
 ### Type convention
 
@@ -179,7 +178,7 @@ All three entity DB APIs (`SyncEntityDb`, `AsyncEntityDb`, `RxEntityDb`) use the
 
 #### `get`
 
-Get is a simple lookup on the database; it will return a single entity if a match is found, or no records if none is
+Get is a simple look-up on the database; it returns a single entity if a match is found, or no records if no match is found.
 found.
 
 The following overloads exist for get; `fields` is a `Set<String>`.
@@ -250,8 +249,7 @@ final var trade = db.get(trade.byTypeId())
 
 #### `getAll`
 
-This takes multiple _unique_ index class instances and returns the type entity type for the record. It takes
-a `List<Pair<String, UniqueEntityIndex<E>>>`, where the `String` is a unique reference to each request.
+This takes multiple _unique_ index class instances and returns the entity type for the record. It takes a `List<Pair<String, UniqueEntityIndex<E>>>`, where the `String` is a unique reference to each request.
 
 ###### Overloads
 
@@ -267,9 +265,9 @@ val recordB = map["B"]
 
 #### `getAllAsList`
 
-This operation is similar to the one above, but takes a `List<UniqueEntityIndex<E>>`, and returns a `List<E?>`.
-The results are returned in the order they were requested and will be `null` if no record was found. The result
-list is guaranteed to be the same count as the input.
+This operation is similar to `getAll`, but takes a `List<UniqueEntityIndex<E>>`, and returns a `List<E?>`.
+
+The results are returned in the order they were requested and will be `null` if no record was found. The result list is guaranteed to be the same count as the input.
 
 ###### Overloads
 
@@ -287,7 +285,8 @@ val recordB = list[1]
 #### `getBulk`
 
 This operation creates a `Flowable` of the whole table.
-The records will be sorted in ascending order by the index provided, or by the primary key if none is provided.
+
+The records will be sorted in ascending order by the index provided. If no index is provided, they will be sorted by the primary key.
 
 There is also the `getBulkFromEnd` function, which returns records in descending order.
 
@@ -339,8 +338,8 @@ final var flowable = db.getBulk(Trade.ById.Companion);
 
 There are two types of `getRange` operation:
 
-* Single-value range, e.g. trades with CURRENCY set to USD
-* Interval range, e.g. all trades with TRADE_DATE between 01-Jul-2024 and 01-Aug-2024.
+* single-value range, e.g. trades with CURRENCY set to USD
+* interval range, e.g. all trades with TRADE_DATE between 01-Jul-2024 and 01-Aug-2024.
 
 Unlike the `get` operation, the `getRange` operation can always return multiple records.
 
@@ -406,21 +405,20 @@ var range = db.getRange(myStartTrade.byDate(), myEndTrade.byDate());
 
 ###### `numKeyFields` property
 
-This allows users to query on part of the index. When using the `getRange` operation, you can tell the database how many fields in the index to use.
+This enables users to query on part of the index. When using the `getRange` operation, you can tell the database how many fields in the index to use.
 
 By default, all fields are used, but you can override this. 
 
-
 :::note
-Order matters here; you can get a range on just field 1, field 1 and field 2, but not on field 2 and field 1.
+Order matters here; you can get a range on just field 1, on field 1 and field 2, but not on field 2 and field 1.
 :::
 
-For example, if on the ORDER table, we had an index on COUNTERPARTY and INSTRUMENT_ID, we could:
+For example, if on the ORDER table, you have an index on COUNTERPARTY and INSTRUMENT_ID, you could:
 
 - perform a single-value `getRange` operation on `COUNTERPARTY`. For this, set `numKeyFields` to `1`.
 - perform a single-value `getRange` operation on both `COUNTERPARTY` and `INSTRUMENT`. For this, set `numKeyFields` to `2`.
 
-For example:
+Mor examples:
 
 <Tabs defaultValue="kotlin" values={[{label: 'Kotlin', value: 'kotlin',}, {label: 'Java', value: 'java',}]}>
 <TabItem value="kotlin">
@@ -496,9 +494,10 @@ var range = db.getRange(
 </TabItem>
 </Tabs>
 
-###### Reversed range lookups
+###### Reversed range look-ups
 
 In addition to `getRange` there is also the `getRangeFromEnd` method.
+
 This works in the same way as `getRange`. However, rows are returned in the reverse order.
 
 ###### Parameters when using index entities
@@ -524,11 +523,11 @@ The entity database will return type-safe results for write operations. There ar
 -   a `previous` property, which is the record as it was *before* the modify operation
 -   a `modifiedFields` property, which holds a `Set<String>` of the fields that were changed in the modify  
 
-`UpsertResult` can be either an `InsertResult` or a `ModifyResult`
+`UpsertResult` can be either an `InsertResult` or a `ModifyResult`.
 
 All write operations have versions that take a single entity and versions that take multiple entities. Different entity types can be inserted in the same operation; however, the return type will be `List<InsertResult<Entity>>`. Also, modify operations only accept table entities.
 
-Another important helper class is `ModifyDetails`. It holds details of data modification details resulting from a Modify or Upsert. When performing modify and upsert operations with EntityDb, you must specify the index of the record you wish to perform the operation to. The `EntityModifyDetails` class enables you to identify the record and the fields to modify.
+Another important helper class is `ModifyDetails`. It holds details of data modification resulting from a modify or upsert. When performing modify and upsert operations with EntityDb, you must specify the index of the record you wish to perform the operation on. The `EntityModifyDetails` class enables you to identify the record and the fields to modify.
 
 When writing a record to the database, typically all non-null properties should be set on the entity. An entity property becomes non-nullable if:
 
@@ -634,9 +633,7 @@ The update operation is a condensed syntax for modifying data in the database. I
 * `updateRangeBy` - an index range
 * `updateAll` - a whole table
 
-The transformation is a lambda, where the rows that are in scope are provided one by one. The rows are provided as in
-the database, and can be modified in place, with the changes applied to the database. All update calls use the
-`safeWriteTransaction` and are transactional if the database supports it.
+The transformation is a lambda, where the rows that are in scope are provided one by one. The rows are provided as in the database, and can be modified in place, with the changes applied to the database. All update calls use the `safeWriteTransaction` and are transactional if the database supports it.
 
 * In the async entity db, the lambda will be of type `E.() -> Unit`. The entity will be the receiver and in the lambda,
 `this` will refer to the row, which should be modified in place.
@@ -724,9 +721,7 @@ There is a distinction between using Kotlin and Java here.
 
 #### Read transactions
 
-Read transactions ensure that all read operations are consistent. Intervening writes will not affect reads within the
-transaction. The return value in the transaction will also be returned from the transaction. For the `RxEntityDb`, it
-will be a `Single<*>`.
+Read transactions ensure that all read operations are consistent. Intervening writes will not affect reads within the transaction. The return value in the transaction will also be returned from the transaction. For the `RxEntityDb`, it will be a `Single<*>`.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -916,12 +911,12 @@ var bulk = db.bulkSubscribe(Trade.class);
 | fields | `Set<String>` | ❌ | Only listen to changes on selected fields (filters `ModifyResult` on fields)| listen to all fields |
 | delay | `Int` | ❌ | Batch updates x ms | no batching |
 | subscribeLocally | `Boolean` | ❌ | When in a cluster, only listen to local updates | false |
-| backwardJoins  | `Boolean` | ❌ | subscribe to changes on sub tables (backwards joins) | false |
+| backwardJoins  | `Boolean` | ❌ | Subscribe to changes on sub-tables (backwards joins) | false |
 | listenerName | `String` | ❌ | When in a cluster, only listen to local updates | generated name |
 
 ###### Java support
 
-There are many optional parameters for bulk subscribe operations. In Kotlin, this works well in a single method due to named parameters and default values.
+There are many optional parameters for bulk subscribe operations. In Kotlin, this works well in a single method, due to named parameters and default values.
 
 In Java, however, we provide a fluent API to set optional parameters.
 
@@ -967,7 +962,7 @@ var bulk = db.bulkSubscribeBuilder(Trade.class)
 `rangeSubscribe` is similar to `bulkSubscribe`. The `rangeSubscribe` operation combines a [`getRange`](#getrange) and a [`subscribe`](#subscribe) call into a single operation.
 This is useful when a class needs to read a range of values from table and then receive updates of changes to the relevant records in the underlying table or view.
 
-This operation supports [backwards joins for views]](/develop/server-capabilities/data-model/#views). This means that it can receive updates on both the root table and the joined tables. The view needs to support this in the definition, and it must be enabled on the `bulkSubscribe` call.
+This operation supports [backwards joins for views](/develop/server-capabilities/data-model/#views). This means that it can receive updates on both the root table and the joined tables. The view needs to support this in the definition, and it must be enabled on the `bulkSubscribe` call.
 
 ###### Different range options
 
@@ -976,7 +971,7 @@ In addition, range subscribe supports both static and dynamic ranges. See below 
 
 ###### Note on Java
 
-Like `bulkSubscribe` there are many optional parameters for range subscribe operations. In Kotlin, this works well in a single method due to named parameters and default values.
+Like `bulkSubscribe`, there are many optional parameters for range subscribe operations. In Kotlin, this works well in a single method, due to named parameters and default values.
 
 In Java however, we provide a fluent API to set optional parameters.
 
@@ -1086,7 +1081,7 @@ In the Java API, the function returns a builder, where optional parameters can b
 | delay            | `Int`            | ❌                  | Group and publish updates every x ms                                         | 200ms                |
 | fields           | `Set<String>`    | ❌                  | Only listen to changes on selected fields (filters `ModifyResult` on fields) | listen to all fields |
 | subscribeLocally | `Boolean`        | ❌                  | When in a cluster, only listen to local updates                              | false                |
-| backwardJoins    | `Boolean`        | ❌                  | subscribe to changes on sub-tables (backwards joins)                         | false                |
+| backwardJoins    | `Boolean`        | ❌                  | Subscribe to changes on sub-tables (backwards joins)                         | false                |
 | listenerName | `String` | ❌ | When in a cluster, only listen to local updates | generated name |
 
 ###### Example
@@ -1150,6 +1145,7 @@ Batching happens in two phases:
 2. At the end of the batching period, they are compressed and the resulting updates are published. 
 
 So what does this mean in practice?
+
 The batching period covers the whole subscription. It is always set globally, i.e. for an update queue subscription or on a data server query. It is never set at the individual row level.
 
 The goal of this batching is to minimize work, and to publish updates that are accurate, rather than to publish every change.
@@ -1179,30 +1175,29 @@ In this regard it is better to think in terms of a batching interval, rather tha
 Batching occurs within discrete batching and only within each period.
 
 - If a trade is inserted and then modified within a single batching period, the two will be compressed into a single update.
-- If the trade is inserted one millisecond before the end of a batching period it is modified right at the start of the next period, the insert is sent at the end of the first period and the update is sent at the end of the next period - there are two updates.
+- If the trade is inserted one millisecond before the end of a batching period, it is modified right at the start of the next period; the insert is sent at the end of the first period and the update is sent at the end of the next period - there are two updates.
 
 The point here is that there is no way of determining whether a series of updates and modifies will be compressed or not. It is entirely determined by the timing of the individual inserts and modifies. All we can determine is that the smaller the gap between the insert and modify, the more likely they are to be compressed.
 
 #### Batching at different levels
 
-Note that batching happens at both the data server and the update-queue level. 
+Note that batching happens at both the Data Server and the update-queue level. 
 
-- Genesis batches on the queue level to minimize the amount of work the data server has to do. Because we pre-allocate LMDB when the data sever starts, having too many needless updates would eat into that allocation.
-- Batching is performed on the data server to minimize the load on the client and the connection.
+- Genesis batches on the queue level to minimize the amount of work the Data Server has to do. Because we pre-allocate LMDB when the data sever starts, having too many needless updates would eat into that allocation.
+- Batching is performed on the Data Server to minimize the load on the client and the connection.
 
 #### Out-of-sequence updates on the queue
 
 Updates are published on the update queue once a record has been written to the database, or when a transaction completes.
 
 Within a high-throughput set-up, where updates on the same table are published from multiple sources, updates can be received out of sequence.
+
 This means that when listening to updates, in a high-throughput application, it is essential to check record timestamps to detect and handle out-of-sequence updates.
 For views, this is less of a problem, as Genesis refreshes the record from the database within a transaction to make sure that the published update is valid.
 
 These multiple sources could be:
 * Different event handlers on the same node modifying the same table
 * The same event handler running on multiple nodes
-
-
 
 ### Return Types
 
@@ -1231,8 +1226,7 @@ val inserts: List<InsertResult<Trade>> = db.insertAll(myTrades)
 val trades: List<Trade> = db.getBulk(TRADE)
 ```
 
-Note that this will load the entire table into memory. This is fine for smaller tables and ranges. However, for
-large tables and ranges, the `stream()` function is provided on the database. This will create a `Stream` that streams the data, rather than loading it all in memory:
+Note that this will load the entire table into memory. This is fine for smaller tables and ranges. However, for large tables and ranges, the `stream()` function is provided on the database. This creates a `Stream` that streams the data, rather than loading it all in memory:
 
 ```kotlin
 val trades: Stream<Trade> = db.stream().getBulk(TRADE)
@@ -1330,7 +1324,7 @@ When using the [RxJava](/develop/server-capabilities/data-access-apis/#rxentity
 
 ## Type Unsafe DB API
 
-The following APIs for DbEntity and DbRecord are used rarely, when needing to operate outside the type-safety entities
+The following APIs for DbEntity and DbRecord are used rarely, when you need to operate outside the type-safety entities.
 
 ### DbEntity
 
@@ -1455,7 +1449,7 @@ The `DbOptimisticConcurrencyMode` property can have one of the following values:
 
 There are two simple ways of setting the property.
 
-In this first example, we simply specify STRICT Optimistic Concurrency as one of the `options`
+In this first example, we simply specify STRICT Optimistic Concurrency as one of the `options`:
 
 ```xml title="alpha-processes.xml"
 
