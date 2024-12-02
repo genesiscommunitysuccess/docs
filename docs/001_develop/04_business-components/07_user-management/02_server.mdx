@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 
 ## Auth module
 
-The server-side of User Management component depends almost entirely on the Genesis [auth](/server/access-control/authorisation) module. It's a built-in module that is installed by default, because all Genesis apps **need** the auth module as a prerequisite.
+The server-side of User Management component depends almost entirely on the Genesis [auth](/develop/server-capabilities/access-control/authorization/) module. It's a built-in module that is installed by default, because all Genesis apps **need** the auth module as a prerequisite.
 
 After the project generation, if you go to the `/server/gradle.properties` file, you can see there's an `authVersion`:
 ```properties
@@ -45,7 +45,7 @@ In the _Genesis Home_ directory, you can see the basic structure of the auth mod
 * **scripts:** specific scripts with procedures for auth module issues.
 
 :::caution
-It's important to load the initial data (.csv files) inside `data` folder. Do this using [SendIt](/operations/commands/server-commands#sendit) command or using [Import CSV(s) to Genesis](/server/tooling/intellij-plugin/#loading-data) option using the IntelliJ Plugin.
+It's important to load the initial data (.csv files) inside `data` folder. Do this using [SendIt](/build-deploy-operate/operate/commands/#sendit) command or using [Import CSV(s) to Genesis](/develop/development-environment/intellij-plugin/#loading-data) option using the IntelliJ Plugin.
 :::
 
 ## Auth processes

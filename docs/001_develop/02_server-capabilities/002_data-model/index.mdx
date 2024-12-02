@@ -454,7 +454,7 @@ When defining a multi-field primary key the order in which the fields are specif
 
 Fields marked as part of a primary key may not be null.
 
-Primary Key names are auto-generated in the following format: [TABLE_NAME]_BY_[FIELD_1](_[FIELD_N]). If you wish to give your primary key a specific name you can apply `.name(<pk name>)` against it. Examples below:
+Primary Key names are auto-generated in the following format: `<TABLE_NAME>_BY_<FIELD_1>(+_<FIELD_N>)`. If you wish to give your primary key a specific name you can apply `.name(<pk name>)` against it. Examples below:
 - `field("ID", LONG).autoIncrement().primaryKey().name("POSITION_BY_IDENTIFIER")`
 - `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID").name("POSITION_BY_BOOK_INST_CPTY)`
 
@@ -954,4 +954,43 @@ derivedField("SPREAD", DOUBLE) {
 }
 
 ```
+
+## Migrating from legacy data model structure
+
+Before version 7.2 of the Genesis Platform fields were defined in their own dictionary file, separately from tables.
+
+From version 7.2, Genesis supports the new syntax detailed in this document.
+
+In `*-tables-dictionary.kts` files we went from this...
+```kotlin
+table(name = "RIGHT", id = 1004) {
+    CODE
+    DESCRIPTION
+    primaryKey {
+        CODE
+    }
+}
+```
+
+...to this:
+```kotlin
+table(name = "RIGHT", id = 1004) {
+    field("CODE").primaryKey()
+    field("DESCRIPTION")
+}
+```
+
+Legacy will continue to work, but it is simple to move to the new model using a provided a gradle plugin.
+
+To start, add the following line to the top of the `build.gradle.kts` file for the module which contains your legacy dictionary files:
+
+```kotlin
+plugins {
+    id("global.genesis.dictionary.upgrade")
+}
+```
+
+After adding this and performing a Gradle refresh, a new task: `updateTablesDictionary` is available in the Gradle task list, under **genesis**.
+To migrate the table dictionaries in your config module, run the task.
+
 

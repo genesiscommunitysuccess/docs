@@ -253,7 +253,7 @@ Click on the funnel, to see the options available (below). From there, select `a
 
 ![Log Filter](/img/intellij-plugin/process-log-filter.png)
 
-The default log level for a process is defined by the `loggingLevel` tag in your application's [`processes.xml` file](../../../server/configuring-runtime/processes/#tags). You can dynamically change this [using the terminal to run the LogLevel script](#using-the-terminal).
+The default log level for a process is defined by the `loggingLevel` tag in your application's [`processes.xml` file](/develop/server-capabilities/runtime-configuration/processes/#tags). You can dynamically change this [using the terminal to run the LogLevel script](#using-the-terminal).
 
 #### Starting processes
 
@@ -291,7 +291,7 @@ When running through the IntelliJ plugin, the back end is available on 'ws://loc
 In production environments, it is typically available through NGINX on 'wss://host-name/gwf'. This is controlled by setting the API_HOST environment variable. If your front-end project has the 'dev:intellij' NPM task, the API_HOST will be set automatically. However, if your project only has the 'dev' task, then you need to make sure the API_HOST is set to 'ws://localhost:9064' to ensure that the front end is able to connect to the back end.
 
 :::info
-Note that we are using [GENESIS_ROUTER](../../../server/configuring-runtime/genesis-router/) as our API_HOST; its default port is 9064. Therefore, your router port in the settings should be:
+Note that we are using [GENESIS_ROUTER](/develop/server-capabilities/runtime-configuration/genesis-router/) as our API_HOST; its default port is 9064. Therefore, your router port in the settings should be:
 
 ![Router Settings](/img/plugin-router.png)
 :::
@@ -341,7 +341,7 @@ If the script run config is not available, or if the legacy UI starter is select
 
 ### The mon window
 
-The `Mon` tab mirrors the [`mon`](/operations/commands/server-commands/?_highlight=mon#mon) command on the server.
+The `Mon` tab mirrors the [`mon`](/build-deploy-operate/operate/commands/?_highlight=mon#mon) command on the server.
 
 From here you are able to:
 
@@ -372,7 +372,7 @@ Disabled columns persist to the project settings, so they stay disabled between 
 
 ### OpenAPI
 
-The plugin can contact the Genesis Router to provide [an openapi spec](/server/integration/open-api). To do this, the plugin asks for a username and password to log in to your application. It then requests the openapi spec and shows a dialog to save it into your project.
+The plugin can contact the Genesis Router to provide [an openapi spec](/develop/server-capabilities/integrations/open-api/). To do this, the plugin asks for a username and password to log in to your application. It then requests the openapi spec and shows a dialog to save it into your project.
 
 To start this process, click on the `Genesis` menu and then on `Generate OpenApi Spec`:
 
@@ -412,12 +412,12 @@ If the commands are not highlighted and you are not able to run them, check your
 
 These are some of the commonly used commands in the plugin:
 
-* [`DbMon`](/operations/commands/dbmon/) - the Genesis Database client
-* [`DumpIt`](/operations/commands/server-commands/#dumpit) - export CSV data from the database
-* [`SendIt`](/operations/commands/server-commands/#sendit) - send CSV data to the database
-* [`LogLevel`](/operations/commands/server-commands/#loglevel) - dynamically adjust log levels of running processes
+* [`DbMon`](/build-deploy-operate/operate/commands/dbmon/) - the Genesis Database client
+* [`DumpIt`](/build-deploy-operate/operate/commands/#dumpit) - export CSV data from the database
+* [`SendIt`](/build-deploy-operate/operate/commands/#sendit) - send CSV data to the database
+* [`LogLevel`](/build-deploy-operate/operate/commands/#loglevel) - dynamically adjust log levels of running processes
 
-There is a [full list of Genesis commands](/operations/commands/server-commands/) in our documentation.
+There is a [full list of Genesis commands](/build-deploy-operate/operate/commands/) in our documentation.
 
 ### Resource daemon
 
@@ -466,7 +466,7 @@ The benefits of Gradle mode over Deploy mode are:
 ### Deploy mode
 
 :::important
-Deployed mode is still supported, but we recommend that you [migrate](/operations/project-structure/settings-plugin/) your project to Gradle mode. This makes it much easier to use the plugin.
+Deployed mode is still supported, but we recommend that you migrate your project to Gradle mode. This makes it much easier to use the plugin.
 :::
 
 When using Deploy mode, you must ensure that the Genesis Home folder is kept up-to-date. The first time you open a project with the plugin enabled, you must create your `genesis home` folder.

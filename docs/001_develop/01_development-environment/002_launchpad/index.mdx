@@ -522,6 +522,124 @@ To run any of these:
 | `Start Server`          | Starts all the App's Server processes.                                                |
 | `Start UI System Design Configurator`| Starts the Design Configurator. You must be on Foundation-UI 14.213.0 or later to use this. |
 
+## Making direct requests to the Server API
+
+### Getting the required data
+
+You will need to get the the `API_HOST` from the vscode environment variable and the authenticated cookies from your session.
+
+#### Application url
+
+1. Open terminal in VSCode workspace `flyout menu -> View -> Terminal`.
+
+2. enter `printenv API_HOST`.
+
+3. replace `wss` with `https` and store this value, it is fixed to your workspace so you can save it.
+
+#### Request headers (Auth cookies)
+
+These are needed for secure access of your app from the Development portal.
+
+##### Getting cookies with Postman interceptor plugin
+
+You can simplify getting cookies for requests using postman interceptor plugin for your browser.
+
+1. Go to cookies on request edit pane in Postman.
+
+2. go to the 'Sync cookies' tab.
+
+3. click on the hyperlink for interceptor and proxy.
+
+4. follow the text till you find the install interceptor hyperlink which you will click.
+
+5. click on the correct hyperlink to install the plugin for your browser.
+
+6. sync cookies tab will show you are connected and from there you can add the url of the launchpad to then sync cookies.
+
+7. your cookies will then be synced shown 'Manage Cookies' tab.
+
+With this if you use the same url for sync cookies, it will autofill the cookies to your request headers.
+
+##### Getting cookies manually via web inspector
+
+1. Be logged in to launchpad.
+
+2. either right click and press inspect or do `F12`.
+
+    This should open the developer tools for your browser.
+
+3. Go to the Application tab at the top of the developer tools.
+
+    :::tip
+    if you cannot see the application tab you can add new tabs by pressing `+` on Edge or `>>` on Chrome.
+    Or drag the developer tools pane out to make space for the tabs to appear.
+    :::
+
+4. Go to cookies in the sidebar and open the cookies for the website.
+
+    There should be AWSELBAuthSessionCookie-0, AWSELBAuthSessionCookie-1.
+    You will be putting this in your requests headers.
+
+When setting the header the tokens need to be structured as AWSELBAuthSessionCookie-0=TOKEN;AWSELBAuthSessionCookie-1=TOKEN;
+
+### Sending requests using postman
+
+Postman can be used to test the API from your project.
+
+For the postman request you will use:
+- The `API_HOST` for the base url with the request at the top
+- Tokens stored in 'Cookie' header
+- raw json Body depending on the event you are sending
+
+An example for login would have `https://portal.genesis.global/workspace/<<WORKSPACE_ID>>/proxy/9064/event-login-auth` url.
+
+The body would be: 
+```
+{
+    "MESSAGE_TYPE": "EVENT_LOGIN_AUTH",
+    "SERVICE_NAME":"AUTH_COMPACT_PROCESS",
+    "DETAILS":{
+        "USER_NAME": "admin",
+        "PASSWORD": "genesis"
+    }
+}
+```
+
+This looks like:
+
+![Postman request body](/img/genesis-launchpad/postman-request-body.png)
+
+The tokens are stored in a cookie header
+
+![Postman token header](/img/genesis-launchpad/postman-token-header.png)
+
+### Sending requests using the CLI
+
+You can use any http client like `curl` to send a request from within the workspace itself or directly from your workstation.
+
+For Curl you will need:
+
+- location: the `API_HOST` value.
+- cookie header: header for storing token for access.
+- content-type header: for setting content to json
+- body: for the details you will be sending to the request
+
+Here is an example of login with `curl`:
+
+```
+curl --location 'https://portal.genesis.global/workspace/<<WORKSPACE_ID>>/proxy/9064/event-login-auth' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: AWSELBAuthSessionCookie-0=; AWSELBAuthSessionCookie-1= \
+--data '{
+    "MESSAGE_TYPE": "EVENT_LOGIN_AUTH",
+    "SERVICE_NAME":"AUTH_COMPACT_PROCESS",
+    "DETAILS":{
+        "USER_NAME": "admin",
+        "PASSWORD": "genesis"
+    }
+}'
+```
+
 ## Genesis tasks
 The tasks described below are used by the various commands above to launch a configuration manually. You can call them individually, when required.
 

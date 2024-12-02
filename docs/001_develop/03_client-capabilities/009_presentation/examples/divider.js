@@ -14,7 +14,7 @@ export default function DividerDemo({ children, color }) {
 	setup();
 	return (
 		<CodeSection>
-			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
+			<div style={{ color: 'var(--neutral-foreground-rest)', width: '100%'}}>
 				<div style={{ display: 'flex', flexWrap: 'wrap', height: '75px', width: '100%', flexDirection: 'column', }}>
 					<div>First block of content</div>
 					<rapid-divider></rapid-divider>

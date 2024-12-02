@@ -210,7 +210,7 @@ Where a nack is triggered, `MESSAGE_TYPE` returned to the client is an `EVENT_NA
 In the parenthesis you can define:
 
 - `name` : the name of the event. `name` will automatically be prefixed with `EVENT_`. so `name = "TRADE_INSERT"` will be targeted by the client as `EVENT_TRADE_INSERT`. Where left unspecified the name will default to the eventHandler Type class name.
-- `transactional` : takes a boolean. Set to `true` where you want your `eventHandler` to comply with [ACID](/develop/glossary/glossary/#acid). Any exception returned will result in a complete rollback of any database writes. While an exception will trigger a rollback, the transaction will commit if a `nack` or `ack` is returned. This setting also enables auto-auditing for writes to any [audited tables](/develop/server-capabilities/data-model/#audited-tables).
+- `transactional` : takes a boolean. Set to `true` where you want your `eventHandler` to comply with [ACID](/develop/glossary/#acid). Any exception returned will result in a complete rollback of any database writes. While an exception will trigger a rollback, the transaction will commit if a `nack` or `ack` is returned. This setting also enables auto-auditing for writes to any [audited tables](/develop/server-capabilities/data-model/#audited-tables).
 
 ```kotlin
   eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
@@ -237,7 +237,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 }
 ```
 
-Otherwise, you can create a [kotlin `data class` to define your metadata](/develop/server-capabilities/communications-metadata/#input-messages) and use it.
+Otherwise, you can create a [kotlin `data class` to define your metadata](/develop/server-capabilities/communications/#input-messages) and use it.
 
 You can also use an index for an event type, this is very common for DELETE events, where the client simply needs to send the ID of the record to delete:
 
@@ -404,7 +404,7 @@ System clients can just set `IGNORE_WARNINGS` to `true` on all messages to ensur
 
 ##### `approvableAck`
 
-An `approvableAck` should be returned in an onValidate block where [`requiresApproval`](#requiresapproval) has been set on the event. 
+An `approvableAck` should be returned in an onValidate block where [`requiresApproval`](#require-approval-on-an-event) has been set on the event. 
 
 There are useful properties you can set as part of the `approvableAck` definition. They are all optional and are detailed below:
 
@@ -485,8 +485,8 @@ As with `onValidate` the block must finish with an [`ack`](#ack). If the event i
   }
 ```
 
-1. The definition takes two `<Type>` (aka Generic) parameters instead of one. The first is the context object, which will be passed to the `onCommit` block. The second is the same as a regular [`eventHandler`](#eventHandler): the event metadata.
-1. The [`onValidate`](#onvalidate) block needs to return a [`validationAck`](#validationAck) instead of a regular [`ack`](#ack).
+1. The definition takes two `<Type>` (aka Generic) parameters instead of one. The first is the context object, which will be passed to the `onCommit` block. The second is the same as a regular [`eventHandler`](#eventhandler): the event metadata.
+1. The [`onValidate`](#onvalidate) block needs to return a [`validationAck`](#validationack) instead of a regular [`ack`](#ack).
 1. The [`onCommit`](#oncommit) block has two lambda parameters, the standard event + a second, which is a reference to the context object returned in the `validationAck`.
 
 #### `validationAck`
@@ -528,7 +528,7 @@ There are several options that can be specified in the message header:
 | `VALIDATE`          | `false` | Where `true`, events will return after the [`onValidate`](#onvalidate) block ack and not trigger the [`onCommit`](#oncommit) block |
 | `IGNORE_WARNINGS`   | `false` | Where `true`, any [`warningNack`](#warningnack) in the code will be ignored and not cause the event to fail validation |
 | `REQUIRES_APPROVAL` | `false` | A client can force the [approval workflow](#approval-workflow) for the event by setting this to true | 
-| `APPROVAL_MESSAGE`  | | Where [approval workflow](#approval-workflow) is triggered, this is the approval message the approver will see. This may be overridden in the event ['requiresPendingApproval`](#requiresPendingApproval), which takes precedence | 
+| `APPROVAL_MESSAGE`  | | Where [approval workflow](#approval-workflow) is triggered, this is the approval message the approver will see. This may be overridden in the event ['requiresPendingApproval`](#requirespendingapproval), which takes precedence | 
 | `REASON`            | | Where the event is set as `transactional` and the tables written by the event are enabled for [`audit`](/develop/server-capabilities/data-model/#audited-tables) this String will be set in the audit record's `AUDIT_EVENT_TEXT` | 
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
@@ -831,9 +831,9 @@ The platform makes the following objects accessible to the `insert` block:
     * `messageType` - represents the original EVENT name (e.g. EVENT_TRADE_INSERT).
     * `destination` - is the process name this event was originally targeting (e.g. POSITION_EVENT_HANDLER).
     * `eventMessage` - contains the JSON object representing the original message payload.
-    * `approvalType` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
-    * `additionalDetails` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
-    * `generated` - equivalent to the property named `entityDetails` provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
+    * `approvalType` - equivalent to the property with the same name provided as part of `approvableAck` (see [pending approval workflow](#pending-approval-workflow)).
+    * `additionalDetails` - equivalent to the property with the same name provided as part of `approvableAck` (see [pending approval workflow](#pending-approval-workflow)).
+    * `generated` - equivalent to the property named `entityDetails` provided as part of `approvableAck` (see [pending approval workflow](#pending-approval-workflow)).
 * `userName` - a string property containing the user name who triggered the event.
 * `messageType` - a shortcut property accessor for the `messageType` value stored inside `insertMessage`.
 * `eventMessage` - a shortcut property accessor for the `eventMessage` value stored inside `insertMessage`.
@@ -876,8 +876,8 @@ pendingApproval {
 
 You might have noticed that the original type-safe event message types are lost inside the **-approval.kts** file, as the content of `eventMessage` inside `APPROVAL` table (and also inside `PendingApprovalInsert`) is a serialized JSON string. You can deserialize the original type-safe objects using the `selectPredicate` method combined with multiple `onEvent` predicates. These methods are available in all the `pendingApproval` code blocks: `insert`, `accept`, `cancel` and `reject`.
 
-- `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function  provides a [GenesisSet](/develop/server-capabilities/communications-metadata/#genesisset) object with the contents of the original message payload.
-- `onEvent` works very similarly to any other GPAL [Event Handler definition](#defining-an-event-handler-in-gpal). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
+- `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function  provides a [GenesisSet](/develop/server-capabilities/communications/#genesisset) object with the contents of the original message payload.
+- `onEvent` works very similarly to any other GPAL [Event Handler definition](#eventhandler). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
 
 
 Please see the example below for custom logic using a table called "RESTRICTED_SYMBOL" to prevent restricted symbols from being added to the system, as well as checking user right codes:
@@ -1030,7 +1030,7 @@ If you wish to run a dedicated process for an Event Handler, here is an example 
 
 **GenesisJunit** is available from version 8 of the Genesis Server Framework (GSF).
 
-If you are testing against a previous version of the framework, go to the [legacy](/develop/server-capabilities/testing/#integration-testing) section.
+If you are testing against a previous version of the framework, go to the [legacy](/develop/server-capabilities/testing-api/#integration-testing) section.
 
 :::
 
@@ -1040,7 +1040,7 @@ This section covers the basics of testing Event Handlers. We shall use a very si
 
 This includes how to test dynamic authorization. 
 
-This testing relies on [**GenesisJunit**](/develop/server-capabilities/testing/#integration-testing), which is designed to make testing easy.
+This testing relies on [**GenesisJunit**](/develop/server-capabilities/testing-api/#integration-testing), which is designed to make testing easy.
 
 In this example, we shall test the following Event Handler: 
 
@@ -1093,7 +1093,7 @@ The code above does two things:
 * It enables **GenesisJunit**.
 * It specifies the Event Handler script that we want to test, using the `ScriptFile` annotation.
 
-There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing/#integration-testing).
+There is more information about `GenesisJunit` and the various annotations in the section on [Integration testing](/develop/server-capabilities/testing-api/#integration-testing).
 
 #### Injecting an Event Handler client
 Use the code below to inject an Event Handler client:
@@ -1365,7 +1365,7 @@ However, you have covered the basics of communication between tests and Event Ha
 * setting the user on the event
 * handling dynamic authorization
 
-For more details about testing with Genesis, take a look at our [integration test documentation](/develop/server-capabilities/testing/#integration-testing).
+For more details about testing with Genesis, take a look at our [integration test documentation](/develop/server-capabilities/testing-api/#integration-testing).
 
 
 ### Integration testing (legacy)
@@ -1390,7 +1390,7 @@ class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing-api/#abstractgenesistestsupport).
 
 Once you have added your config above, you can start writing tests against our Event Handler.
 
@@ -1630,7 +1630,7 @@ An API client, such as [Postman](https://www.postman.com/) or [Insomnia](https:/
 
 The API client enables you to create calls to the resources in your server - Data Servers, Request Servers and Event Handlers. Then you can just click to run a call and see what response you get.
 
-Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/develop/server-capabilities/testing/#using-an-api-client) page.
+Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/develop/server-capabilities/testing-api/#using-an-api-client) page.
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 
@@ -1710,7 +1710,7 @@ public class TradingEventHandlerTest extends AbstractGenesisTestSupport<EventRes
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/develop/server-capabilities/testing-api/#abstractgenesistestsupport).
 
 Once you have set up your configuration, you can start writing tests against your Event Handler.
 
@@ -1998,7 +1998,7 @@ The Event Handler interface is the common supertype of AsyncEventHandler, Rx3Eve
 | messageType | `fun messageType(): String?` | null | Contains the name of the Event Handler. If undefined, the Event Handler name will become `EVENT_*INPUT_CLASS_NAME*`. So, for an Event Handler using an input type called `TradeInsert`, the message type will become `EVENT_TRADE_INSERT`.                                                               |
 | overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I`                                                                                        |
 | requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them ([pending approval](#approval-workflow) in order to take effect) |
-| schemaValidation | `fun schemaValidation(): Boolean` | true | This option enables you to disable the automatic Json Schema validation enforced by the back end. See [type-safe messages](/develop/server-capabilities/communications-metadata/#type-safe-messages) for more information.
+| schemaValidation | `fun schemaValidation(): Boolean` | true | This option enables you to disable the automatic Json Schema validation enforced by the back end. See [type-safe messages](/develop/server-capabilities/communications/#type-safe-messages) for more information.
 
 Each custom Event Handler must define an input message type `I` and an output message type `O` (these need to be data classes), as GPAL Event Handlers do). In the examples below, `Company` is the input message and `EventReply` is the output message. The `message` object contains event message and has the following properties :
 
@@ -2008,9 +2008,9 @@ Each custom Event Handler must define an input message type `I` and an output me
 | messageType |  | Name of the Event Handler                                                                                                                                                                                                                                                             |
 | userName |  | Name of logged-in user                                                                                                                                                                                                                                                                |
 | ignoreWarnings | false | If set to false, events will not be processed if there are any warnings; you will get EventNack with warning message. If set to true, warning messages will be ignored; processing of events will be stopped only if there are any errors                                             |
-| requiresApproval | false | This particular event needs approval from a second user if set to true. For more details, check [Pending Approval](/develop/server-capabilities/core-business-logic-event-handler/#approval-workflow) |
-| approvalKey | null | Auto-generated key ID for particular approval request. For more details, check [Pending Approval](/develop/server-capabilities/core-business-logic-event-handler/#approval-workflow)                  |
-| approvalMessage | null | Optional message for approval request. For more details, check [Pending Approval](/develop/server-capabilities/core-business-logic-event-handler/#appoval-workflow)                                  |
+| requiresApproval | false | This particular event needs approval from a second user if set to true. For more details, see [approval workflow](#approval-workflow) |
+| approvalKey | null | Auto-generated key ID for particular approval request. For more details, see [approval workflow](#approval-workflow)                  |
+| approvalMessage | null | Optional message for approval request. For more details, see [approval workflow](#approval-workflow)                                  |
 | reason | null | Optional reason sent as part of event message                                                        
 
 ### Async
@@ -2419,7 +2419,7 @@ Here is an example:
 ### Sync
 
 
-Sync works similarly to [Async](../../../server/api-reference/event-handler-api/#async) and [Rx3](#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
+Sync works similarly to [Async](/develop/server-capabilities/data-access-apis/#asyncentitydb) and [Rx3](#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
 
 #### SyncEventHandler
 

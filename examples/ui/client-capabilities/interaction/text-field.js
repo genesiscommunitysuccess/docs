@@ -14,7 +14,7 @@ export default function TextFieldDemo({ children, color }) {
 	setup();
 	return (
 		<CodeSection>
-			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
+			<div style={{ color: 'var(--neutral-foreground-rest)', width: '100%'}}>
 				<div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', flexDirection: 'column', }}>
 					<rapid-text-field placeholder="Sample text" type="text">Text Field</rapid-text-field>
 				</div>
@@ -27,7 +27,7 @@ export default function TextFieldDemo({ children, color }) {
 export function TextFieldWithSlot({ children, color }) {
 	return (
 		<CodeSection>
-			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
+			<div style={{ color: 'var(--neutral-foreground-rest)', width: '100%'}}>
 				<div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', flexDirection: 'column', }}>
 						<rapid-text-field type="text" inputmode="numeric" pattern="\d*">
 						<div slot="start">
