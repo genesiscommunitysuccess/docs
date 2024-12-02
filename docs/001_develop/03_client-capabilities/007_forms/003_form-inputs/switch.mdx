@@ -64,21 +64,19 @@ Declaration
 Usage
 ```typescript
 export function MyComponent() {
-
     const [switchValue, setSwitchValue] = useState(false);
 
+    const handleSwitchChange = (event) => {
+        console.log(event.target.checked);
+        setSwitchValue(event.target.checked);
+    };
 
-  const handleSwitchChange = (event) => {
-    console.log(event.target.checked);
-    setSwitchValue(event.target.checked);
-  };
-
-  return (
-    <rapid-switch onChange={handleSwitchChange}>
-        <span slot="checked-message">Dark</span>
-        <span slot="unchecked-message">Light</span>
-    </rapid-switch>
-  );
+    return (
+        <rapid-switch onChange={handleSwitchChange}>
+            <span slot="checked-message">Dark</span>
+            <span slot="unchecked-message">Light</span>
+        </rapid-switch>
+    );
 }
 ```
 </TabItem>
