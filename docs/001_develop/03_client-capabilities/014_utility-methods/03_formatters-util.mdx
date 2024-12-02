@@ -1,0 +1,65 @@
+---
+title: 'Formatting Utilities'
+sidebar_label: 'Formatting Utilities'
+id: formatting-utils
+keywords: [utils, utility, data, formatters, number, date, datetime, unix, timestamp, separator, parse, parsing, parser, numeric]
+tags:
+  - utils
+  - utility
+  - formatters
+  - number
+  - date
+  - datetime
+  - unix
+  - timestamp
+  - separator
+  - parse
+  - parsing
+  - parser
+  - numeric
+---
+
+This provides utilities for parsing and formatting numbers and dates, ensuring that your application can accurately process and display data in user-friendly formats.
+
+:::info
+For more detailed information on API and configurations, please refer to the [API documentation](docs/api/index.md).
+:::
+
+## Key Features
+
+- **`formatDateTimestamp`** - Formats UNIX timestamps into ISO date strings (`YYYY-MM-DD`), making it easy to display dates in a standard format.
+- **`formatDateTimeTimestamp`** - Formats UNIX timestamps into ISO date and time strings (`YYYY-MM-DD HH:MM:SS`), combining date and time for better precision.
+- **`formatTimestamp`** - A flexible function to format UNIX timestamps. Includes or omits the time component based on a configurable flag.
+- **Number Parsing** - Transforms localized number strings into numeric types, correctly interpreting group separators and decimal points to ensure reliable conversions.
+- **Separator Detection** - Identifies if a localized number string includes a decimal separator, helping to distinguish between integers and floating-point numbers.
+
+## Examples 
+
+### Date and Time Formatting
+
+```typescript
+import { formatDateTimestamp, formatDateTimeTimestamp, formatTimestamp } from '@genesislcap/foundation-utils';
+
+console.log(formatDateTimestamp(Date.now())); // Outputs current date in YYYY-MM-DD format
+console.log(formatDateTimeTimestamp(Date.now())); // Outputs current date and time in YYYY-MM-DD HH:MM:SS format
+console.log(formatTimestamp(Date.now(), true)); // Outputs current date and time based on the withTime flag
+```
+
+### Locale-Specific Number Parsing
+
+This class provides functionality for parsing localized number strings back into their numeric form, taking into account locale-specific grouping, decimal separators, and numerals.
+The `NumberParser` class utilizes the `Intl.NumberFormat` API to adapt to various locales. It employs regular expressions to strip locale-specific formatting, allowing for accurate numeric parsing.
+
+```typescript
+import { NumberParser } from '@genesislcap/foundation-utils';
+
+const parser = new NumberParser('en-US');
+console.log(parser.parse('1,234.56')); // Outputs 1234.56
+console.log(parser.hasSeparator('1,234')); // Outputs false
+```
+
+## Considerations
+
+- **Consistent Temporal Data Representation**: Use the date and time formatting functions to ensure uniform representation of temporal data across your application.  
+- **Accurate Numeric Input Handling**: Leverage the NumberParser to parse user input, guaranteeing correct interpretation of numeric data regardless of locale settings.  
+- **Robustness in Global Applications**: Regularly test these utilities with diverse locale settings to ensure reliability, accuracy, and user-friendliness in a global context.  
