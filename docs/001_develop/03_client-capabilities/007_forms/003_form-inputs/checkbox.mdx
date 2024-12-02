@@ -51,7 +51,7 @@ Usage
     <rapid-checkbox
       ?disabled="${(x) => x.disabled}"
       ?checked="${sync((x) => x.isSelected, 'boolean')}"
-      @change="${(x) => x.checkChanged()}"
+      @change="${(x, ctx) => x.checkChanged(ctx.event)}"
     >Checkbox
     </rapid-checkbox>
   `,
@@ -59,8 +59,10 @@ Usage
 export class MyElement extends GenesisElement {
   @observable disabled = false;
   @observable isSelected = false;
-  checkChanged() {
-    console.log(this.isSelected);
+  checkChanged(e: Event) {
+    this.isSelected = e.event.checked;
+    console.log(this.isSelected); // sync value updated
+    console.log(e.event.checked); // equivalent to sync value
   }
 }
 ```
@@ -81,8 +83,10 @@ export function MyComponent() {
     console.log({ checkboxValue })
   };
 
+  const [disabled, setDisabled] = useState(false);
+
   return (
-    <rapid-checkbox onChange={handleCheckboxChange}></rapid-checkbox>
+    <rapid-checkbox disabled={disabled} onChange={handleCheckboxChange}>Checkbox</rapid-checkbox>
   );
 }
 ```
@@ -97,27 +101,26 @@ Declaration
 Usage
 ```typescript
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'my-root',
   template: `
     <rapid-checkbox
       name="isSelected"
+      [disabled]="isDisabled"
       [checked]="isSelected"
       (change)="onCheckboxChange($event)"
-    ></rapid-checkbox>
+    >Checkbox</rapid-checkbox>
   `,
   styleUrls: ['./my.component.css'],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [FormsModule],
 })
 export class AppComponent {
+  isDisabled: boolean = false;
   isSelected: boolean = false;
   onCheckboxChange(event: Event) {
     const target = event.target as HTMLInputElement;
     this.isSelected = target.checked;
-    console.log(this.isSelected);
   }
 }
 ```

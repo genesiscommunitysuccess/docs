@@ -47,18 +47,37 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-            <rapid-slider @change="${(x) => x.handleChange()}"
-                          value="${sync((x) => x.sliderValue, 'number')}">
+        <div>
+            <label>Simple slider</label>
+            <rapid-slider @change="${(x, ctx) => x.handleSliderChanged(ctx.event)}" value="${sync((x) => x.sliderValue, 'number')}"></rapid-slider>
+        </div>
+        <div>
+            <label>Slider with labels and step value of 1</label>
+            <rapid-slider
+              value="${sync((x) => x.sliderValue, 'number')}"
+              @change="${(x, ctx) => x.handleLabelSliderChanged(ctx.event)}"
+              min="0"
+              max="100"
+              step="1"
+              value="50"
+            >
               <rapid-slider-label position="0"> Low </rapid-slider-label>
               <rapid-slider-label position="50"> Mid </rapid-slider-label>
               <rapid-slider-label position="100"> High </rapid-slider-label>
             </rapid-slider>
-          `,
+        </div>
+      `,
     })
     export class MyElement extends GenesisElement {
-      @observable sliderValue: number;
-      handleChange() {
-        console.log(this.sliderValue);
+        @observable sliderValue: number;
+      handleSliderChanged(event: Event): void {
+          console.log((event.target as HTMLInputElement).value);
+      }
+
+      handleLabelSliderChanged(e: Event): void {
+        // both sync values and event values will be the same
+        console.log(this.sliderValue)
+        console.log((event.target as HTMLInputElement).value);
       }
     }
     ```
@@ -78,15 +97,36 @@ Use cases:
     Usage
     ```typescript
     export function MyComponent() {
-      const handleChange = (event) => {
-        console.log({ event.target.value })
-      };
+
+        const handleSliderChanged = (event) => {
+          console.log(event.target.value)
+        }
+        const [labelSliderValue, setLabelSliderValue] = useState(false);
+
+        const handleLabelSliderChanged = (event) => {
+            console.log(event.target.value)
+            setLabelSliderValue(event.target.value);
+        }
+
       return (
-        <rapid-slider onChange={handleChange}>
-          <rapid-slider-label position="0"> Low </rapid-slider-label>
-          <rapid-slider-label position="50"> Mid </rapid-slider-label>
-          <rapid-slider-label position="100"> High </rapid-slider-label>
-        </rapid-slider>
+        <div>
+            <label>Simple slider</label>
+            <rapid-slider onChange={handleSliderChanged}></rapid-slider>
+        </div>
+        <div>
+            <label>Slider with labels and step value of 1</label>
+            <rapid-slider
+                onChange={handleLabelSliderChanged}
+                min="0"
+                max="100"
+                step="1"
+                value="50"
+            >
+                <rapid-slider-label position="0"> Low </rapid-slider-label>
+                <rapid-slider-label position="50"> Mid </rapid-slider-label>
+                <rapid-slider-label position="100"> High </rapid-slider-label>
+            </rapid-slider>
+        </div>
       );
     }
   ```
@@ -104,26 +144,45 @@ Use cases:
 
   Usage
   ```typescript
-  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-  import { FormsModule } from '@angular/forms';
-  @Component({
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+    @Component({
     selector: 'my-root',
-    template: `
-              <rapid-slider (change)="handleChange($event)">
-                <rapid-slider-label position="0"> Low </rapid-slider-label>
-                <rapid-slider-label position="50"> Mid </rapid-slider-label>
-                <rapid-slider-label position="100"> High </rapid-slider-label>
+        template: `
+          <div>
+              <label>Simple slider</label>
+              <rapid-slider (change)="handleSliderChanged($event)"></rapid-slider>
+          </div>
+          <div>
+              <label>Slider with labels and step value of 1</label>
+              <rapid-slider
+                      (change)="handleLabelSliderChanged($event)"
+                      min="0"
+                      max="100"
+                      step="1"
+                      value="50"
+              >
+                  <rapid-slider-label position="0"> Low </rapid-slider-label>
+                  <rapid-slider-label position="50"> Mid </rapid-slider-label>
+                  <rapid-slider-label position="100"> High </rapid-slider-label>
               </rapid-slider>
-              `,
-    standalone: true,
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [FormsModule],
-  })
+          </div>
+        `,
+        standalone: true,
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
   export class AppComponent {
-    handleChange(event: Event) {
-      const target = event.target as HTMLInputElement;
-      console.log(target.value);
-    }
+
+      labelSliderValue;
+
+      handleLabelSliderChangd(event: Event): void {
+        console.log((event.target as HTMLInputElement).value);
+      }
+
+      handleSliderChanged(event: Event): void {
+        console.log((event.target as HTMLInputElement).value);
+        this.labelSliderValue = (event.target as HTMLInputElement).value;
+      }
   }
   ```
 </TabItem>

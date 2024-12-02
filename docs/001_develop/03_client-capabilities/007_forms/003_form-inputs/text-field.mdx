@@ -13,7 +13,7 @@ tags:
 sidebar_position: 8
 ---
 
-import TextFieldDemo, { TextFieldWithSlot } from '../../../../../examples/ui/client-capabilities/interaction/text-field.js';
+import { TextFieldWithSlot } from '../../../../../examples/ui/client-capabilities/interaction/text-field'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -28,7 +28,7 @@ Use cases:
 
 ## Example
 
-<TextFieldDemo />
+<TextFieldWithSlot />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 
@@ -44,9 +44,28 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-text-field :value=${sync((x) => x.fieldValue)}>
-          Sample Text Field
-        </rapid-text-field>
+        <div>
+            <label>Simple text field</label>
+            <rapid-text-field
+                :value=${sync((x) => x.fieldValue)}
+                @change="${(x, ctx) => x.fieldValueChanged(ctx.event)}"
+                type="text">
+            </rapid-text-field>
+        </div>
+        <div>
+            <label>Number field with start, end slots and placeholder text</label>
+            <rapid-text-field
+                @change="${(x, ctx) => x.fieldValueChanged(ctx.event)}"
+                type="number">
+                <div slot="start">$</div>
+                <div slot="end">$</div>
+            </rapid-text-field>
+        </div>
+        <div>
+            <label>Disabled text field</label>
+            <rapid-text-field type="text" disabled>
+            </rapid-text-field>
+        </div>
       `,
     })
     export class MyElement extends GenesisElement {
@@ -67,11 +86,31 @@ Use cases:
     Usage
     ```typescript
     export function MyComponent() {
+
+      const [textFieldValue, setTextFieldValue] = useState(false);
+
       const handleTextFieldChanged = (event) => {
         console.log(event.target.value)
+        setTextFieldValue(event.target.value)
       };
       return (
-        <rapid-text-field onChange={handleTextFieldChanged}></rapid-text-field>
+        <div>
+          <label>Simple text field</label>
+          <rapid-text-field type="text">
+          </rapid-text-field>
+        </div>
+        <div>
+            <label>Number field with start, end slot and placeholder</label>
+            <rapid-text-field onChange={handleTextFieldChanged} type="number" placeholder="Enter text here">
+                <div slot="start">$</div>
+                <div slot="end">%</div>
+            </rapid-text-field>
+        </div>
+        <div>
+            <label>Disabled text field</label>
+            <rapid-text-field type="text" disabled>
+            </rapid-text-field>
+        </div>
       );
     }
     ```
@@ -86,23 +125,41 @@ Use cases:
     Usage
     ```typescript
     import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-    import { FormsModule } from '@angular/forms';
     @Component({
       selector: 'my-root',
       template: `
-        <rapid-text-field
-          (change)="onTextFieldChange($event)"
-        ></rapid-text-field>
+          <div>
+              <label>Simple text field</label>
+              <rapid-text-field (change)="fieldValueChanged($event)" type="text">
+              </rapid-text-field>
+          </div>
+          <div>
+              <label>Number field with start slot</label>
+              <rapid-text-field
+                      (change)="fieldValueChanged($event)"
+                      placeholder="Enter amount here"
+                      type="number">
+                  <div slot="start">$</div>
+                  <div slot="end">%</div>
+              </rapid-text-field>
+          </div>
+          <div>
+              <label>Disabled text field</label>
+              <rapid-text-field type="text" disabled>
+              </rapid-text-field>
+          </div>
       `,
       styleUrls: ['./my.component.css'],
       standalone: true,
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule],
     })
     export class AppComponent {
-      onTextFieldChange(event: Event) {
-        const target = event.target as HTMLInputElement;
-        console.log(target.value);
+
+      textFieldValue: string;
+
+      fieldValueChanged(event: Event): void {
+        console.log((event.target as HTMLInputElement).value);
+        this.textFieldValue = (event.target as HTMLInputElement).value
       }
     }
     ```
