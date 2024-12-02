@@ -860,7 +860,34 @@ endpoint<String>(GET, "users") {
 
 ## Runtime configuration
 
-All web handler scripts are automatically loaded by the GENESIS_ROUTER process.
+GPAL custom endpoints require no configuration beyond the web-handler.kts file. No modifications to the processes.xml file are required. Files will be picked up automatically by the Genesis Router from the /script folders.
+
+### Script modules
+
+If your custom endpoint requires additional dependencies, then these can use the `ScriptModules` annotation.
+
+For example, to add a dependency on my-module, add this to the top of your file:
+
+```kotlin
+@file:ScriptModules("my-module")
+```
+
+This code tries to find your my-module module and add it to the classpath of the script, including all its dependencies. This has the same effect as adding a `<module>` tag to the processes.xml file, but it works on a script level.
+
+### Configure Genesis Router
+
+If you are going to use custom endpoints, it is essential that you configure the [Genesis Router](/develop/server-capabilities/runtime-configuration/genesis-router).
+
+Here is an example configuration:
+
+```kotlin
+router {
+    webPort = 9064
+    socketPort = 9065
+
+    // rest of file cut for brevity     
+}
+```
 
 ## Integration testing
 
