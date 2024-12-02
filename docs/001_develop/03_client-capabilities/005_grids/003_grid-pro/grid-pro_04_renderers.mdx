@@ -12,6 +12,18 @@ pagination_prev: develop/client-capabilities/grids/grid-pro/grid-pro-cell-and-co
 pagination_next: develop/client-capabilities/grids/grid-tabulator/grid-tabulator
 ---
 
+import {
+  GridProExampleActionRenderer,
+  GridProExampleActionsMenuRenderer,
+  GridProExampleBooleanRenderer,
+  GridProExampleEditableRenderer,
+  GridProExampleSelectEditorRenderer,
+  GridProExampleNumberEditor,
+  GridProExampleMultiselectEditor,
+  GridProExampleDateEditor,
+  GridProExampleStringEditor,
+} from './grid-pro_examples.js'
+
 # Renderers
 
 ## Overview
@@ -20,11 +32,13 @@ All of our custom cell rendering components enabled by default in Grid Pro. Thes
 
 ## Genesis Default Renderers
 
-### Action Renderer (`ActionRenderer`)
-
-#### Purpose
+### Action Renderer (`action`)
 
 Renders a single action button within a grid cell, allowing for row-specific interactions.
+
+<GridProExampleActionRenderer />
+
+#### [API Documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.actionrenderer/) 
 
 #### Key Features
 
@@ -36,22 +50,25 @@ Renders a single action button within a grid cell, allowing for row-specific int
 #### Usage Example
 
 ```typescript
-const columnDef = {
-  cellRenderer: 'actionRenderer',
+const actionRendererColDef = {
+  cellRenderer: 'action',
   cellRendererParams: {
     actionName: 'Edit',
     actionClick: (rowData) => handleEdit(rowData),
     isDisabled: (rowData) => !rowData.editable,
     appearance: 'primary'
-  }
+  },
+  // other column options
 }
 ```
 
-### Actions Menu Renderer (`ActionsMenuRenderer`)
+### Actions Menu Renderer (`actionsMenu`)
 
-#### Purpose
+Renders a menu of multiple actions for a grid row.
 
-Renders a dropdown menu of multiple actions for a grid row.
+<GridProExampleActionsMenuRenderer />
+
+#### [API Documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.actionsmenurenderer/) 
 
 #### Key Features
 
@@ -62,7 +79,7 @@ Renders a dropdown menu of multiple actions for a grid row.
 #### Usage Example
 
 ```typescript
-const actionsColumn = getActionsMenuDef([
+const actionsColDefs = getActionsMenuDef([
   {
     name: 'View',
     callback: (rowData) => viewDetails(rowData)
@@ -72,13 +89,34 @@ const actionsColumn = getActionsMenuDef([
     callback: (rowData) => deleteRow(rowData)
   }
 ]);
+
+const columnDefs = [
+  { field: 'name' },
+  // other defs
+  actionsColDefs
+];
 ```
 
-### Boolean Renderer (`BooleanRenderer`)
+```typescript
+const actionsMenuRendererColDef: ColDef = {
+    cellRenderer: GridProRendererTypes.actionsMenu,
+    cellRendererParams: {
+      actions,
+      buttonAppearance,
+      isVertical,
+      buttonText: customActionsOpenerName,
+    },
+    // other column options
+  };
+```
 
-#### Purpose
+### Boolean Renderer (`boolean`)
 
 Renders a checkbox within a grid cell, allowing direct boolean value editing.
+
+<GridProExampleBooleanRenderer />
+
+#### [API Documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.booleanrenderer/) 
 
 #### Key Features
 
@@ -89,19 +127,22 @@ Renders a checkbox within a grid cell, allowing direct boolean value editing.
 #### Usage Example
 
 ```typescript
-const columnDef = {
-  cellRenderer: 'booleanRenderer',
+const booleanRendererColDef = {
+  cellRenderer: 'boolean',
   cellRendererParams: {
     isDisabled: (rowData) => !rowData.canEdit
-  }
+  },
+  // other column options
 }
 ```
 
-### Editable Renderer (`EditableRenderer`)
-
-#### Purpose
+### Editable Renderer (`editable`)
 
 Renders a cell with a formatted value and an optional progress indicator.
+
+<GridProExampleEditableRenderer />
+
+#### [API Documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.editablerenderer/) 
 
 #### Key Features
 
@@ -112,64 +153,160 @@ Renders a cell with a formatted value and an optional progress indicator.
 #### Usage Example
 
 ```typescript
-const columnDef = {
-  cellRenderer: 'editableRenderer',
-  valueFormatter: (params) => formatCurrency(params.value)
+const editableRenderercolDef = {
+  cellRenderer: 'editable',
+  valueFormatter: (params) => formatCurrency(params.value),
+  // other column options
 }
 ```
 
-### Select Renderer (`SelectRenderer`)
+### Select Editor (`selectEditor`)
 
-#### Purpose
+Renders a dropdown select editor within a grid cell, allowing users to edit cell values by selecting from a list of options.
 
-Renders a dropdown select within a grid cell.
+<GridProExampleSelectEditorRenderer />
+
+#### [API Documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.selecteditor/) 
 
 #### Key Features
 
-- Dynamic option generation
-- Custom selection handling
-- Supports disabled state
-- Accessor-based value setting
+- Supports asynchronous data loading for options
+- Customizable value and label fields
+- Integrates with data sources
+- Handles value changes and updates the grid data
+- Supports both synchronous and asynchronous options
 
 #### Usage Example
 
 ```typescript
-const columnDef = {
-  cellRenderer: 'selectRenderer',
-  cellRendererParams: {
-    options: (rowData) => [
-      { name: 'option1', displayName: 'Option 1' },
-      { name: 'option2', displayName: 'Option 2' }
-    ],
-    onSelect: (value, params) => updateRowData(value, params),
-    accessor: 'status'
-  }
+const selectEditorRendererColDef = {
+  cellEditor: 'selectEditor',
+  cellEditorParams: {
+    allOptionsResourceName: 'optionsResource',
+    valueField: 'id',
+    labelField: 'name',
+    async: true,
+    datasourceOptions: { /* datasource configuration */ },
+    values: [/* static option values */],
+  },
+  // other column options
 }
 ```
 
-### Text Field Renderer (`AgTextFieldRenderer`)
+### Number Editor (`numberEditor`)
 
-#### Purpose
+Provides a numeric input editor within a grid cell, allowing users to input and edit numerical values.
 
-Renders a text input within a grid cell.
+<GridProExampleNumberEditor />
+
+#### [API Documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.numbereditor/) 
 
 #### Key Features
 
-- Direct text editing
-- Max length support
-- Change event handling
-- Disabled state control
+- Supports number formatting options
+- Customizable placeholder text
+- Handles value changes and updates grid data
+- Supports disabling the editor
 
 #### Usage Example
 
 ```typescript
-const columnDef = {
-  cellRenderer: 'textFieldRenderer',
-  cellRendererParams: {
-    maxLength: 50,
-    onChange: (value, params) => updateText(value, params),
-    isDisabled: (rowData) => !rowData.editable
-  }
+const numberEditorRendererColDef = {
+  cellEditor: 'numberEditor',
+  cellEditorParams: {
+    withFormatting: true,
+    formatOptions: { style: 'currency', currency: 'USD' },
+    placeholder: 'Enter amount',
+    disabled: false,
+  },
+  // other column options
+}
+```
+
+### Multiselect Editor (`multiselectEditor`)
+
+Provides a multi-select editor within a grid cell, allowing users to select multiple options.
+
+<GridProExampleMultiselectEditor />
+
+#### [API Documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.multiselecteditor/) 
+
+#### Key Features
+
+- Supports asynchronous data loading for options
+- Customizable value and label fields
+- Integrates with data sources
+- Handles multiple selections
+- Handles value changes and updates grid data
+
+#### Usage Example
+
+```typescript
+const multiselectEditorRendererColDef = {
+  cellEditor: 'multiselectEditor',
+  cellEditorParams: {
+    allOptionsResourceName: 'optionsResource', // Resource name for fetching options.
+    valueField: 'id',
+    labelField: 'name',
+    async: true,
+    datasourceOptions: { /* datasource configuration */ },
+    values: [/* static option values */],
+    selectedOptionsCallback: (data) => fetchSelectedOptions(data),
+  },
+  // other column options
+}
+```
+
+### Date Editor (`dateEditor`)
+
+Provides a date or date-time input editor within a grid cell, allowing users to input or edit date values.
+
+<GridProExampleDateEditor />
+
+#### [API Documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.dateeditor/) 
+
+#### Key Features
+
+- Supports both date and date-time input types
+- Customizable date format
+- Handles value changes and updates grid data
+- Automatically focuses on the editor when opened
+
+#### Usage Example
+
+```typescript
+const dateEditorRendererColDef = {
+  cellEditor: 'dateEditor',
+  cellEditorParams: {
+    withTime: true, // Set to false for date only
+  },
+  // other column options
+}
+```
+
+### String Editor (`stringEditor`)
+
+Provides a text input editor within a grid cell, allowing users to input or edit string values.
+
+<GridProExampleStringEditor />
+
+#### [API Documentation](/develop/client-capabilities/grids/grid-pro/docs/api/grid-pro.stringeditor/) 
+
+#### Key Features
+
+- Customizable placeholder text
+- Handles value changes and updates grid data
+- Automatically focuses on the editor when opened
+
+#### Usage Example
+
+```typescript
+const stringEditorRendererColDef = {
+  cellEditor: 'stringEditor',
+  cellEditorParams: {
+    placeholder: 'Enter text',
+  },
+  // other column options
 }
 ```
 
@@ -244,77 +381,34 @@ export class CustomRenderer extends GenesisElement implements ICellRendererComp 
 }
 ```
 
-#### 2. Create Renderer Template
-
-```typescript
-export const getCustomRendererTemplate = (designSystem = 'foundation') => {
-  const customComponent = `${designSystem}-text-field`;
-  
-  return html`
-    <${customComponent}
-      ?disabled=${(x) => x.isDisabled(x.params?.data)}
-      :value="${(x) => x.value}"
-      @change=${(x, c) => x.changeHandler(c.event.target.value)}
-    ></${customComponent}>
-  `;
-};
-```
-
-#### 3. Compose Renderer
-
-```typescript
-export const foundationCustomRenderer = CustomRenderer.compose({
-  baseName: 'custom-renderer',
-  template: getCustomRendererTemplate(),
-});
-```
-
-#### 4. Register in Grid Options
-
-```typescript
-const gridOptions = {
-  components: {
-    myCustomRenderer: CustomRenderer
-  },
-  columnDefs: [
-    {
-      cellRenderer: 'myCustomRenderer',
-      cellRendererParams: {
-        onChange: (value, params) => {
-          // Custom change handling logic
-          console.log('Value changed:', value);
-        },
-        isDisabled: (rowData) => !rowData.editable
-      }
-    }
-  ]
-};
-```
-
 ## Key Considerations
 
-- Always implement `ICellRendererComp`.
+- Always implement `ICellRendererComp` for renderers or `ICellEditorComp` for editors.
 - Use `@observable` for reactive properties.
-- Provide flexible configuration options.
-- Handle potential errors.
+- Provide flexible configuration options through `cellRendererParams` or `cellEditorParams`.
+- Handle potential errors gracefully.
 - Integrate with design system components.
+- Ensure editors are registered in `gridOptions.components`.
 
 ## Common Patterns to Follow
 
-- All renderers implement the `ICellRendererComp` interface.
+- All custom components implement the appropriate AG Grid interface (`ICellRendererComp` or `ICellEditorComp`).
 - Utilize `@observable` decorators for reactive properties.
-- Support custom disable logic.
+- Support custom disable logic through `isDisabled` functions.
 - Integrate with the Foundation UI design system.
-- Provide flexible configuration through `cellRendererParams`.
+- Provide flexible configuration through parameters.
+- Handle value changes and update grid data accordingly.
+- Consider performance when generating dynamic options.
+- Ensure proper focus management in editors with `afterGuiAttached()`.
 
-When creating custom renderers for Grid Pro, follow these key steps:
+When creating custom renderers or editors for Grid Pro, follow these key steps:
 
-- Initialize with `init()` method.
+- Initialize with the `init()` method.
 - Implement `getGui()` to return the root element.
-- Use `refresh()` to update renderer state.
-- Provide optional disable logic.
+- Use `refresh()` to update the component state.
+- Implement `getValue()` in editors to return the edited value.
+- Provide optional disable logic with `isDisabled()`.
 - Support custom change handling.
-- Provide meaningful `isDisabled` functions.
 - Handle potential errors in callbacks.
 - Use appropriate value accessors.
-- Consider performance when generating dynamic options.
+- Consider the user experience, such as focusing the editor when it's opened.
