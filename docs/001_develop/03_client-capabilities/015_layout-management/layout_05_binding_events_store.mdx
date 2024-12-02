@@ -1,0 +1,234 @@
+---
+title: 'Inline binding and events'
+sidebar_label: 'Inline binding and events'
+id: client-layout-management-binding
+keywords: [ binding, clonenode, events, properties, store, communication, inline ]
+tags:
+- binding
+- clonenode
+- events
+- properties
+- store
+- communication
+- inline
+sidebar_position: 15
+---
+
+There are some limitations for using bindings and other syntaxes inline in the html.
+
+```html
+<rapid-layout>
+  <rapid-layout-item>
+    <my-element
+      @change="${ ... }"
+      :property="${ ... }"
+    ></my-element>
+  </rapid-layout-item>
+</rapid-layout>
+```
+
+Even if `<my-element>` usually supports the event and property bindings, it won't work if defined inline in the layout.
+
+:::info
+Read on if you're interested to learn why this limitation occurs: to be able to allow you to use `addItem()` to add the same item multiple times on the layout, it's necessary to clone the items using the [cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode). A limitation of that in the browser is that event listeners are not copied, and the bindings for the Genesis element are lost too.
+:::
+
+There is a very simple pattern to work around this - just wrap the bindings up in an element.
+
+```typescript
+@customElement({
+  name: 'container-element',
+  template: html<ContainerElement>`
+    <my-element
+      @change="${ ... }"
+      :property="${ ... }"
+    ></my-element>`
+})
+export class ContainerElement extends GenesisElement { }
+```
+
+Then you can replace that in the original html:
+```html
+<rapid-layout>
+  <rapid-layout-item>
+    <container-element></container-element>
+  </rapid-layout-item>
+</rapid-layout>
+```
+
+:::tip
+This works because the bindings and events run _after_ the cloneNode() call, so they're not lost during that process.
+:::
+
+## State management
+
+The question you may ask with the above answer is how you access the properties which are represented in `${ ... }`. If they were statically defined functions or `const` values on the class, then you can move them onto the `ContainerElement` class. More likely though they are dynamically generated.
+
+This is where we'll want to use some formal state management. This section will rely on your knowledge of [`foundation-store`](../../state-management/). The store is already set up out of the box with applications created from Genesis Create or using the Genesis CLI `genx`.
+
+### Pre-layout example
+
+Here is a very simple example of two elements inline in a component which are interacting with state.
+
+```typescript
+@customElement({
+  name: 'my-element',
+  template: html<MyElement>`
+    <rapid-checkbox
+      ?checked=${sync((x) => x.isSelected, 'boolean')}
+    >Checkbox
+    </rapid-checkbox>
+    <rapid-checkbox ?checked=${(x) => x.isSelected}></rapid-checkbox>
+    `,
+})
+export class MyElement extends GenesisElement {
+  @observable isSelected = true;
+  isSelectedChanged() {
+    console.log(this.isSelected);
+  }
+}
+```
+As you toggle the first checkbox, the second one will change to match. This is an overly simple example - but instead imagine that the first component is configuring a string which contains a filter, and the second component is a grid which binds the filter to change what rows are displayed.
+
+:::info
+Notice the second checkbox doesn't have a `sync` directive, this is because we're only making the first checkbox drive the state of the second. This is analogous to a filter driving a property on a grid. You may have a different use case where both components communicate to each other both ways.
+:::
+
+### Adding a layout
+
+Now imagine that we want to add those two elements into a layout.
+```typescript
+@customElement({
+  name: 'my-element',
+  template: html<MyElement>`
+    <rapid-layout>
+      <rapid-layout-item>
+        <rapid-checkbox
+          ?checked=${sync((x) => x.isSelected, 'boolean')}
+        >Checkbox
+        </rapid-checkbox>
+      </rapid-layout-item>
+        <rapid-checkbox ?checked=${(x) => x.isSelected}></rapid-checkbox>
+      </rapid-layout-item>
+    </rapid-layout>
+  `,
+})
+```
+
+Now you see that the interaction of the `isSelected` is no longer working between them.
+
+### Wrapper components
+
+As discussed before, now we're going to add wrapper components to hold the bindings.
+
+```typescript
+@customElement({
+  name: 'wrapper-one',
+  template: html`
+    <rapid-checkbox
+      ?checked=${sync((x) => x.isSelected, 'boolean')}
+    >Checkbox</rapid-checkbox>`
+})
+class WrapperOne extends GenesisElement { }
+
+@customElement({
+  name: 'wrapper-two',
+  template: html`
+    <rapid-checkbox
+     ?checked=${(x) => x.isSelected}
+    >Checkbox</rapid-checkbox>`
+})
+class WrapperTwo extends GenesisElement { }
+
+// Register the wrappers
+WrapperOne;
+WrapperTwo;
+
+@customElement({
+  name: 'my-element',
+  template: html<MyElement>`
+    <rapid-layout>
+      <rapid-layout-item>
+        <wrapper-one></wrapper-one>
+      </rapid-layout-item>
+        <wrapper-two></wrapper-two>
+      <rapid-layout-item>
+    </rapid-layout>
+    `,
+})
+export class MyElement extends GenesisElement { }
+```
+
+There's still got a big issue here though - the `isSelected` variable isn't linked between the two components anymore. Handling this case requires the use of a state management library, such as the `foundation-store` module included in the platform.
+
+### State Management
+
+1. Add your new event into the store's event enum.
+```typescript
+export enum StoreEvents {
+  ...
+  CheckboxToggle = 'checkbox-toggle',
+}
+```
+
+2. Add your event detail onto the map union. Notice we're using `boolean` as the type here - because that is the type of the checkbox toggle we want to sync. It could be a `string` representing a filter mentioned earlier, or any other type.
+```typescript
+export type StoreEventDetailMap = StoreRootEventDetailMap & {
+  ...
+  [StoreEvents.CheckboxToggle]: boolean;
+};
+```
+
+3. Add the variable to sync onto the store, here represented by `checkboxToggle`. Then add an event listener to react to the emitted event and commit it on the store.
+```typescript
+class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> implements Store {
+  @observable checkboxToggle: boolean = false;
+
+  constructor() {
+    super();
+    this.createListener<boolean>(StoreEvents.CheckboxToggle, (toggle) => {
+      this.checkboxToggle.commit = toggle;
+    })
+  }
+}
+```
+
+4. Finally, the two wrapper classes are updated to emit and read from the store.
+```typescript
+@customElement({
+  name: 'wrapper-one',
+  template: html`
+    <rapid-checkbox
+     @change=${(x, c) => x.myEvent((c.event.target as Checkbox).checked)}
+    >Checkbox</rapid-checkbox>`
+})
+class WrapperOne extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
+  myEvent(val: boolean) {
+    this.$emit(StoreEvents.CheckboxToggle, val);
+  }
+}
+
+@customElement({
+  name: 'wrapper-two',
+  template: html`
+    <rapid-checkbox
+     ?checked=${(x) => x.store.checkboxToggle}
+    >Checkbox</rapid-checkbox>`
+})
+class WrapperTwo extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
+  @Store store: Store;
+}
+
+WrapperOne;
+WrapperTwo;
+@customElement({
+  name: 'my-element',
+  template: html<MyElement>`
+    <wrapper-one></wrapper-one>
+    <wrapper-two></wrapper-two>
+    `,
+})
+export class MyElement extends GenesisElement { }
+```
+
+We've covered the pitfalls that occur when trying to add the layout to a group of elements that share state and bindings, and a way to solve that via the [`foundation-store`](../../state-management/).

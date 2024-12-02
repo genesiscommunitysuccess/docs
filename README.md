@@ -4,7 +4,7 @@ Documentation is written using [Markdown format](markdown-syntax.md).
 
 ## Contribution
 
-Now our community team is accepting contributions from all community members of Genesis. All accepted contributions will be published on our [official website](https://learn.genesis.global/).
+Now our community team is accepting contributions from all community members of Genesis. All accepted contributions will be published on our [official website](https://docs.genesis.global/).
 
 Please check our [Contribution guide](https://www.notion.so/genesisglobal/Contributing-new-documentation-75953fb245f246ff872789035451a0c4) on Notion. 
 

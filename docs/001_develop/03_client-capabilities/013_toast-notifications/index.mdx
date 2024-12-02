@@ -2,13 +2,442 @@
 title: 'Toast notifications'
 sidebar_label: 'Toast notifications'
 id: client-toast-notifications
-keywords: [toast, toasts, notification, notifications]
+keywords: [toast, notification, alert, snackbar, banner, dialog]
 tags:
 - toast
-- toasts
 - notification
-- notifications
+- banner
+- snackbar
+- alert
+- dialog
+
 sidebar_position: 13
 ---
 
-Coming soon...
+import ToastNotificationDemo, {AlertDemo, SnackbarDemo, BannerDemo, ToastDemo} from '../../../../examples/ui/client-capabilities/toast-notifications/toast-notifications.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import EventWrapper from '../../../_includes/_store_event_wrapper.mdx'
+
+# Genesis Foundation Notifications
+
+`foundation-notifications` package is used for creating and displaying various types of notifications including `alert`, `toast`, `banner`, `snackbar` and `dialog`. These notifications are configurable and can be used in different scenarios ranging from status update to interactive user alerts.
+
+Notifications can be centrally managed within an application using `notification-listener` component, ensuring consistent user experience. With the help of different notification components and configurations, this package allows users to create a variety of notifications effortlessly.
+
+## API Documentation
+
+For more detailed information on API and configurations, please refer to the [API documentation](./docs/api/index.md).
+
+## Example
+Lets look at an example of one of the many notification components in this module, the `dialog` notification component. Further examples are shown below.
+
+<ToastNotificationDemo />
+<br/>
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+ ```typescript
+  import { showNotificationDialog } from '@genesislcap/foundation-notifications';
+
+  @customElement({
+    name: 'my-element',
+    template: html`
+      <div class="container">
+        <rapid-button @click=${(x) => x.showDialog()}>Show Dialog</rapid-button>
+      </div>
+    `,
+  })
+  export class MyElement extends GenesisElement {
+    showDialog() {
+      showNotificationDialog(
+        {
+          title: 'Important message',
+          body: 'Lorem ipsum',
+          dialog: {
+            confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+            dismissingAction: {
+              label: 'Dismiss',
+              action: () => console.log('Lorem ipsum'),
+            },
+          },
+        },
+        'rapid',
+      );
+    }
+  }
+```
+</TabItem>
+<TabItem value="react">
+```typescript
+import { showNotificationDialog } from '@genesislcap/foundation-notifications';
+
+export function MyComponent() {
+  const showDialog = (event) => {
+    showNotificationDialog(
+      {
+        title: 'Important message',
+        body: 'Lorem ipsum',
+        dialog: {
+          confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+          dismissingAction: {
+            label: 'Dismiss',
+            action: () => console.log('Lorem ipsum'),
+          },
+        },
+      },
+      'rapid',
+    );
+  };
+
+  return (
+    <rapid-button onClick={showDialog}>Show Dialog</rapid-button>
+  );
+}
+```
+</TabItem>
+<TabItem value="angular">
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { showNotificationDialog } from '@genesislcap/foundation-notifications';
+
+@Component({
+  selector: 'my-root',
+  template: `
+    <rapid-button
+      (click)="showDialog($event)"
+    >Show Dialog</rapid-button>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [FormsModule],
+})
+export class AppComponent {
+  showDialog(event: Event) {
+    showNotificationDialog(
+      {
+        title: 'Important message',
+        body: 'Lorem ipsum',
+        dialog: {
+          confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+          dismissingAction: {
+            label: 'Dismiss',
+            action: () => console.log('Lorem ipsum'),
+          },
+        },
+      },
+      'rapid',
+    );
+  }
+}
+```
+</TabItem>
+</Tabs>
+
+
+## Notification Components
+Here is a list of available notification components in Genesis's `foundation-notifications` package:
+* **Alert**: `Alerts` are quick messages that share important information without interrupting the user.
+* **Toast**: These are short, auto-closing notifications that are displayed at edge of screen and are ideal for transient messages like success confirmations or error notifications.
+* **Banner**: `banner` is used to show important notifications such as messages for system update. It appears on `top` of screen.
+* **Snackbar**: These are interactive notifications that appear at bottom of screen. `snackbar` are persistent until dismissed.
+* **Dialog**: `dialog` is used for displaying critical notifications as they block the underlying interface until dismissed by user action. One example will be confirmation dialog shown on deleting a user.
+
+
+## Understanding notification components with examples:
+The notifications component implemented by `foundation-notifications` package are designed to serve specific use cases. These components aids users in providing timely feedback, warning or interactive prompts.
+
+### Alert
+
+`alerts` are simple, non-intrusive notifications that are used for giving information to user without interrupting their workflow. They are great for showing messages that don't require user interaction such as updates, confirmations or warnings. It functions similarly to the built-in JavaScript **alert()** method
+
+Here's an example of using `alerts` with the [showNotificationAlert](./docs/api/foundation-notifications.shownotificationalert) method from the package.For the parameters, refer to [AlertStructure](./docs/api/foundation-notifications.alertstructure) in the package API documentation.
+
+<AlertDemo />
+<br/>
+ ```typescript
+
+  showNotificationAlert({ title: 'Important message', body: 'Lorem ipsum' });
+
+```
+
+### Toast
+`Toast` notifications are short, auto-closing notifications that are displayed at edge of the screen. They are used for transient messages like success confirmations, error notifications or updates that don't require user acknowledgement.
+
+Here's an example of using `toast` with the [showNotificationToast](./docs/api/foundation-notifications.shownotificationtoast) method from the package.For the parameters, refer to [ToastStructure](./docs/api/foundation-notifications.toaststructure) in the package API documentation.
+<ToastDemo />
+<br/>
+
+ ```typescript
+  showNotificationToast(
+    {
+    title: 'Important message',
+    body: 'Lorem ipsum',
+    toast: {
+      autoClose: true,
+      closeTimeout: 3000,
+      type: 'success',
+    },
+  },
+  'rapid',
+  );
+```
+As mentioned before, they automatically close after a specific duration by using `autoClose` and `closeTimeout` options. Like `snackbar`, they can be styled using the `type` option that supports `error, success, warning and info` styles.
+
+### Banner
+`Banner` notifications are used for delivering key messages and appears at `top` of the screen. It supports `confirming` and `dismissing` actions with callbacks.
+Here's an example of using `banner` with the [showNotificationBanner](./docs/api/foundation-notifications.shownotificationbanner) method from the package. For the parameters, refer to [BannerStructure](./docs/api/foundation-notifications.bannerstructure) in the package API documentation.
+<BannerDemo />
+<br/>
+
+ ```typescript
+  showNotificationBanner(
+    {
+      body: 'Lorem ipsum',
+      banner: {
+        confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+        dismissingAction: {
+          label: 'Dismiss',
+          action: () => console.log('Lorem ipsum'),
+        },
+      },
+    },
+    'rapid',
+  );
+```
+
+### Snackbar
+ `snackbars` are notifications that appear at bottom of screen. These notifications can have interactive button unlike `toasts`. They can be used for brief updates that require user interaction, like showing a status or confirming an action.
+ 
+ `type` property in snackbar config can be used to set the notification style. Supported types are `error`,`success`, `info` or `warning`.
+
+Here's an example of using `snackbar` with the [showNotificationSnackbar](./docs/api/foundation-notifications.shownotificationSnackbar) method from the package.For the parameters, refer to [SnackbarStructure](./docs/api/foundation-notifications.snackbarstructure) in the package API documentation.
+
+<SnackbarDemo />
+<br/>
+
+ ```typescript
+  showNotificationSnackbar(
+  {
+    body: 'Lorem ipsum',
+    snackbar: {
+      confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+      type: 'error', 
+    },
+  },
+  'rapid',
+);
+```
+ `Snackbar` are persistent until dismissed. They can disappear automatically after a short time by setting the `autoClose` property in the snackbar config. 
+
+```typescript
+  showNotificationSnackbar(
+    {
+      body: 'Lorem ipsum',
+      snackbar: {
+        confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+        type: 'error', 
+        autoClose: true
+      },
+    },
+    'rapid',
+  );
+```
+
+### Dialog
+
+This notification component uses a modal-like window to display notification. `Dialog` notifications requires user to take an action before proceeding as they block the underlying interface until dismissed. Therefore, these are used for critical interactions such as warnings, confirmations or important announcements.  `Dialog` notification component also supports multiple action buttons.
+
+One of the most common use case for dialog is `confirming before deleting`.
+
+An example for using `dialog` component is shown in the Example section above. 
+Multiple action buttons can be shown in a dialog by using `confirmingActions` property as shown in below snippet:
+
+```typescript
+showNotificationDialog(
+  {
+    title: 'Important message',
+    body: 'Lorem ipsum',
+    dialog: {
+      confirmingActions: [
+        { label: 'Confirm', action: () => console.log('Lorem ipsum') },
+        { label: 'Save', action: () => console.log('Lorem ipsum') }
+      ],
+      dismissingAction: {
+        label: 'Dismiss',
+        action: () => console.log('Lorem ipsum'),
+      },
+    },
+  },
+  'rapid',
+);
+```
+
+
+## Notification listener Component
+
+`rapid-notification-listener` component is a key utility in Genesis that listens for notifications event dispatched form any part of your application. It processes the event payload and dynamically displays the appropriate notification component (e.g., `Alert`, `Toast`, `Dialog`, etc.).
+
+By centralizing notification management, the `notification-listener` makes it easy to handle different types of notification in a consistent and modular way.
+
+The client app need to create `notification-listener` at top of the component tree. Any child under `notification-listener` component can dispatch custom **NotificationEvent** event
+
+### Example: Usage of Notification listener
+Lets look at code example to setup and use the `notification-listener` component. You will need to follow the following steps to achieve this:
+
+**1. Wrap your application with the notification-listener**
+
+As discussed earlier `notification-listener` component needs to be placed at the top of component tree to ensure it can capture events from any child component. You can find the `rapid-design-system-provider` tag in your application and place the `notification-listener` tag inside it, whether you're using React, Angular, or Genesis framework.
+
+```typescript
+<rapid-design-system-provider>
+  <rapid-notification-listener>
+    // other application components go here
+  </rapid-notification-listener>
+</rapid-design-system-provider>
+```
+
+**2. Dispatching notification using NOTIFICATION_EVENT**
+
+To dispatch notification, you can use [NotificationEvent.NOTIFICATION_EVENT](./docs/api/foundation-notifications.notificationevent.md). You can specify the type of notification component you want to display in the `config` object. For this example we are displaying snackbar.
+
+```typescript
+this.$emit( NotificationEvent.NOTIFICATION_EVENT,
+  {
+    title: 'Important message',
+    body: 'Lorem ipsum',
+    config: {
+      snackbar: {
+        confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+        type: 'error',
+        autoClose: true
+      },
+    },
+  } as NotificationStructure,)
+```
+
+**3. Provide a UI element to trigger notification**
+
+Now you can trigger your notification on clicking on a UI element like button.
+
+
+Lets complete the above example and trigger the notification event from a child component.
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+```typescript
+
+import {NotificationEvent, NotificationStructure} from '@genesislcap/foundation-notifications'
+...
+@customElement({
+  name: 'my-element',
+  template: html`
+    <div class="container">
+      <rapid-button @click=${(x) => x.triggerNotification()}>Show Notification</rapid-button>
+    </div>
+  `,
+})
+export class MyElement extends GenesisElement {
+  triggerNotification() {
+    this.$emit( NotificationEvent.NOTIFICATION_EVENT,
+      {
+        title: 'Important message',
+        body: 'Lorem ipsum',
+        config: {
+          snackbar: {
+            confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+            type: 'error',
+            autoClose: true
+          },
+        },
+      } as NotificationStructure,)
+  }
+}
+```
+</TabItem>
+<TabItem value="react">
+```typescript
+import { NotificationEvent, NotificationStructure } from '@genesislcap/foundation-notifications';
+import { useRef } from 'react';
+
+export function MyComponent() {
+  const ref = useRef();
+  const triggerNotification = (event) => {
+    const notificationPayload = {
+      title: 'Important message',
+      body: 'Lorem ipsum',
+      config: {
+        snackbar: {
+          confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+          type: 'error',
+          autoClose: true
+        },
+      },
+    } as NotificationStructure;
+    ref.current.dispatchEvent(customEventFactory(NotificationEvent.NOTIFICATION_EVENT, notificationPayload))
+  };
+
+  return (
+    <rapid-button onClick={triggerNotification} ref={ref}>Show Notification</rapid-button>
+  );
+}
+```
+<EventWrapper/>
+</TabItem>
+<TabItem value="angular">
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NotificationEvent, NotificationStructure } from '@genesislcap/foundation-notifications';
+
+@Component({
+  selector: 'my-root',
+  template: `
+    <rapid-button
+      (click)="triggerNotification($event)"
+    >Show Notification</rapid-button>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [FormsModule],
+})
+export class AppComponent {
+  constructor(private el: ElementRef) {}
+  triggerNotification(event: Event) {
+    const notificationPayload = {
+      title: 'Important message',
+      body: 'Lorem ipsum',
+      config: {
+        snackbar: {
+          confirmingActions: [{ label: 'Confirm', action: () => console.log('Lorem ipsum') }],
+          type: 'error',
+          autoClose: true
+        },
+      },
+    } as NotificationStructure;
+    this.el.nativeElement.dispatchEvent(customEventFactory(NotificationEvent.NOTIFICATION_EVENT, notificationPayload));
+  }
+}
+```
+<EventWrapper />
+</TabItem>
+</Tabs>
+
+
+
+Additionally we can also provide `resource-name` attribute to `notification-listener` component. This attribute allows the component to connect to a datasource and listen to the notifications on actions like `insert`, `update` or `delete` performed on the specified `resource-name`.
+
+## Installation
+
+To enable this module in your application, follow the steps below.
+
+1. Add `@genesislcap/foundation-notifications` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
+
+```json
+{
+  "dependencies": {
+    "@genesislcap/foundation-notifications": "latest"
+  },
+}
+```

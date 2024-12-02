@@ -2,7 +2,7 @@
 
 This CDK stack builds the AWS infrastructure, which powers the live docs website:
 
-https://learn.genesis.global/docs
+https://docs.genesis.global/docs
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 

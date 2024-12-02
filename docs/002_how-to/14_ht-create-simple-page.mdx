@@ -1,0 +1,224 @@
+---
+title: 'How to : Create a simple page'
+sidebar_label: 'Create a simple page'
+id: ht-create-simple-page
+keywords: [web components, front end, frontend, forms, modal, flyout]
+tags:
+    - web components
+    - front end
+    - frontend
+    - forms
+    - modal
+    - flyout
+
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+In this page, we shall look at how to create a simple page and add some components. 
+
+## Pages and routes
+You get a home page automatically if you use genx or Genesis Create. But you can add as many new pages as you like.
+
+If you want to create a new page:
+
+1. In the folder **client/src/routes**, add a new folder called **new-page** (use your preferred name for this new folder).
+2. In the new folder, create three files:
+    - **new-page.ts** (this is where the component class is defined, incuding methods, properties and the custom element definition)
+
+```ts
+    import { customElement, FoundationElement, ... } from '@genesislcap/web-core';
+    import { newPageTemplate as template } from './new-page.template';
+    import { newPageStyles as styles } from './new-page.styles';
+    
+    @customElement({
+      name: 'new-page',
+      template,
+      styles
+    })
+    export class NewPage extends FoundationElement {
+    }
+```
+  - **new-page.styles.ts** (this where your styles are defined)
+
+```ts
+    import { css } from '@genesislcap/web-core';
+    
+    export const newPageStyles = css`
+      // add your styles here
+
+```
+
+    - **new-page.template.ts** (this is where your HTML template is defined)
+
+```ts
+    import { Charts } from './charts';
+    
+    export const newPageTemplate = html`
+       <div>This is the new page template!</div>
+    `
+    ```
+
+3. In the file **src/routes/config.ts**, create a route for your new page, for example:
+
+```TypeScript
+{
+  path: 'new-page',
+  element: NewPage,
+  title: 'New Page',
+  name: 'new-page',
+  navItems: [
+    {
+      title: 'New Page',
+      icon: {
+        name: 'cog', // // use any free icon from https://fontawesome.com/icons
+        variant: 'solid',
+      },
+      permission: '',
+    },
+  ],
+},
+```
+
+## Adding a form
+You have created a component called `NewPage`. Now you can add a form to that component. For example, you can use a form to add a record to a table in the database.
+
+The example below adds a simple form element to the new page. 
+
+- The content of the form is defined by the UISchema and the JsonSchema in the **new-page.ts** file.
+- The form is itself is then added to the **new-page.template.ts** file.
+
+**new-page.ts**
+
+```ts
+import { customElement, FoundationElement, observable } from '@genesislcap/web-core';
+...
+export class NewPage extends FoundationElement {
+  ...
+  formUiSchema = {
+    type: 'VerticalLayout',
+    elements: [
+      {
+        type: 'Control',
+        scope: '#/properties/QUANTITY',
+        label: 'Enter Quantity:'
+      },
+      {
+        type: 'Control',
+        scope: '#/properties/SIDE',
+        options: <ConnectedRenderersOptions>{
+          data: [
+            { label: 'Buy', value: 'BUY' },
+            { label: 'Sell', value: 'SELL' }
+          ],
+          valueField: 'value',
+          labelField: 'label',
+        }
+      }
+    ]
+  }
+  
+  formJsonSchema = {
+    type: 'object',
+    properties: {
+      quantity: {
+        type: 'number',
+        description: 'kotlin.Double',
+      },
+      side: {
+        type: 'number',
+        description: 'kotlin.String',
+      },
+    },
+  };
+
+  handleFormSubmit(e: CustomEvent) {
+    // handle form submit
+  }
+  ...
+}
+```
+
+**new-page.template.ts**
+
+```ts
+...
+<foundation-form 
+  @submit=${(x, ctx) => x.handleFormSubmit(ctx.event)} 
+  :jsonSchema=${x => x.formJsonSchema} 
+  :uischema=${x => x.formUiSchema}
+>
+</foundation-form>
+...
+```
+
+## Adding a modal
+To create a modal component, add the element to your **new-page.template.ts** file. The component, and any content, will be invisible until the modal is opened.
+
+In the **new-page.ts** class, add the property to get a handle on the modal instance.
+
+```
+export class NewPage extends FoundationElement {
+  myModal: Modal;
+}
+```
+
+In the **new-page.template.ts** add the element and a `ref` value so that the class can open it.
+
+In the click handler on the button, call the `show` method on the modal.
+
+```html
+...
+<rapid-button @click=${x => x.myModal.show()}></rapid-button>
+<rapid-modal ${ref('myModal')}>
+  <p>This paragraph will appear in the modal</p>
+</rapid-modal>
+...
+```
+
+When open, the modal is displayed over the top of any existing content in your page. It also creates an invisible overlay that prevents you user from interacting with any content outside the modal while it is active.
+
+## Adding a flyout
+To add a flyout to your application, add the `<rapid-flyout>` element to your template. 
+
+This element accepts a `closed` property value, a boolean for true or false. When the value is **true**, the flyout will be closed, and when the value is **false** the flyout will be open.
+
+By default, the flyout is positioned on the right side of the screen. To configure it to appear on the left, set `position="left"` on the element.
+
+You can insert any content you want within the flyout. 
+
+:::info
+When the user clicks outside the flyout, it closes. Also, you can add code to close the programmatically; set the value bound to the `closed` attribute.
+
+When a flyout is closed, the component emits a **closed** event, which you can listen to.
+:::
+
+Here is an example declaration of a flyout:
+
+```ts
+<rapid-button @click=${x => x.leftFlyoutActive = true}>Open left positioned flyout</rapid-button>
+<rapid-button @click=${x => x.rightFlyoutActive = true}>Open right positioned flyout</rapid-button>
+<rapid-flyout :closed="${x => !x.rightFlyoutActive}" @closed=${() => console.log('right flyout closed')}>
+  <p>This paragraph will appear in the flyout</p>
+</rapid-flyout>
+<rapid-flyout :closed="${x => !x.leftFlyoutActive}" position="left" @closed=${() => console.log('left flyout closed')}>
+  <p>This paragraph will appear in the flyout</p>
+</rapid-flyout>
+```
+:::tip
+Ready to go deeper?
+
+Go to our page on [How to create a simple front end](/how-to/ht-front-end-example/). 
+
+This introduces you an example app where you can see the code. You can build and run to see it in action and try out your own changes in configuration.
+:::
+
+## Technical details
+
+Find more details in our in our reference documentation:
+
+- [Working with forms](/develop/client-capabilities/forms/smart-forms/) 
+- [Json schemas for forms](/develop/client-capabilities/forms/smart-forms/foundation-forms-json-schema/)
+- [UI schemas for forms](/develop/client-capabilities/forms/smart-forms/foundation-forms-ui-schema/)
+
