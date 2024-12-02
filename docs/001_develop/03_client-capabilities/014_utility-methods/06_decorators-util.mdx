@@ -1,0 +1,91 @@
+---
+title: 'Decorators Utilities'
+sidebar_label: 'Decorators Utilities'
+id: decorators-utils
+keywords: [utils, utility, data, decorators, env, environment, formatters, number, date, logger, logging, mappers, mixins, observers, resource, server, serializer, json, styles, css, UUID, unique, window, iframe]
+tags:
+  - utils
+  - utility
+  - data
+  - decorators
+  - env
+  - environment
+  - formatters
+  - number
+  - date
+  - logger
+  - logging
+  - mappers
+  - mixins
+  - observers
+  - resource
+  - server
+  - serializer
+  - json
+  - styles
+  - css
+  - UUID
+  - unique
+  - window
+  - iframe
+---
+
+# Decorators utilities
+
+Provides utility decorators to enhance component behavior and development efficiency within TypeScript projects. Specifically, the `renderOnChange` decorator automates the re-rendering process of components upon property changes, leveraging the FAST framework for web development.
+
+## Key Features
+
+- **Automatic Rerendering:** Automatically invokes the `render()` method of a component when any decorated property changes.
+- **Integration with FAST Framework:** Designed to work seamlessly with components extending `FASTElement`.
+
+## Examples
+
+### Using `renderOnChange`
+
+Apply the `renderOnChange` decorator to properties that should trigger a re-render upon change:
+
+```typescript
+import { renderOnChange } from '@genesislcap/foundation-utils';
+import { GenesisElement, attr } from '@genesislcap/web-core';
+
+export class MyExampleComponent extends GenesisElement {
+  @attr({ mode: 'boolean', attribute: 'line-numbers' })
+  @renderOnChange
+  lineNumbers: boolean = true;
+
+  @attr
+  @renderOnChange
+  indent: number | 'tab' = 2;
+}
+```
+
+### Using with template
+
+Suppose you have a component where you want certain attributes to trigger a render when they change, such as a custom input element where the `value` and `placeholder` properties are observed:
+
+```typescript
+import { renderOnChange } from '@genesislcap/foundation-utils';
+import { attr, FASTElement, html } from '@genesislcap/web-core';
+
+@customElement({
+  name: 'my-example-component',
+  template: html`
+    <input type="text" placeholder="${x => x.placeholder}" value="${x => x.value}" />`,
+})
+export class MyExampleComponent extends GenesisElement {
+  @attr
+  @renderOnChange
+  value: string = '';
+
+  @attr
+  @renderOnChange
+  placeholder: string = 'Enter text...';
+}
+```
+
+In this example, changes to either `value` or `placeholder` will automatically invoke the `render()` method, ensuring the component's visual state is immediately updated to reflect these changes.
+
+## Considerations
+
+When using `renderOnChange`, consider the performance implications of frequent re-rendering, especially for components with complex rendering logic or those nested within deep component trees. Optimize your `render()` method to be as efficient as possible and minimize unnecessary DOM updates.
