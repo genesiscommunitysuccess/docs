@@ -1,0 +1,69 @@
+---
+title: 'Environment utilities'
+sidebar_label: 'Environment utilities'
+id: env-utils
+keywords: [utils, utility, data, decorators, env, environment, isDev, variables, development, production, api, host, user, socket, localhost]
+tags:
+  - utils
+  - utility
+  - data
+  - decorators
+  - env
+  - environment
+  - isDev 
+  - variables
+  - development
+  - production
+  - api
+  - host
+  - user
+  - socket
+  - localhost
+---
+
+Provides utilities for managing and accessing environment-specific settings and variables, facilitating the configuration of application behavior based on the current environment. This category includes utilities for identifying the development environment and securely accessing environment variables.
+
+:::info
+For more detailed information on API and configurations, please refer to the [API documentation](docs/api/index.md).
+:::
+
+## Key Features
+
+- **Environment Checking:** Determine whether the application is running in a development environment.
+- **Environment Variables:** Access environment variables in a secure and convenient manner.
+
+## Examples
+
+### Checking the Environment
+
+Use `isDev` to check if the application is running in a development environment. This can be useful for enabling debugging tools or setting development-specific configurations:
+
+```typescript
+import { isDev } from '@genesislcap/foundation-utils';
+
+if (isDev()) {
+  console.log('Running in development mode');
+}
+```
+
+### Accessing Environment Variables
+
+The `variables.ts` file provides a set of default environment variables that can be used throughout the application. These variables can be accessed directly or overridden by setting corresponding environment variables in the runtime environment.
+
+```typescript
+import {
+  API_HOST,
+  DEFAULT_ORGANISATION,
+  DEFAULT_USER,
+  SOCKET_EXT,
+} from '@genesislcap/foundation-utils';
+
+const apiHost = getVariable(API_HOST, 'http://localhost:3000');
+const defaultOrganisation = getVariable(DEFAULT_ORGANISATION, 'default');
+const defaultUser = getVariable(DEFAULT_USER, 'admin');
+const socketExt = getVariable(SOCKET_EXT, 'ws');
+```
+
+## Considerations
+
+When using environment utilities, ensure you do not expose sensitive information, especially when accessing environment variables. Consider using environment-specific configuration files or services for managing secrets and other critical settings.
