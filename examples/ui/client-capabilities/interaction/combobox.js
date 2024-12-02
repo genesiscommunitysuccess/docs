@@ -1,7 +1,7 @@
 import { CodeSection } from '../../documentationBase';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 
-export default function ComboboxDemo({ inIndex }) {
+export default function ComboboxDemo({ inIndex = false }) {
 	const isBrowser = useIsBrowser();
 
 	if (isBrowser) {
@@ -9,7 +9,7 @@ export default function ComboboxDemo({ inIndex }) {
 		RapidImports.registerComponents();
 	}
 
-	const styles = inIndex ? {minWidth: '0px', marginBottom: '100px'} : {}
+	const styles = inIndex ? {minWidth: '0px', marginBottom: '120px', width: '100%'} : {}
 
 	return (
 		<CodeSection>
