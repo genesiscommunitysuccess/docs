@@ -1,4 +1,4 @@
-import LiveExampleBuilder from '@site/src/components/LiveExampleBuilder';
+import LiveExampleBuilder, {useUpdateCSSVariable} from '@site/src/components/LiveExampleBuilder';
 
 import AccordionDemo from '/examples/ui/client-capabilities/interaction/accordion.js';
 import AnchorDemo from '/examples/ui/client-capabilities/interaction/anchor.js';
@@ -89,6 +89,7 @@ const cardData = [
 ];
 
 export default function InteractionIndex() {
+	useUpdateCSSVariable('--toc-sidebar-width', '0px')
   return (
 		<LiveExampleBuilder itemData={cardData} />
   );

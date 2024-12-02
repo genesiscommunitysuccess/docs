@@ -1,4 +1,4 @@
-import LiveExampleBuilder from '@site/src/components/LiveExampleBuilder';
+import LiveExampleBuilder, {useUpdateCSSVariable} from '@site/src/components/LiveExampleBuilder';
 
 import ButtonDemo from '/examples/ui/client-capabilities/interaction/button.js';
 import CheckboxDemo from '/examples/ui/client-capabilities/interaction/checkbox.js';
@@ -118,6 +118,7 @@ const cardData = [
 ];
 
 export default function FormsIndex() {
+	useUpdateCSSVariable('--toc-sidebar-width', '0px')
   return (
 		<LiveExampleBuilder itemData={cardData} />
   );

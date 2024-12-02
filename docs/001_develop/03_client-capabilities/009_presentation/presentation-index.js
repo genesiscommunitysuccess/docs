@@ -1,4 +1,4 @@
-import LiveExampleBuilder from '@site/src/components/LiveExampleBuilder';
+import LiveExampleBuilder, {useUpdateCSSVariable} from '@site/src/components/LiveExampleBuilder';
 
 import AvatarDemo from './examples/avatar.js';
 import BadgeDemo from './examples/badge.js';
@@ -96,6 +96,7 @@ const cardData = [
 ];
 
 export default function PresentationIndex() {
+	useUpdateCSSVariable('--toc-sidebar-width', '0px')
   return (
 		<LiveExampleBuilder itemData={cardData} />
   );
