@@ -97,17 +97,12 @@ Use cases:
     Usage
     ```typescript
     export function MyComponent() {
-
-        const handleSliderChanged = (event) => {
-          console.log(event.target.value)
-        }
-        const [labelSliderValue, setLabelSliderValue] = useState(false);
-
-        const handleLabelSliderChanged = (event) => {
-            console.log(event.target.value)
-            setLabelSliderValue(event.target.value);
-        }
-
+      const [labelSliderValue, setLabelSliderValue] = useState(false);
+      const handleSliderChanged = (event) => {
+        const target = event.target as HTMLInputElement;
+        console.log(target.value);
+        setLabelSliderValue(event.target.value);
+      }
       return (
         <div>
             <label>Simple slider</label>

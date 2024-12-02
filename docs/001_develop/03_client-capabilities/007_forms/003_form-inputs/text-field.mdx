@@ -90,8 +90,9 @@ Use cases:
       const [textFieldValue, setTextFieldValue] = useState(false);
 
       const handleTextFieldChanged = (event) => {
-        console.log(event.target.value)
-        setTextFieldValue(event.target.value)
+        const target = event.target as HTMLInputElement;
+        console.log(target.value);
+        setTextFieldValue(target.value)
       };
       return (
         <div>
