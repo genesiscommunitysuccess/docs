@@ -490,7 +490,7 @@ exports.default = {
             output: {
                 directory: "./docs/001_develop/03_client-capabilities/011_criteria/",
                 api_docs: "docs/api",
-                readme: "./docs/index.mdx",
+                readme: "./index.mdx",
                 keywords: [
                     "web",
                     "criteria",
