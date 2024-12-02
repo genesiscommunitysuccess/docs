@@ -148,30 +148,28 @@ The order of the rapid-stepper-tab corresponds to the order of the rapid-stepper
   Usage
   ```typescript
   import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-  import { FormsModule } from '@angular/forms';
   @Component({
     selector: 'my-root',
     template: `
         <rapid-stepper
             (submit)="handleSubmit($event)"
         >
-        <rapid-stepper-tab>Step 1</rapid-stepper-tab>
-        <rapid-stepper-tab>Step 2</rapid-stepper-tab>
-        <rapid-stepper-tab>Step 3</rapid-stepper-tab>
-        <rapid-stepper-tab-panel>
-            Tab Panel 1
-        </rapid-stepper-tab-panel>
-        <rapid-stepper-tab-panel>
-            Tab Panel 2
-        </rapid-stepper-tab-panel>
-        <rapid-stepper-tab-panel>
-            Tab Panel 3
-        </rapid-stepper-tab-panel>
+            <rapid-stepper-tab>Step 1</rapid-stepper-tab>
+            <rapid-stepper-tab>Step 2</rapid-stepper-tab>
+            <rapid-stepper-tab>Step 3</rapid-stepper-tab>
+            <rapid-stepper-tab-panel>
+                Tab Panel 1
+            </rapid-stepper-tab-panel>
+            <rapid-stepper-tab-panel>
+                Tab Panel 2
+            </rapid-stepper-tab-panel>
+            <rapid-stepper-tab-panel>
+                Tab Panel 3
+            </rapid-stepper-tab-panel>
         </rapid-stepper>
         `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [FormsModule],
   })
   export class AppComponent {
     handleSubmit(event: Event) {

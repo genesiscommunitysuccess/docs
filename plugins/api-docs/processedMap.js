@@ -15,6 +15,7 @@ module.exports = {
 	"@genesislcap/foundation-comms": "14.217.6",
 	"@genesislcap/foundation-entity-management": "14.217.6",
 	"@genesislcap/foundation-forms": "14.217.6",
+	"@genesislcap/foundation-header": "14.217.6",
 	"@genesislcap/foundation-i18n": "14.217.6",
 	"@genesislcap/g2plot-chart": "14.217.6",
 	"@genesislcap/grid-pro": "14.217.6",
@@ -23,4 +24,5 @@ module.exports = {
 	"@genesislcap/foundation-testing": "14.217.6",
 	"@genesislcap/foundation-utils": "14.217.6",
 	"@genesislcap/foundation-store": "14.217.6",
+	"@genesislcap/foundation-criteria": "14.217.6",
 };
