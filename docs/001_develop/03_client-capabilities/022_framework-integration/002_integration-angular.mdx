@@ -267,6 +267,53 @@ export class AppComponent {
 ### Global styles
 You can add global styles by modifying the main stylesheet located at **src/styles/styles.css**. This file contains styles that apply to the entire application.
 
+### Component styles
+
+Styling a component works the same way it does in Angular. Create your styles in a file and import it in your component using the `styleUrl` property or inline them with the `styles` property.
+
+This example shows how to style the host component, the foundation-form element and the `userActions` part of the form.
+
+:::info
+You can learn more in our [styling](../019_styling/index.mdx) documentation.
+:::
+
+```ts
+@Component({
+  selector: 'my-root',
+  template: `
+    <foundation-form
+      (submit)="handleSubmit($event)"
+    ></foundation-form>
+  `,
+  standalone: true,
+  styles: `
+    :host {
+      max-height: 800px;
+      overflow-y: auto;
+      display: block;
+    }
+
+    foundation-form {
+      display: block;
+      height: 1000px;
+    }
+
+    foundation-form::part(userActions) {
+      padding: 20px;
+      display: flex;
+      justify-content: flex-start;
+      flex-direction: row
+    }
+  `, // styles
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class AppComponent {
+  handleEvent(e): void {
+    console.log('form submitted', e);
+  }
+}
+```
+
 ---
 
 ## Slots
