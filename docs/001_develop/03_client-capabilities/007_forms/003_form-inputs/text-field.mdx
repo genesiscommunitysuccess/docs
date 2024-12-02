@@ -68,7 +68,8 @@ Use cases:
     ```typescript
     export function MyComponent() {
       const handleTextFieldChanged = (event) => {
-        console.log(event.target.value)
+        const target = event.target as HTMLInputElement;
+        console.log(target.value);
       };
       return (
         <rapid-text-field onChange={handleTextFieldChanged}></rapid-text-field>

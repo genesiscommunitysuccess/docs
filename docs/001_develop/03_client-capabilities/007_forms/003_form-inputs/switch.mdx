@@ -66,8 +66,12 @@ Declaration
 Usage
 ```typescript
 export function MyComponent() {
+
+  const [switchValue, setSwitchState] = useState('');
+
   const handleSwitchChange = (event) => {
-    setSwitchState(!!event.target.checked);
+    const target = event.target as HTMLInputElement;
+    setSwitchState(target.value);
     console.log({ switchValue })
   };
 

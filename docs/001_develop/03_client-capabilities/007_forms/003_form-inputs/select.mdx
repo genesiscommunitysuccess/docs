@@ -74,7 +74,8 @@ Use cases:
   ```typescript
   export function MyComponent() {
     const handleSelectChanged = (event) => {
-      console.log('Select changed')
+      const target = event.target as HTMLInputElement;
+      console.log(target.value);
     };
 
     return (

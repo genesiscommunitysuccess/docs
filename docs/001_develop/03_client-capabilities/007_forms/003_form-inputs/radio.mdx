@@ -67,7 +67,8 @@ Use cases:
   ```typescript
   export function MyComponent() {
     const handleRadioFieldChanged = (event) => {
-      console.log({ event.target.value })
+      const target = event.target as HTMLInputElement;
+      console.log(target.value);
     };
     return (
       <rapid-radio onChange={handleRadioFieldChanged}>
