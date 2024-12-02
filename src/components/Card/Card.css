@@ -37,7 +37,8 @@
   background: var(--white);
 }
 
-.card-outer .card-inner .card-main-image-wrapper {
+.card-outer .card-inner .card-main-image-wrapper,
+.card-outer .card-inner .card-main-children-wrapper {
   height: 80px;
   width: 100%;
   display: flex;
@@ -49,6 +50,12 @@
 .card-outer .card-inner .card-main-image-wrapper img {
   max-width: 100%;
   max-height: 100%;
+}
+
+.card-outer .card-inner .card-main-children-wrapper {
+  display: contents;
+  overflow: hidden
+
 }
 
 .card-outer .card-inner .card-main-content {
