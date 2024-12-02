@@ -1,0 +1,77 @@
+---
+title: 'Mixins utilities'
+sidebar_label: 'Mixins utilities'
+id: mixins-util
+keywords: [utils, utility, mixins, augment, addition, lifecycle]
+tags:
+  - utils
+  - utility
+  - mixins
+  - augment
+  - addition
+  - lifecycle
+---
+
+The `mixins` category provides specialized functionalities that can be mixed into Genesis elements to enhance their capabilities and facilitate common patterns used within applications.
+
+:::info
+For Genesis code syntax only
+:::
+
+## 1. Lifecycle Mixin
+
+This mixin is designed to augment Genesis elements with additional control over their connect and disconnect lifecycle hooks. It's particularly useful for elements that are part of custom layouts or need to manage their lifecycle events in a granular manner.
+
+## Key Features
+
+- **Conditional Lifecycle Execution:** Offers methods to determine whether connect and disconnect lifecycle callbacks should run based on the element's current state and container.
+- **Layout Integration:** Seamlessly integrates with custom layouts by providing mechanisms to respect the dragging state and lifecycle update tokens.
+- **Cleanup Timeout:** Ensures elements removed from the layout are correctly cleaned up after a predefined timeout, avoiding memory leaks.
+
+## Examples
+
+#### `LifecycleMixin` Usage
+
+```typescript
+import { LifecycleMixin } from '@genesislcap/foundation-utils';
+import {customElement, GenesisElement, observable} from '@genesislcap/web-core';
+
+@customElement({
+  name: 'my-element',
+  template: html`<!-- template here -->`,
+})
+export class MyExampleComponent extends LifecycleMixin(GenesisElement) {
+  // Your element's implementation
+}
+```
+
+#### 2. Pending State Mixin
+
+This mixin introduces a pattern for managing elements that have asynchronous dependencies, such as data fetching or processing. It enables elements to signal their pending state and handle errors gracefully.
+
+#### Key Features
+
+- **Pending State Management:** Tracks pending asynchronous operations to provide feedback on the element's loading state.
+- **Progress Tracking:** Computes the progress of pending operations as a percentage, useful for loading indicators.
+- **Event Handling:** Raises custom events for state changes and errors, allowing parent components to react to the child's asynchronous state.
+
+#### `PendingState` Usage
+
+```typescript
+import { LifecycleMixin } from '@genesislcap/foundation-utils';
+import {customElement, GenesisElement, observable} from '@genesislcap/web-core';
+
+@customElement({
+  name: 'my-pending-element',
+  template: html`<!-- template here -->`,
+})
+export class MyExampleComponent extends PendingState(GenesisElement) {
+  // Element logic that involves asynchronous operations
+}
+```
+
+## Key Points
+
+- **Use Mixins Sparingly:** While mixins can offer powerful extensions to elements, they should be used judiciously to avoid complexity and maintain component clarity.
+- **Override With Care:** If overriding mixin methods or properties, ensure to call `super` to maintain the mixin's intended functionality.
+- **Document Mixin Behaviors:** Clearly document how mixins affect the behavior of your components, especially if they alter standard lifecycle behaviors or introduce new states and events.
