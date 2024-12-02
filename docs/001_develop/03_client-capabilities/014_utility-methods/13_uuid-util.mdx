@@ -1,0 +1,72 @@
+---
+title: 'UUID utilities'
+sidebar_label: 'UUID utilities'
+id: uuid-util
+keywords: [utils, utility, uuid, generation, identifier, unique]
+tags:
+  - utils
+  - utility
+  - uuid
+  - generation
+  - identifier
+  - unique
+---
+
+This provides a robust solution for generating UUIDs within your application, offering both immediate and potentially remote generation methods, with an optional logging feature for development and debugging purposes.
+
+## Key Features
+
+- **UUID Generation:** Leverages the `uuidv4` library to generate UUIDs, ensuring uniqueness and compliance with the UUID v4 standard.
+- **Logging Capability:** Offers an optional parameter to log generated UUIDs, aiding in debugging and tracking ID generation.
+- **Configurable Service:** While the current implementation directly uses `uuidv4`, future enhancements may include customizable configurations for UUID generation.
+
+## Use Cases
+
+This module is designed for:
+- Generating a Universally Unique Identifier
+
+## Interfaces and Services
+
+- **`UUIDConfig` Interface:** Intended for future use to customize UUID generation through configuration options.
+- **`UUID` Interface:** Defines the contract for UUID generation services, including methods for creating IDs and remote IDs, with optional logging.
+- **`UUIDService` Class:** Implements the `UUID` interface, providing default behavior for UUID generation and logging.
+
+## Examples
+
+#### Generating a UUID
+
+```typescript
+import { UUID } from '@genesislcap/foundation-utils';
+import { FASTElement } from '@microsoft/fast-element';
+
+export class MyExampleComponent extends FASTElement {
+  @UUID uuid: UUID;
+
+  async generateUUID(): string {
+    return this.uuid.createId(true); // Generates and logs a UUID
+  }
+}
+```
+
+#### Generating a Remote UUID
+
+This method is designed for scenarios where UUID generation might involve server-side logic or validation, though the current implementation is client-side.
+
+```typescript
+import { UUID } from '@genesislcap/foundation-utils';
+import { FASTElement } from '@microsoft/fast-element';
+
+export class MyExampleComponent extends FASTElement {
+  @UUID uuid: UUID;
+
+  async generateRemoteUUID(): string {
+    const remoteUUID = await this.uuid.createRemoteId(true); // Generates and logs a remote UUID
+    return remoteUUID;
+  }
+}
+```
+
+## Key Points
+
+- **Consider UUID Uniqueness Requirements:** Ensure the UUID generation strategy meets your application's requirements for uniqueness and randomness.
+- **Plan for Configuration Enhancements:** While the `UUIDConfig` interface is a placeholder, anticipate future needs for configurable UUID generation to accommodate different scenarios or integration with backend services.
