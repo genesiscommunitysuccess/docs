@@ -68,7 +68,7 @@
 
   --doc-sidebar-width: 325px !important;
 
-  --toc-sidebar-width: 325px;
+  --toc-sidebar-width: 140px;
 }
 
 body {
@@ -216,7 +216,7 @@ h5 {
 }
 
 .main-wrapper main article {
-  max-width: 100rem;
+  max-width: 120rem;
 }
 
 @media (min-aspect-ratio: 1/1) and (min-width: 1512px) {
@@ -224,6 +224,15 @@ h5 {
     margin-left: auto;
     margin-right: auto;
   }
+	:root {
+		--toc-sidebar-width: 220px;
+	}
+}
+
+@media (min-aspect-ratio: 1/1) and (min-width: 2250px) {
+	:root {
+		--toc-sidebar-width: 335px;
+	}
 }
 
 @media (min-aspect-ratio: 1/1) and (max-width: 996px) {

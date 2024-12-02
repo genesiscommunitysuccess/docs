@@ -21,7 +21,7 @@ export default function DocCardList(props: Props): JSX.Element {
   const category = useCurrentSidebarCategory();
   const extraCategoryData = sidebarItemsData[category.href];
   let enrichedItems = filterDocCardListItems(items);
-  
+
   if (extraCategoryData?.items) {
   enrichedItems = enrichedItems.map((item) => {
     const extraData = extraCategoryData.items.find(extraItemData => extraItemData.href === item.href) || {};
@@ -30,7 +30,7 @@ export default function DocCardList(props: Props): JSX.Element {
         ...extraData,
       };
     });
-  } 
+  }
 
   const filteredItems = enrichedItems.map((
     { label: heading, href: link, description: text, imageUrl  },
