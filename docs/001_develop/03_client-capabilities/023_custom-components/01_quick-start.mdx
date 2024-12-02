@@ -53,7 +53,7 @@ const styles = css`
       color: grey;
     }
 `;
- The @customElement decorator is a function that helps define and register a custom HTML element. It associates a class with a specific custom tag name in the DOM.
+// The @customElement decorator is a function that helps define and register a custom HTML element. It associates a class with a specific custom tag name in the DOM.
 
 @customElement({
   name: 'my-button',
@@ -72,6 +72,31 @@ We’ve created a custom component called `<my-button>`, which currently display
 Like web Components, Genesis Elements are required to include a hyphen (-) in their name in order to avoid conflicts with native HTML elements.
 
 :::
+
+## Add it to your project
+
+:::note
+After defining your custom component, you need to import it somewhere in your application's code to ensure it gets registered. If you are using a project built generated from Genesis Create or `genx` then a good place for it to go is the same file that contains `rapidDesignSystem.provideDesignSystem()`.
+:::
+
+Let's say we import `MyButton` into a `hello-world.js` file. This ensures `MyButton` will be registered with the browser, allowing you to use the `<my-button>` element in your HTML.
+
+```typescript
+import "./MyButton";
+
+...
+
+MyButton;
+```
+
+Now it can be added in your HTML this way:
+
+```typescript
+<script type="module" src="path/to/hello-world.js"></script>
+<my-button label="Cancel"></my-button>
+```
+
+> In this example, we created a custom web component using `GenesisElement`. We defined a button template and added a `label` attribute using the `@attr` decorator, allowing the button text to be customized via HTML. We implemented the `labelChanged` method, which is automatically called whenever the `label` value changes. The template dynamically updates with the new value, ensuring the button remains responsive to changes in its attributes.
 
 ## Add an Attribute
 
@@ -102,26 +127,6 @@ Now let's update the template to display the value:
 const template = html`<button>${(x) => x.label}</button>`;
 ```
 
-## Add it to your project
-
-:::note
-After defining your custom component, you need to import it somewhere in your application's code to ensure it gets registered.
-:::
-
-Let's say we import `MyButton` into a `hello-world.js` file. This ensures `MyButton` will be registered with the browser, allowing you to use the `<my-button>` element in your HTML.
-
-```typescript
-import "./MyButton";
-```
-
-Now it can be added in your HTML this way:
-
-```typescript
-<script type="module" src="path/to/hello-world.js"></script>
-<my-button label="Cancel"></my-button>
-```
-
-> In this example, we created a custom web component using `GenesisElement`. We defined a button template and added a `label` attribute using the `@attr` decorator, allowing the button text to be customized via HTML. We implemented the `labelChanged` method, which is automatically called whenever the `label` value changes. The template dynamically updates with the new value, ensuring the button remains responsive to changes in its attributes.
 
 ## Typed Templates
 

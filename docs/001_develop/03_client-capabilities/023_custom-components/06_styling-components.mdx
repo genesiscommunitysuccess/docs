@@ -391,14 +391,14 @@ const styles = css`
   name: "my-button",
   template: html<MyButton>`
     <button><slot></slot></button>
-    // Slot allows flexible content
+    <!-- Slot allows flexible content -->
   `,
   styles,
 })
 export class MyButton extends GenesisElement {}
 ```
 
-##### Key Points: 
+##### Key Points:
 
 >- `:host` ensures that styles like `display` and `contain` apply only to the `<my-button>` element.
   >>- This prevents global CSS rules from interfering with the component and vice versa.

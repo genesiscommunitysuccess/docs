@@ -3,7 +3,7 @@ title: 'directives'
 sidebar_label: 'Directives'
 id: directives
 keywords: [
-    Template Directives, 
+    Template Directives,
     Reactive Templates,
     Conditional Rendering,
     List Rendering,
@@ -29,7 +29,7 @@ sidebar_position: 3
 
 # Directives
 
-Directives in Genesis Elements are special attributes or decorators that add specific functionality to the template or component logic. Below is a summary of commonly used directives:
+Directives in Genesis Elements are special functions used in the templates that add specific functionality. Below is a summary of commonly used directives:
 
 ### Ref
 
@@ -116,7 +116,7 @@ export class MyButton extends GenesisElement {
 ##### Key Points:
 
 >- The `<slot>` element inside `<button>` is a placeholder. Any content added within `<my-button>` in HTML will appear here.
-  
+
 >- `slotted("slotContent")`:
 
   >>- The `slotted` directive links the slot’s content to the `slotContent` property.
@@ -348,7 +348,7 @@ import {
 
 @customElement({
   name: "my-button-list",
-  template: html<MyButtonList>` 
+  template: html<MyButtonList>`
     <h2>Button List</h2>
     <ul>
       ${repeat(
