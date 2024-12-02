@@ -1,0 +1,13 @@
+`customEventFactory` is a helper function to create events in the expected payload format. You can either import it from the PBC module if you're using it, or copy this function into your codebase.
+
+  ```typescript
+  export function customEventFactory(type: string, detail?: any) {
+      return new CustomEvent(type, {
+          bubbles: true,
+          cancelable: true,
+          composed: true,
+          detail,
+      });
+  }
+  ```
+

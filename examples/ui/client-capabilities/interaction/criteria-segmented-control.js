@@ -29,7 +29,7 @@ export default function CriteriaSegmentedControlDemo({ children, color }) {
 
 	return (
 		<CodeSection>
-			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
+			<div style={{ color: 'var(--neutral-foreground-rest)', width: '100%'}}>
 				<div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', flexDirection: 'column', }}>
 					<criteria-segmented-control ref={segmentedControlRef} onClick={handleChange}>
 						<label slot="label">Select option</label>

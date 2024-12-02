@@ -48,11 +48,13 @@ While any DOM content is permissible as a child of the menu, only `<rapid-menu-i
 
     Usage
     ```typescript
+    import { MenuItem } from '@genesislcap/web-core';
+
     @customElement({
       name: 'my-element',
       template: html<MyElement>`
         <rapid-menu @change=${(x,ctx) => x.menuChange(<Event & {target: MenuItem}>ctx.event)}>
-          <rapid-menu-item @click=${(x) => itemOneAction()}>Menu item 1</rapid-menu-item>
+          <rapid-menu-item @click=${(x) => x.itemOneAction()}>Menu item 1</rapid-menu-item>
           <rapid-menu-item>Menu item 2</rapid-menu-item>
           <rapid-menu-item>Menu item 3</rapid-menu-item>
           <rapid-divider></rapid-divider>

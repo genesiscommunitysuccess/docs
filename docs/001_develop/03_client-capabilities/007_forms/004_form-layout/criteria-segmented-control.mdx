@@ -54,7 +54,6 @@ Use cases:
             </criteria-segmented-control>
           `,
       })
-
       export class MyElement extends GenesisElement {
         criteriaFilter: string;
         toolbarOptions: CriteriaSegmentedControlOption[] = [
@@ -67,6 +66,7 @@ Use cases:
           console.log(this.criteriaFilter)
         }
       }
+
     ```
 
   </TabItem>
@@ -97,7 +97,6 @@ Use cases:
           <criteria-segmented-control criteriaOptions={{criteriaOptions}} onClick={handleCriteriaChange}>
             <label slot="label">Select option</label>
           </criteria-segmented-control>
-
         );
       }
     ```
@@ -112,7 +111,6 @@ Use cases:
     Usage
     ```typescript
       import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-      import { FormsModule } from '@angular/forms';
       import { CriteriaSegmentedControlOption, Serialisers } from '@genesislcap/foundation-criteria';
       @Component({
         selector: 'my-root',
@@ -125,7 +123,6 @@ Use cases:
             `,
         standalone: true,
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
-        imports: [FormsModule],
       })
       export class AppComponent {
 
@@ -168,7 +165,7 @@ The choice of serialisers are:
     Serialisers.dateIsLessEqual
 ```
 
-Further details on criteria matching can be found [here](https://learn.genesis.global/docs/web/basics/criteria-matching/)
+Further details on criteria matching can be found [here](/develop/client-capabilities/criteria/)
 
 ## API
 

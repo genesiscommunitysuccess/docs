@@ -1,0 +1,218 @@
+---
+title: 'Horizontal Scroll'
+sidebar_label: 'Horizontal Scroll'
+id: client-presentation-horizontal-scroll
+keywords: [presentation, horizontal, scroll]
+tags:
+- presentation
+- horizontal scroll
+sidebar_position: 9
+---
+
+import HorizontalScrollDemo from './examples/horizontal-scroll';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Horizontal scroller
+
+Use cases:
+- Presenting many sections of data to the user that they can scroll through.
+- Alternative to typical dragging of a scrollbar to navigate through content. Uses buttons (fliipers) instead.
+
+## Example
+
+<HorizontalScrollDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-horizontal-scroll></rapid-horizontal-scroll>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-horizontal-scroll>
+          <rapid-card>
+            Card number 1
+            <rapid-button>A button</rapid-button>
+          </rapid-card>
+          <rapid-card>
+            Card number 2
+            <rapid-button>A button</rapid-button>
+          </rapid-card>
+        </rapid-horizontal-scroll>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+    <rapid-horizontal-scroll></rapid-horizontal-scroll>
+  ```
+  Usage
+  ```typescript
+  export function MyComponent() {
+    return (
+      <rapid-horizontal-scroll>
+        <rapid-card>
+          Card number 1
+          <rapid-button>A button</rapid-button>
+        </rapid-card>
+          <rapid-card>
+          Card number 2
+          <rapid-button>A button</rapid-button>
+        </rapid-card>
+      </rapid-horizontal-scroll>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+    <rapid-horizontal-scroll></rapid-horizontal-scroll>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  @Component({
+    selector: 'my-root',
+    template: `
+      <rapid-horizontal-scroll>
+        <rapid-card>
+          Card number 1
+          <rapid-button>A button</rapid-button>
+        </rapid-card>
+          <rapid-card>
+          Card number 2
+          <rapid-button>A button</rapid-button>
+        </rapid-card>
+      </rapid-horizontal-scroll>
+    `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  })
+  export class AppComponent {
+  }
+  ```
+</TabItem>
+</Tabs>
+
+:::tip
+You can use any html content inside of the scroll component, you don't have to use `<rapid-card>`s.
+:::
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>speed</td>
+      <td><code>number</code></td>
+      <td>Speed of scroll in pixels per second. **Default: 600**</td>
+<td>
+
+```typescript
+<rapid-horizontal-scroll speed="750">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>duration</td>
+      <td><code>string</code></td>
+      <td>The CSS time value for the scroll transition duration. Overrides the `speed` attribute. When `duration` is set, the `speed` attribute has no effect.</td>
+<td>
+
+```typescript
+<rapid-horizontal-scroll duration="300">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>easing</td>
+      <td><code>"linear" | "ease-in" | "ease-out" | "ease-in-out" | string</code></td>
+      <td>The easing value of the scroll. **Default "ease-out"**</td>
+<td>
+
+```typescript
+<rapid-horizontal-scroll easing="ease-in">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>flippers-hidden-from-at</td>
+      <td><code>boolean</code></td>
+      <td>Whether the flippers are hidden from assistive technology. **Default: false**</td>
+<td>
+
+```typescript
+<rapid-horizontal-scroll flippers-hidden-from-at>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>view</td>
+      <td><code>"default" | "mobile"</code></td>
+      <td>View for this component. **Default: default**</td>
+<td>
+
+```typescript
+<rapid-horizontal-scroll view="mobile">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+| Name | Description |
+|---|---|
+| Default | Where the content to be scrolled is placed |
+| start | Content which can be provided before the scroll area |
+| end | Content which can be provided after the scroll area |
+
+### Parts
+| Name | Description |
+|---|---|
+| scroll-area | Wraps the entire scrollable region. |
+| scroll-view | The visible scroll area. |
+| content-container | The container for the content. |
+| scroll-prev | The previous flipper container. |
+| scroll-action-previous | The element wrapping the previous flipper. |
+| scroll-next | The next flipper container. |
+| scroll-action-next | The element wrapping the next flipper. |
+
+### Events fired
+| Name | Description |
+|---|---|
+| scrollstart | Fires a custom 'scrollstart' event when scrolling |
+| scrollend | Fires a custom 'scrollend' event when scrolling stops |
+
+### Events listened to
+This component doesn't listen to any events.

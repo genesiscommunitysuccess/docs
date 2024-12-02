@@ -7,11 +7,13 @@ import { CriteriaSegmentedControl } from "@genesislcap/foundation-criteria";
 import { g2plotChartsComponents } from '@genesislcap/g2plot-chart';
 import * as rapidDesignSystem from "@genesislcap/rapid-design-system";
 import { rapidGridComponents } from "@genesislcap/rapid-grid-pro";
+import { FoundationHeader } from "@genesislcap/foundation-header";
 
 /**
  * Ensure tree shaking doesn't remove these.
  */
 FoundationRouter;
+FoundationHeader;
 // EntityManagement;
 Form;
 Filters;

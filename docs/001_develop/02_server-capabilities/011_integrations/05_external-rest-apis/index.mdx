@@ -1,0 +1,364 @@
+---
+title: 'External REST APIs'
+sidebar_label: 'External REST APIs'
+id: server-external-rest-apis
+keywords: [server, external, rest, api, apis, integration, endpoints, web]
+tags:
+  - server
+  - external
+  - rest
+  - api
+  - apis
+  - integration
+  - endpoints
+  - web
+sidebar_position: 5
+---
+
+## Overview
+
+The Genesis HTTP Client is designed to simplify integration with external REST services in the Genesis Platform. It provides an intuitive DSL for making HTTP requests, so that you can integrate [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) and [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) with external applications easily and without the need to pull their data into your Genesis application. 
+
+The key features and benefits are:
+
+- **Seamless Integration**. Designed to work seamlessly with Genesis Request Servers and Event Handlers.
+- **Flexible Usage**. Supports multiple approaches, including direct client usage, annotation-driven approach, and OpenAPI code generation.
+- **Comprehensive HTTP Support**. Full support for GET, POST, PUT, DELETE.
+- **Customizable**. Easily configure headers, query parameters, path parameters, and request bodies.
+- **Error Handling**. Built-in support for retries and error callbacks.
+- **Paginated Support**. Pagination support for Request Servers.
+
+
+
+:::important
+Ensure your Genesis Platform is updated to at least version 8.1 to use the Genesis HTTP Client.
+:::
+
+## Basic usage
+
+Here's a quick example of a GET request using the Genesis HTTP Client within a Request Server:
+
+```kotlin
+requestReply<Unit, HelloWorld>("HELLO_WORLD") {
+    val client = GenesisHttpClient()
+
+    replySingle {
+        client.get<HelloWorld> {
+            url = "https://my-external-api/hello",
+            query("name", "John")
+        }.data
+    }
+}
+```
+
+This example demonstrates how to make a GET request to an external REST API within a Genesis Request Server, showcasing the client's seamless integration with Genesis components.
+In the following sections, we'll explore the core concepts, different usage approaches, and advanced features of the Genesis HTTP Client.
+
+## Example configuration
+
+This section demonstrates practical examples of using the Genesis HTTP Client in common Genesis capabilities [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) and [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) and common use cases.
+
+### Example 1: Request Server with external API call
+
+This example shows how to use the Genesis HTTP Client in a Request Server to fetch data from an external API, ensuring errors are handled:
+
+```kotlin
+requestReplies {
+  requestReply<TradeRequest, TradeDetails>("FETCH_TRADE_DETAILS") {
+    val client = GenesisHttpClient()
+
+    replySingle { request: TradeRequest ->
+      try {
+        client.get<TradeDetails> {
+          path = "https://my-external-api/trades/${request.tradeId}",
+        }
+      } catch (e: UnexpectedResponseException) {
+        when (e.statusCode) {
+          HttpStatusCode.NotFound -> throw NotFoundException("Trade not found")
+          else -> throw Exception("Error fetching trade: ${e.message}")
+        }
+      }
+    }
+  }
+}
+```
+
+### Example 2: Event Handler with external POST
+
+This example demonstrates how to use the Genesis HTTP Client in an Event Handler to send a post to an external service as part of a TradeInsert event
+
+```kotlin
+eventHandler {
+  data class TradeNotification(
+    val tradeId: Long,
+    val status: String,
+    val timestamp: Long
+  )
+
+  eventHandler<TradeInsert> {
+    val client = GenesisHttpClient()
+
+    onCommit { event ->
+      ...
+      val notification = TradeNotification(
+        tradeId = event.tradeId,
+        status = event.status,
+        timestamp = event.timestamp
+      )
+
+      try {
+        client.post<Unit>(
+          path = "https://my-external-api/trade-notification",
+          request = notification,
+          builder = {
+            header("Authorization ", "Bearer 123")
+          }
+        )
+      } catch (e: Exception) {
+        nack("Failed to send notification", e)
+      }
+      ...
+      ack()
+    }
+  }
+}
+```
+
+### Example 3: Request Server with OpenAPI client
+
+This example demonstrates how to use the [OpenAPI-generated client](#openapi-code-generation) service in a Request Server to get an account by id:
+
+```kotlin
+
+val tradeApiService = TradeApiService("https://my-external-api")
+tradeApiService.registerApiToken("Authorization", "Basic ABC123=")
+
+requestReplies {
+  requestReply<Int, Account>("GET_ACCOUNT_BY_ID") {
+    replySingle {
+      accountsApi.getAccountById(it.toLong())
+    }
+  }
+}
+
+```
+
+### Example 4 - Request Server with OpenAPI client inside an Event Handler
+
+This example demonstrates how to use the [OpenAPI-generated client](#openapi-code-generation) service in an Event Handler to update a trade in an external system via an external call. 
+
+```kotlin
+
+val tradeApiService = TradeApiService("https://my-external-api")
+
+eventHandler {
+  eventHandler<TradeUpdateEvent> {
+    onCommit { event ->
+      val updatedTrade = NewTrade(
+        symbol = event.symbol,
+        quantity = event.quantity,
+        price = event.price
+      )
+
+      try {
+        tradeApiService.updateTrade(event.tradeId, updatedTrade)
+        ack()
+      } catch (e: Exception) {
+        logger.error("Failed to update trade in external system: ${e.message}", e)
+      }
+    }
+  }
+}
+```
+
+### Example 5 - Paginated request
+
+This example demonstrates how to integrate a Request Server which  a pagination supporting OpenAPI-generated REST API in an Event Handler using a paginated `requestReply`:
+
+```kotlin
+
+val accountsApi = AccountControllerApi("https://my-external-api")
+accountsApi.registerApiToken("Authorization", "Basic ABC123=")
+
+requestReplies {
+  requestReply<FindAllUsingGETRequest, AccountWithRecordId>("ACCOUNTS_API") {
+    maxRetries = 5
+    replyList { request ->
+      try {
+        val response = accountsApi.findAllUsingGET(request)
+        val accounts = response.accounts.map { account ->
+          AccountWithRecordId(
+            account.accountNumber,
+            account.balance,
+            account.brokerId,
+            account.customerId,
+            account.owner
+          )
+        }
+        accounts
+      } catch (e: Exception) {
+        LOG.warn("Error sending request for accounts to external API", e)
+        emptyList()
+      }
+    }
+  }
+}
+```
+
+## Configuration options
+
+### `GenesisHttpClient`
+
+The `GenesisHttpClient` is the main class you interact with. It provides methods for making HTTP requests.
+
+```kotlin
+val client = GenesisHttpClient()
+```
+
+You can optionally configure a [Ktor HttpClient object if needed](https://ktor.io/docs/client-create-and-configure.html#engine-config). An example is provided below:
+
+```kotlin
+val apacheClient = HttpClient(Apache5) {
+    engine {
+        sslContext = SslSettings.getSslContext()
+    }
+}
+
+val client = GenesisHttpClient(apacheClient) 
+```
+
+You can follow the documented examples on the ktor documentation site as needed, for example [configuring SSL](https://ktor.io/docs/client-ssl.html#configure-ssl) if required in your setup.
+
+Each method below returns a `TypedHttpResponse<T>` object, where `T` is the expected response body type.
+
+### Request methods
+The client supports all standard HTTP methods:
+
+- GET: `client.get<T>()`
+- POST: `client.post<T>()`
+- PUT: `client.put<T>()`
+- DELETE: `client.delete<T>()`
+
+Each method returns a `TypedHttpResponse<T>` object, where `T` is the expected response body type.
+
+### Configuring requests
+You can configure requests using a DSL within a lambda function. Common configuration options include:
+
+- `url`: the endpoint URL
+- `header`: HTTP headers
+- `query`: query parameters
+- `body`: request body (for POST, PUT)
+
+Example:
+```kotlin
+    eventHandler<Account>("API_TRADE_INSERT") {
+        onCommit {
+            httpClient
+                .post<Account> {
+                    url = "http://my-external-api/account"
+                    header("Authorization", "Basic ABCDEFG")
+                }
+        }
+    }
+```
+
+### OpenAPI code generation
+
+This approach uses code generated from an OpenAPI/Swagger specification, providing the simplest and most type-safe way to make API calls.
+
+To use this approach, you need to generate the code from the OpenAPI specification file using the `genesis-openapi-codegen` tool. The generated code will include API interfaces and data classes that map to the API endpoints and request/response bodies.
+
+You must also include the following set-up in your module's `build.gradle.kts` file:
+
+```kotlin
+
+plugins {
+    id("global.genesis.openapi") version "8.2.0" // Genesis Version
+}
+
+tasks {
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+    genesisOpenApi {
+        packageName = "global.genesis.api.trades"
+        specification = project.layout.projectDirectory.file("src/main/resources/trades.json")
+    }
+}
+```
+
+In the example above, we are generating the code from the `trades.json`, which is an open-api specification file. The generated code will be placed in the `global.genesis.api.trades` package.
+
+You can generate the code either by running the `genesis-openapi-codegen` task or by building the project. You can then use the generated code to make API calls, for example:
+
+```kotlin
+val tradeApi = TradeServiceApi("https://my-external-api")
+tradeApi.registerApiToken("Authorization", "Basic YWRtaW46YWRtaW4=")
+```
+
+```kotlin
+val accountsApi = AccountsControllerApi("https://my-external-api")
+accountsApi.registerRetryCallback(HttpStatusCode.Unauthorized) {
+    registerApiToken("Authorization", "Basic YWRtaW46YWRtaW4=")
+}
+```
+
+The example below can be used inside a Genesis Request Server or Event Handler, for example:
+
+```kotlin
+eventHandler<Account>("API_ACCOUNT_EH_INSERT") {
+    onCommit {
+        val createdAccount = accountsApi.createAccount(it.details)
+        ack(listOf(mapOf("ACCOUNT_NUMBER" to createdAccount.accountNumber)))
+    }
+}
+```
+
+
+## Response handling
+
+The `HttpResponse<T>` object contains:
+
+- statusCode: the HTTP status code
+- headers: response headers
+- data: the response body, deserialized to type T
+
+Example:
+
+```kotlin
+  eventHandler("API_TRADE_INSERT") {
+    onCommit { event ->
+      client.get<String>(
+        path = "https://my-external-api/trades",
+        request = event.details) {
+        header("Authorization", "Basic ABCDEFG")
+        query("tradeId", event.details)
+      }.data
+      ack()
+  }
+}
+```
+## Client API
+
+There is no specific Client API for the Genesis HTTP Client as it is a client itself. Links are provided below for the common services which use the Genesis HTTP Client:
+
+- [Request Server Client API](/develop/server-capabilities/snapshot-queries-request-server/#client-api)
+- [Event Handler Client API](/develop/server-capabilities/core-business-logic-event-handler/#client-api)
+
+## Runtime configuration
+
+The Genesis HTTP Client was introduced in version 8.1 of the Genesis Platform. It is compatible with all Genesis applications running on version 8.1 or higher.
+
+The Genesis HTTP Client is available to use in Genesis applications running platform **version 8.1+**. 
+
+To use it, add the following dependency to your project's `server/<your-app>/build.gradle.kts` file:
+
+```kotlin {3}
+dependencies {
+  ...
+  implementation("global.genesis:genesis-http-client")
+}
+```

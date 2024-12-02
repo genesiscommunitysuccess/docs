@@ -197,7 +197,7 @@ This setting within `selfServiceRequest` controls the email password reset email
 `body` will be the body of the email. Per the example you have access to use parameters:
 - `{{USER}}` the name of the user resetting their password.
 - `{{RESET_URL}}` the auto-generated secure URL the user needs to click in order to start the password reset workflow.
-- `{{TIMEOUT}}` the [`timeoutInMinutes`](#timeoutinminutes) configuration setting.
+- `{{TIMEOUT}}` the [`timeoutInMinutes`](#selfservicereset) configuration setting.
 
 ### `ldap`
 
@@ -272,7 +272,7 @@ authentication {
 ### `sessionTimeoutMins` 
 
 Specifies a time out (in minutes) for the session. Sessions are timed out (logged out) after the amount of time in minutes specified by this value, at which point the session is expired and the client is told to re-authenticate.  
-A genesis UI is configured by default to perform a [refresh login](#event_login_refresh) upon expiry to avoid users needing to manually re-authenticate.
+A genesis UI is configured by default to perform a [refresh token login](#event_login_auth) upon expiry to avoid users needing to manually re-authenticate.
 
 ```kotlin
 security {
@@ -1672,8 +1672,8 @@ In the `SSO_USER` table:
 The Genesis username should be the user’s email address.
 
 #### Front-to-back flow
-
-This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes that the [front end has been configured correctly](../../access-control/sso-front-end-config/).
+.
+This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes that the [front end has been configured correctly](/develop/client-capabilities/login/).
 
 ###### The flow
 1. The front end hits **ssoListEndpoint** - by default, this is `gwf/sso/listJWT/SSO` (this is configurable).
