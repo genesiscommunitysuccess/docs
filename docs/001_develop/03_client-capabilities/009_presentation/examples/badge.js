@@ -14,7 +14,7 @@ export default function BadgeDemo({ children, color }) {
 	setup();
 	return (
 		<CodeSection>
-			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
+			<div style={{ color: 'var(--neutral-foreground-rest)', width: '100%'}}>
 				<div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', width: '50px', flexDirection: 'column', }}>
 					<rapid-badge fill="primary" color="light">JD</rapid-badge>
 				</div>

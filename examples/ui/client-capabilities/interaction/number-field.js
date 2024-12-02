@@ -14,7 +14,7 @@ export default function NumberFieldDemo({ children, color }) {
 	setup();
 	return (
 		<CodeSection>
-			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
+			<div style={{ color: 'var(--neutral-foreground-rest)', width: '100%'}}>
 				<div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', flexDirection: 'column', }}>
 					<rapid-number-field value="1"></rapid-number-field>
 				</div>

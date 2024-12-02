@@ -15,7 +15,7 @@ export default function HorizontalScrollDemo({ children, color }) {
 	setup();
 	return (
 		<CodeSection>
-			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
+			<div style={{ color: 'var(--neutral-foreground-rest)', width: '100%'}}>
 				<div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', flexDirection: 'row', justifyContent: 'space-evenly' }}>
 					<rapid-horizontal-scroll style={{ width: '100%' }} flippers-hidden-from-at>
 						<rapid-card>
