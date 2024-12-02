@@ -7,6 +7,11 @@ export default function LiveExampleBuilder({ itemData }) {
   const isBrowser = useIsBrowser();
   const [isLoading, setIsLoading] = useState(true);
 
+	const processedItems = itemData.map((item) => ({
+		...item,
+		...(item.children ? {children: {...item.children, props: {inIndex: true}}} : {}),
+	}))
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -30,7 +35,7 @@ export default function LiveExampleBuilder({ itemData }) {
             xs="12"
             sm="6"
             md="4"
-            items={itemData}
+            items={processedItems}
           />
         </div>
       )}
