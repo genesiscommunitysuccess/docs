@@ -1,7 +1,7 @@
 ---
-title: 'Creating A Component'
-sidebar_label: 'creating-component'
-id: creating-component,
+title: 'Extending Genesis components'
+sidebar_label: 'Extending Genesis components'
+id: styling-extending
 keywords: [extend component, create component, styling]
 tags:
 - styling
@@ -14,17 +14,17 @@ sidebar_position: 3
 
 # Extending Genesis Components
 
-Genesis components are designed to be extensible, enabling you to create custom components with configurable styles and functionality. 
+Genesis components are designed to be extensible, enabling you to create custom components with configurable styles and functionality.
 In this example, we’ll create a `MyButton` component by extending the `RapidButton` component from the Rapid Design System.
 
 We are able to create our own `MyButton` component by extending `RapidButton` in five steps:
 
 Step 1: Import Dependencies
 
-- RapidButton for the base button component.
-- buttonTemplate for reusing the existing button template.
-- buttonShadowOptions for the button's Shadow DOM configuration.
-- A separate custom styles file, my-button.styles.
+- `RapidButton` for the base button component.
+- `buttonTemplate` for reusing the existing button template.
+- `buttonShadowOptions` for the button's Shadow DOM configuration.
+- A separate custom styles file, `my-button.styles.ts`
 
 ```typescript
 import {
@@ -35,9 +35,9 @@ import {
 import { myButtonStyles as styles } from './my-button.styles';
 ```
 
-Step 2: Extend RapidButton
+Step 2: Extend `RapidButton`
 
-Create a new MyButton class that extends RapidButton. 
+Create a new MyButton class that extends RapidButton.
 This allows you to inherit the functionality of the base button while applying your custom styles and configurations.
 
 ```typescript
@@ -58,7 +58,7 @@ The compose method allows you to combine the base button's template, custom styl
 export const myButton = MyButton.compose({
   baseName: 'my-button',  // Base name for the component
   template,              // Reusing the RapidButton template
-  styles,                // Custom styles for MyButton
+  styles,                // Your custom styles for MyButton
   shadowOptions: rapidButtonShadowOptions, // Shadow DOM configuration
 });
 
@@ -66,7 +66,7 @@ export const myButton = MyButton.compose({
 
 Step 4: Define Custom Styles
 
-Create a my-button.styles file to define the custom styles for MyButton. Use CSS custom properties and design tokens for consistency.
+Create a `my-button.styles.ts` file to define the custom styles for `MyButton`. Use CSS custom properties and design tokens for consistency.
 
 ```typescript
 import { css } from '@genesislcap/web-core';
@@ -88,12 +88,22 @@ Step 5: Register the Component
 
 Finally, register the MyButton component with the customizations in your application.
 
-```typescript
-import { provideFASTDesignSystem } from '@microsoft/fast-components';
+```typescript {2,6}
+import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
 import { myButton } from './my-button';
 
-provideFASTDesignSystem().register(myButton());
+rapidDesignSystem .provideDesignSystem()
+.register(
+    myButton(),
+    rapidDesignSystem.baseComponents,
+);
 ```
+
+:::warning
+A common error when registering your customised components is registering them *after* the base component has already been registered - meaning your change will not be visible.
+Observe in the code above that `myButton()` is registered *before* `rapidDesignSystem.baseComponents`. This ensures that the component with the custom styling you've created
+takes priority over the base implementation.
+:::
 
 Complete Example
 
@@ -139,8 +149,12 @@ export const myButtonStyles = css`
 Component Registration
 
 ```typescript
-import { provideFASTDesignSystem } from '@microsoft/fast-components';
+import * as rapidDesignSystem from '@genesislcap/rapid-design-system';
 import { myButton } from './my-button';
 
-provideFASTDesignSystem().register(myButton());
+rapidDesignSystem .provideDesignSystem()
+.register(
+    myButton(),
+    rapidDesignSystem.baseComponents,
+);
 ```
