@@ -1,0 +1,48 @@
+---
+title: 'Desktop interoperability'
+sidebar_label: 'Desktop interoperability'
+id: foundation-desktop-interoperability
+keywords: [genesis, foundation, ui, fdc3, openfin]
+tags:
+  - genesis
+  - foundation
+  - ui
+  - fdc3
+  - openfin
+---
+
+These pages contain an overview for working with the FDC3 protocol, using both Interop.io and Openfin.
+
+1. FDC3 Channel Event
+- A utility element that listens to events and broadcasts them on FDC3 channels
+- Can send events on system color channels or app channels
+- Allows mapping of event payloads before broadcasting
+- Key attributes include `event-name`, `channel-type`, and `channel-name`
+
+2. FDC3 Context Channel Listener
+- Listens to FDC3 app channels for specified contexts
+- Configurable to handle different context types and provide callbacks
+- Useful for listening to and handling events on app channels
+
+3. FDC3 System Channel Listener
+- Similar to context channel listener but specifically for system/color channels
+- Listens for specified context types on system channels
+- Provides callback handling for system channel events
+
+4. FDC3 Intent Listener
+- Handles intents raised against an application in FDC3 workspace
+- Configurable for different intent types and handlers
+
+5. Notification Listeners (Openfin & Interop.io)
+- Components for displaying notifications in respective platforms
+- Can be configured with custom buttons and actions
+- Link notifications to platform-specific notification panels
+
+The documentation also includes a Foundation FDC3 overview describing:
+- Core FDC3 standard implementation
+- API for intents, context sharing and channels
+- Installation and configuration guidance
+- Usage examples for common scenarios
+- Best practices for implementation
+
+All components are designed to work with Genesis, React and Angular frameworks and provide detailed API documentation for implementation.
