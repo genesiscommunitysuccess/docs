@@ -1,7 +1,10 @@
 import React from "react";
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import './Card.css'
 
 export default function Card({ heading, text, link, imageUrl = '/svg/categories-icons/document-svgrepo-com.svg', children }) {
+  const relativeLink = useBaseUrl(link);
+  const relativeImageSrc = useBaseUrl(imageUrl);
   const wrapperStyle = !children ? {} : {
 		display: 'contents',
 	};
@@ -13,7 +16,7 @@ export default function Card({ heading, text, link, imageUrl = '/svg/categories-
   };
 
   return (
-    <a href={link} title={heading} className="card-outer">
+    <a href={relativeLink} title={heading} className="card-outer">
       <div className="card-inner" style={{overflow: 'hidden'}}>
         <div
           className="card-main-image-wrapper"
@@ -28,7 +31,7 @@ export default function Card({ heading, text, link, imageUrl = '/svg/categories-
             imageUrl && (
               <img
                 className="card-main-image"
-                src={imageUrl}
+                src={relativeImageSrc}
                 alt={heading}
               />
             )
