@@ -197,7 +197,7 @@ This setting within `selfServiceRequest` controls the email password reset email
 `body` will be the body of the email. Per the example you have access to use parameters:
 - `{{USER}}` the name of the user resetting their password.
 - `{{RESET_URL}}` the auto-generated secure URL the user needs to click in order to start the password reset workflow.
-- `{{TIMEOUT}}` the [`timeoutInMinutes`](#timeoutinminutes) configuration setting.
+- `{{TIMEOUT}}` the [`timeoutInMinutes`](#selfservicereset) configuration setting.
 
 ### `ldap`
 
@@ -272,7 +272,7 @@ authentication {
 ### `sessionTimeoutMins` 
 
 Specifies a time out (in minutes) for the session. Sessions are timed out (logged out) after the amount of time in minutes specified by this value, at which point the session is expired and the client is told to re-authenticate.  
-A genesis UI is configured by default to perform a [refresh login](#event_login_refresh) upon expiry to avoid users needing to manually re-authenticate.
+A genesis UI is configured by default to perform a [refresh token login](#event_login_auth) upon expiry to avoid users needing to manually re-authenticate.
 
 ```kotlin
 security {
@@ -492,7 +492,7 @@ In this example an `entitlementUtils` object wraps an external API we can call t
 
 Auth events are the same as any other event handler you build into your project, the API is described in the [Event Handler Client API section](/develop/server-capabilities/core-business-logic-event-handler/#client-api). There are no special message headers for these events other than for some, no `SESSION_AUTH_TOKEN` is required (i.e. user doesn't need to be logged in), which is noted for each event where it is the case.
 
-This section will give an overview of the auth API events available to users, which are already available in a client UI in any applications using the [User management](/develop/business-components/user-management/user-management-introduction/) component. They are listed here for those who wish to build their own Client API to authenticate to use the application API, and further if they wish to interact with users/profile setup from their client.
+This section will give an overview of the auth API events available to users, which are already available in a client UI in any applications using the [User management](/develop/business-components/user-management/) component. They are listed here for those who wish to build their own Client API to authenticate to use the application API, and further if they wish to interact with users/profile setup from their client.
 
 ### Auth tokens
 
@@ -1672,8 +1672,8 @@ In the `SSO_USER` table:
 The Genesis username should be the user’s email address.
 
 #### Front-to-back flow
-
-This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes that the [front end has been configured correctly](../../access-control/sso-front-end-config/).
+.
+This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes that the [front end has been configured correctly](/develop/client-capabilities/login/).
 
 ###### The flow
 1. The front end hits **ssoListEndpoint** - by default, this is `gwf/sso/listJWT/SSO` (this is configurable).

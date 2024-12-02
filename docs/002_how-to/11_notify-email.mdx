@@ -1,11 +1,14 @@
 ---
-title: 'How to use Notify to send emails'
-sidebar_label: 'Send emails via Notify'
+title: 'How to : Send emails with attachments'
+sidebar_label: 'Send emails with attachments'
 id: ht-notify-email
-keywords: [email, email]
+keywords: [email, attachment, notify, notifications, document management]
 tags:
     - email
-    - email
+    - attachment
+    - notify
+    - notifications
+    - document management
 
 ---
 
@@ -14,10 +17,47 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Here we shall show you how to set up Genesis so that you can automatically send emails in response to events.
+Trading and back-office applications often need to communicate with external users as part of their workflow.
 
-For example, if the user has just executed a trade, this can generate an email containing the trade details.
+For example, when a new trade is created or multiple trades have gone through an order management pipeline, you can send an email confirmation to traders. 
 
+## Example
+We have created an example application that enables you to upload documents that can be attached to your emails.
+
+You can then click on the **Add email** button to display a form that enables you to select the file to attach, and to enter the email address, subject and body content of the email.
+
+As soon as the email is sent, the details of the message are stored in the application's database.
+
+This gives you insight into: 
+
+- how to use Document Manager to hold the document templates that you need
+- how to use Notifications to interact with your email server
+- how to set up events on your Event Handler to trigger the outgoing message
+
+:::tip Download, view and run
+Our simple example enables you to upload documents that can be attached to your emails.
+
+You can then click on the **Add email** button to display a form that enables you to select the file to attach, and to enter the email address, subject and body content of the email.
+
+You can [clone the repo](https://github.com/genesiscommunitysuccess/howto-send-email-with-attachment) to see the code - which includes comments at the key points to highlight what is being specified - and run the application.
+
+:::
+
+## Creating a similar app
+
+The readme file in the repository shows you the main steps required to create a simlar app to the example.
+
+At each stage, you can open the relevant files and look at the code to see what is being configured what logic is being used to drive the app.
+
+1. Add the Document Management and Notifications components when you create your project in Genesis Create.
+
+2. Add these as dependencies to **build.gradle.kts**.
+
+3. Update your application's **processes.xml** to include `global.genesis.notify.api.service` and `global.genesis.file.api`.
+
+4. Configure the details of your mail server in **genesis-notify.kts**. (Note that the default mail service in the app might be blocked by your security precautions.)
+
+5. Create an event in your **eventhandler.kts** to provide the logic required to send the email.
 
 ## Testing
 
@@ -25,8 +65,13 @@ For example, if the user has just executed a trade, this can generate an email c
 Go to our [**Testing**](/how-to/ht-prepare-test/) page for details of our testing tools and the dependencies that you need to declare.
 :::
 
-To test your auth set-up  on your app:
+To test the set-up of an app that uses Document Manager and Notifications to send out emails:
 
 - *Details to follow shortly. Thank you for your patience.*
 
+## Full technical details
+You can find full technical details in our reference documentation:
 
+- [Document Management](/develop/business-components/doc-management/)
+- [Notifications](/develop/business-components/notifications/)
+- [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/)

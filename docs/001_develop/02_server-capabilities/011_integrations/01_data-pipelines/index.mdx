@@ -16,6 +16,7 @@ sidebar_position: 1
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import CommonProcesses from '/snippet/_common-see-processes.md'
 
 ## Overview
 
@@ -36,30 +37,6 @@ B --> |".sink()"| C( Data Sink)
 Data pipelines takes care of the boilerplate of creating these integrations, so developers can focus on the business specific parts of the workflow. It is also built on a set of well defined APIs, making it very easily extensible in both Kotlin (using Kotlin Flow) and Java (using RxJava3 reactive streams).
 
 Genesis Data Pipelines are defined in the *-pipelines.kts files.
-
-## Runtime configuration
-
-To include your `*-pipelines.kts` file definitions in a runtime process, you will need to ensure the process definition:
-
-1. Ensure `genesis-pal-datapipeline` is included in `module`
-1. Ensure `global.genesis.pipelines` is included in `package`
-1. Ensure your *-pipelines.kts file(s) are defined in `script`
-1. Ensure `pal` is set in `language`
-
-If you wish to run a dedicated process as a data pipeline, the following gives an example full process definition:
-
-```xml
-  <process name="POSITION_DATAPIPELINE">
-    <groupId>POSITION</groupId>
-    <start>true</start>
-    <options>-Xmx1024m -DXSD_VALIDATE=false</options>
-    <module>genesis-pal-datapipeline</module>
-    <package>global.genesis.pipelines</package>
-    <script>position-pipelines.kts</script>
-    <description>Pipelines</description>
-    <language>pal</language>
-  </process>
-```
 
 ## Core Concepts
 
@@ -357,42 +334,88 @@ This is a real-time acknowledgement source that uses Camel to poll a location pe
 The next element is only emitted once acknowledgement is given that the previous one has been successfully processed.
 
 There are two ways to create a camel source. One is by setting the location URL, the second is by using Route Builder.
+ - The location URL is a simple string that defines the location. 
+ - The routeHandler function exposes the full Camel Route Builder. 
 
-###### Setting the location URL
+The Route Builder is Apache Camel's API for defining how to read messages, and where from. Using the `routeHandler` function gives you the most flexibility and control over your routes logic, allowing for more advanced configurations, such as specifying processors and idempotency logic.
+Within the routeHandler block you can access the `dataPipelineProcessor` variable, this is a custom processor that is always created that will emit the messages from the source into the pipeline. Using location is shorthand, the following examples are functionally equivalent:
 
-GPAL Example:
+Simple example with `location`:
 ```kotlin
-pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
-  source(
-    camelFileSource {
-      location = "file://src/test/resources/camel-source-test?noop=true"
-    }
-  ).sink(filesSink)
+camelFileSource {
+  location = "file://src/test/resources/camel-source-test?noop=true"
+} 
+```
+
+Equivalent example with `routeHandler`:
+```kotlin
+camelFileSource {
+  routeHandler {
+    from("file://src/test/resources/camel-source-test?noop=true")
+      .process(dataPipelineProcessor)
+  }
 }
 ```
 
-###### Using the Camel Route Builder
-The Route Builder is Apache Camel's API for defining how to read messages, and where from.
-If you are already familiar with Camel APIs, you should feel right at home here. If not, [you can read more about them here.](https://camel.apache.org/manual/routes.html)
-
-Passing in a route builder gives you the most flexibility and control over your routes logic, allowing for more advanced configurations, such as specifying processors and idempotency logic.
-Within the routeHandler block you can access the `dataPipelineProcessor` variable, this is a custom processor that is always created that will emit the messages from the source into the pipeline.
+###### Reading from a Local Directory
 ```kotlin
 pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
   source(
     camelFileSource {
       routeHandler {
-        from("file://src/test/resources/camel-source-test?noop=true&idempotent=true")
+        val pathStr = "${GenesisPaths.genesisHome()}/runtime/inbound"
+        val idempotentRepo = "${pathStr}/IDEMPOTENT_CONSUMER.DATA"
+
+        from("file:${pathStr}")
           .idempotentConsumer(
             header("CamelFileName"),
-            FileIdempotentRepository.fileIdempotentRepository(File("factInPathStrConsumerRepo"), 300000, 15000000)
-          ).process(dataPipelineProcessor)
+            FileIdempotentRepository.fileIdempotentRepository(File(idempotentRepo), 300000, 15000000)
+          )
+          .process(dataPipelineProcessor)
       }
     }
-  )
-  .sink(filesSink)
+  ).sink { file, context ->
+    LOG.info("Recieved file $file")
+    true
+  }
 }
 ```
+
+###### Reading from an SFTP server
+
+The example below defines an [SFTP component](https://camel.apache.org/components/4.8.x/sftp-component.html), and shows how you can use properties set in the allowing you to have site-specific variables for each instance.
+
+This is particularly useful when integrating with external services where connection details are likely to vary between environments.
+
+```kotlin
+pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
+  source(
+    camelFileSource {
+      routeHandler {
+          val sftpEndPointPath = systemDefinition.getItem("SFTP_SERVER_SFTP")
+          val sftpUserName = systemDefinition.getItem("SFTP_SERVER_USERNAME")
+          val sftpPassword = systemDefinition.getItem("SFTP_SERVER_PASSWORD")
+          val sftpFileName = systemDefinition.getItem("SFTP_SERVER_FILENAME")
+          val pathStr = "${GenesisPaths.genesisHome()}/runtime/inbound"
+          val sftpConsumerRepo = "${pathStr}/IDEMPOTENT_CONSUMER.DATA"
+
+          from("sftp:${sftpEndPointPath}?username=${sftpUserName}&password=${sftpPassword}&include=$${sftpFileName}" +
+              "&delay=1000&sortBy=file:modified&delete=false&bridgeErrorHandler=true" +
+              "&knownHostsFile=/home/myapp/.ssh/known_hosts&throwExceptionOnConnectFailed=true&stepwise=false")
+              .idempotentConsumer(header("CamelFileName"),
+                  FileIdempotentRepository.fileIdempotentRepository(File(sftpConsumerRepo), 300000, 15000000))
+              .process(dataPipelineProcessor)
+      }
+    }
+  ).sink(filesSink)
+}
+```
+
+:::info
+Additional Camel components, such as SFTP capabilities can be added by adding additional jars to your process classpath. Some of these additional camel modules can bring a large number of transitive dependencies into your application, which might cause conflicts with other libraries you are using. You may want to create a [separate module](../../../../build-deploy-operate/build/project-structure/#adding-new-modules-to-a-project) in your application in order to more effectively manage this.
+:::
+
+For further details and configuration options see, the Apache Camel [SFTP component](https://camel.apache.org/components/sftp-component.html) documentation.
 
 #### `dbBatchQuery`
 
@@ -471,7 +494,7 @@ pipelines {
 
 #### `httpSource`
 
-The HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/server/integration/web-integration/genesis-http-client-intro/).
+The HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/develop/server-capabilities/integrations/custom-endpoints/).
 
 When defining this source, you must specify the type of object you expect to receive from the remote endpoint.
 
@@ -516,7 +539,7 @@ eventHandler<Trade>(name = "TEST_PIPELINE_START") {
 
 #### `typedHttpSource`
 
-The Typed HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/server/integration/web-integration/genesis-http-client-intro/).
+The Typed HTTP Source is a batch executable source for querying data from remote HTTP endpoints. It uses the [Genesis HTTP Client](/develop/server-capabilities/integrations/custom-endpoints/).
 
 When defining this source, you must specify the type of object you expect to receive from the remote endpoint, as well as the request object being sent (which should be provided in the `execute()` method when triggering this pipeline).
 
@@ -675,7 +698,98 @@ pipeline("TEST_DB_SINK") {
   .sink(txDbSink())
 }
 ```
+<!--- TODO uncomment on release of 8.7
+#### `fileSink`
 
+This sink implementation allows you to write data to files on the file system of the server hosting your application. It accepts objects of type `PipelineFile`, which includes the file name, file path and input stream of its contents.
+
+###### Writing to a local Directory
+
+```kotlin
+pipeline("OUTBOUND_FILE_PIPELINE") {
+  source(
+    BatchSource {
+      (1..100).asFlow()
+    }
+  ).map {
+    NewPipelineFile(
+      name = it.toString() + "txt", 
+      path = "/path-to/output-directory",
+      content = it.toString().byteInputStream(),
+    )
+  }.sink(fileSink())
+}
+```
+
+
+#### `camelFileSink`
+
+This sink implementation allows you to configure Camel routes using the Route Builder API, and will write file content to the server file system so that Camel can process and send the files to external locations. It accepts objects of type `PipelineFile`, which includes the file name, file path and input stream of its contents.
+
+You can configure Camel routes by using the route builder function. You are not limitied to a single route, and can create as many routes as needed.
+
+The Route Builder is Apache Camel's API for defining how to read messages, and where from. Using the `routeHandler` function gives you flexibility and control over your routes logic, allowing for more advanced configurations, such as specifying processors and idempotency logic.
+
+```kotlin
+camelFileSink {
+  routeHandler {
+    from("file://src/test/resources/camel-source-test?noop=true")
+      .to("file://some/other/directory")
+  }
+}
+```
+
+###### Writing to a local Directory
+```kotlin
+pipeline("CAMEL_OUTBOUND_PIPELINE") {
+  source(
+    camelFileSource {
+      location = "file://src/test/resources/camel-sink-input?noop=true&idempotent=true"
+    }
+  ).map {
+    NewPipelineFile(
+      name = it.name,
+      path = "src/test/resources/camel-sink-temp",
+      content = it.content
+    )
+  }.sink(
+    camelFileSink {
+      routeHandler {
+        from("file://src/test/resources/camel-sink-temp?noop=true&idempotent=true")
+          .to("file://src/test/resources/camel-sink-output")
+      }
+    }
+  )
+}
+```
+
+###### Writing to an SFTP server
+```kotlin
+val sftpUserName = systemDefinition.getItem("SFTP_SERVER_USERNAME")
+val sftpPassword = systemDefinition.getItem("SFTP_SERVER_PASSWORD")
+
+pipeline("CAMEL_SFTP_OUTBOUND_PIPELINE") {
+  source(
+    camelFileSource {
+      location = "file://src/test/resources/camel-sink-input?noop=true&idempotent=true"
+    }
+  ).map {
+    NewPipelineFile(
+      name = it.name,
+      path = "src/test/resources/camel-sink-temp",
+      content = it.content
+    )
+  }.sink(
+    camelFileSink {
+      routeHandler {
+        from("file://src/test/resources/camel-sink-temp?noop=true&idempotent=true")
+          .to("sftp://remote-host:22/remote-path?username=${sftpUserName}&password={sftpPassword}")
+      }
+    }
+  )
+}
+```
+-->
 
 ### Completion Handlers
 
@@ -913,6 +1027,32 @@ pipelines {
     }
 }
 ```
+
+## Runtime configuration
+
+To include your `*-pipelines.kts` file definitions in a runtime process, you will need to ensure the process definition:
+
+1. Ensure `genesis-pal-datapipeline` is included in `module`
+1. Ensure `global.genesis.pipelines` is included in `package`
+1. Ensure your *-pipelines.kts file(s) are defined in `script`
+1. Ensure `pal` is set in `language`
+
+If you wish to run a dedicated process as a data pipeline, the following gives an example full process definition:
+
+```xml
+  <process name="POSITION_DATAPIPELINE">
+    <groupId>POSITION</groupId>
+    <start>true</start>
+    <options>-Xmx1024m -DXSD_VALIDATE=false</options>
+    <module>genesis-pal-datapipeline</module>
+    <package>global.genesis.pipelines</package>
+    <script>position-pipelines.kts</script>
+    <description>Pipelines</description>
+    <language>pal</language>
+  </process>
+```
+
+<CommonProcesses/>
 
 ## Creating Custom Elements
 

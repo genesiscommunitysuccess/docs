@@ -30,6 +30,7 @@ const config = {
   onDuplicateRoutes: "throw",
   clientModules: ["./src/client-modules/genesislcap.js"],
   plugins: [
+    "./plugins/webpack-options",
     [
       "@docusaurus/plugin-client-redirects",
       {
@@ -121,6 +122,15 @@ const config = {
   ],
   themeConfig: {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    webpackOptions: {
+      options: {
+        resolve: {
+          alias: {
+            'foundationZero/ZeroDesignSystem': '@genesislcap/foundation-zero',
+          },
+        },
+      },
+    },
     tableOfContents: {
       minHeadingLevel: 2,
       maxHeadingLevel: 5,
@@ -140,7 +150,7 @@ const config = {
         { type: "doc", docId: "develop/platform-overview", label: "Develop", position: "right" },
         { type: "doc", docId: "how-to/how-to-landing", label: "How To Guides", position: "right" },
         { type: "doc", docId: "build-deploy-operate/bdo-overview", label: "Build, Deploy & Operate", position: "right" },
-        { type: "doc", docId: "release-notes/latest-releases", label: "Release Notes", position: "right" },        
+        { type: "doc", docId: "release-notes/latest-release", label: "Release Notes", position: "right" },        
         // {
         //   type: "html",
         //   position: "right",

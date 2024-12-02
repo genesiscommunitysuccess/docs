@@ -73,8 +73,8 @@ For a manual set-up of nginx, use this nginx.conf file:
 
 ```text
 map $http_upgrade $connection_upgrade {
-    default upgrade;
-    ''      close;
+  default upgrade;
+  ''      close;
 }
 
 server {

@@ -40,6 +40,8 @@ Use cases:
 
     Usage
     ```typescript
+    import { DropdownMenuItem } from '@genesislcap/web-core';
+
     @customElement({
       name: 'my-element',
       template: html`
@@ -113,7 +115,7 @@ Use cases:
         },
         {
           name: 'Menu item 4',
-          callback: () => logger.debug('Menu item 4 clicked'),
+          callback: () => console.log('Menu item 4 clicked'),
           isDisabled: () => true,
         },
       ];

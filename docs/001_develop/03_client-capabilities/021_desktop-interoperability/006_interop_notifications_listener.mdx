@@ -1,0 +1,225 @@
+---
+title: 'FDC3 Interop.io Notifications Listener'
+sidebar_label: 'FDC3 Interop.io Notifications Listener'
+id: fdc3-interop-notification-listener
+keywords: [interaction, interactive, interoperability, interop.io, fdc3, notifications]
+tags:
+- interaction
+- interactive
+- interoperability
+- interop.io
+- notifications
+- fdc3
+- data
+sidebar_position: 2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# FDC3 Interop.IO notifications listener
+
+This is a utility element that pipes notifications to [Interop.io notifications](https://docs.interop.io/desktop/reference/javascript/notifications/index.html#overview)
+Use cases:
+* Display notifications in the Interop.io Notifications panel
+
+## Examples
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+Declaration
+```html
+<rapid-interop-notification-listener></rapid-interop-notification-listener>
+```
+
+Usage
+```typescript
+@customElement({
+    name: 'my-element',
+    template: html`
+      <rapid-interop-notification-listener
+        resource-name="ALL_NOTIFY_ALERT_RECORDS"
+        :toastButtons="${(): ToastButton[] => [
+            {
+                condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
+                action: ({details, buttonElement, toastElement}) => {
+                    console.log({details, buttonElement, toastElement});
+                    toastElement.close();
+                },
+                appearance: 'secondary-orange',
+                placeholder: 'Dismiss',
+            },
+        ]}"
+      ></rapid-interop-notification-listener>
+    `,
+})
+export class MyElement extends GenesisElement {}
+```
+</TabItem>
+
+<TabItem value="react">
+Declaration
+```html
+<rapid-interop-notification-listener></rapid-interop-notification-listener>
+```
+
+Usage
+```typescript
+export function MyComponent() {
+
+    const interopNotificationListenerRef = useRef(null);
+
+    if (interopNotificationListenerRef.current) {
+        interopNotificationListenerRef.current.toastButtons = [
+            {
+                condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
+                action: ({details, buttonElement, toastElement}) => {
+                    console.log({details, buttonElement, toastElement});
+                    toastElement.close();
+                },
+                appearance: 'secondary-orange',
+                placeholder: 'Dismiss',
+            },
+        ]
+    }
+
+    return (
+        <rapid-interop-notification-listener
+            ref={interopNotificationListenerRef}
+            resource-name="ALL_NOTIFY_ALERT_RECORDS"
+        >
+        </rapid-interop-notification-listener>
+    );
+}
+```
+</TabItem>
+
+<TabItem value="angular">
+Declaration
+```html
+<rapid-interop-notification-listener></rapid-interop-notification-listener>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+@Component({
+    selector: 'my-root',
+    template: `
+        <rapid-interop-notification-listener
+            #interopNotificationListenerRef
+            resource-name="ALL_NOTIFY_ALERT_RECORDS"
+        >
+        </rapid-interop-notification-listener>
+    `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class AppComponent {
+    @ViewChild('interopNotificationListenerRef') interopNotificationListener!: ElementRef;
+
+    ngAfterViewInit() {
+        if (this.interopNotificationListener.nativeElement) {
+            this.interopNotificationListener.nativeElement.buttons = [
+                {
+                    condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
+                    action: ({details, buttonElement, toastElement}) => {
+                        console.log({details, buttonElement, toastElement});
+                        toastElement.close();
+                    },
+                    appearance: 'secondary-orange',
+                    placeholder: 'Dismiss',
+                },
+            ]
+        }
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## DOM API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>resource-name</td>
+            <td><code>string</code></td>
+            <td>The name of the server resource that pushes notifications to the client</td>
+<td>
+```typescript
+    <rapid-interop-notification-listener resource-name="ALL_NOTIFY_ALERT_RECORDS">
+```
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Properties
+
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Use</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>toastButtons</td>
+<td>
+[ToastButton[]](../013_toast-notifications/docs/api/foundation-notifications.toastbutton.md)
+</td>
+            <td>An array of configs for showing buttons. Buttons appear in notifications when the <code>condition</code> callback returns <code>true</code>. The action callback is called when the corresponding button is clicked</td>
+<td>
+
+```typescript
+    <rapid-interop-notification-listener :toastButtons=${() => [
+        {
+            condition: ({details}) => details.NOTIFY_SEVERITY !== 'Warning',
+            action: ({details, buttonElement, toastElement}) => {
+            console.log({details, buttonElement, toastElement});
+            toastElement.close();
+        },
+            appearance: 'secondary-orange',
+            placeholder: 'Dismiss',
+        },
+    ]}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Slots
+
+This component has no slots.
+
+### Parts
+
+This component has no parts.
+
+### Fired Events
+
+This component doesn't fire any events.
+
+### Listened Events
+
+This component doesn't listen to any events.

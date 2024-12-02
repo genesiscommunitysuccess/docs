@@ -1,0 +1,194 @@
+---
+title: 'Charts'
+sidebar_label: 'Charts'
+id: g2plot-chart
+keywords: [genesis, foundation, ui, chart, g2plot-chart, g2plot]
+tags:
+  - connected
+  - datasource
+  - chart
+  - charts
+  - g2plot-chart
+  - g2plot
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import SimpleChartExample from './examples/simple_chart_example';
+
+# Genesis G2Plot Chart
+
+Genesis charts are based on [G2plot](https://g2plot.antv.antgroup.com/en/), a powerful charting library that provides various customizable chart types, enabling users to create interactive and visually appealing data visualizations.
+
+The `G2PlotChart` component comes with several key properties that allow you to configure and display the chart with your desired data and settings. These properties give you full control over how the chart behaves and looks:
+
+- [`config`](./docs/api/g2plot-chart.g2plotchart.config.md) - The configuration to use for the chart. Check [ChartConfig](./docs/api/g2plot-chart.chartconfig.md) for possible options. This allows for detailed customization of the chart's appearance, behavior, and functionality.
+
+- [`data`](./docs/api/g2plot-chart.g2plotchart.data.md) - The data to display in the chart. This is the dataset that will be visualized, and it can be dynamically updated based on user interaction or data source changes.
+
+- [`type`](./docs/api/g2plot-chart.g2plotchart.type.md) - The type to use for the chart. If not set, the default bar chart type will be used. You can specify different chart types such as line, area, pie, and others to best match your data and analytical needs.
+
+These properties, combined with the wide range of chart types available, offer a flexible way to present data visually and interactively, making complex information more accessible and easier to analyze.
+
+## Examples
+
+### Adding a G2Plot chart component to the template
+
+Below we have a simple example of a configuration for a chart. This example includes not only the basic setup for the chart but also sample data to demonstrate how the chart will look and behave.
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration:
+```html
+<rapid-g2plot-chart></rapid-g2plot-chart>
+```
+
+Usage:
+```typescript
+const chartConfiguration = {
+    width: 700,
+    xField: "value",
+    yField: "groupBy",
+    seriesField: "series",
+    legend: {
+      position: "top-left",
+    },
+  };
+
+  const chartData = [
+    { groupBy: "1951", value: 38, series: "3" },
+    { groupBy: "1952", value: 52, series: "5" },
+    { groupBy: "1956", value: 61, series: "1" },
+    { groupBy: "1957", value: 145, series: "2" },
+    { groupBy: "1958", value: 48, series: "4" },
+    { groupBy: "1996", value: 38, series: "6" },
+    { groupBy: "1997", value: 52, series: "7" },
+    { groupBy: "1999", value: 61, series: "8" },
+    { groupBy: "1995", value: 145, series: "9" },
+    { groupBy: "1994", value: 48, series: "10" },
+  ];
+
+
+@customElement({
+  name: 'g2plot-chart-example',
+  template: html`
+    <rapid-g2plot-chart
+      type="bar"
+      :config=${() => chartConfiguration}
+      :data=${() => chartData}
+    ></rapid-g2plot-chart>
+  `,
+})
+export class G2PlotChartExample extends GenesisElement {}
+```
+
+</TabItem>
+<TabItem value="react">
+
+Declaration:
+```html
+<rapid-g2plot-chart></rapid-g2plot-chart>
+```
+
+Usage:
+```typescript
+const chartConfiguration = {
+    width: 700,
+    xField: "value",
+    yField: "groupBy",
+    seriesField: "series",
+    legend: {
+      position: "top-left",
+    },
+  };
+
+  const chartData = [
+    { groupBy: "1951", value: 38, series: "3" },
+    { groupBy: "1952", value: 52, series: "5" },
+    { groupBy: "1956", value: 61, series: "1" },
+    { groupBy: "1957", value: 145, series: "2" },
+    { groupBy: "1958", value: 48, series: "4" },
+    { groupBy: "1996", value: 38, series: "6" },
+    { groupBy: "1997", value: 52, series: "7" },
+    { groupBy: "1999", value: 61, series: "8" },
+    { groupBy: "1995", value: 145, series: "9" },
+    { groupBy: "1994", value: 48, series: "10" },
+  ];
+
+export default function G2PlotChartExample({}) {
+  return (
+    <rapid-g2plot-chart
+      type="bar"
+      config={chartConfiguration}
+      data={chartData}
+    ></rapid-g2plot-chart>
+  );
+}
+```
+
+</TabItem>
+<TabItem value="angular">
+
+Declaration
+```html
+<rapid-g2plot-chart></rapid-g2plot-chart>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+const sampleChartConfiguration = {
+    width: 700,
+    xField: "value",
+    yField: "groupBy",
+    seriesField: "series",
+    legend: {
+      position: "top-left",
+    },
+  };
+
+  const sampleChartData = [
+    { groupBy: "1951", value: 38, series: "3" },
+    { groupBy: "1952", value: 52, series: "5" },
+    { groupBy: "1956", value: 61, series: "1" },
+    { groupBy: "1957", value: 145, series: "2" },
+    { groupBy: "1958", value: 48, series: "4" },
+    { groupBy: "1996", value: 38, series: "6" },
+    { groupBy: "1997", value: 52, series: "7" },
+    { groupBy: "1999", value: 61, series: "8" },
+    { groupBy: "1995", value: 145, series: "9" },
+    { groupBy: "1994", value: 48, series: "10" },
+  ];
+
+@Component({
+  selector: 'my-root',
+  template: `
+    <rapid-g2plot-chart
+      type="bar"
+      [config]="chartConfiguration"
+      [data]="chartData"
+    ></rapid-g2plot-chart>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [FormsModule],
+})
+export class AppComponent {
+  chartConfiguration = sampleChartConfiguration;
+  chartData = sampleChartData
+}
+```
+</TabItem>
+</Tabs>
+
+<SimpleChartExample/>
+
+##
+
+:::info
+After you have looked at the basics here, you can find more details in our [API Docs](./docs/api/index.md)
+:::

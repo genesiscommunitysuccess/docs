@@ -1,0 +1,79 @@
+.card {
+  text-align: left;
+}
+
+.card-outer {
+  --app-background: #191919;
+
+  display: flex;
+  position: relative;
+  border-radius: 10px;
+  flex: 1;
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, .35), 0 20px 40px 0 rgba(10, 0, 74, 0.07);
+  animation-name: elementAppear;
+  animation-duration: 350ms;
+  animation-delay: calc(var(--animation-order) * 100ms);
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
+  height: 100%;
+  padding-top: 1px;
+}
+
+.card-outer:hover {
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, .35), 0 20px 40px 0 rgba(10, 0, 74, .1);
+  background: linear-gradient(83deg, #00F 0%, #D71CA6 65%, #fab15d 100%);
+}
+
+.card-outer .card-inner {
+  position: relative;
+  display: flex;
+  height: calc(100% - 3px);
+  width: 100%;
+  padding: 24px;
+  bottom: -3px;
+  flex-direction: column;
+  text-align: center;
+  border-radius: 8px;
+  background: var(--white);
+}
+
+.card-outer .card-inner .card-main-image-wrapper {
+  height: 80px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: var(--ifm-spacing-vertical);
+}
+
+.card-outer .card-inner .card-main-image-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.card-outer .card-inner .card-main-content {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card-outer .card-inner .card-main-content svg {
+  margin-top: 16px;
+  height: 70px;
+  fill: var(--primary);
+}
+
+.card-outer .card-inner .card-main-content h3 {
+  width: 100%;
+  font-size: 28px;
+  font-weight: 300;
+}
+
+.card-outer .card-inner .card-main-content p {
+  font-size: 16px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}

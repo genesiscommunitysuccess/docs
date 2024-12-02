@@ -47,15 +47,15 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-select @change=${x => x.selectChanged()}>
+        <rapid-select @change=${(x, ctx) => x.selectChanged(ctx.event)}>
           <rapid-option value="s">Small</rapid-option>
           <rapid-option value="l">Large</rapid-option>
         </rapid-select>
       `,
     })
     export class MyElement extends GenesisElement {
-      selectChanged() {
-        alert('Select Changed')
+      selectChanged(e: Event) {
+        alert('Select Changed', e.target.value)
       }
     }
     ```
@@ -74,7 +74,8 @@ Use cases:
   ```typescript
   export function MyComponent() {
     const handleSelectChanged = (event) => {
-      console.log('Select changed')
+      const target = event.target as HTMLInputElement;
+      console.log(target.value);
     };
 
     return (
@@ -99,22 +100,20 @@ Use cases:
   Usage
   ```typescript
   import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-  import { FormsModule } from '@angular/forms';
   @Component({
     selector: 'my-root',
     template: `
-          <rapid-select (change)="onSelectChanged($event)">
-            <rapid-option value="s">Small</rapid-option>
-            <rapid-option value="l">Large</rapid-option>
-          </rapid-select>
-        `,
+      <rapid-select (change)="onSelectChanged($event)">
+        <rapid-option value="s">Small</rapid-option>
+        <rapid-option value="l">Large</rapid-option>
+      </rapid-select>
+    `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [FormsModule],
   })
   export class AppComponent {
     onSelectChanged(event: Event) {
-      console.log('Select changed');
+      console.log('Select changed', event.target.value);
     }
   }
   ```

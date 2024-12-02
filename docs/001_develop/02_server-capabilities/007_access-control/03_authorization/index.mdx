@@ -38,7 +38,7 @@ All levels can be configured in applications to ensure complete security.
 
 This model enables full control of data within an application at the most granular level.
 
-Typically levels 1 and 3 are controlled by [permission codes](#permission-codes), and level 2 is controlled by [entity access](#entity-access), however you can set up the application as per your business requirements. The following sections give an overview of the 2 layers and example use-cases.
+Typically levels 1 and 3 are controlled by [permission codes](#permission-right-codes), and level 2 is controlled by [entity access](#entity-access), however you can set up the application as per your business requirements. The following sections give an overview of the 2 layers and example use-cases.
 
 Beyond this page, there is a [how to guide on authorization](/how-to/ht-auth/) available with a project with code examples you can clone and run, which explains further the practical implementation of authorization.
 
@@ -292,11 +292,11 @@ Here is an example of restricting button visibility (based on the Right Code **T
       createEvent="${(x) => getViewUpdateRightComponent(x.user, 'TradeUpdate', 'EVENT_TRADE_INSERT')}"
 ```
 
-See the relevant [client capabilities pages](/develop/client-capabilities/client-capabilities-overview/) for more details on how to secure them with permissions.
+See the relevant [client capabilities pages](/develop/client-capabilities/) for more details on how to secure them with permissions.
 
 ## Assigning users permissions
 
-Most applications will include the [User management](/develop/business-components/user-management/user-management-introduction/) component for easily assigning rights and users to profiles. Users gain the superset of permissions that are assigned to the profiles they are a part of.
+Most applications will include the [User management](/develop/business-components/user-management/) component for easily assigning rights and users to profiles. Users gain the superset of permissions that are assigned to the profiles they are a part of.
 
 The following section provides details as to how user permissions assignment works, and the table records which make it work.
 

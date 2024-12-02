@@ -125,6 +125,39 @@ views {
 }
 ```
 
+You can also store and reuse the derived field `withInput` calculations, like so:
+
+```kotlin
+views {
+    view("TRADE_VIEW", TRADE) {
+        joins {
+            joining(INSTRUMENT, backwardsJoin = true) {
+              on(TRADE { INSTRUMENT_ID } to INSTRUMENT { INSTRUMENT_ID })
+            }
+            joining(COUNTERPARTY) {
+              on(TRADE { COUNTERPARTY_ID } to INSTRUMENT { COUNTERPARTY_ID })
+            }
+        }
+        fields {
+            TRADE.allFields()
+
+            INSTRUMENT.NAME withPrefix INSTRUMENT 
+
+            COUNTERPARTY.COUNTERPARTY_ID
+            COUNTERPARTY.COUNTERPARTY_CODE withAlias CTPTY_CODE
+            COUNTERPARTY.NAME withAlias CTPTY_NAME
+
+            val myLambda: DerivedField2<Double, Double, Double> = { quantity, price -> quantity * price }
+            
+            derivedField("NOTIONAL", DOUBLE) {
+                withInput(TRADE.QUANTITY, TRADE.PRICE, myLambda)
+            }
+
+        }
+  }
+}
+```
+
 ### Summary
 
 Tables and views of data can be used to power client queries, both [snapshot](/develop/server-capabilities/snapshot-queries-request-server/) and [real-time](/develop/server-capabilities/real-time-queries-data-server/), which in turn can power [grids](/develop/client-capabilities/grids/), [charts](/develop/client-capabilities/charts/) and other data visualization web client components. 
@@ -198,7 +231,7 @@ The value in the parenthesis in the second example below is the maximum number o
 
 ###### `Enum`
 Enum (aka enumerated) fields specify the exact set of values which the field can be set to. They are helpful when you have a definitive set of values and want to present users with a pick-list.
-Each value of the enum can also be have an "alias" which is typically a human readable representation of the value.
+Each value of the enum can also be have an "alias" which is typically a human readable representation of the value. Use the `to` keyword to separate value and alias See this in the second example below.  
 Enums must have a default value. The third example below shows how to set this. Where no default is specified the first value in the list is set as the default.
 
 ###### Example Definitions:
@@ -260,7 +293,7 @@ Big Decimals allow the user to define the `precision` and `scale` (the 2 inputs 
 
 ###### Example Definitions:
 `field("MY_BIGDECIMAL", BIGDECIMAL)`   
-`field("MY_BIGDECIMAL", BIGDECIMAL(10, 3)`
+`field("MY_BIGDECIMAL", BIGDECIMAL(10, 3))`
 
 ###### `Nano Timestamp`
 A nano timestamp is a precise way to record a timestamp to the closest nano seconds.
@@ -454,7 +487,7 @@ When defining a multi-field primary key the order in which the fields are specif
 
 Fields marked as part of a primary key may not be null.
 
-Primary Key names are auto-generated in the following format: [TABLE_NAME]_BY_[FIELD_1](_[FIELD_N]). If you wish to give your primary key a specific name you can apply `.name(<pk name>)` against it. Examples below:
+Primary Key names are auto-generated in the following format: `<TABLE_NAME>_BY_<FIELD_1>(+_<FIELD_N>)`. If you wish to give your primary key a specific name you can apply `.name(<pk name>)` against it. Examples below:
 - `field("ID", LONG).autoIncrement().primaryKey().name("POSITION_BY_IDENTIFIER")`
 - `primaryKey("BOOK_ID", "INSTRUMENT_ID", "COUNTERPARTY_ID").name("POSITION_BY_BOOK_INST_CPTY)`
 
@@ -954,4 +987,43 @@ derivedField("SPREAD", DOUBLE) {
 }
 
 ```
+
+## Migrating from legacy data model structure
+
+Before version 7.2 of the Genesis Platform fields were defined in their own dictionary file, separately from tables.
+
+From version 7.2, Genesis supports the new syntax detailed in this document.
+
+In `*-tables-dictionary.kts` files we went from this...
+```kotlin
+table(name = "RIGHT", id = 1004) {
+    CODE
+    DESCRIPTION
+    primaryKey {
+        CODE
+    }
+}
+```
+
+...to this:
+```kotlin
+table(name = "RIGHT", id = 1004) {
+    field("CODE").primaryKey()
+    field("DESCRIPTION")
+}
+```
+
+Legacy will continue to work, but it is simple to move to the new model using a provided a gradle plugin.
+
+To start, add the following line to the top of the `build.gradle.kts` file for the module which contains your legacy dictionary files:
+
+```kotlin
+plugins {
+    id("global.genesis.dictionary.upgrade")
+}
+```
+
+After adding this and performing a Gradle refresh, a new task: `updateTablesDictionary` is available in the Gradle task list, under **genesis**.
+To migrate the table dictionaries in your config module, run the task.
+
 
