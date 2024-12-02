@@ -23,7 +23,7 @@ export default function BannerDemo({ children, color }) {
 	return (
 		<CodeSection>
 			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
-				<div style={{ display: 'flex', flexWrap: 'wrap', height: '75px', width: '100%', flexDirection: 'column', }}>
+				<div style={{ display: 'flex', flexWrap: 'wrap', height: '130px', width: '100%', flexDirection: 'column', }}>
 					<rapid-banner ref={bannerRef} onClick={dismissBanner}>
 						<div slot="content">
 							A banner for displaying information... Click to dismiss!

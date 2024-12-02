@@ -11,7 +11,7 @@ function setup() {
 	}
 }
 
-export default function HorizontalScrollDemo({ children, color }) {
+export default function HorizontalScrollDemo({ inIndex = false }) {
 	setup();
 	return (
 		<CodeSection>
@@ -30,7 +30,8 @@ export default function HorizontalScrollDemo({ children, color }) {
 							Card number 3
 							<rapid-button>A button</rapid-button>
 						</rapid-card>
-						<rapid-card>
+						{!inIndex ?
+						(<><rapid-card>
 							Card number 4
 							<rapid-button>A button</rapid-button>
 						</rapid-card>
@@ -65,7 +66,7 @@ export default function HorizontalScrollDemo({ children, color }) {
 						<rapid-card>
 							Card number 12
 							<rapid-button>A button</rapid-button>
-						</rapid-card>
+						</rapid-card></>) : null}
 					</rapid-horizontal-scroll>
 				</div>
 			</div>

@@ -17,7 +17,7 @@ export default function BreadcrumbDemo({ children, color }) {
 	return (
 		<CodeSection>
 			<div style={{ color: 'var(--neutral-foreground-rest)', width: '-webkit-fill-available'}}>
-				<div style={{ display: 'flex', flexWrap: 'wrap', height: '45px', width: '100%', flexDirection: 'column', }}>
+				<div style={{ display: 'flex', flexWrap: 'wrap', height: '55px', width: '100%', flexDirection: 'column', }}>
 					<rapid-breadcrumb>
 						<rapid-breadcrumb-item href="#">Breadcrumb item 1</rapid-breadcrumb-item>
 						<rapid-breadcrumb-item href="#">Breadcrumb item 2</rapid-breadcrumb-item>
