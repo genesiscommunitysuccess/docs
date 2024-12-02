@@ -186,8 +186,7 @@ import {
   ICellRendererComp, 
   ICellRendererParams 
 } from '@ag-grid-community/core';
-import { html, observable } from '@microsoft/fast-element';
-import { FoundationElement } from '@microsoft/fast-foundation';
+import { GenesisElement, html, observable } from '@genesislcap/web-core';
 import { logger } from '../utils';
 
 // Define custom params interface
@@ -196,7 +195,7 @@ interface CustomRendererParams extends ICellRendererParams {
   isDisabled?: (rowData: any) => boolean;
 }
 
-export class CustomRenderer extends FoundationElement implements ICellRendererComp {
+export class CustomRenderer extends GenesisElement implements ICellRendererComp {
   @observable
   public params: CustomRendererParams;
 

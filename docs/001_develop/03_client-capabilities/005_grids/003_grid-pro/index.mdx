@@ -73,23 +73,26 @@ provideDesignSystem().register(baseComponents, rapidGridComponents);
 
 <TabItem value="genesis">
 
-Declaration:
+### Declaration:
 
 ```html
 <simple-grid-pro-example></simple-grid-pro-example>
 ```
 
-Definition:
+### Definition:
 
 ```typescript
-import { ColDef, GridOptions } from '@ag-grid-community/core';
+import { ColDef } from '@ag-grid-community/core';
 import { GridPro } from '@genesislcap/grid-pro';
-import { customElement, DOM, GenesisElement, html, observable, ref } from '@genesislcap/web-core';
+import { customElement, GenesisElement, html, observable, ref } from '@genesislcap/web-core';
 
 @customElement({
   name: 'simple-grid-pro-example',
   template: html`
-    <rapid-grid-pro ${ref('grid')}></rapid-grid-pro>
+    <div style="display: flex; flex-direction: column; height: 200px;">
+      <rapid-button @click="${x => x.loadGrid()}">Load Grid Pro</rapid-button>
+      <rapid-grid-pro ${ref('grid')}></rapid-grid-pro>
+    </div>
   `,
 })
 export class SimpleGridExample extends GenesisElement {
@@ -100,44 +103,183 @@ export class SimpleGridExample extends GenesisElement {
     { headerName: 'Make', field: 'make', sortable: true, filter: true },
     { headerName: 'Model', field: 'model', sortable: true, filter: true },
     { headerName: 'Price', field: 'price', sortable: true, filter: true },
+    { headerName: 'Year', field: 'year', sortable: true, filter: true },
+    { headerName: 'Color', field: 'color', sortable: true, filter: true },
   ];
 
   private rowData = [
-    { make: 'Toyota', model: 'Celica', price: 35000 },
-    { make: 'Ford', model: 'Mondeo', price: 32000 },
-    { make: 'Porsche', model: 'Boxster', price: 72000 },
+    { make: 'Toyota', model: 'Celica', price: 35000, year: 2021, color: 'red' },
+    { make: 'Ford', model: 'Mondeo', price: 32000, year: 2020, color: 'blue' },
+    { make: 'Porsche', model: 'Boxster', price: 72000, year: 2022, color: 'green' },
+    { make: 'Subaru', model: 'Impreza', price: 25000, year: 2019, color: 'yellow' },
+    { make: 'Nissan', model: 'Sentra', price: 20000, year: 2018, color: 'black' },
+    { make: 'Chevrolet', model: 'Camaro', price: 40000, year: 2020, color: 'white' },
+    { make: 'BMW', model: 'M3', price: 60000, year: 2021, color: 'silver' },
+    { make: 'Audi', model: 'A4', price: 45000, year: 2022, color: 'orange' },
+    { make: 'Mercedes', model: 'C-Class', price: 50000, year: 2020, color: 'purple' },
+    { make: 'Volkswagen', model: 'Golf', price: 30000, year: 2019, color: 'brown' },
     // ...
   ];
 
-  private gridOptions: GridOptions = {
-    defaultColDef: {
-      resizable: true,
-      filter: true,
-    },
-    columnDefs: this.columnDefs,
-    rowData: this.rowData,
-  };
-
-  connectedCallback() {
-    super.connectedCallback();
-    DOM.queueUpdate(() => {
-      this.grid.gridOptions = this.gridOptions;
-    });
+  public loadGrid() {
+    this.grid.gridOptions = {
+      defaultColDef: {
+        resizable: true,
+        filter: true,
+      },
+      columnDefs: this.columnDefs,
+      rowData: this.rowData,
+    };
   }
 }
 ```
 
 </TabItem>
+
 <TabItem value="react">
 
-TBD
+### Declaration:
+
+```jsx
+<SimpleGridExample />
+```
+
+### Definition:
+
+```jsx
+import { GridPro } from '@genesislcap/grid-pro';
+import React, { useRef } from 'react';
+
+const SimpleGridExample = () => {
+  const gridRef = useRef(null);
+
+  const columnDefs = [
+    { headerName: 'Make', field: 'make', sortable: true, filter: true },
+    { headerName: 'Model', field: 'model', sortable: true, filter: true },
+    { headerName: 'Price', field: 'price', sortable: true, filter: true },
+    { headerName: 'Year', field: 'year', sortable: true, filter: true },
+    { headerName: 'Color', field: 'color', sortable: true, filter: true },
+  ];
+
+  const rowData = [
+    { make: 'Toyota', model: 'Celica', price: 35000, year: 2021, color: 'red' },
+    { make: 'Ford', model: 'Mondeo', price: 32000, year: 2020, color: 'blue' },
+    { make: 'Porsche', model: 'Boxster', price: 72000, year: 2022, color: 'green' },
+    { make: 'Subaru', model: 'Impreza', price: 25000, year: 2019, color: 'yellow' },
+    { make: 'Nissan', model: 'Sentra', price: 20000, year: 2018, color: 'black' },
+    { make: 'Chevrolet', model: 'Camaro', price: 40000, year: 2020, color: 'white' },
+    { make: 'BMW', model: 'M3', price: 60000, year: 2021, color: 'silver' },
+    { make: 'Audi', model: 'A4', price: 45000, year: 2022, color: 'orange' },
+    { make: 'Mercedes', model: 'C-Class', price: 50000, year: 2020, color: 'purple' },
+    { make: 'Volkswagen', model: 'Golf', price: 30000, year: 2019, color: 'brown' },
+    // ...
+  ];
+
+  const loadGrid = () => {
+    if (gridRef.current) {
+      gridRef.current.gridOptions = {
+        defaultColDef: {
+          resizable: true,
+          filter: true,
+        },
+        columnDefs,
+        rowData,
+      };
+    }
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '200px' }}>
+      <rapid-button onClick={loadGrid}>Load Grid Pro</rapid-button>
+      <rapid-grid-pro ref={gridRef}></rapid-grid-pro>
+    </div>
+  );
+};
+
+export default SimpleGridExample;
+```
+
+> **Note**: In React, you might need to add a type declaration for the custom element to avoid TypeScript errors. You can declare the module for `'rapid-grid-pro'` or use `any` type for `gridRef`.
 
 </TabItem>
+
 <TabItem value="angular">
 
-TBD
+### Declaration:
+
+```html
+<simple-grid-pro-example></simple-grid-pro-example>
+```
+
+### Definition:
+
+```typescript
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { GridPro } from '@genesislcap/grid-pro';
+
+@Component({
+  selector: 'simple-grid-pro-example',
+  template: `
+    <div style="display: flex; flex-direction: column; height: 200px;">
+      <rapid-button (click)="loadGrid()">Load Grid Pro</rapid-button>
+      <rapid-grid-pro #grid></rapid-grid-pro>
+    </div>
+  `,
+})
+export class SimpleGridExample {
+  @ViewChild('grid') grid: ElementRef;
+
+  private columnDefs = [
+    { headerName: 'Make', field: 'make', sortable: true, filter: true },
+    { headerName: 'Model', field: 'model', sortable: true, filter: true },
+    { headerName: 'Price', field: 'price', sortable: true, filter: true },
+    { headerName: 'Year', field: 'year', sortable: true, filter: true },
+    { headerName: 'Color', field: 'color', sortable: true, filter: true },
+  ];
+
+  private rowData = [
+    { make: 'Toyota', model: 'Celica', price: 35000, year: 2021, color: 'red' },
+    { make: 'Ford', model: 'Mondeo', price: 32000, year: 2020, color: 'blue' },
+    { make: 'Porsche', model: 'Boxster', price: 72000, year: 2022, color: 'green' },
+    { make: 'Subaru', model: 'Impreza', price: 25000, year: 2019, color: 'yellow' },
+    { make: 'Nissan', model: 'Sentra', price: 20000, year: 2018, color: 'black' },
+    { make: 'Chevrolet', model: 'Camaro', price: 40000, year: 2020, color: 'white' },
+    { make: 'BMW', model: 'M3', price: 60000, year: 2021, color: 'silver' },
+    { make: 'Audi', model: 'A4', price: 45000, year: 2022, color: 'orange' },
+    { make: 'Mercedes', model: 'C-Class', price: 50000, year: 2020, color: 'purple' },
+    { make: 'Volkswagen', model: 'Golf', price: 30000, year: 2019, color: 'brown' },
+    // ...
+  ];
+
+  loadGrid() {
+    if (this.grid && this.grid.nativeElement) {
+      this.grid.nativeElement.gridOptions = {
+        defaultColDef: {
+          resizable: true,
+          filter: true,
+        },
+        columnDefs: this.columnDefs,
+        rowData: this.rowData,
+      };
+    }
+  }
+}
+```
+
+> **Note**: In your Angular module, make sure to include `CUSTOM_ELEMENTS_SCHEMA`:
+
+```typescript
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@NgModule({
+  declarations: [SimpleGridExample],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class AppModule {}
+```
 
 </TabItem>
+
 </Tabs>
 
 ## Supported Row Models
@@ -150,40 +292,40 @@ It’s important to note that any client app can implement the other Row Models 
 
 `Infinite` and `Viewport` row models are also supported but not offered "out of the box" (devs will have to create their own component).
 
-| Feature | Client-Side | Server-Side | Notes |
-| --- | --- |--- | --- |
-| All Data in Client | ✓ | ✗ | Free |
-| Fetch Data as User Scrolls | ✗ | ✓ | Free |
-| Row Sorting | (client) | (client OR server) our component is server-only | Free |
-| Row Filtering | (client) | (client OR server) our component is server-only | Free |
-| Quick Filter | ✓ | ✓ | Free |
-| Floating Filters | ✓ | ✓ | Free |
-| Dynamic Row Height | ✓ | ✓ | Free |
-| Row Grouping | (client) | (server) | Paid (Enterprise) |
-| Row Pivoting | (client) | (server) | Paid (Enterprise) |
-| Lazy Loading Row Groups | ✗ | ✓ | Paid (Enterprise) |
-| Value Aggregation | (client) | (server) | Paid (Enterprise) |
-| Row Selection | ✓ | ✓ | Free |
-| Specify Selectable Rows | ✓ | ✓ | Free |
-| Header Checkbox Selection | ✓ | ✓ | Free |
-| Range Selection | ✓ | ✓ | Free |
-| Column Spanning | ✓ | ✓ | Free |
-| Column Pinning | ✓ | ✓ | Free |
-| Row Pinning | ✓ | ✓ | Free |
-| Pagination | ✓ | ✓ | Free |
-| Custom Filters | ✓ | ✓ | Free |
-| Cell Editors | ✓ | ✓ | Free |
-| Cell Renderers | ✓ | ✓ | Free |
-| Value Getter | ✓ | ✓ | Free |
-| Value Setter | ✓ | ✓ | Free |
-| Value Formatter | ✓ | ✓ | Free |
-| Value Parser | ✓ | ✓ | Free |
-| Full Width Rows | ✓ | ✓ | Free |
-| CSV Export | ✓ | (data on screen) | Free |
-| Excel Export | ✓ | (data on screen) | Paid (Enterprise) |
-| Clipboard Copy & Paste | ✓ | ✓ | Free |
-| Update via Transaction | ✓ | ✓ | Free |
-| Update via Async Transactions | ✓ | ✓ | Free |
+| Feature                          | Client-Side | Server-Side | Notes                |
+| -------------------------------- | ----------- | ----------- | -------------------- |
+| All Data in Client               | ✓           | ✗           | Free                 |
+| Fetch Data as User Scrolls       | ✗           | ✓           | Free                 |
+| Row Sorting                      | (client)    | (client OR server) our component is server-only | Free |
+| Row Filtering                    | (client)    | (client OR server) our component is server-only | Free |
+| Quick Filter                     | ✓           | ✓           | Free                 |
+| Floating Filters                 | ✓           | ✓           | Free                 |
+| Dynamic Row Height               | ✓           | ✓           | Free                 |
+| Row Grouping                     | (client)    | (server)    | Paid (Enterprise)    |
+| Row Pivoting                     | (client)    | (server)    | Paid (Enterprise)    |
+| Lazy Loading Row Groups          | ✗           | ✓           | Paid (Enterprise)    |
+| Value Aggregation                | (client)    | (server)    | Paid (Enterprise)    |
+| Row Selection                    | ✓           | ✓           | Free                 |
+| Specify Selectable Rows          | ✓           | ✓           | Free                 |
+| Header Checkbox Selection        | ✓           | ✓           | Free                 |
+| Range Selection                  | ✓           | ✓           | Free                 |
+| Column Spanning                  | ✓           | ✓           | Free                 |
+| Column Pinning                   | ✓           | ✓           | Free                 |
+| Row Pinning                      | ✓           | ✓           | Free                 |
+| Pagination                       | ✓           | ✓           | Free                 |
+| Custom Filters                   | ✓           | ✓           | Free                 |
+| Cell Editors                     | ✓           | ✓           | Free                 |
+| Cell Renderers                   | ✓           | ✓           | Free                 |
+| Value Getter                     | ✓           | ✓           | Free                 |
+| Value Setter                     | ✓           | ✓           | Free                 |
+| Value Formatter                  | ✓           | ✓           | Free                 |
+| Value Parser                     | ✓           | ✓           | Free                 |
+| Full Width Rows                  | ✓           | ✓           | Free                 |
+| CSV Export                       | ✓           | (data on screen) | Free             |
+| Excel Export                     | ✓           | (data on screen) | Paid (Enterprise) |
+| Clipboard Copy & Paste           | ✓           | ✓           | Free                 |
+| Update via Transaction           | ✓           | ✓           | Free                 |
+| Update via Async Transactions    | ✓           | ✓           | Free                 |
 
 ## Performance
 
