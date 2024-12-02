@@ -197,6 +197,19 @@ In the example above, the paths would be:
 
 Creating an individual endpoint.
 
+This takes 2 parameters, firstly the type of HTTP request, secondly the unique name of the endpoint.
+
+Valid HTTP request types are:
+- GET
+- POST
+- PUT
+- DELETE
+
+
+```kotlin 
+  endpoint(GET, "test") {
+```
+
 ###### Request parameters
 
 In addition to the body, endpoints can also take request parameters. These are defined in the `endpoint` block, and are available in the `handleRequest` block.
