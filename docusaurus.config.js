@@ -13,7 +13,7 @@ const GTM_ID = process.env.GTM_ID || "GTM-5GTR43J"; // default to uat GTM_ID, pr
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   customFields: {
-    baseUrlEnv: baseUrl, // Expose the BASE_URL variable to the client
+    baseUrlEnv: baseUrl,
   },
   title: "Genesis Application Platform for Financial Markets",
   tagline:
