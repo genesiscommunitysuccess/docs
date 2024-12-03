@@ -37,7 +37,7 @@ export default function Card({ heading, text, link, imageUrl = '/svg/categories-
             )
           )}
         </div>
-        <div className="card-main-content" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+        <div className="card-main-content" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-top' }}>
           <h3>{heading}</h3>
           <p>{text}</p>
         </div>
