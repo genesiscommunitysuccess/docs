@@ -3,4 +3,23 @@ title: 'Grids'
 id: client-grids
 ---
 
-<!-- This file is used for generate parent category page -->
+## [Entity Manager](./entity-manager)
+
+The Entity Manager is a sophisticated micro front-end component that serves as a comprehensive solution for data management interfaces. It combines the powerful `grid-pro` with integrated forms for entity creation and modification. One of its core strengths is its ability to automatically interface with backend resources for CRUD operations, while generating dynamic forms based on backend metadata. The component also features robust grid display and search capabilities that can be extensively configured.
+
+The Grid Configuration system forms a central part of the Entity Manager's functionality. It allows for detailed customization of columns, including properties such as width, headers, and styling options. The system supports various CRUD menu button placements, whether at the top, bottom, or within columns. Users can choose from different button style configurations, including default, vertical, and horizontal actions menus. Importantly, the component can maintain column states for persistence across sessions.
+
+Form Configuration in the Entity Manager is designed for maximum flexibility and ease of use. The system automatically generates forms using backend metadata, while still allowing for customization through form UI schemas for both create and update operations. It includes support for default values and implements comprehensive form validation and error handling mechanisms.
+
+The Integration Features of the Entity Manager enable seamless connectivity with backend systems. It can interface with backend resources through either `DATASERVER` queries or `REQUEST_SERVER` requests. The component includes configurable event handlers for create, update, and delete operations, along with search bar functionality and real-time data update capabilities.
+
+
+## [Grid Pro](./grid-pro)
+
+The grid pro is a fully featured data grid which also offerers seamless server connection capabilities. At its foundation, the framework offers two distinct datasource approaches. The Client-Side Datasource is optimized for smaller datasets, performing operations like sorting and filtering directly in the browser. This approach provides flexibility and works seamlessly with both `DATASERVER` and `REQUEST_SERVER` resources. The Server-Side Datasource, on the other hand, is engineered for handling larger datasets by delegating operations to the backend, though it comes with certain constraints such as limiting sorting capabilities to indexed fields only.
+
+It provides robust Cell and Column components that enable detailed configuration of grid layouts and cell rendering. The Grid Pro component comes equipped with an array of built-in renderers, including specialized options like Action Renderer, Actions Menu Renderer, and Boolean Renderer, each serving specific data display and interaction needs. This versatility allows developers to create sophisticated and interactive grid interfaces tailored to their requirements.
+
+Grid Pro's feature set is comprehensive, offering seamless integration with modern JavaScript frameworks and supporting both simple and connected data scenarios. Whether working with basic JSON data, REST APIs, or connected data through Data Server or Request Server, the system maintains high performance through smart optimization techniques like DOM virtualization and pagination. These features ensure smooth handling of large datasets while providing a responsive user experience.
+
+It can all be configured through common attributes and configurations, applicable to both client-side and server-side implementations. This flexibility allows developers to fine-tune grid behavior and appearance, ensuring the final implementation aligns perfectly with their application's needs while maintaining optimal performance and user experience.

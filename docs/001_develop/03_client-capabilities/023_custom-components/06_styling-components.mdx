@@ -3,10 +3,585 @@ title: 'styling components'
 sidebar_label: 'Styling Components'
 id: styling-components
 
+keywords: [
+    Custom element styles,
+    Dynamic CSS,
+    Scoped styles,
+    Element lifecycle,
+    Hiding undefined elements,
+    FOUC (Flash of Unstyled Content)
+    Shadow DOM CSS,
+    Scoped Styles,
+    CSS Custom Properties,
+    Normalize CSS,
+    Reusable styles,
+    Encapsulation,
+    Styling Templates,
+    css helper,
+    cssPartial utility
+]
+
+tags:
+  - CSS
+  - Shadow DOM
+  - Dynamic Styles
+  - Custom Elements
+  - host
+  - Styles and Lifecycle
+  - Encapsulation
+  - Performance
+  - FOUC
+
 sidebar_position: 3
 ---
 
 # Styling & Structure: CSS Templates
-Component styles
-Theme integration
-CSS customization
+
+In this section we will demonstrate how to style the `my-button` component, covering the following items:
+
+- [Basic Styles](#basic-styles),
+- [Composing Styles](#composing-styles),
+- [Partial CSS](#partial-css),
+- [Dynamic Behavior with CSSDirective](#cssdirective),
+- [Shadow DOM Styling](#shadow-dom-styling),
+- [Slotted Content](#slotted-content),
+- [Style Lifecycle Management](#style-lifecycle-management),
+- [Hiding Undefined Elements](#hiding-undefined-elements)
+
+## Basic Styles
+
+In the previous sections and examples you might have noticed a `css` tag we imported from `@genesislcap/web-core` along with `html`.
+
+Quick reminder on how to create a custom element using `@customElement`:
+
+```typescript
+import {
+  css, customElement, html} from "@genesislcap/web-core";
+
+@customElement({
+  name: "my-button",
+  template,
+  styles // focusing on styles,
+})
+```
+
+So far we have seen how we can attach styles using the `styles` property in the `@customElement` decorator. But let's dive deeper and explore how we can define styles:
+
+### Defining Styles:
+
+In the example below we show how the `css` tagged template helper allows creating and re-using CSS for custom elements.
+These styles are **encapsulated in the Shadow DOM** and attached via the `styles` property in the `@customElement` decorator.
+
+```typescript
+import {
+  html,
+  css,
+  customElement,
+  GenesisElement,
+} from "@genesislcap/web-core";
+
+const styles = css`
+  :host { /* The :host selector applies styles to the custom element itself (<my-button>).*/
+    display: inline-block;
+    padding: 10px;
+    background-color: gray;
+  }
+
+  :host([primary]) { /* :host([primary]): Styles the element with blue background if it has the primary attribute. */
+    background-color: blue;
+  }
+
+  :host([disabled]) { /* :host([disabled]): Styles the element with reduced opacity and disabled interaction if the disabled attribute is present.*/
+    opacity: 0.5;
+    pointer-events: none;
+  }
+`;
+
+@customElement({
+  name: "my-button",
+  template: html<MyButton>`<button>${(x) => x.label}</button>`,
+  styles,
+})
+export class MyButton extends GenesisElement {
+  @attr primary: boolean = false;
+  @attr disabled: boolean = false;
+}
+```
+
+:::important
+
+Even if the `primary` and `disabled` properties default to false, adding the attributes in the HTML template will apply the corresponding styles. Boolean attributes are present or absent.
+
+:::
+
+### Usage in HTML
+
+```typescript
+<my-button> label="Click Me" primary></my-button>
+<my-button> label="Disabled" disabled></my-button>
+```
+
+>- The first button will have a blue background (`primary` attribute applied).
+>- The second button will have reduced opacity and disabled pointer events (`disabled` attribute applied).
+
+In the example above we have:
+
+>- Used the `styles` property in the `@customElement` decorator.
+>- Ensured `styles` are encapsulated within the Shadow DOM.
+>- Used `:host` and `:host([attribute])` to apply styles based on the custom element's attributes.
+
+## Composing Styles
+
+We can also compose reusable styles and utility styles into our component. This approach encourages consistency across components and reduces duplication by enabling shared styles.
+
+Let's say we want to compose our own utility style (called normalize), that ensures consistent baseline styles across browsers.
+This can include setting consistent 'margin', 'padding', 'line-height', and other foundational properties.
+
+```typescript
+// normalize.ts
+import { css } from "@genesislcap/web-core";
+
+export const normalize = css`
+  html, body, * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  button {
+    all: unset;
+    cursor: pointer;
+  }
+`;
+
+```
+
+Here's how we can now use normalize utlity along with additional reusable style blocks to style `my-button` component.
+
+```typescript
+import {
+  css,
+  html,
+  customElement,
+  GenesisElement,
+} from "@genesislcap/web-core";
+import { normalize } from "./normalize"; // Import normalize styles
+
+// Define reusable base button styles
+const buttonBaseStyles = css`
+  button {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-align: center;
+    border: 1px solid transparent;
+  }
+`;
+
+@customElement({
+  name: "my-button",
+  template: html<MyButton>` <button>${(x) => x.label}</button> `,
+  styles: css`
+    ${normalize} /* Include normalize styles */
+    ${buttonBaseStyles} /* Include reusable button styles */
+    /*normalize and buttonBaseStyles combined for consistent design across components*/
+    :host {
+      display: inline-block;
+    }
+
+    button {
+      background-color: blue;
+      color: white;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    button:hover {
+      background-color: darkblue;
+    }
+
+    button:active {
+      background-color: navy;
+    }
+  `,
+})
+export class MyButton extends GenesisElement {
+  label: string = "Click Me";
+}
+```
+
+In the example above we have:
+
+>- Seen how to reuse and combine shared style blocks like normalize or utility styles.
+>- Combined multiple styles using the `css` helper.
+
+### Partial CSS
+
+In addition to reusing styles dynamically, we can also organize styles into separate files and this is when 'partial CSS' comes in handy.
+
+To achieve this we can leverage `cssPartial`. See the example below:
+
+```typescript
+import { css, cssPartial } from "@genesislcap/web-core";
+
+const partial = cssPartial`padding: 10px 20px;`; // We've created partial styles using cssPartial
+const styles = css`
+  :host {
+    ${partial} /* we can attach partial into host */
+  }
+`;
+
+@customElement({
+  name: "my-button",
+  template: html<MyButton>`<button>${(x) => x.label}</button>`,
+  styles: styles,
+})
+```
+
+In the example above we have:
+
+>- Defined reusable snippets of CSS using `cssPartial`.
+>- Reused blocks of CSS properties that aren’t standalone styles.
+
+## CSSDirective
+
+A `CSSDirective` allows us to create dynamic CSS styles and behaviors.
+Instead of using static styles, you can programmatically control how the styles are applied to your component,
+making it powerful for things like animations, dynamic layouts, or user interactions.
+
+We can achieve this in a few simple steps:
+
+#### Import the required Modules:
+
+```typescript
+import { CSSDirective } from "@genesislcap/web-core";
+```
+
+#### Define the Custom Directive
+
+```typescript
+class RandomWidth extends CSSDirective {
+  private property = "--button-width";
+}
+```
+
+>- A new class `RandomWidth` is created, extending `CSSDirective`. This makes it a directive that can generate styles dynamically.
+>- `private property = "--button-width"` defines a CSS custom property (`--button-width`) that will hold the dynamically generated `width` value.
+
+#### Generate CSS Dynamically
+
+```typescript
+  createCSS() {
+    return `width: var(${this.property});`; // value of --button-width
+  }
+```
+
+>- The `createCSS()` method specifies what CSS should be added to the element.
+>- Here, it generates a rule to set the `width` of the element based on the value of the `--button-width` custom property (which will be dynamically updated).
+
+#### Define behavior
+
+```typescript
+  createBehavior() {
+    return {
+      bind(el) {
+        el.style.setProperty(this.property, `${Math.random() * 100 + 100}px`);
+      },
+      unbind(el) {
+        el.style.removeProperty(this.property);
+      },
+    };
+  }
+```
+
+- The `createBehavior()` method defines the dynamic behavior of the directive:
+
+  >- `bind(el)`: When the element is connected to the DOM, it sets the `--button-width` property to a random value between 100px and 200px.
+  >- `unbind(el)`: When the element is disconnected, it removes the `--button-width` property to clean up.
+
+#### Attach the Directive to Styles
+
+```typescript
+import {
+  css,
+  html,
+  customElement,
+  GenesisElement,
+} from "@genesislcap/web-core";
+
+@customElement({
+  name: "my-button",
+  template: html<MyButton>` <button>${(x) => x.label}</button> `,
+  styles: css`
+    button {
+      ${new RandomWidth()}
+      background-color: blue;
+      color: white;
+    }
+  `,
+})
+export class MyButton extends GenesisElement {
+  label: string = "Click Me";
+}
+```
+
+>- The `RandomWidth` directive is used in the styles property for the `my-button` component.
+  >>- When the button is rendered:
+    >>>- The `RandomWidth` directive dynamically sets the width of the button using the random value generated by `bind()`.
+    >>>- The button also gets a blue background and white text from the other static styles.
+
+#### When the code runs:
+
+>- When the `my-button` component is created and added to the DOM, the `bind()` method runs.
+>- A random width is calculated (e.g., 150px) and applied to the `--button-width` property.
+>- The `createCSS()` method uses this property to set the button's width.
+>- The button element will have a random width (e.g., 150px) and the other static styles like blue background and white text.
+>- If the element is removed from the DOM, the `unbind()` method is called, which removes the `--button-width` property, ensuring there are no leftover styles.
+
+In this section we have applied dynamic styles by:
+
+>- Adding behavior-driven styles to custom elements using two key methods:
+  >>- `createCSS()`: Generates CSS dynamically.
+  >>- `createBehavior()`: Attaches dynamic behavior to an element.
+
+## Shadow DOM Styling
+
+Shadow DOM encapsulation ensures styles do not affect the global DOM. Meaning they apply only to your custom element and do not "leak" into the global styles.
+Conversely, styles from the global scope cannot accidentally modify the appearance of your custom element.
+
+Some considerations for Shadow DOM Styling
+
+>- By default, custom elements behave as inline elements. You might want to define a specific `display` property like `inline-block` or `block` to control their layout behavior.
+>- Setting `contain: content` improves performance by signaling to the browser that the element's layout, painting, and size calculations are self-contained.
+  This ensures the browser doesn't unnecessarily re-calculate styles or layout changes for the entire document if something inside the component changes.
+>- Adding support for the `hidden` attribute ensures your component properly respects the `display: none` behavior when `hidden` is applied. This is a common practice for ensuring that components behave predictably.
+
+The `:host` selector allows us to apply styles directly to our custom element.
+
+```typescript
+import {
+  css,
+  html,
+  customElement,
+  GenesisElement,
+} from "@genesislcap/web-core";
+
+const styles = css`
+  /* Encapsulation and default display */
+  :host {
+    display: inline-block; /* Ensure consistent layout behavior */
+    contain: content; /* Optimize performance */
+  }
+
+  /* Support for the "hidden" attribute */
+  :host([hidden]) {
+    display: none; /* Completely remove the component from the visual flow */
+  }
+  /* Styles for the internal button */
+  button {
+    background-color: blue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+`;
+@customElement({
+  name: "my-button",
+  template: html<MyButton>`
+    <button><slot></slot></button>
+    <!-- Slot allows flexible content -->
+  `,
+  styles,
+})
+export class MyButton extends GenesisElement {}
+```
+
+##### Key Points:
+
+>- `:host` ensures that styles like `display` and `contain` apply only to the `<my-button>` element.
+  >>- This prevents global CSS rules from interfering with the component and vice versa.
+>- When `<my-button hidden>` is used, the component is visually removed using `display: none`.
+  >>- This is a common convention for enabling/disabling components.
+>- The button inside the Shadow DOM is styled with "padding", "background color", and "rounded corners". These styles are scoped to the Shadow DOM and won't affect other buttons outside the `my-button` component.
+
+## Slotted Content
+
+A slot is a placeholder where users of the component can insert their own content. This allows components to be flexible and reusable.
+For example, if `my-button` component has a `slot`, you can pass content like a `label` or an `icon` into the button when using it.
+
+The `::slotted()` CSS element lets you style content that is projected into a slot in your component's Shadow DOM.
+However, you can only style direct children of the slot (not descendants of those children).
+
+```typescript
+@customElement({
+  name: "my-button",
+  template: html<MyButton>`
+    <button><slot></slot></button>
+    // Slot for user content
+  `,
+  styles: css`
+    button {
+      background-color: blue; /* Styles for the button */
+      color: white; /* Button text color */
+    }
+
+    ::slotted(span) {
+      color: yellow; /* Styles for <span> elements inside the slot */
+      font-weight: bold; /* Make slotted <span> text bold */
+    }
+  `,
+})
+export class MyButton extends GenesisElement {}
+```
+
+In this case, the `<span>` inside the slot will have yellow text and be bold.
+
+Styles applied to `button` and `::slotted(span)` are scoped to `my-button` Shadow DOM and won’t affect buttons or spans elsewhere in the document.
+
+#### Usage in HTML
+
+```typescript
+<my-button>
+  <button style="background-color: blue; color: white;">
+    <span style="color: yellow; font-weight: bold;">Click Me</span>
+  </button>
+</my-button>
+```
+
+#### Key Limitations
+
+`::slotted()` can only style the immediate children of the `<slot>`. If the content inside the slot has nested elements, those cannot be styled directly:
+
+Styles defined in the Shadow DOM (like button {}) do not affect the slotted content directly. Slotted content is styled using the `::slotted()` selector.
+
+```typescript
+<my-button>
+  <div>
+    <span>Cannot style this span</span>
+  </div>
+</my-button>
+```
+
+## Style Lifecycle Management
+
+Styles are typically defined when a custom element is created and attached to the DOM.
+However, in some cases, you may need dynamic styles that depend on the element's state, attributes, or properties at the time it's connected to the DOM.
+
+This is where the `resolveStyles()` method becomes valuable. It allows you to dynamically generate and apply styles during the `connectedCallback` phase of the custom element lifecycle.
+
+The `resolveStyles()` method is called when the element is attached to the DOM (in the `connectedCallback` phase).
+
+##### Use `resolveStyles()` when:
+
+>- The styles need to change based on a property or attribute.
+>- The component's appearance must adapt dynamically when it's rendered.
+
+```typescript
+@customElement({
+  name: "my-button",
+  template: html<MyButton>` <button>${(x) => x.label}</button> `,
+  styles: (x) => x.resolveStyles(), // Use resolveStyles to dynamically resolve styles
+})
+export class MyButton extends GenesisElement {
+  label: string = "Click Me";
+
+  resolveStyles() {
+    // Dynamically return styles based on the label value
+    return this.label === "Click Me"
+      ? css`
+          button {
+            background-color: blue;
+          }
+        `
+      : css`
+          button {
+            background-color: red;
+          }
+        `;
+  }
+}
+```
+
+>- `resolveStyles()` is called when the element is connected to the DOM.
+>- The method checks the `label` property. If the `label` is "Click Me", the button will have a blue background. Otherwise, it will have a red background.
+
+You can further extend this example to update styles dynamically based on attributes or properties, such as a type or theme:
+
+```typescript
+@customElement({
+  name: "my-button",
+  template: html<MyButton>` <button>${(x) => x.label}</button> `,
+  styles: (x) => x.resolveStyles(), // Use resolveStyles to dynamically resolve styles
+})
+export class MyButton extends GenesisElement {
+  @attr type: string = "primary"; // Attribute controlling style
+  label: string = "Click Me";
+
+  resolveStyles() {
+    switch (this.type) {
+      case "primary":
+        return css`
+          button {
+            background-color: blue;
+            color: white;
+          }
+        `;
+      case "secondary":
+        return css`
+          button {
+            background-color: gray;
+            color: black;
+          }
+        `;
+      case "danger":
+        return css`
+          button {
+            background-color: red;
+            color: white;
+          }
+        `;
+      default:
+        return css`
+          button {
+            background-color: white;
+            color: black;
+          }
+        `;
+    }
+  }
+}
+```
+
+The `type` attribute determines the button's style:
+
+>- `<my-button type="primary"></my-button>` → Blue button.
+>- `<my-button type="secondary"></my-button>` → Gray button.
+>- `<my-button type="danger"></my-button>` → Red button.
+>- `resolveStyles()` is automatically called during `connectedCallback` and applies the correct styles based on the value of the type attribute.
+>- we can dynamically update the `type` attribute, and the styles will update accordingly.
+
+## Hiding Undefined Elements
+
+When using custom elements (like `<my-button>`), the browser may render them before they are fully defined or styled.
+This can cause a "flash of unstyled content" (FOUC), where the element appears in its default, unstyled form for a brief moment.
+
+To prevent the FOUC issue, we can hide custom elements that haven’t been upgraded yet by using the CSS `:not(:defined)` pseudo-class.
+
+- `:not(:defined)` matches any element that has not yet been defined (i.e., upgraded by the browser).
+- Using `visibility: hidden`, we hide these elements from view until their definition and styles are applied.
+
+See implementation below:
+
+```typescript
+:not(:defined) {
+  visibility: hidden; /* Hides all custom elements until defined */
+}
+```
+
+:::note
+
+Using `visibility: hidden` ensures that the element is still part of the document flow but not visible to the user. This prevents layout shifts when the element is styled.
+
+:::

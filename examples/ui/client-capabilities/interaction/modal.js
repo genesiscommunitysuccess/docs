@@ -2,7 +2,7 @@ import { CodeLabel, CodeSection } from '../../documentationBase';
 import React, { useEffect, useRef, useState } from 'react';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 
-export default function ModalDemo({ children, color }) {
+export default function ModalDemo({ inIndex = false }) {
 
     const isBrowser = useIsBrowser();
 
@@ -60,6 +60,25 @@ export default function ModalDemo({ children, color }) {
         }
     }, []);
 
+
+		if (inIndex) {
+			return (
+				<CodeSection>
+					<div style={{ color: 'var(--neutral-foreground-rest)'}}>
+						<div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+							<rapid-button
+								onClick={() => handleClick(modalRef)}>
+								Open modal
+							</rapid-button>
+							<rapid-modal
+								ref={modalRef}
+							>
+								Modal example
+							</rapid-modal>
+						</div>
+					</div>
+				</CodeSection >)
+		}
 
     return (<CodeSection><CodeLabel>Modal:</CodeLabel>
         <div style={{ color: 'var(--neutral-foreground-rest)'}}>

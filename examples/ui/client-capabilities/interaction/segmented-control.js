@@ -16,6 +16,7 @@ export default function SegmentedControlDemo({ children, color }) {
 
 	const handleChange = (event) => {
 		setOutputValue(event.target.value);
+		console.log(outputValue);
 	}
 
 	return (
