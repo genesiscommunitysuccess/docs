@@ -74,7 +74,7 @@
       {
         "href": "/develop/server-capabilities/workflow-state-machine/",
         "imageUrl": "/svg/categories-icons/diagram-next-svgrepo-com.svg",
-        "description": "API for defining states and workflow for any entity."
+        "description": "Define workflow and states for any entity in your application."
       },
       {
         "href": "/develop/server-capabilities/real-time-aggregation-consolidator/",
@@ -89,10 +89,15 @@
       {
         "href": "/develop/server-capabilities/integrations/",
         "imageUrl": "/svg/categories-icons/pipeline-svgrepo-com.svg",
-        "description": "Define pipelines simplifying getting data in and out of Genesis."
+        "description": "Define pipelines simplifying getting data in and out of applications."
       },
       {
-        "href": "/develop/server-capabilities/communications-meta/",
+        "href": "/develop/server-capabilities/custom-components/",
+        "imageUrl": "/svg/categories-icons/trophy-svgrepo-com.svg",
+        "description": "Define and inject custom server components into your application."
+      },
+      {
+        "href": "/develop/server-capabilities/communications/",
         "imageUrl": "/svg/categories-icons/network-receive-symbolic-svgrepo-com.svg",
         "description": "Understand how Genesis microservices communicate with each other and with the web interface."
       },
@@ -104,7 +109,7 @@
       {
         "href": "/develop/server-capabilities/runtime-configuration/",
         "imageUrl": "/svg/categories-icons/configuration-settings-gear-options-preferences-setting-tools-svgrepo-com.svg",
-        "description": "Define configuration values across components by environments."
+        "description": "Define runtime configuration for your applications, including per-environment configuration items."
       }
     ]
   },
@@ -150,7 +155,7 @@
       {
         "href": "/develop/client-capabilities/presentation/",
         "imageUrl": "/svg/categories-icons/photo-svgrepo-com.svg",
-        "description": "Present information to the user in the most engaging form, from cards, banners and badges to progress bars and skeletons."
+        "description": "Present information to the user in the most engaging form. From cards, banners and badges to progress bars and skeletons."
       },
       {
         "href": "/develop/client-capabilities/filters/",
@@ -200,12 +205,19 @@
       },
       {
         "href": "/develop/client-capabilities/desktop-interoperability/",
+        "imageUrl": "/svg/categories-icons/ui-desktop-interoperability.svg",
         "description": "Make your application seamlessly with other desktop financial applications, so that users can click to move and take information from one application to the other."
       },
       {
         "href": "/develop/client-capabilities/custom-components/",
         "imageUrl": "/svg/categories-icons/trophy-svgrepo-com.svg",
         "description": "Write your own custom components, based on standard web components that you can use in other web frameworks, such as React or Angular."
+      }
+      ,
+      {
+        "href": "/develop/client-capabilities/testing/",
+        "imageUrl": "/svg/categories-icons/ui-checks-svgrepo-com.svg",
+        "description": "Define client-side unit tests and application end-to-end tests."
       }
     ]
   },
