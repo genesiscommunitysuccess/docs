@@ -4,23 +4,28 @@
     "items": [
       {
         "href": "/develop/development-environment/launchpad/",
-        "description": "Launchpad description"
+        "imageUrl": "/svg/categories-icons/rocket-svgrepo-com.svg",
+        "description": "Genesis cloud based development environment allowing users to assemble, build and run complete applications entirely in a browser."
       },
       {
         "href": "/develop/development-environment/genesis-start/",
-        "description": "Genesis Start description"
+        "imageUrl": "/svg/categories-icons/play-circle-svgrepo-com.svg",
+        "description": "Desktop utility allowing users in any IDE to quickly manage their development environment, including bootstrapping local database along with starting and stopping all the Genesis components."
       },
       {
         "href": "/develop/development-environment/intellij-plugin/",
-        "description": "IntelliJ Plugin description"
+        "imageUrl": "/svg/categories-icons/intellij-idea-svgrepo-com.svg",
+        "description": "Plugin allowing IntelliJ users to quickly manage their development environment from within IntelliJ, including bootstrapping local database along with starting and stopping all the Genesis components."
       },
       {
         "href": "/develop/development-environment/vscode-plugin/",
-        "description": "VSCode Plugin description"
+        "imageUrl": "/svg/categories-icons/vscode-svgrepo-com.svg",
+        "description": "Plugin allowing VS Code IDE users to leverage the Genesis View AI Agent to generate Genesis web application routes from images created by UI designers as well as accelerators to inject UI elements in existing projects."
       },
       {
         "href": "/develop/development-environment/custom-elements-lsp/",
-        "description": "Custom Elements LSP description"
+        "imageUrl": "/svg/categories-icons/code-svgrepo-com.svg",
+        "description": "Plugin enabling VS Code IDE users to enable intelli-sense for custom web component elements to aid in development of front end applications using raw Web Components as a framework. "
       },
       {
         "href": "/develop/development-environment/ai/",
@@ -28,7 +33,8 @@
       },
       {
         "href": "/develop/development-environment/genx/",
-        "description": "genx description"
+        "imageUrl": "/svg/categories-icons/terminal-svgrepo-com.svg",
+        "description": "Command line tool allowing advanced users to quickly generate new project scaffolding and perform typical development functions such as building, triggering tests and so on."
       }
     ]
   },
@@ -37,55 +43,68 @@
     "items": [
       {
         "href": "/develop/server-capabilities/data-model/",
-        "description": "Assembling the application data model"
+        "imageUrl": "/svg/categories-icons/hierarchy-svgrepo-com.svg",
+        "description": "Defining the object and relational data model for the application.  This is the meta data driving the capabilities of the entire platform."
       },
       {
         "href": "/develop/server-capabilities/data-access-apis/",
-        "description": "Accessing the application data model directly via API"
+        "imageUrl": "/svg/categories-icons/data-ingress-egress-svgrepo-com.svg",
+        "description": "API for reading and writing data to the underlying database."
       },
       {
         "href": "/develop/server-capabilities/real-time-queries-data-server/",
-        "description": "Defining low-latency real-time data queries for clients to subscribe"
+        "imageUrl": "/svg/categories-icons/refresh-square-svgrepo-com.svg",
+        "description": "Defining named queries for datasets which need to be exposed to subscribing clients with real time, low-latency updates."
       },
       {
         "href": "/develop/server-capabilities/snapshot-queries-request-server/",
-        "description": "Configuring on-demand data queries accessible to authorized clients"
+        "imageUrl": "/svg/categories-icons/table-alt-svgrepo-com.svg",
+        "description": "Defining on-demand, or snapshot data queries accessible to consuming clients."
       },
       {
         "href": "/develop/server-capabilities/core-business-logic-event-handler/",
-        "description": "Composing business events which update the applications data"
+        "imageUrl": "/svg/categories-icons/chip-component-svgrepo-com.svg",
+        "description": "Defining application events and core business logic to be invoked by consuming clients."
       },
       {
         "href": "/develop/server-capabilities/access-control/",
-        "description": "Configuring human and system user application access privileges"
+        "imageUrl": "/svg/categories-icons/access-svgrepo-com.svg",
+        "description": "Configuring human and system user application authentication and access controls and privileges"
       },
       {
         "href": "/develop/server-capabilities/workflow-state-machine/",
-        "description": "Workflow State Machine description"
+        "imageUrl": "/svg/categories-icons/diagram-next-svgrepo-com.svg",
+        "description": "API allowing users to define states and workflow for any entity."
       },
       {
         "href": "/develop/server-capabilities/real-time-aggregation-consolidator/",
-        "description": "Real Time Aggregation Consolidator description"
+        "imageUrl": "/svg/categories-icons/spreadsheet-with-sum-symbol-svgrepo-com.svg",
+        "description": "Defining realtime aggregation against the stream of incoming data."
       },
       {
         "href": "/develop/server-capabilities/real-time-triggers-evaluator/",
-        "description": "Real Time Triggers Evaluator description"
+        "imageUrl": "/svg/categories-icons/research-left-svgrepo-com.svg",
+        "description": "Defining realtime expression evaluation for using in triggering new events, processing and alerting."
       },
       {
         "href": "/develop/server-capabilities/integrations/",
-        "description": "Integrations description"
+        "imageUrl": "/svg/categories-icons/pipeline-svgrepo-com.svg",
+        "description": "Defining pipelines simplifying getting data in and out of Genesis."
       },
       {
         "href": "/develop/server-capabilities/communications-meta/",
-        "description": "Communications description"
+        "imageUrl": "/svg/categories-icons/network-receive-symbolic-svgrepo-com.svg",
+        "description": "Understanding how Genesis microservices communicate with each other and with the web interface."
       },
       {
         "href": "/develop/server-capabilities/testing-api/",
-        "description": "Testing API description"
+        "imageUrl": "/svg/categories-icons/ui-checks-svgrepo-com.svg",
+        "description": "Defining server side tests for all aspects of the server side."
       },
       {
         "href": "/develop/server-capabilities/runtime-configuration/",
-        "description": "Runtime Configuration description"
+        "imageUrl": "/svg/categories-icons/configuration-settings-gear-options-preferences-setting-tools-svgrepo-com.svg",
+        "description": "Defining configuration values across components by environments."
       }
     ]
   },
@@ -94,86 +113,90 @@
     "items": [
       {
         "href": "/develop/client-capabilities/server-communications/",
-        "description": "Server Communications description",
-        "imageUrl": "/svg/categories-icons/set-up-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/set-up-svgrepo-com.svg",
+        "description": "Understanding Genesis client/server communication, authentication and session management."
       },
       {
         "href": "/develop/client-capabilities/login/",
-        "description": "Login description",
-        "imageUrl": "/svg/categories-icons/user-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/user-svgrepo-com.svg",
+        "description": "Understanding how the login micro front-end can be configured to achieve authentication, single-sign on and more."
       },
       {
         "href": "/develop/client-capabilities/header/",
-        "description": "Header description"
+        "imageUrl": "/svg/categories-icons/menu-svgrepo-com.svg",
+        "description": "Configure the navigation and flyout menu and routing within the application."
       },
       {
         "href": "/develop/client-capabilities/grids/",
-        "description": "Grids description",
-        "imageUrl": "/svg/categories-icons/insert-table-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/insert-table-svgrepo-com.svg",
+        "description": "Rich, realtime data grids with built in server side connection."
       },
       {
         "href": "/develop/client-capabilities/charts/",
-        "description": "Charts description",
-        "imageUrl": "/svg/categories-icons/pie-chart-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/pie-chart-svgrepo-com.svg",
+        "description": "Rich, realtime charts for data visualization with built in server side connection"
       },
       {
         "href": "/develop/client-capabilities/forms/",
         "storyBookHref": "/storybook/forms",
-        "description": "Forms description",
-        "imageUrl": "/svg/categories-icons/copy-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/copy-svgrepo-com.svg",
+        "description": "Dynamic forms component allowing for rich forms based on underlying data-model."
       },
       {
         "href": "/develop/client-capabilities/interaction/",
-        "description": "Interaction description",
-        "imageUrl": "/svg/categories-icons/creativity-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/creativity-svgrepo-com.svg",
+        "description": "Suite of components for managing interactions from accordions to tree views."
       },
       {
         "href": "/develop/client-capabilities/presentation/",
-        "description": "Presentation description",
-        "imageUrl": "/svg/categories-icons/photo-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/photo-svgrepo-com.svg",
+        "description": "Suite of components for presenting information to the user, from cards, banners and badges to progress bars and skeletons."
       },
       {
         "href": "/develop/client-capabilities/filters/",
-        "description": "Filters description"
+        "imageUrl": "/svg/categories-icons/filter-xmark-svgrepo-com.svg",
+        "description": "Client side filtering of data for fast, dynamic data views."
       },
       {
         "href": "/develop/client-capabilities/criteria/",
-        "description": "Criteria description",
-        "imageUrl": "/svg/categories-icons/look-up-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/look-up-svgrepo-com.svg",
+        "description": "Server side filtering of data for fast, dynamic and optimized data views."
       },
       {
         "href": "/develop/client-capabilities/toast-notifications/",
-        "description": "Toast Notifications description",
-        "imageUrl": "/svg/categories-icons/mail-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/mail-svgrepo-com.svg",
+        "description": "Toast notifications for rich, modern, realtime end-user alerts, notifications and acknowledgements"
         
       },
       {
         "href": "/develop/client-capabilities/utility-methods/",
-        "description": "Utility methods description",
-        "imageUrl": "/svg/categories-icons/accelerate-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/accelerate-svgrepo-com.svg",
+        "description": "Collection of utility services and helpers designed to facilitate common development tasks within Genesis applications."
       },
       {
         "href": "/develop/client-capabilities/layout-management/",
-        "description": "Layout Management description"
+        "imageUrl": "/svg/categories-icons/layout-svgrepo-com.svg",
+        "description": "Understanding layout features including dynamic layouts supporting resizing, dragging and re-ordering."
       },
       {
         "href": "/develop/client-capabilities/state-management/",
-        "description": "State Management description"
+        "imageUrl": "/svg/categories-icons/diagram-next-svgrepo-com.svg",
+        "description": "APIs to manage application state using best practices."
       },
       {
         "href": "/develop/client-capabilities/styling/",
-        "description": "Styling description",
-        "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg",
+        "description": "Styling description"
       },
       {
         "href": "/develop/client-capabilities/internationalization/",
-        "description": "Internationalization description",
-        "imageUrl": "/svg/categories-icons/network-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/network-svgrepo-com.svg",
+        "description": "Internationalization description"
       },
       {
         "href": "/develop/client-capabilities/framework-integration/",
-        "description": "Framework Integration description",
-        "imageUrl": "/svg/categories-icons/thumbs-up-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/thumbs-up-svgrepo-com.svg",
+        "description": "Framework Integration description"
       },
       {
         "href": "/develop/client-capabilities/desktop-interoperability/",
@@ -181,8 +204,8 @@
       },
       {
         "href": "/develop/client-capabilities/custom-components/",
-        "description": "Custom Components description",
-        "imageUrl": "/svg/categories-icons/trophy-svgrepo-com.svg"
+        "imageUrl": "/svg/categories-icons/trophy-svgrepo-com.svg",
+        "description": "Custom Components description"
       }
     ]
   },
