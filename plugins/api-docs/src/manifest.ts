@@ -256,7 +256,7 @@ export default {
         readme: "./README.md",
       },
       output: {
-        directory: "./docs/001_develop/03_client-capabilities/002_server-communications/01_server-communications-docs",
+        directory: "./docs/001_develop/03_client-capabilities/002_server-communications",
         api_docs: "docs/api",
         readme: "index.mdx",
         keywords: ["genesis", "foundation", "comms", "connect", "server-communications", "services"],
@@ -427,7 +427,7 @@ export default {
         readme: "./README.md",
       },
       output: {
-        directory: "./docs/001_develop/03_client-capabilities/020_internationalization/01_internationalization-docs",
+        directory: "./docs/001_develop/03_client-capabilities/020_internationalization",
         api_docs: "docs/api",
         readme: "index.mdx",
         keywords: ["genesis", "foundation", "i18n", "internationalization"],
