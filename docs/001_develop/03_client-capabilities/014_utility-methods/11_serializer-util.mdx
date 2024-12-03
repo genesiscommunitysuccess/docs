@@ -38,8 +38,9 @@ and [React](../../framework-integration/client-framework-integration-react/#depe
 
 ```typescript
 import { JSONSerializer } from '@genesislcap/foundation-utils';
+import { GenesisElement } from '@genesislcap/web-core';
 
-export class MyService extends FASTElement {
+export class MyService extends GenesisElement {
   @JSONSerializer serializer!: JSONSerializer; // DI token
 
   const object = { date: new Date(), bigNumber: BigInt(12345678901234567890) };
