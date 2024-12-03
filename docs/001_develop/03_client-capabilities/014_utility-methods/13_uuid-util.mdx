@@ -37,9 +37,9 @@ This module is designed for:
 
 ```typescript
 import { UUID } from '@genesislcap/foundation-utils';
-import { FASTElement } from '@microsoft/fast-element';
+import { GenesisElement } from '@genesislcap/web-core';
 
-export class MyExampleComponent extends FASTElement {
+export class MyExampleComponent extends GenesisElement {
   @UUID uuid: UUID;
 
   async generateUUID(): string {
@@ -54,9 +54,9 @@ This method is designed for scenarios where UUID generation might involve server
 
 ```typescript
 import { UUID } from '@genesislcap/foundation-utils';
-import { FASTElement } from '@microsoft/fast-element';
+import { GenesisElement } from '@genesislcap/web-core';
 
-export class MyExampleComponent extends FASTElement {
+export class MyExampleComponent extends GenesisElement {
   @UUID uuid: UUID;
 
   async generateRemoteUUID(): string {
