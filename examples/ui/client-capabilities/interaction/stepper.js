@@ -1,5 +1,6 @@
 import { CodeLabel, CodeSection } from '../../documentationBase';
 import useIsBrowser from '@docusaurus/useIsBrowser';
+import './stepper.css';
 
 export default function StepperDemo({ children, color }) {
 
