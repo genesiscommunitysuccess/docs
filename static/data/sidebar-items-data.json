@@ -5,7 +5,7 @@
       {
         "href": "/develop/development-environment/launchpad/",
         "imageUrl": "/svg/categories-icons/rocket-svgrepo-com.svg",
-        "description": "Genesis cloud based development environment allowing users to assemble, build and run complete applications entirely in a browser."
+        "description": "Genesis cloud-based development environment allowing users to assemble, build and run complete applications entirely in a browser."
       },
       {
         "href": "/develop/development-environment/genesis-start/",
@@ -44,7 +44,7 @@
       {
         "href": "/develop/server-capabilities/data-model/",
         "imageUrl": "/svg/categories-icons/hierarchy-svgrepo-com.svg",
-        "description": "Defining the object and relational data model for the application. This is the metadata driving the capabilities of the entire platform."
+        "description": "Define the object and relational data model for the application. This is the metadata driving the capabilities of the entire platform."
       },
       {
         "href": "/develop/server-capabilities/data-access-apis/",
@@ -84,7 +84,7 @@
       {
         "href": "/develop/server-capabilities/real-time-triggers-evaluator/",
         "imageUrl": "/svg/categories-icons/research-left-svgrepo-com.svg",
-        "description": "Defining the real-time logic for triggering new events, processing and alerting."
+        "description": "Define the real-time logic for triggering new events, processing and alerting."
       },
       {
         "href": "/develop/server-capabilities/integrations/",
@@ -94,7 +94,7 @@
       {
         "href": "/develop/server-capabilities/communications-meta/",
         "imageUrl": "/svg/categories-icons/network-receive-symbolic-svgrepo-com.svg",
-        "description": "Understanding how Genesis microservices communicate with each other and with the web interface."
+        "description": "Understand how Genesis microservices communicate with each other and with the web interface."
       },
       {
         "href": "/develop/server-capabilities/testing-api/",
@@ -114,12 +114,12 @@
       {
         "href": "/develop/client-capabilities/server-communications/",
         "imageUrl": "/svg/categories-icons/set-up-svgrepo-com.svg",
-        "description": "Understanding Genesis client/server communication, authentication and session management."
+        "description": "Understand Genesis client/server communication, authentication and session management."
       },
       {
         "href": "/develop/client-capabilities/login/",
         "imageUrl": "/svg/categories-icons/user-svgrepo-com.svg",
-        "description": "Understanding how the login micro front-end can be configured to achieve authentication, single-sign-on, and more."
+        "description": "Understand how the login micro front-end can be configured to achieve authentication, single-sign-on, and more."
       },
       {
         "href": "/develop/client-capabilities/header/",
@@ -176,7 +176,7 @@
       {
         "href": "/develop/client-capabilities/layout-management/",
         "imageUrl": "/svg/categories-icons/layout-svgrepo-com.svg",
-        "description": "Understanding layout features, including dynamic layouts that support resizing, dragging and re-ordering."
+        "description": "Understand layout features, including dynamic layouts that support resizing, dragging and re-ordering."
       },
       {
         "href": "/develop/client-capabilities/state-management/",
@@ -186,26 +186,26 @@
       {
         "href": "/develop/client-capabilities/styling/",
         "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg",
-        "description": "Styling description"
+        "description": "Define the visual style of the application through the tokens in the design System."
       },
       {
         "href": "/develop/client-capabilities/internationalization/",
         "imageUrl": "/svg/categories-icons/network-svgrepo-com.svg",
-        "description": "Internationalization description"
+        "description": "Set up your application so that it can have different human-language versions, which users can switch between. "
       },
       {
         "href": "/develop/client-capabilities/framework-integration/",
         "imageUrl": "/svg/categories-icons/thumbs-up-svgrepo-com.svg",
-        "description": "Framework Integration description"
+        "description": "Start working quickly with Foundation UI, the Genesis library of web components, using your existing or preferred stack."
       },
       {
         "href": "/develop/client-capabilities/desktop-interoperability/",
-        "description": "Desktop Interoperability description"
+        "description": "Work seamlessly with other desktop financial applications, so that users can click to move and take information from one application to the other."
       },
       {
         "href": "/develop/client-capabilities/custom-components/",
         "imageUrl": "/svg/categories-icons/trophy-svgrepo-com.svg",
-        "description": "Custom Components description"
+        "description": "Write custom components in the Genesis syntax. These components are based on web components, so you can use them in any other web framework, such as React or Angular."
       }
     ]
   },
@@ -214,31 +214,31 @@
     "items": [
       {
         "href": "/develop/business-components/notifications/",
-        "description": "Notifications and Alerts description"
+        "description": "Configure an application to display notifications, and to send and receive messages to and from various messaging services: email, Symphony and Teams."
       },
       {
         "href": "/develop/business-components/reporting/",
-        "description": "Reporting description"
+        "description": "Enable your users to create reports based on the data in your application. The Reporting component provides a micro front-end that enables them to select, filter and generate files in csv format."
       },
       {
         "href": "/develop/business-components/doc-management/",
-        "description": "Document Management description"
+        "description": "Enable your users to upload and download documents for use in emails and other contexts."
       },
       {
         "href": "/develop/business-components/generated-docs/",
-        "description": "Template Generated Documents description"
+        "description": "Create document templates that enable users to generate documents such as trade reports."
       },
       {
         "href": "/develop/business-components/reconciliation/",
-        "description": "Reconciliation description"
+        "description": "Quickly configure a reconciliation flow and enable admins to set up new file sources, data dictionaries and reconciliation rules at runtime to support a constantly changing ecosystem."
       },
       {
         "href": "/develop/business-components/user-management/",
-        "description": "User Management description"
+        "description": "Enable your admin users to view, add and edit user details, and to activate and deactivate users in a single click."
       },
       {
         "href": "/develop/business-components/fix/",
-        "description": "FIX description"
+        "description": "Create a Gateway to connect to a remote system using the FIX protocol. Use the FIX Xlator to enable type-safe handling of FIX messages. "
       }
     ]
   }
