@@ -15,6 +15,12 @@ sidebar_position: 3
 This section will focus on how to override the default styles of the Genesis `RapidButton` component in your custom `MyButton` component.
 By leveraging CSS custom properties, we can adjust colors, spacing, typography, and more to align your component with your design system.
 
+:::important
+
+The styles in this page including `baseStyles` and apperance styles are specific to buttons, in this case `RapidButton`.
+
+:::
+
 `RapidButton` is made up of 'base styles' (These provide structural and default functional styles for all `RapidButton` instances.)
 and 'appearance styles' (These are variations layered on top of the base styles to create visually distinct versions of the component, such as primary, danger, neutral, etc.).
 Here we focus our attention on how to override the appearance styles in our custom `MyButton` component - this is what you'll likely be doing most of the time.
@@ -44,7 +50,7 @@ Let's override structural properties defined in the `baseStyles` by adding or mo
 ##### Custom Base Styles
 
 ```typescript
-import { css } from "@genesislcap/web-core";
+import { css } from '@genesislcap/web-core';
 
 // Defining base styles for MyButton
 export const myButtonStyles = css`
@@ -84,15 +90,11 @@ export const myButtonStyles = css`
 - Semantic font size (--type-ramp-base-font-size).
 - Adjusted height and padding based on design tokens.
 
-#### Customizing Appearance Styles
+#### Customizing Appearance Styles in buttons
 
 Appearance styles define visual variations like primary, danger, or link. They often rely on design tokens for consistent theming across appearances.
 
-:::important
 
-These apperance styles are specific to buttons, in this case `RapidButton`.
-
-:::
 
 ##### Reusing Existing Appearances
 
@@ -116,8 +118,8 @@ The `neutral` and `primary` appearances will behave as defined in `baseStyles`:
 If you want to tweak or redefine an existing appearance (e.g., `neutral`), you can override the styles in your custom `MyButton`.
 
 ```typescript
-import { css } from "@genesislcap/web-core";
-import { rapidButtonStyles } from "@genesislcap/rapid-design-system";
+import { css } from '@genesislcap/web-core';
+import { rapidButtonStyles } from '@genesislcap/rapid-design-system';
 
 const customNeutralAppearance = css`
   :host([appearance="neutral"]) {
@@ -154,7 +156,7 @@ export const myButtonStyles = (
 The above snippet is using this helper function
 
 ```typescript
-import { ElementStyles, PropertyStyleSheetBehavior } from "@genesis/web-core";
+import { ElementStyles, PropertyStyleSheetBehavior } from '@genesis/web-core';
 
 /**
  * Behavior that will conditionally apply a stylesheet based on the elements
@@ -180,7 +182,7 @@ export function appearanceBehavior(value: string, styles: ElementStyles) {
 
 > This approach ensures that your custom `MyButton` inherits the full functionality of `RapidButton` while applying your customizations.
 
-##### Adding a New Appearance
+##### Adding new appearance styles
 
 To define a completely new appearance (e.g., success), use the `appearanceBehavior` utility.
 
@@ -226,6 +228,6 @@ export const myButtonStyles = (
 
 > - **Appearance Styles**:
 
-    >>- Reusing: Default appearances (e.g., neutral, primary) are already defined in baseStyles. No need to redefine unless necessary.
+    >>- Reusing: Default appearances (e.g., neutral, primary) are already defined in `baseStyles`. No need to redefine unless necessary.
     >>- Customizing: Override existing appearances for unique designs.
     >>- Adding: Define new appearances for entirely new behaviors.
