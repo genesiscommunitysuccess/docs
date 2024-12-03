@@ -1,6 +1,6 @@
 {
   "/develop/development-environments": {
-    "description": "Development environment description",
+    "description": "The Genesis Application Platform comes with a suite of tooling to help with building and running applications.",
     "items": [
       {
         "href": "/develop/development-environment/launchpad/",
@@ -39,7 +39,7 @@
     ]
   },
   "/develop/server-capabilities": {
-    "description": "This section provides full details of the Genesis application platform's server capabilities. Each section details how the capability works. along with examples. There is full documentation on configuration and interaction.",
+    "description": "This section provides full details of the Genesis Application Platform's server capabilities. Each section details how the capability works, along with examples and full documentation on configuration and interaction.",
     "items": [
       {
         "href": "/develop/server-capabilities/data-model/",
@@ -74,7 +74,7 @@
       {
         "href": "/develop/server-capabilities/workflow-state-machine/",
         "imageUrl": "/svg/categories-icons/diagram-next-svgrepo-com.svg",
-        "description": "API for defining states and workflow for any entity."
+        "description": "Define workflow and states for any entity in your application."
       },
       {
         "href": "/develop/server-capabilities/real-time-aggregation-consolidator/",
@@ -89,10 +89,15 @@
       {
         "href": "/develop/server-capabilities/integrations/",
         "imageUrl": "/svg/categories-icons/pipeline-svgrepo-com.svg",
-        "description": "Define pipelines simplifying getting data in and out of Genesis."
+        "description": "Define pipelines simplifying getting data in and out of applications."
       },
       {
-        "href": "/develop/server-capabilities/communications-meta/",
+        "href": "/develop/server-capabilities/custom-components/",
+        "imageUrl": "/svg/categories-icons/trophy-svgrepo-com.svg",
+        "description": "Define and inject custom server components into your application."
+      },
+      {
+        "href": "/develop/server-capabilities/communications/",
         "imageUrl": "/svg/categories-icons/network-receive-symbolic-svgrepo-com.svg",
         "description": "Understand how Genesis microservices communicate with each other and with the web interface."
       },
@@ -104,12 +109,12 @@
       {
         "href": "/develop/server-capabilities/runtime-configuration/",
         "imageUrl": "/svg/categories-icons/configuration-settings-gear-options-preferences-setting-tools-svgrepo-com.svg",
-        "description": "Define configuration values across components by environments."
+        "description": "Define runtime configuration for your applications, including per-environment configuration items."
       }
     ]
   },
   "/develop/client-capabilities": {
-    "description": "Client capabilities (Web UI) description",
+    "description": "This section provides full details of the Genesis Application Platform's client (web UI) capabilities. Each section details how the capability works, along with examples and full documentation on configuration.",
     "items": [
       {
         "href": "/develop/client-capabilities/server-communications/",
@@ -150,7 +155,7 @@
       {
         "href": "/develop/client-capabilities/presentation/",
         "imageUrl": "/svg/categories-icons/photo-svgrepo-com.svg",
-        "description": "Present information to the user in the most engaging form, from cards, banners and badges to progress bars and skeletons."
+        "description": "Present information to the user in the most engaging form. From cards, banners and badges to progress bars and skeletons."
       },
       {
         "href": "/develop/client-capabilities/filters/",
@@ -200,6 +205,7 @@
       },
       {
         "href": "/develop/client-capabilities/desktop-interoperability/",
+        "imageUrl": "/svg/categories-icons/ui-desktop-interoperability.svg",
         "description": "Make your application seamlessly with other desktop financial applications, so that users can click to move and take information from one application to the other."
       },
       {
@@ -207,10 +213,16 @@
         "imageUrl": "/svg/categories-icons/trophy-svgrepo-com.svg",
         "description": "Write your own custom components, based on standard web components that you can use in other web frameworks, such as React or Angular."
       }
+      ,
+      {
+        "href": "/develop/client-capabilities/testing/",
+        "imageUrl": "/svg/categories-icons/ui-checks-svgrepo-com.svg",
+        "description": "Define client-side unit tests and application end-to-end tests."
+      }
     ]
   },
   "/develop/business-components": {
-    "description": "Genesis Platform Business Components are designed to give you working business solutions for the most common requirements of financial applications. You can incorporate them into your application in very little time. They are easy to install, run and customise to meet your exact requirements. Each one comes with a combination of pre-built micro-services, APIs and UI components that can be integrated in to your application with minimal configuration.",
+    "description": "Genesis Application Platform Business Components are designed to give you working business solutions for the most common requirements of financial applications. You can incorporate them into your application in very little time. They are easy to install, run and customize to meet your exact requirements. Each one comes with a combination of pre-built micro-services, APIs and UI components that can be integrated in to your application with minimal configuration.",
     "items": [
       {
         "href": "/develop/business-components/notifications/",
