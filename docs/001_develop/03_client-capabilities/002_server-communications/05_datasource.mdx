@@ -20,7 +20,7 @@ This provides an interface for interacting with different types of data sources 
 - **Data Transformation:** Includes utilities for normalizing criteria and filtering results from a data server.
 - **Mock Testing Support:** Accompanied by testing utilities to facilitate unit and integration testing of components that depend on data sources.
 
-## Key Components
+## Key components
 
 ### `DefaultDatasource`
 
@@ -38,7 +38,7 @@ An extension of `DefaultDatasource`, tailored for use cases that involve entity-
 
 ## Examples
 
-### Initializing a Datasource
+### Initializing a datasource
 
 Initialization of a `DefaultDatasource` is crucial for setting up the resource name, criteria, and other options that define how data should be fetched and presented.
 
@@ -65,7 +65,7 @@ export class MyExampleClass {
 }
 ```
 
-### Taking a Snapshot
+### Taking a snapshot
 
 After initializing the datasource, you can take a snapshot of the current data. This is particularly useful for fetching data at a specific point in time without setting up a real-time stream.
 
@@ -82,7 +82,7 @@ export class MyExampleClass {
 }
 ```
 
-### Streaming Data
+### Streaming data
 
 For scenarios where you need real-time data updates, after initializing the datasource, subscribe to the datasource's stream. This example demonstrates how to handle real-time data updates:
 
@@ -105,7 +105,7 @@ export class MyExampleClass {
 }
 ```
 
-### Updating Datasource Criteria
+### Updating datasource criteria
 
 Changing the criteria of an already initialized datasource allows you to filter the data dynamically. This can be useful for implementing user-driven filters:
 
@@ -124,7 +124,7 @@ export class MyExampleClass {
 }
 ```
 
-### Cleaning Up
+### Cleaning up
 
 When the datasource is no longer needed, or before re-initializing it with new parameters, it's important to properly deinitialize it to clean up resources:
 
@@ -142,7 +142,7 @@ export class MyExampleClass {
 }
 ```
 
-### Filtering Criteria Transformation
+### Filtering criteria transformation
 
 Transforming a complex filtering criteria string into a structured query object:
 
@@ -174,7 +174,7 @@ const filteredResult = dataServerResultFilter(rawResult);
 // Outputs: { inserts: [{ ROW_REF: '1' }], deletes: [{ ROW_REF: '2' }], updates: [], SOURCE_REF: "exampleSourceRef" }
 ```
 
-### Normalizing Criteria
+### Normalizing criteria
 
 Normalizing filtering criteria for a consistent query format:
 

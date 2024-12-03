@@ -1,6 +1,6 @@
 ---
-title: 'Storage (Key-Value)'
-sidebar_label: 'Storage (Key-Value)'
+title: 'Storage (key-value)'
+sidebar_label: 'Storage (key-value)'
 id: comms-storage
 keywords: [genesis, foundation, comms, storage, key-value, kv]
 tags:
@@ -10,23 +10,23 @@ tags:
   - kv
 ---
 
-# Key-Value Storage
+# Key-value storage
 
-Provides a versatile Key-Value (KV) storage system for managing data within the application, abstracting over the specifics of the underlying storage technology to offer a unified API for data operations. This feature enables developers to interact with the KV storage seamlessly, performing CRUD operations such as inserting, updating, retrieving, and deleting data items.
+The Genesis Application Platform provides a versatile Key-Value (KV) storage system for managing data within the application, abstracting over the specifics of the underlying storage technology to offer a unified API for data operations. This feature enables you to interact with the KV storage seamlessly, performing CRUD operations such as inserting, updating, retrieving, and deleting data items.
 
-## Key Components
+## Key components
 
 - **KVStorage Interface:** Outlines the contract for KV storage operations, including methods to delete, get, list, and put items in the KV storage.
 - **DefaultKVStorage Implementation:** Implements the `KVStorage` interface, providing concrete logic to interact with the KV storage, checking for availability, and performing CRUD operations.
 - **KVStorageConfig Interface and Default Configuration:** Facilitates configuration of the KV storage, allowing for the specification of account, namespace, auth key, and auth email.
 
-### Usage Examples
+### Usage examples
 
-#### Coonfiguring KV Storage
+#### Configuring KV storage
 
 Set up the KV storage **with** custom configuration options if necessary. By default, `defaultKVStorageConfig` provides a starting point.
 
-First, we define a custom `KVStorageConfig` that suits our application's needs, different from the default configuration. This might involve specifying a unique account, namespace, auth key, and auth email to tailor the KV Storage behavior.
+First, define a custom `KVStorageConfig` that suits your application's needs, different from the default configuration. This might involve specifying a unique account, namespace, auth key, and auth email to tailor the KV storage behaviour.
 
 ```typescript
 import { KVStorageConfig, defaultKVStorageConfig } from '@genesislcap/foundation-comms';
@@ -42,7 +42,7 @@ const customKVStorageConfig: KVStorageConfig = {
 
 #### Register KVStorageConfig with DI Container
 
-Within the `MainApplication`'s `registerDIDependencies` method, we register the custom `KVStorageConfig` with the DI container. This step ensures that any instance of `KVStorage` created within the application uses this configuration.
+Within the `MainApplication`'s `registerDIDependencies` method, register the custom `KVStorageConfig` with the DI container. This step ensures that any instance of `KVStorage` created within the application uses this configuration.
 
 ```typescript
 import { KVStorageConfig } from '@genesislcap/foundation-comms';
@@ -60,9 +60,9 @@ export class MyExampleClass {
 }
 ```
 
-#### Performing CRUD Operations
+#### Performing CRUD operations
 
-##### Put (Insert or Update)
+##### Put (insert or update)
 
 ```typescript
 import { KVStorage } from '@genesislcap/foundation-comms';
@@ -141,6 +141,6 @@ Removes specified keys and their associated values from the KV storage.
 - **Error Handling:** Implement robust error handling, especially for network-related operations that might fail or return unexpected results.
 - **Configuration Management:** Securely manage the configuration details such as the `authKey` and `authEmail` to prevent unauthorized access to the KV storage.
 
-### Future Expansion
+### Future expansion
 
-While KV storage is currently the primary focus, the architecture is designed with extensibility in mind, allowing for the potential inclusion of additional storage options. This foresight ensures that the storage solution can evolve to meet future needs without requiring significant rearchitecture.
+While KV storage is currently the primary focus, the architecture is designed with extensibility in mind, allowing for the potential inclusion of additional storage options. This foresight ensures that the storage solution can evolve to meet future needs without requiring significant re-architecture.
