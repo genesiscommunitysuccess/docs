@@ -16,6 +16,8 @@ tags:
 
 ---
 
+import SerializerDemo from './examples/serializers.js';
+
 This contains a comprehensive JSON serialization and deserialization solution, designed to support complex data structures, including those involving big integers and custom object types, ensuring robust and flexible handling of JSON data.
 
 ## Key Features
@@ -35,6 +37,16 @@ The `JSONSerializer` DI Token enable the serialization and deserialization of co
 Inject the UUID class dependency like this in [Angular](../../framework-integration/client-framework-integration-angular/#dependency-injection)
 and [React](../../framework-integration/client-framework-integration-react/#dependency-injection).
 :::
+
+### Example
+
+```typescript
+const object = { date: new Date(), bigNumber: BigInt(12345678901234567890) };
+```
+
+<SerializerDemo />
+
+#### Code
 
 ```typescript
 import { JSONSerializer } from '@genesislcap/foundation-utils';
