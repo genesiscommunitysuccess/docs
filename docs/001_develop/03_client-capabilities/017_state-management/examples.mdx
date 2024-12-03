@@ -121,7 +121,7 @@ We're going to be linking two components together using a variable in the store.
   <TabItem value="react">
 
 
-    ```typescript
+    ```tsx
     const ExampleGrid = () => {
       const baseGridOptions = {
         defaultColDef: {
@@ -203,7 +203,7 @@ Pasting the above example into your codebase and adding it to the HTML should al
   </TabItem>
   <TabItem value="react">
 
-    ```typescript
+    ```tsx
     const SetFilter = () => {
       const [radioValue, setRadioValue] = useState('both');
 
@@ -335,7 +335,7 @@ In Genesis syntax you can dispatch an event from a standard component, but it's 
   </TabItem>
   <TabItem value="react">
 
-  ```typescript {2,6,9}
+  ```tsx {2,6,9}
   const SetFilter = () => {
     const ref = useRef();
     const [radioValue, setRadioValue] = useState('both');
@@ -424,7 +424,7 @@ The very final step is to use the configured value to filter the grid rows. Ther
   </TabItem>
   <TabItem value="react">
 
-  ```typescript {2,13-22,26}
+  ```tsx {2,13-22,26}
   const ExampleGrid = () => {
     const gridRef = useRef();
 
@@ -678,7 +678,7 @@ As well as reacting to the `@observable` directly on the html, there are additio
   </TabItem>
   <TabItem value="react">
 
-  ```typescript
+  ```tsx
   import { ColDef } from '@ag-grid-community/core';
   import { useRef, useState, useEffect } from 'react';
   import { customEventFactory } from '@/pbc/utils';

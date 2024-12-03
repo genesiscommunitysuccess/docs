@@ -24,7 +24,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 The `entity-management` micro front-end provides a seamless way to interact with back-end resources, enabling users to manage entities directly from the front-end.
-It features two core components: a grid for displaying and managing entity data and a form for creating or updating entities. 
+It features two core components: a grid for displaying and managing entity data and a form for creating or updating entities.
 
 Below are some of its standout capabilities that streamline entity interaction and enhance user experience:
 
@@ -36,13 +36,13 @@ Below are some of its standout capabilities that streamline entity interaction a
   - Forms are dynamically generated from the back-end resource metadata.
   - Simplifies the process of creating or updating entities.
 
-- **Dynamic Grid Configuration**:  
-  - Displays entities as rows with attributes in columns for a clear and structured overview.  
-  - Integrates with back-end data sources like Data Server queries or Request Server requests to populate data dynamically.  
+- **Dynamic Grid Configuration**:
+  - Displays entities as rows with attributes in columns for a clear and structured overview.
+  - Integrates with back-end data sources like Data Server queries or Request Server requests to populate data dynamically.
 
-- **Streamlined Workflow**:  
-  - Combines the grid and form seamlessly to allow quick navigation between viewing, creating, and editing entities.  
-  - Reduces development time by leveraging pre-built components.  
+- **Streamlined Workflow**:
+  - Combines the grid and form seamlessly to allow quick navigation between viewing, creating, and editing entities.
+  - Reduces development time by leveraging pre-built components.
 
 ### Adding the Entity Management component to the template
 
@@ -82,7 +82,7 @@ Declaration:
 ```
 
 Usage:
-```typescript
+```tsx
 export default function EntityManagementExample({}) {
   return (
    <entity-management
@@ -131,9 +131,9 @@ import CounterpartyEntity from '../../../../_includes/_counterparty_table.mdx'
 
 <CounterpartyEntity />
 
-In this example, we configure the **entity-management** using three key attributes:  
+In this example, we configure the **entity-management** using three key attributes:
 
-1. **`design-system-prefix="rapid"`** - Ensures that all UI elements are styled according to the **rapid** design system.  
+1. **`design-system-prefix="rapid"`** - Ensures that all UI elements are styled according to the **rapid** design system.
 2. **`resourceName="ALL_COUNTERPARTYS"`** - Defines the source of the data for the grid: a Data Server query called `ALL_COUNTERPARTYS`.
 3. **`title="Counterparty Management"`** - Displays **"Counterparty Management"** as the title of the grid.
 7. **`createEvent="EVENT_COUNTERPARTY_INSERT"`** - Generates a form with all the fields from the metadata of the `EVENT_COUNTERPARTY_INSERT` event and adds a button at the top of the grid so that the user can access this form to create new entities.
@@ -202,7 +202,7 @@ Declaration:
 ```
 
 Usage:
-```typescript
+```tsx
 const counterpartyUIschema = {
   type: 'VerticalLayout',
   elements: [
@@ -285,16 +285,16 @@ export class AppComponent {
 </TabItem>
 </Tabs>
 
-In this example, we configure the **entity-management** using the following attributes:  
+In this example, we configure the **entity-management** using the following attributes:
 
-1. **`design-system-prefix="rapid"`** - Ensures that all UI elements are styled according to the **rapid** design system.  
+1. **`design-system-prefix="rapid"`** - Ensures that all UI elements are styled according to the **rapid** design system.
 2. **`resourceName="ALL_COUNTERPARTYS"`** - Defines the source of the data for the grid: a Data Server query called `ALL_COUNTERPARTYS`.
 3. **`title="Counterparty Management"`** - Displays **"Counterparty Management"** as the title of the grid.
 4. **`:createFormUiSchema=${(x) => counterpartyUIschema}`** - Specifies the UI schema for the create form. It dynamically loads the schema for the counterparty form from a predefined JavaScript object or function, ensuring that the form fields align with the data structure of the entity.
 5. **`updateEvent="EVENT_COUNTERPARTY_UPDATE"`** - Defines the event used for updating existing counterparty records. This triggers the form to populate with the data of the selected entity for editing.
 6. **`deleteEvent="EVENT_COUNTERPARTY_DELETE"`** - Defines the event used for deleting counterparty records. A button will be displayed for users to delete the selected entity from the grid.
 7. **`createEvent="EVENT_COUNTERPARTY_INSERT"`** - Generates a form with all the fields from the metadata of the `EVENT_COUNTERPARTY_INSERT` event and adds a button at the top of the grid so that the user can access this form to create new entities.
-8. **`enable-search-bar`** - Enables the search bar functionality within the grid, allowing users to search for specific entities.  
+8. **`enable-search-bar`** - Enables the search bar functionality within the grid, allowing users to search for specific entities.
 
 
 With these attributes in place, the grid will appear on your page when the application is run locally, provided the back-end resources are correctly configured.
@@ -327,7 +327,7 @@ Note that it is not mandatory to specify an event, but if you don't specify a `c
 :::
 
 :::warning
-The `persist-column-state-key` string defines the key where the serialised state of the columns is stored, as an object in [local storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage). 
+The `persist-column-state-key` string defines the key where the serialised state of the columns is stored, as an object in [local storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
 
 If you set multiple `entity-management` components in your application, **you must use unique keys** to persist the state - otherwise, the user experience will be unpredictable.
 :::
