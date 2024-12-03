@@ -15,6 +15,12 @@ sidebar_position: 3
 This section will focus on how to override the default styles of the Genesis `RapidButton` component in your custom `MyButton` component.
 By leveraging CSS custom properties, we can adjust colors, spacing, typography, and more to align your component with your design system.
 
+:::important
+
+The styles in this page including `baseStyles` and apperance styles are specific to buttons, in this case `RapidButton`.
+
+:::
+
 `RapidButton` is made up of 'base styles' (These provide structural and default functional styles for all `RapidButton` instances.)
 and 'appearance styles' (These are variations layered on top of the base styles to create visually distinct versions of the component, such as primary, danger, neutral, etc.).
 Here we focus our attention on how to override the appearance styles in our custom `MyButton` component - this is what you'll likely be doing most of the time.
@@ -22,8 +28,7 @@ We can achieve this by adding or modifying CSS custom properties. In Genesis, de
 
 Before we move on let's clarify the difference between custom properties and design tokens:
 
-
-| Aspect     | Custom Properties (CSS variables)                              | Design Tokens                                     |
+| Aspect     | Custom Properties (CSS variables)               | Design Tokens                                     |
 | ---------- | ----------------------------------------------- | ------------------------------------------------- |
 | Definition | Flexible variables defined in component styles. | Semantic variables representing design decisions. |
 | Purpose    | Enable local, flexible customizations.          | Promote shared theming and consistency.           |
@@ -52,8 +57,12 @@ export const myButtonStyles = css`
   /* Using custom properties for structural adjustments */
   :host {
     font-weight: 700; /* Custom property (direct value) */
-    font-size: var(--type-ramp-base-font-size); /* Design token for semantic font size */
-    height: calc(((var(--base-height-multiplier) + 2) * var(--design-unit)) * 1px); /* Design tokens for height */
+    font-size: var(
+      --type-ramp-base-font-size
+    ); /* Design token for semantic font size */
+    height: calc(
+      ((var(--base-height-multiplier) + 2) * var(--design-unit)) * 1px
+    ); /* Design tokens for height */
   }
 
   .control {
@@ -66,8 +75,8 @@ export const myButtonStyles = css`
 
 > - Custom Properties: `font-weight: 700`: Directly defines a value.
 > - Design Tokens:
-    >>- var(`--type-ramp-base-font-size`): Semantic font size token.
-    >>- var(`--design-unit`): Represents consistent spacing and sizing across components.
+>   > - var(`--type-ramp-base-font-size`): Semantic font size token.
+>   > - var(`--design-unit`): Represents consistent spacing and sizing across components.
 
 ##### Usage in HTML
 
@@ -81,9 +90,11 @@ export const myButtonStyles = css`
 - Semantic font size (--type-ramp-base-font-size).
 - Adjusted height and padding based on design tokens.
 
-#### Customizing Appearance Styles
+#### Customizing Appearance Styles in buttons
 
 Appearance styles define visual variations like primary, danger, or link. They often rely on design tokens for consistent theming across appearances.
+
+
 
 ##### Reusing Existing Appearances
 
@@ -94,47 +105,56 @@ If the default appearance styles meet your needs, simply use the appearance attr
 <my-button appearance="primary">Primary Button</my-button>
 
 ```
-The neutral and primary appearances will behave as defined in baseStyles:
 
-> -Neutral Appearance:
->> -Background: Transparent neutral fill.
->> -Border: Neutral border color.
->> -Text: Neutral foreground.
+The `neutral` and `primary` appearances will behave as defined in `baseStyles`:
+
+> - Neutral Appearance:
+>   > - Background: Transparent neutral fill.
+>   > - Border: Neutral border color.
+>   > - Text: Neutral foreground.
 
 ##### Customizing an Existing Appearance
 
-If you want to tweak or redefine an existing appearance (e.g., neutral), you can override the styles in your custom `MyButton`.
+If you want to tweak or redefine an existing appearance (e.g., `neutral`), you can override the styles in your custom `MyButton`.
 
 ```typescript
 import { css } from '@genesislcap/web-core';
 import { rapidButtonStyles } from '@genesislcap/rapid-design-system';
 
 const customNeutralAppearance = css`
-  :host([appearance='neutral']) {
-    background: var(--custom-neutral-background, #f0f0f0); /* Custom neutral background */
+  :host([appearance="neutral"]) {
+    background: var(
+      --custom-neutral-background,
+      #f0f0f0
+    ); /* Custom neutral background */
     border: 2px solid var(--custom-neutral-border, #ccc); /* Custom border */
     color: var(--custom-neutral-text, #333); /* Custom text color */
   }
 
-  :host([appearance='neutral']:hover) {
+  :host([appearance="neutral"]:hover) {
     background: var(--custom-neutral-hover, #e0e0e0); /* Custom hover state */
   }
 `;
 
- export const myButtonStyles = (
-   context: ElementDefinitionContext,
-   definition: FoundationElementDefinition,
- ): ElementStyles =>
-   css`
-     ${rapidButtonStyles(context, definition)}
-   `.withBehaviors(
-     // our defined custom behaviour
-     appearanceBehavior('neutral', customNeutralAppearance),
-   );
+// Combine base styles with custom behaviors
+export const myButtonStyles = (
+  context: ElementDefinitionContext,
+  definition: FoundationElementDefinition
+): ElementStyles =>
+  css`
+    ${rapidButtonStyles(context, definition)}/* Include base styles */
+  `.withBehaviors(
+    // our defined custom behaviour
+    appearanceBehavior(
+      "neutral",
+      customNeutralAppearance
+    ) /* Add custom neutral behavior */
+  );
 ```
 
 :::tip
 The above snippet is using this helper function
+
 ```typescript
 import { ElementStyles, PropertyStyleSheetBehavior } from '@genesis/web-core';
 
@@ -148,31 +168,49 @@ import { ElementStyles, PropertyStyleSheetBehavior } from '@genesis/web-core';
  * @public
  */
 export function appearanceBehavior(value: string, styles: ElementStyles) {
-  return new PropertyStyleSheetBehavior('appearance', value, styles);
+  return new PropertyStyleSheetBehavior("appearance", value, styles);
 }
 ```
+
 :::
 
-##### Adding a New Appearance
+##### Key Notes:
 
-To define a completely new appearance (e.g., success), use the appearanceBehavior utility.
+> - `rapidButtonStyles`: Retain all existing base styles and behaviors for consistency.
+> - `withBehaviors`: Add or extend behaviors without replacing existing ones.
+> - Custom Neutral Appearance: Override only the styles you want to change.
+
+> This approach ensures that your custom `MyButton` inherits the full functionality of `RapidButton` while applying your customizations.
+
+##### Adding new appearance styles
+
+To define a completely new appearance (e.g., success), use the `appearanceBehavior` utility.
 
 ```typescript
 const successAppearance = css`
-  :host([appearance='success']) {
+  :host([appearance="success"]) {
     background: var(--success-fill, #4caf50); /* Green success background */
     color: var(--neutral-foreground-rest); /* White text color */
     border: 2px solid var(--success-border, #388e3c); /* Dark green border */
   }
 
-  :host([appearance='success']:hover) {
+  :host([appearance="success"]:hover) {
     background: var(--success-hover-fill, #66bb6a); /* Lighter hover state */
   }
 `;
 
-export const myButtonStyles = css`
-  ${appearanceBehavior('success', successAppearance)};
-`;
+export const myButtonStyles = (
+  context: ElementDefinitionContext,
+  definition: FoundationElementDefinition
+): ElementStyles =>
+  css`
+    ${rapidButtonStyles(context, definition)}/* Include base styles */
+  `.withBehaviors(
+    appearanceBehavior(
+      "success",
+      successAppearance
+    ) /* Define the new "success" appearance */
+  );
 ```
 
 ##### Usage in HTML
@@ -181,15 +219,15 @@ export const myButtonStyles = css`
 <my-button appearance="success">Success Button</my-button>
 ```
 
-##### Key Points:
+### Key Points for Overriding Default Styles:
 
->- Base Styles:
+> - **Base Styles**:
 
->>- Use these for structural adjustments (e.g., typography, padding).
->>- Directly modify or override with CSS custom properties or design tokens.
+> > - Use these for structural adjustments (e.g., typography, padding).
+> > - Directly modify or override with CSS custom properties or design tokens.
 
->- Appearance Styles:
+> - **Appearance Styles**:
 
-    >>- Reusing: Default appearances (e.g., neutral, primary) are already defined in baseStyles. No need to redefine unless necessary.
+    >>- Reusing: Default appearances (e.g., neutral, primary) are already defined in `baseStyles`. No need to redefine unless necessary.
     >>- Customizing: Override existing appearances for unique designs.
     >>- Adding: Define new appearances for entirely new behaviors.
