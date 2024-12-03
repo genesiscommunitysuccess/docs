@@ -13,16 +13,16 @@ tags:
   - management
 ---
 
-This encompasses a comprehensive suite of utilities and components for dynamic style management, including CSS rule insertion, font face loading, and the application of styles to custom elements.
+The platform provides a comprehensive suite of utilities and components for dynamic style management, including CSS rule insertion, font-face loading, and the application of styles to custom elements.
 
-## Key Features
+## Key features
 
 - **Encapsulated Style Management:** Allows styles to be defined and dynamically changed for custom elements, supporting encapsulated styling strategies.
 - **Font Face Loading:** Simplifies the loading of custom font faces by generating and applying the necessary CSS rules.
 - **Dynamic CSS Rule Insertion:** Enables the insertion of CSS rules into the document, facilitating dynamic style updates.
 - **Element Style Conversion:** Converts `ComposableStyles` or an array of `ComposableStyles` into `ElementStyles` for efficient style application.
 
-## Use Cases
+## Use cases
 
 This module is ideal for:
 - Dynamic style management.
@@ -30,7 +30,7 @@ This module is ideal for:
 
 ### Examples
 
-#### Dynamic Style Application with `SlottedStyles`
+#### Dynamic style application with `SlottedStyles`
 
 The `SlottedStyles` custom element enables the encapsulation and dynamic application of styles to slotted content. It observes changes to its `styles` property and applies the new styles to its parent element's shadow DOM or to the document.
 
@@ -65,11 +65,11 @@ slottedStyles.addEventListener('styles-changed', (e) => {
 });
 ```
 
-### CSS Rule and Font Face Management
+### CSS rule and font-face management
 
-#### Inserting CSS Rules
+#### Inserting CSS rules
 
-The `insertDocumentCSSRule` utility function dynamically inserts CSS rules into the document, creating a new `<style>` element or utilizing an existing one identified by a specific ID.
+The `insertDocumentCSSRule` utility function dynamically inserts CSS rules into the document, creating a new `<style>` element or using an existing one that is identified by a specific ID.
 
 ```typescript
 import { insertDocumentCSSRule } from '@genesislcap/foundation-utils';
@@ -78,7 +78,7 @@ import { insertDocumentCSSRule } from '@genesislcap/foundation-utils';
 insertDocumentCSSRule('.my-class { color: red; }', 'my-style-element-id');
 ```
 
-#### Loading Font Faces
+#### Loading font faces
 
 The `loadFontFaces` function simplifies the process of defining and loading custom font faces by automatically generating the necessary CSS rules and applying them to the document.
 
@@ -94,7 +94,7 @@ loadFontFaces(`
 `, 'custom-font-styles');
 ```
 
-#### Style Conversion
+#### Style conversion
 
 The `toElementStyles` function converts `ComposableStyles` or an array of `ComposableStyles` into `ElementStyles`, streamlining the application of styles within `@genesislcap/genesis-element` components.
 
@@ -108,8 +108,8 @@ const myStyles = toElementStyles(`:host { display: block; }`);
 document.querySelector('some-element').styles = myStyles;
 ```
 
-### Key Points
+### Key points
 
 - **Scoped Style Application:** Use `SlottedStyles` for scoped style management within components, ensuring styles are applied predictably and without leaking into the global scope.
-- **Efficient Font Loading:** When using `loadFontFaces`, ensure fonts are loaded efficiently to minimize impact on page load times and prevent layout shifts.
-- **Semantic ID Naming:** Choose meaningful IDs for style and font elements to facilitate maintainability and prevent conflicts.
+- **Efficient Font Loading:** When using `loadFontFaces`, ensure fonts are loaded efficiently to minimize the impact on page load times and to prevent layout shifts.
+- **Semantic ID Naming:** Choose meaningful IDs for style and font elements to ensure maintainability and prevent conflicts.
