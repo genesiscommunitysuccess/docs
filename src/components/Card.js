@@ -1,10 +1,13 @@
 // @todo: Remove after updating the documentation where this component is used as QuickCard.
 import React from "react";
 import { Card as CardMaterial } from '@mui/material'
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 export default function Card({ heading, link, text }) {
+  const relativeLink = useBaseUrl(link);
+
   return (
-    <a href={link} title={heading} className="card">
+    <a href={relativeLink} title={heading} className="card">
       <CardMaterial 
         sx={{ backgroundColor: 'var(--white)', position: 'relative', padding: '32px', display: 'flexbox', flexGrow: '1', flexDirection: 'row', margin: '1%', borderRadius: "8px" }}
         style={{ height: '100%', boxShadow: 'none' }}

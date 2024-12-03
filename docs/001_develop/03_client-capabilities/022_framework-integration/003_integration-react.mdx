@@ -232,6 +232,53 @@ return (
 ### Global styles
 You can add global styles by modifying the main stylesheet located at **src/styles/styles.css**. This file contains styles that apply to the entire application.
 
+### Component styles
+Styling a component works the same way it does in React. Create your styles in a file and import it at the top of your component **.tsx** file.
+
+This example shows how to style the host component, the foundation-form element and the `userActions` part of the form.
+
+:::info
+You can learn more in our [styling](../019_styling/index.mdx) documentation.
+:::
+
+**styles.css**
+```css
+:host {
+  max-height: 800px;
+  overflow-y: auto;
+  display: block;
+}
+
+foundation-form {
+  display: block;
+  height: 1000px;
+}
+
+foundation-form::part(userActions) {
+  padding: 20px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row
+}
+```
+
+**example.tsx**
+
+```ts
+import './style.css';
+
+export default function Example() {
+  const handleSubmit = (event) => {
+    console.log(event.target);
+  }
+}
+return (
+  <foundation-form
+      design-system-prefix="rapid"
+      onSubmit={handleSubmit}
+  ></foundation-form>
+)
+```
 ---
 
 ### Styling specific components or pages
@@ -276,7 +323,7 @@ export function MyComponent() {
 
 Foundation UI has a suite of services that can be added to your application via dependency injection.
 
-If you want to use the Connect service, the best approach is to create a class to resolve the dependency injection boilerplate and export it.
+For example, if you want to use the Connect service, the best approach is to create a class to resolve the dependency injection boilerplate and export it.
 
 :::info
 You can follow this same procedure for any other service from the framework that works via dependency injection.
@@ -353,5 +400,5 @@ Design tokens are declared in the **src/styles/design-tokens.json** file. They o
 The design tokens enable you to define and manage values such as colours, fonts, and spacing across the whole application. You can modify these tokens to propagate changes wherever they are used in the application.
 
 :::note
-See more details in our page on [Design systems](../../../design-systems/introduction/)
+See more details in our page on [design tokens](../../styling/design-tokens/) and the [Design System Configurator](../../styling/direct-customization-genesis-components/styling-direct-dsc/)
 :::

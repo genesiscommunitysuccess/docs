@@ -1,0 +1,52 @@
+---
+title: 'Sizing tokens'
+sidebar_label: 'Sizing tokens'
+id: styling-tokens-sizing
+keywords: [web, design system, tokens, sizing]
+tags:
+  - web
+  - design system
+  - tokens
+  - sizing
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+You can adjust any of the defaults in the `design-tokens.json` file of your design system.
+
+- `density`: an adjustment to sizing tokens `baseHeightMultiplier` and `baseHorizontalSpacingMultiplier`.
+- `borderRadius`: radius applied to borders, for example the border on a button or a checkbox.
+- `strokeWidth`: changes the width of the outline (stroke) of SVG elements or text. It determines how thick the lines, borders, or outlines appear.
+- `designUnit`: the unit size of the design grid. Used to calculate height and spacing sizes for controls.
+
+## Usage
+
+<Tabs
+  defaultValue="css"
+  values={[
+    { label: 'CSS', value: 'css', },
+    { label: 'JavaScript', value: 'token', }
+  ]
+}>
+<TabItem value="css">
+
+```css
+border-radius: var(--control-corner-radius);
+```
+
+</TabItem>
+<TabItem value="token">
+
+```ts
+import {controlCornerRadius} from '@genesislcap/rapid-design-system';
+
+const styles = css`
+  :host {
+    border-radius: ${controlCornerRadius};
+}`;
+```
+
+</TabItem>
+</Tabs>
+
