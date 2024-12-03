@@ -28,7 +28,21 @@ export default function SerializerDemo({ children, color }) {
 	}
 
 	const toggleEnhanced = (event) => {
-		const serializer = DI.getOrCreateDOMContainer().get(JSONSerializer);
+
+		let replacer = function(key, value) {
+			if (this[key] instanceof Date) {
+				return this[key].toUTCString();
+			}
+			return value;
+		}
+
+		const CustomJSONSerializerConfig = {
+			parse: (input) => parse(input, null, customNumberParser),
+			stringify: (object) => stringify(object, replacer),
+		};
+
+		const serializer = DI.getOrCreateDOMContainer().get(JSONSerializer(CustomJSONSerializerConfig));
+
 		const jsonString = serializer.serialize(dateObject);
 		setOutputValue2(jsonString);
 	}

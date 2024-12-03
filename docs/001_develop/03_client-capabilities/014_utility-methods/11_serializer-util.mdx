@@ -22,16 +22,16 @@ This contains a comprehensive JSON serialization and deserialization solution, d
 
 ## Key Features
 
-- **`customNumberParser` Function:** Enhances the parsing of numeric values, supporting safe integers, floating-point numbers, and BigInt values.
 - **`JSONSerializer` Interface:** Defines methods for serializing objects to JSON strings and deserializing JSON strings to JavaScript objects, with support for HTTP response objects and message event data.
 - **`DefaultJSONSerializer` Class:** Implements the `JSONSerializer` interface, providing default serialization and deserialization behaviors that can be customized via the `JSONSerializerConfig`.
+- **`customNumberParser` Function:** Enhances the parsing of numeric values, supporting safe integers, floating-point numbers, and BigInt values.
 - **`JSONReplacer` and `JSONReviver` Functions:** Facilitate custom serialization and deserialization processes, allowing for the handling of special types, such as dates and NaN values, and the exclusion of properties with specific key prefixes.
 
 ## Examples
 
 ### JSON Serialization/Deserialization
 
-The `JSONSerializer` DI Token enable the serialization and deserialization of complex objects, including BigInt values and custom object types, ensuring that JSON data is accurately represented in JavaScript.
+The `JSONSerializer` DI Token enables the serialization and deserialization of complex objects, including BigInt values and custom object types, ensuring that JSON data is accurately represented in JavaScript.
 
 :::tip
 Inject the UUID class dependency like this in [Angular](../../framework-integration/client-framework-integration-angular/#dependency-injection)
@@ -39,6 +39,8 @@ and [React](../../framework-integration/client-framework-integration-react/#depe
 :::
 
 ### Example
+
+Serialize
 
 ```typescript
 const object = { date: new Date(), bigNumber: BigInt(12345678901234567890) };
