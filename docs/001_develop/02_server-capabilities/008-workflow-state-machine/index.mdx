@@ -332,7 +332,7 @@ For the example below, you can only modify an order when it has a status of NEW 
 
 `modifyEvent` can also define the following same blocks as `insertEvent`. Click to see their descriptions for usage details:
 
-- [`excludedFields`](#excludefields)
+- [`excludedFields`](#excludedfields)
 - [`onEvent`](#onevent) : One exception on the `modifyEvent`, per the [example configuration](#example-configuration) as this the object is already in the DB and we know the event uses the table object, both event and the retrieved record are available in `onEvent`
 - [`onValidate`](#onvalidate)
 - [`onCommit`](#oncommit)
@@ -364,7 +364,7 @@ In the example below the Order.OrderStatus must be NEW for this event to validat
 
 `transitionEvent` can also define the following same blocks as `insertEvent`. Click to see their descriptions for usage details:
 
-- [`excludedFields`](#excludefields)
+- [`excludedFields`](#excludedfields)
 - [`onEvent`](#onevent) : One exception on the `transitionEvent`, per the [example configuration](#example-configuration) as this the object is already in the DB and we know the event uses the table object, both event and the retrieved record are available in `onEvent`
 - [`onValidate`](#onvalidate)
 - [`onCommit`](#oncommit)
@@ -541,7 +541,7 @@ You can build a State Machine using this interface by providing:
 - the state of the entity field to manage; this field needs to be ENUM field. In our example, it is called `OrderStatus`.
 - the side effect of a state change, which is something you can subscribe to when the state changes to trigger further actions. In our example, it is called `OrderEffect` and you can see we add it in-line in the same file we create the StateMachine module.
 
-The following is an example State Machine written in kotlin. This would be injected into your event handler as described in the [configuration options](#configurationoptions) section. 
+The following is an example State Machine written in kotlin. This would be injected into your event handler as described in the [configuration options](#configuration-options) section. 
 
 This option is only recommended when you are using the [event handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api) for your event handle. 
 
