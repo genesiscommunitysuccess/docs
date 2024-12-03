@@ -37,13 +37,13 @@ This module is ideal for:
 
 The `SlottedStyles` custom element enables the encapsulation and dynamic application of styles to slotted content. It observes changes to its `styles` property and applies the new styles to its parent element's shadow DOM or to the document.
 
-
-
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 
   <TabItem value="genesis">
     Usage
     ```typescript
+    import { css, html, customElement, GenesisElement } from '@genesislcap/web-core';
+
     const slottedStyles = css`
       .content {
         background: red;
@@ -53,8 +53,11 @@ The `SlottedStyles` custom element enables the encapsulation and dynamic applica
     @customElement({
       name: 'my-element',
       template: html`
-          <rapid-button> <slotted-styles :styles="${() => slottedStyles}"></slotted-styles> Slotted styles button </rapid-button>
-          `,
+        <rapid-button>
+            <slotted-styles :styles="${() => slottedStyles}"></slotted-styles>
+            Slotted styles button
+        </rapid-button>
+      `,
     })
     export class MyElement extends GenesisElement {
     }
@@ -64,9 +67,11 @@ The `SlottedStyles` custom element enables the encapsulation and dynamic applica
   <TabItem value="react">
     Usage
     ```typescript
+    import { css } from '@genesislcap/web-core';
+
     const slottedStyles =  css`
       .content {
-        background:red;
+        background: red;
       }
     `;
 
@@ -90,6 +95,8 @@ The `SlottedStyles` custom element enables the encapsulation and dynamic applica
     Usage
     ```typescript
     import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    import { css } from '@genesislcap/web-core';
+
     @Component({
       selector: 'my-root',
       template: `
@@ -97,7 +104,7 @@ The `SlottedStyles` custom element enables the encapsulation and dynamic applica
             <slotted-styles [styles]=slottedStyles></slotted-styles>
             Slotted Styles button
           </rapid-button>
-          `,
+      `,
       standalone: true,
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
