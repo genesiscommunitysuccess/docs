@@ -290,7 +290,7 @@ The store should be the single source of truth. With that in mind, you could inj
 this.tradeEntryUI.binding(x => x.isOpen, value => value ? this.stop() : this.start());
 ```
 
-Keeping UI state in a store could also make it easier to save a snapshot of the UI state for rehydration, for example, to know what windows the user has open. You could add some middleware to the commit proxy (base store concept) for converting state transitions into browser history entries, which might allow you to deep-link and select browser back button to say close the modal, with each back button moving backwards though the UI state. 
+Keeping UI state in a store could also make it easier to save a snapshot of the UI state for rehydration, for example, to know what windows the user has open. You could add some middleware to the commit proxy (base store concept) for converting state transitions into browser history entries; this allows you to deep-link and select the browser back button - for example, to close the modal; each click on the back button moves backward though the UI state. 
 
 :::tip
 Be careful not to blur the lines between the data and the UI state in our store fragments.
