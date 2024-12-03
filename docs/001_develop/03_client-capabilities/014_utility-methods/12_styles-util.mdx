@@ -1,0 +1,162 @@
+---
+title: 'Styles utilities'
+sidebar_label: 'Styles utilities'
+id: styles-util
+keywords: [utils, utility, styles, dynamic, look, styling, management]
+tags:
+  - utils
+  - utility
+  - styles
+  - dynamic
+  - look
+  - styling
+  - management
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The platform provides a comprehensive suite of utilities and components for dynamic style management, including CSS rule insertion, font-face loading, and the application of styles to custom elements.
+
+## Key features
+
+- **Encapsulated Style Management:** Allows styles to be defined and dynamically changed for custom elements, supporting encapsulated styling strategies.
+- **Font Face Loading:** Simplifies the loading of custom font faces by generating and applying the necessary CSS rules.
+- **Dynamic CSS Rule Insertion:** Enables the insertion of CSS rules into the document, facilitating dynamic style updates.
+- **Element Style Conversion:** Converts `ComposableStyles` or an array of `ComposableStyles` into `ElementStyles` for efficient style application.
+
+## Use cases
+
+This module is ideal for:
+- Dynamic style management.
+- Enhanced styling, flexibility and maintainability
+
+### Examples
+
+#### Dynamic style application with `SlottedStyles`
+
+The `SlottedStyles` custom element enables the encapsulation and dynamic application of styles to slotted content. It observes changes to its `styles` property and applies the new styles to its parent element's shadow DOM or to the document.
+
+
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+    Usage
+    ```typescript
+    const slottedStyles = css`
+      .content {
+        background: red;
+      }
+    `;
+
+    @customElement({
+      name: 'my-element',
+      template: html`
+          <rapid-button> <slotted-styles :styles="${() => slottedStyles}"></slotted-styles> Slotted styles button </rapid-button>
+          `,
+    })
+    export class MyElement extends GenesisElement {
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+    Usage
+    ```typescript
+    const slottedStyles =  css`
+      .content {
+        background:red;
+      }
+    `;
+
+    export function MyComponent() {
+      const slottedStylesRef = useRef(null);
+      useEffect(() => {
+        if (slottedStylesRef.current) {
+          slottedStylesRef.current.styles = slottedStyles;
+        }
+      });
+      return (
+        <rapid-button>
+          <slotted-styles ref={slottedStylesRef}></slotted-styles>
+          Slotted Styles button
+        </rapid-button>
+      )
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    @Component({
+      selector: 'my-root',
+      template: `
+          <rapid-button>
+            <slotted-styles [styles]=slottedStyles></slotted-styles>
+            Slotted Styles button
+          </rapid-button>
+          `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class AppComponent {
+      slottedStyles = css`
+        .content {
+          background: red;
+        }
+      `
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+### CSS rule and font-face management
+
+#### Inserting CSS rules
+
+The `insertDocumentCSSRule` utility function dynamically inserts CSS rules into the document, creating a new `<style>` element or using an existing one that is identified by a specific ID.
+
+```typescript
+import { insertDocumentCSSRule } from '@genesislcap/foundation-utils';
+
+// Insert a global CSS rule
+insertDocumentCSSRule('.my-class { color: red; }', 'my-style-element-id');
+```
+
+#### Loading font faces
+
+The `loadFontFaces` function simplifies the process of defining and loading custom font faces by automatically generating the necessary CSS rules and applying them to the document.
+
+```typescript
+import { loadFontFaces } from '@genesislcap/foundation-utils';
+
+// Load custom font faces
+loadFontFaces(`
+  @font-face {
+    font-family: 'CustomFont';
+    src: url('/path/to/custom-font.woff2') format('woff2');
+  }
+`, 'custom-font-styles');
+```
+
+#### Style conversion
+
+The `toElementStyles` function converts `ComposableStyles` or an array of `ComposableStyles` into `ElementStyles`, streamlining the application of styles within `@genesislcap/genesis-element` components.
+
+```typescript
+import { toElementStyles } from '@genesislcap/foundation-utils';
+
+// Define styles
+const myStyles = toElementStyles(`:host { display: block; }`);
+
+// Apply styles to a slotted-styles element
+document.querySelector('some-element').styles = myStyles;
+```
+
+### Key points
+
+- **Scoped Style Application:** Use `SlottedStyles` for scoped style management within components, ensuring styles are applied predictably and without leaking into the global scope.
+- **Efficient Font Loading:** When using `loadFontFaces`, ensure fonts are loaded efficiently to minimize the impact on page load times and to prevent layout shifts.
+- **Semantic ID Naming:** Choose meaningful IDs for style and font elements to ensure maintainability and prevent conflicts.
