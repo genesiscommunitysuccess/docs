@@ -18,7 +18,8 @@ import TabItem from '@theme/TabItem';
 
 # Grid Pro
 
-The `@genesislcap/grid-pro` package provides a collection of grid-related components and utilities for Genesis applications.
+The `@genesislcap/grid-pro` package provides a collection of grid-related components and utilities for Genesis applications. It is installed by default in
+applications build with Genesis Create or via the `genx` CLI.
 
 ## API Documentation
 
@@ -35,35 +36,6 @@ For more detailed information on API and configurations, please refer to the [AP
   - **Connected Data**: when you have a Data Server or Request Server available and ready to use, and you don't want to worry about handling data transformations, updates, deletes and cell renderers in the grid.
 - **State persistence**: ability to save and restore grid state.
 - **Row models**: support for both client-side and server-side [row models](https://www.ag-grid.com/javascript-data-grid/row-models/).
-
-## Getting Started
-
-### Installation
-
-To enable this module in your application, follow the steps below.
-
-1. Add `@genesislcap/grid-pro` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
-
-```json
-{
-  "dependencies": {
-    "@genesislcap/grid-pro": "latest"
-  },
-}
-```
-
-### Setup
-
-Make sure the required grid components are registered with your design system.
-Depending on how the app was created this might have been setup for you automatically (genx cli / create).
-The design system name might vary (you can create a custom one for your app), using rapid in this example.
-
-```typescript
-import { provideDesignSystem, baseComponents } from '@genesislcap/rapid-design-system';
-import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
-
-provideDesignSystem().register(baseComponents, rapidGridComponents);
-```
 
 ## Usage - Simple Data
 
@@ -358,3 +330,38 @@ By leveraging both DOM Virtualisation and Pagination, our “grid components” 
 - **Initial Load**: Only the data for the first page is loaded, minimizing the initial load time.
 - **Scrolling**: As users scroll, DOM Virtualisation ensures only the visible rows and columns are rendered, maintaining performance.
 - **Page Navigation**: Users can navigate through pages to access the full dataset without overwhelming the client.
+
+## Legacy project setup
+
+This package is installed by default in applications build with Genesis Create or via the `genx` CLI, but you can follow these steps to install it in your existing project.
+
+### Installation
+
+To enable this module in your application, follow the steps below.
+
+1. Add `@genesislcap/grid-pro` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
+
+```json
+{
+  "dependencies": {
+    "@genesislcap/grid-pro": "latest"
+  },
+}
+```
+
+### Setup
+
+Make sure the required grid components are registered with your design system.
+Depending on how the app was created this might have been setup for you automatically (genx cli / create).
+The design system name might vary (you can create a custom one for your app), using rapid in this example.
+
+```typescript
+import { provideDesignSystem, baseComponents } from '@genesislcap/rapid-design-system';
+import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
+
+provideDesignSystem().register(baseComponents, rapidGridComponents);
+```
+
+:::tip
+If you're unsure where to register the component search for the `provideDesignSystem` method in your project.
+:::

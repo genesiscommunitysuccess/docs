@@ -1,6 +1,7 @@
 import useIsBrowser from '@docusaurus/useIsBrowser';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CodeSection } from '../../../../../examples/ui/documentationBase';
+import LoadingRing from '@site/src/components/Card/LoadingRing';
 
 const rowData = [
   { make: 'Toyota', model: 'Celica', price: 35000, year: 2021, color: 'red' },
@@ -26,10 +27,10 @@ const columnDefs = [
 function GridProExampleBase({
   modifyGridOptions = (options) => options,
   gridHeight = '200px',
-  buttonText = 'Load Grid Pro',
 }) {
   const isBrowser = useIsBrowser();
   const grid = useRef(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (isBrowser) {
@@ -53,14 +54,21 @@ function GridProExampleBase({
       gridOptions = modifyGridOptions(gridOptions);
 
       grid.current.gridOptions = gridOptions;
+
+      setIsLoaded(true);
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => { loadGridOptions(); }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <CodeSection>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: gridHeight }}>
-        <rapid-button onClick={loadGridOptions}>{buttonText}</rapid-button>
-        <rapid-grid-pro ref={grid}></rapid-grid-pro>
+        {!isLoaded ? (<LoadingRing />) : null}
+        <rapid-grid-pro ref={grid} ></rapid-grid-pro>
       </div>
     </CodeSection>
   );
