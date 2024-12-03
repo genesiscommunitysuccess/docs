@@ -30,6 +30,9 @@ export default function LiveExampleBuilder({ itemData }) {
       {isLoading ? (
 		<LoadingRing />
       ) : (
+			<>
+					<p style={{textAlign: 'center'}}>Here is an index of components in this section. You can interact
+						with the live examples below, or click the card to navigate to the documentation.</p>
         <div style={{ visibility: isLoading ? 'hidden' : 'visible' }}>
           <CardList
             xs="12"
@@ -38,7 +41,7 @@ export default function LiveExampleBuilder({ itemData }) {
             items={processedItems}
           />
         </div>
-      )}
+      </>) }
     </>
   );
 }
