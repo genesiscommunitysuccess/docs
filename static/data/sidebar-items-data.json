@@ -1,6 +1,6 @@
 {
   "/develop/development-environments": {
-    "description": "Development environment description",
+    "description": "The Genesis Application Platform comes with a suite of tooling to help with building and running applications.",
     "items": [
       {
         "href": "/develop/development-environment/launchpad/",
@@ -39,7 +39,7 @@
     ]
   },
   "/develop/server-capabilities": {
-    "description": "This section provides full details of the Genesis application platform's server capabilities. Each section details how the capability works. along with examples. There is full documentation on configuration and interaction.",
+    "description": "This section provides full details of the Genesis application platform's server capabilities. Each section details how the capability works, along with examples and full documentation on configuration and interaction.",
     "items": [
       {
         "href": "/develop/server-capabilities/data-model/",
@@ -114,7 +114,7 @@
     ]
   },
   "/develop/client-capabilities": {
-    "description": "Client capabilities (Web UI) description",
+    "description": "This section provides full details of the Genesis application platform's client (web UI) capabilities. Each section details how the capability works, along with examples and full documentation on configuration.",
     "items": [
       {
         "href": "/develop/client-capabilities/server-communications/",
@@ -222,7 +222,7 @@
     ]
   },
   "/develop/business-components": {
-    "description": "Genesis Platform Business Components are designed to give you working business solutions for the most common requirements of financial applications. You can incorporate them into your application in very little time. They are easy to install, run and customise to meet your exact requirements. Each one comes with a combination of pre-built micro-services, APIs and UI components that can be integrated in to your application with minimal configuration.",
+    "description": "Genesis Application Platform Business Components are designed to give you working business solutions for the most common requirements of financial applications. You can incorporate them into your application in very little time. They are easy to install, run and customize to meet your exact requirements. Each one comes with a combination of pre-built micro-services, APIs and UI components that can be integrated in to your application with minimal configuration.",
     "items": [
       {
         "href": "/develop/business-components/notifications/",
