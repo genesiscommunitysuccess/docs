@@ -13,6 +13,9 @@ pagination_prev: develop/client-capabilities/grids/grid-pro/grid-pro-datasources
 pagination_next: develop/client-capabilities/grids/grid-tabulator/grid-tabulator
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Cell and Column Components
 
 ## Overview
@@ -127,33 +130,103 @@ You can get the type `ColDef` from the `"@ag-grid-community/core"` package;
 ## Usage Example
 
 ```typescript
-const customBooleanColDefs: ColDef[] = [
-    {
-        headerName: 'Release Date',
-        field: 'releaseDate',
-        cellEditor: 'dateEditor',
-        cellEditorParams: {
-        withTime: false,
-        },
-        width: 200,
-        pinned: 'right',
-        editable: true,
+import { ColDef } from '@ag-grid-community/core';
+
+const customColDefs: ColDef[] = [
+  {
+    headerName: 'Action',
+    cellRenderer: 'action',
+    width: 200,
+    pinned: 'right',
+    cellRendererParams: {
+      actionName: 'View',
+      appearance: 'primary',
+      actionClick: (rowData) => console.log('View Data', rowData),
     },
+  },
 ];
-
 ```
 
-```html
-<grid-pro>
-  <grid-pro-column :definition=${columnConfig}>
-    <grid-pro-cell
-      :renderer=${customRenderer}
-      :rendererParams=${rendererParams}
-    ></grid-pro-cell>
-  </grid-pro-column>
-</grid-pro>
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+```typescript
+@customElement({
+  name: 'my-element',
+  template: html`
+    <rapid-grid-pro>
+      ${repeat(
+        () => customColDefs,
+        html`
+          <grid-pro-column :definition="${(x) => x}">
+            ${when(
+              (x) => x.cellRenderer,
+              html`
+                <grid-pro-cell
+                  :renderer="${(x) => x.cellRenderer}"
+                  :rendererParams="${(x) => x.cellRendererParams}"
+                ></grid-pro-cell>
+              `,
+            )}
+          </grid-pro-column>
+        `,
+      )}
+    </rapid-grid-pro>
+  `,
+})
+export class MyElement extends GenesisElement {}
 ```
 
+  </TabItem>
+  <TabItem value="react">
+
+```typescript
+export function MyElement() {
+  return (
+    <rapid-grid-pro>
+      {customColDefs.map((colDef, index) => (
+        <grid-pro-column definition={colDef} key={index}>
+          {colDef.cellRenderer ? (
+            <grid-pro-cell
+              renderer={colDef.cellRenderer}
+              rendererParams={colDef.cellRendererParams}
+            />
+          ) : null}
+        </grid-pro-column>
+      ))}
+    </rapid-grid-pro>
+  );
+};
+```
+
+  </TabItem>
+  <TabItem value="angular">
+
+```typescript
+@Component({
+  selector: 'app-my-element',
+  template: `
+    <rapid-grid-pro>
+      <grid-pro-column
+        *ngFor="let colDef of colDefs"
+        [definition]="colDef">
+        <grid-pro-cell
+          *ngIf="colDef.cellRenderer"
+          [renderer]="colDef.cellRenderer"
+          [rendererParams]="colDef.cellRendererParams">
+        </grid-pro-cell>
+      </grid-pro-column>
+    </rapid-grid-pro>
+  `
+})
+export class MyElementComponent {
+  colDefs: ColDef[] = customColDefs; // refer to above example
+}
+```
+
+  </TabItem>
+</Tabs>
 
 ## Performance Considerations
 
