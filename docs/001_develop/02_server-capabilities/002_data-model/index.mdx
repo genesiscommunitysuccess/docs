@@ -292,7 +292,7 @@ Only valid for fields of type `STRING`. Either  or `uuid` can be set.
 In this example, where the application has system definition `Location` set to `NY`, the generated values will be 000000000000001TRNY1, then 000000000000002TRNY1, and so on...
 
 :::info
-If your application is set to use an SQL database, then sequence will generate a uuid by default. if you want it to generate a sequence as defined here, set the following system definition items in your application:   
+If your application is set to use an SQL database, then sequence will generate a uuid by default. If you want it to generate a sequence as defined here, set the following system definition items in your application:   
 `item(name = "SqlSequencePaddingSize", value = 15)`   
 `item(name = "SqlEnableSequenceGeneration", value = true)`
 :::
