@@ -44,7 +44,7 @@
       {
         "href": "/develop/server-capabilities/data-model/",
         "imageUrl": "/svg/categories-icons/hierarchy-svgrepo-com.svg",
-        "description": "Define the object and relational data model for the application. This is the metadata driving the capabilities of the entire platform."
+        "description": "Define the object and relational data model for the application. This is the metadata that drives the capabilities of the entire platform."
       },
       {
         "href": "/develop/server-capabilities/data-access-apis/",
@@ -54,22 +54,22 @@
       {
         "href": "/develop/server-capabilities/real-time-queries-data-server/",
         "imageUrl": "/svg/categories-icons/refresh-square-svgrepo-com.svg",
-        "description": "Defining named queries for datasets that need to be exposed to subscribing clients for real-time, low-latency updates."
+        "description": "Define named queries for datasets that need to be exposed to subscribing clients for real-time, low-latency updates."
       },
       {
         "href": "/develop/server-capabilities/snapshot-queries-request-server/",
         "imageUrl": "/svg/categories-icons/table-alt-svgrepo-com.svg",
-        "description": "Defining on-demand, or snapshot data queries accessible to consuming clients."
+        "description": "Define on-demand or snapshot data queries accessible to consuming clients."
       },
       {
         "href": "/develop/server-capabilities/core-business-logic-event-handler/",
         "imageUrl": "/svg/categories-icons/chip-component-svgrepo-com.svg",
-        "description": "Defining application events and core business logic to be invoked by consuming clients."
+        "description": "Define application events and core business logic to be invoked by consuming clients."
       },
       {
         "href": "/develop/server-capabilities/access-control/",
         "imageUrl": "/svg/categories-icons/access-svgrepo-com.svg",
-        "description": "Configuring authentication of human and system users, plus precise access controls to data and features."
+        "description": "Configure authentication of human and system users, and set up precise access controls to data and features."
       },
       {
         "href": "/develop/server-capabilities/workflow-state-machine/",
@@ -79,7 +79,7 @@
       {
         "href": "/develop/server-capabilities/real-time-aggregation-consolidator/",
         "imageUrl": "/svg/categories-icons/spreadsheet-with-sum-symbol-svgrepo-com.svg",
-        "description": "Defining real-time aggregation against the stream of incoming data."
+        "description": "Define real-time aggregation against the stream of incoming data."
       },
       {
         "href": "/develop/server-capabilities/real-time-triggers-evaluator/",
@@ -89,7 +89,7 @@
       {
         "href": "/develop/server-capabilities/integrations/",
         "imageUrl": "/svg/categories-icons/pipeline-svgrepo-com.svg",
-        "description": "Defining pipelines simplifying getting data in and out of Genesis."
+        "description": "Define pipelines simplifying getting data in and out of Genesis."
       },
       {
         "href": "/develop/server-capabilities/communications-meta/",
@@ -99,12 +99,12 @@
       {
         "href": "/develop/server-capabilities/testing-api/",
         "imageUrl": "/svg/categories-icons/ui-checks-svgrepo-com.svg",
-        "description": "Defining server-side tests for all aspects of the server."
+        "description": "Define server-side tests for all aspects of the server."
       },
       {
         "href": "/develop/server-capabilities/runtime-configuration/",
         "imageUrl": "/svg/categories-icons/configuration-settings-gear-options-preferences-setting-tools-svgrepo-com.svg",
-        "description": "Defining configuration values across components by environments."
+        "description": "Define configuration values across components by environments."
       }
     ]
   },
@@ -134,13 +134,13 @@
       {
         "href": "/develop/client-capabilities/charts/",
         "imageUrl": "/svg/categories-icons/pie-chart-svgrepo-com.svg",
-        "description": "Rich, real-time charts for data visualization with built-in server-side connection."
+        "description": "Rich, real-time charts for data visualization, with built-in server-side connection."
       },
       {
         "href": "/develop/client-capabilities/forms/",
         "storyBookHref": "/storybook/forms",
         "imageUrl": "/svg/categories-icons/copy-svgrepo-com.svg",
-        "description": "Dynamic forms component for creating rich forms based on the underlying data model."
+        "description": "Create rich forms based on the underlying data model."
       },
       {
         "href": "/develop/client-capabilities/interaction/",
@@ -150,7 +150,7 @@
       {
         "href": "/develop/client-capabilities/presentation/",
         "imageUrl": "/svg/categories-icons/photo-svgrepo-com.svg",
-        "description": "Suite of components for presenting information to the user, from cards, banners and badges to progress bars and skeletons."
+        "description": "Present information to the user in the most engaging form, from cards, banners and badges to progress bars and skeletons."
       },
       {
         "href": "/develop/client-capabilities/filters/",
@@ -200,12 +200,12 @@
       },
       {
         "href": "/develop/client-capabilities/desktop-interoperability/",
-        "description": "Work seamlessly with other desktop financial applications, so that users can click to move and take information from one application to the other."
+        "description": "Make your application seamlessly with other desktop financial applications, so that users can click to move and take information from one application to the other."
       },
       {
         "href": "/develop/client-capabilities/custom-components/",
         "imageUrl": "/svg/categories-icons/trophy-svgrepo-com.svg",
-        "description": "Write custom components in the Genesis syntax. These components are based on web components, so you can use them in any other web framework, such as React or Angular."
+        "description": "Write your own custom components, based on standard web components that you can use in other web frameworks, such as React or Angular."
       }
     ]
   },
@@ -238,7 +238,7 @@
       },
       {
         "href": "/develop/business-components/fix/",
-        "description": "Create a Gateway to connect to a remote system using the FIX protocol. Use the FIX Xlator to enable type-safe handling of FIX messages. "
+        "description": "Create a gateway to connect to a remote system using the FIX protocol. Use the FIX Xlator to enable type-safe handling of FIX messages. "
       }
     ]
   }
