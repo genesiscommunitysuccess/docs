@@ -12,6 +12,9 @@ const GTM_ID = process.env.GTM_ID || "GTM-5GTR43J"; // default to uat GTM_ID, pr
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
+  customFields: {
+    baseUrlEnv: baseUrl,
+  },
   title: "Genesis Application Platform for Financial Markets",
   tagline:
     "The Platform with 50+ Modern Building Blocks to Accelerate App Development.",
@@ -30,6 +33,7 @@ const config = {
   onDuplicateRoutes: "throw",
   clientModules: ["./src/client-modules/genesislcap.js"],
   plugins: [
+    "./plugins/webpack-options",
     [
       "@docusaurus/plugin-client-redirects",
       {
@@ -121,6 +125,15 @@ const config = {
   ],
   themeConfig: {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    webpackOptions: {
+      options: {
+        resolve: {
+          alias: {
+            'foundationZero/ZeroDesignSystem': '@genesislcap/foundation-zero',
+          },
+        },
+      },
+    },
     tableOfContents: {
       minHeadingLevel: 2,
       maxHeadingLevel: 5,
