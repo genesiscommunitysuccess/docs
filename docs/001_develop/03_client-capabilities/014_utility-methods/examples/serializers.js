@@ -19,14 +19,17 @@ export default function SerializerDemo({ children, color }) {
 	const [outputValue, setOutputValue] = useState('');
 	const [outputValue2, setOutputValue2] = useState('');
 
+	const dateObject = { date: new Date()};
+	const object = { date: new Date(), bigNumber: BigInt(12345678901234567890) };
+
 	const toggleStandard = (event) => {
-		setOutputValue('here Standard');
+		const jsonString = JSON.stringify(dateObject);
+		setOutputValue(jsonString);
 	}
 
 	const toggleEnhanced = (event) => {
-		const object = { date: new Date(), bigNumber: BigInt(12345678901234567890) };
 		const serializer = DI.getOrCreateDOMContainer().get(JSONSerializer);
-		const jsonString = serializer.serialize(object);
+		const jsonString = serializer.serialize(dateObject);
 		setOutputValue2(jsonString);
 	}
 
@@ -43,7 +46,7 @@ export default function SerializerDemo({ children, color }) {
 						<rapid-text-field
 							readOnly
 							value={outputValue}
-							placeholder="Generated expression outpu1t."
+							placeholder="Output"
 						>
 							<label slot="label">JSONSerializer Output:</label>
 						</rapid-text-field>
@@ -60,7 +63,7 @@ export default function SerializerDemo({ children, color }) {
 						<rapid-text-field
 							readOnly
 							value={outputValue2}
-							placeholder="Generated expression outpu1t."
+							placeholder="Output"
 						>
 							<label slot="label">JSONSerializer Output:</label>
 						</rapid-text-field>
