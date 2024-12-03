@@ -1,7 +1,8 @@
 import {CodeLabel, CodeSection} from "../../../../../examples/ui/documentationBase.js";
 import useIsBrowser from "@docusaurus/useIsBrowser";
 import React, { useEffect, useRef, useState } from 'react';
-import { DefaultJSONSerializer } from '@genesislcap/foundation-utils';
+import { DefaultJSONSerializer, defaultJSONSerializerConfig, JSONSerializer } from '@genesislcap/foundation-utils';
+import { DI } from '@genesislcap/web-core';
 
 function setup() {
 	// Setup
@@ -24,7 +25,7 @@ export default function SerializerDemo({ children, color }) {
 
 	const toggleEnhanced = (event) => {
 		const object = { date: new Date(), bigNumber: BigInt(12345678901234567890) };
-		const serializer = new DefaultJSONSerializer();
+		const serializer = DI.getOrCreateDOMContainer().get(JSONSerializer);
 		const jsonString = serializer.serialize(object);
 		setOutputValue2(jsonString);
 	}
