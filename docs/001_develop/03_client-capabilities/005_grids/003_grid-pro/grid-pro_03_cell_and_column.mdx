@@ -1,0 +1,78 @@
+---
+title: 'Cell and Column'
+sidebar_label: 'Cell and Column'
+id: grid-pro-cell-and-column
+keywords: [genesis, foundation, ui, grid, grid-pro, ag, cell, column]
+tags:
+  - grid
+  - grid-pro
+  - ag
+  - cell
+  - column
+pagination_prev: develop/client-capabilities/grids/grid-pro/grid-pro-datasources
+pagination_next: develop/client-capabilities/grids/grid-tabulator/grid-tabulator
+---
+
+# Cell and Column Components
+
+## Overview
+
+The Cell and Column components provide a flexible, template-driven approach to configuring Grid Pro columns and cell renderers.
+
+## `GridProCell` Component
+
+### Description
+
+The `GridProCell` component is used to define custom cell renderers within a `GridProColumn`. It implements the AG Grid `ICellRendererComp` interface, allowing for dynamic cell rendering.
+
+### Properties
+
+- **`renderer`** (observable)
+  - **Type:** `ICellRendererFunc`
+  - Defines the cell rendering function.
+  - Can be a custom rendering function or a reference to a predefined renderer.
+
+- **`rendererParams`** (observable)
+  - **Type:** `ICellRendererParams`
+  - Provides parameters for the cell renderer.
+  - Configures how the cell should be rendered based on the grid context.
+
+### Usage Example
+
+```html
+<grid-pro>
+  <grid-pro-column :definition=${columnConfig}>
+    <grid-pro-cell
+      :renderer=${customRenderer}
+      :rendererParams=${rendererParams}
+    ></grid-pro-cell>
+  </grid-pro-column>
+</grid-pro>
+```
+
+## `GridProColumn` Component
+
+### Description
+
+The `GridProColumn` component represents a column definition for the Grid Pro.
+
+### Properties
+
+- **`slottedAgCell`** (observable)
+  - **Type:** `HTMLElement[]`
+  - Tracks slotted cell elements.
+
+- **`definition`** (observable)
+  - **Type:** `ColDef`
+  - Stores the column definition configuration.
+  - Initialized as an empty object.
+
+## Best Practices
+
+- Use `GridProCell` to define custom cell renderers with dynamic rendering logic.
+- Leverage the `definition` property of `GridProColumn` to configure column-specific settings.
+
+## Performance Considerations
+
+- Custom renderers should be lightweight to maintain grid performance.
+- Use observable properties to enable reactive updates.
