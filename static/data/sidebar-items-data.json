@@ -39,12 +39,12 @@
     ]
   },
   "/develop/server-capabilities": {
-    "description": "This section provides all the details around the Genesis application platform's server capabilities. Each section details how the capability works along with examples, and includes full documentation on configuration and interaction.",
+    "description": "This section provides full details of the Genesis application platform's server capabilities. Each section details how the capability works. along with examples. There is full documentation on configuration and interaction.",
     "items": [
       {
         "href": "/develop/server-capabilities/data-model/",
         "imageUrl": "/svg/categories-icons/hierarchy-svgrepo-com.svg",
-        "description": "Defining the object and relational data model for the application.  This is the meta data driving the capabilities of the entire platform."
+        "description": "Defining the object and relational data model for the application. This is the metadata driving the capabilities of the entire platform."
       },
       {
         "href": "/develop/server-capabilities/data-access-apis/",
@@ -54,7 +54,7 @@
       {
         "href": "/develop/server-capabilities/real-time-queries-data-server/",
         "imageUrl": "/svg/categories-icons/refresh-square-svgrepo-com.svg",
-        "description": "Defining named queries for datasets which need to be exposed to subscribing clients with real time, low-latency updates."
+        "description": "Defining named queries for datasets that need to be exposed to subscribing clients for real-time, low-latency updates."
       },
       {
         "href": "/develop/server-capabilities/snapshot-queries-request-server/",
@@ -69,22 +69,22 @@
       {
         "href": "/develop/server-capabilities/access-control/",
         "imageUrl": "/svg/categories-icons/access-svgrepo-com.svg",
-        "description": "Configuring human and system user application authentication and access controls and privileges"
+        "description": "Configuring authentication of human and system users, plus precise access controls to data and features."
       },
       {
         "href": "/develop/server-capabilities/workflow-state-machine/",
         "imageUrl": "/svg/categories-icons/diagram-next-svgrepo-com.svg",
-        "description": "API allowing users to define states and workflow for any entity."
+        "description": "API for defining states and workflow for any entity."
       },
       {
         "href": "/develop/server-capabilities/real-time-aggregation-consolidator/",
         "imageUrl": "/svg/categories-icons/spreadsheet-with-sum-symbol-svgrepo-com.svg",
-        "description": "Defining realtime aggregation against the stream of incoming data."
+        "description": "Defining real-time aggregation against the stream of incoming data."
       },
       {
         "href": "/develop/server-capabilities/real-time-triggers-evaluator/",
         "imageUrl": "/svg/categories-icons/research-left-svgrepo-com.svg",
-        "description": "Defining realtime expression evaluation for using in triggering new events, processing and alerting."
+        "description": "Defining the real-time logic for triggering new events, processing and alerting."
       },
       {
         "href": "/develop/server-capabilities/integrations/",
@@ -99,7 +99,7 @@
       {
         "href": "/develop/server-capabilities/testing-api/",
         "imageUrl": "/svg/categories-icons/ui-checks-svgrepo-com.svg",
-        "description": "Defining server side tests for all aspects of the server side."
+        "description": "Defining server-side tests for all aspects of the server."
       },
       {
         "href": "/develop/server-capabilities/runtime-configuration/",
@@ -119,7 +119,7 @@
       {
         "href": "/develop/client-capabilities/login/",
         "imageUrl": "/svg/categories-icons/user-svgrepo-com.svg",
-        "description": "Understanding how the login micro front-end can be configured to achieve authentication, single-sign on and more."
+        "description": "Understanding how the login micro front-end can be configured to achieve authentication, single-sign-on, and more."
       },
       {
         "href": "/develop/client-capabilities/header/",
@@ -129,23 +129,23 @@
       {
         "href": "/develop/client-capabilities/grids/",
         "imageUrl": "/svg/categories-icons/insert-table-svgrepo-com.svg",
-        "description": "Rich, realtime data grids with built in server side connection."
+        "description": "Rich, real-time data grids with built-in server-side connection."
       },
       {
         "href": "/develop/client-capabilities/charts/",
         "imageUrl": "/svg/categories-icons/pie-chart-svgrepo-com.svg",
-        "description": "Rich, realtime charts for data visualization with built in server side connection"
+        "description": "Rich, real-time charts for data visualization with built-in server-side connection."
       },
       {
         "href": "/develop/client-capabilities/forms/",
         "storyBookHref": "/storybook/forms",
         "imageUrl": "/svg/categories-icons/copy-svgrepo-com.svg",
-        "description": "Dynamic forms component allowing for rich forms based on underlying data-model."
+        "description": "Dynamic forms component for creating rich forms based on the underlying data model."
       },
       {
         "href": "/develop/client-capabilities/interaction/",
         "imageUrl": "/svg/categories-icons/creativity-svgrepo-com.svg",
-        "description": "Suite of components for managing interactions from accordions to tree views."
+        "description": "Suite of components for managing interactions, from accordions to tree views."
       },
       {
         "href": "/develop/client-capabilities/presentation/",
@@ -155,17 +155,17 @@
       {
         "href": "/develop/client-capabilities/filters/",
         "imageUrl": "/svg/categories-icons/filter-xmark-svgrepo-com.svg",
-        "description": "Client side filtering of data for fast, dynamic data views."
+        "description": "Client-side filtering of data for fast, dynamic data views."
       },
       {
         "href": "/develop/client-capabilities/criteria/",
         "imageUrl": "/svg/categories-icons/look-up-svgrepo-com.svg",
-        "description": "Server side filtering of data for fast, dynamic and optimized data views."
+        "description": "Server-side filtering of data for fast, dynamic and optimized data views."
       },
       {
         "href": "/develop/client-capabilities/toast-notifications/",
         "imageUrl": "/svg/categories-icons/mail-svgrepo-com.svg",
-        "description": "Toast notifications for rich, modern, realtime end-user alerts, notifications and acknowledgements"
+        "description": "Toast notifications for rich, modern, real-time end-user alerts, notifications and acknowledgements"
         
       },
       {
@@ -176,12 +176,12 @@
       {
         "href": "/develop/client-capabilities/layout-management/",
         "imageUrl": "/svg/categories-icons/layout-svgrepo-com.svg",
-        "description": "Understanding layout features including dynamic layouts supporting resizing, dragging and re-ordering."
+        "description": "Understanding layout features, including dynamic layouts that support resizing, dragging and re-ordering."
       },
       {
         "href": "/develop/client-capabilities/state-management/",
         "imageUrl": "/svg/categories-icons/diagram-next-svgrepo-com.svg",
-        "description": "APIs to manage application state using best practices."
+        "description": "APIs to manage application states using best practices."
       },
       {
         "href": "/develop/client-capabilities/styling/",
