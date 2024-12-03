@@ -2,9 +2,27 @@ import React from "react";
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import './Card.css'
 
-export default function Card ({ link, heading, children, imageUrl, imageAlt, footer, className }) {
+export default function Card (props) {
+  const { link, heading, text, children, imageUrl, imageAlt, imageLink, footer, className } = props;
   const relativeLink = useBaseUrl(link);
   const relativeImageSrc = useBaseUrl(imageUrl);
+
+  const imageElement = 
+    <img
+      className="card-main-image"
+      src={relativeImageSrc}
+      alt={imageAlt || heading}
+    />;
+
+  const imageWithWrapper = imageLink ? (
+    <a href={imageLink} title={heading} className="card-main-image-wrapper">
+      {imageElement}
+    </a>
+  ) : (
+    <div className="card-main-image-wrapper">
+      {imageElement}
+    </div>
+  );
 
   // Stops the link working when interacting with the live examples
   const handleChildClick = (e) => {
@@ -14,21 +32,18 @@ export default function Card ({ link, heading, children, imageUrl, imageAlt, foo
 
   const content = (
     <div className="card-inner" style={{ overflow: 'hidden' }}>
-      { imageUrl && (
-        <div className="card-main-image-wrapper">
-          <img
-            className="card-main-image"
-            src={relativeImageSrc}
-            alt={imageAlt || heading}
-          />
-          </div>
-        )
-      }
+      { imageUrl ? imageWithWrapper : null }
       { children && (
         <div className="card-main-children-wrapper" onClick={handleChildClick}>
           {children}
         </div> )
       }
+      { (heading || text) && (
+      <div className="card-main-content">
+        { heading && <h3>{heading}</h3> }
+        { text && <p>{text}</p> } 
+      </div>
+      )}
       {footer && (
         <div className="card-footer">
           {footer}

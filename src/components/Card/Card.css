@@ -64,6 +64,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  justify-content: flex-start;
 }
 
 .card-outer .card-inner .card-main-content svg {

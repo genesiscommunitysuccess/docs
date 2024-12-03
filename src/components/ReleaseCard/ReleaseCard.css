@@ -1,5 +1,52 @@
 
+.release-card {
+  height: 95%;
+  width: 550px;
+}
 
-.release-card .card-main-image-wrapper {
-  height: 300px;
+.release-card .card-inner .card-main-image-wrapper {
+  width: 100%;
+  height: auto;
+  max-width: 500px;
+}
+
+.release-card-footer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 0;
+}
+
+@media (max-width: 1199px) {
+  .release-card {
+    width: 100%;
+  }
+
+  .release-card .card-inner .card-main-image-wrapper {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+.release-card .release-card-button {
+  background-color: var(--warm-gray-3);
+  color: var(--black);
+  border: none;
+  border-radius: 6px;
+  padding: 3px 12px;
+  font-size: 1rem;
+  font-family: var(--medium-font);
+  font-weight: 400;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  white-space: nowrap;
+}
+
+.release-card .release-card-button:hover {
+  background-color: var(--primary-blue);
+  color: #ffffff;
 }

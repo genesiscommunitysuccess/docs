@@ -6,12 +6,12 @@ export default function ReleaseCard({ blogLink, releaseNotesLink, imageName, ima
   const imageSrc = imageName ? `/img/release-notes/${imageName}` : null;
   
   const footerContent = (
-    <nav style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
-      <a href={blogLink} target="_blank" style={{ display: 'flexbox', fontSize: '14px', fontWeight: 'bold' }}>
+    <nav className="release-card-footer">
+      <a href={blogLink} target="_blank" className="release-card-button">
         Blog
         <ArrowForward sx={{ height: '10px', width: 'auto', paddingLeft: '1%' }} />
       </a>
-      <a href={releaseNotesLink} style={{ display: 'flexbox', fontSize: '14px', fontWeight: 'bold' }}>
+      <a href={releaseNotesLink} className="release-card-button">
         Release notes
         <ArrowForward sx={{ height: '10px', width: 'auto', paddingLeft: '1%' }} />
       </a>
@@ -23,7 +23,7 @@ export default function ReleaseCard({ blogLink, releaseNotesLink, imageName, ima
       className="release-card"
       imageUrl={imageSrc}
       imageAlt={imageAltText}
-      imgLink={blogLink}
+      imageLink ={blogLink}
       footer={footerContent}
     />
   );
