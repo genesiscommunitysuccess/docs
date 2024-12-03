@@ -4,18 +4,18 @@ sidebar_label: 'Latest Release'
 id: 'latest-release'
 ---
 
-import ReleaseCard from '@site/src/components/ReleaseCard';
+import ReleaseCard from '@site/src/components/ReleaseCard/ReleaseCard';
 import { Grid } from '@mui/material'
 
 ## Platform
 
 <Grid container>
-    <Grid item xs={12} md={12} sx={{padding: '1%'}}>
-        <ReleaseCard
-          blog_link="https://genesis.global/blog/genesis-release-8-4/"
-          rn_link="../release-notes/platform/8/8.4/"
-          img_url="Release-8.4.webp"
-          alt_text="8.4 Release"
-        />
-    </Grid>
+  <Grid item xs={12} md={12} sx={{padding: '1%'}}>
+    <ReleaseCard
+      blogLink="https://genesis.global/blog/genesis-release-8-4/"
+      releaseNotesLink="/8/8.4/"
+      imageName="Release-8.4.webp"
+      imageAltText="8.4 Release"
+    />
+  </Grid>
 </Grid>
