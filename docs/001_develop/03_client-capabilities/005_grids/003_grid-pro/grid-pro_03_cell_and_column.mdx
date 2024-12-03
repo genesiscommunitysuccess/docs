@@ -151,13 +151,34 @@ const customColDefs: ColDef[] = [
 
   <TabItem value="genesis">
 
+Simple example
+```typescript
+@customElement({
+  name: 'my-element',
+  template: html`
+    <rapid-grid-pro>
+      <grid-pro-column :definition="${(x) => x.colDefs[0]}">
+        <grid-pro-cell
+          :renderer="${(x) => x.colDefs[0].cellRenderer}"
+          :rendererParams="${(x) => x.colDefs[0].cellRendererParams}"
+        ></grid-pro-cell>
+      </grid-pro-column>
+    </rapid-grid-pro>
+  `,
+})
+export class MyElement extends GenesisElement {
+    @observable colDefs: ColDef[] = customColDefs; // refer to above example
+}
+```
+
+Loop example
 ```typescript
 @customElement({
   name: 'my-element',
   template: html`
     <rapid-grid-pro>
       ${repeat(
-        () => customColDefs,
+        (x) => x.colDefs,
         html`
           <grid-pro-column :definition="${(x) => x}">
             ${when(
@@ -175,17 +196,38 @@ const customColDefs: ColDef[] = [
     </rapid-grid-pro>
   `,
 })
-export class MyElement extends GenesisElement {}
+export class MyElement extends GenesisElement {
+    @observable colDefs: ColDef[] = customColDefs; // refer to above example
+}
 ```
 
   </TabItem>
   <TabItem value="react">
 
+Simple example
 ```typescript
 export function MyElement() {
+  const colDefs: ColDef[] = customColDefs; // refer to above example
   return (
     <rapid-grid-pro>
-      {customColDefs.map((colDef, index) => (
+      <grid-pro-column definition={colDefs[0]}>
+        <grid-pro-cell
+          renderer={colDefs[0].cellRenderer}
+          rendererParams={colDefs[0].cellRendererParams}
+        />
+      </grid-pro-column>
+    </rapid-grid-pro>
+  );
+};
+```
+
+Loop example
+```typescript
+export function MyElement() {
+  const colDefs: ColDef[] = customColDefs; // refer to above example
+  return (
+    <rapid-grid-pro>
+      {colDefs.map((colDef, index) => (
         <grid-pro-column definition={colDef} key={index}>
           {colDef.cellRenderer ? (
             <grid-pro-cell
@@ -203,6 +245,27 @@ export function MyElement() {
   </TabItem>
   <TabItem value="angular">
 
+Simple example
+```typescript
+@Component({
+  selector: 'app-my-element',
+  template: `
+    <rapid-grid-pro>
+      <grid-pro-column [definition]="customColDefs[0]">
+        <grid-pro-cell
+          [renderer]="customColDefs[0].cellRenderer"
+          [rendererParams]="customColDefs[0].cellRendererParams">
+        </grid-pro-cell>
+      </grid-pro-column>
+    </rapid-grid-pro>
+  `
+})
+export class MyElementComponent {
+  colDefs: ColDef[] = customColDefs; // refer to above example
+}
+```
+
+Loop example
 ```typescript
 @Component({
   selector: 'app-my-element',
