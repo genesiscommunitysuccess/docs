@@ -1,8 +1,344 @@
 ---
-title: 'Release Notes'
+title: '8.1'
 sidebar_label: '8.1'
-sidebar_position: 4
+sidebar_position: 19
 id: '8.1'
 ---
 
-# I'm on 8.1
+## Server
+
+### Features
+
+- Data pipelines V2 Implementation 
+- Add BigDecimal support to average function 
+- Output field needs to be nullable for aggregate functions which require index scan, add error message
+- Add ability to generate apis from openapi spec 
+- Add default values to entity event generator 
+- Add preCompileScripts gradle task in exec plugin 
+- Added field macros for common field patterns 
+- Exposing compactProcessStrategy in docker container build 
+- Handle DataServer LOGON_NACK message in testing flow 
+- Introducing compact process development strategy
+- Project should not need to override gradle project name to start with "genesisproduct-"
+- Use lower lmdb default database size when running through intellij 
+
+### Fixes
+
+- Project should not need to override gradle project name to start with "genesisproduct-" 
+- Populate missing DETAILS.SESSION_AUTH_TOKEN field for inbound EVENT_LOGIN_DETAILS messages at the router level 
+- AbstractExternalUpdateQueue can publish to any topic and not just table based ones 
+- Add empty REQUEST when message body and parameters is empty on request replies
+- Ensure gradle-api vulnerable dependencies are not added to the build due to the new openapi gradle plugin 
+- Gradle preCompileScripts does not consider compacted processes 
+- RouterMessageDelegator initialisation logic is now applied even if there was a GenesisMessageClient already computed 
+- Update all references of python to python3 
+- Add type conversion from Integer to Short 
+- Excluding unsupported pbcs from DEV compactProcessStrategy
+- Fix handling in json schema 
+- Fix openapi generator issue 
+- Fix improve handling in builder for fields with IS_ prefix 
+- Fix increasing the tolerance for declaring the node stale 
+- Fix process json aliased enums correctly 
+- Fix set default values in json schema 
+- Fix sort and compare json contents on artifacts and processes.
+- Fix typo in compactProcesses in gradle properties 
+- Fix typo in compactProcesses in project overview builder
+- Fix uses io dispatcher and timeout while cleaning process metadata entries
+- Fix uses io dispatcher while cleaning process metadata entries 
+- Using provider to create JMSUpdateQueue 
+
+### Dependency changes
+
+- Bump byteBuddyVersion from 1.14.15 to 1.14.16 in /genesis-conventions 
+- Bump byteBuddyVersion from 1.14.16 to 1.14.17 in /genesis-conventions 
+- Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.6 to 0.17.7 in /genesis-subcore/deploy-gradle-plugin 
+- Bump com.github.oshi:oshi-core from 6.6.0 to 6.6.1 in /genesis-conventions 
+- Bump com.google.errorprone:error_prone_annotations from 2.27.1 to 2.28.0 in /genesis-conventions
+- Bump com.google.guava:guava from 33.1.0-jre to 33.2.0-jre in /genesis-conventions 
+- Bump com.google.guava:guava from 33.2.0-jre to 33.2.1-jre in /genesis-conventions 
+- Bump com.google.protobuf:protobuf-java from 4.26.1 to 4.27.0 in /genesis-conventions 
+- Bump com.google.protobuf:protobuf-java from 4.27.0 to 4.27.1 in /genesis-conventions 
+- Bump com.google.protobuf:protobuf-java from 4.27.1 to 4.27.2 in /genesis-conventions 
+- Bump com.jfrog.artifactory from 5.2.0 to 5.2.1 in /genesis-conventions 
+- Bump com.jfrog.artifactory from 5.2.0 to 5.2.1 in /genesis-publish-config 
+- Bump com.jfrog.artifactory from 5.2.1 to 5.2.2 in /genesis-conventions 
+- Bump com.jfrog.artifactory from 5.2.1 to 5.2.2 in /genesis-publish-config 
+- Bump com.networknt:json-schema-validator from 1.4.0 to 1.4.2 in /genesis-conventions 
+- Bump com.networknt:json-schema-validator from 1.4.2 to 1.4.3 in /genesis-conventions 
+- Bump commons-cli:commons-cli from 1.7.0 to 1.8.0 in /genesis-conventions 
+- Bump commons-net:commons-net from 3.10.0 to 3.11.0 in /genesis-conventions 
+- Bump commons-net:commons-net from 3.11.0 to 3.11.1 in /genesis-conventions 
+- Bump debeziumVersion from 2.6.1.Final to 2.6.2.Final in /genesis-conventions 
+- Bump io.github.classgraph:classgraph from 4.8.172 to 4.8.173 in /genesis-conventions 
+- Bump io.github.classgraph:classgraph from 4.8.173 to 4.8.174 in /genesis-conventions 
+- Bump korthout/backport-action from 2 to 3 
+- Bump ktorVersion from 2.3.11 to 2.3.12 in /genesis-conventions 
+- Bump maven-plugin-api.version from 3.9.6 to 3.9.7 in /genesis-parent/genesis-maven-submodules 
+- Bump maven-plugin-api.version from 3.9.7 to 3.9.8 in /genesis-parent/genesis-maven-submodules 
+- Bump micrometerVersion from 1.12.5 to 1.13.0 in /genesis-conventions 
+- Bump micrometerVersion from 1.13.0 to 1.13.1 in /genesis-conventions 
+- Bump mockitoVersion from 5.11.0 to 5.12.0 in /genesis-conventions 
+- Bump nettyVersion from 4.1.109.Final to 4.1.110.Final in /genesis-conventions 
+- Bump nettyVersion from 4.1.110.Final to 4.1.111.Final in /genesis-conventions 
+- Bump org.agrona:agrona from 1.21.1 to 1.21.2 in /genesis-conventions 
+- Bump org.apache.activemq:artemis-jakarta-client from 2.33.0 to 2.34.0 in /genesis-conventions 
+- Bump org.apache.activemq:artemis-jakarta-client from 2.34.0 to 2.35.0 in /genesis-conventions 
+- Bump org.apache.commons:commons-compress from 1.26.1 to 1.26.2 in /genesis-conventions 
+- Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.11.0 to 3.13.1 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-clean-plugin from 3.3.2 to 3.4.0 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-compiler-plugin from 3.12.1 to 3.13.0 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-dependency-plugin from 3.6.1 to 3.7.0 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-dependency-plugin from 3.7.0 to 3.7.1 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-deploy-plugin from 3.1.1 to 3.1.2 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-enforcer-plugin from 3.4.1 to 3.5.0 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-install-plugin from 3.1.1 to 3.1.2 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-plugin-plugin from 3.11.0 to 3.13.1 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven.plugins:maven-release-plugin from 3.0.1 to 3.1.0 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven:maven-model from 3.9.6 to 3.9.7 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.maven:maven-model from 3.9.7 to 3.9.8 in /genesis-parent/genesis-maven-submodules 
+- Bump org.apache.shiro:shiro-core from 1.13.0 to 2.0.1 in /genesis-conventions 
+- Bump org.apache.sshd:sshd-core from 2.12.1 to 2.13.0 in /genesis-conventions 
+- Bump org.assertj:assertj-core from 3.25.3 to 3.26.0 in /genesis-conventions 
+- Bump org.checkerframework:checker-qual from 3.43.0 to 3.44.0 in /genesis-conventions 
+- Bump org.codehaus.plexus:plexus-utils from 3.5.0 to 4.0.1 in /genesis-parent/genesis-maven-submodules 
+- Bump org.freemarker:freemarker from 2.3.32 to 2.3.33 in /genesis-conventions 
+- Bump org.hsqldb:hsqldb from 2.7.2 to 2.7.3 in /genesis-conventions 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.0 to 5.2.1 in /genesis-conventions 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.0 to 5.2.1 in /genesis-publish-config 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.1 to 5.2.2 in /genesis-conventions 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.1 to 5.2.2 in /genesis-publish-config 
+- Bump org.jline:jline from 3.26.1 to 3.26.2 in /genesis-conventions 
+- Bump pekkoVersion from 1.0.2 to 1.0.3 in /genesis-conventions 
+- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.6 to 2.3.7 in /genesis-conventions
+- Bump sshdVersion from 2.12.1 to 2.13.0 in /genesis-conventions 
+- Bump sshdVersion from 2.13.0 to 2.13.1 in /genesis-conventions 
+- Change org.furyio for org.apache.fury and bump to 0.5.1 in /genesis-conventions
+
+### Patch Releases
+
+#### 8.1.11
+- ResourceDaemon: Fix Dependency Injection initialisation on startup
+- Remove explicit toString call on ClusterMessage debug listener
+
+#### 8.1.10
+- Dataserver backwardsJoin view does not recover in case of a buffered out of order update
+
+#### 8.1.9
+- Ensure full service initialisation does not happen until a service is allowed to go up when in primary mode
+- Mon dies when system is not able to connect to CONSUL but is configured to do so
+
+#### 8.1.8
+- DbMon search returns the expected number of records
+- DbMon updateWhere fails if there is a white space in the argument 
+- Allow db mon to fetch more than 500 results
+
+#### 8.1.7
+- Add clientHandler router config with option to close client channel if becomes full
+- Make logging of zero values optional in logger reporter
+
+#### 8.1.6
+- Fix Auth key concatenation for enriched auth clauses and AuthCache re-registration operation now uses correct record ids
+- Can use warningNack in context event handlers
+- Exclude data folder from site specific folder copy 
+- Fix minor issues in GenesisJunit test framework 
+
+#### 8.1.5
+- Feat add metric for tracking the number of users per dataserver query
+- DOUBLE fields generated using the new table DSL to accept negative values by default
+- Update SetLogLevel to use data classes and workflow, re-add countdown latch to script to ensure level is set before exiting script
+
+#### 8.1.4
+
+- getRangeFromEnd default method without fields parameter now calls correct getRangeFromEnd method
+- FDB alias cache will now respect fields with same name and different type defined in different tables
+- Add non-blocking threading model for database subscriptions
+- Add support for Consolidators and data pipelines in GenesisJunit
+
+#### 8.1.3
+- Saving process static info in a blocking manner to ensure read integrity
+
+#### 8.1.2
+- Ensure that fields marked as non-nullable at the table level are also marked as such in the audit table
+
+#### 8.1.1
+- Ensure socket queues are ready before cluster init
+
+## Client
+
+### Features
+
+* Add set row data property to element 
+* Support for seeds hosted in NPM registry 
+* New package for seed-related utilities 
+* Handle events added to grid-pro from template 
+* Making app parameter optional for genx add command 
+* Allow headers to have different case types 
+* Allow connect component to retrieve all available resources 
+* Allow host router to redirect after successful login 
+* Adding circular dependency plugin 
+* Add KVStorage type for state persistence
+* Support for absolute app dir paths
+* Resolve ref reference in json schema
+* Add stacking icons component
+* Default searchBarConfig if not defined
+* Add web-core package for FAST re-exports and wc utils
+* Allow filterModel saving to storage
+* Handle json forms default values 
+* Adding interop notifications component 
+* Ability to change rowSelection
+* Hide-submit-button attr in stepper
+* Helpers for conditional check and partials
+* Support array without providing resource name
+* Labels for checkboxes 
+* Network monitor 
+* Global error handling - overlays 
+* Add foundation-fdc3 package
+* Add channel eventelement
+* Add file targeting for unit tests
+* Handle service errors 
+* Allow skipping seed dependency install 
+* Add genesis exports and update client-app
+* Adding fdc3 util elements
+* Multi ds header tweaks 
+* Enum renderers support server default value 
+* Support reqRep in default search bar config 
+* Danger appearance for button 
+* Make local dev builds accessible on the network 
+* Improvements for cell renderers 
+* Stream latest state of the dataserver 
+* Network monitoring enhancements 
+* Conditional nav item based on permission 
+* Genesis resources and datasource enhancements 
+* Server handle errors 
+* Enable vite prod build + scripts
+* Automatically opens browser window
+* Add strongly typed broadcast-channel
+* Handle components errors - chart 
+
+### Fixes
+
+* Revert "address showcase code that E2E depends on 
+* Shared https and proxy setup 
+* fRevert foundation-login dependency 
+* Husky usage deprecation notice 
+* Add MSG_NACK error logging when SOURCE_REF is empty 
+* G2plot-chart fix 
+* Correctly handle subdir param for NPM seeds
+* Permission error in Powershell 
+* Explicitly listing bundler dependencies 
+* Added script for checking module size 
+* Upgrade deprecated GH actions to v4 
+* Address grid theme switching 
+* Pull small changes upstream 
+* Husky install command 
+* Updating jsdom, sinon, workbox-webpack-plugin 
+* Bump lsp versions 
+* Address invalid sorting scenarios with custom colDef forcing sortable 
+* Removing husky for CI builds
+* Add events directly in component 
+* Address all circular dependency warnings 
+* Address SSRM criteria changing + add dataLogoff for those
+* Remove console log from rapid-grid-pro
+* Clean row group defs to avoid enterprise warnings by default
+* Replace remaining console.log usages for logger util
+* Remove hardcoded row height from EM 
+* Fixed rapid grid pro text color in light mode
+* Adjust stepper-tab-panel styles
+* Persist refresh token across tabs
+* Include mfaToken in session refresh flow
+* Add categorized-multiselect
+* Address removeStyles null scenarios 
+* Address double disconnectedCallback cycle on layout items
+* Fix content wrapping issue in categorized-multiselect
+* Get correct value for boolean renderer on change
+* Update storybook to v8 (and prettier to v3) 
+* Handle ui and json schema in layout
+* Address logout issue when user session is expired or regular flow
+* Export change-case library
+* Set packages deprecated 
+* Keep column definitions on restart 
+* Address AG attribute setup on grid-pro connectedCallback
+* Allow changing local data in datasources
+* Allow column state to be kept on datasource restart
+* Add tabs & tab-panel default height
+* Make mfaToken optional in BasicAuthType
+* Using absolute dir path internally
+* Passing correct auth NPM tokens after registry re-order
+* Removing tmp folder before CLI tests
+* Adjust typorgraphy token values and  rapid-badge variations 
+* Column state not applying correctly on restart 
+* Address husky hooks execution 
+* Improve datasource cloning 
+* Fixing clone node + layout issue when setting functions in grid options
+* DeepClone for columnDefs in datasource/grid-pro-column
+* Styling overflow in small container
+* Services-status - allow user to set messages 
+* Update webpack deps 
+* Removing federation dashboard from webpack-builder 
+* Set profile package deprecated
+* Datasource emit size-changed event
+* Include readOnly type in forms 
+* Multiselect with option to add new items when not available from the list 
+* Improve grid tab content DSC app 
+* Ensure loadGenxModule is not affected by require module caching 
+* Datasource emit event after DATASERVER process stoped 
+* Added logic to default to Design System of the client app for which DSC was launched
+* Default order of pbc routes to the end 
+* Allow default blank values in seeds 
+* Seed utils to update server dependencies rather than duplicating
+* Correctly handle non-string option labels
+* Update README
+* Multiselect add css vars 
+* Prefix added in entity management 
+* Network monitor and user intersection ahead of v15 
+* Allow contains search in multiselect 
+* Add translations to foundation-login
+* Address prefixed layout lifecycle
+* Revert change to transform rights and profiles 
+* Upgrade to v6 
+* Set dev only button to rapid
+* Correctly switch between date and datetime input 
+* Testing for random failures 
+* Skip tests failing on CI flow 
+* Update README for foundation-i18n
+* Form add additional renderers 
+* Snackbar auto-close/stacking/height tweaks 
+* Scroll on modal position center
+* Overflow-wrap for long string in snackbar
+* Set scrollbar-color 
+* Add translations 
+* Header title styles fixed for entity management 
+* Ability to set position in search-bar
+* Default background color for tab-panel
+* Adding unit tests 
+* Export notification listener in rapid 
+* Font fixed for snackbar 
+* Remove manual dataLogoff calls
+* Added warning, buy, sell tokens in zero 
+* Address dialog outline styling 
+* Address add entity button spacing
+* Filtering + WS messages teardown conflict
+* Formatting for date and datetime
+* Improved major version check error message 
+* Update PR description job 
+* Upgrade actions-gh-pages to v4 
+* Validation for last step in stepper if submit button is hidden 
+* Pinning down ajv version due to a breaking change 
+* Update types dep for tabulator-tables 
+* Monorepo packages cleanup 
+* Add rapid storybook to gh-pages 
+* Remove circular references 
+* Update genx-cli test CI job step 
+* Address DOM disconnection when using entity-management with layout + better layout styling
+* Address user-select for tab component
+* Reverting site build temporarily for github-pages
+* Fixing deep clone and event property 
+* Address multiple visual issues
+* Override deep clone methods to handle functions, defaulting to using e.detail.data 
+* Rename show passwords => show password 
+* Update PR template
+
+## Breaking changes
+
+- Removing chronicle queues and maps for genesis cluster. This creates the `ZeroMQConnectToLocalhostViaLoopback` setting for [configuring ZeroMQ](/build-deploy-operate/operate/update-queue/#zeromq-configuration-options) in development environments. This setting ensures that the message queue is not affected by network switching. **Do not use it in Production environments.**
+- Ensure generated openapi spec is parseable by openapi generator

@@ -1,8 +1,181 @@
 ---
-title: 'Release Notes'
+title: '8.2'
 sidebar_label: '8.2'
-sidebar_position: 3
+sidebar_position: 18
 id: '8.2'
 ---
 
-# I'm on 8.2
+## Server
+
+### Features
+
+- Add "userHasRight" function to GPAL Dataserver, RequestReply and EventHandler 
+- Add configurable timeout when waiting for dependent processes 
+- Add gpal functions for data pipelines DbSink and update types 
+- Add pipeline test for CSV Decoder 
+- Added data pipeline manager as process bootstrap entry point + simple db source and log sink impls for testing 
+- Added sendEventOnCompletion handler for Data Pipelines
+- Allow Dynamic rule PROCESS_NAME to be null and resolve resources by service discovery 
+- CSV Decoder (Operator Implementation)
+- Expose additional system definition properties to run listeners directly on Netty threads and processing update queue updates in a single threaded fashion 
+- Relax type requirements on SendEventOnCompletion handler functions and add db and log handles to pipelines script 
+- Add non-blocking threading model for database subscriptions 
+- Add onCompletion handling to data pipelines v2 
+- Add optional pagination support to API code generation 
+- Add support for Consolidators and ata pipelines in GenesisJunit 
+- Added persistence api for data pipelines.
+- Added source implementation to batch poll the db. 
+- Added source that uses camel to get files. 
+- Allow remap to skip confirmation prompt based on sysdef 
+- Allow specifying product name in settings plugin
+- Create DbSink class to implement Sink and StreamSink to add rows to db 
+- Data pipelines v2 csv encoder 
+- Enable sql database metrics 
+- Enable update queue metrics 
+- Extended DbBatchPoller to accept indexes with multiple fields. 
+- Feat add metric for tracking the number of users per dataserver query 
+- Pipelines v2 default imports 
+- Simplified db batch poll gpal syntax. 
+- Update genesis meta json schema with keyword and validation 
+
+### Fixes
+
+- getRangeFromEnd default method without fields parameter now calls correct getRangeFromEnd method 
+- Consolidator minus operation produces incorrect result when the first operand is null
+- DOUBLE fields generated using the new table DSL to accept negative values by default 
+- Ensure gradle-api vulnerable dependencies are not added to the build due to the new openapi gradle plugin 
+- Ensure that fields marked as non-nullable at the table level are also marked as such in the audit table 
+- FDB alias cache will now respect fields with same name and different type defined in different tables 
+- Gradle preCompileScripts does not consider compacted processes 
+- Map maxRows from router request to paginated request 
+- Update SetLogLevel to use data classes and workflow, re-add countdown latch to script 
+- Can use warningNack in context event handlers 
+- Ensure PrimaryRoleNodeRestorer handles persisted state properly 
+- Ensure socket queues are ready before cluster init 
+- Excluding unsupported pbcs from DEV compactProcessStrategy 
+- Fixed rx implementation constructor. 
+- Prevent remap using oracle to potentially rename constraints and indices in the recycle bin
+- Saving process static info in a blocking manner to ensure read integrity 
+- Typo in compactProcesses in gradle properties 
+- Updated db batch poll channel logic. 
+- Uses io dispatcher and timeout while cleaning process metadata entries 
+
+### Dependency changes
+
+- Bump apachePoi from 5.2.5 to 5.3.0 in /genesis-conventions 
+- Bump byteBuddyVersion from 1.14.17 to 1.14.18 in /genesis-conventions 
+- Bump byteBuddyVersion from 1.14.17 to 1.14.18 in /genesis-conventions 
+- Bump camelVersion from 4.6.0 to 4.7.0 in /genesis-conventions 
+- Bump com.github.oshi:oshi-core from 6.6.1 to 6.6.2 in /genesis-conventions 
+- Bump com.github.spullara.mustache.java:compiler from 0.9.13 to 0.9.14 in /genesis-conventions
+- Bump com.google.errorprone:error_prone_annotations from 2.28.0 to 2.29.2 in /genesis-conventions 
+- Bump com.h2database:h2 from 2.2.224 to 2.3.230 in /genesis-conventions 
+- Bump com.jfrog.artifactory from 5.2.2 to 5.2.3 in /genesis-conventions
+- Bump com.jfrog.artifactory from 5.2.2 to 5.2.3 in /genesis-publish-config 
+- Bump com.networknt:json-schema-validator from 1.4.3 to 1.5.0 in /genesis-conventions 
+- Bump commons-codec:commons-codec from 1.17.0 to 1.17.1 in /genesis-parent/genesis-cluster 
+- Bump de.cronn:reflection-util from 2.15.0 to 2.16.0 in /genesis-subcore/genesis-db 
+- Bump debeziumVersion from 2.6.2.Final to 2.7.0.Final in /genesis-conventions
+- Bump groovyVersion from 3.0.21 to 3.0.22 in /genesis-conventions
+- Bump jacksonVersion from 2.17.1 to 2.17.2 in /genesis-conventions 
+- Bump junitVersion from 5.10.2 to 5.10.3 in /genesis-conventions 
+- Bump micrometerVersion from 1.13.1 to 1.13.2 in /genesis-conventions 
+- Bump nettyVersion from 4.1.111.Final to 4.1.112.Final in /genesis-conventions 
+- Bump org.apache.commons:commons-lang3 from 3.14.0 to 3.15.0 in /genesis-conventions 
+- Bump org.assertj:assertj-core from 3.26.0 to 3.26.3 in /genesis-conventions 
+- Bump org.checkerframework:checker-qual from 3.44.0 to 3.45.0 in /genesis-conventions 
+- Bump org.gradle.test-retry from 1.5.9 to 1.5.10 in /genesis-conventions
+- Bump org.java-websocket:Java-WebSocket from 1.5.6 to 1.5.7 in /genesis-conventions 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.2 to 5.2.3 in /genesis-conventions
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.2 to 5.2.3 in /genesis-publish-config 
+- Bump org.mockito.kotlin:mockito-kotlin from 5.3.1 to 5.4.0 in /genesis-conventions 
+- Bump org.openapitools:openapi-generator from 7.6.0 to 7.7.0 in /genesis-conventions 
+- Bump testcontainersVersion from 1.19.8 to 1.20.0 in /genesis-conventions 
+- Downgrading H2 to 2.2.224 due to different behavior on GetRange operations and indices
+
+### Patch Releases
+
+#### 8.2.7
+
+- Configurable update frequency and caching for Db cluster strategy
+- Include dependant scripts in codegen cache key
+- ResourceDaemon: Fix Dependency Injection initialisation on startup
+- Remove explicit toString call on ClusterMessage debug line
+
+#### 8.2.6
+
+- Dataserver backwardsJoin view does not recover in case of a buffered out of order update
+
+#### 8.2.5
+
+- Add optional classloader and cpu metrics
+- Ensure full service initialisation does not happen until a service is allowed to go up when in primary mode
+- Find project jars from gradle jar task, not from version
+- Consul: improve session check logic used to determine primary process demotion to avoid race conditions
+- Criteria validation and compilation should handle StackOverflow errors
+- DbMon search returns the expected number of records
+- DbMon updateWhere fails if there is a white space in the argument
+- Mon dies when system is not able to connect to CONSUL but is configured to do so
+- Allow db mon to fetch more than 500 results
+
+#### 8.2.4
+
+- Db batch polling source should accept NANO_TIMESTAMP index
+
+#### 8.2.3
+
+- Make logging of zero values optional in logger reporter
+- Fix Auth key concatenation for enriched auth clauses and AuthCache re-registration operation now uses correct record ids
+- Refactor metric report type handling in tests and factory
+- Add clientHandler router config with option to close client channel if becomes full
+- Fix ms sql insert handling
+
+#### 8.2.2
+
+- Ensure completion handlers are only invoked when an element is processed
+- Exclude data folder from site specific folder copy
+
+#### 8.2.1
+
+- Increasing object_key field size
+- Ensure error messages are flushed to logs on process exit
+- Dix minor issues in GenesisJunit test framework
+
+## Client
+
+### Features
+
+* Allowing to specify development server public path 
+* Support for dotenv files
+* Add slot on right-side of foundation header 
+* Add number and date formatters
+* Allow EM to use SSRM / server-side-datasource 
+
+### Fixes
+
+* Remove sourceRef leftover 
+* RefreshToken to be updated on MFA_FAILED error code 
+* Accessibility changes 
+* Use default FUI .env file in PR test steps if exists 
+* Address custom rowId when using EM + re-work of deferredGridOptions 
+* Increase lighthouse audit thresholds 
+* Address multiselect auto positioning 
+* Address stylelint warnings
+* Address zero tab contrast ratio 
+* Grid-pro TS type tweaks and grid-tabulator styling
+* Keyboard enabled X button 
+* Address -any- types
+* Change display property to block for flex compatibility
+* Login / auth should visually indicate required fields 
+* Notifications announced by screen readers
+* Ability to trigger master build manually 
+* Remove button styles from nav menu 
+* Sync progress bar after tabs/tab-panels change 
+* Seed utils is able to add additional server artifacts 
+* Add high-frequency demo + route tweaks
+* Fixing vertical alignment issues in rapid foundation form
+* Replacing grid-pro-genesis-datasource with grid-pro-client-side-datasource
+* Updated number-field to accept negative numbers 
+* PBC support in angular 
+* Fix typeRampPlus4Font size token value for rapid 
+* Chart rendering 
