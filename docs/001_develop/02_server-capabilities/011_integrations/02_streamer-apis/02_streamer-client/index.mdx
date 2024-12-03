@@ -43,6 +43,8 @@ The core streamer client behaviour is the following:
 
 :::warning
 Streamer client processes should run in `primaryOnly` mode to avoid sending a duplicated message stream to an event handler.
+
+Streamer client processes may replay messages that have been sent to an event handler previously in event of failure. Event handler implementations must take this into account and build duplicate message protection accordingly.
 :::
 
 Additionally, streamer clients may use `xlator` plugins that enhance the available streamer configuration with new configuration blocks and data transformations. See the FIX xlator documentation [here](/develop/business-components/fix/fix-xlator/) for more information.

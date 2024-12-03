@@ -37,7 +37,8 @@
   background: var(--white);
 }
 
-.card-outer .card-inner .card-main-image-wrapper {
+.card-outer .card-inner .card-main-image-wrapper,
+.card-outer .card-inner .card-main-children-wrapper {
   height: 80px;
   width: 100%;
   display: flex;
@@ -51,12 +52,19 @@
   max-height: 100%;
 }
 
+.card-outer .card-inner .card-main-children-wrapper {
+  display: contents;
+  overflow: hidden
+
+}
+
 .card-outer .card-inner .card-main-content {
   width: 100%;
   flex: 1;
   display: flex;
   align-items: center;
   flex-direction: column;
+  justify-content: flex-start;
 }
 
 .card-outer .card-inner .card-main-content svg {
