@@ -171,7 +171,7 @@
         "href": "/develop/client-capabilities/toast-notifications/",
         "imageUrl": "/svg/categories-icons/mail-svgrepo-com.svg",
         "description": "Toast notifications for rich, modern, real-time end-user alerts, notifications and acknowledgements"
-        
+
       },
       {
         "href": "/develop/client-capabilities/utility-methods/",
@@ -191,7 +191,7 @@
       {
         "href": "/develop/client-capabilities/styling/",
         "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg",
-        "description": "Define the visual style of the application through the tokens in the design System."
+        "description": "Define the visual style of the application through the tokens in the design system."
       },
       {
         "href": "/develop/client-capabilities/internationalization/",
