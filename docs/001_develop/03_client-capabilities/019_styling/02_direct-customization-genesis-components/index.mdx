@@ -1,0 +1,23 @@
+---
+title: 'Direct Genesis component styling'
+sidebar_label: 'Direct Genesis component styling'
+id: styling-direct
+keywords: [extend component, create component, styling]
+tags:
+- styling
+- extend component
+- create component
+- styling
+sidebar_position: 3
+---
+
+This section will cover how you can style Genesis components directly, without having to create a new class with custom styles and extend the base.
+
+The advantage of doing this is that it's a lot quicker, and your change can be encapsulated to the particular usage. For example, if you want to change the text colour of the button you can just set the style of that directly in the place you need it, which doesn't change the button across the entire application. However, if you do want to change it across the whole application you can do that to by setting the style at the top level.
+
+The disadvantage of direct styling is that it relies on APIs of the components - the item you wish to customise either needs to have a `::part` or use a `--css-variable`. Most of the time these will be exposed, but for times they are not you can extend the component instead to style based on the template directly.
+
+## Component libraries
+
+An additional advantage of this approach is that it's component library agnostic - you can use this approach when using Genesis syntax, as well as libraries like [React](../../022_framework-integration/003_integration-react.mdx) and [Angular](../../022_framework-integration/002_integration-angular.mdx). The code examples in this section will be shown as pure `html` and `css`, and then you can apply it to whichever component library you're using.
+

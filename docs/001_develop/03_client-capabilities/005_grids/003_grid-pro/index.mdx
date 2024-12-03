@@ -2,20 +2,24 @@
 title: 'Grid Pro'
 sidebar_label: 'Grid Pro'
 id: grid-pro
-keywords: [genesis, foundation, ui, grid, grid-pro, ag]
+keywords: [genesis, foundation, ui, simples-data grid, grid-pro, ag]
 tags:
-  - connected
-  - datasource
+  - simple-data
   - grid
   - grid-pro
   - ag
 pagination_prev: develop/client-capabilities/grids/entity-manager/entity-manager
-pagination_next: develop/client-capabilities/grids/grid-tabulator/grid-tabulator
+pagination_next: develop/client-capabilities/grids/grid-pro/grid-pro-datasources
 ---
+
+import GridProExample from './grid-pro_examples.js'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Grid Pro
 
-The `@genesislcap/grid-pro` package provides a collection of grid-related components and utilities for Genesis applications.
+The `@genesislcap/grid-pro` package provides a collection of grid-related components and utilities for Genesis applications. It is installed by default in
+applications build with Genesis Create or via the `genx` CLI.
 
 ## API Documentation
 
@@ -33,104 +37,34 @@ For more detailed information on API and configurations, please refer to the [AP
 - **State persistence**: ability to save and restore grid state.
 - **Row models**: support for both client-side and server-side [row models](https://www.ag-grid.com/javascript-data-grid/row-models/).
 
-## Getting Started
+## Usage - Simple Data
 
-### Installation
+<GridProExample />
 
-To enable this module in your application, follow the steps below.
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
 
-1. Add `@genesislcap/grid-pro` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
+<TabItem value="genesis">
 
-```json
-{
-  "dependencies": {
-    "@genesislcap/grid-pro": "latest"
-  },
-}
+### Declaration:
+
+```html
+<simple-grid-pro-example></simple-grid-pro-example>
 ```
 
-### Setup
-
-Make sure the required grid components are registered with your design system.
-Depending on how the app was created this might have been setup for you automatically (genx cli / create).
-The design system name might vary (you can create a custom one for your app), using rapid in this example.
+### Definition:
 
 ```typescript
-import { provideDesignSystem, baseComponents } from '@genesislcap/rapid-design-system';
-import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
-
-provideDesignSystem().register(baseComponents, rapidGridComponents);
-```
-
-### Attributes
-
-There are many attributes that can be set on a datasource component.
-
-#### Resource Attributes
-
-Some  **resource** related attributes are `DATASERVER` or `REQUEST_SERVER` specific while others can be used with both.
-
-##### Attributes that are common between DATASERVER and REQUEST_SERVER
-
-|Name|Type|Default|Description|
-|----|----|-------|-----------|
-| `resource-name` | `string` | - | The name of the target [Data Server](/develop/server-capabilities/real-time-queries-data-server/) `query` or [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) `requestReply`. |
-| `is-snapshot` | `boolean` | `false` | Request a snapshot from the server. |
-| `criteria` |`string`| - |Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription.|
-| `max-rows` | `number` | - | Maximum number of rows to be returned as part of the initial message, and as part of any additional MORE_ROWS messages. **This will not affect the number of rows displayed**|
-| `view-number` | `number` | - | The desired view/page you want data from. |
-
-##### DATASERVER only attributes
-
-|Name|Type|Default|Description|
-|----|----|-------|-----------|
-| `fields` | `string` | - | This optional parameter allows you to select a subset of fields from the query if the client is not interested in receiving all of them. |
-| `max-view` | `number` | - | Maximum number of rows to track as part of a client "view" |
-| `moving-view` | `boolean` | `false` | If true, when the maximum number of rows defined in `max-view` is reached, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows. If false, the updates in the server will be sent to the front end regardless of order. Note that this will only update the UI; no changes will be performed in the database.|
-| `order-by` | `string` | - | This option can be used to select a [Data Server index](/develop/server-capabilities/real-time-queries-data-server/#indices) (defined in the Data Server `query`), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows are returned in order of creation (from oldest database record to newest).|
-| `reverse` | `boolean` | `false` | This option changes the [Data Server index](/develop/server-capabilities/real-time-queries-data-server/#indices) iteration. For example, if you are using the default index, the query will return rows in order from the newest database records to the oldest.|
-
-##### REQUEST_SERVER only attributes
-
-|Name|Type|Default|Description|
-|----|----|-------|-----------|
-| `disable-polling` | `boolean` | `false` | This option disables polling if set to true (data updates for the grid will not be fetched automatically).|
-| `polling-interval` | `number` | - | This option enables you to set a custom polling frequency (in milliseconds) for a [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) resource. Note that this option only works with Request Server resources; if your resource is a Data Server `query`, your grid is updated in real time. |
-|`request`| `string` | - | Similar to `fields` but for [Request Server](/develop/server-capabilities/snapshot-queries-request-server/) scenarios. This optional parameter enables you to specify request fields, which can include wildcards.|
-|`request-auto-setup`| `boolean` | `false` | This option, if set to true, will automatically set up the `request` based on the datasources's metadata.|
-
-#### Component Attributes
-
-There are additional attributes that can affect the behavior of a datasource component.
-
-##### `<grid-pro-client-side-datasource>`
-
-|Name|Type|Default|Description|
-|----|----|-------|-----------|
-| `restart-on-reconnection` | `boolean` | `false` | This option, if set to true, will force the resource data to be reloaded upon a reconnection event.|
-| `keep-col-defs-on-clear-row-data` | `boolean` | `false` | This option, if set to true, will retain column definitions upon a `restart` or `clearRowData` event. |
-
-##### `<grid-pro-server-side-datasource>`
-
-|Name|Type|Default|Description|
-|----|----|-------|-----------|
-| `pagination` | `boolean` | `false` | This option enables pagination if set to true, otherwise the behavior will be infinite-scroll.|
-| `zero-based-view-number` | `boolean` | `false` | This option, if set to true, will make the starting VIEW_NUMBER zero-based (starting from 0 instead of 1).|
-| `live-updates` | `boolean` | `false` | This option enables live updates for the grid if set to true.|
-
-More details about our datasource implementations [here](#genesis-datasource).
-
-### Usage - Simple Data example
-
-```typescript
-import { ColDef, GridOptions } from '@ag-grid-community/core';
+import { ColDef } from '@ag-grid-community/core';
 import { GridPro } from '@genesislcap/grid-pro';
-import { customElement, DOM, GenesisElement, html, observable, ref } from '@genesislcap/web-core';
+import { customElement, GenesisElement, html, observable, ref } from '@genesislcap/web-core';
 
 @customElement({
-  name: 'simple-grid-example',
+  name: 'simple-grid-pro-example',
   template: html`
-    <rapid-grid-pro ${ref('grid')}></rapid-grid-pro>
+    <div style="display: flex; flex-direction: column; height: 200px;">
+      <rapid-button @click="${x => x.loadGrid()}">Load Grid Pro</rapid-button>
+      <rapid-grid-pro ${ref('grid')}></rapid-grid-pro>
+    </div>
   `,
 })
 export class SimpleGridExample extends GenesisElement {
@@ -138,220 +72,187 @@ export class SimpleGridExample extends GenesisElement {
   public grid: GridPro;
 
   private columnDefs: ColDef[] = [
-    { headerName: '#', colId: 'rowNum', valueGetter: 'node.id', width: 80, pinned: 'left' },
-    { headerName: 'Athlete', field: 'athlete', width: 150, pinned: 'left' },
-    { headerName: 'Age', field: 'age', width: 90, pinned: 'left' },
-    { headerName: 'Country', field: 'country', width: 150 },
-    { headerName: 'Year', field: 'year', width: 90 },
-    {
-      headerName: 'Date',
-      field: 'date',
-      width: 110,
-      filter: 'agDateColumnFilter',
-      filterParams: {
-        buttons: ['apply', 'reset'],
-        browserDatePicker: true,
-        comparator: (filterLocalDateAtMidnight, cellValue) => {
-          // Handling '29/08/2004' date format - adjust as need to match your date format
-          // https://www.ag-grid.com/javascript-data-grid/filter-date/
-          const dateAsString = cellValue;
-          if (dateAsString == null) return -1;
-          const dateParts = dateAsString.split('/');
-          const cellDate = new Date(
-            Number(dateParts[2]),
-            Number(dateParts[1]) - 1,
-            Number(dateParts[0]),
-          );
-          if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
-            return 0;
-          }
-          if (cellDate < filterLocalDateAtMidnight) {
-            return -1;
-          }
-          if (cellDate > filterLocalDateAtMidnight) {
-            return 1;
-          }
-          return 0;
-        },
-      },
-    },
-    { headerName: 'Sport', field: 'sport', width: 150, editable: true },
-    { headerName: 'Gold', field: 'gold', width: 100 },
-    { headerName: 'Silver', field: 'silver', width: 100 },
-    { headerName: 'Bronze', field: 'bronze', width: 100 },
-    { headerName: 'Total', field: 'total', width: 100, pinned: 'right' },
+    { headerName: 'Make', field: 'make', sortable: true, filter: true },
+    { headerName: 'Model', field: 'model', sortable: true, filter: true },
+    { headerName: 'Price', field: 'price', sortable: true, filter: true },
+    { headerName: 'Year', field: 'year', sortable: true, filter: true },
+    { headerName: 'Color', field: 'color', sortable: true, filter: true },
   ];
 
   private rowData = [
-    {
-      athlete: 'Michael Phelps',
-      age: 27,
-      country: 'United States',
-      year: 2012,
-      date: '12/08/2012',
-      sport: 'Swimming',
-      gold: 4,
-      silver: 2,
-      bronze: 0,
-      total: 6,
-    },
-    {
-      athlete: 'Natalie Coughlin',
-      age: 25,
-      country: 'United States',
-      year: 2008,
-      date: '24/08/2008',
-      sport: 'Swimming',
-      gold: 1,
-      silver: 2,
-      bronze: 3,
-      total: 6,
-      isActionDisabled: true,
-    },
+    { make: 'Toyota', model: 'Celica', price: 35000, year: 2021, color: 'red' },
+    { make: 'Ford', model: 'Mondeo', price: 32000, year: 2020, color: 'blue' },
+    { make: 'Porsche', model: 'Boxster', price: 72000, year: 2022, color: 'green' },
+    { make: 'Subaru', model: 'Impreza', price: 25000, year: 2019, color: 'yellow' },
+    { make: 'Nissan', model: 'Sentra', price: 20000, year: 2018, color: 'black' },
+    { make: 'Chevrolet', model: 'Camaro', price: 40000, year: 2020, color: 'white' },
+    { make: 'BMW', model: 'M3', price: 60000, year: 2021, color: 'silver' },
+    { make: 'Audi', model: 'A4', price: 45000, year: 2022, color: 'orange' },
+    { make: 'Mercedes', model: 'C-Class', price: 50000, year: 2020, color: 'purple' },
+    { make: 'Volkswagen', model: 'Golf', price: 30000, year: 2019, color: 'brown' },
     // ...
   ];
 
-  private gridOptions: GridOptions = {
-    defaultColDef: {
-      resizable: true,
-      filter: true,
-    },
-    columnDefs: this.columnDefs,
-    rowData: this.rowData,
-  };
-
-  connectedCallback() {
-    super.connectedCallback();
-    DOM.queueUpdate(() => {
-      this.grid.gridOptions = this.gridOptions;
-    });
+  public loadGrid() {
+    this.grid.gridOptions = {
+      defaultColDef: {
+        resizable: true,
+        filter: true,
+      },
+      columnDefs: this.columnDefs,
+      rowData: this.rowData,
+    };
   }
 }
 ```
 
-### Usage - Connected Data example (client-side datasource)
+</TabItem>
 
-```typescript
-@customElement({
-  name: 'connected-grid-client-side-example',
-  template: html`
-    <rapid-grid-pro enable-row-flashing enable-cell-flashing>
-      <grid-pro-client-side-datasource
-        resource-name="ALL_TRADES"
-        criteria="INSTRUMENT_ID == 'TSLA'"
-      ></grid-pro-client-side-datasource>
-    </rapid-grid-pro>
-  `,
-})
-export class ConnectedGridClientSideExample extends GenesisElement {}
+<TabItem value="react">
+
+### Declaration:
+
+```jsx
+<SimpleGridExample />
 ```
 
-### Usage - connected data example (server-side datasource)
+### Definition:
 
-Note: if pagination is set to false the grid will be in infinite scroll mode.
+```jsx
+import { GridPro } from '@genesislcap/grid-pro';
+import React, { useRef } from 'react';
 
-```typescript
-@customElement({
-  name: 'connected-grid-server-side-example',
-  template: html`
-    <rapid-grid-pro enable-row-flashing enable-cell-flashing>
-      <grid-pro-server-side-datasource
-        resource-name="ALL_TRADES"
-        criteria="INSTRUMENT_ID == 'TSLA'"
-      ></grid-pro-server-side-datasource>
-    </rapid-grid-pro>
-  `,
-})
-export class ConnectedGridServerSideExample extends GenesisElement {}
+const SimpleGridExample = () => {
+  const gridRef = useRef(null);
+
+  const columnDefs = [
+    { headerName: 'Make', field: 'make', sortable: true, filter: true },
+    { headerName: 'Model', field: 'model', sortable: true, filter: true },
+    { headerName: 'Price', field: 'price', sortable: true, filter: true },
+    { headerName: 'Year', field: 'year', sortable: true, filter: true },
+    { headerName: 'Color', field: 'color', sortable: true, filter: true },
+  ];
+
+  const rowData = [
+    { make: 'Toyota', model: 'Celica', price: 35000, year: 2021, color: 'red' },
+    { make: 'Ford', model: 'Mondeo', price: 32000, year: 2020, color: 'blue' },
+    { make: 'Porsche', model: 'Boxster', price: 72000, year: 2022, color: 'green' },
+    { make: 'Subaru', model: 'Impreza', price: 25000, year: 2019, color: 'yellow' },
+    { make: 'Nissan', model: 'Sentra', price: 20000, year: 2018, color: 'black' },
+    { make: 'Chevrolet', model: 'Camaro', price: 40000, year: 2020, color: 'white' },
+    { make: 'BMW', model: 'M3', price: 60000, year: 2021, color: 'silver' },
+    { make: 'Audi', model: 'A4', price: 45000, year: 2022, color: 'orange' },
+    { make: 'Mercedes', model: 'C-Class', price: 50000, year: 2020, color: 'purple' },
+    { make: 'Volkswagen', model: 'Golf', price: 30000, year: 2019, color: 'brown' },
+    // ...
+  ];
+
+  const loadGrid = () => {
+    if (gridRef.current) {
+      gridRef.current.gridOptions = {
+        defaultColDef: {
+          resizable: true,
+          filter: true,
+        },
+        columnDefs,
+        rowData,
+      };
+    }
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '200px' }}>
+      <rapid-button onClick={loadGrid}>Load Grid Pro</rapid-button>
+      <rapid-grid-pro ref={gridRef}></rapid-grid-pro>
+    </div>
+  );
+};
+
+export default SimpleGridExample;
 ```
 
-## Genesis Datasource
+> **Note**: In React, you might need to add a type declaration for the custom element to avoid TypeScript errors. You can declare the module for `'rapid-grid-pro'` or use `any` type for `gridRef`.
 
-This folder contains implementations of Genesis `datasource` components, responsible for fetching data for Genesis Grid Pro component.
+</TabItem>
 
-This document outlines the available features of our two “Grid Pro” datasources: `<grid-pro-client-side-datasource>` and `<grid-pro-server-side-datasource>`.
+<TabItem value="angular">
 
-## \<grid-pro-client-side-datasource\>
+### Declaration:
 
-### Client-Side Features
+```html
+<simple-grid-pro-example></simple-grid-pro-example>
+```
 
-- **Sorting**: Order by any column, ASC or DESC.
-- **Filtering**:
-  - Filtering options are automatically generated, based on the resource’s metadata.
-  - String Filters:
-    - contains
-    - not contains
-    - equals
-    - not equals
-    - starts with
-    - ends with
-    - blank
-    - not blank
-  - Number/Date Filters:
-    - equals
-    - less than
-    - less than or equal
-    - greater than
-    - greater than or equal
-    - in range
-- **Filter Combinations** (Max 2 filters can be combined):
-  - filter1 AND filter2
-  - filter1 OR filter2
+### Definition:
 
-### Client-Side Notes
+```typescript
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { GridPro } from '@genesislcap/grid-pro';
 
-- Works with both `DATASERVER` and `REQUEST_SERVER` resources.
-- Operations like sorting and filtering are performed on the client-side.
-- Suitable for datasets that are small to medium in size and can be entirely loaded into the client.
+@Component({
+  selector: 'simple-grid-pro-example',
+  template: `
+    <div style="display: flex; flex-direction: column; height: 200px;">
+      <rapid-button (click)="loadGrid()">Load Grid Pro</rapid-button>
+      <rapid-grid-pro #grid></rapid-grid-pro>
+    </div>
+  `,
+})
+export class SimpleGridExample {
+  @ViewChild('grid') grid: ElementRef;
 
-## \<grid-pro-server-side-datasource\>
+  private columnDefs = [
+    { headerName: 'Make', field: 'make', sortable: true, filter: true },
+    { headerName: 'Model', field: 'model', sortable: true, filter: true },
+    { headerName: 'Price', field: 'price', sortable: true, filter: true },
+    { headerName: 'Year', field: 'year', sortable: true, filter: true },
+    { headerName: 'Color', field: 'color', sortable: true, filter: true },
+  ];
 
-### Server-Side Features
+  private rowData = [
+    { make: 'Toyota', model: 'Celica', price: 35000, year: 2021, color: 'red' },
+    { make: 'Ford', model: 'Mondeo', price: 32000, year: 2020, color: 'blue' },
+    { make: 'Porsche', model: 'Boxster', price: 72000, year: 2022, color: 'green' },
+    { make: 'Subaru', model: 'Impreza', price: 25000, year: 2019, color: 'yellow' },
+    { make: 'Nissan', model: 'Sentra', price: 20000, year: 2018, color: 'black' },
+    { make: 'Chevrolet', model: 'Camaro', price: 40000, year: 2020, color: 'white' },
+    { make: 'BMW', model: 'M3', price: 60000, year: 2021, color: 'silver' },
+    { make: 'Audi', model: 'A4', price: 45000, year: 2022, color: 'orange' },
+    { make: 'Mercedes', model: 'C-Class', price: 50000, year: 2020, color: 'purple' },
+    { make: 'Volkswagen', model: 'Golf', price: 30000, year: 2019, color: 'brown' },
+    // ...
+  ];
 
-- **Sorting**: Order by any INDEX column/field, ASC or DESC.
-  - This is a server limitation. For each column that needs to have “sorting” the developer will need to have an INDEX for it. See more about indexes [here](/develop/server-capabilities/real-time-queries-data-server/#indices).
-  - By default, sorting is disabled on ALL columns… BUT if we detect valid ‘` indexes” from the metadata those column/fields will be setup to have sorting.
-  - If the user attempts to force `sortable` we’ll check if it’s really ok to do that + warn in the logs about it + try to mention other available indexes.. if any at all.
-- **Filtering**:
-  - Filtering options are automatically generated, based on the resource’s metadata.
-  - String filters
-    - blank
-    - contains
-    - equals
-    - notBlank
-    - notEqual
-    - wordStartsWith
-  - Number filters
-    - equals
-    - notEqual
-    - greaterThan
-    - greaterThanOrEqual
-    - lessThan
-    - lessThanOrEqual
-    - inRange
-    - blank
-    - notBlank
-  - Date filters
-    - equals
-    - lessThan
-    - greaterThan
-    - inRange
-    - isToday
-    - blank
-    - notBlank
+  loadGrid() {
+    if (this.grid && this.grid.nativeElement) {
+      this.grid.nativeElement.gridOptions = {
+        defaultColDef: {
+          resizable: true,
+          filter: true,
+        },
+        columnDefs: this.columnDefs,
+        rowData: this.rowData,
+      };
+    }
+  }
+}
+```
 
-### Server-Side Notes
+> **Note**: In your Angular module, make sure to include `CUSTOM_ELEMENTS_SCHEMA`:
 
-- Operations like sorting and filtering are pushed to the backend.
-  - Filtering uses `CRITERIA_MATCH` param
-  - Sorting uses `ORDERY_BY` param
-  - Both work the same way, once filtering/sorting is applied the datasource component “resets itself”, basically starting a new stream with the updated params.
-- **LIMITATIONS**
-  - Sorting can only be applied to “index” fields/columns.
-  - ROWS_COUNT doesn’t reflect the correct amount when a CRITERIA_MATCH (filtering) is applied. Example: X resource has 100 records. A criteria is specified so it returns only 50 records… the rows count sent from the server is still 100. Because of that we have to manually/locally calculate that.
-- Suitable for large datasets where only a subset of data is loaded into the client based on user interactions.
+```typescript
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
----
+@NgModule({
+  declarations: [SimpleGridExample],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class AppModule {}
+```
+
+</TabItem>
+
+</Tabs>
 
 ## Supported Row Models
 
@@ -363,45 +264,40 @@ It’s important to note that any client app can implement the other Row Models 
 
 `Infinite` and `Viewport` row models are also supported but not offered "out of the box" (devs will have to create their own component).
 
-| Feature | Client-Side | Server-Side | Notes |
-| --- | --- |--- | --- |
-| All Data in Client | ✓ | ✗ | Free |
-| Fetch Data as User Scrolls | ✗ | ✓ | Free |
-| Row Sorting | (client) | (client OR server) our component is server-only | Free |
-| Row Filtering | (client) | (client OR server) our component is server-only | Free |
-| Quick Filter | ✓ | ✓ | Free |
-| Floating Filters | ✓ | ✓ | Free |
-| Dynamic Row Height | ✓ | ✓ | Free |
-| Row Grouping | (client) | (server) | Paid (Enterprise) |
-| Row Pivoting | (client) | (server) | Paid (Enterprise) |
-| Lazy Loading Row Groups | ✗ | ✓ | Paid (Enterprise) |
-| Value Aggregation | (client) | (server) | Paid (Enterprise) |
-| Row Selection | ✓ | ✓ | Free |
-| Specify Selectable Rows | ✓ | ✓ | Free |
-| Header Checkbox Selection | ✓ | ✓ | Free |
-| Range Selection | ✓ | ✓ | Free |
-| Column Spanning | ✓ | ✓ | Free |
-| Column Pinning | ✓ | ✓ | Free |
-| Row Pinning | ✓ | ✓ | Free |
-| Pagination | ✓ | ✓ | Free |
-| Custom Filters | ✓ | ✓ | Free |
-| Cell Editors | ✓ | ✓ | Free |
-| Cell Renderers | ✓ | ✓ | Free |
-| Value Getter | ✓ | ✓ | Free |
-| Value Setter | ✓ | ✓ | Free |
-| Value Formatter | ✓ | ✓ | Free |
-| Value Parser | ✓ | ✓ | Free |
-| Full Width Rows | ✓ | ✓ | Free |
-| CSV Export | ✓ | (data on screen) | Free |
-| Excel Export | ✓ | (data on screen) | Paid (Enterprise) |
-| Clipboard Copy & Paste | ✓ | ✓ | Free |
-| Update via Transaction | ✓ | ✓ | Free |
-| Update via Async Transactions | ✓ | ✓ | Free |
-
-### Summary
-
-- **Client-Side Datasource**: Suitable for smaller datasets where all data can be loaded into the client. Operations like sorting and filtering are performed on the client-side.
-- **Server-Side Datasource**: Ideal for large datasets, where operations are pushed to the backend to ensure performance and consistency. Data is fetched as needed based on user interactions.
+| Feature                          | Client-Side | Server-Side | Notes                |
+| -------------------------------- | ----------- | ----------- | -------------------- |
+| All Data in Client               | ✓           | ✗           | Free                 |
+| Fetch Data as User Scrolls       | ✗           | ✓           | Free                 |
+| Row Sorting                      | (client)    | (client OR server) our component is server-only | Free |
+| Row Filtering                    | (client)    | (client OR server) our component is server-only | Free |
+| Quick Filter                     | ✓           | ✓           | Free                 |
+| Floating Filters                 | ✓           | ✓           | Free                 |
+| Dynamic Row Height               | ✓           | ✓           | Free                 |
+| Row Grouping                     | (client)    | (server)    | Paid (Enterprise)    |
+| Row Pivoting                     | (client)    | (server)    | Paid (Enterprise)    |
+| Lazy Loading Row Groups          | ✗           | ✓           | Paid (Enterprise)    |
+| Value Aggregation                | (client)    | (server)    | Paid (Enterprise)    |
+| Row Selection                    | ✓           | ✓           | Free                 |
+| Specify Selectable Rows          | ✓           | ✓           | Free                 |
+| Header Checkbox Selection        | ✓           | ✓           | Free                 |
+| Range Selection                  | ✓           | ✓           | Free                 |
+| Column Spanning                  | ✓           | ✓           | Free                 |
+| Column Pinning                   | ✓           | ✓           | Free                 |
+| Row Pinning                      | ✓           | ✓           | Free                 |
+| Pagination                       | ✓           | ✓           | Free                 |
+| Custom Filters                   | ✓           | ✓           | Free                 |
+| Cell Editors                     | ✓           | ✓           | Free                 |
+| Cell Renderers                   | ✓           | ✓           | Free                 |
+| Value Getter                     | ✓           | ✓           | Free                 |
+| Value Setter                     | ✓           | ✓           | Free                 |
+| Value Formatter                  | ✓           | ✓           | Free                 |
+| Value Parser                     | ✓           | ✓           | Free                 |
+| Full Width Rows                  | ✓           | ✓           | Free                 |
+| CSV Export                       | ✓           | (data on screen) | Free             |
+| Excel Export                     | ✓           | (data on screen) | Paid (Enterprise) |
+| Clipboard Copy & Paste           | ✓           | ✓           | Free                 |
+| Update via Transaction           | ✓           | ✓           | Free                 |
+| Update via Async Transactions    | ✓           | ✓           | Free                 |
 
 ## Performance
 
@@ -434,3 +330,38 @@ By leveraging both DOM Virtualisation and Pagination, our “grid components” 
 - **Initial Load**: Only the data for the first page is loaded, minimizing the initial load time.
 - **Scrolling**: As users scroll, DOM Virtualisation ensures only the visible rows and columns are rendered, maintaining performance.
 - **Page Navigation**: Users can navigate through pages to access the full dataset without overwhelming the client.
+
+## Legacy project setup
+
+This package is installed by default in applications build with Genesis Create or via the `genx` CLI, but you can follow these steps to install it in your existing project.
+
+### Installation
+
+To enable this module in your application, follow the steps below.
+
+1. Add `@genesislcap/grid-pro` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
+
+```json
+{
+  "dependencies": {
+    "@genesislcap/grid-pro": "latest"
+  },
+}
+```
+
+### Setup
+
+Make sure the required grid components are registered with your design system.
+Depending on how the app was created this might have been setup for you automatically (genx cli / create).
+The design system name might vary (you can create a custom one for your app), using rapid in this example.
+
+```typescript
+import { provideDesignSystem, baseComponents } from '@genesislcap/rapid-design-system';
+import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
+
+provideDesignSystem().register(baseComponents, rapidGridComponents);
+```
+
+:::tip
+If you're unsure where to register the component search for the `provideDesignSystem` method in your project.
+:::

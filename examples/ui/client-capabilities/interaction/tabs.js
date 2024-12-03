@@ -1,12 +1,11 @@
 import { CodeSection } from '../../documentationBase';
 import useIsBrowser from '@docusaurus/useIsBrowser';
-import { MenuItem } from '@genesislcap/rapid-design-system';
 
 function ListItem({children}) {
 	return (<li style={{color: 'white'}}>{children}</li>)
 }
 
-export default function MenuDemo({ children, color }) {
+export default function MenuDemo({ inIndex = false }) {
 
 	const isBrowser = useIsBrowser();
 
@@ -20,7 +19,7 @@ export default function MenuDemo({ children, color }) {
 			<rapid-tabs activeid="entrees">
 				<rapid-tab id="apps">Appetizers</rapid-tab>
 				<rapid-tab id="entrees">Entrees</rapid-tab>
-				<rapid-tab id="desserts">Desserts</rapid-tab>
+				{!inIndex ? (<rapid-tab id="desserts">Desserts</rapid-tab>) : null}
 				<rapid-tab-panel id="appsPanel">
 					<ol>
 						<ListItem>Stuffed artichokes</ListItem>
@@ -33,12 +32,13 @@ export default function MenuDemo({ children, color }) {
 						<ListItem>Grilled Fish with Artichoke Caponata</ListItem>
 					</ol>
 				</rapid-tab-panel>
-				<rapid-tab-panel id="dessertsPanel">
+				{!inIndex ?
+				(<rapid-tab-panel id="dessertsPanel">
 					<ol>
 						<ListItem>Tiramisu</ListItem>
 						<ListItem>limoncello and Ice Cream with Biscotti</ListItem>
 					</ol>
-				</rapid-tab-panel>
+				</rapid-tab-panel>) : null}
 			</rapid-tabs>
 		</CodeSection >
 	)
