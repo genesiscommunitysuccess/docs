@@ -19,7 +19,7 @@ The Genesis server state machine is used to define workflow for application's ta
 
 To give an example, you may be building an Order Management System, and need to define the lifecycle of your Order's. You may have various states for your order defined in an ENUM:
 
-ORDER_STATE:
+ORDER_STATUS:
 - NEW
 - ASSIGNED
 - PARTIALLY_FILLED
@@ -38,13 +38,13 @@ State Machines can be written in-line within a GPAL event handler, else written 
 
 ### In-line Event Handler State Machine
 
-The following example of a State Machine defines five events that control the transition of trades from one state to another.
+The following example of a State Machine defines five events that control the transition of orders from one state to another.
 
 ```kotlin
 eventHandler {
   stateMachine(ORDER.ORDER_STATUS) {
     insertEvent { //This generates an EVENT called `EVENT_ORDER_INSERT`
-      initialStates(OrderStatus.NEW, ORDER_STATE.ASSIGNED) //Inserted orders 
+      initialStates(ORDER_STATUS.NEW, ORDER_STATUS.ASSIGNED) //You can only set the ORDER_STATUS to these values on an insert.
 
       excludedFields {
         ENTERED_BY
@@ -53,6 +53,7 @@ eventHandler {
         MODIFIED_TIME
       }
 
+      TODO is this the same as onCommit on an event?
       onEvent { event ->
         event.withDetails {
           enteredBy = event.userName
@@ -63,7 +64,7 @@ eventHandler {
       onValidate { order ->
         verifyOnly { order hasField ORDER.PRICE }
         verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
-        if(order.orderState == OrderState.ASSIGNED) {
+        if(order.orderState == OrderStatus.ASSIGNED) {
           if(order.assignedTo == null) {
             return onValidate@nack("Order must be assigned to set status of ASSIGNED")
           }
@@ -81,15 +82,16 @@ eventHandler {
         MODIFIED_TIME
       }
 
-      onEvent { event, trade ->
-        trade.modifiedBy = event.userName
-        trade.modifiedTime = now()
+      TODO why does insert use event.withDetails and this does not? Is that right?
+      onEvent { event, order ->
+        order.modifiedBy = event.userName
+        order.modifiedTime = now()
       }
 
       onValidate { order ->
         verifyOnly { order hasField ORDER.PRICE }
         verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
-        if(order.orderState == OrderState.ASSIGNED) {
+        if(order.orderState == OrderStatus.ASSIGNED) {
           if(order.assignedTo == null) {
             return onValidate@nack("Order must be assigned to someone to set status of ASSIGNED")
           }
@@ -101,13 +103,13 @@ eventHandler {
     transitionEvent(OrderStatus.ASSIGNED) {
       fromStates(OrderStatus.NEW)
 
-      onEvent { event, trade ->
-        trade.modifiedBy = event.userName
-        trade.modifiedTime = now()
+      onEvent { event, order ->
+        order.modifiedBy = event.userName
+        order.modifiedTime = now()
       }
 
       onValidate { order ->
-        if(order.orderState == OrderState.ASSIGNED) {
+        if(order.orderState == OrderStatus.ASSIGNED) {
           if(order.assignedTo == null) {
             return onValidate@nack("Order must be assigned to someone to set status of ASSIGNED")
           }
@@ -119,9 +121,9 @@ eventHandler {
     transitionEvent(OrderStatus.PARTIALLY_FILLED) {
       fromStates(OrderStatus.ASSIGNED)
 
-      onEvent { event, trade ->
-        trade.modifiedBy = event.userName
-        trade.modifiedTime = now()
+      onEvent { event, order ->
+        order.modifiedBy = event.userName
+        order.modifiedTime = now()
       }
 
       onValidate { order ->
@@ -133,9 +135,9 @@ eventHandler {
     transitionEvent(OrderStatus.FULLY_FILLED) {
       fromStates(OrderStatus.PARTIALLY_FILLED)
 
-      onEvent { event, trade ->
-          trade.modifiedBy = event.userName
-          trade.modifiedTime = now()
+      onEvent { event, order ->
+          order.modifiedBy = event.userName
+          order.modifiedTime = now()
       }
 
       onValidate { order ->
@@ -147,9 +149,9 @@ eventHandler {
     transitionEvent(OrderStatus.COMPLETED) {
       fromStates(OrderStatus.ASSIGNED, OrderStatus.PARTIALLY_FILLED, OrderStatus.FULLY_FILLED )
 
-      onEvent { event, trade ->
-        trade.modifiedBy = event.userName
-        trade.modifiedTime = now()
+      onEvent { event, order ->
+        order.modifiedBy = event.userName
+        order.modifiedTime = now()
       }
     }
 
@@ -157,9 +159,9 @@ eventHandler {
     transitionEvent(OrderStatus.CANCELLED) {
       fromStates(OrderStatus.ASSIGNED, OrderStatus.PARTIALLY_FILLED, OrderStatus.FULLY_FILLED)
 
-      onEvent { event, trade ->
-        trade.modifiedBy = event.userName
-        trade.modifiedTime = now()
+      onEvent { event, order ->
+        order.modifiedBy = event.userName
+        order.modifiedTime = now()
       }
     }
   }
@@ -175,7 +177,7 @@ The following is an example State Machine written in kotlin. This would be injec
 class OrderStateMachine @Inject constructor(
     db: AsyncEntityDb
 ) {
-    private val internalState: StateMachine<Order, OrderState, OrderEffect> = db.stateMachineBuilder {
+    private val internalState: StateMachine<Order, OrderStatus, OrderEffect> = db.stateMachineBuilder {
       // Read ORDER_STATUS from Order table
       readState { orderStatus }
       
@@ -184,7 +186,7 @@ class OrderStateMachine @Inject constructor(
         // Allows the status to change
         isMutable = true
 
-        // State machine will accept the specified state on creation of trade
+        // State machine will accept the specified state on creation of order
         initialState(OrderEffect.New) {
           onValidate { order ->
             verifyOnly { order hasField ORDER.PRICE }
@@ -192,7 +194,7 @@ class OrderStateMachine @Inject constructor(
           }
         }
 
-        onCommit { trade ->
+        onCommit { order ->
           event.withDetails {
             enteredBy = event.userName
             enteredTime = now()
@@ -200,7 +202,7 @@ class OrderStateMachine @Inject constructor(
         }
 
         // Allowed transitions are from NEW to ASSIGNED
-        transition(TradeStatus.ASSIGNED, TradeEffect.Assigned)
+        transition(OrderStatus.ASSIGNED, OrderEffect.Assigned)
       }
 
       // Defines how the status NEW is handled
@@ -208,12 +210,14 @@ class OrderStateMachine @Inject constructor(
         // Allows the status to change
         isMutable = true
 
-        // State machine will accept the specified state on creation of trade
+        TODO can we use initialState when we have in the one above too?
+
+        // State machine will accept the specified state on creation of order
         initialState(OrderEffect.Assigned) {
           onValidate { order ->
             verifyOnly { order hasField ORDER.PRICE }
             verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
-            if(order.orderState == OrderState.ASSIGNED) {
+            if(order.orderState == OrderStatus.ASSIGNED) {
               if(order.assignedTo == null) {
                 return onValidate@nack("Order must be assigned to set status of ASSIGNED")
               }
@@ -221,17 +225,19 @@ class OrderStateMachine @Inject constructor(
           }
         }
 
+        TODO if ASSIGNED can be an initial state + something you transition to do I need to define onValidate twice like this?
+
         onValidate { order ->
           verifyOnly { order hasField ORDER.PRICE }
           verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
-          if(order.orderState == OrderState.ASSIGNED) {
+          if(order.orderState == OrderStatus.ASSIGNED) {
             if(order.assignedTo == null) {
               return onValidate@nack("Order must be assigned to set status of ASSIGNED")
             }
           }
         }
 
-        onCommit { trade ->
+        onCommit { order ->
           event.withDetails {
             enteredBy = event.userName
             enteredTime = now()
@@ -239,41 +245,81 @@ class OrderStateMachine @Inject constructor(
         }
 
         // Allowed transitions from ASSIGNED
-        transition(TradeStatus.PARTIALLY_FILLED, TradeEffect.PartiallyFilled)
-        transition(TradeStatus.COMPLETED, TradeEffect.Completed)
-        transition(TradeStatus.CANCELLED, TradeEffect.Cancelled)
+        transition(OrderStatus.PARTIALLY_FILLED, OrderEffect.PartiallyFilled)
+        transition(OrderStatus.COMPLETED, OrderEffect.Completed)
+        transition(OrderStatus.CANCELLED, OrderEffect.Cancelled)
       }
-
-TODO add below states
-
-- PARTIALLY_FILLED
-- FULLY_FILLED
-- COMPLETED
-- CANCELLED
-
 
       state(OrderStatus.PartiallyFilled) {
         isMutable = true
 
-        onValidate { issuedSecurity ->
-            require(!issuedSecurity.rejectionReason.isNullOrEmpty()) {
-                "Rejection reason must be given"
-            }
+        onValidate { order ->
+          require(order.quantityFilled > 0) { "Order must have some quantity filled to be set as PARTIALLY_FILLED" }
+        }
+
+        TODO do we have onCommit on all states? if not does this code need to go in the event handler which changes the state?
+        onCommit { order ->
+          event.withDetails {
+            modifiedBy = event.userName
+            modifiedTime = now()
+          }
         }
 
         transition(OrderStatus.ASSIGNED, OrderEffect.Assigned)
       }
 
+
+      TODO add below states
+
+      - FULLY_FILLED
+      - COMPLETED
+      - CANCELLED
+
+
+    //An order can only go to FULLY_FILLED from PARTIALLY_FILLED
+    transitionEvent(OrderStatus.FULLY_FILLED) {
+      fromStates(OrderStatus.PARTIALLY_FILLED)
+
+      onEvent { event, order ->
+          order.modifiedBy = event.userName
+          order.modifiedTime = now()
+      }
+
+      onValidate { order ->
+        require(order.quantityFilled == order.quantity) { "Order must have quantity filled to the full order quantity to be set as FULLY_FILLED" }
+      }
     }
+
+    //An order can go to COMPLETED from ASSIGNED, PARTIALLY_FILLED, FULLY_FILLED
+    transitionEvent(OrderStatus.COMPLETED) {
+      fromStates(OrderStatus.ASSIGNED, OrderStatus.PARTIALLY_FILLED, OrderStatus.FULLY_FILLED )
+
+      onEvent { event, order ->
+        order.modifiedBy = event.userName
+        order.modifiedTime = now()
+      }
+    }
+
+    //An order can go to CANCELLED from ASSIGNED, PARTIALLY_FILLED, FULLY_FILLED
+    transitionEvent(OrderStatus.CANCELLED) {
+      fromStates(OrderStatus.ASSIGNED, OrderStatus.PARTIALLY_FILLED, OrderStatus.FULLY_FILLED)
+
+      onEvent { event, order ->
+        order.modifiedBy = event.userName
+        order.modifiedTime = now()
+      }
+    }
+  }
 }
 
+TODO do we need effects on in-line? 
 sealed class OrderEffect {
-    object New : OrderEffect()
-    object Assigned : OrderEffect()
-    object PartiallyFilled : OrderEffect()
-    object FullyFilled : OrderEffect()
-    object Completed : OrderEffect()
-    object Cancelled : OrderEffect()
+  object New : OrderEffect()
+  object Assigned : OrderEffect()
+  object PartiallyFilled : OrderEffect()
+  object FullyFilled : OrderEffect()
+  object Completed : OrderEffect()
+  object Cancelled : OrderEffect()
 }
 
 ```
@@ -282,19 +328,646 @@ sealed class OrderEffect {
 
 State Machines can be written in-line within a GPAL event handler, else written in Kotlin and injected for use. Configuration options of both are detailed here.
 
-### In-line Event Handler State Machine
+### In-line Event Handler : `stateMachine`
+
+Takes two parameters:
+1. `tableField` ;  which is the field of a table which holds the state.
+1. `transactional` ; optional boolean parameter (default is true) which functions the same as defining [`transactional` on a standard eventHandler`](/develop/server-capabilities/core-business-logic-event-handler/#eventhandler)
+
+```kotlin
+eventHandler {
+  stateMachine(tableField = ORDER.ORDER_STATUS, transactional = true) {
+  ...
+  }
+}
+```
+
+#### `insertEvent`
+
+Define an event on this state machine for inserting the entity. The resulting eventHandler will be named `EVENT_<table_entity_name>_INSERT`. 
+In the below example the event would be called `EVENT_ORDER_INSERT`.
+
+```kotlin {3-5}
+eventHandler {
+  stateMachine(tableField = ORDER.ORDER_STATUS, transactional = true) {
+    insertEvent {
+      ...
+    }
+    ...
+  }
+}
+```
+
+##### `initialStates`
+
+The valid values that can be set on the `tableField` on an `insertEvent` 
+
+```kotlin {3}
+  ...
+    insertEvent {
+      initialStates(ORDER_STATUS.NEW, ORDER_STATUS.ASSIGNED)
+    ...
+    }
+  }
+}
+```
+
+##### `excludedFields`
+
+Removes fields defined on the table from the event. These fields should only be set by the events and not the client.
+
+```kotlin {3-8}
+    insertEvent {
+      ...
+      excludedFields {
+        ENTERED_BY
+        ENTERED_TIME
+        MODIFIED_BY
+        MODIFIED_TIME
+      }
+      ...
+    }
+```
+
+##### `onEvent`
+
+Provides event information, which can be used to get and set information on the event such as user entering the event and the event time.
+
+TODO what is it used for? different from onCommit?
+
+```kotlin {3-8}
+    insertEvent {
+      ...
+      onEvent { event ->
+        event.withDetails {
+          enteredBy = event.userName
+          enteredTime = now()
+        }
+      }
+      ...
+    }
+```
+
+##### `onValidate`
+
+Validate the inbound event details here. See the [event handler `onValidate` documentation](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate) for the full usage of `onValidate`.
+
+TODO is the only difference you don't need to ack() at the end like you do on an event?
+
+```kotlin {3-11}
+    insertEvent {
+      ...
+      onValidate { order ->
+        verifyOnly { order hasField ORDER.PRICE }
+        verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
+        if(order.orderState == OrderStatus.ASSIGNED) {
+          if(order.assignedTo == null) {
+            return onValidate@nack("Order must be assigned to set status of ASSIGNED")
+          }
+        }
+      }
+      ...
+    }
+```
+
+#### `modifyEvent`
+
+Define an event on this state machine for modifying the entity. The resulting eventHandler will be named `EVENT_<table_entity_name>__MODIFY`. 
+In the below example the event would be called `EVENT_ORDER_MODIFY`.
+
+```kotlin {4-6}
+eventHandler {
+  stateMachine(tableField = ORDER.ORDER_STATUS, transactional = true) {
+    ...
+    modifyEvent {
+      ...
+    }
+    ...
+  }
+}
+```
+
+##### `mutableStates`
+
+The valid values that the table record can have set on the `tableField` on an `modifyEvent`.
+
+For the example below, you can only modify an order when it has a status of NEW or ASSIGNED
+
+```kotlin {3}
+   ...
+    modifyEvent {
+      mutableStates(OrderStatus.NEW, OrderStatus.ASSIGNED)
+      ...
+    }
+  }
+}
+```
+
+##### `excludedFields`
+
+Removes fields defined on the table from the event. These fields should only be set by the events and not the client.
+
+```kotlin {3-8}
+    modifyEvent {
+      ...
+      excludedFields {
+        ENTERED_BY
+        ENTERED_TIME
+        MODIFIED_BY
+        MODIFIED_TIME
+      }
+      ...
+    }
+```
+
+##### `onEvent`
+
+Provides event information, which can be used to get and set information on the event such as user entering the event and the event time.
+
+TODO what is it used for? different from onCommit?
+
+```kotlin {3-6}
+    modifyEvent {
+      ...
+      onEvent { event, order ->
+        order.modifiedBy = event.userName
+        order.modifiedTime = now()
+      }
+      ...
+    }
+```
+
+##### `onValidate`
+
+Validate the inbound event details here. See the [event handler `onValidate` documentation](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate) for the full usage of `onValidate`.
+
+TODO is the only difference you don't need to ack() at the end like you do on an event?
+
+```kotlin {3-11}
+    modifyEvent {
+      ...
+      onValidate { order ->
+        verifyOnly { order hasField ORDER.PRICE }
+        verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
+        if(order.orderState == OrderStatus.ASSIGNED) {
+          if(order.assignedTo == null) {
+            return onValidate@nack("Order must be assigned to set status of ASSIGNED")
+          }
+        }
+      }
+      ...
+    }
+```
+
+#### `transitionEvent`
+
+Specifying a `transitionEvent` will generate an event specifically for transitioning the status. These events define the possible transitions of the `ORDER_STATUS` field. The resulting eventHandler will be named `EVENT_<table_entity_name>__<status being transitioned to>`.
+
+In the below example the event would be called `EVENT_ORDER_ASSIGNED`.
+
+```kotlin
+    transitionEvent(OrderStatus.ASSIGNED) {
+      ...
+    }
+```
+
+##### `fromStates`
+
+Defines the states we can transition from, to this. Use comma separation to define multiple states.
+
+In the example below the Order.OrderStatus must be NEW for this event to validate.
+
+TODO why do we have mutableStates in one and fromStates in another?
+
+```kotlin {2}
+    transitionEvent(OrderStatus.ASSIGNED) {
+      fromStates(OrderStatus.NEW)
+      ...
+    }
+```
+
+##### `onEvent`
+
+Provides event information, which can be used to get and set information on the event such as user entering the event and the event time.
+
+TODO what is it used for? different from onCommit?
+
+```kotlin {3-6}
+    transitionEvent(OrderStatus.ASSIGNED) {
+      ...
+      onEvent { event, order ->
+        order.modifiedBy = event.userName
+        order.modifiedTime = now()
+      }
+      ...
+    }
+```
+
+##### `onValidate`
+
+Validate the inbound event details here. See the [event handler `onValidate` documentation](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate) for the full usage of `onValidate`.
+
+TODO is the only difference you don't need to ack() at the end like you do on an event?
+
+```kotlin {3-9}
+    transitionEvent(OrderStatus.ASSIGNED) {
+      ...
+      onValidate { order ->
+        if(order.orderState == OrderStatus.ASSIGNED) {
+          if(order.assignedTo == null) {
+            return onValidate@nack("Order must be assigned to someone to set status of ASSIGNED")
+          }
+        }
+      }
+    }
+```
+
+### Injectable `StateMachine`
+
+You can build a State Machine using this interface by providing:
+- the entity of the State Machine. In our example, it is called `Order`.
+- the state of the entity field to manage; this field needs to be ENUM field. In our example, it is called `OrderStatus`.
+- the side effect of a state change, which is something you can subscribe to when the state changes. In our example, it is called `OrderEffect` and you can see we add it in-line in the same file we create the StateMachine module.
+
+The following is an example State Machine written in kotlin. This would be injected into your event handler as described in the [configuration options](#configurationoptions) section.
+
+```kotlin {5,10-17}
+@Module
+class OrderStateMachine @Inject constructor(
+    db: AsyncEntityDb
+) {
+    private val internalState: StateMachine<Order, OrderStatus, OrderEffect> = db.stateMachineBuilder {
+      ...
+    }
+}
+
+sealed class OrderEffect {
+  object New : OrderEffect()
+  object Assigned : OrderEffect()
+  object PartiallyFilled : OrderEffect()
+  object FullyFilled : OrderEffect()
+  object Completed : OrderEffect()
+  object Cancelled : OrderEffect()
+}
+```
+
+#### `readState`
+
+`readState` must be defined and tells the state machine which field on the table to use for reading the state.
+
+In our example, the field to read is `orderStatus`.
+
+```kotlin
+    private val internalState: StateMachine<Order, OrderStatus, OrderEffect> = db.stateMachineBuilder {
+      readState { orderStatus }
+      ...
+    }      
+```
+
+#### `state`
+
+The `state` method is where we define how to handle the state of the table. Handling of the state is managed by `StateBuilder`, which is explained in detail below.
+```
+    private val internalState: StateMachine<Order, OrderStatus, OrderEffect> = db.stateMachineBuilder {
+      ...
+         
+      state(OrderStatus.NEW) {
+        ...
+      }
+    } 
+```
+##### `isMutable`
+
+TODO
+```
+        // Allows the status to change
+        isMutable = true
+```
+##### `initialState`
+
+TODO
+```
+        // State machine will accept the specified state on creation of order
+        initialState(OrderEffect.New) {
+          onValidate { order ->
+            verifyOnly { order hasField ORDER.PRICE }
+            verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
+          }
+        }
+```
+TODO what else in here? onCommit? Why in 2 places?
+
+
+##### `initialStateWithContext`
+
+TODO from docs no examples
+
+##### `onValidate`
 
 TODO
 
-TODO the onValidates can link to the eventHandler onValidates section
-
-### Injectable State Machine
+##### `onCommit`
 
 TODO
+```
+        onCommit { order ->
+          event.withDetails {
+            enteredBy = event.userName
+            enteredTime = now()
+          }
+        }
+```
+
+##### `transition`
+
+TODO
+
+##### `transitionWithContext`
+
+TODO from docs no examples
+
+
+## Inject State Machine
+
+### Inject State Machine in [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) file
+
+```kotlin
+eventHandler {
+    val stateMachine = inject<OrderStateMachine>()
+
+    eventHandler<Order>(name = "ORDER_INSERT", transactional = true) {
+        permissioning {
+            permissionCodes = listOf("ORDERR")
+            auth(mapName = "ENTITY_VISIBILITY") {
+                authKey {
+                    key(data.counterpartyId)
+                }
+            }
+        }
+        onValidate { event ->
+            val message = event.details
+            verify {
+                entityDb hasEntry Counterparty.ById(message.counterpartyId)
+                entityDb hasEntry Instrument.ById(message.instrumentId)
+            }
+            ack()
+        }
+        onCommit { event ->
+            val order = event.details
+            order.enteredBy = event.userName
+            stateMachine.insert(entityDb, order)
+            ack()
+        }
+    }
+}
+```
+
+
+### Inject State Machine in Event Handler [API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api)
+
+```kotlin
+@Module
+class EventCompanyHandlerAsync @Inject constructor(
+  private val entityDb: AsyncEntityDb,
+  private val orderMachine: OrderStateMachine
+) : AsyncEventHandler<Company, EventReply> {
+  override suspend fun process(message: Event<Company>): EventReply {
+    val company = message.details
+    // custom code block..
+    return EventReply.EventAck()
+  }
+}
+```
+
+## Client API
+
+TODO mention that this just adds state validation and point to event handler API for client interaction.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Runtime configuration
 
-TODO
+In-line state Machines are defined as Event Handlers in your application's `*-eventhandler.kts` file and you shouldn't need to do any more.
+
+If you have defined your state-machine in kotlin, make sure the event handler definition in `processes.xml` includes the `.jar` file containing the state machine in `<classpath>`.
 
 <CommonProcesses/>
+
+
+## Integration testing
+
+A State Machine is just another layer of an Event Handler, the test configuration is same as for Event Handlers.
+
+The Genesis Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Event Handler configuration is used to create our Event Handler. We also need to add the required packages, genesis home and separately set the `IS_SCRIPT` System Definition property to true (This is required as part of the Event Handler initialization).
+
+```kotlin
+class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
+    GenesisTestConfig {
+      addPackageName("global.genesis.eventhandler.pal")
+      genesisHome = "/GenesisHome/"
+      parser = { it }
+      scriptFileName = "your-application-eventhandler.kts"
+      initialDataFile = "seed-data.csv"
+    }
+) {
+    override fun systemDefinition(): Map<String, Any> = mapOf("IS_SCRIPT" to "true")
+}
+```
+
+Once you have set up your configuration, you can start writing tests against State Machine.
+
+### Writing tests
+
+Let's write some tests for our [examples](#example-configuration) of State Machine.
+
+```kotlin
+
+  //Add these helper functions for test:
+  private inline fun <T : Any> T.assertProperty(block: T.() -> Boolean) = assert(block()) {
+    toPrettyJsonString(true)
+  }
+
+  private fun EventReply.EventAck.extractOrderId(): String {
+    val generated = generated.first()
+    assert(generated.isNotEmpty())
+    assert("ORDER_ID" in generated)
+    return generated["ORDER_ID"] as String
+  }
+
+  private fun makeOrder(newOrderPrice: Double, orderQuantity: Int) =
+    Order {
+      orderId = "order_id"
+      quantity = orderQuantity
+      orderPrice = newOrderPrice
+      instrumentId = 1
+      enteredBy = null
+      enteredTime = null
+      modifiedBy = null
+      modifiedTime = null
+    }
+
+  @Test
+  fun `test order insert`() = runBlocking {
+    val start = DateTime.now()
+    val reply = sendEvent(
+      makeOrder(1.25, 12),
+      messageType = "EVENT_ORDER_INSERT",
+        userName = "admin"
+      )
+
+    val ack = reply.assertedCast<EventReply.EventAck>()
+    val order = entityDb.get(Order.ById(ack.extractOrderId()))!!
+
+    order.assertProperty { enteredBy == "admin" }
+    order.assertProperty { enteredTime!! > start }
+    order.assertProperty { orderPrice == 1.25 }
+    order.assertProperty { quantity == 12 }
+    order.assertProperty { orderStatus == OrderStatus.NEW }
+  }
+
+  @Test
+  fun `test order insert - failure`() = runBlocking {
+    val reply = sendEvent(
+      makeOrder(1.25, -1),
+      messageType = "EVENT_ORDER_INSERT",
+      userName = "admin"
+    )
+
+    val nack = reply.assertedCast<EventReply.EventNack>()
+    val error = nack.error.first().text
+
+    assertEquals("Expected Order.QUANTITY to be greater than or equal to 0; actual value -1", error)
+  }
+
+  @Test
+  fun `test order modify`() = runBlocking {
+    val reply = sendEvent(
+        makeOrder(1.25, 12),
+        messageType = "EVENT_ORDER_INSERT",
+        userName = "admin"
+    )
+
+    val ack = reply.assertedCast<EventReply.EventAck>()
+
+    val orderId = ack.extractOrderId()
+    var order = entityDb.get(Order.ById(orderId))!!
+
+    order.quantity = 15
+
+    sendEvent(
+        order,
+        messageType = "EVENT_ORDER_MODIFY",
+        userName = "admin"
+    ).assertedCast<EventReply.EventAck>()
+
+    order = entityDb.get(Order.ById(orderId))!!
+
+    order.assertProperty { enteredBy == "admin" }
+    order.assertProperty { modifiedBy == "admin" }
+    order.assertProperty { quantity == 15 }
+    order.assertProperty { orderStatus == OrderStatus.NEW }
+  }
+
+  @Test
+  fun `test order modify - failure`() = runBlocking {
+    val reply = sendEvent(
+        makeOrder(1.25, 12),
+        messageType = "EVENT_ORDER_INSERT",
+        userName = "admin"
+    )
+
+    val ack = reply.assertedCast<EventReply.EventAck>()
+
+    val reply2 = reply.messageType
+
+    val orderId = ack.extractOrderId()
+    val order = entityDb.get(Order.ById(orderId))!!
+
+    order.orderPrice = null
+
+    val nack = sendEvent(
+        order,
+        messageType = "EVENT_ORDER_MODIFY",
+        userName = "admin"
+    ).assertedCast<EventReply.EventNack>()
+
+    val error = nack.error.first().text
+    assertEquals("Expected Order.ORDER_PRICE to have a value", error)
+  }
+
+  @Test
+  fun `test order cancel`() = runBlocking {
+    val reply = sendEvent(
+      makeOrder(1.25, 12),
+      messageType = "EVENT_ORDER_INSERT",
+      userName = "admin"
+    )
+
+    val ack = reply.assertedCast<EventReply.EventAck>()
+
+    val orderId = ack.extractOrderId()
+    val index = Order.ById(orderId)
+
+    sendEvent(
+        index,
+        messageType = "EVENT_ORDER_CANCELLED",
+        userName = "admin"
+    ).assertedCast<EventReply.EventAck>()
+
+    val order = entityDb.get(index)!!
+
+    order.assertProperty { enteredBy == "admin" }
+    order.assertProperty { modifiedBy == "admin" }
+    order.assertProperty { orderStatus == OrderStatus.CANCELLED }
+  }
+
+  @Test
+  fun `test order modify - fail cancelled`() = runBlocking {
+    val reply = sendEvent(
+      makeOrder(1.25, 12),
+      messageType = "EVENT_ORDER_INSERT",
+      userName = "admin"
+    )
+
+    val ack = reply.assertedCast<EventReply.EventAck>()
+
+    val orderId = ack.extractOrderId()
+    val index = Order.ById(orderId)
+
+    sendEvent(
+      index,
+      messageType = "EVENT_ORDER_CANCELLED",
+      userName = "admin"
+    ).assertedCast<EventReply.EventAck>()
+
+    val order = entityDb.get(index)!!
+    order.quantity = 100
+
+    val nack = sendEvent(
+      order,
+      messageType = "EVENT_ORDER_MODIFY",
+      userName = "admin"
+    ).assertedCast<EventReply.EventNack>()
+
+    val error = nack.error.first().text
+    assert(error == "Order CANCELLED is immutable") { error }
+  }
+```
+
+:::info
+For further information on testing, go to our page on [Integration testing](/develop/server-capabilities/testing-api/).
+:::
