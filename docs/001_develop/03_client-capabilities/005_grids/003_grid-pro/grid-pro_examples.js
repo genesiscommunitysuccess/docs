@@ -30,7 +30,7 @@ function GridProExampleBase({
 }) {
   const isBrowser = useIsBrowser();
   const grid = useRef(null);
-	const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (isBrowser) {
@@ -55,11 +55,11 @@ function GridProExampleBase({
 
       grid.current.gridOptions = gridOptions;
 
-			setIsLoaded(true);
+      setIsLoaded(true);
     }
   };
 
-	useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => { loadGridOptions(); }, 2000);
     return () => clearTimeout(timer);
   }, []);
@@ -67,8 +67,8 @@ function GridProExampleBase({
   return (
     <CodeSection>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: gridHeight }}>
-				{!isLoaded ? (<LoadingRing />) : null}
-				<rapid-grid-pro ref={grid} ></rapid-grid-pro>
+        {!isLoaded ? (<LoadingRing />) : null}
+        <rapid-grid-pro ref={grid} ></rapid-grid-pro>
       </div>
     </CodeSection>
   );
