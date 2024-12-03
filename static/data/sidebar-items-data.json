@@ -39,7 +39,7 @@
     ]
   },
   "/develop/server-capabilities": {
-    "description": "This section provides full details of the Genesis application platform's server capabilities. Each section details how the capability works, along with examples and full documentation on configuration and interaction.",
+    "description": "This section provides full details of the Genesis Application Platform's server capabilities. Each section details how the capability works, along with examples and full documentation on configuration and interaction.",
     "items": [
       {
         "href": "/develop/server-capabilities/data-model/",
@@ -114,7 +114,7 @@
     ]
   },
   "/develop/client-capabilities": {
-    "description": "This section provides full details of the Genesis application platform's client (web UI) capabilities. Each section details how the capability works, along with examples and full documentation on configuration.",
+    "description": "This section provides full details of the Genesis Application Platform's client (web UI) capabilities. Each section details how the capability works, along with examples and full documentation on configuration.",
     "items": [
       {
         "href": "/develop/client-capabilities/server-communications/",
