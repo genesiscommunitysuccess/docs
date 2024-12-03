@@ -44,11 +44,12 @@ The `SlottedStyles` custom element enables the encapsulation and dynamic applica
   <TabItem value="genesis">
     Usage
     ```typescript
-    const slottedStyles = css
-    :host {
-      display: block;
-      color: red;
-    }
+    const slottedStyles = css`
+      :host {
+        display: block;
+        color: red;
+      }
+    `
     @customElement({
       name: 'my-element',
       template: html`
@@ -63,13 +64,13 @@ The `SlottedStyles` custom element enables the encapsulation and dynamic applica
   <TabItem value="react">
     Usage
     ```typescript
-    const slottedStyles = {
+    const slottedStyles =  css`
       host:
       {
-        display: 'block',
-        color: 'red',
+        display: block;
+        color: red;
       },
-    };
+    `
     export function MyComponent() {
       const slottedStylesRef = useRef(null);
       useEffect(() => {
@@ -102,13 +103,14 @@ The `SlottedStyles` custom element enables the encapsulation and dynamic applica
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     export class AppComponent {
-      slottedStyles = {
-      host:
-      {
-        display: 'block',
-        color: 'red',
-      },
-    };
+      slottedStyles = css`
+        host:
+        {
+          display: block;
+          color: red;
+        }
+      `
+    }
   }
     ```
   </TabItem>
