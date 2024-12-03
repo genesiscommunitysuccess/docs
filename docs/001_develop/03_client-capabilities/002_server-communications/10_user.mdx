@@ -11,11 +11,11 @@ tags:
 
 # User Management 
 
-The Genesis Framework includes a structured approach to managing user data, permissions, and profiles. This is implemented through the `User` interface and `CurrentUser` class, providing a system to manage user roles and access within applications effectively.
+The Genesis Framework provides a robust solution for managing user access and roles. This includes a structured approach to managing user data, permissions, and profiles. This is implemented through the `User` interface and `CurrentUser` class, providing a system to manage user roles and access within applications effectively.
 
-## Key Components
+## Key components
 
-### User Interface and Classes
+### User interface and classes
 
 - **UserOptions**: Defines core user options including permissions, profiles, and username.
 - **User**: Enhances `UserOptions` with methods for checking specific permissions or profiles.
@@ -23,14 +23,14 @@ The Genesis Framework includes a structured approach to managing user data, perm
 
 Used in `Auth` and `Session` services, the `CurrentUser` class provides a central point for managing user roles and permissions, ensuring consistent access control across the application.
 
-### User Types
+### User types
 
 The framework specifies types for permissions and profiles to support both predefined system values and custom values defined by applications.
 
 - **CoreUserPermissions & UnknownUserPermissions**: Represents specific user permissions.
 - **CoreUserProfiles & UnknownUserProfiles**: Represents user profiles that can be assigned.
 
-## Usage Example
+## Usage example
 
 Below is an example demonstrating how to use the `CurrentUser` class to manage and check the current user's permissions and profiles.
 

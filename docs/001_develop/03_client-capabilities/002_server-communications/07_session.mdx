@@ -1,6 +1,6 @@
 ---
-title: 'Session Management'
-sidebar_label: 'Session Management'
+title: 'Session management'
+sidebar_label: 'Session management'
 id: comms-session
 keywords: [genesis, foundation, comms, session]
 tags:
@@ -8,18 +8,18 @@ tags:
   - session
 ---
 
-# Session Management
+# Session management
 
-This introduces a comprehensive approach to managing user session data, leveraging browser storage mechanisms to persist user authentication states, preferences, and other session-specific information. It provides a unified interface to interact with both local storage and session storage, facilitating easy storage and retrieval of session data.
+There is a comprehensive approach to managing user session data, using browser storage mechanisms to persist user authentication states, preferences, and other session-specific information. It provides a unified interface to interact with both local storage and session storage, making it easy to store and retrieve session data.
 
-## Key Components
+## Key components
 
 - **Session Interface (`Session`):** Defines the contract for session management operations, including setting, getting, and removing items from storage, as well as managing user authentication results and session return URLs.
 - **Default Implementation (`DefaultSession`):** Offers a concrete implementation of the `Session` interface, encapsulating logic for prefixing storage keys, handling authentication results, and managing return URLs.
 
-## Usage Examples
+## Usage examples
 
-### Setting the Storage Key Prefix
+### Setting the storage key prefix
 
 To avoid key collisions in storage, it's recommended to set a unique prefix for your application's storage keys.
 
@@ -35,7 +35,7 @@ export class MyExampleClass {
 }
 ```
 
-### Managing Authentication Data
+### Managing authentication data
 
 Store and manage authentication results to maintain user session state.
 
@@ -63,9 +63,9 @@ export class MyExampleClass {
 }
 ```
 
-This utilizes `setSessionStorageItem` for storing each piece of data and `removeSessionStorageItem` for cleanup.
+This uses `setSessionStorageItem` to store each piece of data and `removeSessionStorageItem` for clean-up.
 
-### Capturing and Managing Return URLs
+### Capturing and managing return URLs
 
 Automatically capture and store the return URL for post-authentication redirection.
 
@@ -91,7 +91,7 @@ This internally uses `setSessionStorageItem` to store the return URL and initial
 
 ### Direct Storage Access: Setting, Getting, and Removing Items
 
-#### Setting Items
+#### Setting items
 
 Store data in local or session storage directly. This demonstrates the versatility in storage options.
 
@@ -114,7 +114,7 @@ export class MyExampleClass {
 
 These methods internally call `setItem`, specifying the storage type.
 
-#### Getting Items
+#### Getting items
 
 Retrieve data from storage, showcasing both local and session storage retrieval.
 
@@ -138,7 +138,7 @@ export class MyExampleClass {
 
 These methods internally use `getItem`, specifying the appropriate storage type.
 
-#### Removing Items
+#### Removing items
 
 Remove items from storage, illustrating how to clear specific data.
 
@@ -162,7 +162,7 @@ export class MyExampleClass {
 
 These methods make internal calls to `removeItem` with the specified storage type.
 
-### Generic Storage Management
+### Generic storage management
 
 For situations where the storage type might vary, or when creating more generic functions that can work with either storage type, `setItem`, `getItem`, and `removeItem` are used directly.
 
@@ -226,7 +226,7 @@ export class MyExampleClass {
 }
 ```
 
-These examples showcase the flexibility of `@Session` in managing both session and local storage. Functions like `setItem`, `getItem`, and `removeItem` offer a unified interface for storage operations, internally leveraging the storage-specific methods (`setLocalStorageItem`, `getLocalStorageItem`, `removeLocalStorageItem`, `setSessionStorageItem`, `getSessionStorageItem`, `removeSessionStorageItem`) to provide a cohesive and comprehensive session management strategy.
+These examples showcase the flexibility of `@Session` in managing both session and local storage. Functions like `setItem`, `getItem`, and `removeItem` offer a unified interface for storage operations, internally using the storage-specific methods (`setLocalStorageItem`, `getLocalStorageItem`, `removeLocalStorageItem`, `setSessionStorageItem`, `getSessionStorageItem`, and `removeSessionStorageItem`) to provide a cohesive and comprehensive session management strategy.
 
 ## Considerations
 

@@ -1,6 +1,6 @@
 ---
-title: 'Metadata Management'
-sidebar_label: 'Metadata Management'
+title: 'Metadata management'
+sidebar_label: 'Metadata management'
 id: comms-metadata
 keywords: [genesis, foundation, comms, metadata]
 tags:
@@ -8,20 +8,20 @@ tags:
   - metadata
 ---
 
-# Metadata and JSON Schema Management
+# Metadata and JSON schema management
 
 This provides a robust system for handling metadata and JSON schemas associated with resources, facilitating the interpretation, validation, and utilization of resource definitions across applications. It includes a caching mechanism to optimize performance by reducing the need to fetch metadata and schemas repetitively.
 
-## Key Components
+## Key components
 
 - **`MetadataCache` and `JsonSchemaCache` Interfaces:** Define contracts for caching metadata and JSON schemas, respectively, with methods for retrieval, validation, and storage.
 - **`DefaultMetaCache` Implementation:** Offers a concrete implementation of both `MetadataCache` and `JsonSchemaCache`, utilizing internal maps for efficient caching.
 - **Metadata and Schema Definitions:** Types and utilities for working with resource metadata, field definitions, and JSON schemas, ensuring structured and type-safe handling of resource descriptors.
 - **Utility Functions:** Includes functions for converting field definitions to metadata, extracting field definitions from metadata, and other operations to ease working with resource metadata.
 
-## Usage Examples
+## Usage examples
 
-### Caching Metadata and JSON Schemas
+### Caching metadata and JSON schemas
 
 ```typescript
 import { MetaCache, Metadata, SchemaResponse } from '@genesislcap/foundation-comms';
@@ -63,7 +63,7 @@ export class MyExampleClass {
 }
 ```
 
-### Retrieving Cached Metadata
+### Retrieving cached metadata
 
 ```typescript
 const cachedMetadata = metaCache.getMetadataFor(resourceName);

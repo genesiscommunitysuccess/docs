@@ -1,6 +1,6 @@
 ---
-title: 'Testing Utilities'
-sidebar_label: 'Testing Utilities'
+title: 'Testing utilities'
+sidebar_label: 'Testing utilities'
 id: comms-testing
 keywords: [genesis, foundation, comms, testing, service-mocks]
 tags:
@@ -9,11 +9,11 @@ tags:
   - service-mocks
 ---
 
-# Testing Utilities
+# Testing utilities
 
-This contains a collection of utilities, mocks, and helpers designed to facilitate effective and streamlined testing of web applications. This documentation outlines the key components and provides examples to demonstrate their use in testing scenarios.
+The Genesis Application Platform provides a collection of utilities, mocks, and helpers designed to facilitate effective and streamlined testing of web applications. This documentation outlines the key components and provides examples that demonstrate their use in testing scenarios.
 
-## Key Components
+## Key components
 
 - **Mocks**: Simulated objects that mimic the behavior of real components within the application. These are crucial for isolating the unit of work in tests.
 
@@ -25,11 +25,11 @@ This contains a collection of utilities, mocks, and helpers designed to facilita
 
 To use the testing utilities, ensure you have the necessary dependencies installed in your project. While specific installation steps might vary based on your project setup, typically, you would need to include `@genesislcap/foundation-testing` and any additional libraries like `sinon` and `@microsoft/fast-element`.
 
-## Example: Testing a Web Component
+## Example: testing a web component
 
 This example demonstrates how to test a custom web component, `MyExampleComponent`, using the provided mocks and testing utilities.
 
-### Step 1: Create Test Components
+### Step 1: create test components
 
 First, define test components that extend the functionality of the components you wish to test. Apply the `@testSpy` decorator to enable spying on component methods.
 
@@ -45,7 +45,7 @@ import { GridProGenesisDatasource } from './grid-pro-genesis-datasource';
 export class MyExampleComponentTest extends MyExampleComponent {}
 ```
 
-### Step 2: Configure Mocks
+### Step 2: configure mocks
 
 Set up and configure the mocks needed for the test. This includes mocking services like `Auth`, `Connect`, and any others that your component depends on.
 
@@ -55,9 +55,9 @@ const connectMock = new ConnectMock();
 // Configure mocks as needed
 ```
 
-### Step 3: Write Test Cases
+### Step 3: write test cases
 
-Utilize the `createComponentSuite` to define your test cases. This utility wraps your component in a test harness, allowing you to interact with it in a controlled test environment.
+Use the `createComponentSuite` to define your test cases. This utility wraps your component in a test harness, allowing you to interact with it in a controlled test environment.
 
 ```typescript
 import {
@@ -77,7 +77,7 @@ Suite('Can be created in the DOM', async ({ element }) => {
 });
 ```
 
-### Step 4: Full Example
+### Step 4: full example
 
 ```typescript
 import { customElement, html, ref } from '@microsoft/fast-element';
@@ -129,7 +129,7 @@ Suite('Can be created in the DOM', async ({ element }) => {
 Suite.run(); // Don't forget to execute the test suite
 ```
 
-### Step 5: Run and Evaluate Tests
+### Step 5: run and evaluate tests
 
 Execute your tests using your preferred test runner. Evaluate the results and make any necessary adjustments to your component or tests based on the outcomes.
 

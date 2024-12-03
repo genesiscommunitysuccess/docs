@@ -13,11 +13,11 @@ tags:
 
 The Genesis Framework includes various utility functions to facilitate common operations within web applications. These utilities are designed to enhance the development process, making it more efficient and streamlined.
 
-## Regular Expression for WebSocket Host Validation
+## Regular expression for WebSocket host validation
 
 **`isWebSocketExpression`**: Validates WebSocket (wss and ws) host URLs to ensure they conform to the expected format. This regular expression checks for valid protocol prefixes (ws or wss) followed by a host address.
 
-### `isWebSocketExpression` Example
+### `isWebSocketExpression` example
 
 ```typescript
 import { isWebSocketExpression } from '@genesislcap/foundation-comms';
@@ -26,11 +26,11 @@ const isValid = isWebSocketExpression.test('wss://example.com');
 console.log(isValid); // Output: true or false based on URL validity
 ```
 
-## Condition-Based Execution
+## Condition-based execution
 
 **`until` Function**: Executes a condition function repeatedly until it returns true or a specified timeout period is reached. This is useful for waiting on certain conditions to be met before proceeding with execution in an asynchronous environment.
 
-### `until` Example
+### `until` example
 
 ```typescript
 import { until } from '@genesislcap/foundation-comms';
@@ -47,4 +47,4 @@ until(conditionFunc, 500)
 
 ## Considerations
 
-The utility functions provided in the Genesis Framework, such as `isWebSocketExpression` for URL validation and `until` for condition-based execution, offer developers convenient tools for addressing common programming scenarios. These utilities aim to reduce boilerplate code and facilitate more readable and maintainable application codebases.
+The utility functions provided in the Genesis Framework, such as `isWebSocketExpression` for URL validation and `until` for condition-based execution, provide convenient tools for addressing common programming scenarios. These utilities aim to reduce boilerplate code and facilitate more readable and maintainable application codebases.
