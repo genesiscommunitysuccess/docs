@@ -3,7 +3,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import './Card.css'
 
 export default function Card ({ link, heading, children, imageUrl, imageAlt, footer, className }) {
-  console.log({ imageUrl2: imageUrl });
   const relativeLink = useBaseUrl(link);
   const relativeImageSrc = useBaseUrl(imageUrl);
 
@@ -39,11 +38,11 @@ export default function Card ({ link, heading, children, imageUrl, imageAlt, foo
   );
 
   return relativeLink ? (
-    <a href={relativeLink} title={heading} className={`card-outer $className`}>
+    <a href={relativeLink} title={heading} className={`card-outer ${className}`}>
       {content}
     </a>
   ) : (
-    <div className={`card-outer $className`}>
+    <div className={`card-outer ${className}`}>
       {content}
     </div>
   );
