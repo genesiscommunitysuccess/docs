@@ -13,6 +13,9 @@ tags:
   - management
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 The platform provides a comprehensive suite of utilities and components for dynamic style management, including CSS rule insertion, font-face loading, and the application of styles to custom elements.
 
 ## Key features
@@ -34,36 +37,82 @@ This module is ideal for:
 
 The `SlottedStyles` custom element enables the encapsulation and dynamic application of styles to slotted content. It observes changes to its `styles` property and applies the new styles to its parent element's shadow DOM or to the document.
 
-```typescript
-import { SlottedStyles } from '@genesislcap/foundation-utils';
 
-// Create a new SlottedStyles element
-const slottedStyles = document.createElement('slotted-styles') as SlottedStyles;
 
-// Define styles
-slottedStyles.styles = `
-  :host {
-    display: block;
-    color: red;
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+    Usage
+    ```typescript
+    const slottedStyles = css
+    :host {
+      display: block;
+      color: red;
+    }
+    @customElement({
+      name: 'my-element',
+      template: html`
+          <rapid-button> <slotted-styles :styles="${() => slottedStyles}"></slotted-styles> Slotted styles button </rapid-button>
+          `,
+    })
+    export class MyElement extends GenesisElement {
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+    Usage
+    ```typescript
+    const slottedStyles = {
+      host:
+      {
+        display: 'block',
+        color: 'red',
+      },
+    };
+    export function MyComponent() {
+      const slottedStylesRef = useRef(null);
+      useEffect(() => {
+        if (slottedStylesRef.current) {
+          slottedStylesRef.current.styles = slottedStyles;
+        }
+      });
+      return (
+        <rapid-button>
+          <slotted-styles ref={slottedStylesRef}></slotted-styles>
+          Slotted Styles button
+        </rapid-button>
+      )
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    @Component({
+      selector: 'my-root',
+      template: `
+          <rapid-button>
+            <slotted-styles [styles]=slottedStyles></slotted-styles>
+            Slotted Styles button
+          </rapid-button>
+          `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class AppComponent {
+      slottedStyles = {
+      host:
+      {
+        display: 'block',
+        color: 'red',
+      },
+    };
   }
-`;
-
-// Append the element to the document
-document.body.appendChild(slottedStyles);
-
-// Update styles dynamically
-slottedStyles.styles = `
-  :host {
-    display: block;
-    color: blue;
-  }
-`;
-
-// Observe changes to the styles property
-slottedStyles.addEventListener('styles-changed', (e) => {
-  console.log('Styles changed:', slottedStyles.styles);
-});
-```
+    ```
+  </TabItem>
+</Tabs>
 
 ### CSS rule and font-face management
 
