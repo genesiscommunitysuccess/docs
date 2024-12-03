@@ -27,17 +27,121 @@ The `GridProCell` component is used to define custom cell renderers within a `Gr
 
 ### Properties
 
-- **`renderer`** (observable)
-  - **Type:** `ICellRendererFunc`
-  - Defines the cell rendering function.
-  - Can be a custom rendering function or a reference to a predefined renderer.
+Property examples are shown using Genesis syntax bindings, and closing tags omitted.
 
-- **`rendererParams`** (observable)
-  - **Type:** `ICellRendererParams`
-  - Provides parameters for the cell renderer.
-  - Configures how the cell should be rendered based on the grid context.
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>renderer</td>
+      <td><code>ICellRendererFunc</code></td>
+      <td>Defines the cell rendering function. Can be a custom rendering function or a reference to a predefined renderer.</td>
+<td>
 
-### Usage Example
+```typescript
+<grid-pro-cell :renderer="${(x) => x.customRenderer}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>rendererParams</td>
+      <td><code>ICellRendererParams</code></td>
+      <td>Provides parameters for the cell renderer. Configures how the cell should be rendered based on the grid context.</td>
+<td>
+
+```typescript
+<grid-pro-cell :rendererParams="${(x) => x.customRendererParams}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+:::info
+You can get the types `ICellRendererFunc` and `ICellRendererParams` from the `"@ag-grid-community/core"` package;
+:::
+
+## `GridProColumn` Component
+
+### Description
+
+The `GridProColumn` component represents a column definition for the Grid Pro.
+
+### Properties
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>slottedAgCell</td>
+      <td><code>HTMLElement[]</code></td>
+      <td>Tracks slotted cell elements</td>
+<td>
+
+```typescript
+<grid-pro-column :slottedAgCell="${(x) => x.slottedElements}">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>definition</td>
+      <td><code>ColDef</code></td>
+      <td>Stores the column definition configuration. Initialized as an empty object.</td>
+<td>
+
+```typescript
+<grid-pro-column :definition="${(x) = x.columnDefiniton}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+:::info
+You can get the type `ColDef` from the `"@ag-grid-community/core"` package;
+:::
+
+### Best Practices
+
+- Use `GridProCell` to define custom cell renderers with dynamic rendering logic.
+- Leverage the `definition` property of `GridProColumn` to configure column-specific settings.
+
+## Usage Example
+
+```typescript
+const customBooleanColDefs: ColDef[] = [
+    {
+        headerName: 'Release Date',
+        field: 'releaseDate',
+        cellEditor: 'dateEditor',
+        cellEditorParams: {
+        withTime: false,
+        },
+        width: 200,
+        pinned: 'right',
+        editable: true,
+    },
+];
+
+```
 
 ```html
 <grid-pro>
@@ -50,27 +154,6 @@ The `GridProCell` component is used to define custom cell renderers within a `Gr
 </grid-pro>
 ```
 
-## `GridProColumn` Component
-
-### Description
-
-The `GridProColumn` component represents a column definition for the Grid Pro.
-
-### Properties
-
-- **`slottedAgCell`** (observable)
-  - **Type:** `HTMLElement[]`
-  - Tracks slotted cell elements.
-
-- **`definition`** (observable)
-  - **Type:** `ColDef`
-  - Stores the column definition configuration.
-  - Initialized as an empty object.
-
-## Best Practices
-
-- Use `GridProCell` to define custom cell renderers with dynamic rendering logic.
-- Leverage the `definition` property of `GridProColumn` to configure column-specific settings.
 
 ## Performance Considerations
 
