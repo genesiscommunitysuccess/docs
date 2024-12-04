@@ -7,7 +7,7 @@ const generateClassNameFromHref = (href) => {
   return href?.replace(/^\/+|\/+$/g, '').toLowerCase().replace(/\//g, '-').replace(/[^a-z0-9-]/g, '');
 };
 
-export default function CardList({ inRow = 1, xs = 12, sm = 6, md = 4, items }) {
+export default function CardList({ inRow = 1, xs = 12, sm = 6, md = 4, items, cardClassname }) {
   return (
     <Grid container spacing={2} className="card-list">
       {items.map((item, index) => item.link && (
@@ -26,6 +26,7 @@ export default function CardList({ inRow = 1, xs = 12, sm = 6, md = 4, items }) 
             text={item.text}
             imageUrl={item.imageUrl}
             children={item.children}
+            className={cardClassname}
           />
         </Grid>
       ))}
