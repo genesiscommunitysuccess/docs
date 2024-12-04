@@ -8,38 +8,96 @@ tags:
 sidebar_position: 2
 ---
 
-The Genesis Launchpad enables you to create new financial applications rapidly. It provides Genesis Create, which enables you to create a project and generate the code for a working application, and it also provides Genesis Cloudspace, where you can examine and edit the code in detail using VSCode, and build, deploy and run your application. 
+## Launchpad hub
 
-You do not need to download any software or dependencies to to start work in this environment.
+The Genesis Launchpad enables you to create new financial applications rapidly. It provides [Genesis Create](#genesis-create), which enables you to create a project and generate the code for a working application, and the [Genesis Cloud Workspace](#genesis-cloud-workspace), where you can load your Create projects, examine and edit the code, as well as build, and run your application - all within your browser.
 
-:::info
-If you prefer, you can generate the code for your project and download it so that you can work locally in IntelliJ. 
+![genesis Launchpad projects](/img/genesis-launchpad/launchpad-projects.png)
 
-You will have to install the relevant dependencies before you start working.
+When you start the Launchpad, the main hub screen is divided into two.
+ 
+- In the upper area, you can either start a new project from scratch, or else select from a list of pre-configured [templates](#genesis-templates).
+- In the lower area, your current projects are listed. You can click on the `Open in code` button on any of these and start working.
+
+![genesis Launchpad projects](/img/genesis-launchpad/open-in-code.png)
+
+
+:::tip Migrating existing Genesis projects from the previous version of Launchpad
+If you created a project using an earlier version of Launchpad, it will not be listed in your Current Projects.
+
+Follow the process for [adding a project to Current Projects](#adding-a-project-to-current-projects) to add your project and start work.
 :::
 
-To use Genesis Launchpad, you need a valid user name and password. When you have these, go to: `From `launchpad.genesis.global/` Genesis Create takes you through the steps to create a working application.
+:::info
+You can have up to 100 projects.
+:::
+
+### Genesis Templates
+
+Genesis Templates are pre-configured Genesis Create projects. You can use them as a start point for your Genesis projects.
+
+To view the list of available templates from Launchpad, click on 'Start from a Template'.
+
+![Launchpad project templates](/img/genesis-launchpad/launchpad-project-templates.png)
+
+You can click to open one of the templates in Genesis Create. 
+
+:::info
+If you already have a project in Genesis Create, then you will be prompted to overwrite the current project - so make sure that you have saved any changes that you want to keep.
+
+![Template overwrite prompt](/img/genesis-launchpad/template-overwrite-prompt.png)
+:::
+
+Once the template is open, you can inspect the project, make changes to the pre-configured details, or you can build and run immediately.
+
+### Adding a project to Current Projects
+
+If you have created a project in your workspace before the new launchpad interface, it will not automatically appear in your current projects in Launchpad. To add a project:
+
+1. Press `F1` to activate the command bar at the top of VSCode.
+
+2. Search for `genesis: sync`.
+
+3. Run `Genesis: Sync projects to launchpad`.
+
+4. Click on 'View on launchpad'.
+
+    This synchronizes your Genesis projects with Launchpad. If prompted, click `Open` to confirm that you want to open on an external website. This displays your project in the Current Projects.
+
+### Deleting a project
+If you want to delete your project, go to the list of your current projects and click on the delete icon.
+
+![Deleting Project](/img/genesis-launchpad/delete-project.png)
 
 ## Genesis Create
-Genesis Create takes you through all the steps you need to set up a project and generate working code. You can see these displayed at the top of the screen:
+
+Genesis Create is a tool to bootstrap new project ideas. It enables you to build out the data model, and add and configure many of the Genesis server and UI components. You can then generate the project codebase to examine and edit the code, before building and running your application.
+
+Genesis Create is accessed via the Launchpad. Otherwise, go directly to https://portal.genesis.global/create/ 
+
+Genesis Create has tooltips throughout. Hover over question marks and buttons to see more details and handy links to documentation.
+
+### First steps in Create
+
+The following documentation serves as a guide for users brand new to Genesis Create. It provides an overview of many of the key steps in project generation to get you started. Not all components are covered.
 
 ![Create steps](/img/genesis-launchpad/create-steps.png)
 
 ### Project Attributes
-The first step  is to name your project and select the Genesis components that you need. 
+The first step is to name your project and select the Genesis components that you need. 
 
-To start your project:
 1.	Give your project a usable name. This will be used in the file names, so keep it short and practical, and do not use spaces.
 2.	Provide a description of the project, which will become the README file. Markdown formatting is supported.
 3.	Select the components that you want to include in your application (in addition to the mandatory components). To add a component, click on the `Add Genesis Components` button at the top right.
 
 :::tip
 Selected Components
+
 A Genesis application is built from a set of components that have different purposes. The components you have selected are listed in the `Selected Components` area. 
 
 Note that Base Genesis Server and User Authorization are mandatory. 
 
-You need to give some thought to your requirements at this point. Click on 1Add Genesis Components` and take a look at what is available.
+You need to give some thought to your requirements at this point. Click on `Add Genesis Components` and take a look at what is available.
 
 You almost certainly want to select `Real Time Queries`. This makes data from your database available to the front end. 
 
@@ -79,7 +137,7 @@ For each attribute that you want to add, make sure that the `New Attributes` pan
 #### Primary key
 The [primary key](/develop/server-capabilities/data-model/#primarykey) is the default way to find records in an entity. Every entity has to have a primary key.
 
-When the attributes for your entity are listed in the main area, you can set the primary key for the entity. Select the `Primary Key` checkbox for the relevant attribute.
+When the attributes for your entity are listed in the main area, you can set the primary key for the entity. Select the `Primary Key` checkbox for the relevant attribute(s) to make the record unique. If yu want to select multiple fields (to create a multi-field key), the ordering your of the selected attributes is important. You can re-order by clicking the symbol on the far right and dragging your attributes.
 
 Here, we have selected CURRENCY ID as the primary key. We have also set `Generated` so that the value of this attribute is generated automatically. Each new record submitted will have a unique sequential integer for this field, prefixed with the letters CU.
 
@@ -87,7 +145,8 @@ Here, we have selected CURRENCY ID as the primary key. We have also set `Generat
 
 Note that edit and delete buttons are available to the right of each attribute in the list, so you can go back and change any attribute you have already set up.
 
-Indices
+#### Indices
+
 An index gives you extra ways of searching for records on the entity. For example, users might want to find trades by instrument or by currency symbol.
 
 Indices can be [unique](/develop/server-capabilities/data-model/#unique), which enables you to find a single record or [non-unique](/develop/server-capabilities/data-model/#nonunique), which enables you to find a range of records.
@@ -126,6 +185,7 @@ Once you have added all the attributes to your entity, click on the `Done` butto
 
 :::tip Right codes
  ![Right codes](/img/genesis-launchpad/right-codes.png)
+
 You have the chance to set right codes at many points in Genesis Create. These codes enable you to control which users have access to items in the database. They give you a great deal of flexibility in controlling access.
 
 We strongly recommend that you use these.
@@ -166,7 +226,7 @@ To add a derived attribute to the view you are creating or editing:
 5. In the `Output Type` field, select the data type of the attribute (such as DOUBLE or INT).
     In the example below, we are creating a derived attribute called FEE of type DOUBLE from two existing attributes.
 
-![Entity references](/img/genesis-launchpad/entity-reference.png)
+![Entity references](/img/genesis-launchpad/derived-attribute.png)
 
 6. Click on `Save and Return` to the main screen for your view.
 7. When you have finished, click on the `Done` button. This returns you to the list of views.
@@ -178,7 +238,8 @@ When you have finished, click on the `Next` button at the bottom right of the wi
 Queries make real-time information available to the front end.
 
 :::tip Adding To Dos and comments
- ![Right codes](/img/genesis-launchpad/right-codes.png)
+ ![Right codes](/img/genesis-launchpad/todos-and-comments.png)
+
 At various points, this link enables you to insert TO DO statements and comments that will appear in the generated code.
 Take time to use this feature; it will save you time later on.
 :::
@@ -202,19 +263,10 @@ To add a consolidator:
 1.	Click on the `New Consolidator` button at the top right.
 2.	Type a name for the consolidator in the `Consolidator Name` field. 
 3.	To aggregate, you need to select the `Input Attribute` and `Output Attribute` to group by. The output attribute is determined by the input attribute you select. 
-4.	Check the fields for configuring the aggregation. The most important field is the `Aggregation Function`, which enables you to select the logic for the aggregation, which could be SUM or AVG, for example. (To handle more complex logic, you can customise this in the generated code later on.) When you are happy, make sure that the `Enabled` checkbox is set.
+4.	Check the fields for configuring the aggregation. The most important field is the `Aggregation Function`, which enables you to select the logic for the aggregation, which could be SUM or AVG, for example. (To handle more complex logic, you can customize this in the generated code later on.) When you are happy, make sure that the `Enabled` checkbox is set.
 5.	Click on `Done` to return to the Consolidators page, where your new consolidator is listed.
 
 When you have finished working with consolidators, click on the `Next` button at the bottom right to moe on to the next step.
-
-### Business Components
-For each Business Component that you selected at the beginning of the process, an extra step is displayed. Each step enables you to configure the chosen component.
-
-For example, the fields for setting up the details of an incoming or outgoing data pipeline look like this:
-
-![Editing the details of the Data Pipeline component](/img/genesis-launchpad/edit-pipeline.png)
-
-After you have configured the Business Component, click on the `Next` button at the bottom right to go to the next step.
 
 ### User Interface
 This step enables you to create the web client for your application.
@@ -271,62 +323,23 @@ When you reach the Summary page, you have completed the configuration of your pr
 
 The next step is to generate the code so that you can build and deploy.
 
-1.	Go back to the Genesis Launchpad tab in your browser and click on `Start Cloud Workspace`. Wait for three minutes to ensure that the workspace is running.
-2.	Click on `Open in Genesis Cloud Workspace`. This generates your code and opens a workspace where you can build and run your application without needing to download any other software or IDE.  
+To do this, click on `Save to Genesis Workspace`. This will open your project in your [Launchpad hub](#launchpad-hub)
 
 :::info Building locally
-Alternatively, you can click on `Download Project Locally` to download your project and build locally using your IntelliJ. 
-
-This does involve some extra set-up, however.
+Alternatively, you can click on `Download Project Locally` to download your project and build locally using your IntelliJ. To be able to build and run your app locally, you'll require access to the Genesis libraries from within your enterprise. There is a small tutorial for doing this on the tab.
 :::
 
-## Genesis Launchpad projects
-When you start the Launchpad, the main screen is divided into two.
-
-- In the upper area, you can either start a new project from scratch or you can select a pre-configured app from the list of [templates](#genesis-templates).
-- In the lower area, your current projects are listed. You can click on any of these and start working. It is possible to [add a Genesis project that was not set up using Genesis Create](#adding-a-project-to-current-projects).
-
-![genesis Launchpad projects](/img/genesis-launchpad/launchpad-projects.png)
-
-:::tip Migrating existing Genesis projects from the previous version of Launchpad
-If you created a project using an earlier version of Launchpad, it will not be listed in your Current Projects.
-
-Follow the process for [adding a project to Current Projects](#adding-a-project-to-current-projects) to add your project and start work.
-:::
-
-:::info
-You can have up to 100 projects.
-:::
-
-### Genesis Templates
-
-Genesis Templates are pre-configured Genesis Create Projects. You can immediately turn any of the projects listed into a Genesis Application that you can run and test.
-
-To view the list of available templates from Launchpad, click on 'New Project from Template'.
-
-![Current template projects](/img/genesis-launchpad/current-projects.png)
-
-You can click to open one of the templates in Genesis Create. 
-
-:::info
-If you already have a project running in Genesis Create, then you will be prompted to overwrite the current project - so make sure that you have saved any changes that you want to keep.
-
-![Template overwrite prompt](/img/genesis-launchpad/template-overwrite-prompt.png)
-:::
-
-Once the template is open, you can inspect the project, make changes to the pre-configured details, or you can build and run immediately.
 
 ## Genesis Cloud Workspace
 
-When you click on `Save to Genesis Workspace` and `View in Launchpad` in Genesis Create, your code is generated automatically and stored as a project.
-The project you are working on then opens in Launchpad.
+When you open a project listed in your [launchpad hub](#launchpad-hub) it will open the project in your cloud workspace.
 
 ### Building the project
 1.	Click on the code icon for the project you created.
 
      ![Current user projects](/img/genesis-launchpad/current-projects.png)
 
-This will open the project in VSCode.
+This will open the project in a web IDE - VSCode.
 
 2.	When the project is open, click on the top bar of VSCode. Select `Show and Run Commands` from the drop-down.
 
@@ -349,7 +362,7 @@ To view the code for your project, click on the `Explorer` button on the extreme
 Your entities and views files are in the `/server/{appname}/ src/main/genesis/cfg` folder.
 
 - The entities are in `{appname}-tables-dictionary.kts`.
-- The views are in `[appname]-view-dictionary.kts`.
+- The views are in `{appname}-view-dictionary.kts`.
 
 Your queries and event handlers are in the `/server/{appname}/src/main/genesis/scripts` folder.
 - The queries you have created are in `{appname}-dataserver.kts`.
@@ -402,24 +415,6 @@ Then you can look through your app and interact with the different displays you 
 
 ![Interact with your app](/img/genesis-launchpad/interact.png)
 
-### Deleting a project
-If you want to delete your project, go to the list of your current projects and click on the delete icon.
-
-![Deleting Project](/img/genesis-launchpad/delete-project.png)
-
-### Adding a project to Current Projects
-
-If you have created a project outside Genesis Create, it does not automatically appear in your current projects in Launchpad. To add a project:
-
-1. Press `F1` to activate the command bar at the top of VSCode.
-
-2. Search for `genesis: sync`.
-
-3. Run `Genesis: Sync projects to launchpad`.
-
-4. Click on 'View on launchpad'.
-
-    This synchronizes your Genesis projects with Launchpad. If prompted, click `Open` to confirm that you want to open on an external website. This displays your project in the Current Projects.
  
 ### Looking at and changing the code
 When you are ready to look deep into the code and make the refinements and extensions you need, go back to VSCode.
@@ -456,15 +451,8 @@ To restart a process after making changes:
 :::tip Saving resources
 The COMPACT_PROCESSES option runs a number of tasks as a single process. This saves you a lot of memory – which you could find useful if you are building and running locally.
 :::
-
-### Finding your project in VSCode
-Once you have closed your project in VSCode, you can easily find it again the next time you want to work on it. 
-
-In VSCode, go to `File → Open Recent →` and select your project.
-
-![Open your recent projects](/img/genesis-launchpad/open-recent.png) 
  
-## Genesis commands in VSCode
+### Genesis commands in VSCode
 
 All the Genesis commands in VSCode are prefixed with `Genesis:`.
 
@@ -488,7 +476,7 @@ Then as soon as you start to type Genesis, the available commands are displayed 
 | `Sync projects to launchpad`| Enables you to add a Genesis Create project that was created outside Genesis Create (or an existing project created on an older version of Genesis Create) to your list of Current Projects. |
 | `Unpack project`      | This command is no longer necessary, and has been deprecated. See the [Troubleshooting](#troubleshooting) section.        |
 
-### Using Genesis: Build project
+#### Using Genesis: Build project
 Running `Genesis: Build project` builds (compiles) all components for the app and triggers `Generate Configs` (see above).
 
 You can right-click on the file generated and download it to your local machine to open and run the project there. 
@@ -498,7 +486,7 @@ The folder created by the command is a temporary store. Running the command agai
 Mostly, you will download the zip file created directly under `project-zip`, which includes the Gradle wrapper (and its respective scripts to run on Unix/Windows 
 -based systems). If your enterprise restricts the downloads of such file types, we provide the project without the Gradle wrapper under the `no-gradle-wrapper `subfolder. **You must have the currently supported Gradle version installed in your workspace to use this.**
 
-## Launch configurations
+### Launch configurations
 The exact list of configurations for your application is dependent on the components that you have chosen. For example, if you have included the Reporting component, then your application will have a configuration for running it. 
 
 However, there is a set of launch configurations that will always be available. These are listed below.
@@ -522,15 +510,15 @@ To run any of these:
 | `Start Server`          | Starts all the App's Server processes.                                                |
 | `Start UI System Design Configurator`| Starts the Design Configurator. You must be on Foundation-UI 14.213.0 or later to use this. |
 
-## Making direct requests to the Server API
+### Making direct requests to the Server API
 
 Being able to integrate with existing third-party systems and services is an important part in evaluating the capabilities of the Genesis platform. The steps below detail how you are able to interact with your application running in Genesis Launchpad.
 
-### Getting the required data
+#### Getting the required data
 
 You will need to get the the `API_HOST` from the vscode environment variable and the authenticated cookies from your session.
 
-#### Application url
+##### Application url
 
 1. Open terminal in VSCode workspace `flyout menu -> View -> Terminal`.
 
@@ -538,11 +526,11 @@ You will need to get the the `API_HOST` from the vscode environment variable and
 
 3. replace `wss` with `https` and store this value, it is fixed to your workspace so you can save it.
 
-#### Request headers (Auth cookies)
+##### Request headers (Auth cookies)
 
 These are needed for secure access of your app from the Development portal.
 
-##### Getting cookies with Postman interceptor plugin
+###### Getting cookies with Postman interceptor plugin
 
 You can simplify getting cookies for requests using postman interceptor plugin for your browser.
 
@@ -562,7 +550,7 @@ You can simplify getting cookies for requests using postman interceptor plugin f
 
 With this if you use the same url for sync cookies, it will autofill the cookies to your request headers.
 
-##### Getting cookies manually via web inspector
+###### Getting cookies manually via web inspector
 
 1. Be logged in to launchpad.
 
@@ -584,7 +572,7 @@ With this if you use the same url for sync cookies, it will autofill the cookies
 
 When setting the header the tokens need to be structured as AWSELBAuthSessionCookie-0=TOKEN;AWSELBAuthSessionCookie-1=TOKEN;
 
-### Sending requests using postman
+#### Sending requests using postman
 
 Postman can be used to test the API from your project.
 
@@ -615,7 +603,7 @@ The tokens are stored in a cookie header
 
 ![Postman token header](/img/genesis-launchpad/postman-token-header.png)
 
-### Sending requests using the CLI
+#### Sending requests using the CLI
 
 You can use any http client like `curl` to send a request from within the workspace itself or directly from your workstation.
 
@@ -642,7 +630,7 @@ curl --location 'https://portal.genesis.global/workspace/<<WORKSPACE_ID>>/proxy/
 }'
 ```
 
-## Genesis tasks
+### Genesis tasks
 The tasks described below are used by the various commands above to launch a configuration manually. You can call them individually, when required.
 
 To run a task, click in the top search bar in VSCode, then select `Run Task`.
@@ -664,7 +652,7 @@ This displays the tasks for you to select.
 | `Genesis Sync`          | Synchronizes configuration between the folder and the deployment of the application, this task runs before launching any java server app. |
 | `Genesis Unit tests`    | Runs server-side unit test.                                                           |
 
-## Code snippets
+### Code snippets
 The plugin provides basic code Kotlin snippets that can used to speed up development of the various Kotlin scripts, such as `eventHandlers` or `requestReply` codeblocks. 
 
 To insert a snippet into one of your `.kts` files, there are two easy methods:
@@ -672,17 +660,17 @@ To insert a snippet into one of your `.kts` files, there are two easy methods:
 - Go to the command bar and use `Insert snippet`. 
 - While editing a `.kts` file, type the prefix `gg` to find the snippet to insert. 
 
-## Troubleshooting
+### Troubleshooting
 
-### Help, my processes keep dying!
+#### Help, my processes keep dying!
 
 Processes are killed when VSCode detects that the user has left the workspace. This is native to VSCode. Refreshing the page is considered to be leaving the workspace and all processes will be killed.
 
-### Can I use multiple browser tabs and have multiple projects open at the same time?
+#### Can I use multiple browser tabs and have multiple projects open at the same time?
 
 **It is highly recommended not to do this**. A single workspace is shared amongst different sessions. Code server supports that, but due the nature of Genesis Applications and their resource usage, you will soon notice that processes will start clashing for resources (for example ports). Additionally, workspaces are sized to be able to run only a single stack of Genesis Applications.
 
-### I want to bring my project from GitHub, how can I do that?
+#### I want to bring my project from GitHub, how can I do that?
 
 Use the command: `Git: clone`. Follow the prompts for authentication and the repos you have access to will be selected.
 
@@ -690,7 +678,7 @@ Use the command: `Git: clone`. Follow the prompts for authentication and the rep
 If you have multiple projects in a single repo (mono-repo structure), after cloning use the command `File: Open folder` and only open the sub-folder that contains your project.
 :::
 
-### I’ve brought my own project and the web-ui doesn’t seem to connect
+#### I’ve brought my own project and the web-ui doesn’t seem to connect
 
 For projects using Genesis Web Components:
 
@@ -707,42 +695,42 @@ For Angular-based projects:
 Use the integrated terminal to obtain the value of environment variables, for example: `echo $PUBLIC_PATH`.
 :::
 
-### Re-Launching your workspace and opening a previous project
+#### Re-Launching your workspace and opening a previous project
 
 - You don’t need to unpack your project.
 - Click on `File → Open Folder: Select the project {timestamp based folder}` and then the subfolder under it (which is the project name).
 
-### What are Ports and which ones must I have?
+#### What are Ports and which ones must I have?
 
 When you start an application, VSCode should identify at least ports `6060` and `9064` and add it to the `PORTS` tab. This enables you to launch the WebUI. 
 
 If you have not seen this pop-up or the port has not been added automatically, you can add it manually. Click on the `PORTS` tab, select `Add Port`, input the missing port number and then right-click the URL and `Launch in Browser` - or use the launch icon next to the forwarded address.
 
-### My browser claims pop-ups are blocked! What should I do?
+#### My browser claims pop-ups are blocked! What should I do?
 
 Make sure pop-ups are not blocked.
 
 ![Unblocking pop-ups](/img/genesis-launchpad/unblock-popup.png) 
  
-### I can’t find logs! Where are they?
+#### I can’t find logs! Where are they?
 
 Logs are streamed per process and available in the standard output. You can find this from the window on the right-hand side. Just find your process from ‘Debug: GenesisProcessBootstrap’. Note you can rename these tasks by right clicking.
 
 Logs are saved in a file under `server/app/genesis-home/runtime/logs`. You can open these directly via the project structure, or using the `Genesis Process View`.
 
-### How do I debug processes?
+#### How do I debug processes?
 
 All processes start in debug mode by default and any breakpoint in java code shall be hit.
 
 Kotlin is not fully supported by VS Code and the language server is currently disabled.
 
-### I get a 401 error when I tried to login, what should I do?
+#### I get a 401 error when I tried to login, what should I do?
 
 This is due how our partner cloud provider handle domain security as it is likely your password manager might be changing the url (your web-browser will usually have a password manager by default). After login, just refresh the page as normal and you will be immediately redirected to the landing page `(CTRL + R) / (CMD + R)`. 
 
-### I'm no longer able to stop my workspace, where did that go?
+#### I'm no longer able to stop my workspace, where did that go?
 
 Your workspace stops automatically after inactivity, you can still do it using the [previous experience](https://portal.genesis.global/_previous).
 
-### Why has `Unpack project` been deprecated?
+#### Why has `Unpack project` been deprecated?
 This is deprecated is no longer necessary and has disabled by default. It can be enabled via VSCode settings in case you need to manually unpack an old project, notice zip files are deleted on a periodic basis.
