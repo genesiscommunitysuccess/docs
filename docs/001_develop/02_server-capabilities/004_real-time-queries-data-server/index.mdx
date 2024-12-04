@@ -714,15 +714,15 @@ Example `DATA_LOGON`
 Request
 ```
 {
-    MESSAGE_TYPE : "DATA_LOGON"
-    SESSION_AUTH_TOKEN : "SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM"
-    SOURCE_REF : "123"
-    USER_NAME: admin
-    DETAILS : {
-        DATASOURCE_NAME: "ALL_TRADES"
-        CRITERIA_MATCH": "QUANTITY > 200",
-        MOVING_VIEW: true,
-        FIELDS: "TRADE_ID DIRECTION QUANTITY PRICE INSTRUMENT_NAME DATE",
+    "MESSAGE_TYPE" : "DATA_LOGON",
+    "SESSION_AUTH_TOKEN" : "SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM",
+    "SOURCE_REF" : "123",
+    "USER_NAME": "admin",
+    "DETAILS" : {
+        "DATASOURCE_NAME": "ALL_TRADES",
+        "CRITERIA_MATCH": "QUANTITY > 200",
+        "MOVING_VIEW": true,
+        "FIELDS": "TRADE_ID DIRECTION QUANTITY PRICE INSTRUMENT_NAME DATE",
         "MAX_ROWS": 10
     }
 }
@@ -824,12 +824,12 @@ SOURCE_REF: 123
 SESSION_AUTH_TOKEN: SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM
 USER_NAME: admin
 {
-    DETAILS : {
-        DATASOURCE_NAME: "ALL_TRADES"
-        CRITERIA_MATCH": "QUANTITY > 200",
-        MOVING_VIEW: true,
-        FIELDS: "TRADE_ID DIRECTION QUANTITY PRICE INSTRUMENT_NAME DATE",
-        MAX_ROWS: 10
+    "DETAILS" : {
+        "DATASOURCE_NAME": "ALL_TRADES",
+        "CRITERIA_MATCH": "QUANTITY > 200",
+        "MOVING_VIEW": true,
+        "FIELDS": "TRADE_ID DIRECTION QUANTITY PRICE INSTRUMENT_NAME DATE",
+        "MAX_ROWS": 10
     }
 }
 ```
@@ -982,10 +982,10 @@ Used to request more columns on an active subscription.
 Request
 ```
 {
-    "MESSAGE_TYPE": "MORE_COLUMNS:
-    "SOURCE_REF": "124"
-    "SESSION_AUTH_TOKEN": "SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM"
-    "USER_NAME": "admin"
+    "MESSAGE_TYPE": "MORE_COLUMNS",
+    "SOURCE_REF": "124",
+    "SESSION_AUTH_TOKEN": "SIlvjfUpkfXtGxfiQk1DDvVRlojKtNIM",
+    "USER_NAME": "admin",
     "DETAILS": {
         "ADD_COLUMNS": "CTPTY_NAME"
     }
@@ -1115,15 +1115,15 @@ This will end a dataserver subscription.
 Request
 ```
 {
-    "MESSAGE_TYPE": "DATA_LOGOFF:
-    "SOURCE_REF": "125"
+    "MESSAGE_TYPE": "DATA_LOGOFF",
+    "SOURCE_REF": "125",
     "USER_NAME": "admin"
 }
 ```
 Response
 ```
 {
-    "MESSAGE_TYPE": "LOGOFF_ACK:
+    "MESSAGE_TYPE": "LOGOFF_ACK",
     "SOURCE_REF": "125"
 }
 ```
