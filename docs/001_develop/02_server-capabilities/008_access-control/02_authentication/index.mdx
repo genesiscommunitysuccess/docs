@@ -17,21 +17,21 @@ import TabItem from '@theme/TabItem';
 
 Authentication is required to use a Genesis application, whether it be via a user interface, or using a client API.
 
-There are a few authentication setups which can be configured for Genesis applications:
+There are a few authentication set-ups which can be configured for Genesis applications:
 
 - [Genesis password](#genesis-password) : Authentication is completely within the application with no external authenticating systems involved.
 - [LDAP](#ldap-authentication) : Authentication requires an external LDAP server, which is used to authenticate users.
 - [SSO](#sso-authentication) : Authentication requires an external SSO (aka ID) provider, which is used to authenticate users.
 
-Larger organizations will typically require [LDAP](#ldap-authentication) or [SSO](#sso-authentication) setups, so that:
+Larger organizations will typically require [LDAP](#ldap-authentication) or [SSO](#sso-authentication) set-ups, so that:
 1. Users can use a familiar username and password that they use to authenticate with most org-wide applications.
 1. User access can be controlled by a central authentication server
 1. Features such as password maintenance, and security features such as MFA, are administered and handler by a central authentication server.
-1. With SSO setup, users can authenticate just once and have authenticated access to many applications including those built using the Genesis application platform.
+1. With SSO setup, users can authenticate just once and have authenticated access to many applications including those built using the Genesis Application Platform.
 
 Your application can be set up to use more than one authentication types concurrently. Each configured authenticator will be tried in turn to see if a logon message can be successfully authenticated.
 
-## Authentication setups
+## Authentication set-ups
 
 ### Genesis password
 
@@ -1365,7 +1365,7 @@ The Data server query `ALL_USER_RIGHTS` displays all users and codes. A logged-i
 
 This is a Data Server, and will use the [Data Server client API message constructs](/develop/server-capabilities/real-time-queries-data-server/#client-api) with `MESSAGE_TYPE` = `ALL_USER_RIGHTS`
 
-### Event Auditing
+### Event auditing
 
 Each authentication event is audited in one way or another, either using the automatic mechanism provided at the table definition level (e.g. PROFILE, PROFILE_RIGHT, PROFILE_USER, PASSWORD_RESET, USER and USER_ATTRIBUTES), or by providing custom tables with the audit information.
 
@@ -1381,7 +1381,7 @@ Additionally, all USER_LOGIN audit events are logged to a file at INFO level in 
 
 ## Setting up SSO
 
-There are three different types of SSO authentication presently supported by the Genesis application platform. These are:
+There are three different types of SSO authentication presently supported by the Genesis Application Platform. These are:
 
 * [JWT (JSON Web Token) SSO](https://jwt.io/introduction) 
 * [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language)
@@ -1482,7 +1482,7 @@ data class DomainJWT(
 
 ### SAML
 
-SAML is an SSO protocol that can be used to authenticate users on the Genesis application platform. It works by connecting a Service Provider (SP) - the Genesis application in this case - and an Identity Provider (IDP), which would be an external party.
+SAML is an SSO protocol that can be used to authenticate users on the Genesis Application Platform. It works by connecting a Service Provider (SP) - the Genesis application in this case - and an Identity Provider (IDP), which would be an external party.
 
 The SP and the IDP communicate using the user's web browser, and do not need to be accessible to each other.
 

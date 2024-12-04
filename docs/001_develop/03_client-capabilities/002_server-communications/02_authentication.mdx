@@ -13,9 +13,9 @@ pagination_prev: develop/client-capabilities/server-communications/comms-analyti
 
 This provides a comprehensive interface for authentication management within a Genesis Server endpoint environment. It encapsulates the entire authentication flow, from login to logout, including session management and user state observability.
 
-## Interfaces and Classes
+## Interfaces and classes
 
-### `Auth` Interface
+### `Auth` interface
 
 - **Description**: Main interface for authentication operations.
 - **Key Properties**:
@@ -28,7 +28,7 @@ This provides a comprehensive interface for authentication management within a G
   - `logout()`: Logs out the current user.
   - `reAuthFromSession()`: Attempts re-authentication using existing session data.
 
-### `DefaultAuth` Class
+### `DefaultAuth` class
 
 - **Description**: Default implementation of the `Auth` interface.
 - **Behavior**:
@@ -36,7 +36,7 @@ This provides a comprehensive interface for authentication management within a G
   - Utilizes `Session`, `Connect`, `MessageBuilder`, and `CredentialManager` for managing authentication flows and session information.
   - Emits changes in login state through a `BehaviorSubject`, allowing reactive components to respond to authentication state changes.
 
-## Authentication Process
+## Authentication process
 
 1. **Login**:
    - Invokes `login()` with user credentials.
@@ -52,7 +52,7 @@ This provides a comprehensive interface for authentication management within a G
    - Utilizes `reAuthFromSession()` for session-based user re-authentication.
    - Checks for valid session information and attempts to re-authenticate the user without requiring credential input.
 
-## Observing User Login State
+## Observing user login state
 
 The module provides `isLoggedIn$`, an Observable that emits boolean values representing the user's login state. This allows components and services to reactively respond to changes in authentication state, enhancing dynamic UI updates and state-dependent functionality.
 
@@ -99,7 +99,7 @@ export class MyExampleClass {
 }
 ```
 
-## Extending and Customizing
+## Extending and customizing
 
 - **Custom Authentication Strategies**: Implement the `Auth` interface to introduce custom authentication mechanisms or integrate with external identity providers.
 - **Session Management**: Leverage the `Session` service for enhanced session persistence and management strategies, supporting complex scenarios like token refresh or multi-factor authentication processes.

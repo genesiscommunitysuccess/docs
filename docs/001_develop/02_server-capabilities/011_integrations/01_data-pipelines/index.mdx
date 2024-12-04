@@ -38,21 +38,21 @@ Data pipelines takes care of the boilerplate of creating these integrations, so 
 
 Genesis Data Pipelines are defined in the *-pipelines.kts files.
 
-## Core Concepts
+## Core concepts
 
-### Batch vs. Real-time
+### Batch vs. real-time
 A data pipeline can be considered 'batch' or 'real-time'.
 
 ###### Batch
-A Batch pipeline consumes data using a request/response based model, utilizing data sources that return a fixed-size result set at a given point in time. Examples include:
+A Batch pipeline consumes data using a request/response based model, using data sources that return a fixed-size result set at a given point in time. Examples include:
  - sending a query to a REST API
  - executing a SQL command to query a database
  - reading a file from a file store
 
 A batch pipeline must be invoked via some kind of trigger, it does not execute continuously.
 
-###### Real-Time
-A real-time Pipeline consumes data via a 'push' model, utilizing data sources that continuously deliver data based on subscriptions. Examples include:
+###### Real-time
+A real-time pipeline consumes data via a 'push' model, using data sources that continuously deliver data based on subscriptions. Examples include:
  - reading data from a message broker (JMS, Kafka etc.)
  - monitoring a file store for any new files
  - listening for updates on a database table or view
@@ -64,25 +64,25 @@ Both batch and real-time pipelines are defined using the same syntax, but the im
 ### Source
 The source is the entry point to a data pipeline. As stated above, a source can be batch or real-time, but it may also have additional properties.
 
-##### Acknowledgeable Sources
+##### Acknowledgeable sources
 Acknowledgeable Sources or Ack Sources, support an acknowledgement mechanism. The acknowledge method is called when the pipeline has finished processing an element in the stream, allowing the source to persist some stateful information for the purposes of recovery.
 
-##### Typed Batch Sources
+##### Typed Batch sources
 A typed batch source is an extension of a batch source, where the input to the execution is a well defined type. This allows the creation of dynamic batch queries in a type safe way. An example use case may be a REST API that allows querying of trade data by trade date. Defining an object that has a date field allows easy construction of the query.
 
 ### Sink
 A sink is the final element of the data pipeline, and responsible for writing the transformed data to the desired destination. A sink can either handle single elements or a stream of elements.
 
-##### Transactional Sinks
+##### Transactional sinks
 If a sink is writing to the Genesis Application Database, it may be designated as a transactional sink by implementing a specific interface. If the sink in a pipeline is transactional, a transaction handle will be created internally within the pipeline and passed to the sink. For batch pipelines, this transaction covers the entire resulting stream. For real-time pipelines, each input element is processed in its own transaction. If the source is also an Ack Source, the same transaction handle is passed to the acknowledgement, allowing the processing of all results and the persistence of state information to occur in a single database transaction. This is very convenient for recoverability.
 
 ### Operators
 An operator is a stage in the pipeline that applies some kind of transformation to elements in the stream. Each operator has an input type and an output type. In order to chain operators together, the input type of the operator to be added must match the output type of the previous operator (or source). In order to send the stream to the sink, the output type of the last operator must be compatible with the element type supported by the sink. Types of operators supported are [filter](./#filter), [map](./#map), [split](./#split) and [transform](./#transform).
 
-### Pipeline Context
+### Pipeline context
 The pipeline context is an object that contains processing state that can be passed between the source, sink, error handlers and completion handlers. In a realtime pipeline, a separate context is created for each input element, and a reference to that element is stored in the context. In a batch pipeline, a context is created for each batch execution. In both cases, the context will contain the name of the pipeline executing, a transaction handle (if the sink is transactional), and a mutable map of context parameters for storing state.
 
-## Building a Pipeline
+## Building a pipeline
 Within the pipelines GPAL file, you will find a `pipelines` block:
 ```kotlin
 pipelines {
@@ -225,10 +225,11 @@ pipeline(name = "Simple Integer Pipeline With Transform") {
   }
 }
 ```
-In this example we have a simple pipeline that will emit the integer values 1 to 5 with duplicates from the source, and the sink will print them to the console. The transform operator will collect all elements in the stream to a set, removing duplicates, then send all the elements downstream to the sink.
+In this example, we have a simple pipeline that will emit the integer values 1 to 5 with duplicates from the source, and the sink will print them to the console. The transform operator will collect all elements in the stream to a set, removing duplicates, then send all the elements downstream to the sink.
 
 ### `sink`
 To make the pipeline complete, you must add a sink using the `sink` function. The sink function takes an instance of an object that implements any of the sink interfaces.
+
 This can be:
 - defined in-line in the script
 - one of the sinks provided by the core platform or any of the extension modules such as kafka-genesis
@@ -322,7 +323,7 @@ pipeline(name = "Simple Integer Pipeline With OnCompletion") {
 }
 ```
 
-## Core Elements
+## Core elements
 The following core elements are part of the Core Data Pipelines library and are always available for use in your *-pipelines.kts scripts.
 
 ### Sources
@@ -357,7 +358,7 @@ camelFileSource {
 }
 ```
 
-###### Reading from a Local Directory
+###### Reading from a local directory
 ```kotlin
 pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
   source(
@@ -375,7 +376,7 @@ pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
       }
     }
   ).sink { file, context ->
-    LOG.info("Recieved file $file")
+    LOG.info("Received file $file")
     true
   }
 }
@@ -427,7 +428,7 @@ If no data is received, the source waits for a delay before attempting to poll a
 
 The type of object that you would like this source to return must be given as part of the source definition, as shown in the example below.
 
-When configuring the db batch poller to use as part of your pipeline you must provide the following as part of the configuration:
+When configuring the db batch poller to use as part of your pipeline, you must provide the following as part of the configuration:
 
 - source (required): this is what the PersistenceManager will use to find the last persisted record and should be unique across all pipelines
 - index (required): this is the table index used to order the records and get the value for the last persisted record for recovery - if a single field index is provided, ensure this value is either the generated `TIMESTAMP` field in the table or of type Long. Else, see below.
@@ -584,7 +585,7 @@ eventHandler<Trade>(name = "TEST_PIPELINE_START") {
 }
 ```
 
-### Split Operators
+### Split operators
 
 #### `csvDecoder` 
 This is a split operator that decodes a PipelineFile object into a stream of CsvRow objects that contain:
@@ -726,7 +727,7 @@ pipeline("OUTBOUND_FILE_PIPELINE") {
 
 This sink implementation allows you to configure Camel routes using the Route Builder API, and will write file content to the server file system so that Camel can process and send the files to external locations. It accepts objects of type `PipelineFile`, which includes the file name, file path and input stream of its contents.
 
-You can configure Camel routes by using the route builder function. You are not limitied to a single route, and can create as many routes as needed.
+You can configure Camel routes by using the route builder function. You are not limited to a single route, and can create as many routes as needed.
 
 The Route Builder is Apache Camel's API for defining how to read messages, and where from. Using the `routeHandler` function gives you flexibility and control over your routes logic, allowing for more advanced configurations, such as specifying processors and idempotency logic.
 
@@ -739,7 +740,7 @@ camelFileSink {
 }
 ```
 
-###### Writing to a local Directory
+###### Writing to a local directory
 ```kotlin
 pipeline("CAMEL_OUTBOUND_PIPELINE") {
   source(
@@ -791,7 +792,7 @@ pipeline("CAMEL_SFTP_OUTBOUND_PIPELINE") {
 ```
 -->
 
-### Completion Handlers
+### Completion handlers
 
 #### `sendEventOnCompletion`
 
@@ -832,7 +833,7 @@ pipeline("TEST_TRADE_PIPELINE") {
 }
 ```
 
-## Non-Core Elements
+## Non-core elements
 The following elements are made available when adding additional libraries available in the integrations marketplace.
 
 ### Sources
@@ -1054,11 +1055,11 @@ If you wish to run a dedicated process as a data pipeline, the following gives a
 
 <CommonProcesses/>
 
-## Creating Custom Elements
+## Creating custom elements
 
 All of the elements within the data pipelines eco system implement a simple interface that allows new implementations to be added easily and rapidly. Most of these interfaces are functional, with only a single method, which allows them to be defined inline in the pipelines script. However, for complex pieces of business logic you may want to implement the element as a class in Java or Kotlin, for easier code management, and testing. In this section you will find examples of how to write custom components as classes, by implementing the interfaces defined in the Pipelines API.
 
-### Map Operator
+### Map operator
 Interface:
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
     <TabItem value="kotlin">
@@ -1104,7 +1105,7 @@ Example:
 </Tabs>
 
 
-### Split Operator
+### Split operator
 Interface:
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
     <TabItem value="kotlin">
@@ -1151,7 +1152,7 @@ Example:
 </Tabs>
 
 
-### Transform Operator
+### Transform operator
 Interface:
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
     <TabItem value="kotlin">
@@ -1197,7 +1198,7 @@ Example:
     </TabItem>
 </Tabs>
 
-### Filter Operator
+### Filter operator
 Filter operators are the exception and do not have a well defined interface, instead the filter method on the pipeline builder takes a predicate function as an argument. This predicate function takes an instance of the current pipeline output type and returns a boolean value.
 
 ### Source
@@ -1371,14 +1372,14 @@ Filter operators are the exception and do not have a well defined interface, ins
 </Tabs>
 
 
-##### Using the Persistence Manager
+##### Using the persistence manager
 There is a persistence manager interface available in the genesis-pipeline-api module, which enables you to decide how to manage tracking what you have last processed.
 
 If you use the default DbPersistenceManager implementation, you can directly inject the interface into your class.
 
 The persistence manager should be used inside the `acknowledge` method of an AckSource in order to persist the state.
 
-###### Database Persistence Manager
+###### Database persistence manager
 
 The DbPersistenceManager is an implementation of PersistenceManager that stores persistence records in the application database.
 
@@ -1634,7 +1635,7 @@ Example:
   </TabItem>
 </Tabs>
 
-### Operation Error Handler
+### Operation error handler
 Interface:
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
     <TabItem value="kotlin">
@@ -1681,7 +1682,7 @@ Example:
     </TabItem>
 </Tabs>
 
-### Uncaught Error Handler
+### Uncaught error handler
 Interface:
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
     <TabItem value="kotlin">

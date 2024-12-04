@@ -33,7 +33,7 @@ Each table requires:
 
 Below shows an example configuration of three tables: `TRADE`, `COUNTERPARTY` and `INSTRUMENT`
 
-###### Example Data Model
+###### Example data model
 
 ```kotlin
 tables {
@@ -222,7 +222,7 @@ String fields can contain any set of characters up to the maximum length of char
 The value in the parenthesis in the second example below is the maximum number of characters that can be stored in this field for a given record. Where not specified the default length will be 64 characters.
 `dbMaxSize` can be used to set the field length to be the maximum allowed for the database technology used by the application.  It is helpful as different database technologies have different limits.
 
-###### Example Definitions:
+###### Example definitions
 `field("MY_STRING", STRING)`  
 `field("MY_STRING", STRING(256))`  
 `field("MY_STRING", STRING(dbMaxSize))`
@@ -232,7 +232,7 @@ Enum (aka enumerated) fields specify the exact set of values which the field can
 Each value of the enum can also be have an "alias" which is typically a human readable representation of the value. Use the `to` keyword to separate value and alias See this in the second example below.  
 Enums must have a default value. The third example below shows how to set this. Where no default is specified the first value in the list is set as the default.
 
-###### Example Definitions:
+###### Example definitions
 `field("MY_ENUM", ENUM("B", "S", "SS"))`  
 `field("MY_ENUM", ENUM("B" to "Buy", "S" to "Sell", "SS" to "Short Sell"))`  
 `field("MY_ENUM", ENUM("B", "S", "SS")).default("S")`  
@@ -240,46 +240,46 @@ Enums must have a default value. The third example below shows how to set this. 
 ###### `Boolean`
 Boolean fields must contain a value of either true or false.
 
-###### Example Definition:
+###### Example definition
 `field("MY_BOOLEAN", BOOLEAN)`
 
 ###### `Date`
 Date fields must contain a value representing a date. Dates represent a day in time, they do not include time precision. 
 
-###### Example Definition:
+###### Example definition
 `field("MY_DATE", DATE)`
 
 ###### `Datetime`
 Datetime fields must contain a value representing a point in date and time
 
-###### Example Definition:
+###### Example definition
 `field("MY_DATETIME", DATETIME)`
 
 ###### `Integer`
 Integer (aka Int) fields represent whole numbers, with no decimal places.
 Integers can only hold 32 bits, and the maximum value is just over 2.14 billion. If you need larger numbers use the type Long
 
-###### Example Definition:
+###### Example definition
 `field("MY_INT", INT)` 
 
 ###### `Long`
 Long fields are similar to integer, but represented in 64 bits. 
 This means it has a much larger maximum value. Long's are used a lot for auto-generated primary keys so that we can theoretically store many more records. 
 
-###### Example Definition:
+###### Example definition
 `field("MY_LONG", LONG)` 
 
 ###### `Short`
 Short fields can store whole numbers from -32,768 to 32,767. 
 They are very rarely used, but are a choice if the data needs to be stored in memory more efficiently.
 
-###### Example Definition:
+###### Example definition
 `field("MY_SHORT", SHORT)` 
 
 ###### `Double`
 Double fields are used to store numeric values with decimal places.
 
-###### Example Definition:
+###### Example definition
 `field("MY_DOUBLE", DOUBLE)`
 
 ###### `BigDecimal`
@@ -289,20 +289,20 @@ Big Decimals allow the user to define the `precision` and `scale` (the 2 inputs 
 - Precision is the number of digits in the number (default where not specified is 20)
 - Scale is the number of digits to the right of the decimal point (default where not specified is 5)
 
-###### Example Definitions:
+###### Example definitions
 `field("MY_BIGDECIMAL", BIGDECIMAL)`   
 `field("MY_BIGDECIMAL", BIGDECIMAL(10, 3))`
 
 ###### `Nano Timestamp`
 A nano timestamp is a precise way to record a timestamp to the closest nano seconds.
 
-###### Example Definition:
+###### Example definition
 `field("MY_NANO_TIMESTAMP", NANO_TIMESTAMP)`
 
 ###### `Raw`
 Raw fields are intended to store large values, they will often contain large structured payloads, else binary data and other non human readable data.
 
-###### Example Definition:
+###### Example definition
 `field("MY_RAW", RAW)`
 
 Fields can also have metadata defined to give them additional characteristics
@@ -342,7 +342,7 @@ Add `.default(<value>)` to your field definition to set a default. The value mus
 ###### Valid for types:
 _any_
 
-###### Example Definitions:
+###### Example definitions
 `field("IS_CORRECT", BOOLEAN).default(true)`
 
 ##### `notNull`
@@ -352,7 +352,7 @@ Where this is not set for a field, its values can be left as null - unless it is
 
 ###### Valid for types:
 _any_
-###### Example Definitions:
+###### Example definitions
 `field("MY_BOOLEAN", BOOLEAN).default(false)`
 
 ##### `sensitive`
@@ -361,7 +361,7 @@ String fields can be marked as `sensitive()`. Values will be masked when printed
 ###### Valid for types:
 `STRING`
 
-###### Example Definitions:
+###### Example definitions
 `field("KEY", STRING).sensitive()`
 
 
@@ -371,7 +371,7 @@ String fields can be marked as `sensitive()`. Values will be masked when printed
 ###### Valid for types:
 Any numeric types except BigDecimal
 
-###### Example Definitions:
+###### Example definitions
 ```kotlin
 field("RATING", INT).metadata {
     min = 0
@@ -384,7 +384,7 @@ field("RATING", INT).metadata {
 ###### Valid for types:
 Any numeric types except BigDecimal
 
-###### Example Definitions:
+###### Example definitions
 ```kotlin
 field("RATING", INT).metadata {
     max = 10
@@ -398,7 +398,7 @@ Sets the minimum number of characters allowed
 ###### Valid for types:
 `STRING`
 
-###### Example Definitions:
+###### Example definitions
 ```kotlin
 field("ISIN").metadata {
     minLength = 12
@@ -412,7 +412,7 @@ Sets the maximum number of characters allowed
 ###### Valid for types:
 `STRING`
 
-###### Example Definitions:
+###### Example definitions
 ```kotlin
 field("ISIN").metadata {
     maxLength = 14
@@ -426,7 +426,7 @@ Sets a [regular expression](https://developer.mozilla.org/en-US/docs/Web/JavaScr
 ###### Valid for types:
 `STRING`
 
-###### Example Definitions:
+###### Example definitions
 ```kotlin
 field("ISIN").metadata {
     pattern = "^[A-Z]{2}[-]{0,1}[A-Z0-9]{9}[-]{0,1}[0-9]{1}$"
@@ -440,7 +440,7 @@ Every field has a default title (derived from the field name converted to title 
 ###### Valid for types:
 _any_
 
-###### Example Definitions:
+###### Example definitions
 `field("KEY", STRING).title("Access key")`
 
 
@@ -686,7 +686,7 @@ views {
 :::caution Do not use backwards joins unnecessarily.
 There is a memory storage and processing overhead when a join is defined as a backwards join. In very large datasets, this can be significant.
 
-Only specify a backwards join where it is essential to publish updates to the joined table in real-time.
+Only specify a backwards join where it is essential to publish updates to the joined table in real time.
 :::
 
 #### `joinType`
