@@ -11,17 +11,17 @@ pagination_next: develop/client-capabilities/server-communications/comms-authent
 
 # Analytics
 
-This introduces a comprehensive system for tracking analytics events throughout the `foundation-comms` package. It leverages a typed event system and a configurable analytics instance to provide detailed insights into user interactions and navigation within the application.
+This introduces a comprehensive system for tracking analytics events throughout the `foundation-comms` package. It uses a typed event system and a configurable analytics instance to provide detailed insights into user interactions and navigation within the application.
 
-## Key Components
+## Key components
 
 - **Event Types Enumeration (`FoundationAnalyticsEventType`):** Defines a list of supported analytics event types, such as `controlClicked` and `routeChanged`, ensuring type safety and consistency in event tracking.
 - **Event Interfaces (`FoundationAnalyticsEvent` Namespace):** Describes the payload structure for each event type, facilitating the capture of relevant event data.
 - **Analytics Interface and Implementation (`FoundationAnalytics` and `DefaultFoundationAnalytics`):** Specifies the contract for an analytics tracking system and provides a default implementation that integrates with the `analytics` library.
 
-## Usage Examples
+## Usage examples
 
-### Tracking a Control Click Event
+### Tracking a control click event
 
 ```typescript
 import { FoundationAnalytics, FoundationAnalyticsEventType } from '@genesislcap/foundation-comms';
@@ -38,7 +38,7 @@ export class MyExampleClass extends FASTElement {
 }
 ```
 
-### Tracking a Route Change Event
+### Tracking a route change event
 
 ```typescript
 import { FoundationAnalytics, FoundationAnalyticsEventType } from '@genesislcap/foundation-comms';

@@ -2,7 +2,7 @@
 title: 'Genesis Connect'
 sidebar_label: 'Genesis Connect'
 id: comms-connect
-keywords: [genesis, foundation, commms, connect]
+keywords: [genesis, foundation, comms, connect]
 tags:
   - comms
   - connect
@@ -10,13 +10,13 @@ tags:
 
 # Genesis Connect
 
-This encapsulates the functionality for establishing and managing connections between a client and a server, particularly focusing on a WebSocket connection for real-time communication in a Genesis server environment. This detailed guide aims to elucidate the various components, functionalities, and usage patterns of the `@Connect` service, including interactions with related types and services.
+Genesis Connect encapsulates the functionality for establishing and managing connections between a client and a server, particularly focusing on a WebSocket connection for real-time communication in a Genesis server environment. This detailed guide aims to elucidate the various components, functionalities, and usage patterns of the `@Connect` service, including interactions with related types and services.
 
 ## Overview of `@Connect`
 
 `@Connect` is designed to facilitate communication between a client application and a Genesis server, offering a robust set of functionalities for connection management, message sending and receiving, and session validation. It leverages WebSocket for real-time bi-directional communication, providing a seamless experience for real-time data exchanges.
 
-### Key Components and Functionalities
+### Key components and functionality
 
 - **Connect Interface**: The core interface that outlines the blueprint for connection management, including methods for sending messages, connecting and disconnecting, session management, data fetching, and event streaming.
 
@@ -32,7 +32,7 @@ This encapsulates the functionality for establishing and managing connections be
 
 - **Reconnection Strategies**: `connect.ts` implements reconnection logic to handle scenarios where the WebSocket connection is lost, ensuring the application remains connected or attempts to reconnect based on predefined configurations.
 
-### Usage Patterns
+### Usage patterns
 
 1. **Establishing a Connection**: Initialize a `DefaultConnect` instance with or without custom configurations and connect to a Genesis server using the `connect` method.
 
@@ -46,7 +46,7 @@ This encapsulates the functionality for establishing and managing connections be
 
 6. **Reconnection Handling**: Configure reconnection options to specify the behavior when the connection is lost, including automatic reconnection attempts and strategies.
 
-### Integrating with Other Modules
+### Integrating with oOther modules
 
 - **Message Building**: Works in conjunction with `message.ts` for constructing and parsing messages exchanged between the client and server.
 
@@ -56,11 +56,11 @@ This encapsulates the functionality for establishing and managing connections be
 
 - **HTTP Fallback**: In scenarios where WebSocket is not feasible, `connect.ts` can switch to HTTP communication, managed by `http.connect.ts`, ensuring compatibility and flexibility across different environments.
 
-#### Example Usage
+#### Example usage
 
 To be added.
 
-## Best Practices
+## Best practice
 
 - **Secure Connection**: Always establish WebSocket connections over secure channels (e.g., HTTPS) to ensure data privacy and integrity.
 
@@ -84,4 +84,4 @@ To be added.
 
 ## Summary
 
-The `@Connect` module is a critical component for enabling real-time communication within the Genesis ecosystem, offering a comprehensive suite of functionalities for connection management, message exchange, session validation, and data streaming. By understanding its components, functionalities, and integration points, developers can effectively leverage this module to build dynamic, real-time applications within the Genesis framework.
+The `@Connect` module is a critical component for enabling real-time communication within the Genesis ecosystem, offering a comprehensive suite of functionalities for connection management, message exchange, session validation, and data streaming. By understanding its components, functionality, and integration points, developers can use this module to build dynamic, real-time applications within the Genesis framework.
