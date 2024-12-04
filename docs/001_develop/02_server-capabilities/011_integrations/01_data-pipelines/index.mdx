@@ -40,7 +40,7 @@ Genesis Data Pipelines are defined in the *-pipelines.kts files.
 
 ## Core concepts
 
-### Batch vs. Real-time
+### Batch vs. real-time
 A data pipeline can be considered 'batch' or 'real-time'.
 
 ###### Batch
@@ -52,7 +52,7 @@ A Batch pipeline consumes data using a request/response based model, utilizing d
 A batch pipeline must be invoked via some kind of trigger, it does not execute continuously.
 
 ###### Real-time
-A real-time Pipeline consumes data via a 'push' model, utilizing data sources that continuously deliver data based on subscriptions. Examples include:
+A real-time pipeline consumes data via a 'push' model, utilizing data sources that continuously deliver data based on subscriptions. Examples include:
  - reading data from a message broker (JMS, Kafka etc.)
  - monitoring a file store for any new files
  - listening for updates on a database table or view
