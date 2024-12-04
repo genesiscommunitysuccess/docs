@@ -358,7 +358,7 @@ camelFileSource {
 }
 ```
 
-###### Reading from a Local Directory
+###### Reading from a local directory
 ```kotlin
 pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
   source(
@@ -376,7 +376,7 @@ pipeline("TEST_CAMEL_ROUTE_PIPELINE") {
       }
     }
   ).sink { file, context ->
-    LOG.info("Recieved file $file")
+    LOG.info("Received file $file")
     true
   }
 }
