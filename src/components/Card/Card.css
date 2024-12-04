@@ -67,6 +67,10 @@
   justify-content: flex-start;
 }
 
+.card-outer.live-example .card-inner .card-main-content {
+  justify-content: end;
+}
+
 .card-outer .card-inner .card-main-content svg {
   margin-top: 16px;
   height: 70px;

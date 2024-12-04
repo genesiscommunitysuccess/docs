@@ -39,6 +39,7 @@ export default function LiveExampleBuilder({ itemData }) {
             sm="6"
             md="4"
             items={processedItems}
+            cardClassname="live-example"
           />
         </div>
       </>) }
