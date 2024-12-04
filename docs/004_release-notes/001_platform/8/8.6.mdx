@@ -64,8 +64,8 @@ id: '8.6'
 - Bump byteBuddyVersion from 1.15.3 to 1.15.5 in /genesis-conventions 
 - Bump byteBuddyVersion from 1.15.5 to 1.15.7 in /genesis-conventions 
 - Bump byteBuddyVersion from 1.15.7 to 1.15.10 in /genesis-conventions 
-- Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.8 to 0.17.9 in /genesis-subcore/deploy-gradle-plugin by @dependabot in https://github.com/genesislcap/genesis-server/pull/3376
-- Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.9 to 0.17.10 in /genesis-subcore/deploy-gradle-plugin by @dependabot in https://github.com/genesislcap/genesis-server/pull/3400
+- Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.8 to 0.17.9 in /genesis-subcore/deploy-gradle-plugin 
+- Bump com.avast.gradle:gradle-docker-compose-plugin from 0.17.9 to 0.17.10 in /genesis-subcore/deploy-gradle-plugin 
 - Bump com.esotericsoftware:kryo from 5.6.0 to 5.6.2 in /genesis-conventions 
 - Bump com.github.oshi:oshi-core from 6.6.4 to 6.6.5 in /genesis-conventions 
 - Bump com.google.errorprone:error_prone_annotations from 2.33.0 to 2.34.0 in /genesis-conventions 
@@ -116,7 +116,48 @@ There have been no patch releases to date.
 
 ### Features
 
-- kjn
+- Added design token for info and notify severity serious 
+- Added part attr content div in dialog 
+- Allow backward jumps and emit related events in stepper component 
+- Allow system design configurator to serve the app under a path 
+- foundation-comms: improve types in Connect and MessageBuilder 
+- foundation-entity-management: emitting rowClick, rowDblClick and contextMenu (aka right click) events from entity management 
+- foundation-forms: add config to override delete/add labels, add border to array form 
+- foundation-forms: enum renderer default value 
+- foundation-forms: label for enum renderer made consisent with grid column header 
+- foundation-openfin: openfin notifications 
+- foundation-ui: add new button content slot to categorized-multiselect 
+- foundation-ui: default label formatter for date/datetime in options-datasource 
+- foundation-ui: display tooltip when text doesn't fit into combobox 
+- foundation-ui: stepper ability to go back to a previous step directly 
+- grid-tabulator: upgrade to 6.3.0 + update grids-preview showcase 
+- Styles updates for horizontal orientation of stepper component 
+- web-core: Add attr with deprecated decorator 
+
 
 ### Fixes
+
+- Address bad fast-foundation refs + package-lock clean 
+- Address foundation-login submit buttons + incorrect Zero DS ref from Rapid Grid Pro 
+- AddServerDependency adds an entry to gradle.properties for non settings plugin deps 
+- build-kit: context resolution in Handlebars helpers 
+- Cleanup on setter usages of deprecated hasValidSession 
+- client-app: move to foundation-auth 
+- Create build-workflow.yaml 
+- Failing tests in showcase client-app 
+- Fix custom gridOptions components when using zero or rapid grids 
+- foundation-forms: add design-system-prefix to filters 
+- foundation-forms: string arrays in forms 
+- foundation-ui: get tooltip config in loadIcon 
+- rollup-builder: bump dependencies that had downstream vuln 
+- grid-pro: address leftover grid api from gridOptions 
+- handlebars helper ifContains support object and array
+- hideStepNumber flag added in stepper for horizontal orientation
+- Lock all fast-foundation refs to version 2.49.6 
+- rapid-design-system: export system health in rapid 
+- Switch from esbuild-kit to tsx + cleanups 
+- Revert switch from esbuild-kit to tsx 
+- Tweak dataLogon params + update High Frequency example 
+- webpack-builder: address HMR not working 
+
 
