@@ -25,7 +25,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
 
 ## `<grid-pro-client-side-datasource>`
 
-### Client-Side Features
+### Client-side features
 
 - **Sorting**: Order by any column, ASC or DESC.
 - **Filtering**:
@@ -50,13 +50,13 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
   - filter1 AND filter2
   - filter1 OR filter2
 
-### Client-Side Notes
+### Client-side notes
 
 - Works with both `DATASERVER` and `REQUEST_SERVER` resources.
 - Operations like sorting and filtering are performed on the client-side.
 - Suitable for datasets that are small to medium in size and can be entirely loaded into the client.
 
-### Usage Example
+### Usage example
 
 ```html
 <rapid-grid-pro enable-row-flashing enable-cell-flashing>
@@ -69,7 +69,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
 
 ## `<grid-pro-server-side-datasource>`
 
-### Server-Side Features
+### Server-side features
 
 - **Sorting**: Order by any INDEX column/field, ASC or DESC.
   - This is a server limitation. For each column that needs to be sortable, you must have an [index](/develop/server-capabilities/real-time-queries-data-server/#indices) for it. 
@@ -103,7 +103,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
     - blank
     - notBlank
 
-### Server-Side Notes
+### Server-side notes
 
 - Operations like sorting and filtering are pushed to the back end.
   - Filtering uses `CRITERIA_MATCH` param.
@@ -114,7 +114,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
   - `ROWS_COUNT` doesn’t reflect the correct amount when a `CRITERIA_MATCH` (filtering) is applied. For example, if a resource has 100 records and a criteria returns only 50, the server still reports 100. We have to calculate this manually.
 - Suitable for large datasets where only a subset of data is loaded into the client based on user interactions.
 
-### Usage Example
+### Usage example
 
 ```html
 <rapid-grid-pro enable-row-flashing enable-cell-flashing>
@@ -125,16 +125,16 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
 </rapid-grid-pro>
 ```
 
-## Common Attributes & Properties
+## Common attributes and properties
 
 There are many attributes that can be set on a datasource component. These attributes can be used to customize the behavior of the datasource and the grid component. Below is a list of some of the most commonly used attributes.
 
-### Resource-Specific
+### Resource-specific
 
 Some **resource** attributes and properties are `DATASERVER` or `REQUEST_SERVER` specific, while others can be used with both.
 These are used to define the resource that the datasource will be fetching data from. The `resource-name` attribute is required for both `DATASERVER` and `REQUEST_SERVER` resources.
 
-#### DATASERVER and REQUEST_SERVER Attributes
+#### DATASERVER and REQUEST_SERVER attributes
 
 <table>
   <thead>
@@ -214,7 +214,7 @@ These are used to define the resource that the datasource will be fetching data 
   </tbody>
 </table>
 
-#### DATASERVER and REQUEST_SERVER Properties
+#### DATASERVER and REQUEST_SERVER properties
 
 <table>
   <thead>
@@ -248,7 +248,7 @@ These are used to define the resource that the datasource will be fetching data 
 
 <GroovyFilterExpressions />
 
-#### DATASERVER-Only Attributes
+#### DATASERVER-only attributes
 
 <table>
   <thead>
@@ -328,7 +328,7 @@ These are used to define the resource that the datasource will be fetching data 
   </tbody>
 </table>
 
-#### REQUEST_SERVER-Only Attributes
+#### REQUEST_SERVER-only attributes
 
 <table>
   <thead>
@@ -382,7 +382,7 @@ These are used to define the resource that the datasource will be fetching data 
   </tbody>
 </table>
 
-#### REQUEST_SERVER-Only Properties
+#### REQUEST_SERVER-only properties
 
 <table>
   <thead>
@@ -411,7 +411,7 @@ These are used to define the resource that the datasource will be fetching data 
   </tbody>
 </table>
 
-### Datasource-Specific Attributes
+### Datasource-specific attributes
 
 There are additional attributes that can affect the behaviour of a datasource component.
 
