@@ -201,21 +201,6 @@ These are used to define the resource that the datasource will be fetching data 
 ```
 </td>
     </tr>
-    <tr>
-      <td><code>:rowDataMapper</code></td>
-      <td><code>Function</code></td>
-      <td>Function to map the row data before it is sent to the grid. The function should return an array of objects, where each object represents a row in the grid.</td>
-<td>
-```html
-<grid-pro-client-side-datasource
-  resource-name="DATASERVER_OR_REQUEST_SERVER_NAME"
-  :rowDataMapper="${(data) => data.map((row) => ({ ...row, calculatedValue: row.value1 + row.value2 }))}">
-<grid-pro-server-side-datasource
-  resource-name="DATASERVER_OR_REQUEST_SERVER_NAME"
-  :rowDataMapper="${(data) => data.map((row) => ({ ...row, calculatedValue: row.value1 + row.value2 }))}">
-```
-</td>
-    </tr>
   </tbody>
 </table>
 
@@ -354,18 +339,6 @@ These are used to define the resource that the datasource will be fetching data 
 ```html
 <grid-pro-client-side-datasource resource-name="REQUEST_SERVER_NAME" polling-interval="5000">
 <grid-pro-server-side-datasource resource-name="REQUEST_SERVER_NAME" polling-interval="3000">
-```
-</td>
-    </tr>
-    <tr>
-      <td><code>:request</code></td>
-      <td><code>any</code></td>
-      <td>Similar to <code>fields</code> but for <a href="/develop/server-capabilities/snapshot-queries-request-server/">Request Server</a> scenarios. This optional parameter enables you to specify request fields, which can include wildcards.</td>
-<td>
-```html
-<grid-pro-client-side-datasource resource-name="REQUEST_SERVER_NAME" :request="Trade.*">
-<grid-pro-server-side-datasource resource-name="REQUEST_SERVER_NAME" :request="Position.*,Price.*">
-<grid-pro-client-side-datasource resource-name="REQUEST_SERVER_NAME" :request="${() => ({ TRADE_ID: '00001' })}">
 ```
 </td>
     </tr>
