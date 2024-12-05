@@ -16,13 +16,13 @@ pagination_next: develop/client-capabilities/grids/grid-tabulator/grid-tabulator
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Cell and Column Components
+# Cell and column components
 
 ## Overview
 
-The Cell and Column components provide a flexible, template-driven approach to configuring Grid Pro columns and cell renderers.
+The cell and column components provide a flexible, template-driven approach to configuring Grid Pro columns and cell renderers.
 
-## `GridProCell` Component
+## `GridProCell` component
 
 ### Description
 
@@ -73,7 +73,7 @@ Property examples are shown using Genesis syntax bindings, and closing tags omit
 You can get the types `ICellRendererFunc` and `ICellRendererParams` from the `"@ag-grid-community/core"` package;
 :::
 
-## `GridProColumn` Component
+## `GridProColumn` component
 
 ### Description
 
@@ -122,12 +122,12 @@ The `GridProColumn` component represents a column definition for the Grid Pro.
 You can get the type `ColDef` from the `"@ag-grid-community/core"` package;
 :::
 
-### Best Practices
+### Best practice
 
 - Use `GridProCell` to define [custom cell renderers](../grid-pro-renderers) with dynamic rendering logic.
 - Leverage the `definition` property of `GridProColumn` to configure column-specific settings.
 
-## Usage Example
+## Usage example
 
 ```typescript
 import { ColDef } from '@ag-grid-community/core';
@@ -291,7 +291,7 @@ export class MyElementComponent {
   </TabItem>
 </Tabs>
 
-## Performance Considerations
+## Performance considerations
 
 - Custom renderers should be lightweight to maintain grid performance.
 - Use observable properties to enable reactive updates.
