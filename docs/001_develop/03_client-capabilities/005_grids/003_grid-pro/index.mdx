@@ -21,9 +21,9 @@ import TabItem from '@theme/TabItem';
 The `@genesislcap/grid-pro` package provides a collection of grid-related components and utilities for Genesis applications. It is installed by default in
 applications build with Genesis Create or via the `genx` CLI.
 
-## API Documentation
+## API documentation
 
-For more detailed information on API and configurations, please refer to the [API documentation](./docs/api/index.md).
+For more detailed information on API and configurations, refer to the [API documentation](./docs/api/index.md).
 
 ## Features
 
@@ -37,7 +37,7 @@ For more detailed information on API and configurations, please refer to the [AP
 - **State persistence**: ability to save and restore grid state.
 - **Row models**: support for both client-side and server-side [row models](https://www.ag-grid.com/javascript-data-grid/row-models/).
 
-## Usage - Simple Data
+## Usage - simple data
 
 <GridProExample />
 
@@ -45,13 +45,13 @@ For more detailed information on API and configurations, please refer to the [AP
 
 <TabItem value="genesis">
 
-### Declaration:
+### Declaration
 
 ```html
 <simple-grid-pro-example></simple-grid-pro-example>
 ```
 
-### Definition:
+### Definition
 
 ```typescript
 import { ColDef } from '@ag-grid-community/core';
@@ -110,13 +110,13 @@ export class SimpleGridExample extends GenesisElement {
 
 <TabItem value="react">
 
-### Declaration:
+### Declaration
 
 ```jsx
 <SimpleGridExample />
 ```
 
-### Definition:
+### Definition
 
 ```jsx
 import { GridPro } from '@genesislcap/grid-pro';
@@ -177,13 +177,13 @@ export default SimpleGridExample;
 
 <TabItem value="angular">
 
-### Declaration:
+### Declaration
 
 ```html
 <simple-grid-pro-example></simple-grid-pro-example>
 ```
 
-### Definition:
+### Definition
 
 ```typescript
 import { Component, ViewChild, ElementRef } from '@angular/core';
@@ -254,15 +254,15 @@ export class AppModule {}
 
 </Tabs>
 
-## Supported Row Models
+## Supported row models
 
-We support all of the AG’s Row Models.  More on [JavaScript Grid: Row Models | AG Grid (ag-grid.com)](https://www.ag-grid.com/javascript-data-grid/row-models/).
+We support all the AG’s Row Models.  More on [JavaScript Grid: Row Models | AG Grid (ag-grid.com)](https://www.ag-grid.com/javascript-data-grid/row-models/).
 
-In the table below you can find a complete “feature list” of all the possibilities of client/server-side row models (and others too.. that can be manually enabled/integrated but we don’t expose any components for those yet).
+In the table below you can find a complete feature list of all the possibilities of client/server-side row models (and others that can be manually enabled/integrated - but we don’t expose any components for those yet).
 
-It’s important to note that any client app can implement the other Row Models to their own needs. Our Grid Pro component is not tied to the datasource, it’s the opossite.. so datasources can be as specialized/customized as possible.
+It’s important to note that any client app can implement the other Row Models to their own needs. Our Grid Pro component is not tied to the datasource. Datasources can be as specialized or customized as you want.
 
-`Infinite` and `Viewport` row models are also supported but not offered "out of the box" (devs will have to create their own component).
+`Infinite` and `Viewport` row models are also supported, but not offered "out of the box". You will have to create your own component if you want to use these.
 
 | Feature                          | Client-Side | Server-Side | Notes                |
 | -------------------------------- | ----------- | ----------- | -------------------- |
@@ -301,7 +301,7 @@ It’s important to note that any client app can implement the other Row Models 
 
 ## Performance
 
-### DOM Virtualisation
+### DOM virtualisation
 
 DOM Virtualisation is a powerful technique that enhances the performance of grid components by only rendering the rows and columns that are currently visible in the viewport. This approach significantly reduces the memory footprint and improves the rendering speed, enabling all of our “grid components” to handle larger datasets more efficiently.
 
@@ -323,15 +323,15 @@ Pagination is another effective technique to improve performance in AG Grid by b
   - Provides a structured way to navigate large datasets, improving usability.
   - Reduces the risk of browser crashes and memory overflow issues.
 
-### Combined Approach
+### Combined approach
 
-By leveraging both DOM Virtualisation and Pagination, our “grid components” can efficiently manage and display larger datasets on the client-side. Here’s how these techniques work together:
+By using both DOM Virtualisation and Pagination, our “grid components” can efficiently manage and display larger datasets on the client side. Here’s how these techniques work together:
 
 - **Initial Load**: Only the data for the first page is loaded, minimizing the initial load time.
 - **Scrolling**: As users scroll, DOM Virtualisation ensures only the visible rows and columns are rendered, maintaining performance.
 - **Page Navigation**: Users can navigate through pages to access the full dataset without overwhelming the client.
 
-## Legacy project setup
+## Legacy project set-up
 
 This package is installed by default in applications build with Genesis Create or via the `genx` CLI, but you can follow these steps to install it in your existing project.
 
@@ -349,7 +349,7 @@ To enable this module in your application, follow the steps below.
 }
 ```
 
-### Setup
+### Set-up
 
 Make sure the required grid components are registered with your design system.
 Depending on how the app was created this might have been setup for you automatically (genx cli / create).
@@ -363,5 +363,5 @@ provideDesignSystem().register(baseComponents, rapidGridComponents);
 ```
 
 :::tip
-If you're unsure where to register the component search for the `provideDesignSystem` method in your project.
+If you're unsure where to register the component, search for the `provideDesignSystem` method in your project.
 :::

@@ -25,7 +25,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
 
 ## `<grid-pro-client-side-datasource>`
 
-### Client-Side Features
+### Client-side features
 
 - **Sorting**: Order by any column, ASC or DESC.
 - **Filtering**:
@@ -50,13 +50,13 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
   - filter1 AND filter2
   - filter1 OR filter2
 
-### Client-Side Notes
+### Client-side notes
 
 - Works with both `DATASERVER` and `REQUEST_SERVER` resources.
 - Operations like sorting and filtering are performed on the client-side.
 - Suitable for datasets that are small to medium in size and can be entirely loaded into the client.
 
-### Usage Example
+### Usage example
 
 ```html
 <rapid-grid-pro enable-row-flashing enable-cell-flashing>
@@ -69,14 +69,14 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
 
 ## `<grid-pro-server-side-datasource>`
 
-### Server-Side Features
+### Server-side features
 
 - **Sorting**: Order by any INDEX column/field, ASC or DESC.
-  - This is a server limitation. For each column that needs to have “sorting” the developer will need to have an INDEX for it. See more about indexes [here](/develop/server-capabilities/real-time-queries-data-server/#indices).
-  - By default, sorting is disabled on all columns, but if valid indexes are detected from the metadata, those columns/fields will have sorting enabled.
-  - If the user attempts to force `sortable`, we'll check its validity, warn in the logs if not, and mention other available indexes if any.
+  - This is a server limitation. For each column that needs to be sortable, you must have an [index](/develop/server-capabilities/real-time-queries-data-server/#indices) for it. 
+  - By default, sorting is disabled on all columns, but wherever a valid index is detected from the metadata, that columns (field) will have sorting enabled.
+  - If the user attempts to force `sortable`, we'll check its validity, warn in the logs if not, and mention other available indices, if any.
 - **Filtering**:
-  - Filtering options are automatically generated based on the resource’s metadata.
+  - Filtering options are automatically generated, based on the resource’s metadata.
   - **String Filters**:
     - blank
     - contains
@@ -103,9 +103,9 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
     - blank
     - notBlank
 
-### Server-Side Notes
+### Server-side notes
 
-- Operations like sorting and filtering are pushed to the backend.
+- Operations like sorting and filtering are pushed to the back end.
   - Filtering uses `CRITERIA_MATCH` param.
   - Sorting uses `ORDER_BY` param.
   - Once filtering/sorting is applied, the datasource component resets itself, starting a new stream with the updated params.
@@ -114,7 +114,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
   - `ROWS_COUNT` doesn’t reflect the correct amount when a `CRITERIA_MATCH` (filtering) is applied. For example, if a resource has 100 records and a criteria returns only 50, the server still reports 100. We have to calculate this manually.
 - Suitable for large datasets where only a subset of data is loaded into the client based on user interactions.
 
-### Usage Example
+### Usage example
 
 ```html
 <rapid-grid-pro enable-row-flashing enable-cell-flashing>
@@ -125,15 +125,15 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
 </rapid-grid-pro>
 ```
 
-## Common Attributes
+## Common attributes
 
 There are many attributes that can be set on a datasource component. These attributes can be used to customize the behavior of the datasource and the grid component. Below is a list of some of the most commonly used attributes.
 
-### Resource Attributes
+### Resource attributes
 
 Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, while others can be used with both.
 
-#### Attributes Common to DATASERVER and REQUEST_SERVER
+#### Attributes common to DATASERVER and REQUEST_SERVER
 
 <table>
   <thead>
@@ -215,7 +215,7 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
 
 <GroovyFilterExpressions />
 
-#### DATASERVER Only Attributes
+#### DATASERVER-only attributes
 
 <table>
   <thead>
@@ -295,7 +295,7 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
   </tbody>
 </table>
 
-#### REQUEST_SERVER Only Attributes
+#### REQUEST_SERVER-only attributes
 
 <table>
   <thead>
@@ -362,9 +362,9 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
   </tbody>
 </table>
 
-### Exclusive Attributes
+### Exclusive attributes
 
-Additional attributes that can affect the behavior of a datasource component.
+There are additional attributes that can affect the behaviour of a datasource component.
 
 #### `<grid-pro-client-side-datasource>`
 
@@ -458,5 +458,5 @@ Additional attributes that can affect the behavior of a datasource component.
 
 ## Summary
 
-- **Client-Side Datasource**: Suitable for smaller datasets where all data can be loaded into the client. Operations like sorting and filtering are performed on the client-side.
-- **Server-Side Datasource**: Ideal for large datasets, where operations are pushed to the backend to ensure performance and consistency. Data is fetched as needed based on user interactions.
+- **Client-Side Datasource**: Suitable for smaller datasets where all data can be loaded into the client. Operations like sorting and filtering are performed on the client side.
+- **Server-Side Datasource**: Ideal for large datasets, where operations are pushed to the back end to ensure performance and consistency. Data is fetched as needed, based on user interactions.
