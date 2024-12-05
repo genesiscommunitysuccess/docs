@@ -1,49 +1,256 @@
 {
+  "/develop/development-environments": {
+    "description": "The Genesis Application Platform comes with a suite of tooling to help with building and running applications.",
+    "items": [
+      {
+        "href": "/develop/development-environment/launchpad/",
+        "imageUrl": "/svg/categories-icons/rocket-svgrepo-com.svg",
+        "description": "Genesis cloud-based development environment allowing users to assemble, build and run complete applications entirely in a browser."
+      },
+      {
+        "href": "/develop/development-environment/genesis-start/",
+        "imageUrl": "/svg/categories-icons/play-circle-svgrepo-com.svg",
+        "description": "Desktop utility allowing users in any IDE to quickly manage their development environment, including bootstrapping local database along with starting and stopping all the Genesis components."
+      },
+      {
+        "href": "/develop/development-environment/intellij-plugin/",
+        "imageUrl": "/svg/categories-icons/intellij-idea-svgrepo-com.svg",
+        "description": "Plugin allowing IntelliJ users to quickly manage their development environment from within IntelliJ, including bootstrapping local database along with starting and stopping all the Genesis components."
+      },
+      {
+        "href": "/develop/development-environment/vscode-plugin/",
+        "imageUrl": "/svg/categories-icons/vscode-svgrepo-com.svg",
+        "description": "Plugin allowing VS Code IDE users to leverage the Genesis View AI Agent to generate Genesis web application routes from images created by UI designers as well as accelerators to inject UI elements in existing projects."
+      },
+      {
+        "href": "/develop/development-environment/custom-elements-lsp/",
+        "imageUrl": "/svg/categories-icons/code-svgrepo-com.svg",
+        "description": "Plugin enabling VS Code IDE users to enable intelli-sense for custom web component elements to aid in development of front end applications using raw Web Components as a framework. "
+      },
+      {
+        "href": "/develop/development-environment/ai/",
+        "description": "AI description"
+      },
+      {
+        "href": "/develop/development-environment/genx/",
+        "imageUrl": "/svg/categories-icons/terminal-svgrepo-com.svg",
+        "description": "Command line tool allowing advanced users to quickly generate new project scaffolding and perform typical development functions such as building, triggering tests and so on."
+      }
+    ]
+  },
   "/develop/server-capabilities": {
+    "description": "This section provides full details of the Genesis Application Platform's server capabilities. Each section details how the capability works, along with examples and full documentation on configuration and interaction.",
     "items": [
       {
         "href": "/develop/server-capabilities/data-model/",
-        "description": "Assembling the application data model"
+        "imageUrl": "/svg/categories-icons/hierarchy-svgrepo-com.svg",
+        "description": "Define the object and relational data model for the application. This is the metadata that drives the capabilities of the entire platform."
       },
       {
         "href": "/develop/server-capabilities/data-access-apis/",
-        "description": "Accessing the application data model directly via API"
+        "imageUrl": "/svg/categories-icons/data-ingress-egress-svgrepo-com.svg",
+        "description": "API for reading and writing data to the underlying database."
       },
       {
         "href": "/develop/server-capabilities/real-time-queries-data-server/",
-        "description": "Defining low-latency real-time data queries for clients to subscribe"
+        "imageUrl": "/svg/categories-icons/refresh-square-svgrepo-com.svg",
+        "description": "Define named queries for datasets that need to be exposed to subscribing clients for real-time, low-latency updates."
       },
       {
         "href": "/develop/server-capabilities/snapshot-queries-request-server/",
-        "description": "Configuring on-demand data queries accessible to authorized clients"
+        "imageUrl": "/svg/categories-icons/table-alt-svgrepo-com.svg",
+        "description": "Define on-demand or snapshot data queries accessible to consuming clients."
       },
       {
         "href": "/develop/server-capabilities/core-business-logic-event-handler/",
-        "description": "Composing business events which update the applications data"
+        "imageUrl": "/svg/categories-icons/chip-component-svgrepo-com.svg",
+        "description": "Define application events and core business logic to be invoked by consuming clients."
       },
       {
         "href": "/develop/server-capabilities/access-control/",
-        "description": "Configuring human and system user application access privileges"
+        "imageUrl": "/svg/categories-icons/access-svgrepo-com.svg",
+        "description": "Configure authentication of human and system users, and set up precise access controls to data and features."
       },
       {
         "href": "/develop/server-capabilities/workflow-state-machine/",
-        "description": "Workflow State Machine description"
+        "imageUrl": "/svg/categories-icons/diagram-next-svgrepo-com.svg",
+        "description": "Define workflow and states for any entity in your application."
       },
       {
         "href": "/develop/server-capabilities/real-time-aggregation-consolidator/",
-        "description": "Real Time Aggregation Consolidator description"
+        "imageUrl": "/svg/categories-icons/spreadsheet-with-sum-symbol-svgrepo-com.svg",
+        "description": "Define real-time aggregation against the stream of incoming data."
       },
       {
         "href": "/develop/server-capabilities/real-time-triggers-evaluator/",
-        "description": "Real Time Triggers Evaluator description"
+        "imageUrl": "/svg/categories-icons/research-left-svgrepo-com.svg",
+        "description": "Define the real-time logic for triggering new events, processing and alerting."
       },
       {
         "href": "/develop/server-capabilities/integrations/",
-        "description": "Integrations description"
+        "imageUrl": "/svg/categories-icons/pipeline-svgrepo-com.svg",
+        "description": "Define pipelines simplifying getting data in and out of applications."
+      },
+      {
+        "href": "/develop/server-capabilities/custom-components/",
+        "imageUrl": "/svg/categories-icons/trophy-svgrepo-com.svg",
+        "description": "Define and inject custom server components into your application."
+      },
+      {
+        "href": "/develop/server-capabilities/communications/",
+        "imageUrl": "/svg/categories-icons/network-receive-symbolic-svgrepo-com.svg",
+        "description": "Understand how Genesis microservices communicate with each other and with the web interface."
+      },
+      {
+        "href": "/develop/server-capabilities/testing-api/",
+        "imageUrl": "/svg/categories-icons/ui-checks-svgrepo-com.svg",
+        "description": "Define server-side tests for all aspects of the server."
       },
       {
         "href": "/develop/server-capabilities/runtime-configuration/",
-        "description": "Runtime Configuration description"
+        "imageUrl": "/svg/categories-icons/configuration-settings-gear-options-preferences-setting-tools-svgrepo-com.svg",
+        "description": "Define runtime configuration for your applications, including per-environment configuration items."
+      }
+    ]
+  },
+  "/develop/client-capabilities": {
+    "description": "This section provides full details of the Genesis Application Platform's client (web UI) capabilities. Each section details how the capability works, along with examples and full documentation on configuration.",
+    "items": [
+      {
+        "href": "/develop/client-capabilities/server-communications/",
+        "imageUrl": "/svg/categories-icons/set-up-svgrepo-com.svg",
+        "description": "Understand Genesis client/server communication, authentication and session management."
+      },
+      {
+        "href": "/develop/client-capabilities/login/",
+        "imageUrl": "/svg/categories-icons/user-svgrepo-com.svg",
+        "description": "Understand how the login micro front-end can be configured to achieve authentication, single-sign-on, and more."
+      },
+      {
+        "href": "/develop/client-capabilities/header/",
+        "imageUrl": "/svg/categories-icons/menu-svgrepo-com.svg",
+        "description": "Configure the navigation and flyout menu and routing within the application."
+      },
+      {
+        "href": "/develop/client-capabilities/grids/",
+        "imageUrl": "/svg/categories-icons/insert-table-svgrepo-com.svg",
+        "description": "Rich, real-time data grids with built-in server-side connection."
+      },
+      {
+        "href": "/develop/client-capabilities/charts/",
+        "imageUrl": "/svg/categories-icons/pie-chart-svgrepo-com.svg",
+        "description": "Rich, real-time charts for data visualization, with built-in server-side connection."
+      },
+      {
+        "href": "/develop/client-capabilities/forms/",
+        "storyBookHref": "/storybook/forms",
+        "imageUrl": "/svg/categories-icons/copy-svgrepo-com.svg",
+        "description": "Create rich forms based on the underlying data model."
+      },
+      {
+        "href": "/develop/client-capabilities/interaction/",
+        "imageUrl": "/svg/categories-icons/creativity-svgrepo-com.svg",
+        "description": "Suite of components for managing interactions, from accordions to tree views."
+      },
+      {
+        "href": "/develop/client-capabilities/presentation/",
+        "imageUrl": "/svg/categories-icons/photo-svgrepo-com.svg",
+        "description": "Present information to the user in the most engaging form. From cards, banners and badges to progress bars and skeletons."
+      },
+      {
+        "href": "/develop/client-capabilities/filters/",
+        "imageUrl": "/svg/categories-icons/filter-xmark-svgrepo-com.svg",
+        "description": "Client-side filtering of data for fast, dynamic data views."
+      },
+      {
+        "href": "/develop/client-capabilities/criteria/",
+        "imageUrl": "/svg/categories-icons/look-up-svgrepo-com.svg",
+        "description": "Server-side filtering of data for fast, dynamic and optimized data views."
+      },
+      {
+        "href": "/develop/client-capabilities/toast-notifications/",
+        "imageUrl": "/svg/categories-icons/mail-svgrepo-com.svg",
+        "description": "Toast notifications for rich, modern, real-time end-user alerts, notifications and acknowledgements"
+
+      },
+      {
+        "href": "/develop/client-capabilities/utility-methods/",
+        "imageUrl": "/svg/categories-icons/accelerate-svgrepo-com.svg",
+        "description": "Collection of utility services and helpers designed to facilitate common development tasks within Genesis applications."
+      },
+      {
+        "href": "/develop/client-capabilities/layout-management/",
+        "imageUrl": "/svg/categories-icons/layout-svgrepo-com.svg",
+        "description": "Understand layout features, including dynamic layouts that support resizing, dragging and re-ordering."
+      },
+      {
+        "href": "/develop/client-capabilities/state-management/",
+        "imageUrl": "/svg/categories-icons/diagram-next-svgrepo-com.svg",
+        "description": "APIs to manage application states using best practices."
+      },
+      {
+        "href": "/develop/client-capabilities/styling/",
+        "imageUrl": "/svg/categories-icons/computer-svgrepo-com.svg",
+        "description": "Define the visual style of the application through the tokens in the design system."
+      },
+      {
+        "href": "/develop/client-capabilities/internationalization/",
+        "imageUrl": "/svg/categories-icons/network-svgrepo-com.svg",
+        "description": "Set up your application so that it can have different human-language versions, which users can switch between. "
+      },
+      {
+        "href": "/develop/client-capabilities/framework-integration/",
+        "imageUrl": "/svg/categories-icons/thumbs-up-svgrepo-com.svg",
+        "description": "Start working quickly with Foundation UI, the Genesis library of web components, using your existing or preferred stack."
+      },
+      {
+        "href": "/develop/client-capabilities/desktop-interoperability/",
+        "imageUrl": "/svg/categories-icons/ui-desktop-interoperability.svg",
+        "description": "Make your application seamlessly with other desktop financial applications, so that users can click to move and take information from one application to the other."
+      },
+      {
+        "href": "/develop/client-capabilities/custom-components/",
+        "imageUrl": "/svg/categories-icons/trophy-svgrepo-com.svg",
+        "description": "Write your own custom components, based on standard web components that you can use in other web frameworks, such as React or Angular."
+      }
+      ,
+      {
+        "href": "/develop/client-capabilities/testing/",
+        "imageUrl": "/svg/categories-icons/ui-checks-svgrepo-com.svg",
+        "description": "Define client-side unit tests and application end-to-end tests."
+      }
+    ]
+  },
+  "/develop/business-components": {
+    "description": "Genesis Application Platform Business Components are designed to give you working business solutions for the most common requirements of financial applications. You can incorporate them into your application in very little time. They are easy to install, run and customize to meet your exact requirements. Each one comes with a combination of pre-built micro-services, APIs and UI components that can be integrated in to your application with minimal configuration.",
+    "items": [
+      {
+        "href": "/develop/business-components/notifications/",
+        "description": "Configure an application to display notifications, and to send and receive messages to and from various messaging services: email, Symphony and Teams."
+      },
+      {
+        "href": "/develop/business-components/reporting/",
+        "description": "Enable your users to create reports based on the data in your application. The Reporting component provides a micro front-end that enables them to select, filter and generate files in csv format."
+      },
+      {
+        "href": "/develop/business-components/doc-management/",
+        "description": "Enable your users to upload and download documents for use in emails and other contexts."
+      },
+      {
+        "href": "/develop/business-components/generated-docs/",
+        "description": "Create document templates that enable users to generate documents such as trade reports."
+      },
+      {
+        "href": "/develop/business-components/reconciliation/",
+        "description": "Quickly configure a reconciliation flow and enable admins to set up new file sources, data dictionaries and reconciliation rules at runtime to support a constantly changing ecosystem."
+      },
+      {
+        "href": "/develop/business-components/user-management/",
+        "description": "Enable your admin users to view, add and edit user details, and to activate and deactivate users in a single click."
+      },
+      {
+        "href": "/develop/business-components/fix/",
+        "description": "Create a gateway to connect to a remote system using the FIX protocol. Use the FIX Xlator to enable type-safe handling of FIX messages. "
       }
     ]
   }

@@ -7,7 +7,7 @@ tags:
 - i18n
 - internationalization
 sidebar_position: 20
-pagination_next: develop/client-capabilities/desktop-interoperability/client-desktop-interoperablity
+pagination_next: develop/client-capabilities/desktop-interoperability/foundation-fdc3
 ---
 
 # Foundation i18n
@@ -16,7 +16,7 @@ The `@genesislcap/foundation-i18n` package provides a collection of i18n service
 
 ## API Documentation
 
-For more detailed information on API and configurations, please refer to the [API documentation](./01_internationalization-docs/api/index.md) in the `docs/api` directory.
+For more detailed information on API and configurations, please refer to the [API documentation](./docs/api/index.md).
 
 ## Features
 
@@ -31,7 +31,7 @@ For more detailed information on API and configurations, please refer to the [AP
 
 To enable this module in your application, follow the steps below.
 
-1. Add `@genesislcap/foundation-i18n` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](https://learn.genesis.global/secure/web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-i18n` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
 
 ```json
 {
@@ -182,4 +182,128 @@ export class MyExampleComponent extends FASTElement {
 
 ### Integrating with Other Libraries
 
-Coming soon.
+#### Angular Example
+
+To integrate `@genesislcap/foundation-i18n` with an Angular application, you can configure `i18next` in a service and use it throughout your components.
+
+**i18n.service.ts**
+
+```typescript
+import { Injectable } from '@angular/core';
+import { defaultI18nextConfig, I18next } from '@genesislcap/foundation-i18n';
+import translations from './translations.json';
+import { DI } from '@microsoft/fast-element';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class I18nService {
+  private container = DI.getOrCreateDOMContainer();
+  private i18n = this.container.get(I18nService);
+
+  constructor() {
+    this.i18n.init({
+      ...defaultI18nextConfig,
+      lng: 'en',
+      resources: translations,
+    });
+  }
+
+  switchLanguage() {
+    const newLanguage = this.i18n.language === 'en' ? 'pt' : 'en';
+    this.i18n.changeLanguage(newLanguage);
+  }
+
+  translate(key: string): string {
+    return this.i18n.t(key);
+  }
+}
+```
+
+**app.component.ts**
+
+```typescript
+import { Component } from '@angular/core';
+import { I18nService } from './i18n.service';
+
+@Component({
+  selector: 'app-root',
+  template: `
+    <button (click)="switchLanguage()">Switch Language</button>
+    <p>{{ translate('Home') }}</p>
+    <p>{{ translate('Admin') }}</p>
+    <p>{{ translate('Reporting') }}</p>
+  `,
+})
+export class AppComponent {
+  constructor(private i18nService: I18nService) {}
+
+  switchLanguage() {
+    this.i18nService.switchLanguage();
+  }
+
+  translate(key: string): string {
+    return this.i18nService.translate(key);
+  }
+}
+```
+
+#### React Example
+
+To integrate `@genesislcap/foundation-i18n` with a React application, you can create a separate service for handling `i18next` similar to how you would create other services.
+
+**i18nService.js**
+
+```javascript
+import { defaultI18nextConfig, I18next } from '@genesislcap/foundation-i18n';
+import { DI } from '@microsoft/fast-foundation';
+import translations from './translations.json';
+
+class I18nService {
+  private container = DI.getOrCreateDOMContainer();
+  private i18n: Connect = this.container.get(I18next);
+
+  constructor() {
+    this.i18n.init({
+      ...defaultI18nextConfig,
+      lng: 'en',
+      resources: translations,
+    });
+  }
+
+  switchLanguage() {
+    const newLanguage = this.i18n.language === 'en' ? 'pt' : 'en';
+    this.i18n.changeLanguage(newLanguage);
+  }
+
+  translate(key) {
+    return this.i18n.t(key);
+  }
+}
+
+export const i18nService = new I18nService();
+```
+
+**App.js**
+
+```jsx
+import React from 'react';
+import { i18nService } from './i18nService';
+
+const App = () => {
+  const switchLanguage = () => {
+    i18nService.switchLanguage();
+  };
+
+  return (
+    <div>
+      <button onClick={switchLanguage}>Switch Language</button>
+      <p>{i18nService.translate('Home')}</p>
+      <p>{i18nService.translate('Admin')}</p>
+      <p>{i18nService.translate('Reporting')}</p>
+    </div>
+  );
+};
+
+export default App;
+```

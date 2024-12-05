@@ -1,0 +1,164 @@
+---
+title: 'Disclosure'
+sidebar_label: 'Disclosure'
+id: client-presentation-disclosure
+keywords: [presentation, disclosure]
+tags:
+- presentation
+- disclosure
+sidebar_position: 9
+---
+
+import DisclosureDemo from './examples/disclosure.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Disclosure
+
+A `disclosure` component is the implementation of native `details` and `summary` controls, which toggles the visibility of the extra content. Visually, it would look like a button or hyperlink beneath extra content.
+
+Use cases:
+* A button that controls the visibility of a section of content.
+* Flagging an item as part of a category.
+* Representing a value of unread messages.
+
+:::note
+When the controlled content is hidden,
+it is often styled as a typical push button with
+a right-pointing arrow or triangle to hint that activating the
+button will display additional content. When the content is visible,
+the arrow or triangle typically points down.
+:::
+
+## Example
+
+<DisclosureDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-disclosure></rapid-disclosure>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-disclosure appearance="lightweight">
+          <strong slot="title">Read about Foundation UI</strong>
+          <div>
+            Foundation UI is a collection of technologies built on Web Components and modern Web Standards, designed to help you
+            efficiently tackle some of the most common challenges in website and application design and development.
+          </div>
+        </rapid-disclosure>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+  <rapid-disclosure></rapid-disclosure>
+  ```
+  Usage
+  ```tsx
+  export function MyComponent() {
+    return (
+      <rapid-disclosure appearance="lightweight">
+        <strong slot="title">Read about Foundation UI</strong>
+        <div>
+          Foundation UI is a collection of technologies built on Web Components and modern Web Standards, designed to help you
+          efficiently tackle some of the most common challenges in website and application design and development.
+        </div>
+      </rapid-disclosure>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+  <rapid-disclosure></rapid-disclosure>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  @Component({
+    selector: 'my-root',
+    template: `
+      <rapid-disclosure>
+        <strong slot="title">Read about Foundation UI</strong>
+        <div>
+          Foundation UI is a collection of technologies built on Web Components and modern Web Standards, designed to help you
+          efficiently tackle some of the most common challenges in website and application design and development.
+        </div>
+      </rapid-disclosure>
+        `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  })
+  export class AppComponent {
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>expanded</td>
+      <td><code>boolean</code></td>
+      <td>If the disclosure is expanded.</td>
+<td>
+
+```typescript
+<rapid-disclosure expanded>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+
+This component doesn't have any properties.
+
+### Slots
+
+| Name | Description |
+|---|---|
+| start| Content which can be provided before the summary content
+| end | Content which can be provided after the summary content
+| title| The summary content
+| Default | The default slot for the disclosure content
+
+### Parts
+
+This component doesn't have any parts.
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.

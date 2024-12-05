@@ -1,0 +1,404 @@
+---
+title: 'Framework integration - React'
+sidebar_label: 'React'
+id: client-framework-integration-react
+keywords: [web, integrations, react]
+tags:
+- web
+- integrations
+- react
+sidebar_position: 22
+---
+
+It is easy to set up a new project where your front end uses the React framework.
+
+On this page, we shall show you how to set up an empty project that you can use as a blank canvas for adding React and Genesis components.
+
+These simple steps create an app you log run and log into, and an empty home page. You are then ready to go into the code and add some components.
+
+We shall also look briefly at:
+
+- the folder structure of the project
+- the principles of routing and styling an application
+
+:::tip
+You can find out more by looking into our [**example application**](https://github.com/genesiscommunitysuccess/howto-ui-integrations-react/tree/main), where you can look at the code and check the results against the running application.
+:::
+
+## Setting up the React project
+
+:::info prerequisites
+Before you start, ensure that you have [Node.js](https://nodejs.org/) and [Genx](../../../development-environment/genx/) installed on your system.
+:::
+
+1. reate a new React project. The example below creates a project called **myApp** using Genx with `--framework React`:
+
+```shell
+npx -y @genesislcap/genx@latest init myApp -s blank-app-seed --framework React -x
+```
+
+2. Navigate to your new project's **client** directory:
+
+```shell
+cd ./client
+```
+
+## Install the dependencies and start the app
+
+1. Run the following command from your project folder:
+
+```shell
+npm run bootstrap
+```
+
+2. Start the app in development mode:
+
+```shell
+npm run dev
+```
+
+The development server launches your project and makes it available on localhost:
+
+:::note
+The project is currently based on React 19, which is in the Release Candidate (RC) stage. This version provides improved support for integration with Web Components, making it easier to share data and manage state between React components and Web Components.
+:::
+
+## Project folder structure and main elements
+
+### src/main.tsx
+This is the main entry point for the application. It bootstraps the app by rendering the **App.tsx** component into the DOM. The file also registers [PBCs](../../../business-components/) using `registerPBCs`.
+
+---
+
+### src/pbc
+This folder contains components that are responsible for enabling the insertion of slots within the application. These slots act as placeholders where content, provided by the registered Project Building Components ([PBCs](../../../business-components/)), is dynamically rendered. The [PBCs](../../../business-components/) are registered in the application through **main.tsx**, ensuring that specific components can be inserted into the designated slots at runtime.
+
+---
+
+### src/share
+The **share** folder holds shared resources and components that are used across the entire application. It includes components like **genesis-components.ts**, which registers Genesis framework components, and **foundation-login.ts**, which sets up the login function for the app.
+
+Key files are:
+
+- **genesis-components.ts**. This registers Genesis framework components, including forms, layouts, and charts.
+- **foundation-login.ts**. This configures the foundation-login micro front-end component that handles authorisation and integrates it with the routing system.
+
+---
+
+### src/pages
+This folder contains the main pages of the application. Each page represents a different route or view, such as the **AuthPage**, which handles authentication-related flows.
+
+---
+
+### src/components
+This folder contains UI components that are used throughout the app. Components in this folder are not tied to specific pages, but are used as building blocks across multiple sections of the application.
+
+## Routing
+
+In React, routing is essential for creating single-page applications with navigation capabilities.
+
+The routing configuration in **store/RoutesContext.tsx** manages and provides routes throughout the application. This file defines a `RoutesProvider` component that combines routes from the main application and additional routes from PBC (Pluggable Business Components).
+
+The `pbcRoutes` are generated dynamically by mapping over the routes provided by the PBC, extracting essential properties, and wrapping them in a `PBCContainer` component. These routes are then combined with the main application's routes into a single `allRoutes` array.
+
+The `RoutesProvider` uses the React Context API to make these routes available to the rest of the application by wrapping its children with the `RoutesContext.Provider`.
+
+Additionally, the `useRoutesContext` hook is provided to access the routes context within functional components. This ensures seamless integration and accessibility of both main application routes and PBC routes throughout the application.
+
+## Setting attributes
+
+Attributes are part of the HTML markup of an element and are reflected in the dom.
+
+Attributes can be either hard coded or set using React's property event bindings.
+
+### Text
+
+To set a text attribute on a component, you can either hard code it in the template or set using the `{}` React bindings. React converts them when rendering in the DOM.
+
+```ts
+export default function Example({}) {
+
+  const resourceName = 'EVENT_INSERT_USER';
+  return (
+    <foundation-form
+      design-system-prefix="rapid"
+      resourceName={resourceName}
+    ></foundation-form>
+    <!-- or hard code it -->
+    <foundation-form
+      design-system-prefix="rapid"
+      resourceName="EVENT_INSERT_USER"
+    ></foundation-form>
+  );
+}
+```
+
+### Boolean
+
+To set a boolean attribute on a component you can either hard code it in the template or use React template bindings `{}`.
+
+```ts
+export default function Example({}) {
+  const isDisabled = true;
+  return (
+    <rapid-button disabled={isDisabled}>
+      Disabled button
+    </rapid-button>
+    <!-- or hard code it -->
+    <rapid-button disabled>
+      Disabled button
+    </rapid-button>
+  );
+}
+```
+
+### Number
+
+To set a text attribute on a component, you can either hard code it in the template or use React template bindings `{}`.
+
+```ts
+export default function Example({}) {
+
+  const maxRows = 100;
+  return (
+    <rapid-grid-pro>
+      <grid-pro-server-side-datasource
+        resource-name="ALL_TRADES"
+        max-rows={maxRows}
+      ></grid-pro-server-side-datasource>
+    </rapid-grid-pro>
+    <!-- or hard code it -->
+     <rapid-grid-pro>
+      <grid-pro-server-side-datasource
+        resource-name="ALL_TRADES"
+        max-rows="100"
+      ></grid-pro-server-side-datasource>
+    </rapid-grid-pro>
+  );
+}
+```
+
+## Setting properties
+
+Properties are part of the Javascript object representation of the DOM element. They are used for dynamic interaction and setting complex non-primitive data types such as objects and arrays.
+
+You can set these using React template bindings `{}`.
+
+```ts
+export default function Example({}) {
+
+  const jsonSchema = {
+      type: 'object',
+      properties: {
+        QUANTITY: {
+          type: 'number',
+          description: 'kotlin.Double',
+        },
+        SIDE: {
+          type: 'string',
+          description: 'kotlin.String',
+        },
+      },
+  };
+  return (
+    <foundation-form
+      design-system-prefix="rapid"
+      jsonSchema="{jsonSchema}"
+    ></foundation-form>
+  );
+}
+```
+
+## Handling events
+
+You can handle events from Foundation UI components using React's event binding `()`. Note, React prefixes events with `on`
+
+```ts
+export default function Example() {
+  const handleSubmit = (event) => {
+    console.log(event.target);
+  }
+}
+return (
+  <foundation-form
+      design-system-prefix="rapid"
+      onSubmit={handleSubmit}
+  ></foundation-form>
+)
+```
+
+## Styling the application
+
+### Global styles
+You can add global styles by modifying the main stylesheet located at **src/styles/styles.css**. This file contains styles that apply to the entire application.
+
+### Component styles
+Styling a component works the same way it does in React. Create your styles in a file and import it at the top of your component **.tsx** file.
+
+This example shows how to style the host component, the foundation-form element and the `userActions` part of the form.
+
+:::info
+You can learn more in our [styling](../019_styling/index.mdx) documentation.
+:::
+
+**styles.css**
+```css
+:host {
+  max-height: 800px;
+  overflow-y: auto;
+  display: block;
+}
+
+foundation-form {
+  display: block;
+  height: 1000px;
+}
+
+foundation-form::part(userActions) {
+  padding: 20px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row
+}
+```
+
+**example.tsx**
+
+```ts
+import './style.css';
+
+export default function Example() {
+  const handleSubmit = (event) => {
+    console.log(event.target);
+  }
+}
+return (
+  <foundation-form
+      design-system-prefix="rapid"
+      onSubmit={handleSubmit}
+  ></foundation-form>
+)
+```
+---
+
+### Styling specific components or pages
+For more granular control, you can add styles to a specific page or component.
+
+For example, if you want to have styling for the page that is displayed when a requested page cannot be found, create a stylesheet called **src/pages/NotFoundPage/NotFoundPage.css** with styles that only apply to that page.
+
+---
+
+## Slots
+
+Many components in FoundationUI have slots which act as placeholders to allow you to fill components with your own markup.
+
+This example shows how you can use the slots in the Modal component.
+
+```typescript
+export function MyComponent() {
+    const modalRef = useRef(null);
+
+    const handleClick = (ref) => {
+        if (modalRef.current) {
+            modalRef.current.show();
+        }
+    };
+
+    return (
+        <rapid-button onClick={() => handleClick()}>Open Modal</rapid-button>
+        <rapid-modal
+            ref={modalRef}
+        >
+            <h3 slot="top">Top slot</h3>
+            Main content in the modal
+            <div slot="bottom">
+                <i>Slotted content in the bottom</i>
+            </div>
+        </rapid-modal>
+    );
+}
+```
+
+## Dependency Injection
+
+Foundation UI has a suite of services that can be added to your application via dependency injection.
+
+For example, if you want to use the Connect service, the best approach is to create a class to resolve the dependency injection boilerplate and export it.
+
+:::info
+You can follow this same procedure for any other service from the framework that works via dependency injection.
+:::
+
+**connect-service.ts**
+```ts
+import { DI } from '@microsoft/fast-foundation';
+import { Connect } from '@genesislcap/foundation-comms';
+import { API_DATA } from '../config';
+
+class ConnectService {
+  private container = DI.getOrCreateDOMContainer();
+  private connect: Connect = this.container.get(Connect);
+
+  getContainer() {
+    return this.container;
+  }
+
+  getConnect() {
+    return this.connect;
+  }
+
+  isConnected() {
+    return this.connect.isConnected;
+  }
+
+  init() {
+    return this.connect.connect(API_DATA.URL);
+  }
+}
+
+export const connectService = new ConnectService();
+```
+
+**your-react-component.ts**
+
+This component will use the Connect `snapshot` method to retrieve data from a dataserver query `ALL_TRADES` and render it in a list.
+
+```ts
+import React, { useState, useEffect } from 'react';
+import { connectService } from './connect.service'; // your file location
+
+export function YourReactComponent {
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+      const getData = async () => {
+        const response = await connectService.getConnect().snapshot('ALL_TRADES')
+
+        if (response.ROW?.length) {
+          setData(response.ROW);
+        }
+      }
+
+      getData();
+  }, []);
+
+  return (
+    <ul>
+      {data.map((item) => (
+        <li>Direction: {item.DIRECTION} Quantity: {item.QUANTITY} Ticker: {item.TICKER}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+### Design tokens
+
+Design tokens are declared in the **src/styles/design-tokens.json** file. They offer an effective way to manage and apply styles in your application in a consistent and maintainable manner.
+
+The design tokens enable you to define and manage values such as colours, fonts, and spacing across the whole application. You can modify these tokens to propagate changes wherever they are used in the application.
+
+:::note
+See more details in our page on [design tokens](../../styling/design-tokens/) and the [Design System Configurator](../../styling/direct-customization-genesis-components/styling-direct-dsc/)
+:::

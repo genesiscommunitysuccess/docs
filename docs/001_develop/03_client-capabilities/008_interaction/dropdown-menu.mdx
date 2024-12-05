@@ -1,0 +1,331 @@
+---
+title: 'Dropdown menu'
+sidebar_label: 'Dropdown menu'
+id: client-interaction-dropdown-menu
+keywords: [ interaction, interactive, toggle, dropdown, menu, hide, callback, appearance, callback, autoclose ]
+tags:
+- interaction
+- interactive
+- toggle
+- dropdown
+- menu
+- hide
+- callback
+- appearance
+- callback
+- autoclose
+sidebar_position: 8
+---
+
+import DropdownMenu from '/examples/ui/client-capabilities/interaction/dropdown-menu.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Dropdown-menu component allows you to create nested menus with menu-items
+
+Use cases:
+* Creating a menu for configuring options
+
+## Example
+<DropdownMenu />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-dropdown-menu></rapid-dropdown-menu>
+    ```
+
+    Usage
+    ```typescript
+    import { DropdownMenuItem } from '@genesislcap/web-core';
+
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-dropdown-menu :items=${(x) => x.setOfItems}></rapid-dropdown-menu>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      setOfItems: DropdownMenuItem[] = [
+        {
+          name: 'Menu item 1',
+          callback: () => alert('Menu item 1 clicked'),
+          icon: {
+            name: 'glasses',
+          },
+        },
+        {
+          name: 'Menu item 3',
+          callback: () => alert('Menu item 3 clicked'),
+          submenu: [
+            {
+              name: 'Menu item 5',
+              callback: () => alert('Menu item 5 clicked'),
+              color: 'red',
+              icon: {
+                name: 'address-card',
+              },
+            },
+          ]
+        },
+        {
+          name: 'Menu item 4',
+          callback: () => logger.debug('Menu item 4 clicked'),
+          isDisabled: () => true,
+        },
+      ];
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-dropdown-menu></rapid-dropdown-menu>
+    ```
+
+    Usage
+    ```tsx
+    export function MyComponent() {
+      const setOfItems = [
+        {
+          name: 'Menu item 1',
+          callback: () => alert('Menu item 1 clicked'),
+          icon: {
+            name: 'glasses',
+          },
+        },
+        {
+          name: 'Menu item 3',
+          callback: () => alert('Menu item 3 clicked'),
+          submenu: [
+            {
+              name: 'Menu item 5',
+              callback: () => alert('Menu item 5 clicked'),
+              color: 'red',
+              icon: {
+                name: 'address-card',
+              },
+            },
+          ]
+        },
+        {
+          name: 'Menu item 4',
+          callback: () => console.log('Menu item 4 clicked'),
+          isDisabled: () => true,
+        },
+      ];
+
+      return (
+        <CodeSection>
+          <rapid-dropdown-menu items={setOfItems}></rapid-dropdown-menu>
+        </CodeSection>
+      )
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-dropdown-menu></rapid-dropdown-menu>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+
+    @Component({
+      selector: 'my-component',
+      template: `
+        <div class="code-section">
+          <rapid-dropdown-menu [items]="setOfItems"></rapid-dropdown-menu>
+        </div>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [FormsModule],
+    })
+    export class MyComponent {
+      setOfItems = [
+        {
+          name: 'Menu item 1',
+          callback: () => alert('Menu item 1 clicked'),
+          icon: {
+            name: 'glasses',
+          },
+        },
+        {
+          name: 'Menu item 3',
+          callback: () => alert('Menu item 3 clicked'),
+          submenu: [
+            {
+              name: 'Menu item 5',
+              callback: () => alert('Menu item 5 clicked'),
+              color: 'red',
+              icon: {
+                name: 'address-card',
+              },
+            },
+          ]
+        },
+        {
+          name: 'Menu item 4',
+          callback: () => console.debug('Menu item 4 clicked'),
+          isDisabled: () => true,
+        },
+      ];
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+
+## API
+
+### Configuration Type
+
+The configuration of the dropdown menu is described by this typescript type.
+```typescript
+export type DropdownMenuItem = {
+  name: string;
+  icon?: {
+    variant?: IconStyle;
+    name: string;
+    size?: FaSize;
+  };
+  color?: string;
+  submenu?: DropdownMenuItem[];
+  callback?: (params?: any) => void | any;
+  isDisabled?: (params?: any) => boolean;
+};
+```
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>auto-close</td>
+            <td><code>boolean</code></td>
+            <td>Controls if the dropdown automatically closes (Default: true)</td>
+<td>
+
+```typescript
+<rapid-dropdown-menu auto-close>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>disable-button</td>
+            <td><code>boolean</code></td>
+            <td>Disables the dropdown button (Default: false)</td>
+<td>
+
+```typescript
+<rapid-dropdown-menu disable-button>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td><code>string</code></td>
+            <td>The name of the dropdown menu (Default: 'Dropdown Menu')</td>
+<td>
+
+```typescript
+<rapid-dropdown-menu name="Dropdown Menu">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>open</td>
+            <td><code>boolean</code></td>
+            <td>Controls if the dropdown is open (Default: false)</td>
+<td>
+
+```typescript
+<rapid-dropdown-menu open>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>buttonAppearance</td>
+            <td><code>string</code></td>
+            <td>Sets the appearance style of the button (Default: none)</td>
+<td>
+
+```typescript
+<rapid-dropdown-menu buttonAppearance="primary">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Properties
+
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>items</td>
+            <td><code>DropdownMenuItem[]</code></td>
+            <td>Configure the items to be in the dropdown menu.</td>
+<td>
+
+```typescript
+<rapid-dropdown-menu :items=${x => x.menuItems}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|The text which appears on the root dropdown menu button.|
+
+### Parts
+
+|Part|Description|
+|---|---|
+|`actions-container`|The main container element which wraps up the button and the dropdown menu.|
+|`actions-opener`|The button which opens the dropdown.|
+|`actions-menu`|The dropdown menu.|
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.

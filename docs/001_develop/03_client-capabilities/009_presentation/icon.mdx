@@ -1,0 +1,201 @@
+---
+title: 'Icon'
+sidebar_label: 'Icon'
+id: client-presentation-icon
+keywords: [presentation, icon, image]
+tags:
+- presentation
+- icon
+- image
+sidebar_position: 9
+---
+
+import IconDemo from './examples/icon.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Icon
+
+Use cases:
+* Displaying a specified icon.
+* An addition to presenting a listbox-option
+* cell-renderers and many others
+
+:::note
+You can use any free publicly-available icon from fontawesome. These are available via the links below:
+- [solid/regular](https://fontawesome.com/search?o=r&m=free) icons
+- [brand](https://fontawesome.com/search?o=r&m=free&f=brands) icons
+Paying for fontawesome pro will enable the use of all icons via this component also.
+:::
+
+## Example
+
+<IconDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-icon></rapid-icon>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-icon name="house"></rapid-icon>
+        <rapid-icon name="user" variant="regular"></rapid-icon>
+        <rapid-icon name="github" variant="brand"></rapid-icon>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+    <rapid-icon></rapid-icon>
+  ```
+  Usage
+  ```tsx
+  export function MyComponent() {
+    return (
+      <rapid-icon name="house"></rapid-icon>
+      <rapid-icon name="user" variant="regular"></rapid-icon>
+      <rapid-icon name="github" variant="brand"></rapid-icon>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+    <rapid-icon></rapid-icon>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  @Component({
+    selector: 'my-root',
+    template: `
+        <rapid-icon name="house"></rapid-icon>
+        <rapid-icon name="user" variant="regular"></rapid-icon>
+        <rapid-icon name="github" variant="brand"></rapid-icon>
+        `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  })
+  export class AppComponent {
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>variant</td>
+      <td><code>"solid" | "regular" | "brand"</code></td>
+      <td>`solid` is the default, `regular` usually is slightly more finely drawn, `brand` is for brand icons only</td>
+<td>
+
+```typescript
+<rapid-icon variant="regular">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>size</td>
+      <td><code>"2xs" | "xs" | "sm" | "lg" | "xl" | "2xl" | "1x" | "2x" | "3x" | "4x" | "5x" | "6x" | "7x" | "8x" | "9x" | "10x"</code></td>
+      <td>Controls the size of the icon. <em>Default: "sm"</em></td>
+<td>
+
+```typescript
+<rapid-icon size="xl">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>The name of the icon (matching with the name in fontawesome).</td>
+<td>
+
+```typescript
+<rapid-icon name="iconName">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>error</td>
+      <td><code>boolean</code></td>
+      <td>Adds error styling to the icon when tooltip attribute is also set.</td>
+<td>
+
+```typescript
+<rapid-icon error>
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>tooltip</td>
+      <td><code>string</code></td>
+      <td>The tooltip for the icon. If not set there is no tooltip.</td>
+<td>
+
+```typescript
+<rapid-icon tooltip="Icon tooltips">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>tooltip-id</td>
+      <td><code>string</code></td>
+      <td>The tooltip id.</td>
+<td>
+
+```typescript
+<rapid-icon tooltip-id="Tooltip_ID">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Properties
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+This component doesn't have any slots.
+
+### Parts
+This component doesn't have any parts,
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.

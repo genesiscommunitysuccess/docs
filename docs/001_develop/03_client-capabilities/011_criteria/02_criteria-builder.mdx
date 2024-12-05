@@ -1,0 +1,119 @@
+---
+title: 'Criteria builder'
+sidebar_label: 'Criteria builder'
+id: criteria-builder
+keywords: [foundation, ui, comms, resource, criteria, filtering, formatters, groovy, filtering, charts, grids]
+tags:
+  - connected
+  - ui
+  - comms
+  - criteria
+  - resource
+  - filtering
+  - formatters
+  - groovy
+  - filtering
+  - charts
+  - grids
+---
+
+The [CriteriaBuilder](./docs/api/foundation-criteria.criteriabuilder.md) is a utility class designed to build objects used in creating query criteria in a Groovy expression format. These criteria can be used in requests to back-end services.
+
+## Methods
+
+:::info
+
+The examples for these methods use a simple expression that checks that `TRADE_ID` equals a certain value.
+
+```ts
+const tradeIdEqualsExpression = new ExpressionBuilder()
+  .withField('TRADE_ID')
+  .withValue('TR1234')
+  .withSerialiser(Serialisers.EQ)
+  .build()
+```
+:::
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Method</th>
+            <th>Description</th>
+            <th>Params</th>
+            <th>Return value</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>withExpression</td>
+            <td>Sets an expression in the criteria</td>
+            <td>ValidExpressionType, ExpressionOptions, Join (default Join.And)</td>
+            <td>CriteriaBuilder</td>
+<td>
+
+```ts
+new CriteriaBuilder().withExpression(tradeIdEqualsExpression)
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>And</td>
+            <td>Sets an expression with an And clause</td>
+            <td>ValidExpressionType, ExpressionOptions</td>
+            <td>CriteriaBuilder</td>
+<td>
+
+```ts
+new CriteriaBuilder()
+    .And(tradeIdEqualsExpression)
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>Or</td>
+            <td>Sets an expression with an Or clause</td>
+            <td>ValidExpressionType, ExpressionOptions</td>
+            <td>CriteriaBuilder</td>
+<td>
+
+```ts
+new CriteriaBuilder().OR(tradeIdEqualsExpression)
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>Not</td>
+            <td>Sets an expression with a Not clause</td>
+            <td>ValidExpressionType, ExpressionOptions</td>
+            <td>CriteriaBuilder</td>
+<td>
+
+```ts
+new CriteriaBuilder().NOT(tradeIdEqualsExpression)
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>Build</td>
+            <td>Creates a string representation of based on the set expressions in the object</td>
+            <td>none</td>
+            <td>string</td>
+<td>
+
+```ts
+new CriteriaBuilder()
+    .withExpression(tradeIdEqualsExpression)
+    .build();
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+

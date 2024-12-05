@@ -1,7 +1,7 @@
 ---
 title: '8.4'
 sidebar_label: '8.4'
-sidebar_position: 1
+sidebar_position: 16
 id: '8.4'
 ---
 ## Server
@@ -57,7 +57,32 @@ id: '8.4'
 * Bump slf4jVersion from 2.0.13 to 2.0.16 in /genesis-conventions 
 * Bump sshdVersion from 2.13.1 to 2.13.2 in /genesis-conventions 
 
-## Web
+### Patch Releases
+
+#### 8.4.5
+
+* fix: Data Server indices on DOUBLE fields are now correctly sorted correctly in LMDB
+* fix: Remove explicit toString call on ClusterMessage debug line
+
+#### 8.4.4
+
+* fix: Disable copyDependencies task in genesis-openapi-codegen and improve publish-plugin-config configuration to ensure no plugin modules ever run copyDependencies task
+
+#### 8.4.3
+
+* fix: Fixed an issue in Remap for Oracle DB where foreign keys would be violated for auto increment columns
+
+#### 8.4.2
+
+* fix: Ensure only generated jars are added to process classpath when using WriteClasspathToManifest
+
+#### 8.4.1
+
+* fix: ensure groovy compilation exceptions are handled
+* fix: fail preCompileScripts gradle task by default and add option to disable failing on error
+* Fixed multiple components dependencies pointing at beta version
+
+## Client
 
 ### Features
 * feat(foundation-fdc3): marking types as deprecated, fix channel broadcast payload 
@@ -108,9 +133,9 @@ If you are using the http client directly, some methods are now marked as intern
 :::info
 **Medium fix**
 
-Use only the [methods](https://learn.genesis.global/docs/server/integration/web-integration/genesis-http-client-core-concepts/#request-methods) exposed as public in the interface (get, put, post, delete). 
+Use only the [methods](/develop/server-capabilities/integrations/custom-endpoints/#endpoint) exposed as public in the interface (get, put, post, delete). 
 
-Read the pages on [GenesisHTTPClient](https://learn.genesis.global/docs/server/integration/web-integration/genesis-http-client-intro/) for full information.
+Read the pages on [GenesisHTTPClient](/develop/server-capabilities/integrations/custom-endpoints/) for full information.
 :::
 
 ### `DbOperation` updates
@@ -142,7 +167,7 @@ Only applications that use the RxSink interface in the Data Pipeline are affecte
 :::tip
 **Simple fix**
 
-Any new implementations of Data Pipeline must only use the [standard http web calls](/server/integration/web-integration/genesis-http-client-core-concepts/#request-methods). Check the revised [reference documentation for Data Pipeline](/develop/server-capabilities/integrations/data-pipelines/) for full details.
+Any new implementations of Data Pipeline must only use the [standard http web calls](/develop/server-capabilities/integrations/custom-endpoints/#endpoint). Check the revised [reference documentation for Data Pipeline](/develop/server-capabilities/integrations/data-pipelines/) for full details.
 :::
 
 ### `onOperationError` type safety
@@ -156,18 +181,5 @@ If your application uses Data Pipelines and are using error handlers in them, yo
 
 :::info
 **Medium fix**
-Change your error handling based on the [new handlers](/server/data-pipelines/implementations/#handlers).
+Change your error handling based on the [new handlers](/develop/server-capabilities/integrations/data-pipelines/#operation-error-handler).
 :::
-
-## Patch Releases
-
-
-### 8.4.2
-
-* fix: Ensure only generated jars are added to process classpath when using WriteClasspathToManifest
-
-### 8.4.1
-
-* fix: ensure groovy compilation exceptions are handled
-* fix: fail preCompileScripts gradle task by default and add option to disable failing on error
-* Fixed multiple components dependencies pointing at beta version

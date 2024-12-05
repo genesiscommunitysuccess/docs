@@ -1,0 +1,87 @@
+
+### Base store file
+
+```typescript store.ts
+import {CustomEventMap} from '@genesislcap/foundation-events';
+import {AbstractStore, Store, registerStore} from '@genesislcap/foundation-store';
+import {observable} from '@genesislcap/web-core';
+
+export interface Store extends StoreRoot {}
+
+export type StoreEventDetailMap = StoreRootEventDetailMap & {};
+
+declare global {
+  interface HTMLElementEventMap extends CustomEventMap<StoreEventDetailMap> {}
+}
+
+class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> implements Store {
+  constructor() {
+    super();
+
+    /**
+     * Register the store root
+     */
+    getApp().registerStoreRoot(this);
+  }
+}
+
+export const Store = registerStore(DefaultStore, 'Store');
+
+// React and angular stores require a layer to work with the dependency injection. See following code sections.
+```
+
+### Angular injection layer
+
+To be able to access the store from your Angular components you need a class to wrap up the store dependency.
+You can add this to the bottom of the `store.ts` file.
+
+```typescript
+import { DI } from '@genesislcap/web-core';
+
+export function getStore(): Store {
+  return DI.getOrCreateDOMContainer().get(Store) as Store;
+}
+```
+
+You can then access the store via the `getStore` function.
+
+```typescript
+import { getStore } from './path/to/store';
+
+getStore(); // access the store
+```
+
+### React injection layer
+
+To be able to access the store from your React components you need a class to wrap up the store dependency.
+You can add this to the bottom of the `store.ts` file.
+
+```typescript
+import { DI } from '@genesislcap/web-core';
+
+class StoreService {
+  private store: any;
+
+  constructor() {
+    this.store = DI.getOrCreateDOMContainer().get(Store) as Store;
+  }
+
+  getStore() {
+    return this.store;
+  }
+
+  onConnected(event?: CustomEvent) {
+    this.store.onConnected(event);
+  }
+}
+
+export const storeService = new StoreService();
+```
+
+You can then access the store via the `storeService` import and using the getter function.
+
+```typescript
+import { storeService } from './path/to/store';
+
+storeService.getStore(); // access the store
+```

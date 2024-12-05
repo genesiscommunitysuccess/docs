@@ -1,0 +1,228 @@
+---
+title: 'Listbox'
+sidebar_label: 'Listbox'
+id: client-interaction-listbox
+keywords: [ interaction, interactive, listbox, option, element, form, component, choice ]
+tags:
+- interaction
+- interactive
+- listbox
+- option
+- element
+- form
+- component
+- choice
+sidebar_position: 8
+---
+
+import ListboxDemo from '/examples/ui/client-capabilities/interaction/listbox.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Options from '../../../_includes/_options.mdx'
+
+Listboxes are menus that display options and allow the user to select one. Listboxes are  the menu which displays when clicking a [`<rapid-select></rapid-select>`](../../forms/form-inputs/client-interaction-select).
+
+Use cases:
+* Constructing menus as part of form items
+
+While any DOM content is permissible as a child of the listbox, only `<rapid-option>` elements, option elements, and slotted items with `role="option"` attribute will be treated as options and receive keyboard support.
+
+:::tip
+The primary use of this component is to be used as part of other custom form components you wish to construct. If you simply want to use a form item which allows the user to select one value we recommend you use a [`<rapid-radio-group></rapid-radio-group>`](../../forms/form-inputs/client-interaction-radio-group) or [`<rapid-segmented-control></rapid-segmented-control>`](../../forms/form-layout/client-interaction-segmented-control/) instead.
+:::
+
+## Example
+<ListboxDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-listbox>
+      <rapid-option></rapid-option>
+      <rapid-option></rapid-option>
+      <rapid-option></rapid-option>
+    </rapid-listbox>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-listbox @click=${(x, ctx) => x.setSelected(ctx.event)}>
+          <rapid-option value="apple">Apple</rapid-option>
+          <rapid-option value="banana">Banana</rapid-option>
+          <rapid-option value="strawberry">Strawberry</rapid-option>
+        </rapid-listbox>
+        Listbox value: ${x => x.listboxValue}
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      @observable listboxValue: string;
+      setSelected(event: Event & { target: { value: string } }) {
+        this.listboxValue = event.target.value;
+      }
+    }
+    ```
+
+    <!-- TODO add link to sync -->
+    :::warning
+    Unlike most other Genesis components you cannot use the `sync` directive here. This is because the listbox doesn't fire events, that is intended to be controlled by the parent form element.
+    :::
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-listbox>
+      <rapid-option></rapid-option>
+      <rapid-option></rapid-option>
+      <rapid-option></rapid-option>
+    </rapid-listbox>
+    ```
+
+    Usage
+    ```tsx
+    export function MyComponent() {
+    const [selected, setSelected] = useState('');
+
+    return (
+      <div>
+        <rapid-listbox onClick={(e) => setSelected(e.target.value)}>
+          <rapid-option value="apple">Apple</rapid-option>
+          <rapid-option value="banana">Banana</rapid-option>
+          <rapid-option value="strawberry">Strawberry</rapid-option>
+        </rapid-listbox>
+        <p>Selected: {selected}</p>
+      </div>)
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-listbox>
+      <rapid-option></rapid-option>
+      <rapid-option></rapid-option>
+      <rapid-option></rapid-option>
+    </rapid-listbox>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+    @Component({
+      selector: 'my-component',
+      template: `
+        <rapid-listbox (click)="setSelected($event)">
+          <rapid-option value="apple">Apple</rapid-option>
+          <rapid-option value="banana">Banana</rapid-option>
+          <rapid-option value="strawberry">Strawberry</rapid-option>
+        </rapid-listbox>
+        <p>Selected: {{ selected }}</p>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [FormsModule],
+    })
+    export class MyComponent {
+      selected: string = '';
+      setSelected(event: any) {
+        this.selected = event.target.value;
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## API
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>disabled</td>
+            <td><code>boolean</code></td>
+            <td>When disabled the user won't be able to interact with the component.</td>
+<td>
+
+```typescript
+<rapid-listbox disabled>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Properties
+
+These properties are intended to be selected in the TypeScript code with a reference to the component, not declaratively via the html.
+
+|Property|Type|Description|
+|---|---|---|
+|selectedIndex|`number`|The index of the selected option. Starts at `-1` indicating no item selected.|
+|selectedOptions|`ListboxOption[]`|A collection of the selected options.|
+
+### Slots
+
+| Slot | Description |
+| --- | --- |
+| Default | The default slot which should be filled with `<rapid-option>`. |
+
+<Options />
+
+You can also use the repeat directive to create options dynamically in the code:
+
+```typescript
+import { html, repeat } from '@genesislcap/web-core';
+const sampleSelectOptions = [
+  { label: 'Large', value: 'l' },
+  { label: 'Small', value: 's' },
+];
+html`
+  <rapid-listbox>
+    ${repeat(
+      (x) => x.sampleSelectOptions,
+      html`
+        <rapid-option value="${(x) => x.value}">${(x) => x.label}</rapid-option>
+      `
+    )}
+  </rapid-listbox>
+`;
+```
+
+### Methods
+
+|Method|Modifier|Type|Description|
+|---|---|---|---|
+|selectFirstOption|`public`|`() => void`|Moves focus to the first selectable option.|
+|setSelectedOption|`protected`|`() => void`|Sets an option as selected (according to the select status of the child option components) and gives it focus.|
+
+### Parts
+
+This component doesn't have any parts.
+
+### Events fired
+
+This component doesn't fire any events. When used as part of a larger form component it's recommended you'd fire change events from that component when the user interacts with the underlying listbox.
+
+### Events listened to
+
+This component doesn't listen to any events.
+

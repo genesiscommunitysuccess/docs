@@ -1,0 +1,344 @@
+---
+title: 'Legacy project setup'
+sidebar_label: 'Legacy setup'
+id: client-state-management-legacy-setup
+keywords: [web, store, events, observable, binding, communication, redux, injection, state, reducer]
+tags:
+  - web
+  - store
+  - events
+  - observable
+  - binding
+  - communication
+  - redux
+  - injection
+  - state
+  - reducer
+sidebar_position: 18
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import BaseStore from '../../../_includes/_base_store_setup.mdx'
+import EventWrapper from '../../../_includes/_store_event_wrapper.mdx'
+
+This page guides you through installing the `foundation-store` in your legacy project. This isn't recommended - all new applications
+created via Genesis Create or `genx` will install the store for you, and then you can just follow the [example tutorial](../client-state-management-examples). However, if you're adding Genesis into an existing project (or you're using an old Genesis project from before the store was a default component) you can follow this guide.
+
+## Installation
+
+1. Add `@genesislcap/foundation-store` as a dependency in your `package.json` file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` (or `npm install` for React and Angular) command again.
+
+```json
+{
+  ...
+  "dependencies": {
+    ...
+    "@genesislcap/foundation-store": "latest"
+    ...
+  },
+  ...
+}
+```
+
+Next you need to add in the base store configuration. Once you've followed this page and the store is setup, you can then configure the store for your use.
+
+<BaseStore />
+
+## Genesis router wiring
+
+If you are using a Genesis syntax project then you need to wire in the store into your application router. Components that interact with the store will individually require access, but there are steps required at the top level to create the store service. You need to inject the store into the class where you use the router in the template. This is very likely to be your `MainApplication` class.
+
+`main.ts`
+```typescript {10}
+@customElement({
+  name,
+  template,
+  styles,
+})
+export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
+  @App app: App;
+  @Connect connect!: Connect;
+  @Container container!: Container;
+  @Store store: Store;
+}
+```
+
+`main.template.ts`
+```typescript {4}
+export const MainTemplate: ViewTemplate<MainApplication> = html`
+  <foundation-router
+    :config=${(x) => x.config}
+    :store=${(x) => x.store}
+  ></foundation-router>
+`;
+```
+
+## Store initialisation events
+
+In addition to the events that you create to handle your business logic, you'll also need to emit events to setup and control
+the state of the store itself.
+
+### `'store-connected'`
+
+In your main application class you need to fire a `'store-connected'` event in-order to
+fully initialise the store.
+
+The `'store-connected'` event handler needs to be explicitly bound. When the root store handles `'store-connected'`,
+it auto binds all the store event listeners to the rootElement.
+
+At this point you can start emitting strongly typed store events, and they will be handled by their corresponding store.
+See EventEmitter for more information.
+
+### `'store-ready'`
+
+As you may be required to do some additional work between the initialisation of the store and the application use, there is
+an additional `store-ready` event to dispatch. It's not a hard requirement to emit this, but is considered best practice. If you've no work to
+do, you can just emit this right after `'store-connected'`.
+
+```typescript
+this.$emit('store-connected', this);
+/**
+ * Do some other work if needed.
+ */
+this.$emit('store-ready', true);
+```
+
+### `'store-disconnected'`
+
+Emitting `'store-disconnected'` will remove all the previously bound event listeners.
+
+```typescript
+// ./main/main.ts
+
+disconnectedCallback() {
+  super.disconnectedCallback();
+  this.$emit('store-disconnected');
+}
+```
+### Configuration example
+
+The following snippets are examples of your main application class dispatching the required events
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+Example Main class in Genesis. Highlighted lines are directly related to initialising the store - other configuration may be different in
+your application. Other functionality that the main class may be required to perform is omitted from this example.
+
+```typescript {2-3,14,25-26,34-35,42-58}
+/**
+ * @fires store-connected - Fired when the store is connected.
+ * @fires store-ready - Fired when the store is ready.
+ */
+@customElement({
+  name,
+  template,
+  styles,
+})
+export class MainApplication extends EventEmitter<StoreEventDetailMap>(GenesisElement) {
+  @App app: App;
+  @Connect connect!: Connect;
+  @Container container!: Container;
+  @Store store: Store;
+
+  @inject(MainRouterConfig) config!: MainRouterConfig;
+
+  @observable provider!: any;
+  @observable ready: boolean = false;
+  @observable data: any = null;
+
+  async connectedCallback() {
+    this.registerDIDependencies();
+    super.connectedCallback();
+    this.addEventListeners();
+    this.readyStore();
+    DOM.queueUpdate(() => {
+      configureDesignSystem(this.provider, designTokens);
+    });
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.removeEventListeners();
+    this.disconnectStore();
+  }
+
+  selectTemplate() {
+    return this.ready ? MainTemplate : LoadingTemplate;
+  }
+
+  protected addEventListeners() {
+    this.addEventListener('store-connected', this.store.onConnected);
+  }
+
+  protected removeEventListeners() {
+    this.removeEventListener('store-connected', this.store.onConnected);
+  }
+
+  protected readyStore() {
+    // @ts-ignore
+    this.$emit('store-connected', this);
+    this.$emit('store-ready', true);
+  }
+
+  protected disconnectStore() {
+    this.$emit('store-disconnected');
+  }
+}
+```
+
+  </TabItem>
+  <TabItem value="react">
+
+In our App class in React we'll need the DOM reference to the root DOM element. This is likely an
+element with the id `'root'`. Here is a code snippet you can use to get the reference and pass it
+as a prop.
+
+```tsx
+function bootstrapApp() {
+  const rootEelement = document.getElementById('root');
+  if (rootEelement) {
+    ReactDOM.createRoot(rootEelement!).render(
+      <React.StrictMode>
+        <App rootElement={rootEelement} />
+      </React.StrictMode>,
+    )
+  }
+}
+```
+
+Example Main class in React. Highlighted lines are directly related to initialising the store - other configuration may be different in
+your application. Other functionality that the main class may be required to perform is omitted from this example.
+
+```typescript tsx {1-3,5-12,20-25,28-31,33}
+interface AppProps {
+  rootElement: HTMLElement;
+}
+
+const App: React.FC<AppProps> = ({ rootElement }) => {
+  const [isStoreConnected, setIsStoreConnected] = useState(false);
+  const dispatchCustomEvent = (type: string, detail?: any) => {
+    rootElement.dispatchEvent(customEventFactory(type, detail));
+  };
+  const handleStoreConnected = (event: CustomEvent) => {
+    storeService.onConnected(event);
+  };
+
+  setApiHost();
+  genesisRegisterComponents();
+  configureFoundationLogin({ router: history });
+
+  useEffect(() => {
+    registerStylesTarget(document.body, 'main');
+    if (!isStoreConnected) {
+      rootElement.addEventListener('store-connected', handleStoreConnected);
+      dispatchCustomEvent('store-connected', rootElement);
+      dispatchCustomEvent('store-ready', true);
+      setIsStoreConnected(true);
+    }
+
+    return () => {
+      if (isStoreConnected) {
+        rootElement.removeEventListener('store-connected', handleStoreConnected);
+        dispatchCustomEvent('store-disconnected');
+      }
+    };
+  }, [isStoreConnected]);
+
+  return (
+    <AuthProvider>
+      <RoutesProvider>
+        <HistoryRouter history={history as any}>
+          <Routes>
+            <Route path="*" element={<DynamicLayout />} />
+          </Routes>
+        </HistoryRouter>
+      </RoutesProvider>
+    </AuthProvider>
+  );
+};
+```
+
+    <EventWrapper />
+
+  </TabItem>
+  <TabItem value="angular">
+
+Example Main class in Angular. Highlighted lines are directly related to initialising the store - other configuration may be different in
+your application. Other functionality that the main class may be required to perform is omitted from this example.
+
+```typescript {9,26-27,33-34,41-60}
+@Component({
+  selector: 'fixedincome-root',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css',
+})
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+  layoutName?: LayoutComponentName;
+  title = 'Fixed Income';
+  store = getStore();
+
+  constructor(
+    private el: ElementRef,
+    router: Router,
+  ) {
+      configureFoundationLogin({ router });
+
+    // Set layout componet based on route
+    router.events.subscribe((event: any) => {
+      if (event instanceof NavigationEnd) {
+        this.layoutName = getLayoutNameByRoute(event.urlAfterRedirects);
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.addEventListeners();
+    this.readyStore();
+    registerStylesTarget(this.el.nativeElement, 'main');
+    this.loadRemotes();
+  }
+
+  ngOnDestroy() {
+    this.removeEventListeners();
+    this.disconnectStore();
+  }
+
+  async loadRemotes() {
+    await registerComponents();
+  }
+
+  addEventListeners() {
+    this.el.nativeElement.addEventListener('store-connected', this.store.onConnected);
+  }
+
+  removeEventListeners() {
+    this.el.nativeElement.removeEventListener('store-connected', this.store.onConnected);
+  }
+
+  readyStore() {
+    this.dispatchCustomEvent('store-connected', this.el.nativeElement);
+    this.dispatchCustomEvent('store-ready', true);
+  }
+
+  disconnectStore() {
+    this.dispatchCustomEvent('store-disconnected');
+  }
+
+  dispatchCustomEvent(type: string, detail?: any) {
+    this.el.nativeElement.dispatchEvent(customEventFactory(type, detail));
+  }
+
+  ngAfterViewInit() {
+  }
+
+}
+```
+
+    <EventWrapper />
+
+  </TabItem>
+</Tabs>
+

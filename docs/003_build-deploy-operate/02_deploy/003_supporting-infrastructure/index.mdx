@@ -114,7 +114,7 @@ Finally, since the first thing you will need to do is to provide a username and 
 
 ##### Common system definitions
 
-Whichever SQL technology you are using, you need to configure it correctly in your **[genesis-system-definitions.kts](/server/configuring-runtime/system-definitions/)** file. The following settings are available for you to add. The `DbHost` setting is mandatory. *All settings apply at the JVM level.*
+Whichever SQL technology you are using, you need to configure it correctly in your [`genesis-system-definitions.kts`](/develop/server-capabilities/runtime-configuration/system-definition/) file. The following settings are available for you to add. The `DbHost` setting is mandatory. *All settings apply at the JVM level.*
 
 
 | Setting                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                          |  
@@ -140,7 +140,7 @@ Whichever SQL technology you are using, you need to configure it correctly in yo
 | `DbSqlCachePrepStmts`               | Enable or disable prepared statement cache. Default: true                                                                                                                                                                                                                                                                                                                                                                            |
 | `DbSqlPrepStmtCacheSize`            | Set the maximum number of cached prepared statements. Default: 250                                                                                                                                                                                                                                                                                                                                                                   |
 | `DbSqlPrepStmtCacheSqlLimit`        | Define the maximum length of SQL statements that can be cached. Default: 2048                                                                                                                                                                                                                                                                                                                                                        |
-| `DbOptimisticConcurrencyMode`       | Set the [Optimistic Concurrency](../../database-concepts/optimistic-concurrency) mode. Available values: STRICT, LAX and NONE. Defaults to NONE.                                                                                                                                                                                                                                                                                     |
+| `DbOptimisticConcurrencyMode`       | Set the [Optimistic Concurrency](/develop/server-capabilities/data-access-apis/#optimistic-concurrency) mode. Available values: STRICT, LAX and NONE. Defaults to NONE.                                                                                                                                                                                                                                                                                     |
 | `SqlMaxParametersPerRequest`    | For Postgres and SQL Server databases only. Set to enable bulk operations for the database (`insertAll`, `getAllAsList`, etc). This speeds up priming (in views, Genesis uses `getAllAsList` internally to get joined records) and makes modify, delete and insert operations much faster. **-1** sets to the Platform default, which is 5000 for Postgres and 2000 for SQL Server. Other database technologies ignore this setting. |
 | `DbSqlResultSetFetchSize`       | Defines the number of rows that will be fetched from the database when more rows are needed while executing a statement. Default: 10000 | 
 
@@ -273,7 +273,7 @@ systemDefinition {
 
 ### File Storage 
 
-There are option when it comes to file storage. File storage is easy to configure in business components such as [Document Management](/develop/business-components/doc-management/doc-management-introduction/) and where using integration capabilities such as [Data Pipelines](/develop/server-capabilities/integrations/data-pipelines/)
+There are option when it comes to file storage. File storage is easy to configure in business components such as [Document Management](/develop/business-components/doc-management/) and where using integration capabilities such as [Data Pipelines](/develop/server-capabilities/integrations/data-pipelines/)
 
 - **Local storage** : useful for many application's however this can cause issues in clustered or container setups unless the filesystem is mounted across all servers.
 - **Cloud storage** : managed cloud file storage services, such as AWS S3, are sometimes preferred in HA and container setups.
@@ -303,7 +303,7 @@ Development teams can configure these to use different port numbers. Make them a
 ## Load Balancer
 
 The Genesis platform does not include a Load Balancer. We encourage you to use your enterprise’s preferred LB. Usually, this is set up to point to the nginx server running on each Genesis host.
-Genesis application environment servers provide a [healthcheck endpoint](#breaks), which the Load Balancer can use to determine server health.
+Genesis application environment servers provide a [healthcheck endpoint](/build-deploy-operate/deploy/hosting-infrastructure/containers/#healthchecks), which the Load Balancer can use to determine server health.
 
 Genesis supports round-robin and sticky-session set-ups.
 
@@ -325,7 +325,7 @@ Genesis installations usually use nginx as a lightweight web server for:
 - proxying web client (and web API) requests to the Genesis server
   - essentially, any client requests with `/gwf` will be routed to the Genesis services with `/gwf` stripped off.
 
-See our [config management page](https://learn.genesis.global/docs/operations/server-setup/config-management/#nginx-configuration) for details on configuring nginx.
+See our [config management page](/build-deploy-operate/deploy/hosting-infrastructure/config-management/#nginx-configuration) for details on configuring nginx.
 
 Other web servers can also be used. If you need to use a different one, this is fine; it simply needs to be set up to perform the same actions that nginx is used for.
 

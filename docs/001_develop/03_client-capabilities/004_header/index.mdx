@@ -6,6 +6,418 @@ keywords: [header]
 tags:
 - header
 sidebar_position: 4
+pagination_prev: develop/client-capabilities/login/client-login
 ---
 
-Coming soon...
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import PrimitiveHeaderExample from './examples/primitive_header_example.js';
+
+# Foundation Header
+
+`foundation-header` is a micro front-end consisting of a navigation bar and a flyout menu, with routing, account-logout capabilities, and the ability to change the current language.
+
+## Adding a header component to the template
+
+Here is an example of a simple navigation bar with two navigation items. This header does not show additional control buttons but displays the default ones, allowing for showing submenus, the logged-in user's name, and the connection status.
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration:
+```html
+  <foundation-header></foundation-header>
+```
+
+Usage:
+```typescript
+@customElement({
+  name: 'header-example',
+  template: html`
+    <foundation-header
+      :routeNavItems=${(x) => x.navItems}
+    ></foundation-header>
+  `,
+})
+export class HeaderExample extends GenesisElement {
+  const navItems = [{
+    title: "Home",
+    icon: {
+      name: "home",
+      variant: "solid",
+    },
+    navId: "header",
+    placementIndex: 0,
+    routePath: "home",
+    routeName: "home",
+  },
+  {
+    title: "Grids",
+    icon: {
+        name: "table",
+        variant: "solid",
+      },
+    navId: "header",
+    placementIndex: 1,
+    routePath: "grids",
+    routeName: "grids",
+  }];
+}
+```
+
+</TabItem>
+<TabItem value="react">
+
+Declaration:
+```html
+  <foundation-header></foundation-header>
+```
+
+Usage:
+```tsx
+export default function HeaderExample({}) {
+  const navItems = [{
+    title: "Home",
+    icon: {
+      name: "home",
+      variant: "solid",
+    },
+    navId: "header",
+    placementIndex: 0,
+    routePath: "home",
+    routeName: "home",
+  },
+  {
+    title: "Grids",
+    icon: {
+        name: "table",
+        variant: "solid",
+      },
+    navId: "header",
+    placementIndex: 1,
+    routePath: "grids",
+    routeName: "grids",
+  }];
+
+  return (
+    <foundation-header
+      routeNavItems={navItems}
+    ></foundation-header>
+  );
+}
+```
+
+</TabItem>
+<TabItem value="angular">
+
+Declaration:
+```html
+  <foundation-header></foundation-header>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'header-example',
+  template: `
+    <foundation-header
+      [routeNavItems]="navItems"
+    ></foundation-header>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class HeaderExampleComponent {
+  navItems = [{
+    title: "Home",
+    icon: {
+      name: "home",
+      variant: "solid",
+    },
+    navId: "header",
+    placementIndex: 0,
+    routePath: "home",
+    routeName: "home",
+  },
+  {
+    title: "Grids",
+    icon: {
+        name: "table",
+        variant: "solid",
+      },
+    navId: "header",
+    placementIndex: 1,
+    routePath: "grids",
+    routeName: "grids",
+  }];
+}
+```
+</TabItem>
+</Tabs>
+
+<PrimitiveHeaderExample />
+
+## Attributes
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>logo-src</td>
+      <td><code>string</code></td>
+      <td>Optional attribute which sets the source of the image in the navigation bar and flyout menu. The Genesis logo will be shown if this attribute is not provided.</td>
+      <td>
+        ```typescript
+        <foundation-header logo-src="path/to/logo.png">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>logo-alt-text</td>
+      <td><code>string</code></td>
+      <td>Optional attribute which controls the alt text of the logo. If this attribute is not set then the alt text is set to 'Corporate Logo'.</td>
+      <td>
+        ```typescript
+        <foundation-header logo-alt-text="My Logo">
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>show-luminance-toggle-button</td>
+      <td><code>boolean</code></td>
+      <td>Boolean attribute which controls whether the navigation bar will display the luminance toggle icon.</td>
+      <td>
+        ```typescript
+        <foundation-header show-luminance-toggle-button>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>show-misc-toggle-button</td>
+      <td><code>boolean</code></td>
+      <td>Boolean attribute which controls whether the navigation bar will display the miscellaneous behaviour icon.</td>
+      <td>
+        ```typescript
+        <foundation-header show-misc-toggle-button>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>show-notification-button</td>
+      <td><code>boolean</code></td>
+      <td>Boolean attribute which controls whether the navigation bar will display the show notification icon.</td>
+      <td>
+        ```typescript
+        <foundation-header show-notification-button>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>show-connection-indicator</td>
+      <td><code>boolean</code></td>
+      <td>Boolean attribute which controls whether the navigation bar will display the connection indicator.</td>
+      <td>
+        ```typescript
+        foundation-header show-connection-indicator>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>show-language-selector</td>
+      <td><code>boolean</code></td>
+      <td>Boolean attribute which controls whether the navigation bar will display the language selector.</td>
+      <td>
+        ```typescript
+        <foundation-header show-language-selector>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>hide-side-bar</td>
+      <td><code>boolean</code></td>
+      <td>Boolean attribute which controls whether the navigation bar will display the side bar.</td>
+      <td>
+        ```typescript
+          <foundation-header hide-side-bar>
+        ```
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Properties
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Type</th>
+      <th>Use</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>userName</td>
+      <td><code>string</code></td>
+      <td>Username of the logged in user.</td>
+      <td>
+        ```typescript
+        <foundation-header :userName="${(x) => x.userName}>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>languageOptions</td>
+      <td><code>LanguageOptions</code></td>
+      <td>Object which defines the language options to be displayed in the language selector.</td>
+      <td>
+        ```typescript
+        <foundation-header :languageOptions="${(x) => x.languageOptions}>
+        ```
+      </td>
+    </tr>
+    <tr>
+      <td>routeNavItems</td>
+      <td><code>FoundationRouteNavItem[]</code></td>
+      <td>Array of FoundationRouteNavItems which define the route buttons to be displayed in the navigation bar.</td>
+      <td>
+        ```typescript
+        <foundation-header :routeNavItems="${(x) => x.routeNavItems}">
+        ```
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Slots
+
+<table>
+  <thead>
+    <tr>
+      <th>Slot Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>menu-contents</td>
+      <td>Slot for adding custom content to the flyout menu (side navigation).</td>
+    </tr>
+    <tr>
+      <td>routes</td>
+      <td>Slot for adding custom route buttons to the navigation bar.</td>
+    </tr>
+    <tr>
+      <td>routes-end</td>
+      <td>Slot for adding custom route buttons to the end of the navigation bar.</td>
+    </tr>
+  </tbody>
+</table>
+
+## Parts
+
+<table>
+  <thead>
+    <tr>
+      <th>Part Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>dynamic-template</td>
+      <td>The element representing the dynamic template content.</td>
+    </tr>
+  </tbody>
+</table>
+
+### Methods
+
+<table>
+  <thead>
+    <tr>
+      <th>Method Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>logout</td>
+      <td>Logs the user out of their session.</td>
+    </tr>
+    <tr>
+      <td>navigateTo</td>
+      <td>Changes the route of the current page.</td>
+    </tr>
+  </tbody>
+</table>
+
+## Fired Events
+
+<table>
+  <thead>
+    <tr>
+      <th>Event Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>luminance-icon-clicked</td>
+      <td><code>void</code></td>
+      <td>Dispatched when the user clicks on the luminance toggle icon in the navigation bar.</td>
+      <td>
+      ```typescript
+        <foundation-header @luminance-icon-clicked="${(x) => x.handleLuminanceIconClick}>
+      ```  
+      </td>
+    </tr>
+    <tr>
+      <td>misc-icon-clicked</td>
+      <td><code>void</code></td>
+      <td>Dispatched when the user clicks on the miscellaneous behaviour icon in the navigation bar.</td>
+      <td>
+      ```typescript
+      <foundation-header @misc-icon-clicked="${(x) => x.handleMiscIconClick}">
+      ```
+      </td>
+    </tr>
+    <tr>
+      <td>notification-icon-clicked</td>
+      <td><code>void</code></td>
+      <td>Dispatched when the user clicks on the notification icon in the navigation bar.</td>
+      <td>
+      ```typescript
+      <foundation-header @notification-icon-clicked="${(x) => x.handleNotificationIconClick}">
+      ```
+      </td>
+    </tr>
+    <tr>
+      <td>language-changed</td>
+      <td><code>void</code></td>
+      <td>Dispatched when the user changes the language in the language selector.</td>
+      <td>
+        ```typescript
+        <foundation-header @language-changed="${(x) => x.handleLanguageChange}">
+        ```
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+:::info
+For a full list of attributes and properties, see [API documents](./docs/api/foundation-header.md).
+:::

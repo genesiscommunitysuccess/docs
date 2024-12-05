@@ -6,7 +6,7 @@ The Genesis documentation is written using [Markdown format](markdown-syntax.md)
 
 Thank you for your interest in contributing to the Genesis documentation. The Genesis platform team now provides open access to the docs repository, and we encourage everyone to be part of it.
 
-Follow the steps below to add your contribuitons to the [official website](https://learn.genesis.global).
+Follow the steps below to add your contribuitons to the [official website](https://docs.genesis.global).
 
 
 ## 1. Create a fork

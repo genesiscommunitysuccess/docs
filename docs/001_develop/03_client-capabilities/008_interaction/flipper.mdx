@@ -1,0 +1,228 @@
+---
+title: 'Flipper'
+sidebar_label: 'Flipper'
+id: client-interaction-flipper
+keywords: [interaction, interactive, flipper, keyboard, event, pager, next, previous, accessibility, direction]
+tags:
+- interaction
+- interactive
+- flipper
+- keyboard
+- event
+- pager
+- next
+- previous
+- accessibility
+- direction
+sidebar_position: 8
+---
+
+import FlipperDemo from '/examples/ui/client-capabilities/interaction/flipper.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Flippers are styled buttons which can be used to indicate moving through blocks of content.
+
+As flippers are often a supplemental form of navigation, the flippers are hidden by default to avoid duplicate keyboard interaction. Passing an attribute of `aria-hidden="false"` will expose the flippers to assistive technology.
+
+Use cases:
+* Create a UI to page through collections of ui elements
+* Create buttons to move through different pages
+
+## Example
+<FlipperDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-flipper></rapid-flipper>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html<MyElement>`
+        <rapid-flipper @click="${(x) => x.onPreviousClick()}" direction="previous"></rapid-flipper>
+        <rapid-flipper @click="${(x) => x.onNextClick()}" direction="next"></rapid-flipper>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+      onPreviousClick() {
+        console.log('previous');
+      }
+
+      onNextClick() {
+        console.log('next');
+      }
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-flipper></rapid-flipper>
+    ```
+
+    Usage
+    ```tsx
+    export function MyComponent() {
+      const dialogRef = useRef(null);
+
+      return (
+        <CodeSection>
+          <rapid-flipper onClick={() => console.log('previous')} direction="previous"></rapid-flipper>
+          <rapid-flipper onClick={() => console.log('next')} direction="next"></rapid-flipper>
+        </CodeSection >
+      )
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-flipper></rapid-flipper>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+    @Component({
+      selector: 'my-component',
+      template: `
+        <code-section>
+          <rapid-flipper
+            direction="previous"
+            (click)="onPreviousClick()"
+          ></rapid-flipper>
+          <rapid-flipper
+            direction="next"
+            (click)="onNextClick()"
+          ></rapid-flipper>
+        </code-section>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class MyComponent {
+      onPreviousClick() {
+        console.log('previous');
+      }
+
+      onNextClick() {
+        console.log('next');
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+
+## API
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>disabled</td>
+            <td><code>boolean</code></td>
+            <td>Disable the flipper, if disabled it will not respond to click.</td>
+<td>
+
+```typescript
+<rapid-flipper disabled>
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>aria-hidden</td>
+            <td><code>boolean</code></td>
+            <td>Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology. <em>Default: <code>true</code></em></td>
+<td>
+
+```typescript
+<rapid-flipper aria-hidden="false">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>direction</td>
+            <td><code>"previous" | "next"</code></td>
+            <td>The direction that the flipper implies navigating. <em>Default: <code>next</code></em></td>
+<td>
+
+```typescript
+<rapid-flipper direction="previous">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Properties
+
+This component doesn't have any properties that are not also controlled via attributes.
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|next|The `next` flipper content.|
+|previous|The `previous` flipper content.|
+
+### Parts
+
+| Part | Description |
+| --- | --- |
+|next|Wraps the `next` flipper content|
+|previous|Wraps the `previous` flipper content|
+
+### Events fired
+
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>click</td>
+            <td><code><a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent">Event & KeyboardEvent</a></code></td>
+            <td>Fired when Enter or Space is invoked via keyboard and the flipper is exposed to assistive technologies.</td>
+<td>
+
+```typescript
+<rapid-flipper @click="${(x,ctx) => x.onFlipperClick(ctx.event)}">
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Events listened to
+
+This component doesn't listen to any events.

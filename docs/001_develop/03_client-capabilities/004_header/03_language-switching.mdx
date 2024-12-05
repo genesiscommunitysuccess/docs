@@ -1,0 +1,172 @@
+---
+title: 'Language Switching'
+sidebar_label: 'Language Switching'
+id: client-header-language-switching
+keywords: [header, language]
+tags:
+- header
+- language switching
+- language
+sidebar_position: 3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import LanguageHeaderExample from './examples/language_header_example.js';
+
+The foundation-header component can display a language selector if the ```show-language-selector``` attribute is set. This allows users to switch between different languages within the application.
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration:
+```html
+<foundation-header show-language-selector></foundation-header>
+```
+
+Usage:
+```typescript
+@customElement({
+  name: 'header-example',
+  template: html`
+    <foundation-header
+      show-language-selector
+    ></foundation-header>
+  `,
+})
+export class HeaderExample extends GenesisElement {}
+```
+
+</TabItem>
+<TabItem value="react">
+
+Declaration:
+```html
+<foundation-header show-language-selector></foundation-header>
+```
+
+Usage:
+```tsx
+export default function HeaderExample() {
+  return (
+    <foundation-header
+       show-language-selector
+    ></foundation-header>
+  );
+}
+```
+
+</TabItem>
+<TabItem value="angular">
+
+Declaration:
+```html
+<foundation-header show-language-selector></foundation-header>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'header-example',
+  template: `
+    <foundation-header
+      show-language-selector
+    ></foundation-header>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class HeaderExampleComponent {}
+```
+</TabItem>
+</Tabs>
+
+By default, the component uses the [languageOptions](./docs/api/foundation-header.languageoptions.md) object, which contains an ```availableLanguage``` array and a ```selectedLanguage``` property. These default options provide a list of available languages and the currently selected language.
+
+When the user selects a different language, the component emits a `language-changed` event. This event is triggered whenever the language is changed via the language selector.
+
+You can also pass custom language options by providing an attribute with this data. Here is an example of how to set up the foudnation-header component with the [show-language-selector](./docs/api/foundation-header.navigation.showlanguageselector.md) attribute and custom language options:
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+<TabItem value="genesis">
+
+Declaration:
+```html
+<foundation-header show-language-selector></foundation-header>
+```
+
+Usage:
+```typescript
+@customElement({
+  name: 'header-example',
+  template: html`
+    <foundation-header
+      show-language-selector
+      :languageOptions=${() => {
+        return { availableLanguages: ['en', 'es'], selectedLanguage: 'es' };
+      }}
+    ></foundation-header>
+  `,
+})
+export class HeaderExample extends GenesisElement {}
+```
+
+</TabItem>
+<TabItem value="react">
+
+Declaration:
+```html
+<foundation-header show-language-selector></foundation-header>
+```
+
+Usage:
+```tsx
+export default function HeaderExample() {
+  const languageOptions = { availableLanguages: ['en', 'es'], selectedLanguage: 'es' };
+
+  return (
+    <foundation-header
+       show-language-selector
+       languageOptions={languageOptions}
+    ></foundation-header>
+  );
+}
+```
+
+</TabItem>
+<TabItem value="angular">
+
+Declaration:
+```html
+<foundation-header show-language-selector></foundation-header>
+```
+
+Usage
+```typescript
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  selector: 'header-example',
+  template: `
+    <foundation-header
+      show-language-selector
+      [languageOptions]=languageOptions
+    ></foundation-header>
+  `,
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class HeaderExampleComponent {
+  const languageOptions = { availableLanguages: ['en', 'es'], selectedLanguage: 'es' };
+}
+```
+</TabItem>
+</Tabs>
+
+#### Example
+
+<LanguageHeaderExample />

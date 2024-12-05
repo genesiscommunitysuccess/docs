@@ -1,0 +1,120 @@
+---
+title: '8.5'
+sidebar_label: '8.5'
+sidebar_position: 15
+id: '8.5'
+---
+
+## Server
+
+### Features
+
+- dictionary: add support for tableId offset overrides at dictionary level in the dictionary schema definition 
+- Add "derivedFieldWithUserName" support to dataservers and req/reps 
+- Add an Integration test for CSV Raw Decoder 
+- Return unsuccessful excel sheet names with error
+- Add pipeline monitor to update process status 
+- Add stop method to realtime source/sink interface 
+- Added support for camel Idempotent repositories in data pipelines 
+- Allow processes templates to be consumed by projectOverViewBuilder 
+- Support multiple process profiles in ProjectOverviewBuilderTask  
+
+### Fixes
+
+- SendTable: ensure SendIt waits for audit record write operations to finish before exiting 
+- codegen: include dependant scripts in codegen cache key 
+- remap: table removal + table rename to the table name of the removed table now works as expected 
+- router: when GET request only has request parameters 
+- Allow primitive type values for parameters with type Any in JSON schema 
+- Ensure only generated jars are added to process classpath when using WriteClasspathToManifest 
+- Exclude unnecessary "kotlin-scripting-dependencies-maven-all" in genesis-shell to clean vulnerability report 
+- Fixed an issue in Remap for Oracle DB where foreign keys would be violated for auto increment columns
+- ResourceDaemon: fix Dependency Injection initialisation on startup 
+- SysDefOverwrite test annotation overwrites specified properties with others retrieved from system definition files 
+- Added next stage call to stream wrapped ops 
+- Allow audit tabes to be generated when a field name clashes with the main table 
+- Duplicate handling strategy in plugin instead of app build.gradle 
+- Ensure groovy compilation exceptions are handled 
+- Fail preCompileScripts gradle task by default and add option to disable failing on error 
+- Websockets for the docker default nginx config 
+- Remove deprecated config from router-process-config.kts 
+- Revert resolving sys def from genesis home in TestSystemDefinitionService
+
+### Dependency changes
+
+- Bump aeronVersion from 1.44.1 to 1.46.0 in /genesis-conventions
+- Bump aeronVersion from 1.46.0 to 1.46.2 in /genesis-conventions
+- Bump byteBuddyVersion from 1.14.18 to 1.15.1 in /genesis-conventions 
+- Bump byteBuddyVersion from 1.15.1 to 1.15.3 in /genesis-conventions 
+- Bump com.github.oshi:oshi-core from 6.6.3 to 6.6.4 in /genesis-conventions 
+- Bump com.google.errorprone:error_prone_annotations from 2.29.2 to 2.32.0 in /genesis-conventions 
+- Bump com.google.errorprone:error_prone_annotations from 2.32.0 to 2.33.0 in /genesis-conventions 
+- Bump com.google.guava:guava from 33.2.1-jre to 33.3.0-jre in /genesis-conventions 
+- Bump commons-io:commons-io from 2.16.1 to 2.17.0 in /genesis-conventions 
+- Bump de.cronn:reflection-util from 2.16.0 to 2.17.0 in /genesis-subcore/genesis-db 
+- Bump debeziumVersion from 2.7.1.Final to 2.7.3.Final in /genesis-conventions 
+- Bump io.github.classgraph:classgraph from 4.8.175 to 4.8.176 in /genesis-conventions 
+- Bump io.reactivex.rxjava3:rxjava from 3.1.8 to 3.1.9 in /genesis-conventions 
+- Bump joda-time:joda-time from 2.12.7 to 2.13.0 in /genesis-conventions 
+- Bump log4jVersion from 2.23.1 to 2.24.0 in /genesis-conventions 
+- Bump log4jVersion from 2.24.0 to 2.24.1 in /genesis-conventions 
+- Bump micrometerVersion from 1.13.2 to 1.13.4 in /genesis-conventions 
+- Bump micrometerVersion from 1.13.4 to 1.13.5 in /genesis-conventions 
+- Bump mockitoVersion from 5.12.0 to 5.13.0 in /genesis-conventions 
+- Bump mockitoVersion from 5.13.0 to 5.14.1 in /genesis-conventions 
+- Bump org.agrona:agrona from 1.21.2 to 1.23.0 in /genesis-conventions 
+- Bump org.apache.commons:commons-lang3 from 3.16.0 to 3.17.0 in /genesis-conventions 
+- Bump org.apache.fury:fury-core from 0.7.0 to 0.7.1 in /genesis-conventions 
+- Bump org.gradle:test-retry-gradle-plugin from 1.5.10 to 1.6.0 in /genesis-conventions 
+- Bump org.hamcrest:hamcrest-library from 2.2 to 3.0 in /genesis-conventions 
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.2.3 to 5.2.5 in /genesis-conventions 
+- Bump org.openapitools:openapi-generator from 7.7.0 to 7.8.0 in /genesis-conventions 
+- Bump org.postgresql:postgresql from 42.7.3 to 42.7.4 in /genesis-conventions 
+- Bump pekkoVersion from 1.0.3 to 1.1.1 in /genesis-conventions 
+- Bump testcontainersVersion from 1.20.1 to 1.20.2 in /genesis-conventions
+
+### Patch Releases
+
+#### 8.5.4
+
+- Configurable update frequency and caching for Db cluster strategy
+- Cluster manager not bound when running GenesisRun and other scripts that user ServiceModule
+- Regression - settings plugin not properly handling OS specific paths while discovering resources
+
+#### 8.5.3
+
+- Remove explicit toString call on ClusterMessage debug line
+
+#### 8.5.2
+
+- Allow project structure to scan sub-folders for scripts and configs
+- Print additional statement to system.log if killProcess ends up calling 'kill -9' after the waiting grace period expires
+- Indices on DOUBLE fields are now correctly sorted correctly in LMDB
+- dbSink should apply operations in batches
+
+#### 8.5.1
+
+- Disable copyDependencies task in genesis-openapi-codegen and improve publish-plugin-config configuration to ensure no plugin modules ever run copyDependencies task
+
+## Client
+
+### Features
+
+- Re-exporting finos/fdc3 types
+- Add tooltip functionality to icon in UI/Forms 
+- Add new helpers to Handlebars
+
+### Fixes
+
+- Update scrolling behavior and flags for combobox
+- Fix clearing array type input NOTIFY
+- Update addEventListener flow + add tsdoc
+- Set initialValue if async mode is off 
+- Improve combobox accessibility - 
+- Temporary disabling publishing to github registry 
+- ResetCombobox before new component data sync 
+- Prevent sending invalid form 
+- Improve combobox accessibility (2)
+- Correct client validation for forms 
+- Address scrolling on listbox components 
+- Update scrolling behavior and flags for combobox

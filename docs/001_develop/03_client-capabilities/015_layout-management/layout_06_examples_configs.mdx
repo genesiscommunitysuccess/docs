@@ -49,24 +49,19 @@ You can set the layout to autosave in local storage as the user interacts with i
 - resizing items using the divider
 - dragging items around the layout
 
-When you have enabled autosave, you are still able to use the manual serialising commands.
-<!-- TODO link -->
+When you have enabled autosave, you are still able to use the manual serialising commands ([getLayout](../docs/api/foundation-layout.foundationlayout.getlayout/) and [loadLayout](../docs/api/foundation-layout.foundationlayout.loadlayout/)).
 
 ### Reloading the layout
 
-The function `tryLoadLayoutFromLocalStorage()` is used to rehydrate the layout from local storage, when `auto-save-key` is enabled.
-<!-- TODO link -->
-If you are using the declarative API, then this function is called for you automatically.
+The function `tryLoadLayoutFromLocalStorage()` is used to rehydrate the layout from local storage, when `auto-save-key` is enabled. See [API](../docs/api/foundation-layout.foundationlayout.tryloadlayoutfromlocalstorage/). If you are using the declarative API, then this function is called for you automatically.
 
-If you are manually registering items (too) using the JavaScript API, you must call this function manually immediately after you have finished registering all the items.
-<!-- TODO link -->
+If you are manually registering items (too) using the JavaScript API, you must call this function manually immediately after you have finished registering all the items. See the [contained example](#contained-example).
 
 ### Layout placeholder
 
 If the layout is auto-loaded with items that are missing from the registration, then a placeholder item is displayed instead. Additionally, the close option is added to the pane. This accounts for you removing an item from a layout that a user has autosaved in their config.
 
-You can change the text of the placeholder using the observable binding `:missingItemPlaceholder`. This is a function that takes a string (the missing registration name) and returns the string to use as the placeholder. A default is set, but you can override it. See the override implementation in this example.
-<!-- TODO link -->
+You can change the text of the placeholder using the observable binding `:missingItemPlaceholder`. This is a function that takes a string (the missing registration name) and returns the string to use as the placeholder. A default is set, but you can override it. See the override implementation in [contained example](#contained-example).
 
 ### Invalidating the cache
 
@@ -76,8 +71,7 @@ In this case, you must invalidate the autosaved layout cache. The cleanest and e
 
 ## Customising header buttons
 
-You can add custom buttons on layout items, and then control their behaviour. See the custom button API for the full definition.
-<!-- TODO link -->
+You can add custom buttons on layout items, and then control their behaviour. See the [custom button API](../docs/api/foundation-layout.foundationlayout.custombuttons/) for the full definition.
 Setting this is optional. If you do define it, you must define it as an array, which enables you to add multiple custom buttons.
 
 * The `svg` parameter controls the icon that is displayed for your button. The format must be a base64 image definition. See the format (as explained in the linked api document above), and then replace the text around the `<< >>` part with a base64 encoded definition of the svg you wish to use.
@@ -347,7 +341,7 @@ See [this example](../client-layout-management-ptifalls/#observables-with-direct
 
 ### Adding items dynamically
 
-This is an example of using the JavaScript API to add items to the layout at runtime. Before reading this example, you should familiarise yourself with the [API Section](#javascript-api).
+This is an example of using the JavaScript API to add items to the layout at runtime. Before reading this example, you should familiarise yourself with the [API Section](/develop/client-capabilities/layout-management/foundation-layout/#javascript-api).
 
 Say you want the user to be able to choose between three different types of item that can be put onto the layout - a profile-management table, a pie chart, and a column chart.
 
@@ -452,7 +446,7 @@ export class ContainedExample extends GenesisElement {
 
 ### Loading serialised layouts
 
-This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example, you should familiarise yourself with the [API Section](#javascript-api):
+This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example, you should familiarise yourself with the [API Section](/develop/client-capabilities/layout-management/foundation-layout/#javascript-api):
 
 ```html
 <rapid-layout>

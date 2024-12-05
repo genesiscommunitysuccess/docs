@@ -1,0 +1,74 @@
+---
+title: 'CSS custom properties (variables)'
+sidebar_label: 'CSS custom properties (variables)'
+id: styling-direct-css-vars
+keywords: [extend component, create component, styling]
+tags:
+- styling
+- extend component
+- create component
+- styling
+sidebar_position: 3
+---
+
+Many components will make use of CSS variables to set their styling - commonly with colour and padding parameters, but the usage can vary.
+
+:::tip
+A quick way to identify what CSS variables are in use is to use the developer tools in your browser to inspect the element's styles.
+:::
+
+Take this example markup
+
+```html
+<rapid-listbox>
+    <rapid-button></rapid-button>
+    <rapid-option value="apple">Apple</rapid-option>
+    <rapid-option value="banana">Banana</rapid-option>
+    <rapid-option value="strawberry">Strawberry</rapid-option>
+</rapid-listbox>
+```
+
+The colour of the text on all of these components use the CSS variable `--neutral-foreground-rest`, and therefore that variable can be set at the level you require to style it. It's likely that for this component you'll want to keep the text color consistent - so you can set the variable at the level of the host component.
+
+```css
+:host {
+  --neutral-foreground-rest: hotpink;
+}
+```
+
+Running this example in the browser will result in both the listbox options' and the button's color changing to `hotpink`.
+
+However, you may want to only set the colour of the listbox items, and *not* the button. In this case the CSS variable should be scoped to the listbox, which means the button still uses the default value.
+
+```css
+rapid-listbox {
+  --neutral-foreground-rest: hotpink;
+}
+```
+
+The browser should now be showing the listbox value's color as `hotpink`, but the button's should still be white.
+
+You can also set this in complex selectors, such as the following which uses child and `nth-child` selectors.:
+
+```css
+rapid-listbox rapid-option:nth-child(odd) {
+  --neutral-foreground-rest: hotpink;
+}
+```
+
+This example sets the odd numbered options to `hotpink`, so for the example template the "Apple" and "Banana" options will be `hotpink` and the "Banana" option will be white.
+
+### Scope
+
+The CSS variable configuration will take effect at which ever scope level you define it, and it'll cascade down to all children components. That's why in the previous example setting the colour at the component level changes everything - it cascades down into all of the `rapid-listbox`, `rapid-option` and `rapid-button` components. CSS variables are the only way to cascade styles down through the Shadow DOM.
+
+If instead of encapsulating the style change to a component you applied it at the top level, you'd see the effect across the entire application for all components which use the CSS variable (and don't overwrite it later).
+
+For example, if you added this to your top level styles:
+```css
+* {
+  --neutral-foreground-rest: hotpink;
+}
+```
+
+You can see that adding the style changes the colour of many Genesis component in your application.

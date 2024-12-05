@@ -68,9 +68,9 @@ This is the minimum timeout that Desktop Agents are required to provide in order
         export class MyElement extends GenesisElement {
 
             @observable quoteMessage: any = {};
-    
+
             @observable instrumentMessage: any = {};
-    
+
             handleQuoteMessage(message) {
                 this.quoteMessage = JSON.stringify(message);
             }
@@ -89,7 +89,7 @@ This is the minimum timeout that Desktop Agents are required to provide in order
         ```
 
         Usage
-        ```typescript
+        ```tsx
         export function MyComponent() {
             useEffect(() => {
 

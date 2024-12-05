@@ -81,7 +81,7 @@ Declaration
 ```
 
 Usage
-```typescript
+```tsx
 export function MyComponent() {
     return (
         <rapid-grid-pro>
@@ -105,7 +105,6 @@ Declaration
 Usage
 ```typescript
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'my-root',
     templateUrl: './my.component.html',
@@ -120,7 +119,6 @@ import { FormsModule } from '@angular/forms';
     `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [FormsModule],
 })
 export class AppComponent {}
 ```
@@ -169,7 +167,7 @@ Declaration
 ```
 
 Usage
-```typescript
+```tsx
 export function MyComponent() {
     return (
         <rapid-grid-pro>
@@ -196,7 +194,6 @@ Declaration
 Usage
 ```typescript
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'my-root',
     templateUrl: './my.component.html',
@@ -214,7 +211,6 @@ import { FormsModule } from '@angular/forms';
     `
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [FormsModule],
 })
 export class AppComponent {}
 ```
@@ -266,7 +262,7 @@ Declaration
 <fdc3-channel-event></fdc3-channel-event>
 ```
 Usage
-```typescript
+```tsx
 export function MyComponent() {
     const mappingFunction = (params: any) => ({ id: { ticker: params.TICKER, cusip: params.CUSIP } })
 
@@ -293,7 +289,6 @@ Declaration
 Usage
 ```typescript
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 @Component({
     selector: 'my-root',
     templateUrl: `
@@ -310,7 +305,6 @@ import { FormsModule } from '@angular/forms';
     `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [FormsModule],
 })
 export class AppComponent {
   mappingFunction(params: any) {

@@ -1,0 +1,128 @@
+---
+title: 'Data utilities'
+sidebar_label: 'Data utilities'
+id: data-util
+keywords: [utils, utility, data, db, crud, database, create, read, update, delete, records]
+tags:
+  - utils
+  - utility
+  - data
+  - db 
+  - crud
+  - database
+  - create
+  - read
+  - update
+  - delete
+  - records
+---
+
+Provides a set of utilities for managing data stores, focusing on an in-memory database implementation. This module supports basic CRUD operations and offers seamless integration with TypeScript, providing strong type safety and event-driven features for enhanced interaction.
+
+:::info
+For more detailed information on API and configurations, please refer to the [API documentation](docs/api/index.md).
+:::
+
+## Key Features
+
+- **CRUD Operations:** Comprehensive support for Create, Read, Update, and Delete operations to manage database records effectively.
+- **Event Listeners:** Built-in support for lifecycle event observers, such as hooks for pre- and post-update actions, enabling extensibility.
+- **Asynchronous API:** All operations return Promises, ensuring smooth asynchronous interaction.
+- **TypeScript Support:** Designed with TypeScript in mind, offering robust type safety and reducing runtime errors.
+- **Lightweight and Fast:** Optimized for small-scale applications and prototyping, ensuring minimal overhead.
+
+## Use Cases
+
+This module is ideal for:
+- Prototyping applications with lightweight data requirements.
+- Small-scale projects requiring a simple and quick database solution.
+- Scenarios where strong type safety and event-driven behavior are critical.
+
+## Examples
+
+### Defining a Record Type
+
+First, create your record type by extending the `DatabaseRecord` interface. This step ensures your records will have an `id` field, which is required for CRUD operations.
+
+```typescript
+interface MyRecord extends DatabaseRecord {
+  name: string;
+  value: number;
+}
+```
+
+### Instantiating the Database
+
+Create an instance of `InMemoryDatabase` using your record type:
+
+```typescript
+import { InMemoryDatabase } from '@genesislcap/foundation-utils';
+
+const db = new InMemoryDatabase<MyRecord>();
+```
+
+### Create Operation
+
+Add a new record to the database:
+
+```typescript
+const newRecord = await db.create({ name: 'Example', value: 123 });
+console.log(newRecord);
+```
+
+### Read Operation
+
+Retrieve a record by its ID:
+
+```typescript
+const record = await db.read(newRecord.value.id);
+console.log(record);
+```
+
+### Update Operation
+
+Modify an existing record:
+
+```typescript
+const updateResult = await db.update(newRecord.value.id, { value: 456 });
+console.log(updateResult);
+```
+
+### Delete Operation
+
+Remove a record from the database:
+
+```typescript
+const deleteResult = await db.delete(newRecord.value.id);
+console.log(deleteResult);
+```
+
+### Visit Operation
+
+Iterate over all records in the database. Useful for bulk operations or analyses.
+
+```typescript
+await db.visit((record) => {
+  console.log(`Visiting record: ${record}`);
+});
+```
+
+### Observing Record Updates
+
+Subscribe to events to be notified about changes:
+
+```typescript
+db.onBeforeUpdate(({ newValue }) => {
+  console.log(`About to update record to: ${newValue}`);
+});
+
+db.onAfterUpdate(({ value }) => {
+  console.log(`Record updated to: ${value}`);
+});
+```
+
+## Key Points
+
+- **Promises:** All operations return Promises, allowing for async handling.
+- **Event Listeners:** Use event listeners to react to database changes and perform additional actions.
+- **In-Memory Database:** This module is designed for small-scale applications and prototyping. For larger projects, consider using a dedicated database solution.

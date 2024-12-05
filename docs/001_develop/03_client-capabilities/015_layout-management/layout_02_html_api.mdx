@@ -66,7 +66,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
     <tr>
       <td>auto-save-key</td>
       <td><code>string</code></td>
-      <td>Optional string which if set, will enable autosaving the layout under this key in local storage. See here for more<!-- todo --></td>
+      <td>Optional string which if set, will enable autosaving the layout under this key in local storage. See [here](../client-layout-management-examples/#autosaving-layout)</td>
 <td>
 
 ```typescript
@@ -91,7 +91,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 </table>
 
 :::tip
-(1) This only applies for usage with the declarative HTML API. When the layout first loads after this amount of time, it emits an event <!-- TODO link -->.
+(1) This only applies for usage with the declarative HTML API. When the layout first loads after this amount of time, it emits [an event](#fired-events).
 :::
 
 #### Properties
@@ -222,8 +222,30 @@ Events can be received by the emitting `<rapid-layout>`, or any parent element.
 
 ### Listened Events
 
-This component doesn't listen to any public API events.
-<!-- TODO: is there an event for renaming a pane ? -->
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>autosave</td>
+            <td>[LayoutReceiveEventsDetail.autosave](../docs/api/foundation-layout.layoutreceiveeventsdetail/)</td>
+            <td>Hint to the layout system that it should autosave. Used if you are using the [state management](../client-layout-management-items/#managing-the-state) included, and your component has changed its state.</td>
+<td>
+
+```typescript
+this.dispatchEvent(new CustomEvent(LayoutReceiveEvents.autosave, { bubbles: true }),);
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 
 ## Rapid layout region
@@ -370,7 +392,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
     <tr>
       <td>registration</td>
       <td><code>string</code></td>
-      <td>Sets the registered name of the component. Not required to be set unless you're also using the javascript API. See here. <!-- TODO -->. By default each item that doesn't have a registration is registered sequentially starting at <code>"1"</code>.</td>
+      <td>Sets the registered name of the component. Not required to be set unless you're also using the javascript API ([see here](../client-layout-management-js)). By default each item that doesn't have a registration is registered sequentially starting at <code>"1"</code>.</td>
 <td>
 
 ```typescript
@@ -402,7 +424,36 @@ This component doesn't fire any events.
 
 ### Listened Events
 
-This component doesn't listen to any events.
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>change-title</td>
+            <td>[LayoutReceiveEventsDetail.changeTitle](../docs/api/foundation-layout.layoutreceiveeventsdetail/)</td>
+            <td>Emit from an layout item to change the name of the title of the layout container. See example context [here](../client-layout-management-examples/#renaming-example).</td>
+<td>
+
+```typescript
+const event: LayoutReceiveEventsDetail['changeTitle'] = {
+    title,
+    mode: 'replace',
+};
+elem.dispatchEvent(
+    new CustomEvent(LayoutReceiveEvents.changeTitle, { detail: event, bubbles: true }),
+);
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
 
 ## Sizing
 

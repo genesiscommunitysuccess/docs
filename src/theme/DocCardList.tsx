@@ -5,12 +5,22 @@ import {
   filterDocCardListItems,
 } from '@docusaurus/plugin-content-docs/client';
 import type { Props } from '@theme/DocCardList';
-import CardList from '@site/src/components/CardList';
+import CardList from '@site/src/components/Card/CardList';
 import sidebarItemsData from '@site/static/data/sidebar-items-data.json';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 function DocCardListForCurrentSidebarCategory({className}: Props) {
   const category = useCurrentSidebarCategory();
   return <DocCardList items={category.items} className={className} />;
+}
+
+function stripBaseUrlPrefix(url) {
+  const { siteConfig } = useDocusaurusContext();
+  const baseUrl = siteConfig.customFields.baseUrlEnv
+  if (url.startsWith(baseUrl)) {
+    return `/${url.slice(baseUrl.length)}`;
+  }
+  return url; 
 }
 
 export default function DocCardList(props: Props): JSX.Element {
@@ -19,22 +29,23 @@ export default function DocCardList(props: Props): JSX.Element {
     return <DocCardListForCurrentSidebarCategory {...props} />;
   }
   const category = useCurrentSidebarCategory();
-  const extraCategoryData = sidebarItemsData[category.href];
+
+  const extraCategoryData = sidebarItemsData[stripBaseUrlPrefix(category.href)];
   let enrichedItems = filterDocCardListItems(items);
-  
+
   if (extraCategoryData?.items) {
   enrichedItems = enrichedItems.map((item) => {
-    const extraData = extraCategoryData.items.find(extraItemData => extraItemData.href === item.href) || {};
+    const extraData = extraCategoryData.items.find(extraItemData => extraItemData.href === stripBaseUrlPrefix(item.href)) || {};
       return {
         ...item,
         ...extraData,
       };
     });
-  } 
+  }
 
   const filteredItems = enrichedItems.map((
-    { label: heading, href: link, description: text, icon  },
-  ) => ({ heading, link, text, icon }));
+    { label: heading, href: link, description: text, imageUrl  },
+  ) => ({ heading, link, text, imageUrl }));
 
   return (
     <section className={clsx('row', className)}>

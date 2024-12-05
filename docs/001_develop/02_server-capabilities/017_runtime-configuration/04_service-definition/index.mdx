@@ -12,7 +12,7 @@ tags:
 ---
 
 
-Every application must have a `-service-definitions.xml` file. This is where you specify the ports of the various processes. These are used to communicate internally between processes.
+Every application must have a `*-service-definitions.xml` file. This is where you specify the ports of the various processes. These are used to communicate internally between processes.
 
 ```xml
 <configuration>
@@ -89,3 +89,16 @@ To override the port, just use the environment variable `{PROCESS_NAME}_PORT={PO
 So for example, if you wanted the `GENESIS_ROUTER` to run on port 22222 you would use `GENESIS_ROUTER_PORT=22222`.
 
 This guide doesn't cover how to use environment variables, but there are many guides online such as [How to Set an Environment Variable in Linux](https://www.freecodecamp.org/news/how-to-set-an-environment-variable-in-linux/) that explain how they work.
+
+## API
+
+In this page, we look at details of the functions that enable you to interact with the Genesis services that can be specified in the `*-service-definition.xml` file.
+
+Functions
+
+| Name | Signature | Description |
+| --- | --- | --- |
+| `getServiceDetails` | `@NotNull ServiceDetails getServiceDetails(String processName) throws GenesisConfigurationException` | Get service details for a given process name. |
+| `getServiceMap` | `Map<String, ServiceDetails> getServiceMap() throws GenesisConfigurationException` | Get services map with: key = serviceName, value = details |
+| `getServices` | `List<ServiceDetails> getServices() throws GenesisConfigurationException` | Get list of services. |
+| `getStartedServices` | `List<ServiceDetails> getStartedServices() throws GenesisConfigurationException` | Get list of started services. |

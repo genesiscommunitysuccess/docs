@@ -56,14 +56,11 @@ Genesis supports several types of database. The currently supported list is:
 
 ### Installing FoundationDB
 
-FoundationDB compatible versions are available from the Genesis Artifactory at [a suitable path](https://genesisglobal.jfrog.io/artifactory/genesis-rpm/$releasever/$basearch/).
-
 If resilient FoundationDB is required, it can be clustered across multiple hosts. For safety, an odd number of instances are needed. You can find set-up details in FoundationDB's [documentation](https://apple.github.io/foundationdb/administration.html).
-
 
 ## Specific preparations
 
-The default installation location for Genesis applications is in **/data**, which might not be created by your OS install. If it is not, it must be created mode 0644, as non-root users' data will be written inside, and thus it needs to be readable.
+The default installation location for Genesis applications is in `/data`, which might not be created by your OS install. If it is not, it must be created mode 0644, as non-root users' data will be written inside, and thus it needs to be readable.
 
 Genesis applications typically run as a non-root user (for a spectrum of reasons, largely security-related). The exact choice of user is in the control of the operator of the host. Genesis currently recommends a separate user per application on a host; _multiple applications running as one user creates difficulties in development and operation_.
 

@@ -1,0 +1,74 @@
+---
+title: 'Serializer utilities'
+sidebar_label: 'Serializer utilities'
+id: serializer-util
+keywords: [utils, utility, serializer, serialization, deserialization, complex, robust]
+tags:
+  - utils
+  - utility
+  - serializer
+  - serialization
+  - deserialization
+  - complex
+  - robust
+  - json serializer
+  - custom number parser
+
+---
+
+This contains a comprehensive JSON serialization and deserialization solution, designed to support complex data structures, including those involving big integers and custom object types, ensuring robust and flexible handling of JSON data.
+
+## Key Features
+
+- **`customNumberParser` Function:** Enhances the parsing of numeric values, supporting safe integers, floating-point numbers, and BigInt values.
+- **`JSONSerializer` Interface:** Defines methods for serializing objects to JSON strings and deserializing JSON strings to JavaScript objects, with support for HTTP response objects and message event data.
+- **`DefaultJSONSerializer` Class:** Implements the `JSONSerializer` interface, providing default serialization and deserialization behaviors that can be customized via the `JSONSerializerConfig`.
+- **`JSONReplacer` and `JSONReviver` Functions:** Facilitate custom serialization and deserialization processes, allowing for the handling of special types, such as dates and NaN values, and the exclusion of properties with specific key prefixes.
+
+## Examples
+
+### JSON Serialization/Deserialization
+
+The `JSONSerializer` DI Token enable the serialization and deserialization of complex objects, including BigInt values and custom object types, ensuring that JSON data is accurately represented in JavaScript.
+
+:::tip
+Inject the UUID class dependency like this in [Angular](../../framework-integration/client-framework-integration-angular/#dependency-injection)
+and [React](../../framework-integration/client-framework-integration-react/#dependency-injection).
+:::
+
+```typescript
+import { JSONSerializer } from '@genesislcap/foundation-utils';
+import { GenesisElement } from '@genesislcap/web-core';
+
+export class MyService extends GenesisElement {
+  @JSONSerializer serializer!: JSONSerializer; // DI token
+
+  const object = { date: new Date(), bigNumber: BigInt(12345678901234567890) };
+  const jsonString = serializer.serialize(object);
+  console.log(jsonString); // Outputs a JSON string with custom formatting
+
+  const parsedObject = serializer.deserialize(jsonString);
+  console.log(parsedObject); // Outputs the original object with date and bigNumber correctly parsed
+}
+```
+
+### Configuring the Serializer
+
+The default serializer behavior can be customized by providing a `JSONSerializerConfig` instance, which defines custom parsing and stringifying logic, including the handling of BigInt values and special object types.
+
+### Custom Number Parsing
+
+The `customNumberParser` function is crucial for correctly handling numerical values during deserialization, ensuring that numbers are accurately represented in the resulting JavaScript objects.
+
+```typescript
+import { customNumberParser } from '@genesislcap/foundation-utils';
+
+const parsedNumber = customNumberParser("12345678901234567890");
+console.log(parsedNumber); // Outputs a BigInt
+```
+
+## Key Points
+
+- Utilize the provided serializer and parser utilities for consistent handling of JSON data, especially when dealing with large numbers or custom object types.
+- Leverage the DI system to manage serializer instances, ensuring that custom configurations are centrally managed and easily accessible.
+- Employ the `JSONReplacer` and `JSONReviver` functions for custom serialization and deserialization needs, such as handling dates or excluding private properties.

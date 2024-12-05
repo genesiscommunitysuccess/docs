@@ -1,0 +1,147 @@
+---
+title: 'Platform overview'
+sidebar_label: 'Platform overview'
+id: 'platform-overview'
+---
+
+The Genesis Application Platform enables you to deliver fast, compliant, secure, scalable, real-time financial-markets-grade applications.
+
+With a choice of development environments and tools, you can create, build and preview applications up to ten times faster than before, and you can ensure that your applications reach production quickly. 
+
+Here's what you've got.
+
+## Data model and views
+At the heart of any Genesis application is the data model. You can define entities (tables) that have attributes (column headings). Each entity can then hold records. This provides a way of storing data neatly for access.
+
+You can then create views that take attributes from more than one entity to provide the more rounded data sets that the business requires. These data sets can be retrieved by the front end for displaying to users, and they can be passed to upstream and downstream systems. 
+
+The data model forms the foundation of the metadata used by other parts of the platform to provide immediate functionality without any extra code. 
+
+Within your views, you can also define derived fields (columns) that are calculated on the fly to augment the data being returned by the system. This can be based on anything from the simplest arithmetic to calculate a percentage of an existing field (attribute value) through to calls that define the most complex calculations in your existing Java libraries.
+
+:::info
+View our reference documentation on the [data model](/develop/server-capabilities/data-model/).
+:::
+
+## Server architecture
+
+The platform has a development suite of pre-built microservices, which enables you to assemble a complete, robust and rich architecture quickly - simply by selecting and configuring the microservices that address your business requirements. 
+
+These microservices have been built to serve the demands of financial-markets-grade applications. They include real-time queries, real-time aggregation, sophisticated access control, strong audit and security.
+
+You can either configure each microservice from scratch, or you can use Genesis Create to generate working code for each one. You can then refine and extend these microservices using a high-level domain-specific language (DSL) called GPAL.    
+
+GPAL abstracts away complex algorithms to provide simple-to-understand syntax, exposing the extension points required to enable you to build very rich applications quickly. It also enables you to use Java and Kotlin at any point to ensure unlimited flexibility. 
+
+:::info
+View our reference documentation on the [development environment](/develop/development-environments/).
+:::
+
+### Core logic and data manipulation microservice (Event Handler)
+
+Applications typically start with the APIs required to contain the logic the user will need to create or modify the underlying data for the application.  
+
+The architecture of the Genesis Platform is event-driven. This is sometimes known as [Command Query Responsibility Segregation (CQRS) Architecture](https://developer.ibm.com/articles/an-introduction-to-command-query-responsibility-segregation/). 
+
+You define the business logic for each event in the Event Handler Microservice. Each event corresponds to a specific request to create, update, delete or otherwise perform an operation on a record in the database. Alongside this, you can specify any other business logic required as part of the processing. 
+
+Simply by adding a few extra lines of code to the event, you can  quickly enable validation, authorization and more. 
+
+Once defined, the microservice automatically exposes the APIs required to start receiving trade events and persisting them into the database and executing the logic configured. 
+
+The Event Handler also exposes metadata APIs that are used by the rest of the platform - such as the UI components that can then dynamically generate a full interactive user interface to manage the underlying data with minimal configuration.   
+
+As data flows through the Event Handler, events are published to the rest of the platform, enabling other microservices to react and provide more capabilities. This includes pre-built business components, such as notifications. These business components use the application's data model, so you don't need to specify any extra logic to provide a full set of functions. 
+
+:::info
+View our reference documentation on the [core business logic](/develop/server-capabilities/core-business-logic-event-handler/).
+:::
+
+### Real-time query microservice (Data Server) 
+
+Most financial applications need to provide views that are live and updated in real time. For this, Genesis provides the Data Server microservice. 
+
+This service listens to the events from the Event Handler. It maintains a cache of data, which it constantly keeps up to date. It also exposes the APIs that enable the UI to retrieve and display the data.
+
+To configure the Data Server, you define real-time queries that enable the client to retrieve the data. You can define each query with a few simple lines of GPAL. Or you can set these in Genesis Create and generate the relevant code in your Data Server's .kts file. 
+
+The Data Server preloads the data defined for each query, maintains meta-data for users requesting views into that data and exposes web sockets to provide a real-time stream of updates to keep those views live and ticking for the end user. 
+
+:::info
+View our reference documentation on the [real-time queries](/develop/server-capabilities/real-time-queries-data-server/).
+:::
+
+### Real-time aggregation microservice (Consolidator)
+
+Another common financial services application requirement is the ability to take data and aggregate it into different aggregation keys.  This can give you trade aggregation into positions or orders, risk numbers, and so on. Genesis provides the Consolidator Microservice for this use case.   
+
+This microservice tracks the stream of events flowing through the platform and aggregates a configured input entity, such as Trade, into an output entity such as Position.  
+
+As with other microservices, it can be configured through a few simple lines of GPAL or some quick settings in Genesis Create. The complexities of managing the aggregation are abstracted away. you don't need to specify when the values are added or removed from an aggregation key, and you don't need to rebuild an entire aggregated view if the logic is modified. 
+
+:::info
+View our reference documentation on [real-time data aggregation](/develop/server-capabilities/real-time-aggregation-consolidator/).
+:::
+
+There is a whole range of microservices and components you can use to add more capabilities to meet your needs. They all share the same virtue of being easy to add to your application and configure to set up basic working versions at speed. And of course, you can add as much complexity as you need.
+
+Check the [Evaluator](/develop/server-capabilities/real-time-triggers-evaluator/), which can be configured to react to the stream of data and detect patterns using a complex expression builder in order to detect and react using custom logic.
+
+### Access and authorization
+
+Users must be authenticated before they can use a Genesis application, whether it be via a user interface, or using a client API. There is no need to code this controlled access. Simple set-up enables you to create a password for the application itself, or you can use LDAP or an external SSO provider.
+
+Authorization enables you to control precisely which users have access to specific information and functions. For example, you can specify that User A and User B have access to a specific query or event. You can do this with as little as a single line of code in the relevant query or event. More precisely, you can set them so that so that User A can only view trades settling in one country, while user B can only view this settling in another country.
+
+:::info
+View our reference documentation on [Authentication](/develop/server-capabilities/access-control/authentication/).
+
+View our reference documentation on [Authorization](/develop/server-capabilities/access-control/authorization/).
+
+View [how to authorize your data](/how-to/ht-auth/).
+:::
+
+## Web application architecture 
+
+Every application needs a rich, responsive, real-time user interface. You can build this quickly from a wide choice of Web UI components in your framework of choice from raw Web Components to Angular and React. You can select one, configure it and connect it the relevant data source through the APIs exposed by the Genesis microservices. 
+
+These components can be quickly composed into fully functional web application using any of the major Web UI frameworks, such as Angular or React. Or you can simply work with the raw Web Components.   
+
+So you can quickly add grids of data, input forms, charts and more. Micro front-ends, such as the entity manager enable you to set up a grid with an accompanying form for submitting and changing records in a single configuration. At the other end of the scale, there is complete scope for creating pages from lower-level building blocks such as Dialogs, Menus, Banners and Breadcrumbs.
+
+### Accelerator tools
+The platform provides tools to give you ways of creating your web UI at speed. For example, the Design System Configurator gives enables you to define a single consistent layout for all your pages - simply by adjusting some settings, where you can immediately see the effect of your change. When you have the right look, one click saves the code for your design system.
+
+![Design System Configurator](/img/000_platform-overview/design-system-config.png)
+
+There is also the UI Generator, which enables you to generate the code for a screen layout from a static image. To refine and extend the initial UI generated, it includes a handy HTML catalogue, where you can just click to insert the relevant code snippet into your code and complete the configuration.
+
+:::info
+View our reference documentation on [components](/develop/client-capabilities/).
+
+View [how to create a simple front end](/how-to/ht-front-end-example/).
+:::
+
+## Genesis application architecture
+
+The diagram below provides an overview of the typical components in any given application.
+
+![Entity Manager Example](/img/000_platform-overview/simple-3.png)
+
+- The Event Handler enables the web client (and other clients) to interact with the database.
+
+- The Data Server enables the the web client and other clients to retrieve streaming data that is updated in real time.
+
+- Similarly, the Request Server supplies snapshot data - anything that is not modified during the day,
+
+- Authorization is coded into each of these to ensure that only permissioned users have access to the relevant data and features. This is policed by the Auth component, which is essential to all Genesis applications.
+
+- The Consolidator aggregates data in real time - it is the Data Server that makes this data available to clients.
+
+- The Genesis Router ensures that traffic between users on the front end and the data and features provided by the server is always routed to the correct location. You do not need to add any code; once your permissions have been set up, the Router module handles this automatically.
+
+- The Data Pipeline takes in data from external systems, transforming it into the correct format for the application's database (the database actions are handled by the Event Handler). It is able to transform data into formats that suit the relevant external systems that you are passing data to.
+
+- Other components provide functions that are common requirements to financial applications. In the example above, the Notifications and Alerts component has been added, enabling the application to set up not only internal notifications to users within the application, but also outgoing messages via email, Symphony or Microsoft Teams.
+
+

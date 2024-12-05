@@ -1,0 +1,391 @@
+---
+title: 'Tabs'
+sidebar_label: 'Tabs'
+id: client-interaction-tabs
+keywords: [ interaction, interactive, menu, desktop, item, choice, nested, start menu, menu bar, action ]
+tags:
+- interaction
+- interactive
+- tabs
+- tab
+- tabbed
+- section
+- tab-panel
+- layered
+- content
+- associated
+- activated
+- title
+sidebar_position: 8
+---
+
+import TabsDemo from '/examples/ui/client-capabilities/interaction/tabs.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Tabs are a set of layered sections of content that display one panel of content at a time. Each tab panel has an associated tab element, that when activated, displays the panel. The list of tab elements is arranged along one edge of the currently displayed panel.
+
+Use cases:
+* Create sections of contents that can be shown one at a time
+* Associate a "tab" item with a title, when clicked will show the associated content
+
+You will use `rapid-tabs`, `rapid-tab`, `rapid-tab-item` to create your tabs.
+
+## Example
+<TabsDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-tabs>
+      <rapid-tab></rapid-tab>
+      <rapid-tab-panel>
+        <!-- content -->
+      </rapid-tab-panel>
+    </rapid-tabs>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html<MyElement>`
+        <rapid-tabs activeid="entrees">
+          <rapid-tab id="apps">Appetizers</rapid-tab>
+          <rapid-tab id="entrees">Entrees</rapid-tab>
+          <rapid-tab id="desserts">Desserts</rapid-tab>
+          <rapid-tab-panel id="appsPanel">
+            <ol>
+              <li>Stuffed artichokes</li>
+              <li>Bruschetta</li>
+            </ol>
+          </rapid-tab-panel>
+          <rapid-tab-panel id="entreesPanel">
+            <ol>
+              <li>Tomato Bread Soup with Steamed Mussels</li>
+              <li>Grilled Fish with Artichoke Caponata</li>
+            </ol>
+          </rapid-tab-panel>
+          <rapid-tab-panel id="dessertsPanel">
+            <ol>
+              <li>Tiramisu</li>
+              <li>limoncello and Ice Cream with Biscotti</li>
+            </ol>
+          </rapid-tab-panel>
+        </rapid-tabs>
+      `,
+    })
+    export class MyElement extends GenesisElement { }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+    Declaration
+    ```html
+    <rapid-tabs>
+      <rapid-tab></rapid-tab>
+      <rapid-tab-panel>
+        <!-- content -->
+      </rapid-tab-panel>
+    </rapid-tabs>
+    ```
+
+    Usage
+    ```tsx
+    export function MyComponent() {
+      return (
+        <rapid-tabs activeid="entrees">
+          <rapid-tab id="apps">Appetizers</rapid-tab>
+          <rapid-tab id="entrees">Entrees</rapid-tab>
+          <rapid-tab id="desserts">Desserts</rapid-tab>
+          <rapid-tab-panel id="appsPanel">
+            <ol>
+              <li>Stuffed artichokes</li>
+              <li>Bruschetta</li>
+            </ol>
+          </rapid-tab-panel>
+          <rapid-tab-panel id="entreesPanel">
+            <ol>
+              <li>Tomato Bread Soup with Steamed Mussels</li>
+              <li>Grilled Fish with Artichoke Caponata</li>
+            </ol>
+          </rapid-tab-panel>
+          <rapid-tab-panel id="dessertsPanel">
+            <ol>
+              <li>Tiramisu</li>
+              <li>limoncello and Ice Cream with Biscotti</li>
+            </ol>
+          </rapid-tab-panel>
+        </rapid-tabs>)
+    }
+    ```
+  </TabItem>
+  <TabItem value="angular">
+
+    Declaration
+    ```html
+    <rapid-tabs>
+      <rapid-tab></rapid-tab>
+      <rapid-tab-panel>
+        <!-- content -->
+      </rapid-tab-panel>
+    </rapid-tabs>
+    ```
+
+    Usage
+    ```typescript
+    import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+    @Component({
+      selector: 'my-component',
+      template: `
+        <rapid-tabs activeid="entrees">
+          <rapid-tab id="apps">Appetizers</rapid-tab>
+          <rapid-tab id="entrees">Entrees</rapid-tab>
+          <rapid-tab id="desserts">Desserts</rapid-tab>
+          <rapid-tab-panel id="appsPanel">
+            <ol>
+              <li>Stuffed artichokes</li>
+              <li>Bruschetta</li>
+            </ol>
+          </rapid-tab-panel>
+          <rapid-tab-panel id="entreesPanel">
+            <ol>
+              <li>Tomato Bread Soup with Steamed Mussels</li>
+              <li>Grilled Fish with Artichoke Caponata</li>
+            </ol>
+          </rapid-tab-panel>
+          <rapid-tab-panel id="dessertsPanel">
+            <ol>
+              <li>Tiramisu</li>
+              <li>limoncello and Ice Cream with Biscotti</li>
+            </ol>
+          </rapid-tab-panel>
+        </rapid-tabs>
+      `,
+      standalone: true,
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    })
+    export class MyComponent { }
+    ```
+  </TabItem>
+</Tabs>
+
+
+## Tabs API
+
+API examples shown with Genesis component syntax, and closing tag omitted.
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>orientation</td>
+            <td><code>"horizontal" | "vertical"</code></td>
+            <td>The orientation of the tabs menu. <em>Default: "horizontal"</em>.</td>
+<td>
+
+```typescript
+<rapid-tabs orientation="vertical">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>activeid</td>
+            <td><code>string</code></td>
+            <td>The id of the active tab. Setting this allows you to configure the default opened tab, else the first tab is shown.</td>
+<td>
+
+```typescript
+<rapid-tabs activeid="apps">
+```
+
+</td>
+        </tr>
+        <tr>
+            <td>activeindicator</td>
+            <td><code>boolean</code></td>
+            <td>Whether or not to show the active indicator on the active tab. <em>Default: <code>true</code></em></td>
+<td>
+
+```typescript
+<rapid-tabs ?activeindicator=${() => false}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Properties
+
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>activetab</td>
+            <td><code>HTMLElement</code></td>
+            <td>The active tab element. You should only read this value, and not set it on the HTML.</td>
+<td>
+
+```typescript
+const value = tabRef.activetab;
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|start|Content which can be provided before the tablist element|
+|end|Content which can be provided after the tablist element|
+|tab|The slot for tabs ([`<rapid-tab>`](#tab-api))|
+|tabpanel|The slot for tabpanels ([`<rapid-tab-panel>`](#tab-panel-api))|
+
+### Parts
+
+|Part|Description|
+|---|---|
+|tablist|The element wrapping for the tabs|
+|tab|The tab slot|
+|activeIndicator|The visual indicator|
+|tabpanel|The tabpanel slot|
+
+### Events fired
+
+<table>
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>change</td>
+            <td><code>HTMLElement</code></td>
+            <td>Fired when a tab is selected, or during keyboard navigation. The event data is active tab.</td>
+<td>
+
+```typescript
+<rapid-tabs @change=${(x,ctx) => x.handleTabChange(ctx.event)}>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Events listened to
+
+This component doesn't listen to any events.
+
+## Tab API
+
+API examples shown with Genesis component syntax, and closing tag omitted.
+
+### Attributes
+
+<table>
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>disabled</td>
+            <td><code>boolean</code></td>
+            <td>Disable the tab, if disabled it will not respond to user interaction.</td>
+<td>
+
+```typescript
+<rapid-tab disabled>
+```
+
+</td>
+        </tr>
+    </tbody>
+</table>
+
+### Properties
+
+This component doesn't have any properties that are not also controlled via attributes.
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|The default slot for the tab content.|
+
+
+### Parts
+
+This component doesn't have any parts.
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.
+
+## Tab panel API
+
+API examples shown with Genesis component syntax, and closing tag omitted.
+
+### Attributes
+
+This component doesn't have any attributes.
+
+### Properties
+
+This component doesn't have any properties.
+
+### Slots
+
+|Slot|Description|
+|---|---|
+|Default|The default slot for the main tab content. Only shown when the associated tab is active.|
+
+### Parts
+
+This component doesn't have any parts.
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.

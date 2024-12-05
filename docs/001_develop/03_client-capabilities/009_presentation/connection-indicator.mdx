@@ -1,0 +1,160 @@
+---
+title: 'Connection Indicator'
+sidebar_label: 'Connection Indicator'
+id: client-presentation-connection-indicator
+keywords: [web, web components, presentation, connection-indicator]
+tags:
+- web
+- web components
+- connection-indicator
+sidebar_position: 9
+---
+
+import ConnectionIndicatorDemo from './examples/connection-indicator.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# ConnectionIndicator
+
+Use cases:
+* Visual representation of the websocket connection status.
+
+## Example
+
+<ConnectionIndicatorDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-connection-indicator></rapid-connection-indicator>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-connection-indicator></rapid-connection-indicator>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+    <rapid-connection-indicator></rapid-connection-indicator>
+  ```
+  Usage
+  ```tsx
+  export function MyComponent() {
+    return (
+      <rapid-connection-indicator></rapid-connection-indicator>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+    <rapid-connection-indicator></rapid-connection-indicator>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  @Component({
+    selector: 'my-root',
+    template: `
+          <rapid-connection-indicator></rapid-connection-indicator>
+        `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  })
+  export class AppComponent {
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>show-label</td>
+      <td><code>boolean</code></td>
+      <td>Displays the `host url` if connected; otherwise it displays the text `disconnected`.</td>
+<td>
+
+```typescript
+<rapid-connection-indicator show-label>
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+# Properties
+
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+
+This component doesn't have any slots.
+
+### Parts
+
+This component doesn't have any parts.
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.
+
+## Login Form
+
+This component has already been integrated into the form of the login page and can easily be enabled by setting the `showConnectionIndicator` parameter to `true`.
+
+#### Example login route settings
+
+```jsx
+{
+path: 'login',
+  element: Login,
+  title: 'Login',
+  name: 'login',
+  layout: loginLayout,
+  settings: {
+  defaultRedirectUrl: 'protected',
+    public: true,
+    resetPassword: true,
+    forgotPassword: true,
+    requestAccount: true,
+    ssoToggle: true,
+    ssoEnable: false,
+    showConnectionIndicator: true,
+},
+childRouters: true,
+}
+```
+
+#### Result (connected)
+![](/img/connection-indicator-connected.png)
+
+#### Result (disconnected)
+![](/img/connection-indicator-disconnected.png)

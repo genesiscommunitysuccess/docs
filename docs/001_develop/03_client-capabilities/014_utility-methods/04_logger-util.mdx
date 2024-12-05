@@ -1,0 +1,63 @@
+---
+title: 'Logger Utility'
+sidebar_label: 'Logger Utility'
+id: logger-utils
+keywords: [utils, utility, logger, logging, consola, depracation, levels, logLevel, createLogger, json]
+tags:
+  - utils
+  - utility
+  - logger
+  - logging
+  - consola
+  - depracation
+  - levels
+  - logLevel
+  - createLogger
+  - json
+---
+
+Advanced logging functionalities, extending the capabilities of the [`Consola`](https://github.com/unjs/consola) logger. It provides structured and versatile logging options suitable for various development needs, from debugging to production monitoring.
+
+## Key Features
+
+- **Consola Integration:** Leverages the `Consola` logging library for a wide range of logging levels and methods, ensuring compatibility with existing logging practices.
+- **Deprecation Logging:** Introduces a custom logging method for deprecated symbols, encouraging best practices and aiding in the gradual phasing out of outdated code.
+- **Configurable Logging Levels:** Includes support for setting log levels, allowing developers to fine-tune the verbosity of log output according to the current environment or debugging needs.
+
+## Logger Options
+
+Options for creating a logger are extended from [`ConsolaOptions`](https://github.com/unjs/consola/blob/main/src/types.ts), enabling the customization of logger behavior, such as log level, reporters, and more.
+
+## Examples 
+
+### Creating a Logger
+
+The `Logger` interface extends the functionality of `Consola`, providing support for multiple log levels such as `log`, `info`, `warn`, and `error`. Additionally, it introduces a specialized method for logging deprecation warnings. Here's how you can create and use a logger:
+
+```typescript
+const logger = createLogger('exampleLogger');
+logger.warn('This is a warning message'); // Outputs: [exampleLogger] This is a warning message
+```
+
+### Deprecated method
+
+The deprecated method logs a deprecation warning for a specified symbol, optionally including guidance on alternative usage and the target version for removal. This ensures clear communication about outdated functionality in your codebase.
+
+```typescript
+import { createLogger, LogLevel } from '@genesislcap/foundation-logger';
+
+const logger = createLogger('myLogger', { level: LogLevel.Debug });
+
+logger.deprecated(
+  'oldFunction', 
+  'Use newFunction instead.', 
+  'v2.0.0'
+);
+// Outputs: [myLogger] Debug: Deprecated symbol used 'oldFunction'. Use 'newFunction' instead. Will be removed in version v2.0.0.
+```
+
+## Considerations
+
+- Utilize the `deprecated` method to log deprecation warnings, facilitating smoother transitions away from outdated code.
+- Adjust log levels dynamically to match the environment, minimizing noise in production logs while maximizing debug information during development.
+- Migrate to the recommended `createLogger` from `@genesislcap/foundation-logger` to take advantage of centralized logging improvements and features.

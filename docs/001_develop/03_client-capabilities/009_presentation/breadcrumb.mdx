@@ -1,0 +1,191 @@
+---
+title: 'Breadcrumb'
+sidebar_label: 'Breadcrumb'
+id: client-presentation-breadcrumb
+keywords: [presentation, breadcrumb, navigation]
+tags:
+- presentation
+- breadcrumb
+- navigation
+sidebar_position: 9
+---
+
+import BreadcrumbDemo from './examples/breadcrumb';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Breadcrumb
+
+Use cases:
+* Breadcrumb trail navigation.
+
+## Example
+
+<BreadcrumbDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-breadcrumb>
+      <rapid-breadcrumb-item href="#">Breadcrumb item 1</rapid-breadcrumb-item>
+      <rapid-breadcrumb-item href="#">Breadcrumb item 2</rapid-breadcrumb-item>
+      <rapid-breadcrumb-item>Breadcrumb item 3</rapid-breadcrumb-item>
+    </rapid-breadcrumb>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-breadcrumb>
+          <rapid-breadcrumb-item href="#">Breadcrumb item 1</rapid-breadcrumb-item>
+          <rapid-breadcrumb-item href="#">Breadcrumb item 2</rapid-breadcrumb-item>
+          <rapid-breadcrumb-item>Breadcrumb item 3</rapid-breadcrumb-item>
+        </rapid-breadcrumb>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+    <rapid-breadcrumb>
+      <rapid-breadcrumb-item href="#">Breadcrumb item 1</rapid-breadcrumb-item>
+      <rapid-breadcrumb-item href="#">Breadcrumb item 2</rapid-breadcrumb-item>
+      <rapid-breadcrumb-item>Breadcrumb item 3</rapid-breadcrumb-item>
+    </rapid-breadcrumb>
+  ```
+  Usage
+  ```tsx
+  export function MyComponent() {
+    return (
+      <rapid-breadcrumb>
+        <rapid-breadcrumb-item href="#">Breadcrumb item 1</rapid-breadcrumb-item>
+        <rapid-breadcrumb-item href="#">Breadcrumb item 2</rapid-breadcrumb-item>
+        <rapid-breadcrumb-item>Breadcrumb item 3</rapid-breadcrumb-item>
+      </rapid-breadcrumb>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+    <rapid-breadcrumb>
+      <rapid-breadcrumb-item href="#">Breadcrumb item 1</rapid-breadcrumb-item>
+      <rapid-breadcrumb-item href="#">Breadcrumb item 2</rapid-breadcrumb-item>
+      <rapid-breadcrumb-item>Breadcrumb item 3</rapid-breadcrumb-item>
+    </rapid-breadcrumb>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  @Component({
+    selector: 'my-root',
+    template: `
+      <rapid-breadcrumb>
+        <rapid-breadcrumb-item href="#">Breadcrumb item 1</rapid-breadcrumb-item>
+        <rapid-breadcrumb-item href="#">Breadcrumb item 2</rapid-breadcrumb-item>
+        <rapid-breadcrumb-item>Breadcrumb item 3</rapid-breadcrumb-item>
+      </rapid-breadcrumb>
+    `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  })
+  export class AppComponent {
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## Breadcrumb API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+This component doesn't have any attributes.
+
+### Properties
+
+This component doesn't have any properties.
+
+### Slots
+
+| Name | Description |
+|---|---|
+| Default | Container for breadcrumb-items |
+
+### Parts
+
+| Part   | Description                                       |
+|--------| ------------------------------------------------- |
+| list   | The list of all the breadcrumb items              |
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.
+
+
+## Breadcrumb Item API
+
+Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+### Attributes
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>href</td>
+      <td><code>string</code></td>
+      <td>The hyperlink text.</td>
+<td>
+
+```typescript
+<rapid-breadcrumb-item href="someLink">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+
+### Properties
+
+This component doesn't have any properties.
+
+### Slots
+
+| Slot      | Description                                       |
+|-----------| ------------------------------------------------- |
+| separator | Used to change the separator between the breadcrumb items.        |
+
+### Parts
+
+| Part     | Description                                       |
+|----------| ------------------------------------------------- |
+| listItem | The breadcrumb item container                    |
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.

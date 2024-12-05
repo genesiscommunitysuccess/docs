@@ -8,12 +8,40 @@ tags:
 sidebar_position: 19
 ---
 
-Coming soon...
 
-Guides for common styling questions such as how to style a grid 
+This guide will help you understand how to customize Genesis components. Whether you are building reusable components or customizing styles for a specific use case, this documentation has you covered.
 
-Design System 
+Genesis components are a collection of web components that are designed to adapt to your design system requirements, allowing you to work seamlessly with existing tools and processes.
 
-    Design system configurator 
+What they offer:
 
-Light mode/dark mode etc 
+- Enhanced flexibility for styling and customization.
+- Integration with design tokens for theming consistency.
+- Advanced customization through **Shadow DOM**, **::part,** and **::slotted**.
+
+
+Throughout this guide we will look at two key customization scenarios:
+
+##### **Scenario 1: Extending Genesis Components**
+In this scenario, you create a new component by extending an existing Genesis component, such as `RapidButton`. This approach is ideal when you need to build reusable, branded components for your design system.
+
+What You Can Do:
+
+>- Create your own styles for the new component.
+>- Override the default styles of the Genesis component using CSS custom properties or other styling methods.
+>- Customize or override design tokens for theming.
+>- Define new appearances or modify existing ones (e.g., primary, danger, or link). This is specific to `rapid-button` and uses the withBehaviors method to define or update component appearances.
+>- Combine multiple styling techniques (e.g., CSS custom properties and design tokens) for precise control over the component's design.
+
+
+
+##### **Scenario 2: Using Genesis Components Directly**
+In this scenario, you use Genesis components as-is in your application and customize their styles directly. This approach is perfect for quick styling adjustments without creating new components.
+
+What You Can Do:
+
+>- Customize styles using CSS custom properties.
+>- Use Shadow DOM techniques like `::part` to style internal elements or `::slotted` for customizing slotted content.
+>- Modify or create appearances without extending components.
+>- Use the Design System Configurator for visual token customization.
+    >>- For users who want a visual approach to styling, the Design System Configurator provides a browser-based interface for customizing Genesis components.

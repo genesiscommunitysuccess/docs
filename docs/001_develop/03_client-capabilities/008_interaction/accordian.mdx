@@ -78,7 +78,7 @@ Use cases:
     ```
 
     Usage
-    ```typescript
+    ```tsx
     export function MyComponent() {
       return (
         <rapid-accordion>
@@ -112,7 +112,6 @@ Use cases:
     Usage
     ```typescript
     import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-    import { FormsModule } from '@angular/forms';
     @Component({
       selector: 'my-root',
       template: `
@@ -133,7 +132,6 @@ Use cases:
       `,
       standalone: true,
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule],
     })
     export class AppComponent { }
     ```

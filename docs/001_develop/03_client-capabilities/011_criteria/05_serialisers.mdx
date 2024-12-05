@@ -1,0 +1,223 @@
+---
+title: 'Serialisers'
+sidebar_label: 'Serialisers'
+id: serialisers
+keywords: [foundation, ui, comms, resource, criteria, filtering, formatters, groovy, filtering, charts, grids]
+tags:
+  - connected
+  - ui
+  - comms
+  - criteria
+  - resource
+  - filtering
+  - formatters
+  - groovy
+  - filtering
+  - charts
+  - grids
+---
+
+[Serialisers](./docs/api/foundation-criteria.serialisers.md) are utility functions for creating Groovy expressions for different operators, such as greater than, less than, equals, etc.
+
+## Methods
+
+<table>
+    <thead>
+    <tr>
+        <th>Method</th>
+        <th>Description</th>
+        <th>Return value</th>
+        <th>Example</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>AND</td>
+        <td>Creates a groovy expression clause testing AND</td>
+        <td>(e: Expression) => string</td>
+        <td>
+            ```ts
+            Serialisers.AND
+            ```
+        </td>
+    </tr>
+    <tr>
+        <td>OR</td>
+        <td>Creates a groovy expression clause testing OR</td>
+        <td>(e: Expression) => string</td>
+        <td>
+            ```ts
+            Serialisers.OR
+            ```
+        </td>
+    </tr>
+    <tr>
+        <td>NOT</td>
+        <td>Creates a groovy expression clause testing NOT</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+```ts
+Serialisers.NOT
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>GT</td>
+        <td>Creates a groovy expression clause testing greater than</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+```ts
+Serialisers.GT
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>GE</td>
+        <td>Creates a groovy expression clause testing greater</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+    ```ts
+    Serialisers.GE
+    ```
+
+</td>
+    </tr>
+    <tr>
+        <td>LT</td>
+        <td>Creates a groovy expression clause testing less than</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+    ```ts
+    Serialisers.LT
+    ```
+
+</td>
+    </tr>
+    <tr>
+        <td>NE</td>
+        <td>Creates a groovy expression clause testing greater than</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+    ```ts
+    Serialisers.GT
+    ```
+
+</td>
+    </tr>
+    <tr>
+        <td>EQ</td>
+        <td>Creates a groovy expression clause testing equals</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+```ts
+Serialisers.EQ
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>equals</td>
+        <td>Creates a groovy expression clause testing equals</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+```ts
+Serialisers.equals
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>equalsIgnoreCase</td>
+        <td>Creates a groovy expression clause testing equalsIgnoreCase, used for testing string values ignoring case</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+```ts
+Serialisers.equalsIgnoreCase
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>contains</td>
+        <td>Creates a groovy expression clause testing contains, used for testing a string contains a value</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+```ts
+Serialisers.contains
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>fieldContains</td>
+        <td>Creates a groovy expression clause testing fieldContains, used for testing a field contains a value</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+```ts
+Serialisers.fieldContains
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>containsIgnoreCase</td>
+        <td>Creates a groovy expression clause testing containsIgnoreCase, used for testing a field contains a value ignoring case</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+```ts
+Serialisers.containsIgnoreCase
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>dateIsEqual</td>
+        <td>Creates a groovy expression clause testing dateIsEqual, used for testing a date matches a value</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+```ts
+Serialisers.dateIsEqual
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>dateIsGreaterEqual</td>
+        <td>Creates a groovy expression clause testing dateIsGreaterEqual, used for testing a date matches or is greater than a value</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+```ts
+Serialisers.dateIsEqual
+```
+
+</td>
+    </tr>
+    <tr>
+        <td>dateIsLessEqual</td>
+        <td>Creates a groovy expression clause testing dateIsLessEqual, used for testing a date matches or is less than a value</td>
+        <td>(e: Expression) => string</td>
+<td>
+
+```ts
+Serialisers.dateIsEqual
+```
+
+</td>
+    </tr>
+    </tbody>
+</table>

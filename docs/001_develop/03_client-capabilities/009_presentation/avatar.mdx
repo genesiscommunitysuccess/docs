@@ -1,0 +1,216 @@
+---
+title: 'Avatar'
+sidebar_label: 'Avatar'
+id: client-presentation-avatar
+keywords: [presentation, avatar, personalisation, user, image]
+tags:
+- presentation
+- avatar
+- personalisation
+- user
+- image
+sidebar_position: 9
+---
+
+import AvatarDemo from './examples/avatar.js';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Avatar
+
+Use cases:
+* Display an image or text (usually initials) to represent a user.
+* Personalise the experience for a user
+
+## Example
+
+<AvatarDemo />
+
+<Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
+
+  <TabItem value="genesis">
+
+    Declaration
+    ```html
+    <rapid-avatar shape="circle"></rapid-avatar>
+    ```
+
+    Usage
+    ```typescript
+    @customElement({
+      name: 'my-element',
+      template: html`
+        <rapid-avatar shape="circle"></rapid-avatar>
+      `,
+    })
+    export class MyElement extends GenesisElement {
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="react">
+
+  Declaration
+  ```html
+    <rapid-avatar shape="circle"></rapid-avatar>
+  ```
+  Usage
+  ```tsx
+  export function MyComponent() {
+    return (
+      <rapid-avatar shape="circle"></rapid-avatar>
+    );
+  }
+  ```
+</TabItem>
+  <TabItem value="angular">
+
+  Declaration
+  ```html
+    <rapid-avatar shape="circle"></rapid-avatar>
+  ```
+
+  Usage
+  ```typescript
+  import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+  import { FormsModule } from '@angular/forms';
+  @Component({
+    selector: 'my-root',
+    template: `
+          <rapid-avatar shape="circle"></rapid-avatar>
+        `,
+    standalone: true,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule],
+  })
+  export class AppComponent {
+  }
+  ```
+</TabItem>
+</Tabs>
+
+## API
+
+ Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>alt</td>
+      <td><code>string</code></td>
+      <td>Alternate text to display.</td>
+<td>
+
+```typescript
+<rapid-avatar alt="User Profile Image">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>link</td>
+      <td><code>string</code></td>
+      <td>URL link assigned to the avatar.</td>
+<td>
+
+```typescript
+<rapid-avatar link="https://someLink">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td><code>string</code></td>
+      <td>The name associated to the avatar</td>
+<td>
+
+```typescript
+<rapid-avatar name="JohnDoe">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>shape</td>
+      <td><code>"circle" | "square"</code></td>
+      <td>The shape of the avatar. Defaults to <code>circle</code></td>
+<td>
+
+```typescript
+<rapid-avatar shape="circle">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>fill</td>
+      <td><code>string</code></td>
+      <td>Background fill colour of the avatar</td>
+<td>
+
+```typescript
+<rapid-avatar fill="primary">
+```
+
+</td>
+    </tr>
+    <tr>
+      <td>color</td>
+      <td><code>string</code></td>
+      <td>The text color of the avatar.</td>
+<td>
+
+```typescript
+<rapid-avatar color="dark">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+:::note
+  The `fill` and `color` attributes of the `avatar` create CSS custom properties, which can be used to style the control.
+  Pass in the css name minus the "avatar-fill-" string for fill.
+  Pass in the css name minus the "avatar-color-" string for color.
+
+```css
+alpha-avatar {
+  --avatar-fill-primary: #0EAFE2;
+  --avatar-fill-danger: #ff0000;
+  --avatar-color-light: #ffffff;
+  --avatar-color-dark: #000000;
+}
+```
+:::
+
+# Properties
+
+This component doesn't have any properties which are not also controlled via attributes.
+
+### Slots
+
+| Name | Description |
+|---|---|
+| media	| Used for media such as an image. |
+| Default |The default slot for avatar text, commonly a name or initials. |
+| badge | Used to provide a badge, such as a status badge. |
+
+### Parts
+
+| Name | Description |
+|---|---|
+| backplate | The wrapping container for the avatar. |
+| link | The avatar link. |
+| media | The media slot. |
+| content | The default slot. |
+
+### Events fired
+
+This component doesn't fire any events.
+
+### Events listened to
+
+This component doesn't listen to any events.
