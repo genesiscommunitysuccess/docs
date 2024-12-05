@@ -151,10 +151,12 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>string</code></td>
       <td>**Required** attribute. The name of the target <a href="/develop/server-capabilities/real-time-queries-data-server/">Data Server</a> <code>query</code> or <a href="/develop/server-capabilities/snapshot-queries-request-server/">Request Server</a> <code>requestReply</code>.</td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME">
 <grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME">
 ```
+
 </td>
     </tr>
     <tr>
@@ -162,10 +164,12 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>boolean</code></td>
       <td>Request a snapshot from the server. Default: <code>false</code></td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" is-snapshot>
 <grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" is-snapshot>
 ```
+
 </td>
     </tr>
     <tr>
@@ -173,10 +177,12 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>string</code></td>
       <td>Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription.</td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" criteria="price > 100">
 <grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" criteria="price > 100">
 ```
+
 </td>
     </tr>
     <tr>
@@ -184,10 +190,12 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>number</code></td>
       <td>Maximum number of rows to be returned as part of the initial message and any additional MORE_ROWS messages. <strong>This will not affect the number of rows displayed.</strong></td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" max-rows="1000">
 <grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" max-rows="1000">
 ```
+
 </td>
     </tr>
     <tr>
@@ -195,10 +203,12 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>number</code></td>
       <td>The desired view/page you want data from.</td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" view-number="2">
 <grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" view-number="2">
 ```
+
 </td>
     </tr>
   </tbody>
@@ -221,14 +231,16 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>Function</code></td>
       <td>Function to map the row data before it is sent to the grid. The function should return an array of objects, where each object represents a row in the grid.</td>
 <td>
-  ```html
-  <grid-pro-client-side-datasource
-    resource-name="DATASERVER_OR_REQUEST_SERVER_NAME"
-    :rowDataMapper="${(data) => data.map((row) => ({ ...row, calculatedValue: row.value1 + row.value2 }))}">
-  <grid-pro-server-side-datasource
-    resource-name="DATASERVER_OR_REQUEST_SERVER_NAME"
-    :rowDataMapper="${(data) => data.map((row) => ({ ...row, calculatedValue: row.value1 + row.value2 }))}">
-  ```
+
+```html
+<grid-pro-client-side-datasource
+  resource-name="DATASERVER_OR_REQUEST_SERVER_NAME"
+  :rowDataMapper="${(data) => data.map((row) => ({ ...row, calculatedValue: row.value1 + row.value2 }))}">
+<grid-pro-server-side-datasource
+  resource-name="DATASERVER_OR_REQUEST_SERVER_NAME"
+  :rowDataMapper="${(data) => data.map((row) => ({ ...row, calculatedValue: row.value1 + row.value2 }))}">
+```
+
 </td>
     </tr>
   </tbody>
@@ -266,10 +278,12 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>number</code></td>
       <td>Maximum number of rows to track as part of a client "view".</td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="DATASERVER_NAME" max-view="500">
 <grid-pro-server-side-datasource resource-name="DATASERVER_NAME" max-view="1000">
 ```
+
 </td>
     </tr>
     <tr>
@@ -277,10 +291,12 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>boolean</code></td>
       <td>Default: <code>false</code>. If true, when the maximum number of rows defined in <code>max-view</code> is reached, the Data Server will start discarding the oldest rows (in terms of timestamp) and sending newer rows. If false, updates in the server will be sent to the front end regardless of order. Note that this will only update the UI; no changes will be performed in the database.</td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="DATASERVER_NAME" moving-view>
 <grid-pro-server-side-datasource resource-name="DATASERVER_NAME" moving-view>
 ```
+
 </td>
     </tr>
     <tr>
@@ -288,10 +304,12 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>string</code></td>
       <td>This option can be used to select a <a href="/develop/server-capabilities/real-time-queries-data-server/#indices">Data Server index</a> (defined in the Data Server <code>query</code>), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows are returned in order of creation (from oldest database record to newest).</td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="DATASERVER_NAME" order-by="price">
 <grid-pro-server-side-datasource resource-name="DATASERVER_NAME" order-by="timestamp">
 ```
+
 </td>
     </tr>
     <tr>
@@ -299,10 +317,12 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>boolean</code></td>
       <td>Default: <code>false</code>. This option changes the <a href="/develop/server-capabilities/real-time-queries-data-server/#indices">Data Server index</a> iteration. For example, if you are using the default index, the query will return rows in order from the newest database records to the oldest.</td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="DATASERVER_NAME" reverse>
 <grid-pro-server-side-datasource resource-name="DATASERVER_NAME" reverse>
 ```
+
 </td>
     </tr>
   </tbody>
@@ -325,10 +345,12 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>boolean</code></td>
       <td>This option disables polling if set to true (data updates for the grid will not be fetched automatically). Defaults to false.</td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="REQUEST_SERVER_NAME" disable-polling>
 <grid-pro-server-side-datasource resource-name="REQUEST_SERVER_NAME" disable-polling>
 ```
+
 </td>
     </tr>
     <tr>
@@ -336,10 +358,12 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>number</code></td>
       <td>This option enables you to set a custom polling frequency (in milliseconds) for a <a href="/develop/server-capabilities/snapshot-queries-request-server/">Request Server</a> resource. Note that this option only works with Request Server resources; if your resource is a Data Server <code>query</code>, your grid is updated in real time.</td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="REQUEST_SERVER_NAME" polling-interval="5000">
 <grid-pro-server-side-datasource resource-name="REQUEST_SERVER_NAME" polling-interval="3000">
 ```
+
 </td>
     </tr>
     <tr>
@@ -347,10 +371,12 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>boolean</code></td>
       <td>This option, if set to true, will automatically set up the <code>request</code> based on the datasource's metadata. Defaults to false.</td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="REQUEST_SERVER_NAME" request-auto-setup>
 <grid-pro-server-side-datasource resource-name="REQUEST_SERVER_NAME" request-auto-setup>
 ```
+
 </td>
     </tr>
   </tbody>
@@ -373,11 +399,13 @@ These are used to define the resource that the datasource will be fetching data 
       <td><code>any</code></td>
       <td>Similar to <code>fields</code> but for <a href="/develop/server-capabilities/snapshot-queries-request-server/">Request Server</a> scenarios. This optional parameter enables you to specify request fields, which can include wildcards.</td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="REQUEST_SERVER_NAME" :request="Trade.*">
 <grid-pro-server-side-datasource resource-name="REQUEST_SERVER_NAME" :request="Position.*,Price.*">
 <grid-pro-client-side-datasource resource-name="REQUEST_SERVER_NAME" :request="${() => ({ TRADE_ID: '00001' })}">
 ```
+
 </td>
     </tr>
   </tbody>
@@ -404,9 +432,11 @@ Additional attributes that can affect the behavior of a datasource component.
       <td><code>boolean</code></td>
       <td>If set to true, the resource data will be reloaded upon a reconnection event. Default: <code>false</code></td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" restart-on-reconnection>
 ```
+
 </td>
     </tr>
     <tr>
@@ -414,9 +444,11 @@ Additional attributes that can affect the behavior of a datasource component.
       <td><code>boolean</code></td>
       <td>If set to true, column definitions will be retained upon a <code>restart</code> or <code>clearRowData</code> event. Default: <code>false</code></td>
 <td>
+
 ```html
 <grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" keep-col-defs-on-clear-row-data>
 ```
+
 </td>
     </tr>
   </tbody>
@@ -439,9 +471,11 @@ Additional attributes that can affect the behavior of a datasource component.
       <td><code>boolean</code></td>
       <td>Enables pagination if set to true (default: false); otherwise, the behavior will be infinite-scroll.</td>
 <td>
+
 ```html
 <grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" pagination>
 ```
+
 </td>
     </tr>
     <tr>
@@ -449,9 +483,11 @@ Additional attributes that can affect the behavior of a datasource component.
       <td><code>boolean</code></td>
       <td>If set to true, the starting <code>VIEW_NUMBER</code> will be zero-based (starting from 0 instead of 1). Default is false.</td>
 <td>
+
 ```html
 <grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" zero-based-view-number>
 ```
+
 </td>
     </tr>
     <tr>
@@ -459,9 +495,11 @@ Additional attributes that can affect the behavior of a datasource component.
       <td><code>boolean</code></td>
       <td>Enables live updates for the grid if set to true (default: false).</td>
 <td>
+
 ```html
 <grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" live-updates>
 ```
+
 </td>
     </tr>
   </tbody>
