@@ -73,7 +73,7 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
 
 - **Sorting**: Order by any INDEX column/field, ASC or DESC.
   - This is a server limitation. For each column that needs to be sortable, you must have an [index](/develop/server-capabilities/real-time-queries-data-server/#indices) for it. 
-  - By default, sorting is disabled on all columns, but wherever a valid index is detected from the metadata, that columns (field) will have sorting enabled.
+  - By default, sorting is disabled on all columns, but wherever a valid index is detected from the metadata, that column (field) will have sorting enabled.
   - If the user attempts to force `sortable`, we'll check its validity, warn in the logs if not, and mention other available indices, if any.
 - **Filtering**:
   - Filtering options are automatically generated, based on the resource’s metadata.
