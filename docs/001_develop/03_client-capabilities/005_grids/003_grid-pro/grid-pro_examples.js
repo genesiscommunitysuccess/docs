@@ -60,14 +60,13 @@ function GridProExampleBase({
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => { loadGridOptions(); }, 2000);
+    const timer = setTimeout(() => { loadGridOptions(); }, 500);
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <CodeSection>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: gridHeight }}>
-        {!isLoaded ? (<LoadingRing />) : null}
         <rapid-grid-pro ref={grid} ></rapid-grid-pro>
       </div>
     </CodeSection>
@@ -238,6 +237,7 @@ export function GridProExampleNumberEditor() {
               disabled: false,
             },
             editable: true,
+            pinned: 'right',
           }
         : colDef
     ),

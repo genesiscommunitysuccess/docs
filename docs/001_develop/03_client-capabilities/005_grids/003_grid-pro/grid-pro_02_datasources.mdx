@@ -125,15 +125,16 @@ The `@genesislcap/grid-pro` package provides a collection of grid-pro datasource
 </rapid-grid-pro>
 ```
 
-## Common attributes
+## Common attributes and properties
 
 There are many attributes that can be set on a datasource component. These attributes can be used to customize the behavior of the datasource and the grid component. Below is a list of some of the most commonly used attributes.
 
-### Resource attributes
+### Resource-specific
 
-Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, while others can be used with both.
+Some **resource** attributes and properties are `DATASERVER` or `REQUEST_SERVER` specific, while others can be used with both.
+These are used to define the resource that the datasource will be fetching data from. The `resource-name` attribute is required for both `DATASERVER` and `REQUEST_SERVER` resources.
 
-#### Attributes common to DATASERVER and REQUEST_SERVER
+#### DATASERVER and REQUEST_SERVER attributes
 
 <table>
   <thead>
@@ -148,12 +149,12 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
     <tr>
       <td><code>resource-name</code></td>
       <td><code>string</code></td>
-      <td>The name of the target <a href="/develop/server-capabilities/real-time-queries-data-server/">Data Server</a> <code>query</code> or <a href="/develop/server-capabilities/snapshot-queries-request-server/">Request Server</a> <code>requestReply</code>.</td>
+      <td>**Required** attribute. The name of the target <a href="/develop/server-capabilities/real-time-queries-data-server/">Data Server</a> <code>query</code> or <a href="/develop/server-capabilities/snapshot-queries-request-server/">Request Server</a> <code>requestReply</code>.</td>
 <td>
 
 ```html
-<grid-pro-client-side-datasource resource-name="trades">
-<grid-pro-server-side-datasource resource-name="trades">
+<grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME">
+<grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME">
 ```
 
 </td>
@@ -165,8 +166,8 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
 <td>
 
 ```html
-<grid-pro-client-side-datasource is-snapshot>
-<grid-pro-server-side-datasource is-snapshot>
+<grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" is-snapshot>
+<grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" is-snapshot>
 ```
 
 </td>
@@ -178,8 +179,8 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
 <td>
 
 ```html
-<grid-pro-client-side-datasource criteria="price > 100">
-<grid-pro-server-side-datasource criteria="price > 100">
+<grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" criteria="price > 100">
+<grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" criteria="price > 100">
 ```
 
 </td>
@@ -191,8 +192,8 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
 <td>
 
 ```html
-<grid-pro-client-side-datasource max-rows="1000">
-<grid-pro-server-side-datasource max-rows="1000">
+<grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" max-rows="1000">
+<grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" max-rows="1000">
 ```
 
 </td>
@@ -204,8 +205,40 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
 <td>
 
 ```html
-<grid-pro-client-side-datasource view-number="2">
-<grid-pro-server-side-datasource view-number="2">
+<grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" view-number="2">
+<grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" view-number="2">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+#### DATASERVER and REQUEST_SERVER properties
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>:rowDataMapper</code></td>
+      <td><code>Function</code></td>
+      <td>Function to map the row data before it is sent to the grid. The function should return an array of objects, where each object represents a row in the grid.</td>
+<td>
+
+```html
+<grid-pro-client-side-datasource
+  resource-name="DATASERVER_OR_REQUEST_SERVER_NAME"
+  :rowDataMapper="${(data) => data.map((row) => ({ ...row, calculatedValue: row.value1 + row.value2 }))}">
+<grid-pro-server-side-datasource
+  resource-name="DATASERVER_OR_REQUEST_SERVER_NAME"
+  :rowDataMapper="${(data) => data.map((row) => ({ ...row, calculatedValue: row.value1 + row.value2 }))}">
 ```
 
 </td>
@@ -234,8 +267,8 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
 <td>
 
 ```html
-<grid-pro-client-side-datasource fields="name,price,quantity">
-<grid-pro-server-side-datasource fields="id,timestamp,value">
+<grid-pro-client-side-datasource resource-name="DATASERVER_NAME" fields="name,price,quantity">
+<grid-pro-server-side-datasource resource-name="DATASERVER_NAME" fields="id,timestamp,value">
 ```
 
 </td>
@@ -247,8 +280,8 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
 <td>
 
 ```html
-<grid-pro-client-side-datasource max-view="500">
-<grid-pro-server-side-datasource max-view="1000">
+<grid-pro-client-side-datasource resource-name="DATASERVER_NAME" max-view="500">
+<grid-pro-server-side-datasource resource-name="DATASERVER_NAME" max-view="1000">
 ```
 
 </td>
@@ -260,8 +293,8 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
 <td>
 
 ```html
-<grid-pro-client-side-datasource moving-view>
-<grid-pro-server-side-datasource moving-view>
+<grid-pro-client-side-datasource resource-name="DATASERVER_NAME" moving-view>
+<grid-pro-server-side-datasource resource-name="DATASERVER_NAME" moving-view>
 ```
 
 </td>
@@ -273,8 +306,8 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
 <td>
 
 ```html
-<grid-pro-client-side-datasource order-by="price">
-<grid-pro-server-side-datasource order-by="timestamp">
+<grid-pro-client-side-datasource resource-name="DATASERVER_NAME" order-by="price">
+<grid-pro-server-side-datasource resource-name="DATASERVER_NAME" order-by="timestamp">
 ```
 
 </td>
@@ -286,8 +319,8 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
 <td>
 
 ```html
-<grid-pro-client-side-datasource reverse>
-<grid-pro-server-side-datasource reverse>
+<grid-pro-client-side-datasource resource-name="DATASERVER_NAME" reverse>
+<grid-pro-server-side-datasource resource-name="DATASERVER_NAME" reverse>
 ```
 
 </td>
@@ -314,8 +347,8 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
 <td>
 
 ```html
-<grid-pro-client-side-datasource disable-polling>
-<grid-pro-server-side-datasource disable-polling>
+<grid-pro-client-side-datasource resource-name="REQUEST_SERVER_NAME" disable-polling>
+<grid-pro-server-side-datasource resource-name="REQUEST_SERVER_NAME" disable-polling>
 ```
 
 </td>
@@ -327,21 +360,8 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
 <td>
 
 ```html
-<grid-pro-client-side-datasource polling-interval="5000">
-<grid-pro-server-side-datasource polling-interval="3000">
-```
-
-</td>
-    </tr>
-    <tr>
-      <td><code>request</code></td>
-      <td><code>string</code></td>
-      <td>Similar to <code>fields</code> but for <a href="/develop/server-capabilities/snapshot-queries-request-server/">Request Server</a> scenarios. This optional parameter enables you to specify request fields, which can include wildcards.</td>
-<td>
-
-```html
-<grid-pro-client-side-datasource request="Trade.*">
-<grid-pro-server-side-datasource request="Position.*,Price.*">
+<grid-pro-client-side-datasource resource-name="REQUEST_SERVER_NAME" polling-interval="5000">
+<grid-pro-server-side-datasource resource-name="REQUEST_SERVER_NAME" polling-interval="3000">
 ```
 
 </td>
@@ -353,8 +373,8 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
 <td>
 
 ```html
-<grid-pro-client-side-datasource request-auto-setup>
-<grid-pro-server-side-datasource request-auto-setup="true">
+<grid-pro-client-side-datasource resource-name="REQUEST_SERVER_NAME" request-auto-setup>
+<grid-pro-server-side-datasource resource-name="REQUEST_SERVER_NAME" request-auto-setup>
 ```
 
 </td>
@@ -362,7 +382,36 @@ Some **resource** attributes are `DATASERVER` or `REQUEST_SERVER` specific, whil
   </tbody>
 </table>
 
-### Exclusive attributes
+#### REQUEST_SERVER-only properties
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>:request</code></td>
+      <td><code>any</code></td>
+      <td>Similar to <code>fields</code> but for <a href="/develop/server-capabilities/snapshot-queries-request-server/">Request Server</a> scenarios. This optional parameter enables you to specify request fields, which can include wildcards.</td>
+<td>
+
+```html
+<grid-pro-client-side-datasource resource-name="REQUEST_SERVER_NAME" :request="Trade.*">
+<grid-pro-server-side-datasource resource-name="REQUEST_SERVER_NAME" :request="Position.*,Price.*">
+<grid-pro-client-side-datasource resource-name="REQUEST_SERVER_NAME" :request="${() => ({ TRADE_ID: '00001' })}">
+```
+
+</td>
+    </tr>
+  </tbody>
+</table>
+
+### Datasource-specific attributes
 
 There are additional attributes that can affect the behaviour of a datasource component.
 
@@ -385,7 +434,7 @@ There are additional attributes that can affect the behaviour of a datasource co
 <td>
 
 ```html
-<grid-pro-client-side-datasource restart-on-reconnection>
+<grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" restart-on-reconnection>
 ```
 
 </td>
@@ -397,7 +446,7 @@ There are additional attributes that can affect the behaviour of a datasource co
 <td>
 
 ```html
-<grid-pro-client-side-datasource keep-col-defs-on-clear-row-data>
+<grid-pro-client-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" keep-col-defs-on-clear-row-data>
 ```
 
 </td>
@@ -424,7 +473,7 @@ There are additional attributes that can affect the behaviour of a datasource co
 <td>
 
 ```html
-<grid-pro-server-side-datasource pagination>
+<grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" pagination>
 ```
 
 </td>
@@ -436,7 +485,7 @@ There are additional attributes that can affect the behaviour of a datasource co
 <td>
 
 ```html
-<grid-pro-server-side-datasource zero-based-view-number>
+<grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" zero-based-view-number>
 ```
 
 </td>
@@ -448,7 +497,7 @@ There are additional attributes that can affect the behaviour of a datasource co
 <td>
 
 ```html
-<grid-pro-server-side-datasource live-updates>
+<grid-pro-server-side-datasource resource-name="DATASERVER_OR_REQUEST_SERVER_NAME" live-updates>
 ```
 
 </td>
