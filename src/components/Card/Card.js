@@ -15,7 +15,7 @@ export default function Card (props) {
     />;
 
   const imageWithWrapper = imageLink ? (
-    <a href={imageLink} title={heading} className="card-main-image-wrapper">
+    <a href={imageLink} title={heading} target="_blank" className="card-main-image-wrapper">
       {imageElement}
     </a>
   ) : (
