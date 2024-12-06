@@ -1,0 +1,212 @@
+---
+title: '7.2'
+sidebar_label: '7.2'
+sidebar_position: 18
+id: '7.2'
+---
+
+### Breaking changes
+- API enhancements for dynamic rule creation forms, split new SYSTEM_ENTITY request into two 
+- Always add userName to rule expression substitutions in DynamicRuleFactory 
+- Standardised python script shebang lines to make compatible with systems running python2 and python3 
+- Add --excludeFields arg to DumpIt 
+- Using indy compilation 
+- Router parses request bodies correctly for reqrep server message 
+- GenesisScriptCache is not consistently hit
+
+Features
+- (Settings plugin): Ensure internal modules exist before compilation
+- (Settings plugin): generate config jar from main module and remove config internal module
+- (router): add flag to provide enhanced HEARTBEAT_PONG messages and expose "onHeartbeatPing" hook in script definition to handle custom business logic
+- (router): expose settings for Websocket frame sizes, fix frame aggregation and - allow Websocket binary payload using MsgPack format
+- (settings-plugin): project type properties so import not required
+- Add PrimaryIfSingleNode system definition setting to automatically set a cluster node as primary if no other hosts are defined
+- Add SQL high performance mode configuration and enable by default on postgres and mssql
+- Add gzip compression option for table dumps
+- Add inject method to AuthPermissionsScript
+- Add minimal cfg zip to distribution and distribution plugin.
+- Add option to exclude fields from results in data servers and request servers
+- Add support for reading gzipped CSV files in SendIt
+- Added new pipeline API to GSF
+- Enhance purger scripts to support csv and csv.gz backups
+- Implement Early Failure for Invalid Mandatory to Optional Field Overrides in Metadata Definitions
+- Implement max safe integer and update numeric type fields
+- Improve logging on Streamer Clients
+- Only log defaulting value statement if running SendIt in verbose mode
+- Support subtable syntax using inline fields
+- Update SQL database connection pool size parameter handling
+- Update scripts to include local imports and implement metaInf producers
+- Add data load flag to remap, and upsertAll flag to SendIt
+- Add process file overrides to project overview build task
+- Add upsert to SendIt.
+- Check db in sync with classpath dictionary on RxDbImpl while not preventing Remap to run.
+- Enable autoIncrement for LONG fields
+- Introducing pbc build gradle plugin
+- Log auth map and fields on dataserver auth usage
+- Logs with traceability in query and caching
+- Move publication logic to DistributionPlugin.
+- New table syntax to support inline field definitions
+- Refactor Excel to Genesis to allow usage from Genesis create
+- Site specific distribution plugin and remove site specific internal module
+- Support for update queue using JMS as underlying implementation
+- Update enum syntax in tables
+Fixes
+- (dataserver): try to recover from data server errors
+- (exec plugin): copy site specific files from main module
+- (manifest): path for finding script modules in simplified structure
+- (pal-dataserver): disableAuthUpdates flag works as expected again
+- (pal-streamer): Added terminateOnError flag to streamer config to allow control of failure behaviour, enhanced exception handling
+- Add 'enabled' property to ManifestCreationTask
+- Add TIMESTAMP support to DbMon distinct command
+- Add NEW_PASSWORD and OLD_PASSWORD to SensitiveFields and test case
+- Add support for dataserver pagination mode when using HTTP requests
+- Add template processing feature in ProductDetailsCreatorPlugin
+- Convert evaluator expression parser as well as writer to use logical AND
+- Create new task to depend on _genesisInstall and generated code
+- End the dictionary sync failure process with exitProcess.
+- Ensure remap logs full output correctly
+- Extending length of address line fields
+- Fix Moving view logic so the timestamp sorted references are always in sync with the rows in view
+- Fix Operating System incompatibilities in purger config (Windows) and path resolution (MacOS)
+- Fix SentIt tasks generation
+- Fix deploy scripts
+- Force version 2.2.11 of jnr-jffi for ALL modules and exclude jnr-jffi dependency from pal-dataserver
+- Guarantee appropriate handling of dataserver socket disconnection events at router level
+- Implement annotation script handling in Gradle plugin
+- Improved Comparator code in DbUtil to prevent Long and Int casting errors
+- JMS UpdateQueue to do not close consumer if there are still listeners -LoginNack to cause the username in the channel context to be erased
+- MORE_COLUMNS messages now successfully change the payload of future QUERY_UPDATE messages
+- Prevent duplicate cache entries in views generated dao jar
+- Prevent malformed payloads from evaluator result expressions
+- Propagate closing of subscription to underlying subscription
+- Refactor file storage and alert tables in genesis configuration
+- Remap fail when field becomes non-nullable and added to key at the same change set
+- Resources are not copied to site-specific internal module in simple app
+- Respect asterisk in project overview builder
+- Unable to find module on simple structure when localDaogenVersion is mentioned
+- Update FindCommand to handle null dbEntity
+- Update Long.MIN/MAX_SAFE_INTEGER and refactor tables in genesis config
+- Update backport.yml
+- Add MetaInf directory to all codegen tasks to ensure they respect gradle rules for caching and task avoidance
+- Add check to stop pbc being used with bundleGeneratedClasses in settings plugin
+- Add process arguments to project overview json
+- Added fields to dynamic rule from template creation.
+- BundleGeneratedClasses=false works when project type is application
+- Correct path to config folder in site specific for simple structure
+- Correct remap's handling of dictionary comparison for old and new table syntax
+- Dictionary cache main module now assembles all the submodules on assemble.
+- Distinct/search commands not working in DBMon for enums
+- Distribution cfg and scripts folder paths
+- Distribution zip file version with dist plugin
+- Do not attempt to handle OOM in ScriptHost
+- Ensure we always add generated jars dependencies
+- Excluding jnr from dataserver 2
+- Finding product name in settings plugin
+- Fix copy task dependencies for simplified project structure
+- GenerateCache option is now respected as expected
+- Handle multiple modules in processes.xml in project overview builder
+- Include all cfg and script files in PBC distribution
+- Including audit generated builders in the dao cache
+- Only add version constraints of artifacts from a product's manifest where version is same as product version
+- pal-dataserver: updates batched at MessageSet level now preserve old row data
+- Remove hardcoded genesis artifactory config in site specific template
+- Remove projectOverviewBuilder task dependency on genesisSync
+- Replaced endsWith() to !=.
+- Resource daemon to do not wait for chronicle when running from intellij plugin
+- SetupEnvironment task fails on deploy plugin
+- Update implementation of createManifestTask to work with changes to simple structure
+- View enriched fields returns null after DATA_LOGOFF message
+Dependency changes
+- Fixing snapshot version
+- Bump jacksonVersion from 2.16.2 to 2.17.0 in /genesis-conventions
+- Move awsJdbcWrapperVersion from genesis-db to genesis-dependencies
+- Update owasp-false-positives.xml to exclude Quartz forever
+- Upgrade gradle license report plugin from 2.0 to 2.7
+- Bump actions/cache from 3 to 4
+- Bump actions/checkout from 2 to 4
+- Bump up actions/upload-artifact from 2 to 4
+- Bump up actions/upload-artifact from 3 to 4
+- Bump aeronVersion from 1.43.0 to 1.44.0 in /genesis-conventions
+- Bump byteBuddyVersion from 1.14.11 to 1.14.13 in /genesis-conventions
+- Bump camelVersion from 4.3.0 to 4.4.0 in /genesis-conventions
+- Bump camelVersion from 4.4.0 to 4.4.1 in /genesis-conventions
+- Bump camelVersion from 4.4.1 to 4.5.0 in /genesis-conventions
+- Bump com.github.oshi:oshi-core from 6.4.11 to 6.4.12 in /genesis-conventions
+- Bump com.github.oshi:oshi-core from 6.4.12 to 6.4.13 in /genesis-conventions
+- Bump com.github.oshi:oshi-core from 6.4.13 to 6.5.0 in /genesis-conventions
+- Bump ump com.github.vertical-blank:sql-formatter from 2.0.4 to 2.0.5 in /genesis-parent/genesis-environment
+- Bump com.google.errorprone:error_prone_annotations from 2.24.1 to 2.25.0 in /genesis-conventions
+- Bump com.google.errorprone:error_prone_annotations from 2.25.0 to 2.26.0 in /genesis-conventions
+- Bump com.google.errorprone:error_prone_annotations from 2.26.0 to 2.26.1 in /genesis-conventions
+- Bump com.google.guava:guava from 32.1.3-jre to 33.0.0-jre in /genesis-conventions/genesis-dependencies
+- Bump com.google.guava:guava from 33.0.0-jre to 33.1.0-jre in /genesis-conventions
+- Bump com.google.jimfs:jimfs from 1.1 to 1.3.0 in /genesis-parent/genesis-environment
+- Bump com.google.protobuf:protobuf-java from 3.25.2 to 3.25.3 in /genesis-conventions
+- Bump com.google.protobuf:protobuf-java from 3.25.3 to 4.26.0 in /genesis-conventions
+- Bump com.google.protobuf:protobuf-java from 4.26.0 to 4.26.1 in /genesis-conventions
+- Bump com.jakewharton.fliptables:fliptables from 1.1.0 to 1.1.1 in /genesis-parent/genesis-environment
+- Bump com.jfrog.artifactory from 5.1.10 to 5.1.14 in /genesis-conventions
+- Bump com.jfrog.artifactory from 5.1.14 to 5.2.0 in /genesis-conventions
+- Bump com.jfrog.artifactory from 5.1.14 to 5.2.0 in /genesis-publish-config
+- Bump com.microsoft.sqlserver:mssql-jdbc from 12.4.2.jre11 to 12.6.0.jre11 in /genesis-conventions
+- Bump com.microsoft.sqlserver:mssql-jdbc from 12.6.0.jre11 to 12.6.1.jre11 in /genesis-conventions
+- Bump commons-codec:commons-codec from 1.16.0 to 1.16.1 in /genesis-parent/genesis-cluster
+- Bump commons-io:commons-io from 2.15.1 to 2.16.0 in /genesis-conventions
+- Bump commons-io:commons-io from 2.16.0 to 2.16.1 in /genesis-conventions
+- Bump debeziumVersion from 2.5.0.Final to 2.5.1.Final in /genesis-conventions
+- Bump debeziumVersion from 2.5.1.Final to 2.5.2.Final in /genesis-conventions
+- Bump debeziumVersion from 2.5.2.Final to 2.5.3.Final in /genesis-conventions
+- Bump debeziumVersion from 2.5.3.Final to 2.5.4.Final in /genesis-conventions
+- Bump debeziumVersion from 2.5.4.Final to 2.6.0.Final in /genesis-conventions
+- Bump gradle/gradle-build-action from 2 to 3
+- Bump groovyVersion from 3.0.20 to 3.0.21 in /genesis-conventions
+- Bump io.github.classgraph:classgraph from 4.8.165 to 4.8.167 in /genesis-conventions
+- Bump io.github.classgraph:classgraph from 4.8.167 to 4.8.168 in /genesis-conventions
+- Bump io.github.classgraph:classgraph from 4.8.168 to 4.8.170 in /genesis-conventions
+- Bump io.netty:netty-all from 4.1.104.Final to 4.1.106.Final in /genesis-conventions/genesis-dependencies
+- Bump io.netty:netty-all from 4.1.106.Final to 4.1.107.Final in /genesis-conventions
+- Bump jacksonVersion from 2.16.1 to 2.16.2 in /genesis-conventions
+- Bump joda-time:joda-time from 2.12.6 to 2.12.7 in /genesis-conventions
+- Bump junitVersion from 5.10.1 to 5.10.2 in /genesis-conventions
+- Bump ktorVersion from 2.3.7 to 2.3.8 in /genesis-conventions/genesis-dependencies
+- Bump ktorVersion from 2.3.8 to 2.3.9 in /genesis-conventions
+- Bump ktorVersion from 2.3.9 to 2.3.10 in /genesis-conventions
+- Bump log4jVersion from 2.22.1 to 2.23.0 in /genesis-conventions
+- Bump log4jVersion from 2.23.0 to 2.23.1 in /genesis-conventions
+- Bump micrometerVersion from 1.12.1 to 1.12.2 in /genesis-conventions
+- Bump micrometerVersion from 1.12.1 to 1.12.2 in /genesis-conventions/genesis-dependencies
+- Bump micrometerVersion from 1.12.2 to 1.12.3 in /genesis-conventions
+- Bump micrometerVersion from 1.12.3 to 1.12.4 in /genesis-conventions
+- Bump micrometerVersion from 1.12.4 to 1.12.5 in /genesis-conventions
+- Bump mockitoVersion from 5.10.0 to 5.11.0 in /genesis-conventions
+- Bump mockitoVersion from 5.8.0 to 5.9.0 in /genesis-conventions/genesis-dependencies
+- Bump mockitoVersion from 5.9.0 to 5.10.0 in /genesis-conventions/genesis-dependencies
+- Bump msgpackVersion from 0.9.7 to 0.9.8 in /genesis-conventions/genesis-dependencies
+- Bump nettyVersion from 4.1.107.Final to 4.1.108.Final in /genesis-conventions
+- Bump org.agrona:agrona from 1.20.0 to 1.21.0 in /genesis-conventions
+- Bump org.agrona:agrona from 1.21.0 to 1.21.1 in /genesis-conventions
+- Bump org.apache.activemq:artemis-jakarta-client from 2.32.0 to 2.33.0 in /genesis-conventions
+- Bump org.apache.commons:commons-compress from 1.25.0 to 1.26.0 in /genesis-conventions
+- Bump org.apache.commons:commons-compress from 1.26.0 to 1.26.1 in /genesis-conventions
+- Bump org.assertj:assertj-core from 3.25.1 to 3.25.2 in /genesis-conventions
+- Bump org.assertj:assertj-core from 3.25.2 to 3.25.3 in /genesis-conventions
+- Bump org.java-websocket:Java-WebSocket from 1.5.5 to 1.5.6 in /genesis-conventions
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.1.14 to 5.2.0 in /genesis-conventions
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.1.14 to 5.2.0 in /genesis-publish-config
+- Bump org.jline:jline from 3.24.1 to 3.25.1 in /genesis-conventions/genesis-dependencies
+- Bump org.jlleitschuh.gradle.ktlint from 11.5.1 to 12.1.0 in /genesis-conventions
+- Bump org.mockito.kotlin:mockito-kotlin from 5.2.1 to 5.3.1 in /genesis-conventions
+- Bump org.postgresql:postgresql from 42.7.1 to 42.7.2 in /genesis-conventions
+- Bump org.postgresql:postgresql from 42.7.2 to 42.7.3 in /genesis-conventions
+- Bump org.zeromq:jeromq from 0.5.4 to 0.6.0 in /genesis-conventions
+- Bump slf4jVersion from 2.0.11 to 2.0.12 in /genesis-conventions
+- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.2 to 2.3.3 in /genesis-conventions/genesis-dependencies
+- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.3 to 2.3.4 in /genesis-conventions
+- Bump software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.3.4 to 2.3.5 in /genesis-conventions
+- Bump sshdVersion from 2.11.0 to 2.12.0 in /genesis-conventions
+- Bump sshdVersion from 2.11.0 to 2.12.0 in /genesis-conventions/genesis-dependencies
+- Bump sshdVersion from 2.12.0 to 2.12.1 in /genesis-conventions
+- Bump testcontainersVersion from 1.19.3 to 1.19.4 in /genesis-conventions/genesis-dependencies
+- Bump testcontainersVersion from 1.19.4 to 1.19.5 in /genesis-conventions
+- Bump testcontainersVersion from 1.19.5 to 1.19.6 in /genesis-conventions
+- Bump testcontainersVersion from 1.19.6 to 1.19.7 in /genesis-conventions
