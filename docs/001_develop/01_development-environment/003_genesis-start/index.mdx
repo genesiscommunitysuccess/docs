@@ -105,7 +105,7 @@ If you need to enable Genesis Start, there are two things that you need to do:
 
 ### Amending the settings file
 
-In your project's `settings.gradle.kts` file, add `google()` to `repositories` under `pluginManagement`.
+In your project's `server/settings.gradle.kts` file, add `google()` to `repositories` under `pluginManagement`.
 
 ```kotlin
 // in repositories under plugin management, add google() at the end:
@@ -119,7 +119,7 @@ pluginManagement {
 
 ### Amending the build file
 
-In your project's `build.gradle.kts` file, add the plugin:
+In your project's `server/build.gradle.kts` file, add the plugin:
 
 ```kotlin
 // add Genesis Start to plugins
