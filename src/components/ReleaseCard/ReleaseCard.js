@@ -11,14 +11,18 @@ export default function ReleaseCard({ blogLink, releaseNotesLink, imageName, ima
   
   const footerContent = (
     <nav className="release-card-footer">
-      <a href={blogLink} target="_blank" title="Blog" className="release-card-button">
-        Blog
-        <ArrowForward sx={{ height: '10px', width: 'auto', paddingLeft: '1%' }} />
-      </a>
-      <a href={relativeReleaseNoteLink} title="Release notes" className="release-card-button">
-        Release notes
-        <ArrowForward sx={{ height: '10px', width: 'auto', paddingLeft: '1%' }} />
-      </a>
+      { blogLink && (
+        <a href={blogLink} target="_blank" title="Blog" className="release-card-button">
+          Blog
+          <ArrowForward sx={{ height: '10px', width: 'auto', paddingLeft: '1%' }} />
+        </a>
+      )}
+      { releaseNotesLink && (
+        <a href={relativeReleaseNoteLink} title="Release notes" className="release-card-button">
+          Release notes
+          <ArrowForward sx={{ height: '10px', width: 'auto', paddingLeft: '1%' }} />
+        </a>
+      )}
     </nav>
   )
 

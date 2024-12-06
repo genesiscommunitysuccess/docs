@@ -14,10 +14,14 @@
   display: flex;
   width: 100%;
   height: 100%;
+  align-items: flex-end;
   justify-content: space-between;
   flex-direction: row;
-  align-items: center;
   padding: 12px 0;
+}
+
+.release-card-footer > *:only-child {
+  margin-left: auto;
 }
 
 @media (max-width: 1199px) {
