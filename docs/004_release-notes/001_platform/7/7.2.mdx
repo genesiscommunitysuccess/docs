@@ -210,3 +210,46 @@ Dependency changes
 - Bump testcontainersVersion from 1.19.4 to 1.19.5 in /genesis-conventions
 - Bump testcontainersVersion from 1.19.5 to 1.19.6 in /genesis-conventions
 - Bump testcontainersVersion from 1.19.6 to 1.19.7 in /genesis-conventions
+
+
+#### 7.2.6
+
+##### Fixes
+- Add empty REQUEST when message body and parameters is empty on request replies
+- Correct issue in updateTablesDictionary gradle task (updateTablesDictionary)
+
+#### 7.2.5
+
+##### Fixes
+
+- USER_ATTRIBUTES table should use new table field syntax for dynamic fields for compatibility purposes
+
+#### 7.2.4
+
+##### Fixes
+
+- Fixed issues in schema validation with BigDecimal handling and embedded type info
+- Ensure heartbeat pong provides accurate information about authentication status at all times
+
+#### 7.2.3
+
+##### Features
+
+- Added support for null values in criteria JSON API
+
+#### 7.2.2
+
+##### Features
+
+- Add new genesisSyncCompact task to support compact processes and update ProjectOverviewBuilderTask
+- Support compact processes in project overview
+
+##### Fixes
+
+- UserSessionCache now handles multiple expiry listeners for the same auth token
+
+#### 7.2.1
+
+##### Breaking changes
+
+- Always start GENESIS_EVALUATOR by default

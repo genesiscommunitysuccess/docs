@@ -303,6 +303,27 @@ id: '7.1'
 
 ### Patch releases
 
+#### 7.1.24
+
+##### Fixes
+
+- Remove ReflectionToStringBuilder from ClusterMessage 
+
+#### 7.1.23
+
+##### Fixes
+
+- Dataserver backwardsJoin view does not recover in case of a buffered out of order update  
+- Add type conversion from Integer to Short
+
+#### 7.1.22
+
+##### Fixes
+
+- Fixed issues in schema validation with BigDecimal handling and embedded type info 
+- UserSessionCache now handles multiple expiry listeners for the same auth token 
+- Ensure heartbeat pong provides accurate information about authentication status at all times
+
 #### 7.1.21
 
 ##### Features
@@ -375,12 +396,23 @@ id: '7.1'
 
 - Dictionary cache main module now assembles all the submodules on assemble.
 
+#### 7.1.12
 
-#### Genesis 7.1.10
+##### Fixes
+
+- LoginNack to cause the username in the channel context to be erased
+
+#### 7.1.11
+
+##### Fixes
+
+- Only add version constraints of artifacts from a product's manifest where version is same as product version Replaced endsWith() to !=.
+
+#### 7.1.10
 
 No functional changes.
 
-#### Genesis 7.1.9
+#### 7.1.9
 
 ##### Features
 
@@ -391,7 +423,7 @@ No functional changes.
 - Add process arguments to project overview json
 - Finding product name in settings plugin
 
-#### Genesis 7.1.8
+#### 7.1.8
 
 ##### Features
 
@@ -402,3 +434,65 @@ No functional changes.
 - MORE_COLUMNS messages now successfully change the payload of future QUERY_UPDATE messages
 - Prevent duplicate cache entries in views generated dao jar
 - Distribution zip file version with dist plugin
+
+#### 7.1.7
+
+##### Fixes
+- Get site specific overrides from local files in exec plugin for simple structure
+
+#### 7.1.6
+
+##### Features
+
+- Enable autoIncrement for LONG fields
+
+##### Fixes
+- Correct path to config folder in site specific for simple structure
+
+#### 7.1.5
+
+##### Fixes
+
+- Fix Moving view logic so the timestamp sorted references are always in sync with the rows in view
+
+#### 7.1.4
+
+##### Fixes
+
+- Add 'enabled' property to ManifestCreationTask
+- Add support for dataserver pagination mode when using HTTP requests
+- Respect asterisk in project overview builder
+
+#### 7.1.3
+
+##### Fixes
+
+- Convert evaluator expression parser as well as writer to use logical AND
+- Ensure we always add generated jars dependencies
+
+#### 7.1.2
+
+##### Fixes
+
+- Including audit generated builders in the dao cache
+
+#### 7.1.1
+
+##### Breaking changes
+
+- API enhancements for dynamic rule creation forms, split new SYSTEM_ENTITY request into two
+##### Features
+
+- Project type properties so import not required
+##### Fixes
+
+- Add template processing feature in ProductDetailsCreatorPlugin
+- Create new task to depend on _genesisInstall and generated code
+- Implement annotation script handling in Gradle plugin
+- Prevent malformed payloads from evaluator result expressions
+- Resources are not copied to site-specific internal module in simple app
+- Distinct/search commands not working in DBMon for enums
+- Fix copy task dependencies for simplified project structure
+- Handle multiple modules in processes.xml in project overview builder
+- Update implementation of createManifestTask to work with changes to simple structure
+- View enriched fields returns null after DATA_LOGOFF message

@@ -161,79 +161,148 @@ id: '7.0'
 
 ### Patch releases
 
-#### 7.1.21
+#### 7.0.13
+
+##### Fixes
+
+- Dataserver backwardsJoin view does not recover in case of a buffered out of order update
+
+#### 7.0.12
+
+##### Fixes
+
+- Add empty REQUEST when message body and parameters is empty on request replies
+- Correct issue in updateTablesDictionary gradle task (updateTablesDictionary)
+
+#### 7.0.11
+
+##### Fixes
+
+- Distinct/search commands not working in DBMon for enums
+- Including audit generated builders in the dao cache
+- View enriched fields returns null after DATA_LOGOFF message
+
+#### 7.0.10
+
+##### Fixes
+
+- Guarantee appropriate handling of dataserver socket disconnection events at router level
+
+#### 7.0.9
+
+##### Fixes
+
+- Force version 2.2.11 of jnr-jffi for ALL modules and exclude jnr-jffi dependency from pal-dataserver
+= Improved Comparator code in DbUtil to prevent Long and Int casting errors
+- Propagate closing of subscription to underlying subscription
+- Excluding jnr from dataserver 2
+
+#### 7.0.8
 
 ##### Features
 
-- Add flag to provide enhanced HEARTBEAT_PONG messages and expose "onHeartbeatPing" hook in script definition to handle custom business logic
-- Expose settings for Websocket frame sizes, fix frame aggregation and allow Websocket binary payload using MsgPack format
-
-#### 7.1.20
-
-##### Fixes
-
-- Path for finding script modules in simplified structure
-- Remap fail when field becomes non-nullable and added to key at the same change set
-- bundleGeneratedClasses=false works when project type is application
-- Remove projectOverviewBuilder task dependency on genesisSync
-
-#### 7.1.19
+- Provide injector binding in Groovy event handlers
+- Add PROCESS_ENABLED field to GENESIS_PROCESS
+- Allow GlobalClasspathAdditions to find jar files just by name, as well as supporting wildcards
 
 ##### Fixes
 
-- pal-dataserver: updates batched at MessageSet level now preserve old row data
+- Try to recover from data server errors
+- Add APPROVAL_MESSAGE HTTP header value to event messages
+- Add NEW_PASSWORD and OLD_PASSWORD to SensitiveFields and test case
+- Correct for out of sync updates by reading view updates in a transaction
+- Resource daemon to do not wait for chronicle when running from intellij plugin
 
-#### 7.1.18
+#### 7.0.7
 
-##### Fixes
+##### Breaking changes
 
-- Add TIMESTAMP support to DbMon distinct command
-- Dependency changes
-- Upgrade gradle license report plugin from 2.0 to 2.7
-
-#### 7.1.17
-
-##### Fixes
-
-- Copy site specific files from main module
-- DisableAuthUpdates flag works as expected again
-- Add MetaInf directory to all codegen tasks to ensure they respect gradle rules for caching and task avoidance
-- GenerateCache option is now respected as expected
-
-#### 7.1.16
-
-- Distribution cfg and scripts folder paths
-- Include all cfg and script files in PBC distribution
-- Genesis 7.1.3(reporting-server)
-- Breaking changes
-- Collapse reporting processes into single process and increase process memory
-
-##### Fixes
-
-#### 7.1.15
+- Add support for process dependency checks when using Consul as cluster mode
 
 ##### Features
 
-- Add minimal cfg zip to distribution and distribution plugin.
-- Site specific distribution plugin and remove site specific internal module
-
-#### 7.1.14
-
-##### Features
-
-- Add inject method to AuthPermissionsScript
-
-#### 7.1.13
-
-##### Features
-
-- Settings plugin: generate config jar from main module and remove config internal module
+- Remove warning for unknown properties in GenesisJsonJacksonFactory and MaskingGenesisJsonJacksonFactory
 
 ##### Fixes
 
-- Dictionary cache main module now assembles all the submodules on assemble.
+- Adding RAW FieldType to ViewMeta
 
+#### 7.0.6
 
+##### Features
+
+-Add mechanism to add jars to classpath for all processes
+
+##### Fixes
+
+- Modify operations used inside "writeTransaction" now fail with RECORD_NOT_FOUND when database record is missing
+- Remap handling of auto-increment changes
+- Resource daemon to await chronicle queue creation
+
+#### 7.0.5
+
+##### Features
+
+-  Allow processes to opt out of compact processes
+
+##### Fixes
+
+- Correct for out of sequence updates in update batching operation
+
+#### 7.0.4
+
+##### Features
+
+- Fixes for --compactProcesses xml generation
+
+##### Fixes
+
+- (dataserver2): ensure we handle stack overflow errors gracefully 
+- (pal-requestserver): ensure ENUM metadata fields provide correct legacy and json schema metadata information about valid values 
+- Fix metricService creating inconsistent hierarchical paths. 
+- Implemented get and set sequence operations for SQL+ use last_value to prevent exception on new connection 
+- Ensure startServer doesn't fail if other gz files are present in the log folder 
+- Fields with defaults should use the default value when provided value is null 
+- Fix message ordering in data server client, to ensure multiple updates are handled correctly 
+- Handling of field resizing operation in MSSQL layer of indexed fields
+
+#### 7.0.3
+
+##### Features
+
+- (pal-streamerclient): Implement ClearStrCliSourceRef script to clear dangling source ref values from both the chronicle map and the running process
+- Add coroutines-debug jar file to genesis-distribution package 
+- Add support for "alwaysAllowedMessageType" in MessageDelegator
+
+##### Fixes
+
+- GPAL: Req Reps with wildcards not working 
+- Make micrometer slf4j registry compatible with genesis metrics log config, allow configurable logging levels 
+- Register global RxJava error handler for SQL engine 
+- Replace coroutine based Channel approach in ChannelUpdateQueueListener for ConcurrentLinkedQueue to avoid potential deadlocks 
+- fEnsure Map can be used as return type in Req-Rep 
+- ClearStrCliSourceRef to work as expected, even when the process is on ERROR state
+- Making auditText field dbMaxSize
+
+#### 7.0.2
+
+##### Features
+
+- (startProcess): Expose GENESIS_DISABLE_MANIFEST_CHECK environment variable to allow processes to start even if not all manifest jars are found 
+- Enable support for sequence capabilities in SQL layers 
+- New `FindFieldsAboveMaxSize` script added to find String fields violating maxSize
+
+##### Fixes
+
+- (pal-dataserver): ensure real time row updates are registered correctly in dataserver auth cache 
+- Updating maxSize of fields to be in line with application usage
+
+#### 7.0.1
+
+##### Fixes
+
+- (pal-dataserver): ensure dataserver auth cache is initialised correctly 
+- (purger): Purger enhancements
 
 
 
