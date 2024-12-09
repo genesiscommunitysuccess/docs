@@ -1,0 +1,165 @@
+---
+title: '8.7'
+sidebar_label: '8.7'
+sidebar_position: 13
+id: '8.7'
+---
+
+## Server
+
+### Features
+
+
+### Fixes
+
+
+
+### Dependency changes
+
+
+### Patch releases
+
+## Breaking changes
+
+### Kotlin 2.1.0 upgrade
+
+The Kotlin version used in Genesis Server is now 2.1.0.
+This means Genesis applications can take advantage of the much faster compilation times provided by the K2 compiler, as well as stay up to date with any other libraries that are already using Kotlin 2.x versions.
+
+**Every Genesis server project is affected.**
+
+In many cases, the upgrade steps are as simple as changing the Kotlin version and updating the Kotlin gradle plugin configuration. The main steps are shown below:
+
+- Add a `.gitignore` entry to your project to ensure Kotlin compiler temporary files are not commited:
+```.gitignore
+# Avoid kotlin compiler folder
+**/.kotlin
+```
+
+- Update the Kotlin Gradle Plugin usage in your "parent" `build.gradle.kts` file:
+
+The Kotlin `jvm` plugin needs to be updated to version `2.1.0` if the plugin version is declared explicitly:
+
+Example:
+```kotlin
+plugins {
+    kotlin("jvm") version "1.9.10"
+}
+```
+
+becomes :
+```kotlin
+plugins {
+    kotlin("jvm") version "2.1.0"
+}
+```
+
+Additionally, if you are using any other Kotlin plugins, like the serialization plugin, they also need to be updated to version `2.1.0`.
+
+The power-assert plugin has changed namespace, as it used to be a third party plugin, but it has been incorporated into the main Kotlin language plugins since version `2.0.0`.
+
+Example:
+```kotlin
+plugins {
+    id("com.bnorm.power.kotlin-power-assert") version "0.13.0"
+}
+
+// If using legacy "apply" method:
+apply(plugin = "com.bnorm.power.kotlin-power-assert")
+```
+
+becomes:
+```kotlin
+plugins {
+    kotlin("plugin.power-assert") version "2.1.0"
+}
+
+// If using legacy "apply" method:
+apply(plugin = "org.jetbrains.kotlin.plugin.power-assert")
+```
+
+`KotlinCompile` task configuration needs to be updated as shown below:
+
+```kotlin
+tasks {
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=all")
+            jvmTarget = "17"
+        }
+    }
+}
+```
+
+becomes:
+
+```kotlin
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+tasks {
+    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        compilerOptions {
+            freeCompilerArgs.addAll("-Xjsr305=strict", "-Xjvm-default=all")
+            jvmTarget = JvmTarget.JVM_17
+        }
+    }
+}
+```
+
+Note the extra `import` statement needed in the previous example.
+
+The two previous steps are usually enough to upgrade a genesis app to use Kotlin 2.1.0, but there are a few other common checks to go through:
+
+- The Kotlin `String.toLowerCase()` and `String.toUpperCase()` methods have been removed in Kotlin `2.1.0` (deprecated since `1.5`). These changes do not affect Java `String.toLowerCase()` and `String.toUpperCase()` methods.
+
+The `toLowerCase()` and `toUpperCase()` Kotlin methods always used the default `Locale` to perform the transformation, but this `Locale` configuration may change depending on the environment the Java process is executed in.
+This is exactly the same behaviour Java `toLowerCase()` and `toUpperCase()` methods have, but unfortunately, it is non-deterministic and can lead to confusion.
+These methods can be replaced by `lowercase()` or `lowercase(Locale.getDefault())` (and the respective `uppercase()` methods too) depending on the expected behaviour. The `lowercase(Locale.getDefault())` will maintain exactly the same behaviour as before, whereas `lowercase()` will use the root locale, which provides deterministic behaviour in all environments.
+
+Example for `lowercase()`:
+```kotlin
+val testVariable = "TEST".toLowerCase()
+```
+
+becomes:
+```kotlin
+import java.util.Locale
+
+val testVariable = "TEST".lowercase(Locale.getDefault())
+//or
+val testVariable = "TEST".lowercase()
+```
+
+IntelliJ is sometimes able to automatically migrate the usage of deprecated methods by hovering over the deprecated methods and using the ALT + ENTER shortcut.
+This feature allows developers to migrate entire projects quickly and safely without resorting to search and replace operations.
+This approach is also valid for migrating `toLowerCase()` and `toUpperCase()`.
+
+![Example](/img/release-notes/kotlin2/tolowercase.png)
+
+- The following GPAL methods have been deprecated, and should be removed from your code.
+
+Ensure all `*-system-definition.kts` files in your project **do not have the following import defined**:
+```kotlin
+import global.genesis.config.dsl.systemDefinition
+```
+
+Ensure all `*-field-dictionary.kts` files in your project **do not have the following import defined**:
+```kotlin
+import global.genesis.dictionary.pal.fields
+```
+
+Ensure all `*-tables-dictionary.kts` files in your project **do not have the following import defined**:
+```kotlin
+import global.genesis.dictionary.pal.tables
+```
+
+For any other issues, Jetbrains has additionally released a very comprehensive Kotlin 2.0 compiled migration guide that can be found [here](https://kotlinlang.org/docs/k2-compiler-migration-guide.html).
+
+
+## Client
+
+### Features
+
+
+
+### Fixes
