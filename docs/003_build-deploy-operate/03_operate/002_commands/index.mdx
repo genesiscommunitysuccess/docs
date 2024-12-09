@@ -384,15 +384,31 @@ genesisInstall --compactProcesses
 
 Install hooks run as part of `genesisInstall`. You can specify the relevant scripts as part of `genesisInstall` then add those scripts to the file  *applicationName*_**config/resources/scripts/installHooks**, where *applicationName* is the name of application you are developing.
 
-The scripts (hooks) you add will only run once, unless their execution fails. If you run `genesisInstall`again, previously successful executions of installHook scripts will not be run as part of the install.
+The scripts (hooks) you add will only run once, unless their execution fails If you run `genesisInstall`again, previously successful executions of installHook scripts will not be run as part of the install.
+
+If you need to run some install hooks all the time, i.e irrespective of their previous run status, you can achieve that with following two options
+- Add `_persist` string as part of the install hook name
+- Use genesisInstallHooks command with repeatHooks option ex: genesisInstallHooks --repeatHooks=testApp1,testApp2
 
 The scripts must be implemented to work in an idempotent way, and the end result of executing a script means the system is (or already was) in the expected target state, whether you run it on a pre-existing environment (e.g. upgrading a server) or you run it in a completely new environment.
 
 On the server, it is located in the **GENESIS_HOME**/*applicationName*/**scripts/installHooks** directory. Logs are located in **GENESIS_HOME/runtime/installHooks**
 
+Along with running the install hooks as part of genesisInstall, we give user flexibility to run them at different genesis-stages by using command called as genesisInstallHooks
+
+#### `genesisInstallHooks`
+
+| Argument           | Mandatory | Options      | Description                                                                                               |
+|--------------------|-----------|--------------|-----------------------------------------------------------------------------------------------------------|
+| --hookType         | false | POST_INSTALL | This is the default value for hook type, which considers the install hooks under /scripts/installHooks/ folder are run |
+|                    |         | PRE_INSTALL  | `genesisInstallHooks --hookType=PRE_INSTALL` : considers install hooks under /scripts/installHooks/preInstall/ folder |
+|                    |         | POST_REMAP   | `genesisInstallHooks --hookType=POST_REMAP` : consider install hooks under /scripts/installHooks/postRemap/ folder |
+| --init             | false |              | `genesisInstallHooks --init=true` Does database dry run                                                    |
+| --repeatHooks      | false |              | `genesisInstallHooks --repeatHooks=testApp1,testApp2` Repeats the install hooks for specified comma seperated product list |
+
 Install hook file-name conventions:
 - We only use shell script for install hooks and inside the shell script you can call a Python script, a Kotlin script or whatever is necessary.
-- The install hook name must be unique.
+- The install hook name must be unique among all the folders of install hooks i.e installHooks/, installHooks/preInstall/ and installHooks/postRemap/.
 - It must contain a priority number at the beginning of the file name. This number should be unique. For example: **1_migrateLogFiles.sh**, **2_migrateDictionary.sh**.
 - If you need to create a new install hook that has to execute before priority number 1 or number 2, you must increase the numbers for all the other scripts (e.g. rename **1_migrateLogFiles.sh** to **9_migrateLogFiles.sh**).
 
