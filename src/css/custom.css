@@ -69,6 +69,10 @@
   --doc-sidebar-width: 325px !important;
 
   --toc-sidebar-width: 140px;
+
+  /** Feedback widget */
+  --feedback-primary-color: #1a00de; 
+  --feedback-font-family: var(--primary-font);
 }
 
 body {
@@ -888,3 +892,6 @@ rapid-badge {
   --badge-color-light: #ffffff;
   --badge-color-dark: #000000;
 }
+
+
+
