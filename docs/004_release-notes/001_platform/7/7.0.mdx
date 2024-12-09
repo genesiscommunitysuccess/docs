@@ -342,7 +342,7 @@ deployPluginVersion=7.0.0
         Still in the `server/jvm/build.gradle.kts` file, add the required directives to support Junit 5 and properties to run tests.
 
 
-```
+```kotlin {10,14-25} title="server/jvm/build.gradle.kts"
 ...
 subprojects  {
     ...
@@ -379,7 +379,7 @@ subprojects  {
 
         Lastly, in the same file, configure the `copyDependencies` task and replace `JavaLanguageVersion`.
 
-```
+```kotlin {13-19,28-30,34-36} title="server/jvm/build.gradle.kts"
 ...
 subprojects  {
     ...
@@ -425,7 +425,7 @@ allprojects {
 
 2. In the `server/jvm/-{application}-site-specific/build.gradle.kts` file, configure the `copyDependencies` task:
 
-```
+```kotlin {4-6}
 ...
 // To give custom name to the distribution package
 tasks {
@@ -445,7 +445,7 @@ tasks {
 
 3. In the `server/jvm/{application}-distribution/build.gradle.kts` file, configure the distTar task:
 
-```
+```kotlin {3-5}
 ...
 tasks {
     distTar {
