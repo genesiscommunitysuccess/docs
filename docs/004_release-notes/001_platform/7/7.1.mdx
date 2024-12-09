@@ -1,0 +1,578 @@
+---
+title: '7.1'
+sidebar_label: '7.1'
+sidebar_position: 19
+id: '7.1'
+---
+
+:::tip
+This release contains [breaking changes](#breaking-changes). These are listed at the end of this page, along with instructions for migrating from previous releases.
+:::
+
+
+
+## Server
+
+### Features
+
+- (Settings plugin): ensure internal modules exist before compilation
+- (build-plugin): copy project config and scripts to internal config module if main module exists
+- (exec-plugin): add task to initialise DB
+- (groovy): provide injector binding in Groovy event handlers
+- (pal-streamerclient): Implement ClearStrCliSourceRef script to clear dangling source ref values from both the chronicle map and the running process
+- (startProcess): expose GENESIS_DISABLE_MANIFEST_CHECK environment variable to allow processes to start even if not all manifest jars are found
+- Add ONCE_PER_RECORD rule execution strategy to dynamic rules engine
+- Add PROCESS_ENABLED field to GENESIS_PROCESS
+- Add coroutines-debug jar file to genesis-distribution package
+- Add support for "alwaysAllowedMessageType" in MessageDelegator
+- Add trace logging to rightSummaryCache
+- Add utility class to create dynamic rule from dynamic rule template
+- Added different rule execution strategies to evaluator dynamic rules
+- Added isTemplate field to DYNAMIC_RULE table
+- Added optional sysdef context to MustacheParser, and make it injectable
+- Adding AWS wrapper as a runtime dependency to genesis-db
+- Allow GlobalClasspathAdditions to find jar files just by name, as well as supporting wildcards
+- Create Genesis Settings plugin
+- Enable support for sequence capabilities in SQL layers
+- Exec plugin output for intellij run configurations
+- Extended evaluator expression parser / generator to cover result expressions
+- Improving Remap and Genesis.py log/output
+- Make projectOverviewBuilder task is compatible with configuration cache
+- New FindFieldsAboveMaxSize script added to find String fields violating maxSize
+- Remove warning for unknown properties in GenesisJsonJacksonFactory and - MaskingGenesisJsonJacksonFactory
+- Update ManifestCreationTask Update SQL database connection pool size parameter handling
+- Update build plugin for gradle configuration cache support
+- Update distribution plugin to support configuration cache
+- Update exec plugin to support configuration cache
+- Widened some text columns in GSF core dictionary
+- Adapt exec plugin to work with simple project structure
+- Add deploy plugin to settings plugin
+- Add dynamic rules parameter table to store placeholder details
+- Add generated config module to simplified project
+- Add genesis manifest creation to gradle
+- Add gsf dependencies to project using genesis() in settings plugin
+- Add mechanism to add jars to classpath for all processes
+- Add more trace logs to dataserver
+- Add process file overrides to project overview build task
+- Add project type property to settings plugin
+- Add settings plugin option to publish generated code
+- Add upsert to SendIt.
+- Added JSON interchange format and parser/generator for simple criteria expressions
+- Added database retry count of 7
+- Allow for encrypted environment overrides
+- Allow processes to opt out of compact processes
+- Apply deploy plugin configuration in legacy settings plugin
+- Automatically add dependencies on modules with script dependencies
+- Check db in sync with classpath dictionary on RxDbImpl while not preventing Remap to run.
+- Copy site-specific resources for simple project structure
+- Create exec tasks for install and remap
+- Create exec tasks for project services
+- Easy syntax to depend on generated code through settings plugin
+- Enable dist plugin on settings plugin.
+- Fixes for --compactProcesses xml generation
+- Inform user that the record is only modified locally when using set in DbMon
+- Make codegen plugin gradle configuration cache compatible
+- Make failure to apply plugin throw an exception rather than warn
+- Make package scan plugin gradle configuration cache compatible
+- Move generateHft task to dao module
+- Move publication logic to DistributionPlugin.
+- Re-use output kts script parsing in codegen
+- Site-specific template use parent project's version if present
+- Specify remap inputs so that we can detect if we need to run
+- Update gradle codegen tasks to have specific file inputs
+- Update remap project overview generation
+- Update syntax to add genesis dependency in settings plugin
+
+### Fixes
+
+- (build-plugin): fix configuration of copy tasks for main module
+- (cluster)!: migrate Akka to Apache Pekko due to license changes
+- (database): modify operations used inside "writeTransaction" now fail with RECORD_NOT_FOUND when database record is missing
+- (dataserver): try to recover from data server errors
+- (dataserver2): ensure we handle stack overflow errors gracefully
+- (pal-dataserver): ensure dataserver auth cache is initialised correctly
+- (pal-dataserver): ensure real time row updates are registered correctly in dataserver auth cache
+- (pal-requestserver): ensure ENUM metadata fields provide correct legacy and json schema metadata information about valid values
+- (pal-streamer): added terminateOnError flag to streamer config to allow control of failure behaviour, enhanced exception handling
+- (pal-streamerclient): ensure recovery timestamps get set as COMPLETE and not ACKED
+- (pal-streamerclient): prevent duplicate DS_LOGON messages when streamer goes down
+- (purger): purger enhancements
+- (router): add APPROVAL_MESSAGE HTTP header value to event messages
+- Add NEW_PASSWORD and OLD_PASSWORD to SensitiveFields and test case
+- Adding RAW FieldType to ViewMeta
+- Decouple settings plugin from artifactory
+- End the dictionary sync failure process with exitProcess.
+- Ensure constraints get dropped when converting from ENUM to String
+- Ensure postgres does not load entire resultSet into memory for large queries
+- Ensure remap logs full output correctly
+- Extending length of address line fields
+- Feature flag is respected for MSSQL case
+- Fix SentIt tasks generation
+- Fix deploy scripts
+- Fix handling in GetNextSequenceNumbers script
+- Fix metricService creating inconsistent hierarchical paths.
+- Fixed XML purger business day calculation
+- Force version 2.2.11 of jnr-jffi for ALL modules and exclude jnr-jffi dependency from pal-dataserver
+- GPAL: Req Reps with wildcards not working
+- Guarantee appropriate handling of dataserver socket disconnection events at router level
+- Implemented get and set sequence operations for SQL+ use last_value to prevent exception on new connection
+- Improved Comparator code in DbUtil to prevent Long and Int casting errors
+- Inserting empty string on a non-nullable field fails in Oracle
+- Logout can also be performed without the user being logged in
+- Make micrometer slf4j registry compatible with genesis metrics log config, allow configurable logging levels
+- NPE in DBUtil.indexComparator when one of the fields is not supplied in the dbrecord
+- Fix OpenApi generator failing due empty object definition
+- Propagate closing of subscription to underlying subscription
+- RefreshTokenCleanUp script to use USER_SESSION table
+- Register global RxJava error handler for SQL engine
+- Replace coroutine based Channel approach in ChannelUpdateQueueListener for ConcurrentLinkedQueue to avoid potential deadlocks
+- SESSION_ID is propagated in the Logout message
+- ScriptAnnotationHandler is unable to load script dependencies when using @file:ScriptModules annotation
+- SetLogLevelScript.groovy to create an instance of - ServiceDetailProvider
+- Unable to find module on simple structure when localDaogenVersion is mentioned
+- Update distribution plugin to support configuration cache
+- Updating maxSize of fields to be in line with application usage
+- Adapt dist plugin to both simple and legacy structures.
+- Add check to stop pbc being used with bundleGeneratedClasses in settings plugin
+- Add dictionary cache codeGen tasks to dist plugin.
+- Add genesis script dependencies to bom
+- Add root folder with product name to the dist zip.
+- Added fields to dynamic rule from template creation.
+- Clear down counters in FDB when auto-increment or sequence is removed from a field
+- CompileKotlin depend on codegen sources
+- Correct for out of sequence updates in update batching operation
+- Correct for out of sync updates by reading view updates in a transaction
+- Declare explicit dependency for dokkaJavadoc
+- Delete dictionaryCacheLocation property from settings plugin
+- Disable copyDependencies task in new gradle plugins
+- Ensure Map can be used as return type in Req-Rep
+- Ensure all process records stored in db are taken into account for process recreation and remove wrong assignment to "shouldStart" property
+- Ensure startServer doesn't fail if other gz files are present in the log folder
+- Excluding jnr from dataserver 2
+- Fields with defaults should use the default value when provided value is null (port to master)
+- ClearStrCliSourceRef to work as expected, even when the process is on ERROR state
+- Fix message ordering in data server client, to ensure multiple updates are handled correctly
+- Fix handle error when deploy plugin applied on PBC project
+- Fix handling of field resizing operation in MSSQL layer of indexed fields
+- Fix ignore derived fields when building view indices
+- Fix including builders to be also serialized in the DAO dictionary
+- Make description optional in process class
+- Making auditText field dbMaxSize
+- Publication plugin: check task group after tasks are in a group.
+- Re-enable copyDependencies for script-config modules
+- Fix remap handling of auto-increment changes
+- Remove suspend from main method and add runBlocking call
+- Resource daemon to await chronicle queue creation
+- Resource daemon to do not wait for chronicle when running from intellij plugin
+- Fix setupEnvironment task fails on deploy plugin
+- Trim consul metadata values to have a max length of 512 and LOG a warning statement when this happens
+- Update task dependencies in distribution gradle template
+
+### Dependency changes
+
+- Reverting kotlin gradle version to 1.9.0
+- Reverting open telemetry to 1.31 as it is pulling kotlin 1.9.20
+- Migrate from v4 to v5 of artifactory plugin
+- Bump actions/setup-dotnet from 3 to 4
+- Bump actions/setup-java from 3 to 4
+- Bump aeronVersion from 1.42.1 to 1.43.0 in /genesis-conventions/genesis-dependencies
+- Bump apachePoi from 5.2.4 to 5.2.5 in /genesis-conventions/genesis-dependencies
+- Bump byteBuddyVersion from 1.14.10 to 1.14.11 in /genesis-conventions/genesis-dependencies
+- Bump byteBuddyVersion from 1.14.9 to 1.14.10 in /genesis-conventions/genesis-dependencies
+- Bump camelVersion from 4.1.0 to 4.2.0 in /genesis-conventions/genesis-dependencies
+- Bump camelVersion from 4.2.0 to 4.3.0 in /genesis-conventions/genesis-dependencies
+- Bump com.avast.gradle:gradle-docker-compose-plugin from 0.16.10 to 0.17.6 in /genesis-subcore/deploy-gradle-plugin
+- Bump com.esotericsoftware:kryo from 5.5.0 to 5.6.0 in /genesis-conventions/genesis-dependencies
+- Bump com.github.oshi:oshi-core from 6.4.10 to 6.4.11 in /genesis-conventions/genesis-dependencies
+- Bump com.github.oshi:oshi-core from 6.4.6 to 6.4.7 in /genesis-conventions/genesis-dependencies
+- Bump com.github.oshi:oshi-core from 6.4.7 to 6.4.8 in /genesis-conventions/genesis-dependencies
+- Bump com.github.oshi:oshi-core from 6.4.8 to 6.4.9 in /genesis-conventions/genesis-dependencies
+- Bump com.github.oshi:oshi-core from 6.4.9 to 6.4.10 in /genesis-conventions/genesis-dependencies
+- Bump com.github.vertical-blank:sql-formatter from 2.0.3 to 2.0.4 in /genesis-parent/genesis-environment
+- Bump com.google.errorprone:error_prone_annotations from 2.22.0 to 2.23.0 in /genesis-conventions/genesis-dependencies
+- Bump com.google.errorprone:error_prone_annotations from 2.23.0 to 2.24.0 in /genesis-conventions/genesis-dependencies
+- Bump com.google.errorprone:error_prone_annotations from 2.24.0 to 2.24.1 in /genesis-conventions/genesis-dependencies
+- Bump com.google.protobuf:protobuf-java from 3.24.4 to 3.25.0 in /genesis-conventions/genesis-dependencies
+- Bump com.google.protobuf:protobuf-java from 3.25.0 to 3.25.1 in /genesis-conventions/genesis-dependencies
+- Bump com.google.protobuf:protobuf-java from 3.25.1 to 3.25.2 in /genesis-conventions
+- Bump com.jakewharton.fliptables:fliptables from 1.0.2 to 1.1.0 in /genesis-parent/genesis-environment
+- Bump com.jfrog.artifactory from 5.1.10 to 5.1.13 in /genesis-publish-config
+- Bump com.jfrog.artifactory from 5.1.13 to 5.1.14 in /genesis-publish-config
+- Bump com.microsoft.sqlserver:mssql-jdbc from 12.4.1.jre11 to 12.4.2.jre11 in /genesis-conventions/genesis-dependencies
+- Bump com.opencsv:opencsv from 5.8 to 5.9 in /genesis-conventions/genesis-dependencies by
+- Bump com.squareup.okhttp3:okhttp from 4.11.0 to 4.12.0 in /genesis-conventions/genesis-dependencies
+- Bump com.squareup:kotlinpoet from 1.14.2 to 1.15.1 in /genesis-conventions/genesis-dependencies
+- Bump com.squareup:kotlinpoet from 1.14.2 to 1.15.2 in /genesis-conventions/genesis-dependencies
+- Bump com.zaxxer:HikariCP from 5.0.1 to 5.1.0 in /genesis-conventions/genesis-dependencies
+- Bump commons-cli:commons-cli from 1.5.0 to 1.6.0 in /genesis-conventions/genesis-dependencies
+- Bump commons-codec:commons-codec from 1.10 to 1.16.0 in /genesis-parent/genesis-cluster
+- Bump commons-io:commons-io from 2.14.0 to 2.15.0 in /genesis-conventions/genesis-dependencies
+- Bump commons-io:commons-io from 2.15.0 to 2.15.1 in /genesis-conventions/genesis-dependencies
+- Bump de.cronn:reflection-util from 2.2.0 to 2.15.0 in /genesis-subcore/genesis-db
+- Bump debeziumVersion from 2.3.4.Final to 2.4.1.Final in /genesis-conventions/genesis-dependencies
+- Bump debeziumVersion from 2.4.1.Final to 2.4.2.Final in /genesis-conventions/genesis-dependencies
+- Bump debeziumVersion from 2.4.2.Final to 2.5.0.Final in /genesis-conventions/genesis-dependencies
+- Bump groovyVersion from 3.0.19 to 3.0.20 in /genesis-conventions/genesis-dependencies by
+- Bump io.github.classgraph:classgraph from 4.8.162 to 4.8.163 in /genesis-conventions/genesis-dependencies
+- Bump io.github.classgraph:classgraph from 4.8.163 to 4.8.164 in /genesis-conventions/genesis-dependencies
+- Bump io.github.classgraph:classgraph from 4.8.164 to 4.8.165 in /genesis-conventions/genesis-dependencies
+- Bump io.netty:netty-all from 4.1.100.Final to 4.1.101.Final in /genesis-conventions/genesis-dependencies
+- Bump io.netty:netty-all from 4.1.101.Final to 4.1.104.Final in /genesis-conventions/genesis-dependencies
+- Bump io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha from 1.31.0-alpha to 1.32.0-alpha in /genesis-conventions/genesis-dependencies
+- Bump io.opentelemetry.javaagent:opentelemetry-javaagent from 1.30.0 to 1.31.0 in /genesis-conventions/genesis-dependencies
+- Bump io.opentelemetry:opentelemetry-bom from 1.31.0 to 1.32.0 in /genesis-conventions/genesis-dependencies
+- Bump io.opentelemetry:opentelemetry-bom from 1.31.0 to 1.32.0 in /genesis-conventions/genesis-dependencies
+- Bump io.opentelemetry:opentelemetry-bom from 1.31.0 to 1.34.0 in /genesis-conventions/genesis-dependencies
+- Bump jacksonVersion from 2.15.2 to 2.15.3 in /genesis-conventions/genesis-dependencies
+- Bump jacksonVersion from 2.15.3 to 2.16.0 in /genesis-conventions/genesis-dependencies
+- Bump jacksonVersion from 2.16.0 to 2.16.1 in /genesis-conventions/genesis-dependencies
+- Bump jnaVersion from 5.13.0 to 5.14.0 in /genesis-conventions/genesis-dependencies
+- Bump joda-time:joda-time from 2.12.5 to 2.12.6 in /genesis-conventions/genesis-dependencies
+- Bump junitVersion from 5.10.0 to 5.10.1 in /genesis-conventions/genesis-dependencies
+- Bump ktorVersion from 2.3.5 to 2.3.6 in /genesis-conventions/genesis-dependencies
+- Bump ktorVersion from 2.3.6 to 2.3.7 in /genesis-conventions/genesis-dependencies
+- Bump log4jVersion from 2.20.0 to 2.21.0 in /genesis-conventions/genesis-dependencies
+- Bump log4jVersion from 2.21.0 to 2.21.1 in /genesis-conventions/genesis-dependencies
+- Bump log4jVersion from 2.21.1 to 2.22.0 in /genesis-conventions/genesis-dependencies
+- Bump log4jVersion from 2.22.0 to 2.22.1 in /genesis-conventions/genesis-dependencies
+- Bump maven-plugin-api.version from 3.9.5 to 3.9.6 in /genesis-parent/genesis-maven-submodules
+- Bump me.champeau.jmh from 0.6.6 to 0.7.2 in /genesis-subcore/genesis-commons
+- Bump micrometerVersion from 1.11.4 to 1.11.5 in /genesis-conventions/genesis-dependencies
+- Bump micrometerVersion from 1.11.5 to 1.12.0 in /genesis-conventions/genesis-dependencies
+- Bump micrometerVersion from 1.12.0 to 1.12.1 in /genesis-conventions/genesis-dependencies
+- Bump mockitoVersion from 5.6.0 to 5.7.0 in /genesis-conventions/genesis-dependencies
+- Bump mockitoVersion from 5.7.0 to 5.8.0 in /genesis-conventions/genesis-dependencies
+- Bump msgpackVersion from 0.9.6 to 0.9.7 in /genesis-conventions/genesis-dependencies
+- Bump net.openhft:affinity from 3.23.2 to 3.23.3 in /genesis-conventions
+- Bump openTelemetryAlphaVersion from 1.30.0-alpha to 1.31.0-alpha in /genesis-conventions/genesis-dependencies
+- Bump org.agrona:agrona from 1.19.2 to 1.20.0 in /genesis-conventions/genesis-dependencies
+- Bump org.apache.commons:commons-compress from 1.24.0 to 1.25.0 in /genesis-conventions/genesis-dependencies
+- Bump org.apache.commons:commons-lang3 from 3.13.0 to 3.14.0 in /genesis-conventions/genesis-dependencies
+- Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.10.1 to 3.10.2 in /genesis-parent/genesis-maven-submodules
+- Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.10.2 to 3.11.0 in /genesis-parent/genesis-maven-submodules
+- Bump org.apache.maven.plugin-tools:maven-plugin-annotations from 3.9.0 to 3.10.1 in /genesis-parent/genesis-maven-submodules
+- Bump org.apache.maven.plugins:maven-clean-plugin from 3.3.1 to 3.3.2 in /genesis-parent/genesis-maven-submodules
+- Bump org.apache.maven.plugins:maven-compiler-plugin from 3.11.0 to 3.12.1 in /genesis-parent/genesis-maven-submodules
+- Bump org.apache.maven.plugins:maven-dependency-plugin from 3.6.0 to 3.6.1 in /genesis-parent/genesis-maven-submodules
+- Bump org.apache.maven.plugins:maven-plugin-plugin from 3.10.1 to 3.10.2 in /genesis-parent/genesis-maven-submodules
+- Bump org.apache.maven.plugins:maven-plugin-plugin from 3.10.2 to 3.11.0 in /genesis-parent/genesis-maven-submodules
+- Bump org.apache.maven.plugins:maven-plugin-plugin from 3.9.0 to 3.10.1 in /genesis-parent/genesis-maven-submodules
+- Bump org.apache.maven:maven-model from 3.9.5 to 3.9.6 in /genesis-parent/genesis-maven-submodules
+- Bump org.apache.shiro:shiro-core from 1.12.0 to 1.13.0 in /genesis-conventions/genesis-dependencies
+- Bump org.assertj:assertj-core from 3.24.2 to 3.25.1 in /genesis-conventions/genesis-dependencies
+- Bump org.checkerframework:checker-qual from 3.39.0 to 3.40.0 in /genesis-conventions/genesis-dependencies
+- Bump org.checkerframework:checker-qual from 3.40.0 to 3.41.0 in /genesis-conventions/genesis-dependencies
+- Bump org.checkerframework:checker-qual from 3.41.0 to 3.42.0 in /genesis-conventions/genesis-dependencies
+- Bump org.furyio:fury-core from 0.2.0 to 0.2.1 in /genesis-conventions/genesis-dependencies
+- Bump org.furyio:fury-core from 0.2.1 to 0.3.0 in /genesis-conventions/genesis-dependencies
+- Bump org.furyio:fury-core from 0.3.0 to 0.3.1 in /genesis-conventions/genesis-dependencies
+- Bump org.furyio:fury-core from 0.3.1 to 0.4.0 in /genesis-conventions/genesis-dependencies
+- Bump org.furyio:fury-core from 0.4.0 to 0.4.1 in /genesis-conventions/genesis-dependencies
+- Bump org.gradle.test-retry from 1.5.3 to 1.5.8 in /genesis-conventions
+- Bump org.gradle:test-retry-gradle-plugin from 1.5.3 to 1.5.8 in /genesis-conventions by
+- Bump org.gridkit.jvmtool:hprof-heap from 0.15 to 0.16 in /genesis-subcore/genesis-config
+- Bump org.hamcrest:hamcrest-library from 1.3 to 2.2 in /genesis-conventions by
+- Bump org.hamcrest:hamcrest-library from 1.3 to 2.2 in /genesis-parent/genesis-cluster
+- Bump org.java-websocket:Java-WebSocket from 1.5.4 to 1.5.5 in /genesis-conventions/genesis-dependencies
+- Bump org.javassist:javassist from 3.29.2-GA to 3.30.2-GA in /genesis-conventions/genesis-dependencies
+- Bump org.jetbrains.kotlin:kotlin-gradle-plugin from 1.9.0 to 1.9.22 in /genesis-subcore/codegen-gradle-plugin
+- Bump org.jetbrains.kotlin:kotlin-scripting-common from 1.9.0 to 1.9.22 in /genesis-subcore/codegen-gradle-plugin
+- Bump org.jetbrains.kotlinx:ki-shell from 0.4.0 to 0.5.2 in /genesis-parent/genesis-shell
+- Bump org.jetbrains.kotlinx:kotlinx-coroutines-test from 1.4.2 to 1.7.3 in /genesis-subcore/genesis-commons
+- Bump org.jfrog.buildinfo:artifactory-maven-plugin from 3.6.1 to 3.6.2 in /genesis-parent/genesis-maven-submodules
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 4.24.21 to 5.1.14 in /genesis-conventions/genesis-dependencies
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.1.10 to 5.1.13 in /genesis-publish-config
+- Bump org.jfrog.buildinfo:build-info-extractor-gradle from 5.1.13 to 5.1.14 in /genesis-publish-config
+- Bump org.jline:jline from 3.23.0 to 3.24.0 in /genesis-conventions/genesis-dependencies
+- Bump org.jline:jline from 3.24.0 to 3.24.1 in /genesis-conventions/genesis-dependencies
+- Bump org.postgresql:postgresql from 42.6.0 to 42.7.0 in /genesis-conventions/genesis-dependencies
+- Bump org.postgresql:postgresql from 42.7.0 to 42.7.1 in /genesis-conventions/genesis-dependencies
+- Bump pekkoVersion from 1.0.1 to 1.0.2 in /genesis-conventions/genesis-dependencies
+- Bump slf4jVersion from 2.0.10 to 2.0.11 in /genesis-conventions/genesis-dependencies
+- Bump slf4jVersion from 2.0.9 to 2.0.10 in /genesis-conventions/genesis-dependencies
+- Bump testcontainersVersion from 1.19.1 to 1.19.2 in /genesis-conventions/genesis-dependencies
+- Bump testcontainersVersion from 1.19.2 to 1.19.3 in /genesis-conventions/genesis-dependencies
+- Revert openTelemetry version from 1.32.0 to 1.31.0 as it pulls in kotlin 1.9.20
+- Revert openTelemetryVersion to 1.31.0 to avoid Gradle compatibility issues
+- Revert kotlinpoet bump back to 1.14.2
+- Upgrade sshd from 2.8.0 to 2.11.0
+
+
+### Patch releases
+
+#### 7.1.24
+
+##### Fixes
+
+- Remove ReflectionToStringBuilder from ClusterMessage 
+
+#### 7.1.23
+
+##### Fixes
+
+- Dataserver backwardsJoin view does not recover in case of a buffered out of order update  
+- Add type conversion from Integer to Short
+
+#### 7.1.22
+
+##### Fixes
+
+- Fixed issues in schema validation with BigDecimal handling and embedded type info 
+- UserSessionCache now handles multiple expiry listeners for the same auth token 
+- Ensure heartbeat pong provides accurate information about authentication status at all times
+
+#### 7.1.21
+
+##### Features
+
+- Add flag to provide enhanced HEARTBEAT_PONG messages and expose "onHeartbeatPing" hook in script definition to handle custom business logic
+- Expose settings for Websocket frame sizes, fix frame aggregation and allow Websocket binary payload using MsgPack format
+
+#### 7.1.20
+
+##### Fixes
+
+- Path for finding script modules in simplified structure
+- Remap fail when field becomes non-nullable and added to key at the same change set
+- bundleGeneratedClasses=false works when project type is application
+- Remove projectOverviewBuilder task dependency on genesisSync
+
+#### 7.1.19
+
+##### Fixes
+
+- pal-dataserver: updates batched at MessageSet level now preserve old row data
+
+#### 7.1.18
+
+##### Fixes
+
+- Add TIMESTAMP support to DbMon distinct command
+- Dependency changes
+- Upgrade gradle license report plugin from 2.0 to 2.7
+
+#### 7.1.17
+
+##### Fixes
+
+- Copy site specific files from main module
+- DisableAuthUpdates flag works as expected again
+- Add MetaInf directory to all codegen tasks to ensure they respect gradle rules for caching and task avoidance
+- GenerateCache option is now respected as expected
+
+#### 7.1.16
+
+- Distribution cfg and scripts folder paths
+- Include all cfg and script files in PBC distribution
+- Genesis 7.1.3(reporting-server)
+- **Breaking** Collapse reporting processes into single process and increase process memory
+
+##### Fixes
+
+#### 7.1.15
+
+##### Features
+
+- Add minimal cfg zip to distribution and distribution plugin.
+- Site specific distribution plugin and remove site specific internal module
+
+#### 7.1.14
+
+##### Features
+
+- Add inject method to AuthPermissionsScript
+
+#### 7.1.13
+
+##### Features
+
+- Settings plugin: generate config jar from main module and remove config internal module
+
+##### Fixes
+
+- Dictionary cache main module now assembles all the submodules on assemble.
+
+#### 7.1.12
+
+##### Fixes
+
+- LoginNack to cause the username in the channel context to be erased
+
+#### 7.1.11
+
+##### Fixes
+
+- Only add version constraints of artifacts from a product's manifest where version is same as product version Replaced endsWith() to !=.
+
+#### 7.1.10
+
+No functional changes.
+
+#### 7.1.9
+
+##### Features
+
+- Add gzip compression option for table dumps
+
+##### Fixes
+
+- Add process arguments to project overview json
+- Finding product name in settings plugin
+
+#### 7.1.8
+
+##### Features
+
+- Logs with traceability in query and caching
+
+##### Fixes
+
+- MORE_COLUMNS messages now successfully change the payload of future QUERY_UPDATE messages
+- Prevent duplicate cache entries in views generated dao jar
+- Distribution zip file version with dist plugin
+
+#### 7.1.7
+
+##### Fixes
+- Get site specific overrides from local files in exec plugin for simple structure
+
+#### 7.1.6
+
+##### Features
+
+- Enable autoIncrement for LONG fields
+
+##### Fixes
+- Correct path to config folder in site specific for simple structure
+
+#### 7.1.5
+
+##### Fixes
+
+- Fix Moving view logic so the timestamp sorted references are always in sync with the rows in view
+
+#### 7.1.4
+
+##### Fixes
+
+- Add 'enabled' property to ManifestCreationTask
+- Add support for dataserver pagination mode when using HTTP requests
+- Respect asterisk in project overview builder
+
+#### 7.1.3
+
+##### Fixes
+
+- Convert evaluator expression parser as well as writer to use logical AND
+- Ensure we always add generated jars dependencies
+
+#### 7.1.2
+
+##### Fixes
+
+- Including audit generated builders in the dao cache
+
+#### 7.1.1
+
+##### Features
+
+- **Breaking** API enhancements for dynamic rule creation forms, split new SYSTEM_ENTITY request into two
+
+##### Features
+
+- Project type properties so import not required
+##### Fixes
+
+- Add template processing feature in ProductDetailsCreatorPlugin
+- Create new task to depend on _genesisInstall and generated code
+- Implement annotation script handling in Gradle plugin
+- Prevent malformed payloads from evaluator result expressions
+- Resources are not copied to site-specific internal module in simple app
+- Distinct/search commands not working in DBMon for enums
+- Fix copy task dependencies for simplified project structure
+- Handle multiple modules in processes.xml in project overview builder
+- Update implementation of createManifestTask to work with changes to simple structure
+- View enriched fields returns null after DATA_LOGOFF message
+
+## Breaking changes
+
+### 7.1 breaking changes
+
+- Removing Python 2 scripts
+- Added PRIME as a table operation on dynamic rules, added rule deletion audit
+- Added new reqrep in GENESIS_CLUSTER to query entity info
+- Add support for process dependency checks when using Consul as cluster mode
+- Replace "contains" behavior for "startsWith" in "buildClasspathForModule" function inside genesis.py
+- Fix cache handling of tables which are cached but have indices that are not cached
+
+### 7.1.16 breaking changes
+
+- Collapse reporting processes into single process and increase process memory
+
+### 7.1.1 breaking changes
+- API enhancements for dynamic rule creation forms, split new SYSTEM_ENTITY request into two
+
+## Migration guide: version 7.0 to 7.1
+
+:::info
+If you want to migrate from version 6 of the Genesis Application Platform, follow the [instructions to upgrade to version 7.0](/release-notes/platform/7/7.0/#migration-guide-version-60-to-70). Once you have completed this, you can then follow the instructions here.
+:::
+
+Version 7.1.0 of the Genesis Server Framework introduces a simpler project structure. In many cases, structural changes to your project will be necessary. The exact change depends on the specific architecture of your project.
+
+### Remove old dictionary-cache dependencies
+If your `server/jvm/product-dictionary-cache/build.gradle.kts` currently includes the following dependencies, you need to remove the first five:
+
+``` kotlin
+dependencies {
+    implementation(project(":product-dictionary-cache:product-generated-dao"))
+    implementation(project(":product-dictionary-cache:product-generated-fields"))
+    implementation(project(":product-dictionary-cache:product-generated-hft"))
+    implementation(project(":product-dictionary-cache:product-generated-sysdef"))
+    implementation(project(":product-dictionary-cache:product-generated-view"))
+
+    implementation("global.genesis:auth-config:${properties["authVersion"]}")
+}
+```
+
+To be clear, the dependencies to remove are:
+
+
+-  `product-dictionary-cache:product-generated-dao`
+-  `product-dictionary-cache:product-generated-fields`
+-  `-dictionary-cache:product-generated-hft`
+-  `product-dictionary-cache:product-generated-sysdef`
+-  `product-dictionary-cache:product-generated-view`
+
+### Add a new dictionary-cache dependency
+Add your application's `-dictionary-`cache` as a dependency to the server/jvm/product-distribution/build.gradle.kts file.
+
+The full name for the cache is: `{appname}-dictionary-cache`. Also, note the `configuration = "codeGen"` parameter.
+
+```
+implementation(project(path = ":product-dictionary-cache", configuration = "codeGen"))
+```
+
+### Update module names in processes.xml
+Review all `{appname}-processes.xml` files in your application (main app config module + `site-specific/cfg`). In these files, update the `<module>` tag values to ensure that they match the underlying module jar name (without .jar).
+
+Previous modules, such as `pal-dataserver`, now need to become genesis-pal-dataserver (because the underlying jar filename for the Data Server is genesis-pal-dataserver.jar)
+
+This breaking change has been made because the previous style caused clashes in applications that have modules of the same name. For example, a `<module>` value of `eventhandler` could pick up `{app_name}-eventhandler.jar` instead of `genesis-eventhandler.jar`.
+
+Failing to make this change will lead to errors during `startProcess` or `startServer`. in the example below, we have failed to change the `<module>` definition from `pal-requestserver` to `genesis-pal-requestserver`:
+
+```bash 
+Starting process GENESIS_AUTH_REQUEST_SERVER
+2024-03-13 15:51:07:root:INFO:No modules found for name pal-requestserver
+Traceback (most recent call last):
+  File "/home/octo/run//genesis/scripts/unix/python3/startProcess", line 308, in <module>
+    startProcess(processName, sys.argv[2:], verbose)
+  File "/home/octo/run//genesis/scripts/unix/python3/startProcess", line 178, in startProcess
+    classpath += genesis.buildClasspathForModules(module.split(','))
+  File "/home/octo/run/genesis/scripts/unix/python3/pymodules/genesis.py", line 45, in buildClasspathForModules
+    classpath += genesis.buildClasspathForModule(module, silent, useGenerated)
+TypeError: 'NoneType' object is not iterable
+```
+
+So, the fix is to change the `<module>` definition from `pal-requestserver` to `genesis-pal-requestserver`.

@@ -1,0 +1,495 @@
+---
+title: '7.0'
+sidebar_label: '7.0'
+sidebar_position: 20
+id: '7.0'
+---
+
+:::tip
+This release contains [breaking changes](#breaking-changes). These are listed at the end of this page, along with instructions for migrating from previous releases.
+:::
+
+
+
+## Server
+
+### Features
+
+- (genesis-codegen): extract builder from entity
+- (pal-dataserver): Add Fury serialization support and off heap buffer implementation
+- (pal-streamerclient): pal-streamerclient: Implement script to dump streamer client cache in JSON format
+- (remap): Add skipTableDump Flag
+- (router): Add flag to enable websocket compression
+- Add support for Open Telemetry tracing and logging context
+- Add support for optimistic concurrency
+- Add trace logging to rightSummaryCache
+- Adding Encoding support for RAW types
+- Allow TIMESTAMPS to be searched for using different formats
+- Allow encoding of refresh token on EVENT_LOGIN_AUTH nack for MFA workflows
+- DbMon: View support on read operations
+- Mark public ListenableFuture APIs as deprecated
+- Nack messages need to implement common interface called GenesisNackReply
+- Rework generateCache tasks to avoid re-generating code
+- Upgrade Gradle to version 8.2.1
+- Upgrade to Gradle 8.3
+- Add an endpoint for the health check port for prometheus format as well as json
+- Add sync db interface
+- Add timeout to the sql connection to connect connection starvation
+- Added -force argument to SendIt script
+- Added support for openapi
+- Create tasks to copy config files to genesis-home folder
+- Create tasks to copy distribution to genesis-home in gradle build folder
+- Make GenesisScriptHost non-static and injectable
+- New distribution zip plugin impl.
+- Support to specify Precision on BIGDECIMAL
+
+### Fixes
+
+- (dataserver): backwardsjoin memory and throughput improvements, and deadlock fix
+- (pal-dataserver): ensure calls to "nextRows" in NextRowsStrategy only run a single LMDB transaction in a single Dispatchers.IO thread
+- (pal-dataserver): remove runblocking operations from NextRowsStrategy after reverting changes
+- (pal-dataserver): revert coroutine based LMDB stream operation usage inside NextRowsStrategy as it leads to deadlocks
+- (pal-streamerclient): Ensure recovery timestamps get set as COMPLETE and not ACKED
+- (pal-streamerclient): Fixed race condition where message is marked as complete before it is marked as sent
+- (pal-streamerclient): Prevent duplicate DS_LOGON messages when streamer goes down
+- (pal-streamerclient): Prevent shutdown deadlock and performance degredation due to metric accumulation
+- (views): improve parsing in view script
+- Avoid using GenesisScriptConfig in genesisInstall
+- Change ENTITY_ID field size so it can be used as a key column with MSSQL
+- Console endpoints to start/not start without mandatory sysdef property
+- ConsulServiceDiscovery localhost() method now returns value for sysdef item "ServiceAddress"
+- Ensure exception in streamer callbacks do not terminate the stream
+- Fix DbMon search
+- Fix handling in GetNextSequenceNumbers script
+- Fix kover report generation
+- Fixed XML purger business day calculation
+- LocalCommandExecutor to support execution from inside WSL/Ubuntu env
+- Logout can also be performed without the user being logged in
+- Make logging async by default
+- OpenApi generator fails due empty object definition
+- Prevent deadlock in DbLayer by not using RxJava computation thread to publish updates from the queue
+- Prevent process crash in dynamic rule registration
+- RefreshTokenCleanUp script to use USER_SESSION table
+- SESSION_ID is propagated in the Logout message
+- ScriptAnnotationHandler is unable to load script dependencies when using @file:ScriptModules annotation backport
+- SetLogLevelScript.groovy to create an instance of ServiceDetailProvider
+- Setting PROCESS_STATUS_MESSAGE to db max size
+- TestUtil to use supplied DBHost upon test startup
+- UTS H2 using schema has fixed value PUBLIC
+- Add blocking annotation on sync db api
+- Change entityId concatenation in AuthKeyBuilder and SimpleGenericAuthEvaluator
+- Connection pool handling
+- Don't attempt to change ENUM fields on tables which arent yet created
+- Fix potential deadlock in static initialistion of dao classes
+- Generate TemplateOptionsDefault object dynamically from gradle to guarantee we are always using the correct values
+- genesisInstall has to be run twice to install sysdef changes from site-specific
+- Ignore derived fields when building view indices
+- Improve dataserver priming performance and memory profile
+- Including builders to be also serialized in the DAO dictionary
+- killProcessRestarter is not killing processRestarter process
+- Make GenesisDictionary db agnostic until it gets to the StorageEngine
+- Reduce data server memory usage
+- Returns 400/REQUEST_FAILED when IllegalArgument is captured in the eventhandler layer rather than 500/INTERNAL_ERROR
+
+### Dependency changes
+
+- Revert bump com.lmax:disruptor from 3.4.4 to 4.0.0 in genesis-conventions/genesis-dependencies
+- Upgrade debezium from 1.9.3.Final to 2.3.3.Final
+- Upgrade to Kotlin 1.9.10
+- Bump actions/checkout from 3 to 4
+- Bump aeronVersion from 1.41.4 to 1.42.1 in /genesis-conventions/genesis-dependencies
+- Bump apachePoi from 5.2.3 to 5.2.4 in /genesis-conventions/genesis-dependencies
+- Bump byteBuddyVersion from 1.14.6 to 1.14.7 in /genesis-conventions/genesis-dependencies
+- Bump byteBuddyVersion from 1.14.7 to 1.14.8 in /genesis-conventions/genesis-dependencies
+- Bump byteBuddyVersion from 1.14.8 to 1.14.9 in /genesis-conventions/genesis-dependencies
+- Bump camelVersion from 4.0.0 to 4.0.1 in /genesis-conventions/genesis-dependencies
+- Bump camelVersion from 4.0.1 to 4.1.0 in /genesis-conventions/genesis-dependencies
+- Bump codahaleVersion from 4.2.19 to 4.2.20 in /genesis-conventions/genesis-dependencies
+- Bump com.github.oshi:oshi-core from 6.4.5 to 6.4.6 in /genesis-conventions/genesis-dependencies
+- Bump com.github.spullara.mustache.java:compiler from 0.9.10 to 0.9.11 in /genesis-conventions/genesis-dependencies
+- Bump com.google.errorprone:error_prone_annotations from 2.21.1 to 2.22.0 in /genesis-conventions/genesis-dependencies
+- Bump com.google.guava:guava from 32.1.2-jre to 32.1.3-jre in /genesis-conventions/genesis-dependencies
+- Bump com.google.protobuf:protobuf-java from 3.24.1 to 3.24.2 in /genesis-conventions/genesis-dependencies
+- Bump com.google.protobuf:protobuf-java from 3.24.2 to 3.24.3 in /genesis-conventions/genesis-dependencies
+- Bump com.google.protobuf:protobuf-java from 3.24.3 to 3.24.4 in /genesis-conventions/genesis-dependencies
+- Bump com.h2database:h2 from 2.2.220 to 2.2.222 in /genesis-conventions/genesis-dependencies
+- Bump com.h2database:h2 from 2.2.222 to 2.2.224 in /genesis-conventions/genesis-dependencies
+- Bump com.lmax:disruptor from 3.4.4 to 4.0.0 in /genesis-conventions/genesis-dependencies
+- Bump com.microsoft.sqlserver:mssql-jdbc from 12.4.0.jre11-preview to 12.4.1.jre11 in /genesis-conventions/genesis-dependencies
+- Bump com.squareup:kotlinpoet from 1.12.0 to 1.14.2 in /genesis-conventions/genesis-dependencies
+- Bump commons-io:commons-io from 2.13.0 to 2.14.0 in /genesis-conventions/genesis-dependencies
+- Bump commons-net:commons-net from 3.9.0 to 3.10.0 in /genesis-conventions/genesis-dependencies
+- Bump debeziumVersion from 2.3.3.Final to 2.3.4.Final in /genesis-conventions/genesis-dependencies
+- Bump info.picocli:picocli from 4.7.4 to 4.7.5 in /genesis-conventions/genesis-dependencies
+- Bump io.netty:netty-all from 4.1.96.Final to 4.1.97.Final in /genesis-conventions/genesis-dependencies
+- Bump io.netty:netty-all from 4.1.97.Final to 4.1.98.Final in /genesis-conventions/genesis-dependencies
+- Bump io.netty:netty-all from 4.1.98.Final to 4.1.99.Final in /genesis-conventions/genesis-dependencies
+- Bump io.netty:netty-all from 4.1.99.Final to 4.1.100.Final in /genesis-conventions/genesis-dependencies
+- Bump io.opentelemetry:opentelemetry-bom from 1.30.1 to 1.31.0 in /genesis-conventions/genesis-dependencies
+- Bump io.reactivex.rxjava3:rxjava from 3.1.6 to 3.1.7 in /genesis-conventions/genesis-dependencies
+- Bump io.reactivex.rxjava3:rxjava from 3.1.7 to 3.1.8 in /genesis-conventions/genesis-dependencies
+- Bump jacksonVersion from 2.14.2 to 2.15.2 in /genesis-conventions/genesis-dependencies
+- Bump ktorVersion from 2.3.3 to 2.3.4 in /genesis-conventions/genesis-dependencies
+- Bump ktorVersion from 2.3.4 to 2.3.5 in /genesis-conventions/genesis-dependencies
+- Bump maven-plugin-api.version from 3.9.4 to 3.9.5 in /genesis-parent/genesis-maven-submodules
+- Bump mockitoVersion from 5.4.0 to 5.6.0 in /genesis-conventions/genesis-dependencies
+- Bump msgpackVersion from 0.9.3 to 0.9.4 in /genesis-conventions/genesis-dependencies
+- Bump msgpackVersion from 0.9.4 to 0.9.6 in /genesis-conventions/genesis-dependencies
+- Bump oracleJdbcVersion from 23.2.0.0 to 23.3.0.23.09 in /genesis-conventions/genesis-dependencies
+- Bump org.agrona:agrona from 1.19.1 to 1.19.2 in /genesis-conventions/genesis-dependencies
+- Bump org.apache.commons:commons-compress from 1.23.0 to 1.24.0 in /genesis-conventions/genesis-dependencies
+- Bump org.apache.maven.plugins:maven-enforcer-plugin from 3.4.0 to 3.4.1 in /genesis-parent/genesis-maven-submodules
+- Bump org.apache.maven:maven-model from 3.9.4 to 3.9.5 in /genesis-parent/genesis-maven-submodules
+- Bump org.checkerframework:checker-qual from 3.37.0 to 3.38.0 in /genesis-conventions/genesis-dependencies
+- Bump org.checkerframework:checker-qual from 3.38.0 to 3.39.0 in /genesis-conventions/genesis-dependencies
+- Bump org.furyio:fury-core from 0.1.2 to 0.2.0 in /genesis-conventions/genesis-dependencies
+- Bump org.zeromq:jeromq from 0.5.3 to 0.5.4 in /genesis-conventions/genesis-dependencies
+- Bump slf4jVersion from 2.0.7 to 2.0.9 in /genesis-conventions/genesis-dependencies
+- Bump testcontainersVersion from 1.18.3 to 1.19.0 in /genesis-conventions/genesis-dependencies
+- Bump testcontainersVersion from 1.19.0 to 1.19.1 in /genesis-conventions/genesis-dependencies
+- Upgrade Gradle version to 8.4
+- Upgrade camel from 3.21.0 to 4.0.0
+- Upgrade to Kotlin coroutines 1.7.3
+
+### Patch releases
+
+#### 7.0.13
+
+##### Fixes
+
+- Dataserver backwardsJoin view does not recover in case of a buffered out of order update
+
+#### 7.0.12
+
+##### Fixes
+
+- Add empty REQUEST when message body and parameters is empty on request replies
+- Correct issue in updateTablesDictionary gradle task (updateTablesDictionary)
+
+#### 7.0.11
+
+##### Fixes
+
+- Distinct/search commands not working in DBMon for enums
+- Including audit generated builders in the dao cache
+- View enriched fields returns null after DATA_LOGOFF message
+
+#### 7.0.10
+
+##### Fixes
+
+- Guarantee appropriate handling of dataserver socket disconnection events at router level
+
+#### 7.0.9
+
+##### Fixes
+
+- Force version 2.2.11 of jnr-jffi for ALL modules and exclude jnr-jffi dependency from pal-dataserver
+= Improved Comparator code in DbUtil to prevent Long and Int casting errors
+- Propagate closing of subscription to underlying subscription
+- Excluding jnr from dataserver 2
+
+#### 7.0.8
+
+##### Features
+
+- Provide injector binding in Groovy event handlers
+- Add PROCESS_ENABLED field to GENESIS_PROCESS
+- Allow GlobalClasspathAdditions to find jar files just by name, as well as supporting wildcards
+
+##### Fixes
+
+- Try to recover from data server errors
+- Add APPROVAL_MESSAGE HTTP header value to event messages
+- Add NEW_PASSWORD and OLD_PASSWORD to SensitiveFields and test case
+- Correct for out of sync updates by reading view updates in a transaction
+- Resource daemon to do not wait for chronicle when running from intellij plugin
+
+#### 7.0.7
+
+#####  Features
+
+- **Breaking** Add support for process dependency checks when using Consul as cluster mode
+- Remove warning for unknown properties in GenesisJsonJacksonFactory and MaskingGenesisJsonJacksonFactory
+
+##### Fixes
+
+- Adding RAW FieldType to ViewMeta
+
+#### 7.0.6
+
+##### Features
+
+-Add mechanism to add jars to classpath for all processes
+
+##### Fixes
+
+- Modify operations used inside "writeTransaction" now fail with RECORD_NOT_FOUND when database record is missing
+- Remap handling of auto-increment changes
+- Resource daemon to await chronicle queue creation
+
+#### 7.0.5
+
+##### Features
+
+-  Allow processes to opt out of compact processes
+
+##### Fixes
+
+- Correct for out of sequence updates in update batching operation
+
+#### 7.0.4
+
+##### Features
+
+- Fixes for --compactProcesses xml generation
+
+##### Fixes
+
+- (dataserver2): ensure we handle stack overflow errors gracefully 
+- (pal-requestserver): ensure ENUM metadata fields provide correct legacy and json schema metadata information about valid values 
+- Fix metricService creating inconsistent hierarchical paths. 
+- Implemented get and set sequence operations for SQL+ use last_value to prevent exception on new connection 
+- Ensure startServer doesn't fail if other gz files are present in the log folder 
+- Fields with defaults should use the default value when provided value is null 
+- Fix message ordering in data server client, to ensure multiple updates are handled correctly 
+- Handling of field resizing operation in MSSQL layer of indexed fields
+
+#### 7.0.3
+
+##### Features
+
+- (pal-streamerclient): Implement ClearStrCliSourceRef script to clear dangling source ref values from both the chronicle map and the running process
+- Add coroutines-debug jar file to genesis-distribution package 
+- Add support for "alwaysAllowedMessageType" in MessageDelegator
+
+##### Fixes
+
+- GPAL: Req Reps with wildcards not working 
+- Make micrometer slf4j registry compatible with genesis metrics log config, allow configurable logging levels 
+- Register global RxJava error handler for SQL engine 
+- Replace coroutine based Channel approach in ChannelUpdateQueueListener for ConcurrentLinkedQueue to avoid potential deadlocks 
+- fEnsure Map can be used as return type in Req-Rep 
+- ClearStrCliSourceRef to work as expected, even when the process is on ERROR state
+- Making auditText field dbMaxSize
+
+#### 7.0.2
+
+##### Features
+
+- (startProcess): Expose GENESIS_DISABLE_MANIFEST_CHECK environment variable to allow processes to start even if not all manifest jars are found 
+- Enable support for sequence capabilities in SQL layers 
+- New `FindFieldsAboveMaxSize` script added to find String fields violating maxSize
+
+##### Fixes
+
+- (pal-dataserver): ensure real time row updates are registered correctly in dataserver auth cache 
+- Updating maxSize of fields to be in line with application usage
+
+#### 7.0.1
+
+##### Fixes
+
+- (pal-dataserver): ensure dataserver auth cache is initialised correctly 
+- (purger): Purger enhancements
+
+
+## Breaking changes
+
+### 7.0 breaking changes
+- Removed support for aerospike as a database layer implementation
+- Removing Python 2 scripts
+- Change all command Nacks to follow new format
+- Remove access to AuthCache static methods and make AuthCacheFactory injectable instead
+- Rework StandardServiceDetailProvider and DefaultProcessInfoProvider to not rely on static properties and methods
+- Upgrade GSF to JUnit5
+- Upgrade to FoundationDB 7.1.x
+- Upgrade to JDK 17
+- Upgrade to Kotlin 1.9.0
+- dropwizard to micrometer
+- Remove code generation for database table repos by default and provides option to re-enable them
+- Remove GenesisDb from GSF
+
+### 7.0.7 breaking changes
+
+- Add support for process dependency checks when using Consul as cluster mode
+
+## Migration guide: version 6.0 to 7.0
+Version 7.0.0 of the Genesis Application Platform requires Java version 17 and gradle version 8.3.
+
+:::info
+If you have an existing application running on version 6 of the Genesis Application Platform and you are using gradle, these instructions will enable you to migrate to version 7 of the platform without difficulties. For applications running on older versions of the platform, please contact your Genesis representative.
+:::
+
+To migrate an existing application to version 7.0.0, follow the steps below.
+
+### Upgrade references to the artifacts
+
+
+In your `gradle.properties` file, bump up `genesisVersion` and all modules in the application to 7.0.0.
+
+```
+genesisVersion=7.0.0
+authVersion=7.0.0
+deployPluginVersion=7.0.0
+```
+
+### Modify the build
+1. Update your `server/jvm/build.gradle.kts` file so that it references Java 17 (including compiler options) and Kotlin 1.9.
+
+![](/img/release-notes/migrate-67-a.png)
+
+        Still in the `server/jvm/build.gradle.kts` file, add the required directives to support Junit 5 and properties to run tests.
+
+
+```kotlin {10,14-25} title="server/jvm/build.gradle.kts"
+...
+subprojects  {
+    ...
+    tasks {
+        ...
+        test {
+            systemProperty("DbLayer", "SQL")
+            systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+            systemProperty("DbQuotedIdentifiers", "true")
+            useJUnitPlatform()
+
+            // Add exports and opens so ChronicleQueue can continue working in JDK 17.
+            // More info in: https://chronicle.software/chronicle-support-java-17/
+            jvmArgs = jvmArgs!! + listOf(
+                "--add-exports=java.base/jdk.internal.ref=ALL-UNNAMED",
+                "--add-exports=java.base/sun.nio.ch=ALL-UNNAMED",
+                "--add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED",
+                "--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED",
+                "--add-opens=jdk.compiler/com.sun.tools.javac=ALL-UNNAMED",
+                "--add-opens=java.base/java.lang=ALL-UNNAMED",
+                "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
+                "--add-opens=java.base/java.io=ALL-UNNAMED",
+                "--add-opens=java.base/java.util=ALL-UNNAMED",
+                "--add-opens=java.base/java.nio=ALL-UNNAMED" // this one is opened for LMDB
+            )
+        }
+        ...
+    }
+}
+...
+```
+
+![](/img/release-notes/migrate-67-b.png)
+
+        Lastly, in the same file, configure the `copyDependencies` task and replace `JavaLanguageVersion`.
+
+```kotlin {13-19,28-30,34-36} title="server/jvm/build.gradle.kts"
+...
+subprojects  {
+    ...
+    tasks {
+        ...
+        //testing should use H2 mem db
+        test {
+            systemProperty("DbLayer", "SQL")
+            systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+            systemProperty("DbQuotedIdentifiers", "true")
+        } 
+
+        afterEvaluate {
+	        val copyDependencies = tasks.findByName("copyDependencies") ?: return@afterEvaluate
+
+            tasks.withType<Jar> {
+                dependsOn(copyDependencies)
+            }
+        }           
+    }
+}
+tasks {
+    ...
+}
+allprojects {
+    ...
+    kotlin {
+        jvmToolchain {
+            (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
+    ...
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
+    ...
+}
+```
+
+![](/img/release-notes/migrate-67-c.png)
+
+2. In the `server/jvm/-{application}-site-specific/build.gradle.kts` file, configure the `copyDependencies` task:
+
+```kotlin {4-6}
+...
+// To give custom name to the distribution package
+tasks {
+    copyDependencies {
+        enabled = false
+    }    
+    distZip {
+        archiveBaseName.set("alpha-site-specific")
+        archiveClassifier.set("bin")
+        archiveExtension.set("zip")
+    }
+}
+...
+```
+
+![](/img/release-notes/migrate-67-d.png)
+
+3. In the `server/jvm/{application}-distribution/build.gradle.kts` file, configure the distTar task:
+
+```kotlin {3-5}
+...
+tasks {
+    distTar {
+        mustRunAfter(":alpha-deploy:copyDependencies")
+    }    
+    distZip {
+        ...
+    }
+    ...
+}
+...
+```
+
+![](/img/release-notes/migrate-67-e.png)
+
+### Finishing
+
+:::caution Double check
+Before running the final commands, make sure your Java and Gradle are running using the required versions (Java 17 and Gradle 8.3).
+
+```bash
+java -version
+gradle -version
+```
+
+Also, make sure your environment variables are set properly, especially `JAVA_HOME` and `PATH`.
+:::
+
+After modifying the gradle files, open a terminal in the folder where you have your project; then upgrade the gradle wrapper:
+
+```
+gradle wrapper --gradle-version=8.3
+```
+
+Then repeat the command in the `server/jvm` folder:
+
+```
+cd server/jvm
+gradle wrapper --gradle-version=8.3
+```
+
+After you have done this:
+
+- If everything has worked, a distribution will be generated - congratulations! You have migrated your application to Genesis 7.
+- If there are errors, you need to search through the release notes for all your modules to check for breaking changes.
+
+
