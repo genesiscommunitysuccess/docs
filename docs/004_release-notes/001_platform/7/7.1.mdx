@@ -5,16 +5,13 @@ sidebar_position: 19
 id: '7.1'
 ---
 
+:::tip
+This release contains [breaking changes](#breaking-changes). These are listed at the end of this page, along with instructions for migrating from previous releases.
+:::
+
+
+
 ## Server
-
-### Breaking changes
-
-- Removing Python 2 scripts
-- Added PRIME as a table operation on dynamic rules, added rule deletion audit
-- Added new reqrep in GENESIS_CLUSTER to query entity info
-- Add support for process dependency checks when using Consul as cluster mode
-- Replace "contains" behavior for "startsWith" in "buildClasspathForModule" function inside genesis.py
-- Fix cache handling of tables which are cached but have indices that are not cached
 
 ### Features
 
@@ -368,8 +365,7 @@ id: '7.1'
 - Distribution cfg and scripts folder paths
 - Include all cfg and script files in PBC distribution
 - Genesis 7.1.3(reporting-server)
-- Breaking changes
-- Collapse reporting processes into single process and increase process memory
+- **Breaking** Collapse reporting processes into single process and increase process memory
 
 ##### Fixes
 
@@ -478,9 +474,10 @@ No functional changes.
 
 #### 7.1.1
 
-##### Breaking changes
+##### Features
 
-- API enhancements for dynamic rule creation forms, split new SYSTEM_ENTITY request into two
+- **Breaking** API enhancements for dynamic rule creation forms, split new SYSTEM_ENTITY request into two
+
 ##### Features
 
 - Project type properties so import not required
@@ -496,3 +493,86 @@ No functional changes.
 - Handle multiple modules in processes.xml in project overview builder
 - Update implementation of createManifestTask to work with changes to simple structure
 - View enriched fields returns null after DATA_LOGOFF message
+
+## Breaking changes
+
+### 7.1 breaking changes
+
+- Removing Python 2 scripts
+- Added PRIME as a table operation on dynamic rules, added rule deletion audit
+- Added new reqrep in GENESIS_CLUSTER to query entity info
+- Add support for process dependency checks when using Consul as cluster mode
+- Replace "contains" behavior for "startsWith" in "buildClasspathForModule" function inside genesis.py
+- Fix cache handling of tables which are cached but have indices that are not cached
+
+### 7.1.16 breaking changes
+
+- Collapse reporting processes into single process and increase process memory
+
+### 7.1.1 breaking changes
+- API enhancements for dynamic rule creation forms, split new SYSTEM_ENTITY request into two
+
+## Migration guide: version 7.0 to 7.1
+
+:::info
+If you want to migrate from version 6 of the Genesis platform, follow the instructions to upgrade to version 7.0. Once you have completed this, you can then follow the instructions here.
+:::
+
+Version 7.1.0 of the Genesis Server Framework introduces a simpler project structure. In many cases, structural changes to your project will be necessary. The exact change depends on the specific architecture of your project.
+
+### Remove old dictionary-cache dependencies
+If your `server/jvm/product-dictionary-cache/build.gradle.kts` currently includes the following dependencies, you need to remove the first five:
+
+``` kotlin
+dependencies {
+    implementation(project(":product-dictionary-cache:product-generated-dao"))
+    implementation(project(":product-dictionary-cache:product-generated-fields"))
+    implementation(project(":product-dictionary-cache:product-generated-hft"))
+    implementation(project(":product-dictionary-cache:product-generated-sysdef"))
+    implementation(project(":product-dictionary-cache:product-generated-view"))
+
+    implementation("global.genesis:auth-config:${properties["authVersion"]}")
+}
+```
+
+To be clear, the dependencies to remove are:
+
+
+-  `product-dictionary-cache:product-generated-dao`
+-  `product-dictionary-cache:product-generated-fields`
+-  `-dictionary-cache:product-generated-hft`
+-  `product-dictionary-cache:product-generated-sysdef`
+-  `product-dictionary-cache:product-generated-view`
+
+### Add a new dictionary-cache dependency
+Add your application's `-dictionary-`cache` as a dependency to the server/jvm/product-distribution/build.gradle.kts file.
+
+The full name for the cache is: `{appname}-dictionary-cache`. Also, note the `configuration = "codeGen"` parameter.
+
+```
+implementation(project(path = ":product-dictionary-cache", configuration = "codeGen"))
+```
+
+### Update module names in processes.xml
+Review all `{appname}-processes.xml` files in your application (main app config module + `site-specific/cfg`). In these files, update the `<module>` tag values to ensure that they match the underlying module jar name (without .jar).
+
+Previous modules, such as `pal-dataserver`, now need to become genesis-pal-dataserver (because the underlying jar filename for the Data Server is genesis-pal-dataserver.jar)
+
+This breaking change has been made because the previous style caused clashes in applications that have modules of the same name. For example, a `<module>` value of `eventhandler` could pick up `{app_name}-eventhandler.jar` instead of `genesis-eventhandler.jar`.
+
+Failing to make this change will lead to errors during `startProcess` or `startServer`. in the example below, we have failed to change the `<module>` definition from `pal-requestserver` to `genesis-pal-requestserver`:
+
+```bash 
+Starting process GENESIS_AUTH_REQUEST_SERVER
+2024-03-13 15:51:07:root:INFO:No modules found for name pal-requestserver
+Traceback (most recent call last):
+  File "/home/octo/run//genesis/scripts/unix/python3/startProcess", line 308, in <module>
+    startProcess(processName, sys.argv[2:], verbose)
+  File "/home/octo/run//genesis/scripts/unix/python3/startProcess", line 178, in startProcess
+    classpath += genesis.buildClasspathForModules(module.split(','))
+  File "/home/octo/run/genesis/scripts/unix/python3/pymodules/genesis.py", line 45, in buildClasspathForModules
+    classpath += genesis.buildClasspathForModule(module, silent, useGenerated)
+TypeError: 'NoneType' object is not iterable
+```
+
+So, the fix is to change the `<module>` definition from `pal-requestserver` to `genesis-pal-requestserver`.

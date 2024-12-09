@@ -5,14 +5,9 @@ sidebar_position: 18
 id: '7.2'
 ---
 
-### Breaking changes
-- API enhancements for dynamic rule creation forms, split new SYSTEM_ENTITY request into two 
-- Always add userName to rule expression substitutions in DynamicRuleFactory 
-- Standardised python script shebang lines to make compatible with systems running python2 and python3 
-- Add --excludeFields arg to DumpIt 
-- Using indy compilation 
-- Router parses request bodies correctly for reqrep server message 
-- GenesisScriptCache is not consistently hit
+:::tip
+This release contains [breaking changes](#breaking-changes). These are listed at the end of this page.
+:::
 
 Features
 - (Settings plugin): Ensure internal modules exist before compilation
@@ -357,8 +352,19 @@ Update all references of python to python3
 
 - UserSessionCache now handles multiple expiry listeners for the same auth token
 
-#### 7.2.1
+## Breaking changes
 
-##### Breaking changes
+### 7.2 breaking
+
+- API enhancements for dynamic rule creation forms, split new SYSTEM_ENTITY request into two 
+- Always add userName to rule expression substitutions in DynamicRuleFactory 
+- Standardised python script shebang lines to make compatible with systems running python2 and python3 
+- Add --excludeFields arg to DumpIt 
+- Using indy compilation 
+- Router parses request bodies correctly for reqrep server message 
+- GenesisScriptCache is not consistently hit
+
+### 7.2.1 breaking
 
 - Always start GENESIS_EVALUATOR by default
+

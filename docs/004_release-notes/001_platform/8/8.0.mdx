@@ -5,14 +5,12 @@ sidebar_position: 20
 id: '8.0'
 ---
 
-## Server
+:::tip
+This release contains [breaking changes](#breaking-changes). These are listed at the end of this page.
+:::
 
-### Breaking changes
-- Always add userName to rule expression substitutions in DynamicRuleFactory
-- Always start GENESIS_EVALUATOR by default
-- Add genesisType to json schema to provide genesis field type info
-- Using indy compilation
-- GenesisScriptCache is not consistently hit
+
+## Server
 
 ### Features
 
@@ -115,4 +113,14 @@ Update all references for python to python3
 - Process json aliased enums correctly
 - Set default values in json schema
 
+
+## Breaking changes
+
+### 8.0 breaking changes
+
+- Always add userName to rule expression substitutions in DynamicRuleFactory
+- Always start GENESIS_EVALUATOR by default
+- Add genesisType to json schema to provide genesis field type info
+- Using indy compilation
+- GenesisScriptCache is not consistently hit
 

@@ -5,21 +5,13 @@ sidebar_position: 20
 id: '7.0'
 ---
 
-## Server
+:::tip
+This release contains [breaking changes](#breaking-changes). These are listed at the end of this page, along with instructions for migrating from previous releases.
+:::
 
-### Breaking changes
-- Removed support for aerospike as a database layer implementation
-- Removing Python 2 scripts
-- Change all command Nacks to follow new format
-- Remove access to AuthCache static methods and make AuthCacheFactory injectable instead
-- Rework StandardServiceDetailProvider and DefaultProcessInfoProvider to not rely on static properties and methods
-- Upgrade GSF to JUnit5
-- Upgrade to FoundationDB 7.1.x
-- Upgrade to JDK 17
-- Upgrade to Kotlin 1.9.0
-- dropwizard to micrometer
-- Remove code generation for database table repos by default and provides option to re-enable them
-- Remove GenesisDb from GSF
+
+
+## Server
 
 ### Features
 
@@ -215,12 +207,9 @@ id: '7.0'
 
 #### 7.0.7
 
-##### Breaking changes
+#####  Features
 
-- Add support for process dependency checks when using Consul as cluster mode
-
-##### Features
-
+- **Breaking** Add support for process dependency checks when using Consul as cluster mode
 - Remove warning for unknown properties in GenesisJsonJacksonFactory and MaskingGenesisJsonJacksonFactory
 
 ##### Fixes
@@ -304,5 +293,203 @@ id: '7.0'
 - (pal-dataserver): ensure dataserver auth cache is initialised correctly 
 - (purger): Purger enhancements
 
+
+## Breaking changes
+
+### 7.0 breaking changes
+- Removed support for aerospike as a database layer implementation
+- Removing Python 2 scripts
+- Change all command Nacks to follow new format
+- Remove access to AuthCache static methods and make AuthCacheFactory injectable instead
+- Rework StandardServiceDetailProvider and DefaultProcessInfoProvider to not rely on static properties and methods
+- Upgrade GSF to JUnit5
+- Upgrade to FoundationDB 7.1.x
+- Upgrade to JDK 17
+- Upgrade to Kotlin 1.9.0
+- dropwizard to micrometer
+- Remove code generation for database table repos by default and provides option to re-enable them
+- Remove GenesisDb from GSF
+
+### 7.0.7 breaking changes
+
+- Add support for process dependency checks when using Consul as cluster mode
+
+## Migration guide: version 6.0 to 7.0
+Version 7.0.0 of the Genesis platform requires Java version 17 and gradle version 8.3.
+
+:::info
+If you have an existing application running on version 6 of the Genesis platform and you are using gradle, these instructions will enable you to migrate to version 7 of the platform without difficulties. For applications running on older versions of the platform, please contact your Genesis representative.
+:::
+
+To migrate an existing application to version 7.0.0, follow the steps below.
+
+### Upgrade references to the artifacts
+
+
+In your `gradle.properties` file, bump up `genesisVersion` and all modules in the application to 7.0.0.
+
+```
+genesisVersion=7.0.0
+authVersion=7.0.0
+deployPluginVersion=7.0.0
+```
+
+### Modify the build
+1. Update your `server/jvm/build.gradle.kts` file so that it references Java 17 (including compiler options) and Kotlin 1.9.
+
+![](/img/release-notes/migrate-67-a.png)
+
+        Still in the `server/jvm/build.gradle.kts` file, add the required directives to support Junit 5 and properties to run tests.
+
+
+```
+...
+subprojects  {
+    ...
+    tasks {
+        ...
+        test {
+            systemProperty("DbLayer", "SQL")
+            systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+            systemProperty("DbQuotedIdentifiers", "true")
+            useJUnitPlatform()
+
+            // Add exports and opens so ChronicleQueue can continue working in JDK 17.
+            // More info in: https://chronicle.software/chronicle-support-java-17/
+            jvmArgs = jvmArgs!! + listOf(
+                "--add-exports=java.base/jdk.internal.ref=ALL-UNNAMED",
+                "--add-exports=java.base/sun.nio.ch=ALL-UNNAMED",
+                "--add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED",
+                "--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED",
+                "--add-opens=jdk.compiler/com.sun.tools.javac=ALL-UNNAMED",
+                "--add-opens=java.base/java.lang=ALL-UNNAMED",
+                "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
+                "--add-opens=java.base/java.io=ALL-UNNAMED",
+                "--add-opens=java.base/java.util=ALL-UNNAMED",
+                "--add-opens=java.base/java.nio=ALL-UNNAMED" // this one is opened for LMDB
+            )
+        }
+        ...
+    }
+}
+...
+```
+
+![](/img/release-notes/migrate-67-b.png)
+
+        Lastly, in the same file, configure the `copyDependencies` task and replace `JavaLanguageVersion`.
+
+```
+...
+subprojects  {
+    ...
+    tasks {
+        ...
+        //testing should use H2 mem db
+        test {
+            systemProperty("DbLayer", "SQL")
+            systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+            systemProperty("DbQuotedIdentifiers", "true")
+        } 
+
+        afterEvaluate {
+	        val copyDependencies = tasks.findByName("copyDependencies") ?: return@afterEvaluate
+
+            tasks.withType<Jar> {
+                dependsOn(copyDependencies)
+            }
+        }           
+    }
+}
+tasks {
+    ...
+}
+allprojects {
+    ...
+    kotlin {
+        jvmToolchain {
+            (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
+    ...
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
+    ...
+}
+```
+
+![](/img/release-notes/migrate-67-c.png)
+
+2. In the `server/jvm/-{application}-site-specific/build.gradle.kts` file, configure the `copyDependencies` task:
+
+```
+...
+// To give custom name to the distribution package
+tasks {
+    copyDependencies {
+        enabled = false
+    }    
+    distZip {
+        archiveBaseName.set("alpha-site-specific")
+        archiveClassifier.set("bin")
+        archiveExtension.set("zip")
+    }
+}
+...
+```
+
+![](/img/release-notes/migrate-67-d.png)
+
+3. In the `server/jvm/{application}-distribution/build.gradle.kts` file, configure the distTar task:
+
+```
+...
+tasks {
+    distTar {
+        mustRunAfter(":alpha-deploy:copyDependencies")
+    }    
+    distZip {
+        ...
+    }
+    ...
+}
+...
+```
+
+![](/img/release-notes/migrate-67-e.png)
+
+### Finishing
+
+:::caution Double check
+Before running the final commands, make sure your Java and Gradle are running using the required versions (Java 17 and Gradle 8.3).
+
+```bash
+java -version
+gradle -version
+```
+
+Also, make sure your environment variables are set properly, especially `JAVA_HOME` and `PATH`.
+:::
+
+After modifying the gradle files, open a terminal in the folder where you have your project; then upgrade the gradle wrapper:
+
+```
+gradle wrapper --gradle-version=8.3
+```
+
+Then repeat the command in the `server/jvm` folder:
+
+```
+cd server/jvm
+gradle wrapper --gradle-version=8.3
+```
+
+After you have done this:
+
+- If everything has worked, a distribution will be generated - congratulations! You have migrated your application to Genesis 7.
+- If there are errors, you need to search through the release notes for all your modules to check for breaking changes.
 
 
