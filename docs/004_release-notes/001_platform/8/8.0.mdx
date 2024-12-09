@@ -88,11 +88,71 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Patch releases
 
+#### 8.0.10
+
+##### Fixes 
+
+- ResourceDaemon: Fix Dependency Injection initialisation on startup 
+- Remove ReflectionToStringBuilder from ClusterMessage
+
+#### 8.0.9
+
+##### Fixes
+
+- Dataserver backwardsJoin view does not recover in case of a buffered out of order update 
+- Mon dies when system is not able to connect to CONSUL but is configured to do so
+
+#### 8.0.8
+
+##### Fixes
+
+- DbMon search returns the expected number of records 
+- fDbMon updateWhere fails if there is a white space in the argument
+
+#### 8.0.7
+
+##### Fixes
+
+- Allow db mon to fetch more than 500 results
+
+#### 8.0.6
+
+##### Features
+
+- Make logging of zero values optional in logger reporter
+
+##### Fixes
+
+- Add clientHandler router config with option to close client channel if becomes full 
+
+#### 8.0.5
+
+##### Fixes
+
+- Auth key concatenation for enriched auth clauses and AuthCache re-registration operation now uses correct record ids 
+- Can use warningNack in context event handlers 
+- Exclude data folder from site specific folder copy
+
+#### 8.0.4
+
+##### Features
+
+- Add non-blocking threading model for database subscriptions 
+- Add support for Consolidators and data pipelines in GenesisJunit 
+- Add metric for tracking the number of users per dataserver query
+
+##### Fixes
+
+- getRangeFromEnd default method without fields parameter now calls correct getRangeFromEnd method 
+- DOUBLE fields generated using the new table DSL to accept negative values by default 
+- FDB alias cache will now respect fields with same name and different type defined in different tables
+- Update SetLogLevel to use data classes and workflow, re-add countdown latch to script
+
 #### 8.0.3
 
 ##### Fixes
 
-(router): Populate missing DETAILS.SESSION_AUTH_TOKEN field for inbound EVENT_LOGIN_DETAILS messages at the router level
+- (router): Populate missing DETAILS.SESSION_AUTH_TOKEN field for inbound EVENT_LOGIN_DETAILS messages at the router level
 
 #### 8.0.2
 
