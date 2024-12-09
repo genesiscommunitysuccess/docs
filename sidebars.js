@@ -237,7 +237,7 @@ module.exports = {
     'release-notes/latest-release',
     {
       type: 'category',
-      label: 'Platform',
+      label: 'Previous releases',
       collapsed: true,
       items: [
         {
