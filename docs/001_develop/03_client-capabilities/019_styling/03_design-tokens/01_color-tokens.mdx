@@ -28,10 +28,10 @@ graph LR
     D[Use Generated Variables]
 ```
 
-You don't have to follow the steps in this exact order e.g. you could set set dark/light mode first if you prefer.
+You don't have to follow the steps in this exact order. For example, you could set set dark/light mode first if you prefer.
 
 :::tip
-To help you visualise how modifying tokens impacts the component look and feel, we have created a [live configuration preview](../../direct-customization-genesis-components/styling-direct-dsc/).
+To help you visualize how modifying tokens impacts the component look and feel, we have created a [live configuration preview](../../direct-customization-genesis-components/styling-direct-dsc/).
 :::
 
 ### Choose base colours
@@ -43,13 +43,13 @@ const accentColorValue = '#0EAFE2';
 const neutralColorValue = '#808080';
 ```
 
-Behind the scenes accent and neutral colour palettes will be generated from the base colours provided:
+Behind the scenes, accent and neutral colour palettes will be generated from the base colours provided:
 
 <color-palette type="accent"></color-palette>
 
 <color-palette type="neutral"></color-palette>
 
-### Choose mode
+### Choose the mode
 
 Choose dark (default) or light mode:
 
@@ -79,14 +79,14 @@ After you have configured your colours, you have a number of variables available
 
 Variable names are not tied to specific colours, as they are context-dependent and can vary between light and dark modes - they follow the semantic naming conventions described below.
 
-#### CSS Custom Property
+#### CSS custom property
 
 ```css
 background: var(--accent-fill-rest);
 ```
 
 :::caution
-You should consider the CSS custom properties emitted by design tokens to be immutable. Avoid changing their values in CSS, as that can lead to rendering and accessibility issues. If you need to change any values, update the base colour and delta configuration as described above.
+You should consider the CSS custom properties emitted by design tokens to be immutable. Avoid changing their values in CSS, as that can lead to rendering and accessibility issues. If you need to change any values, update the base colour and delta configuration, as described above.
 :::
 
 #### Token
@@ -109,7 +109,7 @@ Foreground variables are intended for text, icons, or other lightweight decorati
 
 #### Neutral foreground
 
-The most common variable, used for plain text or icons.
+This is the most common variable, used for plain text or icons.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -118,7 +118,7 @@ The most common variable, used for plain text or icons.
 
 #### Accent foreground
 
-This is commonly used for link text or icon. It is also used for smaller elements that might not show up well using `accentFill`: for instance, if your accent colour is dark purple and you support a dark mode interface.
+This is commonly used for link text or icon. It is also used for smaller elements that might not show up well using `accentFill`; for instance, use it if your accent colour is dark purple and you support a dark mode interface.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -129,7 +129,7 @@ This is commonly used for link text or icon. It is also used for smaller element
 
 #### Foreground On Accent
 
-This is either black or white based on the contrast requirements. It returns white if possible, as a common treatment for an accent button is white text over the accent colour.
+This is either black or white, based on the contrast requirements. It returns white if possible, as a common treatment for an accent button is white text over the accent colour.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -279,7 +279,7 @@ This the only layer recipe that's relative to the container colour instead of ab
 
 #### neutralLayerFloating
 
-A special layer for floating layers, like flyouts or menus. It will be lighter than any other layers if possible, but will also be white in default light mode, as will neutral layer one.
+A special layer for floating layers, such as flyouts or menus. It will be lighter than any other layers if possible, but will also be white in default light mode, as will neutral layer one.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |

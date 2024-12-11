@@ -13,29 +13,29 @@ sidebar_position: 3
 
 ## Parts
 
-A `part` is a html tag which has been configured as a `part` on the template, and it allows you to target the particular
-part of the component from the outside. For components which have `parts` defined, this allows you to very precisely
-target certain parts of the component rather than the entire component, as might be the case when you set a CSS variable.
+A `part` is an html tag that has been configured as a `part` on the template. This enables you to target a particular part of the component from the outside. where a component has `parts` defined, you can very precisely target certain parts of the component rather than the entire component (as might be the case when you set a CSS variable).
 
 :::tip
 A quick way to identify what parts are declared on the component is to use the developer tools in your browser to inspect the element's template.
 :::
 
-Take this example markup
+Take a look at this example mark-up:
+
 ```html
 <rapid-button>Content</rapid-button>
 ```
 
-To modify a particular part of the component it can be targeted using the part selector. For example, to set the colour of "control" part:
+You can modify a specific part of the component using the part selector. For example, to set the colour of the "control" part:
+
 ```css
 rapid-button::part(control) {
     border: 2px solid #ff0000;
     background-color: #f4f4f4;
 }
 ```
-This configures the `control` of the button, which is the button itself and not the context such as the label text. `part(control)` is used because the core button is defined as `<button part="control">` on the template
+This configures the `control` of the button, which is the button itself and not the context (such as the label text). `part(control)` is used because the core button is defined as `<button part="control">` on the template.
 
-If you are using the default design system then the text may now be hard to read because it's white text on a light background. You could set the color of the text using a CSS variable as before.
+If you are using the default design system, then the text might now be hard to read, because it's white text on a light background. You could set the `color` of the text using a CSS variable as before.
 
 ## Slotted items
 
@@ -45,7 +45,7 @@ You can also target components in the slots directly.
 
 ### External slot styling
 
-Consider a similar example to the previous markup, where an additional `p` tag has been added in the end slot:
+Consider a similar example to the previous mark-up, where an additional `p` tag has been added in the end slot:
 
 ```html
 <rapid-button>
@@ -54,7 +54,7 @@ Consider a similar example to the previous markup, where an additional `p` tag h
 </rapid-button>
 ```
 
-When rendering this markup the button will have "Content" as the main button text, and then the text "Test" will be added to the end slot.
+When rendering this mark-up, the button will have `Content` as the main button text, and then the text `Test will be added to the end slot.
 
 Now applying this styling:
 ```css
@@ -66,35 +66,37 @@ rapid-button p[slot="end"] {
 The `p` tag in the end slot will be now colored pink.
 
 :::info
-Use this approach whenever you're styling the components which you're putting into the slot of an existing component.
+Use this approach whenever you're styling the components that you're putting into the slot of an existing component.
 :::
 
 ### Internal slot styling
 
-The component itself may supply styles for slotted items. Here are some examples for this.
+:::info
+Slots enable you to define how a component should style content that is passed into its slots; you can apply custom styles to the inserted elements without modifying the component's internal structure.
+:::
 
-1. Target any item in the `end` slot
+The component itself might supply styles for slotted items. Here are some examples for this.
+
+This example targets any item in the `end` slot
 ```css
 ::slotted(slot="end") {
     ...
 }
 ```
 
-2. Target any item in a slot
+This example targets any item in a slot
 ```css
 ::slotted(*) {
     ...
 }
 ```
 
-3. Target any `p` or `span` in a slot.
+This example targets any `p` or `span` in a slot.
 ```css
 ::slotted(p), ::slotted(span) {
     ...
 }
 ```
 
-:::info
-Use this approach whenever you're defining how a component should style slotted items that are added when its used.
-:::
+
 
