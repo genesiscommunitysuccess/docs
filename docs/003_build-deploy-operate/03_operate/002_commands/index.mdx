@@ -384,15 +384,21 @@ genesisInstall --compactProcesses
 
 Install hooks run as part of `genesisInstall`. You can specify the relevant scripts as part of `genesisInstall` then add those scripts to the file  *applicationName*_**config/resources/scripts/installHooks**, where *applicationName* is the name of application you are developing.
 
-The scripts (hooks) you add will only run once, unless their execution fails If you run `genesisInstall`again, previously successful executions of installHook scripts will not be run as part of the install.
-
-If you need to run some install hooks all the time, i.e irrespective of their previous run status, you can achieve that with following two options
-- Add `_persist` string as part of the install hook name
-- Use genesisInstallHooks command with repeatHooks option ex: genesisInstallHooks --repeatHooks=testApp1,testApp2
+The scripts (hooks) you add will only run once, unless their execution fails. If you run `genesisInstall`again, previously successful executions of installHook scripts will not be run as part of the install.
 
 The scripts must be implemented to work in an idempotent way, and the end result of executing a script means the system is (or already was) in the expected target state, whether you run it on a pre-existing environment (e.g. upgrading a server) or you run it in a completely new environment.
 
 On the server, it is located in the **GENESIS_HOME**/*applicationName*/**scripts/installHooks** directory. Logs are located in **GENESIS_HOME/runtime/installHooks**
+
+***Where do we store the status of install hook run***
+
+You can utilize the system definition property `HookStateStore`, to set it to either `FILE` or `DB`
+If `HookStateStore="FILE"` : We refer the log file of the hook located under **GENESIS_HOME/runtime/installHooks**. the hook state is considered as success, if the last line of the log says "SUCCESS"
+If `HookStateStore="DB"` : We refer the database table called `SYSTEM`, hook key and status are stored under `SYSTEM_KEY` and `SYSTEM_VALUE` columns respectively
+
+If you need to run some install hooks all the time, i.e irrespective of their previous run status, you can achieve that with following two options
+- Add `_persist` string as part of the install hook name
+- Use genesisInstallHooks command with repeatHooks option ex: genesisInstallHooks --repeatHooks=testApp1,testApp2
 
 Along with running the install hooks as part of genesisInstall, we give user flexibility to run them at different genesis-stages by using command called as genesisInstallHooks
 
