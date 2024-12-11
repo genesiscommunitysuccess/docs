@@ -10,6 +10,59 @@ tags:
 sidebar_position: 4
 ---
 
+## Running locally using [Genesis Start](/develop/development-environment/genesis-start/).
+
+### Prerequisites
+Before you download a project that you have created from Genesis Create, make sure you have the correct prerequisites to build and run locally.
+
+|Software                        | Download information                                                                    |
+|--------------------------------|-----------------------------------------------------------------------------------------|
+| JDK 17                         | [Windows (.msi)](https://download.oracle.com/java/17/archive/jdk-17.0.10_windows-x64_bin.msi)   [Other Platforms](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) |
+| Node.js                        | [Windows (.msi)](https://nodejs.org/dist/v20.12.2/node-v20.12.2-x64.msi)  [Other Platforms](https://nodejs.org/en/download) |
+| LMDB (Mac Users Only)          | [Installation Guide](https://nodejs.org/en/download)                                    |
+| Genesis Server Framework (GSF) | Artifact Access.	Contact your technical representative for access.                      |
+| Gradle                         | Bundled with IntelliJ. Configure Gradle properties to point to the GSF artifactory.     |   
+
+### Downloading and running from Genesis Create
+
+To download a project that you have created using Genesis Create to build and run on a local machine:
+
+1. In the `Summary` screen of Genesis Create, select the `Download Project Locally` tab, then click on `Generate Project`.
+
+This downloads a .zip file containing your Genesis project codebase.	
+
+:::info Exclude Gradle Wrapper JAR
+Depending on your enterprise firewall restrictions, you might need to select `Exclude Gradle Wrapper JAR`.
+
+Gradle wrapper automatically downloads the proper version; this removes the need to have Gradle build tool available locally. However, this requires a JAR file to be included in the generated project - which can be blocked by some organization filters. 
+
+To avoid this, you can choose to exclude the wrapper and use the instructions provided to install Gradle and/or the wrapper after the project has been downloaded.
+:::
+
+2. Move the .zip file to a suitable directory, such as a Genesis projects directory. Then unzip the project.
+
+3. Open a terminal, and go to the unzipped project's location. Then run the command to run `Genesis Start`:
+
+```
+MacOSX (shown) : ./gradlew genesisStart
+Windows : .\gradlew.bat genesisStart
+```
+4. When the Genesis Start user interface has opened, on the `Bootstrap and Launch` button to build, run and start your application.
+
+  It takes a few minutes to build and bootstrap the application for the first time.
+
+5. When the application is ready, the default screen for the web application is displayed. Log in using the default credentials:
+
+  - Username: admin
+
+  - Password: genesis
+
+  - Click on the `Login` button.
+
+:::tip 
+The `Login` is not always displayed immediately. It is only diaplayed once all the application's services are running.
+:::
+
 ## Gradle deploy plugin
 
 The Genesis Application Platform provides a Gradle plugin that makes it easy to perform all the installation tasks that are necessary to deploy your own Genesis project on your local workstation, from your IDE.
