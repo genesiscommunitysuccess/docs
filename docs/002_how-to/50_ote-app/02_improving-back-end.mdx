@@ -21,29 +21,6 @@ The addition of this file enables us to call bespoke events from the front end -
 
 Go to the folder **OTE\server\OTE-app\src\main\Kotlin**. Here we will add an additional folder and file.
 
-### Using IntelliJ
-
-1. Right-click on **add new package** and call this package **genesis.global.message.event**.
-
-2. Right-click on the genesis.global.message.event package and add a new **Kotlin class** called **BlankMessage.kt**.
-
-### Using Launchpad
-
-1. Create the following folder structure manually:
-
-**OTE\server\OTE-app\src\main\Kotlin\genesis\global\message\event**.
-
-2. Add the file **BlankMessage.kt** to the **event** folder that you have just created.
-
-3. Add the following code to the **BlankMessage.kt** file:
-
-```kotlin
-package genesis.global.message.event
-
-class BlankMessage {
-}
-```
-
 ## Adding a query
 Now add a new query to your Data Server to make this information available to the front end.
 
@@ -156,7 +133,6 @@ eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_INSERT", transactional = true
 4. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-pob-eventhandler.kts**. Add the following large code snippet:
 
 ```kotlin
-import genesis.global.message.event.BlankMessage
 import global.genesis.gen.dao.enums.OTE.cash_movement.Reason
 import global.genesis.gen.dao.enums.OTE.instrument.Type
 import global.genesis.gen.dao.enums.OTE.passive_order_book.Side
@@ -171,7 +147,7 @@ eventHandler {
     //This event runs a closing price process that calculates a weighted average price from the trades booked in a
     //given time period prior to the process
     //There could be a number of ways of doing this depending on the requirements of the end user
-    eventHandler<BlankMessage>("RUN_CLOSING_PRICES") {
+    eventHandler<Unit>("RUN_CLOSING_PRICES") {
         onCommit {
             //Currently this uses the time the event is run to set a range for weighted average price calculations
             //This will usually be more specific and based on actual trading times (such as last 30 minutes of the
@@ -216,7 +192,7 @@ eventHandler {
     //This process takes the most recent closing prices and triggers cash movements to reflect a variation margin
     //based upon the movement seen in the market.  This assumes a 100% variation call after a closing price is
     //run.  This is only done for Type == Future.  This function could vary by end user requirement
-    eventHandler<BlankMessage>("RUN_VARIATION_MARGIN") {
+    eventHandler<Unit>("RUN_VARIATION_MARGIN") {
         onValidate { event ->
             val lastClosingPriceRun = entityDb.getBulk(CLOSING_PRICE)
             require(lastClosingPriceRun.count() != 0) {"No closing prices - run closing prices first!"}
@@ -386,7 +362,7 @@ eventHandler {
     //In the order insert, this is checked again anyway, but in production this process should run on a sensible
     //schedule to ensure orders expire in a timely fashion
     //Currently called from a front end button, but could easily be a CRON_RULE triggering this
-    eventHandler<BlankMessage>("EXPIRE_ORDERS") {
+    eventHandler<Unit>("EXPIRE_ORDERS") {
         onCommit {
             entityDb.getRange(PassiveOrderBook.byExpiry(DateTime.parse("2000-01-01")), PassiveOrderBook.byExpiry(now()))
                 .toList().filter { it.status == Status.Active }.forEach {
@@ -419,7 +395,7 @@ eventHandler {
 
     //This function inserts new orders.  As it does so it:
     //1. Cycles through existing orders (of opposite side) where instrument is the same
-    //2. If order has not already expired (ideally will have moved to "expired" state, but chance for race condition
+    //2. If order has not already expired (ideally will have moved to "expired" state, but chance for race condition)
     //3. It then checks whether the price of the open order is favourable
     //       if a buy, is sell price offered lower or equal
     //       if a sell, is buy price offered higher or equal
