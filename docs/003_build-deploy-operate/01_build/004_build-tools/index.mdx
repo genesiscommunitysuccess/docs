@@ -32,11 +32,13 @@ To download a project that you have created using Genesis Create to build and ru
 This downloads a .zip file containing your Genesis project codebase.	
 
 :::info Exclude Gradle Wrapper JAR
-Depending on your enterprise firewall restrictions, you might need to select `Exclude Gradle Wrapper JAR`.
+![Exclude Gradle Wrapper JAR](/img/003_build-deploy-operate/exclude-gradle-wrapper-jar.png)
 
-Gradle wrapper automatically downloads the proper version; this removes the need to have Gradle build tool available locally. However, this requires a JAR file to be included in the generated project - which can be blocked by some organization filters. 
+By default, the generated project includes a JAR file so that you don't need to have the Gradle build tool available locally. Some institutions block these JAR files.
 
-To avoid this, you can choose to exclude the wrapper and use the instructions provided to install Gradle and/or the wrapper after the project has been downloaded.
+If this affects you, make sure that `Exclude Gradle Wrapper JAR` is set to exclude the JAR. After you have unzipped your project, you can then [install Gradle and/or the wrapper](#installing-gradle-wrapper) locally.
+
+Note that this setting is retained until you change it manually. 
 :::
 
 2. Move the .zip file to a suitable directory, such as a Genesis projects directory. Then unzip the project.
@@ -44,8 +46,8 @@ To avoid this, you can choose to exclude the wrapper and use the instructions pr
 3. Open a terminal, and go to the unzipped project's location. Then run the command to run `Genesis Start`:
 
 ```
-MacOSX (shown) : ./gradlew genesisStart
-Windows : .\gradlew.bat genesisStart
+MacOSX: ./gradlew genesisStart
+Windows: .\gradlew.bat genesisStart
 ```
 4. When the Genesis Start user interface has opened, on the `Bootstrap and Launch` button to build, run and start your application.
 
@@ -60,8 +62,26 @@ Windows : .\gradlew.bat genesisStart
   - Click on the `Login` button.
 
 :::tip 
-The `Login` is not always displayed immediately. It is only diaplayed once all the application's services are running.
+The `Login` is not always displayed immediately. It is only displayed once all the application's services are running.
 :::
+
+### Installing Gradle wrapper
+
+1. Download the Gradle zip distribution manually from your company's internal gradle distribution url for gradle 8.3+ or from https://services.gradle.org/distributions/gradle-8.3-all.zip and unzip the zip file.
+
+2. Use the Gradle binary inside (`bin/gradle`) to generate the wrapper files in the project. 
+
+  For example, if you have downloaded the gradle 8.3 distribution to your `Downloads` folder, go to the root folder of your Genesis project and run the following command (either in Windows or Mac), making sure that you specify the correct path to wherever you downloaded the distribution zip:
+
+```bash 
+~/Downloads/gradle-8.8/bin/gradle.bat wrapper --gradle-distribution-url={URL}
+```
+
+```bash
+~/Downloads/gradle-8.3/bin/gradle wrapper --gradle-distribution-url={URL}
+```
+
+ Once you have done this, you can open and run your app in Genesis Start in the [standard way](#downloading-and-running-from-genesis-create).
 
 ## Gradle deploy plugin
 
@@ -86,7 +106,7 @@ There are several possible configurations for your deployment. For each one, you
 - a local Linux host
 - a remote Linux host (via SSL)
 
-#### General Setup
+#### General set-up
 
 Make sure you have a **gradle.properties** file inside a **.gradle** folder in your user directory; this file must contain your Genesis Artifactory credentials in clear (unencrypted) text:
 
@@ -166,7 +186,7 @@ ssh-host=user1-remotehost
 ssh-port=22
 ```
 
-## Plugin Tasks
+## Plugin tasks
 
 The Genesis deploy plugin comes with several tasks. They are grouped under `genesisdeploy` and `genesissetup`.
 
