@@ -29,7 +29,7 @@ To download a project that you have created using Genesis Create to build and ru
 
 1. In the `Summary` screen of Genesis Create, select the `Download Project Locally` tab, then click on `Generate Project`.
 
-This downloads a .zip file containing your Genesis project codebase.	
+  This downloads a .zip file containing your Genesis project codebase.	
 
 :::info Exclude Gradle Wrapper JAR
 ![Exclude Gradle Wrapper JAR](/img/003_build-deploy-operate/exclude-gradle-wrapper-jar.png)
@@ -43,12 +43,16 @@ Note that this setting is retained until you change it manually.
 
 2. Move the .zip file to a suitable directory, such as a Genesis projects directory. Then unzip the project.
 
-3. Open a terminal, and go to the unzipped project's location. Then run the command to run `Genesis Start`:
+3. Open a terminal, and go to the unzipped project's location. Then run the command to run `Genesis Start` from either Windows or Mac:
 
+```bash {title="Windows"}
+.\gradlew.bat genesisStart
 ```
-MacOSX: ./gradlew genesisStart
-Windows: .\gradlew.bat genesisStart
+
+```bash {title="Mac"}
+./gradlew genesisStart
 ```
+
 4. When the Genesis Start user interface has opened, on the `Bootstrap and Launch` button to build, run and start your application.
 
   It takes a few minutes to build and bootstrap the application for the first time.
@@ -73,11 +77,11 @@ The `Login` is not always displayed immediately. It is only displayed once all t
 
   For example, if you have downloaded the gradle 8.3 distribution to your `Downloads` folder, go to the root folder of your Genesis project and run the following command (either in Windows or Mac), making sure that you specify the correct path to wherever you downloaded the distribution zip:
 
-```bash 
+```bash {title="Windows"}
 ~/Downloads/gradle-8.8/bin/gradle.bat wrapper --gradle-distribution-url={URL}
 ```
 
-```bash
+```bash {title="Mac"}
 ~/Downloads/gradle-8.3/bin/gradle wrapper --gradle-distribution-url={URL}
 ```
 
