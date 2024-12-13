@@ -16,14 +16,14 @@ import TabItem from '@theme/TabItem';
 
 Now we can tidy up and improve some elements of the GUI to make things look a bit nicer.
 
-The majority of this section will see changes made in the front-end folder, which is found under **ALM/client**.
+The majority of this section will see changes made in the front-end folder, which is found under `ALM/client`.
 
 ## Fixing capitalisation on front-end grids
 Genesis Create saves with coding case, rather than visual case.
 
 So, to start, let's do something very easy. We shall update some of the names in the front-end grid. 
 
-1. Open the file **ALM\client\src\routes\config.ts**.
+1. Open the file `ALM\client\src\routes\config.ts`.
 
 2. Change the capitalisation of the tab names (titles) in the GUI:
 
@@ -41,7 +41,7 @@ So, to start, let's do something very easy. We shall update some of the names in
 OK, we are actually going to change the back-end code here - but don't tell anyone.
 :::
 
-1. Open the file **ALM\server\ALM-app\src\main\genesis\scripts\ALM-reqrep.kts**.
+1. Open the file `ALM\server\ALM-app\src\main\genesis\scripts\ALM-reqrep.kts`.
 
 2. Replace the `POSITION` request reply with the `where` clause, as below:
 
@@ -56,7 +56,7 @@ requestReply(POSITION) {
 ## Formatting on positive/negative numbers
 The code snippet below will make positive numbers green and negative numbers red.
 
-1. In the folder **ALM\client\src\utils**, create a new file called **util-formatters.ts**. 
+1. In the folder `ALM\client\src\utils`, create a new file called `util-formatters.ts`. 
 
 2. Add the code below to the file. (We'll need to use this function in a few other files later on.):
 
@@ -75,7 +75,7 @@ export function cellStyle(params){
 ### Format the columns
 Now insert this function into some of the column selections.
 
-1. Open the file **ALM\client\src\routes\sourced-trades\loans-manager\loans.column.defs.ts**.
+1. Open the file `ALM\client\src\routes\sourced-trades\loans-manager\loans.column.defs.ts`.
 
 2. To include this new function add the following import statement to the top of the file:
 
@@ -106,7 +106,7 @@ The `PAYMENT_AMOUNT` section should now look like this:
     cellStyle: (params) => cellStyle(params),
   },
 ```
-5. Make similar changes in the file **ALM\client\src\routes\sourced-trades\c-ds-manager\c-ds.column.defs.ts**. 
+5. Make similar changes in the file `ALM\client\src\routes\sourced-trades\c-ds-manager\c-ds.column.defs.ts`. 
 
 Adjust the import statement and add the same line to `DEPOSIT_AMOUNT` and `MATURITY_AMOUNT`:
 
@@ -129,7 +129,7 @@ import { cellStyle } from '../../../utils/util-formatters';
 ### Format the positions grid
 We can also add this function to the positions grid.
 
-1. Open the file **ALM\client\src\routes\fx-blotter\position-grid\position.gridOptions.ts**.
+1. Open the file `ALM\client\src\routes\fx-blotter\position-grid\position.gridOptions.ts`.
 
 2. Add the import statement in the same way as you did before:
 
@@ -154,9 +154,9 @@ The block should look like this:
 ## Improving the Trade Entry/Modify pop ups
 By default, the trade entry screens in our application are displayed in a vertical list. When we have many fields, this can be difficult to navigate. We can change this through the template.
 
-1. In the folder **ALM\client\src\routes\fx-blotter\fx-trades-manager\`, adjust the forms for creating and updating an FX Trade. 
+1. In the folder `ALM\client\src\routes\fx-blotter\fx-trades-manager\`, adjust the forms for creating and updating an FX Trade. 
 
-Edit both **fx-trades.create.form.schema.ts** and **fx-trades.update.form.schema.ts**, replacing `"type": "VerticalLayout",` with:
+Edit both `fx-trades.create.form.schema.ts` and `fx-trades.update.form.schema.ts`, replacing `"type": "VerticalLayout",` with:
 
 ```jsx
 "type": "LayoutVertical2Columns",
@@ -175,7 +175,7 @@ This class will subscribe to the new `ALL_POSITIONS` stream. It will transform t
 
 It will also dynamically update the column definitions on the grid so that there is a column for each currency.  
 
-1. Create your new custom element in a new file: **client/src/components/positions-grid.ts**. Add the content below.
+1. Create your new custom element in a new file: `client/src/components/positions-grid.ts`. Add the content below.
 
 ```jsx
 import { customElement, FASTElement, html, ref } from '@microsoft/fast-element';
@@ -297,7 +297,7 @@ export class PositionsGrid extends FASTElement {
 }
 ```
 
-2. Add your new custom element to the **client/src/components/components.ts**. 
+2. Add your new custom element to the `client/src/components/components.ts`. 
 
 This ensures that the browser knows how to render it. To do this, add two lines to the top of the file, as shown below:
 
@@ -314,7 +314,7 @@ import { rapidGridComponents } from '@genesislcap/rapid-grid-pro';
 import { NotPermittedComponent } from './not-permitted-component';
 import { PositionsGrid } from './positions-grid';
 
-/**
+/`
  * Ensure tree shaking doesn't remove these.
  */
 FoundationRouter;
@@ -325,7 +325,7 @@ PositionsGrid;
 
 ```
 
-3. Update your route template in **client/src/routes/fx-blotter/fx-blotter.template.ts**; find the `rapid-layout-item` for `Position`:
+3. Update your route template in `client/src/routes/fx-blotter/fx-blotter.template.ts`; find the `rapid-layout-item` for `Position`:
 
 ```jsx
             <rapid-layout-item title="Position">
@@ -356,7 +356,7 @@ FxBlotterRatesGrid;
 PositionsGrid;
 ```
 
-This will use the positions grid we added in the new **positions-grid.ts** file.
+This will use the positions grid we added in the new `positions-grid.ts` file.
 
 ## Adding a new chart
 We won't be inputting loan data until we deal with [data from external sources](/how-to/alm-app/ht-alm-ingesting-external/). However, it would be useful to set up currency conversion on the loan pie chart so that it displays all data in a single currency, in this case GBP. 
@@ -364,9 +364,9 @@ We won't be inputting loan data until we deal with [data from external sources](
 We'll do this using the `FX_RATE` table that we created.
 
 ### Update the back end
-1. Go to the back-end code, inside **ALM/server**. We need to add a new view to provide data for this chart.
+1. Go to the back-end code, inside `ALM/server`. We need to add a new view to provide data for this chart.
 
-2. Open the file **ALM\server\ALM-app\src\main\genesis\cfg\ALM-view-dictionary.kts**.
+2. Open the file `ALM\server\ALM-app\src\main\genesis\cfg\ALM-view-dictionary.kts`.
 
 3. Add the code below, which defines a view joining `LOAN_TRADE` to the latest `FX_RATE`.
 
@@ -391,7 +391,7 @@ We'll do this using the `FX_RATE` table that we created.
     }
   }
 ```
-4. In the file **ALM\server\ALM-app\src\main\genesis\scripts\ALM-dataserver.kts**, add a new query to towards the end of the file. This enables the front end to query this data.
+4. In the file `ALM\server\ALM-app\src\main\genesis\scripts\ALM-dataserver.kts`, add a new query to towards the end of the file. This enables the front end to query this data.
 
 ```jsx
   query("LOAN_PAYMENTS_GBP", LOAN_PAYMENTS_GBP) {
@@ -404,9 +404,9 @@ We'll do this using the `FX_RATE` table that we created.
 ```
 
 ### Update the front end
-1. Go to the front-end code inside **ALM\client**. 
+1. Go to the front-end code inside `ALM\client`. 
   
-2. Open the file **ALM\client\src\routes\sourced-trades\sourced-trades.template.ts** and find the following section:
+2. Open the file `ALM\client\src\routes\sourced-trades\sourced-trades.template.ts` and find the following section:
 
 
 ```jsx
@@ -419,7 +419,7 @@ We'll do this using the `FX_RATE` table that we created.
              <rapid-layout-item title="Loans by Client - GBP">
 ```
 
-4. In the file **ALM\client\src\routes\sourced-trades\loans-by-client-chart\loans-by-client.template.ts**, adjust the `chart-datasource` to use the new data server and field:
+4. In the file `ALM\client\src\routes\sourced-trades\loans-by-client-chart\loans-by-client.template.ts`, adjust the `chart-datasource` to use the new data server and field:
 
 ```jsx
                    <chart-datasource
@@ -428,7 +428,7 @@ We'll do this using the `FX_RATE` table that we created.
                    ></chart-datasource>
 ```
 
-5. In the file **ALM\client\src\routes\sourced-trades\sourced-trades.template.ts**, add a third chart, showing GBP Equivalent currency exposure from the loans. To do this, add this `rapid layout item` between the loan chart `rapid layout item` and the CD chart `rapid layout item`:
+5. In the file `ALM\client\src\routes\sourced-trades\sourced-trades.template.ts`, add a third chart, showing GBP Equivalent currency exposure from the loans. To do this, add this `rapid layout item` between the loan chart `rapid layout item` and the CD chart `rapid layout item`:
 
 ```jsx
              <rapid-layout-item title="Loans by Currency - GBP Equivalent">

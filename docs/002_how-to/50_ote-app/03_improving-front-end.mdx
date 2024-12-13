@@ -16,7 +16,7 @@ import TabItem from '@theme/TabItem';
 
 Now we can tidy up and improve some elements of the GUI to make things look a bit nicer.
 
-The majority of this section is for changes made in the front-end folder, which is found under **OTE/client**.
+The majority of this section is for changes made in the front-end folder, which is found under `OTE/client`.
 
 ## Enhancing the Grid layout
 
@@ -26,7 +26,7 @@ In this section you will change the existing 2x2 grid layout to a more sophistic
 - three sections (Participant Positions, Trades and Open Positions) are displayed beneath the Orders grid
 
 ### 1. Update the template.ts
-Go to **OTE\client\src\routes\orders\orders.template.ts**. Replace the code **inside** the **rapid-layout** tags with the code below:
+Go to `OTE\client\src\routes\orders\orders.template.ts`. Replace the code *inside* the `rapid-layout` tags with the code below:
 
 ```
     <rapid-layout-region type="horizontal">
@@ -51,7 +51,7 @@ With the next set of steps you will be making a change to allow user names to ap
 
 ### 2. Update the form for creating and editing new records
 
-Go to the file **OTE\client\src\routes\balances\cash-movements-manager\cash-movement.create.form.schema.ts**.<br></br>
+Go to the file `OTE\client\src\routes\balances\cash-movements-manager\cash-movement.create.form.schema.ts`.<br></br>
 
 Replace the code below:
 
@@ -79,7 +79,7 @@ Replace the code below:
   }
 },
 ```
-Repeat the above in the file **OTE\client\src\routes\balances\cash-movements-manager\cash-movement.update.form.schema.ts**.
+Repeat the above in the file `OTE\client\src\routes\balances\cash-movements-manager\cash-movement.update.form.schema.ts`.
 
 
 ## Simulating intraday and End Of Day processing
@@ -94,7 +94,7 @@ In this application, we can simulate automated processes by adding buttons that 
 - closing prices
 - variation margin
 
-1. Go to the file **OTE\client\src\routes\processes\process-history-manager\process-history.ts** file.<br></br>Add the following import code, which creates a connection to the `eventHandler`.
+1. Go to the file `OTE\client\src\routes\processes\process-history-manager\process-history.ts` file.<br></br>Add the following import code, which creates a connection to the `eventHandler`.
 
 Add the following code at the bottom of the list of existing import code:
 
@@ -166,7 +166,7 @@ export class ProcessesProcessHistoryManager extends GenesisElement {
 }
 ```
 
-3. Go to the file **OTE\client\src\routes\processes\process-history-manager\process-history.template.ts**. <br></br>
+3. Go to the file `OTE\client\src\routes\processes\process-history-manager\process-history.template.ts`. <br></br>
 Remove the following two lines:
 
 ```ts
