@@ -20,8 +20,8 @@ Before you download a project that you have created from Genesis Create, make su
 | JDK 17                         | [Windows (.msi)](https://download.oracle.com/java/17/archive/jdk-17.0.10_windows-x64_bin.msi)   [Other Platforms](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) |
 | Node.js                        | [Windows (.msi)](https://nodejs.org/dist/v20.12.2/node-v20.12.2-x64.msi)  [Other Platforms](https://nodejs.org/en/download) |
 | LMDB (Mac Users Only)          | [Installation Guide](https://nodejs.org/en/download)                                    |
-| Genesis Server Framework (GSF) | Artifact Access.	Contact your technical representative for access.                      |
-| Gradle                         | Bundled with IntelliJ. Configure Gradle properties to point to the GSF artifactory.     |   
+| Genesis Server Framework (GSF) | [Artifact Access](https://docs.genesis.global/docs/build-deploy-operate/build/library-access/).	Contact your technical representative if you need access.                      |
+| Gradle                         | Bundled with your Genesis project (unless you have selected [`Exclude Gradle Wrapper JAR`(#exclude-gradle-wrapper-jar). You must configure your Gradle properties to point to the GSF artifactory.     |   
 
 ### Downloading and running from Genesis Create
 
@@ -69,7 +69,21 @@ Note that this setting is retained until you change it manually.
 The `Login` is not always displayed immediately. It is only displayed once all the application's services are running.
 :::
 
-### Installing Gradle wrapper
+### Local build and run
+
+#### Exclude Gradle Wrapper JAR
+
+![Exclude Gradle Wrapper JAR](/img/003_build-deploy-operate/exclude-gradle-wrapper-jar.png)
+
+This option is displayed when you decide to select to download and run your project locally from the Summary screen in Genesis Create.
+
+By default, your generated project includes a JAR file so that you don't need to have the Gradle build tool available locally. *Some institutions block these JAR files*.
+
+If this affects you, make sure that `Exclude Gradle Wrapper JAR` is set to exclude the JAR. After you have unzipped your project, you can then [install Gradle and/or the wrapper](#installing-gradle-wrapper) locally.
+
+Note that this setting is retained until you change it manually. 
+
+#### Installing Gradle wrapper
 
 1. Download the Gradle zip distribution manually from your company's internal gradle distribution url for gradle 8.3+ or from https://services.gradle.org/distributions/gradle-8.3-all.zip and unzip the zip file.
 
