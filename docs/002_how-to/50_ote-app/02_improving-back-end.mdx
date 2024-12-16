@@ -15,18 +15,12 @@ import TabItem from '@theme/TabItem';
 
 Here, we shall look into the back-end code and make some useful changes to increase the usability and range of the app.
 
-## Adding additional folders and files
-
-The addition of this file enables us to call bespoke events from the front end - this is simply declaring a blank "message" to send in.
-
-Go to the folder **OTE\server\OTE-app\src\main\Kotlin**. Here we will add an additional folder and file.
-
 ## Adding a query
 Now add a new query to your Data Server to make this information available to the front end.
 
-1. Go to the folder **OTE\server\OTE-app\src\main\genesis\scripts**.
+1. Go to the folder `OTE\server\OTE-app\src\main\genesis\scripts`.
 
-2. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-dataserver.kts** and add the following code [Need to specify where] to define the new query.
+2. Go to the file `OTE\server\OTE-app\src\main\genesis\scripts\OTE-dataserver.kts` and add the following code [Need to specify where] to define the new query.
 
 This can also be found in a TODO block.
 
@@ -41,7 +35,7 @@ query("ALL_USER_NAMES", USER) {
 ## Updating the consolidators
 The code changes listed can also be found in TODO blocks.
 
-1. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-consolidator.kts**.
+1. Go to the file `OTE\server\OTE-app\src\main\genesis\scripts\OTE-consolidator.kts`.
 
 2. In the `SELL_PARTICIPANT_POSITION_AGG consolidator`, find `sum { quantity } into QUANTITY`. Update it as follows:
 
@@ -78,14 +72,14 @@ where {
 ## Create a new passive order book eventHandler
 To handle the Passive Order Book correctly, we are going to do two things:
 
-- create a new **-eventhandler.kts**file with the relevant logic for the Passive Order Book; we provide a large code snippet here that contains the logic
-- this makes the `PASSIVE_ORDER_BOOK_INSERT`, `PASSIVE_ORDER_BOOK_MODIFY` and `PASSIVE_ORDER_BOOK_DELETE` events in the **OTE-eventhandler.kts** file unnecessary, so you need to remove them.
+- create a new `-eventhandler.kts`file with the relevant logic for the Passive Order Book; we provide a large code snippet here that contains the logic
+- this makes the `PASSIVE_ORDER_BOOK_INSERT`, `PASSIVE_ORDER_BOOK_MODIFY` and `PASSIVE_ORDER_BOOK_DELETE` events in the `OTE-eventhandler.kts` file unnecessary, so you need to remove them.
 
 To do this:
 
-1. Go to the folder **OTE\server\OTE-app\src\main\genesis\scripts**. Add a file called **OTE-pob-eventhandler.kts**.
+1. Go to the folder `OTE\server\OTE-app\src\main\genesis\scripts`. Add a file called `OTE-pob-eventhandler.kts`.
 
-2. Add this newly created file to the OTE_MANAGER. To do this, go to the file **OTE\server\OTE-app\src\main\genesis\cfg\OTE-processes.xml**.
+2. Add this newly created file to the OTE_MANAGER. To do this, go to the file `OTE\server\OTE-app\src\main\genesis\cfg\OTE-processes.xml`.
 
 In this file, find `<script>OTE-eventhandler.kts,OTE-reqrep.kts,OTE-dataserver.kts</script>`. Replace this with the code below:
 
@@ -93,7 +87,7 @@ In this file, find `<script>OTE-eventhandler.kts,OTE-reqrep.kts,OTE-dataserver.k
 <script>OTE-eventhandler.kts,OTE-pob-eventhandler.kts,OTE-reqrep.kts,OTE-dataserver.kts</script>
 ```
 
-3. Go to file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-eventhandler.kts** and remove the following code:
+3. Go to file `OTE\server\OTE-app\src\main\genesis\scripts\OTE-eventhandler.kts` and remove the following code:
 
 ```kotlin
 eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_INSERT", transactional = true) {
@@ -130,7 +124,7 @@ eventHandler<PassiveOrderBook>("PASSIVE_ORDER_BOOK_INSERT", transactional = true
     }
   }
   ```
-4. Go to the file **OTE\server\OTE-app\src\main\genesis\scripts\OTE-pob-eventhandler.kts**. Add the following large code snippet:
+4. Go to the file `OTE\server\OTE-app\src\main\genesis\scripts\OTE-pob-eventhandler.kts`. Add the following large code snippet:
 
 ```kotlin
 import global.genesis.gen.dao.enums.OTE.cash_movement.Reason
