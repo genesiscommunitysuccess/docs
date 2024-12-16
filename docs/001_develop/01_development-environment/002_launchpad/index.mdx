@@ -163,7 +163,7 @@ To add an index to the entity that you are creating or editing:
     - use the `Type` field to make the index unique or non-unique.
     - A default name for the index is displayed in the `Name` field. You can change this, if necessary. 
     - When ready, click `Add index`. The new index is listed in the main area under the `Indices` tab. 
-4. When you have finished, click on the `Done` button to return to the Entity Models screen, where all your entities are listed..
+4. When you have finished, click on the `Done` button to return to the Entity Models screen, where all your entities are listed.
 
 #### Entity references
 Entity references are useful, because they enable you to add attributes from different entities to create [views](#views). You can select another entity as a reference, and then you will be able to add fields from that entity to create a view later on.
@@ -199,17 +199,19 @@ When you have finished adding entities, click on the `Next` button at the bottom
 
 #### Creating a data model from Excel
 
-You can create a data model with entities ([tables](/develop/server-capabilities/data-model/#tables))and [views](/develop/server-capabilities/data-model/#views) directly from an Excel spreadsheet. 
+You can create a data model with entities ([tables](/develop/server-capabilities/data-model/#tables))and [views](/develop/server-capabilities/data-model/#views) directly from an Excel workbook. 
 
-In the Entities main screen, there is a button that enables you to select a spreadsheet and preview how Genesis Create interprets it.
+In the Entities main screen, click on the `Detect From Excel` button. This enables you to select a spreadsheet. 
 
 ![Detect Excel button](/img/genesis-launchpad/detect-excel-button.png)
 
-For example, a spreadsheet has been previewed here has found three entities and one view.
+Genesis Create attempts to create a data model from the workbook that you have selected. If it is successful, it displays information about the data model it has created. For example, here it has created three entities and one view.
 
 ![Schema detected](/img/genesis-launchpad/detected-schema.png)
 
-The preview includes suggestions for checking the schema to see that it matches your expectations. You can then go back to the spreadsheet and edit it to improve the result when you preview it again.
+Note that the display includes advice on how to check that you are happy with the data model produced.
+
+Once you have closed the dialog, you can see the details of the entities and views that have been produced, and you can work your way through the steps in Genesis Create to complete the project.
 
 :::tip
 You must start with an empty project. If you have a another project loaded:
@@ -217,6 +219,41 @@ You must start with an empty project. If you have a another project loaded:
 Click on the three dots at the top right of the window and select `New`. You are warned that this clears any current changes. If necessary, cancel, then click on the three dots again and select `Save`. This downloads the project as a JSON file.
 :::
 
+##### Adjusting an Excel workbook
+The real world is messy, and genesis Create will not be able to extract a data model from every workbook that you select. However, if you know the general rules for how the extraction process works, you can adjust your workbook and try again. 
+
+:::tip
+It is easier to adjust the Excel workbook before extracting the data model than it is to adjust the code after you have extracted.
+:::
+
+The transformation process follows these rules:
+
+- The size of the Excel file must not be larger than 10MB.
+- Each tab (worksheet) needs to become a single entity or view. Hidden sheets are ignored.
+- Row 1 contains the column headings, which becomes the attribute names. All attribute names are in caps, with spaces turned into underscore characters. So, `Account name` becomes `ACCOUNT_NAME`, for example. Illegal characters, such as `%` are converted automatically. 
+- The data for the entity begins at row 2. The data in each column determines the type of the attribute (in row 1). Where th process cannot determine a type, it defaults to STRING. The data in each worksheet is saved in a separate CSV file.
+- Column A is used as the primary key for the entity (or root entity of the view).
+- A column attribute is ignored if it has no data in any rows.
+- Where a column is formatted as Excel Date type, the values for *all* rows in the column must be formatted properly and compliant with the specified date format.
+- If any column in an Excel sheet has a datetime value, this is converted to DATE type in the format yyyy-MM-dd.
+- [Entity references](#entity-references) are created (and used to set up views) where a worksheet contains a VLOOKUP that looks at a column on the same sheet, and looks up a dataset looked on a different sheet. 
+
+It is essential to look carefully at your workbook and adjust it to suit these rules. 
+
+- In particular, make sure that the attribute that you want to be the primary key is in column A.
+- It is worth adjusting the data in row 1 so that this produces meaningful attribute names. In particular, long names should be avoided.
+
+:::tip
+The data is from your workbook is not extracted at this stage. You can extract the data later, after you have generated a project in Create and built the app in Launchpad.
+
+To do this:
+
+1. Copy your Excel file into the folder `server/testData/excel`.
+
+2. In VSCode, go to the Genesis plugin on the right and select `Tasks -> Scripts -> ExcelData to CSV`.
+
+This creates a separate CSV (with the data starting at row 2) file for each worksheet to match the entities and views that have been created.
+:::
 
 ### Views
 [Views](/develop/server-capabilities/data-model/#views) enable you to display information from more than one table in a single place. 
@@ -228,8 +265,9 @@ To create a new view, click on the `New View` button at the top right.
 Click at the end of the `Root Entity` field and select an entity from the dropdown list. This displays a default name for the view in the `View Name` field. 
 
 Underneath, this displays the entities you can join with to create a view. These are listed because your root entity includes entity references to those tables.
- 
+
 To join to one of the entities listed:
+
 1.	Click on the `Selected` checkbox.
 2.	Click on the `Attributes` tab; you can now see all the attributes for the view, including the attributes from the entity you have joined.
 3.	Click on a `Selected` checkbox for an attribute to add it to or remove it from the view.
