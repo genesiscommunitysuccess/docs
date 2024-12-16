@@ -23,14 +23,17 @@ id: '8.7'
 
 ### Kotlin 2.1.0 upgrade
 
-The Kotlin version used in Genesis Server is now 2.1.0.
-This means Genesis applications can take advantage of the much faster compilation times provided by the K2 compiler, as well as stay up to date with any other libraries that are already using Kotlin 2.x versions.
+The Kotlin version used in Genesis Server is now 2.1.0. Genesis applications can now:
+
+- take advantage of the much faster compilation times provided by the K2 compiler
+- stay up-to-date with any other libraries that are already using Kotlin 2.x versions
 
 **Every Genesis server project is affected.**
 
+#### Upgrading your server project
 In many cases, the upgrade steps are as simple as changing the Kotlin version and updating the Kotlin gradle plugin configuration. The main steps are shown below:
 
-- Add a `.gitignore` entry to your project to ensure Kotlin compiler temporary files are not commited:
+- Add a `.gitignore` entry to your project to ensure Kotlin compiler temporary files are not committed:
 ```.gitignore
 # Avoid kotlin compiler folder
 **/.kotlin
@@ -47,16 +50,16 @@ plugins {
 }
 ```
 
-becomes :
+becomes:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.1.0"
 }
 ```
 
-Additionally, if you are using any other Kotlin plugins, like the serialization plugin, they also need to be updated to version `2.1.0`.
+If you are using any other Kotlin plugins, like the serialization plugin, you must update these to version `2.1.0`.
 
-The power-assert plugin has changed namespace, as it used to be a third party plugin, but it has been incorporated into the main Kotlin language plugins since version `2.0.0`.
+The power-assert plugin has changed namespace. This used to be a third-party plugin, but it has been incorporated into the main Kotlin language plugins since version `2.0.0`.
 
 Example:
 ```kotlin
@@ -108,13 +111,19 @@ tasks {
 
 Note the extra `import` statement needed in the previous example.
 
-The two previous steps are usually enough to upgrade a genesis app to use Kotlin 2.1.0, but there are a few other common checks to go through:
+#### Further checks
+
+The previous steps are usually enough to upgrade a Genesis app to use Kotlin 2.1.0, but there are a few other common checks to go through:
 
 - The Kotlin `String.toLowerCase()` and `String.toUpperCase()` methods have been removed in Kotlin `2.1.0` (deprecated since `1.5`). These changes do not affect Java `String.toLowerCase()` and `String.toUpperCase()` methods.
 
-The `toLowerCase()` and `toUpperCase()` Kotlin methods always used the default `Locale` to perform the transformation, but this `Locale` configuration may change depending on the environment the Java process is executed in.
-This is exactly the same behaviour Java `toLowerCase()` and `toUpperCase()` methods have, but unfortunately, it is non-deterministic and can lead to confusion.
-These methods can be replaced by `lowercase()` or `lowercase(Locale.getDefault())` (and the respective `uppercase()` methods too) depending on the expected behaviour. The `lowercase(Locale.getDefault())` will maintain exactly the same behaviour as before, whereas `lowercase()` will use the root locale, which provides deterministic behaviour in all environments.
+The `toLowerCase()` and `toUpperCase()` Kotlin methods always used the default `Locale` to perform the transformation, but this `Locale` configuration may change depending on the environment where the Java process is executed.
+
+This is exactly the same behaviour as Java `toLowerCase()` and `toUpperCase()` methods, but unfortunately, it is non-deterministic and can lead to confusion.
+These methods can be replaced by `lowercase()` or `lowercase(Locale.getDefault())` (and the respective `uppercase()` methods too) depending on the expected behaviour. 
+
+- `lowercase(Locale.getDefault())` will maintain exactly the same behaviour as before.
+- `lowercase()` will use the root locale, which provides deterministic behaviour in all environments.
 
 Example for `lowercase()`:
 ```kotlin
@@ -130,9 +139,7 @@ val testVariable = "TEST".lowercase(Locale.getDefault())
 val testVariable = "TEST".lowercase()
 ```
 
-IntelliJ is sometimes able to automatically migrate the usage of deprecated methods by hovering over the deprecated methods and using the ALT + ENTER shortcut.
-This feature allows developers to migrate entire projects quickly and safely without resorting to search and replace operations.
-This approach is also valid for migrating `toLowerCase()` and `toUpperCase()`.
+IntelliJ sometimes enables you to migrate the usage of deprecated methods automatically; hover over the deprecated methods and use the ALT + ENTER shortcut. In this way, you can migrate entire projects quickly and safely without resorting to search and replace operations. This is a valid method for migrating `toLowerCase()` and `toUpperCase()`.
 
 ![Example](/img/release-notes/kotlin2/tolowercase.png)
 
@@ -152,9 +159,9 @@ Ensure all `*-tables-dictionary.kts` files in your project **do not have the fol
 ```kotlin
 import global.genesis.dictionary.pal.tables
 ```
-
-For any other issues, Jetbrains has additionally released a very comprehensive Kotlin 2.0 compiled migration guide that can be found [here](https://kotlinlang.org/docs/k2-compiler-migration-guide.html).
-
+:::tip
+For any other issues, Jetbrains has additionally released a very comprehensive [Kotlin 2.0 compiled migration guide](https://kotlinlang.org/docs/k2-compiler-migration-guide.html).
+:::
 
 ## Client
 
