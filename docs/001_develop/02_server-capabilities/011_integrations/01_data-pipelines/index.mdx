@@ -457,9 +457,10 @@ pipelines {
 }
 ```
 
-You also have the option of providing a batch size to the dbBatchQuery source.
-If no batch size is provided, the elements from the database poll will be returned individually and the latest index persisted will be of each record.
-If a batch size is provided, the elements from the database poll will be batched into the size you have specified and returned as a list. The latest index persisted will be from the last record in that batch.
+You also have the option of providing a batch size to the `dbBatchQuery` source.
+If no `batchSize` is provided, the elements from the database poll will be returned individually and the persistence manager will use the index from each individual record to keep track of what has been processed.
+If a `batchSize` is provided, the elements from the database poll will be batched into the size you have specified and returned as a list. The persistence manager will use the index from the last record of this batch, this means if the system went down whilst in the middle of processing a batch of records,
+it would recover by continuing from the beginning of that batch.
 
 ```kotlin
 // specify batchSize as shown below
@@ -678,8 +679,8 @@ This is a transform operator that encodes an object of a user-defined type into 
 ```
 
 You also have the option of providing configuration to specify the following:
-- columnSeparator (optional Char) [default: ',']: this is the character used to separate values.
-- quoteChar (optional Char) [default: '"']: this is the character used for quoting values that contain quote characters or line feeds.
+- `columnSeparator` (optional `Char`) [default: ',']: this is the character used to separate values.
+- `quoteChar` (optional `Char`) [default: '"']: this is the character used for quoting values that contain quote characters or line feeds.
 
 Example:
 ```kotlin
