@@ -32,7 +32,7 @@ Even if `<my-element>` usually supports the event and property bindings, it won'
 :::info
 Read on if you're interested to learn why this limitation occurs.
 
-To enable you to use `addItem()` to add the same item multiple times on the layout, it's necessary to clone the items using the [cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode). A limitation of that in the browser is that event listeners are not copied, and the bindings for the Genesis element are lost too.
+To use `addItem()` to add the same item multiple times on the layout, you must clone the items using the [cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode). A limitation of that in the browser is that event listeners are not copied, and the bindings for the Genesis element are lost too.
 :::
 
 There is a very simple pattern to work around this - just wrap the bindings up in an element.
@@ -161,7 +161,7 @@ WrapperTwo;
 export class MyElement extends GenesisElement { }
 ```
 
-There's still got a big issue here though - the `isSelected` variable isn't linked between the two components anymore. To handle this, you need to use a state management library, such as the `foundation-store` module that is included in the platform.
+There's still a big issue here though - the `isSelected` variable isn't linked between the two components anymore. To handle this, you need to use a state management library, such as the `foundation-store` module that is included in the platform.
 
 ### State management
 
