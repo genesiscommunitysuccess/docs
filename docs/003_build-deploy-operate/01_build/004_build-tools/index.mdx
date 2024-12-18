@@ -10,88 +10,28 @@ tags:
 sidebar_position: 4
 ---
 
-## Running locally using [Genesis Start](/develop/development-environment/genesis-start/)
+## Software requirements
+To run a Genesis application, including on your local machine, the following software must be installed:
 
-### Prerequisites
-Before you download a project that you have created from Genesis Create, make sure you have the correct prerequisites to build and run locally.
+|Software                            | Access Information                                                                      |
+|------------------------------------|-----------------------------------------------------------------------------------------|
+| JDK 17                             | [Windows (.msi)](https://download.oracle.com/java/17/archive/jdk-17.0.10_windows-x64_bin.msi)   [Other Platforms](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) |
+| Node.js                            | [Windows (.msi)](https://nodejs.org/dist/v20.12.2/node-v20.12.2-x64.msi)  [Other Platforms](https://nodejs.org/en/download) |
+| LMDB (Mac Only)                    | [Installation Guide](#lmdb-installation-guide-macos)                                                                        |
+| Genesis Server Framework (GSF)     | [Artifact Access](/build-deploy-operate/build/library-access/#server-artifacts)                                             |
+| Genesis Web Framework (Foundation) | [Artifact Access](/build-deploy-operate/build/library-access/#client-artifacts)                                             |
+| Gradle                             | Bundled with your Genesis application project (unless [downloading a new Create project with "Exclude Gradle Wrapper JAR" selected](/develop/development-environment/launchpad/#exclude-gradle-wrapper-jar))  |  
 
-|Software                        | Download information                                                                    |
-|--------------------------------|-----------------------------------------------------------------------------------------|
-| JDK 17                         | [Windows (.msi)](https://download.oracle.com/java/17/archive/jdk-17.0.10_windows-x64_bin.msi)   [Other Platforms](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) |
-| Node.js                        | [Windows (.msi)](https://nodejs.org/dist/v20.12.2/node-v20.12.2-x64.msi)  [Other Platforms](https://nodejs.org/en/download) |
-| LMDB (Mac Users Only)          | [Installation Guide](https://nodejs.org/en/download)                                    |
-| Genesis Server Framework (GSF) | [Artifact Access](https://docs.genesis.global/docs/build-deploy-operate/build/library-access/).	Contact your technical representative if you need access.                      |
-| Gradle                         | Bundled with your Genesis project (unless you have selected [`Exclude Gradle Wrapper JAR`](#exclude-gradle-wrapper-jar)). You must configure your Gradle properties to point to the GSF artifactory.     |   
+### LMDB installation guide (MacOS)
 
-### Downloading from Genesis Create
+When running a Genesis application on MacOS, you must install and configure LMDB. The following steps can be followed:
 
-To download a project that you have created using Genesis Create to build and run on a local machine:
-
-1. In the `Summary` screen of Genesis Create, select the `Download Project Locally` tab, then click on `Generate Project`.
-
-  This downloads a .zip file containing your Genesis project codebase.	
-
-:::tip
-Some institutions block Jar files. If you are affected, you need to use the `Exclude Gradle Wrapper JAR` setting. See details in the section on [Exclude Gradle Wrapper JAR](#exclude-gradle-wrapper-jar).
-:::
-
-2. Move the .zip file to a suitable directory, such as a Genesis projects directory. Then unzip the project.
-
-3. Open a terminal, and go to the unzipped project's location. Then run the command to run `Genesis Start` from either Windows or Mac:
-
-```bash {title="Windows"}
-.\gradlew.bat genesisStart
+1. Install lmdb for mac : [homebrew installation instructions](https://formulae.brew.sh/formula/lmdb)
+1. Add `liblmdb.dylib` to your Java Extensions:
+```bash
+mkdir -p ~/Library/Java/Extensions
+cp /opt/homebrew/opt/lmdb/lib/liblmdb.dylib ~/Library/Java/Extensions/
 ```
-
-```bash {title="Mac"}
-./gradlew genesisStart
-```
-
-4. When the Genesis Start user interface has opened, on the `Bootstrap and Launch` button to build, run and start your application.
-
-  It takes a few minutes to build and bootstrap the application for the first time.
-
-5. When the application is ready, the default screen for the web application is displayed. Log in using the default credentials:
-
-  - Username: admin
-
-  - Password: genesis
-
-  - Click on the `Login` button.
-
-:::tip 
-The `Login` is not always displayed immediately. It is only displayed once all the application's services are running.
-:::
-
-#### Exclude Gradle Wrapper JAR
-
-![Exclude Gradle Wrapper JAR](/img/003_build-deploy-operate/exclude-gradle-wrapper-jar.png)
-
-This option is displayed when you decide to select to download and run your project locally from the Summary screen in Genesis Create.
-
-By default, your generated project includes a JAR file so that you don't need to have the Gradle build tool available locally. *Some institutions block these JAR files*.
-
-If this affects you, make sure that `Exclude Gradle Wrapper JAR` is set to exclude the JAR. After you have unzipped your project, you can then [install Gradle and/or the wrapper](#installing-gradle-wrapper) locally.
-
-Note that this setting is retained until you change it manually. 
-
-#### Installing Gradle wrapper
-
-1. Download the Gradle zip distribution manually from your company's internal gradle distribution url for gradle 8.3+ or from https://services.gradle.org/distributions/gradle-8.3-all.zip and unzip the zip file.
-
-2. Use the Gradle binary inside (`bin/gradle`) to generate the wrapper files in the project. 
-
-  For example, if you have downloaded the gradle 8.3 distribution to your `Downloads` folder, go to the root folder of your Genesis project and run the following command (either in Windows or Mac), making sure that you specify the correct path to wherever you downloaded the distribution zip:
-
-```bash {title="Windows"}
-~/Downloads/gradle-8.8/bin/gradle.bat wrapper --gradle-distribution-url={URL}
-```
-
-```bash {title="Mac"}
-~/Downloads/gradle-8.3/bin/gradle wrapper --gradle-distribution-url={URL}
-```
-
- Once you have done this, you can open and run your app in Genesis Start in the [standard way](#downloading-and-running-from-genesis-create).
 
 ## Gradle deploy plugin
 
