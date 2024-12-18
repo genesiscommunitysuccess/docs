@@ -49,7 +49,7 @@ You can set the layout to autosave in local storage as the user interacts with i
 - resizing items using the divider
 - dragging items around the layout
 
-When you have enabled autosave, you are still able to use the manual serialising commands ([getLayout](../docs/api/foundation-layout.foundationlayout.getlayout/) and [loadLayout](../docs/api/foundation-layout.foundationlayout.loadlayout/)).
+When you have enabled autosave, you are still able to use the manual serializing commands ([getLayout](../docs/api/foundation-layout.foundationlayout.getlayout/) and [loadLayout](../docs/api/foundation-layout.foundationlayout.loadlayout/)).
 
 ### Reloading the layout
 
@@ -465,9 +465,9 @@ This is an elaborate example of using the JavaScript API with consideration of t
 We can use `layoutRequiredRegistrations()` on the config returned from `getLayout()` to see the registered names that are required to load the layout.
 
 ```javascript
-const layout = document.querySelector('rapid-layout'); // as FoundatonLayout in TypeScript;
+const layout = document.querySelector('rapid-layout'); // as FoundationLayout in TypeScript;
 const layoutConfig = layout.getLayout();
-console.log(FoundatonLayout.layoutRequiredRegistrations(layoutConfig))
+console.log(FoundationLayout.layoutRequiredRegistrations(layoutConfig))
 ```
 This will log `['trades','users']` because these are the two registered panes. You can then load any layout that only contains either/both of these items.
 
@@ -489,7 +489,7 @@ Consider now where the user refreshes the page to go back to the original state 
 // User has refreshed page
 
 console.log(layout.registeredItems());
-// Ouputs ['trades','users']
+// Outputs ['trades','users']
 
 layout.loadLayout(layoutConfigTwo);
 // Uncaught Error: Trying to load layout with extra components. The component(s) not currently loaded are "test"
@@ -523,9 +523,9 @@ Now all those items will be registered with the layout for potential use when ca
 Alternatively, you could query the current layout and the layout you want to load to see if there are any missing registered items; you can then register the missing ones. Using our previous examples:
 
 ```javascript
-const currentRegistrations = FoundatonLayout.registeredItems();
+const currentRegistrations = FoundationLayout.registeredItems();
 // ['trades','users']
-const requiredRegistrations = FoundatonLayout.layoutRequiredRegistrations(layoutConfigTwo);
+const requiredRegistrations = FoundationLayout.layoutRequiredRegistrations(layoutConfigTwo);
 // ['test','trades','users']
 
 // We can see 'test' is missing and therefore we should register it

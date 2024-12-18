@@ -264,7 +264,7 @@ new item. To fix this, you must [invalidate the cache](/develop/client-capabilit
 
 ### Resource-intensive component resetting in layout
 
-Say you have a component which has to initialise a resource-heavy or long-awaited asynchronous task, such as the following:
+Say you have a component which has to initialize a resource-heavy or long-awaited asynchronous task, such as the following:
 ```typescript
 @customElement({
   name: 'mock-connected',
@@ -284,7 +284,7 @@ export class MockConnected extends GenesisElement {
 }
 ```
 
-As explained in the [lifecycle info section](../client-layout-management-items/#resource-intensive-components), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initialising a potentially heavy resource.
+As explained in the [lifecycle info section](../client-layout-management-items/#resource-intensive-components), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initializing a potentially heavy resource.
 
 Use `LifecycleMixin` to access properties on the class, which can be used to run lifecycle functionality more thoughtfully. In the following example, the resource-intensive tasks are called conditionally - only when needed.
 
@@ -398,16 +398,16 @@ of a registered component.
 Consider the following, which is the order of events for loading the layout when using html that includes bindings.
 
 1. As the DOM is parsed, the elements inside the layout are created. At this point, the bindings are attached and the event listeners are created, and the `connectedCallback` lifecycle method executes.
-2. Once all the elements contained in the layout have been created, the layout itself initialises\*.
-3. As part of the initialisation process, it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache.
+2. Once all the elements contained in the layout have been created, the layout itself initializes\*.
+3. As part of the initialization process, it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache.
 4. We then load golden layout with the layout config and the registered items, where the registered items create a clone of the items in the document fragment.
 
 The issue occurs during step four - the clone from `cloneNode` doesn't have the event listeners, so the new copy (which is the one you see on the layout) has no event listeners. Compare this with the similar but different process if you've wrapped up the html into its own custom component.
 
 1. As the DOM is parsed, the elements inside the layout are created. At this point, the bindings are attached and the event listeners are created, and the `connectedCallback` lifecycle method executes.
-2. Once all the elements contained in the layout have been created, the layout itself initialises\*.
-3. As part of the initialisation process, it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache. This is just a tag, such as `<filtered-chart></filtered-chart>`, not a definition that includes bindings or event listeners.
+2. Once all the elements contained in the layout have been created, the layout itself initializes\*.
+3. As part of the initialization process, it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache. This is just a tag, such as `<filtered-chart></filtered-chart>`, not a definition that includes bindings or event listeners.
 4. We then load golden layout with the layout config and the registered items, where the registered items create a clone of the items in the document fragment.
-5. When that clone is put on the DOM, it is a custom element. And so it calls the lifecycle method again `connectedCallback` as well as other initialisation methods that include attaching the event listener to the component as required.
+5. When that clone is put on the DOM, it is a custom element. And so it calls the lifecycle method again `connectedCallback` as well as other initialization methods that include attaching the event listener to the component as required.
 
->>\* It initialises after the timeout specified by the `reload-buffer` attribute if using the declarative HTML API, or if steps `3` and `4` occur during calls to `registerItem` and `addItem` respectively.
+>>\* It initializes after the timeout specified by the `reload-buffer` attribute if using the declarative HTML API, or if steps `3` and `4` occur during calls to `registerItem` and `addItem` respectively.

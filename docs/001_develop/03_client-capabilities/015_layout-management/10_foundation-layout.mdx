@@ -740,7 +740,7 @@ export class ContainedExample extends FASTElement {
 
 ### Loading serialized layouts
 
-This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example, you should familiarise yourself with the [API Section](/develop/client-capabilities/layout-management/foundation-layout/#javascript-api):
+This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example, you should familiarize yourself with the [API Section](/develop/client-capabilities/layout-management/foundation-layout/#javascript-api):
 
 ```html
 <foundation-layout>
@@ -758,9 +758,9 @@ This is an elaborate example of using the JavaScript API with consideration of t
 We can use `layoutRequiredRegistrations()` on the config returned from `getLayout()` to see the registered names that are required to load the layout.
 
 ```javascript
-const layout = document.querySelector('foundation-layout'); // as FoundatonLayout in TypeScript;
+const layout = document.querySelector('foundation-layout'); // as FoundationLayout in TypeScript;
 const layoutConfig = layout.getLayout();
-console.log(FoundatonLayout.layoutRequiredRegistrations(layoutConfig))
+console.log(FoundationLayout.layoutRequiredRegistrations(layoutConfig))
 ```
 This will log `['trades','users']` because these are the two registered panes. You can then load any layout that only contains either/both of these items.
 
@@ -782,7 +782,7 @@ Consider now where the user refreshes the page to go back to the original state 
 // User has refreshed page
 
 console.log(layout.registeredItems());
-// Ouputs ['trades','users']
+// Outputs ['trades','users']
 
 layout.loadLayout(layoutConfigTwo);
 // Uncaught Error: Trying to load layout with extra components. The component(s) not currently loaded are "test"
@@ -816,9 +816,9 @@ Now all those items will be registered with the layout for potential use when ca
 Alternatively, you could query the current layout and the layout you want to load to see if there are any missing registered items; you can then register the missing ones. Using our previous examples:
 
 ```javascript
-const currentRegistrations = FoundatonLayout.registeredItems();
+const currentRegistrations = FoundationLayout.registeredItems();
 // ['trades','users']
-const requiredRegistrations = FoundatonLayout.layoutRequiredRegistrations(layoutConfigTwo);
+const requiredRegistrations = FoundationLayout.layoutRequiredRegistrations(layoutConfigTwo);
 // ['test','trades','users']
 
 // We can see 'test' is missing and therefore we should register it
@@ -1139,7 +1139,7 @@ export class MockConnected extends FASTElement {
 }
 ```
 
-As explained in the [lifecycle info section](/develop/client-capabilities/layout-management/foundation-layout/#element-lifecycle-gating), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initialising a potentially heavy resource.
+As explained in the [lifecycle info section](/develop/client-capabilities/layout-management/foundation-layout/#element-lifecycle-gating), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initializing a potentially heavy resource.
 
 Use `LifecycleMixin` to access properties on the class, which can be used to run lifecycle functionality more thoughtfully. In the following example, the resource-intensive tasks are called conditionally - only when needed.
 
