@@ -30,7 +30,9 @@ There are some limitations for using bindings and other syntaxes inline in the h
 Even if `<my-element>` usually supports the event and property bindings, it won't work if defined inline in the layout.
 
 :::info
-Read on if you're interested to learn why this limitation occurs: to be able to allow you to use `addItem()` to add the same item multiple times on the layout, it's necessary to clone the items using the [cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode). A limitation of that in the browser is that event listeners are not copied, and the bindings for the Genesis element are lost too.
+Read on if you're interested to learn why this limitation occurs.
+
+To enable you to use `addItem()` to add the same item multiple times on the layout, it's necessary to clone the items using the [cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode). A limitation of that in the browser is that event listeners are not copied, and the bindings for the Genesis element are lost too.
 :::
 
 There is a very simple pattern to work around this - just wrap the bindings up in an element.
@@ -62,9 +64,9 @@ This works because the bindings and events run _after_ the cloneNode() call, so 
 
 ## State management
 
-The question you may ask with the above answer is how you access the properties which are represented in `${ ... }`. If they were statically defined functions or `const` values on the class, then you can move them onto the `ContainerElement` class. More likely though they are dynamically generated.
+The question you may ask with the above answer is how you access to the properties that are represented in `${ ... }`. If they were statically defined functions or `const` values on the class, then you can move them onto the `ContainerElement` class. More likely though they are dynamically generated.
 
-This is where we'll want to use some formal state management. This section will rely on your knowledge of [`foundation-store`](../../state-management/). The store is already set up out of the box with applications created from Genesis Create or using the Genesis CLI `genx`.
+This is where you need to use some formal state management. For more details, see the section on [`foundation-store`](../../state-management/). For applications created from Genesis Create or the Genesis CLI `genx`, the store is set up for you automatically.
 
 ### Pre-layout example
 
@@ -88,10 +90,10 @@ export class MyElement extends GenesisElement {
   }
 }
 ```
-As you toggle the first checkbox, the second one will change to match. This is an overly simple example - but instead imagine that the first component is configuring a string which contains a filter, and the second component is a grid which binds the filter to change what rows are displayed.
+As you toggle the first checkbox, the second one will change to match. This is an overly simple example - but instead imagine that the first component is configuring a string that contains a filter, and the second component is a grid that binds the filter to change what rows are displayed.
 
 :::info
-Notice the second checkbox doesn't have a `sync` directive, this is because we're only making the first checkbox drive the state of the second. This is analogous to a filter driving a property on a grid. You may have a different use case where both components communicate to each other both ways.
+Notice the second checkbox doesn't have a `sync` directive. this is because we are only making the first checkbox drive the state of the second. This is analogous to a filter driving a property on a grid. You may have a different use case where both components communicate with each other both ways.
 :::
 
 ### Adding a layout
@@ -159,11 +161,12 @@ WrapperTwo;
 export class MyElement extends GenesisElement { }
 ```
 
-There's still got a big issue here though - the `isSelected` variable isn't linked between the two components anymore. Handling this case requires the use of a state management library, such as the `foundation-store` module included in the platform.
+There's still got a big issue here though - the `isSelected` variable isn't linked between the two components anymore. To handle this, you need to use a state management library, such as the `foundation-store` module that is included in the platform.
 
-### State Management
+### State management
 
 1. Add your new event into the store's event enum.
+
 ```typescript
 export enum StoreEvents {
   ...
@@ -172,6 +175,7 @@ export enum StoreEvents {
 ```
 
 2. Add your event detail onto the map union. Notice we're using `boolean` as the type here - because that is the type of the checkbox toggle we want to sync. It could be a `string` representing a filter mentioned earlier, or any other type.
+
 ```typescript
 export type StoreEventDetailMap = StoreRootEventDetailMap & {
   ...
@@ -180,6 +184,7 @@ export type StoreEventDetailMap = StoreRootEventDetailMap & {
 ```
 
 3. Add the variable to sync onto the store, here represented by `checkboxToggle`. Then add an event listener to react to the emitted event and commit it on the store.
+
 ```typescript
 class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> implements Store {
   @observable checkboxToggle: boolean = false;
@@ -194,6 +199,7 @@ class DefaultStore extends AbstractStoreRoot<Store, StoreEventDetailMap> impleme
 ```
 
 4. Finally, the two wrapper classes are updated to emit and read from the store.
+
 ```typescript
 @customElement({
   name: 'wrapper-one',
