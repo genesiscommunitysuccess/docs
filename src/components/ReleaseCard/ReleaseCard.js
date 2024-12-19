@@ -7,7 +7,7 @@ const RELEASE_PAGE_URL_PREFIX = '/release-notes/platform';
 
 export default function ReleaseCard({ blogLink, releaseNotesLink, imageName, imageAltText }) {
   const relativeReleaseNoteLink = useBaseUrl(`${RELEASE_PAGE_URL_PREFIX}${releaseNotesLink}`);
-  const imageSrc = imageName ? `/img/release-notes/${imageName}` : null;
+  const imageSrc = imageName ? `/img/004_release-notes/${imageName}` : null;
   
   const footerContent = (
     <nav className="release-card-footer">
