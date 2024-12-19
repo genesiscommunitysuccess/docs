@@ -1,6 +1,6 @@
 ---
-title: 'Logger Utility'
-sidebar_label: 'Logger Utility'
+title: 'Logger utility'
+sidebar_label: 'Logger utility'
 id: logger-utils
 keywords: [utils, utility, logger, logging, consola, depracation, levels, logLevel, createLogger, json]
 tags:
@@ -16,21 +16,21 @@ tags:
   - json
 ---
 
-Advanced logging functionalities, extending the capabilities of the [`Consola`](https://github.com/unjs/consola) logger. It provides structured and versatile logging options suitable for various development needs, from debugging to production monitoring.
+These advanced logging functionalities extend the capabilities of the [`Consola`](https://github.com/unjs/consola) logger. Together, this gives you structured and versatile logging options suitable for various development needs, from debugging to production monitoring.
 
-## Key Features
+## Key features
 
-- **Consola Integration:** Leverages the `Consola` logging library for a wide range of logging levels and methods, ensuring compatibility with existing logging practices.
+- **Consola Integration:** Uses the `Consola` logging library for a wide range of logging levels and methods, ensuring compatibility with existing logging practices.
 - **Deprecation Logging:** Introduces a custom logging method for deprecated symbols, encouraging best practices and aiding in the gradual phasing out of outdated code.
-- **Configurable Logging Levels:** Includes support for setting log levels, allowing developers to fine-tune the verbosity of log output according to the current environment or debugging needs.
+- **Configurable Logging Levels:** Includes support for setting log levels, enabling you to fine-tune the verbosity of log output to meet the current environment or debugging needs.
 
-## Logger Options
+## Logger options
 
-Options for creating a logger are extended from [`ConsolaOptions`](https://github.com/unjs/consola/blob/main/src/types.ts), enabling the customization of logger behavior, such as log level, reporters, and more.
+Options for creating a logger are extended from [`ConsolaOptions`](https://github.com/unjs/consola/blob/main/src/types.ts), enabling the customization of logger behaviour, such as log level, reporters, and more.
 
 ## Examples 
 
-### Creating a Logger
+### Creating a logger
 
 The `Logger` interface extends the functionality of `Consola`, providing support for multiple log levels such as `log`, `info`, `warn`, and `error`. Additionally, it introduces a specialized method for logging deprecation warnings. Here's how you can create and use a logger:
 
@@ -58,6 +58,6 @@ logger.deprecated(
 
 ## Considerations
 
-- Utilize the `deprecated` method to log deprecation warnings, facilitating smoother transitions away from outdated code.
+- Use the `deprecated` method to log deprecation warnings, making it easier to transition away from outdated code.
 - Adjust log levels dynamically to match the environment, minimizing noise in production logs while maximizing debug information during development.
 - Migrate to the recommended `createLogger` from `@genesislcap/foundation-logger` to take advantage of centralized logging improvements and features.
