@@ -10,6 +10,29 @@ tags:
 sidebar_position: 4
 ---
 
+## Software requirements
+To run a Genesis application, including on your local machine, the following software must be installed:
+
+|Software                            | Access Information                                                                      |
+|------------------------------------|-----------------------------------------------------------------------------------------|
+| JDK 17                             | [Windows (.msi)](https://download.oracle.com/java/17/archive/jdk-17.0.10_windows-x64_bin.msi)   [Other Platforms](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) |
+| Node.js                            | [Windows (.msi)](https://nodejs.org/dist/v20.12.2/node-v20.12.2-x64.msi)  [Other Platforms](https://nodejs.org/en/download) |
+| LMDB (Mac Only)                    | [Installation Guide](#lmdb-installation-guide-macos)                                                                        |
+| Genesis Server Framework (GSF)     | [Artifact Access](/build-deploy-operate/build/library-access/#server-artifacts)                                             |
+| Genesis Web Framework (Foundation) | [Artifact Access](/build-deploy-operate/build/library-access/#client-artifacts)                                             |
+| Gradle                             | Bundled with your Genesis application project (unless [downloading a new Create project with "Exclude Gradle Wrapper JAR" selected](/develop/development-environment/launchpad/#exclude-gradle-wrapper-jar))  |  
+
+### LMDB installation guide (MacOS)
+
+When running a Genesis application on MacOS, you must install and configure LMDB. The following steps can be followed:
+
+1. Install lmdb for mac : [homebrew installation instructions](https://formulae.brew.sh/formula/lmdb)
+1. Add `liblmdb.dylib` to your Java Extensions:
+```bash
+mkdir -p ~/Library/Java/Extensions
+cp /opt/homebrew/opt/lmdb/lib/liblmdb.dylib ~/Library/Java/Extensions/
+```
+
 ## Gradle deploy plugin
 
 The Genesis Application Platform provides a Gradle plugin that makes it easy to perform all the installation tasks that are necessary to deploy your own Genesis project on your local workstation, from your IDE.
@@ -33,7 +56,7 @@ There are several possible configurations for your deployment. For each one, you
 - a local Linux host
 - a remote Linux host (via SSL)
 
-#### General Setup
+#### General set-up
 
 Make sure you have a **gradle.properties** file inside a **.gradle** folder in your user directory; this file must contain your Genesis Artifactory credentials in clear (unencrypted) text:
 
@@ -113,7 +136,7 @@ ssh-host=user1-remotehost
 ssh-port=22
 ```
 
-## Plugin Tasks
+## Plugin tasks
 
 The Genesis deploy plugin comes with several tasks. They are grouped under `genesisdeploy` and `genesissetup`.
 

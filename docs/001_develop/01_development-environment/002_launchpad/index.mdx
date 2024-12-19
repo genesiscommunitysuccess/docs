@@ -8,6 +8,9 @@ tags:
 sidebar_position: 2
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Launchpad hub
 
 The Genesis Launchpad enables you to create new financial applications rapidly.  
@@ -27,7 +30,7 @@ You can have up to 100 projects.
 
 ### Launch and run a project
 
-<iframe src="https://scribehow.com/embed/Launch_and_run_your_application__LXVf8Ba9RPiocwLea5jeWQ?" width="100%" height="640" allowfullscreen frameborder="0"></iframe>
+<iframe src="https://scribehow.com/embed/Launch_and_run_your_application__LXVf8Ba9RPiocwLea5jeWQ?skipIntro=true&removeLogo=true&as=scrollable" width="100%" height="640" allowfullscreen frameborder="0"></iframe>
 
 :::tip Migrating existing Genesis projects from the previous version of Launchpad
 If you created a project using an earlier version of Launchpad, it will not be listed in your Current Projects.
@@ -326,11 +329,46 @@ When you reach the Summary page, you have completed the configuration of your pr
 
 The next step is to generate the code so that you can build and deploy.
 
+
+#### Opening in your Genesis Workspace
+
 To do this, click on `Save to Genesis Workspace`. This loads your project in your [Launchpad hub](#launchpad-hub).
 
-:::info Building locally
-Alternatively, you can click on `Download Project Locally` to download your project and build locally using your IntelliJ. To be able to build and run your app locally, you'll require access to the Genesis libraries from within your enterprise. There is a small tutorial for doing this on the tab.
+#### Downloading your project to run locally
+
+Alternatively, you can download your project to run locally following this guide:
+
+<iframe src="https://scribehow.com/embed/Download_and_run_your_Create_project_locally__IT-lknXzTDKFn3YUFb2Ftw?skipIntro=true&removeLogo=true&as=scrollable" width="100%" height="640" allowfullscreen frameborder="0"></iframe>
+
+##### Exclude Gradle Wrapper JAR
+
+![Exclude Gradle Wrapper JAR](/img/003_build-deploy-operate/exclude-gradle-wrapper-jar.png)
+
+By default, your generated project includes a JAR file so that you don't need to have the Gradle build tool available locally. *Some institutions block these JAR files*. If this affects you, make sure that `Exclude Gradle Wrapper JAR` is set to exclude the JAR. After you have unzipped your project, you must then install gradle manually following these instructions.
+
+:::info
+For the instructions below, change `{URL}` to be either:
+- Your company's internal gradle distribution url for gradle 8.3+
+- The public URL https://services.gradle.org/distributions/gradle-8.3-all.zip
 :::
+
+If your local Gradle installation version is ≥ 8.3 or 7.6.4, you can simply run `gradle wrapper --gradle-distribution-url={URL}` at the project root level. If you don't have this, else if you receive errors, follow these instructions:
+
+1. Download the Gradle zip distribution manually from `{URL}` and unzip it.
+2. Run the following command in your project's root directory. The command assumes you unzipped the gradle download in `~/Downloads` and this part of the command should be changed accordingly if you are using another directory:
+
+    <Tabs defaultValue="windows" values={[{ label: 'Windows', value: 'windows', }, { label: 'Mac OSX / Linux', value: 'mac', }]}>
+    <TabItem value="windows">
+    ```shell
+    ~\Downloads\gradle-8.3\bin\gradle.bat wrapper --gradle-distribution-url={URL}
+    ```
+    </TabItem>
+    <TabItem value="mac">
+    ```bash
+    ~/Downloads/gradle-8.3/bin/gradle wrapper --gradle-distribution-url={URL}
+    ```
+    </TabItem>
+    </Tabs>
 
 ## Genesis Cloud Workspace
 
@@ -484,9 +522,6 @@ Running `Genesis: Build project` builds (compiles) all components for the app an
 You can right-click on the file generated and download it to your local machine to open and run the project there. 
 
 The folder created by the command is a temporary store. Running the command again will delete and recreate all its files.
-
-Mostly, you will download the zip file created directly under `project-zip`, which includes the Gradle wrapper (and its respective scripts to run on Unix/Windows 
--based systems). If your enterprise restricts the downloads of such file types, we provide the project without the Gradle wrapper under the `no-gradle-wrapper `subfolder. **You must have the currently supported Gradle version installed in your workspace to use this.**
 
 ### Launch configurations
 The exact list of configurations for your application is dependent on the components that you have chosen. For example, if you have included the Reporting component, then your application will have a configuration for running it. 
