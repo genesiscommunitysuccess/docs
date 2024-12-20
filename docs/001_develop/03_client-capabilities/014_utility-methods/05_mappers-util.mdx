@@ -57,10 +57,10 @@ The `DefaultServerRowDTOMapper` class provides a concrete implementation of the 
 
 ### Conversion methods
 
-- **`fromDTO(dto: ServerRowDTO): ServerRowEntity`**: Transforms a `ServerRowDTO` instance into a `ServerRowEntity`. This process involves converting keys from uppercase to lowercase while maintaining data integrity.
-- **`toDTO(entity: ServerRowEntity): ServerRowDTO`**: Converts a `ServerRowEntity` back into its `ServerRowDTO` representation, translating keys from lowercase to uppercase.
+- **`fromDTO(dto: ServerRowDTO): ServerRowEntity`**: Transforms a `ServerRowDTO` instance into a `ServerRowEntity`. This process involves converting keys from upper-case to lower-case while maintaining data integrity.
+- **`toDTO(entity: ServerRowEntity): ServerRowDTO`**: Converts a `ServerRowEntity` back into its `ServerRowDTO` representation, translating keys from lower-case to upper-case.
 
-### Usage Example
+### Usage example
 
 Below is an example demonstrating the usage of `DefaultServerRowDTOMapper` in a typical application:
 
@@ -92,10 +92,10 @@ export class MyExampleComponent extends GenesisElement {
 }
 ```
 
-This example illustrates how the `DefaultServerRowDTOMapper` can be utilized to handle seamless conversions, enabling consistent data representation across different application layers.
+This example illustrates how to use the `DefaultServerRowDTOMapper` to handle seamless conversions, enabling consistent data representation across different application layers.
 
 ## Considerations
 
-- Utilize the provided mapper utilities for all server communication involving server row data to ensure consistency in data handling.
+- Use the mapper utilities for all server communication involving server row data to ensure consistency in data handling.
 - Extend the `DTOMapper` interface for other data types as needed, maintaining a uniform approach to data conversion across your application.
-- Leverage dependency injection for accessing mapper instances, enhancing modularity and testability.
+- Use dependency injection for accessing mapper instances, enhancing modularity and testability.
