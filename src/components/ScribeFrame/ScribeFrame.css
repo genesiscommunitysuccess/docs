@@ -37,7 +37,6 @@
 }
 
 .learn-icon {
-  margin-right: 8px; /* Adjust the spacing between the icon and text */
-  width: 20px; /* Optional: Set the width of the icon */
-  height: 20px; /* Optional: Set the height of the icon */
+  width: 60px; /* Optional: Set the width of the icon */
+  height: 60px; /* Optional: Set the height of the icon */
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import './ScribeFrame.css';
+import SvgIcon from '@site/static/svg/learn.svg';
 
 export default function ScribeFrame({ src, title, scroll = false }) {
   if(scroll) {
@@ -8,7 +9,7 @@ export default function ScribeFrame({ src, title, scroll = false }) {
   return (
     <div className="iframeContainer">
       <div class="learn-title">
-        <img src="@site/static/svg/learn.svg" alt="learn" class="learn-icon"></img>
+        <SvgIcon className='learn-icon'/>
         <p class="sbs-title">
           Learn step-by-step
         </p>
