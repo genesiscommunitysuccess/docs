@@ -95,6 +95,16 @@ id: '8.2'
 
 ### Patch releases
 
+#### 8.2.8
+
+##### Features
+- Query API: Add dynamicQueryBuilder support
+- Add support for dynamic parameters as well as fix issues related to ENUM and DateTime handling
+
+##### Fixes
+- Query API: ensure number parameters are not passed as string values to "where" clauses and use correct uppercase underscore translation
+- Cluster manager not bound when running GenesisRun and other scripts that user ServiceModule
+
 #### 8.2.7
 
 - Configurable update frequency and caching for Db cluster strategy
