@@ -1,11 +1,14 @@
 import React from 'react';
 import './ScribeFrame.css';
 
-export default function ScribeFrame({ src, title }) {
+export default function ScribeFrame({ src, title, scroll = false }) {
+  if(scroll) {
+    src+="&as=scrollable"
+  }
   return (
     <div className="iframeContainer">
       <div class="learn-title">
-        <img src="./static/svg/learn.svg" alt="learn" class="learn-icon"></img>
+        <img src="@site/static/svg/learn.svg" alt="learn" class="learn-icon"></img>
         <p class="sbs-title">
           Learn step-by-step
         </p>
