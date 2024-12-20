@@ -1,0 +1,124 @@
+---
+title: '8.7'
+sidebar_label: '8.7'
+sidebar_position: 13
+id: '8.7'
+---
+
+## Server
+
+### Features
+
+* Relocate genesis-cluster classes to new modules
+* expose columnSeparator and quoteChar to csvDecoder operator
+* no longer need import for LOG in purger script
+* Add clientName gradle property to allow for custom site specific folders
+* print additional statement to system.log if killProcess ends up calling 'kill -9' after the waiting grace period expires
+* triggerRemote method no longer requires process name
+* compact PBCs together in dev strategy
+* add columnSeparator and quoteChar to csvEncoder operator
+* add ability to copy event meta data with new details type
+* Allow lambdas for withInput expressions to be assigned and reused
+* Added genesis-transform module for user-defined ETL capabilities
+* add batch size configuration to db batch poll source
+* Make process name optional on cron rule records to allow execution in compact process mode
+* add support for runtime script file and config file annotations 
+* Added Connector and AckConnector for joining pipelines
+* Upgrade to Kotlin 2.1.0
+* Implemented CamelFileSource for outbound file flow and made sink interfaces contravariant
+* Install hooks improvements
+* Document Manger: Ability to upload files to a customised sub directory
+* Document Manger: Extend file storage api to allow generate and store document + modify + delete
+* Document Manger: Add UNIT_TEST_PROCESS to remote file storage client
+* Recon: Added support to invoke a reconciliation by configuration name as well as ID, for API users
+* Notify: Added new dataserver specifically for toasts
+* Notify: Relax validation restrictions on Email Gateway config to make SMTP credentials optional 
+* Notify: adapt codebase to changes related to Cluster simplification in GSF
+
+### Fixes
+
+* Indices on DOUBLE fields are now correctly sorted correctly in LMDB - Dataserver
+* Add custom deserializer for Field to ignore originalName
+* dbSink should apply operations in batches
+* DictionaryBuilder: fix table metadata read operation and ensure field/table names don't have a double '_'
+* Ensure parentheses are preserved when parsing evaluator expressions to JSON
+* can use deploy plugin when distribution plugin is disabled
+* correct bug in enum handling
+* remove explicit toString call on ClusterMessage debug line
+* Do not throw if txDbSink is not given a transaction handle, just create a new one
+* fix reqrep not starting if key field has _FROM or _TO
+* regression on view generation when empty blocks are used in derived fields
+* Renamed DbSink to bring in line with documentation, added typealias for backwards compatibility
+* Correct typo in new transformer API
+* optionally disable maven modules
+* correct mapping of dates in ExcelDataToCsv
+* Pipelines : Added type variance to operator interfaces
+* Cluster manager not bound when running GenesisRun and other scripts that user ServiceModule
+* Regression - settings plugin not properly handling OS specific paths while discovering resources
+* Update comment in BodyLessWebEndpoint.kt to new docs url
+* ExcelDataToCSV. allow better user.dir setup, running with no arg and running on a dir
+* Integrations: close consumer when source is stopped
+* Auth: make user active_sessions eventually consistent with user_session table
+* Auth: login-auth-ack and login-details-ack messages now return a "ZERO_MQ_PROXY_OUTBOUND_PORT" property instead of the mispelt "ZERO_MQ_PROXY_OUTOUND_PORT"
+* Auth: update URLs to docs
+* Auth: bump seed version for release
+* Recon: Timestamp on batch recon results view is now start time, not last updated time
+* Notify: Allow null values on email address lists
+
+### Dependency changes
+
+* com.thoughtworks.xstream:xstream from 1.4.20 to 1.4.21
+* oracleJdbcVersion from 23.5.0.24.07 to 23.6.0.24.10
+* org.apache.fury:fury-core from 0.8.0 to 0.9.0
+* groovyVersion from 3.0.22 to 3.0.23
+* org.quartz-scheduler:quartz from 2.3.2 to 2.5.0
+* nettyVersion from 4.1.114.Final to 4.1.115.Final
+* io.github.classgraph:classgraph from 4.8.177 to 4.8.179
+* org.apache.shiro:shiro-core from 2.0.1 to 2.0.2
+* com.zaxxer:HikariCP from 6.1.0 to 6.2.0
+* micrometerVersion from 1.13.6 to 1.14.1
+* dcarbone/install-jq-action from 2.1.0 to 3.0.1
+* debeziumVersion from 3.0.1.Final to 3.0.2.Final
+* com.avast.gradle:gradle-docker-compose-plugin from 0.17.10 to 0.17.11
+* com.zaxxer:HikariCP from 6.2.0 to 6.2.1
+* org.openapitools:openapi-generator from 7.9.0 to 7.10.0
+* com.google.errorprone:error_prone_annotations from 2.35.1 to 2.36.0
+* commons-io:commons-io from 2.17.0 to 2.18.0
+* testcontainersVersion from 1.20.3 to 1.20.4
+* log4jVersion from 2.24.1 to 2.24.2
+* debeziumVersion from 3.0.2.Final to 3.0.3.Final
+* io.reactivex.rxjava3:rxjava from 3.1.9 to 3.1.10
+* debeziumVersion from 3.0.3.Final to 3.0.4.Final
+* com.google.protobuf:protobuf-java from 4.28.3 to 4.29.0
+* org.checkerframework:checker-qual from 3.48.2 to 3.48.3
+* software.amazon.jdbc:aws-advanced-jdbc-wrapper from 2.5.2 to 2.5.3
+* Auth: bump com.jfrog.artifactory from 5.2.3 to 5.2.5
+* Auth: bump org.sonarqube from 5.0.0.4638 to 5.1.0.4882
+* Auth: bump org.passay:passay from 1.6.5 to 1.6.6
+
+### Patch releases
+
+There have been no patch releases to date.
+
+## Client
+
+### Features
+
+* add support for NANO_TIMESTAMP
+* Notify: Added No Row and Loading message for alert center
+* Notify: added html tooltip on rule dropdowns
+* Notify: add part to alert inbox to allow for styling overrides
+
+### Fixes
+
+* remove module federation for zero ds
+* add Accessor re-export
+* lock all FAST package versions
+* Reporting: improve accessibility for grid checkboxes - new row select renderer 
+* Reporting: removed special characters from column name
+* Notify: retaining field name in right side on rule dialog 
+* Notify: made Topic field in rule dialog as combobox
+* Notify: handle date and datetime fields in rule builder 
+* Notify: debounce text based filters
+* Notify: force a new package-lock with up to date dependency refs
+

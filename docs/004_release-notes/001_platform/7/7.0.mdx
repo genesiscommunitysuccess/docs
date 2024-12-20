@@ -337,7 +337,7 @@ deployPluginVersion=7.0.0
 ### Modify the build
 1. Update your `server/jvm/build.gradle.kts` file so that it references Java 17 (including compiler options) and Kotlin 1.9.
 
-![](/img/release-notes/migrate-67-a.png)
+![](/img/004_release-notes/migrate-67-a.png)
 
         Still in the `server/jvm/build.gradle.kts` file, add the required directives to support Junit 5 and properties to run tests.
 
@@ -375,7 +375,7 @@ subprojects  {
 ...
 ```
 
-![](/img/release-notes/migrate-67-b.png)
+![](/img/004_release-notes/migrate-67-b.png)
 
         Lastly, in the same file, configure the `copyDependencies` task and replace `JavaLanguageVersion`.
 
@@ -421,7 +421,7 @@ allprojects {
 }
 ```
 
-![](/img/release-notes/migrate-67-c.png)
+![](/img/004_release-notes/migrate-67-c.png)
 
 2. In the `server/jvm/-{application}-site-specific/build.gradle.kts` file, configure the `copyDependencies` task:
 
@@ -441,7 +441,7 @@ tasks {
 ...
 ```
 
-![](/img/release-notes/migrate-67-d.png)
+![](/img/004_release-notes/migrate-67-d.png)
 
 3. In the `server/jvm/{application}-distribution/build.gradle.kts` file, configure the distTar task:
 
@@ -459,7 +459,7 @@ tasks {
 ...
 ```
 
-![](/img/release-notes/migrate-67-e.png)
+![](/img/004_release-notes/migrate-67-e.png)
 
 ### Finishing
 
