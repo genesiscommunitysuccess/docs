@@ -17,13 +17,13 @@ tags:
   - records
 ---
 
-Provides a set of utilities for managing data stores, focusing on an in-memory database implementation. This module supports basic CRUD operations and offers seamless integration with TypeScript, providing strong type safety and event-driven features for enhanced interaction.
+The data utilities enable you to manage data stores, focusing on an in-memory database implementation. This module supports basic CRUD operations and offers seamless integration with TypeScript, providing strong type safety and event-driven features for enhanced interaction.
 
 :::info
-For more detailed information on API and configurations, please refer to the [API documentation](docs/api/index.md).
+For more detailed information on API and configurations, refer to the [API documentation](docs/api/index.md).
 :::
 
-## Key Features
+## Key features
 
 - **CRUD Operations:** Comprehensive support for Create, Read, Update, and Delete operations to manage database records effectively.
 - **Event Listeners:** Built-in support for lifecycle event observers, such as hooks for pre- and post-update actions, enabling extensibility.
@@ -31,7 +31,7 @@ For more detailed information on API and configurations, please refer to the [AP
 - **TypeScript Support:** Designed with TypeScript in mind, offering robust type safety and reducing runtime errors.
 - **Lightweight and Fast:** Optimized for small-scale applications and prototyping, ensuring minimal overhead.
 
-## Use Cases
+## Use cases
 
 This module is ideal for:
 - Prototyping applications with lightweight data requirements.
@@ -40,7 +40,7 @@ This module is ideal for:
 
 ## Examples
 
-### Defining a Record Type
+### Defining a record type
 
 First, create your record type by extending the `DatabaseRecord` interface. This step ensures your records will have an `id` field, which is required for CRUD operations.
 
@@ -51,7 +51,7 @@ interface MyRecord extends DatabaseRecord {
 }
 ```
 
-### Instantiating the Database
+### Instantiating the database
 
 Create an instance of `InMemoryDatabase` using your record type:
 
@@ -61,7 +61,7 @@ import { InMemoryDatabase } from '@genesislcap/foundation-utils';
 const db = new InMemoryDatabase<MyRecord>();
 ```
 
-### Create Operation
+### Create operation
 
 Add a new record to the database:
 
@@ -70,7 +70,7 @@ const newRecord = await db.create({ name: 'Example', value: 123 });
 console.log(newRecord);
 ```
 
-### Read Operation
+### Read operation
 
 Retrieve a record by its ID:
 
@@ -79,7 +79,7 @@ const record = await db.read(newRecord.value.id);
 console.log(record);
 ```
 
-### Update Operation
+### Update operation
 
 Modify an existing record:
 
@@ -88,7 +88,7 @@ const updateResult = await db.update(newRecord.value.id, { value: 456 });
 console.log(updateResult);
 ```
 
-### Delete Operation
+### Delete operation
 
 Remove a record from the database:
 
@@ -97,7 +97,7 @@ const deleteResult = await db.delete(newRecord.value.id);
 console.log(deleteResult);
 ```
 
-### Visit Operation
+### Visit operation
 
 Iterate over all records in the database. Useful for bulk operations or analyses.
 
@@ -107,7 +107,7 @@ await db.visit((record) => {
 });
 ```
 
-### Observing Record Updates
+### Observing record updates
 
 Subscribe to events to be notified about changes:
 
@@ -121,7 +121,7 @@ db.onAfterUpdate(({ value }) => {
 });
 ```
 
-## Key Points
+## Key points
 
 - **Promises:** All operations return Promises, allowing for async handling.
 - **Event Listeners:** Use event listeners to react to database changes and perform additional actions.

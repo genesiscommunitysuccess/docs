@@ -13,9 +13,9 @@ tags:
   - events
 ---
 
-This includes utilities for creating event observers and handling element visibility changes, facilitating the subscription to and publication of custom events, and responding to changes in element visibility.
+There are utilities for creating event observers and handling element visibility changes, facilitating the subscription to and publication of custom events, and responding to changes in element visibility.
 
-## Key Features
+## Key features
 
 - **`Listener` Type:** Defines a callback function that receives an event of a specific type.
 - **`Subscribe` Type:** Represents a function that subscribes a listener to receive event notifications, returning an unsubscribe function for cleanup.
@@ -24,11 +24,11 @@ This includes utilities for creating event observers and handling element visibi
 
 ## Examples
 
-### Event Observer
+### Event observer
 
 The event observer utility provides a pattern for creating a publish-subscribe mechanism, allowing parts of your application to subscribe to and receive notifications for specific events.
 
-#### Creating an Observer
+#### Creating an observer
 
 ```typescript
 import { createObserver, Listener } from '@genesislcap/foundation-utils';
@@ -47,11 +47,11 @@ const unsubscribe = exampleObserver.subscribe((ev) => {
 exampleObserver.publish({ message: 'Hello Observer Pattern!' });
 ```
 
-### Visibility Observer
+### Visibility observer
 
-This utility leverages the `IntersectionObserver` API to monitor the visibility of a specified HTML element, invoking a callback whenever the visibility state changes.
+This utility uses the `IntersectionObserver` API to monitor the visibility of a specified HTML element, invoking a callback whenever the visibility state changes.
 
-#### respondToVisibility Usage
+#### respondToVisibility usage
 
 ```typescript
 import { respondToVisibility } from '@genesislcap/foundation-utils';
@@ -63,7 +63,7 @@ respondToVisibility(targetElement, (isVisible) => {
 });
 ```
 
-## Key Points
+## Key points
 
 - **Promises:** All operations return Promises, allowing for async handling.
 - **Event Listeners:** Use event listeners to react to database changes and perform additional actions.
