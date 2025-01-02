@@ -343,9 +343,9 @@ As well as returning an [`ack`](#ack) (success) or a [`nack`](#nack), the `onVal
 
 ##### `verify`
 
-Within the `onvalidate` block, a `verify` block is helpful for common relational checks. For example, to check that referenced ID-based entities already exist in the database.
+Within the `onvalidate` block, a `verify` block is helpful for common relational checks. For example, you can use it to check that referenced ID-based entities already exist in the database.
 
-In this example we verify that the instrument and counterparty IDs that were supplied on the event exist in the database.
+In this example, we verify that the instrument and counterparty IDs that were supplied on the event exist in the database.
 
 ```kotlin {3-6}
   onValidate {
@@ -482,7 +482,7 @@ The `trigger` method can be used to call on another event within the same Event 
 
 ##### `triggerRemote`
 
-The `triggerRemote` method can be used to call on an event from another Event Handler script file. It takes the following parameters:
+You can use the `triggerRemote` method to call on an event from another Event Handler script file. It takes the following parameters:
 
 - event metadata
 - timeout on the remote event call in milliseconds (optional)
@@ -504,7 +504,7 @@ The `triggerRemote` method can be used to call on an event from another Event Ha
 
 ### `contextEventHandler`
 
-`contextEventHandler` is similar to an `eventHandler`, but is used where you want to pass context from the [`onValidate`](#onvalidate) block to the [`onCommit`](#oncommit) block. For example, on a modification event: if you first look up the original entity record and want to pass to `onCommit` so that it doesn't need to be re-read from the database.
+`contextEventHandler` is similar to an `eventHandler`. You can use it where you want to pass context from the [`onValidate`](#onvalidate) block to the [`onCommit`](#oncommit) block. For example, on a modification event, you can first look up the original entity record and pass it to `onCommit` so that it doesn't need to be re-read from the database.
 
 ```kotlin
   contextEventHandler<Trade, Trade>(name = "TRADE_MODIFY") {
