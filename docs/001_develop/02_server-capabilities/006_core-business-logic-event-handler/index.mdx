@@ -532,11 +532,11 @@ Where you have more than one Event Handler script file, you can use the `trigger
 
 - The definition takes two `<Type>` (aka Generic) parameters instead of one:
   - the context object, which will be passed to the `onCommit` block
-  - the event metadata (which is the same as for a regular [`eventHandler`](#eventhandler)
+  - the event metadata (which is the same as for a regular [`eventHandler`](#eventhandler))
 - The [`onValidate`](#onvalidate) block must return a [`validationAck`](#validationack) instead of a regular [`ack`](#ack).
 - The [`onCommit`](#oncommit) block has two lambda parameters: 
   - the standard event 
-+ - a reference to the context object returned in the `validationAck`
+  - a reference to the context object returned in the `validationAck`
 
 #### `validationAck`
 
