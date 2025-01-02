@@ -138,7 +138,7 @@ There are two main blocks to an eventHandler, [`onValidate`](#onvalidate) and [`
 
 ### `ack`
 
-An `ack` needs to be supplied at the end of any `onValidate` and `onCommit` blocks; It signifies that the event was successful.
+You must specify an `ack` at the end of all `onValidate` and `onCommit` blocks; this signifies that the event was successful.
 
 ```kotlin {4}
 eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -508,7 +508,7 @@ Where you have more than one Event Handler script file, you can use the `trigger
 
 ### `contextEventHandler`
 
-`contextEventHandler` is similar to an `eventHandler`. You can use it where you want to pass context from the [`onValidate`](#onvalidate) block to the [`onCommit`](#oncommit) block. For example, on a modification event, you can first look up the original entity record and pass it to `onCommit` so that it doesn't need to be re-read from the database.
+`contextEventHandler` is similar to an `eventHandler`. You can use it where you want to pass context from the [`onValidate`](#onvalidate) block to the [`onCommit`](#oncommit) block. For example, on a modification event, you can look up the original entity record and then pass it to `onCommit` so that it doesn't need to be re-read from the database.
 
 ```kotlin
   contextEventHandler<Trade, Trade>(name = "TRADE_MODIFY") {
@@ -530,13 +530,19 @@ Where you have more than one Event Handler script file, you can use the `trigger
   }
 ```
 
-1. The definition takes two `<Type>` (aka Generic) parameters instead of one. The first is the context object, which will be passed to the `onCommit` block. The second is the same as a regular [`eventHandler`](#eventhandler): the event metadata.
-1. The [`onValidate`](#onvalidate) block needs to return a [`validationAck`](#validationack) instead of a regular [`ack`](#ack).
-1. The [`onCommit`](#oncommit) block has two lambda parameters, the standard event + a second, which is a reference to the context object returned in the `validationAck`.
+- The definition takes two `<Type>` (aka Generic) parameters instead of one:
+  - the context object, which will be passed to the `onCommit` block
+  - the event metadata (which is the same as for a regular [`eventHandler`](#eventhandler)
+- The [`onValidate`](#onvalidate) block must return a [`validationAck`](#validationack) instead of a regular [`ack`](#ack).
+- The [`onCommit`](#oncommit) block has two lambda parameters: 
+  - the standard event 
++ - a reference to the context object returned in the `validationAck`
 
 #### `validationAck`
 
-The same concept as an `ack`[] but must return an object matching the type of the first `<Type>` parameter in the `contextEventHandler` definition.
+For a `contextEventHandler`, you must specify a `validationAck` at the end the `onValidate` block to signify that the event was successful. Do not use the standard `ack` used in standard `eventHandler`blocks. 
+
+The `validationAck` must return an object matching the type of the first `<Type>` parameter in the `contextEventHandler` definition.
 
 ```kotlin
   contextEventHandler<Trade, Trade>(name = "TRADE_MODIFY") {
