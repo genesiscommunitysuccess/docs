@@ -463,7 +463,11 @@ As with `onValidate` the block must finish with an [`ack`](#ack). If the event i
 
 ##### `trigger`
 
-The `trigger` method can be used to call on another event within the same Event Handler script file. It takes the event metadata as a parameter.
+You can use the `trigger` method to call on another event within the same Event Handler script file. It takes the event metadata as a parameter.
+
+:::tip
+If you are using more than one Event Handler script file, use [`triggerRemote`](#triggerremote) to call an event in one of the other files.
+:::
 
 ```kotlin
     eventHandler<TriggerTrade>(name = "TRIGGER_TRADE_INSERT") {
@@ -482,7 +486,7 @@ The `trigger` method can be used to call on another event within the same Event 
 
 ##### `triggerRemote`
 
-You can use the `triggerRemote` method to call on an event from another Event Handler script file. It takes the following parameters:
+Where you have more than one Event Handler script file, you can use the `triggerRemote` method to call on an event from one of the other Event Handler script files. It takes the following parameters:
 
 - event metadata
 - timeout on the remote event call in milliseconds (optional)
