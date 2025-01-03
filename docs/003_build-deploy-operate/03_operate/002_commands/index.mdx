@@ -390,7 +390,7 @@ The scripts must be implemented to work in an idempotent way, and the end result
 
 On the server, these must be located in the `GENESIS_HOME/{applicationName}/scripts/installHooks` directory. Logs are located in `GENESIS_HOME/runtime/installHooks`.
 
-#### Status of install hook run
+###### Status of install hook run
 
 To control where the status of the run is stored, use the system definition property `HookStateStore`:
 
@@ -400,10 +400,10 @@ To control where the status of the run is stored, use the system definition prop
 
 If you need to run some install hooks all the time, i.e irrespective of their previous run status, use one of the following options:
 
-- Add `_persist` string as part of the install hook name.
+- Add `_persist` as part of the install hook name.
 - Use the `genesisInstallHooks` command with the `repeatHooks` option, for example: `genesisInstallHooks --repeatHooks=testApp1,testApp2`
 
-#### `genesisInstallHooks`
+##### `genesisInstallHooks`
 You can use this command to perform an install hook run at any time.
 
 | Argument           | Mandatory | Options      | Description                                                                                               |
@@ -420,7 +420,7 @@ Install hook file-name conventions:
 - Each install hook must contain a priority number at the beginning of the file name. This number should be unique. For example: **1_migrateLogFiles.sh**, **2_migrateDictionary.sh**.
 - If you need to create a new install hook that has to execute before priority number 1 or number 2, you must increase the numbers for all the other scripts (e.g. rename **1_migrateLogFiles.sh** to **9_migrateLogFiles.sh**).
 
-### Practical examples
+###### Practical examples
 
 You can create a new script and add it to the `/scripts/installHooks/` directory to perform any particular functionality as part of `genesisInstall`.
 
