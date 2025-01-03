@@ -1,6 +1,6 @@
 ---
-title: 'Data Mapping Utilities'
-sidebar_label: 'Data Mapping Utilities'
+title: 'Data-mapping utilities'
+sidebar_label: 'Data-mapping utilities'
 id: mappers-utils
 keywords: [utils, utility, data, decorators, env, environment, formatters, number, date, logger, logging, mappers, mixins, observers, resource, server, serializer, json, styles, css, UUID, unique, window, iframe]
 tags:
@@ -30,37 +30,37 @@ tags:
   - iframe
 ---
 
-This section describes utilities designed to simplify the conversion between different data representations within an application, with a particular focus on server row data transformations. These utilities offer a systematic approach to managing data conversions between Data Transfer Objects (DTOs) and entities, ensuring consistency and maintainability.
+These utilities enable you to convert from one data representation to another within an application, with a particular focus on transforming server row data. They offer a systematic approach to managing data conversion between Data Transfer Objects (DTOs) and entities, ensuring consistency and maintainability.
 
 :::info
 For more detailed information on API and configurations, please refer to the [API documentation](docs/api/index.md).
 :::
 
-## Key Components
+## Key components
 
-- **ServerRowDTO** - Specifies the structure for server row data as exchanged with the backend. The DTO adheres to a convention of using uppercase keys.
-- **ServerRowEntity** - Represents the client-side or application-side structure for server row data, adhering to a convention of using lowercase keys.
-- **ServerRowDTOMapper** - A specialized interface extending `DTOMapper`, designed specifically for mapping between `ServerRowDTO` and `ServerRowEntity`.
+- **ServerRowDTO** Specifies the structure for server row data as exchanged with the back end. The DTO adheres to a convention of using upper-case keys.
+- **ServerRowEntity** Represents the client-side or application-side structure for server row data, adhering to a convention of using lower-case keys.
+- **ServerRowDTOMapper**  A specialized interface extending `DTOMapper`, designed specifically for mapping between `ServerRowDTO` and `ServerRowEntity`.
 
-## DTOMapper Interface
+## DTOMapper interface
 
 The `DTOMapper` interface defines the core methods required for data transformation between DTOs and entities. These methods include:
 
 - **`fromDTO`** - Transforms a DTO instance into its corresponding entity representation.
 - **`toDTO`** - Converts an entity instance back into its DTO format.
 
-By leveraging these utilities, developers can achieve a clear separation of concerns and streamline data processing workflows between backend systems and the application.
+You can use these utilities to achieve a clear separation of concerns and streamline data processing workflows between back-end systems and the client application.
 
-## DefaultServerRowDTOMapper Class
+## DefaultServerRowDTOMapper class
 
 The `DefaultServerRowDTOMapper` class provides a concrete implementation of the `ServerRowDTOMapper` interface, delivering robust methods to handle conversions between `ServerRowDTO` and `ServerRowEntity` seamlessly.
 
-### Conversion Methods
+### Conversion methods
 
-- **`fromDTO(dto: ServerRowDTO): ServerRowEntity`**: Transforms a `ServerRowDTO` instance into a `ServerRowEntity`. This process involves converting keys from uppercase to lowercase while maintaining data integrity.
-- **`toDTO(entity: ServerRowEntity): ServerRowDTO`**: Converts a `ServerRowEntity` back into its `ServerRowDTO` representation, translating keys from lowercase to uppercase.
+- **`fromDTO(dto: ServerRowDTO): ServerRowEntity`**: Transforms a `ServerRowDTO` instance into a `ServerRowEntity`. This process involves converting keys from upper-case to lower-case while maintaining data integrity.
+- **`toDTO(entity: ServerRowEntity): ServerRowDTO`**: Converts a `ServerRowEntity` back into its `ServerRowDTO` representation, translating keys from lower-case to upper-case.
 
-### Usage Example
+### Usage example
 
 Below is an example demonstrating the usage of `DefaultServerRowDTOMapper` in a typical application:
 
@@ -92,10 +92,10 @@ export class MyExampleComponent extends GenesisElement {
 }
 ```
 
-This example illustrates how the `DefaultServerRowDTOMapper` can be utilized to handle seamless conversions, enabling consistent data representation across different application layers.
+This example illustrates how to use the `DefaultServerRowDTOMapper` to handle seamless conversions, enabling consistent data representation across different application layers.
 
 ## Considerations
 
-- Utilize the provided mapper utilities for all server communication involving server row data to ensure consistency in data handling.
+- Use the mapper utilities for all server communication involving server row data to ensure consistency in data handling.
 - Extend the `DTOMapper` interface for other data types as needed, maintaining a uniform approach to data conversion across your application.
-- Leverage dependency injection for accessing mapper instances, enhancing modularity and testability.
+- Use dependency injection for accessing mapper instances, enhancing modularity and testability.

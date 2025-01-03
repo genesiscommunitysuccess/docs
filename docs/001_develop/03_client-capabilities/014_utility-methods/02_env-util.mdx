@@ -21,20 +21,20 @@ tags:
   - localhost
 ---
 
-Provides utilities for managing and accessing environment-specific settings and variables, facilitating the configuration of application behavior based on the current environment. This category includes utilities for identifying the development environment and securely accessing environment variables.
+The environment utilities enable you to manage and access environment-specific settings and variables. This enables you to configure application behaviour based on the current environment. This category includes utilities for identifying the development environment and securely accessing environment variables.
 
 :::info
 For more detailed information on API and configurations, please refer to the [API documentation](docs/api/index.md).
 :::
 
-## Key Features
+## Key features
 
 - **Environment Checking:** Determine whether the application is running in a development environment.
 - **Environment Variables:** Access environment variables in a secure and convenient manner.
 
 ## Examples
 
-### Checking the Environment
+### Checking the environment
 
 Use `isDev` to check if the application is running in a development environment. This can be useful for enabling debugging tools or setting development-specific configurations:
 
@@ -46,7 +46,7 @@ if (isDev()) {
 }
 ```
 
-### Accessing Environment Variables
+### Accessing environment variables
 
 The `variables.ts` file provides a set of default environment variables that can be used throughout the application. These variables can be accessed directly or overridden by setting corresponding environment variables in the runtime environment.
 

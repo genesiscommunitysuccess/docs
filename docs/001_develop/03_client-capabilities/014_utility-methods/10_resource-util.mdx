@@ -15,7 +15,7 @@ tags:
 
 Resource utilities facilitate the classification of resources into two distinct types: local and remote. This distinction is essential for handling resources differently based on their origin. It can be used to enhance the flexibility and robustness of resource management within your application.
 
-## Key Features
+## Key features
 
 - **`ResourceType` Object:** Enumerates the resource types, explicitly defining "local" and "remote" as the only valid options. This approach ensures type safety and clarity when working with resources of varying origins.
 
@@ -40,6 +40,6 @@ loadResource(ResourceType.local, 'path/to/local/resource');
 loadResource(ResourceType.remote, 'url/to/remote/resource');
 ```
 
-## Key Points
+## Key points
 
 - **Explicit Type Checks:** Use the `ResourceType` enum for type checks and logic branching, ensuring that resource handling logic is clear and maintainable.

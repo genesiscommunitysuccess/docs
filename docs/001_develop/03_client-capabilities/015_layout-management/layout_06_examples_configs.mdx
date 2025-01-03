@@ -2,7 +2,7 @@
 title: 'Examples and configuration'
 sidebar_label: 'Examples and configuration'
 id: client-layout-management-examples
-keywords: [ layout, layout management, Drag and drop, Resizable panels, Tabbed , Responsive , Customizable, Splitting, Stacking, Popouts, Nested , State persistence, Flexible, Container, Item, Component, Content item, Stack, Row, Column, Header, Tabs, Lifecycle methods, API, Resize events, Drag , Close events Declerative HTML, Attribute, Property, Template]
+keywords: [ layout, layout management, Drag and drop, Resizable panels, Tabbed , Responsive , Customizable, Splitting, Stacking, Popouts, Nested , State persistence, Flexible, Container, Item, Component, Content item, Stack, Row, Column, Header, Tabs, Lifecycle methods, API, Resize events, Drag , Close events Declarative HTML, Attribute, Property, Template]
 tags:
 - layout
 - layout management
@@ -31,7 +31,7 @@ tags:
 - Resize events
 - Drag
 - Close events
-- Declerative HTML
+- Declarative HTML
 - Attribute
 - Property
 - Template
@@ -49,7 +49,7 @@ You can set the layout to autosave in local storage as the user interacts with i
 - resizing items using the divider
 - dragging items around the layout
 
-When you have enabled autosave, you are still able to use the manual serialising commands ([getLayout](../docs/api/foundation-layout.foundationlayout.getlayout/) and [loadLayout](../docs/api/foundation-layout.foundationlayout.loadlayout/)).
+When you have enabled autosave, you are still able to use the manual serializing commands ([getLayout](../docs/api/foundation-layout.foundationlayout.getlayout/) and [loadLayout](../docs/api/foundation-layout.foundationlayout.loadlayout/)).
 
 ### Reloading the layout
 
@@ -69,7 +69,7 @@ As explained in the previous section, a placeholder item is added if an item is 
 
 In this case, you must invalidate the autosaved layout cache. The cleanest and easiest implementation is to add a hash onto the end of your `auto-save-key`, which will start a new autosave for this table (and reload the default, containing your new layout item).
 
-## Customising header buttons
+## Customizing header buttons
 
 You can add custom buttons on layout items, and then control their behaviour. See the [custom button API](../docs/api/foundation-layout.foundationlayout.custombuttons/) for the full definition.
 Setting this is optional. If you do define it, you must define it as an array, which enables you to add multiple custom buttons.
@@ -81,7 +81,7 @@ Different layout instances can have their own custom buttons, or they can share 
 
 ### Applying the custom button
 
-To ensure that every item gets the button as expected, you need to ensure that you apply the custom button definitions as early as possible. If you are using the html API then you'll probably want to apply the definitions in the template.
+To ensure that every item gets the button as expected, apply the custom button definitions as early as possible. If you are using the html API, then you probably want to apply the definitions in the template.
 
 ```html
 <rapid-layout :customButtons=${() => buttonDefinition}>
@@ -89,14 +89,15 @@ To ensure that every item gets the button as expected, you need to ensure that y
 </rapid-layout>
 ```
 
-If you are only using the javascript API then you should apply the property before the items are added to the layout.
+If you are only using the javascript API, then apply the property before the items are added to the layout.
 ```typescript
 layout.customButtons = buttonDefinition;
 ```
 
 ### Renaming example
 
-See this example of creating a custom button, which enables the user to rename an item.
+This example of creating a custom button enables users to rename an item.
+
 ```typescript
 export const layoutCustomButtons: CustomButton[] = [
   {
@@ -117,7 +118,7 @@ export const layoutCustomButtons: CustomButton[] = [
 You can import `LAYOUT_ICONS`, `CustomButton`, `LayoutReceiveEvents`, and `LayoutReceiveEventsDetail` from the `foundation-layout` package.
 
 :::warning
-You'll probably want to improve this callback function to handle cases where the user doesn't enter a prompt value.
+You probably want to improve this callback function to handle cases where the user doesn't enter a prompt value.
 :::
 
 ## Examples
@@ -334,14 +335,14 @@ You would see both items rendered like this:
 If you had `showIndexFunds = false;` then only the `Stocks Chart` would be rendered.
 
 :::danger
-Directives are for initialising the layout only and should *not* be used with changing `@observable` attributes, which would cause the
-layout to reinitialise incorrectly - this will duplicate the panels. For example, you can use the `when` directive to conditionally render a pane during initialisation, but not to toggle whether to show/hide the pane afterwards.
-See [this example](../client-layout-management-ptifalls/#observables-with-directives).
+Directives are for initializing the layout only and should *not* be used with changing `@observable` attributes, which cause the layout to reinitialize incorrectly - this will duplicate the panels. For example, you can use the `when` directive to conditionally render a pane during initialization, but not to toggle whether to show/hide the pane afterwards.
+
+See [this example](../client-layout-management-pitfalls/#observables-with-directives).
 :::
 
 ### Adding items dynamically
 
-This is an example of using the JavaScript API to add items to the layout at runtime. Before reading this example, you should familiarise yourself with the [API Section](/develop/client-capabilities/layout-management/foundation-layout/#javascript-api).
+This is an example of using the JavaScript API to add items to the layout at runtime. Before reading this example, you should familiarize yourself with the [API Section](/develop/client-capabilities/layout-management/foundation-layout/#javascript-api).
 
 Say you want the user to be able to choose between three different types of item that can be put onto the layout - a profile-management table, a pie chart, and a column chart.
 
@@ -444,9 +445,9 @@ export class ContainedExample extends GenesisElement {
 }
 ```
 
-### Loading serialised layouts
+### Loading serialized layouts
 
-This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example, you should familiarise yourself with the [API Section](/develop/client-capabilities/layout-management/foundation-layout/#javascript-api):
+This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example, you should familiarize yourself with the [API Section](/develop/client-capabilities/layout-management/foundation-layout/#javascript-api):
 
 ```html
 <rapid-layout>
@@ -464,9 +465,9 @@ This is an elaborate example of using the JavaScript API with consideration of t
 We can use `layoutRequiredRegistrations()` on the config returned from `getLayout()` to see the registered names that are required to load the layout.
 
 ```javascript
-const layout = document.querySelector('rapid-layout'); // as FoundatonLayout in TypeScript;
+const layout = document.querySelector('rapid-layout'); // as FoundationLayout in TypeScript;
 const layoutConfig = layout.getLayout();
-console.log(FoundatonLayout.layoutRequiredRegistrations(layoutConfig))
+console.log(FoundationLayout.layoutRequiredRegistrations(layoutConfig))
 ```
 This will log `['trades','users']` because these are the two registered panes. You can then load any layout that only contains either/both of these items.
 
@@ -488,7 +489,7 @@ Consider now where the user refreshes the page to go back to the original state 
 // User has refreshed page
 
 console.log(layout.registeredItems());
-// Ouputs ['trades','users']
+// Outputs ['trades','users']
 
 layout.loadLayout(layoutConfigTwo);
 // Uncaught Error: Trying to load layout with extra components. The component(s) not currently loaded are "test"
@@ -522,9 +523,9 @@ Now all those items will be registered with the layout for potential use when ca
 Alternatively, you could query the current layout and the layout you want to load to see if there are any missing registered items; you can then register the missing ones. Using our previous examples:
 
 ```javascript
-const currentRegistrations = FoundatonLayout.registeredItems();
+const currentRegistrations = FoundationLayout.registeredItems();
 // ['trades','users']
-const requiredRegistrations = FoundatonLayout.layoutRequiredRegistrations(layoutConfigTwo);
+const requiredRegistrations = FoundationLayout.layoutRequiredRegistrations(layoutConfigTwo);
 // ['test','trades','users']
 
 // We can see 'test' is missing and therefore we should register it

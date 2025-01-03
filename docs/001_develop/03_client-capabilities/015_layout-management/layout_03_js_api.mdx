@@ -1,6 +1,6 @@
 ---
-title: 'Layout Dynamimic JS API'
-sidebar_label: 'Layout Dynamic JS API'
+title: 'Layout dynamimic JS API'
+sidebar_label: 'Layout dynamic JS API'
 id: client-layout-management-js
 keywords: [ layout, layout management, Drag and drop, Resizable panels, Tabbed , Responsive , Customizable, Splitting, Stacking, Popouts, Nested , State persistence, Flexible, Container, Item, Component, Content item, Stack, Row, Column, Header, Tabs, Lifecycle methods, API, Resize events, Drag , Close events, Javascript method, function, config, dynamic]
 tags:
@@ -53,38 +53,39 @@ export class MyLayout extends GenesisElement {
 }
 ```
 
-Before discussing the API it's useful to understand a number of concepts.
+Before discussing this API, it's useful to understand a number of concepts.
 
 ## Dynamic registration and adding items
 
-To have a pane displayed on the layout system, it must be registered with the layout system. When using the [declarative API](./layout_02_html_api.mdx), the layout system takes care of this for you, but as you start to add items dynamically and then serialise the layout, you need to consider which panes are registered. See [this contained example](../client-layout-management-examples/#contained-example), which allows the user to add pre-determined items to the layout dynamically.
+To have a pane displayed on the layout system, it must be registered with the layout system. When using the [declarative API](./layout_02_html_api.mdx), the layout system takes care of this for you, but as you start to add items dynamically and then serialize the layout, you need to consider which panes are registered. See this [contained example](../client-layout-management-examples/#contained-example), which allows the user to add pre-determined items to the layout dynamically.
 
 :::tip
-If you are only using the declarative API, and not using any dynamic integrations with JavaScript, then you shouldn't need to set the registration names of any items, as all the same items will be registered when you load a previously saved layout. If you are dynamically adding items as well, it is highly recommended to set the registration names of items manually. This makes it easier to figure out what is and is not registered.
+If you are only using the declarative API, and not using any dynamic integrations with JavaScript, then you do not need to set the registration names of any items, as all the same items will be registered when you load a previously saved layout. If you are dynamically adding items as well, it is highly recommended that you set the registration names of items manually. This makes it easier to figure out what is and is not registered.
+
 * When using the declarative API, use the `registration` attribute on the `<foundation-layout-item>` component.
 * When using the JavaScript API, set the `registration` optional parameter on the registered element [config](../docs/api/foundation-layout.foundationlayout.registeritem/#parameters).
 :::
 
 ## Saving and loading layout
 
-The JavaScript API can be used to save and load layout states manually. This only describes the state of the dynamic layout itself. It is the responsibility of each component within the layout to serialise its own state, if required. To enable autosaving the layout [see here](../client-layout-management-examples/#autosaving-layout).
+You can use the JavaScript API to save and load layout states manually. This only describes the state of the dynamic layout itself. It is the responsibility of each component within the layout to serialize its own state, if required. To enable autosaving the layout [see here](../client-layout-management-examples/#autosaving-layout).
 
 ## Methods
 
-For more info with these methods see the method section of the API docs [here](../docs/api/foundation-layout.foundationlayout/#methods).
+For more information on the methods in the table below, see the [Methods section of the API docs](../docs/api/foundation-layout.foundationlayout/#methods).
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
 |  addItem(config, placement) |  | Dynamically add a new item to the layout. The user can move the new plane to whenever they want once it has been added. |
 |  getLayout() |  | Gets a minified string containing the config describing the current layout of the layout object to later restore in function |
-|  layoutRequiredRegistrations(layout) | <code>static</code> | Gets all of the required element registry function names for a set of config |
+|  layoutRequiredRegistrations(layout) | <code>static</code> | Gets all the required element registry function names for a set of config;  *see the tip below*|
 |  loadLayout(layout, handleMissingItem, disableCache) |  | Restores a layout described in the config from getLayout() |
-|  registeredItems() (1) |  | Gets all of the currently registered names |
+|  registeredItems() |  | Gets all the currently registered names |
 |  registerItem(registration, elements) |  | Register a collection of <code>Element</code> and associate them with an <code>ID</code> with the layout system for later use. |
 |  removeItems(registration, force) |  | Removes all instances of a specified registered item from the layout. |
-|  tryActivatePopoutMode() |  | **_(BETA)_** If in a popout window from the dynamic layout, this function will run the flow to put the component in popout mode. This function is automatically called if using the declarative HTML API, but if only using the JavaScript API then you will need to call this function manually. |
+|  tryActivatePopoutMode() |  | **_(BETA)_** If in a popout window from the dynamic layout, this function will run the flow to put the component in popout mode. This function is automatically called if using the declarative HTML API; if you are only using the JavaScript API, then you must call this function manually. |
 |  tryLoadLayoutFromLocalStorage() |  | Try to load a layout from local storage, or return false. Only required if manually calling FoundationLayout.registerItem() |
 
 :::tip
-(1) Use this function over .layoutRequiredRegistrations(layout: SerialisedLayout) to get the current registrations, because that will miss any items that are currently registered with the layout system, but which are not shown on the layout.
+To get all the currently registered names, use `registeredItems()`. Do *not* use `.layoutRequiredRegistrations(layout: SerialisedLayout)` for this purpose, because it does not pick up items that are currently registered with the layout system, but which are not shown on the layout.
 :::

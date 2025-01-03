@@ -10,21 +10,23 @@ tags:
 sidebar_position: 3
 ---
 
-# Overriding Default Styles
 
-This section will focus on how to override the default styles of the Genesis `RapidButton` component in your custom `MyButton` component.
-By leveraging CSS custom properties, we can adjust colors, spacing, typography, and more to align your component with your design system.
+This section focuses on how to override the default styles of the Genesis `RapidButton` component in your custom `MyButton` component.
+Using CSS custom properties, you can adjust colours, spacing, typography, and more to align your component with your design system.
 
 :::important
 
-The styles in this page including `baseStyles` and apperance styles are specific to buttons, in this case `RapidButton`.
+The styles in this page including `baseStyles` and appearance styles, are specific to buttons - in this case, `RapidButton`.
 
 :::
 
-`RapidButton` is made up of 'base styles' (These provide structural and default functional styles for all `RapidButton` instances.)
-and 'appearance styles' (These are variations layered on top of the base styles to create visually distinct versions of the component, such as primary, danger, neutral, etc.).
-Here we focus our attention on how to override the appearance styles in our custom `MyButton` component - this is what you'll likely be doing most of the time.
-We can achieve this by adding or modifying CSS custom properties. In Genesis, design tokens are implemented as custom properties, so you can customize them directly.
+`RapidButton` is made up of:
+
+- 'base styles' provide structural and default functional styles for all `RapidButton` instances.
+- 'appearance styles' are variations layered on top of the base styles to create visually distinct versions of the component, such as primary, danger, neutral, etc.
+
+Here we focus our attention on how to override the appearance styles in our custom `MyButton` component - which is what you'll probably be doing most of the time.
+You can achieve this by adding or modifying CSS custom properties. In Genesis, design tokens are implemented as custom properties, so you can customize them directly.
 
 Before we move on let's clarify the difference between custom properties and design tokens:
 
@@ -39,15 +41,15 @@ Before we move on let's clarify the difference between custom properties and des
 :::tip
 
 In modern web design systems, including Genesis, design tokens are often implemented as CSS custom properties (CSS variables).
-This implementation allows the design system to leverage the flexibility of CSS variables for both consistency and dynamic runtime theming.
+This implementation allows the design system to use the flexibility of CSS variables for both consistency and dynamic runtime theming.
 
 :::
 
-#### Overriding Base Styles
+#### Overriding base styles
 
-Let's override structural properties defined in the `baseStyles` by adding or modifying CSS custom properties.
+You can override the structural properties defined in the `baseStyles` by adding or modifying the CSS custom properties.
 
-##### Custom Base Styles
+##### Custom base styles
 
 ```typescript
 import { css } from '@genesislcap/web-core';
@@ -71,7 +73,7 @@ export const myButtonStyles = css`
 `;
 ```
 
-##### Key Notes:
+##### Key notes
 
 > - Custom Properties: `font-weight: 700`: Directly defines a value.
 > - Design Tokens:
@@ -90,13 +92,11 @@ export const myButtonStyles = css`
 - Semantic font size (--type-ramp-base-font-size).
 - Adjusted height and padding based on design tokens.
 
-#### Customizing Appearance Styles in buttons
+#### Customizing appearance styles in buttons
 
-Appearance styles define visual variations like primary, danger, or link. They often rely on design tokens for consistent theming across appearances.
+Appearance styles define visual variations, such as primary, danger, or link. They often rely on design tokens for consistent theming across appearances.
 
-
-
-##### Reusing Existing Appearances
+##### Reusing existing appearances
 
 If the default appearance styles meet your needs, simply use the appearance attribute without any redefinition.
 
@@ -113,9 +113,9 @@ The `neutral` and `primary` appearances will behave as defined in `baseStyles`:
 >   > - Border: Neutral border color.
 >   > - Text: Neutral foreground.
 
-##### Customizing an Existing Appearance
+##### Customizing the existing appearance
 
-If you want to tweak or redefine an existing appearance (e.g., `neutral`), you can override the styles in your custom `MyButton`.
+If you want to tweak or redefine the existing appearance (e.g., `neutral`), you can override the styles in your custom `MyButton`.
 
 ```typescript
 import { css } from '@genesislcap/web-core';
@@ -153,7 +153,7 @@ export const myButtonStyles = (
 ```
 
 :::tip
-The above snippet is using this helper function
+The above snippet uses this helper function:
 
 ```typescript
 import { ElementStyles, PropertyStyleSheetBehavior } from '@genesis/web-core';
@@ -174,7 +174,7 @@ export function appearanceBehavior(value: string, styles: ElementStyles) {
 
 :::
 
-##### Key Notes:
+##### Key notes
 
 > - `rapidButtonStyles`: Retain all existing base styles and behaviors for consistency.
 > - `withBehaviors`: Add or extend behaviors without replacing existing ones.
@@ -219,15 +219,15 @@ export const myButtonStyles = (
 <my-button appearance="success">Success Button</my-button>
 ```
 
-### Key Points for Overriding Default Styles:
+### Key points for overriding default styles:
 
-> - **Base Styles**:
+> - **Base styles**
 
 > > - Use these for structural adjustments (e.g., typography, padding).
 > > - Directly modify or override with CSS custom properties or design tokens.
 
-> - **Appearance Styles**:
+> - **Appearance styles**
 
     >>- Reusing: Default appearances (e.g., neutral, primary) are already defined in `baseStyles`. No need to redefine unless necessary.
     >>- Customizing: Override existing appearances for unique designs.
-    >>- Adding: Define new appearances for entirely new behaviors.
+    >>- Adding: Define new appearances for entirely new behaviours.

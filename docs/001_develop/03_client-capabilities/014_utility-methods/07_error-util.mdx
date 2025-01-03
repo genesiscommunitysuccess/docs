@@ -1,6 +1,6 @@
 ---
-title: 'Error Utilities'
-sidebar_label: 'Error Utilities'
+title: 'Error utilities'
+sidebar_label: 'Error utilities'
 id: error-utils
 keywords: [utils, utility, data, decorators, env, environment, formatters, number, date, logger, logging, mappers, mixins, observers, resource, server, serializer, json, styles, css, UUID, unique, window, iframe]
 tags:
@@ -30,18 +30,16 @@ tags:
   - iframe
 ---
 
-# Error Utilities
+Error utilities provide a sophisticated system for managing errors within your application. Using TypeScript interfaces and types, they provide a structured approach to recording, accessing, and logging errors.
 
-Provides a sophisticated system for managing errors within your application. By leveraging TypeScript interfaces and types, it provides a structured approach to recording, accessing, and logging errors.
-
-## Key Features
+## Key features
 
 - **`ErrorMap<TErrorDetailMap>` Interface:** Outlines the structure for an error map, including methods for setting, getting, and managing errors, alongside properties for accessing the last error and a consolidated error message string.
 - **`DefaultErrorMap<TErrorDetailMap>` Class:** Implements the `ErrorMap` interface, providing concrete logic for error management, including observable properties for reactive UI updates.
 
 ## Examples
 
-### Creating an Error Map
+### Creating an error map
 
 Use the `createErrorMap` factory function to instantiate an `ErrorMap` with a custom logger function. This logger is invoked whenever an error is set, allowing for flexible error reporting.
 
@@ -52,7 +50,7 @@ const logger = (key, error) => console.error(`Error [${key}]:`, error.message);
 const errorMap = createErrorMap(logger);
 ```
 
-### Recording an Error
+### Recording an error
 
 Add errors to the map using the `set` method. This records the error under the specified key and updates the `lastError` observable property.
 
@@ -60,7 +58,7 @@ Add errors to the map using the `set` method. This records the error under the s
 errorMap.set('networkError', new Error('Failed to fetch data'));
 ```
 
-### Accessing Errors
+### Accessing errors
 
 Retrieve specific errors by key, check for their presence, or get all errors as an iterable collection using `get`, `has`, and `values` methods, respectively.
 
@@ -75,7 +73,7 @@ for (const error of errorMap.values()) {
 }
 ```
 
-### Managing Errors
+### Managing errors
 
 Errors can be individually removed or the entire map can be cleared. The `lastError` is also managed accordingly.
 
@@ -84,7 +82,7 @@ errorMap.delete('networkError'); // Remove a specific error
 errorMap.clear(); // Clear all errors
 ```
 
-### Error Messages
+### Error messages
 
 The `messages` property provides a concatenated string of all error messages, prefaced by the total error count. This is useful for displaying error summaries to the user.
 
@@ -94,6 +92,6 @@ console.log(errorMap.messages); // Outputs formatted error messages
 
 ## Considerations
 
-- Utilize the `ErrorMap` to centralize error handling and reporting in your application.
-- Leverage the `lastError` and `messages` for user-facing error feedback, ensuring a comprehensive overview of current issues.
+- Use the `ErrorMap` to centralize error handling and reporting in your application.
+- Use the `lastError` and `messages` for user-facing error feedback, ensuring a comprehensive overview of current issues.
 - Employ the provided logger function to integrate with existing logging frameworks or error tracking services, enhancing observability.
