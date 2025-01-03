@@ -154,19 +154,17 @@ In the Entities main screen, click on the `Detect From Excel` button. This enabl
 
 ![Detect Excel button](/img/genesis-create/detect-excel-button.png)
 
-Genesis Create attempts to create a data model from the workbook that you have selected. If it is successful, it displays information about the data model it has created. For example, here it has created three entities and one view.
+:::info
+If you already have an entity model in Genesis Create, this button is not displayed.
+
+To clear the current entity model and start a new project, click on the three dots at the top right of the window and select `New`. You are warned that this clears any current changes. If necessary, cancel, then click on the three dots again and select `Save`. This downloads the project as a JSON file.
+:::
+
+When you select this button, Genesis Create attempts to create a data model from the workbook that you have selected. If it is successful, it displays information about the data model it has created. For example, here it has created three entities and one view.
 
 ![Schema detected](/img/genesis-create/detected-schema.png)
 
-Note that the display includes advice on how to check that you are happy with the data model produced.
-
 Once you have closed the dialog, you can see the details of the entities and views that have been produced, and you can work your way through the steps in Genesis Create to complete the project.
-
-:::tip
-*You must start with an empty project*. If you have a another project loaded:
-
-Click on the three dots at the top right of the window and select `New`. You are warned that this clears any current changes. If necessary, cancel, then click on the three dots again and select `Save`. This downloads the project as a JSON file.
-:::
 
 ##### Adjusting an Excel workbook
 The real world is messy, and Genesis Create will not be able to extract a data model from every workbook that you select. However, if you know the general rules for how the extraction process works, you can adjust your workbook and try again. 
