@@ -527,16 +527,16 @@ You can use the `triggerRemote` method to call an event that is not defined in t
 ```
 
 - The definition takes two `<Type>` (aka Generic) parameters instead of one:
-  - the context object, which will be passed to the `onCommit` block
+  - the context object, which will be passed to the [`onCommit`](#oncommit) block
   - the event metadata (which is the same as for a regular [`eventHandler`](#eventhandler))
 - The [`onValidate`](#onvalidate) block must return a [`validationAck`](#validationack) instead of a regular [`ack`](#ack).
 - The [`onCommit`](#oncommit) block has two lambda parameters: 
   - the standard event 
-  - a reference to the context object returned in the `validationAck`
+  - a reference to the context object returned in the [`validationAck`](#validationack)
 
 #### `validationAck`
 
-For a `contextEventHandler`, you must specify a `validationAck` at the end the `onValidate` block to signify that the event was successful. Do not use the standard `ack` used in standard `eventHandler`blocks. 
+For a `contextEventHandler`, you must specify a `validationAck` at the end the `onValidate` block to signify that the event was successful. Do not use the standard `ack` used in standard `eventHandler` blocks. 
 
 The `validationAck` must return an object matching the type of the first `<Type>` parameter in the `contextEventHandler` definition.
 
