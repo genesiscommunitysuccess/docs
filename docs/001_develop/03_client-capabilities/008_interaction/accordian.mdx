@@ -20,14 +20,16 @@ import AccordionDemo from '/examples/ui/client-capabilities/interaction/accordio
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Accordions allow users to expand or collapse sections of content on a page.
+Accordions enable users to expand or collapse sections of content on a page.
 
 Use cases:
-* Presenting multiple sections of content
-* Allow the users to show or hide different sections of related information
+* presenting multiple sections of content
+* enabling users to show or hide specific sections of related information
 
 
 ## Example
+You can see an accordion in action in the example below. This has three panels (accordion items) that can be expanded or collapsed by clicking on the `+` or `-` icons.
+
 <AccordionDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -169,7 +171,7 @@ Use cases:
 
 ### Properties
 
-This component doesn't have any properties which are not also controlled via attributes.
+The properties of this component are all controlled via attributes.
 
 ### Slots
 
@@ -263,10 +265,10 @@ This component doesn't have any properties which are not also controlled via att
 
 | Slot | Description |
 | --- | --- |
-| Default | The default slot for accordion item content |
-| start | Content which can be provided between the heading and the icon |
-| end | Content which can be provided between the start slot and icon |
-| heading | Content which serves as the accordion item heading and text of the expand button |
+| Default | The default slot for placing accordion item content |
+| start | Content to be placed between the heading and the icon |
+| end | Content to be placed between the start slot and icon |
+| heading | Content that serves as the accordion item heading and the text of the expand button |
 | expanded-icon | The expanded icon |
 | collapsed-icon | The collapsed icon |
 
@@ -275,7 +277,7 @@ This component doesn't have any properties which are not also controlled via att
 | Part | Description |
 | --- | --- |
 | heading | Wraps the button |
-| button | The button which serves to invoke the item |
+| button | The button that serves to invoke the item |
 | heading-content | Wraps the slot for the heading content within the button |
 | icon | The icon container |
 | expanded-icon | The expanded icon slot |
