@@ -21,7 +21,7 @@ If you have entered some trades within the default application, you may have not
 
 Let’s add some pro-code to get the position calculation to include the direction of the trade. 
 
-1. Go to the file **ALM\server\ALM-app\src\main\genesis\scripts\ALM-consolidator.kts**.  
+1. Go to the file `ALM\server\ALM-app\src\main\genesis\scripts\ALM-consolidator.kts`.  
 
 The original consolidator script should look this (but it probably includes additional comments):
 
@@ -72,7 +72,7 @@ So, we shall now use two consolidator blocks to implement our change.
 
 - We can add further consolidators to also take into account `LOAN_TRADE` and `CD_TRADE` movements.
 
-2. Copy the entire code block below and replace the entire contents of the file **ALM-consolidator.kts**.
+2. Copy the entire code block below and replace the entire contents of the file `ALM-consolidator.kts`.
 
 ```kotlin
 import global.genesis.gen.dao.enums.ALM.fx_trade.Side
@@ -170,7 +170,7 @@ Genesis automatically audits data if you select `Generate Audit Trail` during Cr
 
 However, there is often a requirement for a version to appear directly on the trade - this can be done simply with pro-code.
 
-1. Go to the file **ALM/server/ALM-app/src/main/genesis/cfg/ALM-tables-dictionary.kts**. 
+1. Go to the file `ALM/server/ALM-app/src/main/genesis/cfg/ALM-tables-dictionary.kts`. 
 
 2. Ensure the `TRADE_VERSION` field is available on your `FX_TRADE` table, and add a default value to it. Set the default value to 1 so every new trade entering the system starts as version 1.
 
@@ -179,7 +179,7 @@ field("TRADE_VERSION", LONG).notNull().default(1)
 ```
 Next, let’s add the logic to the events. 
 
-1. Go to the file **ALM/server/ALM-app/src/main/genesis/scripts/ALM-eventhandler.kts**.
+1. Go to the file `ALM/server/ALM-app/src/main/genesis/scripts/ALM-eventhandler.kts`.
 
 2. Go to the `FX_TRADE_MODIFY` section and add the following code to increment the version on modification:
 

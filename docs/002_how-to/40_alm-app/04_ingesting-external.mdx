@@ -24,16 +24,16 @@ In this page, we’ll go through some different methods to ingest data in to the
 ## Loading example data
 First, let's look at loading some example static data into our application.
 
-There is a simple command - **Genesis: SendIt** - that loads data to the database.
+There is a simple command - `Genesis: SendIt` - that loads data to the database.
 
 To start with, we shall load three static data files: `BOOK`, `CLIENT`, and `ENTITY`.
 
-You can find these three files in the **SampleData** folder of the [ALM repo](https://github.com/genesiscommunitysuccess/alm-app/tree/master/server/ALM-app/src/main/genesis/data/SampleData).
+You can find these three files in the `SampleData` folder of the [ALM repo](https://github.com/genesiscommunitysuccess/alm-app/tree/master/server/ALM-app/src/main/genesis/data/SampleData).
 
-Once you have copied the content, press **SHIFT** and select **BOOK.csv**, **CLIENT.csv** and **ENTITY.csv**, then right-click and select **Genesis: SendIt** to add the data.
+Once you have copied the content, press `SHIFT` and select `BOOK.csv`, `CLIENT.csv` and `ENTITY.csv`, then right-click and select `Genesis: SendIt` to add the data.
 
 :::tip
-By default, **SendIt** simply adds data. Note that:
+By default, `SendIt` simply adds data. Note that:
 
 - it will not clear any existing records
 - it will not overwrite any record that is already in the database 
@@ -46,21 +46,21 @@ However, there is a lot more you can do with this command. See the [SendIt speci
 The Genesis Create set-up includes a data pipeline. You can now try to use this to input some data.
 
 ### What the pipeline definitions
-The code for the pipeline is in **ALM/server/ALM-app/src/main/genesis/scripts/ALM-pipelines.kts**.
+The code for the pipeline is in `ALM/server/ALM-app/src/main/genesis/scripts/ALM-pipelines.kts`.
 
-The pipeline has been set up so that when the application is running, a folder called **loadData** is created in **ALM/server/ALM-app/src/main/genesis/data**.
+The pipeline has been set up so that when the application is running, a folder called `loadData` is created in `ALM/server/ALM-app/src/main/genesis/data`.
 
-1. The pipeline listens to this folder for any CSV file with the prefix **CDs**. 
+1. The pipeline listens to this folder for any CSV file with the prefix `CDs`. 
 
 2. When it sees a file, it processes it and adds any records to the `CD_TRADE` table.
 
-3. Once processed, the files move into a sub-directory called **.done**, with a timestamp added to the filename.
+3. Once processed, the files move into a sub-directory called `.done`, with a timestamp added to the filename.
 
 ### Try it out
 
-1. Download the file **CDs.csv** from the **SampleData** folder of the [ALM repo](https://github.com/genesiscommunitysuccess/alm-app/tree/master/server/ALM-app/src/main/genesis/data/SampleData).
+1. Download the file `CDs.csv` from the `SampleData/data_pipeline_example_file` folder of the [ALM repo](https://github.com/genesiscommunitysuccess/alm-app/tree/master/server/ALM-app/src/main/genesis/data/SampleData/data_pipeline_example_file).
 
-2. Paste this file into the **loadData** folder in your app. 
+2. Paste this file into the `loadData` folder in your app. 
 
 That's it! The data pipeline will then process the file automatically.
 
@@ -71,7 +71,7 @@ For this exercise, we have set up a rest server that provides Loan Trade data.
 ### Define the receiving message
 To call the rest server, we first need to define the receiving message.
 
-1. Create a new file called **Messages.kt** at **ALM\server\ALM-app\src\main\kotlin**.
+1. Create a new file called `Messages.kt` at `ALM\server\ALM-app\src\main\kotlin`.
 
 2. Paste the following into the file:
 
@@ -182,7 +182,7 @@ data object Message
 
 Now we can add an event to trigger a request to the REST API.
 
-1. Open the file **ALM\server\ALM-app\src\main\genesis\scripts\ALM-eventhandler.kts** and add the following imports to the very top of the file:
+1. Open the file `ALM\server\ALM-app\src\main\genesis\scripts\ALM-eventhandler.kts` and add the following imports to the very top of the file:
 
 ```kotlin
 import global.genesis.gen.dao.enums.ALM.fx_trade.TradeStatus
@@ -294,7 +294,7 @@ Now that we've added these events, we shall set up some ways to call this.
 
 We can do this by adding and defining an EVALUATOR process.
 
-1. Open **ALM\server\ALM-app\src\main\genesis\cfg\ALM-processes.xml** and insert the following code:
+1. Open `ALM\server\ALM-app\src\main\genesis\cfg\ALM-processes.xml` and insert the following code:
 
 ```kotlin
   <process name="ALM_EVALUATOR">
@@ -309,7 +309,7 @@ We can do this by adding and defining an EVALUATOR process.
   </process>
 ```
 
-2. Open **ALM\server\ALM-app\src\main\genesis\cfg\ALM-service-definitions.xml**  and add:
+2. Open `ALM\server\ALM-app\src\main\genesis\cfg\ALM-service-definitions.xml`  and add:
 
 ```kotlin
   <service host="localhost" name="ALM_EVALUATOR" port="9703"/>
@@ -318,7 +318,7 @@ This gives us a new service that the Cron Scheduler can call to trigger the rest
 
 To define the Cron Scheduler:
 
-1. In the folder **ALM\server\ALM-app\src\main\genesis\data**, create a new csv file called **CRON_RULE.csv**. 
+1. In the folder `ALM\server\ALM-app\src\main\genesis\data`, create a new csv file called `CRON_RULE.csv`. 
 
 2. Insert the following line:
 
@@ -328,7 +328,7 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 ```
 By default, this example will run every 10 minutes. But you are welcome to set the cron schedule as needed. 
 
-3. Right click on the file in the Project window and select **Genesis: SendIt** to insert this record into the database.
+3. Right click on the file in the Project window and select `Genesis: SendIt` to insert this record into the database.
 
 ## Kafka integration
 
@@ -339,20 +339,20 @@ For this exercise, we have set up a Kafka producer which we can connect to for s
 ### Add implementations and properties
 To start, we'll need to add some implementations to our application.
 
-1. Open the file **server/ALM-app/build.gradle.kts**, then add the following implementations:
+1. Open the file `server/ALM-app/build.gradle.kts`, then add the following implementations:
 
 ```kotlin
     implementation("global.genesis:kafka-genesis:${properties["platformIntegrationVersion"]}")
     implementation("software.amazon.msk:aws-msk-iam-auth:2.2.0")
 ```
 
-2. Then in the file **server/gradle.properties**,  add the following property:
+2. Then in the file `server/gradle.properties`,  add the following property:
 
 ```kotlin
 platformIntegrationVersion=8.4.0
 ```
 
-3. Also add this to the classpath of the ALM_PIPELINE process. Open the file **server/ALM-app/src/main/genesis/cfg/ALM-processes.xml**, then add the following to the ALM_PIPLINE process:
+3. Also add this to the classpath of the ALM_PIPELINE process. Open the file `server/ALM-app/src/main/genesis/cfg/ALM-processes.xml`, then add the following to the ALM_PIPLINE process:
 
 ```xml
     <classpath>ALM-app*,aws-msk-iam-auth*</classpath>
@@ -361,7 +361,7 @@ platformIntegrationVersion=8.4.0
 ### Set up source properties
 We need to set up some properties for our Kafka source. 
 
-1. Open the file **server/ALM-app/src/main/genesis/cfg/ALM-system-definition.kts**.
+1. Open the file `server/ALM-app/src/main/genesis/cfg/ALM-system-definition.kts`.
 
 2. At the top of the file, add the following import:
 
@@ -383,7 +383,7 @@ import java.net.InetAddress;
 
 ### Creating a new pipeline for Kafka
 
-1. Open the file **server/ALM-app/src/main/genesis/scripts/ALM-pipelines.kts**. 
+1. Open the file `server/ALM-app/src/main/genesis/scripts/ALM-pipelines.kts`. 
 
 2. We need to add some imports, and initialise some methods. Add the code below to the beginning of the file:
 

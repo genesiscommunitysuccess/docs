@@ -74,6 +74,14 @@ const config = {
           },
         ]
       : null,
+    [
+      'docusaurus-pushfeedback',{
+          project: '2d0tujmfbf',
+          buttonPosition: 'center-right',
+          modalPosition: 'sidebar-right',
+          buttonStyle: 'dark',
+      }
+    ]
   ],
   presets: [
     [

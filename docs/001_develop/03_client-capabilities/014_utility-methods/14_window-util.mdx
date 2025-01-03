@@ -14,14 +14,14 @@ tags:
   - symphony
 ---
 
-Provides a set of utilities designed to facilitate interactions with the browser window and to ascertain the application's runtime environment, enhancing the adaptability and user experience of web applications.
+These utilities enable you to control interaction with the browser window and to ascertain the application's runtime environment, enhancing the adaptability and user experience of web applications.
 
-## Key Features
+## Key features
 
 - **Environment Checks:** Functions to determine if the application is running inside an iframe or the Symphony desktop app, supporting conditional logic based on the execution context.
 - **Pop-up Window Management:** A utility for opening new browser windows with specific dimensions, useful for creating dialogues, authentication flows, or additional information displays.
 
-## Use Cases
+## Use cases
 
 This module is ideal for:
 - Prototyping applications with lightweight data requirements.
@@ -30,7 +30,7 @@ This module is ideal for:
 
 ## Examples
 
-#### Checking for an iFrame Environment
+#### Checking for an iFrame environment
 
 ```typescript
 import { inIFrame } from '@genesislcap/foundation-utils';
@@ -40,7 +40,7 @@ if (inIFrame()) {
 }
 ```
 
-#### Determining the Symphony Desktop App Environment
+#### Determining the Symphony Desktop app environment
 
 ```typescript
 import { inSymphonyDesktop } from '@genesislcap/foundation-utils';
@@ -50,7 +50,7 @@ if (inSymphonyDesktop()) {
 }
 ```
 
-#### Opening a Pop-up Window
+#### Opening a pop-up window
 
 ```typescript
 import { openPopup, POPUP_DEFAULT_WIDTH, POPUP_DEFAULT_HEIGHT } from '@genesislcap/foundation-utils';
@@ -67,8 +67,8 @@ if (newWindow) {
 }
 ```
 
-## Key Points
+## Key points
 
 - **Secure Contexts:** Ensure that functionalities requiring secure contexts, like pop-up management, adhere to browser security policies and permissions.
-- **User Experience Considerations:** Use pop-up windows judiciously to avoid disrupting the user experience or running afoul of browser pop-up blockers.
-- **Environment-Sensitive Development:** Leverage environment check utilities to tailor the application behavior for specific contexts, ensuring a seamless user experience across different platforms.
+- **User Experience Considerations:** Use pop-up windows judiciously to avoid disrupting the user experience or running foul of browser pop-up blockers.
+- **Environment-Sensitive Development:** Use environment check utilities to tailor the application behaviour for specific contexts, ensuring a seamless user experience across different platforms.

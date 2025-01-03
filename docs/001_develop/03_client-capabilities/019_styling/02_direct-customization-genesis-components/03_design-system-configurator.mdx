@@ -11,20 +11,27 @@ tags:
 sidebar_position: 3
 ---
 
-The Design System Configurator can be used to customise and tailor the design system according to your specific needs. This
-configures many of the [CSS variables](../styling-direct-css-vars/) that the `rapid` design system uses while showing
-some example components live update to your changes.
+The Design System Configurator is a tool that enables you to configure many of the [CSS variables](../styling-direct-css-vars/) that the `rapid` design system uses. You can adjust settings by moving sliders and changing values, and see the effect of the changes immediately on screen.
 
+To run the Design System Configurator:
 
-To run it you can navigate to the `/client` directory in your app created via Genesis Create or `genx` and run
+If you have created your app via Genesis Create or `genx`:
+
+1. Go to the `/client` directory.
+
+2. Run:
+
 ```bash
 npm run dsconfig
 ```
-or run that npm job via your IDE.
+If you are using IntelliJ or another IDE, simply run that npm job.
 
-On the left-hand side, is the [Editor](#editor), where you can make all the modifications you want. On the right side, you can see the [Preview](#preview) with the results of those changes.
+## Working with the configurator
 
-Try changing the configurations and observe the reflected changes on the right.
+On the left-hand side, is the [Editor](#editor). On the right side, you can see the [Preview](#preview) with the results of those changes.
+
+When you make changes in the Editor panel, you can see the effect immediately in the Preview. It's as simple as that.
+
 
 <div class="demo-view">
   <img
@@ -40,14 +47,18 @@ Try changing the configurations and observe the reflected changes on the right.
   </div>
 </div>
 
+&nbsp;
+
+Click on the button above to start the configurator now. This includes more example design systems. You can switch between systems, make adjustments and save the resulting design tokens in a JSON file.
+
 :::tip
-When using the DSC on your application it configures the `rapid` design system, which is the default. It can additionally be used to configure design
-systems you define yourself too, as long as they use the same tokens. The hosted DSC you can access via clicking the button above has more example design systems too.
+When using the DSC on your application, it configures the `rapid` design system, which is the default. You can also use this to configure yor own design
+system, as long as it uses the same tokens. 
 :::
 
 ## Editor
 
-The **Preserve selected options...** checkbox in the editor is ticked by default.
+The `Preserve selected options...` checkbox in the editor is ticked by default.
 
 <img
   id="shadowed-img"
@@ -55,21 +66,23 @@ The **Preserve selected options...** checkbox in the editor is ticked by default
   alt="Image capture of checkbox"
 />
 
-This means that when you switch between design systems, all of your selections are retained.
-For instance, if you change the **Accent Color** while on the **Rapid** design system, and then switch to **Zero**, you will see the changes you made there as well.
+This setting means that any adjustments you make are retained if you switch between design systems. For instance, if you change the `Accent Color` while on the `Rapid` design system, and then you switch to `Zero`, you will see the changes you made there as well.
 
-Alternatively, if it's unticked, switching between design systems will not retain the configurations.
-Instead, they will be reset to design system defaults.
+If you untick this setting, your adjustments are not changed when you switch between design systems. When you switch, the adjustments are reset to the default.
+
 
 :::note
-Note that in this documentation, the DSC (Design System Configurator), is in _preview_ mode rather than _application_ mode. There are minor but significant differences between them.
+In this documentation, the DSC (Design System Configurator), is in _preview_ mode rather than _application_ mode. There are minor but significant differences between them.
 :::
 
 :::important
-The **Design System** is an important configuration. Depending on which one you choose, you will get a different look. While in _preview_ mode, you will see **Zero** and **Foundation UI** in the dropdown list of **Design System**. But in _application_ mode, you will see one more design system.
+The `Design System` is an important configuration. The Design System you choose control the look of the whole application. If you choose a different system, you will get a different look. 
 :::
 
-For example, if you have launched DSC from an application called **client-app**, you will also see **Client App** in the dropdown list.
+### Preview mode and application mode
+While in _preview_ mode, you will see `Zero` and `Foundation UI` in the dropdown list of `Design System`. But in _application_ mode, you will see one more design system.
+
+For example, if you have launched DSC from an application called `client-app`, you will also see `Client App` in the dropdown list.
 
 |                                        |                                       |
 | :------------------------------------: | :-----------------------------------: |
@@ -83,10 +96,10 @@ In the editor, after you have configured the design system, there are two more t
 
 ### Saving tokens
 
-Once you're happy with all the changes, you can click the **Save** button. At this point, a modal is prompted that shows you the configured design tokens in a JSON format.
+Once you're happy with all the changes, click on the `Save` button. At this point, a modal is displayed showing the configured design tokens in a JSON format.
 
 :::note
-Because this is only a preview, only the **Close** button is shown on the modal. When the **DSC** app is launched, you will see another **Save** button parallel to the **Close** one. Clicking the **Save** button, saves all the changes; this is reflected in the application you're currently running the Design System Configurator from.
+Because this is only a preview, only the `Close` button is shown on the modal. When the DSC app is launched, you will see another `Save` button parallel to the `Close` one. Click on the `Save` button to save all the changes; this is reflected in the application where you're running the Design System Configurator.
 :::
 
 See the images below.
@@ -98,15 +111,15 @@ See the images below.
 
 ### Resetting tokens
 
-Alternatively, if you no longer need the modifications you have made, click the **Reset**, which reverts the values back to their default state.
+Alternatively, if you no longer need the modifications you have made, click the `Reset` button, which resets the values back to their default state.
 
 ## Preview
 
-In the preview, you can see four tabs displaying the information suggested by their titles.
+The preview shows four tabs displaying the information suggested by their titles.
 
 ### Components
 
-The contents of the **Components** tab reflect the components that are affected by the configurations of the design tokens.
+The contents of the `Components` tab reflect the components that are affected by the configurations of the design tokens.
 
 :::note
 The components we see here are only a small collection used for the purpose of displaying an example. Setting the styles using the configuration tool will set the styles of all of the primitive components in the [Interaction](../../../interaction/), [Forms](../../../forms/), and [Presentation](../../../presentation/) sections.
@@ -114,12 +127,12 @@ The components we see here are only a small collection used for the purpose of d
 
 ### Typography
 
-The **Typography** tab displays the list of typography tokens avilable for you to use. Click on the tab in the preview and observe the changes to the **Body Font**, **Base Font Size** and **Base Line Height** as you configure these tokens on the left-hand side.
+The `Typography` tab displays the list of typography tokens you to adjust. Click on the tab in the preview and observe the changes to the `Body Font`, `Base Font Size` and `Base Line Height` as you configure these tokens on the left-hand side.
 
 ### Colors
 
-The **Colors** tab, as you may suspect, shows the design tokens available for setting colour. Click on the **Colors** tab and observe the reflected changes as you configure the **Accent color** and **Neutral color** design tokens.
+The `Colors` tab, as you may suspect, shows the design tokens available for setting colour. Click on the `Colors` tab to view your changes as you configure the `Accent color` and `Neutral color` design tokens.
 
 ### Form
 
-The **Form** tab displays a `Smart Form`. This is another component available for us to use. It utilizes a collection of other components like `text-field`, `combobox` and `checkbox`. Design tokens like **Density** and **Design Unit** will trigger more visible changes in the _preview_. Go to the **Form** tab and configure the design tokens in the editor to see the results.
+The `Form` tab displays a `Smart Form`. This is another component available for you to use. It uses a collection of other components, such as `text-field`, `combobox` and `checkbox`. Design tokens such as `Density` and `Design Unit` trigger more visible changes in the _preview_. Go to the `Form` tab and configure the design tokens in the editor to see the results.

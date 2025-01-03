@@ -11,13 +11,13 @@ tags:
 sidebar_position: 3
 ---
 
-Many components will make use of CSS variables to set their styling - commonly with colour and padding parameters, but the usage can vary.
+Many components make use of CSS variables to set their styling - commonly with colour and padding parameters, but the usage can vary.
 
 :::tip
 A quick way to identify what CSS variables are in use is to use the developer tools in your browser to inspect the element's styles.
 :::
 
-Take this example markup
+Take a look at this example mark-up:
 
 ```html
 <rapid-listbox>
@@ -28,7 +28,7 @@ Take this example markup
 </rapid-listbox>
 ```
 
-The colour of the text on all of these components use the CSS variable `--neutral-foreground-rest`, and therefore that variable can be set at the level you require to style it. It's likely that for this component you'll want to keep the text color consistent - so you can set the variable at the level of the host component.
+The colour of the text on all these components is determined by the CSS variable `--neutral-foreground-rest`. You can set that variable at the level you require to style it. For this component, you probably want to keep the text colour consistent - so you can set the variable at the level of the host component.
 
 ```css
 :host {
@@ -36,9 +36,9 @@ The colour of the text on all of these components use the CSS variable `--neutra
 }
 ```
 
-Running this example in the browser will result in both the listbox options' and the button's color changing to `hotpink`.
+Running this example in the browser changes the colour of both the listbox options and the button to `hotpink`. Nice.
 
-However, you may want to only set the colour of the listbox items, and *not* the button. In this case the CSS variable should be scoped to the listbox, which means the button still uses the default value.
+If you want to only set only the colour of the listbox items, and *not* the button, the CSS variable should be scoped to the listbox. In this case, the button still uses the default value.
 
 ```css
 rapid-listbox {
@@ -46,9 +46,9 @@ rapid-listbox {
 }
 ```
 
-The browser should now be showing the listbox value's color as `hotpink`, but the button's should still be white.
+The browser should now be showing the listbox value's color as `hotpink`, but the button's value should still be white.
 
-You can also set this in complex selectors, such as the following which uses child and `nth-child` selectors.:
+You can also set this in complex selectors. The following example uses child and `nth-child` selectors:
 
 ```css
 rapid-listbox rapid-option:nth-child(odd) {
@@ -56,13 +56,13 @@ rapid-listbox rapid-option:nth-child(odd) {
 }
 ```
 
-This example sets the odd numbered options to `hotpink`, so for the example template the "Apple" and "Banana" options will be `hotpink` and the "Banana" option will be white.
+This example sets the odd-numbered options to `hotpink`. So for the example template, the "Apple" and "Banana" options will be `hotpink` and the "Banana" option will be white.
 
 ### Scope
 
-The CSS variable configuration will take effect at which ever scope level you define it, and it'll cascade down to all children components. That's why in the previous example setting the colour at the component level changes everything - it cascades down into all of the `rapid-listbox`, `rapid-option` and `rapid-button` components. CSS variables are the only way to cascade styles down through the Shadow DOM.
+The CSS variable configuration takes effect at whichever scope level you define it. From there, it cascades down to all children components. That's why in the previous example setting, the colour at the component level changes everything - it cascades down into all the `rapid-listbox`, `rapid-option` and `rapid-button` components. CSS variables are the only way to cascade styles down through the Shadow DOM.
 
-If instead of encapsulating the style change to a component you applied it at the top level, you'd see the effect across the entire application for all components which use the CSS variable (and don't overwrite it later).
+If instead of encapsulating the style change to a component you applied it at the top level, you'd see the effect across the entire application for all components that use the CSS variable (and which don't overwrite it later).
 
 For example, if you added this to your top level styles:
 ```css
@@ -71,4 +71,4 @@ For example, if you added this to your top level styles:
 }
 ```
 
-You can see that adding the style changes the colour of many Genesis component in your application.
+You can see that adding the style changes the colour of many Genesis components in your application.

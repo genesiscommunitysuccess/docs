@@ -69,6 +69,10 @@
   --doc-sidebar-width: 325px !important;
 
   --toc-sidebar-width: 140px;
+
+  /** Feedback widget */
+  --feedback-primary-color: #1a00de; 
+  --feedback-font-family: var(--primary-font);
 }
 
 body {
@@ -160,7 +164,6 @@ h5 {
 .overlay-link {
   color: #fff;
   font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   padding: 10px 20px;
   background-color: #007acc;
   border-radius: 5px;
@@ -171,6 +174,11 @@ h5 {
 
 .overlay-link:hover {
   background-color: #005999;
+  color: #fff;
+}
+
+.overlay-link p {
+  margin: 0 0 0;
   color: #fff;
 }
 /**********************************************/
@@ -887,4 +895,12 @@ rapid-badge {
   --badge-fill-danger: #ff0000;
   --badge-color-light: #ffffff;
   --badge-color-dark: #000000;
+}
+
+
+.center-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 70%;
 }

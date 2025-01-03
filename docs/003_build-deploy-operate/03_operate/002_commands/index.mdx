@@ -88,7 +88,7 @@ This example has a `-t` option, which specifies that only the table ORDER USER s
 AppGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
 ```
 
-The ORDER USER table will be appended to the files that were created in the tas folder.
+The ORDER USER table will be appended to the files that were created in the `tas` directory.
 
 ## `CountRecords`
 
@@ -325,9 +325,9 @@ exit $?
 
 To implement this:
 
-1. Navigate to the ***appName*\server\jvm\\*appName*-config\src\main\resources\scripts\installHooks** folder
+1. Navigate to the `{appName}\server\jvm\{appName}-config\src\main\resources\scripts\installHooks` directory.
 
-2. Create a file called ***nextInstallHookNumber*_ConvertData.sh** or similar and add the bash script above.
+2. Create a file called `{nextInstallHookNumber}_ConvertData.sh` or similar and add the bash script above.
 
 The installHook will run before `remap` on your next deploy.
 
@@ -335,15 +335,15 @@ The installHook will run before `remap` on your next deploy.
 
 This command validates all system and product configuration, checking for things such as field duplication.
 
-`genesisInstall` looks at all the folders (apart from runtime and generated), all the modules, and all files in the **cfg** directory. It copies the config files from the **cfg** directory into the **generated** folder.
+`genesisInstall` looks at all the directories (apart from runtime and generated), all the modules, and all files in the `cfg` directory. It copies the config files from the `cfg` directory into the `generated` directory.
 
-In the files collected, the command examines the installation environment and looks for system definition tokens (file names with suffix `.tmplt.xml`). The generated **cfg** file names have their token placeholders replaced with the environment's system definition value for the token, and the suffix will be changed to **.auto.xml**.
+In the files collected, the command examines the installation environment and looks for system definition tokens (file names with suffix `.tmplt.xml`). The generated `cfg` file names have their token placeholders replaced with the environment's system definition value for the token, and the suffix will be changed to `.auto.xml`.
 
-The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a  file in **site-specific/cfg** has the same name as a file in a module's **cfg**, the version in **site-specific/cfg** will always be used.
+The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a  file in `site-specific/cfg` has the same name as a file in a module's `cfg`, the version in `site-specific/cfg` will always be used.
 
-Following this, when you start any process, the `startProcess` command reads from the **cfg** directory in the **generated** folder.
+Following this, when you start any process, the `startProcess` command reads from the `cfg` directory in the `generated` directory.
 
-`genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the **run/generated/cfg** area.
+`genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the `run/generated/cfg` area.
 
 ###### Syntax
 The `genesisInstall` command can take the following arguments:
@@ -382,23 +382,47 @@ genesisInstall --compactProcesses
 
 ### Install hooks
 
-Install hooks run as part of `genesisInstall`. You can specify the relevant scripts as part of `genesisInstall` then add those scripts to the file  *applicationName*_**config/resources/scripts/installHooks**, where *applicationName* is the name of application you are developing.
+Install hooks run automatically as part of `genesisInstall`. You can specify the relevant scripts as part of `genesisInstall` then add those scripts to the file  `{applicationName}_config/resources/scripts/installHooks`.
 
 The scripts (hooks) you add will only run once, unless their execution fails. If you run `genesisInstall`again, previously successful executions of installHook scripts will not be run as part of the install.
 
 The scripts must be implemented to work in an idempotent way, and the end result of executing a script means the system is (or already was) in the expected target state, whether you run it on a pre-existing environment (e.g. upgrading a server) or you run it in a completely new environment.
 
-On the server, it is located in the **GENESIS_HOME**/*applicationName*/**scripts/installHooks** directory. Logs are located in **GENESIS_HOME/runtime/installHooks**
+On the server, these must be located in the `GENESIS_HOME/{applicationName}/scripts/installHooks` directory. Logs are located in `GENESIS_HOME/runtime/installHooks`.
+
+#### Status of install hook run
+
+To control where the status of the run is stored, use the system definition property `HookStateStore`:
+
+- `HookStateStore="FILE"` places the log file of the hook under **GENESIS_HOME/runtime/installHooks**. The hook state is considered as successful if the last line of the log says "SUCCESS".
+
+- `HookStateStore="DB"` adds the details to a database table called `SYSTEM`; the hook key is stored in the `SYSTEM_KEY` column. The status is stored in the `SYSTEM_VALUE` column.
+
+If you need to run some install hooks all the time, i.e irrespective of their previous run status, use one of the following options:
+
+- Add `_persist` string as part of the install hook name.
+- Use the `genesisInstallHooks` command with the `repeatHooks` option, for example: `genesisInstallHooks --repeatHooks=testApp1,testApp2`
+
+#### `genesisInstallHooks`
+You can use this command to perform an install hook run at any time.
+
+| Argument           | Mandatory | Options      | Description                                                                                               |
+|--------------------|-----------|--------------|-----------------------------------------------------------------------------------------------------------|
+| --hookType         | false | POST_INSTALL | This is the default value for hook type, which runs the install hooks in the `/scripts/installHooks/` directory  |
+|                    |         | PRE_INSTALL  | `genesisInstallHooks --hookType=PRE_INSTALL` runs install hooks in the `/scripts/installHooks/preInstall/` directory |
+|                    |         | POST_REMAP   | `genesisInstallHooks --hookType=POST_REMAP` runs install hooks in the `/scripts/installHooks/postRemap/` directory |
+| --init             | false |              | `genesisInstallHooks --init=true` performs a database dry run                                                    |
+| --repeatHooks      | false |              | `genesisInstallHooks --repeatHooks=testApp1,testApp2` repeats the install hooks for a specified comma-separated product list |
 
 Install hook file-name conventions:
-- We only use shell script for install hooks and inside the shell script you can call a Python script, a Kotlin script or whatever is necessary.
-- The install hook name must be unique.
-- It must contain a priority number at the beginning of the file name. This number should be unique. For example: **1_migrateLogFiles.sh**, **2_migrateDictionary.sh**.
+- Genesis only uses shell script for install hooks. Within the shell script, you can call a Python script, a Kotlin script or whatever is necessary.
+- The install hook name must be unique within all the relevant directories for install hooks: `installHooks/`, `installHooks/preInstall/` and `installHooks/postRemap/`.
+- Each install hook must contain a priority number at the beginning of the file name. This number should be unique. For example: **1_migrateLogFiles.sh**, **2_migrateDictionary.sh**.
 - If you need to create a new install hook that has to execute before priority number 1 or number 2, you must increase the numbers for all the other scripts (e.g. rename **1_migrateLogFiles.sh** to **9_migrateLogFiles.sh**).
 
 ### Practical examples
 
-You can create a new script and add it to the folder mentioned above to perform any particular functionality as part of `genesisInstall`.
+You can create a new script and add it to the `/scripts/installHooks/` directory to perform any particular functionality as part of `genesisInstall`.
 
 Any script exiting with value "0" is considered successful by the installHooks system, and any script exiting with a non-zero value is considered to have failed execution.
 
@@ -430,7 +454,7 @@ fun main(args: Array<String>) {
 }
 ```
 
-Consider another example; we have a migration script called migrateDictionary.sh as an install hook; this internally executes [MigrateDictionary](#migratedictionary) as shown below:
+Consider another example; we have a migration script called `migrateDictionary.sh` as an install hook; this internally executes [MigrateDictionary](#migratedictionary) as shown below:
 
 ```shell
 #!/bin/bash
@@ -444,7 +468,7 @@ exit $?
 
 This is a Python script wrapper for Genesis scripts.
 
-'GenesisRun` will attempt to find a script to execute within the Genesis folder structure (site-specific or scripts).
+'GenesisRun` will attempt to find a script to execute within the Genesis directory structure (site-specific or scripts).
 
 There are two environment variables that can be used to configure how much RAM the scripts will use:
 
@@ -849,11 +873,11 @@ This enables you to define the data-retention policy. Data will be removed from 
 
 Example: For the TRADE table, you could decide to keep allocated trades for 60 days, and 30 days for the rest.
 
-To use this tool, you must have a `*-purger.kts` file in the application's `cfg`` folder. Invoking the **PurgeTables** command will pick up all files that are found in the `$GENESIS_HOME/generated/cfg/` directory.
+To use this tool, you must have a `*-purger.kts` file in the application's `cfg` directory. Invoking the **PurgeTables** command will pick up all files that are found in the `$GENESIS_HOME/generated/cfg/` directory.
 
 In order to enable syntax highlighting and autocompletion for purger files, you must add **genesis-environment** as a dependency of your application's **-config** module. See simple examples below for purger definitions:
 
-A log file called `purge_<time_of_run>` will be created under the `$GENESIS_HOME/runtime/logs/` folder.
+A log file called `purge_<time_of_run>` will be created in the `$GENESIS_HOME/runtime/logs/` directory.
 
 The functions and filters below give you different ways of purging data.
 
@@ -1389,4 +1413,4 @@ The `dependency` tag defines the processes that the current process is dependent
 
 The `loggingLevel` tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to declare explicitly that you would like to log all the received/sent network messages.
 
-The `classpath` tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a lib folder for one of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
+The `classpath` tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a `lib` directory for one of the Genesis applications in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.

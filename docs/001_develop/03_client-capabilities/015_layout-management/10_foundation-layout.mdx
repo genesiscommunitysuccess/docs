@@ -12,7 +12,7 @@ tags:
   - golden layout
 ---
 
-# Genesis Foundation UI App Layout
+# Genesis Foundation UI app Layout
 
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
@@ -71,21 +71,21 @@ For the rest of this document, the components will be referred to with the `foun
 
 ### Custom styling
 
-The required class, template, and base styles are exported as part of the package, allowing a client to customise the styling of the layout system via design system extensions.
+The required class, template, and base styles are exported as part of the package, enabling a client to customize the styling of the layout system via design system extensions.
 
 :::tip
-All the customisable styles of the layout system are contained within the styles for [`<foundation-layout>`](./docs/api/foundation-layout.foundationlayout.md). So if you want to customise the styles in addition to setting the css variables, you only need to set the styles here.
+All the customizable styles of the layout system are contained within the styles for [`<foundation-layout>`](./docs/api/foundation-layout.foundationlayout.md). So if you want to customize the styles in addition to setting the css variables, you only need to set the styles here.
 :::
 
-### [Top Level Component `<foundation-layout>`](./docs/api/foundation-layout.foundationlayout.md)
+### [Top-level component `<foundation-layout>`](./docs/api/foundation-layout.foundationlayout.md)
 
-Top level web component, which is used to initialise a custom layout
+Top-level web component, which is used to initialize a custom layout
 
-- **reload-buffer** : numerical attribute that controls the buffer between how long the layout is reloaded. The default
+- **reload-buffer**: the time in milliseconds between each reload of the layout is reloaded. The default
 is 500ms. In this case, the layout is only reloaded if the child elements of the layout region are manipulated
-once every 500ms. This is to stop the layout being reloaded over and over for every single item during initialisation.
+once every 500ms. This is to stop the layout being reloaded for every single item during initialization.
 The higher the value is, the more performant the component is - but the first load will appear to take longer.
-- **auto-save-key** : optional string which if set, will enable autosaving the layout under this key in local
+- **auto-save-key**: optional string; if set, this enables autosaving the layout under this key in local
 storage. See [here](#autosaving-layout) for more.
 
 :::tip
@@ -93,7 +93,7 @@ This only applies for usage with the declarative HTML API. When the layout first
 it emits an [event](#events).
 :::
 
-### [Layout Regions](./docs/api/foundation-layout.foundationlayoutregion.md)
+### [Layout regions](./docs/api/foundation-layout.foundationlayoutregion.md)
 
 If you don't specify the `type` of the layout region, it defaults to `type="horizontal"`;
 
@@ -107,7 +107,7 @@ component using n-1 column split(s). Can be nested within other horizontal and v
 
 #### `<foundation-layout-region type="horizontal">`
 
-Indicates to the layout system that all immediate children are (by default) to be split equally among the available space of this
+Indicates to the layout system that all immediate children are (by default) to be split equally within the available space of this
 component using n-1 row split(s). Can be nested within other horizontal and vertical regions.
 
 #### `<foundation-layout-region type="tabs">`
@@ -143,35 +143,35 @@ The size defines the size of the component _compared_ to the siblings _within_ t
 
 ## JavaScript API
 
-The JavaScript API is [accessed through the methods on the root layout object](./docs/api/foundation-layout.foundationlayout.md) and allows for saving/loading the layout state, and dynamically adding items to the layout at runtime.
+The JavaScript API is [accessed through the methods on the root layout object](./docs/api/foundation-layout.foundationlayout.md) and allows for saving and loading the layout state, and for dynamically adding items to the layout at runtime.
 
 ### Dynamic registration and adding items
 
-To have a pane displayed on the layout system, it must be *registered* with the layout system. When using the [declarative API](#declarative-html-api), the layout system takes care of this for you, but as you start to add items dynamically and then serialise the layout, you need to consider which panes are registered. See [this contained example](#contained-example), which allows the user to add pre-determined items to the layout dynamically.
+To have a pane displayed on the layout system, it must be *registered* with the layout system. When using the [declarative API](#declarative-html-api), the layout system takes care of this for you, but as you start to add items dynamically and then serialize the layout, you need to consider which panes are registered. See this [contained example](#contained-example), which allows users to add pre-determined items to the layout dynamically.
 
 :::tip
-If you are only using the declarative API, and not using any dynamic integrations with JavaScript, then you shouldn't need to set the registration names of any items, as all the same items will be registered when you load a previously saved layout. If you are dynamically adding items as well, it is highly recommended to set the registration names of items manually. This makes it easier to figure out what is and is not registered.
+If you are only using the declarative API, and not using any dynamic integrations with JavaScript, then you do not need to set the registration names of any items, as all the same items will be registered when you load a previously saved layout. If you are dynamically adding items as well, it is highly recommended that you set the registration names of items manually. This makes it easier to figure out what is and is not registered.
 * When using the declarative API, use the `registration` attribute on the `<foundation-layout-item>` component.
 * When using the JavaScript API, set the `registration` optional parameter on the [registered element config](./docs/api/foundation-layout.registeredelementconfig.md).
 :::
 
-#### [Register Item](./docs/api/foundation-layout.foundationlayout.registeritem.md)
+#### [Register item](./docs/api/foundation-layout.foundationlayout.registeritem.md)
 
-This API enables you to register an item at runtime, but it will not be displayed in the layout. This could be used to register components in anticipation of displaying them when loading a serialised layout - [see this example](#loading-serialised-layouts).
+This API enables you to register an item at runtime, but it will not be displayed in the layout. This could be used to register components in anticipation of displaying them when loading a serialized layout - [see this example](#loading-serialized-layouts).
 
-#### [Add Item](./docs/api/foundation-layout.foundationlayout.additem.md)
+#### [Add item](./docs/api/foundation-layout.foundationlayout.additem.md)
 
 Add an item or items that have previously been registered with the layout.
 
-#### [Remove Items](./docs/api/foundation-layout.foundationlayout.removeitems.md)
+#### [Remove items](./docs/api/foundation-layout.foundationlayout.removeitems.md)
 
 Dynamically remove items from the layout. See linked API for side effects and options.
 
-#### [Layout Required Registrations](./docs/api/foundation-layout.foundationlayout.layoutrequiredregistrations.md)
+#### [Layout required registrations](./docs/api/foundation-layout.foundationlayout.layoutrequiredregistrations.md)
 
-Static function to read a layout config. It returns a list of all the required registrations required to load it in the layout system. [See this example](#loading-serialised-layouts).
+Static function to read a layout config. It returns a list of all the required registrations required to load it in the layout system. See this [example](#loading-serialized-layouts).
 
-#### [Get Current Registrations](./docs/api/foundation-layout.foundationlayout.registereditems.md)
+#### [Get current registrations](./docs/api/foundation-layout.foundationlayout.registereditems.md)
 
 Returns a list of all the items currently registered with the layout system.
 
@@ -179,28 +179,28 @@ Returns a list of all the items currently registered with the layout system.
 Use this function over `.layoutRequiredRegistrations(layout: SerialisedLayout)` to get the *current* registrations, because that will miss any items that are currently registered with the layout system, but which are not shown on the layout.
 :::
 
-### Serialising layout
+### Serializing layout
 
-The JavaScript API can be used to save and load layout states manually. This only describes the state of the dynamic layout itself. It is the responsibility of each component within the layout to serialise its own state, if required.
+The JavaScript API can be used to save and load layout states manually. This only describes the state of the dynamic layout itself. It is the responsibility of each component within the layout to serialize its own state, if required.
 To enable autosaving the layout, see [here](#autosaving-layout).
 
-#### [Get Layout](./docs/api/foundation-layout.foundationlayout.getlayout.md)
+#### [Get layout](./docs/api/foundation-layout.foundationlayout.getlayout.md)
 
 Get an object describing the current layout so that it can be restored at a later date. This does not save any data internally to the layout. It is up to the client to store this state where appropriate for later recall (browser local storage, persistence layer, etc.). Use the [autosaving layout](#autosaving-layout) feature to get the layout to do this for you with local storage.
 
 You can store state for an instance of an item, and that will be saved inline. See [managing state](#managing-the-state).
 
-#### [Load Layout](./docs/api/foundation-layout.foundationlayout.loadlayout.md)
+#### [Load layout](./docs/api/foundation-layout.foundationlayout.loadlayout.md)
 
-Loads a serialised layout. All items that are described in the config to load must already be registered with the layout system - using either the declarative or JavaScript API. If there are items missing (could be due either to missing items or to a mismatch of registered names) then a `LayoutUsageError` will be thrown containing the names of the missing items. Alternatively, you can request placeholder items to be added.
+Loads a serialized layout. All items that are described in the config to load must already be registered with the layout system - using either the declarative or JavaScript API. If there are items missing (because either items are missing or there is a mismatch of registered names), then a `LayoutUsageError` will be thrown containing the names of the missing items. Alternatively, you can request placeholder items to be added.
 
 ## Events
 
-### [Emitted Events](./docs/api/foundation-layout.layoutemitevents.md)
+### [Emitted events](./docs/api/foundation-layout.layoutemitevents.md)
 
-Certain actions that are performed by the user interacting with the layout emit events. See the API document (in the link above) for the events and when they're emitted. Interacting with these events allows your client code to  interact dynamically with the layout, such as enabling/disabling buttons to add items to the layout when they're removed/added.
+Some actions that are performed by the user interacting with the layout emit events. See the [API document](./docs/api/foundation-layout.layoutemitevents.md) for details of these events and when they're emitted. Interacting with these events enables your client code to interact dynamically with the layout, such as enabling or disabling buttons, or adding items to the layout when they're removed or added.
 
-### [Received Events](./docs/api/foundation-layout.layoutreceiveevents.md)
+### [Received events](./docs/api/foundation-layout.layoutreceiveevents.md)
 
 Certain events are listened to by the container for each component, enabling the component to interact with the layout. For example, a component could emit an event to change the title of the containing window:
 
@@ -209,7 +209,7 @@ this.$emit(eventType, eventDetail)
 ```
 Each event requires a certain detail to process the event - see [the map of events to their required details](./docs/api/foundation-layout.layoutreceiveeventsdetail.md).
 
-## Customising header buttons
+## Customizing header buttons
 
 You can add custom buttons on layout items, and then control their behaviour. See [the custom button API](./docs/api/foundation-layout.custombutton.md) for the full definition. Setting this is optional. If you do define it, you must define it as an array, which enables you to add multiple custom buttons.
 
@@ -220,7 +220,7 @@ Different layout instances can have their own custom buttons, or they can share 
 
 ### Applying the custom button
 
-To ensure that every item gets the button as expected, you need to ensure that you apply the custom button definitions as early as possible. If you are using the html API then you'll probably want to apply the definitions in the template.
+To ensure that every item gets the button as expected, apply the custom button definitions as early as possible. If you are using the html API, then you'll probably want to apply the definitions in the template.
 
 ```html
 <foundation-layout :customButtons=${() => buttonDefinition}>
@@ -228,7 +228,7 @@ To ensure that every item gets the button as expected, you need to ensure that y
 </foundation-layout>
 ```
 
-If you are only using the javascript API then you should just apply the property as soon as you can.
+If you are only using the javascript API, then just apply the property as soon as you can.
 ```typescript
 layout.customButtons = buttonDefinition;
 ```
@@ -246,11 +246,12 @@ You can set the layout to autosave in local storage as the user interacts with i
 - resizing items using the divider
 - dragging items around the layout
 
-When you have enabled autosave, you are still able to use the manual [serialising commands](#serialising-layout).
+When you have enabled autosave, you are still able to use the manual [serializing commands](#serializing-layout).
 
 ### Reloading the layout
 
 The function [tryLoadLayoutFromLocalStorage()](./docs/api/foundation-layout.foundationlayout.tryloadlayoutfromlocalstorage.md) is used to rehydrate the layout from local storage, when `auto-save-key` is enabled.
+
 If you are using the declarative API, then this function is called for you automatically.
 
 If you are manually registering items (too) using the JavaScript API, you must [call this function manually](#contained-example) immediately after you have finished registering all the items.
@@ -259,7 +260,7 @@ If you are manually registering items (too) using the JavaScript API, you must [
 
 If the layout is auto-loaded with items that are missing from the registration, then a placeholder item is displayed instead. Additionally, the close option is added to the pane. This accounts for you removing an item from a layout that a user has autosaved in their config.
 
-You can change the text of the placeholder using the observable binding `:missingItemPlaceholder`. This is a function that takes a string (the missing registration name) and returns the string to use as the placeholder. A default is set, but you can override it. See the override implementation [in this example](#contained-example).
+You can change the text of the placeholder using the observable binding `:missingItemPlaceholder`. This is a function that takes a string (the missing registration name) and returns the string to use as the placeholder. A default is set, but you can override it. See the override implementation in this [example](#contained-example).
 
 ### Invalidating the cache
 
@@ -277,7 +278,7 @@ Some actions that the user can perform with items in the layout will run the com
 - when an item is dragged around the layout
 - potentially, when another item is removed from the layout
 - potentially, when new items are added to the layout
-- when an item is maximised or minimised
+- when an item is maximized or minimized
 
 For example, if you have a component with a loaded resource on the layout (such as a grid with a `grid-pro-genesis-datasource`) and you add a new item to the layout with the JavaScript API, then the component with the loaded resource will have to reload too. It is important that any such element accounts for this, including such requirements as caching data, or resizing correctly.
 
@@ -299,7 +300,7 @@ You do not need to de-register a component that is registered in the layout whil
 
 - When the element is part of the layout registry, then `shouldRunConnect` will be false and you can use this to ensure that your component isn't doing unnecessary work while part of the cache.
 
-- Once the component is actually initialised in the layout on the DOM, then `shouldRunConnect` will be true, and you can then perform all the required initialisation.
+- Once the component is actually initialized in the layout on the DOM, then `shouldRunConnect` will be true, and you can then perform all the required initialization.
 
 ### Managing the state
 
@@ -314,7 +315,7 @@ The layout system only interacts with the immediately contained items - so if yo
 :::
 
 :::danger
-Each layout item can contain multiple components, and most of the time there are no extra considerations when doing this. However, the state of each component in an instance is saved in order of the components on the DOM, so if the serialised state is manually changed to have the items out of order with their state, then the incorrect states will be passed into each item. This should not occur during defined behaviour, but is possible if the end-user is able to change the state passed into `loadLayout()` manually.
+Each layout item can contain multiple components, and most of the time there are no extra considerations when doing this. However, the state of each component in an instance is saved in order of the components on the DOM, so if the serialized state is manually changed to have the items out of order with their state, then the incorrect states will be passed into each item. This should not occur during defined behaviour, but is possible if the end-user is able to change the state passed into `loadLayout()` manually.
 :::
 
 ### Element cloning
@@ -737,9 +738,9 @@ export class ContainedExample extends FASTElement {
 }
 ```
 
-### Loading serialised layouts
+### Loading serialized layouts
 
-This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example, you should familiarise yourself with the [API Section](/develop/client-capabilities/layout-management/foundation-layout/#javascript-api):
+This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example, you should familiarize yourself with the [API Section](/develop/client-capabilities/layout-management/foundation-layout/#javascript-api):
 
 ```html
 <foundation-layout>
@@ -757,9 +758,9 @@ This is an elaborate example of using the JavaScript API with consideration of t
 We can use `layoutRequiredRegistrations()` on the config returned from `getLayout()` to see the registered names that are required to load the layout.
 
 ```javascript
-const layout = document.querySelector('foundation-layout'); // as FoundatonLayout in TypeScript;
+const layout = document.querySelector('foundation-layout'); // as FoundationLayout in TypeScript;
 const layoutConfig = layout.getLayout();
-console.log(FoundatonLayout.layoutRequiredRegistrations(layoutConfig))
+console.log(FoundationLayout.layoutRequiredRegistrations(layoutConfig))
 ```
 This will log `['trades','users']` because these are the two registered panes. You can then load any layout that only contains either/both of these items.
 
@@ -781,7 +782,7 @@ Consider now where the user refreshes the page to go back to the original state 
 // User has refreshed page
 
 console.log(layout.registeredItems());
-// Ouputs ['trades','users']
+// Outputs ['trades','users']
 
 layout.loadLayout(layoutConfigTwo);
 // Uncaught Error: Trying to load layout with extra components. The component(s) not currently loaded are "test"
@@ -815,9 +816,9 @@ Now all those items will be registered with the layout for potential use when ca
 Alternatively, you could query the current layout and the layout you want to load to see if there are any missing registered items; you can then register the missing ones. Using our previous examples:
 
 ```javascript
-const currentRegistrations = FoundatonLayout.registeredItems();
+const currentRegistrations = FoundationLayout.registeredItems();
 // ['trades','users']
-const requiredRegistrations = FoundatonLayout.layoutRequiredRegistrations(layoutConfigTwo);
+const requiredRegistrations = FoundationLayout.layoutRequiredRegistrations(layoutConfigTwo);
 // ['test','trades','users']
 
 // We can see 'test' is missing and therefore we should register it
@@ -1138,7 +1139,7 @@ export class MockConnected extends FASTElement {
 }
 ```
 
-As explained in the [lifecycle info section](/develop/client-capabilities/layout-management/foundation-layout/#element-lifecycle-gating), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initialising a potentially heavy resource.
+As explained in the [lifecycle info section](/develop/client-capabilities/layout-management/foundation-layout/#element-lifecycle-gating), this component may have its `disconnectedCallback` and `connectedCallback` lifecycle at unnecessary times, effectively wasting time re-initializing a potentially heavy resource.
 
 Use `LifecycleMixin` to access properties on the class, which can be used to run lifecycle functionality more thoughtfully. In the following example, the resource-intensive tasks are called conditionally - only when needed.
 
@@ -1245,26 +1246,26 @@ The same limitation applies if you're checking the variable multiple times becau
 ## Supplementary information
 
 ### Custom components to handle bindings and event listeners
-As shown in [this example](/develop/client-capabilities/layout-management/foundation-layout/#binding-events-inline-in-the-declarative-api), you need to wrap html that uses fast bindings and event listeners into their own custom
-components. This section is a technical explanation for why this is necessary. It is required that we make use of `cloneNode` to allow the layout to add multiple instances
-of a registered component.
+As shown in [this example](/develop/client-capabilities/layout-management/foundation-layout/#binding-events-inline-in-the-declarative-api), you need to wrap html that uses fast bindings and event listeners into their own custom components. In this section, we explain why this is necessary. 
+
+For this, you need to use `cloneNode` to allow the layout to add multiple instances of a registered component.
 
 Consider the following, which is the order of events for loading the layout when using html that includes bindings.
 
 1. As the DOM is parsed, the elements inside the layout are created. At this point, the bindings are attached and the event listeners are created, and the `connectedCallback` lifecycle method executes.
-2. Once all the elements contained in the layout have been created, the layout itself initialises\*.
-3. As part of the initialisation process, it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache.
+2. Once all the elements contained in the layout have been created, the layout itself initializes\*.
+3. As part of the initialization process, it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache.
 4. We then load golden layout with the layout config and the registered items, where the registered items create a clone of the items in the document fragment.
 
 The issue occurs during step four - the clone from `cloneNode` doesn't have the event listeners, so the new copy (which is the one you see on the layout) has no event listeners. Compare this with the similar but different process if you've wrapped up the html into its own custom component.
 
 1. As the DOM is parsed, the elements inside the layout are created. At this point, the bindings are attached and the event listeners are created, and the `connectedCallback` lifecycle method executes.
-2. Once all the elements contained in the layout have been created, the layout itself initialises\*.
-3. As part of the initialisation process, it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache. This is just a tag, such as `<filtered-chart></filtered-chart>`, not a definition that includes bindings or event listeners.
+2. Once all the elements contained in the layout have been created, the layout itself initializes\*.
+3. As part of the initialization process, it moves the element from the DOM and puts it internally into a document fragment as part of the layout registration cache. This is just a tag, such as `<filtered-chart></filtered-chart>`, not a definition that includes bindings or event listeners.
 4. We then load golden layout with the layout config and the registered items, where the registered items create a clone of the items in the document fragment.
-5. When that clone is put on the DOM, it is a custom element. And so it calls the lifecycle method again `connectedCallback` as well as other initialisation methods that include attaching the event listener to the component as required.
+5. When that clone is put on the DOM, it is a custom element. And so it calls the lifecycle method again `connectedCallback` as well as other initialization methods that include attaching the event listener to the component as required.
 
->>\* It initialises after the timeout specified by the `reload-buffer` attribute if using the declarative HTML API, or if steps `3` and `4` occur during calls to `registerItem` and `addItem` respectively.
+>>\* It initializes after the timeout specified by the `reload-buffer` attribute if using the declarative HTML API, or if steps `3` and `4` occur during calls to `registerItem` and `addItem` respectively.
 
 ## Installation
 
@@ -1284,6 +1285,7 @@ To enable this module in your application, follow the steps below.
 }
 ```
 
-## [API Docs](./docs/api/index.md)
+## API documentation
+For further details, see our [API docs](./docs/api/index.md).
 
 
