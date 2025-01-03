@@ -82,13 +82,13 @@ tas/
     /scripts/tas-tnHandler.gy
 ```
 
-This example has a `-t` option, which specifies that only the table ORDER USER should be read from the source dictionary.
+This example has a `-t` option, which specifies that only the table's `ORDER` and `USER` should have code generated for them.
 
 ```bash
 AppGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
 ```
 
-The ORDER USER table will be appended to the files that were created in the `tas` directory.
+AppGen components for `ORDER` and `USER` tables will be appended to the relevant files that were created in the `tas` directory.
 
 ## `CountRecords`
 
@@ -307,43 +307,15 @@ In the example below, the changes are applied to the database for two tables: TR
 FixEnumValues --commit TRADE POSITION
 ```
 
-### Using an installHook
-
-To automate this process, you can use an installHook to call the script before `remap` is performed - be aware that *it will only run successfully once*.
-
-The following example finds all String to Enum changes in all tables and commits any valid updates to the database before `remap` is performed.
-
-```bash
-#!/bin/bash
-source "$HOME"/.bashrc
-shopt -s expand_aliases
-
-FixEnumValues --commit
-
-exit $?
-```
-
-To implement this:
-
-1. Navigate to the `{appName}\server\jvm\{appName}-config\src\main\resources\scripts\installHooks` directory.
-
-2. Create a file called `{nextInstallHookNumber}_ConvertData.sh` or similar and add the bash script above.
-
-The installHook will run before `remap` on your next deploy.
-
 ## `genesisInstall`
 
-This command validates all system and product configuration, checking for things such as field duplication.
+This command validates all system and product configuration, checking for things such as field duplication, and ultimately installs config files into place to be picked up on the next system start: `/generated/cfg/`.
 
-`genesisInstall` looks at all the directories (apart from runtime and generated), all the modules, and all files in the `cfg` directory. It copies the config files from the `cfg` directory into the `generated` directory.
+**System Definition token replacement**: For any files collected with file names with suffix `.tmplt.xml`, the command examines the installation environment and looks for system definition tokens. The generated `cfg` file names have their token placeholders replaced with the system definition value for the token assigned for that environment, and the suffix of the file will be changed to `.auto.xml`.
 
-In the files collected, the command examines the installation environment and looks for system definition tokens (file names with suffix `.tmplt.xml`). The generated `cfg` file names have their token placeholders replaced with the environment's system definition value for the token, and the suffix will be changed to `.auto.xml`.
+**Site Specific overridden files**: The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a file in `site-specific/cfg` has the same name as a file in a module's `cfg`, the version in `site-specific/cfg` will always be used.
 
-The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a  file in `site-specific/cfg` has the same name as a file in a module's `cfg`, the version in `site-specific/cfg` will always be used.
-
-Following this, when you start any process, the `startProcess` command reads from the `cfg` directory in the `generated` directory.
-
-`genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the `run/generated/cfg` area.
+`genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the `generated/cfg` area and a message will be printed (see`--ignore` flag details below on how to ignore errors and copy the files regardless)
 
 ###### Syntax
 The `genesisInstall` command can take the following arguments:
@@ -359,14 +331,6 @@ The `genesisInstall` command can take the following arguments:
 |          | --compactProcessesStrategy <!-- genesisInstall --compactProcessesStrategy -->  | no        | The strategy to be used when `compactProcesses` is set; defaults to `DEFAULT`; valid values are: `DEFAULT`, `DEV`. WARNING: the DEV strategy optimizes (and sometimes removes) processes to provide the optimal developer experience with the fewest possible resources; **DO NOT use this for production deployments** | none                | none |
 |          | --repeatedHooks <!-- genesisInstall --repeatedHooks -->    | no        | If supplied, will repeat the specified install hooks                                                                                      | none              | none |
 |          | --hostDiff  <!-- genesisInstall --hostDiff -->        | no        | If supplied, will compare all the files in every Genesis server in the cluster to make sure that the files are in sync  | none              | none |
-
-Once complete, all configuration files will be copied and, where necessary, merged into the **~/run/generated/cfg** file, which we alias as **$GC**.
-
-If any problems are found in the generated configuration files, they will be deleted. This forces you to correct the errors in the original configuration files.
-
-To ignore errors in the configuration files, use the `--ignore` argument. This leaves the configuration files undeleted, even if errors are found.
-
-All process configuration is stored within **$GC**.
 
 The example below ignores errors and leaves the configuration files undeleted, even if errors are found.
 
