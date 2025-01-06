@@ -169,23 +169,19 @@ Once you have closed the dialog, you can see the details of the entities and vie
 ##### Adjusting an Excel workbook
 The real world is messy, and Genesis Create will not be able to extract a perfect data model from every workbook that you select. However, if you know the general rules for how the extraction process works, you can adjust your workbook and try again. 
 
-:::tip
-It is usually easier to adjust the Excel workbook before you attempt to create the data model. You might need to make several iterations before Genesis Create can create a working schema to your satisfaction.
-:::
-
 The transformation process follows these rules:
 
 - The size of the Excel file must not be larger than 10MB.
 - Each tab (worksheet) needs to become a single entity or view. Hidden sheets are ignored.
 - Row 1 contains the column headings, which becomes the attribute names. All attribute names are in caps, with spaces turned into underscore characters. So, `Account name` becomes `ACCOUNT_NAME`, for example. Illegal characters, such as `%` are converted automatically. 
-- The data for the entity begins at row 2. The data in each column determines the type of the attribute (in row 1). Where th process cannot determine a type, it defaults to STRING. The data in each worksheet is saved in a separate CSV file.
+- The data for the entity begins at row 2. The data in each column determines the type of the attribute (in row 1). Where the process cannot determine a type, it defaults to STRING. The data in each worksheet is saved in a separate CSV file.
 - Column A is used as the primary key for the entity (or root entity of the view).
 - A column attribute is ignored if it has no data in any rows.
 - Where a column is formatted as Excel Date type, the values for *all* rows in the column must be formatted properly and compliant with the specified date format.
 - If any column in an Excel sheet has a datetime value, this is converted to DATE type in the format yyyy-MM-dd.
 - [Entity references](#entity-references) are created (and used to set up views) where a worksheet contains a VLOOKUP that looks at a column on the same sheet, and looks up a dataset looked on a different sheet. 
 
-It is essential to look carefully at your workbook and adjust it to suit these rules. 
+It is essential to look carefully at your workbook and adjust it to suit these rules. The more you can adjust the workbook to fit these rules, the better the resulting schema is likely to be. It will also make it easier for you to extract the data and reload it into your generated app.
 
 - In particular, make sure that the attribute that you want to be the primary key is in column A.
 - It is worth adjusting the data in row 1 so that this produces meaningful attribute names. In particular, you should avoid long names.
