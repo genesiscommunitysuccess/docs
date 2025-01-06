@@ -15,9 +15,9 @@ import CommonProcesses from '/snippet/_common-see-processes.md'
 
 ## Overview
 
-The Genesis server state machine is used to define workflow for application's table entities. State machines work in conjunction with [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/) to ensure records for the entity follow the correct workflow at all times.
+The Genesis server State Machine is used to define workflows for application's table entities. State Machines work in conjunction with [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/) to ensure records for the entity follow the correct workflow at all times.
 
-To give an example, you may be building an Order Management System, and need to define the lifecycle of your Order's. You may have various states for your order defined in an ENUM:
+To give an example, you may be building an Order Management System, and need to define the lifecycle of your orders. You may have various states for your order defined in an ENUM:
 
 ORDER_STATUS:
 - NEW
@@ -27,14 +27,14 @@ ORDER_STATUS:
 - COMPLETED
 - CANCELLED
 
-There are typically two aspects of related system logic to define in your state machine:
+There are typically two aspects of related system logic to define in your State Machine:
 
 1. **Transitions** ; Define what the valid transitions between the states are. Building on our example, you may need to configure that order must be `ASSIGNED` before it is moved to `PARTIALLY_FILLED`. Also, `CANCELLED` is an end state and thus has no valid transitions to another state.
 1. **State Validation** ; Validate that all the required fields are set to transition to a given state. For example, an Order must have `ASSIGNED_TO` set to a valid user in the system to transition to `ASSIGNED`.
 
 ## Example configuration
 
-State Machines can be written in-line within a GPAL event handler, this is the recommended approach when using GPAL in your application. 
+State Machines can be written in-line within a GPAL Event Handler, this is the recommended approach when using GPAL in your application.
 
 :::info
 A [StateMachine API](#statemachine-api) is also available, which can be used if you decide to write your event handlers using the [event handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api). See further down for examples and docs.
@@ -45,8 +45,8 @@ The following example of a State Machine defines five events that control the tr
 ```kotlin
 eventHandler {
   stateMachine(ORDER.ORDER_STATUS) {
-    insertEvent { //This generates an EVENT called `EVENT_ORDER_INSERT`
-      initialStates(ORDER_STATUS.NEW, ORDER_STATUS.ASSIGNED) //You can only set the ORDER_STATUS to these values on an insert.
+    insertEvent { // This generates an EVENT called `EVENT_ORDER_INSERT`
+      initialStates(OrderStatus.NEW, OrderStatus.ASSIGNED) // You can only set the ORDER_STATUS to these values on an insert.
 
       excludedFields {
         ENTERED_BY
@@ -55,8 +55,8 @@ eventHandler {
         MODIFIED_TIME
       }
 
-      //onEvent can be used to update the event details prior to onValidate and onCommit being run
-      //event.withDetails is an optional helpful function to edit the event record without prefixing everything with event.details
+      // onEvent can be used to update the event details prior to onValidate and onCommit being run
+      // event.withDetails is an optional helpful function to edit the event record without prefixing everything with event.details
       onEvent { event ->
         event.withDetails {
           enteredBy = event.userName
@@ -64,7 +64,7 @@ eventHandler {
         }
       }
 
-      //This defines the resulting insert event's onValidate function. 
+      // This defines the resulting insert event's onValidate function.
       onValidate { order ->
         verifyOnly { order hasField ORDER.PRICE }
         verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
@@ -78,7 +78,7 @@ eventHandler {
     }
 
     modifyEvent {
-      mutableStates(OrderStatus.NEW, OrderStatus.ASSIGNED) //You can only modify an order when it is in state NEW or ASSIGNED
+      mutableStates(OrderStatus.NEW, OrderStatus.ASSIGNED) // You can only modify an order when it is in state NEW or ASSIGNED
 
       excludedFields {
         ENTERED_BY
@@ -87,7 +87,7 @@ eventHandler {
         MODIFIED_TIME
       }
 
-      //As this is a modify event and we know the event uses the table object, both event and the retrieved record are available in onEvent on modifyEvent and transactionEvents
+      // As this is a modify event and we know the event uses the table object, both event and the retrieved record are available in onEvent on modifyEvent and transactionEvents
       onEvent { event, order ->
         order.modifiedBy = event.userName
         order.modifiedTime = now()
@@ -104,7 +104,7 @@ eventHandler {
       }
     }
 
-    //An order can only go to ASSIGNED from NEW
+    // An order can only go to ASSIGNED from NEW
     transitionEvent(OrderStatus.ASSIGNED) {
       fromStates(OrderStatus.NEW)
 
@@ -122,7 +122,7 @@ eventHandler {
       }
     }
 
-    //An order can only go to PARTIALLY_FILLED from ASSIGNED
+    // An order can only go to PARTIALLY_FILLED from ASSIGNED
     transitionEvent(OrderStatus.PARTIALLY_FILLED) {
       fromStates(OrderStatus.ASSIGNED)
 
@@ -136,7 +136,7 @@ eventHandler {
       }
     }
 
-    //An order can only go to FULLY_FILLED from PARTIALLY_FILLED
+    // An order can only go to FULLY_FILLED from PARTIALLY_FILLED
     transitionEvent(OrderStatus.FULLY_FILLED) {
       fromStates(OrderStatus.PARTIALLY_FILLED)
 
@@ -150,7 +150,7 @@ eventHandler {
       }
     }
 
-    //An order can go to COMPLETED from ASSIGNED, PARTIALLY_FILLED, FULLY_FILLED
+    // An order can go to COMPLETED from ASSIGNED, PARTIALLY_FILLED, FULLY_FILLED
     transitionEvent(OrderStatus.COMPLETED) {
       fromStates(OrderStatus.ASSIGNED, OrderStatus.PARTIALLY_FILLED, OrderStatus.FULLY_FILLED )
 
@@ -160,7 +160,7 @@ eventHandler {
       }
     }
 
-    //An order can go to CANCELLED from ASSIGNED, PARTIALLY_FILLED, FULLY_FILLED
+    // An order can go to CANCELLED from ASSIGNED, PARTIALLY_FILLED, FULLY_FILLED
     transitionEvent(OrderStatus.CANCELLED) {
       fromStates(OrderStatus.ASSIGNED, OrderStatus.PARTIALLY_FILLED, OrderStatus.FULLY_FILLED)
 
@@ -181,7 +181,7 @@ State Machines can be written in-line within a GPAL event handler, else written 
 
 Takes two parameters:
 1. `tableField` ;  which is the field of a table which holds the state.
-1. `transactional` ; optional boolean parameter (default is true) which functions the same as defining [`transactional` on a standard eventHandler`](/develop/server-capabilities/core-business-logic-event-handler/#eventhandler)
+1. `transactional` ; optional boolean parameter (default is true) which functions the same as defining [`transactional` on a standard eventHandler](/develop/server-capabilities/core-business-logic-event-handler/#eventhandler)
 
 ```kotlin
 eventHandler {
@@ -193,8 +193,8 @@ eventHandler {
 
 #### `insertEvent`
 
-Define an event on this state machine for inserting the entity. The resulting eventHandler will be named `EVENT_<table_entity_name>_INSERT`. 
-In the below example the event would be called `EVENT_ORDER_INSERT`.
+Define an event on this State Machine for inserting the entity. The resulting eventHandler will be named `EVENT_<table_entity_name>_INSERT`.
+In the example below the event would be called `EVENT_ORDER_INSERT`.
 
 ```kotlin {3-5}
 eventHandler {
@@ -257,7 +257,7 @@ Removes fields defined on the table from the event. These fields should only be 
 
 ##### `onValidate`
 
-Validate the inbound event details here. See the [event handler `onValidate` documentation](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate) for the full usage of `onValidate`.
+Validate the inbound event details here. See the [Event Handler `onValidate` documentation](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate) for the full usage of `onValidate`.
 
 One difference from regular eventHandler `onValidate` block is that we don't have to return an `ack`, it will be implicitly returned where no exception is hit, or `nack` returned.
 
@@ -267,8 +267,8 @@ One difference from regular eventHandler `onValidate` block is that we don't hav
       onValidate { order ->
         verifyOnly { order hasField ORDER.PRICE }
         verifyOnly { order hasField ORDER.QUANTITY greaterThan 0 }
-        if(order.orderState == OrderStatus.ASSIGNED) {
-          if(order.assignedTo == null) {
+        if (order.orderState == OrderStatus.ASSIGNED) {
+          if (order.assignedTo == null) {
             return onValidate@nack("Order must be assigned to set status of ASSIGNED")
           }
         }
@@ -279,7 +279,7 @@ One difference from regular eventHandler `onValidate` block is that we don't hav
 
 ##### `onCommit`
 
-Commit the inbound event details here. See the [event handler `onCommit` documentation](/develop/server-capabilities/core-business-logic-event-handler/#oncommit) for the full usage of `onCommit`.
+Commit the inbound event details here. See the [Event Handler `onCommit` documentation](/develop/server-capabilities/core-business-logic-event-handler/#oncommit) for the full usage of `onCommit`.
 
 This block is optional.
 
@@ -291,7 +291,7 @@ There are a couple of differences from regular eventHandler `onCommit` block.
     insertEvent {
       ...
       onCommit { order ->
-        //You can perform other functionality prior to committing the object here.
+        // You can perform other functionality prior to committing the object here.
       }
       ...
     }
@@ -299,8 +299,8 @@ There are a couple of differences from regular eventHandler `onCommit` block.
 
 #### `modifyEvent`
 
-Define an event on this state machine for modifying the entity. The resulting eventHandler will be named `EVENT_<table_entity_name>__MODIFY`. 
-In the below example the event would be called `EVENT_ORDER_MODIFY`.
+Define an event on this State Machine for modifying the entity. The resulting eventHandler will be named `EVENT_<table_entity_name>__MODIFY`.
+In the example below the event would be called `EVENT_ORDER_MODIFY`.
 
 ```kotlin {4-6}
 eventHandler {
@@ -316,7 +316,7 @@ eventHandler {
 
 ##### `mutableStates`
 
-The valid values that the table record can have set on the `tableField` on an `modifyEvent`.
+The valid values that the table record can have set on the `tableField` for a `modifyEvent`.
 
 For the example below, you can only modify an order when it has a status of NEW or ASSIGNED
 
@@ -333,7 +333,7 @@ For the example below, you can only modify an order when it has a status of NEW 
 `modifyEvent` can also define the following same blocks as `insertEvent`. Click to see their descriptions for usage details:
 
 - [`excludedFields`](#excludedfields)
-- [`onEvent`](#onevent) : One exception on the `modifyEvent`, per the [example configuration](#example-configuration) as this the object is already in the DB and we know the event uses the table object, both event and the retrieved record are available in `onEvent`
+- [`onEvent`](#onevent) : One exception on the `modifyEvent`, per the [example configuration](#example-configuration) as the object is already in the DB and we know the event uses the table object, both event and the retrieved record are available in `onEvent`
 - [`onValidate`](#onvalidate)
 - [`onCommit`](#oncommit)
 
@@ -341,7 +341,7 @@ For the example below, you can only modify an order when it has a status of NEW 
 
 Specifying a `transitionEvent` will generate an event specifically for transitioning the status. These events define the possible transitions of the `ORDER_STATUS` field. The resulting eventHandler will be named `EVENT_<table_entity_name>__<status being transitioned to>`.
 
-In the below example the event would be called `EVENT_ORDER_ASSIGNED`.
+In the example below the event would be called `EVENT_ORDER_ASSIGNED`.
 
 ```kotlin
     transitionEvent(OrderStatus.ASSIGNED) {
@@ -353,7 +353,7 @@ In the below example the event would be called `EVENT_ORDER_ASSIGNED`.
 
 Defines the states we can transition **from**, to the state defined in the `transitionEvent` parameter. Use comma separation to define multiple states.
 
-In the example below the Order.OrderStatus must be NEW for this event to validate.
+In the example below the `Order.OrderStatus` must be NEW for this event to validate.
 
 ```kotlin {2}
     transitionEvent(OrderStatus.ASSIGNED) {
@@ -365,35 +365,35 @@ In the example below the Order.OrderStatus must be NEW for this event to validat
 `transitionEvent` can also define the following same blocks as `insertEvent`. Click to see their descriptions for usage details:
 
 - [`excludedFields`](#excludedfields)
-- [`onEvent`](#onevent) : One exception on the `transitionEvent`, per the [example configuration](#example-configuration) as this the object is already in the DB and we know the event uses the table object, both event and the retrieved record are available in `onEvent`
+- [`onEvent`](#onevent) : One exception on the `transitionEvent`, per the [example configuration](#example-configuration) as the object is already in the DB and we know the event uses the table object, both event and the retrieved record are available in `onEvent`
 - [`onValidate`](#onvalidate)
 - [`onCommit`](#oncommit)
 
 ## Client API
 
-The State Machine is used to configure workflow states and works hand in hand with event handlers. There is no Client API specifically for a State Machine. Use [the event handler client API](/develop/server-capabilities/core-business-logic-event-handler/#client-api) to interact with your events.
+The State Machine is used to configure workflow states and works hand in hand with Event Handlers. There is no Client API specifically for a State Machine. Use [the Event Handler client API](/develop/server-capabilities/core-business-logic-event-handler/#client-api) to interact with your events.
 
 ## Runtime configuration
 
-In-line state Machines are defined as Event Handlers in your application's `*-eventhandler.kts` file and you shouldn't need to do any more.
+In-line State Machines are defined as Event Handlers in your application's `*-eventhandler.kts` file and you shouldn't need to do any more.
 
-If you have defined your state-machine in kotlin, make sure the event handler definition in `processes.xml` includes the `.jar` file containing the state machine in `<classpath>`.
+If you have defined your State Machine in kotlin, make sure the Event Handler definition in the `processes.xml` includes the `.jar` file containing the State Machine in `<classpath>`.
 
 <CommonProcesses/>
 
 ## Integration testing
 
-A State Machine is just another layer of an Event Handler, the test configuration is same as for Event Handlers. You should add further tests to test your transition workflow logic works as anticipated. 
+A State Machine is just another layer of an Event Handler, the test configuration is the same as for Event Handlers. You should add further tests to test your transition workflow logic works as expected.
 
-See the [event handlers testing section](/develop/server-capabilities/core-business-logic-event-handler/#testing) for more details.
+See the [Event Handlers testing section](/develop/server-capabilities/core-business-logic-event-handler/#testing) for more details.
 
 ## StateMachine API
 
-The Genesis Application Platform also offers an API for writing your state machine in kotlin. This approach is best used when you have written your event handlers using the [event handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api) 
+The Genesis Application Platform also offers an API for writing your State Machine in kotlin. This approach is best used when you have written your Event Handlers using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api).
 
 ### Example code
 
-The following is an example State Machine written in kotlin. The functionality example mirrors the in-line GPAL [example configuration](#example-configuration) described previously.
+The following is an example State Machine written in kotlin. The functionality in this example mirrors the in-line GPAL [example configuration](#example-configuration) described previously.
 
 ```kotlin
 @Module
@@ -409,7 +409,7 @@ class OrderStateMachine @Inject constructor(
         // Allows the status to change
         isMutable = true
 
-        // State machine will accept the specified state on creation of order
+        // State Machine will accept the specified state on creation of order
         initialState(OrderEffect.New) {
           onValidate { order ->
             verifyOnly { order hasField ORDER.PRICE }
@@ -432,8 +432,8 @@ class OrderStateMachine @Inject constructor(
         // Allows the status to change
         isMutable = true
 
-        //State machine will accept the specified state on creation of order
-        //Here we have our onValidate outside and will always run regardless of this being an insert or transition. 
+        // State Machine will accept the specified state on creation of order
+        // Here we have our onValidate outside and will always run regardless of this being an insert or transition.
         // initialState.onValidate on the NEW as it will only be on an insert. Assigned can be transitioned to.
         initialState(OrderEffect.Assigned)
 
@@ -467,7 +467,7 @@ class OrderStateMachine @Inject constructor(
           require(order.quantityFilled > 0) { "Order must have some quantity filled to be set as PARTIALLY_FILLED" }
         }
 
-        //Here we are using the onCommit, there is no onEvent when using the state machine API
+        // Here we are using the onCommit, there is no onEvent when using the State Machine API
         onCommit { order ->
           event.withDetails {
             modifiedBy = event.userName
@@ -522,7 +522,7 @@ class OrderStateMachine @Inject constructor(
     }
 }
 
-//When using the StateMachine API we also have SideEffects, which can be subscribed to and trigger actions if required.
+// When using the State Machine API we also have SideEffects, which can be subscribed to and trigger actions if required.
 sealed class OrderEffect {
   object New : OrderEffect()
   object Assigned : OrderEffect()
@@ -541,9 +541,9 @@ You can build a State Machine using this interface by providing:
 - the state of the entity field to manage; this field needs to be ENUM field. In our example, it is called `OrderStatus`.
 - the side effect of a state change, which is something you can subscribe to when the state changes to trigger further actions. In our example, it is called `OrderEffect` and you can see we add it in-line in the same file we create the StateMachine module.
 
-The following is an example State Machine written in kotlin. This would be injected into your event handler as described in the [configuration options](#configuration-options) section. 
+The following is an example State Machine written in kotlin. This would be injected into your Event Handler as described in the [configuration options](#configuration-options) section.
 
-This option is only recommended when you are using the [event handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api) for your event handle. 
+This option is only recommended when you are using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api) for your Event Handler.
 
 ```kotlin {5,10-17}
 @Module
@@ -569,7 +569,7 @@ The following functions are available:
 
 #### readState
 `fun readState(init: T.() -> S)`
-This specifies which state to read from table.
+This specifies how to read state `S` from table `T`.
 
 #### state
 `fun state(state: S, stateHandler: StateBuilder<T, S, E>.() -> Unit)`
@@ -587,7 +587,7 @@ This is the method where you define how to handle the state of the table. Handli
 | transition | `fun transition(newState: S,sideEffect: E,transitionBuilder: TransitionBuilderInit<T>? = null,)` | The State Machine will transition from the current state to [newState] |
 | transition | `fun transition(newState: S,sideEffect: E,priority: Int,transitionBuilder: TransitionBuilderInit<T>? = null,)` | The State Machine will transition from the current state to [newState], and you can specify priority for this transition|
 | transitionWithContext | `fun <C : Any> transitionWithContext(newState: S,sideEffect: E,transitionBuilder: ContextTransitionBuilder<T, C>.() -> Unit,) ` | The State Machine will transition from the current state to [newState] |
-| transitionWithContext | `fun <C : Any> transitionWithContext(newState: S,sideEffect: E,priority: Int,transitionBuilder: ContextTransitionBuilder<T, C>.() -> Unit,)` | The State Machine will transition from the current state to [newState], and you can specify priority for this transition. The validation will share a context|
+| transitionWithContext | `fun <C : Any> transitionWithContext(newState: S,sideEffect: E,priority: Int,transitionBuilder: ContextTransitionBuilder<T, C>.() -> Unit,)` | The State Machine will transition from the current state to [newState], and you can specify priority for this transition. The validation will share a context.|
 
 ##### StateMachine
 
@@ -642,9 +642,9 @@ Find more details on injection on our [Custom Components page](/develop/server-c
 
 #### [GPAL Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) file
 
-It is recommended to use in-line state machines as described in [example configuration](#example-configuration). However, if needed you can also inject into a GPAL event handler per the following example. 
+It is recommended to use in-line State Machines as described in [example configuration](#example-configuration). However, if needed you can also inject into a GPAL Event Handler per the following example.
 
-Where adopting this, you should use `stateMachine` handle instead of the `entityDb`, to commit database changes to ensure the state machine logic is triggered.
+Where adopting this, you should use `stateMachine` handle instead of the `entityDb`, to commit database changes to ensure the State Machine logic is triggered.
 
 ```kotlin
 eventHandler {
