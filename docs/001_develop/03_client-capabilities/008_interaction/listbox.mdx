@@ -20,16 +20,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Options from '../../../_includes/_options.mdx'
 
-Listboxes are menus that display options and allow the user to select one. Listboxes are  the menu which displays when clicking a [`<rapid-select></rapid-select>`](../../forms/form-inputs/client-interaction-select).
-
-Use cases:
-* Constructing menus as part of form items
-
-While any DOM content is permissible as a child of the listbox, only `<rapid-option>` elements, option elements, and slotted items with `role="option"` attribute will be treated as options and receive keyboard support.
+Listboxes are menus that display options, allowing the user to select one. Listboxes are displayed when clicking on a [`<rapid-select></rapid-select>`](../../forms/form-inputs/client-interaction-select).
 
 :::tip
-The primary use of this component is to be used as part of other custom form components you wish to construct. If you simply want to use a form item which allows the user to select one value we recommend you use a [`<rapid-radio-group></rapid-radio-group>`](../../forms/form-inputs/client-interaction-radio-group) or [`<rapid-segmented-control></rapid-segmented-control>`](../../forms/form-layout/client-interaction-segmented-control/) instead.
+This component is primarily used as part of other custom form components. If you simply want to use a form item which allows the user to select one value, use a [`<rapid-radio-group></rapid-radio-group>`](../../forms/form-inputs/client-interaction-radio-group) or [`<rapid-segmented-control></rapid-segmented-control>`](../../forms/form-layout/client-interaction-segmented-control/) instead.
 :::
+
+While any DOM content is permissible as a child of the listbox, only `<rapid-option>` elements, option elements, and slotted items with the `role="option"` attribute will be treated as options and receive keyboard support.
+
+Use cases:
+* constructing menus as part of form items
 
 ## Example
 <ListboxDemo />
@@ -220,7 +220,7 @@ This component doesn't have any parts.
 
 ### Events fired
 
-This component doesn't fire any events. When used as part of a larger form component it's recommended you'd fire change events from that component when the user interacts with the underlying listbox.
+This component doesn't fire any events. When used as part of a larger form component, fire your change events from that component when the user interacts with the underlying listbox.
 
 ### Events listened to
 

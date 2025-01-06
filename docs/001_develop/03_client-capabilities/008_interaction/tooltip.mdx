@@ -19,12 +19,14 @@ import TooltipDemo from '/examples/ui/client-capabilities/interaction/tooltip.js
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Links to another html element and displays popup information when the user hovers.
+A tooltip enables you to display information about an element when the user places their cursor above it. 
 
 Use cases:
-* Provide extra information about another element when it's hovered
+* providing extra information about another element when the user hovers the cursor over it
 
 ## Example
+
+In the example below, if you place your cursor over the `Hover me` button, a tooltip is displayed.
 <TooltipDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -104,7 +106,7 @@ Use cases:
 
 ## API
 
-API examples shown with Genesis component syntax, and closing tag omitted.
+API examples are shown with Genesis component syntax; the closing tag is not included.
 
 ### Attributes
 
@@ -157,7 +159,7 @@ API examples shown with Genesis component syntax, and closing tag omitted.
         <tr>
             <td>position</td>
             <td><code>TooltipPosition</code></td>
-            <td>Controls the placement of the tooltip relative to the anchor. When the position is undefined the tooltip is placed above or below the anchor based on available space</td>
+            <td>Controls the placement of the tooltip relative to the anchor. When the position is undefined, the tooltip is placed above or below the anchor based on available space.</td>
 <td>
 
 ```typescript
@@ -169,7 +171,7 @@ API examples shown with Genesis component syntax, and closing tag omitted.
         <tr>
             <td>auto-update-mode</td>
             <td><code>"anchor" | "auto"</code></td>
-            <td>Controls when the tooltip updates its position. 'anchor' only updates when the anchor is resized, 'auto' updates on scroll/resize events. <em>Default</em>: 'anchor'</td>
+            <td>Controls when the tooltip updates its position. 'anchor' only updates when the anchor is resized. 'auto' updates on scroll/resize events. <em>Default</em>: 'anchor'</td>
 <td>
 
 ```typescript
