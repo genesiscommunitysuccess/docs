@@ -352,7 +352,7 @@ You can specify an install hook script by adding it to your application codebase
 
 The scripts must be implemented to work in an idempotent way, and the end result of executing any install hook script should mean the system is in the expected target state for the upgraded application to run. So it should work when running it on a pre-existing environment (e.g. upgrading an application environment) or if it is run in a completely new environment installing the application for the first time.
 
-#### Status of install hook run
+###### Status of install hook run
 
 Any environment running an application needs to store state of running any install hooks, so that the next run of `genesisInstall` knows whether to run them or not.
 
@@ -391,7 +391,7 @@ Install hook file-name conventions:
 - Each install hook must contain a priority number + `_` at the beginning of the file name. This number should be unique. For example: **1_**migrateLogFiles.sh, **2_**migrateDictionary.sh.
 - If you need to create a new install hook that has to execute before priority number 1 or number 2, you must increase the numbers for all the other scripts (e.g. rename **1_**migrateLogFiles.sh to **9_**migrateLogFiles.sh).
 
-### Practical examples
+###### Practical examples
 
 You can create a new script and add it to the `/scripts/installHooks/` directory to perform any particular functionality as part of `genesisInstall`.
 
