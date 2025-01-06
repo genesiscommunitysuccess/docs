@@ -652,7 +652,7 @@ eventHandler {
 
     eventHandler<Order>(name = "ORDER_INSERT", transactional = true) {
         permissioning {
-            permissionCodes = listOf("ORDERR")
+            permissionCodes = listOf("ORDER")
             auth(mapName = "ENTITY_VISIBILITY") {
                 authKey {
                     key(data.counterpartyId)
