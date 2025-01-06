@@ -315,7 +315,7 @@ This command validates all system and product configuration, checking for things
 
 **Site Specific overridden files**: The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a file in `site-specific/cfg` has the same name as a file in a module's `cfg`, the version in `site-specific/cfg` will always be used.
 
-`genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the `generated/cfg` area and a message will be printed (see`--ignore` flag details below on how to ignore errors and copy the files regardless)
+`genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the `generated/cfg` area and a message will be printed. See `--ignore` flag details below on how to ignore errors and copy the files regardless.
 
 ###### Syntax
 The `genesisInstall` command can take the following arguments:
@@ -346,7 +346,7 @@ genesisInstall --compactProcesses
 
 ### Install hooks
 
-Install hooks are scripts which will run automatically the next time `genesisInstall` is run in an environment. They are typically operations which should run only once for a given environment, as part of an application version upgrade. If any fail, an error will be provided and it will run again on the next `genesisInstall`.
+Install hooks are scripts that run automatically the next time `genesisInstall` is run in an environment. They are typically operations that should run only once for a given environment, as part of an application version upgrade. If any install hook fails, an error will be provided and it will run again on the next `genesisInstall`.
 
 You can specify an install hook script by adding it to your application codebase in the `server/{{appName}}-app/src/main/genesis/scripts/installHooks` directory.
 
@@ -354,41 +354,41 @@ The scripts must be implemented to work in an idempotent way, and the end result
 
 ###### Status of install hook run
 
-Any environment running an application needs to store state of running any install hooks, so that the next run of `genesisInstall` knows whether to run them or not.
+Any environment running an application needs to store the state of running any install hooks, so that the next run of `genesisInstall` knows whether to run them or not.
 
-The system definition property `HookStateStore` defines how the environment determines if an installHook has already run:
+The system definition property `HookStateStore` defines how the environment determines if an install hook has already run:
 
-- `HookStateStore="FILE"` : The install hook's log file output is used to determine. Logs are stored in  `GENESIS_HOME/runtime/installHooks`. The hook state is considered as successful if the last line of the latest log file reads "SUCCESS".
+- `HookStateStore="FILE"`: The install hook's log file output is used to determine whether each install hook has run successfully. Logs are stored in `GENESIS_HOME/runtime/installHooks`. The hook state is considered as successful if the last line of the latest log file reads "SUCCESS".
 
-- `HookStateStore="DB"` : The install hook's statuses are stored in the application's database in a table called `SYSTEM`. The hook key is stored in the `SYSTEM_KEY` column and the status is stored in the `SYSTEM_VALUE` column. This is read to determine if any given install hook script needs to run.
+- `HookStateStore="DB"`: The status of each install hook is stored in the application's database in a table called `SYSTEM`. The hook key is stored in the `SYSTEM_KEY` column and the status is stored in the `SYSTEM_VALUE` column. This is read to determine if any given install hook script needs to run.
 
 #### Running an install hook every time
 
-On rare occasions you might need an install hook which runs every time a genesisInstall is run. i.e irrespective of their previous run status. To do so use one of the following options:
+On rare occasions, you might need an install hook that runs every time a `genesisInstall` is run - irrespective of its previous run status. For this requirement, use one of the following options:
 
-- Add `_persist` to the end of the filename. With this the script will run every time `genesisInstall` is run.
+- Add `_persist` to the end of the filename. With this, the script will run every time `genesisInstall` is run.
 - Use the `genesisInstallHooks` command with the `repeatHooks` option, for example: `genesisInstallHooks --repeatHooks=auth,reporting`. See below for more details on this script.
 
 #### `genesisInstallHooks`
-The `genesisInstallHooks` command will specifically run a (set of) install hook scripts. This is needed when:
+The `genesisInstallHooks` command specifically runs a (set of) install hook scripts. This is needed when:
 
-1. You need to run just an install hooks without running genesisInstall.
-1. You need to run `PRE_INSTALL` or `POST_REMAP` install hooks.
-    1. `PRE_INSTALL` hooks are used when you need the script functionality to run **prior** to `genesisInstall` running. Scripts must be placed in the `/scripts/installHooks/preInstall/` directory.
-    1. `POST_REMAP` hooks are used when you need the script functionality to run **after** a `remap` has been completed. Scripts must be placed in the `/scripts/installHooks/postRemap/` directory.
+- you need to run install hooks without running `genesisInstall`
+- you need to run `PRE_INSTALL` or `POST_REMAP` install hooks
+    - `PRE_INSTALL` hooks are used when you need the script functionality to run **prior** to running `genesisInstall`. Scripts must be placed in the `/scripts/installHooks/preInstall/` directory.
+    - `POST_REMAP` hooks are used when you need the script functionality to run **after** a `remap` has been completed. Scripts must be placed in the `/scripts/installHooks/postRemap/` directory.
 
 | Argument           | Mandatory | Options      | Description                                                                                               |
 |--------------------|-----------|--------------|-----------------------------------------------------------------------------------------------------------|
 | --hookType         | false   | `POST_INSTALL` | Hook type can only take a single option. POST_INSTALL is the default where --hookType is omitted, which runs standard install hooks located in the `/scripts/installHooks/` directory  |
 |                    |         | `PRE_INSTALL`  | `genesisInstallHooks --hookType=PRE_INSTALL` runs install hooks in the `/scripts/installHooks/preInstall/` directory |
 |                    |         | `POST_REMAP`   | `genesisInstallHooks --hookType=POST_REMAP` runs install hooks in the `/scripts/installHooks/postRemap/` directory |
-| --init             | false   |                | `genesisInstallHooks --init=true` marks all installHooks as completed without running any of them. Typically used on a brand new environment. If you the HookStateStore is set to DB and this is a new environment, you'll need to run remap before running with this flag. |
-| --repeatHooks      | false   |                | `genesisInstallHooks --repeatHooks=my_app,auth,reporting` repeats ALL install hooks for a specified comma-separated list or modules regardless of [their status](#status-of-install-hook-run)  |
+| --init             | false   |                | `genesisInstallHooks --init=true` marks all installHooks as completed without running any of them. Typically used on a brand new environment. If the HookStateStore is set to DB and this is a new environment, you must run remap before running with this flag. |
+| --repeatHooks      | false   |                | `genesisInstallHooks --repeatHooks=my_app,auth,reporting` repeats ALL install hooks for a specified comma-separated list or modules, regardless of [their status](#status-of-install-hook-run)  |
 
 Install hook file-name conventions:
 - Genesis uses shell script for install hooks. Within the shell script, you could call a Python script, a Kotlin script, Java code, or whatever type of script is necessary.
 - The install hook name must be unique within all the relevant directories for install hooks: `installHooks/`, `installHooks/preInstall/` and `installHooks/postRemap/`.
-- Each install hook must contain a priority number + `_` at the beginning of the file name. This number should be unique. For example: **1_**migrateLogFiles.sh, **2_**migrateDictionary.sh.
+- Each install hook must contain a priority number + `_` at the beginning of the file name. This number must be unique. For example: **1_**migrateLogFiles.sh, **2_**migrateDictionary.sh.
 - If you need to create a new install hook that has to execute before priority number 1 or number 2, you must increase the numbers for all the other scripts (e.g. rename **1_**migrateLogFiles.sh to **9_**migrateLogFiles.sh).
 
 ###### Practical examples
