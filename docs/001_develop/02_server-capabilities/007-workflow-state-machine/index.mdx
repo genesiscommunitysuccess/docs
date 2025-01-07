@@ -644,9 +644,9 @@ Find more details on injection on our [Custom Components page](/develop/server-c
 
 It is recommended that you use in-line State Machines, as described in the [example configuration](#example-configuration). However, you can also inject into a GPAL Event Handler. 
 
-If you do this, use `stateMachine`  instead of the `entityDb`, to commit database changes and ensure that the State Machine logic is triggered.
+If you do this, use `stateMachine` (not `entityDb`) to commit database changes. This ensures that the State Machine logic is triggered.
 
-here is an example:
+Here is an example:
 
 ```kotlin
 eventHandler {
