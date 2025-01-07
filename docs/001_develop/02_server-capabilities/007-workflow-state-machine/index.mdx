@@ -175,13 +175,13 @@ eventHandler {
 
 ## Configuration options
 
-State Machines can be written in-line within a GPAL event handler, else written in Kotlin and injected for use. Configuration options of both are detailed here.
+State Machines can either be written in-line within a GPAL event handler, or else written in Kotlin and injected for use. Configuration options for both are detailed here.
 
 ### `stateMachine`
 
-Takes two parameters:
-1. `tableField` ;  which is the field of a table which holds the state.
-1. `transactional` ; optional boolean parameter (default is true) which functions the same as defining [`transactional` on a standard eventHandler](/develop/server-capabilities/core-business-logic-event-handler/#eventhandler)
+This takes two parameters:
+- `tableField` is the field in the table that holds the state.
+- `transactional` is an optional boolean parameter (default is true). This makes the event [`transactional` in the same way as a standard eventHandler](/develop/server-capabilities/core-business-logic-event-handler/#eventhandler).
 
 ```kotlin
 eventHandler {
@@ -193,7 +193,7 @@ eventHandler {
 
 #### `insertEvent`
 
-Define an event on this State Machine for inserting the entity. The resulting eventHandler will be named `EVENT_<table_entity_name>_INSERT`.
+Defines an event on the State Machine for inserting the entity. The resulting eventHandler will be named `EVENT_<table_entity_name>_INSERT`.
 In the example below the event would be called `EVENT_ORDER_INSERT`.
 
 ```kotlin {3-5}
@@ -209,7 +209,7 @@ eventHandler {
 
 ##### `initialStates`
 
-The valid values that can be set on the `tableField` on an `insertEvent` 
+This specifies the valid values that can be set on the `tableField` on an `insertEvent` 
 
 ```kotlin {3}
   ...
@@ -223,7 +223,7 @@ The valid values that can be set on the `tableField` on an `insertEvent`
 
 ##### `excludedFields`
 
-Removes fields defined on the table from the event. These fields should only be set by the events and not the client.
+This removes fields defined on the table from the event. These fields should only be set by the events and not the client.
 
 ```kotlin {3-8}
     insertEvent {
@@ -240,7 +240,7 @@ Removes fields defined on the table from the event. These fields should only be 
 
 ##### `onEvent`
 
-`onEvent` can be used to update the event details prior to onValidate and onCommit being run. It provides event information, which can be manipulated before `onValidate` and `onCommit` blocks are run.
+`onEvent` can be used to update the event details prior to `onValidate` and `onCommit` being run. It provides event information, which can be manipulated before `onValidate` and `onCommit` blocks are run.
 
 ```kotlin {3-8}
     insertEvent {
@@ -257,9 +257,9 @@ Removes fields defined on the table from the event. These fields should only be 
 
 ##### `onValidate`
 
-Validate the inbound event details here. See the [Event Handler `onValidate` documentation](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate) for the full usage of `onValidate`.
+This validates the inbound event details. See the [Event Handler `onValidate` documentation](/develop/server-capabilities/core-business-logic-event-handler/#onvalidate) for the full usage of `onValidate`.
 
-One difference from regular eventHandler `onValidate` block is that we don't have to return an `ack`, it will be implicitly returned where no exception is hit, or `nack` returned.
+One difference from a regular eventHandler `onValidate` block is that there is no need to return an `ack`. This is returned implicitly where no exception is hit; otherwise, a `nack` is returned.
 
 ```kotlin {3-11}
     insertEvent {
@@ -284,8 +284,8 @@ Commit the inbound event details here. See the [Event Handler `onCommit` documen
 This block is optional.
 
 There are a couple of differences from regular eventHandler `onCommit` block.
-1. We don't have to write the main object to the DB. This will also happen implicitly
-1. We don't have to return an `ack`, it will be implicitly returned where no exception is hit, or `nack` returned.
+- You don't have to write the main object to the DB. This also happens implicitly.
+- You don't have to return an `ack`. This is returned implicitly where no exception is hit; otherwise, a `nack` is returned.
 
 ```kotlin {3-5}
     insertEvent {
@@ -300,7 +300,7 @@ There are a couple of differences from regular eventHandler `onCommit` block.
 #### `modifyEvent`
 
 Define an event on this State Machine for modifying the entity. The resulting eventHandler will be named `EVENT_<table_entity_name>__MODIFY`.
-In the example below the event would be called `EVENT_ORDER_MODIFY`.
+In the example below, the event would be called `EVENT_ORDER_MODIFY`.
 
 ```kotlin {4-6}
 eventHandler {
@@ -330,10 +330,10 @@ For the example below, you can only modify an order when it has a status of NEW 
 }
 ```
 
-`modifyEvent` can also define the following same blocks as `insertEvent`. Click to see their descriptions for usage details:
+`modifyEvent` can also define the following blocks (which are the same as for `insertEvent`). Click to see their descriptions for usage details:
 
 - [`excludedFields`](#excludedfields)
-- [`onEvent`](#onevent) : One exception on the `modifyEvent`, per the [example configuration](#example-configuration) as the object is already in the DB and we know the event uses the table object, both event and the retrieved record are available in `onEvent`
+- [`onEvent`](#onevent): There is an exception on the `modifyEvent`, per the [example configuration](#example-configuration). Because the object is already in the DB and we know the event uses the table object, both the event and the retrieved record are available in `onEvent`.
 - [`onValidate`](#onvalidate)
 - [`onCommit`](#oncommit)
 
@@ -353,7 +353,7 @@ In the example below the event would be called `EVENT_ORDER_ASSIGNED`.
 
 Defines the states we can transition **from**, to the state defined in the `transitionEvent` parameter. Use comma separation to define multiple states.
 
-In the example below the `Order.OrderStatus` must be NEW for this event to validate.
+In the example below, the `Order.OrderStatus` must be NEW for this event to validate.
 
 ```kotlin {2}
     transitionEvent(OrderStatus.ASSIGNED) {
@@ -362,16 +362,16 @@ In the example below the `Order.OrderStatus` must be NEW for this event to valid
     }
 ```
 
-`transitionEvent` can also define the following same blocks as `insertEvent`. Click to see their descriptions for usage details:
+`transitionEvent` can also define the following same blocks (which are the same as for `insertEvent`). Click to see their descriptions for usage details:
 
 - [`excludedFields`](#excludedfields)
-- [`onEvent`](#onevent) : One exception on the `transitionEvent`, per the [example configuration](#example-configuration) as the object is already in the DB and we know the event uses the table object, both event and the retrieved record are available in `onEvent`
+- [`onEvent`](#onevent): Thre is an exception on the `transitionEvent`, per the [example configuration](#example-configuration). Because the object is already in the DB and we know the event uses the table object, both the event and the retrieved record are available in `onEvent`.
 - [`onValidate`](#onvalidate)
 - [`onCommit`](#oncommit)
 
 ## Client API
 
-The State Machine is used to configure workflow states and works hand in hand with Event Handlers. There is no Client API specifically for a State Machine. Use [the Event Handler client API](/develop/server-capabilities/core-business-logic-event-handler/#client-api) to interact with your events.
+The State Machine is used to configure workflow states, and works hand in hand with Event Handlers. There is no Client API specifically for a State Machine. Use [the Event Handler client API](/develop/server-capabilities/core-business-logic-event-handler/#client-api) to interact with your events.
 
 ## Runtime configuration
 
