@@ -362,7 +362,7 @@ In the example below, the `Order.OrderStatus` must be NEW for this event to vali
     }
 ```
 
-`transitionEvent` can also define the following same blocks (which are the same as for `insertEvent`). Click to see their descriptions for usage details:
+`transitionEvent` can also define the following blocks (which are the same as for `insertEvent`). Click to see their descriptions for usage details:
 
 - [`excludedFields`](#excludedfields)
 - [`onEvent`](#onevent): Thre is an exception on the `transitionEvent`, per the [example configuration](#example-configuration). Because the object is already in the DB and we know the event uses the table object, both the event and the retrieved record are available in `onEvent`.
