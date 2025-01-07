@@ -29,9 +29,6 @@ This is used to annotate a class that is responsible for acting as Factory for a
 
 Example:
 ```kotlin
-import com.google.inject.Provider
-import com.google.inject.Singleton
-
 @Singleton
 @ProviderOf(type = PriceFeed::class)
 class PriceFeedProvider : Provider<PriceFeedProvider> {
@@ -100,7 +97,7 @@ Likewise, modules can be defined to be conditional on classes, so if the selecte
 #### Conditional on missing class
 You can also add conditional modules on missing classes. This annotation is very helpful if you want to develop an “extension” mechanism as part of your application. 
 
-For example, you could define an interface, and an @Module implementing this interface with a conditional on that interface class being missing. This means that if a class is defined as an @Module that implements the interface, that class will be selected (i.e. this class can be defined in an external jar and added to classpath using framework config). If no class is defined as an **@Module** to implement that interface, then the **@ConditionalOnMissingClass** module will be instantiated.
+For example, you could define an interface, and an `@Module` implementing this interface with a conditional on that interface class being missing. This means that if a class is defined as an `@Module` that implements the interface, that class will be selected (i.e. this class can be defined in an external jar and added to classpath using framework config). If no class is defined as an `@Module` to implement that interface, then the `@ConditionalOnMissingClass` module will be instantiated.
 
 For example, imagine you want to create a “hook” into the Genesis message-handling logic, so it can be extended as desired in other applications. The interface and default class would look like this in Kotlin:
 
@@ -115,7 +112,7 @@ class DefaultMessageTracer : MessageTracer{
     override fun onMessageReceived(msg: Message) = println("This is a message $msg")
 }
 ```
-If an application requires custom logic, a new **@Module** class could be defined in a separate jar file like this:
+If an application requires custom logic, a new `@Module` class could be defined in a separate jar file like this:
 
 ```kotlin
 @Module
@@ -123,7 +120,7 @@ class ProductMessageTracer : MessageTracer{
     override fun onMessageReceived(msg: Message) = println("Hi $msg")
 }
 ```
-If the package for this class is available in the classpath (``` <classpath>``` section in processes.xml) and is also being scanned (i.e. ```<package>``` section in processes.xml), `ProductMessageTracer` will take precedence when starting the process and `DefaultMessageTracer` will be ignored. Otherwise, `DefaultMessageTracer` will be instantiated.
+If the package for this class is available in the classpath (```<classpath>``` section in processes.xml) and is also being scanned (i.e. ```<package>``` section in processes.xml), `ProductMessageTracer` will take precedence when starting the process and `DefaultMessageTracer` will be ignored. Otherwise, `DefaultMessageTracer` will be instantiated.
 
 #### Conditional on property and missing class
 Lastly, we have a combination of both “conditional on property” and “conditional on missing class“ annotations. Referring to the previous example, we could use both features at once like this:
@@ -140,7 +137,7 @@ The process will crash on start up if the system definition value for `MessageTr
 
 ### Injectable properties from System Definition
 
-#### Example of **genesis-system-definition.kts** file
+#### Example of `genesis-system-definition.kts` file
 
 ```kotlin
 systemDefinition {
