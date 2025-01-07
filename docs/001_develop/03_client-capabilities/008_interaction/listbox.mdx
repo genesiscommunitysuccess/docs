@@ -23,7 +23,9 @@ import Options from '../../../_includes/_options.mdx'
 Listboxes are menus that display options, allowing the user to select one. Listboxes are displayed when clicking on a [`<rapid-select></rapid-select>`](../../forms/form-inputs/client-interaction-select).
 
 :::tip
-This component is primarily used as part of other custom form components. If you simply want to use a form item which allows the user to select one value, use a [`<rapid-radio-group></rapid-radio-group>`](../../forms/form-inputs/client-interaction-radio-group) or [`<rapid-segmented-control></rapid-segmented-control>`](../../forms/form-layout/client-interaction-segmented-control/) instead.
+If you simply want to use a form item that allows the user to select one value, use a [`<rapid-radio-group></rapid-radio-group>`](../../forms/form-inputs/client-interaction-radio-group) or [`<rapid-segmented-control></rapid-segmented-control>`](../../forms/form-layout/client-interaction-segmented-control/) instead. These components are the easiest way of meeting more than 90 percent of your requirements.
+
+Only use the Listbox component when you have a custom requirement.
 :::
 
 While any DOM content is permissible as a child of the listbox, only `<rapid-option>` elements, option elements, and slotted items with the `role="option"` attribute will be treated as options and receive keyboard support.
@@ -70,7 +72,7 @@ Use cases:
 
     <!-- TODO add link to sync -->
     :::warning
-    Unlike most other Genesis components you cannot use the `sync` directive here. This is because the listbox doesn't fire events, that is intended to be controlled by the parent form element.
+    Unlike most other Genesis components, you cannot use the `sync` directive here. This is because the listbox doesn't fire events. This must be controlled by the parent form element.
     :::
 
   </TabItem>
@@ -158,7 +160,7 @@ Use cases:
         <tr>
             <td>disabled</td>
             <td><code>boolean</code></td>
-            <td>When disabled the user won't be able to interact with the component.</td>
+            <td>When disabled, the user is not able to interact with the component.</td>
 <td>
 
 ```typescript

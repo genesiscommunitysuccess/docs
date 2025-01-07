@@ -24,6 +24,9 @@ Use cases:
 * configuration box
 
 ## Example
+The example below shows the component in action. Clicking on the `Open Dialog` button displays a dialog with some simple text. Click in the `x` in the top right corner to remove the dialog. 
+
+
 <DialogDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -235,8 +238,8 @@ Use cases:
 
 |Method|Description|Example|
 |--|--|--|
-|show|Show the dialog|`dialogRef.show()`|
-|close|Hides the dialog|`dialogRef.close()`|
+|show|Shows the dialog. |`dialogRef.show()`|
+|close|Hides the dialog. |`dialogRef.close()`|
 
 ### Slots
 
@@ -250,9 +253,9 @@ Use cases:
 
 | Part | Description |
 | --- | --- |
-|dialog|the base html `dialog` tag|
-|top|The top part of the dialog, which contains the dialog header|
-|bottom|The bottom part of the dialog, which contains the dialog footer|
+|dialog|The base html `dialog` tag.|
+|top|The top part of the dialog, which contains the dialog header.|
+|bottom|The bottom part of the dialog, which contains the dialog footer.|
 
 ### Events fired
 

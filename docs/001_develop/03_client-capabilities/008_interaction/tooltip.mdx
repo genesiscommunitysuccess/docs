@@ -22,7 +22,7 @@ import TabItem from '@theme/TabItem';
 A tooltip enables you to display information about an element when the user places their cursor above it. 
 
 Use cases:
-* providing extra information about another element when the user hovers the cursor over it
+* providing further information about an element when the user hovers the cursor over it
 
 ## Example
 
@@ -123,11 +123,11 @@ API examples are shown with Genesis component syntax; the closing tag is not inc
         <tr>
             <td>visible</td>
             <td><code>boolean</code></td>
-            <td>Whether the tooltip is visible or not. If undefined tooltip is shown when anchor element is hovered</td>
+            <td>Whether the tooltip is visible or not. If this is set to true, then the tooltip is always visible - regardless of where the cursor is. Otherwise, the tooltip is interactive; it will appear only when the user hovers over the anchored element.</td>
 <td>
 
 ```typescript
-<rapid-tooltip visibile>
+<rapid-tooltip visible>
 ```
 
 </td>
@@ -159,7 +159,7 @@ API examples are shown with Genesis component syntax; the closing tag is not inc
         <tr>
             <td>position</td>
             <td><code>TooltipPosition</code></td>
-            <td>Controls the placement of the tooltip relative to the anchor. When the position is undefined, the tooltip is placed above or below the anchor based on available space.</td>
+            <td>Controls the placement of the tooltip relative to the anchor. When the position is undefined, the tooltip is placed above or below the anchor, based on available space.</td>
 <td>
 
 ```typescript
@@ -171,7 +171,7 @@ API examples are shown with Genesis component syntax; the closing tag is not inc
         <tr>
             <td>auto-update-mode</td>
             <td><code>"anchor" | "auto"</code></td>
-            <td>Controls when the tooltip updates its position. 'anchor' only updates when the anchor is resized. 'auto' updates on scroll/resize events. <em>Default</em>: 'anchor'</td>
+            <td>Controls when the tooltip updates its position. 'anchor' only updates when the anchor is resized. 'auto' updates on scroll/resize events. Default: 'anchor'</td>
 <td>
 
 ```typescript
@@ -183,7 +183,7 @@ API examples are shown with Genesis component syntax; the closing tag is not inc
         <tr>
             <td>horizontal-viewport-lock</td>
             <td><code>boolean</code></td>
-            <td>Controls if the tooltip will always remain fully in the viewport on the horizontal axis</td>
+            <td>Controls whether the tooltip always remains fully in the viewport on the horizontal axis. If set to true, the position is adjusted to stay within the bounds of the viewport, detaching from the anchor if necessary. This prevents overflow and clipping.</td>
 <td>
 
 ```typescript
@@ -195,7 +195,7 @@ API examples are shown with Genesis component syntax; the closing tag is not inc
         <tr>
             <td>vertical-viewport-lock</td>
             <td><code>boolean</code></td>
-            <td>Controls if the tooltip will always remain fully in the viewport on the vertical axis</td>
+            <td>Controls whether the tooltip always remains fully in the viewport on the vertical axis. If set to true, the position is adjusted to stay within the bounds of the viewport, detaching from the anchor if necessary. This prevents overflow and clipping.</td>
 <td>
 
 ```typescript

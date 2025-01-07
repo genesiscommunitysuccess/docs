@@ -27,6 +27,15 @@ Use cases:
 * creating a menu for configuring options
 
 ## Example
+
+The example below shows the component in action. Click on `Dropdown Menu` to display the menu. 
+
+- `Menu item 1` includes an icon.
+- `Menu item 3` displays a submenu with one single item: `Menu item 5`
+- When you click on items 1 and 5, it generates an alert.
+- `Menu item 4` is disabled. 
+- Cunningly, there is no `Menu item 2` - just to make sure you haven't fallen asleep.
+
 <DropdownMenu />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -221,7 +230,7 @@ export type DropdownMenuItem = {
         <tr>
             <td>auto-close</td>
             <td><code>boolean</code></td>
-            <td>Controls if the dropdown automatically closes (Default: true)</td>
+            <td>Controls whether the dropdown closes automatically  (Default: true)</td>
 <td>
 
 ```typescript
@@ -312,14 +321,14 @@ export type DropdownMenuItem = {
 
 |Slot|Description|
 |---|---|
-|Default|The text which appears on the root dropdown menu button.|
+|Default|The text that appears on the root dropdown menu button.|
 
 ### Parts
 
 |Part|Description|
 |---|---|
-|`actions-container`|The main container element which wraps up the button and the dropdown menu.|
-|`actions-opener`|The button which opens the dropdown.|
+|`actions-container`|The main container element that wraps up the button and the dropdown menu.|
+|`actions-opener`|The button that opens the dropdown.|
 |`actions-menu`|The dropdown menu.|
 
 ### Events fired

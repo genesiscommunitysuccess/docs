@@ -32,6 +32,10 @@ Use cases:
 While any DOM content is permissible as a child of the menu, only `<rapid-menu-item>`s and slotted content with a role of `menuitem`, `menuitemcheckbox`, or `menuitemradio` will receive keyboard support.
 
 ## Example
+
+In the example below, the first three menu items behave like buttons that you can apply actions to. Menu items 4 and 5 function as radio buttons where only can be selected at a time.
+
+
 <MenuDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -153,13 +157,13 @@ While any DOM content is permissible as a child of the menu, only `<rapid-menu-i
 
 ## Menu API
 
-API examples shown with Genesis component syntax, and closing tag omitted.
+The API examples shown here use Genesis component syntax; the closing tag is omitted.
 
-### Attributes
+### Menu attributes
 
 This component doesn't have any attributes.
 
-### Properties
+### Menu properties
 
 This component doesn't have any properties.
 
@@ -210,11 +214,11 @@ This component doesn't fire any events.
 
 This component doesn't listen to any events.
 
-## Menu Item API
+## Menu item API
 
-API examples shown with Genesis component syntax, and closing tag omitted.
+The API examples are shown with Genesis component syntax; the closing tag is omitted.
 
-### Attributes
+### Menu item attributes
 
 <table>
     <thead>
@@ -229,7 +233,7 @@ API examples shown with Genesis component syntax, and closing tag omitted.
         <tr>
             <td>disabled</td>
             <td><code>boolean</code></td>
-            <td>Disable the menu item; if disabled it will not respond to clicks.</td>
+            <td>Disable the menu item; when disabled, it will not respond to clicks.</td>
 <td>
 
 ```typescript
@@ -253,7 +257,7 @@ API examples shown with Genesis component syntax, and closing tag omitted.
         <tr>
             <td>role</td>
             <td><code>"menuitem" | "menuitemcheckbox" | "menuitemradio"</code></td>
-            <td>The role of the menu item, altering its behaviour in the menu according to the corresponding html element. <strong>Default</strong>: <code>menuitem</code>.</td>
+            <td>Sets the type of menu item. "menuitem" displays the item as a button. "menuitemcheckbox" displays the item as a checkbox. "menuitemradio" displays the item as a radio button. Default: <code>menuitem</code>.</td>
 <td>
 
 ```typescript
@@ -277,9 +281,9 @@ API examples shown with Genesis component syntax, and closing tag omitted.
     </tbody>
 </table>
 
-### Properties
+### Menu item properties
 
-The properties of this component are all controlled via [attributes](#attributes).
+The properties of this component are all controlled via the menu item [attributes](#menu-item-attributes).
 
 ### Slots
 
@@ -295,7 +299,7 @@ The properties of this component are all controlled via [attributes](#attributes
 
 #### Nested example
 
-You may nest multiple levels of menu items to create sub menus.
+You can nest multiple levels of menu items to create sub menus.
 ```html
 <rapid-menu>
     <rapid-menu-item>

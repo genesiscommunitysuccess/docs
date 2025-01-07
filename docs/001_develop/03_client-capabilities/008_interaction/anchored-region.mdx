@@ -22,10 +22,11 @@ import TabItem from '@theme/TabItem';
 
 Anchored regions are containers that position content relative to the anchor element. 
 
-The anchored region can react to the available space between the anchor and a parent "viewport" element. Depending on the attributes set, the region can be placed on the side of the anchor with the most available space, or it can resize itself based on that space.
+The anchored region can react to the available space between the anchor and a parent `viewport` element. Depending on the attributes set, the region can be placed on the side of the anchor with the most available space, or it can resize itself based on that space.
 
 Use cases:
-* creating a layout that reacts to layout changes
+* creating a component that is visible relative to another component (for information, this component is used to implement the [Tooltip](/develop/client-capabilities/interaction/client-interaction-tooltip/) component)
+* creating a layout that reacts to layout changes 
 * creating a layout where elements are not viewed in DOM order (1)
 
 :::warning
@@ -269,7 +270,7 @@ The live example includes css styling to ensure the components fit into the exam
         <tr>
             <td>vertical-viewport-lock</td>
             <td><code>boolean</code></td>
-            <td>Controls whether the region must remain in the `viewport` on the vertical axis (i.e. detatches from the anchor). Default: false</td>
+            <td>Controls whether the anchored region always remains fully in the viewport on the horizontal axis. If true, the position is adjusted to stay within viewport bounds, detaching from the anchor if necessary. This prevents overflow and clipping. Default: false</td>
 <td>
 
 ```typescript
@@ -281,7 +282,7 @@ The live example includes css styling to ensure the components fit into the exam
         <tr>
             <td>vertical-inset</td>
             <td><code>boolean</code></td>
-            <td>WControls whether the region can overlap the anchor on the vertical axis</td>
+            <td>Controls whether the region can overlap the anchor on the vertical axis</td>
 <td>
 
 ```typescript
@@ -376,7 +377,7 @@ This component doesn't have any css parts. Style the content directly in the def
         <tr>
             <td>loaded</td>
             <td><code>this</code></td>
-            <td>Fires when the region is loaded and visible</td>
+            <td>Fires when the region is loaded and visible.</td>
 <td>
 
 ```typescript
@@ -388,7 +389,7 @@ This component doesn't have any css parts. Style the content directly in the def
         <tr>
             <td>positionchange</td>
             <td><code>this</code></td>
-            <td>Fires when the position has changed</td>
+            <td>Fires when the position has changed.</td>
 <td>
 
 ```typescript

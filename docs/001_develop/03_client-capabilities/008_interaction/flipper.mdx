@@ -21,7 +21,7 @@ import FlipperDemo from '/examples/ui/client-capabilities/interaction/flipper.js
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Flippers are styled buttons that can be used to help users to see where they are as they move through blocks of content.
+Flippers are styled buttons that point left and right so that users can move horizontally backwards and forwards through sequential blocks of content. They also enable users to see exactly where they are in the sequence.
 
 Flippers are often a supplemental form of navigation, so they are hidden by default to avoid duplicate keyboard interaction. Passing an attribute of `aria-hidden="false"` will expose the flippers to assistive technology.
 
@@ -142,7 +142,7 @@ Use cases:
         <tr>
             <td>disabled</td>
             <td><code>boolean</code></td>
-            <td>Disable the flipper, if disabled it will not respond to click.</td>
+            <td>Disable the flipper. When disabled, it will not respond to clicks.</td>
 <td>
 
 ```typescript
@@ -154,7 +154,7 @@ Use cases:
         <tr>
             <td>aria-hidden</td>
             <td><code>boolean</code></td>
-            <td>Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology. <em>Default: <code>true</code></em></td>
+            <td>Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology. Default: <code>true</code></td>
 <td>
 
 ```typescript
@@ -166,7 +166,7 @@ Use cases:
         <tr>
             <td>direction</td>
             <td><code>"previous" | "next"</code></td>
-            <td>The direction that the flipper implies navigating. <em>Default: <code>next</code></em></td>
+            <td>Sets which way the flipper points. "previous" points left and "next" points right. Default: <code>next</code>.</td>
 <td>
 
 ```typescript
@@ -193,8 +193,8 @@ The properties of this component are all controlled via [attributes](#attributes
 
 | Part | Description |
 | --- | --- |
-|next|Wraps the `next` flipper content|
-|previous|Wraps the `previous` flipper content|
+|next|Wraps the `next` flipper content. |
+|previous|Wraps the `previous` flipper content. |
 
 ### Events fired
 
