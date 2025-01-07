@@ -11,27 +11,24 @@ tags:
 sidebar_position: 12
 ---
 
-The Genesis Application Platform allows developers to create [modules for business logic](/build-deploy-operate/build/project-structure/#adding-new-modules-to-a-project). 
+The Genesis Application Platform enables you to create [modules for business logic](/build-deploy-operate/build/project-structure/#adding-new-modules-to-a-project). 
 
 ## Injecting dependencies
 
-A key part of writing custom code is injecting the objects your module or process relies on.
+A key part of writing custom code is injecting the objects which your module or process relies on.
 
 Genesis supports some of the key annotations from javax.annotation and javax.inject, defined in [Java Platform Enterprise Edition](https://docs.oracle.com/javaee/7/index.html), using Google Guice as the internal dependency injection mechanism. In addition, Genesis provides some of its own annotations.
 
 ### `@Module`
 
-All classes that need to be created on microservice start-up must be annotated with @Module. This ensures the instance is created as singleton.
+All classes that need to be created on microservice start-up must be annotated with `@Module`. This ensures the instance is created as singleton.
 
 ### `@ProviderOf`
 
-This is used to annotate a class that is responsible for acting as Factory for a specified type. Adding the `@Singleton` annotation ensures only one Factory class is created.
+This is used to annotate a class that is responsible for acting as Factory for a specified type. Adding the `@Singleton` annotation ensures that only one Factory class is created.
 
 Example:
 ```kotlin
-import com.google.inject.Provider
-import com.google.inject.Singleton
-
 @Singleton
 @ProviderOf(type = PriceFeed::class)
 class PriceFeedProvider : Provider<PriceFeedProvider> {
@@ -50,7 +47,7 @@ This annotation is used to provide Genesis system definition properties as part 
 
 ### `@PostConstruct`
 
-The Genesis microservice runtime environment will call this only once after initialisation of the object, including all injected beans.
+The Genesis microservice runtime environment will call this only once after initialization of the object, including all injected beans.
 
 ### `@PreDestroy`
 
@@ -58,7 +55,7 @@ The Genesis microservice runtime environment will call this only once, just befo
 
 ### Example
 
-The example below combines an `@Module`, `@Named` and `@Inject` annotation on a constructor and on a field, and it uses `@PostConstruct` and `@PreDestroy`.
+The example below combines `@Module`, `@Named` and `@Inject` annotations on a constructor and on a field, and it uses `@PostConstruct` and `@PreDestroy`.
 
 ```kotlin
 @Module
@@ -100,7 +97,10 @@ Likewise, modules can be defined to be conditional on classes, so if the selecte
 #### Conditional on missing class
 You can also add conditional modules on missing classes. This annotation is very helpful if you want to develop an “extension” mechanism as part of your application. 
 
-For example, you could define an interface, and an @Module implementing this interface with a conditional on that interface class being missing. This means that if a class is defined as an @Module that implements the interface, that class will be selected (i.e. this class can be defined in an external jar and added to classpath using framework config). If no class is defined as an **@Module** to implement that interface, then the **@ConditionalOnMissingClass** module will be instantiated.
+For example, you could define an interface. You could then define an `@Module` implementing this interface with a conditional on that interface class being missing. 
+
+- If a class is defined as an `@Module` that implements the interface, that class will be selected (i.e. this class can be defined in an external jar and added to classpath using framework config). 
+- If no class is defined as an `@Module` to implement that interface, then the `@ConditionalOnMissingClass` module will be instantiated.
 
 For example, imagine you want to create a “hook” into the Genesis message-handling logic, so it can be extended as desired in other applications. The interface and default class would look like this in Kotlin:
 
@@ -115,7 +115,7 @@ class DefaultMessageTracer : MessageTracer{
     override fun onMessageReceived(msg: Message) = println("This is a message $msg")
 }
 ```
-If an application requires custom logic, a new **@Module** class could be defined in a separate jar file like this:
+If an application requires custom logic, a new `@Module` class could be defined in a separate jar file like this:
 
 ```kotlin
 @Module
@@ -123,7 +123,7 @@ class ProductMessageTracer : MessageTracer{
     override fun onMessageReceived(msg: Message) = println("Hi $msg")
 }
 ```
-If the package for this class is available in the classpath (``` <classpath>``` section in processes.xml) and is also being scanned (i.e. ```<package>``` section in processes.xml), `ProductMessageTracer` will take precedence when starting the process and `DefaultMessageTracer` will be ignored. Otherwise, `DefaultMessageTracer` will be instantiated.
+If the package for this class is available in the classpath (```<classpath>``` section in [processes.xml](/develop/server-capabilities/runtime-configuration/processes/)) and is also being scanned (i.e. ```<package>``` section in [processes.xml](/develop/server-capabilities/runtime-configuration/processes/)), `ProductMessageTracer` will take precedence when starting the process and `DefaultMessageTracer` will be ignored. Otherwise, `DefaultMessageTracer` will be instantiated.
 
 #### Conditional on property and missing class
 Lastly, we have a combination of both “conditional on property” and “conditional on missing class“ annotations. Referring to the previous example, we could use both features at once like this:
@@ -140,7 +140,7 @@ The process will crash on start up if the system definition value for `MessageTr
 
 ### Injectable properties from System Definition
 
-#### Example of **genesis-system-definition.kts** file
+#### Example of `genesis-system-definition.kts` file
 
 ```kotlin
 systemDefinition {
