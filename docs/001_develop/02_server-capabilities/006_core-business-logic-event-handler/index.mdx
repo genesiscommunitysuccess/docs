@@ -23,7 +23,7 @@ import CommonOpenAPI from '/snippet/_common-open-api.md'
 
 ## Overview
 
-The Genesis Application Platform has a real-time event-driven architecture. The Event Handler is a microservice responsible for providing these events, which can apply business logic and affect the application's data set. You can configure events, including optional and mandatory input fields, which the client can trigger via APIs. 
+The Genesis Application Platform has a real-time event-driven architecture. The Event Handler is a microservice responsible for providing these events, which can apply business logic and affect the application's data set. You can configure events, including optional and mandatory input fields, which the client can trigger via APIs.
 
 ```mermaid
 graph TD
@@ -138,7 +138,7 @@ There are two main blocks to an eventHandler, [`onValidate`](#onvalidate) and [`
 
 ### `ack`
 
-An `ack` needs to be supplied at the end of any `onValidate` and `onCommit` blocks; It signifies that the event was successful.
+You must specify an `ack` at the end of all `onValidate` and `onCommit` blocks; this signifies that the event was successful.
 
 ```kotlin {4}
 eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -172,11 +172,11 @@ A successful event can also send data back to the client as part of an `ack`. A 
 
 ### `nack`
 
-A nack statement signifies that an event failed. This is typically sent during `onValidate` and sometimes during `onEvent`. 
+A nack statement signifies that an event failed. This is typically sent during `onValidate` and sometimes during `onEvent`.
 
 It can take a string argument, which is the error message passed back to the client. 
 
-Where triggering within an `onValidate` block, prefix the `nack` with `return@onValidate` to terminate validation at this point. 
+Where triggering within an `onValidate` block, prefix the `nack` with `return@onValidate` to terminate validation at this point.
 
 To trigger a nack within an `onCommit` block, prefix the `nack` with `return @onCommit`.
 
@@ -343,9 +343,9 @@ As well as returning an [`ack`](#ack) (success) or a [`nack`](#nack), the `onVal
 
 ##### `verify`
 
-Within the `onvalidate` block, a `verify` block is helpful for common relational checks. For example, to check that referenced ID-based entities already exist in the database. 
+Within the `onvalidate` block, a `verify` block is helpful for common relational checks. For example, you can use it to check that referenced ID-based entities already exist in the database.
 
-In this example we verify that the instrument and counterparty IDs that were supplied on the event exist in the database.
+In this example, we verify that the instrument and counterparty IDs that were supplied on the event exist in the database.
 
 ```kotlin {3-6}
   onValidate {
@@ -379,7 +379,7 @@ In the example below, if a price is not "more than or equal to 0.0" the message 
 
 ##### `warningNack`
 
-A `warningNack` is only applicable to the `onValidate` block, and is used to warn the client. These warnings are sometimes referred to as "soft errors". 
+A `warningNack` is only applicable to the `onValidate` block, and is used to warn the client. These warnings are sometimes referred to as "soft errors".
 
 `warningNack`, like [`nack`](#nack), accepts a String parameter, which is the message given back to the client. For example, `warningNack("Price differs more than 10% from the current market price.")`.
 
@@ -395,7 +395,7 @@ A `warningNack` may also take an object of type [`Throwable`](https://docs.oracl
     }
 ```
 
-Clients using the API are expected to set `IGNORE_WARNINGS` to `true` on the inbound message where they wish to ignore warnings. For example, if a warning is presented to a user, they can be presented with an option to ignore, or to edit and re-submit for validation. 
+Clients using the API are expected to set `IGNORE_WARNINGS` to `true` on the inbound message where they wish to ignore warnings. For example, if a warning is presented to a user, they can be presented with an option to ignore, or to edit and re-submit for validation.
 
 System clients can just set `IGNORE_WARNINGS` to `true` on all messages to ensure that:
 
@@ -404,7 +404,7 @@ System clients can just set `IGNORE_WARNINGS` to `true` on all messages to ensur
 
 ##### `approvableAck`
 
-An `approvableAck` should be returned in an onValidate block where [`requiresApproval`](#require-approval-on-an-event) has been set on the event. 
+An `approvableAck` should be returned in an onValidate block where [`requiresApproval`](#require-approval-on-an-event) has been set on the event.
 
 There are useful properties you can set as part of the `approvableAck` definition. They are all optional and are detailed below:
 
@@ -459,11 +459,58 @@ As with `onValidate` the block must finish with an [`ack`](#ack). If the event i
     }
   }
 
-``` 
+```
+
+##### `trigger`
+
+You can use the `trigger` method to call on another event within the same Event Handler script file. It takes the event metadata as a parameter.
+
+```kotlin
+    eventHandler<TriggerTrade>(name = "TRIGGER_TRADE_INSERT") {
+        onValidate {
+            ack()
+        }
+        onCommit { event ->
+            val trade = Trade {
+                // do some logic with event details to get new details for next event call
+            }
+            // set the messageType to the name of the event you wish to call and details to the new trade object
+            trigger(event.copyMeta(messageType = "TRADE_INSERT", details = trade))
+        }
+    }
+```
+
+##### `triggerRemote`
+
+You can use the `triggerRemote` method to call an event that is not defined in this script file, for example:
+
+- another event from this application, which is defined in another file
+- an event defined in the platform
+- a business component that you have added to this project 
+
+`triggerRemote` takes the following parameters:
+
+- event metadata
+- timeout on the remote event call in milliseconds (optional)
+
+```kotlin
+    eventHandler<TriggerTrade>(name = "TRIGGER_REMOTE_TRADE_INSERT") {
+        onValidate {
+            ack()
+        }
+        onCommit { event ->
+            val trade = Trade {
+                // do some logic with event details to get new details for next event call
+            }
+            // set the messageType to the name of the event you wish to call and details to the new trade object
+            triggerRemote(event.copyMeta(messageType = "TRADE_INSERT", details = trade))
+        }
+    }
+```
 
 ### `contextEventHandler`
 
-`contextEventHandler` is similar to an `eventHandler`, but is used where you want to pass context from the [`onValidate`](#onvalidate) block to the [`onCommit`](#oncommit) block. For example, on a modification event: if you first look up the original entity record and want to pass to `onCommit` so that it doesn't need to be re-read from the database.
+`contextEventHandler` is similar to an `eventHandler`. You can use it where you want to pass context from the [`onValidate`](#onvalidate) block to the [`onCommit`](#oncommit) block. For example, on a modification event, you can look up the original entity record and then pass it to `onCommit` so that it doesn't need to be re-read from the database.
 
 ```kotlin
   contextEventHandler<Trade, Trade>(name = "TRADE_MODIFY") {
@@ -485,13 +532,19 @@ As with `onValidate` the block must finish with an [`ack`](#ack). If the event i
   }
 ```
 
-1. The definition takes two `<Type>` (aka Generic) parameters instead of one. The first is the context object, which will be passed to the `onCommit` block. The second is the same as a regular [`eventHandler`](#eventhandler): the event metadata.
-1. The [`onValidate`](#onvalidate) block needs to return a [`validationAck`](#validationack) instead of a regular [`ack`](#ack).
-1. The [`onCommit`](#oncommit) block has two lambda parameters, the standard event + a second, which is a reference to the context object returned in the `validationAck`.
+- The definition takes two `<Type>` (aka Generic) parameters instead of one:
+  - the context object, which will be passed to the [`onCommit`](#oncommit) block
+  - the event metadata (which is the same as for a regular [`eventHandler`](#eventhandler))
+- The [`onValidate`](#onvalidate) block must return a [`validationAck`](#validationack) instead of a regular [`ack`](#ack).
+- The [`onCommit`](#oncommit) block has two lambda parameters: 
+  - the standard event 
+  - a reference to the context object returned in the [`validationAck`](#validationack)
 
 #### `validationAck`
 
-The same concept as an `ack`[] but must return an object matching the type of the first `<Type>` parameter in the `contextEventHandler` definition.
+For a `contextEventHandler`, you must specify a `validationAck` at the end the `onValidate` block to signify that the event was successful. Do not use the standard `ack` used in standard `eventHandler` blocks. 
+
+The `validationAck` must return an object matching the type of the first `<Type>` parameter in the `contextEventHandler` definition.
 
 ```kotlin
   contextEventHandler<Trade, Trade>(name = "TRADE_MODIFY") {
@@ -528,7 +581,7 @@ There are several options that can be specified in the message header:
 | `VALIDATE`          | `false` | Where `true`, events will return after the [`onValidate`](#onvalidate) block ack and not trigger the [`onCommit`](#oncommit) block |
 | `IGNORE_WARNINGS`   | `false` | Where `true`, any [`warningNack`](#warningnack) in the code will be ignored and not cause the event to fail validation |
 | `REQUIRES_APPROVAL` | `false` | A client can force the [approval workflow](#approval-workflow) for the event by setting this to true | 
-| `APPROVAL_MESSAGE`  | | Where [approval workflow](#approval-workflow) is triggered, this is the approval message the approver will see. This may be overridden in the event ['requiresPendingApproval`](#requirespendingapproval), which takes precedence | 
+| `APPROVAL_MESSAGE`  | | Where [approval workflow](#approval-workflow) is triggered, this is the approval message the approver will see. This may be overridden in the event ['requiresPendingApproval`](#requirespendingapproval), which takes precedence |
 | `REASON`            | | Where the event is set as `transactional` and the tables written by the event are enabled for [`audit`](/develop/server-capabilities/data-model/#audited-tables) this String will be set in the audit record's `AUDIT_EVENT_TEXT` | 
 
 <Tabs defaultValue="websocket" values={[{ label: 'Websocket API', value: 'websocket', }, { label: 'REST API', value: 'rest', }]}>
@@ -793,7 +846,7 @@ To configure the allowed approvers using server-side configuration:
 
 1. Create a new GPAL approval file; its name must end in **-approval.kts** (e.g. **_test_-approval.kts**).
 
-2. Add the new file's name to the `GENESIS_CLUSTER` process definition's `<script></script>` element found in your application's `cfg/genesis-processes.xml` (values should be comma-separated). If this file is not in your application, [read here how to find and override the file](/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files). 
+2. Add the new file's name to the `GENESIS_CLUSTER` process definition's `<script></script>` element found in your application's `cfg/genesis-processes.xml` (values should be comma-separated). If this file is not in your application, [read here how to find and override the file](/develop/server-capabilities/runtime-configuration/site-specific/#overriding-platform-provided-files).
 
   See the sample file below:
 
@@ -1248,7 +1301,7 @@ eventHandler {
 
 The first thing you need to do, is to enable the in-memory test auth cache using the `@EnableInMemoryTestAuthCache` annotation.
 
-You also need to inject `InMemoryTestAuthCache` into your test class. 
+You also need to inject `InMemoryTestAuthCache` into your test class.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">

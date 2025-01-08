@@ -13,22 +13,24 @@ tags:
 
 Site specific is an area of the run directory, on a deployed application instance, where you can override the standard definitions found elsewhere in your application.
 
-Any *platform provided files* placed in your application's `cfg` or `script` will supersede those provided by the platform. Where we say |*platform provided files*, we mean any files which are genesis, auth, or any business component or module which is not your application. 
+Any *platform-provided files* placed in your application's `cfg` or `script` will supersede those provided by the platform. *Platform-provided files* can be any files provided by Genesis, auth, or any business component or module that is not your application. 
 
-## Overriding platform provided files
+## Overriding platform-provided files
 
-Once you have built a project for the first time locally, you can find all the platform provided module artifacts, including those in `cfg` and `scripts`, to copy into your application's respective `cfg` and `scripts` directory as required.
+Once you have built a project for the first time locally, you can find all the platform-provided module artifacts, including those in `cfg` and `scripts`, to copy into your application's respective `cfg` and `scripts` directories, as required.
 
-As shown in the image below they'll be found in your project's `server/<app_name>/build/genesis-home/` directory.  
+As shown in the image below they are found in your project's `server/<app_name>/build/genesis-home/` directory.  
+
 ![](/img/001_develop/genesis-platform-provided-files-overview.png)
 
-A common requirement may be to turn on/off processes which are disabled/enabled by default. If it is not already available in our project's `cfg` directory we would find `genesis-processes.xml` (per screenshot below) and copy it there.
-![](/img/001_develop/genesis-platform-provided-files-overview.png)
+A common requirement is to turn on processes that are disabled by default or to turn off those that are enabled by default. If it is not already available in your project's `cfg` directory you can find `genesis-processes.xml` (per screenshot below) and copy it there.
 
-We can then edit the file, and after our next build the changes will take effect, whether the project is being built and run locally or pushed to CICD for build and deployment. 
+![](/img/001_develop/genesis-process-example.png)
+
+You can then edit the file. The changes you make will take effect after your next build, whether the project is being built and run locally or pushed to CICD for build and deployment. 
 
 :::tip
-These files may change from over time with new platform releases. Any Genesis platform provided files placed in this location may need to be updated with any new platform features your application needs to take advantage of.
+These files can change over time with new platform releases. Any Genesis platform-provided files placed in this location might need to be updated with any new platform features that your application needs to take advantage of.
 :::
 
 
