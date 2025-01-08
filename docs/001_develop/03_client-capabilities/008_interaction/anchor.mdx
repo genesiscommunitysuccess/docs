@@ -21,14 +21,16 @@ import AnchorDemo from '/examples/ui/client-capabilities/interaction/anchor.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Anchors add different types of links to your page.
+Anchors enable you to show links of different types of in a page.
 
 Use cases:
-* Creating a hyperlink to a different page
-* Linking to a specific region of the current page
-* An email link which pre-populates the recipient field
+* a hyperlink to a different page
+* linking to a specific region of the current page
+* an email link that pre-populates the recipient field
 
 ## Example
+There are three working links in the example below.
+
 <AnchorDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -114,7 +116,7 @@ Use cases:
     <tr>
         <td>download</td>
         <td><code>string | boolean</code></td>
-        <td>Causes the browser to treat the linked URL as a download. This attributes only works for same-origin URLs, or when using the <code>blob:</code> and <code>data:</code> schemes. Different browsers will behave slightly differently for downloads, such as asking the user where to save the file or automatically saving to a downloads directory.</td>
+        <td>Causes the browser to treat the linked URL as a download. This attributes only works for same-origin URLs, or when using the <code>blob:</code> and <code>data:</code> schemes. Different browsers behave slightly differently for downloads, such as asking the user where to save the file or automatically saving to a downloads directory.</td>
 <td>
 
 ```typescript
@@ -126,7 +128,7 @@ Use cases:
     <tr>
         <td>href</td>
         <td><code>string</code></td>
-        <td>The URL that the hyperlink points to. This is commonly to another page, but it could be to a region of the current page. You can also use schemes such as <code>mailto:</code>, <code>javascript:</code>, <code>tel:</code>, and <code>sms:</code></td>
+        <td>The URL that the hyperlink points to. This is commonly to another page in your app, but it could be to a region of the current page. You can also use schemes such as <code>mailto:</code>, <code>javascript:</code>, <code>tel:</code>, and <code>sms:</code></td>
 <td>
 
 ```typescript
@@ -150,7 +152,7 @@ Use cases:
     <tr>
         <td>ping</td>
         <td><code>string</code></td>
-        <td>A space separated list of URLs to which to send a <code>PING</code> message. This is commonly used for tracking.</td>
+        <td>A space-separated list of URLs to which to send a <code>PING</code> message. This is commonly used for tracking.</td>
 <td>
 
 ```typescript
@@ -213,22 +215,22 @@ Use cases:
 
 ### Properties
 
-This component doesn't have any properties which are not also controlled via attributes.
+The properties of this component are all controlled via [attributes](#attributes).
 
 ### Slots
 
 |Slot|Description|
 |---|---|
-|Default|This elements which are contained in the anchor region, and will trigger the `href` when clicked.|
-|start|Content which can be provided before the anchor content.|
-|end|Content which can be provided after the anchor content.|
+|Default| The elements that are contained in the anchor region, and which trigger the `href` when clicked.|
+|start| Optional content to be placed before the anchor content.|
+|end| Optional content to be placed after the anchor content.|
 
 ### Parts
 
 | Part | Description |
 | --- | --- |
-| control | The anchor element |
-| content | The element wrapping anchor content
+| control | The anchor element. |
+| content | The element wrapping the anchor content. |
 
 ### Events fired
 

@@ -17,13 +17,16 @@ import DialogDemo from '/examples/ui/client-capabilities/interaction/dialog.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Dialogs are popup menus which take focus and prohibit the user interacting with the content behind.
+A dialog is a pop-up dialog (rectangular panel) that takes focus, and prohibits the user from interacting with the content behind.
 
 Use cases:
-* Popup notification
-* Configuration box
+* pop-up notification
+* configuration box
 
 ## Example
+The example below shows the component in action. Clicking on the `Open Dialog` button displays a dialog with some simple text. Click in the `x` in the top right corner to remove the dialog. 
+
+
 <DialogDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -168,7 +171,7 @@ Use cases:
     <tr>
       <td>position</td>
       <td><code>'center' | 'left' | 'right'</code></td>
-      <td>The position of the dialog. <code>center</code> is the default.</td>
+      <td>The position of the dialog. Default is <code>center</code>.</td>
 <td>
 
 ```typescript
@@ -180,7 +183,7 @@ Use cases:
     <tr>
       <td>show-close-icon</td>
       <td><code>boolean</code></td>
-      <td>Enables the close icon in the top right corner of the dialog. <code>true</code> is the default.</td>
+      <td>Enables the close icon in the top right corner of the dialog. Default is <code>true</code>.</td>
 <td>
 
 ```typescript
@@ -235,14 +238,14 @@ Use cases:
 
 |Method|Description|Example|
 |--|--|--|
-|show|Show the dialog|`dialogRef.show()`|
-|close|Hides the dialog|`dialogRef.close()`|
+|show|Shows the dialog. |`dialogRef.show()`|
+|close|Hides the dialog. |`dialogRef.close()`|
 
 ### Slots
 
 |Slot|Description|
 |---|---|
-|Default|All the content which you want to display on the dialog box when shown.|
+|Default|All the content that you want to display on the dialog box when shown.|
 |top|Can be used to set a title section for the dialog.|
 |bottom|Can be used to set a footer section for the dialog.|
 
@@ -250,9 +253,9 @@ Use cases:
 
 | Part | Description |
 | --- | --- |
-|dialog|the base html `dialog` tag|
-|top|The top part of the dialog which contains the dialog header|
-|bottom|The bottom part of the dialog which contains the dialog footer|
+|dialog|The base html `dialog` tag.|
+|top|The top part of the dialog, which contains the dialog header.|
+|bottom|The bottom part of the dialog, which contains the dialog footer.|
 
 ### Events fired
 

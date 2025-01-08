@@ -21,17 +21,21 @@ import MenuDemo from '/examples/ui/client-capabilities/interaction/menu.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The menu is a component which lists choices for a user, such as allowing them to select actions.
+The menu component displays a list of choices for a user, enabling them to select actions.
 
-The menu behaves like native operating system menus, such as the menus that pull down from the menubars commonly found at the top of many desktop application window. When a user activates a choice in a menu, the menu usually closes unless the choice opened a submenu.
+The menu behaves like the menus displayed at the top of many desktop applications. When a user activates a choice in a menu, the menu usually either closes or opens a submenu.
 
 Use cases:
-* Create a menu bar to emulate the feeling of a desktop application
-* Create a menu for interacting with a component
+* creating a menu bar in the style of a classic desktop application
+* creating a menu for interacting with a component
 
 While any DOM content is permissible as a child of the menu, only `<rapid-menu-item>`s and slotted content with a role of `menuitem`, `menuitemcheckbox`, or `menuitemradio` will receive keyboard support.
 
 ## Example
+
+In the example below, the first three menu items behave like buttons that you can apply actions to. Menu items 4 and 5 function as radio buttons where only can be selected at a time.
+
+
 <MenuDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -69,7 +73,7 @@ While any DOM content is permissible as a child of the menu, only `<rapid-menu-i
         console.log(e.target.getAttribute('role'))
       }
       itemOneAction() {
-        // alternatively, just add event listners to perform actions on click
+        // alternatively, just add event listeners to perform actions on click
       }
     }
     ```
@@ -153,13 +157,13 @@ While any DOM content is permissible as a child of the menu, only `<rapid-menu-i
 
 ## Menu API
 
-API examples shown with Genesis component syntax, and closing tag omitted.
+The API examples shown here use Genesis component syntax; the closing tag is omitted.
 
-### Attributes
+### Menu attributes
 
 This component doesn't have any attributes.
 
-### Properties
+### Menu properties
 
 This component doesn't have any properties.
 
@@ -168,7 +172,7 @@ This component doesn't have any properties.
 |Method|Type|Description|
 |---|---|---|
 |focus|`() => void`|Focuses the first item in the menu.|
-|collapseExapndedItem|`() => void`|Collapses any expanded menu items.|
+|collapseExpandedItem|`() => void`|Collapses any expanded menu items.|
 
 ### Slots
 
@@ -210,11 +214,11 @@ This component doesn't fire any events.
 
 This component doesn't listen to any events.
 
-## Menu Item API
+## Menu item API
 
-API examples shown with Genesis component syntax, and closing tag omitted.
+The API examples are shown with Genesis component syntax; the closing tag is omitted.
 
-### Attributes
+### Menu item attributes
 
 <table>
     <thead>
@@ -229,7 +233,7 @@ API examples shown with Genesis component syntax, and closing tag omitted.
         <tr>
             <td>disabled</td>
             <td><code>boolean</code></td>
-            <td>Disable the menu item, if disabled it will not respond to click.</td>
+            <td>Disable the menu item; when disabled, it will not respond to clicks.</td>
 <td>
 
 ```typescript
@@ -253,7 +257,7 @@ API examples shown with Genesis component syntax, and closing tag omitted.
         <tr>
             <td>role</td>
             <td><code>"menuitem" | "menuitemcheckbox" | "menuitemradio"</code></td>
-            <td>The role of the menu item, altering its behaviour in the menu according to the corresponding html element. <strong>Default</strong>: <code>menuitem</code>.</td>
+            <td>Sets the type of menu item. "menuitem" displays the item as a button. "menuitemcheckbox" displays the item as a checkbox. "menuitemradio" displays the item as a radio button. Default: <code>menuitem</code>.</td>
 <td>
 
 ```typescript
@@ -265,7 +269,7 @@ API examples shown with Genesis component syntax, and closing tag omitted.
         <tr>
             <td>checked</td>
             <td><code>boolean</code></td>
-            <td>The checked state of the menu item, only if it's a role of radio or checkbox.</td>
+            <td>The checked state of the menu item (only if this is acting like a radio button or checkbox).</td>
 <td>
 
 ```typescript
@@ -277,25 +281,25 @@ API examples shown with Genesis component syntax, and closing tag omitted.
     </tbody>
 </table>
 
-### Properties
+### Menu item properties
 
-This component doesn't have any properties that are not also controlled via attributes.
+The properties of this component are all controlled via the menu item [attributes](#menu-item-attributes).
 
 ### Slots
 
 |Slot|Description|
 |---|---|
-|Default|The default slot which can be populated by menu items, or other menus to created nested menus.|
+|Default|The default slot that can be populated by menu items, or other menus to created nested menus.|
 |checked-indicator|The checked indicator.|
 |radio-indicator|The radio indicator.|
-|start|Content which can be provided before the menu item content.|
-|end|Content which can be provided after the menu item content.|
+|start|Content that can be provided before the menu item content.|
+|end|Content that can be provided after the menu item content.|
 |expand-collapse-indicator|The expand/collapse indicator.|
-|submenu|Used to nest menu's within menu items.|
+|submenu|Used to nest menus within menu items.|
 
 #### Nested example
 
-You may nest multiple levels of menu items to create sub menus.
+You can nest multiple levels of menu items to create sub menus.
 ```html
 <rapid-menu>
     <rapid-menu-item>
@@ -349,7 +353,7 @@ You may nest multiple levels of menu items to create sub menus.
         <tr>
             <td>change</td>
             <td><code>void</code></td>
-            <td>Fired when a menu item with a role of <code>menuitemcheckbox</code>, <code>menuitemradio</code>, or <code>menuitem</code> is invoked. The event doesn't contain data, but you can use the event target to get a reference to the emitting menu item. You'll likely want to add this onto the containing menu item.</td>
+            <td>Fired when a menu item with a role of <code>menuitemcheckbox</code>, <code>menuitemradio</code>, or <code>menuitem</code> is invoked. The event doesn't contain data, but you can use the event target to get a reference to the emitting menu item. Usually, you will add this onto the containing menu item.</td>
 <td>
 
 ```typescript

@@ -24,12 +24,12 @@ A modal is a type of dialog that prevents the user from interacting with other c
 By default, the modal starts in a closed state.
 
 Use cases:
-* Display content in a window over other main page content
-* Control user interactions
-* Submission confirmations
-* Alert users
-* Require some action before closing
-* Prevent interacting with content outside the modal
+* displaying content in a window over other main page content
+* controlling user interactions
+* submission confirmations
+* alerting users
+* requiring some user action before closing
+* preventing interacion with content outside the modal
 
 ## Example
 
@@ -162,7 +162,7 @@ Use cases:
 
 ## DOM API
 
-Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+The sections below provide property and attribute binding examples for Genesis Component syntax. The HTML closing tag is not included.
 
 ### Attributes
 
@@ -262,8 +262,8 @@ If you set `position` to be `left` or `right`, the modal will assume `height: 10
 
 | Method | Type | Use | Example |
 |---|---|---|---|
-|show|`() => void`|When called will show the modal.|`modal.show()`|
-|close|`() => void`|When called will close the modal.|`modal.close()`|
+|show|`() => void`|When called, shows the modal.|`modal.show()`|
+|close|`() => void`|When called, closes the modal.|`modal.close()`|
 
 ### Slots
 
@@ -279,7 +279,7 @@ If you set `position` to be `left` or `right`, the modal will assume `height: 10
 |---|---|
 | dialog | The container element containing the modal dialog. |
 | content | The content container element |
-| top | The top part of the modal which contains the modal dialog header. |
+| top | The top part of the modal, which contains the modal dialog header. |
 | close-icon | The close icon in the top right hand corner of the modal dialog. |
 | bottom | The footer section of the modal dialog. |
 

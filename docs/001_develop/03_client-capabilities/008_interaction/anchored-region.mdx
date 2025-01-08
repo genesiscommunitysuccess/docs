@@ -20,14 +20,17 @@ import AnchoredRegion from '/examples/ui/client-capabilities/interaction/anchore
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Anchored regions are containers which position content relative to the anchor element. The anchored region can react to the available space between the anchor and a parent "viewport" element such that the region is placed on the side of the anchor with the most available space, or even resize itself based on that space.
+Anchored regions are containers that position content relative to the anchor element. 
+
+The anchored region can react to the available space between the anchor and a parent `viewport` element. Depending on the attributes set, the region can be placed on the side of the anchor with the most available space, or it can resize itself based on that space.
 
 Use cases:
-* Creating a layout which is reactive to layout changes
-* Creating a layout where elements are not viewed in DOM order (1)
+* creating a component that is visible relative to another component (for information, this component is used to implement the [Tooltip](/develop/client-capabilities/interaction/client-interaction-tooltip/) component)
+* creating a layout that reacts to layout changes 
+* creating a layout where elements are not viewed in DOM order (1)
 
 :::warning
-(1) Elements which are viewed differently to the DOM order may cause accessibility issues with screen readers.
+(1) Elements that are not viewed in the same order as the DOM order could cause accessibility issues with screen readers.
 :::
 
 ## Example
@@ -134,8 +137,6 @@ The live example includes css styling to ensure the components fit into the exam
 
 ### Attributes
 
-
-
 <table>
     <thead>
         <tr>
@@ -149,7 +150,7 @@ The live example includes css styling to ensure the components fit into the exam
         <tr>
             <td>anchor</td>
             <td><code>string</code></td>
-            <td>The HTML ID of the anchor element this region is positioned relative to. Default: ""</td>
+            <td>The HTML ID of the anchor element this region is positioned relative to. </td>
 <td>
 
 ```typescript
@@ -161,7 +162,7 @@ The live example includes css styling to ensure the components fit into the exam
         <tr>
             <td>viewport</td>
             <td><code>string</code></td>
-            <td>The HTML ID of the viewport element this region is positioned relative to. Default: ""</td>
+            <td>The HTML ID of the viewport element this region is positioned relative to. </td>
 <td>
 
 ```typescript
@@ -173,7 +174,7 @@ The live example includes css styling to ensure the components fit into the exam
         <tr>
             <td>horizontal-positioning-mode</td>
             <td><code>"uncontrolled" | "locktodefault" | "dynamic"</code></td>
-            <td>Sets logic for horizontal placement. Default: "uncontrolled". <code>locktodefault</code> forces the default position, <code>dynamic</code> decides placement based on available space, and <code>uncontrolled</code> does not control placement on the horizontal axis</td>
+            <td>Controls horizontal placement. Default: "uncontrolled". <code>locktodefault</code> forces the default position, <code>dynamic</code> decides placement based on available space, and <code>uncontrolled</code> does not control placement on the horizontal axis</td>
 <td>
 
 ```typescript
@@ -197,7 +198,7 @@ The live example includes css styling to ensure the components fit into the exam
         <tr>
             <td>horizontal-viewport-lock</td>
             <td><code>boolean</code></td>
-            <td>Whether region remains in viewport on horizontal axis. Default: false</td>
+            <td>Controls whether the anchored region always remains fully in the viewport on the horizontal axis. If true, the position is adjusted to stay within viewport bounds, detaching from the anchor if necessary. This prevents overflow and clipping. Default: false</td>
 <td>
 
 ```typescript
@@ -209,7 +210,7 @@ The live example includes css styling to ensure the components fit into the exam
         <tr>
             <td>horizontal-inset</td>
             <td><code>boolean</code></td>
-            <td>Whether region overlaps anchor on horizontal axis. Default: false</td>
+            <td>Controls whether the region can overlap the anchor on the horizontal axis. Default: false</td>
 <td>
 
 ```typescript
@@ -221,7 +222,7 @@ The live example includes css styling to ensure the components fit into the exam
         <tr>
             <td>horizontal-threshold</td>
             <td><code>number</code></td>
-            <td>How narrow the space allocated to the default position has to be before the widest area is selected for the layout.</td>
+            <td>Sets how narrow the space allocated to the default position has to be before the widest area is selected for the layout.</td>
 <td>
 
 ```typescript
@@ -269,7 +270,7 @@ The live example includes css styling to ensure the components fit into the exam
         <tr>
             <td>vertical-viewport-lock</td>
             <td><code>boolean</code></td>
-            <td>Whether region remains in viewport on vertical axis (i.e. detatches from the anchor). Default: false</td>
+            <td>Controls whether the anchored region always remains fully in the viewport on the vertical axis. If true, the position is adjusted to stay within viewport bounds, detaching from the anchor if necessary. This prevents overflow and clipping. Default: false</td>
 <td>
 
 ```typescript
@@ -281,7 +282,7 @@ The live example includes css styling to ensure the components fit into the exam
         <tr>
             <td>vertical-inset</td>
             <td><code>boolean</code></td>
-            <td>Whether the region overlaps the anchor on the vertical axis</td>
+            <td>Controls whether the region can overlap the anchor on the vertical axis</td>
 <td>
 
 ```typescript
@@ -293,7 +294,7 @@ The live example includes css styling to ensure the components fit into the exam
         <tr>
             <td>vertical-threshold</td>
             <td><code>number</code></td>
-            <td>Space threshold before tallest area is selected for layout</td>
+            <td>Space threshold before the tallest area is selected for layout</td>
 <td>
 
 ```typescript
@@ -317,7 +318,7 @@ The live example includes css styling to ensure the components fit into the exam
         <tr>
             <td>fixed-placement</td>
             <td><code>boolean</code></td>
-            <td>Whether region uses fixed positioning instead of absolute. Default: false</td>
+            <td>Controls whether the region uses fixed positioning instead of absolute. Default: false</td>
 <td>
 
 ```typescript
@@ -343,7 +344,7 @@ The live example includes css styling to ensure the components fit into the exam
 
 ### Properties
 
-You should only be reading these properties via the code, rather than setting them on the template.
+You should only read these properties via the code. Do not set them on the template.
 
 |Property|Type|Description|
 |--|--|--|
@@ -355,11 +356,11 @@ You should only be reading these properties via the code, rather than setting th
 
 |Slot|Description|
 |---|---|
-|Default|This elements which are contained in the anchored region.|
+|Default|The elements that are contained in the anchored region.|
 
 ### Parts
 
-This component doesn't have any css parts. Style the content in the default slot directly.
+This component doesn't have any css parts. Style the content directly in the default slot.
 
 ### Events fired
 
@@ -376,7 +377,7 @@ This component doesn't have any css parts. Style the content in the default slot
         <tr>
             <td>loaded</td>
             <td><code>this</code></td>
-            <td>Fires when the region is loaded and visible</td>
+            <td>Fires when the region is loaded and visible.</td>
 <td>
 
 ```typescript
@@ -388,7 +389,7 @@ This component doesn't have any css parts. Style the content in the default slot
         <tr>
             <td>positionchange</td>
             <td><code>this</code></td>
-            <td>Fires when the position has changed</td>
+            <td>Fires when the position has changed.</td>
 <td>
 
 ```typescript

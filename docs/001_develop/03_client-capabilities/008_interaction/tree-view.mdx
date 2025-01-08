@@ -19,13 +19,16 @@ import TreeViewDemo from '/examples/ui/client-capabilities/interaction/tree-view
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-A tree view widget presents a hierarchical list. Any item in the hierarchy may have child items, and items that have children may be expanded or collapsed to show or hide the children.
+A tree view widget presents a hierarchical list. Any item in the hierarchy can have child items, and items that have children can be expanded or collapsed to show or hide the children.
 
 Use cases:
-* Creating a file system navigator that uses a tree view to display folders and files. An item representing a folder can be expanded to reveal the contents of the folder, which may be files, folders, or both.
-* Creating a hierarchical diagram of profiles
+* creating a file system navigator that uses a tree view to display folders and files. An item representing a folder can be expanded to reveal the contents of the folder, which may be files, folders, or both
+* creating a hierarchical diagram of profiles
 
 ## Example
+The example shows the component in action. Item 1 and Item 2 both have two children, which you can click to view. Item 3 has no children.
+
+
 <TreeViewDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
