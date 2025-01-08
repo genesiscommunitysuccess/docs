@@ -115,7 +115,7 @@ To add an index to the entity that you are creating or editing:
     - use the `Type` field to make the index unique or non-unique.
     - A default name for the index is displayed in the `Name` field. You can change this, if necessary. 
     - When ready, click `Add index`. The new index is listed in the main area under the `Indices` tab. 
-4. When you have finished, click on the `Done` button to return to the Entity Models screen, where all your entities are listed..
+4. When you have finished, click on the `Done` button to return to the Entity Models screen, where all your entities are listed.
 
 #### Entity references
 Entity references are useful, because they enable you to add attributes from different entities to create [views](#views). You can select another entity as a reference, and then you will be able to add fields from that entity to create a view later on.
@@ -146,7 +146,61 @@ You have the chance to set right codes at many points in Genesis Create. These c
 We strongly recommend that you use these.
 :::
 
-#### Adding more entities
+#### Creating a data model from Excel
+
+You can create a data model with entities ([tables](/develop/server-capabilities/data-model/#tables)) and [views](/develop/server-capabilities/data-model/#views) directly from an Excel workbook. 
+
+In the Entities main screen, click on the `Detect From Excel` button. This enables you to select a spreadsheet. 
+
+![Detect Excel button](/img/genesis-create/detect-excel-button.png)
+
+:::info
+If you already have an entity model in Genesis Create, this button is not available. It becomes available if you delete all the entities in your current project.
+
+Alternatively, clear the current entity model and start a new project. Click on the three dots at the top right of the window and select `New`. You are warned that this clears any current changes. If necessary, cancel, then click on the three dots again and select `Save`. This downloads the project as a JSON file.
+:::
+
+When you select this button, Genesis Create attempts to create a data model from the workbook that you have selected. If it is successful, it displays information about the data model it has created. For example, here it has created three entities and one view.
+
+![Schema detected](/img/genesis-create/detected-schema.png)
+
+Once you have closed the dialog, you can see the details of the entities and views that have been produced, and you can work your way through the rest of the steps in Genesis Create to complete the project.
+
+##### Adjusting an Excel workbook
+The real world is messy, and Genesis Create will not be able to extract a perfect data model from every workbook that you select. However, if you know the general rules for how the extraction process works, you can adjust your workbook and try again. 
+
+The transformation process follows these rules:
+
+- The size of the Excel file must not be larger than 10MB.
+- Each tab (worksheet) needs to become a single entity or view. Hidden sheets are ignored.
+- Row 1 contains the column headings, which becomes the attribute names. All attribute names are in caps, with spaces turned into underscore characters. So, `Account name` becomes `ACCOUNT_NAME`, for example. Illegal characters, such as `%` are converted automatically. 
+- The data for the entity begins at row 2. The data in each column determines the type of the attribute (in row 1). Where the process cannot determine a type, it defaults to STRING. The data in each worksheet is saved in a separate CSV file.
+- Column A is used as the primary key for the entity (or root entity of the view).
+- A column attribute is ignored if it has no data in any rows.
+- Where a column is formatted as Excel Date type, the values for *all* rows in the column must be formatted properly and compliant with the specified date format.
+- If any column in an Excel sheet has a datetime value, this is converted to DATE type in the format yyyy-MM-dd.
+- [Entity references](#entity-references) are created (and used to set up views) where a worksheet contains a VLOOKUP that looks at a column on the same sheet, and looks up a dataset looked on a different sheet. 
+
+It is essential to look carefully at your workbook and adjust it to suit these rules. The more you can adjust the workbook to fit these rules, the better the resulting schema is likely to be. It will also make it easier for you to extract the data and reload it into your generated app.
+
+- In particular, make sure that the attribute that you want to be the primary key is in column A.
+- It is worth adjusting the data in row 1 so that this produces meaningful attribute names. In particular, you should avoid long names.
+
+##### Extracting the data
+The data from your workbook is not extracted at this stage. You can extract the data later, after you have generated a project in Create and built the app in Launchpad.
+
+To do this:
+
+1. Copy your Excel file into the folder `server/testData/excel`.
+
+2. In VSCode, go to the Genesis plugin on the right and select `Tasks -> Scripts -> ExcelData to CSV`.
+
+This creates a separate CSV (with the data starting at row 2) file for each worksheet to match the entities and views that have been created.
+
+##### Completing the application
+Once you have adjusted your spreadsheet and you have loaded it successfully (when you load it and Genesis Create responds with `Successfully detected schema`), you have a set of entities and (where relevant) views. You can proceed through the remaining steps in Genesis Create, then build and run your app.
+
+#### Finishing adding the entities
 When you have finished adding entities, click on the `Next` button at the bottom right of the window to go to the next step.
 
 ### Views
