@@ -150,6 +150,11 @@ The Kotlin version used in Genesis Server is now 2.1.0. Genesis applications can
 
 **Every Genesis server project is affected.**
 
+:::info
+The Kotlin 2.x compiler may use more heap memory in certain scenarios in comparison to the previous Kotlin 1.x compiler.
+Please ensure your project uses  the most up-to-date Gradle Daemon and Kotlin Compiler Daemon settings found on the [blank-app-seed](https://github.com/genesiscommunitysuccess/blank-app-seed/blob/prerelease/server/gradle.properties) for best results.
+:::
+
 #### Upgrading your server project
 In many cases, the upgrade steps are as simple as changing the Kotlin version and updating the Kotlin gradle plugin configuration. The main steps are shown below:
 
@@ -280,5 +285,5 @@ Ensure all `*-tables-dictionary.kts` files in your project **do not have the fol
 import global.genesis.dictionary.pal.tables
 ```
 :::tip
-For any other issues, Jetbrains has additionally released a very comprehensive [Kotlin 2.0 compiled migration guide](https://kotlinlang.org/docs/k2-compiler-migration-guide.html).
+For any other issues, Jetbrains has additionally released a very comprehensive [Kotlin 2.0 compiler migration guide](https://kotlinlang.org/docs/k2-compiler-migration-guide.html).
 :::
