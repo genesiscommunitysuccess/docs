@@ -16,11 +16,11 @@ import AvatarDemo from './examples/avatar.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Avatar
+An avatar is an element that can be used to personalize a display (for example, to display an image or the initials of a user) or to act as signals (such as traffic lights) to indicate the status of content. You can include a link with the avatar so that if a user clicks on it, they can go to a different URL.
 
 Use cases:
-* Display an image or text (usually initials) to represent a user.
-* Personalise the experience for a user
+* display an image or text (usually initials) to represent a user
+* personalize the experience for a user
 
 ## Example
 
@@ -91,23 +91,12 @@ Use cases:
 
 ## API
 
- Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+### Attributes
+This table shows attribute binding examples for Genesis Component syntax. The HTML closing tag is not included.
 
 <table>
   <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
   <tbody>
-    <tr>
-      <td>alt</td>
-      <td><code>string</code></td>
-      <td>Alternate text to display.</td>
-<td>
-
-```typescript
-<rapid-avatar alt="User Profile Image">
-```
-
-</td>
-    </tr>
     <tr>
       <td>link</td>
       <td><code>string</code></td>
@@ -123,7 +112,7 @@ Use cases:
     <tr>
       <td>name</td>
       <td><code>string</code></td>
-      <td>The name associated to the avatar</td>
+      <td>The name associated with the avatar</td>
 <td>
 
 ```typescript
@@ -159,7 +148,7 @@ Use cases:
     <tr>
       <td>color</td>
       <td><code>string</code></td>
-      <td>The text color of the avatar.</td>
+      <td>The text colour of the avatar.</td>
 <td>
 
 ```typescript
@@ -186,16 +175,16 @@ alpha-avatar {
 ```
 :::
 
-# Properties
+## Properties
 
-This component doesn't have any properties which are not also controlled via attributes.
+This component is controlled via attributes.
 
 ### Slots
 
 | Name | Description |
 |---|---|
-| media	| Used for media such as an image. |
-| Default |The default slot for avatar text, commonly a name or initials. |
+| media	| Used for media, such as an image. |
+| Default |The default slot for avatar text, which is commonly a name or initials. |
 | badge | Used to provide a badge, such as a status badge. |
 
 ### Parts

@@ -13,25 +13,21 @@ import DisclosureDemo from './examples/disclosure.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Disclosure
-
-A `disclosure` component is the implementation of native `details` and `summary` controls, which toggles the visibility of the extra content. Visually, it would look like a button or hyperlink beneath extra content.
+A `disclosure` component is the implementation of native `details` and `summary` controls, which toggles the visibility of the extra content. Visually, it can look like a button or a hyperlink beneath extra content.
 
 Use cases:
-* A button that controls the visibility of a section of content.
-* Flagging an item as part of a category.
-* Representing a value of unread messages.
+* displaying a button that controls the visibility of a section of content
+* flagging an item as part of a category
+* showing the number of unread messages
 
 :::note
-When the controlled content is hidden,
-it is often styled as a typical push button with
-a right-pointing arrow or triangle to hint that activating the
-button will display additional content. When the content is visible,
+When the controlled content is hidden, it is often styled as a typical push button with
+a right-pointing arrow or triangle that hints that the button will display additional content. When the content is visible,
 the arrow or triangle typically points down.
 :::
 
 ## Example
-
+The example below displays a hyperlink to further content.
 <DisclosureDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -115,7 +111,7 @@ the arrow or triangle typically points down.
 
 ## API
 
-Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+This table shows attribute binding examples for Genesis Component syntax. The HTML closing tag is not included.
 
 ### Attributes
 
