@@ -32,7 +32,7 @@ Use cases:
 
     Declaration
     ```html
-    <rapid-avatar shape="circle"></rapid-avatar>
+    <rapid-avatar></rapid-avatar>
     ```
 
     Usage
@@ -40,7 +40,7 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-avatar shape="circle"></rapid-avatar>
+        <rapid-avatar shape="circle" fill="green" color="black">JD</rapid-avatar>
       `,
     })
     export class MyElement extends GenesisElement {
@@ -52,13 +52,13 @@ Use cases:
 
   Declaration
   ```html
-    <rapid-avatar shape="circle"></rapid-avatar>
+    <rapid-avatar></rapid-avatar>
   ```
   Usage
   ```tsx
   export function MyComponent() {
     return (
-      <rapid-avatar shape="circle"></rapid-avatar>
+      <rapid-avatar shape="circle" fill="green" color="black">JD</rapid-avatar>
     );
   }
   ```
@@ -67,7 +67,7 @@ Use cases:
 
   Declaration
   ```html
-    <rapid-avatar shape="circle"></rapid-avatar>
+    <rapid-avatar></rapid-avatar>
   ```
 
   Usage
@@ -77,7 +77,7 @@ Use cases:
   @Component({
     selector: 'my-root',
     template: `
-          <rapid-avatar shape="circle"></rapid-avatar>
+          <rapid-avatar shape="circle" fill="green" color="black">JD</rapid-avatar>
         `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

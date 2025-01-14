@@ -1,6 +1,6 @@
 ---
-title: 'Horizontal Scroll'
-sidebar_label: 'Horizontal Scroll'
+title: 'Horizontal scroll'
+sidebar_label: 'Horizontal scroll'
 id: client-presentation-horizontal-scroll
 keywords: [presentation, horizontal, scroll]
 tags:
@@ -13,13 +13,14 @@ import HorizontalScrollDemo from './examples/horizontal-scroll';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Horizontal scroller
+The horizontal scroller provides an alternative to a horizontal scroll bar. When the screen space is not wide enough to display the whole the of the content, a right arrow ([a flipper](/develop/client-capabilities/interaction/client-interaction-flipper/)) is displayed. The user can click on the arrow to move to the right. Similarly, as soon as content disappears from view on the left side, a left arrow is displayed so that the user can move back in that direction.
 
 Use cases:
-- enabling the user to scroll through content
-- Alternative to typical dragging of a scrollbar to navigate through content. Uses buttons (fliipers) instead.
+- where there is insufficient space for horizontal scroll bars
+- where the content is broken into individual horizontal sections
 
 ## Example
+The example below shows the horizontal scroller in action. There are twelve individual cards displayed. If you reduce the size of your window so that they do not all fit, the flipper button appears at the right. If you click to move right, a flipper button appears at the left side to enable you to move back.
 
 <HorizontalScrollDemo />
 
@@ -188,14 +189,14 @@ This table shows attribute binding examples for Genesis Component syntax. The HT
 </table>
 
 ### Properties
-This component doesn't have any properties which are not also controlled via attributes.
+This component is only controlled via attributes.
 
 ### Slots
 | Name | Description |
 |---|---|
-| Default | Where the content to be scrolled is placed |
-| start | Content which can be provided before the scroll area |
-| end | Content which can be provided after the scroll area |
+| Default | This is where you place the content to be scrolled. |
+| start | You can place content before (to the left of) the `Default` content. This is not scrolled. |
+| end | You can place content after (to the right of) the `Default` content. This is not scrolled. |
 
 ### Parts
 | Name | Description |
@@ -203,16 +204,16 @@ This component doesn't have any properties which are not also controlled via att
 | scroll-area | Wraps the entire scrollable region. |
 | scroll-view | The visible scroll area. |
 | content-container | The container for the content. |
-| scroll-prev | The previous flipper container. |
-| scroll-action-previous | The element wrapping the previous flipper. |
-| scroll-next | The next flipper container. |
-| scroll-action-next | The element wrapping the next flipper. |
+| scroll-prev | The Previous flipper container. |
+| scroll-action-previous | The element wrapping the Previous flipper. |
+| scroll-next | The Next flipper container. |
+| scroll-action-next | The element wrapping the Next flipper. |
 
 ### Events fired
 | Name | Description |
 |---|---|
-| scrollstart | Fires a custom 'scrollstart' event when scrolling |
-| scrollend | Fires a custom 'scrollend' event when scrolling stops |
+| scrollstart | Fires a custom 'scrollstart' event when scrolling. |
+| scrollend | Fires a custom 'scrollend' event when scrolling stops. |
 
 ### Events listened to
 This component doesn't listen to any events.
