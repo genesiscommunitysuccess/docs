@@ -13,15 +13,15 @@ import CardDemo from './examples/card.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Card
+A card displays a set of content separate from other content on the screen.
 
 Use cases:
-* Container for content
-* Present collections of related information
-* Grouping of content
+* container for content
+* show collections of related information
+* grouping of content
 
 ## Example
-
+This simple example shows a card with a title at the top, some nonsense Latin text in the main area, and a (non-responsive) button at the bottom.
 <CardDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -38,7 +38,14 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-card></rapid-card>
+      <rapid-card>
+				<h4>Card title</h4>
+				<p>
+					At purus lectus quis habitant commodo, cras. Aliquam malesuada velit a tortor. Felis orci tellus netus risus et
+					ultricies augue aliquet.
+				</p>
+				<rapid-button>Test button</rapid-button>
+			</rapid-card>
       `,
     })
     export class MyElement extends GenesisElement {
@@ -56,7 +63,14 @@ Use cases:
   ```tsx
   export function MyComponent() {
     return (
-      <rapid-card></rapid-card>
+      <rapid-card>
+				<h4>Card title</h4>
+				<p>
+					At purus lectus quis habitant commodo, cras. Aliquam malesuada velit a tortor. Felis orci tellus netus risus et
+					ultricies augue aliquet.
+				</p>
+				<rapid-button>Test button</rapid-button>
+			</rapid-card>
     );
   }
   ```
@@ -74,7 +88,14 @@ Use cases:
   @Component({
     selector: 'my-root',
     template: `
-          <rapid-card></rapid-card>
+      <rapid-card>
+				<h4>Card title</h4>
+				<p>
+					At purus lectus quis habitant commodo, cras. Aliquam malesuada velit a tortor. Felis orci tellus netus risus et
+					ultricies augue aliquet.
+				</p>
+				<rapid-button>Test button</rapid-button>
+			</rapid-card>
         `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -86,8 +107,6 @@ Use cases:
 </Tabs>
 
 ## API
-
-Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
 
 ### Attributes
 
@@ -101,7 +120,7 @@ This component doesn't have any properties.
 
 | Name | Description |
 |---|---|
-| Default |The default slot for the card content |
+| Default |The default slot for the card content. |
 
 ### Parts
 

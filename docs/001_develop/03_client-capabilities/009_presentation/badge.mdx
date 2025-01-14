@@ -2,11 +2,11 @@
 title: 'Badge'
 sidebar_label: 'Badge'
 id: client-presentation-badge
-keywords: [presentation, badge, personalisation, user, image]
+keywords: [presentation, badge, personalization, user, image]
 tags:
 - presentation
 - badge
-- personalisation
+- personalization
 - user
 - image
 sidebar_position: 9
@@ -16,7 +16,7 @@ import BadgeDemo from './examples/badge.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Badge
+A badge is a visual status indicator or description of an associated component.
 
 Use cases:
 * highlighting an item
@@ -24,7 +24,7 @@ Use cases:
 * showing the number of unread messages
 
 ## Example
-
+This simple example shows a rectangular badge with text in light against a primary (green) background.
 <BadgeDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -41,7 +41,7 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-badge></rapid-badge>
+        <rapid-badge fill="primary" color="light">JD</rapid-badge>
       `,
     })
     export class MyElement extends GenesisElement {
@@ -59,7 +59,7 @@ Use cases:
   ```tsx
   export function MyComponent() {
     return (
-      <rapid-badge></rapid-badge>
+      <rapid-badge fill="primary" color="light">JD</rapid-badge>
     );
   }
   ```
@@ -77,7 +77,7 @@ Use cases:
   @Component({
     selector: 'my-root',
     template: `
-          <rapid-badge></rapid-badge>
+          <rapid-badge fill="primary" color="light">JD</rapid-badge>
         `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -90,7 +90,7 @@ Use cases:
 
 ## API
 
-Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
+This table shows attribute binding examples for Genesis Component syntax. The HTML closing tag is not included.
 
 <table>
   <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
@@ -98,7 +98,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
     <tr>
       <td>fill</td>
       <td><code>string</code></td>
-      <td>Background fill colour of the badge</td>
+      <td>Background fill colour of the badge.</td>
 <td>
 
 ```typescript
@@ -151,7 +151,7 @@ rapid-badge {
 
 ## Properties
 
-This component doesn't have any properties which are not also controlled via attributes.
+The properties for this are controlled via attributes.
 
 ### Slots
 

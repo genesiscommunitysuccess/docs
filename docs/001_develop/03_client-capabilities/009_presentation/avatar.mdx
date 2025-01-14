@@ -2,11 +2,11 @@
 title: 'Avatar'
 sidebar_label: 'Avatar'
 id: client-presentation-avatar
-keywords: [presentation, avatar, personalisation, user, image]
+keywords: [presentation, avatar, personalization, user, image]
 tags:
 - presentation
 - avatar
-- personalisation
+- personalization
 - user
 - image
 sidebar_position: 9
@@ -23,6 +23,7 @@ Use cases:
 * personalize the experience for a user
 
 ## Example
+This simple example displays a green circular avatar with text (initials).
 
 <AvatarDemo />
 
@@ -112,7 +113,7 @@ This table shows attribute binding examples for Genesis Component syntax. The HT
     <tr>
       <td>name</td>
       <td><code>string</code></td>
-      <td>The name associated with the avatar</td>
+      <td>The name associated with the avatar.</td>
 <td>
 
 ```typescript
@@ -124,7 +125,7 @@ This table shows attribute binding examples for Genesis Component syntax. The HT
     <tr>
       <td>shape</td>
       <td><code>"circle" | "square"</code></td>
-      <td>The shape of the avatar. Defaults to <code>circle</code></td>
+      <td>The shape of the avatar. Defaults to <code>circle</code>.</td>
 <td>
 
 ```typescript
@@ -136,7 +137,7 @@ This table shows attribute binding examples for Genesis Component syntax. The HT
     <tr>
       <td>fill</td>
       <td><code>string</code></td>
-      <td>Background fill colour of the avatar</td>
+      <td>Background fill colour of the avatar.</td>
 <td>
 
 ```typescript
@@ -162,8 +163,9 @@ This table shows attribute binding examples for Genesis Component syntax. The HT
 
 :::note
   The `fill` and `color` attributes of the `avatar` create CSS custom properties, which can be used to style the control.
-  Pass in the css name minus the "avatar-fill-" string for fill.
-  Pass in the css name minus the "avatar-color-" string for color.
+
+  - Pass in the css name minus the "avatar-fill-" string for fill.
+  - Pass in the css name minus the "avatar-color-" string for color.
 
 ```css
 alpha-avatar {
