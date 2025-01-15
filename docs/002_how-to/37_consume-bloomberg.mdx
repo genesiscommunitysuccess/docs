@@ -1,0 +1,56 @@
+---
+title: 'How to consume data from Bloomberg B-PIPE'
+sidebar_label: 'Consume data from Bloomberg B-PIPE'
+id: ht-consume-bloomberg
+keywords: [bloomberg, consume, data pipeline, b-pipe, B-PIPE]
+tags:
+    - bloomberg
+    - consume
+    - data pipeline
+    - b-pipe
+    - B-PIPE
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Bloomberg B-PIPE is a normalized and consolidated market data feed for financial markets pricing and reference data. The Genesis platform allows you to easily integrate with B-PIPE and consume this data into your application.
+
+For example, you can subscribe to real-time pricing information on financial instruments, query for product definitions, or query for historical trade information.
+
+## Example
+We have created an example application that shows how to consume market data updates.
+
+The application provides two pipelines, one to subscribe and one to consume. Subscriptions are generated for every instrument in the application database, and subscription updates flow into the market data table to update the UI grids in real-time.
+
+:::tip Download, view and run
+The examples are within one complete example application, which includes a front end so that you can run and see the data.
+
+You can [clone the repo](https://github.com/genesiscommunitysuccess/howto-bloomberg/tree/main) to see the code - which includes comments at the key points to highlight what is being specified - and run the application.
+
+The README file for the application provides set-up instructions for creating a similar application. As well as the pipeline definitions, this includes setting up dependencies, system definitions, the Event Handler (to trigger an event to insert data) and the Data Server (to provide data to the front end.)
+:::
+
+## Subscribing to Bloomberg
+In the example application, a pipeline is set up to generate a market data subscription for every instrument in the database. A short list of instruments is pre-loaded via CSV file.
+
+## Consuming from Bloomberg
+The example contains a second pipeline that listens to data updates coming from the data subscrptions. Whenever an update is received, it it updates the database, which updates the views which drive the real-time UI grids.
+
+## Testing
+
+:::info
+Go to our [**Testing**](/how-to/ht-prepare-test/) page for details of our testing tools and the dependencies that you need to declare.
+:::
+
+To test the set-up of a Data Pipeline for Bloomberg on your app:
+
+- *Please note that you will need access to a real Bloomberg B-PIPE or SAPI endpoint in order for this how-to guide to run correctly.*
+
+## Full technical details
+You can find full technical details in our reference documentation:
+
+- [Data Pipeline](/develop/server-capabilities/integrations/data-pipelines/)
+- [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/)
+- [Data Server](/develop/server-capabilities/real-time-queries-data-server/)
+
