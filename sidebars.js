@@ -141,6 +141,10 @@ module.exports = {
         },
         {
           type: 'doc',
+          id: 'how-to/ht-consume-bloomberg',
+        },
+        {
+          type: 'doc',
           id: 'how-to/ht-fdc3',
         }
       ],
