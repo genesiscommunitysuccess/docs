@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 
 The Genesis Bloomberg module provides all the tools necesassary to easily connect to a Bloomberg API instance and consume data directly into your Genesis Application.
 
-You can use the Bloomberg Connector directly in the [Data Pipelines](../../server-capabilities/integrations/data-pipelines/) integration framework to access Bloomberg data quickly and with minimal lines of code. 
+You can use the Bloomberg Connector in the [Data Pipelines](../../server-capabilities/integrations/data-pipelines/) integration framework to access Bloomberg data quickly and with minimal lines of code. 
 
 Alternatively, you can use the Bloomberg Client directly in your custom code to have full control and more flexibility in how you consume data. In either scenario, our highly resilient and recoverable client will take care of the heavy lifting, meaning you can focus on the application's business logic.
 
@@ -136,7 +136,7 @@ In order to use the Bloomberg client directly in your code, you can inject it vi
 
 ### Using Data Pipelines
 
-The Genesis Bloomberg module also allows direct integration with [Data Pipelines](../../server-capabilities/integrations/data-pipelines/). In order to create an instance of the `BloombergGateway`, which acts as both a source of Events, and a Sink for requests, you can use the `bloomberg` GPAL extension.
+The Genesis Bloomberg module also provides integration with [Data Pipelines](../../server-capabilities/integrations/data-pipelines/). In order to create an instance of the `BloombergGateway`, which acts as both a source of Events, and a Sink for requests, you can use the `bloomberg` GPAL extension.
 
 ```kotlin
 pipelines {
@@ -1002,4 +1002,4 @@ This event should be interpreted as a simultaneous receipt of a UserEntitlements
 </details>
 
 ## Examples
-For a real-world example of how to build an application that consumes Bloomberg Market Data, please see our [how-to guide](../../../how-to/ht-consume-bloomberg/).
+For a real-world example of how to build an application that consumes Bloomberg Market Data, please see our [how-to guide](https://docs.genesis.global/docs/how-to/ht-consume-bloomberg/).
