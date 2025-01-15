@@ -1,6 +1,6 @@
 ---
-title: 'Progress Ring'
-sidebar_label: 'Progress Ring'
+title: 'Progress ring'
+sidebar_label: 'Progress ring'
 id: client-presentation-progress-ring
 keywords: [presentation, progress, ring]
 tags:
@@ -13,22 +13,20 @@ import ProgressRingDemo from './examples/progress-ring.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Progress Ring
+A progress ring displays a circular indicator that an action is in progress.
 
-The [`Progress`](/develop/client-capabilities/presentation/client-presentation-progress/) and `Progress Ring` components are used to display one of the following:
+- If it contains a `value` attribute, the indicator shows how far the action has progressed towards completion (referred to as a **determinate** state). 
 
-- the length of time a process will take
-- a visual percentage value (referred to as a **determinate** state)
-- a visual representation of an unspecified wait time (referred to as an **indeterminate** state)
+- If there is no `value` attribute, the indicator simply displays an animated circle until the action has been completed (referred to as an **indeterminate** state).
 
-`Progress` components are typically visually represented by a circular or linear animation.
-When the `value` attribute is passed, the state is **determinate**; otherwise, it is **indeterminate**.
+Alternatively, you can indicate progress using the [progress](/develop/client-capabilities/presentation/client-presentation-progress/) component, which displays progress along a horizontal line.
 
 Use cases:
-- Progress indicators
-- Metric visualisation
+- progress indicators
+- metric visualisation
 
 ## Example
+The example below has two progress rings. The first has a `value` of 75 against a `max` of 100, so it indicates that the action is 75% percent complete. The second is indeterminate, so it simply shows the animated circle.
 
 <ProgressRingDemo />
 
@@ -46,7 +44,8 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-progress-ring></rapid-progress-ring>
+        <rapid-progress-ring min="0" max="100" value="75"></rapid-progress-ring>
+        <rapid-progress-ring min="0" max="100"></rapid-progress-ring>
       `,
     })
     export class MyElement extends GenesisElement {
@@ -64,7 +63,8 @@ Use cases:
   ```tsx
   export function MyComponent() {
     return (
-      <rapid-progress-ring></rapid-progress-ring>
+      <rapid-progress-ring min="0" max="100" value="75"></rapid-progress-ring>
+      <rapid-progress-ring min="0" max="100"></rapid-progress-ring>
     );
   }
   ```
@@ -82,7 +82,8 @@ Use cases:
   @Component({
     selector: 'my-root',
     template: `
-        <rapid-progress-ring></rapid-progress-ring>
+        <rapid-progress-ring min="0" max="100" value="75"></rapid-progress-ring>
+        <rapid-progress-ring min="0" max="100"></rapid-progress-ring>
         `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -144,7 +145,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 
 ### Properties
-This component doesn't have any properties which are not also controlled via attributes.
+The properties of this component are all controlled via attributes.
 
 ### Slots
 | Name | Description |

@@ -1,6 +1,6 @@
 ---
-title: 'Connection Indicator'
-sidebar_label: 'Connection Indicator'
+title: 'Connection indicator'
+sidebar_label: 'Connection indicator'
 id: client-presentation-connection-indicator
 keywords: [web, web components, presentation, connection-indicator]
 tags:
@@ -14,13 +14,13 @@ import ConnectionIndicatorDemo from './examples/connection-indicator.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The ConnectionIndicator component provides a clear visual indicator of the status pf the connection between the user device and the app server.
+The ConnectionIndicator component provides a clear visual indicator of the status of the connection between the user device and the app server.
 
 Use cases:
 * visual representation of the websocket connection status
 
 ## Example
-
+The example below shows a communication indicator, which should be set to `disconnected`.
 <ConnectionIndicatorDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -37,7 +37,7 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-connection-indicator></rapid-connection-indicator>
+        <rapid-connection-indicator show-label></rapid-connection-indicator>
       `,
     })
     export class MyElement extends GenesisElement {
@@ -55,7 +55,7 @@ Use cases:
   ```tsx
   export function MyComponent() {
     return (
-      <rapid-connection-indicator></rapid-connection-indicator>
+      <rapid-connection-indicator show-label></rapid-connection-indicator>
     );
   }
   ```
@@ -73,7 +73,7 @@ Use cases:
   @Component({
     selector: 'my-root',
     template: `
-          <rapid-connection-indicator></rapid-connection-indicator>
+          <rapid-connection-indicator show-label></rapid-connection-indicator>
         `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -129,7 +129,7 @@ This component doesn't listen to any events.
 
 ## Login Form
 
-This component has already been integrated into the form of the login page. To enable it, set the `showConnectionIndicator` parameter to `true`.
+This component is integrated into the form of the login page. To enable it, set the `showConnectionIndicator` parameter to `true`.
 
 #### Example login route settings
 

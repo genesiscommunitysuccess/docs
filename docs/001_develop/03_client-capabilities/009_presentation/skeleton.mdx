@@ -15,14 +15,13 @@ import TabItem from '@theme/TabItem';
 
 # Skeleton
 
-The `skeleton` component is used as a visual placeholder for an element while it is in a loading state.
-It usually presents itself as a simplified wireframe-like version of the UI it is representing.
+The `skeleton` component shows a visual placeholder for an element while it is in a loading state. This is usually presented as a simplified wireframe-like version of the UI that it is representing.
 
 Use cases:
-- Indicating loading state
+- Indicating loading state where a page could take time to load
 
 ## Example
-
+The example below displays a rectangular image based on a `.SVG` file. The `shimmer` attribute has been used to animate the image.
 <SkeletonDemo />
 
 <Tabs defaultValue="genesis" values={[{ label: 'Genesis', value: 'genesis', }, { label: 'React', value: 'react', }, { label: 'Angular', value: 'angular', }]}>
@@ -39,7 +38,7 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-skeleton></rapid-skeleton>
+        <rapid-skeleton shape="rect" pattern="/svg/skeleton-test-pattern.svg" shimmer></rapid-skeleton>
       `,
     })
     export class MyElement extends GenesisElement {
@@ -57,7 +56,7 @@ Use cases:
   ```tsx
   export function MyComponent() {
     return (
-      <rapid-skeleton></rapid-skeleton>
+      <rapid-skeleton shape="rect" pattern="/svg/skeleton-test-pattern.svg" shimmer></rapid-skeleton>
     );
   }
   ```
@@ -75,7 +74,7 @@ Use cases:
   @Component({
     selector: 'my-root',
     template: `
-        <rapid-skeleton></rapid-skeleton>
+        <rapid-skeleton shape="rect" pattern="/svg/skeleton-test-pattern.svg" shimmer></rapid-skeleton>
         `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -88,9 +87,9 @@ Use cases:
 
 ## API
 
-Property and attribute binding examples for Genesis Component syntax. Closing tag omitted.
-
 ### Attributes
+
+This table shows attribute binding examples for Genesis Component syntax. The HTML closing tag is not included.
 
 <table>
   <thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Example</th></tr></thead>
@@ -148,7 +147,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 
 ### Properties
-This component doesn't have any properties which are not also controlled via attributes.
+The properties for this component are all controlled via attributes.
 
 ### Slots
 | Name | Description |

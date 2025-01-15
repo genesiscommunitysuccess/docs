@@ -13,22 +13,20 @@ import ProgressDemo from './examples/progress.js';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Progress
+A progress component displays a horizontal linear indicator of an action in progress.
 
-Used to display one of the following:
+- If it contains a `value` attribute, the indicator shows how far the action has progressed towards completion (referred to as a **determinate** state). 
 
-- the length of time a process will take
-- a visual percentage value (referred to as a **determinate** state)
-- a visual representation of an unspecified wait time (referred to as an **indeterminate** state). Can be thought of as a loading animation.
+- If there is no `value` attribute, the indicator simply displays an animated line until the action has been completed (referred to as an **indeterminate** state).
 
-`Progress` components are typically visually represented by a circular or linear animation.
-When the `value` attribute is passed, the state is **determinate**; otherwise, it is **indeterminate**.
+Alternatively, you can indicate progress using the [progress ring](/develop/client-capabilities/presentation/client-presentation-progress-ring/) component, which displays progress using a circular indicator.
 
 Use cases:
-- Progress indicators
-- Metric visualisation
+- progress indicators
+- metric visualisation
 
 ## Example
+The example below shows a simple indicator with no `value`, so the line remains animated.
 
 <ProgressDemo />
 
@@ -46,7 +44,7 @@ Use cases:
     @customElement({
       name: 'my-element',
       template: html`
-        <rapid-progress></rapid-progress>
+        <rapid-progress min="0" max="100" ></rapid-progress>
       `,
     })
     export class MyElement extends GenesisElement {
@@ -64,7 +62,7 @@ Use cases:
   ```tsx
   export function MyComponent() {
     return (
-      <rapid-progress></rapid-progress>
+      <rapid-progress min="0" max="100" ></rapid-progress>
     );
   }
   ```
@@ -82,7 +80,7 @@ Use cases:
   @Component({
     selector: 'my-root',
     template: `
-        <rapid-progress></rapid-progress>
+        <rapid-progress min="0" max="100" ></rapid-progress>
         `,
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -144,7 +142,7 @@ Property and attribute binding examples for Genesis Component syntax. Closing ta
 
 
 ### Properties
-This component doesn't have any properties which are not also controlled via attributes.
+The properties of this component are all controlled via attributes.
 
 ### Slots
 | Name | Description |
