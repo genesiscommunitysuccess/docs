@@ -473,6 +473,61 @@ val batchPollSource = dbBatchQuery<TestIndexTable>(batchSize = 200) {
 // this source will return batches of List<TestIndexTable>
 ```
 
+### `dbBulkSubscribe`
+
+This is a real-time bulk subscription to the database for a particular entity and can be used for tables or views.
+
+:::important
+
+This source implementation is not recoverable, meaning on each invocation of this pipeline all records in the table will be processed.
+
+:::
+
+The source returns a flow of `Bulk` objects for your chosen entity which will need to be converted to the underlying record using a mapper, an example of which has been provided below:
+
+```kotlin
+// the following mapper class extracts the Trades record from each Bulk<Trades> object and returns it to the pipeline:
+class TradesMapper : SuspendElementOperator<Bulk<Trades>, Trades> {
+    override suspend fun apply(input: Bulk<Trades>): Trades? = when (input) {
+        Bulk.Prime.Completed,
+        is Bulk.Update.Delete -> null
+        is Bulk.Prime.Record -> input.record
+        is Bulk.Update.Insert -> input.record
+        is Bulk.Update.Modify -> input.record
+    }
+}
+
+// then in your pipelines script:
+pipeline("TEST_DB_BULK_SUBSCRIBE") {
+        source(dbBulkSubscribe<Trades>())
+            .map(TradesMapper())
+            .sink(TradesSink())
+    }
+```
+
+If you want to use this source to subscribe to a view, you have the option of setting `backwardsJoin` to `true`. Note: in order to receive updates from changes to any non-primary table in your view, you must set this configuration in the pipeline source
+regardless of whether the view itself has joins with `backwardsJoin` set to `true`.
+This setting is defaulted to false but can be set to true as shown below:
+
+```kotlin
+pipeline("TEST_DB_BULK_SUBSCRIBE") {
+        source(dbBulkSubscribe<Trades>() { backwardsJoin = true })
+            .map(TradesMapper())
+            .sink(TradesSink())
+    }
+```
+
+### `dbBulkQuery`
+
+This is a batch executable source for doing a bulk query on a table or view. It returns a flow of the object you have specified when defining the source:
+
+```kotlin
+pipeline("TEST_DB_BULK_QUERY") {
+        source(dbBulkQuery<Trades>())
+            .sink(TradesSink())
+    }
+```
+
 #### `AbstractProgrammaticSource`
 
 This is an abstract implementation of a real-time acknowledgement source that additionally has a send method, which can be used by any custom code to provide data to the pipeline.
@@ -599,6 +654,12 @@ eventHandler<Trade>(name = "TEST_PIPELINE_START") {
   }
 }
 ```
+
+#### `typedBatchSource`
+
+This is a convenience source which allows you to easily wrap a custom function in a GPAL pipelines definition. For example, if you want to call an external REST API using one of our generated service classes.
+
+ADD EXAMPLE
 
 ### Split operators
 
@@ -742,7 +803,7 @@ pipeline("TEST_DB_SINK") {
   .sink(txDbSink())
 }
 ```
-<!--- TODO uncomment on release of 8.7
+
 #### `fileSink`
 
 This sink implementation allows you to write data to files on the file system of the server hosting your application. It accepts objects of type `PipelineFile`, which includes the file name, file path and input stream of its contents.
@@ -833,7 +894,52 @@ pipeline("CAMEL_SFTP_OUTBOUND_PIPELINE") {
   )
 }
 ```
--->
+
+### Connectors
+
+A connector is a pipeline element that acts as both a source and a sink, consuming elements from one pipeline and emitting to another. This is particular useful for when you require blending multiple inbound streaming feeds together.
+
+#### connector
+
+This is an example of how to use the connector in a pipeline.
+
+```kotlin
+val tradesConnector = connector<Trade>()
+
+pipeline("TEST_CSV_ENCODER") {
+        source(dbBulkQuery<Trade>())
+            .transform(csvEncoder())
+            .sink(tradesConnector)
+    }
+
+
+pipeline("TEST_TRADE_TO_KAFKA") {
+    // same connector object can be used as source for another pipeline
+    source(tradesConnector)
+    .sink(kafkaSink) // see how to define a kafkaSink further down
+}
+```
+
+#### ackConnector
+
+The `ackConnector` is the exact same as the `connector` except it incorporates the acknowledgement mechanism. The sink call does not return until the downstream sink has processed the element.
+
+```kotlin
+val tradesConnector = ackConnector<Trade>()
+
+pipeline("TEST_CSV_ENCODER") {
+        source(dbBulkQuery<Trade>())
+            .transform(csvEncoder())
+            .sink(tradesConnector)
+    }
+
+
+pipeline("TEST_TRADE_TO_KAFKA") {
+    // same connector object can be used as source for another pipeline
+    source(tradesConnector)
+    .sink(kafkaSink) // see how to define a kafkaSink further down
+}
+```
 
 ### Completion handlers
 
@@ -873,6 +979,30 @@ pipeline("TEST_TRADE_PIPELINE") {
         .map(mapper)
         .sink(logSink)
         .onCompletion(insertTradeOnCompletionHandler)
+}
+```
+
+#### `sendCustomEventOnCompletion`
+
+This handler works in the exact same way as `sendEventOnCompletion` above except the return type of the event can be specified. This can therefore be used when the return type of your custom event is anything other than EventReply.
+
+```kotlin
+
+val saveDocumentOnCompletionHandler = sendCustomEventOnCompletion<Trade, TradeDetails, EventSaveDocumentReply> {
+            eventName = "EVENT_SAVE_DOCUMENT"
+            buildEvent { context: PipelineContext<Bulk<Bond>> ->
+                GenesisSet {
+                    // construct GenesisSet here
+                }
+            }
+        }
+
+pipeline("TEST_CSV_ENCODER") {
+        source(dbBulkQuery<Trade>())
+            // encoder is expecting objects of type Trade as defined in source
+            .transform(csvEncoder())
+            .sink(streamSink)
+            .onCompletion(saveDocumentOnCompletionHandler)
 }
 ```
 
