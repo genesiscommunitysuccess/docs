@@ -13,7 +13,7 @@ sidebar_position: 7
 import Log from '/snippet/_LOG.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
 
-Almost every application has workflows where work items move from one state to another, such as *new*, *amended* and *completed*. It can be difficult to manage transitions from one state to another using a standard event handler. 
+Almost every application has workflows where work items move from one state to another, such as *new*, *amended* and *completed*. But it can be difficult to manage transitions from one state to another using a standard event handler. 
 
 - You might want to limit transitions (e.g. you can only transition from *new* to *amended*, and never from *amended* to *new*).
 - You might need validation for specific states (e.g. to move to *completed*, the quantity must be greater than 0)
@@ -33,7 +33,7 @@ To achieve this, you can create a [table](/develop/server-capabilities/data-mode
 
 Once you have the states, there are two main sets of logic that you have to define. The recommended way to do this is to create dedicated `eventHandler` code blocks in your [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) service:
 
-- **Transitions**. You must define all the required transitions from state to state. In our example, you could define that an order must be `ASSIGNED` before it is moved to `PARTIALLY_FILLED`. And you might want`CANCELLED` orders to remain cancelled, so you would not define any transitions from there.
+- **Transitions**. You must define all the required transitions from state to state. In our example, you could define that an order must be `ASSIGNED` before it is moved to `PARTIALLY_FILLED`. And you might want `CANCELLED` orders to remain cancelled, so you would not define any transitions from there.
 
 - **Validation**. You must define the checks that ensure that the trade or order has the right information to make the required transition. For example, an Order must have `ASSIGNED_TO` set to a valid user in the system to transition to `ASSIGNED`.
 
