@@ -13,9 +13,9 @@ sidebar_position: 7
 import Log from '/snippet/_LOG.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
 
-Most applications are focused on trades and orders. And virtually every type of trade and order has its own lifecycle, which tracks it through various states.
+Almost every application has workflows where work items move from one state to another, such as *new*, *amended* and *completed*. It is difficult to handle the transitions from one state to another simply using the standard database operations - insert, modify and delete.
 
-The State Machine enables you to specify those states and the workflow from one state to another. 
+The State Machine provides extensions to the Event Handler that make it easy to define and code these transitions and their validations.  
 
 For example, if you are building an Order Management System, you could define the following states for your orders:
 
@@ -28,7 +28,7 @@ For example, if you are building an Order Management System, you could define th
 
 To achieve this, you can create a [table](/develop/server-capabilities/data-model/#tables) called ORDER_STATUS. Each state would have a field of type ENUM in the table.
 
-Once you have the states, there are two main sets of logic that must be defined. The recommended way to do this is to create dedicated `eventHandler` code blocks in your [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) service:
+Once you have the states, there are two main sets of logic that you have to define. The recommended way to do this is to create dedicated `eventHandler` code blocks in your [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) service:
 
 - **Transitions**. You must define all the required transitions from state to state. In our example, you could define that an order must be `ASSIGNED` before it is moved to `PARTIALLY_FILLED`. And you might want`CANCELLED` orders to remain cancelled, so you would not define any transitions from there.
 
@@ -38,13 +38,13 @@ You need to create an `eventHandler` for every required transition in the workfl
 
 ## Example configuration
 
-State Machines can be written in-line within a GPAL Event Handler. This is the recommended approach when using GPAL in your application.
+You can specify your State Machine in a [GPAL Event Handler](/develop/server-capabilities/core-business-logic-event-handler/). This is the recommended approach when using GPAL in your application.
 
 :::info
-A [StateMachine API](#statemachine-api) is also available, which can be used if you decide to write your `eventHandler codeblocks using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api). See further down for examples and docs.
+If you decide to write your `eventHandler` codeblocks using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api), you need to create your State Machine as a set of Java or Kotlin classes. Our section on the [StateMachine API](#statemachine-api) provides details and examples.
 :::
 
-The following example of a State Machine defines five events that control the transition of orders from one state to another.
+The following example of a State Machine defines events for insert and modify. After these, it defines five `transitionEvent` events that control the transition of orders from one state to another.
 
 ```kotlin
 eventHandler {
