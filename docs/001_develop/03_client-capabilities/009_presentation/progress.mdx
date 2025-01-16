@@ -26,7 +26,7 @@ Use cases:
 - metric visualisation
 
 ## Example
-The example below shows a simple indicator with no `value`, so the line remains animated.
+The example below shows two simple indicators. The first has a `value` of 50 against a `max` of 100, so it indicates that the action is 50% percent complete. The second is indeterminate, so it simply shows the animated line.
 
 <ProgressDemo />
 
@@ -44,6 +44,7 @@ The example below shows a simple indicator with no `value`, so the line remains 
     @customElement({
       name: 'my-element',
       template: html`
+        <rapid-progress min="0" max="100" value="50"></rapid-progress>
         <rapid-progress min="0" max="100" ></rapid-progress>
       `,
     })
@@ -62,6 +63,7 @@ The example below shows a simple indicator with no `value`, so the line remains 
   ```tsx
   export function MyComponent() {
     return (
+      <rapid-progress min="0" max="100" value="50"></rapid-progress>
       <rapid-progress min="0" max="100" ></rapid-progress>
     );
   }
@@ -80,6 +82,7 @@ The example below shows a simple indicator with no `value`, so the line remains 
   @Component({
     selector: 'my-root',
     template: `
+        <rapid-progress min="0" max="100" value="50"></rapid-progress>
         <rapid-progress min="0" max="100" ></rapid-progress>
         `,
     standalone: true,

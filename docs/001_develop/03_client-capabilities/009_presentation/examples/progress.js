@@ -17,6 +17,7 @@ export default function ProgressDemo({ children, color }) {
 		<CodeSection>
 			<div style={{ color: 'var(--neutral-foreground-rest)', width: '100%'}}>
 				<div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', flexDirection: 'row', justifyContent: 'space-evenly' }}>
+					<rapid-progress style={{ width: '100%'}} min="0" max="100" value="50"></rapid-progress>
 					<rapid-progress style={{ width: '100%'}} min="0" max="100" ></rapid-progress>
 				</div>
 			</div>
