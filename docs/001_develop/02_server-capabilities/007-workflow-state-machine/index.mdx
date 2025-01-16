@@ -13,13 +13,15 @@ sidebar_position: 7
 import Log from '/snippet/_LOG.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
 
-## Overview
+Almost every application has workflows where work items move from one state to another, such as *new*, *amended* and *completed*. But it can be difficult to manage transitions from one state to another using a standard event handler. 
 
-The Genesis server State Machine is used to define workflows for an application's table entities. State Machines work in conjunction with [Event Handlers](/develop/server-capabilities/core-business-logic-event-handler/) to ensure records for the entity follow the correct workflow at all times.
+- You might want to limit transitions (e.g. you can only transition from *new* to *amended*, and never from *amended* to *new*).
+- You might need validation for specific states (e.g. to move to *completed*, the quantity must be greater than 0)
 
-To give an example, you may be building an Order Management System, and need to define the lifecycle of your orders. You may have various states for your order defined in an ENUM:
+The State Machine provides easy ways of implementing these requirements.
 
-ORDER_STATUS:
+For example, if you are building an Order Management System, you could define the following states for your orders:
+
 - NEW
 - ASSIGNED
 - PARTIALLY_FILLED
@@ -27,20 +29,25 @@ ORDER_STATUS:
 - COMPLETED
 - CANCELLED
 
-There are typically two aspects of related system logic to define in your State Machine:
+To achieve this, you can create a [table](/develop/server-capabilities/data-model/#tables) called ORDER_STATUS. Each state would have a field of type ENUM in the table.
 
-1. **Transitions** ; Define what the valid transitions between the states are. Building on our example, you may need to configure that order must be `ASSIGNED` before it is moved to `PARTIALLY_FILLED`. Also, `CANCELLED` is an end state and thus has no valid transitions to another state.
-1. **State Validation** ; Validate that all the required fields are set to transition to a given state. For example, an Order must have `ASSIGNED_TO` set to a valid user in the system to transition to `ASSIGNED`.
+Once you have the states, there are two main sets of logic that you have to define. The recommended way to do this is to create dedicated `eventHandler` code blocks in your [Event Handler](/develop/server-capabilities/core-business-logic-event-handler/) service:
+
+- **Transitions**. You must define all the required transitions from state to state. In our example, you could define that an order must be `ASSIGNED` before it is moved to `PARTIALLY_FILLED`. And you might want `CANCELLED` orders to remain cancelled, so you would not define any transitions from there.
+
+- **Validation**. You must define the checks that ensure that the trade or order has the right information to make the required transition. For example, an Order must have `ASSIGNED_TO` set to a valid user in the system to transition to `ASSIGNED`.
+
+You need to create an `eventHandler` for every required transition in the workflow - no `eventHandler`, no transition.
 
 ## Example configuration
 
-State Machines can be written in-line within a GPAL Event Handler. This is the recommended approach when using GPAL in your application.
+You can specify your State Machine in a [GPAL Event Handler](/develop/server-capabilities/core-business-logic-event-handler/). This is the recommended approach when using GPAL in your application.
 
 :::info
-A [StateMachine API](#statemachine-api) is also available, which can be used if you decide to write your event handlers using the [event handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api). See further down for examples and docs.
+If you decide to write your `eventHandler` codeblocks using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api), you need to create your State Machine as a set of Java or Kotlin classes. Our section on the [StateMachine API](#statemachine-api) provides details and examples.
 :::
 
-The following example of a State Machine defines five events that control the transition of orders from one state to another.
+The following example of a State Machine defines events for insert and modify. After these, it defines five `transitionEvent` events that control the transition of orders from one state to another.
 
 ```kotlin
 eventHandler {
@@ -175,7 +182,7 @@ eventHandler {
 
 ## Configuration options
 
-State Machines can either be written in-line within a GPAL event handler, or else written in Kotlin and injected for use. Configuration options for both are detailed here.
+The recommended way to create a State Machine is to write it in a [GPAL Event Handler](/develop/server-capabilities/core-business-logic-event-handler/). Alternatively, you can write specific classes in Kotlin and inject them for use. Configuration options for both are detailed here.
 
 ### `stateMachine`
 
@@ -377,7 +384,7 @@ The State Machine is used to configure workflow states, and works hand in hand w
 
 In-line State Machines are defined as Event Handlers in your application's `*-eventhandler.kts` file and you shouldn't need to do any more.
 
-If you have defined your State Machine in kotlin, make sure the Event Handler definition in the `processes.xml` includes the `.jar` file containing the State Machine in `<classpath>`.
+If you have defined your State Machine in Kotlin, make sure the Event Handler definition in the `processes.xml` includes the `.jar` file containing the State Machine in `<classpath>`.
 
 <CommonProcesses/>
 
@@ -389,11 +396,11 @@ See the [Event Handlers testing section](/develop/server-capabilities/core-busin
 
 ## StateMachine API
 
-The Genesis Application Platform also offers an API for writing your State Machine in kotlin. This approach is best used when you have written your Event Handlers using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api).
+The Genesis Application Platform also offers an API for writing your State Machine in Kotlin. This approach is best used when you have written your Event Handlers using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api).
 
 ### Example code
 
-The following is an example State Machine written in kotlin. The functionality in this example mirrors the in-line GPAL [example configuration](#example-configuration) described previously.
+The following is an example State Machine written in Kotlin. The functionality in this example mirrors the in-line GPAL [example configuration](#example-configuration) described previously.
 
 ```kotlin
 @Module
@@ -541,7 +548,7 @@ You can build a State Machine using this interface by providing:
 - the state of the entity field to manage; this field needs to be ENUM field. In our example, it is called `OrderStatus`.
 - the side effect of a state change, which is something you can subscribe to when the state changes to trigger further actions. In our example, it is called `OrderEffect` and you can see we add it in-line in the same file we create the StateMachine module.
 
-The following is an example State Machine written in kotlin. This would be injected into your Event Handler as described in the [configuration options](#configuration-options) section.
+The following is an example State Machine written in Kotlin. This would be injected into your Event Handler as described in the [configuration options](#configuration-options) section.
 
 This option is only recommended when you are using the [Event Handler API](/develop/server-capabilities/core-business-logic-event-handler/#event-handler-api) for your Event Handler.
 
