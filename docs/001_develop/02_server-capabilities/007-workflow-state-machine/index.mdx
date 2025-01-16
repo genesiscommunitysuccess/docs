@@ -13,9 +13,12 @@ sidebar_position: 7
 import Log from '/snippet/_LOG.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
 
-Almost every application has workflows where work items move from one state to another, such as *new*, *amended* and *completed*. It is difficult to handle the transitions from one state to another simply using the standard database operations - insert, modify and delete.
+Almost every application has workflows where work items move from one state to another, such as *new*, *amended* and *completed*. It can be difficult to manage transitions from one state to another using a standard event handler. 
 
-The State Machine provides extensions to the Event Handler that make it easy to define and code these transitions and their validations.  
+- You might want to limit transitions (e.g. you can only transition from *new* to *amended*, and never from *amended* to *new*).
+- You might need validation for specific states (e.g. to move to *completed*, the quantity must be greater than 0)
+
+The State Machine provides easy ways of implementing these requirements.
 
 For example, if you are building an Order Management System, you could define the following states for your orders:
 
