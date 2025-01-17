@@ -94,15 +94,7 @@ In this application, we can simulate automated processes by adding buttons that 
 - closing prices
 - variation margin
 
-1. Go to the file `OTE\client\src\routes\processes\process-history-manager\process-history.ts` file.<br></br>Add the following import code, which creates a connection to the `eventHandler`.
-
-Add the following code at the bottom of the list of existing import code:
-
-```
-import { Connect } from "@genesislcap/foundation-comms";
-```
-
-2. Find the code below:
+1. Go to the file `OTE\client\src\routes\processes\process-history-manager\process-history.ts` file.<br></br> Find the code below:
 
 ```
 export class ProcessesProcessHistoryManager extends GenesisElement {
@@ -111,7 +103,7 @@ export class ProcessesProcessHistoryManager extends GenesisElement {
 }
 ```
 
-... and replace it with the following, which will make the button specifically call the right event in the eventHandler:
+... and replace it with the following, which will make the button specifically call the relevant event in the eventHandler:
 
 ```
 export class ProcessesProcessHistoryManager extends GenesisElement {
@@ -166,14 +158,7 @@ export class ProcessesProcessHistoryManager extends GenesisElement {
 }
 ```
 
-3. Go to the file `OTE\client\src\routes\processes\process-history-manager\process-history.template.ts`. <br></br>
-Remove the following two lines:
-
-```ts
-createEvent="${(x) => getViewUpdateRightComponent(x.user, 'ProcessLogUpdate', 'EVENT_PROCESS_LOG_INSERT')}"
-:createFormUiSchema=${() => createFormSchema }
-```
-4. Now you can add the action buttons that enable the user to trigger the processes. Find the line `></entity-management>` and replace the line with the below:
+2. Add the action buttons that enable the user to trigger the processes. Find the line `></entity-management>` and replace the line with the below:
 
 ```ts
   crud-menu-position="top"
@@ -222,4 +207,4 @@ export const ProcessHistoryTemplate = html<ProcessesProcessHistoryManager>`
     )}`;
 ```
 
-The buttons now are displayed at the top right of the menu for the component. When the user clicks on a button, it triggers the relevant event.
+When you build and run again, the buttons are now displayed at the top right of the menu for the component. The user can click on a button to trigger the relevant event.
