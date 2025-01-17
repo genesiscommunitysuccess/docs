@@ -13,7 +13,7 @@ sidebar_position: 7
 import Log from '/snippet/_LOG.md'
 import CommonProcesses from '/snippet/_common-see-processes.md'
 
-Almost every application has workflows where work items move from one state to another, such as *new*, *amended* and *completed*. But it can be difficult to manage transitions from one state to another using a standard event handler. 
+Almost every application has workflows where work items move from one state to another, such as *new*, *amended* and *completed*. But it can be difficult to manage transitions from one state to another using a standard Event Handler:
 
 - You might want to limit transitions (e.g. you can only transition from *new* to *amended*, and never from *amended* to *new*).
 - You might need validation for specific states (e.g. to move to *completed*, the quantity must be greater than 0)
