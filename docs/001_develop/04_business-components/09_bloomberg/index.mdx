@@ -21,15 +21,17 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-The Genesis Bloomberg module provides all the tools necesassary to easily connect to a Bloomberg API instance and consume data directly into your Genesis Application.
+The Genesis Bloomberg module provides all the tools you need to connect easily to a Bloomberg API instance. This enables you to consume data directly into your Genesis Application.
 
-You can use the Bloomberg Connector in the [Data Pipelines](../../server-capabilities/integrations/data-pipelines/) integration framework to access Bloomberg data quickly and with minimal lines of code. 
+- You can use the Bloomberg Connector in the [Data Pipelines](../../server-capabilities/integrations/data-pipelines/) integration framework to access Bloomberg data quickly and with minimal lines of code. 
 
-Alternatively, you can use the Bloomberg Client directly in your custom code to have full control and more flexibility in how you consume data. In either scenario, our highly resilient and recoverable client will take care of the heavy lifting, meaning you can focus on the application's business logic.
+- Alternatively, you can use the Bloomberg Client directly in your custom code. This gives you full control and more flexibility in how you consume data. 
 
-## Adding Bloomberg to your Project
+In either scenario, our highly resilient and recoverable client takes care of the heavy lifting, meaning you can focus on the application's business logic.
 
-In order to use the capabilites of this module, you must add the following dependency to your application:
+## Adding Bloomberg to your project
+
+To use this module, you must add the following dependency to your application:
 
 ```kotlin
 implementation("global.genesis:bloomberg-genesis:${properties["genesisIntegrationVersion"]}")
@@ -57,10 +59,10 @@ You can also use the genx CLI to add dependencies and configuration files manual
     </TabItem>
 </Tabs>
 
-## Consuming Data
+## Consuming data
 
-### Common Configuration
-Both the direct and Data Pipelines approaches both use a common configuration structure in GPAL, which offers auto-complete and type-safe configuration for initialising a Bloomberg client.
+### Common donfiguration
+The direct and Data Pipelines approaches both use a common configuration structure in GPAL, which offers auto-complete and type-safe configuration for initializing a Bloomberg client.
 
 ```kotlin
 bloomberg {
@@ -78,7 +80,7 @@ bloomberg {
 }
 ```
 
-The `addServer` function allows you to add multiple IP address / port combinations that the client will use to connect. Each function will add a server to the underlying array, and the client will connect in a round-robin fashion. The port is optional, and will default to 8194.
+The `addServer` function enables you to add multiple IP address/port combinations, which enable the client to connect. Each function adds a server to the underlying array, and the client connects in a round-robin fashion. The port is optional, and defaults to 8194.
 
 The other configuration options are as follows:
  - applicationName (required): This is the identifier for the application. When the client connects, it will first authenticate the application before requesting data. This value will be set up on the Bloomberg remote server as part of onboarding.
@@ -92,10 +94,8 @@ The other configuration options are as follows:
  - enableEntitlementChecks (optional): Boolean flag indicating whether the client should emit events detailing user entitlement changes to the Application. If consuming data from a service that requires EID checking, the application MUST correctly handle these events in order to enforce Bloomberg EMRS entitlements and pass certification.
  - wrapData (optional): Boolean flag indicating whether data points should be wrapped in a DataField wrapper class, that supports interrogation for data type information. Defaults to true. Wrapping the data makes writing the consumer logic easier, at the cost of additional memory overhead in the application. For applications with a large number of topic subscriptions, or requirements to handle a large number of updates, it may be prudent to set this to false.
 
-
-
-### Using the Client Directly
-In order to use the Bloomberg client directly in your code, you can inject it via [dependency injection](../../server-capabilities/custom-components/#injecting-dependencies). The client will attempt to find a file matching the pattern `*-bloomberg.kts` included as part of the process definition, and use this to initialise the client automatically.
+### Using the client directly
+In order to use the Bloomberg client directly in your code, you can inject it via [dependency injection](../../server-capabilities/custom-components/#injecting-dependencies). To initialize automatically, the client attempts to find a file matching the pattern `*-bloomberg.kts` included as part of the process definition.
 
 <details>
 <summary>Code Examples</summary>
