@@ -21,13 +21,15 @@ import TabItem from '@theme/TabItem';
 
 ## Overview
 
-The Genesis Bloomberg module provides all the tools you need to connect easily to a Bloomberg API instance. This enables you to consume data directly into your Genesis Application.
+The Genesis Bloomberg module provides all the tools you need to connect easily to a Bloomberg API instance. This enables you to consume data directly in your Genesis application.
+
+There are two different ways to set this up:
 
 - You can use the Bloomberg Connector in the [Data Pipelines](../../server-capabilities/integrations/data-pipelines/) integration framework to access Bloomberg data quickly and with minimal lines of code. 
 
 - Alternatively, you can use the Bloomberg Client directly in your custom code. This gives you full control and more flexibility in how you consume data. 
 
-In either scenario, our highly resilient and recoverable client takes care of the heavy lifting, meaning you can focus on the application's business logic.
+Whichever you choose, our highly resilient and recoverable client takes care of the heavy lifting; you can focus on the application's business logic.
 
 ## Adding Bloomberg to your project
 
@@ -62,7 +64,7 @@ You can also use the genx CLI to add dependencies and configuration files manual
 ## Consuming data
 
 ### Common configuration
-The direct and Data Pipelines approaches both use a common configuration structure in GPAL. This offers auto-complete and type-safe configuration for initializing a Bloomberg client.
+Whether you are creating Data Pipelines or using Bloomberg Client directly in your custom code, there is a common configuration structure in GPAL. This offers auto-complete and type-safe configuration for initializing a Bloomberg client.
 
 ```kotlin
 bloomberg {
@@ -91,8 +93,8 @@ The other configuration options are :
  - clientName (optional): The name of the client as used by process monitoring and healthchecks. Defaults to 'BloombergClient'. Change this if you want more granularity of monitoring on different client instances within your application.
  - numberOfStartAttempts (optional): The number of connection attempts to make to the remote server. This is a direct configuration option on the Bloomberg API library. When this number has been exhausted, the Genesis Client will wait for the reconnection delay and then restart the session. Defaults to 10.
  - reconnectionDelayMillis (optional): The time in milliseconds to wait before attempting to recreate and restart the session connection to Bloomberg. This configures the Genesis client, not the underlying library. While the Genesis client is running, it will continually attempt to connect.
- - enableEntitlementChecks (optional): Boolean flag indicating whether the client should emit events detailing user entitlement changes to the Application. If consuming data from a service that requires EID checking, the application MUST correctly handle these events in order to enforce Bloomberg EMRS entitlements and pass certification.
- - wrapData (optional): Boolean flag indicating whether data points should be wrapped in a DataField wrapper class, that supports interrogation for data type information. Defaults to true. Wrapping the data makes writing the consumer logic easier, at the cost of additional memory overhead in the application. For applications with a large number of topic subscriptions, or requirements to handle a large number of updates, it may be prudent to set this to false.
+ - enableEntitlementChecks (optional): Boolean flag indicating whether the client should emit events detailing user entitlement changes to the application. If consuming data from a service that requires EID checking, the application MUST handle these events correctly in order to enforce Bloomberg EMRS entitlements and pass certification.
+ - wrapData (optional): Boolean flag indicating whether data points should be wrapped in a DataField wrapper class, which supports interrogation for data-type information. Defaults to true. Wrapping the data makes writing the consumer logic easier, at the cost of additional memory overhead in the application. For applications with a large number of topic subscriptions, or requirements to handle a large number of updates, it may be prudent to set this to false.
 
 ### Using the client directly
 In order to use the Bloomberg client directly in your code, you can inject it via [dependency injection](../../server-capabilities/custom-components/#injecting-dependencies). To initialize automatically, the client attempts to find a file matching the pattern `*-bloomberg.kts` included as part of the process definition.
@@ -136,7 +138,7 @@ In order to use the Bloomberg client directly in your code, you can inject it vi
 
 ### Using Data Pipelines
 
-The Genesis Bloomberg module also provides integration with [Data Pipelines](../../server-capabilities/integrations/data-pipelines/). In order to create an instance of the `BloombergGateway`, which acts as both a source of Events, and a Sink for requests, you can use the `bloomberg` GPAL extension.
+In order to create an instance of the `BloombergGateway`, you can set up a [Data Pipeline](../../server-capabilities/integrations/data-pipelines/), which acts as both a source of Events, and a Sink for requests. To do this, you can use the `bloomberg` GPAL extension.
 
 ```kotlin
 pipelines {
@@ -169,19 +171,20 @@ pipelines {
 ```
 
 In addition to the configuration properties detailed [above](./#common-configuration), the Gateway configuration also exposes additional config options:
+
  - pipelineBufferSize (optional): The number of elements to buffer while they are waiting to be consumed by the sink. Defaults to 1000. Note that only data updates will be discarded. User entitlement updates will not be discarded and the buffer will have to clear before they can be processed.
 
 ## Client API
 
 ### Requests
-Requests are sent to Bloomberg. They have a common supertype, `BloombergRequest`, that is the input type supported by the Bloomberg Sink in Data Pipelines. Sending a request is how you interact with the Bloomberg client.
+Sending a request is how you interact with the Bloomberg client. All requests that are sent to Bloomberg have a common supertype, `BloombergRequest`, which is the input type supported by the Bloomberg Sink in Data Pipelines. 
 
 ##### DataSubscription
-The DataSubscription contains the information required to subscribe to a real time data feed from a Bloomberg API service. It contains the following fields:
+The DataSubscription contains the information required to subscribe to a real-time data feed from a Bloomberg API service. It contains the following fields:
  - correlationId (String): A unique identifier for the subscription
  - topic (String): An identifier for the feed to subscribe to. For example, when using the market data service (//blp/mktdata) as the default subscription service, the topic should be the Bloomberg Instrument Ticker (VOD LN Equity).
  - fields (List of String): A list of valid Bloomberg field identifiers (FIDs) that you want to subscribe for. Please see Bloomberg Developer Documentation for more details on which FIDs are available per service.
- - options (List of String) : A list of additional options, such as the update frequency, or whether to subscribe for delayed data.
+ - options (List of String): A list of additional options, such as the update frequency, or whether to subscribe for delayed data.
 
 If using the client directly, you can pass an instance of this request to the `subscribe` method.
 
@@ -317,12 +320,11 @@ Note that if using the client directly, you need only pass the string value corr
 </details>
 
 ##### DataRequest
-The DataRequest represents a one-off request for data sent to a Bloomberg API service. Most services either support real-time subscriptions, or one-off data requests. It contains the following fields:
+The DataRequest represents a single request for data sent to a Bloomberg API service. Most services either support real-time subscriptions, or single (one-off) data requests. It contains the following fields:
  - correlationId (String): A unique identifier for the request
  - topic (String): An identifier for the feed to request data for. For example, when using the product data service (//blp/refdata) as the default subscription service, the topic should be the Bloomberg Instrument Ticker (VOD LN Equity).
- - fields (List of String): A list of valid Bloomberg field identifiers (FIDs) that you want to receiver data for. Please see Bloomberg Developer Documentation for more details on which FIDs are available per service.
- - requestType (String) : The type of request you want to send to the service. For example, `ReferenceDataRequest`.
-
+ - fields (List of String): A list of valid Bloomberg field identifiers (FIDs) that you want to receive data for. See the Bloomberg Developer Documentation for more details on which FIDs are available per service.
+ - requestType (String): The type of request you want to send to the service. For example, `ReferenceDataRequest`.
 
 If using the client directly, you can pass an instance of this request to the `requestData` method.
 
@@ -394,10 +396,11 @@ If using the client directly, you can pass an instance of this request to the `r
 </details>
 
 ##### UserLogon
-The UserLogon request triggers an authentication check for a particular user with Bloomberg EMRS, and starts a flow of entitlement events for every user that is successfully authenticated. It contains the following fields:
+The UserLogon request triggers an authentication check with the Bloomberg entitlement system (EMRS) for a specified user. It then starts a flow of entitlement events for every user that is successfully authenticated. It contains the following fields:
+
  - userName (String): The identifier of the user account within the Genesis Application.
- - emrsId (String): The identifier of the user as they are known to the Bloomberg entitlement system (EMRS)
- - ipAddress (String): The IP address from which the user is currently logged into the Genesis Application.
+ - emrsId (String): The identifier of the user as stored on the Bloomberg entitlement system (EMRS).
+ - ipAddress (String): The IP address from which the user is currently logged into the Genesis application.
 
 If using the client directly, you can pass an instance of this request to the `logonUser` method.
 
@@ -466,10 +469,12 @@ If using the client directly, you can pass an instance of this request to the `l
 </details>
 
 ### Events
-Events are received from Bloomberg. They have a common supertype, `BloombergEvent`, that is the output type supported by the Bloomberg Source in Data Pipelines. Receiving and processing events is how you consume data from Bloomberg.
+Events are received from Bloomberg. They have a common supertype, `BloombergEvent`, which is the output type supported by the Bloomberg Source in Data Pipelines. Receiving and processing events is how you consume data from Bloomberg.
 
 #### Registering an Event Listener
-In order to register a callback to receive events from the client, you must call the `addEventListener` method, passing an instance of an object that implements the `EventListener` interface. The interface has callbacks corresponding to each of the following event types, but has default no-op implementations of all of them, as not all of them will be applicable for every application. See below for details on each of the supported event types, and their associated methods in the EventListener.
+In order to register a callback to receive events from the client, call the `addEventListener` method, passing an instance of an object that implements the `EventListener` interface. 
+
+The interface has callbacks corresponding to each of the following event types, but has default no-op implementations of all of them, as not all of them are applicable to every application. See below for details on each of the supported event types, and their associated methods in the EventListener.
 
 ##### SubscriptionDataEvent
 The SubscriptionDataEvent represents an update to an active data subscription. It contains the following fields: 
@@ -867,11 +872,11 @@ The SubscriptionStatusEvent is sent when a subscription changes status. It conta
 ##### UserEntitlementsUpdateEvent
 The UserEntitlementsUpdateEvent is sent when the data entitlements for a user have changed. It contains the following fields: 
  - userName (String): The identifier of the user account within the Genesis Application.
- - emrsId (String): The identifier of the user as they are known to the Bloomberg entitlement system (EMRS)
+ - emrsId (String): The identifier of the user as stored on the Bloomberg entitlement system (EMRS)
  - eid (Int): The entitlement ID that has either been granted or denied to the user.
  - entitled (Boolean): Whether the user is entitled for this EID or not.
 
-These events must be used to drive data visisibility rules in the application.
+These events must be used to drive data visibility rules in the application.
 
 <details>
 <summary>Code Examples</summary>
@@ -939,8 +944,8 @@ These events must be used to drive data visisibility rules in the application.
 
 ##### UserEntitlementsRevokedEvent
 The UserEntitlementsRevokedEvent is sent when all data entitlements for a user have been revoked. It contains the following fields: 
- - userName (String): The identifier of the user account within the Genesis Application.
- - emrsId (String): The identifier of the user as they are known to the Bloomberg entitlement system (EMRS)
+ - userName (String): The identifier of the user account within the Genesis application.
+ - emrsId (String): The identifier of the user as they are known to the Bloomberg entitlement system (EMRS).
 
 This event should be interpreted as a simultaneous receipt of a UserEntitlementsUpdateEvent for every known EID in the system, with 'entitled' set to false.
 
@@ -1002,4 +1007,4 @@ This event should be interpreted as a simultaneous receipt of a UserEntitlements
 </details>
 
 ## Examples
-For a real-world example of how to build an application that consumes Bloomberg Market Data, please see our [how-to guide](https://docs.genesis.global/docs/how-to/ht-consume-bloomberg/).
+For a real-world example of how to build an application that consumes Bloomberg Market Data, see our [how-to guide](https://docs.genesis.global/docs/how-to/ht-consume-bloomberg/).
