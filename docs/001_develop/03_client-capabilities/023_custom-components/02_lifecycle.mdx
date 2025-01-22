@@ -25,13 +25,13 @@ tags:
 sidebar_position: 3
 ---
 
-# Component Lifecycles
+# Component lifecycles
 
-Genesis Elements go through several lifecycle stages from creation to removal. Understanding these lifecycles is crucial for proper component initialization, cleanup, and state management.
+Genesis elements go through several lifecycle stages from creation to removal. Understanding these lifecycles is crucial for proper component initialization, cleanup, and state management.
 
 Here are some lifecycle methods that we have access to through `GenesisElement`:
 
-### Connected & Disconnected
+### Connected and disconnected
 
 `connectedCallback` lifecycle runs when a component is added to the DOM - perfect time for setup.
 
@@ -68,7 +68,7 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-### Changed Callbacks
+### Changed callbacks
 
 Changed Callback lifecycle runs when **attributes/properties** update - handle state changes. The name varies depending on the name of the attribute.
 

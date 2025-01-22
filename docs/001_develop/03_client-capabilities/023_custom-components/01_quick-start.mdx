@@ -25,11 +25,17 @@ tags:
 sidebar_position: 3
 ---
 
-# Quick Start
+# Quick start
 
-Let's create a simple web component using Genesis. There are three parts that make up a component: the _HTML template_, the _CSS styles_ and the _component logic_. Web components can vary in complexity, from a simple button to a very detailed interactive experience.
+In this section, we shall create a simple web component using Genesis. There are three parts that make up a component: 
 
-## Create Custom Element
+- the HTML template
+- the CSS styles 
+- the component logic
+
+Web components can vary in complexity, from a simple button to a very detailed interactive experience.
+
+## Create custom element
 
 Start by importing all necessary parts:
 
@@ -65,19 +71,17 @@ export class MyButton extends GenesisElement {};
 
 ```
 
-We’ve created a custom component called `<my-button>`, which currently displays a basic button in the browser with the text "Click Me." To make it more useful, let's add an attribute that allows us to customize the button's label and give it more dynamic functionality.
+The code above has created a custom component called `<my-button>`, which currently displays a basic button in the browser with the text `Click Me` To make it more useful, you can now add an attribute that enables you us to customize the button's label and give it more dynamic functionality.
 
 :::important
 
-Like web Components, Genesis Elements are required to include a hyphen (-) in their name in order to avoid conflicts with native HTML elements.
+Like web components, Genesis Elements must include a hyphen (-) in their name. This avoids conflicts with native HTML elements.
 
 :::
 
 ## Add it to your project
 
-:::note
-After defining your custom component, you need to import it somewhere in your application's code to ensure it gets registered. If you are using a project built generated from Genesis Create or `genx` then a good place for it to go is the same file that contains `rapidDesignSystem.provideDesignSystem()`.
-:::
+After defining your custom component, you need to import it somewhere in your application's code to ensure it gets registered. If you are using a project generated from Genesis Create or `genx`, then a good location is the file that contains `rapidDesignSystem.provideDesignSystem()`.
 
 Let's say we import `MyButton` into a `hello-world.js` file. This ensures `MyButton` will be registered with the browser, allowing you to use the `<my-button>` element in your HTML.
 
@@ -98,7 +102,7 @@ Now it can be added in your HTML this way:
 
 > In this example, we created a custom web component using `GenesisElement`. We defined a button template and added a `label` attribute using the `@attr` decorator, allowing the button text to be customized via HTML. We implemented the `labelChanged` method, which is automatically called whenever the `label` value changes. The template dynamically updates with the new value, ensuring the button remains responsive to changes in its attributes.
 
-## Add an Attribute
+## Add an attribute
 
 We can add an `attr` decorator which allows us to link a class property to an HTML attribute, ensuring that changes in the attribute are automatically reflected in the JavaScript property, and vice versa, allowing for clean and declarative state management of custom elements.
 
@@ -128,7 +132,7 @@ const template = html`<button>${(x) => x.label}</button>`;
 ```
 
 
-## Typed Templates
+## Typed templates
 
 Templates can be strongly typed to ensure they align with the data model they are rendering. In TypeScript, you specify the type directly within the template declaration using the syntax `html<Type>`. This approach provides better type safety and ensures that the data passed into the template matches the expected structure of the associated component or model.
 
