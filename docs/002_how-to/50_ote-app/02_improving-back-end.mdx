@@ -73,22 +73,43 @@ where {
 To handle the Passive Order Book correctly, you need to update the `-eventhandler.kts` file. The file contains a list of TODO items. Each of these contains extra code. 
 
 ### Checking the file
-Before you change anything, take some time to look through the file.
+Some of the TODOs involve large code snippets. You are going to make major changes to this file. So, before you change anything, take some time to look through the file.
 
+There are more than 20 different eventHandlers in the file, and you will see them mostly in groups of three: _INSERT, _MODIFY and _DELETE. The exception is for the Passive Order Book, which only has _INSERT and _DELETE (and you will be changing these).
 
+At the end of the file are are three eventHandlers that need custom logic, which cannot be created using Genesis Create. These eventHandlers serve new buttons on the front end, which enable the user to [simulate End of Day processes](/how-to/ote-app/ht-ote-improving-front-end/#simulating-intraday-and-end-of-day-processing).  You will need to add code to:
+
+- RUN_CLOSING_PRICES
+- RUN_VARIATION_MARGIN
+- EXPIRE ORDERS
+
+Here is a summary of the changes you need to make:
+
+| Item                      |      Task                                                   |
+|---------------------------|-------------------------------------------------------------|
+| import statements         |  Insert these at the beginning of the file.                 | 
+| PASSIVE_ORDER_BOOK_INSERT | Replace this with the larger contextEventHandler provided.  | 
+| PASSIVE_ORDER_BOOK_DELETE | Replace this with the larger contextEventHandler provided.  | 
+| RUN_CLOSING_PRICES        | Add additional code after the onCommit line.                |
+| RUN_VARIATION_MARGIN      | Add additional code *before* and *after* the onCommit line. |
+| EXPIRE_ORDERS             | Add additional code after the onCommit line.                |
+
+Genesis Create adds TODO items automatically, and you can ignore the generic TODO at the end of the file.
 
 ### Implementing the TODO items
 For each TODO item:
 
-1. Copy the code from that item.
+1. Cut the code from that item.
 2. Insert it into the relevant point in the code itself. 
-3. Remove the asterisk character from the beginning of each line!
+3. Remove the asterisk character from the beginning of each line. But take care not to remove any asterisks in the code you have inserted!
+4. Once you have made the changes, remove the TODO comments themselves to keep the code tidy.
 
 :::tip
-When you are copying and pasting the code in the TODO items, make sure you copy the complete code each time - word wrapping makes it easy to get this wrong if you have a small window.
+Our extensive usability team has found that it is easier to insert the import statements first and then go to the end of the file and work through the remaining TODOs in reverse order. This makes it easier to keep track as you cut and paste.
 
-The code snippets themselves have comments throughout to indicate the purpose of each codeblock.
+When you are cutting and pasting the code in the TODO items, make sure you copy the complete code each time - word wrapping makes it easy to get this wrong if you have a small window.
 
+The code snippets themselves have comments throughout to indicate the purpose of each codeblock. You should leave these in place.
 :::
 
 That's it. Once you have inserted this code, you have successfully set the logic for handling the passive order book. 
