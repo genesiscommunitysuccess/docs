@@ -264,7 +264,7 @@ If using the client directly, you can pass an instance of this request to the `s
 The DataUnsubscribe contains the information required to unsubscribe from a previously registered subscription. It contains the following fields:
  - correlationId (String): A unique identifier for the subscription
 
-Note that if using the client directly, you need only pass the string value correlationId to the unsubscribe method, not the request object. If using data pipelines, you must construct the request.
+If using the client directly, you only need to pass the string value correlationId to the unsubscribe method, not the request object. If using data pipelines, you must construct the request.
 
 <details>
 <summary>Code Examples</summary>
@@ -320,13 +320,13 @@ Note that if using the client directly, you need only pass the string value corr
 </details>
 
 ##### DataRequest
-The DataRequest represents a single request for data sent to a Bloomberg API service. Most services either support real-time subscriptions, or single (one-off) data requests. It contains the following fields:
- - correlationId (String): A unique identifier for the request
+Most services either support real-time subscriptions, or single (one-off) data requests. The DataRequest represents a single request for data sent to a Bloomberg API service. It contains the following fields:
+ - correlationId (String): A unique identifier for the request.
  - topic (String): An identifier for the feed to request data for. For example, when using the product data service (//blp/refdata) as the default subscription service, the topic should be the Bloomberg Instrument Ticker (VOD LN Equity).
  - fields (List of String): A list of valid Bloomberg field identifiers (FIDs) that you want to receive data for. See the Bloomberg Developer Documentation for more details on which FIDs are available per service.
  - requestType (String): The type of request you want to send to the service. For example, `ReferenceDataRequest`.
 
-If using the client directly, you can pass an instance of this request to the `requestData` method.
+If you are using the client directly, you can pass an instance of this request to the `requestData` method.
 
 <details>
 <summary>Code Examples</summary>
@@ -479,7 +479,7 @@ The interface has callbacks corresponding to each of the following event types, 
 ##### SubscriptionDataEvent
 The SubscriptionDataEvent represents an update to an active data subscription. It contains the following fields: 
  - correlationId (String): A unique identifier for the subscription
- - data (Map&lt;String, DataField&gt;): The fields that were updated as part of this event. The DataField class is a wrapper for data points that can be interrogated for type information in ways friendly to java `switch` and kotlin `when` statements.
+ - data (Map&lt;String, DataField&gt;): The fields that were updated as part of this event. The DataField class is a wrapper for data points that can be interrogated for type information in ways friendly to Java `switch` and Kotlin `when` statements.
 
  The following field types are supported:
 | Wrapper Type    | Value Type                   |
@@ -499,7 +499,7 @@ The SubscriptionDataEvent represents an update to an active data subscription. I
 | ListField       | List&lt;DataField&gt;        |
 
 
- Each time a topic update is received from Bloomberg, a SubscriptionDataEvent will be passed to all registered listeners via the `onSubscriptionUpdated` method. This will be the main callback to receive subscription data updates if `wrapData` is set to true in configuration, which is the default.
+ Each time a topic update is received from Bloomberg, a SubscriptionDataEvent is passed to all registered listeners via the `onSubscriptionUpdated` method. This is the main callback to receive subscription data updates if `wrapData` is set to true in configuration, which is the default.
 
 <details>
 <summary>Code Examples</summary>
@@ -604,7 +604,7 @@ The SubscriptionDataEvent represents an update to an active data subscription. I
 
 ##### SubscriptionRawDataEvent
 The SubscriptionRawDataEvent represents an update to an active data subscription. It contains the following fields: 
- - correlationId (String): A unique identifier for the subscription
+ - correlationId (String): A unique identifier for the subscription.
  - data (Map&lt;String, Object&gt;): The fields that were updated as part of this event. The values are the raw data values extracted from the Bloomberg message.
 
  The following field types are supported:
@@ -625,7 +625,7 @@ The SubscriptionRawDataEvent represents an update to an active data subscription
 | List&lt;Object&gt;           |
 
 
- Each time a topic update is received from Bloomberg, a SubscriptionRawDataEvent will be passed to all registered listeners via the `onSubscriptionUpdated` method. This will be the main callback to receive subscription data updates if `wrapData` is set to false in configuration.
+ Each time a topic update is received from Bloomberg, a SubscriptionRawDataEvent is passed to all registered listeners via the `onSubscriptionUpdated` method. This is the main callback to receive subscription data updates if `wrapData` is set to false in configuration.
 
 <details>
 <summary>Code Examples</summary>
@@ -712,9 +712,9 @@ The SubscriptionRawDataEvent represents an update to an active data subscription
 
 ##### DataResponseEvent
 The DataResponseEvent represents an response to a previously issued one-off data request. It contains the following fields: 
- - correlationId (String): A unique identifier for the request
+ - correlationId (String): A unique identifier for the request.
  - data (Map&lt;String, Object&gt;): The fields returned as one the response. The values are the raw data values extracted from the Bloomberg message.
- - moreData (Boolean): Whether or not there are additional responeses pending. Sometimes depending on the size of the request, multiple responses may be received.
+ - moreData (Boolean): Indicates whether or not there are additional responeses pending. Sometimes, depending on the size of the request, multiple responses may be received.
 
 <details>
 <summary>Code Examples</summary>
@@ -788,14 +788,14 @@ The DataResponseEvent represents an response to a previously issued one-off data
 The SubscriptionStatusEvent is sent when a subscription changes status. It contains the following fields: 
  - correlationId (String): A unique identifier for the subscription.
  - message (String): An informational message providing more information about the status change.
- - status (SubscriptionStatus Enum): The status of the the subscription. The supported status values are as follows: 
+ - status (SubscriptionStatus Enum): The status of the subscription. The supported status values are as follows: 
 
 | Status          | Description                  |
 |-----------------|------------------------------|
 | ACTIVE          | The subscription is healthy and updates are being published. |
-| STALE           | The subscription has paused, and the last received update should not be considered 'current'. The subscription may resume at a later time. There is no need to resubscribe. |
-| CANCELLED       | The subscription has been terminated either by client or server request. Resubscribing will restart the subscription. |
-| REJECTED        | The subscription was rejected, either by being malformed or containing incorrect data. Resubscribing will not fix the problem, and it is suggestive of an issue with the logic building the subscription. For example, an invalid ticker symbol could be the cause of a subscription being rejected.  |
+| STALE           | The subscription has paused, and the last received update should not be considered 'current'. The subscription may resume at a later time. There is no need to re-subscribe. |
+| CANCELLED       | The subscription has been terminated either by client or server request. Re-subscribing restarts the subscription. |
+| REJECTED        | The subscription was rejected, either by being malformed or containing incorrect data. Re-subscribing will not fix the problem, and it is suggestive of an issue with the logic that is building the subscription. For example, an invalid ticker symbol could be the cause of a subscription being rejected.  |
 
 <details>
 <summary>Code Examples</summary>
@@ -871,9 +871,9 @@ The SubscriptionStatusEvent is sent when a subscription changes status. It conta
 
 ##### UserEntitlementsUpdateEvent
 The UserEntitlementsUpdateEvent is sent when the data entitlements for a user have changed. It contains the following fields: 
- - userName (String): The identifier of the user account within the Genesis Application.
+ - userName (String): The identifier of the user account within the Genesis application.
  - emrsId (String): The identifier of the user as stored on the Bloomberg entitlement system (EMRS)
- - eid (Int): The entitlement ID that has either been granted or denied to the user.
+ - eid (Int): The entitlement ID (EID) that has either been granted or denied to the user.
  - entitled (Boolean): Whether the user is entitled for this EID or not.
 
 These events must be used to drive data visibility rules in the application.
@@ -945,7 +945,7 @@ These events must be used to drive data visibility rules in the application.
 ##### UserEntitlementsRevokedEvent
 The UserEntitlementsRevokedEvent is sent when all data entitlements for a user have been revoked. It contains the following fields: 
  - userName (String): The identifier of the user account within the Genesis application.
- - emrsId (String): The identifier of the user as they are known to the Bloomberg entitlement system (EMRS).
+ - emrsId (String): The identifier of the user as stored on the Bloomberg entitlement system (EMRS).
 
 This event should be interpreted as a simultaneous receipt of a UserEntitlementsUpdateEvent for every known EID in the system, with 'entitled' set to false.
 
