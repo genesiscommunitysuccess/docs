@@ -94,13 +94,9 @@ In this application, we can simulate automated processes by adding buttons that 
 - closing prices
 - variation margin
 
-1. Go to the file `OTE\client\src\routes\processes\process-history-manager\process-history.ts` file.<br></br>Add the following import code, which creates a connection to the `eventHandler`.
+### Calling the eventHandlers
 
-Add the following code at the bottom of the list of existing import code:
-
-```
-import { Connect } from "@genesislcap/foundation-comms";
-```
+1. Go to the file `OTE\client\src\routes\processes\process-history-manager\process-history.ts` file.
 
 2. Find the code below:
 
@@ -111,7 +107,7 @@ export class ProcessesProcessHistoryManager extends GenesisElement {
 }
 ```
 
-... and replace it with the following, which will make the button specifically call the right event in the eventHandler:
+... and replace it with the following, which makes the button specifically call the relevant event in the eventHandler:
 
 ```
 export class ProcessesProcessHistoryManager extends GenesisElement {
@@ -141,6 +137,8 @@ import { customElement, GenesisElement } from '@genesislcap/web-core';
 import { ProcessHistoryStyles as styles } from './process-history.styles';
 import { ProcessHistoryTemplate as template } from './process-history.template';
 import { Connect } from "@genesislcap/foundation-comms";
+import { columnDefs } from './process-history.column.defs';
+import { ColDef } from '@ag-grid-community/core';
 
 @customElement({
   name: 'processes-process-history-manager',
@@ -150,6 +148,10 @@ import { Connect } from "@genesislcap/foundation-comms";
 export class ProcessesProcessHistoryManager extends GenesisElement {
   @User user: User;
   @Connect connect: Connect;
+
+  @observable columns: ColDef[] = [
+    ...columnDefs,
+  ];
 
   runExpiryProcess() {
     this.connect.commitEvent("EVENT_EXPIRE_ORDERS", {DETAILS:{}})
@@ -166,14 +168,15 @@ export class ProcessesProcessHistoryManager extends GenesisElement {
 }
 ```
 
-3. Go to the file `OTE\client\src\routes\processes\process-history-manager\process-history.template.ts`. <br></br>
-Remove the following two lines:
+### Add the action buttons
+Now add the action buttons that enable the user to trigger the processes. 
 
-```ts
-createEvent="${(x) => getViewUpdateRightComponent(x.user, 'ProcessLogUpdate', 'EVENT_PROCESS_LOG_INSERT')}"
-:createFormUiSchema=${() => createFormSchema }
-```
-4. Now you can add the action buttons that enable the user to trigger the processes. Find the line `></entity-management>` and replace the line with the below:
+1. Go to the file `OTE\client\src\routes\processes\process-history-manager\process-history.template.ts`. 
+
+2. We are going to add the buttons before the closing tag for entity management. Find the line `></entity-management>`.
+
+3. Replace this line with the lines below:
+ 
 
 ```ts
   crud-menu-position="top"
@@ -184,6 +187,8 @@ createEvent="${(x) => getViewUpdateRightComponent(x.user, 'ProcessLogUpdate', 'E
 </entity-management>
 ```
 
+These lines close the opening tag for entity management and add the buttons before closing the entity management block.
+
 Your code should now look like this:
 
 ```ts
@@ -193,6 +198,7 @@ import type { ProcessesProcessHistoryManager } from './process-history';
 import { createFormSchema } from './process-history.create.form.schema';
 import { updateFormSchema } from './process-history.update.form.schema';
 import { columnDefs } from './process-history.column.defs';
+import { ColDef } from '@ag-grid-community/core';
 
 export const ProcessHistoryTemplate = html<ProcessesProcessHistoryManager>`
     ${whenElse(
@@ -222,4 +228,4 @@ export const ProcessHistoryTemplate = html<ProcessesProcessHistoryManager>`
     )}`;
 ```
 
-The buttons now are displayed at the top right of the menu for the component. When the user clicks on a button, it triggers the relevant event.
+When you build and run again, the buttons are now displayed at the top right of the component. The user can click on a button to trigger the relevant event.
