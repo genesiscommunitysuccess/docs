@@ -1,6 +1,6 @@
 ---
-title: "statemanagement"
-sidebar_label: "State Management"
+title: "State management"
+sidebar_label: "State management"
 id: state-management
 keywords:
   [
@@ -26,21 +26,15 @@ tags:
 sidebar_position: 3
 ---
 
-# State Management
+Components manage state through: 
 
-Components manage state through the following key concepts: **attributes**, **properties**, and **observables**.
-Attributes are defined on the HTML markup of the element, whereas properties can be accessed via the DOM object in Javascript (or via a special property binding syntax on the markup).
-Observable properties and attributes configure the component to watch for changes, allowing the associated html template to update as they are updated.
+- Attributes. These are defined in the HTML markup of the element.
+- Properties. These are accessed via the DOM object in Javascript (or via a special property-binding syntax in the mark-up).
+- Observables. Observable properties and attributes configure the component to watch for changes, enabling the associated html template to update as they are updated.
 
 ## Attributes
 
-As seen in the earlier examples, in order to create an attribute you simply use the `@attr` decorator.
-
-:::tip
-
-When you use the `@attr` decorator, you are creating a property-attribute pair. This creates a binding so that any change in one will update the other, keeping them in sync.
-
-:::
+In order to create an attribute, use the `@attr` decorator. This creates a property-attribute pair - a binding. Once created, any change in one automatically updates the other, keeping them synchronized.
 
 ```typescript
 @customElement({
@@ -62,7 +56,7 @@ The `label` property is tied to an HTML attribute, so to override the value of `
 The default value of `label` is 'Submit', if no value is provided in the HTML.
 
 ```typescript
- <my-button label="Cancel"></my-buttonn>
+ <my-button label="Cancel"></my-button>
 ```
 
 :::note
@@ -71,17 +65,17 @@ The `labelChanged` method is only useful if you want to perform additional actio
 
 :::
 
-> Attributes are:
->
-> > - Always strings in HTML
-> > - Used in HTML markup
-> > - Visible in DOM inspector
-> > - Used for initial state
-> > - Slower for dynamic updates
+Attributes are:
 
-### Attribute Value Binding
+- always strings in HTML
+- used in HTML markup
+- visible in DOM inspector
+- used for initial state
+- slower for dynamic updates
 
-For most attributes, we can directly bind their values to expressions in the template, allowing them to update dynamically based on properties in the component.
+### Binding attribute values
+
+For most attributes, you can directly bind their values to expressions in the template. This enables them to be updated dynamically, based on properties in the component.
 
 The `label` attribute controls the text shown on the button. To bind `label` to a dynamic value, we use an expression within the template.
 
@@ -107,17 +101,17 @@ export class MyButton extends GenesisElement {
 <my-button label="Cancel"></my-button>
 ```
 
-##### Key Points:
+##### Key points:
 
-> - Here, the label attribute binds directly to the button's text via `${(x) => x.label}`.
-> - If label is set to "Cancel" in HTML `(<my-button label="Cancel">)`, the button will display "Cancel".
-> - When the `label` value is changed dynamically, the button text will automatically update.
+- Here, the label attribute binds directly to the button's text via `${(x) => x.label}`.
+- If `label` is set to `"Cancel"` in HTML `(<my-button label="Cancel">)`, the button displays "Cancel".
+- When the `label` value is changed dynamically, the button text is updated.
 
-### Interpolated Attribute Values
+### Interpolated attribute values
 
-In cases where an attribute value is partially static and partially dynamic, we can combine static and dynamic parts using interpolated expressions. This approach is useful for creating customized button labels or CSS classes.
+In cases where an attribute value is partially static and partially dynamic, you can combine static and dynamic parts using interpolated expressions. This approach is useful for creating customized button labels or CSS classes.
 
-For instance, consider `MyButton` component. You can use interpolation to dynamically construct an `aria-label` that combines a static prefix ("Perform action:") with a dynamic property (`action`). Similarly, the button’s visible label can be updated based on the label property:
+Consider this for the `MyButton` component. You can use interpolation to dynamically construct an `aria-label` that combines a static prefix ("Perform action:") with a dynamic property (`action`). Similarly, the button’s visible label can be updated based on the `label` property:
 
 ```typescript
 @customElement({
@@ -140,23 +134,24 @@ export class MyButton extends GenesisElement {
 
 :::tip
 
-`aria-label` provides a textual description of an element's purpose or action for assistive technologies, ensuring that users relying on screen readers can understand and interact with the element, even if its visible text or appearance is unclear or insufficient.
-Where as `label` is strictly for visibility.
+`label` is strictly for visibility. By contrast, `aria-label` provides a textual description of an element's purpose or action for assistive technologies. This ensures that users relying on screen readers can understand and interact with the element, even if its visible text or appearance is unclear or insufficient.
 
 :::
 
-### Boolean Attribute Binding
+### Binding boolean attributes
 
 Boolean attributes are special because their presence or absence determines their value, rather than their string value. In addition to the `@attr` option, an attribute can also take a configuration with the `mode` option.
 
-If the attribute is a boolean and the `mode` is set to "boolean" this allows `GenesisElement` to add or remove the attribute from the element.
+If the attribute is a boolean and the `mode` is set to `"boolean"`, this enables `GenesisElement` to add or remove the attribute from the element.
 
-If a boolean attribute is present in the HTML markup (e.g., `<button disabled></button>`), it is interpreted as true.
-If the attribute is absent (e.g., `<my-button></my-button>`), it is interpreted as false.
+- If a boolean attribute is present in the HTML markup (e.g., `<button disabled></button>`), it is interpreted as true.
+- If the attribute is absent (e.g., `<my-button></my-button>`), it is interpreted as false.
 
 We can use a **?** prefix to handle boolean attributes so they’re added or removed from the DOM based on a condition.
 
-> The `disabled` attribute controls whether the button is clickable. By using `?disabled=${(x) => x.isDisabled}`, we can bind it to the component’s `isDisabled` property and dynamically control whether the button is enabled or disabled.
+:::info Controlling the button dynamically
+The `disabled` attribute controls whether the button is clickable. If you use `?disabled=${(x) => x.isDisabled}`, you can bind it to the component’s `isDisabled` property and dynamically control whether the button is enabled or disabled.
+:::
 
 ```typescript
 @customElement({
@@ -186,32 +181,32 @@ export class MyButton extends GenesisElement {
 <my-button label="Submit" disabled></my-button>
 ```
 
-##### Key Points:
+##### Key points:
 
-> - The `?disabled="${(x) => x.isDisabled}"` syntax lets the templating engine handle boolean attributes automatically.
->   > - If `isDisabled` is true, the `disabled` attribute is added to the button (`<button disabled>`).
->   > - If `isDisabled` is false, the `disabled` attribute is removed from the button.
-> - The `@attr({ mode: 'boolean' })` decorator ensures that changes to `isDisabled` in JavaScript reflect in the DOM as a disabled attribute, and vice versa.
-> - The `attribute` key in the `@attr` decorator allows you to explicitly define the attribute name used in HTML.
->   In this example:
->   > - `isDisabled` is a property and it and follows camelCase convention in JavaScript which help distinguish from the HTML attribute `disabled`.
->   > - `disabled` is an attribute and it's used in HTML to represent state declaratively and reflect it in the DOM.
+- The `?disabled="${(x) => x.isDisabled}"` syntax lets the templating engine handle boolean attributes automatically.
+  - If `isDisabled` is true, the `disabled` attribute is added to the button (`<button disabled>`).
+  - If `isDisabled` is false, the `disabled` attribute is removed from the button.
+- The `@attr({ mode: 'boolean' })` decorator ensures that changes to `isDisabled` in JavaScript reflect in the DOM as a disabled attribute, and vice versa.
+- The `attribute` key in the `@attr` decorator allows you to explicitly define the attribute name used in HTML. In this example:
+  - `isDisabled` is a property and it and follows camelCase convention in JavaScript which help distinguish from the HTML attribute `disabled`.
+  - `disabled` is an attribute and it's used in HTML to represent state declaratively and reflect it in the DOM.
 
 ## Properties (@attr)
 
 It's important to distinguish between attributes and properties.
 
-> - Attributes are part of the HTML markup. They provide initial configuration and are typically static values of `type` string.
-> - Properties on the other hand are JavaScript-based, representing the internal state and can be any data type (boolean, number, object, etc).
-> - Attributes can be linked to properties via `reflection`, so updates to one (e.g. setting a property) can update the other (e.g. the attribute in HTML) and vice versa.
+- Attributes are part of the HTML markup. They provide initial configuration and are typically static values of `type` string.
+- Properties are JavaScript-based. They represent the internal state, and they can be any data type (boolean, number, object, etc).
 
-We can manage `reflection` using the `@attr` decorator, making attributes and properties automatically sync to reflect the latest state.
+You can link attributes to properties via `reflection`. Once you have done this, updates to one (e.g. setting a property) can update the other (e.g. the attribute in HTML).
 
-> Properties and attributes are effectively two sides of the same coin. The `@attr` decorator creates a two-way binding between a JavaScript property on the component and a DOM attribute. This means that changes to the attribute in the HTML will reflect on the property in JavaScript, and changes to the property in JavaScript will update the attribute in the DOM.
+To manage `reflection`, use the `@attr` decorator, making attributes and properties synchronize automatically to reflect the latest state.
+
+Properties and attributes are effectively two sides of the same coin. The `@attr` decorator creates a two-way binding between a JavaScript property on the component and a DOM attribute. Consequently, changes to the attribute in the HTML reflect on the property in JavaScript, and changes to the property in JavaScript update the attribute in the DOM.
 
 :::important
 
-Properties can be defined internally in the component class without linking them to HTML attributes. These internal properties are not exposed in the DOM as attributes.
+You can define properties internally in the component class without linking them to HTML attributes. These internal properties are not exposed in the DOM as attributes.
 
 :::
 
@@ -236,7 +231,7 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-- Properties can be declared using `@attr` which provides reflection between the JavaScript property and the HTML attribute. Changes to the attribute will update the property, and vice versa.
+You can declare properties using `@attr`, which provides reflection between the JavaScript property and the HTML attribute. Changes to the attribute will update the property, and vice versa.
 
 ```typescript
 export class MyButton extends GenesisElement {
@@ -244,7 +239,7 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-- The **_:_** symbol is used for property binding, allowing you to bind values directly to DOM properties instead of HTML attributes. This is useful when you want to bind complex data types or frequently changing properties that shouldn’t be reflected as attributes in the DOM.
+The **_:_** symbol is used for property binding, enabling you to bind values directly to DOM properties instead of HTML attributes. This is useful when you want to bind complex data types or frequently-changing properties that shouldn’t be reflected as attributes in the DOM.
 
 See `clickCount`
 
@@ -271,11 +266,13 @@ export class MyButton extends GenesisElement {
 
 ## Observables
 
-Observables are a powerful tool for creating reactive components. They allow properties to automatically update the associated view (html template) within a component whenever the data changes, which is essential for dynamic and interactive elements. Observables are declared with the `@observable` decorator.
+Observables are a powerful tool for creating reactive components. They enable properties to update the associated view (html template) within a component automatically whenever the data changes. This is essential for dynamic and interactive elements. 
 
->- Observable properties automatically trigger updates to any part of the template or component that depends on them. Whenever an observable property changes, the UI or other bound elements update without additional code.
->- Use `@observable` to mark a property as an observable. This ensures that changes to the property automatically trigger any relevant updates in the component.
->- For each observable property, we have a built-in mechanism to execute code whenever the property’s value changes. This callback method is named after the observable property, with the suffix '**Changed**'.
+You can declare an observable using the `@observable` decorator.
+
+- Observable properties automatically trigger updates to any part of the template or component that depends on them. Whenever an observable property changes, the UI or other bound elements are updated without additional code.
+- Use `@observable` to mark a property as an observable. This ensures that changes to the property automatically trigger any relevant updates in the component.
+- For each observable property, there is a built-in mechanism to execute code whenever the property’s value changes. This callback method is named after the observable property, with the suffix '**Changed**'.
 
 Let’s look at an example where we create a `<my-button>` component with an observable `count` property that updates dynamically every time a button is clicked. We’ll use the `@observable` decorator and a `countChanged` callback to log each change.
 
@@ -308,10 +305,9 @@ export class MyButton extends GenesisElement {
 
 ```
 
->- The `@observable` decorator makes `count` reactive, meaning any change in `count` automatically updates the bound elements in the template.
->- The template displays the current `count` as part of the button text. Whenever `count` changes, this binding is re-rendered, showing the latest value without extra code.
->- The `countChanged` method is automatically called whenever `count` changes.
-  >>- This callback receives the `oldValue` and `newValue`, allowing you to track and log each change in the console.
+- The `@observable` decorator makes `count` reactive. So, any change in `count` automatically updates the bound elements in the template.
+- The template displays the current `count` as part of the button text. Whenever `count` changes, this binding is re-rendered, showing the latest value without extra code. 
+- The `countChanged` method is automatically called whenever `count` changes. This callback receives the `oldValue` and `newValue`, enabling you to track and log each change in the console.
 
 #### Usage in HTML
 
@@ -319,15 +315,15 @@ export class MyButton extends GenesisElement {
 <my-button></my-button>
 ```
 
-Initial State:
+Initial state:
 
-  > The button displays "Clicked: 0 times".
+- The button displays "Clicked: 0 times".
 
-After Clicks:
+After clicks:
 
-  >- First click: The button displays "Clicked: 1 times".
-  >- And so on, incrementing with each click.
-  >- The button displays "Clicked: 0 times".
+- First click: The button displays "Clicked: 1 times".
+- And so on, incrementing with each click.
+- The button displays "Clicked: 0 times".
 
 Each time `count` updates, `countChanged` logs the old and new values to the console:
 
@@ -337,6 +333,6 @@ Count changed from 1 to 2
 ```
 :::important
 
-`@observable` decorator is an effective way to manage component state, allowing properties to reactively update the UI, trigger callbacks, and handle complex data in a streamlined way.
+The `@observable` decorator is an effective way to manage component state, allowing properties to reactively update the UI, trigger callbacks, and handle complex data in a streamlined way.
 
 :::

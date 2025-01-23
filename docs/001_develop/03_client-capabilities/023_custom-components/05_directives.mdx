@@ -27,13 +27,11 @@ tags:
 sidebar_position: 3
 ---
 
-# Directives
-
-Directives in Genesis Elements are special functions used in the templates that add specific functionality. Below is a summary of commonly used directives:
+Directives in Genesis Elements are special functions used in the templates in order to add specific functionality. This section looks at the most commonly used directives:
 
 ### Ref
 
-The `ref` directive lets you directly reference a specific DOM element within your component's template, enabling direct interaction with that element.
+The `ref` directive enables you to directly reference a specific DOM element within your component's template, so that you can interact directly with that element.
 
 Here’s how to use `ref` in `<my-button>` to reference the button element, making it accessible for direct manipulation in code.
 
@@ -59,11 +57,11 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-##### Key Points:
+##### Key points:
 
->- `ref("buttonElement")`: The `ref` directive creates a reference to the `<button>` element and assigns it to the `buttonElement` property of `<my-button>` component instance, allowing direct interaction with the DOM element.
+- `ref("buttonElement")`: The `ref` directive creates a reference to the `<button>` element and assigns it to the `buttonElement` property of `<my-button>` component instance, allowing direct interaction with the DOM element.
 
->- In `connectedCallback`, `this.buttonElement` is a direct reference to the `<button>` DOM node, allowing us to access properties like `textContent`. Here, we log the button’s text to the console.
+- In `connectedCallback`, `this.buttonElement` is a direct reference to the `<button>` DOM node, allowing us to access properties like `textContent`. Here, we log the button’s text to the console.
 
 :::note
 
@@ -113,16 +111,16 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-##### Key Points:
+##### Key points:
 
->- The `<slot>` element inside `<button>` is a placeholder. Any content added within `<my-button>` in HTML will appear here.
+- The `<slot>` element inside `<button>` is a placeholder. Any content added within `<my-button>` in HTML will appear here.
 
->- `slotted("slotContent")`:
+- `slotted("slotContent")`:
 
-  >>- The `slotted` directive links the slot’s content to the `slotContent` property.
-  >>- This means `slotContent` will be an array containing all the nodes (text, elements, etc.) passed into the slot.
-  >>- If `slotContent` changes (e.g., content is added or removed from the slot), `slotContentChanged()` will be called automatically, logging the updated content.
-    >- `slotContentChanged()` method is triggered whenever the `slotContent` changes, allowing you to respond to changes in the slot content.
+  - The `slotted` directive links the slot’s content to the `slotContent` property.
+  - This means `slotContent` will be an array containing all the nodes (text, elements, etc.) passed into the slot.
+  - If `slotContent` changes (e.g., content is added or removed from the slot), `slotContentChanged()` will be called automatically, logging the updated content.
+    - `slotContentChanged()` method is triggered whenever the `slotContent` changes, allowing you to respond to changes in the slot content.
       In this example, we’re simply logging the current content of the slot to the console.
 
 #### Usage in HTML
@@ -135,10 +133,9 @@ export class MyButton extends GenesisElement {
 
 ### Children
 
-The `children` directive allows us to capture and manage multiple child nodes within a specific element. This is useful when you want to work with all child elements under a certain parent node inside your component.
+The `children` directive enables you to capture and manage multiple child nodes within a specific element. This is useful when you want to work with all child elements under a certain parent node inside your component.
 
-In this example, we’ll modify `<my-button>` to capture any child elements placed inside it, using the `children` directive to get all child nodes within the `<div>` container.
-
+The example below modifies `<my-button>` to capture any child elements placed inside it. The `children` directive gets all child nodes within the `<div>` container.
 
 ```typescript
 import { GenesisElement, customElement, html, children, observable } from "@genesislcap/web-core";
@@ -167,11 +164,11 @@ export class MyButton extends GenesisElement {
     }
 }
 ```
-##### Key Points:
+##### Key points:
 
->- By specifying `children("childNodes")`, the `childNodes` property will contain all nodes inside the `<div>`, including text nodes, comment nodes, and any HTML elements.
->- As before, `@observable` on `childNodes` ensures it updates whenever there’s a change in the `<div>`’s child nodes.
->- Each time the slot content changes, `childNodesChanged` logs the updated list of child nodes.
+- By specifying `children("childNodes")`, the `childNodes` property will contain all nodes inside the `<div>`, including text nodes, comment nodes, and any HTML elements.
+- As before, `@observable` on `childNodes` ensures it updates whenever there’s a change in the `<div>`’s child nodes.
+- Each time the slot content changes, `childNodesChanged` logs the updated list of child nodes.
 
 #### Usage in HTML
 
@@ -184,9 +181,9 @@ export class MyButton extends GenesisElement {
 </my-button>
 ```
 
->- `childNodes` will contain everything inside `<div>`, including `<span>` elements, text nodes like "Text node", and `<div>` elements.
+- `childNodes` will contain everything inside `<div>`, including `<span>` elements, text nodes like "Text node", and `<div>` elements.
 
->- Any changes in the slot content (e.g., adding or removing nodes) will trigger `childNodesChanged` and log the updated list.
+- Any changes in the slot content (e.g., adding or removing nodes) will trigger `childNodesChanged` and log the updated list.
 
 #### Syntax breakdown
 
@@ -245,13 +242,13 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-**Initial State**:
+**Initial state**:
 
->- When `<my-button>` is first added to the DOM, it displays "Loading..." for 2 seconds (simulated delay).
+- When `<my-button>` is first added to the DOM, it displays "Loading..." for 2 seconds (simulated delay).
 
 **After 2 Seconds**:
 
->- Once the delay completes, `ready` is set to `true`, and the button appears with the text: "Data Loaded: Hello, Genesis!".
+- Once the delay completes, `ready` is set to `true`, and the button appears with the text: "Data Loaded: Hello, Genesis!".
 
 ### Syntax breakdown
 
@@ -259,8 +256,8 @@ export class MyButton extends GenesisElement {
 when(condition, template);
 ```
 
->- `condition`: A boolean expression that determines if the template should be rendered. If true, the template is added to the DOM; if false, it’s removed.
->- `template`: Defines the HTML structure to render when the condition is true.
+- `condition`: A boolean expression that determines if the template should be rendered. If true, the template is added to the DOM; if false, it’s removed.
+- `template`: Defines the HTML structure to render when the condition is true.
 
 ### whenElse
 
@@ -313,16 +310,16 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-**Initial State**:
+**Initial state**:
 
->- When `<my>-button>` is added to the DOM, the condition `!x.ready` evaluates to true, so the "Loading..." template is rendered.
+- When `<my>-button>` is added to the DOM, the condition `!x.ready` evaluates to true, so the "Loading..." template is rendered.
 
 **After 2 Seconds**:
 
->- The `simulateDataLoad` method sets ready to true, causing the condition `!x.ready` to evaluate to false.
->- The second template (the button) is then rendered with the message: "Data Loaded: Hello, Genesis!".
+- The `simulateDataLoad` method sets ready to true, causing the condition `!x.ready` to evaluate to false.
+- The second template (the button) is then rendered with the message: "Data Loaded: Hello, Genesis!".
 
-#### Syntax Breakdown
+#### Syntax breakdown
 
 ```typescript
 whenElse(condition, trueTemplate, falseTemplate);
@@ -334,9 +331,9 @@ whenElse(condition, trueTemplate, falseTemplate);
 
 ### Repeat
 
-The `repeat` directive is used to dynamically render a list of items. This directive is highly useful for rendering lists, especially when you need to manage and display data dynamically.
+The `repeat` directive is used to render a list of items dynamically. This is highly useful for rendering lists, especially when you need to manage and display data dynamically.
 
-`<my-button-list>` will display a static list of button labels, each rendered as a button. This example shows how to use `repeat` to render each item in the list.
+Below, `<my-button-list>` displays a static list of button labels, each rendered as a button. This example shows how to use `repeat` to render each item in the list.
 
 ```typescript
 import {
@@ -366,13 +363,13 @@ export class MyButtonList extends GenesisElement {
 }
 
 ```
-##### Key Points:
+##### Key points:
 
->- The `repeat` directive iterates over the `buttons` array and renders each item as a `<button>` inside an `<li>`.
->- Each `button` displays the label from the `buttons` array ("Click Me", "Submit", "Reset").
->- The `buttons` array is initialized with static values for simplicity. Each item in the array is displayed as a button in the rendered HTML.
->- The `repeat` directive efficiently handles rendering, using the array indices as keys to minimize DOM updates.
->- The resulting structure is an unordered list (`<ul>`) where each `<li>` contains a `<button>` with the appropriate label from the array.
+- The `repeat` directive iterates over the `buttons` array and renders each item as a `<button>` inside an `<li>`.
+- Each `button` displays the label from the `buttons` array ("Click Me", "Submit", "Reset").
+- The `buttons` array is initialized with static values for simplicity. Each item in the array is displayed as a button in the rendered HTML.
+- The `repeat` directive efficiently handles rendering, using the array indices as keys to minimize DOM updates.
+- The resulting structure is an unordered list (`<ul>`) where each `<li>` contains a `<button>` with the appropriate label from the array.
 
 #### Usage in HTML
 
@@ -384,19 +381,19 @@ To test `<my-button-list>`, add it to your HTML page:
 </body>
 ```
 
-#### Advanced Features of `repeat`
+#### Advanced features of `repeat`
 
 The `repeat` directive also includes advanced features for handling more complex scenarios. Here are two important options:
 
-##### Opting Into Positioning
+##### Opting into positioning
 
-By default, the `repeat` directive doesn’t track the `position (index)` or metadata of each item in the array. However, you can enable this by passing `{ positioning: true }` in the options. This allows you to use additional context properties such as:
+By default, the `repeat` directive doesn’t track the `position (index)` or metadata of each item in the array. However, you can enable this by passing `{ positioning: true }` in the options. This enables you to use additional context properties such as:
 
->- `index`: The index of the current item.
->- `isFirst`: true if the current item is the first in the array.
->- `isLast`: true if the current item is the last in the array.
+- `index`: The index of the current item.
+- `isFirst`: true if the current item is the first in the array.
+- `isLast`: true if the current item is the last in the array.
 
-Example with Positioning:
+Example with positioning:
 
 ```typescript
 <ul>
@@ -412,7 +409,7 @@ Example with Positioning:
 The `c.index` provides the current index of the item, allowing you to render numbered buttons (e.g., 1. Click Me, 2. Submit).
 `{ positioning: true }` enables these additional context properties.
 
-#### View Recycling
+#### View recycling
 
 View recycling determines whether previously rendered DOM elements are reused when the array changes.
 
@@ -424,8 +421,7 @@ By default, `repeat` enables view recycling to optimize performance, especially 
 
 **_Recycling Enabled (recycle: true):_**
 
-The `repeat` directive may reuse DOM elements that have already been rendered for array items.
-This improves performance by avoiding unnecessary DOM creation and destruction.
+The `repeat` directive can reuse DOM elements that have already been rendered for array items. This improves performance by avoiding unnecessary DOM creation and destruction.
 
 **_Recycling Disabled (recycle: false):_**
 
@@ -448,19 +444,24 @@ Let's look at an example without recycling:
 repeat(expression, itemTemplate, options);
 ```
 
->- `expression`: Specifies the data source for repeat.
->- `itemTemplate`: Defines the HTML structure for each item.
->- `options` (optional):
-  >>- `positioning: true`: Enables index and positional metadata like `index`, `isFirst`, and `isLast`.
-  >>- `recycle: false`: Prevents view recycling for cases where re-initializing DOM elements is required.
+- `expression`: Specifies the data source for repeat.
+- `itemTemplate`: Defines the HTML structure for each item.
+- `options` (optional):
+  - `positioning: true`: Enables index and positional metadata like `index`, `isFirst`, and `isLast`.
+  - `recycle: false`: Prevents view recycling for cases where re-initializing DOM elements is required.
 
 ### Sync
 
-The `sync` directive enables two-way data binding between the model (component state) and the view (template). Unlike one-way data binding, where data flows only from the model to the view, the `sync` directive ensures that changes in the view (e.g., user interaction) automatically update the model, keeping both synchronized.
+The `sync` directive enables two-way data binding between the model (component state) and the view (template). Unlike one-way data binding, where data flows only from the model to the view, the `sync` directive ensures that changes in the view (e.g., user interaction) automatically update the model, keeping the two synchronized.
 
 This eliminates the need for manual event handling, simplifying code and ensuring consistency between the UI and the underlying data.
 
-The `sync` directive accepts three parameters: `binding`, `conversionType` (optional) and `eventName` (optional)
+The `sync` directive accepts three parameters: 
+
+- `binding`
+- `conversionType` (optional)
+- `eventName` (optional)
+
 The following example demonstrates how the `sync` directive binds a checkbox’s checked state to a model property:
 
 ```typescript
@@ -495,13 +496,13 @@ export class MyCheckbox extends GenesisElement {
 }
 ```
 
-##### Key Points:
+##### Key points:
 
->- The `isSelected` property sets the initial state of the checkbox (checked = true).
->- When the user toggles the checkbox, the `isSelected` property is updated automatically.
->- The `isSelectedChanged` method is triggered whenever the property changes, logging the new state to the console.
+- The `isSelected` property sets the initial state of the checkbox (checked = true).
+- When the user toggles the checkbox, the `isSelected` property is updated automatically.
+- The `isSelectedChanged` method is triggered whenever the property changes, logging the new state to the console.
 
-##### Using Sync with Multiple Input Types
+##### Using Sync with multiple input types
 
 The `sync` directive works seamlessly with various input types, such as text fields, number fields, and checkboxes.
 
@@ -607,23 +608,23 @@ export class CheckboxExample extends GenesisElement {
 sync(binding, conversionType, eventName);
 ```
 
->- `binding`: A function that defines the binding to the chosen variable on the model.
-  >>- Example: `sync((x) => x.propertyName)`.
->- `conversionType` : This optional parameter allows `sync` to automatically convert the underlying data type from the string on the variable to the correct type on the model.
+- `binding`: A function that defines the binding to the chosen variable on the model.
+  - Example: `sync((x) => x.propertyName)`.
+- `conversionType` : This optional parameter allows `sync` to automatically convert the underlying data type from the string on the variable to the correct type on the model.
 
-  >>- string, this is the default
-  >>- number
-  >>- time
-  >>- boolean
+  - string, this is the default
+  - number
+  - time
+  - boolean
 
->- `eventName`: this optional parameter is used by `sync` to know what event to listen to from the component and reflect the data back to the model.
-  >>- `input`
-  >>- `change`
-  >>- `default`
+- `eventName`: this optional parameter is used by `sync` to know what event to listen to from the component and reflect the data back to the model.
+  - `input`
+  - `change`
+  - `default`
 
-Main Benefits:
+Main benefits:
 
->- No need for manual event listeners to update the model.
->- Ensures the view and model stay in sync, improving consistency.
->- Automatically triggers `propertyNameChanged` methods for reactive behavior.
->- Supports automatic type conversion for numbers, booleans, strings, and more.
+- No need for manual event listeners to update the model.
+- Ensures the view and model stay synchronized, which improves consistency.
+- Automatically triggers `propertyNameChanged` methods for reactive behavior.
+- Supports automatic type conversion for numbers, booleans, strings, and more.
