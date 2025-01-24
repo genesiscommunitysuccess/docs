@@ -25,7 +25,7 @@ The core aspects of event handling are:
 
 - **Component Communication**. This enables a component (such as `<my-button>`) to notify or interact with parent components or other parts of the application. Here, we achieve this by emitting a custom event from `<my-button>` when it’s clicked.
 
-- **Custom Events**. Custom events are unique, developer-defined events (such as button-clicked in this example), which communicate specific actions or states. You use `$emit` helper to create and dispatch a custom event.
+- **Custom Events**. Custom events are unique, developer-defined events (such as `button-clicked` in the example below), which communicate specific actions or states. You can use the `$emit` helper to create and dispatch a custom event.
 
 - **Event Data Passing**. When emitting custom events, you can send additional data along with the event. In the example below, `event.detail` passes contextual information ( `label` and `count`) to any listener that handles the event.
 
@@ -68,7 +68,7 @@ export class MyButton extends GenesisElement {
 ```
 
 ## Component communication
-Now let's create a new component that listens to `<my-button>`. 
+The example below creates a new component that listens to `<my-button>`. 
 
 ```typescript
 import { GenesisElement, customElement, html } from "@genesislcap/web-core";
@@ -95,34 +95,26 @@ export class ParentComponent extends GenesisElement {
 }
 ```
 
-### Component Communication:
-- `<my-button>` is able to communicate with its parent or other parts of the application by notifying them whenever it’s clicked.
+So, `<my-button>` is able to communicate with its parent component (or other parts of the application) by notifying them whenever it’s clicked. The `$emit` helper method in the configuration of `<my-button>` emits a button-clicked event that any parent component or listener can handle.
 
+Let's focus on the `button-clicked` custom event and the `$emit` method. 
 
+- The `button-clicked` event is unique to `<my-button>`. It indicates that the button has been clicked, providing a specific trigger for event listeners.
 
-> - This allows `<my-button>` to communicate with its parent or other parts of the application by notifying them whenever it’s clicked.
-> - Using the `$emit` helper method, `<my-button>` emits a button-clicked event that any parent component or listener can handle.
+- The `$emit` method simplifies the creation and dispatch of the button-clicked event with `{bubbles: true} and {composed: true}`. This makes it available to parent components and global listeners.
 
-Custom Events:
-
-> - `button-clicked` is a custom event that’s unique to `<my-button>`. It’s created to indicate that the button has been clicked, providing a specific trigger for listeners.
-> - The `$emit` method simplifies the creation and dispatch of the button-clicked event with `{bubbles: true} and {composed: true}`, making it available to parent components and global listeners.
-
-Event Data Passing:
-
-> - The custom event includes data (the `label` and `count` properties) to provide context on the button’s state when the event was emitted.
-> - Implementation: The `$emit` method’s second parameter passes `{ label: this.label, count: this.count }` as `event.detail`, enabling any listener to access this information for further processing.
+- The `button-clicked` event is able to pass data (the `label` and `count` properties) to provide context on the button’s state when the event was emitted. Specifically, the `$emit` method’s second parameter passes `{ label: this.label, count: this.count }` as `event.detail`. Any event listener can access this information for further processing.
 
 ### Event bubbling
 
-Event bubbling enables an event travel up the DOM from the component that triggered it, enabling parent components to handle it.
+Event bubbling enables an event to travel up the DOM from the component that triggered it, enabling parent components to handle it.
 
 - Components higher up in the DOM tree can listen for and react to events emitted by child components.
 - This reduces the need for coupling child and parent components tightly.
 
 :::note
 
-When a custom event is emitted with `$emit`, it bubbles up the DOM *by default* unless bubbles is explicitly set to false.
+When a custom event is emitted with `$emit`, it bubbles up the DOM *by default* unless `bubbles` is explicitly set to false.
 
 :::
 
@@ -174,9 +166,9 @@ export class ParentContainer extends GenesisElement {
 ```
 
 In the example above, we didn’t explicitly set `bubbles` and `composed` because they are set to true by default.
-However, if you want to customize this behavior, you can pass an 'options object' as the third parameter to `$emit`.
+However, if you want to customize this behaviour, you can pass an 'options object' as the third parameter to `$emit`.
 
-Here's how you can modify the `emitCustomEvent` method to include bubbles and composed settings:
+Here's how to modify the `emitCustomEvent` method to include bubbles and composed settings:
 
 ```typescript
 emitCustomEvent() {
@@ -197,21 +189,16 @@ emitCustomEvent() {
 
 ```
 
-##### Key points:
+In this modified event:
 
-`bubbles`:
+- When `bubbles` is true, the event propagates upward through the DOM.
+- When `bubbles` is false, the event does not bubble.
+- If you want the event to be confined to the component emitting it and not propagate up the DOM tree, set `bubbles` to false.
 
-- When true, the event propagates upward through the DOM.
-- When false, the event does not bubble.
-- Set `bubbles` to false if you want the event to be confined to the component emitting it and not propagate up the DOM tree.
-
-`composed`:
-
-- When true, the event crosses the shadow DOM boundary and can be listened to outside the shadow DOM.
-- When false, the event is confined within the shadow DOM.
+- When `composed` is true, the event crosses the shadow DOM boundary and can be listened to outside the shadow DOM.
+- When `composed` is false, the event is confined within the shadow DOM.
 - Set `composed` to false if you want the event to stay within the shadow DOM of the component.
 
-`ParentContainer`:
+You don't need to make any changes to the parent component if you keep `bubbles: true`. It will still handle the event the same way.
 
-- No changes are needed for the parent component if you keep `bubbles: true`. It will still handle the event the same way.
-- If you set `bubbles: false` or `composed: false`, make sure you either attach the event listener directly to the emitting component or you adjust the shadow DOM handling to handle this.
+If you set `bubbles: false` or `composed: false`, make sure you either attach the event listener directly to the emitting component or you adjust the shadow DOM handling to handle this.
