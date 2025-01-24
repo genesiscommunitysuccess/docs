@@ -50,7 +50,7 @@ global.genesis.pipeline
 
 See [process configuration](/develop/server-capabilities/runtime-configuration/processes/) for more information of process definitions.
 
-The `fixSource` must be instantiated with any number of session ids that you want to connect to and will return both the Message object and session id String that the message has come from.
+The `fixSource` must be instantiated with any number of session ids that you want to connect to and will return an object of type `InboundFixMessage` which contains both the Message object and session id String that the message has come from.
 
 ```kotlin
 pipelines {
@@ -73,14 +73,14 @@ global.genesis.pipeline
 
 See [process configuration](/develop/server-capabilities/runtime-configuration/processes/) for more information of process definitions.
 
-The `fixSink` needs to receive an object or flow of type FixRawMessageSessions which contains the raw fix message as a String and an optional list of session ids to send this message to.
+The `fixSink` needs to receive an object or flow of type `OutboundFixMessage` which contains the Message object and an optional list of session ids to send this message to.
 If no list or an empty list has been provided, the message will be sent to the default session id configured in your quick fix settings.
 
 ```kotlin
 pipelines {
     pipeline("TEST_FIX_SINK") {
         source(Source {
-            flowOf(FixRawMessageSessions("some-fix-message", listOf("FIX.4.0:CPTY1->CPTY2", "FIX.4.0:CPTY3->CPTY4")), FixRawMessageSessions("some-other-fix-message"))
+            flowOf(OutboundFixMessage(Message(...), listOf("FIX.4.0:CPTY1->CPTY2", "FIX.4.0:CPTY3->CPTY4")), OutboundFixMessage(Message(...)))
         })
             .sink(fixSink())
     }
