@@ -17,19 +17,20 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Bloomberg API
+The Genesis Bloomberg module provides all the tools you need to connect easily to a Bloomberg API instance. This enables you to consume data directly in your Genesis application. 
 
-## Overview
+There are two important components:
 
-The Genesis Bloomberg module provides all the tools you need to connect easily to a Bloomberg API instance. This enables you to consume data directly in your Genesis application.
+- The Genesis Bloomberg Client
+- The Genesis Bloomberg Connector
 
-There are two different ways to set this up:
+For a simple and quick connection, you can use the Genesis Bloomberg Connector in the [Data Pipelines](../../server-capabilities/integrations/data-pipelines/) integration framework. You only need to deploy minimal lines of code to connect and consume Bloomberg data. 
 
-- You can use the Bloomberg Connector in the [Data Pipelines](../../server-capabilities/integrations/data-pipelines/) integration framework to access Bloomberg data quickly and with minimal lines of code. 
+For full control and complete flexibility in how you consume the data from Bloomberg, you can use the Genesis Bloomberg Client. This is the code object that interacts with all aspects of the Bloomberg API. You can use the Genesis Bloomberg Client directly in your custom code. 
 
-- Alternatively, you can use the Bloomberg Client directly in your custom code. This gives you full control and more flexibility in how you consume data. 
-
-Whichever you choose, our highly resilient and recoverable client takes care of the heavy lifting; you can focus on the application's business logic.
+:::info 
+The Genesis Bloomberg Connector uses the Genesis Bloomberg Client to implement its connection.
+:::
 
 ## Adding Bloomberg to your project
 
@@ -64,7 +65,7 @@ You can also use the genx CLI to add dependencies and configuration files manual
 ## Consuming data
 
 ### Common configuration
-Whether you are creating Data Pipelines or using Bloomberg Client directly in your custom code, there is a common configuration structure in GPAL. This offers auto-complete and type-safe configuration for initializing a Bloomberg client.
+Whether you are creating Data Pipelines or using Bloomberg Client directly in your custom code, there is a common configuration structure in GPAL. This offers auto-complete and type-safe configuration for initializing a Bloomberg Client.
 
 ```kotlin
 bloomberg {
@@ -82,25 +83,25 @@ bloomberg {
 }
 ```
 
-The `addServer` function enables you to add multiple IP address/port combinations, which enable the client to connect. Each function adds a server to the underlying array, and the client connects in a round-robin fashion. The port is optional, and defaults to 8194.
+The `addServer` function enables you to add multiple IP address/port combinations, which enable the Client to connect. Each function adds a server to the underlying array, and the Client connects in a round-robin fashion. The port is optional, and defaults to 8194.
 
 The other configuration options are :
 
 | Option                             | Mandatory |     Description                                                  |
 |------------------------------------|-----------|------------------------------------------------------------------|
-| `applicationName`                  | Yes       | This is the identifier for the application. When the client connects, it first authenticates the application before requesting data. This value will be set up on the Bloomberg remote server as part of onboarding. |
+| `applicationName`                  | Yes       | This is the identifier for the application. When the Client connects, it first authenticates the application before requesting data. This value will be set up on the Bloomberg remote server as part of onboarding. |
 | `pathToPk7`                        | No        | If you are using a Bloomberg cloud-hosted B-PIPE instance, also referred to as 'zero footprint', a set of certificates and a password will be provided to you in order to secure the connection. |
 | `pathToPk12`                       | No        | See `pathToPk7`.                                                 |
 | `pkPassword`                       | No        | See `pathToPk7`.                                                 |
-| `defaultSubscriptionService`       | Yes       | The identifier for the Bloomberg service to send subscriptions to. See Bloomberg Developer documentation for a full list of services. |
-| `clientName`                       | No        | The name of the client as used by process monitoring and healthchecks. Defaults to 'BloombergClient'. Change this if you want more granularity of monitoring on different client instances within your application. |
+| `defaultSubscriptionService`       | Yes       | The identifier for the Bloomberg service to send subscriptions to. See the Bloomberg Developer documentation for a full list of services. |
+| `clientName`                       | No        | The name of the Client as used by process monitoring and healthchecks. Defaults to 'BloombergClient'. Change this if you want more granularity of monitoring on different Client instances within your application. |
 | `numberOfStartAttempts`            | No        | The number of connection attempts to make to the remote server. This is a direct configuration option on the Bloomberg API library. When this number has been exhausted, the Genesis Client will wait for the reconnection delay and then restart the session. Defaults to 10. |
-| `reconnectionDelayMillis`          | No        | The time in milliseconds to wait before attempting to recreate and restart the session connection to Bloomberg. This configures the Genesis client, not the underlying library. While the Genesis client is running, it will continually attempt to connect. |
-| `enableEntitlementChecks`          | No        | Boolean flag indicating whether the client should emit events detailing user entitlement changes to the application. If consuming data from a service that requires EID checking, the application MUST handle these events correctly in order to enforce Bloomberg EMRS entitlements and pass certification. |
+| `reconnectionDelayMillis`          | No        | The time in milliseconds to wait before attempting to recreate and restart the session connection to Bloomberg. This configures the Genesis Client, not the underlying library. While the Genesis Client is running, it will continually attempt to connect. |
+| `enableEntitlementChecks`          | No        | Boolean flag indicating whether the Client should emit events detailing user entitlement changes to the application. If consuming data from a service that requires EID checking, the application MUST handle these events correctly in order to enforce Bloomberg EMRS entitlements and pass certification. |
 | `wrapData`                         | No        | Boolean flag indicating whether data points should be wrapped in a DataField wrapper class, which supports interrogation for data-type information. Defaults to true. Wrapping the data makes writing the consumer logic easier, at the cost of additional memory overhead in the application. For applications with a large number of topic subscriptions, or requirements to handle a large number of updates, it may be prudent to set this to false. |
 
-### Using the client directly
-In order to use the Bloomberg client directly in your code, you can inject it via [dependency injection](../../server-capabilities/custom-components/#injecting-dependencies). To initialize automatically, the client attempts to find a file matching the pattern `*-bloomberg.kts` included as part of the process definition.
+### Using the Client directly
+In order to use the Bloomberg Client directly in your code, you can inject it via [dependency injection](../../server-capabilities/custom-components/#injecting-dependencies). To initialize automatically, the Client attempts to find a file matching the pattern `*-bloomberg.kts` included as part of the process definition.
 
 <details>
 <summary>Code Examples</summary>
@@ -175,21 +176,26 @@ pipelines {
 
 In addition to the configuration properties detailed [above](./#common-configuration), the Gateway configuration also exposes additional config options:
 
- - pipelineBufferSize (optional): The number of elements to buffer while they are waiting to be consumed by the sink. Defaults to 1000. Note that only data updates will be discarded. User entitlement updates will not be discarded and the buffer will have to clear before they can be processed.
+ | Option                    | Mandatory      |     Description                                                  |
+|----------------------------|----------------|------------------------------------------------------------------|
+| `pipelineBufferSize`       | No             | The number of elements to buffer while they are waiting to be consumed by the sink. Defaults to 1000. Note that only data updates will be discarded. User entitlement updates will not be discarded and the buffer will have to clear before they can be processed. |
 
 ## Client API
 
 ### Requests
-Sending a request is how you interact with the Bloomberg client. All requests that are sent to Bloomberg have a common supertype, `BloombergRequest`, which is the input type supported by the Bloomberg Sink in Data Pipelines. 
+Sending a request is how you interact with the Bloomberg Client. All requests that are sent to Bloomberg have a common supertype, `BloombergRequest`, which is the input type supported by the Bloomberg Sink in Data Pipelines. 
 
-##### DataSubscription
-The DataSubscription contains the information required to subscribe to a real-time data feed from a Bloomberg API service. It contains the following fields:
- - correlationId (String): A unique identifier for the subscription
- - topic (String): An identifier for the feed to subscribe to. For example, when using the market data service (//blp/mktdata) as the default subscription service, the topic should be the Bloomberg Instrument Ticker (VOD LN Equity).
- - fields (List of String): A list of valid Bloomberg field identifiers (FIDs) that you want to subscribe for. Please see Bloomberg Developer Documentation for more details on which FIDs are available per service.
- - options (List of String): A list of additional options, such as the update frequency, or whether to subscribe for delayed data.
+##### `DataSubscription`
+The `DataSubscription` contains the information required to subscribe to a real-time data feed from a Bloomberg API service. It contains the following fields:
 
-If using the client directly, you can pass an instance of this request to the `subscribe` method.
+| Field                      | Type           |     Description                                                  |
+|----------------------------|----------------|------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the subscription. |
+| `topic`                    | String         | An identifier for the feed to subscribe to. For example, when using the market data service (//blp/mktdata) as the default subscription service, the topic should be the Bloomberg Instrument Ticker (VOD LN Equity). |
+| `fields`                   | List of String | A list of valid Bloomberg field identifiers (FIDs) that you want to subscribe for. See the Bloomberg Developer Documentation for more details on which FIDs are available per service. |
+| `options`                  | List of String | A list of additional options, such as the update frequency, or whether to subscribe for delayed data.  |
+
+If using the Client directly, you can pass an instance of this request to the `subscribe` method.
 
 <details>
 <summary>Code Examples</summary>
@@ -263,11 +269,14 @@ If using the client directly, you can pass an instance of this request to the `s
   </Tabs>
 </details>
 
-##### DataUnsubscribe
-The DataUnsubscribe contains the information required to unsubscribe from a previously registered subscription. It contains the following fields:
- - correlationId (String): A unique identifier for the subscription
+##### `DataUnsubscribe`
+The `DataUnsubscribe` contains the information required to unsubscribe from a previously registered subscription. It contains the following fields:
 
-If using the client directly, you only need to pass the string value correlationId to the unsubscribe method, not the request object. If using data pipelines, you must construct the request.
+| Field                      | Type           |     Description                                                  |
+|----------------------------|----------------|------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the subscription.                        |
+
+If using the Client directly, you only need to pass the string value correlationId to the unsubscribe method, not the request object. If using data pipelines, you must construct the request.
 
 <details>
 <summary>Code Examples</summary>
@@ -322,14 +331,17 @@ If using the client directly, you only need to pass the string value correlation
   </Tabs>
 </details>
 
-##### DataRequest
-Most services either support real-time subscriptions, or single (one-off) data requests. The DataRequest represents a single request for data sent to a Bloomberg API service. It contains the following fields:
- - correlationId (String): A unique identifier for the request.
- - topic (String): An identifier for the feed to request data for. For example, when using the product data service (//blp/refdata) as the default subscription service, the topic should be the Bloomberg Instrument Ticker (VOD LN Equity).
- - fields (List of String): A list of valid Bloomberg field identifiers (FIDs) that you want to receive data for. See the Bloomberg Developer Documentation for more details on which FIDs are available per service.
- - requestType (String): The type of request you want to send to the service. For example, `ReferenceDataRequest`.
+##### `DataRequest`
+Most services either support real-time subscriptions, or single (one-off) data requests. The `DataRequest` represents a single request for data sent to a Bloomberg API service. It contains the following fields:
 
-If you are using the client directly, you can pass an instance of this request to the `requestData` method.
+| Field                      | Type           |     Description                                                  |
+|----------------------------|----------------|------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the subscription. |
+| `topic`                    | String         | An identifier for the feed to subscribe to. For example, when using the market data service (//blp/mktdata) as the default subscription service, the topic should be the Bloomberg Instrument Ticker (VOD LN Equity). |
+|`fields`                    | List of String | A list of valid Bloomberg field identifiers (FIDs) that you want to receive data for. See the Bloomberg Developer Documentation for more details on which FIDs are available per service.|
+|`requestType`               | String         | The type of request you want to send to the service. For example, `ReferenceDataRequest`. |
+
+If you are using the Client directly, you can pass an instance of this request to the `requestData` method.
 
 <details>
 <summary>Code Examples</summary>
@@ -398,14 +410,16 @@ If you are using the client directly, you can pass an instance of this request t
   </Tabs>
 </details>
 
-##### UserLogon
-The UserLogon request triggers an authentication check with the Bloomberg entitlement system (EMRS) for a specified user. It then starts a flow of entitlement events for every user that is successfully authenticated. It contains the following fields:
+##### `UserLogon`
+The `UserLogon` request triggers an authentication check with the Bloomberg entitlement system (EMRS) for the specified user. It then starts a flow of entitlement events for every user that is successfully authenticated. It contains the following fields:
 
- - userName (String): The identifier of the user account within the Genesis Application.
- - emrsId (String): The identifier of the user as stored on the Bloomberg entitlement system (EMRS).
- - ipAddress (String): The IP address from which the user is currently logged into the Genesis application.
+| Field                      | Type           |     Description                                                   |
+|----------------------------|----------------|-------------------------------------------------------------------|
+| `userName`                 | String         | The identifier of the user account within the Genesis Application |
+| `emrsId`                   | String         | The identifier of the user as stored on the Bloomberg entitlement system (EMRS). |
+|`ipAddress`                 | String         | The IP address from which the user is currently logged into the Genesis application. |
 
-If using the client directly, you can pass an instance of this request to the `logonUser` method.
+If using the Client directly, you can pass an instance of this request to the `logonUser` method.
 
 <details>
 <summary>Code Examples</summary>
@@ -475,17 +489,20 @@ If using the client directly, you can pass an instance of this request to the `l
 Events are received from Bloomberg. They have a common supertype, `BloombergEvent`, which is the output type supported by the Bloomberg Source in Data Pipelines. Receiving and processing events is how you consume data from Bloomberg.
 
 #### Registering an Event Listener
-In order to register a callback to receive events from the client, call the `addEventListener` method, passing an instance of an object that implements the `EventListener` interface. 
+In order to register a callback to receive events from the Client, call the `addEventListener` method, passing an instance of an object that implements the `EventListener` interface. 
 
-The interface has callbacks corresponding to each of the following event types, but has default no-op implementations of all of them, as not all of them are applicable to every application. See below for details on each of the supported event types, and their associated methods in the EventListener.
+The interface has callbacks corresponding to each of the following event types. Each one has a default no-op implementation, as not all of them are applicable to every application. See below for details on each of the supported event types, and their associated methods in the EventListener.
 
-##### SubscriptionDataEvent
-The SubscriptionDataEvent represents an update to an active data subscription. It contains the following fields: 
- - correlationId (String): A unique identifier for the subscription
- - data (Map&lt;String, DataField&gt;): The fields that were updated as part of this event. The DataField class is a wrapper for data points that can be interrogated for type information in ways friendly to Java `switch` and Kotlin `when` statements.
+##### `SubscriptionDataEvent`
+The `SubscriptionDataEvent` represents an update to an active data subscription. It contains the following fields: 
+
+| Field                      | Type           |     Description                                                   |
+|----------------------------|----------------|-------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the subscription.                         |
+| `data`                     | Map&lt;String, DataField&gt; | The fields that were updated as part of this event. The DataField class is a wrapper for data points that can be interrogated for type information in ways friendly to Java `switch` and Kotlin `when` statements. |
 
  The following field types are supported:
-| Wrapper Type    | Value Type                   |
+| Wrapper type    | Value type                   |
 | ----------------|------------------------------|
 | BooleanField    | Boolean                      |
 | CharField       | Char                         |
@@ -502,7 +519,7 @@ The SubscriptionDataEvent represents an update to an active data subscription. I
 | ListField       | List&lt;DataField&gt;        |
 
 
- Each time a topic update is received from Bloomberg, a SubscriptionDataEvent is passed to all registered listeners via the `onSubscriptionUpdated` method. This is the main callback to receive subscription data updates if `wrapData` is set to true in configuration, which is the default.
+ Each time a topic update is received from Bloomberg, a `SubscriptionDataEvent` is passed to all registered listeners via the `onSubscriptionUpdated` method. This is the main callback to receive subscription data updates if `wrapData` is set to true in configuration, which is the default.
 
 <details>
 <summary>Code Examples</summary>
@@ -599,19 +616,23 @@ The SubscriptionDataEvent represents an update to an active data subscription. I
               is DataField.TimeField -> {}
             }
           }
+        }
       }
       ```
       </TabItem>
   </Tabs>
 </details>
 
-##### SubscriptionRawDataEvent
-The SubscriptionRawDataEvent represents an update to an active data subscription. It contains the following fields: 
- - correlationId (String): A unique identifier for the subscription.
- - data (Map&lt;String, Object&gt;): The fields that were updated as part of this event. The values are the raw data values extracted from the Bloomberg message.
+##### `SubscriptionRawDataEvent`
+The `SubscriptionRawDataEvent` represents an update to an active data subscription. It contains the following fields: 
+
+| Field                      | Type           |     Description                                                   |
+|----------------------------|----------------|-------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the subscription.                         |
+| `data`                     | Map&lt;String, DataField&gt; | The fields that were updated as part of this event. The values are the raw data values extracted from the Bloomberg message. |
 
  The following field types are supported:
-| Value Type                   |
+| Value type                   |
 |------------------------------|
 | Boolean                      |
 | Char                         |
@@ -628,7 +649,7 @@ The SubscriptionRawDataEvent represents an update to an active data subscription
 | List&lt;Object&gt;           |
 
 
- Each time a topic update is received from Bloomberg, a SubscriptionRawDataEvent is passed to all registered listeners via the `onSubscriptionUpdated` method. This is the main callback to receive subscription data updates if `wrapData` is set to false in configuration.
+ Each time a topic update is received from Bloomberg, a `SubscriptionRawDataEvent` is passed to all registered listeners via the `onSubscriptionUpdated` method. This is the main callback to receive subscription data updates if `wrapData` is set to false in configuration.
 
 <details>
 <summary>Code Examples</summary>
@@ -707,18 +728,22 @@ The SubscriptionRawDataEvent represents an update to an active data subscription
               is LocalTime -> {}
             }
           }
+        }
       }
       ```
       </TabItem>
   </Tabs>
 </details>
 
-##### DataResponseEvent
-The DataResponseEvent represents an response to a previously issued one-off data request. It contains the following fields: 
- - correlationId (String): A unique identifier for the request.
- - data (Map&lt;String, Object&gt;): The fields returned as one the response. The values are the raw data values extracted from the Bloomberg message.
- - moreData (Boolean): Indicates whether or not there are additional responeses pending. Sometimes, depending on the size of the request, multiple responses may be received.
+##### `DataResponseEvent`
+The `DataResponseEvent` represents a response to a previously issued one-off data request. It contains the following fields: 
 
+| Field                      | Type           |     Description                                                  |
+|----------------------------|----------------|------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the request.                             |
+|`data`                      | Map&lt;String, Object&gt; | The fields returned by the response. The values are the raw data values extracted from the Bloomberg message. |
+|`moreData`                  | Boolean        | Indicates whether or not there are additional responses pending. Sometimes, depending on the size of the request, multiple responses can be received. |
+ 
 <details>
 <summary>Code Examples</summary>
   <Tabs
@@ -787,17 +812,22 @@ The DataResponseEvent represents an response to a previously issued one-off data
   </Tabs>
 </details>
 
-##### SubscriptionStatusEvent
-The SubscriptionStatusEvent is sent when a subscription changes status. It contains the following fields: 
- - correlationId (String): A unique identifier for the subscription.
- - message (String): An informational message providing more information about the status change.
- - status (SubscriptionStatus Enum): The status of the subscription. The supported status values are as follows: 
+##### `SubscriptionStatusEvent`
+The `SubscriptionStatusEvent` is sent when a subscription changes status. It contains the following fields: 
+
+| Field                      | Type           |     Description                                                   |
+|----------------------------|----------------|-------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the subscription.                         |
+| `message`                  | String         | A message providing more information about the status change.     |
+| `status`                   | SubscriptionStatus Enum | The status of the subscription. The supported status values are listed in the table below. |
+
+The supported `status` values are: 
 
 | Status          | Description                  |
 |-----------------|------------------------------|
 | ACTIVE          | The subscription is healthy and updates are being published. |
-| STALE           | The subscription has paused, and the last received update should not be considered 'current'. The subscription may resume at a later time. There is no need to re-subscribe. |
-| CANCELLED       | The subscription has been terminated either by client or server request. Re-subscribing restarts the subscription. |
+| STALE           | The subscription has paused, and the last received update should not be considered 'current'. The subscription can resume at a later time. There is no need to re-subscribe. |
+| CANCELLED       | The subscription has been terminated either by Client or server request. Re-subscribing restarts the subscription. |
 | REJECTED        | The subscription was rejected, either by being malformed or containing incorrect data. Re-subscribing will not fix the problem, and it is suggestive of an issue with the logic that is building the subscription. For example, an invalid ticker symbol could be the cause of a subscription being rejected.  |
 
 <details>
@@ -872,12 +902,15 @@ The SubscriptionStatusEvent is sent when a subscription changes status. It conta
   </Tabs>
 </details>
 
-##### UserEntitlementsUpdateEvent
-The UserEntitlementsUpdateEvent is sent when the data entitlements for a user have changed. It contains the following fields: 
- - userName (String): The identifier of the user account within the Genesis application.
- - emrsId (String): The identifier of the user as stored on the Bloomberg entitlement system (EMRS)
- - eid (Int): The entitlement ID (EID) that has either been granted or denied to the user.
- - entitled (Boolean): Whether the user is entitled for this EID or not.
+##### `UserEntitlementsUpdateEvent`
+The `UserEntitlementsUpdateEvent` is sent when the data entitlements for a user have changed. It contains the following fields: 
+
+| Field                      | Type           |     Description                                                    |
+|----------------------------|----------------|--------------------------------------------------------------------|
+| `userName`                 | String         | The identifier of the user account within the Genesis application. |
+| `emrsId`                   | String         | The identifier of the user as stored on the Bloomberg entitlement system (EMRS). |
+| `eid`                      | Int            | The entitlement ID (EID) that has either been granted or denied to the user. |
+| `entitled`                 | Boolean        | Whether the user is entitled for this EID or not.                  |                 
 
 These events must be used to drive data visibility rules in the application.
 
@@ -945,12 +978,15 @@ These events must be used to drive data visibility rules in the application.
   </Tabs>
 </details>
 
-##### UserEntitlementsRevokedEvent
-The UserEntitlementsRevokedEvent is sent when all data entitlements for a user have been revoked. It contains the following fields: 
- - userName (String): The identifier of the user account within the Genesis application.
- - emrsId (String): The identifier of the user as stored on the Bloomberg entitlement system (EMRS).
+##### `UserEntitlementsRevokedEvent`
+The `UserEntitlementsRevokedEvent` is sent when all data entitlements for a user have been revoked. It contains the following fields: 
 
-This event should be interpreted as a simultaneous receipt of a UserEntitlementsUpdateEvent for every known EID in the system, with 'entitled' set to false.
+| Field                      | Type           |     Description                                                    |
+|----------------------------|----------------|--------------------------------------------------------------------|
+| `userName`                 | String         | The identifier of the user account within the Genesis application. |
+| `emrsId`                   | String         | The identifier of the user as stored on the Bloomberg entitlement system (EMRS). |
+
+This event should be interpreted as a simultaneous receipt of a `UserEntitlementsUpdateEvent` for every known EID in the system, with 'entitled' set to false.
 
 <details>
 <summary>Code Examples</summary>
