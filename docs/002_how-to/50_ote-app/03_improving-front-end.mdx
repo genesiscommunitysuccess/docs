@@ -103,7 +103,11 @@ In this application, we can simulate automated processes by adding buttons that 
 ```
 export class ProcessesProcessHistoryManager extends GenesisElement {
   @User user: User;
+  @Connect connect!: Connect;
 
+  @observable columns: ColDef[] = [
+    ...columnDefs,
+  ];
 }
 ```
 
@@ -114,6 +118,10 @@ export class ProcessesProcessHistoryManager extends GenesisElement {
   @User user: User;
   @Connect connect: Connect;
 
+  @observable columns: ColDef[] = [
+    ...columnDefs,
+  ];
+  
   runExpiryProcess() {
     this.connect.commitEvent("EVENT_EXPIRE_ORDERS", {DETAILS:{}})
   }
