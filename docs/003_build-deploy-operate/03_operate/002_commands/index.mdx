@@ -962,28 +962,30 @@ purgers {
 
 The following filters are used in the examples explained above:
 
-`whereRange`: This filter can contain value of the table-index parameter or parameters if there are more than one field in the table-index. Parameter list can range from 1-10.
-It filters the records based on the index parameter value/values
+`whereRange`: This filter can contain the value of the table-index parameter or parameters if there is more than one field in the table-index. Parameter list can range from 1-10.
+It filters the records based on the index parameter value or values. 
 
-`filter`: filter based on predicate provided
+`filter`: filter based on the predicate provided
 
-`filterBusinessDays`: this method allows you to purge data based on business date.
+`filterBusinessDays`: this method enables you to purge data based on business date.
 You need to provide:
 - max age of record
 - country name
 - region which defaults to "NATIONAL"
 - and optional LONG or DATETIME field of table you want to purge and if not specified TIMESTAMP field of table is used
 
-`filterDays`: this method allows to purge data based on calendar date
+`filterDays`: this method enables to purge data based on calendar date.
 You need to provide:
 - max age of record
 - and optional LONG or DATETIME field of table you want to purge and if not specified TIMESTAMP field of table is used
 
-`finally` and `batchFinally` clauses: It is run for every record that is purged and used to add some extra functionality if needed, including cascading the purge, see below for details.
-
 ### Cascade purges
 
-In some data sets, it is necessary to cascade the purging and delete related records:
+It is often necessary to cascade purges so that related records are also deleted. For example, if you are purging records from the TRADES table, you might also want to purge the related records in the FEES table.
+
+For this, we provide `finally` and `batchFinally` clauses.
+
+When you use one of these clauses, you can add extra functionality for every record that is purged, such as the logic for purging related records:
 
 ```kotlin
 bulkPurger(TABLE_A).batchFinally { records ->
@@ -998,8 +1000,9 @@ bulkPurger(TABLE_A).finally { record ->
 }
 ```
 
-The main difference is that `batchFinally` is processed in batches, which means that any cascade operation should run more efficiently.
-This could be a consideration on larger data sets.
+Whereas `finally` deletes records individually as the process runs, the `batchFinally` clause processes the purge in batches and you can specify `batchSize` in the `config` (see below). This enables you to purge more efficiently when you have large datasets, as it results in fewer database operations.
+
+For example, if you use the `finally` clause and you delete 8,000 records, then there will be 8,000 database operations. If you use the `batchFinally` clause on the same dataset with `batchSize` set to 1,000, there will be 8 database operations.
 
 ### Config
 
@@ -1009,16 +1012,18 @@ purgers {
         backupMode = CSV_GZ // accepted values: LOG, CSV, CSV_GZ, NONE
         formatMode = FORMATTED // accepted values: FORMATTED, LEGACY
         backupLocation = Paths.get(GenesisPaths.runtime(), "purger", OSSafeDateTimeString())
-        batchSize = 100
+        batchSize = 1000
     }
 
     // ...snip...
 }
 ```
 These config values affect how purgers behave. By default, records are written to a log file in `backupLocation`.
+
 Alternatively, records can be written in a [DumpIt](#dumpit) compatible `.csv` or `.csv.gz` file.
-`formatMode` corresponds to DumpIt argument.
-The `batchSize` property represents purgers batch size. Larger batch sizes should be able to use more efficient database operations to purge, but will require more memory.
+
+- `formatMode` corresponds to the DumpIt argument.
+- `batchSize` represents the batch size of each purge (which results in a single database operation for each batch). Larger batch sizes should be able to use more efficient database operations to purge, but they do require more memory.
 
 ## `ReconcileDatabaseSync`
 
