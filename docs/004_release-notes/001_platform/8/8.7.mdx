@@ -104,9 +104,13 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 8.7.4
 
-##### Fixes
+##### Features
+- Optimise memory usage BackwardJoinCache for 1-2-1 joins 
+- Provide better bulk purge support 
+- Performance Improvement: Use deleteAll in PurgerScript.purgeDerivedRange 
 
-- Catch and accumulate unsupported formula errors while processing a worksheet
+##### Fixes
+- ExcelToGenesis: catch and accumulate unsupported formula errors while processing a worksheet 
 - Fixed issue where removal of a sequence at the same time as a table rename would cause remap to fail 
 
 #### 8.7.3
