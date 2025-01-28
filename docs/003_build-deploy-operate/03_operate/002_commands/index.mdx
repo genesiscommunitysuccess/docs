@@ -908,6 +908,10 @@ purgers {
  // Inject repo
  val userSessionRepo = inject<UserSessionRx2Repository>()
 
+ config {
+     batchSize = 1000
+ }
+
  // Range purger with whereRange
  rangePurger(USER_SESSION.BY_USER_NAME).whereRange("JohnDoe")
 
@@ -925,6 +929,12 @@ purgers {
   .whereRange("JohnDoe")
   .finally { userSession ->
     println("Purged record: ${userSession.toGenesisSet()}")
+  }
+ // batchFinally clause usage
+ rangePurger(USER_SESSION.BY_USER_NAME)
+  .whereRange("JohnDoe")
+  .batchFinally { userSessions ->
+    println("Purged record: ${userSessions}")
   }
 }
 ```
@@ -969,7 +979,46 @@ You need to provide:
 - max age of record
 - and optional LONG or DATETIME field of table you want to purge and if not specified TIMESTAMP field of table is used
 
-`finally` clause: It is run for every record that is purged and used to add some extra functionality if needed
+`finally` and `batchFinally` clauses: It is run for every record that is purged and used to add some extra functionality if needed, including cascading the purge, see below for details.
+
+### Cascade purges
+
+In some data sets, it is necessary to cascade the purging and delete related records:
+
+```kotlin
+bulkPurger(TABLE_A).batchFinally { records ->
+    val keysToPurge = records.map { TableB.byTableAId(it.tableId) }
+    entityDb.purgeAllDerivedRecords(keysToPurge)
+}
+
+// or
+
+bulkPurger(TABLE_A).finally { record ->
+    entityDb.purgeDerivedRecord(TableB.byTableAId(record.tableId))
+}
+```
+
+The main difference is that `batchFinally` is processed in batches, which means that any cascade operation should run more efficiently.
+This could be a consideration on larger data sets.
+
+### Config
+
+```kotlin
+purgers {
+    config {
+        backupMode = CSV_GZ // accepted values: LOG, CSV, CSV_GZ, NONE
+        formatMode = FORMATTED // accepted values: FORMATTED, LEGACY
+        backupLocation = Paths.get(GenesisPaths.runtime(), "purger", OSSafeDateTimeString())
+        batchSize = 100
+    }
+
+    // ...snip...
+}
+```
+These config values affect how purgers behave. By default, records are written to a log file in `backupLocation`.
+Alternatively, records can be written in a [DumpIt](#dumpit) compatible `.csv` or `.csv.gz` file.
+`formatMode` corresponds to DumpIt argument.
+The `batchSize` property represents purgers batch size. Larger batch sizes should be able to use more efficient database operations to purge, but will require more memory.
 
 ## `ReconcileDatabaseSync`
 
