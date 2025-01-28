@@ -908,6 +908,10 @@ purgers {
  // Inject repo
  val userSessionRepo = inject<UserSessionRx2Repository>()
 
+ config {
+     batchSize = 1000
+ }
+
  // Range purger with whereRange
  rangePurger(USER_SESSION.BY_USER_NAME).whereRange("JohnDoe")
 
@@ -925,6 +929,12 @@ purgers {
   .whereRange("JohnDoe")
   .finally { userSession ->
     println("Purged record: ${userSession.toGenesisSet()}")
+  }
+ // batchFinally clause usage
+ rangePurger(USER_SESSION.BY_USER_NAME)
+  .whereRange("JohnDoe")
+  .batchFinally { userSessions ->
+    println("Purged record: ${userSessions}")
   }
 }
 ```
@@ -950,26 +960,70 @@ purgers {
 
 ### Filters
 
-The following filters are used in the examples explained above:
+The example above uses filters. This section looks at the filters that are available for purging. 
 
-`whereRange`: This filter can contain value of the table-index parameter or parameters if there are more than one field in the table-index. Parameter list can range from 1-10.
-It filters the records based on the index parameter value/values
+`whereRange`: This filter can contain the value of the table-index parameter or parameters if there is more than one field in the table-index. Parameter list can range from 1-10.
+It filters the records based on the index parameter value or values. 
 
-`filter`: filter based on predicate provided
+`filter`: filter based on the predicate provided
 
-`filterBusinessDays`: this method allows you to purge data based on business date.
+`filterBusinessDays`: this method enables you to purge data based on business date.
 You need to provide:
 - max age of record
 - country name
-- region which defaults to "NATIONAL"
-- and optional LONG or DATETIME field of table you want to purge and if not specified TIMESTAMP field of table is used
+- region (optional - defaults to "NATIONAL")
+- LONG or DATETIME field of the table you want to purge (optional - defaults to TIMESTAMP field of table)
 
-`filterDays`: this method allows to purge data based on calendar date
+`filterDays`: this method enables you to purge data based on calendar date.
 You need to provide:
 - max age of record
-- and optional LONG or DATETIME field of table you want to purge and if not specified TIMESTAMP field of table is used
+- LONG or DATETIME field of the table you want to purge (optional - defaults to TIMESTAMP field of table)
 
-`finally` clause: It is run for every record that is purged and used to add some extra functionality if needed
+### Config
+
+You can also supply `config` values to control the behaviour of the purge. For example:
+
+```kotlin
+purgers {
+    config {
+        backupMode = CSV_GZ // accepted values: LOG, CSV, CSV_GZ, NONE
+        formatMode = FORMATTED // accepted values: FORMATTED, LEGACY
+        backupLocation = Paths.get(GenesisPaths.runtime(), "purger", OSSafeDateTimeString())
+        batchSize = 1000
+    }
+
+    // ...snip...
+}
+```
+
+The example above uses `config` settings:
+
+- `backupMode` specifies the type of log file that is created.
+- `formatMode` corresponds to the DumpIt argument; records can be written in a [DumpIt](#dumpit) compatible `.csv` or `.csv.gz` file.
+- `backupLocation` is where the the log file is located.
+- `batchSize` represents the batch size of each purge (which results in a single database operation for each batch). Only use this when you are using `batchFinally` to include logic for [cascade purges](#cascade-purges). Larger batch sizes result in fewer database operations and a more efficient purge, but they do require more memory.
+<br></br>For example, if you use `batchFinally` with `batchSize` set to 1,000 and you delete 8,000 records, there will be 8 database operations. By contrast, an unbatched operation using the `finally` filter would have a database operation for every single delete.
+
+### Cascade purges
+
+It is often necessary to cascade purges so that related records are also deleted. For example, if you are purging records from the TRADES table, you might also want to purge the related records in the FEES table.
+
+For this, you can use either `finally` (which performs a delete for each record to be deleted) or `batchFinally` (which batches records and performs a single delete operation on the whole batch).
+
+When you use `finally` or `batchFinally`, you can add extra functionality for every record that is purged, such as the logic for purging related records:
+
+```kotlin
+bulkPurger(TABLE_A).batchFinally { records ->
+    val keysToPurge = records.map { TableB.byTableAId(it.tableId) }
+    entityDb.purgeAllDerivedRecords(keysToPurge)
+}
+
+// or
+
+bulkPurger(TABLE_A).finally { record ->
+    entityDb.purgeDerivedRecord(TableB.byTableAId(record.tableId))
+}
+```
 
 ## `ReconcileDatabaseSync`
 
