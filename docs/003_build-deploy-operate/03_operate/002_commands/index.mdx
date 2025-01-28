@@ -979,13 +979,9 @@ You need to provide:
 - max age of record
 - LONG or DATETIME field of the table you want to purge (optional - defaults to TIMESTAMP field of table)
 
-`finally` is a filter for implementing [cascade purges](#cascade-purges).
-
-`batchFinally` enables you to process records in batches when you purge. You can specify the `batchSize` in the `config`.<br></br> This is useful when you are purging large datasets - you can cut down the number of database operations, which speeds up the process. However, this uses more memory. `batchFinally` can also be used for [cascade purges](#cascade-purges).
-
 ### Config
 
-You can supply `config` values to control the behaviour of the purge. For example:
+You can also supply `config` values to control the behaviour of the purge. For example:
 
 ```kotlin
 purgers {
@@ -1000,21 +996,21 @@ purgers {
 }
 ```
 
-The example above us`config` settings:
+The example above uses `config` settings:
 
 - `backupMode` specifies the type of log file that is created.
 - `formatMode` corresponds to the DumpIt argument; records can be written in a [DumpIt](#dumpit) compatible `.csv` or `.csv.gz` file.
 - `backupLocation` is where the the log file is located.
-- `batchSize` represents the batch size of each purge (which results in a single database operation for each batch). Larger batch sizes should be able to use more efficient database operations to purge, but they do require more memory.
+- `batchSize` represents the batch size of each purge (which results in a single database operation for each batch). Only use this when you are using 'batchFinally` to include logic for [cascade purges](#cascade-purges). Larger batch sizes result in fewer database operations and a more efficient purge, but they do require more memory.
 <br></br>For example, if you use the `batchFinally` clause with `batchSize` set to 1,000 and you delete 8,000 records, there will be 8 database operations. By contrast, an unbatched operation using the `finally` filter would have a database operation for every single delete.
 
 ### Cascade purges
 
 It is often necessary to cascade purges so that related records are also deleted. For example, if you are purging records from the TRADES table, you might also want to purge the related records in the FEES table.
 
-For this, we provide `finally` and `batchFinally` clauses.
+For this, you can use either `finally` (which performs a delete for each record to be deleted) or `batchFinally` (which batches records and performs a single delete operation on the whole batch).
 
-When you use one of these clauses, you can add extra functionality for every record that is purged, such as the logic for purging related records:
+When you use `finally` or `batchFinally`, you can add extra functionality for every record that is purged, such as the logic for purging related records:
 
 ```kotlin
 bulkPurger(TABLE_A).batchFinally { records ->
