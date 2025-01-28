@@ -23,9 +23,9 @@ sidebar_position: 3
 
 The core aspects of event handling are:
 
-- **Component Communication**. This enables a component (such as `<my-button>`) to notify or interact with parent components or other parts of the application. Here, we achieve this by emitting a custom event from `<my-button>` when it’s clicked.
+- **Component Communication**. You need to enable a component (such as `<my-button>`) to notify or interact with parent components or other parts of the application. Here, we achieve this by emitting a custom event from `<my-button>` when it’s clicked.
 
-- **Custom Events**. Custom events are unique, developer-defined events (such as `button-clicked` in the example below), which communicate specific actions or states. You can use the `$emit` helper to create and dispatch a custom event.
+- **Custom Events**. YOu can create your own custom events (such as `button-clicked` in the example below), which communicate specific actions or states. You can use the `$emit` helper to create and dispatch a custom event.
 
 - **Event Data Passing**. When emitting custom events, you can send additional data along with the event. In the example below, `event.detail` passes contextual information ( `label` and `count`) to any listener that handles the event.
 
@@ -189,16 +189,18 @@ emitCustomEvent() {
 
 ```
 
-In this modified event:
+In this modified event, this is how bubbling works:
 
-- When `bubbles` is true, the event propagates upward through the DOM.
+- When `bubbles` is true, the event propagates upward through the DOM. (If you want the event to be confined to the component emitting it and not propagate up the DOM tree, set `bubbles` to false.)
 - When `bubbles` is false, the event does not bubble.
-- If you want the event to be confined to the component emitting it and not propagate up the DOM tree, set `bubbles` to false.
 
-- When `composed` is true, the event crosses the shadow DOM boundary and can be listened to outside the shadow DOM.
+This is how the `compose setting behaves:
+
+- When `composed` is true, the event crosses the shadow DOM boundary and can be listened to outside the shadow DOM. (If you want the event to stay within the shadow DOM of the component, set `composed` to false.)
 - When `composed` is false, the event is confined within the shadow DOM.
-- Set `composed` to false if you want the event to stay within the shadow DOM of the component.
 
 You don't need to make any changes to the parent component if you keep `bubbles: true`. It will still handle the event the same way.
 
+:::tip
 If you set `bubbles: false` or `composed: false`, make sure you either attach the event listener directly to the emitting component or you adjust the shadow DOM handling to handle this.
+:::

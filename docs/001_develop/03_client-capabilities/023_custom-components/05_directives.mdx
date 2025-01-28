@@ -1,5 +1,5 @@
 ---
-title: 'directives'
+title: 'Directives'
 sidebar_label: 'Directives'
 id: directives
 keywords: [
@@ -27,7 +27,7 @@ tags:
 sidebar_position: 3
 ---
 
-Directives in Genesis Elements are special functions used in the templates in order to add specific functionality. This section looks at the most commonly used directives:
+Directives in Genesis Elements are special functions used in the templates that enable you to create specific functionality. This section looks at the most commonly used directives:
 
 ### Ref
 
@@ -57,15 +57,13 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-##### Key points:
+In the example above, the directive `ref("buttonElement")`creates a reference to the `<button>` element and assigns it to the `buttonElement` property of `<my-button>` component instance, allowing direct interaction with the DOM element.
 
-- `ref("buttonElement")`: The `ref` directive creates a reference to the `<button>` element and assigns it to the `buttonElement` property of `<my-button>` component instance, allowing direct interaction with the DOM element.
-
-- In `connectedCallback`, `this.buttonElement` is a direct reference to the `<button>` DOM node, allowing us to access properties like `textContent`. Here, we log the button’s text to the console.
+In `connectedCallback`, `this.buttonElement` is a direct reference to the `<button>` DOM node, allowing us to access properties like `textContent`. In this case, it logs the button’s text to the console.
 
 :::note
 
-Even though the `<button>` element is part of our `<my-button>` component’s template, you can’t directly access DOM elements inside the template without a reference. The `ref` directive provides this direct access, allowing you to manipulate or retrieve information from a specific DOM element.
+Even though the `<button>` element is part of our `<my-button>` component’s template, you can’t directly access DOM elements inside the template without a reference. The `ref` directive provides this direct access, enabling you to manipulate or retrieve information from a specific DOM element.
 
 :::
 
@@ -75,15 +73,17 @@ Even though the `<button>` element is part of our `<my-button>` component’s te
 ref(propertyName);
 ```
 
-- Property Name: The name of the property that will store the DOM reference in the component. The element with `ref(propertyName)` will be assigned to this property.
+- Property Name: The name of the property that stores the DOM reference in the component. The element with `ref(propertyName)` will be assigned to this property.
 
 ### Slotted
 
-The goal is to create a `<my-button>` component that can accept any content passed into it, such as text or other HTML elements. We use a slot to allow dynamic content, and the `slotted` directive to capture and monitor any content placed inside this slot.
+A `<slot>` is a placeholder inside a component. Any content you add between `<my-button>` tags in HTML will appear in this slot. This set-up makes the `<my-button>` component more flexible, as it can display different content depending on how it’s used.
+
+The example below creates a `<my-button>` component that can accept any content passed into it, such as text or other HTML elements. The slot can handle dynamic content, and the `slotted` directive captures and monitors any content placed inside this slot.
 
 The `slotted` directive captures all nodes assigned to a slot in `<my-button>`.
 
-A `<slot>` is like a placeholder inside a component. Any content you add between `<my-button>` tags in HTML will appear in this slot. This setup makes the `<my-button>` component more flexible, as it can display different content depending on how it’s used.
+
 
 ```typescript
 import {
@@ -111,17 +111,13 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-##### Key points:
+In the example above, the `<slot>` element inside `<button>` is a placeholder. Any content added within `<my-button>` in HTML will appear here.
 
-- The `<slot>` element inside `<button>` is a placeholder. Any content added within `<my-button>` in HTML will appear here.
-
-- `slotted("slotContent")`:
+Look further at `slotted("slotContent")`:
 
   - The `slotted` directive links the slot’s content to the `slotContent` property.
   - This means `slotContent` will be an array containing all the nodes (text, elements, etc.) passed into the slot.
-  - If `slotContent` changes (e.g., content is added or removed from the slot), `slotContentChanged()` will be called automatically, logging the updated content.
-    - `slotContentChanged()` method is triggered whenever the `slotContent` changes, allowing you to respond to changes in the slot content.
-      In this example, we’re simply logging the current content of the slot to the console.
+  - If `slotContent` changes (e.g., content is added or removed from the slot), `slotContentChanged()` will be called automatically, logging the updated content.<br></br> The `slotContentChanged()` method is triggered whenever the `slotContent` changes, so you can respond to changes in the slot content. In this example, it simply logs the current content of the slot to the console.
 
 #### Usage in HTML
 
@@ -136,6 +132,7 @@ export class MyButton extends GenesisElement {
 The `children` directive enables you to capture and manage multiple child nodes within a specific element. This is useful when you want to work with all child elements under a certain parent node inside your component.
 
 The example below modifies `<my-button>` to capture any child elements placed inside it. The `children` directive gets all child nodes within the `<div>` container.
+
 
 ```typescript
 import { GenesisElement, customElement, html, children, observable } from "@genesislcap/web-core";
@@ -164,10 +161,10 @@ export class MyButton extends GenesisElement {
     }
 }
 ```
-##### Key points:
 
-- By specifying `children("childNodes")`, the `childNodes` property will contain all nodes inside the `<div>`, including text nodes, comment nodes, and any HTML elements.
-- As before, `@observable` on `childNodes` ensures it updates whenever there’s a change in the `<div>`’s child nodes.
+The example above specifies `children("childNodes")`, so that the `childNodes` property will contain all nodes inside the `<div>`, including text nodes, comment nodes, and any HTML elements.
+
+- Note the `@observable` on `childNodes`, which ensures it updates whenever there’s a change in the `<div>`’s child nodes.
 - Each time the slot content changes, `childNodesChanged` logs the updated list of child nodes.
 
 #### Usage in HTML
