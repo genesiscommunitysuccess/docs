@@ -960,7 +960,7 @@ purgers {
 
 ### Filters
 
-The following filters are used in the examples explained above:
+The example above uses filters. This section looks at the filters that are available for purging. 
 
 `whereRange`: This filter can contain the value of the table-index parameter or parameters if there is more than one field in the table-index. Parameter list can range from 1-10.
 It filters the records based on the index parameter value or values. 
@@ -971,13 +971,42 @@ It filters the records based on the index parameter value or values.
 You need to provide:
 - max age of record
 - country name
-- region which defaults to "NATIONAL"
-- and optional LONG or DATETIME field of table you want to purge and if not specified TIMESTAMP field of table is used
+- region (optional - defaults to "NATIONAL")
+- LONG or DATETIME field of the table you want to purge (optional - defaults to TIMESTAMP field of table)
 
-`filterDays`: this method enables to purge data based on calendar date.
+`filterDays`: this method enables you to purge data based on calendar date.
 You need to provide:
 - max age of record
-- and optional LONG or DATETIME field of table you want to purge and if not specified TIMESTAMP field of table is used
+- LONG or DATETIME field of the table you want to purge (optional - defaults to TIMESTAMP field of table)
+
+`finally` is a filter for implementing [cascade purges](#cascade-purges).
+
+`batchFinally` enables you to process records in batches when you purge. You can specify the `batchSize` in the `config`.<br></br> This is useful when you are purging large datasets - you can cut down the number of database operations, which speeds up the process. However, this uses more memory. `batchFinally` can also be used for [cascade purges](#cascade-purges).
+
+### Config
+
+You can supply `config` values to control the behaviour of the purge. For example:
+
+```kotlin
+purgers {
+    config {
+        backupMode = CSV_GZ // accepted values: LOG, CSV, CSV_GZ, NONE
+        formatMode = FORMATTED // accepted values: FORMATTED, LEGACY
+        backupLocation = Paths.get(GenesisPaths.runtime(), "purger", OSSafeDateTimeString())
+        batchSize = 1000
+    }
+
+    // ...snip...
+}
+```
+
+The example above us`config` settings:
+
+- `backupMode` specifies the type of log file that is created.
+- `formatMode` corresponds to the DumpIt argument; records can be written in a [DumpIt](#dumpit) compatible `.csv` or `.csv.gz` file.
+- `backupLocation` is where the the log file is located.
+- `batchSize` represents the batch size of each purge (which results in a single database operation for each batch). Larger batch sizes should be able to use more efficient database operations to purge, but they do require more memory.
+<br></br>For example, if you use the `batchFinally` clause with `batchSize` set to 1,000 and you delete 8,000 records, there will be 8 database operations. By contrast, an unbatched operation using the `finally` filter would have a database operation for every single delete.
 
 ### Cascade purges
 
@@ -999,31 +1028,6 @@ bulkPurger(TABLE_A).finally { record ->
     entityDb.purgeDerivedRecord(TableB.byTableAId(record.tableId))
 }
 ```
-
-Whereas `finally` deletes records individually as the process runs, the `batchFinally` clause processes the purge in batches and you can specify `batchSize` in the `config` (see below). This enables you to purge more efficiently when you have large datasets, as it results in fewer database operations.
-
-For example, if you use the `finally` clause and you delete 8,000 records, then there will be 8,000 database operations. If you use the `batchFinally` clause on the same dataset with `batchSize` set to 1,000, there will be 8 database operations.
-
-### Config
-
-```kotlin
-purgers {
-    config {
-        backupMode = CSV_GZ // accepted values: LOG, CSV, CSV_GZ, NONE
-        formatMode = FORMATTED // accepted values: FORMATTED, LEGACY
-        backupLocation = Paths.get(GenesisPaths.runtime(), "purger", OSSafeDateTimeString())
-        batchSize = 1000
-    }
-
-    // ...snip...
-}
-```
-These config values affect how purgers behave. By default, records are written to a log file in `backupLocation`.
-
-Alternatively, records can be written in a [DumpIt](#dumpit) compatible `.csv` or `.csv.gz` file.
-
-- `formatMode` corresponds to the DumpIt argument.
-- `batchSize` represents the batch size of each purge (which results in a single database operation for each batch). Larger batch sizes should be able to use more efficient database operations to purge, but they do require more memory.
 
 ## `ReconcileDatabaseSync`
 
