@@ -48,7 +48,7 @@ This section looks at how to style the `my-button` component. It covers the foll
 
 ## Basic styles
 
-Here is a quick reminder on how to create a custom element using `@customElement`. Note the `css` tag that is imported from `@genesislcap/web-core` along with `html`:
+Here is a quick reminder of how to create a custom element using `@customElement`. Note the `css` tag that is imported from `@genesislcap/web-core` along with `html`:
 
 ```typescript
 import {
@@ -61,12 +61,11 @@ import {
 })
 ```
 
-So far we have seen how we can attach styles using the `styles` property in the `@customElement` decorator. But let's dive deeper and explore how to define styles:
+So far we have seen how we can attach styles using the `styles` property in the `@customElement` decorator. But let's dive deeper and explore how to define styles.
 
-### Defining styles:
+### Defining styles
 
-The example below shows how the `css` tagged template helper enables you to create and re-use CSS for custom elements.
-These styles are *encapsulated in the Shadow DOM* and attached via the `styles` property in the `@customElement` decorator.
+The example below shows how the `css` tagged template helper enables you to create and re-use CSS for custom elements. These styles are *encapsulated in the Shadow DOM* and attached via the `styles` property in the `@customElement` decorator.
 
 ```typescript
 import {
@@ -111,20 +110,23 @@ Even if the `primary` and `disabled` properties default to false, you can add th
 :::
 
 ### Usage in HTML
+With the styles defined in the example above, you can now use `<my-button>` in your HTML:
 
 ```typescript
 <my-button> label="Click Me" primary></my-button>
 <my-button> label="Disabled" disabled></my-button>
 ```
 
+In the example above:
+
 - The first button will have a blue background (`primary` attribute applied).
 - The second button will have reduced opacity and disabled pointer events (`disabled` attribute applied).
 
-In the example above we have:
+To achieve this, we have:
 
-- Used the `styles` property in the `@customElement` decorator.
-- Ensured `styles` are encapsulated within the Shadow DOM.
-- Used `:host` and `:host([attribute])` to apply styles based on the custom element's attributes.
+- used the `styles` property in the `@customElement` decorator
+- ensured that `styles` are encapsulated within the Shadow DOM.
+- used `:host` and `:host([attribute])` to apply styles based on the custom element's attributes.
 
 ## Composing styles
 
@@ -152,7 +154,10 @@ export const normalize = css`
 
 ```
 
-Here's how you can now use the normalize utility along with additional reusable style blocks to style `my-button` component.
+Here's how you can now use the normalize utility along with additional reusable style blocks to style `my-button` component. This example:
+
+- shows how to reuse and combine shared style blocks, in this case, `normalize` and `buttonBaseStyles`
+- combines multiple styles using the `css` helper
 
 ```typescript
 import {
@@ -206,16 +211,14 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-In the example above we have:
-
->- Seen how to reuse and combine shared style blocks like normalize or utility styles.
->- Combined multiple styles using the `css` helper.
-
 ### Partial CSS
 
 In addition to reusing styles dynamically, you can also organize styles into separate files. This is when 'partial CSS' becomes useful.
 
-To achieve this, you can use `cssPartial`. See the example below:
+To achieve this, you can use `cssPartial`. The example below:
+
+- uses `cssPartial` to define reusable snippets of CSS
+- reuses blocks of CSS properties that are not standalone styles
 
 ```typescript
 import { css, cssPartial } from "@genesislcap/web-core";
@@ -234,16 +237,11 @@ const styles = css`
 })
 ```
 
-In the example above we have:
-
-- defined reusable snippets of CSS using `cssPartial`.
-- reused blocks of CSS properties that aren’t standalone styles
-
 ## CSSDirective
 
 A `CSSDirective` enables you to create dynamic CSS styles and behaviours. Instead of using static styles, you can programmatically control how the styles are applied to your component. This is useful for things like animation, dynamic layouts, or user interactions.
 
-You  can achieve this in a few simple steps:
+You can achieve this in a few simple steps:
 
 #### Import the required modules
 
@@ -253,16 +251,20 @@ import { CSSDirective } from "@genesislcap/web-core";
 
 #### Define the custom directive
 
+The example below:
+- creates a new class, `RandomWidth`, which extends `CSSDirective`to make it a directive that can generate styles dynamically.
+- uses `private property = "--button-width"` to define a CSS custom property (`--button-width`) that holds the dynamically generated `width`.value.
+
 ```typescript
 class RandomWidth extends CSSDirective {
   private property = "--button-width";
 }
 ```
 
-- This creates a new class, `RandomWidth`, which extends `CSSDirective`to make it a directive that can generate styles dynamically.
-- `private property = "--button-width"` defines a CSS custom property (`--button-width`) that holds the dynamically generated `width` value.
-
 #### Generate CSS dynamically
+In the example below, the `createCSS()` method specifies what CSS should be added to the element.
+
+Specifically, it generates a rule to set the `width` of the element based on the value of the `--button-width` custom property (which is updated dynamically).
 
 ```typescript
   createCSS() {
@@ -270,10 +272,11 @@ class RandomWidth extends CSSDirective {
   }
 ```
 
-- The `createCSS()` method specifies what CSS should be added to the element.
-- Here, it generates a rule to set the `width` of the element based on the value of the `--button-width` custom property (which is updated dynamically).
+#### Define the behaviour
+In the example below, the `createBehavior()` method defines the dynamic behaviour of the directive:
 
-#### Define behaviour
+  - `bind(el)`: When the element is connected to the DOM, it sets the `--button-width` property to a random value between 100px and 200px.
+  - `unbind(el)`: When the element is disconnected, it removes the `--button-width` property to clean up.
 
 ```typescript
   createBehavior() {
@@ -288,12 +291,13 @@ class RandomWidth extends CSSDirective {
   }
 ```
 
-- The `createBehavior()` method defines the dynamic behaviour of the directive:
-
-  - `bind(el)`: When the element is connected to the DOM, it sets the `--button-width` property to a random value between 100px and 200px.
-  - `unbind(el)`: When the element is disconnected, it removes the `--button-width` property to clean up.
-
 #### Attach the directive to styles
+In the example below, the `RandomWidth` directive is used in the styles property for the `my-button` component.
+
+When the button is rendered:
+- The `RandomWidth` directive dynamically sets the width of the button using the random value generated by `bind()`.
+- The button also gets a blue background and white text from the other static styles.
+
 
 ```typescript
 import {
@@ -319,24 +323,20 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-- The `RandomWidth` directive is used in the styles property for the `my-button` component.
-  - When the button is rendered:
-    - The `RandomWidth` directive dynamically sets the width of the button using the random value generated by `bind()`.
-    - The button also gets a blue background and white text from the other static styles.
-
-#### When the code runs:
+#### When the code runs
+From the above examples, this is what will happen when the code runs:
 
 - When the `my-button` component is created and added to the DOM, the `bind()` method runs.
 - A random width is calculated (e.g., 150px) and applied to the `--button-width` property.
 - The `createCSS()` method uses this property to set the button's width.
-- The button element will have a random width (e.g., 150px) and the other static styles like blue background and white text.
+- The button element will have a random width (e.g., 150px) and other static styles, such as blue background and white text.
 - If the element is removed from the DOM, the `unbind()` method is called, which removes the `--button-width` property, ensuring there are no leftover styles.
 
-In this section we have applied dynamic styles by:
+#### Summary
+In this section we have applied dynamic styles by adding behaviour-driven styles to custom elements. we used two key methods:
 
-- Adding behavior-driven styles to custom elements using two key methods:
-  - `createCSS()`: Generates CSS dynamically.
-  - `createBehavior()`: Attaches dynamic behavior to an element.
+  - `createCSS()`to generate CSS dynamically
+  - `createBehavior()` to attach dynamic behaviour to an element
 
 ## Shadow DOM Styling
 
@@ -344,12 +344,12 @@ Shadow DOM encapsulation ensures styles do not affect the global DOM. They apply
 
 Conversely, styles from the global scope cannot accidentally modify the appearance of your custom element.
 
-Some considerations for Shadow DOM styling
+Here are some considerations for Shadow DOM styling:
 
-- By default, custom elements behave as inline elements. You might want to define a specific `display` property like `inline-block` or `block` to control their layout behavior.
-- Setting `contain: content` improves performance by signaling to the browser that the element's layout, painting, and size calculations are self-contained.
+- By default, custom elements behave as inline elements. You might want to define a specific `display` property such as `inline-block` or `block` to control their layout behaviour.
+- Setting `contain: content` improves performance by signalling to the browser that the element's layout, painting, and size calculations are self-contained. <br></br>
   This ensures the browser doesn't unnecessarily re-calculate styles or layout changes for the entire document if something inside the component changes.
-- Adding support for the `hidden` attribute ensures your component properly respects the `display: none` behavior when `hidden` is applied. This is a common practice for ensuring that components behave predictably.
+- Adding support for the `hidden` attribute ensures your component properly respects the `display: none` behaviour when `hidden` is applied. This is a common practice for ensuring that components behave predictably.
 
 The `:host` selector enables you to apply styles directly to your custom element.
 

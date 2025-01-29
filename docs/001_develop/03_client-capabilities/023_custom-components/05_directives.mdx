@@ -120,6 +120,7 @@ Look further at `slotted("slotContent")`:
   - If `slotContent` changes (e.g., content is added or removed from the slot), `slotContentChanged()` will be called automatically, logging the updated content.<br></br> The `slotContentChanged()` method is triggered whenever the `slotContent` changes, so you can respond to changes in the slot content. In this example, it simply logs the current content of the slot to the console.
 
 #### Usage in HTML
+Once you have defined `<my-button>` with slotted content, as above, you can use it in your HTML.
 
 ```typescript
 <my-button>
@@ -132,7 +133,6 @@ Look further at `slotted("slotContent")`:
 The `children` directive enables you to capture and manage multiple child nodes within a specific element. This is useful when you want to work with all child elements under a certain parent node inside your component.
 
 The example below modifies `<my-button>` to capture any child elements placed inside it. The `children` directive gets all child nodes within the `<div>` container.
-
 
 ```typescript
 import { GenesisElement, customElement, html, children, observable } from "@genesislcap/web-core";
@@ -168,6 +168,7 @@ The example above specifies `children("childNodes")`, so that the `childNodes` p
 - Each time the slot content changes, `childNodesChanged` logs the updated list of child nodes.
 
 #### Usage in HTML
+Once you have defined `<my-button>` to capture and manage child nodes, as above, you can use it in your HTML.
 
 ```typescript
 <my-button>
@@ -188,14 +189,18 @@ The example above specifies `children("childNodes")`, so that the `childNodes` p
 children(propertyName, options);
 ```
 
->- `propertyName`: Specifies the property that will store the array of child nodes.
->- `options` (optional): Additional settings for filtering or structuring child nodes. This can include:
-  >>- `filter`: Restricts the collection to specific elements (e.g., elements('span')).
-  >>- `positioning`: Includes index and other contextual properties if true.
+- `propertyName`specifies the property that will store the array of child nodes.
+- `options` (optional)provides additional settings for filtering or structuring child nodes. This can include:
+  - `filter`restricts the collection to specific elements (e.g., elements('span')).
+  - `positioning` includes index and other contextual properties if true.
 
 ### When
 
-The `when` directive allows you to conditionally render sections of HTML. By providing a condition to `when`, it will display the specified template in the DOM when the condition is true and remove it when false. If the condition never becomes true, the template won’t be rendered at all.
+The `when` directive enables you to render sections of HTML conditionally. 
+
+When you provide a condition to `when`, it displays the specified template in the DOM when the condition is true and removes it when false. If the condition never becomes true, the template is not rendered at all.
+
+Here is an example:
 
 ```typescript
 import { GenesisElement, customElement, observable, html, when } from "@genesislcap/web-core";
@@ -239,13 +244,15 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-**Initial state**:
+In the example above:
+
+**Initial state**
 
 - When `<my-button>` is first added to the DOM, it displays "Loading..." for 2 seconds (simulated delay).
 
-**After 2 Seconds**:
+**After 2 Seconds**
 
-- Once the delay completes, `ready` is set to `true`, and the button appears with the text: "Data Loaded: Hello, Genesis!".
+- Once the delay is completed, `ready` is set to `true`, and the button appears with the text: "Data Loaded: Hello, Genesis!".
 
 ### Syntax breakdown
 
@@ -253,12 +260,12 @@ export class MyButton extends GenesisElement {
 when(condition, template);
 ```
 
-- `condition`: A boolean expression that determines if the template should be rendered. If true, the template is added to the DOM; if false, it’s removed.
-- `template`: Defines the HTML structure to render when the condition is true.
+- `condition`is a boolean expression that determines if the template should be rendered. If true, the template is added to the DOM; if false, it’s removed.
+- `template` defines the HTML structure to render when the condition is true.
 
 ### whenElse
 
-The `whenElse` directive simplifies conditional rendering by allowing you to specify both the "true" and "false" templates in a single directive. This is useful for if-else scenarios, where different content needs to be rendered based on a condition.
+The `whenElse` directive simplifies conditional rendering; it allows you to specify both the "true" and "false" templates in a single directive. This is useful for if-else scenarios, where different content needs to be rendered based on a condition.
 
 Let's look at the same example as above but with `whenElse`:
 
@@ -307,11 +314,11 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-**Initial state**:
+**Initial state**
 
 - When `<my>-button>` is added to the DOM, the condition `!x.ready` evaluates to true, so the "Loading..." template is rendered.
 
-**After 2 Seconds**:
+**After 2 Seconds**
 
 - The `simulateDataLoad` method sets ready to true, causing the condition `!x.ready` to evaluate to false.
 - The second template (the button) is then rendered with the message: "Data Loaded: Hello, Genesis!".
@@ -322,15 +329,15 @@ export class MyButton extends GenesisElement {
 whenElse(condition, trueTemplate, falseTemplate);
 ```
 
->- `condition`: A boolean expression that determines which template to render.
->- `trueTemplate`: The template rendered if the condition evaluates to true.
->- `falseTemplate`: The template rendered if the condition evaluates to false.
+- `condition` is a boolean expression that determines which template to render.
+- `trueTemplate` is the template rendered if the condition evaluates to true.
+- `falseTemplate` is the template rendered if the condition evaluates to false.
 
 ### Repeat
 
 The `repeat` directive is used to render a list of items dynamically. This is highly useful for rendering lists, especially when you need to manage and display data dynamically.
 
-Below, `<my-button-list>` displays a static list of button labels, each rendered as a button. This example shows how to use `repeat` to render each item in the list.
+in the example below, `<my-button-list>` displays a static list of button labels, each rendered as a button. This example shows how to use `repeat` to render each item in the list.
 
 ```typescript
 import {
@@ -360,9 +367,10 @@ export class MyButtonList extends GenesisElement {
 }
 
 ```
-##### Key points:
 
-- The `repeat` directive iterates over the `buttons` array and renders each item as a `<button>` inside an `<li>`.
+In the example above:
+
+- The `repeat` directive iterates over the `buttons` array and renders each item as a `<button>` inside an `<li>` .
 - Each `button` displays the label from the `buttons` array ("Click Me", "Submit", "Reset").
 - The `buttons` array is initialized with static values for simplicity. Each item in the array is displayed as a button in the rendered HTML.
 - The `repeat` directive efficiently handles rendering, using the array indices as keys to minimize DOM updates.
@@ -384,13 +392,13 @@ The `repeat` directive also includes advanced features for handling more complex
 
 ##### Opting into positioning
 
-By default, the `repeat` directive doesn’t track the `position (index)` or metadata of each item in the array. However, you can enable this by passing `{ positioning: true }` in the options. This enables you to use additional context properties such as:
+By default, the `repeat` directive doesn’t track the `position (index)` or metadata of each item in the array. However, you can achieve this by passing `{ positioning: true }` in the options. This enables you to use additional context properties such as:
 
-- `index`: The index of the current item.
-- `isFirst`: true if the current item is the first in the array.
-- `isLast`: true if the current item is the last in the array.
+- `index` - the index of the current item.
+- `isFirst` - true if the current item is the first in the array.
+- `isLast`- true if the current item is the last in the array.
 
-Example with positioning:
+Here is an example that uses positioning:
 
 ```typescript
 <ul>
@@ -403,7 +411,8 @@ Example with positioning:
 </ul>
 ```
 
-The `c.index` provides the current index of the item, allowing you to render numbered buttons (e.g., 1. Click Me, 2. Submit).
+In the example above, the `c.index` provides the current index of the item, enabling you to render numbered buttons (e.g., 1. Click Me, 2. Submit).
+
 `{ positioning: true }` enables these additional context properties.
 
 #### View recycling
@@ -441,11 +450,11 @@ Let's look at an example without recycling:
 repeat(expression, itemTemplate, options);
 ```
 
-- `expression`: Specifies the data source for repeat.
-- `itemTemplate`: Defines the HTML structure for each item.
+- `expression` specifies the data source for repeat.
+- `itemTemplate` defines the HTML structure for each item.
 - `options` (optional):
-  - `positioning: true`: Enables index and positional metadata like `index`, `isFirst`, and `isLast`.
-  - `recycle: false`: Prevents view recycling for cases where re-initializing DOM elements is required.
+  - `positioning: true`enables index and positional metadata like `index`, `isFirst`, and `isLast`.
+  - `recycle: false` prevents view recycling for cases where re-initializing DOM elements is required.
 
 ### Sync
 
@@ -493,7 +502,7 @@ export class MyCheckbox extends GenesisElement {
 }
 ```
 
-##### Key points:
+In the example above:
 
 - The `isSelected` property sets the initial state of the checkbox (checked = true).
 - When the user toggles the checkbox, the `isSelected` property is updated automatically.
@@ -605,16 +614,15 @@ export class CheckboxExample extends GenesisElement {
 sync(binding, conversionType, eventName);
 ```
 
-- `binding`: A function that defines the binding to the chosen variable on the model.
+- `binding` is a function that defines the binding to the chosen variable on the model.
   - Example: `sync((x) => x.propertyName)`.
-- `conversionType` : This optional parameter allows `sync` to automatically convert the underlying data type from the string on the variable to the correct type on the model.
-
-  - string, this is the default
+- `conversionType` (optional) enables `sync` to convert the underlying data type automatically from the string on the variable to the correct type on the model.The types available are:
+  - string (this is the default)
   - number
   - time
   - boolean
 
-- `eventName`: this optional parameter is used by `sync` to know what event to listen to from the component and reflect the data back to the model.
+- `eventName` (optional) is used by `sync` to know what event to listen to from the component and to reflect the data back to the model.
   - `input`
   - `change`
   - `default`
