@@ -25,7 +25,7 @@ The core aspects of event handling are:
 
 - **Component Communication**. You need to enable a component (such as `<my-button>`) to notify or interact with parent components or other parts of the application. Here, we achieve this by emitting a custom event from `<my-button>` when it’s clicked.
 
-- **Custom Events**. YOu can create your own custom events (such as `button-clicked` in the example below), which communicate specific actions or states. You can use the `$emit` helper to create and dispatch a custom event.
+- **Custom Events**. You can create your own custom events (such as `button-clicked` in the example below), which communicate specific actions or states. You can use the `$emit` helper to create and dispatch a custom event.
 
 - **Event Data Passing**. When emitting custom events, you can send additional data along with the event. In the example below, `event.detail` passes contextual information ( `label` and `count`) to any listener that handles the event.
 
