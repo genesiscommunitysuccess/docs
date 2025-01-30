@@ -179,7 +179,7 @@ Once you have defined `<my-button>` to capture and manage child nodes, as above,
 </my-button>
 ```
 
-- `childNodes` will contain everything inside `<div>`, including `<span>` elements, text nodes like "Text node", and `<div>` elements.
+- `childNodes` will contain everything inside `<div>`, including `<span>` and `<div>` elements, text nodes like "Text node",  as well as custom elements such as `<rapid-button>`.
 
 - Any changes in the slot content (e.g., adding or removing nodes) will trigger `childNodesChanged` and log the updated list.
 
