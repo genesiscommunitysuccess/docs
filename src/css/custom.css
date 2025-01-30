@@ -71,7 +71,7 @@
   --toc-sidebar-width: 140px;
 
   /** Feedback widget */
-  --feedback-primary-color: #1a00de; 
+  --feedback-primary-color: #1a00de;
   --feedback-font-family: var(--primary-font);
 }
 
@@ -903,4 +903,9 @@ rapid-badge {
   margin-left: auto;
   margin-right: auto;
   max-width: 70%;
+}
+
+th > code {
+  color: black;
+  font-weight: initial;
 }
