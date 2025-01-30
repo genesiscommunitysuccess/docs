@@ -370,7 +370,7 @@ export class MyButtonList extends GenesisElement {
 
 In the example above:
 
-- The `repeat` directive iterates over the `buttons` array and renders each item as a `<button>` inside an `<li>` .
+- The `repeat` directive iterates over the `buttons` array and renders each item as a `<button>` inside an `<li>`.
 - Each `button` displays the label from the `buttons` array ("Click Me", "Submit", "Reset").
 - The `buttons` array is initialized with static values for simplicity. Each item in the array is displayed as a button in the rendered HTML.
 - The `repeat` directive efficiently handles rendering, using the array indices as keys to minimize DOM updates.
@@ -429,6 +429,10 @@ By default, `repeat` enables view recycling to optimize performance, especially 
 
 The `repeat` directive can reuse DOM elements that have already been rendered for array items. This improves performance by avoiding unnecessary DOM creation and destruction.
 
+:::warning
+Recycling components can cause issues if you have a set of components with different attributes or properties and you plan to re-render the list while changing the components, or their attributes and properties. If you observe behaviour where component are not changing as you expect then it's a good time to try disabling recycling `{recycle: false}`.
+:::
+
 **_Recycling Disabled (recycle: false):_**
 
 All views are discarded and recreated whenever the array changes.
@@ -453,7 +457,7 @@ repeat(expression, itemTemplate, options);
 - `expression` specifies the data source for repeat.
 - `itemTemplate` defines the HTML structure for each item.
 - `options` (optional):
-  - `positioning: true`enables index and positional metadata like `index`, `isFirst`, and `isLast`.
+  - `positioning: true` enables index and positional metadata like `index`, `isFirst`, and `isLast`.
   - `recycle: false` prevents view recycling for cases where re-initializing DOM elements is required.
 
 ### Sync
