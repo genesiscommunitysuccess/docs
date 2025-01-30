@@ -342,16 +342,23 @@ In this section we have applied dynamic styles by adding behaviour-driven styles
 
 Shadow DOM encapsulation ensures styles do not affect the global DOM. They apply only to your custom element, and do not "leak" into the global styles.
 
-Conversely, styles from the global scope cannot accidentally modify the appearance of your custom element.
+Equally, styles from the global scope cannot accidentally modify the appearance of your custom element.
 
 Here are some considerations for Shadow DOM styling:
 
-- By default, custom elements behave as inline elements. You might want to define a specific `display` property such as `inline-block` or `block` to control their layout behaviour.
+- By default, custom elements behave as inline elements. You might want to define a specific `display` property, such as `inline-block` or `block`, to control their layout behaviour.
 - Setting `contain: content` improves performance by signalling to the browser that the element's layout, painting, and size calculations are self-contained. <br></br>
   This ensures the browser doesn't unnecessarily re-calculate styles or layout changes for the entire document if something inside the component changes.
 - Adding support for the `hidden` attribute ensures your component properly respects the `display: none` behaviour when `hidden` is applied. This is a common practice for ensuring that components behave predictably.
 
+### Applying styles directly
 The `:host` selector enables you to apply styles directly to your custom element.
+
+In the example below,
+
+- `:host` ensures that styles such as `display` and `contain` apply only to the `<my-button>` element. This prevents global CSS rules from interfering with the component, and vice versa.
+- When `<my-button hidden>` is used, the component is visually removed using `display: none`. This is a common convention for enabling/disabling components.
+- The button inside the Shadow DOM is styled with "padding", "background color", and "rounded corners". These styles are scoped to the Shadow DOM and won't affect other buttons outside the `my-button` component.
 
 ```typescript
 import {
@@ -393,13 +400,6 @@ const styles = css`
 export class MyButton extends GenesisElement {}
 ```
 
-##### Key points
-
-- `:host` ensures that styles such as `display` and `contain` apply only to the `<my-button>` element.
-  - This prevents global CSS rules from interfering with the component, and vice versa.
-- When `<my-button hidden>` is used, the component is visually removed using `display: none`. This is a common convention for enabling/disabling components.
-- The button inside the Shadow DOM is styled with "padding", "background color", and "rounded corners". These styles are scoped to the Shadow DOM and won't affect other buttons outside the `my-button` component.
-
 ## Slotted content
 
 A slot is a placeholder where users of the component can insert their own content. This means that components can be flexible and reusable.
@@ -407,6 +407,10 @@ For example, if `my-button` component has a `slot`, you can pass content like a 
 
 The `::slotted()` CSS element enables you to style content that is projected into a slot in your component's Shadow DOM.
 However, you can only style direct children of the slot (not descendants of those children).
+
+In the example below, the `<span>` inside the slot has yellow text in bold.
+
+The styles applied to `button` and `::slotted(span)` are scoped to `my-button` Shadow DOM. These will not affect buttons or spans elsewhere in the document.
 
 ```typescript
 @customElement({
@@ -430,11 +434,8 @@ However, you can only style direct children of the slot (not descendants of thos
 export class MyButton extends GenesisElement {}
 ```
 
-In this case, the `<span>` inside the slot has yellow text in bold.
-
-Styles applied to `button` and `::slotted(span)` are scoped to `my-button` Shadow DOM and won’t affect buttons or spans elsewhere in the document.
-
 #### Usage in HTML
+Once you have defined slotted content for your custom element, as above, you can now use `<my-button>` in your HTML:
 
 ```typescript
 <my-button>
@@ -460,17 +461,16 @@ Styles defined in the Shadow DOM (such as button {}) do not affect the slotted c
 
 ## Style lifecycle management
 
-Styles are typically defined when a custom element is created and attached to the DOM.
-However, in some cases, you could need dynamic styles that depend on the element's state, attributes, or properties at the time it's connected to the DOM.
+In most cases, you define styles when you create a custom element and attach it to the DOM. However, if you want the component's appearance to adapt dynamically when it's rendered, you can also create dynamic styles that depend on the element's state, attributes, or properties at the time it's connected to the DOM.
 
-This is where the `resolveStyles()` method becomes valuable. It enables you to dynamically generate and apply styles during the connectedCallback` phase of the custom element lifecycle.
+To create a custom element that adapts dynamically, you can use the `resolveStyles()` method. This enables you to generate and apply styles dynamically during the connectedCallback` phase of the custom element's lifecycle.
 
 The `resolveStyles()` method is called when the element is attached to the DOM (in the `connectedCallback` phase).
 
-##### Use `resolveStyles()` when:
+In the example below:
 
-- The styles need to change based on a property or attribute.
-- The component's appearance must adapt dynamically when it's rendered.
+- `resolveStyles()` is called when the element is connected to the DOM.
+- The method checks the `label` property. If the `label` is "Click Me", the button will have a blue background. Otherwise, it will have a red background.
 
 ```typescript
 @customElement({
@@ -498,10 +498,15 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-- `resolveStyles()` is called when the element is connected to the DOM.
-- The method checks the `label` property. If the `label` is "Click Me", the button will have a blue background. Otherwise, it will have a red background.
-
 You can further extend this example to update styles dynamically based on attributes or properties, such as a type or theme:
+
+In the example below, the `type` attribute determines the button's style:
+
+- `<my-button type="primary"></my-button>` → Blue button.
+- `<my-button type="secondary"></my-button>` → Grey button.
+- `<my-button type="danger"></my-button>` → Red button.
+- `resolveStyles()` is automatically called during `connectedCallback` and applies the correct styles based on the value of the type attribute.
+- You can dynamically update the `type` attribute, and the styles will be updated accordingly.
 
 ```typescript
 @customElement({
@@ -548,25 +553,16 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-The `type` attribute determines the button's style:
-
-- `<my-button type="primary"></my-button>` → Blue button.
-- `<my-button type="secondary"></my-button>` → Gray button.
-- `<my-button type="danger"></my-button>` → Red button.
-- `resolveStyles()` is automatically called during `connectedCallback` and applies the correct styles based on the value of the type attribute.
-- You can dynamically update the `type` attribute, and the styles will be updated accordingly.
-
 ## Hiding undefined elements
 
-When using custom elements (like `<my-button>`), the browser could render them before they are fully defined or styled.
-This can cause a "flash of unstyled content" (FOUC), where the element appears in its default, unstyled form for a brief moment.
+When using custom elements, the browser could render them before they are fully defined or styled. This can cause a "flash of unstyled content" (FOUC), where the element appears in its default, unstyled form for a brief moment.
 
-To prevent the FOUC issue, you can hide custom elements that haven’t been upgraded yet by using the CSS `:not(:defined)` pseudo-class.
+To prevent FOUC, you can use the CSS `:not(:defined)` pseudo-class to hide custom elements that haven’t been upgraded yet.
 
 - `:not(:defined)` matches any element that has not yet been defined (i.e., upgraded by the browser).
-- Using `visibility: hidden`, we hide these elements from view until their definition and styles are applied.
+- `visibility: hidden` hides these elements from view until their definition and styles are applied.
 
-See the implementation below:
+You can see this in the implementation below:
 
 ```typescript
 :not(:defined) {
@@ -576,6 +572,6 @@ See the implementation below:
 
 :::note
 
-Using `visibility: hidden` ensures that the element is still part of the document flow but not visible to the user. This prevents layout shifts when the element is styled.
+Using `visibility: hidden` ensures that the element is still part of the document flow, but it is not visible to the user. This prevents layout shifts when the element is styled.
 
 :::

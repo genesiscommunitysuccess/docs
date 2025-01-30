@@ -458,9 +458,14 @@ repeat(expression, itemTemplate, options);
 
 ### Sync
 
-The `sync` directive enables two-way data binding between the model (component state) and the view (template). Unlike one-way data binding, where data flows only from the model to the view, the `sync` directive ensures that changes in the view (e.g., user interaction) automatically update the model, keeping the two synchronized.
+The `sync` directive establishes two-way data binding between the model (component state) and the view (template). Unlike one-way data binding, where data flows only from the model to the view, the `sync` directive ensures that changes in the view (e.g., user interaction) automatically update the model, keeping the two synchronized.
 
-This eliminates the need for manual event handling, simplifying code and ensuring consistency between the UI and the underlying data.
+The main advantages of this are:
+
+- You don't need to create manual event listeners to update the model.
+- The view and model stay synchronized, which improves consistency.
+- It automatically triggers `propertyNameChanged` methods for reactive behaviour.
+- It supports automatic type conversion for numbers, booleans, strings, and more.
 
 The `sync` directive accepts three parameters: 
 
@@ -627,9 +632,3 @@ sync(binding, conversionType, eventName);
   - `change`
   - `default`
 
-Main benefits:
-
-- No need for manual event listeners to update the model.
-- Ensures the view and model stay synchronized, which improves consistency.
-- Automatically triggers `propertyNameChanged` methods for reactive behavior.
-- Supports automatic type conversion for numbers, booleans, strings, and more.
