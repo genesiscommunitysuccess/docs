@@ -63,7 +63,7 @@ Now when you use `<my-button>` in your HTML, you can change the default value of
  <my-button label="Cancel"></my-button>
 ```
 
-The `labelChanged` method is in the custom element is not necessary. But it is useful if you want to perform additional actions when the label attribute changes, such as logging or triggering other side effects. Since the `@attr` decorator already handles the synchronization between the attribute and property (updating the DOM whenever label changes).
+The `labelChanged` method is the custom element is not necessary. But it is useful if you want to perform additional actions when the label attribute changes, such as logging or triggering other side effects. The `@attr` decorator handles the synchronization between the attribute and property (updating the DOM whenever label changes).
 
 :::info
 Here are the most important things to know about attributes:
