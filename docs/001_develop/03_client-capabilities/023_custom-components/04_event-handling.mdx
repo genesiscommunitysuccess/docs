@@ -107,7 +107,7 @@ Let's focus on the `button-clicked` custom event and the `$emit` method.
 
 ### Event bubbling
 
-Event bubbling enables an event to travel up the DOM from the component that triggered it, enabling parent components to handle it.
+Event bubbling enables an event to travel up the DOM from the component that triggered it, and through all components to the root (yes, the root is at the top of the structure). This enables _all_ parent components to handle the event.
 
 - Components higher up in the DOM tree can listen for and react to events emitted by child components.
 - This reduces the need for coupling child and parent components tightly.
