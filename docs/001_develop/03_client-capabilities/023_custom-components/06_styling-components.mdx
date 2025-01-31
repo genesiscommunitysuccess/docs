@@ -253,7 +253,7 @@ import { CSSDirective } from "@genesislcap/web-core";
 
 The example below:
 - creates a new class, `RandomWidth`, which extends `CSSDirective` to make it a directive that can generate styles dynamically.
-- uses `private property = "--button-width"` to define a CSS custom property (`--button-width`) that holds the dynamically generated `width`.value.
+- uses `private property = "--button-width"` to define a CSS custom property (`--button-width`) that holds the dynamically generated `width` value.
 
 ```typescript
 class RandomWidth extends CSSDirective {
@@ -329,7 +329,7 @@ From the above examples, this is what will happen when the code runs:
 - When the `my-button` component is created and added to the DOM, the `bind()` method runs.
 - A random width is calculated (e.g., 150px) and applied to the `--button-width` property.
 - The `createCSS()` method uses this property to set the button's width.
-- The button element will have a random width (e.g., 150px) and other static styles, such as blue background and white text.
+- The button element will have a random width (e.g. 150px) and other static styles, such as blue background and white text.
 - If the element is removed from the DOM, the `unbind()` method is called, which removes the `--button-width` property, ensuring there are no leftover styles.
 
 #### Summary
