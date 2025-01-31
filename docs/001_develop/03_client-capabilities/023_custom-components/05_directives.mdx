@@ -77,7 +77,7 @@ ref(propertyName);
 
 ### Slotted
 
-A `<slot>` is a placeholder inside a component. Any content you add between `<my-button>` tags in HTML will appear in this slot. This set-up makes the `<my-button>` component more flexible, as it can display different content depending on how it’s used.
+A `<slot>` is a placeholder inside a component. Any content you add between `<my-button>` tags in HTML will appear in this slot. This set-up makes the `<my-button>` component more flexible, as it can display different content depending on how it’s used. See more info [here](../quick-start/#using-slots).
 
 The example below creates a `<my-button>` component that can accept any content passed into it, such as text or other HTML elements. The slot can handle dynamic content, and the `slotted` directive captures and monitors any content placed inside this slot.
 
@@ -196,7 +196,7 @@ children(propertyName, options);
 
 ### When
 
-The `when` directive enables you to render sections of HTML conditionally. 
+The `when` directive enables you to render sections of HTML conditionally.
 
 When you provide a condition to `when`, it displays the specified template in the DOM when the condition is true and removes it when false. If the condition never becomes true, the template is not rendered at all.
 
@@ -471,7 +471,7 @@ The main advantages of this are:
 - It automatically triggers `propertyNameChanged` methods for reactive behaviour.
 - It supports automatic type conversion for numbers, booleans, strings, and more.
 
-The `sync` directive accepts three parameters: 
+The `sync` directive accepts three parameters:
 
 - `binding`
 - `conversionType` (optional)
