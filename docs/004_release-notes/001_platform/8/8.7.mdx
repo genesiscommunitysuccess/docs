@@ -102,6 +102,17 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ### Patch releases
 
+#### 8.7.4
+
+##### Features
+- Optimise memory usage BackwardJoinCache for 1-2-1 joins 
+- Provide better [bulk purge support](/build-deploy-operate/operate/commands/#cascade-purges)
+- Performance Improvement: Use deleteAll in PurgerScript.purgeDerivedRange 
+
+##### Fixes
+- ExcelToGenesis: catch and accumulate unsupported formula errors while processing a worksheet 
+- Fixed issue where removal of a sequence at the same time as a table rename would cause remap to fail 
+
 #### 8.7.3
 
 ##### Features
@@ -124,6 +135,7 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 ##### Features
 - Generated Entities: Add enum references as companion object properties for each enum field for easy access in GPAL scripts
+- Document Management: Add support for excel templates 
 
 ##### Fixes
 - Platform Integrations: Fixed initialisation issue in BloombergClient related to metrics
@@ -160,7 +172,6 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 * Notify: Handle date and datetime fields in rule builder 
 * Notify: Debounce text based filters
 * Notify: Force a new package-lock with up to date dependency refs
-* Document Management: Add support for excel templates 
 
 ## Breaking changes
 

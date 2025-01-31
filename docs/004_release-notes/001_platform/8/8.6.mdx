@@ -110,12 +110,35 @@ id: '8.6'
 
 ### Patch releases
 
+#### 8.6.9
+
+##### Features
+- Allow for overriding of test process name
+
+##### Fixes
+- gradle: site specific plugin to do not modify binary files stored under data 
+- Ensure cookie based REFRESH_AUTH_TOKEN value is correctly added to EVENT_LOGIN_AUTH payload 
+- Ensure DataDumpManager uses different loggers for GenesisMessageDecoder and GenesisMessageEncoder 
+- Ensure script files in site-specific have priority when searching by suffix 
+
+#### 8.6.8
+
+##### Features
+- Provide better [bulk purge support](/build-deploy-operate/operate/commands/#cascade-purges)
+
+##### Fixes
+- Fixed issue where removal of a sequence at the same time as a table rename would cause remap to fail 
+
+#### 8.6.7
+
+##### Features
+- Install hooks improvements
+- Optimise memory usage BackwardJoinCache for 1-2-1 joins
+
 #### 8.6.6
 
 ##### Features
-
 - Added support for enabling app level sys def files in integration tests
-
 
 ##### Fixes
 

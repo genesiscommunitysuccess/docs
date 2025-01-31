@@ -1,0 +1,1049 @@
+---
+title: 'Bloomberg API'
+sidebar_label: 'Bloomberg API'
+sidebar_position: 8
+id: business-components-bloomberg
+keywords: [Bloomberg, BBG, market data, market-data]
+tags:
+  - Bloomberg
+  - BBG
+  - market data
+  - market-data
+  - installation
+  - genx
+  - add
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The Genesis Bloomberg module provides all the tools you need to connect easily to a Bloomberg API instance. This enables you to consume data directly in your Genesis application. 
+
+There are two important components:
+
+- The Genesis Bloomberg Client
+- The Genesis Bloomberg Connector
+
+For a simple and quick connection, you can use the Genesis Bloomberg Connector in the [Data Pipelines](../../server-capabilities/integrations/data-pipelines/) integration framework. You only need to deploy minimal lines of code to connect and consume Bloomberg data. 
+
+For full control and complete flexibility in how you consume the data from Bloomberg, you can use the Genesis Bloomberg Client. This is the code object that interacts with all aspects of the Bloomberg API. You can use the Genesis Bloomberg Client directly in your custom code. 
+
+:::info 
+The Genesis Bloomberg Connector uses the Genesis Bloomberg Client to implement its connection.
+:::
+
+## Adding Bloomberg to your project
+
+To use this module, you must add the following dependency to your application:
+
+```kotlin
+implementation("global.genesis:bloomberg-genesis:${properties["genesisIntegrationVersion"]}")
+```
+
+You can also use the genx CLI to add dependencies and configuration files manually.
+
+<Tabs
+    defaultValue="windows"
+    values={[
+        { label: 'Windows', value: 'windows', },
+        { label: 'Mac and Linux', value: 'mac-and-linux', }
+    ]
+    }>
+    <TabItem value="windows">
+        ```shell title="Powershell"
+        npx -y @genesislcap/genx@latest add app-folder-name -x -s genesislcap/bloomberg-genesis-seed
+        ```
+    </TabItem>
+
+    <TabItem value= 'mac-and-linux'>
+        ```shell title="Bash"
+        npx -y @genesislcap/genx@latest add app-folder-name -x -s genesislcap/bloomberg-genesis-seed
+        ```
+    </TabItem>
+</Tabs>
+
+## Consuming data
+
+### Common configuration
+Whether you are creating Data Pipelines or using Bloomberg Client directly in your custom code, there is a common configuration structure in GPAL. This offers auto-complete and type-safe configuration for initializing a Bloomberg Client.
+
+```kotlin
+bloomberg {
+  addServer(hostName = "localhost", port = 8194)
+  applicationName = "Genesis:Demo Application"
+  pathToPk7 = "./src/test/resources/rootCert.pk7"
+  pathToPk12 = "./src/test/resources/cert.pk12"
+  pkPassword = "********"
+  defaultSubscriptionService = "//blp/mktdata"
+  clientName = "BloombergClient"
+  numberOfStartAttempts = 10
+  reconnectionDelayMillis = 10000L
+  enableEntitlementChecks = true
+  wrapData = true
+}
+```
+
+The `addServer` function enables you to add multiple IP address/port combinations, which enable the Client to connect. Each function adds a server to the underlying array, and the Client connects in a round-robin fashion. The port is optional, and defaults to 8194.
+
+The other configuration options are :
+
+| Option                             | Mandatory |     Description                                                  |
+|------------------------------------|-----------|------------------------------------------------------------------|
+| `applicationName`                  | Yes       | This is the identifier for the application. When the Client connects, it first authenticates the application before requesting data. This value will be set up on the Bloomberg remote server as part of onboarding. |
+| `pathToPk7`                        | No        | If you are using a Bloomberg cloud-hosted B-PIPE instance, also referred to as 'zero footprint', a set of certificates and a password will be provided to you in order to secure the connection. |
+| `pathToPk12`                       | No        | See `pathToPk7`.                                                 |
+| `pkPassword`                       | No        | See `pathToPk7`.                                                 |
+| `defaultSubscriptionService`       | Yes       | The identifier for the Bloomberg service to send subscriptions to. See the Bloomberg Developer documentation for a full list of services. |
+| `clientName`                       | No        | The name of the Client as used by process monitoring and healthchecks. Defaults to 'BloombergClient'. Change this if you want more granularity of monitoring on different Client instances within your application. |
+| `numberOfStartAttempts`            | No        | The number of connection attempts to make to the remote server. This is a direct configuration option on the Bloomberg API library. When this number has been exhausted, the Genesis Client will wait for the reconnection delay and then restart the session. Defaults to 10. |
+| `reconnectionDelayMillis`          | No        | The time in milliseconds to wait before attempting to recreate and restart the session connection to Bloomberg. This configures the Genesis Client, not the underlying library. While the Genesis Client is running, it will continually attempt to connect. |
+| `enableEntitlementChecks`          | No        | Boolean flag indicating whether the Client should emit events detailing user entitlement changes to the application. If consuming data from a service that requires EID checking, the application MUST handle these events correctly in order to enforce Bloomberg EMRS entitlements and pass certification. |
+| `wrapData`                         | No        | Boolean flag indicating whether data points should be wrapped in a DataField wrapper class, which supports interrogation for data-type information. Defaults to true. Wrapping the data makes writing the consumer logic easier, at the cost of additional memory overhead in the application. For applications with a large number of topic subscriptions, or requirements to handle a large number of updates, it may be prudent to set this to false. |
+
+### Using the Client directly
+In order to use the Bloomberg Client directly in your code, you can inject it via [dependency injection](../../server-capabilities/custom-components/#injecting-dependencies). To initialize automatically, the Client attempts to find a file matching the pattern `*-bloomberg.kts` included as part of the process definition.
+
+<details>
+<summary>Code Examples</summary>
+<Tabs
+    defaultValue="Java"
+    values={[
+        { label: 'Java', value: 'Java', },
+        { label: 'Kotlin', value: 'Kotlin', }
+    ]
+    }>
+    <TabItem value="Java">
+    ```Java
+    import javax.inject.Inject;
+
+    public class BloombergSubscriber {
+      private BloombergClient client;
+    
+      @Inject
+      public BloombergSubscriber(BloombergClient client) {
+        this.client = client;
+      }
+    }
+    ```
+    </TabItem>
+
+    <TabItem value= 'Kotlin'>
+    ```kotlin
+    import javax.inject.Inject
+
+    class BloombergSubscriber @Inject constructor(
+      private val client: BloombergClient
+    )
+    ```
+    </TabItem>
+</Tabs>
+</details>
+
+
+### Using Data Pipelines
+
+In order to create an instance of the `BloombergGateway`, you can set up a [Data Pipeline](../../server-capabilities/integrations/data-pipelines/), which acts as both a source of Events, and a Sink for requests. To do this, you can use the `bloomberg` GPAL extension.
+
+```kotlin
+pipelines {
+
+    val bloomberg = bloomberg {
+        addServer("localhost", 8194)
+        applicationName = "TestApp"
+        pathToPk7 = "/certs/root.pk7"
+        pathToPk12 = "certs/cert.pk12"
+        pkPassword = "***********"
+        defaultSubscriptionService = "//blp/mktdata"
+    }
+
+    pipeline(name = "Bloomberg Subscriptions") {
+        source(dbBulkSubscribe<Instruments>())
+            .map { element ->
+              // Convert instrument to DataSubscription here
+            }
+            .sink(bloomberg)
+    }
+
+    pipeline(name = "Bloomberg Data Updates") {
+        source(bloomberg)
+            .map { element ->
+              // Convert Data Update to market data record here
+            }
+            .sink(dbSink())
+    }
+}
+```
+
+In addition to the configuration properties detailed [above](./#common-configuration), the Gateway configuration also exposes additional config options:
+
+ | Option                    | Mandatory      |     Description                                                  |
+|----------------------------|----------------|------------------------------------------------------------------|
+| `pipelineBufferSize`       | No             | The number of elements to buffer while they are waiting to be consumed by the sink. Defaults to 1000. Note that only data updates will be discarded. User entitlement updates will not be discarded and the buffer will have to clear before they can be processed. |
+
+## Client API
+
+### Requests
+Sending a request is how you interact with the Bloomberg Client. All requests that are sent to Bloomberg have a common supertype, `BloombergRequest`, which is the input type supported by the Bloomberg Sink in Data Pipelines. 
+
+##### `DataSubscription`
+The `DataSubscription` contains the information required to subscribe to a real-time data feed from a Bloomberg API service. It contains the following fields:
+
+| Field                      | Type           |     Description                                                  |
+|----------------------------|----------------|------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the subscription. |
+| `topic`                    | String         | An identifier for the feed to subscribe to. For example, when using the market data service (//blp/mktdata) as the default subscription service, the topic should be the Bloomberg Instrument Ticker (VOD LN Equity). |
+| `fields`                   | List of String | A list of valid Bloomberg field identifiers (FIDs) that you want to subscribe for. See the Bloomberg Developer Documentation for more details on which FIDs are available per service. |
+| `options`                  | List of String | A list of additional options, such as the update frequency, or whether to subscribe for delayed data.  |
+
+If using the Client directly, you can pass an instance of this request to the `subscribe` method.
+
+<details>
+<summary>Code Examples</summary>
+  <Tabs
+      defaultValue="Java"
+      values={[
+          { label: 'Java', value: 'Java', },
+          { label: 'Kotlin', value: 'Kotlin', }
+      ]
+      }>
+      <TabItem value="Java">
+      ```Java
+      import global.genesis.bloomberg.api.DataSubscription;
+      import global.genesis.bloomberg.api.EventListener;
+      import global.genesis.bloomberg.api.SubscriptionDataEvent;
+      
+      import javax.inject.Inject;
+      import java.util.Arrays;
+      import java.util.Collections;
+      
+      public class ExampleSubscriber implements EventListener {
+        private BloombergClient client;
+      
+        @Inject
+        public ExampleSubscriber(BloombergClient client) {
+          this.client = client;
+          client.addEventListener(this);
+        }
+        
+        public void subscribe() {
+          DataSubscription subscription = new DataSubscription(
+              "CorrelationId",
+              "BARC LN Equity",
+              Arrays.asList("BID", "ASK", "BID_SIZE", "ASK_SIZE"),
+              Collections.emptyList()
+          );
+          
+          client.subscribe(subscription);
+        }
+      ```
+      </TabItem>
+  
+      <TabItem value= 'Kotlin'>
+      ```kotlin
+      import global.genesis.bloomberg.api.DataSubscription
+      import global.genesis.bloomberg.api.EventListener
+      import global.genesis.bloomberg.api.SubscriptionDataEvent
+      import javax.inject.Inject
+      
+      class ExampleSubscriber @Inject constructor(
+        private val client: BloombergClient
+      ) : EventListener {
+          
+        init {
+            client.addEventListener(this)
+        }
+        
+        fun subscribe() {
+          val subscription = DataSubscription(
+            "CorrelationId",
+            "BARC LN Equity",
+            mutableListOf("BID", "ASK", "BID_SIZE", "ASK_SIZE"),
+            emptyList()
+          )
+          
+          client.subscribe(subscription)
+        }
+      }
+      ```
+      </TabItem>
+  </Tabs>
+</details>
+
+##### `DataUnsubscribe`
+The `DataUnsubscribe` contains the information required to unsubscribe from a previously registered subscription. It contains the following fields:
+
+| Field                      | Type           |     Description                                                  |
+|----------------------------|----------------|------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the subscription.                        |
+
+If using the Client directly, you only need to pass the string value correlationId to the unsubscribe method, not the request object. If using data pipelines, you must construct the request.
+
+<details>
+<summary>Code Examples</summary>
+  <Tabs
+      defaultValue="Java"
+      values={[
+          { label: 'Java', value: 'Java', },
+          { label: 'Kotlin', value: 'Kotlin', }
+      ]
+      }>
+      <TabItem value="Java">
+      ```Java
+      import global.genesis.bloomberg.api.EventListener;
+      import global.genesis.bloomberg.api.SubscriptionDataEvent;
+
+      import javax.inject.Inject;
+
+      public class ExampleSubscriber implements EventListener {
+        private BloombergClient client;
+
+        @Inject
+        public ExampleSubscriber(BloombergClient client) {
+          this.client = client;
+          client.addEventListener(this);
+        }
+        
+        public void unsubscribe() {
+          client.unsubscribe("CorrelationId");
+        }
+      }
+      ```
+      </TabItem>
+  
+      <TabItem value= 'Kotlin'>
+      ```kotlin
+      import global.genesis.bloomberg.api.EventListener
+      import javax.inject.Inject
+      
+      class ExampleSubscriber @Inject constructor(
+        private val client: BloombergClient
+      ) : EventListener {
+        init {
+          client.addEventListener(this)
+        }
+      
+        fun unsubscribe() {
+          client.unsubscribe("CorrelationId")
+        }
+      }
+      ```
+      </TabItem>
+  </Tabs>
+</details>
+
+##### `DataRequest`
+Most services either support real-time subscriptions, or single (one-off) data requests. The `DataRequest` represents a single request for data sent to a Bloomberg API service. It contains the following fields:
+
+| Field                      | Type           |     Description                                                  |
+|----------------------------|----------------|------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the subscription. |
+| `topic`                    | String         | An identifier for the feed to subscribe to. For example, when using the market data service (//blp/mktdata) as the default subscription service, the topic should be the Bloomberg Instrument Ticker (VOD LN Equity). |
+|`fields`                    | List of String | A list of valid Bloomberg field identifiers (FIDs) that you want to receive data for. See the Bloomberg Developer Documentation for more details on which FIDs are available per service.|
+|`requestType`               | String         | The type of request you want to send to the service. For example, `ReferenceDataRequest`. |
+
+If you are using the Client directly, you can pass an instance of this request to the `requestData` method.
+
+<details>
+<summary>Code Examples</summary>
+  <Tabs
+      defaultValue="Java"
+      values={[
+          { label: 'Java', value: 'Java', },
+          { label: 'Kotlin', value: 'Kotlin', }
+      ]
+      }>
+      <TabItem value="Java">
+      ```Java
+      import global.genesis.bloomberg.api.DataRequest;
+      import global.genesis.bloomberg.api.EventListener;
+
+      import javax.inject.Inject;
+      import java.util.Arrays;
+
+      public class ExampleSubscriber implements EventListener {
+        private BloombergClient client;
+
+        @Inject
+        public ExampleSubscriber(BloombergClient client) {
+          this.client = client;
+          client.addEventListener(this);
+        }
+
+        public void sendRequest() {
+          DataRequest request = new DataRequest(
+              "CorrelationId",
+              "ReferenceDataRequest",
+              "BARC LN Equity",
+              Arrays.asList("BID", "ASK")
+          );
+          client.requestData(request);
+        }
+      }
+      ```
+      </TabItem>
+  
+      <TabItem value= 'Kotlin'>
+      ```kotlin
+      import global.genesis.bloomberg.api.DataRequest
+      import global.genesis.bloomberg.api.EventListener
+      import javax.inject.Inject
+      
+      class ExampleSubscriber @Inject constructor(
+        private val client: BloombergClient
+      ) : EventListener {
+        init {
+          client.addEventListener(this)
+        }
+      
+        fun sendRequest() {
+          val request = DataRequest(
+            "CorrelationId",
+            "ReferenceDataRequest",
+            "BARC LN Equity",
+            mutableListOf("BID", "ASK")
+          )
+          client.requestData(request)
+        }
+      }
+      ```
+      </TabItem>
+  </Tabs>
+</details>
+
+##### `UserLogon`
+The `UserLogon` request triggers an authentication check with the Bloomberg entitlement system (EMRS) for the specified user. It then starts a flow of entitlement events for every user that is successfully authenticated. It contains the following fields:
+
+| Field                      | Type           |     Description                                                   |
+|----------------------------|----------------|-------------------------------------------------------------------|
+| `userName`                 | String         | The identifier of the user account within the Genesis Application |
+| `emrsId`                   | String         | The identifier of the user as stored on the Bloomberg entitlement system (EMRS). |
+|`ipAddress`                 | String         | The IP address from which the user is currently logged into the Genesis application. |
+
+If using the Client directly, you can pass an instance of this request to the `logonUser` method.
+
+<details>
+<summary>Code Examples</summary>
+  <Tabs
+      defaultValue="Java"
+      values={[
+          { label: 'Java', value: 'Java', },
+          { label: 'Kotlin', value: 'Kotlin', }
+      ]
+      }>
+      <TabItem value="Java">
+      ```Java
+      import global.genesis.bloomberg.api.EventListener;
+      import global.genesis.bloomberg.api.UserLogon;
+      
+      import javax.inject.Inject;
+      
+      public class ExampleSubscriber implements EventListener {
+        private BloombergClient client;
+      
+        @Inject
+        public ExampleSubscriber(BloombergClient client) {
+          this.client = client;
+          client.addEventListener(this);
+        }
+      
+        public void logonUser() {
+          UserLogon logon = new UserLogon(
+              "JohnDoe",
+              "123456",
+              "127.0.0.1"
+          );
+          client.logonUser(logon);
+        }
+      }
+      ```
+      </TabItem>
+  
+      <TabItem value= 'Kotlin'>
+      ```kotlin
+      import global.genesis.bloomberg.api.EventListener
+      import global.genesis.bloomberg.api.UserLogon
+      import javax.inject.Inject
+      
+      class ExampleSubscriber @Inject constructor(
+        private val client: BloombergClient
+      ) : EventListener {
+        init {
+          client.addEventListener(this)
+        }
+      
+        fun logonUser() {
+          val logon = UserLogon(
+            "JohnDoe",
+            "123456",
+            "127.0.0.1"
+          )
+          client.logonUser(logon)
+        }
+      }
+      ```
+      </TabItem>
+  </Tabs>
+</details>
+
+### Events
+Events are received from Bloomberg. They have a common supertype, `BloombergEvent`, which is the output type supported by the Bloomberg Source in Data Pipelines. Receiving and processing events is how you consume data from Bloomberg.
+
+#### Registering an Event Listener
+In order to register a callback to receive events from the Client, call the `addEventListener` method, passing an instance of an object that implements the `EventListener` interface. 
+
+The interface has callbacks corresponding to each of the following event types. Each one has a default no-op implementation, as not all of them are applicable to every application. See below for details on each of the supported event types, and their associated methods in the EventListener.
+
+##### `SubscriptionDataEvent`
+The `SubscriptionDataEvent` represents an update to an active data subscription. It contains the following fields: 
+
+| Field                      | Type           |     Description                                                   |
+|----------------------------|----------------|-------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the subscription.                         |
+| `data`                     | Map&lt;String, DataField&gt; | The fields that were updated as part of this event. The DataField class is a wrapper for data points that can be interrogated for type information in ways friendly to Java `switch` and Kotlin `when` statements. |
+
+ The following field types are supported:
+| Wrapper type    | Value type                   |
+| ----------------|------------------------------|
+| BooleanField    | Boolean                      |
+| CharField       | Char                         |
+| FloatField      | Float                        |
+| DoubleField     | Double                       |
+| IntField        | Int                          |
+| LongField       | Long                         |
+| StringField     | String                       |
+| DateField       | org.joda.LocalDate           |
+| TimeField       | org.joda.LocalTime           |
+| DateTimeField   | org.joda.LocalDateTime       |
+| ByteArrayField  | byte[]                       |
+| MapField        | Map&lt;String, DataField&gt; |
+| ListField       | List&lt;DataField&gt;        |
+
+
+ Each time a topic update is received from Bloomberg, a `SubscriptionDataEvent` is passed to all registered listeners via the `onSubscriptionUpdated` method. This is the main callback to receive subscription data updates if `wrapData` is set to true in configuration, which is the default.
+
+<details>
+<summary>Code Examples</summary>
+  <Tabs
+      defaultValue="Java"
+      values={[
+          { label: 'Java', value: 'Java', },
+          { label: 'Kotlin', value: 'Kotlin', }
+      ]
+      }>
+      <TabItem value="Java">
+      ```Java
+      import global.genesis.bloomberg.api.DataField;
+      import global.genesis.bloomberg.api.EventListener;
+      import global.genesis.bloomberg.api.SubscriptionDataEvent;
+      
+      import javax.inject.Inject;
+      import java.util.Map;
+      
+      public class ExampleSubscriber implements EventListener {
+        private BloombergClient client;
+    
+        @Inject
+        public ExampleSubscriber(BloombergClient client) {
+            this.client = client;
+            client.addEventListener(this);
+        }
+    
+        @Override
+        public void onSubscriptionUpdated(SubscriptionDataEvent event) {
+          // We can read the correlation ID so we know which subscription the update is for
+          String correlationId = event.getCorrelationId();
+  
+          // We can access the wrapped data from the event
+          Map<String, DataField> data = event.getData();
+          for (Map.Entry<String, DataField> entry: data.entrySet()) {
+            // Here we can inspect the types provided and do any necessary conversions
+            switch (entry.getValue().getType()) {
+              case BOOLEAN -> {}
+              case BYTE_ARRAY -> {}
+              case CHAR -> {}
+              case DATE -> {}
+              case DATE_TIME -> {}
+              case DOUBLE -> {}
+              case FLOAT -> {}
+              case INT -> {}
+              case LONG -> {}
+              case STRING -> {}
+              case TIME -> {}
+              case MAP -> {}
+              case LIST -> {}
+            }
+          }
+        }
+      }
+      ```
+      </TabItem>
+  
+      <TabItem value= 'Kotlin'>
+      ```kotlin
+      import global.genesis.bloomberg.api.DataField
+      import global.genesis.bloomberg.api.EventListener
+      import global.genesis.bloomberg.api.SubscriptionDataEvent
+      import javax.inject.Inject
+  
+      class ExampleSubscriber @Inject constructor(
+          private val client: BloombergClient
+      ) : EventListener {
+  
+        init {
+            client.addEventListener(this)
+        }
+  
+        override fun onSubscriptionUpdated(event: SubscriptionDataEvent) {
+          // We can read the correlation ID so we know which subscription the update is for
+          val correlationId = event.correlationId
+          // We can access the wrapped data from the event
+          val data = event.data
+          data.forEach { entry ->
+            // Here we can use kotlin sealed classes to know the type of each field
+            when (entry.value) {
+              is DataField.BooleanField -> {}
+              is DataField.ByteArrayField -> {}
+              is DataField.CharField -> {}
+              is DataField.DateField -> {}
+              is DataField.DateTimeField -> {}
+              is DataField.DoubleField -> {}
+              is DataField.FloatField -> {}
+              is DataField.IntField -> {}
+              is DataField.ListField -> {}
+              is DataField.LongField -> {}
+              is DataField.MapField -> {}
+              is DataField.StringField -> {}
+              is DataField.TimeField -> {}
+            }
+          }
+        }
+      }
+      ```
+      </TabItem>
+  </Tabs>
+</details>
+
+##### `SubscriptionRawDataEvent`
+The `SubscriptionRawDataEvent` represents an update to an active data subscription. It contains the following fields: 
+
+| Field                      | Type           |     Description                                                   |
+|----------------------------|----------------|-------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the subscription.                         |
+| `data`                     | Map&lt;String, DataField&gt; | The fields that were updated as part of this event. The values are the raw data values extracted from the Bloomberg message. |
+
+ The following field types are supported:
+| Value type                   |
+|------------------------------|
+| Boolean                      |
+| Char                         |
+| Float                        |
+| Double                       |
+| Int                          |
+| Long                         |
+| String                       |
+| org.joda.LocalDate           |
+| org.joda.LocalTime           |
+| org.joda.LocalDateTime       |
+| byte[]                       |
+| Map&lt;String, Object&gt;    |
+| List&lt;Object&gt;           |
+
+
+ Each time a topic update is received from Bloomberg, a `SubscriptionRawDataEvent` is passed to all registered listeners via the `onSubscriptionUpdated` method. This is the main callback to receive subscription data updates if `wrapData` is set to false in configuration.
+
+<details>
+<summary>Code Examples</summary>
+  <Tabs
+      defaultValue="Java"
+      values={[
+          { label: 'Java', value: 'Java', },
+          { label: 'Kotlin', value: 'Kotlin', }
+      ]
+      }>
+      <TabItem value="Java">
+      ```Java
+      import global.genesis.bloomberg.api.DataField;
+      import global.genesis.bloomberg.api.EventListener;
+      import global.genesis.bloomberg.api.SubscriptionRawDataEvent;
+      
+      import javax.inject.Inject;
+      import java.util.Map;
+      
+      public class ExampleSubscriber implements EventListener {
+        private BloombergClient client;
+    
+        @Inject
+        public ExampleSubscriber(BloombergClient client) {
+            this.client = client;
+            client.addEventListener(this);
+        }
+    
+        @Override
+        public void onSubscriptionUpdated(SubscriptionDataEvent event) {
+          // We can read the correlation ID so we know which subscription the update is for
+          String correlationId = event.getCorrelationId();
+  
+          // We can access the raw data from the event
+          Map<String, Object> data = event.getData();
+        }
+      }
+      ```
+      </TabItem>
+  
+      <TabItem value= 'Kotlin'>
+      ```kotlin
+      import global.genesis.bloomberg.api.DataField
+      import global.genesis.bloomberg.api.EventListener
+      import global.genesis.bloomberg.api.SubscriptionRawDataEvent
+      import javax.inject.Inject
+  
+      class ExampleSubscriber @Inject constructor(
+          private val client: BloombergClient
+      ) : EventListener {
+  
+        init {
+            client.addEventListener(this)
+        }
+  
+        override fun onSubscriptionUpdated(event: SubscriptionRawDataEvent) {
+          // We can read the correlation ID so we know which subscription the update is for
+          val correlationId = event.correlationId
+          // We can access the wrapped data from the event
+          val data = event.data
+          data.forEach { entry ->
+            // Here we can use kotlin sealed classes to know the type of each field
+            when (entry.value) {
+              is Boolean -> {}
+              is ByteArray -> {}
+              is Char -> {}
+              is LocalDate -> {}
+              is LocalDateTime -> {}
+              is Double -> {}
+              is Float -> {}
+              is Int -> {}
+              is List -> {}
+              is Long -> {}
+              is Map -> {}
+              is String -> {}
+              is LocalTime -> {}
+            }
+          }
+        }
+      }
+      ```
+      </TabItem>
+  </Tabs>
+</details>
+
+##### `DataResponseEvent`
+The `DataResponseEvent` represents a response to a previously issued one-off data request. It contains the following fields: 
+
+| Field                      | Type           |     Description                                                  |
+|----------------------------|----------------|------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the request.                             |
+|`data`                      | Map&lt;String, Object&gt; | The fields returned by the response. The values are the raw data values extracted from the Bloomberg message. |
+|`moreData`                  | Boolean        | Indicates whether or not there are additional responses pending. Sometimes, depending on the size of the request, multiple responses can be received. |
+ 
+<details>
+<summary>Code Examples</summary>
+  <Tabs
+      defaultValue="Java"
+      values={[
+          { label: 'Java', value: 'Java', },
+          { label: 'Kotlin', value: 'Kotlin', }
+      ]
+      }>
+      <TabItem value="Java">
+      ```Java
+      import global.genesis.bloomberg.api.DataResponseEvent;
+      import global.genesis.bloomberg.api.EventListener;
+      
+      import javax.inject.Inject;
+      import java.util.Map;
+      
+      public class ExampleSubscriber implements EventListener {
+        private BloombergClient client;
+      
+        @Inject
+        public ExampleSubscriber(BloombergClient client) {
+          this.client = client;
+          client.addEventListener(this);
+        }
+      
+        @Override
+        public void onDataResponse(DataResponseEvent event) {
+          // We can read the correlation ID so we know which request the response is for
+          String correlationId = event.getCorrelationId();
+      
+          // We can access the raw data from the response
+          Map<String, Object> data = event.getData();
+      
+          Integer bidSize = (Integer) data.get("BID_SIZE");
+        }
+      }
+      ```
+      </TabItem>
+  
+      <TabItem value= 'Kotlin'>
+      ```kotlin
+      import global.genesis.bloomberg.api.DataResponseEvent
+      import global.genesis.bloomberg.api.EventListener
+      import javax.inject.Inject
+
+      class ExampleSubscriber @Inject constructor(
+        private val client: BloombergClient
+      : EventListener {
+        init {
+          client.addEventListener(this)
+        }
+
+        override fun onDataResponse(event: DataResponseEvent) {
+          // We can read the correlation ID so we know which request the response is for
+          val correlationId = event.correlationId
+
+          // We can access the raw data from the response
+          val data = event.data
+
+          val bidSize = data["BID_SIZE"] as Int?
+        }
+      } 
+      ```
+      </TabItem>
+  </Tabs>
+</details>
+
+##### `SubscriptionStatusEvent`
+The `SubscriptionStatusEvent` is sent when a subscription changes status. It contains the following fields: 
+
+| Field                      | Type           |     Description                                                   |
+|----------------------------|----------------|-------------------------------------------------------------------|
+| `correlationId`            | String         | A unique identifier for the subscription.                         |
+| `message`                  | String         | A message providing more information about the status change.     |
+| `status`                   | SubscriptionStatus Enum | The status of the subscription. The supported status values are listed in the table below. |
+
+The supported `status` values are: 
+
+| Status          | Description                  |
+|-----------------|------------------------------|
+| ACTIVE          | The subscription is healthy and updates are being published. |
+| STALE           | The subscription has paused, and the last received update should not be considered 'current'. The subscription can resume at a later time. There is no need to re-subscribe. |
+| CANCELLED       | The subscription has been terminated either by Client or server request. Re-subscribing restarts the subscription. |
+| REJECTED        | The subscription was rejected, either by being malformed or containing incorrect data. Re-subscribing will not fix the problem, and it is suggestive of an issue with the logic that is building the subscription. For example, an invalid ticker symbol could be the cause of a subscription being rejected.  |
+
+<details>
+<summary>Code Examples</summary>
+  <Tabs
+      defaultValue="Java"
+      values={[
+          { label: 'Java', value: 'Java', },
+          { label: 'Kotlin', value: 'Kotlin', }
+      ]
+      }>
+      <TabItem value="Java">
+      ```Java
+      import global.genesis.bloomberg.api.EventListener;
+      import global.genesis.bloomberg.api.SubscriptionStatusEvent;
+      
+      import javax.inject.Inject;
+      
+      public class ExampleSubscriber implements EventListener {
+        private BloombergClient client;
+      
+        @Inject
+        public ExampleSubscriber(BloombergClient client) {
+          this.client = client;
+          client.addEventListener(this);
+        }
+      
+        @Override
+        public void onSubscriptionStatus(SubscriptionStatusEvent event) {
+          // We can read the correlation ID so we know which subscription the status event is for
+          String correlationId = event.getCorrelationId();
+      
+          switch (event.getStatus()) {
+            case ACTIVE -> {}
+            case STALE -> {}
+            case CANCELLED -> {}
+            case REJECTED -> {}
+          }
+        }
+      }
+      ```
+      </TabItem>
+  
+      <TabItem value= 'Kotlin'>
+      ```kotlin
+      import global.genesis.bloomberg.api.EventListener
+      import global.genesis.bloomberg.api.SubscriptionStatus
+      import global.genesis.bloomberg.api.SubscriptionStatusEvent
+      import javax.inject.Inject
+      
+      class ExampleSubscriber @Inject constructor(
+        private val client: BloombergClient
+      ) : EventListener {
+        init {
+          client.addEventListener(this)
+        }
+      
+        override fun onSubscriptionStatus(event: SubscriptionStatusEvent) {
+          // We can read the correlation ID so we know which subscription the status event is for
+          val correlationId = event.correlationId
+        
+          when (event.status) {
+            SubscriptionStatus.ACTIVE -> {}
+            SubscriptionStatus.STALE -> {}
+            SubscriptionStatus.CANCELLED -> {}
+            SubscriptionStatus.REJECTED -> {}
+          }
+        }
+      }
+      ```
+      </TabItem>
+  </Tabs>
+</details>
+
+##### `UserEntitlementsUpdateEvent`
+The `UserEntitlementsUpdateEvent` is sent when the data entitlements for a user have changed. It contains the following fields: 
+
+| Field                      | Type           |     Description                                                    |
+|----------------------------|----------------|--------------------------------------------------------------------|
+| `userName`                 | String         | The identifier of the user account within the Genesis application. |
+| `emrsId`                   | String         | The identifier of the user as stored on the Bloomberg entitlement system (EMRS). |
+| `eid`                      | Int            | The entitlement ID (EID) that has either been granted or denied to the user. |
+| `entitled`                 | Boolean        | Whether the user is entitled for this EID or not.                  |                 
+
+These events must be used to drive data visibility rules in the application.
+
+<details>
+<summary>Code Examples</summary>
+  <Tabs
+      defaultValue="Java"
+      values={[
+          { label: 'Java', value: 'Java', },
+          { label: 'Kotlin', value: 'Kotlin', }
+      ]
+      }>
+      <TabItem value="Java">
+      ```Java
+      import global.genesis.bloomberg.api.EventListener;
+      import global.genesis.bloomberg.api.UserEntitlementsUpdateEvent;
+      
+      import javax.inject.Inject;
+      
+      public class ExampleSubscriber implements EventListener {
+        private BloombergClient client;
+      
+        @Inject
+        public ExampleSubscriber(BloombergClient client) {
+          this.client = client;
+          client.addEventListener(this);
+        }
+      
+        @Override
+        public void onUserEntitlementsUpdate(UserEntitlementsUpdateEvent event) {
+          String user = event.getUserName();
+          
+          String emrsId = event.getEmrsId();
+          
+          int eid = event.getEid();
+          
+          boolean entitled = event.getEntitled();
+        }
+      }
+      ```
+      </TabItem>
+  
+      <TabItem value= 'Kotlin'>
+      ```kotlin
+      import global.genesis.bloomberg.api.EventListener
+      import global.genesis.bloomberg.api.UserEntitlementsUpdateEvent
+      import javax.inject.Inject
+      
+      class ExampleSubscriber @Inject constructor(
+        private val client: BloombergClient
+      ) : EventListener {
+        init {
+          client.addEventListener(this)
+        }
+      
+        override fun onUserEntitlementsUpdate(event: UserEntitlementsUpdateEvent) {
+          val user = event.userName
+          val emrsId = event.emrsId
+          val eid = event.eid
+          val entitled = event.entitled
+        }
+      }
+      ```
+      </TabItem>
+  </Tabs>
+</details>
+
+##### `UserEntitlementsRevokedEvent`
+The `UserEntitlementsRevokedEvent` is sent when all data entitlements for a user have been revoked. It contains the following fields: 
+
+| Field                      | Type           |     Description                                                    |
+|----------------------------|----------------|--------------------------------------------------------------------|
+| `userName`                 | String         | The identifier of the user account within the Genesis application. |
+| `emrsId`                   | String         | The identifier of the user as stored on the Bloomberg entitlement system (EMRS). |
+
+This event should be interpreted as a simultaneous receipt of a `UserEntitlementsUpdateEvent` for every known EID in the system, with 'entitled' set to false.
+
+<details>
+<summary>Code Examples</summary>
+  <Tabs
+      defaultValue="Java"
+      values={[
+          { label: 'Java', value: 'Java', },
+          { label: 'Kotlin', value: 'Kotlin', }
+      ]
+      }>
+      <TabItem value="Java">
+      ```Java
+      import global.genesis.bloomberg.api.EventListener;
+      import global.genesis.bloomberg.api.UserEntitlementsRevokedEvent;
+      
+      import javax.inject.Inject;
+      
+      public class ExampleSubscriber implements EventListener {
+        private BloombergClient client;
+      
+        @Inject
+        public ExampleSubscriber(BloombergClient client) {
+          this.client = client;
+          client.addEventListener(this);
+        }
+      
+        @Override
+        public void onUserEntitlementsRevoked(UserEntitlementsRevokedEvent event) {
+          String user = event.getUserName();
+          String emrsId = event.getEmrsId();
+        }
+      }
+      ```
+      </TabItem>
+  
+      <TabItem value= 'Kotlin'>
+      ```kotlin
+      import global.genesis.bloomberg.api.EventListener
+      import global.genesis.bloomberg.api.UserEntitlementsRevokedEvent
+      import javax.inject.Inject
+      
+      class ExampleSubscriber @Inject constructor(
+        private val client: BloombergClient
+      ) : EventListener {
+        init {
+          client.addEventListener(this)
+        }
+      
+        override fun onUserEntitlementsRevoked(event: UserEntitlementsRevokedEvent) {
+          val user = event.userName
+          val emrsId = event.emrsId
+        }
+      }
+      ```
+      </TabItem>
+  </Tabs>
+</details>
+
+## Examples
+For a real-world example of how to build an application that consumes Bloomberg Market Data, see our [how-to guide](https://docs.genesis.global/docs/how-to/ht-consume-bloomberg/).

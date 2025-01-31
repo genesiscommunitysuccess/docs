@@ -63,7 +63,7 @@ This is the same as `filter` but also has a context property `userName` with the
 In the example below, the entity has a field `ASSIGNED_TO` which is populated with the user the data is assigned to, in this scenario rows which do not have `ASSIGNED_TO` set to the user querying the data will be filtered out.
 
 ```kotlin
-    filter {
+    filterWithUserName {
       data.assignedTo == userName
     }
 ```
