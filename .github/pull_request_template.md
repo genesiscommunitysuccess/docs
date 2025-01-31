@@ -6,9 +6,6 @@ __________
 
 Thank you for contributing to the documentation.
 
-Do the changes you have made apply to both Current and Previous versions?
-<!--- Yes / No -->
-
 Have you done a trial build to check all new or changed links?
 <!--- Yes / No -->
 
