@@ -97,28 +97,28 @@ id: '8.2'
 
 #### 8.2.11
 
-##### Features
+###### Features
 - Provide better [bulk purge support](/build-deploy-operate/operate/commands/#cascade-purges)
 - performance improvements(genesis-environment): Use deleteAll in PurgerScript.purgeDerivedRange
 
 #### 8.2.10
 
-##### Features
+###### Features
 - Optimise memory usage BackwardJoinCache for 1-2-1 joins
 
 #### 8.2.9
 
-##### Fixes
+###### Fixes
 - ResourceDaemon doesn't properly evaluate ClusterMode
 - Preregister root records in back join cache to ensure they exist when child record is registered
 
 #### 8.2.8
 
-##### Features
+###### Features
 - Query API: Add dynamicQueryBuilder support
 - Add support for dynamic parameters as well as fix issues related to ENUM and DateTime handling
 
-##### Fixes
+###### Fixes
 - Query API: ensure number parameters are not passed as string values to "where" clauses and use correct uppercase underscore translation
 - Cluster manager not bound when running GenesisRun and other scripts that user ServiceModule
 
