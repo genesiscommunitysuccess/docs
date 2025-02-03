@@ -90,44 +90,44 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 8.0.10
 
-##### Fixes 
+###### Fixes 
 
 - ResourceDaemon: Fix Dependency Injection initialisation on startup 
 - Remove ReflectionToStringBuilder from ClusterMessage
 
 #### 8.0.9
 
-##### Fixes
+###### Fixes
 
 - Dataserver backwardsJoin view does not recover in case of a buffered out of order update 
 - Mon dies when system is not able to connect to CONSUL but is configured to do so
 
 #### 8.0.8
 
-##### Fixes
+###### Fixes
 
 - DbMon search returns the expected number of records 
 - fDbMon updateWhere fails if there is a white space in the argument
 
 #### 8.0.7
 
-##### Fixes
+###### Fixes
 
 - Allow db mon to fetch more than 500 results
 
 #### 8.0.6
 
-##### Features
+###### Features
 
 - Make logging of zero values optional in logger reporter
 
-##### Fixes
+###### Fixes
 
 - Add clientHandler router config with option to close client channel if becomes full 
 
 #### 8.0.5
 
-##### Fixes
+###### Fixes
 
 - Auth key concatenation for enriched auth clauses and AuthCache re-registration operation now uses correct record ids 
 - Can use warningNack in context event handlers 
@@ -135,13 +135,13 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 8.0.4
 
-##### Features
+###### Features
 
 - Add non-blocking threading model for database subscriptions 
 - Add support for Consolidators and data pipelines in GenesisJunit 
 - Add metric for tracking the number of users per dataserver query
 
-##### Fixes
+###### Fixes
 
 - getRangeFromEnd default method without fields parameter now calls correct getRangeFromEnd method 
 - DOUBLE fields generated using the new table DSL to accept negative values by default 
@@ -150,23 +150,23 @@ This release contains [breaking changes](#breaking-changes). These are listed at
 
 #### 8.0.3
 
-##### Fixes
+###### Fixes
 
 - (router): Populate missing DETAILS.SESSION_AUTH_TOKEN field for inbound EVENT_LOGIN_DETAILS messages at the router level
 
 #### 8.0.2
 
-##### Fixes
+###### Fixes
 
 Update all references for python to python3
 
 #### 8.0.1
 
-##### Features
+###### Features
 
 - Add BigDecimal support to average function
 
-##### Fixes
+###### Fixes
 - pal-consolidator: Process should crash on startup with a relevant error message if a consolidator definition is using a function that requires "indexScan" and "indexScan" has not been defined
 - Add type conversion from Integer to Short
 - Improve handling in builder for fields with IS_ prefix
