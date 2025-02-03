@@ -479,11 +479,11 @@ This is a real-time bulk subscription to the database for a particular entity an
 
 :::important
 
-This source implementation is not recoverable, meaning on each invocation of this pipeline all records in the table will be processed.
+This source implementation is not recoverable.On each invocation of this pipeline, all records in the table will be processed.
 
 :::
 
-The source returns a flow of `Bulk` objects for your chosen entity which will need to be converted to the underlying record using a mapper, an example of which has been provided below:
+The source returns a flow of `Bulk` objects for your chosen entity. This needs to be converted to the underlying record using a mapper, an example of which has been provided below:
 
 ```kotlin
 // the following mapper class extracts the Trades record from each Bulk<Trades> object and returns it to the pipeline:
@@ -505,9 +505,11 @@ pipeline("TEST_DB_BULK_SUBSCRIBE") {
     }
 ```
 
-If you want to use this source to subscribe to a view, you have the option of setting `backwardsJoin` to `true`. Note: in order to receive updates from changes to any non-primary table in your view, you must set this configuration in the pipeline source
-regardless of whether the view itself has joins with `backwardsJoin` set to `true`.
-This setting is defaulted to false but can be set to true as shown below:
+If you want to use this source to subscribe to a view, you have the option of setting `backwardsJoin` to `true`. 
+
+In order to receive updates from changes to any non-primary table in your view, you must set this configuration in the pipeline source, regardless of whether the view itself has joins with `backwardsJoin` set to `true`.
+
+This setting is defaulted to false. Here is an example of how to set it to true:
 
 ```kotlin
 pipeline("TEST_DB_BULK_SUBSCRIBE") {
@@ -519,7 +521,7 @@ pipeline("TEST_DB_BULK_SUBSCRIBE") {
 
 ### `dbBulkQuery`
 
-This is a batch executable source for doing a bulk query on a table or view. It returns a flow of the object you have specified when defining the source:
+This is a batch executable source for doing a bulk query on a table or view. It returns a flow of the object that you specified when you defined the source:
 
 ```kotlin
 pipeline("TEST_DB_BULK_QUERY") {
@@ -530,9 +532,9 @@ pipeline("TEST_DB_BULK_QUERY") {
 
 #### `AbstractProgrammaticSource`
 
-This is an abstract implementation of a real-time acknowledgement source that additionally has a send method, which can be used by any custom code to provide data to the pipeline.
+This is an abstract implementation of a real-time acknowledgement source. This source additionally has a send method, which can be used by any custom code to provide data to the pipeline.
 
-This source is dependent on the calling code being a part of the same process as the pipeline using this source - ensure this is done by updating your process definition.
+The source is dependent on the calling code being a part of the same process as the pipeline using this source. Upudate your process definition to ensure this is done.
 
 Here is an example of using this source to provide Trade objects:
 
@@ -657,7 +659,7 @@ eventHandler<Trade>(name = "TEST_PIPELINE_START") {
 
 #### `typedBatchSource`
 
-This is a convenience source which allows you to easily wrap a custom function in a GPAL pipelines definition. For example, if you want to call an external REST API using one of our generated service classes.
+This is a convenience source that enables you to easily wrap a custom function in a GPAL pipelines definition. Use this, for example, if you want to call an external REST API using one of our generated service classes.
 
 ADD EXAMPLE
 
@@ -897,7 +899,7 @@ pipeline("CAMEL_SFTP_OUTBOUND_PIPELINE") {
 
 ### Connectors
 
-A connector is a pipeline element that acts as both a source and a sink, consuming elements from one pipeline and emitting to another. This is particular useful for when you require blending multiple inbound streaming feeds together.
+A connector is a pipeline element that acts as both a source and a sink, consuming elements from one pipeline and emitting to another. This is particularly useful when you want to blend multiple inbound streaming feeds together.
 
 #### connector
 
@@ -922,7 +924,7 @@ pipeline("TEST_TRADE_TO_KAFKA") {
 
 #### ackConnector
 
-The `ackConnector` is the exact same as the `connector` except it incorporates the acknowledgement mechanism. The sink call does not return until the downstream sink has processed the element.
+The `ackConnector` is the same as the `connector`, except it incorporates the acknowledgement mechanism. The sink call does not return until the downstream sink has processed the element.
 
 ```kotlin
 val tradesConnector = ackConnector<Trade>()
@@ -984,7 +986,7 @@ pipeline("TEST_TRADE_PIPELINE") {
 
 #### `sendCustomEventOnCompletion`
 
-This handler works in the exact same way as `sendEventOnCompletion` above except the return type of the event can be specified. This can therefore be used when the return type of your custom event is anything other than EventReply.
+This handler works in the same way as `sendEventOnCompletion` above, except the return type of the event can be specified. This can therefore be used when the return type of your custom event is anything other than EventReply.
 
 ```kotlin
 
