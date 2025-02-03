@@ -25,7 +25,7 @@ tags:
 sidebar_position: 3
 ---
 
-Genesis elements go through several lifecycle stages from creation to removal. Understanding these lifecycles is crucial for proper component initialization, clean-up, and state management.
+Genesis elements go through several lifecycle stages from creation to removal. Understanding these stages is crucial for properly initializing components, cleaning up and for state management.
 
 `GenesisElement` has access to a number of methods that enable you to control the lifecycle. These are described below. 
 
@@ -70,7 +70,7 @@ export class MyButton extends GenesisElement {
 
 The changed callback lifecycle runs when the attributes or properties of an element are updated, in order to handle state changes. The name of the method varies, based on the name of the attribute or property.
 
-This example is for handling changes to the label attribute of `MyButton`. So, the method used is `labelChanged`. When this method is triggered,  the following statement is added to the log:
+The example below is for handling changes to the label attribute of `MyButton`. So, the method used is `labelChanged`. When this method is triggered,  the following statement is added to the log:
 
 `<my-button label="Cancel"></my-button>`
 

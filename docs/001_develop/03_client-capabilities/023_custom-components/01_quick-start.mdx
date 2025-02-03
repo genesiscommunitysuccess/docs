@@ -1,6 +1,6 @@
 ---
-title: "Quickstart"
-sidebar_label: "Quick Start"
+title: "Quick start"
+sidebar_label: "Quick start"
 id: quick-start
 
 keywords:
@@ -25,7 +25,6 @@ tags:
 sidebar_position: 3
 ---
 
-# Quick start
 
 In this section, we shall create a simple web component using Genesis. There are three parts that make up a component:
 
@@ -35,7 +34,7 @@ In this section, we shall create a simple web component using Genesis. There are
 
 Web components can vary in complexity, from a simple button to a very detailed interactive experience.
 
-## Create custom element
+## Create a custom element
 
 Start by importing all necessary parts:
 
@@ -47,6 +46,8 @@ import {
   html,
 } from "@genesislcap/web-core";
 ```
+
+Now use the code below to create a custom component called `<my-button`>. This component currently displays a basic button in the browser with the text `Click Me`. 
 
 ```typescript
 // Create an HTML template using the html tag template literal
@@ -67,8 +68,6 @@ const styles = css`
 })
 export class MyButton extends GenesisElement {};
 ```
-
-The code above has created a custom component called `<my-button>`, which currently displays a basic button in the browser with the text `Click Me`. To make it more useful, you can now add an attribute that enables you to customize the button's label and give it more dynamic functionality.
 
 :::important
 
@@ -96,9 +95,6 @@ Now it can be added in your HTML this way:
 <script type="module" src="path/to/hello-world.js"></script>
 <my-button label="Cancel"></my-button>
 ```
-
-> In this example, we created a custom web component using `GenesisElement`. We defined a button template and added a `label` attribute using the `@attr` decorator, allowing the button text to be customized via HTML. We implemented the `labelChanged` method, which is automatically called whenever the `label` value changes. The template dynamically updates with the new value, ensuring the button remains responsive to changes in its attributes.
-
 ### Typed templates
 
 Templates can be strongly typed to ensure they align with the data model they are rendering. In TypeScript, you specify the type directly within the template declaration using the syntax `html<Type>`. This approach provides better type safety and ensures that the data passed into the template matches the expected structure of the associated component or model.
@@ -113,11 +109,11 @@ const template = html<MyButton>`<button>Click Me</button>`;
 
 ## Add an attribute
 
-We can add an `attr` decorator which allows us to link a class property to an HTML attribute, ensuring that changes in the attribute are automatically reflected in the JavaScript property, and vice versa, allowing for clean and declarative state management of custom elements.
+You can now make the button label dynamic. Add an `attr` decorator that enables you to link a class property to an HTML attribute. This ensures that changes in the attribute are automatically reflected in the JavaScript property, and vice versa, allowing for clean and declarative state management of custom elements.
 
 You can define a default value for an attribute directly within the class definition. This ensures that if no value is provided, the attribute will fall back to the specified default.
 
-Let's declare an attribute called **_label_** and then change that value to see it reflected:
+The code below declares an attribute called **_label_**:
 
 ```typescript {7}
 @customElement({
@@ -136,7 +132,9 @@ Now let's update the template to display the value:
 const template = html`<button>${(x) => x.label}</button>`;
 ```
 
-### Complete example
+Now the label of the button changes whenever the value of the `label`attribute is changed.
+
+The code for the component now looks like this:
 
 ```typescript {5,9}
 import { attr, css, customElement, GenesisElement, html } from '@genesislcap/web-core';
@@ -153,7 +151,7 @@ export class MyButton extends GenesisElement {
 
 ## Using slots
 
-Slots are an important concept when using web components as they allow you to compose components together. They're useful in both complicated use cases, such as composing elements together in a structure, or a simple case such as configuring the text displayed inside of a component. Let's look at a simple example below by changing the `MyButton` component:
+Slots are an important concept when using web components. They enable you to compose components together. They're useful in both complicated use cases, such as composing elements together in a structure, or a simple case such as configuring the text displayed inside of a component. Let's look at a simple example below by changing the `MyButton` component:
 
 ```typescript
 @customElement({
@@ -163,17 +161,17 @@ Slots are an important concept when using web components as they allow you to co
 export class MyButton extends GenesisElement {}
 ```
 
-If you load the webpage with this change you'll see that the button contains no text whatsoever, and it is rendered as a tiny box. However, we can now customise the text shown on the button from the slot. Change the usage of `<my-button>` to the following:
+If you load the webpage with this change, you'll see that the button contains no text whatsoever, and it is rendered as a tiny box. However, you can now customize the text shown on the button from the slot. Change the usage of `<my-button>` to the following:
 
 ```html
 <my-button>This text is going into the slot!</my-button>
 ```
 
-Now when you refresh the page you will see the button with the text we added.
+Now when you refresh the page, you will see the button with the text you added.
 
 ### Default slot content
 
-In many cases the behaviour seen above where no slot content is added leading to a blank component is undesirable. To solve this you can define default slot content:
+In example above, you provided some content for the slot. But if you don't provide that content, the component is blank. This is undesirable. So now define some default slot content for the component:
 
 ```typescript
 @customElement({
@@ -183,18 +181,20 @@ In many cases the behaviour seen above where no slot content is added leading to
 export class MyButton extends GenesisElement {}
 ```
 
-To contrast this behaviour we can declare two `<my-button>` components:
+To see this working, you can declare two `<my-button>` components:
 
 ```html
 <my-button></my-button>
 <my-button>This text is going into the slot!</my-button>
 ```
 
-Loading this example you can see the first button uses the default slot content, and the second overrides the default content with the declared text.
+When you load this example, you can see the first button uses the default slot content, and the second overrides the default content with the declared text.
 
-### Slot content
+### Other slot content
 
-Simply working through the above slot examples may make you question why you'd use a slot, as we achieved something very similar with an attribute in the above example. The key realisation is that you don't have to use simple text nodes inside of the slot content.
+So why would you use a slot when you were able to achieve something very similar with an attribute? The answer is that you don't have to use simple text nodes inside the slot content.
+
+The code below uses the [rapid-icon](../../presentation/client-presentation-icon/) component to provide the slot content. 
 
 ```html
 <my-button>
@@ -202,7 +202,7 @@ Simply working through the above slot examples may make you question why you'd u
 </my-button>
 ```
 
-Here we have used the [rapid-icon](../../presentation/client-presentation-icon/) component as the slot content. You can also add multiple nodes into the slot:
+You can also add multiple nodes into the slot:
 
 ```html
 <my-button>
@@ -213,7 +213,7 @@ Here we have used the [rapid-icon](../../presentation/client-presentation-icon/)
 
 ### Named slots
 
-In all of the previous example we've been adding content into the default slot, signified by a `<slot></slot>` element with no name attribute. Using a named slot we'll now put all of the above concepts together into a component.
+All the previous examples, added content to the default slot, signified by a `<slot></slot>` element with no name attribute. The code below uses a named slot to put all the above concepts together into a component.
 
 ```typescript
 @customElement({
@@ -224,10 +224,12 @@ export class MyButton extends GenesisElement { }
 ```
 
 :::warning
-Even though we named the slot `icon` that doesn't necessarily mean that you have to put an icon component in there, the browser doesn't enforce which components are slotted.
+ The browser does not enforce which components are slotted.
+ 
+ Even though you named the slot `icon`, that doesn't necessarily mean that you have to put an icon component in there.
 :::
 
-Here is a usage, which we'll discuss:
+The code below renders three buttons that behave differently:
 
 ```html
 <my-button></my-button>
@@ -240,13 +242,15 @@ Here is a usage, which we'll discuss:
 </my-button>
 ```
 
-1. The first example renders with no icon and with the default `Click me!` button text.
-2. The second example renders with an icon and with the override `Override text` button text.
-3. The third example renders with an icon - but no text!
+In the example above:
 
-You might expect with the third example that you should see an icon and the default text. However, the `rapid-icon` element becomes slotted content, and while it gets placed in the named "icon" slot, its presence means there is content provided to the component, which overwrites the default slot content.
+- The first example renders with no icon and with the default `Click me!` button text.
+- The second example renders with an icon and with the override `Override text` button text.
+- The third example renders with an icon - but no text!
 
-To be clear, you can only expect to see default slot content if no elements are placed in the slot, even if they're all part of named slots. To fix this the component can be changed to have the text as a named slot too
+In the third exaample, you might expect to see an icon and the default text. However, the `rapid-icon` element becomes slotted content, and while it gets placed in the named "icon" slot, its presence means there is content provided to the component, which overwrites the default slot content.
+
+To be clear, you can only expect to see default slot content if no elements are placed in the slot, even if they're all part of named slots. To fix this, you can change the component the text is in a named slot.
 
 ```typescript
 import { customElement, GenesisElement, html } from '@genesislcap/web-core';
@@ -261,7 +265,7 @@ import { customElement, GenesisElement, html } from '@genesislcap/web-core';
 export class MyButton extends GenesisElement { }
 ```
 
-Make a final adjustment to the usage and now we see the expected behaviour.
+If you make a final adjustment to the usage, you now see the expected behaviour.
 
 ```html {6}
 <my-button></my-button>
@@ -273,3 +277,17 @@ Make a final adjustment to the usage and now we see the expected behaviour.
   <rapid-icon name="user" variant="regular" slot="icon"></rapid-icon>
 </my-button>
 ```
+
+## Summary
+This is what you did in this quick start:
+
+- created a custom web component using `GenesisElement`
+- defined a button template
+- added a `label` attribute using the `@attr` decorator, allowing the button text to be customized via HTML
+- implemented the `labelChanged` method, which is automatically called whenever the `label` value changes, so the template updates dynamically with the new value and the button remains responsive to changes in its attributes
+- added content to the default slot within the HTML
+- added default content to the default slot in the component
+- added named slots to the component to contain extra content
+- used another component(`rapid-icon`) within a slot within the HTML
+
+We hope you have found this helpful.

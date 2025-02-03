@@ -1,5 +1,5 @@
 ---
-title: "State and API"
+title: "Component state and API"
 sidebar_label: "Component state and API"
 id: state-management
 keywords:
@@ -36,9 +36,9 @@ If you are writing your own web components, there are three pieces of terminolog
 - Observables. Observable properties and attributes configure the component to watch for changes, enabling the associated html template to update as they are updated.
 
 :::info
-<CollapsibleSlot title="Basic info" description="Learn about the basics of attributes and properties in the browser. You need to understand these concepts before the rest of this document.">
+<CollapsibleSlot title="Basic info" description="It is vital that you know the basics of attributes and properties in the browser. Click on the button below to learn about these concepts before you move on.">
 
-<strong>Attributes</strong> are part of a HTML element's API. They are usually a key-value pair where the value is a string, such as `href`.
+<strong>Attributes</strong> are part of an HTML element's API. They are usually a key-value pair where the value is a string, such as `href`.
 
 ```html
 <a href="https://docs.genesis.global/docs/develop/client-capabilities/"></a>
@@ -65,7 +65,7 @@ const document = {
 }
 ```
 
-A key difference to attributes is that property values can be any JavaScript type, including arrays and objects:
+A key difference between attributes and properties is that property values can be any JavaScript type, including arrays and objects:
 
 ```javascript
 const person = {
@@ -97,7 +97,7 @@ class Person {
 
 ## Attributes
 
-To create an attribute, use the `@attr` decorator. This creates a property-attribute pair - a binding. Once created, any change in one automatically updates (is reflected to) the other, keeping them synchronized.
+To create an attribute, use the `@attr` decorator. 
 
 Here is an example of an attribute for the `MyButton` example component:
 
@@ -116,11 +116,19 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-The `label` property is tied to an HTML attribute, so to override the value of `label`, you can simply replace it in the HTML.
+
+
+:::info property-attribute pairs
+When you use the `@attr` decorator to create an attribute, it also creates a property with the same name, so you have a property-attribute pair.
+
+The example above creates an attribute called `label` and a property called `label`.  Any change in one automatically updates (is reflected to) the other, keeping them synchronized.
+
+The `label` property is tied to the `label` HTML attribute. So to override the value of `label`, you can simply replace it in the HTML.
+:::
 
 #### Usage in HTML
 
-Now when you use `<my-button>` in your HTML, you can change the default value of `label` ('Submit'). In this case, we are changing it to `Cancel`.
+Now when you use `<my-button>` in your HTML, you can change the default value of `label` ('Submit'). In the example below, we are changing it to `Cancel`.
 
 ```typescript
  <my-button label="Cancel"></my-button>
@@ -138,19 +146,21 @@ Here are the most important things to know about attributes:
 - They are visible in Browser Console DOM inspector.
 :::
 
-### Attribute - Property pairs
+### Attribute-property pairs
 
-It's important to distinguish between attributes and properties. In the above example where we added
+It's important to distinguish between attributes and properties. Look at the example above where we added:
+
 ```
 @attr label = "Click Me";
 ```
-this created both an attribute _and_ a property called "label". Because of the `@attr` decorator creating a pair, changes to either the attribute or the property are reflected to the other. Once you have done this, updates to one (e.g. setting a property) can update the other (e.g. the attribute in HTML).
+
+This created both an attribute _and_ a property called "label". The `@attr` decorator creates a pair, so changes to either the attribute or the property are reflected in the other. Once you have done this, updates to one (e.g. setting a property) can update the other (e.g. the attribute in HTML).
 
 :::important
-You can define properties internally in the component class without linking them to HTML attributes. These internal properties are not exposed in the DOM as attributes. This isn't the same as the `private` keyword which prohibits access to a property from outside of the class.
+You can define properties internally in the component class without linking them to HTML attributes. These internal properties are not exposed in the DOM as attributes. This isn't the same as the `private` keyword which prohibits access to a property from outside the class.
 :::
 
-`clickCount` is an internal property and is only accessible within the component. If it was used in the markup then the initial value would be shown, but changes to the property after initial render are **not** reactive in the HTML markup.
+`clickCount` is an internal property and is only accessible within the component. If it was used in the markup, then the initial value would be shown, but changes to the property after initial render are **not** reactive in the HTML markup.
 
 ```typescript
 @customElement({
@@ -172,7 +182,7 @@ For most attributes, you can directly bind their values to expressions in the te
 
 The `label` attribute controls the text shown on the button. To bind `label` to a dynamic value, we use an expression within the template.
 
-Here’s an example of this might in a `<my-button>` component:
+Here’s an example of this for a `<my-button>` component:
 
 ```typescript
 @customElement({
@@ -231,9 +241,9 @@ export class MyButton extends GenesisElement {
 
 ### Binding boolean attributes
 
-With boolean attributes, their presence or absence determines their value (the string value itself does not). And an attribute can also take a configuration from the `mode` option.
+With boolean attributes, their presence or absence determines their value (the string value itself does not). 
 
-If the attribute is a boolean and the `mode` is set to `"boolean"`, this enables `GenesisElement` to add or remove the attribute from the element.
+You can configure an attribute as a boolean by setting the optional `mode` parameter to `boolean` on the `@attr` decorator. If the attribute is a boolean and the `mode` is set to `"boolean"`, this enables `GenesisElement` to add or remove the attribute from the element.
 
 - If a boolean attribute is present in the HTML markup (e.g., `<button disabled></button>`), it is interpreted as true.
 - If the attribute is absent (e.g., `<my-button></my-button>`), it is interpreted as false.
@@ -284,9 +294,9 @@ In this example:
   - `isDisabled` is a property and it and follows camelCase convention in JavaScript which help distinguish from the HTML attribute `disabled`.
   - `disabled` is an attribute and it's used in HTML to represent state declaratively and reflect it in the DOM.
 
-## Observable Properties
+## Observable properties
 
-In all of the attributes examples you'll notice that when the attribute is changed its updated value is shown on the template. This is because all attributes declared with the `@attr` decorator are also `Observables`. `Observables` are a key concept to how you make the components reactive in the browser to their changing state.
+In all the attributes examples, note that when the attribute is changed its updated value is shown on the template. This is because all attributes declared with the `@attr` decorator are also `Observables`. `Observables` are a key way to make the components reactive in the browser to their changing state.
 
 You can also declare a property to be observable using the `@observable` decorator. As with attributes, observable properties enable you to create reactive components.
 
@@ -324,6 +334,7 @@ export class MyButton extends GenesisElement {
     }
 }
 ```
+
 Look at that example again in more detail:
 
 - The `@observable` decorator makes `count` reactive. So, any change in `count` automatically updates the bound elements in the template.
@@ -331,9 +342,8 @@ Look at that example again in more detail:
 - The `countChanged` method is automatically called whenever `count` changes. This callback receives the `oldValue` and `newValue`, enabling you to track and log each change in the console.
 
 :::tip
-In the above simple example `count` could be an attribute too, but it's useful to use it as a property instead so we can work with the number directly rather than working with a numeric string. As with all properties observable properties can be any type, including arras and objects.
+In the above simple example `count` could be an attribute too, but it's useful to use it as a property instead so we can work with the number directly rather than working with a numeric string. As with all properties observable properties can be any type, including arrays and objects.
 :::
-
 
 #### Usage in HTML
 
@@ -358,21 +368,21 @@ Count changed from 1 to 2
 
 ## Property template binding
 
-You could tweak the above example like the following
+You could tweak the above example like this:
 
 ```html {2}
 <my-button></my-button>
 <my-button :count="${(_) => 5}"></my-button>
 ```
 
-You will now have two buttons, the first one being identical to what you had before. The second button starts with a count of five and then increments from there as you press the button, because we've configured the property to have a value of `5` initially.
+You now have two buttons. The first is identical to what you had before. The second button starts with a count of five and then increments from there as you press the button, because we've configured the property to have a value of `5` initially.
 
-Notice unlike setting an attribute you set a property using a function expression. In the above example it always returns `5`, but it could be a more complex function that is reactive (and would therefore update the template). You can return a type from the expression to match the type of the property, including arrays and objects.
+Unlike setting an attribute, you set a property using a function expression. In the example above, this always returns `5`, but it could be a more complex function that is reactive (and would therefore update the template). You can return a type from the expression to match the type of the property, including arrays and objects.
 
 Unlike an attribute where you set the value with no prefix, or a `?` if you're setting a dynamic boolean value, you use the `:` prefix to set a property via the template.
 
 :::tip
-A property doesn't have to be observable to be set from the template with the `:` prefix, though if you want the component to react with a template change when the binding expression updates it must be `@observable`.
+A property doesn't have to be observable to be set from the template with the `:` prefix. However, if you want the component to react with a template change when the binding expression updates, it must be `@observable`.
 :::
 
 ## Complete example
@@ -408,7 +418,7 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-Considering just attributes and properties, the above component declares the following API:
+Considering just the attributes and properties, the component above declares the following API:
 
 <table>
   <thead>
@@ -425,7 +435,7 @@ Considering just attributes and properties, the above component declares the fol
       <td><code>count</code></td>
       <td>Observable property</td>
       <td>Yes</td>
-      <td>Updates the template on change as it's observable</td>
+      <td>Updates the template on change. as it's observable.</td>
 <td>
 
 ```typescript
@@ -490,7 +500,7 @@ Considering just attributes and properties, the above component declares the fol
       <td><code>buttonVersion</code></td>
       <td>Property</td>
       <td>No</td>
-      <td>Will not update the template upon change if used there, but the state still changes so it can be used internal to the class.</td>
+      <td>Will not update the template upon change if used there, but the state still updates - so you can use it change the component's logic.</td>
 <td>
 
 ```typescript
@@ -504,20 +514,20 @@ Considering just attributes and properties, the above component declares the fol
 
 ### Key points
 
-1. Creating an attribute using `@attr` creates _both_ an attribute and a property. They share a name unless you specify a different name using the decorator parameters as we did above on the disabled attribute.
-2. You can set the value of a property via the template using the `:` prefix, but the component's template is only reactive to this change if it's declared as `@observable`. Attributes are always observable.
-3. `*` The above API table is comprehensive, but in practise you should *not* set a property value via the template if it's linked to an attribute. E.g.
-    1. `count` is OK to set the property via the template as it's not linked to an attribute.
-    2. `label` isn't recommend to set via the template `:label=${() => 'value'}` as you should set it via the label attribute `label='value'`, (or `label=${x => x.labelExpression}` if setting dynamically).
-    3. `isDisabled` isn't recommend to set via the template `:isDisabled=${() => true}` as you should set it via the attribute `disabled` (or `?disabled=${x => x.expression}` if setting dynamically).
-    3. `buttonVersion` is OK to set the property via the template as it's not linked to an attribute.
-4. As shown in [this example](#interpolated-attribute-values) you can also use expressions when setting attributes too if you wish.
+- Creating an attribute using `@attr` creates _both_ an attribute and a property. They share a name unless you specify a different name using the decorator parameters, as we did above on the disabled attribute.
+- You can set the value of a property via the template using the `:` prefix, but the component's template is only reactive to this change if it's declared as `@observable`. Attributes are always observable.
+- `*` The above API table is comprehensive, but in practice you should *not* set a property value via the template if it's linked to an attribute. E.g.
+    - `count` is OK for setting the property via the template, as it's not linked to an attribute.
+    - `label` isn't recommend to set via the template `:label=${() => 'value'}` as you should set it via the label attribute `label='value'`, (or `label=${x => x.labelExpression}` if setting dynamically).
+    - `isDisabled` is not recommended for setting via the template `:isDisabled=${() => true}` as you should set it via the attribute `disabled` (or `?disabled=${x => x.expression}` if setting dynamically).
+     `buttonVersion` is OK for setting the property via the template, as it's not linked to an attribute.
+- As shown in [this example](#interpolated-attribute-values), you can also use expressions when setting attributes too if you wish.
 
 ## API recommendations
 
 The attributes and properties of a component create its API surface (as well as methods and events, but they're not considered here).
 
-It's recommended when implementing reactivity in a custom component you use an `@attr` attribute where you can (string or boolean), and then an `@observable` property if you need to.
+It is recommended when implementing reactivity in a custom component that you use an `@attr` attribute where you can (string or boolean), and then an `@observable` property if you need to.
 
 Further to this, you should consider whether properties on your component's API can be changed into attributes. For example:
 
@@ -525,12 +535,15 @@ Further to this, you should consider whether properties on your component's API 
 <my-component :property=${() = ({configOne: 'foo', configTwo: 'bar' })}>
 ```
 
-The above works to set the property via the component's API, but it would be better if the API was simply defined with two attributes.
+The above sets the property via the component's API, but it would be better if the API was simply defined with two attributes.
 
 ```typescript
 <my-component config-one=${() => 'foo'} config-two=${() => 'bar'}>
 ```
 
-Attribute - property pairs have advantages over just a property - benefits include being able to set the values in the browser inspector, and better behaviour when a component is cloned using `.cloneNode()`.
+Attribute-property pairs have advantages over a property on its own. Benefits include:
 
-There may be times where you need to pass a more complex property through the template, but if you end up passing a lot of state you may find it cleaner to refactor the component to use a state management library such as the `foundation-store` or Redux.
+- being able to set the values in the browser inspector
+- better behaviour when a component is cloned using `.cloneNode()`
+
+There might be times where you need to pass a more complex property through the template. However, if you end up passing a lot of state, you may find it cleaner to refactor the component to use a state management library, such as the `foundation-store` or Redux.
