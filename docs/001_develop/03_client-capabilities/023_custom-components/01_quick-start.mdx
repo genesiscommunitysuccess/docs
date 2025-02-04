@@ -151,7 +151,14 @@ export class MyButton extends GenesisElement {
 
 ## Using slots
 
-Slots are an important concept when using web components. They enable you to compose components together. They're useful in both complicated use cases, such as composing elements together in a structure, or a simple case such as configuring the text displayed inside of a component. Let's look at a simple example below by changing the `MyButton` component:
+Slots are an important concept when using web components. They enable you to compose layouts from different components or nodes in the DOM to create new functionality or displayed values.
+
+The composition can vary in complexity:
+
+- a simple case would be configuring the text inside a component, where different parts of the text come from different locations.
+- complex example could involve structuring elements together (such as building a [`rapid-layout`block](/develop/client-capabilities/layout-management/#example)).
+
+Let's look at a simple example below by changing the `MyButton` component:
 
 ```typescript
 @customElement({
