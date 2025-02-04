@@ -12,11 +12,11 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-There are some pipeline implementations provided with the FIX Component that can be used within any data pipeline you have set up. See [Data Pipelines](/develop/server-capabilities/integrations/data-pipelines/) for more information.
+The FIX Component provides some [Data Pipeline](/develop/server-capabilities/integrations/data-pipelines/) implementations, which you can use within any data pipeline that you have set up. 
 
-### Set Up
+### Set-up
 
-In order to have access to the following out of box GPAL extension functions you will need to add the following dependency to the app module of your project:
+To have access to the GPAL extension functions described in this section, you must add the following dependency to the app module of your project:
 
 <Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
     <TabItem value="gradle">
@@ -41,16 +41,14 @@ In order to have access to the following out of box GPAL extension functions you
 
 ### `fixSource`
 
-In order to source fix messages to your pipeline you must have the following packages in the process definition of where your pipeline lives:
+In order to source FIX messages for your pipeline, you must have the following packages in the [process definition](/develop/server-capabilities/runtime-configuration/processes/) where your pipeline is located:
 
 ```kotlin
 global.genesis.listener
 global.genesis.pipeline
 ```
 
-See [process configuration](/develop/server-capabilities/runtime-configuration/processes/) for more information of process definitions.
-
-The `fixSource` must be instantiated with any number of session ids that you want to connect to and will return an object of type `InboundFixMessage` which contains both the Message object and session id String that the message has come from.
+The `fixSource` must be instantiated with any number of session ids that you want to connect to. It returns an object of type `InboundFixMessage`, which contains both the Message object and session id String that identify where the message has come from.
 
 ```kotlin
 pipelines {
@@ -64,17 +62,18 @@ pipelines {
 
 ### `fixSink`
 
-In order to send fix messages to a session from your pipeline you must have the following packages in the process definition of where your pipeline lives:
+In order to send fix messages to a session from your pipeline, you must have the following packages in the process definition of where your pipeline is located:
 
 ```kotlin
 global.genesis.publisher
 global.genesis.pipeline
 ```
 
-See [process configuration](/develop/server-capabilities/runtime-configuration/processes/) for more information of process definitions.
+See [process configuration](/develop/server-capabilities/runtime-configuration/processes/) for more information about process definitions.
 
-The `fixSink` needs to receive an object or flow of type `OutboundFixMessage` which contains the Message object and an optional list of session ids to send this message to.
-If no list or an empty list has been provided, the message will be sent to the default session id configured in your quick fix settings.
+The `fixSink` needs to receive an object or flow of type `OutboundFixMessage`, which contains the Message object and an optional list of session ids to send this message to.
+
+If no list or an empty list is provided, the message will be sent to the default session id that is configured in your quick fix settings.
 
 ```kotlin
 pipelines {
