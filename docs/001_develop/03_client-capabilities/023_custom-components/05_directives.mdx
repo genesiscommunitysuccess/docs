@@ -77,7 +77,7 @@ ref(propertyName);
 
 ### Slotted
 
-A `<slot>` is a placeholder inside a component. Any content you add between `<my-button>` tags in HTML will appear in this slot. This set-up makes the `<my-button>` component more flexible, as it can display different content depending on how it’s used. See more info [here](../quick-start/#using-slots).
+A [slot (`<slot>`)](/develop/client-capabilities/custom-components/quick-start/#using-slots) is a placeholder inside a component. Any content you add between `<my-button>` tags in HTML will appear in this slot. This makes the `<my-button>` component more flexible, because it can display different content depending on how it’s used. 
 
 The example below creates a `<my-button>` component that can accept any content passed into it, such as text or other HTML elements. The slot can handle dynamic content, and the `slotted` directive captures and monitors any content placed inside this slot.
 
@@ -248,11 +248,11 @@ In the example above:
 
 **Initial state**
 
-- When `<my-button>` is first added to the DOM, it displays "Loading..." for 2 seconds (simulated delay).
+- When `<my-button>` is first added to the DOM, it displays `Loading...` for two seconds (simulated delay).
 
-**After 2 Seconds**
+**After two seconds**
 
-- Once the delay is completed, `ready` is set to `true`, and the button appears with the text: "Data Loaded: Hello, Genesis!".
+- Once the two-second delay has elapsed, `ready` is set to `true`, and the button appears with the text: `Data Loaded: Hello, Genesis!`.
 
 ### Syntax breakdown
 
@@ -316,12 +316,12 @@ export class MyButton extends GenesisElement {
 
 **Initial state**
 
-- When `<my>-button>` is added to the DOM, the condition `!x.ready` evaluates to true, so the "Loading..." template is rendered.
+- When `<my>-button>` is added to the DOM, the condition `!x.ready` evaluates to true, so the `Loading...` template is rendered.
 
-**After 2 Seconds**
+**After two seconds**
 
 - The `simulateDataLoad` method sets ready to true, causing the condition `!x.ready` to evaluate to false.
-- The second template (the button) is then rendered with the message: "Data Loaded: Hello, Genesis!".
+- The second template (the button) is then rendered with the message: `Data Loaded: Hello, Genesis!`.
 
 #### Syntax breakdown
 
@@ -337,7 +337,7 @@ whenElse(condition, trueTemplate, falseTemplate);
 
 The `repeat` directive is used to render a list of items dynamically. This is highly useful for rendering lists, especially when you need to manage and display data dynamically.
 
-in the example below, `<my-button-list>` displays a static list of button labels, each rendered as a button. This example shows how to use `repeat` to render each item in the list.
+In the example below, `<my-button-list>` displays a static list of button labels, each rendered as a button. This example shows how to use `repeat` to render each item in the list.
 
 ```typescript
 import {
@@ -371,7 +371,7 @@ export class MyButtonList extends GenesisElement {
 In the example above:
 
 - The `repeat` directive iterates over the `buttons` array and renders each item as a `<button>` inside an `<li>`.
-- Each `button` displays the label from the `buttons` array ("Click Me", "Submit", "Reset").
+- Each `button` displays the label from the `buttons` array (`"Click Me"`, `"Submit"`, `"Reset"`).
 - The `buttons` array is initialized with static values for simplicity. Each item in the array is displayed as a button in the rendered HTML.
 - The `repeat` directive efficiently handles rendering, using the array indices as keys to minimize DOM updates.
 - The resulting structure is an unordered list (`<ul>`) where each `<li>` contains a `<button>` with the appropriate label from the array.
@@ -417,25 +417,18 @@ In the example above, the `c.index` provides the current index of the item, enab
 
 #### View recycling
 
-View recycling determines whether previously rendered DOM elements are reused when the array changes.
-
-:::note
-
-By default, `repeat` enables view recycling to optimize performance, especially for large lists.
-
-:::
-
-**_Recycling Enabled (recycle: true):_**
-
 The `repeat` directive can reuse DOM elements that have already been rendered for array items. This improves performance by avoiding unnecessary DOM creation and destruction.
 
-:::warning
-Recycling components can cause issues if you have a set of components with different attributes or properties and you plan to re-render the list while changing the components, or their attributes and properties. If you observe behaviour where component are not changing as you expect then it's a good time to try disabling recycling `{recycle: false}`.
+`recycle:` enables you to set whether the DOM elements are reused when the array changes.
+
+- `recycle: true` When the array changes, only DOM elements that are directly affected by the changes are recreated. DOM elements that have already been rendered and which are not directly affected by the array change are left unchanged. This is the default, which optimizes performance, especially for large lists.
+- `recycle: false` All views are discarded and recreated whenever the array changes. 
+
+:::tip
+Recycling components can cause issues if you have a set of components with different attributes or properties and you plan to re-render the list while changing the components, or their attributes and properties. 
+
+If you see that components are not changing as you expect, then try disabling recycling `{recycle: false}`.
 :::
-
-**_Recycling Disabled (recycle: false):_**
-
-All views are discarded and recreated whenever the array changes.
 
 Let's look at an example without recycling:
 
@@ -625,7 +618,7 @@ sync(binding, conversionType, eventName);
 
 - `binding` is a function that defines the binding to the chosen variable on the model.
   - Example: `sync((x) => x.propertyName)`.
-- `conversionType` (optional) enables `sync` to convert the underlying data type automatically from the string on the variable to the correct type on the model.The types available are:
+- `conversionType` (optional) enables `sync` to convert the underlying data type automatically from the string on the variable to the correct type on the model. The types available are:
   - string (this is the default)
   - number
   - time

@@ -40,7 +40,7 @@ This section looks at how to style the `my-button` component. It covers the foll
 - [Basic styles](#basic-styles),
 - [Composing styles](#composing-styles),
 - [Partial CSS](#partial-css),
-- [Dynamic behavior with CSSDirective](#cssdirective),
+- [Dynamic behaviour with CSSDirective](#cssdirective),
 - [Shadow DOM styling](#shadow-dom-styling),
 - [Slotted content](#slotted-content),
 - [Style lifecycle management](#style-lifecycle-management),
@@ -338,7 +338,7 @@ In this section we have applied dynamic styles by adding behaviour-driven styles
   - `createCSS()`to generate CSS dynamically
   - `createBehavior()` to attach dynamic behaviour to an element
 
-## Shadow DOM Styling
+## Shadow DOM styling
 
 Shadow DOM encapsulation ensures styles do not affect the global DOM. They apply only to your custom element, and do not "leak" into the global styles.
 
@@ -358,7 +358,7 @@ In the example below,
 
 - `:host` ensures that styles such as `display` and `contain` apply only to the `<my-button>` element. This prevents global CSS rules from interfering with the component, and vice versa.
 - When `<my-button hidden>` is used, the component is visually removed using `display: none`. This is a common convention for enabling/disabling components.
-- The button inside the Shadow DOM is styled with "padding", "background color", and "rounded corners". These styles are scoped to the Shadow DOM and won't affect other buttons outside the `my-button` component.
+- The button inside the Shadow DOM is styled with `"padding"`, `"background color"`, and `"rounded corners"`. These styles are scoped to the Shadow DOM and won't affect other buttons outside the `my-button` component.
 
 ```typescript
 import {
@@ -402,15 +402,15 @@ export class MyButton extends GenesisElement {}
 
 ## Slotted content
 
-A slot is a placeholder where users of the component can insert their own content. This means that components can be flexible and reusable.
-For example, if `my-button` component has a `slot`, you can pass content like a `label` or an `icon` into the button when using it.
+A [slot](/develop/client-capabilities/custom-components/quick-start/#using-slots) is a placeholder where users of the component can insert their own content. This means that components can be flexible and reusable.
+For example, if the `my-button` component has a `slot`, you can pass content like a `label` or an `icon` into the button when using it.
 
 The `::slotted()` CSS element enables you to style content that is projected into a slot in your component's Shadow DOM.
-However, you can only style direct children of the slot (not descendants of those children).
+However, you can only style the direct children of the slot (not descendants of those children).
 
 In the example below, the `<span>` inside the slot has yellow text in bold.
 
-The styles applied to `button` and `::slotted(span)` are scoped to `my-button` Shadow DOM. These will not affect buttons or spans elsewhere in the document.
+The styles applied to `button` and `::slotted(span)` are scoped to the `my-button` Shadow DOM. These will not affect buttons or spans elsewhere in the document.
 
 ```typescript
 @customElement({

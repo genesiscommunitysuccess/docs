@@ -535,7 +535,7 @@ Further to this, you should consider whether properties on your component's API 
 <my-component :property=${() = ({configOne: 'foo', configTwo: 'bar' })}>
 ```
 
-The above sets the property via the component's API, but it would be better if the API was simply defined with two attributes.
+The example above sets the property via the component's API, but it would be better if the API was simply defined with two attributes.
 
 ```typescript
 <my-component config-one=${() => 'foo'} config-two=${() => 'bar'}>
