@@ -961,9 +961,9 @@ The following handler can be used:
 
 ```kotlin
 
-val insertTradeOnCompletionHandler = sendEventOnCompletion<Bulk<Bond>, TradeDetails> {
+val insertTradeOnCompletionHandler = sendEventOnCompletion<Bulk<Trade>, TradeDetails> {
             eventName = "EVENT_TRADE_LOGIC"
-            buildEvent { context: PipelineContext<Bulk<Bond>> ->
+            buildEvent { context: PipelineContext<Bulk<Trade>> ->
                 TradeDetails(
                     // construct TradeDetails object based on provided context object
                 )
@@ -984,10 +984,10 @@ This handler works in the same way as `sendEventOnCompletion` above, except the 
 
 ```kotlin
 
-val saveDocumentOnCompletionHandler = sendCustomEventOnCompletion<Trade, TradeDetails, EventSaveDocumentReply> {
-            eventName = "EVENT_SAVE_DOCUMENT"
-            buildEvent { context: PipelineContext<Bulk<Bond>> ->
-                GenesisSet {
+val customTradeOnCompletionHandler = sendCustomEventOnCompletion<Trade, TradeDetails, EventCustomTradeReply> {
+            eventName = "EVENT_CUSTOM_TRADE"
+            buildEvent { context: PipelineContext<Bulk<Trade>> ->
+                TradeDetails {
                     // construct GenesisSet here
                 }
             }
@@ -998,7 +998,7 @@ pipeline("TEST_CSV_ENCODER") {
             // encoder is expecting objects of type Trade as defined in source
             .transform(csvEncoder())
             .sink(streamSink)
-            .onCompletion(saveDocumentOnCompletionHandler)
+            .onCompletion(customTradeOnCompletionHandler)
 }
 ```
 
