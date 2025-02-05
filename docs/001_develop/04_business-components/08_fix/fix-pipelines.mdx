@@ -9,35 +9,15 @@ tags:
   - fix-pipelines
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 The FIX Component provides some [Data Pipeline](/develop/server-capabilities/integrations/data-pipelines/) implementations, which you can use within any data pipeline that you have set up. 
 
 ### Set-up
 
 To have access to the GPAL extension functions described in this section, you must add the following dependency to the app module of your project:
 
-<Tabs defaultValue="gradle" values={[{ label: 'Gradle', value: 'gradle', }, { label: 'Maven', value: 'maven', }]}>
-    <TabItem value="gradle">
-
-        ```kotlin
-        implementation("global.genesis:fix-pipelines:$fixVersion")
-        ```
-
-    </TabItem>
-    <TabItem value="maven">
-
-        ```xml
-        <dependency>
-            <groupId>global.genesis</groupId>
-            <artifactId>fix-pipelines</artifactId>
-            <version>$fixVersion</version>
-        </dependency>
-        ```
-
-    </TabItem>
-</Tabs>
+```kotlin
+implementation("global.genesis:fix-pipelines:$fixVersion")
+```
 
 ### `fixSource`
 
