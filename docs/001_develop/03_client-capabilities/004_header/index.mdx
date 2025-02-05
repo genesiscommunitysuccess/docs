@@ -382,7 +382,7 @@ export class HeaderExampleComponent {
       <td>
       ```typescript
         <foundation-header @luminance-icon-clicked="${(x) => x.handleLuminanceIconClick}>
-      ```  
+      ```
       </td>
     </tr>
     <tr>
@@ -414,6 +414,16 @@ export class HeaderExampleComponent {
         <foundation-header @language-changed="${(x) => x.handleLanguageChange}">
         ```
       </td>
+    </tr>
+    <tr>
+        <td>logout-clicked</td>
+        <td><code>void</code></td>
+        <td>Dispatched when the user clicks logout button.</td>
+        <td>
+            ```typescript
+            <foundation-header @logout-clicked="${(x) => x.handleLagoutClicked}">
+            ```
+        </td>
     </tr>
   </tbody>
 </table>
