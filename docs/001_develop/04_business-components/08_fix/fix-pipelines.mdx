@@ -21,7 +21,7 @@ implementation("global.genesis:fix-pipelines:$fixVersion")
 
 ### `fixSource`
 
-In order to source FIX messages for your pipeline, you must have the following packages in the [process definition](/develop/server-capabilities/runtime-configuration/processes/) where your pipeline is located:
+In order to source FIX messages for your pipeline, you must include the following packages in the [process definition](/develop/server-capabilities/runtime-configuration/processes/) running your pipeline script file:
 
 ```kotlin
 global.genesis.listener
@@ -42,14 +42,12 @@ pipelines {
 
 ### `fixSink`
 
-In order to send fix messages to a session from your pipeline, you must have the following packages in the process definition of where your pipeline is located:
+In order to send fix messages to a session from your pipeline, you must include the following packages in the [process definition](/develop/server-capabilities/runtime-configuration/processes/) running your pipeline script file:
 
 ```kotlin
 global.genesis.publisher
 global.genesis.pipeline
 ```
-
-See [process configuration](/develop/server-capabilities/runtime-configuration/processes/) for more information about process definitions.
 
 The `fixSink` needs to receive an object or flow of type `OutboundFixMessage`, which contains the Message object and an optional list of session ids to send this message to.
 
