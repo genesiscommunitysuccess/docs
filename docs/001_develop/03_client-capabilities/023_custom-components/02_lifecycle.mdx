@@ -1,6 +1,6 @@
 ---
-title: "Lifecycle"
-sidebar_label: "Lifecycle"
+title: "Component lifecycles"
+sidebar_label: "Component lifecycles"
 id: "lifecycle"
 
 keywords:
@@ -25,17 +25,15 @@ tags:
 sidebar_position: 3
 ---
 
-# Component Lifecycles
+Genesis elements go through several lifecycle stages from creation to removal. Understanding these stages is crucial for properly initializing components, cleaning up and for state management.
 
-Genesis Elements go through several lifecycle stages from creation to removal. Understanding these lifecycles is crucial for proper component initialization, cleanup, and state management.
+`GenesisElement` has access to a number of methods that enable you to control the lifecycle. These are described below. 
 
-Here are some lifecycle methods that we have access to through `GenesisElement`:
+### Connected and disconnected methods
 
-### Connected & Disconnected
+`connectedCallback` lifecycle runs when a component is added to the DOM - this is the perfect time for set-up.
 
-`connectedCallback` lifecycle runs when a component is added to the DOM - perfect time for setup.
-
-`disconnectedCallback` lifecycle runs when a component is removed from the DOM - perfect time for cleanup.
+`disconnectedCallback` lifecycle runs when a component is removed from the DOM - this is the perfect time for clean-up.
 
 ```typescript
 import {
@@ -68,15 +66,15 @@ export class MyButton extends GenesisElement {
 }
 ```
 
-### Changed Callbacks
+### Changed callbacks
 
-Changed Callback lifecycle runs when **attributes/properties** update - handle state changes. The name varies depending on the name of the attribute.
+The changed callback lifecycle runs when the attributes or properties of an element are updated, in order to handle state changes. The name of the method varies, based on the name of the attribute or property.
 
-:::note
+The example below is for handling changes to the label attribute of `MyButton`. So, the method used is `labelChanged`. When this method is triggered,  the following statement is added to the log:
 
-In the following example you'll notice we have not included the `connectedCallback` and `disconnectedCallback`. You only need to add them explicitly if you need to run your own code in the lifecycles, you can omit them otherwise.
+`<my-button label="Cancel"></my-button>`
 
-:::
+> Button text changed from Submit to Cancel
 
 ```typescript
 import {
@@ -102,9 +100,8 @@ export class MyButton extends GenesisElement {
   }
 }
 ```
+:::note
 
-The `labelChanged` method will be triggered and consequently log the following statement when the label attribute is changed in the template:
+The example above does not include the `connectedCallback` and `disconnectedCallback`. If you want to use this snippet in your lifecycles, you need to add these methods.
 
-`<my-button label="Cancel"></my-button>`
-
-> Button text changed from Submit to Cancel
+:::
