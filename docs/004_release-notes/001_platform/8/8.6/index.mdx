@@ -110,12 +110,17 @@ id: '8.6'
 
 ### Patch releases
 
+#### 8.6.10
+
+###### Fixes
+- Ensure classpath builder util can handle jars with no manifest
+
 #### 8.6.9
 
-##### Features
+###### Features
 - Allow for overriding of test process name
 
-##### Fixes
+###### Fixes
 - gradle: site specific plugin to do not modify binary files stored under data 
 - Ensure cookie based REFRESH_AUTH_TOKEN value is correctly added to EVENT_LOGIN_AUTH payload 
 - Ensure DataDumpManager uses different loggers for GenesisMessageDecoder and GenesisMessageEncoder 
@@ -123,53 +128,53 @@ id: '8.6'
 
 #### 8.6.8
 
-##### Features
+###### Features
 - Provide better [bulk purge support](/build-deploy-operate/operate/commands/#cascade-purges)
 
-##### Fixes
+###### Fixes
 - Fixed issue where removal of a sequence at the same time as a table rename would cause remap to fail 
 
 #### 8.6.7
 
-##### Features
+###### Features
 - Install hooks improvements
 - Optimise memory usage BackwardJoinCache for 1-2-1 joins
 
 #### 8.6.6
 
-##### Features
+###### Features
 - Added support for enabling app level sys def files in integration tests
 
-##### Fixes
+###### Fixes
 
 - Option to register root records in back join cache to ensure they exist when child record is registered
 
 #### 8.6.5
 
-##### Fixes
+###### Fixes
 - ResourceDaemon doesn't properly evaluate ClusterMode
 
 #### 8.6.4
 
-##### Features
+###### Features
 - Query API: Add dynamicQueryBuilder support
 
-##### Fixes
+###### Fixes
 - Optimize index matching for non-consecutive fields in request-server
 
 #### 8.6.3
 
-##### Fixes
+###### Fixes
 - Query API: Ensure numeric type parameters are not passed as "string" values to SQL "where" clauses, and use correct uppercase underscore translation.
 
 #### 8.6.2
 
-##### Features
+###### Features
 - Query API: Add support for dynamic parameters as well as fix issues related to ENUM and DateTime handling.
 
 #### 8.6.1
 
-##### Fixes
+###### Fixes
 - Exec plugin should take clientName override into account.
 
 ## Client

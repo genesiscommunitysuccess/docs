@@ -137,8 +137,9 @@ export class AppComponent {
 </Tabs>
 
 
-## Notification components
 The Genesis `foundation-notifications` package provides the following notification components:
+
+Here is a list of available notification components in Genesis's `foundation-notifications` package:
 
 * **Alert**: `Alerts` are quick messages that share important information without interrupting the user.
 * **Toast**: These are short, auto-closing notifications that are displayed at the edge of screen and are ideal for transient messages, such as success confirmations or error notifications.
@@ -166,6 +167,7 @@ For the parameters, refer to [AlertStructure](./docs/api/foundation-notification
 ```
 
 ### Toast
+
 Toast notifications are short, auto-closing notifications that are displayed at the edge of the screen. They are used for transient messages, such as success confirmations, error notifications or updates that don't require user acknowledgement.
 
 Here's an example of a toast using the [showNotificationToast](./docs/api/foundation-notifications.shownotificationtoast) method from the package. You can click on the `Show Toast` button to view the toast message, which slides in from the top right. You can click to remove it, or you can leave it and it will disappear after a few seconds. 
@@ -188,6 +190,7 @@ For the parameters, refer to [ToastStructure](./docs/api/foundation-notification
   'rapid',
   );
 ```
+
 As mentioned before, toast notifications automatically close after a specific duration, using the `autoClose` and `closeTimeout` options. Like [`snackbar`](#snackbar), they can be styled using the `type` option that supports `error`, `success`, `warning` and `info` styles.
 
 ### Banner
@@ -216,6 +219,7 @@ For the parameters, refer to [BannerStructure](./docs/api/foundation-notificatio
 ```
 
 ### Snackbar
+
  A snackbar is a notification that appears at the bottom of the screen. These notifications can have interactive buttons, unlike `toasts`. They can be used for brief updates that require user interaction, such as showing a status message or confirming an action.
 
  Use the `type` property in the snackbar config to set the notification style. Supported types are:
@@ -287,7 +291,6 @@ showNotificationDialog(
   'rapid',
 );
 ```
-
 
 ## Notification listener component
 
@@ -435,7 +438,6 @@ export class AppComponent {
 <EventWrapper />
 </TabItem>
 </Tabs>
-
 
 Additionally, you can provide the `resource-name` attribute to the `notification-listener` component. This attribute enables the component to connect to a datasource and listen to the notifications on actions such as `insert`, `update` or `delete` performed on the specified `resource-name`.
 
