@@ -95,6 +95,20 @@ id: '8.2'
 
 ### Patch releases
 
+#### 8.2.12
+
+###### Features
+- Add flag to create compact `toString` method on entities
+- Allow lambdas for `withInput` expressions to be assigned and reused
+
+###### Fixes
+- Handle multiple updates for same record in data server
+- Add sync backwards join cache impl
+- Ensure cookie based `REFRESH_AUTH_TOKEN` value is correctly added to `EVENT_LOGIN_AUTH` payload
+- Ensure `DataDumpManager` uses different loggers for `GenesisMessageDecoder` and `GenesisMessageEncoder`
+- Increase zero mq subscriber worker high water mark value to `Integer.max_value`
+- Regression on view generation when empty blocks are used in derived fields
+
 #### 8.2.11
 
 ###### Features
