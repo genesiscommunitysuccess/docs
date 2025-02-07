@@ -75,6 +75,28 @@ id: '8.5'
 
 ### Patch releases
 
+#### 8.5.5
+
+###### Features
+
+- Add flag to create compact `toString` method on entities 
+- Allow lambdas for `withInput` expressions to be assigned and reused 
+- Optimise memory usage `BackwardJoinCache` for 1-2-1 joins 
+- Provide better bulk purge support 
+
+###### Performance improvements
+- Use `deleteAll` in `PurgerScript.purgeDerivedRange` 
+
+###### Fixes
+
+- Add sync backwards join cache impl 
+- Ensure cookie based `REFRESH_AUTH_TOKEN` value is correctly added to `EVENT_LOGIN_AUTH` payload 
+- ResourceDaemon doesn't properly evaluate `ClusterMode` 
+- Ensure DataDumpManager uses different loggers for `GenesisMessageDecoder` and `GenesisMessageEncoder` 
+- Ensure script files in site-specific have priority when searching by suffix 
+- Increase zero mq subscriber worker high water mark value to `Integer.max_value` 
+- Regression on view generation when empty blocks are used in derived fields
+
 #### 8.5.4
 
 - Configurable update frequency and caching for Db cluster strategy
