@@ -19,17 +19,14 @@ import TabItem from '@theme/TabItem';
 
 These client-side filters enable the client app to filter and process data locally on behalf of the user. 
 
-- Your app can filter runtime data or state to achieve an outcome. 
-- Your app can filter using options such as `userTargeting` and `timeWindow` to customize data manipulation directly in the browser. This improves responsiveness by reducing server requests.
-
 In general, client-side filters take primitive input parameters, and return `true` or `false` based on these values. You can combine them using the [ClientFilterRunner](./docs/api/foundation-filters.runner.md) utility provided in the `foundation-filters` package to create layered filtering conditions for complex data scenarios.
 
 If a filter is used without all the input parameters needed, Genesis logs a warning and returns `true` by convention so that the chain can continue.
 
-For detailed information on the API and configuration, see the [API documentation](./docs/api/index.md).
+For detailed information on the API and configuration, see the [API documentation](/develop/client-capabilities/filters/docs/api/foundation-filters/).
 
 ## Example
-Here is an example of the `timeWindow` filter. 
+Here is an example of the `timeWindow` filter. In this case, the start and date are created dynamically; they show the day before the current day and the day after by default. You can click on the `Check` button to see the message returned. And you can change the dates to see a different message when today's date is not in the range.
 
 <FiltersDemo />
 
@@ -39,7 +36,7 @@ Each filter is provided in two flavours:
 1. Functions
 2. Dependency injection (DI)
 
-These flavours are explained in detail below with help of code examples.
+Both flavours are shown in the example below. This also uses `timeWindow`, but in this case, the start and end for the period are both set to a specific date and time.
 
 <Tabs defaultValue="DI" values={[ { label: 'Dependency Injection (DI)', value: 'DI', },{ label: 'Function', value: 'function', }]}>
   <TabItem value="function">
@@ -131,22 +128,6 @@ Here is a list of available filters:
 * [userAgent](./docs/api/foundation-filters.useragentfilter.md): This filters content by the user's browser, OS, devices or specified user agent string. For example, you can customize the experience according to specific environments, such as targeting mobile devices or audience, or you can restrict access from a specific browser.
 * [userTargeting](./docs/api/foundation-filters.usertargetingfilter.md): This filters content on basis of attributes such as usernames, permissions and profiles. It enables you to show personalized content or to restrict access to specific content depending on user conditions.
 
-
-## Installation
-
-To enable this module in your application, follow the steps below.
-
-1. Add `@genesislcap/foundation-filters` as a dependency in your `package.json` file. 
-```json
-{
-  "dependencies": {
-    "@genesislcap/foundation-filters": "latest"
-  },
-}
-```
-
-2. Run the `$ npm run bootstrap` command. (Whenever you change the dependencies of your project, you should always run this command to rebuild.) You can find more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
-
 ## Using dependency injection
 
 Dependency injection (DI) is essential if you want to set up filters with dynamic configurations. This method also simplifies reusability across components. The example below uses the `UserTargeting` filter without the need to provide the current user or other data points directly to the underlying function. If you later change the source of the the current user, you can refactor centrally.
@@ -180,7 +161,9 @@ Also note that DI-based filters are registered as transient, so you will get a n
 This section looks at each filter in detail and provides examples.
 
 ### `nodeEnv`
-The nodeEnv filter checks the current application environment (such as "development" or "production") and returns true if the filter’s specified environment matches the current one. Use this, for example, to ensure that specific features or configurations are available only in intended environments.
+The nodeEnv filter checks the `NODE_ENV` environment variable to obtain the current application environment. If this is unset, then it is classed as` development`. 
+
+The filter returns true if the filter’s specified environment matches the current one. Use this, for example, to ensure that specific features or configurations are available only to the intended environments.
 
 Here is an example:
 
@@ -211,19 +194,19 @@ import { NodeEnv } from '@genesislcap/foundation-filters';
 const outcome = this.nodeEnv.isDevelopment;
 ```
 
-You can find other the available API for nodeEnv in the [API Docs](./docs/api/index.md).
+You can find the other available API for nodeEnv in the [API Docs](/develop/client-capabilities/filters/docs/api/foundation-filters/).
 
 ### `percentage`
 The percentage filter checks if a randomly generated number between 0 and 100 is within a specified percentage threshold. This enables you to set probabilistic conditions, so that specified features or elements can be displayed to a proportion of users based on the given percentage. 
 
-For example, if you set the filter to 20%, the each time it runs, it has a 20% chance of passing. Consequently only about 20% of users will see the feature or content. This is useful for controlled feature rollouts or A/B testing without requiring complex set-ups.
+For example, if you set the filter to 20%, then each time it runs, it has a 20% chance of passing. Consequently only about 20% of users will see the feature or content. This is useful for controlled feature rollouts or A/B testing without requiring complex set-ups.
 
 <Tabs defaultValue="DI" values={[ { label: 'Dependency Injection (DI)', value: 'DI', },{ label: 'Function', value: 'function', }]}>
   <TabItem value="function">
     ```ts
     import { percentageFilter } from '@genesislcap/foundation-filters';
     ...
-    const probability = 0.5; // define percentage between 0 & 1
+    const probability = 0.2; // define percentage between 0 & 1
     const randomNumber = Math.random(); // provide a random number optionally
     const outcome = percentageFilter(probability, randomNumber);
     console.log(outcome); // true or false based on probability
@@ -456,4 +439,19 @@ const outcome = this.runner.run([
 console.log(outcome); // true if all the filters pass 
 
 ```
+
+## Installation
+
+To enable this module in your application, follow the steps below.
+
+1. Add `@genesislcap/foundation-filters` as a dependency in your `package.json` file. 
+```json
+{
+  "dependencies": {
+    "@genesislcap/foundation-filters": "latest"
+  },
+}
+```
+
+2. Run the `$ npm run bootstrap` command. (Whenever you change the dependencies of your project, you should always run this command to rebuild.) You can find more information in the [package.json basics](/build-deploy-operate/build/bdo-build-overview/#packagejson) page.
 
