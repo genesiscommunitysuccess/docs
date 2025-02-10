@@ -161,7 +161,7 @@ GenesisSet(fields: MutableMap\<String, Any?\>) | Creates a GenesisSet object usi
 | setByteArray | `fun setByteArray(key: String, value: ByteArray?)` | Set byte array value.  If the value exists in the set it is overwritten. |
 | setDate | `fun setDate(key: String, date: DateTime?)` | Set date value.  If the value exists in the set it is overwritten. |
 | setDirect | `fun setDirect(property: String, value: Any?)` | Shorthand method to set a field that may be multiple sets deep. For example, `genesisSet.setDirect("DETAILS.TRADE.CLIENT.NAME", "Example")` |
-| setDirectNull | `fun setDirectNull(property: String, value: Any?, defaultValue: Any)` | Shorthand method to set a field that can be multiple sets deep, and whcih accepts a default value for null parameters. For example, `genesisSet.setDirectNull("DETAILS.TRADE.MARKET.NAME", "Test", "Example")`. |
+| setDirectNull | `fun setDirectNull(property: String, value: Any?, defaultValue: Any)` | Shorthand method to set a field that can be multiple sets deep, and which accepts a default value for null parameters. For example, `genesisSet.setDirectNull("DETAILS.TRADE.MARKET.NAME", "Test", "Example")`. |
 | setDouble | `fun setDouble(key: String, value: Double?)` | Set double value.  If the value exists in the set it is overwritten. |
 | setFullArray | `fun setFullArray(key: String, array: Iterable\<*\>)` | Set a full list of values. If there is an existing item which is a list, then all items in this array are appended to it, otherwise this array is set as the new value. |
 | setGenesisSet | `setGenesisSet(key: String, set: GenesisSet?)` | Embed a set inside this set.  If the value exists in the set it is overwritten. |
