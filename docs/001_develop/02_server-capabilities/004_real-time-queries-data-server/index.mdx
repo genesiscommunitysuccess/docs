@@ -674,6 +674,8 @@ With `serializationType`, there are two options for configuring the type of seri
 
 In our current Data Server implementation, internal tests show that Fury can serialize and deserialize row objects 13-15 times faster than Kryo; this leads to faster LMDB read/write operations (up to twice as quick in some cases). This performance improvement has a great impact on the latency incurred when requesting rows from a Data Server query, whether it happens as part of the first subscription message (DATA_LOGON messages) or subsequent row request messages (MORE_ROWS messages). 
 
+However, the serialized byte array size of a Fury object can be between 10 and 15 per cent larger than a Kryo object, so there is a small penalty to pay for using this option.
+
 With `SerializationBufferMode`, you can change the buffer type used to read and write information from and to LMDB. 
 
 There are two options: `SerializationBufferMode.ON_HEAP` and `SerializationBufferMode.OFF_HEAP`. 
@@ -687,7 +689,7 @@ A string overflow happens when the value of a String field in an index is larger
 
 There are two options:
 
--  `onStringOverflow.IGNORE_ROW` means that rows with string overflows will be ignored. This can lead to data missing from the Data Server.
+- `onStringOverflow.IGNORE_ROW` means that rows with string overflows will be ignored. This can lead to data missing from the Data Server.
 - `onStringOverflow.TRUNCATE_FIELD` causes indices with string overflows to be truncated. The data with the overflow will still be returned in full, and will be searchable. However, if multiple rows are truncated to the same value, any subsequent rows will lead to duplicate index exceptions during the insert, so these rows will not be available to the Data Server.
 
 ###### Using the type-aware criteria evaluator
@@ -698,7 +700,7 @@ For example, you might want a front-end client to perform a criteria search on a
 
 The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimized experience. The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`). 
 
-Note that the type-aware evaluator is also available in `DbMon` for operations such as `search` and `qsearch`. 
+Note that the type-aware evaluator is also available in [`DbMon`](/build-deploy-operate/operate/commands/dbmon/) for operations such as `search` and `qsearch`. 
 
 If you do not use the use the type-aware criteria evaluator, the traditional criteria evaluator needs the field types to match the query fields in the Data Server. 
 
@@ -727,7 +729,7 @@ Find details around [how data servers work with optimistic concurrency](/develop
 
 ## Client API
 
-Client's can connect and query via Websocket or REST HTTP calls. Websockets are required for real-time updates to be pushed. 
+Clients can connect and query via Websocket or REST HTTP calls. Websockets are required for real-time updates to be pushed. 
 
 <CommonAuthenticateFirst />
 
